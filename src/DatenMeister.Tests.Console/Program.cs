@@ -10,7 +10,11 @@ namespace DatenMeister.Tests.Console
     {
         static void Main(string[] args)
         {
+            var property = new object();
             System.Console.WriteLine("DatenMeister Testing");
+
+            var element = new MOF.InMemory.MofElement();
+            element.set(property, "Test");
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DatenMeister.MOF.Interface
+namespace DatenMeister.MOF.Interface.Reflection
 {
     /// <summary>
     /// Implements the interface according to MOF Core Specificaton 2.5, clause 9.4

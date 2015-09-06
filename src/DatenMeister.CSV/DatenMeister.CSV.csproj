@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{67F8BCA3-8438-4E91-9DEA-4189C1776E26}</ProjectGuid>
+    <ProjectGuid>{39845115-F057-4641-9237-6960BB676684}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DatenMeister</RootNamespace>
-    <AssemblyName>DatenMeister</AssemblyName>
+    <RootNamespace>DatenMeister.CSV</RootNamespace>
+    <AssemblyName>DatenMeister.CSV</AssemblyName>
     <DefaultLanguage>de-DE</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,22 +39,16 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MOF\Exceptions\MofException.cs" />
-    <Compile Include="MOF\InMemory\MofElement.cs" />
-    <Compile Include="MOF\InMemory\MofFactory.cs" />
-    <Compile Include="MOF\InMemory\MofObject.cs" />
-    <Compile Include="MOF\InMemory\MofReflectiveSequence.cs" />
-    <Compile Include="MOF\InMemory\MofUriExtent.cs" />
-    <Compile Include="MOF\Interface\Common\IReflectiveCollection.cs" />
-    <Compile Include="MOF\Interface\Identifiers\IExtent.cs" />
-    <Compile Include="MOF\Interface\Identifiers\IUriExtent.cs" />
-    <Compile Include="MOF\Interface\Reflection\IElement.cs" />
-    <Compile Include="MOF\Interface\Reflection\IFactory.cs" />
-    <Compile Include="MOF\Interface\Reflection\IObject.cs" />
-    <Compile Include="MOF\Interface\Common\IReflectiveSequence.cs" />
+    <Compile Include="CSVDataProvider.cs" />
+    <Compile Include="CSVSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
+      <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>
+      <Name>DatenMeister</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

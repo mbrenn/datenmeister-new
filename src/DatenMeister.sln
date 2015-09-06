@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Tests.Console"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Tests", "DatenMeister.Tests\DatenMeister.Tests.csproj", "{20B36121-B027-4BAC-BBF5-93E75380E6F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.CSV", "DatenMeister.CSV\DatenMeister.CSV.csproj", "{39845115-F057-4641-9237-6960BB676684}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{20B36121-B027-4BAC-BBF5-93E75380E6F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20B36121-B027-4BAC-BBF5-93E75380E6F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20B36121-B027-4BAC-BBF5-93E75380E6F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39845115-F057-4641-9237-6960BB676684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39845115-F057-4641-9237-6960BB676684}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39845115-F057-4641-9237-6960BB676684}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39845115-F057-4641-9237-6960BB676684}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

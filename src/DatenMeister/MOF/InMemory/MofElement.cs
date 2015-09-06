@@ -1,4 +1,5 @@
 ﻿using DatenMeister.MOF.Interface;
+using DatenMeister.MOF.Interface.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,21 @@ namespace DatenMeister.MOF.InMemory
 
         IElement _metaclass;
 
-        public MofElement()
+        /// <summary>
+        /// Gets or sets the guid of the element
+        /// </summary>
+        public Guid guid
         {
+            get;
+            private set;
         }
 
-        public MofElement(IElement container, IElement metaClass)
+        public MofElement()
+        {
+            guid = Guid.NewGuid();
+        }
+
+        public MofElement(IElement container, IElement metaClass) : this()
         {
             _container = container;
             _metaclass = metaClass;

@@ -17,18 +17,13 @@ namespace DatenMeister.MOF.InMemory
 
         IElement _metaclass;
 
-        /// <summary>
-        /// Gets or sets the guid of the element
-        /// </summary>
-        public Guid guid
+        public IElement metaclass
         {
-            get;
-            private set;
+            get { return _metaclass; }
         }
 
         public MofElement()
-        {
-            guid = Guid.NewGuid();
+        {   
         }
 
         public MofElement(IElement container, IElement metaClass) : this()
@@ -42,7 +37,7 @@ namespace DatenMeister.MOF.InMemory
             return _container;
         }
 
-        public IObject getMetaClass()
+        public IElement getMetaClass()
         {
             return _metaclass;
         }

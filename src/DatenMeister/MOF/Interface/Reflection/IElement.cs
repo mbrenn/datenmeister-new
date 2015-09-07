@@ -11,7 +11,12 @@ namespace DatenMeister.MOF.Interface.Reflection
     /// </summary>
     public interface IElement : IObject
     {
-        IObject getMetaClass();
+        IElement metaclass
+        {
+            get;
+        }
+
+        IElement getMetaClass();
 
         IElement container();
     }

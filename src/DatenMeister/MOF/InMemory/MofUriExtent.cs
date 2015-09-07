@@ -30,12 +30,25 @@ namespace DatenMeister.MOF.InMemory
 
         public IElement element(string uri)
         {
+            var uriAsUri = new Uri(uri);
+            
             throw new NotImplementedException();
         }
 
         public string uri(IElement element)
         {
-            throw new NotImplementedException();
+            if ( element == null )
+            {
+                throw new ArgumentNullException("element");
+            }
+
+            var elementAsObject = element as MofObject;
+            if ( elementAsObject == null)
+            {
+                throw new InvalidOperationException("element is not of type MofObject. Element is: " + element.ToString());
+            }
+            
+            return _contextUri + "#" + elementAsObject.guid.ToString();
         }
 
         public bool useContainment()

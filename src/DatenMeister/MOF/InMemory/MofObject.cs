@@ -15,9 +15,23 @@ namespace DatenMeister.MOF.InMemory
     public class MofObject : IObject
     {
         /// <summary>
+        /// Gets or sets the guid of the element
+        /// </summary>
+        public Guid guid
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Stores the values direct within the memory
         /// </summary>
         private Dictionary<object, object> values = new Dictionary<object, object>();
+
+        public MofObject()
+        {
+            guid = Guid.NewGuid();
+        }
 
         public bool equals(object other)
         {

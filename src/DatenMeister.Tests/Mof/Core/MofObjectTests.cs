@@ -19,7 +19,7 @@ namespace DatenMeister.Tests.Mof.Core
             var property2 = new object();
 
             var mofObject = new MofObject();
-            Assert.That(mofObject.isSet(property1), Is.True);
+            Assert.That(mofObject.isSet(property1), Is.False);
             mofObject.set(property1, "Test");
             mofObject.set(property2, property1);
 

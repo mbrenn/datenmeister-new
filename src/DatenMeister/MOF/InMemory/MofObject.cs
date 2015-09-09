@@ -71,5 +71,18 @@ namespace DatenMeister.MOF.InMemory
         {
             values[property] = null;
         }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            var komma = string.Empty;
+            foreach (var pair in values)
+            {
+                builder.Append($"{komma}{pair.Key.ToString()} = {pair.Value.ToString()}");
+                komma = ", ";
+            }
+
+            return builder.ToString();
+        }
     }
 }

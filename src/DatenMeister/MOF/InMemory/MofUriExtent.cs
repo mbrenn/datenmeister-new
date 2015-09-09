@@ -56,7 +56,7 @@ namespace DatenMeister.MOF.InMemory
             return false;
         }
 
-        IReflectiveSequence IExtent.elements()
+        public IReflectiveSequence elements()
         {
             return new MofReflectiveSequence(_elements);
         }

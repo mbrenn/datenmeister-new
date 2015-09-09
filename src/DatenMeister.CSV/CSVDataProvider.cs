@@ -23,7 +23,7 @@ namespace DatenMeister.CSV
         /// <returns>The loaded extent</returns>
         public void Load(IUriExtent extent, IFactory factory, string path, CSVSettings settings)
         {
-            this.ReadFromFile(path, extent, factory, settings);
+            ReadFromFile(path, extent, factory, settings);
         }
 
         /// <summary>
@@ -44,20 +44,49 @@ namespace DatenMeister.CSV
             {
                 using (var stream = new StreamReader(fileStream, settings.Encoding))
                 {
+                    var createColumns = false;
                     // Reads header, if necessary
                     if (settings.HasHeader)
                     {
-                        throw new NotImplementedException();
+                        // TODO: Do not skip first line...
                         //extent.HeaderNames.AddRange(this.SplitLine(stream.ReadLine(), settings));
+                        var ignoredLine = stream.ReadLine();
+                    }
+
+                    if (settings.Columns == null )
+                    {
+                        settings.Columns = new List<object>();
+                        createColumns = true;
                     }
 
                     // Reads the data itself
                     string line;
                     while ((line = stream.ReadLine()) != null)
                     {
-                        var values = this.SplitLine(line, settings);
+                        var values = SplitLine(line, settings);
 
                         var csvObject = factory.create(null);
+
+                        // we now have the created object, let's fill it
+                        var valueCount = values.Count;
+                        for (var n = 0; n < valueCount; n++)
+                        {
+                            object foundColumn;
+                            if (settings.Columns.Count <= n && createColumns)
+                            {
+                                // Create new column
+                                foundColumn = (object)$"Column {n + 1}";
+                                settings.Columns.Add(foundColumn);
+                            }
+                            else
+                            {
+                                foundColumn = settings.Columns[n];
+                            }
+
+                            csvObject.set(foundColumn, values[n]);
+                        }
+                        
+
                         extent.elements().add(csvObject);
                     }
                 }
@@ -112,7 +141,7 @@ namespace DatenMeister.CSV
                         x => element.get(x));
                 }
             }
-        }*/
+        }*/ 
 
         /// <summary>
         /// Splits a CSV line into columns

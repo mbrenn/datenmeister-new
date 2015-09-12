@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DatenMeister.MOF.Exceptions
+namespace DatenMeister.EMOF.Exceptions
 {
     /// <summary>
     /// This exception will be thrown, when a violation of Mof is found out

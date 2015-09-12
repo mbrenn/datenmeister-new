@@ -1,13 +1,10 @@
-﻿using DatenMeister.MOF.Interface.Common;
-using System;
+﻿using DatenMeister.EMOF.Interface.Common;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections;
-using DatenMeister.MOF.Exceptions;
+using DatenMeister.EMOF.Exceptions;
 
-namespace DatenMeister.MOF.InMemory
+namespace DatenMeister.EMOF.InMemory
 {
     public class MofReflectiveSequence : IReflectiveSequence
     {

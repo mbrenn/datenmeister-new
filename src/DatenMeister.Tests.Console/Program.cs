@@ -1,10 +1,7 @@
 ﻿using DatenMeister.CSV;
-using DatenMeister.MOF.InMemory;
-using System;
-using System.Collections.Generic;
+using DatenMeister.EMOF.InMemory;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DatenMeister.Tests.Console
 {
@@ -15,10 +12,8 @@ namespace DatenMeister.Tests.Console
             var property = new object();
             System.Console.WriteLine("DatenMeister Testing");
 
-            var element = new MOF.InMemory.MofElement();
+            var element = new EMOF.InMemory.MofElement();
             element.set(property, "Test");
-
-
 
             // Checks the loading of the PLZ
             System.Console.WriteLine("Loading the Zip codes");

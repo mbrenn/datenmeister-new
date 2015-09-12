@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DatenMeister.MOF.Interface.Reflection
+﻿namespace DatenMeister.EMOF.Interface.Reflection
 {
     /// <summary>
     /// Implements the interface according to MOF Core Specificaton 2.5, clause 9.4

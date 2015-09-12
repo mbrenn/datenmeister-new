@@ -1,13 +1,10 @@
-﻿using DatenMeister.MOF.Exceptions;
-using DatenMeister.MOF.Interface;
-using DatenMeister.MOF.Interface.Reflection;
+﻿using DatenMeister.EMOF.Exceptions;
+using DatenMeister.EMOF.Interface.Reflection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace DatenMeister.MOF.InMemory
+namespace DatenMeister.EMOF.InMemory
 {
     /// <summary>
     /// Describes the InMemory object, representing the Mof Object

@@ -1,12 +1,6 @@
-﻿using DatenMeister.MOF.Interface;
-using DatenMeister.MOF.Interface.Reflection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DatenMeister.EMOF.Interface.Reflection;
 
-namespace DatenMeister.MOF.InMemory
+namespace DatenMeister.EMOF.InMemory
 {
     /// <summary>
     /// Implements the IElement according to the Mof specification

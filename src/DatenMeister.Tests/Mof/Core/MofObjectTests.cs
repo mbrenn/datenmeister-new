@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using DatenMeister.MOF.InMemory;
+﻿using DatenMeister.EMOF.InMemory;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Mof.Core

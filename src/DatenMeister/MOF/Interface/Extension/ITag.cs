@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace DatenMeister.MOF.Interface.Extension
 {
+    /// <summary>
+    /// Defines the Tag interface as defined in MOF CoreSpecification 2.5
+    /// </summary>
+    // TODO: Inherit from IElement
     public interface ITag
     {
         string name

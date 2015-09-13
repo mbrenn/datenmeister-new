@@ -10,46 +10,46 @@ namespace DatenMeister.EMOF.Proxy
 {
     public class ProxyReflectiveCollection : IReflectiveCollection
     {
-        private IReflectiveCollection _collection;
+        protected IReflectiveCollection _collection;
 
-        public ProxyReflectiveCollection ( IReflectiveCollection collection)
+        public ProxyReflectiveCollection(IReflectiveCollection collection)
         {
             _collection = collection;
         }
 
-        public bool add(object value)
+        public virtual bool add(object value)
         {
-            throw new NotImplementedException();
+            return _collection.add(value);
         }
 
-        public bool addAll(IReflectiveSequence value)
+        public virtual bool addAll(IReflectiveSequence value)
         {
-            throw new NotImplementedException();
+            return _collection.addAll(value);
         }
 
-        public void clear()
+        public virtual void clear()
         {
-            throw new NotImplementedException();
+            _collection.clear();
         }
 
-        public IEnumerator<object> GetEnumerator()
+        public virtual IEnumerator<object> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _collection.GetEnumerator();
         }
 
-        public bool remove(object value)
+        public virtual bool remove(object value)
         {
-            throw new NotImplementedException();
+            return _collection.remove(value);
         }
 
-        public int size()
+        public virtual int size()
         {
-            throw new NotImplementedException();
+            return _collection.size();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }

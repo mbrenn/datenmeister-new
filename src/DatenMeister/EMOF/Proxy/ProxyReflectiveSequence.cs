@@ -13,7 +13,7 @@ namespace DatenMeister.EMOF.Proxy
         /// <summary>
         /// Stores the sequence
         /// </summary>
-        private IReflectiveSequence _sequence;
+        protected IReflectiveSequence _sequence;
 
         public ProxyReflectiveSequence(IReflectiveSequence sequence)
         {
@@ -72,7 +72,7 @@ namespace DatenMeister.EMOF.Proxy
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable)_sequence).GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

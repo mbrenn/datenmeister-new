@@ -9,7 +9,7 @@ namespace DatenMeister.EMOF.Proxy
 {
     public class ProxyMofElement : IElement
     {
-        private IElement _element;
+        protected IElement _element;
 
         public ProxyMofElement(IElement element)
         {

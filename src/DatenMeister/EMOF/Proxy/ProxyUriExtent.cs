@@ -11,7 +11,7 @@ namespace DatenMeister.EMOF.Proxy
 {
     public class ProxyUriExtent : IUriExtent
     {
-        private IUriExtent _extent;
+        protected IUriExtent _extent;
 
         public ProxyUriExtent ( IUriExtent extent)
         {

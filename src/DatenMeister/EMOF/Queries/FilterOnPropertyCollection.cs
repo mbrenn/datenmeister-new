@@ -5,11 +5,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using DatenMeister.EMOF.Proxy;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.Queries
 {
-    public class FilterOnPropertyCollection
+    public class FilterOnPropertyCollection : ProxyReflectiveSequence
     {
+        private object _property;
 
+        private object _filterValue;
+
+        public FilterOnPropertyCollection(IReflectiveSequence sequence, object property, object filterValue)
+            : base(sequence)
+        {
+            _property = property;
+            _filterValue = filterValue;
+        }
+
+        public override IEnumerator<object> GetEnumerator()
+        {
+            foreach (var value in _sequence)
+            {
+                var valueAsObject = value as IObject;
+                if (valueAsObject?.get(_property)?.Equals(_filterValue) == true)
+                {
+                    yield return valueAsObject;
+                }
+            }
+        }
+
+        public override int size()
+        {
+            var result = 0;
+            foreach (var value in _sequence)
+            {
+                var valueAsObject = value as IObject;
+                if (valueAsObject?.get(_property)?.Equals(_filterValue) == true)
+                {
+                    result++;
+                }
+            }
+
+            return result;
+        }
     }
 }

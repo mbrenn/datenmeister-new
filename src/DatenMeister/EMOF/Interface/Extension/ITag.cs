@@ -1,12 +1,7 @@
-﻿using DatenMeister.MOF.Interface.Common;
-using DatenMeister.MOF.Interface.Reflection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DatenMeister.EMOF.Interface.Common;
+using DatenMeister.EMOF.Interface.Reflection;
 
-namespace DatenMeister.MOF.Interface.Extension
+namespace DatenMeister.EMOF.Interface.Extension
 {
     /// <summary>
     /// Defines the Tag interface as defined in MOF CoreSpecification 2.5

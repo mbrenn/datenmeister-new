@@ -39,21 +39,21 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MOF\Exceptions\MofException.cs" />
-    <Compile Include="MOF\InMemory\MofElement.cs" />
-    <Compile Include="MOF\InMemory\MofFactory.cs" />
-    <Compile Include="MOF\InMemory\MofObject.cs" />
-    <Compile Include="MOF\InMemory\MofReflectiveSequence.cs" />
-    <Compile Include="MOF\InMemory\MofTag.cs" />
-    <Compile Include="MOF\InMemory\MofUriExtent.cs" />
-    <Compile Include="MOF\Interface\Common\IReflectiveCollection.cs" />
-    <Compile Include="MOF\Interface\Identifiers\IExtent.cs" />
-    <Compile Include="MOF\Interface\Extension\ITag.cs" />
-    <Compile Include="MOF\Interface\Identifiers\IUriExtent.cs" />
-    <Compile Include="MOF\Interface\Reflection\IElement.cs" />
-    <Compile Include="MOF\Interface\Reflection\IFactory.cs" />
-    <Compile Include="MOF\Interface\Reflection\IObject.cs" />
-    <Compile Include="MOF\Interface\Common\IReflectiveSequence.cs" />
+    <Compile Include="EMOF\Exceptions\MofException.cs" />
+    <Compile Include="EMOF\InMemory\MofElement.cs" />
+    <Compile Include="EMOF\InMemory\MofFactory.cs" />
+    <Compile Include="EMOF\InMemory\MofObject.cs" />
+    <Compile Include="EMOF\InMemory\MofReflectiveSequence.cs" />
+    <Compile Include="EMOF\InMemory\MofTag.cs" />
+    <Compile Include="EMOF\InMemory\MofUriExtent.cs" />
+    <Compile Include="EMOF\Interface\Common\IReflectiveCollection.cs" />
+    <Compile Include="EMOF\Interface\Identifiers\IExtent.cs" />
+    <Compile Include="EMOF\Interface\Extension\ITag.cs" />
+    <Compile Include="EMOF\Interface\Identifiers\IUriExtent.cs" />
+    <Compile Include="EMOF\Interface\Reflection\IElement.cs" />
+    <Compile Include="EMOF\Interface\Reflection\IFactory.cs" />
+    <Compile Include="EMOF\Interface\Reflection\IObject.cs" />
+    <Compile Include="EMOF\Interface\Common\IReflectiveSequence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -1,11 +1,6 @@
-﻿using DatenMeister.MOF.Interface.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DatenMeister.EMOF.Interface.Common;
 
-namespace DatenMeister.MOF.Interface.Identifiers
+namespace DatenMeister.EMOF.Interface.Identifiers
 {
     /// <summary>
     /// Defines the interface for the Extent as defined in MOF Specification 2.5, Chapter 10.2

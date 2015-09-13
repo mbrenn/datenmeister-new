@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DatenMeister.CSV
 {
@@ -10,9 +7,9 @@ namespace DatenMeister.CSV
     {
         public CSVSettings()
         {
-            this.Encoding = Encoding.UTF8;
-            this.HasHeader = true;
-            this.Separator = ",";
+            Encoding = Encoding.UTF8;
+            HasHeader = true;
+            Separator = ',';
         }
 
         public Encoding Encoding
@@ -27,7 +24,17 @@ namespace DatenMeister.CSV
             set;
         }
 
-        public string Separator
+        public char Separator
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the columns to be used for loading
+        /// If this value is null for loading, the columns will be auto-generated. 
+        /// </summary>
+        public List<object> Columns
         {
             get;
             set;

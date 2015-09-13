@@ -1,13 +1,10 @@
-﻿using DatenMeister.MOF.Interface.Identifiers;
+﻿using DatenMeister.EMOF.Interface.Common;
+using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.EMOF.Interface.Reflection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DatenMeister.MOF.Interface.Common;
-using DatenMeister.MOF.Interface.Reflection;
 
-namespace DatenMeister.MOF.InMemory
+namespace DatenMeister.EMOF.InMemory
 {
     public class MofUriExtent : IUriExtent
     {
@@ -56,7 +53,7 @@ namespace DatenMeister.MOF.InMemory
             return false;
         }
 
-        IReflectiveSequence IExtent.elements()
+        public IReflectiveSequence elements()
         {
             return new MofReflectiveSequence(_elements);
         }

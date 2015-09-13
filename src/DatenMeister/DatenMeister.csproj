@@ -54,6 +54,9 @@
     <Compile Include="EMOF\Interface\Reflection\IFactory.cs" />
     <Compile Include="EMOF\Interface\Reflection\IObject.cs" />
     <Compile Include="EMOF\Interface\Common\IReflectiveSequence.cs" />
+    <Compile Include="EMOF\Proxy\ProxyMofElement.cs" />
+    <Compile Include="EMOF\Proxy\ProxyReflectiveSequence.cs" />
+    <Compile Include="EMOF\Proxy\ProxyUriExtent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

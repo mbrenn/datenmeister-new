@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ZipCodeFinder.Logic;
 
 namespace ZipCodeFinder
 {
@@ -69,11 +70,14 @@ namespace ZipCodeFinder
 
             if (rootFrame.Content == null)
             {
+                DataProvider.TheOne.LoadZipCodes();
+
                 // Wenn der Navigationsstapel nicht wiederhergestellt wird, zur ersten Seite navigieren
                 // und die neue Seite konfigurieren, indem die erforderlichen Informationen als Navigationsparameter
                 // übergeben werden
                 rootFrame.Navigate(typeof(MainPage), e.Arguments);
             }
+
             // Sicherstellen, dass das aktuelle Fenster aktiv ist
             Window.Current.Activate();
         }

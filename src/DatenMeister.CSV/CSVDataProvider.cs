@@ -25,6 +25,18 @@ namespace DatenMeister.CSV
         }
 
         /// <summary>
+        /// Loads the CSV Extent out of the settings and stores the extent Uri
+        /// </summary>
+        /// <param name="extent">The uri being used for an extent</param>
+        /// <param name="path">Path being used to load the extent</param>
+        /// <param name="settings">Settings to load the extent</param>
+        /// <returns>The loaded extent</returns>
+        public void Load(IUriExtent extent, IFactory factory, Stream stream, CSVSettings settings)
+        {
+            ReadFromStream(extent, factory, settings, stream);
+        }
+
+        /// <summary>
         /// Reads an extent from file
         /// </summary>
         /// <param name="path">Path being used to load the file</param>
@@ -33,60 +45,72 @@ namespace DatenMeister.CSV
         /// When the settings are null, a default setting will be loaded</param>
         private void ReadFromFile(string path, IUriExtent extent, IFactory factory, CSVSettings settings)
         {
+            using (var fileStream = new FileStream(path, FileMode.Open))
+            {
+                ReadFromStream(extent, factory, settings, fileStream);
+            }
+        }
+
+        /// <summary>
+        /// Reads the file from the stream
+        /// </summary>
+        /// <param name="path">Path being used to load the file</param>
+        /// <param name="extent">Extet being stored</param>
+        /// <param name="settings">Settings being used to store it. 
+        /// <param name="stream"></param>
+        public void ReadFromStream(IUriExtent extent, IFactory factory, CSVSettings settings, Stream stream)
+        {
             if (settings == null)
             {
                 settings = new CSVSettings();
             }
 
-            using (var fileStream = new FileStream(path, FileMode.Open))
+            using (var streamReader = new StreamReader(stream, settings.Encoding))
             {
-                using (var stream = new StreamReader(fileStream, settings.Encoding))
+                var createColumns = false;
+                // Reads header, if necessary
+                if (settings.HasHeader)
                 {
-                    var createColumns = false;
-                    // Reads header, if necessary
-                    if (settings.HasHeader)
+                    // TODO: Do not skip first line...
+                    //extent.HeaderNames.AddRange(this.SplitLine(stream.ReadLine(), settings));
+                    var ignoredLine = streamReader.ReadLine();
+                }
+
+                if (settings.Columns == null)
+                {
+                    settings.Columns = new List<object>();
+                    createColumns = true;
+                }
+
+                // Reads the data itself
+                string line;
+                while ((line = streamReader.ReadLine()) != null)
+                {
+                    var values = SplitLine(line, settings);
+
+                    var csvObject = factory.create(null);
+
+                    // we now have the created object, let's fill it
+                    var valueCount = values.Count;
+                    for (var n = 0; n < valueCount; n++)
                     {
-                        // TODO: Do not skip first line...
-                        //extent.HeaderNames.AddRange(this.SplitLine(stream.ReadLine(), settings));
-                        var ignoredLine = stream.ReadLine();
-                    }
-
-                    if (settings.Columns == null )
-                    {
-                        settings.Columns = new List<object>();
-                        createColumns = true;
-                    }
-
-                    // Reads the data itself
-                    string line;
-                    while ((line = stream.ReadLine()) != null)
-                    {
-                        var values = SplitLine(line, settings);
-
-                        var csvObject = factory.create(null);
-
-                        // we now have the created object, let's fill it
-                        var valueCount = values.Count;
-                        for (var n = 0; n < valueCount; n++)
+                        object foundColumn;
+                        if (settings.Columns.Count <= n && createColumns)
                         {
-                            object foundColumn;
-                            if (settings.Columns.Count <= n && createColumns)
-                            {
-                                // Create new column
-                                foundColumn = (object)$"Column {n + 1}";
-                                settings.Columns.Add(foundColumn);
-                            }
-                            else
-                            {
-                                foundColumn = settings.Columns[n];
-                            }
-
-                            csvObject.set(foundColumn, values[n]);
+                            // Create new column
+                            foundColumn = (object)$"Column {n + 1}";
+                            settings.Columns.Add(foundColumn);
                         }
-                        
+                        else
+                        {
+                            foundColumn = settings.Columns[n];
+                        }
 
-                        extent.elements().add(csvObject);
+                        csvObject.set(foundColumn, values[n]);
                     }
+
+
+                    extent.elements().add(csvObject);
                 }
             }
         }
@@ -139,7 +163,7 @@ namespace DatenMeister.CSV
                         x => element.get(x));
                 }
             }
-        }*/ 
+        }*/
 
         /// <summary>
         /// Splits a CSV line into columns

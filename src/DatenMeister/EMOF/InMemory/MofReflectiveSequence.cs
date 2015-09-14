@@ -33,7 +33,7 @@ namespace DatenMeister.EMOF.InMemory
 
         public void add(int index, object value)
         {
-            this.add(index, value);
+            add(index, value);
         }
 
         public bool addAll(IReflectiveSequence values)

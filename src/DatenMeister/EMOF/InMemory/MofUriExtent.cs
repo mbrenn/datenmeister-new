@@ -22,7 +22,7 @@ namespace DatenMeister.EMOF.InMemory
 
         public string contextURI()
         {
-            return this._contextUri;
+            return _contextUri;
         }
 
         public IElement element(string uri)

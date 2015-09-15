@@ -18,7 +18,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.Column="0">
             <TextBlock>Postleitzahl</TextBlock>
-            <TextBox x:Name="txtZipCode"></TextBox>
+            <TextBox x:Name="txtZipCode" TextChanged="txtZipCode_TextChanged"></TextBox>
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="2">
             <TextBlock>Ortschaft:</TextBlock>

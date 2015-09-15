@@ -10,20 +10,26 @@ using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.Queries
 {
-    public class FilterOnPropertyCollection : ProxyReflectiveCollection
+    public class FilterOnPropertyByPredicateCollection : ProxyReflectiveCollection
     {
+        /// <summary>
+        /// Stores the property
+        /// </summary>
         private object _property;
 
-        private object _filterValue;
+        /// <summary>
+        /// Stores the filter to filter on the property
+        /// </summary>
+        private Predicate<object> _filter;
 
-        public FilterOnPropertyCollection(
-            IReflectiveSequence collection, 
+        public FilterOnPropertyByPredicateCollection(
+            IReflectiveCollection collection, 
             object property, 
-            object filterValue)
+            Predicate<object> filter)
             : base(collection)
         {
             _property = property;
-            _filterValue = filterValue;
+            _filter = filter;
         }
 
         public override IEnumerator<object> GetEnumerator()
@@ -31,7 +37,7 @@ namespace DatenMeister.EMOF.Queries
             foreach (var value in _collection)
             {
                 var valueAsObject = value as IObject;
-                if (valueAsObject?.get(_property)?.Equals(_filterValue) == true)
+                if (_filter(valueAsObject?.get(_property)))
                 {
                     yield return valueAsObject;
                 }
@@ -44,7 +50,7 @@ namespace DatenMeister.EMOF.Queries
             foreach (var value in _collection)
             {
                 var valueAsObject = value as IObject;
-                if (valueAsObject?.get(_property)?.Equals(_filterValue) == true)
+                if (_filter(valueAsObject?.get(_property)))
                 {
                     result++;
                 }

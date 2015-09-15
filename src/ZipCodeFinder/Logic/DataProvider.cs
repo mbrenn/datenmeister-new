@@ -42,17 +42,36 @@ namespace ZipCodeFinder.Logic
             var factory = new MofFactory();
 
             var csvProvider = new CSVDataProvider();
-       
+
             var file = await Package.Current.InstalledLocation.GetFileAsync(@"Assets\data\plz.csv");
             var stream = await file.OpenStreamForReadAsync();
-              
+
             csvProvider.Load(
                 ZipCodes,
                 factory,
                 stream,
                 csvSettings);
 
-            Debug.WriteLine($"Loaded: {ZipCodes.elements().Count().ToString()} Zipcodes");    
+            Columns.ZipCode = csvSettings.Columns[1];
+            Columns.Name = csvSettings.Columns[4];
+
+            Debug.WriteLine($"Loaded: {ZipCodes.elements().Count().ToString()} Zipcodes");
+        }
+
+
+        public static class Columns
+        {
+            public static object ZipCode
+            {
+                get;
+                set;
+            }
+
+            public static object Name
+            {
+                get;
+                set;
+            }
         }
     }
 }

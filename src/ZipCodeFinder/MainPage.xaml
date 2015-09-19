@@ -16,13 +16,16 @@
             <ColumnDefinition Width="30*"/>
             <ColumnDefinition Width="70*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Grid.Column="0">
-            <TextBlock>Postleitzahl</TextBlock>
-            <TextBox x:Name="txtZipCode" TextChanged="txtZipCode_TextChanged"></TextBox>
-        </StackPanel>
-        <StackPanel Grid.Row="2" Grid.Column="2">
-            <TextBlock>Ortschaft:</TextBlock>
-            <TextBlock x:Name="txtCity">55130 Mainz</TextBlock>
-        </StackPanel>
+        <Viewbox VerticalAlignment="Top">
+            <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <TextBlock HorizontalAlignment="Center">Postleitzahl:</TextBlock>
+                <TextBox x:Name="txtZipCode" TextChanged="txtZipCode_TextChanged" Width="200"></TextBox>
+            </StackPanel>
+        </Viewbox>
+        <Viewbox Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" x:Name="viewBoxLocation">
+            <StackPanel Width="300" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <TextBlock x:Name="txtCity">55130 Mainz</TextBlock>
+            </StackPanel>
+        </Viewbox>
     </Grid>
 </Page>

@@ -18,7 +18,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>ZipCodeFinder_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>3275BD6B74AED4BD6DAC4990E02D326A96C7384F</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>BD7959E9D46DD9E008BE919ABAAE825660D7836C</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>

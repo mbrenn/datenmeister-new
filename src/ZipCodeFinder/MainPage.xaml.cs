@@ -55,5 +55,30 @@ namespace ZipCodeFinder
                 txtCity.Text = "Unbekannt";
             }
         }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var newSize = e.NewSize;
+            if (newSize.Height > newSize.Width)
+            {
+                columnSecond.Width = new GridLength(0, GridUnitType.Pixel);
+                rowFirst.Height = GridLength.Auto;
+                rowSecond.Height = new GridLength(1, GridUnitType.Star);
+                Grid.SetRow(viewBoxLocation, 1);
+                Grid.SetColumn(viewBoxLocation, 0);
+                viewBoxZip.VerticalAlignment = VerticalAlignment.Top;
+                viewBoxLocation.VerticalAlignment = VerticalAlignment.Top;
+            }
+            else
+            {
+                columnSecond.Width = new GridLength(50, GridUnitType.Star);
+                rowFirst.Height = new GridLength(1, GridUnitType.Star);
+                rowSecond.Height = new GridLength(0, GridUnitType.Pixel);
+                Grid.SetColumn(viewBoxLocation, 1);
+                Grid.SetRow(viewBoxLocation, 0);
+                viewBoxZip.VerticalAlignment = VerticalAlignment.Center;
+                viewBoxLocation.VerticalAlignment = VerticalAlignment.Center;
+            }
+        }
     }
 }

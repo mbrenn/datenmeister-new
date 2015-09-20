@@ -5,26 +5,27 @@
     xmlns:local="using:ZipCodeFinder"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" SizeChanged="Page_SizeChanged">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition x:Name="rowFirst"/>
+            <RowDefinition x:Name="rowSecond"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="30*"/>
-            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="50*" x:Name="columnFirst"/>
+            <ColumnDefinition Width="50*" x:Name="columnSecond"/>
         </Grid.ColumnDefinitions>
-        <Viewbox VerticalAlignment="Top">
-            <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <Viewbox VerticalAlignment="Top" x:Name="viewBoxZip" Margin="10">
+            <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center">Postleitzahl:</TextBlock>
-                <TextBox x:Name="txtZipCode" TextChanged="txtZipCode_TextChanged" Width="200"></TextBox>
+                <TextBox x:Name="txtZipCode" TextChanged="txtZipCode_TextChanged" Width="300" HorizontalAlignment="Center"></TextBox>
             </StackPanel>
         </Viewbox>
-        <Viewbox Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" x:Name="viewBoxLocation">
+        <Viewbox Grid.Row="2" Grid.Column="2" x:Name="viewBoxLocation" Margin="10">
             <StackPanel Width="300" HorizontalAlignment="Center" VerticalAlignment="Top">
-                <TextBlock x:Name="txtCity">55130 Mainz</TextBlock>
+                <TextBlock HorizontalAlignment="Center">Ort:</TextBlock>
+                <TextBlock x:Name="txtCity" HorizontalAlignment="Center" FontWeight="Bold">55130 Mainz</TextBlock>
             </StackPanel>
         </Viewbox>
     </Grid>

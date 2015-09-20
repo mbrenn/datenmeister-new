@@ -34,7 +34,7 @@ namespace ZipCodeFinder.Logic
         public async void LoadZipCodes()
         {
             var csvSettings = new CSVSettings();
-            csvSettings.Encoding = Encoding.GetEncoding("ISO-8859-1");
+            csvSettings.Encoding = Encoding.UTF8;// Encoding.GetEncoding("ISO-8859-1");
             csvSettings.Separator = '\t';
             csvSettings.HasHeader = false;
 

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -31,17 +33,23 @@ namespace ZipCodeFinder
             UpdateCity();
         }
 
-        private void txtZipCode_TextChanged(object sender, TextChangedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            this.txtZipCode.Focus(FocusState.Programmatic);
+        }
+
+        private void txtZipCode_TextChanged(object sender, TextChangedEventArgs e)
+        {            
             UpdateCity();
         }
 
         private void UpdateCity()
         {
-            var found = Filter.WhenPropertyIs(
+            var typedZipCode = txtZipCode.Text.Trim();
+            var found = Filter.WhenPropertyStartsWith(
                     DataProvider.TheOne.ZipCodes.elements(),
                     DataProvider.Columns.ZipCode,
-                    txtZipCode.Text)
+                    typedZipCode)
                 .FirstOrDefault();
 
             if (found != null)
@@ -52,7 +60,7 @@ namespace ZipCodeFinder
             }
             else
             {
-                txtCity.Text = "Unbekannt";
+                txtCity.Text = "Nicht vergeben";
             }
         }
 
@@ -61,6 +69,8 @@ namespace ZipCodeFinder
             var newSize = e.NewSize;
             if (newSize.Height > newSize.Width)
             {
+                // Vertical layout
+                columnFirst.Width = new GridLength(1, GridUnitType.Star);
                 columnSecond.Width = new GridLength(0, GridUnitType.Pixel);
                 rowFirst.Height = GridLength.Auto;
                 rowSecond.Height = new GridLength(1, GridUnitType.Star);
@@ -71,7 +81,9 @@ namespace ZipCodeFinder
             }
             else
             {
-                columnSecond.Width = new GridLength(50, GridUnitType.Star);
+                // Horizontal layout
+                columnFirst.Width = GridLength.Auto;
+                columnSecond.Width = new GridLength(70, GridUnitType.Star);
                 rowFirst.Height = new GridLength(1, GridUnitType.Star);
                 rowSecond.Height = new GridLength(0, GridUnitType.Pixel);
                 Grid.SetColumn(viewBoxLocation, 1);
@@ -79,6 +91,20 @@ namespace ZipCodeFinder
                 viewBoxZip.VerticalAlignment = VerticalAlignment.Center;
                 viewBoxLocation.VerticalAlignment = VerticalAlignment.Center;
             }
+        }
+
+        private async void PasteToClipboard_Click(object sender, RoutedEventArgs e)
+        {
+            var package = new DataPackage();
+            package.SetText(txtCity.Text);
+            Clipboard.SetContent(package);
+
+
+
+            btnClipboard.Content = "...kopiert...";
+            await Task.Delay(1000);
+            btnClipboard.Content = "In Zwischenablage";
+
         }
     }
 }

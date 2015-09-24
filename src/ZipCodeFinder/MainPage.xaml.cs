@@ -67,6 +67,19 @@ namespace ZipCodeFinder
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var newSize = e.NewSize;
+            OnResize(newSize);
+        }
+
+        private void OnResize(Size newSize)
+        {
+            // Performs the scaling
+            var fullSize = 1200.0;
+            var fontSize = Math.Min(fullSize, newSize.Height) / fullSize * 64;
+            txtCity.FontSize = fontSize;
+            txtCityHeader.FontSize = fontSize;
+            txtZipCode.FontSize = fontSize;
+            txtZipCodeHeader.FontSize = fontSize;
+
             if (newSize.Height > newSize.Width)
             {
                 // Vertical layout

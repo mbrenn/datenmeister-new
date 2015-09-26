@@ -1,4 +1,5 @@
-﻿using DatenMeister.EMOF.Interface.Reflection;
+﻿using DatenMeister.App.ZipCode;
+using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Queries;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,6 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using ZipCodeFinder.Logic;
 
 // Die Vorlage "Leere Seite" ist unter http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 dokumentiert.
 

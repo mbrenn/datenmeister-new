@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 
-namespace ZipCodeFinder.Logic
+namespace DatenMeister.App.ZipCode
 {
-    class DataProvider
+    public class DataProvider
     {
         private static DataProvider Singleton;
 

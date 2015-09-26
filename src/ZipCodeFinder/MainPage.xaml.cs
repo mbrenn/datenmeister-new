@@ -45,17 +45,13 @@ namespace ZipCodeFinder
 
         private void UpdateCity()
         {
-            var typedZipCode = txtZipCode.Text.Trim();
-            var found = Filter.WhenPropertyStartsWith(
-                    DataProvider.TheOne.ZipCodes.elements(),
-                    DataProvider.Columns.ZipCode,
-                    typedZipCode)
+            var found = DataProvider.TheOne.FindBySearchString(txtZipCode.Text)
                 .FirstOrDefault();
 
             if (found != null)
             {
-                var cityName = (found as IObject).get(DataProvider.Columns.Name).ToString();
-                var zipCode = (found as IObject).get(DataProvider.Columns.ZipCode).ToString();
+                var cityName = found.get(DataProvider.Columns.Name).ToString();
+                var zipCode = found.get(DataProvider.Columns.ZipCode).ToString();
                 txtCity.Text = $"{zipCode} {cityName}";
             }
             else

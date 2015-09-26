@@ -1,5 +1,7 @@
 ﻿using DatenMeister.CSV;
 using DatenMeister.EMOF.InMemory;
+using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.EMOF.Queries;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -52,6 +54,22 @@ namespace DatenMeister.App.ZipCode
             Columns.Name = csvSettings.Columns[4];
 
             Debug.WriteLine($"Loaded: {ZipCodes.elements().Count().ToString()} Zipcodes");
+        }
+
+        /// <summary>
+        /// Finds a specific zip code by search string
+        /// </summary>
+        /// <param name="searchString">String to be used for searching</param>
+        /// <returns>Enumeration of objects</returns>
+        public IEnumerable<IObject> FindBySearchString(string searchString)
+        {
+            var typedZipCode = searchString.Trim();
+            var found = Filter.WhenPropertyStartsWith(
+                    DataProvider.TheOne.ZipCodes.elements(),
+                    DataProvider.Columns.ZipCode,
+                    typedZipCode);
+            
+            return found.Cast<IObject>();
         }
 
 

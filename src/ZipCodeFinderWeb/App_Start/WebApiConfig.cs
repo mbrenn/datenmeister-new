@@ -1,6 +1,9 @@
-﻿using System;
+﻿using DatenMeister.App.ZipCode;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Http;
 
 namespace ZipCodeFinderWeb
@@ -19,6 +22,13 @@ namespace ZipCodeFinderWeb
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+                        
+            
+            var dataPath =Path.Combine(HttpRuntime.AppDomainAppPath, "App_Data/plz.csv");
+            using (var stream = new FileStream(dataPath, FileMode.Open))
+            {
+                DataProvider.TheOne.LoadZipCodes(stream);
+            }
         }
     }
 }

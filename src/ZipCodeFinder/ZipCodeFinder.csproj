@@ -155,9 +155,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DatenMeister.App.ZipCode\DatenMeister.App.ZipCode.csproj">
-      <Project>{cd96f909-f09d-433a-bf31-e1f46e3716d1}</Project>
-      <Name>DatenMeister.App.ZipCode</Name>
+    <ProjectReference Include="..\DatenMeister.Apps.ZipCode\DatenMeister.Apps.ZipCode.csproj">
+      <Project>{3ec1dbf5-b87f-4807-96cf-5e68801c3629}</Project>
+      <Name>DatenMeister.Apps.ZipCode</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>

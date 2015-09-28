@@ -16,6 +16,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.XMI", "DatenMeister.XMI\DatenMeister.XMI.csproj", "{E44275C2-9E62-42BE-B984-127F82C1766F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZipCodeFinder", "ZipCodeFinder\ZipCodeFinder.csproj", "{8680E50C-DF34-424D-9B41-E9E2D2304609}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3EC1DBF5-B87F-4807-96CF-5E68801C3629} = {3EC1DBF5-B87F-4807-96CF-5E68801C3629}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{146881C7-18C8-44BB-A198-8407E8976809}"
 EndProject

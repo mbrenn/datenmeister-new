@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
@@ -35,7 +36,7 @@ namespace ZipCodeFinder
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            this.txtZipCode.Focus(FocusState.Programmatic);
+            txtZipCode.Focus(FocusState.Programmatic);
         }
 
         private void txtZipCode_TextChanged(object sender, TextChangedEventArgs e)
@@ -45,18 +46,36 @@ namespace ZipCodeFinder
 
         private void UpdateCity()
         {
-            var found = DataProvider.TheOne.FindBySearchString(txtZipCode.Text)
-                .FirstOrDefault();
+            var amount = 200;
+            var foundArray = DataProvider.TheOne.FindBySearchString(txtZipCode.Text)
+                .Take(amount);
 
-            if (found != null)
+            var builder = new StringBuilder();
+
+            var any = 0;
+            foreach (var found in foundArray)
             {
+                any++;
                 var cityName = found.get(DataProvider.Columns.Name).ToString();
                 var zipCode = found.get(DataProvider.Columns.ZipCode).ToString();
-                txtCity.Text = $"{zipCode} {cityName}";
+
+                builder.Append($"{zipCode} {cityName}\r\n");
             }
-            else
+
+            if (any == 0)
             {
                 txtCity.Text = "Nicht vergeben";
+            }
+            else
+
+            {
+                if (any == amount)
+                {
+                    builder.Append("...");
+                }
+
+                txtCity.Text = builder.ToString();
+
             }
         }
 
@@ -85,8 +104,6 @@ namespace ZipCodeFinder
                 rowSecond.Height = new GridLength(1, GridUnitType.Star);
                 Grid.SetRow(viewBoxLocation, 1);
                 Grid.SetColumn(viewBoxLocation, 0);
-                viewBoxZip.VerticalAlignment = VerticalAlignment.Top;
-                viewBoxLocation.VerticalAlignment = VerticalAlignment.Top;
             }
             else
             {
@@ -97,8 +114,6 @@ namespace ZipCodeFinder
                 rowSecond.Height = new GridLength(0, GridUnitType.Pixel);
                 Grid.SetColumn(viewBoxLocation, 1);
                 Grid.SetRow(viewBoxLocation, 0);
-                viewBoxZip.VerticalAlignment = VerticalAlignment.Center;
-                viewBoxLocation.VerticalAlignment = VerticalAlignment.Center;
             }
         }
 
@@ -107,8 +122,6 @@ namespace ZipCodeFinder
             var package = new DataPackage();
             package.SetText(txtCity.Text);
             Clipboard.SetContent(package);
-
-
 
             btnClipboard.Content = "...kopiert...";
             await Task.Delay(1000);

@@ -38,12 +38,14 @@ namespace DatenMeister.EMOF.Queries
         public static IReflectiveCollection WhenOneOfThePropertyContains(
             IReflectiveCollection collection,
             object[] properties,
-            string value)
+            string value,
+            StringComparison comparer = StringComparison.CurrentCulture)
         {
             return new FilterOnMultipleProperties(
                 collection,
                 properties,
-                value);
+                value,
+                comparer);
         }
     }
 }

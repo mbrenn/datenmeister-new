@@ -63,11 +63,13 @@ namespace DatenMeister.App.ZipCode
         /// <returns>Enumeration of objects</returns>
         public IEnumerable<IObject> FindBySearchString(string searchString)
         {
+            var columns = new[] { DataProvider.Columns.Name, DataProvider.Columns.ZipCode };
             var typedZipCode = searchString.Trim();
-            var found = Filter.WhenPropertyStartsWith(
+            var found = Filter.WhenOneOfThePropertyContains(
                     DataProvider.TheOne.ZipCodes.elements(),
-                    DataProvider.Columns.ZipCode,
-                    typedZipCode);
+                    columns,
+                    typedZipCode,
+                    StringComparison.CurrentCultureIgnoreCase);
             
             return found.Cast<IObject>();
         }

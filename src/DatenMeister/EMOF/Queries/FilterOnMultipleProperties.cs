@@ -10,14 +10,20 @@ namespace DatenMeister.EMOF.Queries
 {
     public class FilterOnMultipleProperties : Proxy.ProxyReflectiveCollection
     {
-        object[] properties;
-        string searchString;
+        private StringComparison _comparison;
+        object[] _properties;
+        string _searchString;
 
-        public FilterOnMultipleProperties(IReflectiveCollection collection, object[] properties, string searchString)
+        public FilterOnMultipleProperties(
+            IReflectiveCollection collection, 
+            object[] properties, 
+            string searchString,
+            StringComparison comparison = StringComparison.CurrentCulture)
             : base(collection)
         {
-            this.properties = properties;
-            this.searchString = searchString;
+            _properties = properties;
+            _searchString = searchString;
+            _comparison = comparison;
         }
         
         public override IEnumerator<object> GetEnumerator()
@@ -25,12 +31,16 @@ namespace DatenMeister.EMOF.Queries
             foreach (var value in _collection)
             {
                 var valueAsObject = value as IObject;
-                foreach (var property in properties)
+                foreach (var property in _properties)
                 {
                     if ((valueAsObject?.isSet(property) == true) &&
-                        (valueAsObject?.get(property)?.ToString()?.Contains(searchString) == true))
+                        (valueAsObject
+                            ?.get(property)
+                            ?.ToString()
+                            ?.IndexOf(_searchString, _comparison) >= 0))
                     {
                         yield return valueAsObject;
+                        continue;
                     }
                 }
             }
@@ -42,10 +52,10 @@ namespace DatenMeister.EMOF.Queries
             foreach (var value in _collection)
             {
                 var valueAsObject = value as IObject;
-                foreach (var property in properties)
+                foreach (var property in _properties)
                 {
                     if ((valueAsObject?.isSet(property) == true) &&
-                        (valueAsObject?.get(property)?.ToString()?.Contains(searchString) == true))
+                        (valueAsObject?.get(property)?.ToString()?.Contains(_searchString) == true))
                     {
                         result++;
                     }

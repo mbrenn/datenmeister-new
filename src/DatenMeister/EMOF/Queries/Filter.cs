@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace DatenMeister.EMOF.Queries
 {
-    public class Filter
+    /// <summary>
+    /// Defines a static helper class, which eases
+    /// the access to the filters.
+    /// </summary>
+    public static class Filter
     {
         public static IReflectiveCollection WhenPropertyStartsWith(
             IReflectiveCollection collection,
@@ -29,6 +33,17 @@ namespace DatenMeister.EMOF.Queries
                 collection,
                 property,
                 (x) => ((string)x) == value);
+        }
+
+        public static IReflectiveCollection WhenOneOfThePropertyContains(
+            IReflectiveCollection collection,
+            object[] properties,
+            string value)
+        {
+            return new FilterOnMultipleProperties(
+                collection,
+                properties,
+                value);
         }
     }
 }

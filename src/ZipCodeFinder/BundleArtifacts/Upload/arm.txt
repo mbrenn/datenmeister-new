@@ -1,0 +1,6 @@
+MainPackage=D:\Projekte\DatenMeister\src\ZipCodeFinder\bin\ARM\Release\Upload\ZipCodeFinder_1.1.0.0_ARM.appx
+SymbolPackage=D:\Projekte\DatenMeister\src\ZipCodeFinder\AppPackages\ZipCodeFinder_1.1.0.0\ZipCodeFinder_1.1.0.0_ARM.appxsym
+ResourcePack=D:\Projekte\DatenMeister\src\ZipCodeFinder\_scale-100.appx
+ResourcePack=D:\Projekte\DatenMeister\src\ZipCodeFinder\_scale-125.appx
+ResourcePack=D:\Projekte\DatenMeister\src\ZipCodeFinder\_scale-150.appx
+ResourcePack=D:\Projekte\DatenMeister\src\ZipCodeFinder\_scale-400.appx

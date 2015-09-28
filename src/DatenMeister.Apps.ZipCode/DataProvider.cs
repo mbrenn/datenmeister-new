@@ -1,5 +1,7 @@
 ﻿using DatenMeister.CSV;
 using DatenMeister.EMOF.InMemory;
+using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.EMOF.Queries;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,11 +9,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 
-namespace ZipCodeFinder.Logic
+namespace DatenMeister.App.ZipCode
 {
-    class DataProvider
+    public class DataProvider
     {
         private static DataProvider Singleton;
 
@@ -31,7 +32,7 @@ namespace ZipCodeFinder.Logic
             Singleton = new DataProvider();
         }
 
-        public async void LoadZipCodes()
+        public void LoadZipCodes(Stream stream)
         {
             var csvSettings = new CSVSettings();
             csvSettings.Encoding = Encoding.UTF8;// Encoding.GetEncoding("ISO-8859-1");
@@ -43,9 +44,6 @@ namespace ZipCodeFinder.Logic
 
             var csvProvider = new CSVDataProvider();
 
-            var file = await Package.Current.InstalledLocation.GetFileAsync(@"Assets\data\plz.csv");
-            var stream = await file.OpenStreamForReadAsync();
-
             csvProvider.Load(
                 ZipCodes,
                 factory,
@@ -56,6 +54,22 @@ namespace ZipCodeFinder.Logic
             Columns.Name = csvSettings.Columns[4];
 
             Debug.WriteLine($"Loaded: {ZipCodes.elements().Count().ToString()} Zipcodes");
+        }
+
+        /// <summary>
+        /// Finds a specific zip code by search string
+        /// </summary>
+        /// <param name="searchString">String to be used for searching</param>
+        /// <returns>Enumeration of objects</returns>
+        public IEnumerable<IObject> FindBySearchString(string searchString)
+        {
+            var typedZipCode = searchString.Trim();
+            var found = Filter.WhenPropertyStartsWith(
+                    DataProvider.TheOne.ZipCodes.elements(),
+                    DataProvider.Columns.ZipCode,
+                    typedZipCode);
+            
+            return found.Cast<IObject>();
         }
 
 

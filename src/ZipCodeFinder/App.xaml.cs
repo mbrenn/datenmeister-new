@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using ZipCodeFinder.Logic;
+using DatenMeister.App.ZipCode;
 
 namespace ZipCodeFinder
 {
@@ -38,7 +38,7 @@ namespace ZipCodeFinder
         /// werden z. B. verwendet, wenn die Anwendung gestartet wird, um eine bestimmte Datei zu öffnen.
         /// </summary>
         /// <param name="e">Details über Startanforderung und -prozess.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
 
 #if DEBUG
@@ -70,7 +70,10 @@ namespace ZipCodeFinder
 
             if (rootFrame.Content == null)
             {
-                DataProvider.TheOne.LoadZipCodes();
+                var file = await Package.Current.InstalledLocation.GetFileAsync(@"Assets\data\plz.csv");
+                var stream = await file.OpenStreamForReadAsync();
+
+                DataProvider.TheOne.LoadZipCodes(stream);
 
                 // Wenn der Navigationsstapel nicht wiederhergestellt wird, zur ersten Seite navigieren
                 // und die neue Seite konfigurieren, indem die erforderlichen Informationen als Navigationsparameter

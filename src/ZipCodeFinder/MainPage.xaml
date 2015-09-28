@@ -5,28 +5,32 @@
     xmlns:local="using:ZipCodeFinder"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" SizeChanged="Page_SizeChanged">
+    mc:Ignorable="d" SizeChanged="Page_SizeChanged" Loaded="Page_Loaded" >
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource SystemAccentColor}">
         <Grid.RowDefinitions>
             <RowDefinition x:Name="rowFirst"/>
             <RowDefinition x:Name="rowSecond"/>
+            <RowDefinition x:Name="rowThird" Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50*" x:Name="columnFirst"/>
             <ColumnDefinition Width="50*" x:Name="columnSecond"/>
         </Grid.ColumnDefinitions>
-        <Viewbox VerticalAlignment="Top" x:Name="viewBoxZip" Margin="10">
-            <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">
-                <TextBlock HorizontalAlignment="Center">Postleitzahl:</TextBlock>
-                <TextBox x:Name="txtZipCode" TextChanged="txtZipCode_TextChanged" Width="300" HorizontalAlignment="Center"></TextBox>
+        <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" x:Name="viewBoxZip" Margin="10">
+            <TextBlock HorizontalAlignment="Center" FontSize="46" FontWeight="Light" x:Name="txtZipCodeHeader">Postleitzahl</TextBlock>
+            <TextBox x:Name="txtZipCode" TextChanged="txtZipCode_TextChanged" Width="300" TextAlignment="Center" MaxLength="5" IsSpellCheckEnabled="False" FontSize="46"></TextBox>
+        </StackPanel>
+        <Grid Grid.Row="1" Grid.Column="2" x:Name="viewBoxLocation" Margin="10">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock HorizontalAlignment="Center" FontSize="46" FontWeight="Light" x:Name="txtCityHeader">Ort</TextBlock>
+                <TextBlock x:Name="txtCity" HorizontalAlignment="Center" FontWeight="Bold" FontSize="46"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap">55130 Mainz</TextBlock>
             </StackPanel>
-        </Viewbox>
-        <Viewbox Grid.Row="2" Grid.Column="2" x:Name="viewBoxLocation" Margin="10">
-            <StackPanel Width="300" HorizontalAlignment="Center" VerticalAlignment="Top">
-                <TextBlock HorizontalAlignment="Center">Ort:</TextBlock>
-                <TextBlock x:Name="txtCity" HorizontalAlignment="Center" FontWeight="Bold">55130 Mainz</TextBlock>
-            </StackPanel>
-        </Viewbox>
+        </Grid>
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2">
+            <Button x:Name="btnClipboard" HorizontalAlignment="Center" Click="PasteToClipboard_Click" Margin="20" VerticalAlignment="Bottom">In Zwischenablage</Button>
+        </StackPanel>
     </Grid>
 </Page>

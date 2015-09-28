@@ -75,7 +75,6 @@ namespace ZipCodeFinder
                 }
 
                 txtCity.Text = builder.ToString();
-
             }
         }
 

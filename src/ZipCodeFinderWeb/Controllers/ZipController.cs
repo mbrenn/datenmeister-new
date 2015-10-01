@@ -12,6 +12,11 @@ namespace ZipCodeFinderWeb.Controllers
     {
         public IEnumerable<object> Get(string zip)
         {
+            if (string.IsNullOrEmpty(zip))
+            {
+                zip = string.Empty;
+            }
+
             var result = new List<object>();
             var found = DataProvider.TheOne.FindBySearchString(zip).Take(100);
             foreach (var foundObject in found)
@@ -19,8 +24,8 @@ namespace ZipCodeFinderWeb.Controllers
                 result.Add(
                     new
                     {
-                        zip = foundObject.get(DataProvider.Columns.ZipCode),
-                        location=foundObject.get(DataProvider.Columns.Name)
+                        Zipcode = foundObject.get(DataProvider.Columns.ZipCode),
+                        City = foundObject.get(DataProvider.Columns.Name)
                     });
             }
             

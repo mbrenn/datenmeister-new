@@ -39,7 +39,16 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Loader.cs" />
+    <Compile Include="Namespaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UmlBootstrapHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
+      <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>
+      <Name>DatenMeister</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

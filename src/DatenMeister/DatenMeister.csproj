@@ -51,13 +51,16 @@
     <Compile Include="EMOF\Interface\Extension\ITag.cs" />
     <Compile Include="EMOF\Interface\Identifiers\IUriExtent.cs" />
     <Compile Include="EMOF\Interface\Reflection\IElement.cs" />
+    <Compile Include="EMOF\Interface\Reflection\IElementExt.cs" />
     <Compile Include="EMOF\Interface\Reflection\IFactory.cs" />
     <Compile Include="EMOF\Interface\Reflection\IObject.cs" />
     <Compile Include="EMOF\Interface\Common\IReflectiveSequence.cs" />
+    <Compile Include="EMOF\Interface\Reflection\IObjectExt.cs" />
     <Compile Include="EMOF\Proxy\ProxyMofElement.cs" />
     <Compile Include="EMOF\Proxy\ProxyReflectiveCollection.cs" />
     <Compile Include="EMOF\Proxy\ProxyReflectiveSequence.cs" />
     <Compile Include="EMOF\Proxy\ProxyUriExtent.cs" />
+    <Compile Include="EMOF\Queries\AllDescendentsQuery.cs" />
     <Compile Include="EMOF\Queries\Filter.cs" />
     <Compile Include="EMOF\Queries\FilterOnMultipleProperties.cs" />
     <Compile Include="EMOF\Queries\FilterOnPropertyCollection.cs" />

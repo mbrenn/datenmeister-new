@@ -9,7 +9,7 @@ namespace DatenMeister.EMOF.InMemory
     /// <summary>
     /// Describes the InMemory object, representing the Mof Object
     /// </summary>
-    public class MofObject : IObject
+    public class MofObject : IObject, IObjectExt
     {
         /// <summary>
         /// Gets or sets the guid of the element
@@ -80,6 +80,18 @@ namespace DatenMeister.EMOF.InMemory
             }
 
             return builder.ToString();
+        }
+
+        /// <summary>
+        /// Returns an enumeration with all properties which are currently set
+        /// </summary>
+        /// <returns>Enumeration of all objects</returns>
+        public IEnumerable<object> getPropertiesBeingSet()
+        {
+            foreach (var key in this.values.Keys)
+            {
+                yield return key;
+            }
         }
     }
 }

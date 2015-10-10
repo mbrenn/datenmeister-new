@@ -1,11 +1,12 @@
-﻿using DatenMeister.EMOF.Interface.Reflection;
+﻿using System;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.InMemory
 {
     /// <summary>
     /// Implements the IElement according to the Mof specification
     /// </summary>
-    public class MofElement : MofObject, IElement
+    public class MofElement : MofObject, IElement, IElementExt
     {
         IElement _container;
 
@@ -34,6 +35,11 @@ namespace DatenMeister.EMOF.InMemory
         public IElement getMetaClass()
         {
             return _metaclass;
+        }
+
+        public void setMetaClass(IElement metaClass)
+        {
+            _metaclass = metaClass;
         }
     }
 }

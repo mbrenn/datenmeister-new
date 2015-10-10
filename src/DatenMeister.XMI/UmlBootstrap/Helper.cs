@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace DatenMeister.XMI
+namespace DatenMeister.XMI.UmlBootstrap
 {
     /// <summary>
     /// Contains some methods which help to parse and understand the xmi file
     /// </summary>
-    public static class UmlBootstrapHelper
+    public static class Helper
     {
         /// <summary>
         /// Gets all packages of a specific xml node

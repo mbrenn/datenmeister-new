@@ -17,7 +17,17 @@ namespace DatenMeister
         private List<ITag> _properties = new List<ITag>();
 
         private List<T> _extent = new List<T>();
+
+        public string id
+        {
+            get { return _id; }
+        }
         
+        public string annotation
+        {
+            get { return _annotation; }
+        }
+
         public IEnumerable<T> extent
         {
             get { return _extent; }

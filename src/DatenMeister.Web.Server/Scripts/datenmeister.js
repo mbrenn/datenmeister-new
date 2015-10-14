@@ -5,16 +5,26 @@ var DatenMeister;
     var WorkbenchLogic = (function () {
         function WorkbenchLogic() {
         }
-        WorkbenchLogic.prototype.loadWorkbenchs = function () {
+        WorkbenchLogic.prototype.loadAndSetWorkbenchs = function (container) {
+            var tthis = this;
             var callback = $.Deferred();
             $.ajax("/api/datenmeister/workspace/all").
                 done(function (data) {
+                tthis.setContent(container, data);
                 callback.resolve(null);
             })
                 .fail(function (data) {
                 callback.reject(null);
             });
             return callback;
+        };
+        WorkbenchLogic.prototype.setContent = function (container, data) {
+            container.empty();
+            var compiled = _.template($("#template_workspace").html());
+            for (var n in data) {
+                var line = compiled(data[n]);
+                container.append($(line));
+            }
         };
         return WorkbenchLogic;
     })();
@@ -24,10 +34,9 @@ var DatenMeister;
 ;
 $(document).ready(function () {
     var workbenchLogic = new DatenMeister.WorkbenchLogic();
-    workbenchLogic.loadWorkbenchs().done(function (data) {
-        alert('We succeeded');
+    workbenchLogic.loadAndSetWorkbenchs($("#container_workspace")).done(function (data) {
+        //alert('We succeeded');
     }).fail(function () {
-        alert('We failed');
+        //alert('We failed');
     });
 });
-//# sourceMappingURL=datenmeister.js.map

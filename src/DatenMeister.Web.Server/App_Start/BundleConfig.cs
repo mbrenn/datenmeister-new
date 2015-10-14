@@ -19,6 +19,9 @@ namespace DatenMeister.Web.Server
             bundles.Add(new ScriptBundle("~/bundles/requirejs").Include(
                         "~/Scripts/require.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/underscore").Include(
+                        "~/Scripts/underscore.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/datenmeister").Include(
                         "~/Scripts/datenmeister*"));
 

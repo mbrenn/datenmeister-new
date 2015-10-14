@@ -20,7 +20,7 @@ namespace DatenMeister.Web.Server
             var file = Path.Combine(
                 AppDomain.CurrentDomain.GetData("DataDirectory") as string,
                 "plz.csv");
-                        using (var stream = new FileStream(file, FileMode.Open))
+            using (var stream = new FileStream(file, FileMode.Open))
             {
                 DataProvider.TheOne.LoadZipCodes(stream);
                 workspaceData.AddExtent(DataProvider.TheOne.ZipCodes);

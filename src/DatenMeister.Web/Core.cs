@@ -33,12 +33,23 @@ namespace DatenMeister.Web
         /// <summary>
         /// Gets all the workspaces 
         /// </summary>
-        public List<Workspace<EMOF.Interface.Identifiers.IExtent>> Workspaces
+        public IEnumerable<Workspace<EMOF.Interface.Identifiers.IExtent>> Workspaces
         {
             get
             {
                 return workspaces;
             }
+        }
+
+        public void AddWorkspace(Workspace<EMOF.Interface.Identifiers.IExtent> workspace)
+        {
+            // Check, if id of workspace is already known
+            if (workspaces.Any(x => x.id == workspace.id))
+            {
+                throw new InvalidOperationException("id is already known");
+            }
+
+            workspaces.Add(workspace);
         }
 
         /// <summary>

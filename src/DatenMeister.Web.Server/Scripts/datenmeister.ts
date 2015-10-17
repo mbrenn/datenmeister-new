@@ -1,12 +1,14 @@
 ﻿/// <reference path="typings/jquery/jquery.d.ts" />
 
-namespace DatenMeister {
+export namespace DatenMeister {
 
-    interface Workbench {
+    interface Workspace {
+        id: string;
+        annotation: string;
     };
 
-    export class WorkbenchLogic {
-        loadAndSetWorkbenchs(container: JQuery): JQueryPromise<Array<Workbench>> {
+    export class WorkspaceLogic {
+        loadAndSetWorkbenchs(container: JQuery): JQueryPromise<Array<Workspace>> {
             var tthis = this;
             var callback = $.Deferred();
             $.ajax("/api/datenmeister/workspace/all").
@@ -21,7 +23,7 @@ namespace DatenMeister {
             return callback;
         }
         
-        setContent(container: JQuery, data: Array<Workbench>) {
+        setContent(container: JQuery, data: Array<Workspace>) {
             container.empty();
             var compiled = _.template($("#template_workspace").html());
             for (var n in data) {
@@ -30,13 +32,19 @@ namespace DatenMeister {
             }
         }
     };
-};
 
-$(document).ready(function () {
-    var workbenchLogic = new DatenMeister.WorkbenchLogic();
-    workbenchLogic.loadAndSetWorkbenchs($("#container_workspace")).done(function (data) {
-        //alert('We succeeded');
-    }).fail(function () {
-        //alert('We failed');
-    });
-});
+
+    export namespace GUI {
+        export function loadWorkspaces() {
+            $(document).ready(function () {
+                var workbenchLogic = new DatenMeister.WorkspaceLogic();
+                workbenchLogic.loadAndSetWorkbenchs($("#container_workspace")).done(function (data) {
+                    //alert('We succeeded');
+                }).fail(function () {
+                    //alert('We failed');
+                });
+            });
+        }
+    }
+    
+};

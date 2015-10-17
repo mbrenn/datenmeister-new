@@ -14,5 +14,10 @@ namespace DatenMeister.Web.Server.Controllers
 
             return View();
         }
+
+        public ActionResult Workspaces(string id)
+        {
+            return View();
+        }
     }
 }

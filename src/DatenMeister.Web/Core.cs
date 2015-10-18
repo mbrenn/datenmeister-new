@@ -37,19 +37,25 @@ namespace DatenMeister.Web
         {
             get
             {
-                return workspaces;
+                lock (workspaces)
+                {
+                    return workspaces.ToList();
+                }
             }
         }
 
         public void AddWorkspace(Workspace<EMOF.Interface.Identifiers.IExtent> workspace)
         {
-            // Check, if id of workspace is already known
-            if (workspaces.Any(x => x.id == workspace.id))
+            lock (workspaces)
             {
-                throw new InvalidOperationException("id is already known");
-            }
+                // Check, if id of workspace is already known
+                if (workspaces.Any(x => x.id == workspace.id))
+                {
+                    throw new InvalidOperationException("id is already known");
+                }
 
-            workspaces.Add(workspace);
+                workspaces.Add(workspace);
+            }
         }
 
         /// <summary>

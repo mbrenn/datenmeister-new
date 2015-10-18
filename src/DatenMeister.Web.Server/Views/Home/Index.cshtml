@@ -4,19 +4,17 @@
     <!--<p><a href="http://datenmeister.de" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>-->
 </div>
 <script type="text/x-jquery-tmpl" id="template_workspace">
-    <tr><td><%-id%>: <%-annotation%></td></tr>
+    <tr>
+        <td><a href="#" class="data"><%-id%></a></td>
+        <td><%-annotation%></td>
+    </tr>
 </script>
 <div class="row">
-    <div class="col-md-4">  
+    <div class="col-md-8">  
         <h2>Workspaces</h2>
-        <table id="container_workspace">
+        <table id="container_workspace" class="table">
             <tr><td><em>Loading...</em></td></tr>
         </table>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
     </div>
     <div class="col-md-4">
         <h2>Web Hosting</h2>

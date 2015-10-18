@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,9 +17,21 @@ namespace DatenMeister.Web.Server.Controllers
             return View();
         }
 
-        public ActionResult Workspaces(string id)
+        public ActionResult Workspace(string id)
         {
-            return View();
+            var foundWorkspace = Core.TheOne.Workspaces.Where(x => x.id == id).FirstOrDefault();
+
+            if (foundWorkspace == null)
+            {
+                return View("Workspace_NotFound");
+            }
+            else
+            {
+                var workspace = new Workspace<IExtent>("ID");
+                var model = new WorkspaceModel(foundWorkspace);
+
+                return View(model);
+            }
         }
     }
 }

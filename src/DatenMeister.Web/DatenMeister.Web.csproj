@@ -56,8 +56,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\ExtentController.cs" />
     <Compile Include="Api\WorkspaceController.cs" />
     <Compile Include="Core.cs" />
+    <Compile Include="Models\WorkspaceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

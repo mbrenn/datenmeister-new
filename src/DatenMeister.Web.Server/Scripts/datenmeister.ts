@@ -11,13 +11,17 @@ module DatenMeister {
         url: string;
     }
 
+    interface MofObject {
+        values: Array<string>;
+    }
+
     export class WorkspaceLogic {
-        loadAndSetWorkbenchs(container: JQuery): JQueryPromise<Array<Workspace>> {
+        loadAndCreateHtmlForWorkbenchs(container: JQuery): JQueryPromise<Array<Workspace>> {
             var tthis = this;
             var callback = $.Deferred();
             $.ajax("/api/datenmeister/workspace/all").
                 done(function (data) {
-                    tthis.setContent(container, data);
+                    tthis.createHtmlForWorkbenchs(container, data);
                     callback.resolve(null);
                 })
                 .fail(function (data) {
@@ -27,7 +31,7 @@ module DatenMeister {
             return callback;
         }
         
-        setContent(container: JQuery, data: Array<Workspace>) {
+        createHtmlForWorkbenchs(container: JQuery, data: Array<Workspace>) {
             container.empty();
             var compiled = _.template($("#template_workspace").html());
             for (var n in data) {
@@ -37,7 +41,7 @@ module DatenMeister {
                 $(".data", dom).click(
                     (function (localEntry) {                        
                         return function () {
-                            location.href = "/Home/workspace?id=" + localEntry.id;
+                            location.href = "/Home/workspace?ws=" + localEntry.id;
                         };
                     } (entry)));
 
@@ -47,13 +51,13 @@ module DatenMeister {
     };
 
     export class ExtentLogic {
-        loadAndSetExtents(container: JQuery, id: string): JQueryPromise<Object> {
+        loadAndCreateHtmlForExtents(container: JQuery, ws: string): JQueryPromise<Object> {
             var tthis = this;
 
             var callback = $.Deferred();
-            $.ajax("/api/datenmeister/extent/all?id=" + id).
+            $.ajax("/api/datenmeister/extent/all?ws=" + ws).
                 done(function (data) {
-                    tthis.setContent(container, data);
+                    tthis.createHtmlForExtent(container, ws, data);
                     callback.resolve(null);
                 })
                 .fail(function (data) {
@@ -62,8 +66,8 @@ module DatenMeister {
 
             return callback;
         }
-        
-        setContent(container: JQuery, data: Array<Workspace>) {
+
+        createHtmlForExtent(container: JQuery, ws: string, data: Array<Workspace>) {
             container.empty();
             var compiled = _.template($("#template_extent").html());
             for (var n in data) {
@@ -73,12 +77,32 @@ module DatenMeister {
                 $(".data", dom).click(
                     (function (localEntry) {
                         return function () {
-                            location.href = "/Home/extent?id=" + localEntry.uri;
+                            location.href = "/Home/extent?ws=" + ws + "&extent=" + localEntry.uri;
                         };
                     } (entry)));
 
                 container.append(dom);
             }
+        }
+
+        loadAndCreateHtmlForItems(container: JQuery, ws: string, extentUrl: string) {
+            var tthis = this;
+
+            var callback = $.Deferred();
+            $.ajax("/api/datenmeister/extent/get?ws=" + ws + "&url=" + extentUrl).
+                done(function (data) {
+                    tthis.createHtmlForItems(container, ws, extentUrl, data);
+                    callback.resolve(null);
+                })
+                .fail(function (data) {
+                    callback.reject(null);
+                });
+
+            return callback;
+        }
+
+        createHtmlForItems(container: JQuery, ws: string, extentUrl: string, data: Array<MofObject>) {
+            container.empty();
         }
     }
 
@@ -86,18 +110,25 @@ module DatenMeister {
         export function loadWorkspaces() {
             $(document).ready(function () {
                 var workbenchLogic = new DatenMeister.WorkspaceLogic();
-                workbenchLogic.loadAndSetWorkbenchs($("#container_workspace")).done(function (data) {
+                workbenchLogic.loadAndCreateHtmlForWorkbenchs($("#container_workspace")).done(function (data) {
                 }).fail(function () {
                 });
             });
         }
 
-        export function loadExtents(workspaceId) {
+        export function loadExtents(workspaceId: string) {
             $(document).ready(function () {
                 var extentLogic = new DatenMeister.ExtentLogic();
-                extentLogic.loadAndSetExtents($("#container_extents"), workspaceId).done(function (data) {
+                extentLogic.loadAndCreateHtmlForExtents($("#container_extents"), workspaceId).done(function (data) {
                 }).fail(function () {
                 });
+            });
+        }
+
+        export function loadExtent(workspaceId: string, extentUrl: string) {
+            $(document).ready(function () {
+                var extentLogic = new DatenMeister.ExtentLogic();
+                extentLogic.loadAndCreateHtmlForItems($("#container_item"), workspaceId, extentUrl);
             });
         }
     }    

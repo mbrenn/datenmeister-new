@@ -27,7 +27,7 @@
 @section Scripts {
 
     <script type="text/javascript">
-    DatenMeister.GUI.loadExtents("@Model.id");
+    DatenMeister.GUI.loadExtents("@HttpUtility.JavaScriptStringEncode(Model.id)");
     </script>
 
 }

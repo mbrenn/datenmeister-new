@@ -17,9 +17,9 @@ namespace DatenMeister.Web.Server.Controllers
             return View();
         }
 
-        public ActionResult Workspace(string id)
+        public ActionResult Workspace(string ws)
         {
-            var foundWorkspace = Core.TheOne.Workspaces.Where(x => x.id == id).FirstOrDefault();
+            var foundWorkspace = Core.TheOne.Workspaces.Where(x => x.id == ws).FirstOrDefault();
 
             if (foundWorkspace == null)
             {
@@ -32,6 +32,28 @@ namespace DatenMeister.Web.Server.Controllers
 
                 return View(model);
             }
+        }
+
+        public ActionResult Extent(string ws, string extent)
+        {
+            var foundWorkspace = Core.TheOne.Workspaces.Where(x => x.id == ws).FirstOrDefault();
+
+            if (foundWorkspace == null)
+            {
+                return View("Workspace_NotFound");
+            }
+
+            var foundExtent = foundWorkspace.extent.Cast<IUriExtent>().Where(x => x.contextURI() == extent).FirstOrDefault();
+            if (foundExtent == null)
+            {
+                return View("Extent_NotFound");
+            }
+
+            var model = new ExtentModel(
+                foundExtent,
+                new WorkspaceModel(foundWorkspace));
+
+            return View(model);
         }
     }
 }

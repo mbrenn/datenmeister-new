@@ -12,10 +12,10 @@ namespace DatenMeister.Web.Api
     public class ExtentController : ApiController
     {
         [Route("all")]
-        public object Get(string id)
+        public object GetAll(string ws)
         {
             var result = new List<object>();
-            var workspace = Core.TheOne.Workspaces.Where(x => x.id == id).First();
+            var workspace = Core.TheOne.Workspaces.Where(x => x.id == ws).First();
 
             foreach (var extent in workspace.extent.Cast<IUriExtent>())
             {
@@ -28,6 +28,12 @@ namespace DatenMeister.Web.Api
             }
 
             return result;
+        }
+
+        [Route("get")]
+        public object Get(string ws, string url)
+        {
+            return null;
         }
     }
 }

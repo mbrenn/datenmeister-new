@@ -286,6 +286,8 @@
     <Content Include="Scripts\underscore.min.map" />
     <Content Include="Views\Home\Workspace.cshtml" />
     <Content Include="Views\Home\Workspace_NotFound.cshtml" />
+    <Content Include="Views\Home\Extent_NotFound.cshtml" />
+    <Content Include="Views\Home\Extent.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

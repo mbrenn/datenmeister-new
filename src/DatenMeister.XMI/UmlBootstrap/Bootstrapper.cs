@@ -59,7 +59,7 @@ namespace DatenMeister.XMI.UmlBootstrap
             var idProperty = (Namespaces.Xmi + "id").ToString();
             theClassObject = descendents
                 .Where (x=>x.isSet(idProperty))
-                .Where (x=>x.get(idProperty).ToString() == "Core-Constructs-Class")
+                .Where (x=>x.get(idProperty).ToString() == "Class")
                 .Single();
         }
 
@@ -72,7 +72,7 @@ namespace DatenMeister.XMI.UmlBootstrap
         {
             var factory = new MofFactory();
             var extent = new MofUriExtent("datenmeister:///uml");
-            var loader = new Loader(extent, factory);
+            var loader = new SimpleLoader(extent, factory);
             loader.Load(path);
 
             var bootStrapper = new Bootstrapper(extent);

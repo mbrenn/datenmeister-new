@@ -10,7 +10,7 @@ using System.Xml.Linq;
 
 namespace DatenMeister.XMI
 {
-    public class Loader
+    public class SimpleLoader
     {
         /// <summary>
         /// Stores the extent to be used to fill the contents of the xmi file
@@ -32,7 +32,7 @@ namespace DatenMeister.XMI
         /// </summary>
         /// <param name="extent">Extent to be used</param>
         /// <param name="factory">Factory to be used</param>
-        public Loader(
+        public SimpleLoader(
             IUriExtent extent, 
             IFactory factory, 
             Workspace<IUriExtent> metaWorkspace = null)

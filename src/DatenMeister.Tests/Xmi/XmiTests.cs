@@ -19,7 +19,7 @@ namespace DatenMeister.Tests.Xmi
         {
             var factory = new DatenMeister.EMOF.InMemory.MofFactory();
             var extent = new MofUriExtent("datenmeister:///target");
-            var loader = new Loader(extent, factory);
+            var loader = new SimpleLoader(extent, factory);
             loader.Load("Xmi/Infrastructure.xml");
 
             var firstElement = (extent.elements().ElementAt(0) as IObject);

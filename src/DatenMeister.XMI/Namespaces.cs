@@ -15,11 +15,11 @@ namespace DatenMeister.XMI
         /// <summary>
         /// Defines the namespace for XMI
         /// </summary>
-        public static readonly XNamespace Xmi = "http://www.omg.org/spec/XMI/20110701";
+        public static readonly XNamespace Xmi = "http://www.omg.org/spec/XMI/20131001";
 
         /// <summary>
         /// Defines the Uml namespace
         /// </summary>
-        public static readonly XNamespace Uml = "http://www.omg.org/spec/UML/20110701";
+        public static readonly XNamespace Uml = "http://www.omg.org/spec/UML/20131001";
     }
 }

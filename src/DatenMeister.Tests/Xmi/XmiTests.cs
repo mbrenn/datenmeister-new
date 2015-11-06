@@ -19,18 +19,18 @@ namespace DatenMeister.Tests.Xmi
         {
             var factory = new DatenMeister.EMOF.InMemory.MofFactory();
             var extent = new MofUriExtent("datenmeister:///target");
-            var loader = new SimpleLoader(extent, factory);
-            loader.Load("Xmi/Infrastructure.xml");
+            var loader = new SimpleLoader(factory);
+            loader.Load(extent, "Xmi/UML.xmi");
 
             var firstElement = (extent.elements().ElementAt(0) as IObject);
             Assert.That(firstElement, Is.Not.Null);
-            Assert.That(firstElement.get("name").ToString(), Is.EqualTo("InfrastructureLibrary"));
+            Assert.That(firstElement.get("name").ToString(), Is.EqualTo("UML"));
         }
 
         [Test]
         public void TestBootstrap()
         {
-            var strapper = Bootstrapper.PerformFullBootstrap("Xmi/Infrastructure.xml");
+            var strapper = Bootstrapper.PerformFullBootstrap("Xmi/UML.xmi");
             Assert.That(strapper, Is.Not.Null);
             Assert.That(strapper.UmlInfrastructure, Is.Not.Null);
 

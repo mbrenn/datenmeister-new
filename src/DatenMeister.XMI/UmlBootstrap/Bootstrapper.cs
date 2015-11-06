@@ -72,8 +72,8 @@ namespace DatenMeister.XMI.UmlBootstrap
         {
             var factory = new MofFactory();
             var extent = new MofUriExtent("datenmeister:///uml");
-            var loader = new SimpleLoader(extent, factory);
-            loader.Load(path);
+            var loader = new SimpleLoader(factory);
+            loader.Load(extent, path);
 
             var bootStrapper = new Bootstrapper(extent);
             bootStrapper.Strap();

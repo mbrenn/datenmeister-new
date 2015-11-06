@@ -13,11 +13,6 @@ namespace DatenMeister.XMI
     public class SimpleLoader
     {
         /// <summary>
-        /// Stores the extent to be used to fill the contents of the xmi file
-        /// </summary>
-        IUriExtent _extent;
-
-        /// <summary>
         /// Stores the factory to be used to create the instances
         /// </summary>
         IFactory _factory;
@@ -33,20 +28,18 @@ namespace DatenMeister.XMI
         /// <param name="extent">Extent to be used</param>
         /// <param name="factory">Factory to be used</param>
         public SimpleLoader(
-            IUriExtent extent, 
             IFactory factory, 
             Workspace<IUriExtent> metaWorkspace = null)
         {
-            _extent = extent;
             _factory = factory;
             _metaWorkspace = metaWorkspace;
         }
 
-        public void Load(string filePath)
+        public void Load(IUriExtent extent, string filePath)
         {
             using (var stream = new FileStream(filePath, FileMode.Open))
             {
-                Load(stream);
+                Load(extent, stream);
             }
         }
 
@@ -54,22 +47,22 @@ namespace DatenMeister.XMI
         /// Loads the file from a stream
         /// </summary>
         /// <param name="stream">Stream to be used for loading</param>
-        public void Load(Stream stream)
+        public void Load(IUriExtent extent, Stream stream)
         {
             var document = XDocument.Load(stream);
-            Load(document);
+            Load(extent, document);
         }
 
         /// <summary>
         /// Loads the document from an XDocument
         /// </summary>
         /// <param name="document">Document to be loaded</param>
-        public void Load(XDocument document)
+        public void Load(IUriExtent extent, XDocument document)
         {
             // Skip the first element
             foreach (var element in document.Elements().Elements())
             {
-                _extent.elements().add(LoadElement(element));
+                extent.elements().add(LoadElement(element));
             }
         }
 

@@ -7,8 +7,8 @@
     <ProjectGuid>{714E49CE-799E-4793-ADCC-542BFD83EAD8}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DatenMeister.SourceGeneration</RootNamespace>
-    <AssemblyName>DatenMeister.SourceGeneration</AssemblyName>
+    <RootNamespace>DatenMeister.SourceGeneration.Console</RootNamespace>
+    <AssemblyName>DatenMeister.SourceGeneration.Console</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

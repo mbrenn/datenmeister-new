@@ -1,6 +1,10 @@
 ﻿using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.XMI.UmlBootstrap;
+using System;
 using System.Text;
+using DatenMeister.EMOF.InMemory;
+using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.XMI;
 
 namespace DatenMeister.SourcecodeGenerator
 {
@@ -9,6 +13,8 @@ namespace DatenMeister.SourcecodeGenerator
     /// </summary>
     public class ClassTreeGenerator
     {
+        public static Version FactoryVersion = new Version(1, 0, 0, 0);
+
         /// <summary>
         /// Gets or sets the result being delivered back
         /// </summary>
@@ -26,6 +32,20 @@ namespace DatenMeister.SourcecodeGenerator
             this.Result = new StringBuilder();
         }
 
+        public void CreateClassTree(IUriExtent extent)
+        {
+            foreach (var element in extent.elements())
+            {
+                var elementAsObject = element as IObject;
+                var attributeXmi = "{" + Namespaces.Xmi.ToString() + "}type";
+
+                if (elementAsObject.isSet(attributeXmi) && elementAsObject.get(attributeXmi).ToString() == "uml:Package")
+                {
+                    CreateClassTree(elementAsObject);
+                }
+            }
+        }
+
         public void CreateClassTree(IObject element)
         {
             var stack = new CallStack(null);
@@ -39,8 +59,10 @@ namespace DatenMeister.SourcecodeGenerator
         private void ParsePackages(IObject element, CallStack stack)
         {
             var nameAsObject = element.get("name");
-            var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();            
+            var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
 
+            this.Result.AppendLine($"{stack.Indentation}public class _{name}");
+            this.Result.AppendLine($"{stack.Indentation}{{");
             var innerStack = new CallStack(stack);
             innerStack.Fullname = stack.Fullname == null ? name : $"{stack.Fullname}.{name}";
 
@@ -52,6 +74,16 @@ namespace DatenMeister.SourcecodeGenerator
 
             // Finds the classes in the package
             ParseClasses(element, innerStack);
+
+            this.Result.AppendLine($"{stack.Indentation}}}");
+
+            this.Result.AppendLine();
+
+            if (stack.Level > 0)
+            {
+                this.Result.AppendLine($"{stack.Indentation}public _{name} {name} = new _{name}();");
+                this.Result.AppendLine();
+            }
         }
 
         /// <summary>
@@ -60,21 +92,35 @@ namespace DatenMeister.SourcecodeGenerator
         /// <param name="element">Element being parsed</param>
         private void ParseClasses(IObject element, CallStack stack)
         {
+            var innerStack = new CallStack(stack);
             foreach (var classInstance in Helper.XmiGetClass(element))
             {
                 var nameAsObject = classInstance.get("name");
                 var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
+                
+                this.Result.AppendLine($"{innerStack.Indentation}public class _{name}");
+                this.Result.AppendLine($"{innerStack.Indentation}{{");
 
-                var className = stack.Fullname == null ? name : $"{stack.Fullname}.{name}";
-                this.Result.AppendLine(className);
+                this.Result.AppendLine($"{innerStack.Indentation}}}");
+                this.Result.AppendLine();
+
+                this.Result.AppendLine($"{innerStack.Indentation}public _{name} {name} = new _{name}();");
+                this.Result.AppendLine();
+
+
             }
         }
 
+        /// <summary>
+        /// Defines the callstack
+        /// </summary>
         public class CallStack
         {
             public CallStack(CallStack ownerStack)
             {
                 _ownerStack = ownerStack;
+                Indentation = ownerStack == null ? string.Empty : $"{ownerStack.Indentation}    ";
+                Level = ownerStack == null ? 0 : ownerStack.Level + 1;
             }
 
             /// <summary>
@@ -82,7 +128,19 @@ namespace DatenMeister.SourcecodeGenerator
             /// </summary>
             private CallStack _ownerStack;
 
+            public int Level
+            {
+                get;
+                set;
+            }
+
             public string Fullname
+            {
+                get;
+                set;
+            }
+
+            public string Indentation
             {
                 get;
                 set;

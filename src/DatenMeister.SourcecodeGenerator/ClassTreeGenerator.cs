@@ -16,6 +16,15 @@ namespace DatenMeister.SourcecodeGenerator
         public static Version FactoryVersion = new Version(1, 0, 0, 0);
 
         /// <summary>
+        /// Gets or sets the namespace
+        /// </summary>
+        public string Namespace
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the result being delivered back
         /// </summary>
         public StringBuilder Result
@@ -49,7 +58,30 @@ namespace DatenMeister.SourcecodeGenerator
         public void CreateClassTree(IObject element)
         {
             var stack = new CallStack(null);
+
+            // Check, if we have namespaces
+            Action preAction = () => { };
+            Action postAction = () => { };
+            if (!string.IsNullOrEmpty(this.Namespace))
+            {
+                var indentation = stack.Indentation;
+                preAction = () =>
+                {
+                    this.Result.AppendLine($"{indentation}namespace {Namespace}");
+                    this.Result.AppendLine($"{indentation}{{");
+                };
+                postAction = () =>
+                {
+                    this.Result.AppendLine($"{indentation}}}");
+                };
+
+                stack = new CallStack(stack);
+            }
+
+            // Actually executes the class tree creation
+            preAction();
             ParsePackages(element, stack);
+            postAction();
         }
 
         /// <summary>

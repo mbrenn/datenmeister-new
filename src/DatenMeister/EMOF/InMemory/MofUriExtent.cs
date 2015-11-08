@@ -28,23 +28,43 @@ namespace DatenMeister.EMOF.InMemory
         public IElement element(string uri)
         {
             var uriAsUri = new Uri(uri);
+            if (string.IsNullOrEmpty(uriAsUri.Fragment))
+            {
+                throw new ArgumentException(
+                    "Uri does not contain a URI-Fragment defining the object being looked for.",
+                    "uri");
+            }
+
+            // Queries the object
+            var queryObjectId = uriAsUri.Fragment.Substring(1);
             
-            throw new NotImplementedException();
+            // Now go through the list
+            foreach (var element in this.elements())
+            {
+                var elementAsMofObject = element as MofElement;
+                if (elementAsMofObject.guid.ToString() == queryObjectId)
+                {
+                    return elementAsMofObject;
+                }
+            }
+
+            // According to MOF Specification, return null, if not found
+            return null;
         }
 
         public string uri(IElement element)
         {
-            if ( element == null )
+            if (element == null)
             {
                 throw new ArgumentNullException("element");
             }
 
             var elementAsObject = element as MofObject;
-            if ( elementAsObject == null)
+            if (elementAsObject == null)
             {
                 throw new InvalidOperationException("element is not of type MofObject. Element is: " + element.ToString());
             }
-            
+
             return _contextUri + "#" + elementAsObject.guid.ToString();
         }
 

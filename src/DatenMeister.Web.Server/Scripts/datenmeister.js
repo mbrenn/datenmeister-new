@@ -2,6 +2,7 @@
 var DatenMeister;
 (function (DatenMeister) {
     ;
+    ;
     var WorkspaceLogic = (function () {
         function WorkspaceLogic() {
         }
@@ -71,7 +72,7 @@ var DatenMeister;
         ExtentLogic.prototype.loadAndCreateHtmlForItems = function (container, ws, extentUrl) {
             var tthis = this;
             var callback = $.Deferred();
-            $.ajax("/api/datenmeister/extent/get?ws=" + ws + "&url=" + extentUrl).
+            $.ajax("/api/datenmeister/extent/items?ws=" + ws + "&url=" + extentUrl).
                 done(function (data) {
                 tthis.createHtmlForItems(container, ws, extentUrl, data);
                 callback.resolve(null);
@@ -82,7 +83,8 @@ var DatenMeister;
             return callback;
         };
         ExtentLogic.prototype.createHtmlForItems = function (container, ws, extentUrl, data) {
-            container.empty();
+            var table = new GUI.DataTable(data.items, data.columns);
+            table.show(container);
         };
         return ExtentLogic;
     })();
@@ -114,6 +116,45 @@ var DatenMeister;
             });
         }
         GUI.loadExtent = loadExtent;
+        /*
+         * Used to show a lot of items in a database. The table will use an array of MofObjects
+         * as the datasource
+         */
+        var DataTable = (function () {
+            function DataTable(items, columns) {
+                this.items = items;
+                this.columns = columns;
+            }
+            // Replaces the content at the dom with the created table
+            DataTable.prototype.show = function (dom) {
+                var domTable = $("<table></table>");
+                // First the headline
+                var domRow = $("<tr></tr>");
+                for (var c in this.columns) {
+                    var column = this.columns[c];
+                    var domColumn = $("<td></td>");
+                    domColumn.text(column.title);
+                    domRow.append(domColumn);
+                }
+                domTable.append(domRow);
+                // Now, the items
+                for (var i in this.items) {
+                    var item = this.items[i];
+                    domRow = $("<tr></tr>");
+                    for (var c in this.columns) {
+                        var column = this.columns[c];
+                        var domColumn = $("<td></td>");
+                        domColumn.text(item.v[column.name]);
+                        domRow.append(domColumn);
+                    }
+                    domTable.append(domRow);
+                }
+                dom.empty();
+                dom.append(domTable);
+            };
+            return DataTable;
+        })();
+        GUI.DataTable = DataTable;
     })(GUI = DatenMeister.GUI || (DatenMeister.GUI = {}));
 })(DatenMeister || (DatenMeister = {}));
 ;

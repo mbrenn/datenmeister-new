@@ -11,8 +11,21 @@ module DatenMeister {
         url: string;
     }
 
-    interface MofObject {
-        values: Array<string>;
+    interface ExtentContent {
+        url: string;
+        columns: Array<DataTableColumn>;
+        items: Array<DataTableItem>;
+    };
+
+    interface DataTableColumn {
+        title: string;
+        name: string;
+    }
+
+    interface DataTableItem {
+        // Stores the url of the object which can be used for reference
+        url: string;
+        v: Array<string>;
     }
 
     export class WorkspaceLogic {
@@ -89,7 +102,7 @@ module DatenMeister {
             var tthis = this;
 
             var callback = $.Deferred();
-            $.ajax("/api/datenmeister/extent/get?ws=" + ws + "&url=" + extentUrl).
+            $.ajax("/api/datenmeister/extent/items?ws=" + ws + "&url=" + extentUrl).
                 done(function (data) {
                     tthis.createHtmlForItems(container, ws, extentUrl, data);
                     callback.resolve(null);
@@ -101,8 +114,9 @@ module DatenMeister {
             return callback;
         }
 
-        createHtmlForItems(container: JQuery, ws: string, extentUrl: string, data: Array<MofObject>) {
-            container.empty();
+        createHtmlForItems(container: JQuery, ws: string, extentUrl: string, data: ExtentContent) {
+            var table = new GUI.DataTable(data.items, data.columns);
+            table.show(container);
         }
     }
 
@@ -131,5 +145,53 @@ module DatenMeister {
                 extentLogic.loadAndCreateHtmlForItems($("#container_item"), workspaceId, extentUrl);
             });
         }
-    }    
+
+        /*
+         * Used to show a lot of items in a database. The table will use an array of MofObjects
+         * as the datasource
+         */
+        export class DataTable {
+            columns: Array<DataTableColumn>;
+            items: Array<DataTableItem>;
+
+            constructor(items: Array<DataTableItem>, columns: Array<DataTableColumn>) {
+                this.items = items;
+                this.columns = columns;
+            }
+
+            // Replaces the content at the dom with the created table
+            show(dom: JQuery) {
+                var domTable = $("<table></table>");
+
+                // First the headline
+                var domRow = $("<tr></tr>");
+                for (var c in this.columns) {
+                    var column = this.columns[c];
+                    var domColumn = $("<td></td>");
+                    domColumn.text(column.title);
+                    domRow.append(domColumn);
+                }
+
+                domTable.append(domRow);
+
+                // Now, the items
+                for (var i in this.items) {
+                    var item = this.items[i];
+
+                    domRow = $("<tr></tr>");
+                    for (var c in this.columns) {
+                        var column = this.columns[c];
+                        var domColumn = $("<td></td>");
+                        domColumn.text(item.v[column.name]);
+                        domRow.append(domColumn);
+                    }
+
+                    domTable.append(domRow);
+                }
+
+                dom.empty();
+                dom.append(domTable);
+            }
+        }
+    }
 };

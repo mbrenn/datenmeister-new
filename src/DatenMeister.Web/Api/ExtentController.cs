@@ -56,7 +56,6 @@ namespace DatenMeister.Web.Api
         {
             var amount = 100; // Return only the first 100 elements if no index is given
             var offset = 0;
-            var result = new ExtentContentModel();
             var workspace = GetWorkspace(ws);
             var foundExtent =
                 workspace.extent
@@ -68,8 +67,12 @@ namespace DatenMeister.Web.Api
                 throw new InvalidOperationException("Not found");
             }
 
+            var totalItems = foundExtent.elements();
+            var foundItems = totalItems;
+
             var properties = ExtentHelper.GetProperties(foundExtent).ToList();
 
+            var result = new ExtentContentModel();
             result.url = url;
             result.columns = properties
                 .Select(x => new DataTableColumn()
@@ -78,7 +81,9 @@ namespace DatenMeister.Web.Api
                     title = x.ToString()
                 })
                 .ToList();
-            result.items = foundExtent.elements()
+            result.totalItemCount = totalItems.Count();
+            result.filteredItemCount = foundItems.Count();
+            result.items = totalItems
                 .Skip(offset)
                 .Take(amount)
                 .Select(x => new DataTableItem()

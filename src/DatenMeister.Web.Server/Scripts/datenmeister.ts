@@ -13,6 +13,8 @@ module DatenMeister {
 
     interface ExtentContent {
         url: string;
+        totalItemCount: number;
+        filteredItemCount: number;
         columns: Array<DataTableColumn>;
         items: Array<DataTableItem>;
     };
@@ -161,13 +163,14 @@ module DatenMeister {
 
             // Replaces the content at the dom with the created table
             show(dom: JQuery) {
+                dom.empty();
                 var domTable = $("<table></table>");
 
                 // First the headline
                 var domRow = $("<tr></tr>");
                 for (var c in this.columns) {
                     var column = this.columns[c];
-                    var domColumn = $("<td></td>");
+                    var domColumn = $("<th></th>");
                     domColumn.text(column.title);
                     domRow.append(domColumn);
                 }
@@ -189,7 +192,6 @@ module DatenMeister {
                     domTable.append(domRow);
                 }
 
-                dom.empty();
                 dom.append(domTable);
             }
         }

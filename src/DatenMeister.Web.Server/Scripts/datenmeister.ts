@@ -189,6 +189,8 @@ module DatenMeister {
                         domRow.append(domColumn);
                     }
 
+                    // Add Edit link
+
                     domTable.append(domRow);
                 }
 

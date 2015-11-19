@@ -148,6 +148,7 @@ var DatenMeister;
                         domColumn.text(item.v[column.name]);
                         domRow.append(domColumn);
                     }
+                    // Add Edit link
                     domTable.append(domRow);
                 }
                 dom.append(domTable);

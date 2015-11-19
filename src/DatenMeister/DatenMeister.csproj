@@ -67,6 +67,7 @@
     <Compile Include="EMOF\Queries\FilterOnMultipleProperties.cs" />
     <Compile Include="EMOF\Queries\FilterOnPropertyCollection.cs" />
     <Compile Include="EMOF\Queries\FilterOnPropertyByPredicateCollection.cs" />
+    <Compile Include="EMOF\Queries\OrderByQuery.cs" />
     <Compile Include="Workspace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

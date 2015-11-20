@@ -41,6 +41,10 @@ namespace DatenMeister.SourcecodeGenerator
             this.Result = new StringBuilder();
         }
 
+        /// <summary>
+        /// Creates a C# class instance for all the packages and classes within the extent
+        /// </summary>
+        /// <param name="extent">Extent to be used</param>
         public void CreateClassTree(IUriExtent extent)
         {
             foreach (var element in extent.elements())
@@ -55,6 +59,13 @@ namespace DatenMeister.SourcecodeGenerator
             }
         }
 
+        /// <summary>
+        /// Creates a C# source code. Not to be used for recursive 
+        /// call since the namespace is just once created
+        /// </summary>
+        /// <param name="element">Regards the given element as a package
+        /// and returns a full namespace for the package. 
+        ///</param>
         public void CreateClassTree(IObject element)
         {
             var stack = new CallStack(null);
@@ -85,7 +96,9 @@ namespace DatenMeister.SourcecodeGenerator
         }
 
         /// <summary>
-        /// Parses the packages
+        /// Parses the packages and creates the C# Code for all the
+        /// packages by recursive calls to itself for packages and
+        /// ParseClasses for classes.
         /// </summary>
         /// <param name="element">Element being parsed</param>
         private void ParsePackages(IObject element, CallStack stack)
@@ -133,13 +146,26 @@ namespace DatenMeister.SourcecodeGenerator
                 this.Result.AppendLine($"{innerStack.Indentation}public class _{name}");
                 this.Result.AppendLine($"{innerStack.Indentation}{{");
 
+                this.ParseProperties(classInstance, innerStack);
+
                 this.Result.AppendLine($"{innerStack.Indentation}}}");
                 this.Result.AppendLine();
 
                 this.Result.AppendLine($"{innerStack.Indentation}public _{name} {name} = new _{name}();");
                 this.Result.AppendLine();
+            }
+        }
 
+        private void ParseProperties(IObject classInstance, CallStack stack)
+        {
+            var innerStack = new CallStack(stack);
 
+            foreach (var propertyObject in Helper.XmiGetProperty(classInstance))
+            {
+                var nameAsObject = propertyObject.get("name");
+                var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
+                this.Result.AppendLine($"{innerStack.Indentation}public object @{name} = new object();");
+                this.Result.AppendLine();
             }
         }
 

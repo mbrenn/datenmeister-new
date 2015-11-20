@@ -30,6 +30,12 @@ namespace DatenMeister.XMI.UmlBootstrap
             return XmlGetElementsOfType(element, typeName);
         }
 
+        public static IEnumerable<XElement> XmiGetProperty(this XElement element)
+        {
+            var typeName = "uml:Property";
+            return XmlGetElementsOfType(element, typeName);
+        }
+
         /// <summary>
         /// Gets all packages of a specific xml node
         /// </summary>
@@ -43,6 +49,12 @@ namespace DatenMeister.XMI.UmlBootstrap
         public static IEnumerable<IObject> XmiGetClass(this IObject element)
         {
             var typeName = "uml:Class";
+            return XmlGetElementsOfType(element, typeName);
+        }
+
+        public static IEnumerable<IObject> XmiGetProperty(this IObject element)
+        {
+            var typeName = "uml:Property";
             return XmlGetElementsOfType(element, typeName);
         }
 

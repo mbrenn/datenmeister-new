@@ -28,6 +28,8 @@ public class _MOF
     {
             public class _Tag
             {
+                public object @tagOwner = new object();
+
             }
 
             public _Tag Tag = new _Tag();
@@ -40,6 +42,12 @@ public class _MOF
     {
             public class _Tag
             {
+                public object @name = new object();
+
+                public object @value = new object();
+
+                public object @element = new object();
+
             }
 
             public _Tag Tag = new _Tag();
@@ -88,6 +96,10 @@ public class _MOF
 
             public class _Argument
             {
+                public object @name = new object();
+
+                public object @value = new object();
+
             }
 
             public _Argument Argument = new _Argument();
@@ -100,12 +112,24 @@ public class _MOF
 
             public class _Link
             {
+                public object @firstElement = new object();
+
+                public object @secondElement = new object();
+
+                public object @association = new object();
+
             }
 
             public _Link Link = new _Link();
 
             public class _Exception
             {
+                public object @objectInError = new object();
+
+                public object @elementInError = new object();
+
+                public object @description = new object();
+
             }
 
             public _Exception Exception = new _Exception();
@@ -118,6 +142,8 @@ public class _MOF
     {
             public class _Factory
             {
+                public object @package = new object();
+
             }
 
             public _Factory Factory = new _Factory();
@@ -136,6 +162,8 @@ public class _MOF
 
             public class _Element
             {
+                public object @metaclass = new object();
+
             }
 
             public _Element Element = new _Element();

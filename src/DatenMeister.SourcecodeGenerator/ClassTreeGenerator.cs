@@ -87,6 +87,7 @@ namespace DatenMeister.SourcecodeGenerator
                 };
 
                 stack = new CallStack(stack);
+                stack.Level--;
             }
 
             // Actually executes the class tree creation
@@ -119,6 +120,12 @@ namespace DatenMeister.SourcecodeGenerator
 
             // Finds the classes in the package
             ParseClasses(element, innerStack);
+
+            if (stack.Level == 0)
+            {
+                this.Result.AppendLine($"{innerStack.Indentation}public _{name} TheOne = new _{name}();");
+                this.Result.AppendLine();
+            }
 
             this.Result.AppendLine($"{stack.Indentation}}}");
 

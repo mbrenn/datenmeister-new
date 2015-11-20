@@ -25,6 +25,7 @@ namespace DatenMeister.SourceGeneration
 
             // Generates tree for UML
             var generator = new ClassTreeGenerator();
+            generator.Namespace = "DatenMeister";
             generator.CreateClassTree(umlExtent);
 
             File.WriteAllText("../../uml.cs", generator.Result.ToString());
@@ -32,6 +33,7 @@ namespace DatenMeister.SourceGeneration
 
             // Generates tree for MOF
             generator = new ClassTreeGenerator();
+            generator.Namespace = "DatenMeister";
             generator.CreateClassTree(mofExtent);
 
             File.WriteAllText("../../mof.cs", generator.Result.ToString());

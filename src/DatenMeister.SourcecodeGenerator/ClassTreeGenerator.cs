@@ -38,7 +38,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// </summary>
         public ClassTreeGenerator()
         {
-            this.Result = new StringBuilder();
+            Result = new StringBuilder();
         }
 
         /// <summary>
@@ -73,17 +73,17 @@ namespace DatenMeister.SourcecodeGenerator
             // Check, if we have namespaces
             Action preAction = () => { };
             Action postAction = () => { };
-            if (!string.IsNullOrEmpty(this.Namespace))
+            if (!string.IsNullOrEmpty(Namespace))
             {
                 var indentation = stack.Indentation;
                 preAction = () =>
                 {
-                    this.Result.AppendLine($"{indentation}namespace {Namespace}");
-                    this.Result.AppendLine($"{indentation}{{");
+                    Result.AppendLine($"{indentation}namespace {Namespace}");
+                    Result.AppendLine($"{indentation}{{");
                 };
                 postAction = () =>
                 {
-                    this.Result.AppendLine($"{indentation}}}");
+                    Result.AppendLine($"{indentation}}}");
                 };
 
                 stack = new CallStack(stack);
@@ -107,8 +107,8 @@ namespace DatenMeister.SourcecodeGenerator
             var nameAsObject = element.get("name");
             var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
 
-            this.Result.AppendLine($"{stack.Indentation}public class _{name}");
-            this.Result.AppendLine($"{stack.Indentation}{{");
+            Result.AppendLine($"{stack.Indentation}public class _{name}");
+            Result.AppendLine($"{stack.Indentation}{{");
             var innerStack = new CallStack(stack);
             innerStack.Fullname = stack.Fullname == null ? name : $"{stack.Fullname}.{name}";
 
@@ -123,18 +123,18 @@ namespace DatenMeister.SourcecodeGenerator
 
             if (stack.Level == 0)
             {
-                this.Result.AppendLine($"{innerStack.Indentation}public _{name} TheOne = new _{name}();");
-                this.Result.AppendLine();
+                Result.AppendLine($"{innerStack.Indentation}public _{name} TheOne = new _{name}();");
+                Result.AppendLine();
             }
 
-            this.Result.AppendLine($"{stack.Indentation}}}");
+            Result.AppendLine($"{stack.Indentation}}}");
 
-            this.Result.AppendLine();
+            Result.AppendLine();
 
             if (stack.Level > 0)
             {
-                this.Result.AppendLine($"{stack.Indentation}public _{name} {name} = new _{name}();");
-                this.Result.AppendLine();
+                Result.AppendLine($"{stack.Indentation}public _{name} {name} = new _{name}();");
+                Result.AppendLine();
             }
         }
 
@@ -149,17 +149,17 @@ namespace DatenMeister.SourcecodeGenerator
             {
                 var nameAsObject = classInstance.get("name");
                 var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
-                
-                this.Result.AppendLine($"{innerStack.Indentation}public class _{name}");
-                this.Result.AppendLine($"{innerStack.Indentation}{{");
 
-                this.ParseProperties(classInstance, innerStack);
+                Result.AppendLine($"{innerStack.Indentation}public class _{name}");
+                Result.AppendLine($"{innerStack.Indentation}{{");
 
-                this.Result.AppendLine($"{innerStack.Indentation}}}");
-                this.Result.AppendLine();
+                ParseProperties(classInstance, innerStack);
 
-                this.Result.AppendLine($"{innerStack.Indentation}public _{name} {name} = new _{name}();");
-                this.Result.AppendLine();
+                Result.AppendLine($"{innerStack.Indentation}}}");
+                Result.AppendLine();
+
+                Result.AppendLine($"{innerStack.Indentation}public _{name} {name} = new _{name}();");
+                Result.AppendLine();
             }
         }
 
@@ -171,8 +171,8 @@ namespace DatenMeister.SourcecodeGenerator
             {
                 var nameAsObject = propertyObject.get("name");
                 var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
-                this.Result.AppendLine($"{innerStack.Indentation}public object @{name} = new object();");
-                this.Result.AppendLine();
+                Result.AppendLine($"{innerStack.Indentation}public object @{name} = new object();");
+                Result.AppendLine();
             }
         }
 

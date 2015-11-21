@@ -26,7 +26,7 @@ namespace DatenMeister.Web.Models
 
         public ExtentModel(IUriExtent extent, WorkspaceModel workspace)
         {
-            this.url = extent.contextURI();
+            url = extent.contextURI();
             this.workspace = workspace;
         }
     }

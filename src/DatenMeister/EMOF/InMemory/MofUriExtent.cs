@@ -39,7 +39,7 @@ namespace DatenMeister.EMOF.InMemory
             var queryObjectId = uriAsUri.Fragment.Substring(1);
             
             // Now go through the list
-            foreach (var element in this.elements())
+            foreach (var element in elements())
             {
                 var elementAsMofObject = element as MofElement;
                 if (elementAsMofObject.guid.ToString() == queryObjectId)

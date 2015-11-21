@@ -1,3 +1,4 @@
+// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.0.0.0
 namespace DatenMeister
 {
     public class _UML

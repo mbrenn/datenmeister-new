@@ -52,7 +52,9 @@ namespace DatenMeister.SourcecodeGenerator
                 var elementAsObject = element as IObject;
                 var attributeXmi = "{" + Namespaces.Xmi.ToString() + "}type";
 
-                if (elementAsObject.isSet(attributeXmi) && elementAsObject.get(attributeXmi).ToString() == "uml:Package")
+                // Work only on the UML:Packages as the entry node
+                if (elementAsObject.isSet(attributeXmi) && 
+                    elementAsObject.get(attributeXmi).ToString() == "uml:Package")
                 {
                     CreateClassTree(elementAsObject);
                 }
@@ -69,6 +71,7 @@ namespace DatenMeister.SourcecodeGenerator
         public void CreateClassTree(IObject element)
         {
             var stack = new CallStack(null);
+            Result.AppendLine($"{stack.Indentation}// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version {FactoryVersion}");
 
             // Check, if we have namespaces
             Action preAction = () => { };

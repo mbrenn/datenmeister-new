@@ -9,10 +9,12 @@ using DatenMeister.XMI;
 namespace DatenMeister.SourcecodeGenerator
 {
     /// <summary>
-    /// Creates a class tree out of an XML which can be used to fill the appropriate instance
+    /// Creates a class file which contains objects for all 
+    /// items within the given extent. 
+    /// It parses classes and packages.
     /// </summary>
-    public class ClassTreeGenerator
-    {
+    public class ClassTreeGenerator : WalkPackageClass
+    { 
         public static Version FactoryVersion = new Version(1, 0, 0, 0);
 
         /// <summary>
@@ -42,35 +44,14 @@ namespace DatenMeister.SourcecodeGenerator
         }
 
         /// <summary>
-        /// Creates a C# class instance for all the packages and classes within the extent
-        /// </summary>
-        /// <param name="extent">Extent to be used</param>
-        public void CreateClassTree(IUriExtent extent)
-        {
-            foreach (var element in extent.elements())
-            {
-                var elementAsObject = element as IObject;
-                var attributeXmi = "{" + Namespaces.Xmi.ToString() + "}type";
-
-                // Work only on the UML:Packages as the entry node
-                if (elementAsObject.isSet(attributeXmi) && 
-                    elementAsObject.get(attributeXmi).ToString() == "uml:Package")
-                {
-                    CreateClassTree(elementAsObject);
-                }
-            }
-        }
-
-        /// <summary>
         /// Creates a C# source code. Not to be used for recursive 
         /// call since the namespace is just once created
         /// </summary>
         /// <param name="element">Regards the given element as a package
         /// and returns a full namespace for the package. 
         ///</param>
-        public void CreateClassTree(IObject element)
+        protected override void Walk(IObject element, CallStack stack)
         {
-            var stack = new CallStack(null);
             Result.AppendLine($"{stack.Indentation}// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version {FactoryVersion}");
 
             // Check, if we have namespaces
@@ -95,7 +76,7 @@ namespace DatenMeister.SourcecodeGenerator
 
             // Actually executes the class tree creation
             preAction();
-            ParsePackages(element, stack);
+            base.Walk(element, stack);
             postAction();
         }
 
@@ -105,7 +86,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// ParseClasses for classes.
         /// </summary>
         /// <param name="element">Element being parsed</param>
-        private void ParsePackages(IObject element, CallStack stack)
+        protected override void WalkPackage(IObject element, CallStack stack)
         {
             var nameAsObject = element.get("name");
             var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
@@ -115,14 +96,7 @@ namespace DatenMeister.SourcecodeGenerator
             var innerStack = new CallStack(stack);
             innerStack.Fullname = stack.Fullname == null ? name : $"{stack.Fullname}.{name}";
 
-            // Finds the subpackages
-            foreach (var package in Helper.XmiGetPackages(element))
-            {
-                ParsePackages(package, innerStack);
-            }
-
-            // Finds the classes in the package
-            ParseClasses(element, innerStack);
+            base.WalkPackage(element, stack);
 
             if (stack.Level == 0)
             {
@@ -144,30 +118,27 @@ namespace DatenMeister.SourcecodeGenerator
         /// <summary>
         /// Parses the packages
         /// </summary>
-        /// <param name="element">Element being parsed</param>
-        private void ParseClasses(IObject element, CallStack stack)
+        /// <param name="element">Element classInstance parsed</param>
+        protected override void WalkClass(IObject classInstance, CallStack stack)
         {
             var innerStack = new CallStack(stack);
-            foreach (var classInstance in Helper.XmiGetClass(element))
-            {
-                var nameAsObject = classInstance.get("name");
-                var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
+            var nameAsObject = classInstance.get("name");
+            var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
 
-                Result.AppendLine($"{innerStack.Indentation}public class _{name}");
-                Result.AppendLine($"{innerStack.Indentation}{{");
+            Result.AppendLine($"{innerStack.Indentation}public class _{name}");
+            Result.AppendLine($"{innerStack.Indentation}{{");
 
-                ParseProperties(classInstance, innerStack);
+            base.WalkClass(classInstance, stack);
 
-                Result.AppendLine($"{innerStack.Indentation}}}");
-                Result.AppendLine();
-
-                Result.AppendLine($"{innerStack.Indentation}public _{name} {name} = new _{name}();");
-                Result.AppendLine();
-            }
+            Result.AppendLine($"{innerStack.Indentation}}}");
+            Result.AppendLine();
         }
 
-        private void ParseProperties(IObject classInstance, CallStack stack)
+
+        protected override void WalkProperties(IObject classInstance, CallStack stack)
         {
+            base.WalkProperties(classInstance, stack);
+
             var innerStack = new CallStack(stack);
 
             foreach (var propertyObject in Helper.XmiGetProperty(classInstance))
@@ -176,42 +147,6 @@ namespace DatenMeister.SourcecodeGenerator
                 var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
                 Result.AppendLine($"{innerStack.Indentation}public object @{name} = new object();");
                 Result.AppendLine();
-            }
-        }
-
-        /// <summary>
-        /// Defines the callstack
-        /// </summary>
-        public class CallStack
-        {
-            public CallStack(CallStack ownerStack)
-            {
-                _ownerStack = ownerStack;
-                Indentation = ownerStack == null ? string.Empty : $"{ownerStack.Indentation}    ";
-                Level = ownerStack == null ? 0 : ownerStack.Level + 1;
-            }
-
-            /// <summary>
-            /// Stores the owner stack
-            /// </summary>
-            private CallStack _ownerStack;
-
-            public int Level
-            {
-                get;
-                set;
-            }
-
-            public string Fullname
-            {
-                get;
-                set;
-            }
-
-            public string Indentation
-            {
-                get;
-                set;
             }
         }
     }

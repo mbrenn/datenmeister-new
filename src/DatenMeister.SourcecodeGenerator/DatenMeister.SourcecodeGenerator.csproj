@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ClassTreeGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WalkPackageClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">

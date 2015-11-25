@@ -68,6 +68,8 @@
     <Compile Include="EMOF\Queries\FilterOnPropertyCollection.cs" />
     <Compile Include="EMOF\Queries\FilterOnPropertyByPredicateCollection.cs" />
     <Compile Include="EMOF\Queries\OrderByQuery.cs" />
+    <Compile Include="Filler\FillTheMOF.cs" />
+    <Compile Include="Filler\FillTheUML.cs" />
     <Compile Include="mof.cs" />
     <Compile Include="uml.cs" />
     <Compile Include="Workspace.cs" />

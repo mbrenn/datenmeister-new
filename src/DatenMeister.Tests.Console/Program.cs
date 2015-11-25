@@ -5,6 +5,10 @@ using DatenMeister.XMI.UmlBootstrap;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System;
+using DatenMeister.EMOF.Helper;
+using DatenMeister.XMI;
+using DatenMeister.Filler;
 
 namespace DatenMeister.Tests.Console
 {
@@ -18,6 +22,15 @@ namespace DatenMeister.Tests.Console
             var element = new EMOF.InMemory.MofElement();
             element.set(property, "Test");
 
+            TestZipCodes();
+            TestUmlBootstrap();
+            TestFillTree();
+
+            System.Console.ReadKey();
+        }
+
+        private static void TestZipCodes()
+        {
             // Checks the loading of the PLZ
             System.Console.WriteLine("Loading the Zip codes");
 
@@ -36,13 +49,17 @@ namespace DatenMeister.Tests.Console
 
             System.Console.WriteLine();
             System.Console.WriteLine("----");
+        }
+
+        private static void TestUmlBootstrap()
+        {
             System.Console.WriteLine("Testing Uml-Bootstrap.");
 
             var watch = new Stopwatch();
             watch.Start();
-            var fullStrap = Bootstrapper.PerformFullBootstrap("data/Infrastructure.xml");
+            var fullStrap = Bootstrapper.PerformFullBootstrap("data/UML.xmi");
             watch.Stop();
-        
+
             var descendents = AllDescendentsQuery.getDescendents(fullStrap.UmlInfrastructure);
             System.Console.WriteLine($"Having {descendents.Count()} elements");
             var n = 0;
@@ -56,9 +73,20 @@ namespace DatenMeister.Tests.Console
 
             System.Console.WriteLine($"Having {n} elements with name");
 
-            System.Console.WriteLine($"Elapsed Time for Bootstrap {watch.ElapsedMilliseconds.ToString("n0")} ms");    
-            System.Console.ReadKey();
+            System.Console.WriteLine($"Elapsed Time for Bootstrap {watch.ElapsedMilliseconds.ToString("n0")} ms");
         }
 
+        private static void TestFillTree()
+        {
+            var factory = new MofFactory();
+            var mofExtent = new MofUriExtent("datenmeister:///mof");
+            var loader = new SimpleLoader(factory);
+            loader.Load(mofExtent, "data/MOF.xmi");
+
+            var mof = new _MOF();
+            FillTheMOF.DoFill(mofExtent.elements(), mof);
+            
+
+        }
     }
 }

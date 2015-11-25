@@ -14,33 +14,13 @@ namespace DatenMeister.SourcecodeGenerator
     /// It parses classes and packages.
     /// </summary>
     public class ClassTreeGenerator : WalkPackageClass
-    { 
-        public static Version FactoryVersion = new Version(1, 0, 0, 0);
-
-        /// <summary>
-        /// Gets or sets the namespace
-        /// </summary>
-        public string Namespace
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the result being delivered back
-        /// </summary>
-        public StringBuilder Result
-        {
-            get;
-            set;
-        }
-
+    {
         /// <summary>
         /// Initializes a new instance of the ClassTreeGenerator
         /// </summary>
         public ClassTreeGenerator()
         {
-            Result = new StringBuilder();
+            this.FactoryVersion = new Version(1, 0, 0, 0);
         }
 
         /// <summary>
@@ -52,32 +32,7 @@ namespace DatenMeister.SourcecodeGenerator
         ///</param>
         protected override void Walk(IObject element, CallStack stack)
         {
-            Result.AppendLine($"{stack.Indentation}// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version {FactoryVersion}");
-
-            // Check, if we have namespaces
-            Action preAction = () => { };
-            Action postAction = () => { };
-            if (!string.IsNullOrEmpty(Namespace))
-            {
-                var indentation = stack.Indentation;
-                preAction = () =>
-                {
-                    Result.AppendLine($"{indentation}namespace {Namespace}");
-                    Result.AppendLine($"{indentation}{{");
-                };
-                postAction = () =>
-                {
-                    Result.AppendLine($"{indentation}}}");
-                };
-
-                stack = new CallStack(stack);
-                stack.Level--;
-            }
-
-            // Actually executes the class tree creation
-            preAction();
-            base.Walk(element, stack);
-            postAction();
+            base.WalkAndWriteNamespace(element, stack);
         }
 
         /// <summary>
@@ -88,11 +43,11 @@ namespace DatenMeister.SourcecodeGenerator
         /// <param name="element">Element being parsed</param>
         protected override void WalkPackage(IObject element, CallStack stack)
         {
-            var nameAsObject = element.get("name");
-            var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
+            var name = GetNameOfElement(element);
 
             Result.AppendLine($"{stack.Indentation}public class _{name}");
             Result.AppendLine($"{stack.Indentation}{{");
+
             var innerStack = new CallStack(stack);
             innerStack.Fullname = stack.Fullname == null ? name : $"{stack.Fullname}.{name}";
 
@@ -100,7 +55,7 @@ namespace DatenMeister.SourcecodeGenerator
 
             if (stack.Level == 0)
             {
-                Result.AppendLine($"{innerStack.Indentation}public _{name} TheOne = new _{name}();");
+                Result.AppendLine($"{innerStack.Indentation}public static _{name} TheOne = new _{name}();");
                 Result.AppendLine();
             }
 
@@ -121,33 +76,30 @@ namespace DatenMeister.SourcecodeGenerator
         /// <param name="element">Element classInstance parsed</param>
         protected override void WalkClass(IObject classInstance, CallStack stack)
         {
-            var innerStack = new CallStack(stack);
-            var nameAsObject = classInstance.get("name");
-            var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
+            var name = GetNameOfElement(classInstance);
 
-            Result.AppendLine($"{innerStack.Indentation}public class _{name}");
-            Result.AppendLine($"{innerStack.Indentation}{{");
+            Result.AppendLine($"{stack.Indentation}public class _{name}");
+            Result.AppendLine($"{stack.Indentation}{{");
 
             base.WalkClass(classInstance, stack);
 
-            Result.AppendLine($"{innerStack.Indentation}}}");
+            Result.AppendLine($"{stack.Indentation}}}");
+             
+            Result.AppendLine();
+            Result.AppendLine($"{stack.Indentation}public _{name} @{name} = new _{name}();");
+            Result.AppendLine($"{stack.Indentation}public object @{name}Instance = new object();");
             Result.AppendLine();
         }
 
 
-        protected override void WalkProperties(IObject classInstance, CallStack stack)
+        protected override void WalkProperty(IObject propertyObject, CallStack stack)
         {
-            base.WalkProperties(classInstance, stack);
+            base.WalkProperty(propertyObject, stack);
 
-            var innerStack = new CallStack(stack);
-
-            foreach (var propertyObject in Helper.XmiGetProperty(classInstance))
-            {
-                var nameAsObject = propertyObject.get("name");
-                var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
-                Result.AppendLine($"{innerStack.Indentation}public object @{name} = new object();");
-                Result.AppendLine();
-            }
+            var nameAsObject = propertyObject.get("name");
+            var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
+            Result.AppendLine($"{stack.Indentation}public object @{name} = new object();");
+            Result.AppendLine();
         }
     }
 }

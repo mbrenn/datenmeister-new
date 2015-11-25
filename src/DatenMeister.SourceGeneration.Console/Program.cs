@@ -28,7 +28,12 @@ namespace DatenMeister.SourceGeneration
             generator.Namespace = "DatenMeister";
             generator.Walk(umlExtent);
 
+            var extentCreator = new FillClassTreeByExtentCreator("DatenMeister._UML");
+            extentCreator.Namespace = "DatenMeister.Filler";
+            extentCreator.Walk(umlExtent);
+
             File.WriteAllText("../../uml.cs", generator.Result.ToString());
+            File.WriteAllText("../../FillTheUML.cs", extentCreator.Result.ToString());
             Console.WriteLine("C# Code for UML written");
 
             // Generates tree for MOF
@@ -36,7 +41,12 @@ namespace DatenMeister.SourceGeneration
             generator.Namespace = "DatenMeister";
             generator.Walk(mofExtent);
 
+            extentCreator = new FillClassTreeByExtentCreator("DatenMeister._MOF");
+            extentCreator.Namespace = "DatenMeister.Filler";
+            extentCreator.Walk(mofExtent);
+
             File.WriteAllText("../../mof.cs", generator.Result.ToString());
+            File.WriteAllText("../../FillTheMOF.cs", extentCreator.Result.ToString());
             Console.WriteLine("C# Code for MOF written");
         }
     }

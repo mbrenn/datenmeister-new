@@ -39,11 +39,12 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SimpleLoader.cs" />
     <Compile Include="Namespaces.cs" />
+    <Compile Include="SimpleLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UmlBootstrap\Helper.cs" />
     <Compile Include="UmlBootstrap\Bootstrapper.cs" />
+    <Compile Include="UmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">

@@ -5,17 +5,19 @@ namespace DatenMeister
     {
         public class _Identifiers
         {
-                public class _URIExtent
-                {
-                }
+            public class _URIExtent
+            {
+            }
 
-                public _URIExtent URIExtent = new _URIExtent();
+            public _URIExtent @URIExtent = new _URIExtent();
+            public object @URIExtentInstance = new object();
 
-                public class _Extent
-                {
-                }
+            public class _Extent
+            {
+            }
 
-                public _Extent Extent = new _Extent();
+            public _Extent @Extent = new _Extent();
+            public object @ExtentInstance = new object();
 
         }
 
@@ -29,13 +31,14 @@ namespace DatenMeister
 
         public class _CMOFExtension
         {
-                public class _Tag
-                {
-                    public object @tagOwner = new object();
+            public class _Tag
+            {
+                public object @tagOwner = new object();
 
-                }
+            }
 
-                public _Tag Tag = new _Tag();
+            public _Tag @Tag = new _Tag();
+            public object @TagInstance = new object();
 
         }
 
@@ -43,17 +46,18 @@ namespace DatenMeister
 
         public class _Extension
         {
-                public class _Tag
-                {
-                    public object @name = new object();
+            public class _Tag
+            {
+                public object @name = new object();
 
-                    public object @value = new object();
+                public object @value = new object();
 
-                    public object @element = new object();
+                public object @element = new object();
 
-                }
+            }
 
-                public _Tag Tag = new _Tag();
+            public _Tag @Tag = new _Tag();
+            public object @TagInstance = new object();
 
         }
 
@@ -61,17 +65,19 @@ namespace DatenMeister
 
         public class _Common
         {
-                public class _ReflectiveSequence
-                {
-                }
+            public class _ReflectiveSequence
+            {
+            }
 
-                public _ReflectiveSequence ReflectiveSequence = new _ReflectiveSequence();
+            public _ReflectiveSequence @ReflectiveSequence = new _ReflectiveSequence();
+            public object @ReflectiveSequenceInstance = new object();
 
-                public class _ReflectiveCollection
-                {
-                }
+            public class _ReflectiveCollection
+            {
+            }
 
-                public _ReflectiveCollection ReflectiveCollection = new _ReflectiveCollection();
+            public _ReflectiveCollection @ReflectiveCollection = new _ReflectiveCollection();
+            public object @ReflectiveCollectionInstance = new object();
 
         }
 
@@ -85,57 +91,63 @@ namespace DatenMeister
 
         public class _CMOFReflection
         {
-                public class _Factory
-                {
-                }
+            public class _Factory
+            {
+            }
 
-                public _Factory Factory = new _Factory();
+            public _Factory @Factory = new _Factory();
+            public object @FactoryInstance = new object();
 
-                public class _Element
-                {
-                }
+            public class _Element
+            {
+            }
 
-                public _Element Element = new _Element();
+            public _Element @Element = new _Element();
+            public object @ElementInstance = new object();
 
-                public class _Argument
-                {
-                    public object @name = new object();
+            public class _Argument
+            {
+                public object @name = new object();
 
-                    public object @value = new object();
+                public object @value = new object();
 
-                }
+            }
 
-                public _Argument Argument = new _Argument();
+            public _Argument @Argument = new _Argument();
+            public object @ArgumentInstance = new object();
 
-                public class _Extent
-                {
-                }
+            public class _Extent
+            {
+            }
 
-                public _Extent Extent = new _Extent();
+            public _Extent @Extent = new _Extent();
+            public object @ExtentInstance = new object();
 
-                public class _Link
-                {
-                    public object @firstElement = new object();
+            public class _Link
+            {
+                public object @firstElement = new object();
 
-                    public object @secondElement = new object();
+                public object @secondElement = new object();
 
-                    public object @association = new object();
+                public object @association = new object();
 
-                }
+            }
 
-                public _Link Link = new _Link();
+            public _Link @Link = new _Link();
+            public object @LinkInstance = new object();
 
-                public class _Exception
-                {
-                    public object @objectInError = new object();
+            public class _Exception
+            {
+                public object @objectInError = new object();
 
-                    public object @elementInError = new object();
+                public object @elementInError = new object();
 
-                    public object @description = new object();
+                public object @description = new object();
 
-                }
+            }
 
-                public _Exception Exception = new _Exception();
+            public _Exception @Exception = new _Exception();
+            public object @ExceptionInstance = new object();
 
         }
 
@@ -143,39 +155,43 @@ namespace DatenMeister
 
         public class _Reflection
         {
-                public class _Factory
-                {
-                    public object @package = new object();
+            public class _Factory
+            {
+                public object @package = new object();
 
-                }
+            }
 
-                public _Factory Factory = new _Factory();
+            public _Factory @Factory = new _Factory();
+            public object @FactoryInstance = new object();
 
-                public class _Type
-                {
-                }
+            public class _Type
+            {
+            }
 
-                public _Type Type = new _Type();
+            public _Type @Type = new _Type();
+            public object @TypeInstance = new object();
 
-                public class _Object
-                {
-                }
+            public class _Object
+            {
+            }
 
-                public _Object Object = new _Object();
+            public _Object @Object = new _Object();
+            public object @ObjectInstance = new object();
 
-                public class _Element
-                {
-                    public object @metaclass = new object();
+            public class _Element
+            {
+                public object @metaclass = new object();
 
-                }
+            }
 
-                public _Element Element = new _Element();
+            public _Element @Element = new _Element();
+            public object @ElementInstance = new object();
 
         }
 
         public _Reflection Reflection = new _Reflection();
 
-        public _MOF TheOne = new _MOF();
+        public static _MOF TheOne = new _MOF();
 
     }
 

@@ -21,10 +21,25 @@ namespace DatenMeister.XMI.UmlBootstrap
         /// </summary>
         private bool wasRun = false;
 
-        public IObject theClassObject
+        public Dictionary<string, IElement> mofClasses
         {
             get;
-            set;
+            private set;
+        }
+
+        public Dictionary<string, IElement> umlClasses
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Stores the extent for the uml infrastructure
+        /// </summary>
+        public IUriExtent MofInfrastructure
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -36,9 +51,21 @@ namespace DatenMeister.XMI.UmlBootstrap
             private set;
         }
 
-        public Bootstrapper(IUriExtent umlInfrastructure)
+        public Bootstrapper(IUriExtent umlInfrastructure, IUriExtent mofInfrastructure)
         {
+            if (umlInfrastructure == null)
+            {
+                throw new ArgumentNullException(nameof(umlInfrastructure));
+            }
+            if (mofInfrastructure == null)
+            {
+                throw new ArgumentNullException(nameof(mofInfrastructure));
+            }
+
             UmlInfrastructure = umlInfrastructure;
+            MofInfrastructure = mofInfrastructure;
+            mofClasses = new Dictionary<string, IElement>();
+            umlClasses = new Dictionary<string, IElement>();
         }
 
         /// <summary>
@@ -52,15 +79,48 @@ namespace DatenMeister.XMI.UmlBootstrap
             }
 
             wasRun = true;
-
-            // First, find the instance of the class itself...
-            // Look by Id
+            
+            // First, find the all classes of the uml namespace...            
             var descendents = AllDescendentsQuery.getDescendents(UmlInfrastructure);
-            var idProperty = (Namespaces.Xmi + "id").ToString();
-            theClassObject = descendents
-                .Where (x=>x.isSet(idProperty))
-                .Where (x=>x.get(idProperty).ToString() == "Class")
-                .Single();
+            var typeProperty = (Namespaces.Xmi + "type").ToString();
+            var allClasses = descendents
+                .Where(x => x.isSet(typeProperty) && x.get(typeProperty).ToString() == "uml:Class");
+            foreach (var classInstance in allClasses.Cast<IElement>())
+            {
+                var name = classInstance.get("name").ToString();
+                umlClasses[name] = classInstance;
+            }
+
+            // Second step: Go throught the MOF
+            descendents = AllDescendentsQuery.getDescendents(MofInfrastructure);
+            allClasses = descendents
+                .Where(x => x.isSet(typeProperty) && x.get(typeProperty).ToString() == "uml:Class");
+            foreach (var classInstance in allClasses.Cast<IElement>())
+            {
+                var name = classInstance.get("name").ToString();
+                mofClasses[name] = classInstance;
+            }
+
+            allClasses = descendents
+                .Where(x => x.isSet(typeProperty));
+            foreach (var classInstance in allClasses)
+            {
+                var name = classInstance.get(typeProperty).ToString();
+                if (name.StartsWith("uml:"))
+                {
+                    name = name.Substring(4);
+                    (classInstance as IElementExt).setMetaClass(umlClasses[name]);
+                }
+                else if (name.StartsWith("mofext:"))
+                {
+                    name = name.Substring(7);
+                    (classInstance as IElementExt).setMetaClass(mofClasses[name]);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Found unknown class: {name}");
+                }
+            }
         }
 
         /// <summary>
@@ -68,14 +128,16 @@ namespace DatenMeister.XMI.UmlBootstrap
         /// </summary>
         /// <param name="path">Path to be used</param>
         /// <returns>The instance of the bootstrapper</returns>
-        public static Bootstrapper PerformFullBootstrap(string path)
+        public static Bootstrapper PerformFullBootstrap(string pathUml, string pathMof)
         {
             var factory = new MofFactory();
-            var extent = new MofUriExtent("datenmeister:///uml");
+            var umlExtent = new MofUriExtent("datenmeister:///uml");
+            var mofExtent = new MofUriExtent("datenmeister:///mof");
             var loader = new SimpleLoader(factory);
-            loader.Load(extent, path);
+            loader.Load(umlExtent, pathUml);
+            loader.Load(mofExtent, pathMof);
 
-            var bootStrapper = new Bootstrapper(extent);
+            var bootStrapper = new Bootstrapper(umlExtent, mofExtent);
             bootStrapper.Strap();
             return bootStrapper;
         }

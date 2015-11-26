@@ -30,16 +30,13 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void TestBootstrap()
         {
-            var strapper = Bootstrapper.PerformFullBootstrap("Xmi/UML.xmi");
+            var strapper = Bootstrapper.PerformFullBootstrap("Xmi/UML.xmi", "Xmi/MOF.xmi");
             Assert.That(strapper, Is.Not.Null);
             Assert.That(strapper.UmlInfrastructure, Is.Not.Null);
 
             Assert.That(
                 AllDescendentsQuery.getDescendents(strapper.UmlInfrastructure).Count(),
                 Is.GreaterThan(500));
-
-            Assert.That(strapper.theClassObject, Is.Not.Null);
-            Assert.That(strapper.theClassObject.get("name").ToString(), Is.EqualTo("Class"));
         }
     }
 }

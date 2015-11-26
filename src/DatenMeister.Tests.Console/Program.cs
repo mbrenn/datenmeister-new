@@ -78,15 +78,22 @@ namespace DatenMeister.Tests.Console
 
         private static void TestFillTree()
         {
+            var watch = new Stopwatch();
+            watch.Start();
             var factory = new MofFactory();
             var mofExtent = new MofUriExtent("datenmeister:///mof");
+            var umlExtent = new MofUriExtent("datenmeister:///uml");
             var loader = new SimpleLoader(factory);
             loader.Load(mofExtent, "data/MOF.xmi");
+            loader.Load(mofExtent, "data/UML.xmi");
 
             var mof = new _MOF();
+            var uml = new _UML();
             FillTheMOF.DoFill(mofExtent.elements(), mof);
-            
+            FillTheUML.DoFill(umlExtent.elements(), uml);
 
+            watch.Stop();
+            System.Console.WriteLine($"Elapsed Time for MOF and UML Fill {watch.ElapsedMilliseconds.ToString("n0")} ms");
         }
     }
 }

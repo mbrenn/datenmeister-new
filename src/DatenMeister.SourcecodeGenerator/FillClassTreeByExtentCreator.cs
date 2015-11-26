@@ -60,6 +60,7 @@ namespace DatenMeister.SourcecodeGenerator
                 this.Result.AppendLine($"{stack.Indentation}{{");
 
                 // Creates the GetNameOfElement helper method
+                this.Result.AppendLine($"{methodStack.Indentation}private static object[] EmptyList = new object[] {{ }};");
                 this.Result.AppendLine($"{methodStack.Indentation}private static string GetNameOfElement(IObject element)");
                 this.Result.AppendLine($"{methodStack.Indentation}{{");
                 this.Result.AppendLine($"{methodStack.Indentation}    var nameAsObject = element.get(\"name\");");
@@ -71,6 +72,7 @@ namespace DatenMeister.SourcecodeGenerator
                 this.Result.AppendLine($"{methodStack.Indentation}{{");
                 this.Result.AppendLine($"{foreachStack.Indentation}string name;");
                 this.Result.AppendLine($"{foreachStack.Indentation}IObject value;");
+                this.Result.AppendLine($"{foreachStack.Indentation}bool isSet;");
 
                 this.Result.AppendLine($"{foreachStack.Indentation}foreach (var item in collection)");
                 this.Result.AppendLine($"{foreachStack.Indentation}{{");
@@ -84,7 +86,8 @@ namespace DatenMeister.SourcecodeGenerator
 
             var ifStack = innerStack.NextWithoutLevelIncrease;
             var ifForeachStack = ifStack.NextWithoutLevelIncrease;
-            this.Result.AppendLine($"{ifStack.Indentation}collection = value.get(\"packagedElement\") as IEnumerable<object>;");
+            this.Result.AppendLine($"{ifStack.Indentation}isSet = value.isSet(\"packagedElement\");");
+            this.Result.AppendLine($"{ifStack.Indentation}collection = isSet ? (value.get(\"packagedElement\") as IEnumerable<object>) : EmptyList;");
             this.Result.AppendLine($"{ifStack.Indentation}foreach (var item{ifStack.Level} in collection)");
             this.Result.AppendLine($"{ifStack.Indentation}{{");
             this.Result.AppendLine($"{ifForeachStack.Indentation}value = item{ifStack.Level} as IObject;");
@@ -112,7 +115,8 @@ namespace DatenMeister.SourcecodeGenerator
             var ifStack = stack.NextWithoutLevelIncrease;
             var ifForeachStack = ifStack.NextWithoutLevelIncrease;
             this.Result.AppendLine($"{ifStack.Indentation}tree.{stack.Fullname}.@{name}Instance = value;");
-            this.Result.AppendLine($"{ifStack.Indentation}collection = value.get(\"ownedAttribute\") as IEnumerable<object>;");
+            this.Result.AppendLine($"{ifStack.Indentation}isSet = value.isSet(\"ownedAttribute\");");
+            this.Result.AppendLine($"{ifStack.Indentation}collection = isSet ? (value.get(\"ownedAttribute\") as IEnumerable<object>) : EmptyList;");
             this.Result.AppendLine($"{ifStack.Indentation}foreach (var item{ifStack.Level} in collection)");
             this.Result.AppendLine($"{ifStack.Indentation}{{");
             this.Result.AppendLine($"{ifForeachStack.Indentation}value = item{ifStack.Level} as IObject;");

@@ -51,6 +51,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -288,6 +289,7 @@
     <Content Include="Views\Home\Workspace_NotFound.cshtml" />
     <Content Include="Views\Home\Extent_NotFound.cshtml" />
     <Content Include="Views\Home\Extent.cshtml" />
+    <Content Include="Views\Home\Item.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -334,7 +336,7 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptTarget>ES6</TypeScriptTarget>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>

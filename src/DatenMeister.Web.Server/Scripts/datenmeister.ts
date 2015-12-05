@@ -24,9 +24,19 @@ module DatenMeister {
         name: string;
     }
 
+    export class DataTableConfiguration {
+        editFunction: (url: string) => void;
+        deleteFunction: (url: string) => void;
+
+        DataTableConfiguration() {
+            this.editFunction = function (url: string) { /*Ignoring*/ };
+            this.deleteFunction = function (url: string) { /*Ignoring*/ };
+        }
+    }
+
     interface DataTableItem {
         // Stores the url of the object which can be used for reference
-        url: string;
+        uri: string;
         v: Array<string>;
     }
 
@@ -117,7 +127,15 @@ module DatenMeister {
         }
 
         createHtmlForItems(container: JQuery, ws: string, extentUrl: string, data: ExtentContent) {
-            var table = new GUI.DataTable(data.items, data.columns);
+            var configuration = new DataTableConfiguration();
+            configuration.editFunction = function (url: string) {
+                alert("EDIT: " + url);
+            };
+            configuration.deleteFunction = function (url: string) {
+                alert("DELETE: " + url);
+            };
+
+            var table = new GUI.DataTable(data.items, data.columns, configuration);
             table.show(container);
         }
     }
@@ -155,14 +173,17 @@ module DatenMeister {
         export class DataTable {
             columns: Array<DataTableColumn>;
             items: Array<DataTableItem>;
+            configuration: DataTableConfiguration;
 
-            constructor(items: Array<DataTableItem>, columns: Array<DataTableColumn>) {
+            constructor(items: Array<DataTableItem>, columns: Array<DataTableColumn>, configuration: DataTableConfiguration) {
                 this.items = items;
                 this.columns = columns;
+                this.configuration = configuration;
             }
 
             // Replaces the content at the dom with the created table
             show(dom: JQuery) {
+                var tthis = this;
                 dom.empty();
                 var domTable = $("<table></table>");
 
@@ -174,6 +195,12 @@ module DatenMeister {
                     domColumn.text(column.title);
                     domRow.append(domColumn);
                 }
+
+                // Creates the edit and delete column
+                var domEditColumn = $("<th>EDIT</th>");
+                domRow.append(domEditColumn);
+                var domDeleteColumn = $("<th>DELETE</th>");
+                domRow.append(domDeleteColumn);
 
                 domTable.append(domRow);
 
@@ -190,6 +217,21 @@ module DatenMeister {
                     }
 
                     // Add Edit link
+                    domEditColumn = $("<td class='hl'>EDIT</td>");
+                    domEditColumn.click((function (url) {
+                        return function () {
+                            tthis.configuration.editFunction (url);
+                        };
+                    })(item.uri));                   
+                    domRow.append(domEditColumn);
+
+                    domDeleteColumn = $("<td class='hl'>DELETE</td>");
+                    domDeleteColumn.click((function (url) {
+                        return function () {
+                            tthis.configuration.deleteFunction(url);
+                        };
+                    })(item.uri));
+                    domRow.append(domDeleteColumn);  
 
                     domTable.append(domRow);
                 }

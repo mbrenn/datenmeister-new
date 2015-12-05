@@ -8,7 +8,7 @@ namespace DatenMeister.Web.Models
 {
     public class DataTableItem
     {
-        public string url
+        public string uri
         {
             get;
             set;

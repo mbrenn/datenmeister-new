@@ -88,7 +88,7 @@ namespace DatenMeister.Web.Api
                 .Take(amount)
                 .Select(x => new DataTableItem()
                 {
-                    url = foundExtent.uri(x as IElement),
+                    uri = foundExtent.uri(x as IElement),
                     v = ObjectHelper.AsStringDictionary(x as IElement, properties)
                 })
                 .ToList();

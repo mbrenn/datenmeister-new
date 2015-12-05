@@ -3,6 +3,16 @@ var DatenMeister;
 (function (DatenMeister) {
     ;
     ;
+    var DataTableConfiguration = (function () {
+        function DataTableConfiguration() {
+        }
+        DataTableConfiguration.prototype.DataTableConfiguration = function () {
+            this.editFunction = function (url) { };
+            this.deleteFunction = function (url) { };
+        };
+        return DataTableConfiguration;
+    })();
+    DatenMeister.DataTableConfiguration = DataTableConfiguration;
     var WorkspaceLogic = (function () {
         function WorkspaceLogic() {
         }
@@ -83,7 +93,14 @@ var DatenMeister;
             return callback;
         };
         ExtentLogic.prototype.createHtmlForItems = function (container, ws, extentUrl, data) {
-            var table = new GUI.DataTable(data.items, data.columns);
+            var configuration = new DataTableConfiguration();
+            configuration.editFunction = function (url) {
+                alert("EDIT: " + url);
+            };
+            configuration.deleteFunction = function (url) {
+                alert("DELETE: " + url);
+            };
+            var table = new GUI.DataTable(data.items, data.columns, configuration);
             table.show(container);
         };
         return ExtentLogic;
@@ -121,12 +138,14 @@ var DatenMeister;
          * as the datasource
          */
         var DataTable = (function () {
-            function DataTable(items, columns) {
+            function DataTable(items, columns, configuration) {
                 this.items = items;
                 this.columns = columns;
+                this.configuration = configuration;
             }
             // Replaces the content at the dom with the created table
             DataTable.prototype.show = function (dom) {
+                var tthis = this;
                 dom.empty();
                 var domTable = $("<table></table>");
                 // First the headline
@@ -137,6 +156,11 @@ var DatenMeister;
                     domColumn.text(column.title);
                     domRow.append(domColumn);
                 }
+                // Creates the edit and delete column
+                var domEditColumn = $("<th>EDIT</th>");
+                domRow.append(domEditColumn);
+                var domDeleteColumn = $("<th>DELETE</th>");
+                domRow.append(domDeleteColumn);
                 domTable.append(domRow);
                 // Now, the items
                 for (var i in this.items) {
@@ -149,6 +173,20 @@ var DatenMeister;
                         domRow.append(domColumn);
                     }
                     // Add Edit link
+                    domEditColumn = $("<td class='hl'>EDIT</td>");
+                    domEditColumn.click((function (url) {
+                        return function () {
+                            tthis.configuration.editFunction(url);
+                        };
+                    })(item.uri));
+                    domRow.append(domEditColumn);
+                    domDeleteColumn = $("<td class='hl'>DELETE</td>");
+                    domDeleteColumn.click((function (url) {
+                        return function () {
+                            tthis.configuration.deleteFunction(url);
+                        };
+                    })(item.uri));
+                    domRow.append(domDeleteColumn);
                     domTable.append(domRow);
                 }
                 dom.append(domTable);

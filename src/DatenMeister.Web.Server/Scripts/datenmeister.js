@@ -35,12 +35,32 @@ var DatenMeister;
     }
     DatenMeister.WorkspaceLogic = WorkspaceLogic;
     ;
+    var Models;
+    (function (Models) {
+        class ItemReferenceModel {
+        }
+        Models.ItemReferenceModel = ItemReferenceModel;
+        class ItemDeleteModel extends ItemReferenceModel {
+        }
+        Models.ItemDeleteModel = ItemDeleteModel;
+    })(Models = DatenMeister.Models || (DatenMeister.Models = {}));
     class ExtentLogic {
+        /* Deletes an item from the database and returns the value indicatng whether the deleteion was successful */
+        deleteItem(ws, extent, item) {
+            var tthis = this;
+            var callback = $.Deferred();
+            $.ajax("/api/datenmeister/extent/item_delete?ws=" + encodeURIComponent(ws)
+                + "&extent=" + encodeURIComponent(extent)
+                + "&item=" + encodeURIComponent(item))
+                .done((data) => { callback.resolve(true); })
+                .fail((data) => { callback.resolve(false); });
+            return callback;
+        }
         loadAndCreateHtmlForExtents(container, ws) {
             var tthis = this;
             var callback = $.Deferred();
-            $.ajax("/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws)).
-                done(function (data) {
+            $.ajax("/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws))
+                .done(function (data) {
                 tthis.createHtmlForExtent(container, ws, data);
                 callback.resolve(null);
             })
@@ -80,6 +100,7 @@ var DatenMeister;
             return callback;
         }
         createHtmlForItems(container, ws, extentUrl, data) {
+            var tthis = this;
             var configuration = new GUI.DataTableConfiguration();
             configuration.editFunction = function (url) {
                 location.href = "/Home/item?ws=" + encodeURIComponent(ws)
@@ -88,7 +109,13 @@ var DatenMeister;
                 return false;
             };
             configuration.deleteFunction = function (url) {
-                alert("DELETE: " + url);
+                var callback = tthis.deleteItem(ws, extentUrl, url);
+                callback
+                    .done(() => {
+                    alert("REMOVED");
+                    tthis.loadAndCreateHtmlForItems(container, ws, extentUrl);
+                })
+                    .fail(() => { alert("FAILED"); });
                 return false;
             };
             var table = new GUI.DataTable(data.items, data.columns, configuration);

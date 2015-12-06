@@ -72,13 +72,38 @@ module DatenMeister {
         }
     };
 
+    export namespace Models {
+        export class ItemReferenceModel {
+            ws: string;
+            extent: string;
+            item: string;
+        }
+
+        export class ItemDeleteModel extends ItemReferenceModel {
+
+        }
+    }
+
     export class ExtentLogic {
+        /* Deletes an item from the database and returns the value indicatng whether the deleteion was successful */
+        deleteItem(ws: string, extent: string, item: string): JQueryPromise<boolean> {
+            var tthis = this;
+            var callback = $.Deferred();
+
+            $.ajax("/api/datenmeister/extent/item_delete?ws=" + encodeURIComponent(ws)
+                    + "&extent=" + encodeURIComponent(extent)
+                    + "&item=" + encodeURIComponent(item))
+                .done((data: any) => { callback.resolve(true); })
+                .fail((data: any) => { callback.resolve(false); });
+            return callback;
+        }
+
         loadAndCreateHtmlForExtents(container: JQuery, ws: string): JQueryPromise<Object> {
             var tthis = this;
 
             var callback = $.Deferred();
-            $.ajax("/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws)).
-                done(function (data) {
+            $.ajax("/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws))
+                .done(function (data) {
                     tthis.createHtmlForExtent(container, ws, data);
                     callback.resolve(null);
                 })
@@ -126,6 +151,7 @@ module DatenMeister {
         }
 
         createHtmlForItems(container: JQuery, ws: string, extentUrl: string, data: IExtentContent) {
+            var tthis = this;
             var configuration = new GUI.DataTableConfiguration();
             configuration.editFunction = function (url: string) {
 
@@ -134,8 +160,15 @@ module DatenMeister {
                     + "&item=" + encodeURIComponent(url);
                 return false;
             };
+
             configuration.deleteFunction = function (url: string) {
-                alert("DELETE: " + url);
+                var callback = tthis.deleteItem(ws, extentUrl, url);
+                callback
+                    .done(() => {
+                        alert("REMOVED");
+                        tthis.loadAndCreateHtmlForItems(container, ws, extentUrl);
+                    })
+                    .fail(() => { alert("FAILED"); });
                 return false;
             };
 

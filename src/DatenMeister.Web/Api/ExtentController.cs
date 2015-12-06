@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
+using System.Web.Http.Results;
 
 namespace DatenMeister.Web.Api
 {
@@ -125,12 +127,42 @@ namespace DatenMeister.Web.Api
             return itemModel;
         }
 
+        [Route("item_delete")]
+        [HttpGet]
+        public object DeleteItem(string ws, string extent, string item)
+        {
+            try
+            {
+                Workspace<IExtent> foundWorkspace;
+                IUriExtent foundExtent;
+                RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
+
+                var foundItem = foundExtent.element(item);
+                if (foundItem == null)
+                {
+                    return NotFound();
+                }
+
+                if (!foundExtent.elements().remove(foundItem))
+                {
+                    return NotFound();
+                }
+
+                return new {success = true};
+            }
+            catch (OperationFailedException)
+            {
+                return NotFound();
+            }
+        }
+
         /// <summary>
         /// Gets the extentmodel for a given extent
         /// </summary>
         /// <param name="ws">Workspace to be queried</param>
         /// <param name="extent">Extent to be querued</param>
         /// <returns>The found extent or an exception.</returns>
+        [ApiExplorerSettings(IgnoreApi = true)]
         public static ExtentModel GetExtentModel(string ws, string extent)
         {
             Workspace<IExtent> foundWorkspace;
@@ -144,6 +176,7 @@ namespace DatenMeister.Web.Api
             return extentModel;
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         public static void RetrieveWorkspaceAndExtent(string ws, string extent, out Workspace<IExtent> foundWorkspace, out IUriExtent foundExtent)
         {
             foundWorkspace = Core.TheOne.Workspaces.FirstOrDefault(x => x.id == ws);

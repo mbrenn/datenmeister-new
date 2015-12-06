@@ -1,10 +1,5 @@
-﻿using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.XMI.UmlBootstrap;
-using System;
-using System.Text;
-using DatenMeister.EMOF.InMemory;
-using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.XMI;
+﻿using System;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.SourcecodeGenerator
 {
@@ -20,7 +15,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// </summary>
         public ClassTreeGenerator()
         {
-            this.FactoryVersion = new Version(1, 0, 0, 0);
+            FactoryVersion = new Version(1, 0, 0, 0);
         }
 
         /// <summary>
@@ -32,7 +27,7 @@ namespace DatenMeister.SourcecodeGenerator
         ///</param>
         protected override void Walk(IObject element, CallStack stack)
         {
-            base.WalkAndWriteNamespace(element, stack);
+            WalkAndWriteNamespace(element, stack);
         }
 
         /// <summary>

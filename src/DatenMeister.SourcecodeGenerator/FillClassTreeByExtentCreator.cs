@@ -1,9 +1,5 @@
-﻿using DatenMeister.EMOF.Interface.Reflection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.SourcecodeGenerator
 {
@@ -17,8 +13,8 @@ namespace DatenMeister.SourcecodeGenerator
 
         public FillClassTreeByExtentCreator(string classNameOfTree)
         {
-            this.ClassNameOfTree = classNameOfTree;
-            this.FactoryVersion = new Version(1, 0, 0, 0);
+            ClassNameOfTree = classNameOfTree;
+            FactoryVersion = new Version(1, 0, 0, 0);
         }
         
         /// <summary>
@@ -28,11 +24,12 @@ namespace DatenMeister.SourcecodeGenerator
         /// <param name="element">Regards the given element as a package
         /// and returns a full namespace for the package. 
         ///</param>
+        /// <param name="stack">Used as the callstack</param>
         protected override void Walk(IObject element, CallStack stack)
         {
-            this.Result.AppendLine("using System.Collections.Generic;");
-            this.Result.AppendLine("using DatenMeister.EMOF.Interface.Reflection;");
-            base.WalkAndWriteNamespace(element, stack);
+            Result.AppendLine("using System.Collections.Generic;");
+            Result.AppendLine("using DatenMeister.EMOF.Interface.Reflection;");
+            WalkAndWriteNamespace(element, stack);
         }
 
         protected override void WalkPackage(IObject element, CallStack stack)
@@ -56,88 +53,88 @@ namespace DatenMeister.SourcecodeGenerator
                 foreachStack = methodStack.NextWithoutLevelIncrease;
                 innerStack = foreachStack.NextWithoutLevelIncrease;
 
-                this.Result.AppendLine($"{stack.Indentation}public class FillThe{name}");
-                this.Result.AppendLine($"{stack.Indentation}{{");
+                Result.AppendLine($"{stack.Indentation}public class FillThe{name}");
+                Result.AppendLine($"{stack.Indentation}{{");
 
                 // Creates the GetNameOfElement helper method
-                this.Result.AppendLine($"{methodStack.Indentation}private static object[] EmptyList = new object[] {{ }};");
-                this.Result.AppendLine($"{methodStack.Indentation}private static string GetNameOfElement(IObject element)");
-                this.Result.AppendLine($"{methodStack.Indentation}{{");
-                this.Result.AppendLine($"{methodStack.Indentation}    var nameAsObject = element.get(\"name\");");
-                this.Result.AppendLine($"{methodStack.Indentation}    return nameAsObject == null ? string.Empty : nameAsObject.ToString();");
-                this.Result.AppendLine($"{methodStack.Indentation}}}");
-                this.Result.AppendLine();
+                Result.AppendLine($"{methodStack.Indentation}private static object[] EmptyList = new object[] {{ }};");
+                Result.AppendLine($"{methodStack.Indentation}private static string GetNameOfElement(IObject element)");
+                Result.AppendLine($"{methodStack.Indentation}{{");
+                Result.AppendLine($"{methodStack.Indentation}    var nameAsObject = element.get(\"name\");");
+                Result.AppendLine($"{methodStack.Indentation}    return nameAsObject == null ? string.Empty : nameAsObject.ToString();");
+                Result.AppendLine($"{methodStack.Indentation}}}");
+                Result.AppendLine();
 
-                this.Result.AppendLine($"{methodStack.Indentation}public static void DoFill(IEnumerable<object> collection, {ClassNameOfTree} tree)");
-                this.Result.AppendLine($"{methodStack.Indentation}{{");
-                this.Result.AppendLine($"{foreachStack.Indentation}string name;");
-                this.Result.AppendLine($"{foreachStack.Indentation}IObject value;");
-                this.Result.AppendLine($"{foreachStack.Indentation}bool isSet;");
+                Result.AppendLine($"{methodStack.Indentation}public static void DoFill(IEnumerable<object> collection, {ClassNameOfTree} tree)");
+                Result.AppendLine($"{methodStack.Indentation}{{");
+                Result.AppendLine($"{foreachStack.Indentation}string name;");
+                Result.AppendLine($"{foreachStack.Indentation}IObject value;");
+                Result.AppendLine($"{foreachStack.Indentation}bool isSet;");
 
-                this.Result.AppendLine($"{foreachStack.Indentation}foreach (var item in collection)");
-                this.Result.AppendLine($"{foreachStack.Indentation}{{");
-                this.Result.AppendLine($"{innerStack.Indentation}value = item as IObject;");
-                this.Result.AppendLine($"{innerStack.Indentation}name = GetNameOfElement(value);");
+                Result.AppendLine($"{foreachStack.Indentation}foreach (var item in collection)");
+                Result.AppendLine($"{foreachStack.Indentation}{{");
+                Result.AppendLine($"{innerStack.Indentation}value = item as IObject;");
+                Result.AppendLine($"{innerStack.Indentation}name = GetNameOfElement(value);");
             }
 
             // First, go through the elements 
-            this.Result.AppendLine($"{innerStack.Indentation}if (name == \"{name}\") // Looking for package");
-            this.Result.AppendLine($"{innerStack.Indentation}{{");
+            Result.AppendLine($"{innerStack.Indentation}if (name == \"{name}\") // Looking for package");
+            Result.AppendLine($"{innerStack.Indentation}{{");
 
             var ifStack = innerStack.NextWithoutLevelIncrease;
             var ifForeachStack = ifStack.NextWithoutLevelIncrease;
-            this.Result.AppendLine($"{ifStack.Indentation}isSet = value.isSet(\"packagedElement\");");
-            this.Result.AppendLine($"{ifStack.Indentation}collection = isSet ? (value.get(\"packagedElement\") as IEnumerable<object>) : EmptyList;");
-            this.Result.AppendLine($"{ifStack.Indentation}foreach (var item{ifStack.Level} in collection)");
-            this.Result.AppendLine($"{ifStack.Indentation}{{");
-            this.Result.AppendLine($"{ifForeachStack.Indentation}value = item{ifStack.Level} as IObject;");
-            this.Result.AppendLine($"{ifForeachStack.Indentation}name = GetNameOfElement(value);");
+            Result.AppendLine($"{ifStack.Indentation}isSet = value.isSet(\"packagedElement\");");
+            Result.AppendLine($"{ifStack.Indentation}collection = isSet ? (value.get(\"packagedElement\") as IEnumerable<object>) : EmptyList;");
+            Result.AppendLine($"{ifStack.Indentation}foreach (var item{ifStack.Level} in collection)");
+            Result.AppendLine($"{ifStack.Indentation}{{");
+            Result.AppendLine($"{ifForeachStack.Indentation}value = item{ifStack.Level} as IObject;");
+            Result.AppendLine($"{ifForeachStack.Indentation}name = GetNameOfElement(value);");
 
             base.WalkPackage(element, ifStack);
 
-            this.Result.AppendLine($"{ifStack.Indentation}}}");
-            this.Result.AppendLine($"{innerStack.Indentation}}}");
+            Result.AppendLine($"{ifStack.Indentation}}}");
+            Result.AppendLine($"{innerStack.Indentation}}}");
 
             if (stack.Level == 0)
             {
-                this.Result.AppendLine($"{foreachStack.Indentation}}}");
-                this.Result.AppendLine($"{methodStack.Indentation}}}");
-                this.Result.AppendLine($"{stack.Indentation}}}");
+                Result.AppendLine($"{foreachStack.Indentation}}}");
+                Result.AppendLine($"{methodStack.Indentation}}}");
+                Result.AppendLine($"{stack.Indentation}}}");
             }
         }
 
         protected override void WalkClass(IObject classInstance, CallStack stack)
         {
             var name = GetNameOfElement(classInstance);
-            this.Result.AppendLine($"{stack.Indentation}if(name == \"{name}\") // Looking for class");
-            this.Result.AppendLine($"{stack.Indentation}{{");
+            Result.AppendLine($"{stack.Indentation}if(name == \"{name}\") // Looking for class");
+            Result.AppendLine($"{stack.Indentation}{{");
 
             var ifStack = stack.NextWithoutLevelIncrease;
             var ifForeachStack = ifStack.NextWithoutLevelIncrease;
-            this.Result.AppendLine($"{ifStack.Indentation}tree.{stack.Fullname}.@{name}Instance = value;");
-            this.Result.AppendLine($"{ifStack.Indentation}isSet = value.isSet(\"ownedAttribute\");");
-            this.Result.AppendLine($"{ifStack.Indentation}collection = isSet ? (value.get(\"ownedAttribute\") as IEnumerable<object>) : EmptyList;");
-            this.Result.AppendLine($"{ifStack.Indentation}foreach (var item{ifStack.Level} in collection)");
-            this.Result.AppendLine($"{ifStack.Indentation}{{");
-            this.Result.AppendLine($"{ifForeachStack.Indentation}value = item{ifStack.Level} as IObject;");
-            this.Result.AppendLine($"{ifForeachStack.Indentation}name = GetNameOfElement(value);");
+            Result.AppendLine($"{ifStack.Indentation}tree.{stack.Fullname}.@{name}Instance = value;");
+            Result.AppendLine($"{ifStack.Indentation}isSet = value.isSet(\"ownedAttribute\");");
+            Result.AppendLine($"{ifStack.Indentation}collection = isSet ? (value.get(\"ownedAttribute\") as IEnumerable<object>) : EmptyList;");
+            Result.AppendLine($"{ifStack.Indentation}foreach (var item{ifStack.Level} in collection)");
+            Result.AppendLine($"{ifStack.Indentation}{{");
+            Result.AppendLine($"{ifForeachStack.Indentation}value = item{ifStack.Level} as IObject;");
+            Result.AppendLine($"{ifForeachStack.Indentation}name = GetNameOfElement(value);");
 
             base.WalkClass(classInstance, ifStack);
 
-            this.Result.AppendLine($"{ifStack.Indentation}}}");
-            this.Result.AppendLine($"{stack.Indentation}}}");
+            Result.AppendLine($"{ifStack.Indentation}}}");
+            Result.AppendLine($"{stack.Indentation}}}");
         }
 
         protected override void WalkProperty(IObject propertyInstance, CallStack stack)
         {
             var name = GetNameOfElement(propertyInstance);
-            this.Result.AppendLine($"{stack.Indentation}if(name == \"{name}\") // Looking for property");
-            this.Result.AppendLine($"{stack.Indentation}{{");
-            this.Result.AppendLine($"{stack.NextIndentation}tree.{stack.Fullname}.@{name} = value;");
+            Result.AppendLine($"{stack.Indentation}if(name == \"{name}\") // Looking for property");
+            Result.AppendLine($"{stack.Indentation}{{");
+            Result.AppendLine($"{stack.NextIndentation}tree.{stack.Fullname}.@{name} = value;");
 
             base.WalkProperty(propertyInstance, stack);
 
-            this.Result.AppendLine($"{stack.Indentation}}}");
+            Result.AppendLine($"{stack.Indentation}}}");
         }
     }
 }

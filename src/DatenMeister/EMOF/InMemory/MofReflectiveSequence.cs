@@ -33,13 +33,13 @@ namespace DatenMeister.EMOF.InMemory
 
         public void add(int index, object value)
         {
-            add(index, value);
+            _values.Insert(index, value);
         }
 
         public bool addAll(IReflectiveSequence values)
         {
             var result = false;
-            foreach ( var value in values)
+            foreach (var value in values)
             {
                 result |= add(value);
             }

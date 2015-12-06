@@ -88,10 +88,7 @@ namespace DatenMeister.EMOF.InMemory
         /// <returns>Enumeration of all objects</returns>
         public IEnumerable<object> getPropertiesBeingSet()
         {
-            foreach (var key in values.Keys)
-            {
-                yield return key;
-            }
+            return values.Keys;
         }
     }
 }

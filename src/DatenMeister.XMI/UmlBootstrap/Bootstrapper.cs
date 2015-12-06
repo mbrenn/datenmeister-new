@@ -126,7 +126,8 @@ namespace DatenMeister.XMI.UmlBootstrap
         /// <summary>
         /// Performs a full bootstrap by reading in the uml class
         /// </summary>
-        /// <param name="path">Path to be used</param>
+        /// <param name="pathUml">Path of XMI file containing the UML file to be used</param>
+        /// <param name="pathMof">Path of XMI file containing the MOF specification being</param>
         /// <returns>The instance of the bootstrapper</returns>
         public static Bootstrapper PerformFullBootstrap(string pathUml, string pathMof)
         {

@@ -42,7 +42,7 @@ namespace DatenMeister.Web.Api
         /// exception is thrown/returns>
         private static Workspace<IExtent> GetWorkspace(string ws)
         {
-            var workspace = Core.TheOne.Workspaces.Where(x => x.id == ws).First();
+            var workspace = Core.TheOne.Workspaces.First(x => x.id == ws);
             if (workspace == null)
             {
                 throw new InvalidOperationException("Workspace not found");
@@ -60,8 +60,7 @@ namespace DatenMeister.Web.Api
             var foundExtent =
                 workspace.extent
                     .Cast<IUriExtent>()
-                    .Where(x => x.contextURI() == extent)
-                    .FirstOrDefault();
+                    .FirstOrDefault(x => x.contextURI() == extent);
             if (foundExtent == null)
             {
                 throw new InvalidOperationException("Not found");
@@ -70,7 +69,7 @@ namespace DatenMeister.Web.Api
             var totalItems = foundExtent.elements();
             var foundItems = totalItems;
 
-            var properties = ExtentHelper.GetProperties(foundExtent).ToList();
+            var properties = foundExtent.GetProperties().ToList();
 
             var result = new ExtentContentModel();
             result.url = extent;
@@ -97,9 +96,68 @@ namespace DatenMeister.Web.Api
         }
 
         [Route("item")]
-        public object GetItem()
+        public object GetItem(string ws, string extent, string item)
         {
-            return null;
+            Workspace<IExtent> foundWorkspace;
+            IUriExtent foundExtent;
+            RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
+
+            var itemModel = new ItemContentModel();
+            itemModel.uri = item;
+
+            // Retrieves the values of the item
+            var foundElement = foundExtent.element(item);
+            if (foundElement == null)
+            {
+                // Not found
+                return null;
+            }
+
+            var foundProperties = ExtentHelper.GetProperties(foundExtent);
+            foreach (var property in foundProperties)
+            {
+                if (foundElement.isSet(property))
+                {
+                    itemModel.values[property.ToString()] = foundElement.get(property).ToString();
+                }
+            }
+
+            return itemModel;
+        }
+
+        /// <summary>
+        /// Gets the extentmodel for a given extent
+        /// </summary>
+        /// <param name="ws">Workspace to be queried</param>
+        /// <param name="extent">Extent to be querued</param>
+        /// <returns>The found extent or an exception.</returns>
+        public static ExtentModel GetExtentModel(string ws, string extent)
+        {
+            Workspace<IExtent> foundWorkspace;
+            IUriExtent foundExtent;
+            RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
+
+            var extentModel = new ExtentModel(
+                foundExtent,
+                new WorkspaceModel(foundWorkspace));
+
+            return extentModel;
+        }
+
+        public static void RetrieveWorkspaceAndExtent(string ws, string extent, out Workspace<IExtent> foundWorkspace, out IUriExtent foundExtent)
+        {
+            foundWorkspace = Core.TheOne.Workspaces.FirstOrDefault(x => x.id == ws);
+
+            if (foundWorkspace == null)
+            {
+                throw new OperationFailedException("Workspace_NotFound");
+            }
+
+            foundExtent = foundWorkspace.extent.Cast<IUriExtent>().FirstOrDefault(x => x.contextURI() == extent);
+            if (foundExtent == null)
+            {
+                throw new OperationFailedException("Extent_NotFound");
+            }
         }
     }
 }

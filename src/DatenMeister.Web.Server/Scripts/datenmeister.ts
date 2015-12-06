@@ -146,8 +146,27 @@ module DatenMeister {
             table.show(container);
         }
 
-        loadAndCreateHtmlForItem(jQuery: JQuery, workspaceId: string, extentUrl: string, itemUrl: string) {
-            // TODO: DO A LOT
+        loadAndCreateHtmlForItem(container: JQuery, ws: string, extentUrl: string, itemUrl: string) {
+            var tthis = this;
+
+            var callback = $.Deferred();
+            $.ajax("/api/datenmeister/extent/item?ws=" + encodeURIComponent(ws)
+                + "&extent=" + encodeURIComponent(extentUrl)
+                + "&item=" + encodeURIComponent(itemUrl)).
+                done(function (data) {
+                    tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data);
+                    callback.resolve(null);
+                })
+                .fail(function (data) {
+                    callback.reject(null);
+                });
+
+            return callback;
+        }
+
+        createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: any) {
+            throw new Error("Not implemented"); 
+            
         }
     }
 

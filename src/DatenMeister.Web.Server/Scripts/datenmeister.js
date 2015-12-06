@@ -101,8 +101,23 @@ var DatenMeister;
             var table = new GUI.DataTable(data.items, data.columns, configuration);
             table.show(container);
         }
-        loadAndCreateHtmlForItem(jQuery, workspaceId, extentUrl, itemUrl) {
-            // TODO: DO A LOT
+        loadAndCreateHtmlForItem(container, ws, extentUrl, itemUrl) {
+            var tthis = this;
+            var callback = $.Deferred();
+            $.ajax("/api/datenmeister/extent/item?ws=" + encodeURIComponent(ws)
+                + "&extent=" + encodeURIComponent(extentUrl)
+                + "&item=" + encodeURIComponent(itemUrl)).
+                done(function (data) {
+                tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data);
+                callback.resolve(null);
+            })
+                .fail(function (data) {
+                callback.reject(null);
+            });
+            return callback;
+        }
+        createHtmlForItem(jQuery, ws, extentUrl, itemUrl, data) {
+            throw new Error("Not implemented");
         }
     }
     DatenMeister.ExtentLogic = ExtentLogic;

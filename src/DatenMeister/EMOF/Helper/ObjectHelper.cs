@@ -18,12 +18,10 @@ namespace DatenMeister.EMOF.Helper
         {
             var result = new Dictionary<object, object>();
 
-            foreach (var property in properties)
+            foreach (var property in properties
+                .Where(property => value.isSet(property)))
             {
-                if (value.isSet(property))
-                {
-                    result[property] = value.get(property);
-                }
+                result[property] = value.get(property);
             }
 
             return result;
@@ -35,12 +33,10 @@ namespace DatenMeister.EMOF.Helper
         {
             var result = new Dictionary<string, string>();
 
-            foreach (var property in properties)
+            foreach (var property in properties
+                .Where(property => value.isSet(property)))
             {
-                if (value.isSet(property))
-                {
-                    result[property.ToString()] = value.get(property).ToString();
-                }
+                result[property.ToString()] = value.get(property).ToString();
             }
 
             return result;

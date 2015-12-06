@@ -64,6 +64,7 @@
     <Compile Include="Models\DataTableItem.cs" />
     <Compile Include="Models\ExtentContentModel.cs" />
     <Compile Include="Models\ExtentModel.cs" />
+    <Compile Include="Models\ItemContentModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\WorkspaceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

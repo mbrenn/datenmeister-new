@@ -17,7 +17,7 @@ namespace DatenMeister.Web.Server.Controllers
 
         public ActionResult Workspace(string ws)
         {
-            var foundWorkspace = Core.TheOne.Workspaces.Where(x => x.id == ws).FirstOrDefault();
+            var foundWorkspace = Core.TheOne.Workspaces.FirstOrDefault(x => x.id == ws);
 
             if (foundWorkspace == null)
             {
@@ -35,7 +35,7 @@ namespace DatenMeister.Web.Server.Controllers
         {
             try
             {
-                var extentModel = GetExtentModel(ws, extent);
+                var extentModel = ExtentController.GetExtentModel(ws, extent);
 
                 return View(extentModel);
 
@@ -48,37 +48,10 @@ namespace DatenMeister.Web.Server.Controllers
 
         public ActionResult Item(string ws, string extent, string item)
         {
-            var extentModel = GetExtentModel(ws, extent);
+            var extentModel = ExtentController.GetExtentModel(ws, extent);
             var model = new ItemModel(extentModel, item);
 
             return View(model);
-        }
-
-        /// <summary>
-        /// Gets the extentmodel for a given extent
-        /// </summary>
-        /// <param name="ws">Workspace to be queried</param>
-        /// <param name="extent">Extent to be querued</param>
-        /// <returns>The found extent or an exception.</returns>
-        private static ExtentModel GetExtentModel(string ws, string extent)
-        {
-            var foundWorkspace = Core.TheOne.Workspaces.FirstOrDefault(x => x.id == ws);
-
-            if (foundWorkspace == null)
-            {
-                throw new OperationFailedException("Workspace_NotFound");
-            }
-
-            var foundExtent = foundWorkspace.extent.Cast<IUriExtent>().FirstOrDefault(x => x.contextURI() == extent);
-            if (foundExtent == null)
-            {
-                throw new OperationFailedException("Extent_NotFound");
-            }
-
-            var extentModel = new ExtentModel(
-                foundExtent,
-                new WorkspaceModel(foundWorkspace));
-            return extentModel;
         }
     }
 }

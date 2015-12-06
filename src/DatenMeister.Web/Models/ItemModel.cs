@@ -11,7 +11,7 @@ namespace DatenMeister.Web.Models
         public ExtentModel extent
         {
             get;
-            set;
+            private set;
         }
 
         public string url

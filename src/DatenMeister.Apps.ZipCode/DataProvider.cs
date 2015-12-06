@@ -61,7 +61,7 @@ namespace DatenMeister.App.ZipCode
         /// </summary>
         /// <param name="searchString">String to be used for searching</param>
         /// <returns>Enumeration of objects</returns>
-        public IEnumerable<IObject> FindBySearchString(string searchString)
+        public static IEnumerable<IObject> FindBySearchString(string searchString)
         {
             var columns = new[] { DataProvider.Columns.Name, DataProvider.Columns.ZipCode };
             var typedZipCode = searchString.Trim();

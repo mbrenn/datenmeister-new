@@ -3,6 +3,7 @@ using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace DatenMeister.EMOF.InMemory
 {
@@ -32,7 +33,7 @@ namespace DatenMeister.EMOF.InMemory
             {
                 throw new ArgumentException(
                     "Uri does not contain a URI-Fragment defining the object being looked for.",
-                    "uri");
+                    nameof(uri));
             }
 
             // Queries the object
@@ -42,6 +43,8 @@ namespace DatenMeister.EMOF.InMemory
             foreach (var element in elements())
             {
                 var elementAsMofObject = element as MofElement;
+                Debug.Assert(elementAsMofObject != null, "elementAsMofObject != null");
+
                 if (elementAsMofObject.guid.ToString() == queryObjectId)
                 {
                     return elementAsMofObject;
@@ -56,7 +59,7 @@ namespace DatenMeister.EMOF.InMemory
         {
             if (element == null)
             {
-                throw new ArgumentNullException("element");
+                throw new ArgumentNullException(nameof(element));
             }
 
             var elementAsObject = element as MofObject;

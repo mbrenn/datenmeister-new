@@ -23,9 +23,12 @@ namespace DatenMeister.Tests.Console
             element.set(property, "Test");
 
             TestZipCodes();
+            System.Console.WriteLine("----");
             TestUmlBootstrap();
+            System.Console.WriteLine("----");
             TestFillTree();
-
+            System.Console.WriteLine("----");
+            System.Console.WriteLine("Please press key.");
             System.Console.ReadKey();
         }
 
@@ -48,7 +51,6 @@ namespace DatenMeister.Tests.Console
             System.Console.WriteLine($"Loaded: {extent.elements().Count().ToString()} Zipcodes");
 
             System.Console.WriteLine();
-            System.Console.WriteLine("----");
         }
 
         private static void TestUmlBootstrap()

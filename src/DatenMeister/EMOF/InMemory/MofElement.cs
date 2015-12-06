@@ -1,5 +1,4 @@
-﻿using System;
-using DatenMeister.EMOF.Interface.Reflection;
+﻿using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.InMemory
 {

@@ -2,36 +2,46 @@
 
 module DatenMeister {
 
-    interface Workspace {
+    export interface IWorkspace {
         id: string;
         annotation: string;
     };
 
-    interface Extent {
+    export interface IExtent {
         url: string;
     }
 
-    interface ExtentContent {
+    export interface IExtentContent {
         url: string;
         totalItemCount: number;
         filteredItemCount: number;
-        columns: Array<DataTableColumn>;
-        items: Array<DataTableItem>;
+        columns: Array<IDataTableColumn>;
+        items: Array<IDataTableItem>;
     };
 
-    interface DataTableColumn {
+    export interface IDataTableColumn {
         title: string;
         name: string;
     }
 
-    interface DataTableItem {
+    export class DataTableConfiguration {
+        editFunction: (url: string) => boolean;
+        deleteFunction: (url: string) => boolean;
+
+        DataTableConfiguration() {
+            this.editFunction = function (url: string) { return false; /*Ignoring*/ };
+            this.deleteFunction = function (url: string) { return false; /*Ignoring*/ };
+        }
+    }
+
+    export interface IDataTableItem {
         // Stores the url of the object which can be used for reference
-        url: string;
+        uri: string;
         v: Array<string>;
     }
 
     export class WorkspaceLogic {
-        loadAndCreateHtmlForWorkbenchs(container: JQuery): JQueryPromise<Array<Workspace>> {
+        loadAndCreateHtmlForWorkbenchs(container: JQuery): JQueryPromise<Array<IWorkspace>> {
             var tthis = this;
             var callback = $.Deferred();
             $.ajax("/api/datenmeister/workspace/all").
@@ -46,7 +56,7 @@ module DatenMeister {
             return callback;
         }
         
-        createHtmlForWorkbenchs(container: JQuery, data: Array<Workspace>) {
+        createHtmlForWorkbenchs(container: JQuery, data: Array<IWorkspace>) {
             container.empty();
             var compiled = _.template($("#template_workspace").html());
             for (var n in data) {
@@ -56,7 +66,7 @@ module DatenMeister {
                 $(".data", dom).click(
                     (function (localEntry) {                        
                         return function () {
-                            location.href = "/Home/workspace?ws=" + localEntry.id;
+                            location.href = `/Home/workspace?ws=${encodeURIComponent(localEntry.id)}`;
                         };
                     } (entry)));
 
@@ -70,7 +80,7 @@ module DatenMeister {
             var tthis = this;
 
             var callback = $.Deferred();
-            $.ajax("/api/datenmeister/extent/all?ws=" + ws).
+            $.ajax("/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws)).
                 done(function (data) {
                     tthis.createHtmlForExtent(container, ws, data);
                     callback.resolve(null);
@@ -82,7 +92,7 @@ module DatenMeister {
             return callback;
         }
 
-        createHtmlForExtent(container: JQuery, ws: string, data: Array<Workspace>) {
+        createHtmlForExtent(container: JQuery, ws: string, data: Array<IWorkspace>) {
             container.empty();
             var compiled = _.template($("#template_extent").html());
             for (var n in data) {
@@ -92,7 +102,8 @@ module DatenMeister {
                 $(".data", dom).click(
                     (function (localEntry) {
                         return function () {
-                            location.href = "/Home/extent?ws=" + ws + "&extent=" + localEntry.uri;
+                            location.href = "/Home/extent?ws=" + encodeURIComponent(ws)
+                                + "&extent=" + encodeURIComponent(localEntry.uri);
                         };
                     } (entry)));
 
@@ -104,7 +115,8 @@ module DatenMeister {
             var tthis = this;
 
             var callback = $.Deferred();
-            $.ajax("/api/datenmeister/extent/items?ws=" + ws + "&url=" + extentUrl).
+            $.ajax("/api/datenmeister/extent/items?ws=" + encodeURIComponent(ws)
+                + "&extent=" + encodeURIComponent(extentUrl)).
                 done(function (data) {
                     tthis.createHtmlForItems(container, ws, extentUrl, data);
                     callback.resolve(null);
@@ -116,9 +128,26 @@ module DatenMeister {
             return callback;
         }
 
-        createHtmlForItems(container: JQuery, ws: string, extentUrl: string, data: ExtentContent) {
-            var table = new GUI.DataTable(data.items, data.columns);
+        createHtmlForItems(container: JQuery, ws: string, extentUrl: string, data: IExtentContent) {
+            var configuration = new DataTableConfiguration();
+            configuration.editFunction = function (url: string) {
+
+                location.href = "/Home/item?ws=" + encodeURIComponent(ws)
+                    + "&extent=" + encodeURIComponent(extentUrl)
+                    + "&item=" + encodeURIComponent(url);
+                return false;
+            };
+            configuration.deleteFunction = function (url: string) {
+                alert("DELETE: " + url);
+                return false;
+            };
+
+            var table = new GUI.DataTable(data.items, data.columns, configuration);
             table.show(container);
+        }
+
+        loadAndCreateHtmlForItem(jQuery: JQuery, workspaceId: string, extentUrl: string, itemUrl: string) {
+            // TODO: DO A LOT
         }
     }
 
@@ -148,21 +177,31 @@ module DatenMeister {
             });
         }
 
+        export function loadItem(workspaceId: string, extentUrl: string, itemUrl: string) {
+            $(document).ready(function () {
+                var extentLogic = new DatenMeister.ExtentLogic();
+                extentLogic.loadAndCreateHtmlForItem($("#container_item"), workspaceId, extentUrl, itemUrl);
+            });
+        }
+
         /*
          * Used to show a lot of items in a database. The table will use an array of MofObjects
          * as the datasource
          */
         export class DataTable {
-            columns: Array<DataTableColumn>;
-            items: Array<DataTableItem>;
+            columns: Array<IDataTableColumn>;
+            items: Array<IDataTableItem>;
+            configuration: DataTableConfiguration;
 
-            constructor(items: Array<DataTableItem>, columns: Array<DataTableColumn>) {
+            constructor(items: Array<IDataTableItem>, columns: Array<IDataTableColumn>, configuration: DataTableConfiguration) {
                 this.items = items;
                 this.columns = columns;
+                this.configuration = configuration;
             }
 
             // Replaces the content at the dom with the created table
             show(dom: JQuery) {
+                var tthis = this;
                 dom.empty();
                 var domTable = $("<table></table>");
 
@@ -174,6 +213,12 @@ module DatenMeister {
                     domColumn.text(column.title);
                     domRow.append(domColumn);
                 }
+
+                // Creates the edit and delete column
+                var domEditColumn = $("<th>EDIT</th>");
+                domRow.append(domEditColumn);
+                var domDeleteColumn = $("<th>DELETE</th>");
+                domRow.append(domDeleteColumn);
 
                 domTable.append(domRow);
 
@@ -190,6 +235,21 @@ module DatenMeister {
                     }
 
                     // Add Edit link
+                    domEditColumn = $("<td class='hl'><a href='#'>EDIT</a></td>");
+                    domEditColumn.click((function (url) {
+                        return function () {
+                            return tthis.configuration.editFunction (url);
+                        };
+                    })(item.uri));                   
+                    domRow.append(domEditColumn);
+
+                    domDeleteColumn = $("<td class='hl'><a href='#'>DELETE</a></td>");
+                    domDeleteColumn.click((function (url) {
+                        return function () {
+                            return tthis.configuration.deleteFunction(url);
+                        };
+                    })(item.uri));
+                    domRow.append(domDeleteColumn);  
 
                     domTable.append(domRow);
                 }

@@ -52,7 +52,7 @@ namespace DatenMeister.Web.Api
         }
 
         [Route("items")]
-        public object GetItems(string ws, string url)
+        public object GetItems(string ws, string extent)
         {
             var amount = 100; // Return only the first 100 elements if no index is given
             var offset = 0;
@@ -60,7 +60,7 @@ namespace DatenMeister.Web.Api
             var foundExtent =
                 workspace.extent
                     .Cast<IUriExtent>()
-                    .Where(x => x.contextURI() == url)
+                    .Where(x => x.contextURI() == extent)
                     .FirstOrDefault();
             if (foundExtent == null)
             {
@@ -73,7 +73,7 @@ namespace DatenMeister.Web.Api
             var properties = ExtentHelper.GetProperties(foundExtent).ToList();
 
             var result = new ExtentContentModel();
-            result.url = url;
+            result.url = extent;
             result.columns = properties
                 .Select(x => new DataTableColumn()
                 {
@@ -88,12 +88,18 @@ namespace DatenMeister.Web.Api
                 .Take(amount)
                 .Select(x => new DataTableItem()
                 {
-                    url = foundExtent.uri(x as IElement),
+                    uri = foundExtent.uri(x as IElement),
                     v = ObjectHelper.AsStringDictionary(x as IElement, properties)
                 })
                 .ToList();
 
             return result;
+        }
+
+        [Route("item")]
+        public object GetItem()
+        {
+            return null;
         }
     }
 }

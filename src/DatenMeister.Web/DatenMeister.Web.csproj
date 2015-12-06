@@ -57,12 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ExtentController.cs" />
+    <Compile Include="Api\OperationFailedException.cs" />
     <Compile Include="Api\WorkspaceController.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Models\DataTableColumn.cs" />
     <Compile Include="Models\DataTableItem.cs" />
     <Compile Include="Models\ExtentContentModel.cs" />
     <Compile Include="Models\ExtentModel.cs" />
+    <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\WorkspaceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

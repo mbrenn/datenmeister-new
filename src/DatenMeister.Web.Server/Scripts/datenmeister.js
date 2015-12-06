@@ -110,7 +110,9 @@ var DatenMeister;
             return callback;
         }
         createHtmlForItem(jQuery, ws, extentUrl, itemUrl, data) {
-            throw new Error("Not implemented");
+            var configuration = new GUI.ItemContentConfiguration();
+            var table = new GUI.ItemContentTable(data, configuration);
+            table.show(jQuery);
         }
     }
     DatenMeister.ExtentLogic = ExtentLogic;
@@ -216,6 +218,10 @@ var DatenMeister;
         }
         GUI.DataTable = DataTable;
         class ItemContentConfiguration {
+            constructor() {
+                this.editFunction = function (url) { return false; /*Ignoring*/ };
+                this.deleteFunction = function (url) { return false; /*Ignoring*/ };
+            }
         }
         GUI.ItemContentConfiguration = ItemContentConfiguration;
         class ItemContentTable {
@@ -231,14 +237,30 @@ var DatenMeister;
                 var domRow = $("<tr><th>Title</th><th>Value</th><th>EDIT</th><th>DELETE</th></tr>");
                 domTable.append(domRow);
                 // Now, the items
-                for (var property in this.item) {
-                    var value = this.item[property];
+                for (var property in this.item.v) {
+                    domRow = $("<tr></tr>");
+                    var value = this.item.v[property];
                     var domColumn = $("<td></td>");
                     domColumn.text(property);
                     domRow.append(domColumn);
                     domColumn = $("<td></td>");
                     domColumn.text(value);
                     domRow.append(domColumn);
+                    // Add Edit link
+                    let domEditColumn = $("<td class='hl'><a href='#'>EDIT</a></td>");
+                    domEditColumn.click((function (url, property) {
+                        return function () {
+                            return tthis.configuration.editFunction(url, property);
+                        };
+                    })(this.item.uri, property));
+                    domRow.append(domEditColumn);
+                    let domDeleteColumn = $("<td class='hl'><a href='#'>DELETE</a></td>");
+                    domDeleteColumn.click((function (url, property) {
+                        return function () {
+                            return tthis.configuration.deleteFunction(url, property);
+                        };
+                    })(this.item.uri, property));
+                    domRow.append(domDeleteColumn);
                     domTable.append(domRow);
                 }
                 dom.append(domTable);

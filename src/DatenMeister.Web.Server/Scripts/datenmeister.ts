@@ -161,9 +161,11 @@ module DatenMeister {
             return callback;
         }
 
-        createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: any) {
-            throw new Error("Not implemented"); 
-            
+        createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: IItemContentModel) {
+            var configuration = new GUI.ItemContentConfiguration();
+            var table = new GUI.ItemContentTable(data, configuration);
+
+            table.show(jQuery);
         }
     }
 
@@ -286,6 +288,14 @@ module DatenMeister {
         
         export class ItemContentConfiguration {
             autoProperties: boolean;
+
+            editFunction: (url: string, property: string) => boolean;
+            deleteFunction: (url: string, property: string) => boolean;
+
+            constructor() {
+                this.editFunction = function (url: string) { return false; /*Ignoring*/ };
+                this.deleteFunction = function (url: string) { return false; /*Ignoring*/ };
+            }
         }
 
         export class ItemContentTable {
@@ -308,8 +318,10 @@ module DatenMeister {
 
                 // Now, the items
 
-                for (var property in this.item) {
-                    var value = this.item[property];
+                for (var property in this.item.v) {
+
+                    domRow = $("<tr></tr>");
+                    var value = this.item.v[property];
                     var domColumn = $("<td></td>");
                     domColumn.text(property);
                     domRow.append(domColumn);
@@ -317,6 +329,23 @@ module DatenMeister {
                     domColumn = $("<td></td>");
                     domColumn.text(value);
                     domRow.append(domColumn);
+
+                    // Add Edit link
+                    let domEditColumn = $("<td class='hl'><a href='#'>EDIT</a></td>");
+                    domEditColumn.click((function (url, property) {
+                        return function () {
+                            return tthis.configuration.editFunction(url, property);
+                        };
+                    })(this.item.uri, property));
+                    domRow.append(domEditColumn);
+
+                    let domDeleteColumn = $("<td class='hl'><a href='#'>DELETE</a></td>");
+                    domDeleteColumn.click((function (url, property) {
+                        return function () {
+                            return tthis.configuration.deleteFunction(url, property);
+                        };
+                    })(this.item.uri, property));
+                    domRow.append(domDeleteColumn);
 
                     domTable.append(domRow);
                 }

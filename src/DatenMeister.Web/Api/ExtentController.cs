@@ -118,7 +118,7 @@ namespace DatenMeister.Web.Api
             {
                 if (foundElement.isSet(property))
                 {
-                    itemModel.values[property.ToString()] = foundElement.get(property).ToString();
+                    itemModel.v[property.ToString()] = foundElement.get(property).ToString();
                 }
             }
 

@@ -19,19 +19,14 @@ module DatenMeister {
         items: Array<IDataTableItem>;
     };
 
+    export interface IItemContentModel {
+        uri: string;
+        v: Array<string>;
+    }
+
     export interface IDataTableColumn {
         title: string;
         name: string;
-    }
-
-    export class DataTableConfiguration {
-        editFunction: (url: string) => boolean;
-        deleteFunction: (url: string) => boolean;
-
-        DataTableConfiguration() {
-            this.editFunction = function (url: string) { return false; /*Ignoring*/ };
-            this.deleteFunction = function (url: string) { return false; /*Ignoring*/ };
-        }
     }
 
     export interface IDataTableItem {
@@ -39,6 +34,8 @@ module DatenMeister {
         uri: string;
         v: Array<string>;
     }
+
+    
 
     export class WorkspaceLogic {
         loadAndCreateHtmlForWorkbenchs(container: JQuery): JQueryPromise<Array<IWorkspace>> {
@@ -129,7 +126,7 @@ module DatenMeister {
         }
 
         createHtmlForItems(container: JQuery, ws: string, extentUrl: string, data: IExtentContent) {
-            var configuration = new DataTableConfiguration();
+            var configuration = new GUI.DataTableConfiguration();
             configuration.editFunction = function (url: string) {
 
                 location.href = "/Home/item?ws=" + encodeURIComponent(ws)
@@ -203,6 +200,16 @@ module DatenMeister {
             });
         }
 
+        export class DataTableConfiguration {
+            editFunction: (url: string) => boolean;
+            deleteFunction: (url: string) => boolean;
+
+            constructor() {
+                this.editFunction = function (url: string) { return false; /*Ignoring*/ };
+                this.deleteFunction = function (url: string) { return false; /*Ignoring*/ };
+            }
+        }
+        
         /*
          * Used to show a lot of items in a database. The table will use an array of MofObjects
          * as the datasource
@@ -274,6 +281,48 @@ module DatenMeister {
                 }
 
                 dom.append(domTable);
+            }
+        }
+        
+        export class ItemContentConfiguration {
+            autoProperties: boolean;
+        }
+
+        export class ItemContentTable {
+            item: IDataTableItem;
+            configuration: ItemContentConfiguration;
+
+            constructor(item: IDataTableItem, configuration: ItemContentConfiguration) {
+                this.item = item;
+                this.configuration = configuration;
+            }
+
+            show(dom: JQuery) {
+                var tthis = this;
+                dom.empty();
+                var domTable = $("<table></table>");
+
+                // First the headline
+                var domRow = $("<tr><th>Title</th><th>Value</th><th>EDIT</th><th>DELETE</th></tr>");
+                domTable.append(domRow);
+
+                // Now, the items
+
+                for (var property in this.item) {
+                    var value = this.item[property];
+                    var domColumn = $("<td></td>");
+                    domColumn.text(property);
+                    domRow.append(domColumn);
+                        
+                    domColumn = $("<td></td>");
+                    domColumn.text(value);
+                    domRow.append(domColumn);
+
+                    domTable.append(domRow);
+                }
+
+                dom.append(domTable);
+
             }
         }
     }

@@ -3,13 +3,6 @@ var DatenMeister;
 (function (DatenMeister) {
     ;
     ;
-    class DataTableConfiguration {
-        DataTableConfiguration() {
-            this.editFunction = function (url) { return false; /*Ignoring*/ };
-            this.deleteFunction = function (url) { return false; /*Ignoring*/ };
-        }
-    }
-    DatenMeister.DataTableConfiguration = DataTableConfiguration;
     class WorkspaceLogic {
         loadAndCreateHtmlForWorkbenchs(container) {
             var tthis = this;
@@ -87,7 +80,7 @@ var DatenMeister;
             return callback;
         }
         createHtmlForItems(container, ws, extentUrl, data) {
-            var configuration = new DataTableConfiguration();
+            var configuration = new GUI.DataTableConfiguration();
             configuration.editFunction = function (url) {
                 location.href = "/Home/item?ws=" + encodeURIComponent(ws)
                     + "&extent=" + encodeURIComponent(extentUrl)
@@ -155,6 +148,13 @@ var DatenMeister;
             });
         }
         GUI.loadItem = loadItem;
+        class DataTableConfiguration {
+            constructor() {
+                this.editFunction = function (url) { return false; /*Ignoring*/ };
+                this.deleteFunction = function (url) { return false; /*Ignoring*/ };
+            }
+        }
+        GUI.DataTableConfiguration = DataTableConfiguration;
         /*
          * Used to show a lot of items in a database. The table will use an array of MofObjects
          * as the datasource
@@ -215,6 +215,36 @@ var DatenMeister;
             }
         }
         GUI.DataTable = DataTable;
+        class ItemContentConfiguration {
+        }
+        GUI.ItemContentConfiguration = ItemContentConfiguration;
+        class ItemContentTable {
+            constructor(item, configuration) {
+                this.item = item;
+                this.configuration = configuration;
+            }
+            show(dom) {
+                var tthis = this;
+                dom.empty();
+                var domTable = $("<table></table>");
+                // First the headline
+                var domRow = $("<tr><th>Title</th><th>Value</th><th>EDIT</th><th>DELETE</th></tr>");
+                domTable.append(domRow);
+                // Now, the items
+                for (var property in this.item) {
+                    var value = this.item[property];
+                    var domColumn = $("<td></td>");
+                    domColumn.text(property);
+                    domRow.append(domColumn);
+                    domColumn = $("<td></td>");
+                    domColumn.text(value);
+                    domRow.append(domColumn);
+                    domTable.append(domRow);
+                }
+                dom.append(domTable);
+            }
+        }
+        GUI.ItemContentTable = ItemContentTable;
     })(GUI = DatenMeister.GUI || (DatenMeister.GUI = {}));
 })(DatenMeister || (DatenMeister = {}));
 ;

@@ -6,14 +6,14 @@ namespace DatenMeister.Web.Models
     {
         public string uri { get; set; }
 
-        public Dictionary<string, string> values
+        public Dictionary<string, string> v
         {
             get; private set;
         }
 
         public ItemContentModel()
         {
-            values = new Dictionary<string, string>();
+            v = new Dictionary<string, string>();
         }
     }
 }

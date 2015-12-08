@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-
-namespace DatenMeister.Web.Models
+﻿namespace DatenMeister.Web.Models
 {
     public class ItemModel
     {
@@ -18,6 +12,10 @@ namespace DatenMeister.Web.Models
         {
             get;
             private set;
+        }
+
+        public ItemModel()
+        {
         }
 
         public ItemModel(ExtentModel extent, string url)

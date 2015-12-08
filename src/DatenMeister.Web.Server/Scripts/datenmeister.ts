@@ -35,7 +35,22 @@ module DatenMeister {
         v: Array<string>;
     }
 
-    
+    export module PostModels {
+
+        /** This class is used to reference a single object within the database */
+        export class ItemReferenceModel {
+            ws: string;
+            extent: string;
+            item: string;
+        }
+
+        export class ItemUnsetPropertyModel extends ItemReferenceModel {
+            property: string;
+        }
+
+        export class ItemDeleteModel extends ItemReferenceModel {
+        }
+    }
 
     export class WorkspaceLogic {
         loadAndCreateHtmlForWorkbenchs(container: JQuery): JQueryPromise<Array<IWorkspace>> {
@@ -87,12 +102,38 @@ module DatenMeister {
     export class ExtentLogic {
         /* Deletes an item from the database and returns the value indicatng whether the deleteion was successful */
         deleteItem(ws: string, extent: string, item: string): JQueryPromise<boolean> {
-            var tthis = this;
             var callback = $.Deferred();
 
-            $.ajax("/api/datenmeister/extent/item_delete?ws=" + encodeURIComponent(ws)
-                    + "&extent=" + encodeURIComponent(extent)
-                    + "&item=" + encodeURIComponent(item))
+            var postModel = new PostModels.ItemDeleteModel();
+            postModel.ws = ws;
+            postModel.extent = extent;
+            postModel.item = item;
+
+            $.ajax("/api/datenmeister/extent/item_delete",
+                {
+                    data: postModel,
+                    method: "POST"
+                })
+                .done((data: any) => { callback.resolve(true); })
+                .fail((data: any) => { callback.resolve(false); });
+            return callback;
+        }
+
+        deleteProperty(ws: string, extent: string, item: string, property: string): JQueryPromise<boolean> {
+            var callback = $.Deferred();
+
+
+            var postModel = new PostModels.ItemUnsetPropertyModel();
+            postModel.ws = ws;
+            postModel.extent = extent;
+            postModel.item = item;
+            postModel.property = property;
+
+            $.ajax("/api/datenmeister/extent/item_unset_property", 
+                {
+                    data: postModel,
+                    method: "POST"
+                })
                 .done((data: any) => { callback.resolve(true); })
                 .fail((data: any) => { callback.resolve(false); });
             return callback;
@@ -161,12 +202,12 @@ module DatenMeister {
                 return false;
             };
 
-            configuration.deleteFunction = function (url: string) {
+            configuration.deleteFunction = function (url: string, domRow: JQuery) {
                 var callback = tthis.deleteItem(ws, extentUrl, url);
                 callback
                     .done(() => {
-                        alert("REMOVED");
-                        tthis.loadAndCreateHtmlForItems(container, ws, extentUrl);
+                        // tthis.loadAndCreateHtmlForItems(container, ws, extentUrl);
+                        domRow.find("td").fadeOut(500, () => { domRow.remove(); });
                     })
                     .fail(() => { alert("FAILED"); });
                 return false;
@@ -195,11 +236,18 @@ module DatenMeister {
         }
 
         createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: IItemContentModel) {
+            var tthis = this;
             var configuration = new GUI.ItemContentConfiguration();
+            configuration.deleteFunction = (url: string, property: string, domRow: JQuery) => {
+                tthis.deleteProperty(ws, extentUrl, itemUrl, property).done(() => domRow.find("td").fadeOut(500, () => { domRow.remove(); }));
+                return false;
+            };
+
             var table = new GUI.ItemContentTable(data, configuration);
 
             table.show(jQuery);
         }
+
     }
 
     export namespace GUI {
@@ -236,12 +284,12 @@ module DatenMeister {
         }
 
         export class DataTableConfiguration {
-            editFunction: (url: string) => boolean;
-            deleteFunction: (url: string) => boolean;
+            editFunction: (url: string, domRow: JQuery) => boolean;
+            deleteFunction: (url: string, domRow: JQuery) => boolean;
 
             constructor() {
-                this.editFunction = function (url: string) { return false; /*Ignoring*/ };
-                this.deleteFunction = function (url: string) { return false; /*Ignoring*/ };
+                this.editFunction = function (url: string, domRow: JQuery) { return false; /*Ignoring*/ };
+                this.deleteFunction = function (url: string, domRow: JQuery) { return false; /*Ignoring*/ };
             }
         }
         
@@ -297,19 +345,26 @@ module DatenMeister {
 
                     // Add Edit link
                     domEditColumn = $("<td class='hl'><a href='#'>EDIT</a></td>");
-                    domEditColumn.click((function (url) {
+                    domEditColumn.click((function (url, iDomRow) {
                         return function () {
-                            return tthis.configuration.editFunction (url);
+                            return tthis.configuration.editFunction(url, iDomRow);
                         };
-                    })(item.uri));                   
+                    })(item.uri, domRow));                   
                     domRow.append(domEditColumn);
 
                     domDeleteColumn = $("<td class='hl'><a href='#'>DELETE</a></td>");
-                    domDeleteColumn.click((function (url) {
+                    var domA = $("a", domDeleteColumn);
+                    domDeleteColumn.click((function (url: string, idomRow: JQuery, idomA: JQuery) {
                         return function () {
-                            return tthis.configuration.deleteFunction(url);
+                            if (idomA.data("wasClicked") === true) {
+                                
+                                return tthis.configuration.deleteFunction(url, idomRow);
+                            } else {
+                                idomA.data("wasClicked", true);
+                                idomA.text("CONFIRM");
+                            }
                         };
-                    })(item.uri));
+                    })(item.uri, domRow, domA));
                     domRow.append(domDeleteColumn);  
 
                     domTable.append(domRow);
@@ -322,12 +377,12 @@ module DatenMeister {
         export class ItemContentConfiguration {
             autoProperties: boolean;
 
-            editFunction: (url: string, property: string) => boolean;
-            deleteFunction: (url: string, property: string) => boolean;
+            editFunction: (url: string, property: string, domRow: JQuery) => boolean;
+            deleteFunction: (url: string, property: string, domRow: JQuery) => boolean;
 
             constructor() {
-                this.editFunction = function (url: string) { return false; /*Ignoring*/ };
-                this.deleteFunction = function (url: string) { return false; /*Ignoring*/ };
+                this.editFunction = (url: string, property: string, domRow: JQuery) => false;
+                this.deleteFunction = (url: string, property: string, domRow: JQuery) => false;
             }
         }
 
@@ -365,19 +420,27 @@ module DatenMeister {
 
                     // Add Edit link
                     let domEditColumn = $("<td class='hl'><a href='#'>EDIT</a></td>");
-                    domEditColumn.click((function (url, property) {
+                    domEditColumn.click((function (url: string, property: string, idomRow: JQuery, idomA: JQuery) {
                         return function () {
-                            return tthis.configuration.editFunction(url, property);
+                            return tthis.configuration.editFunction(url, property, idomRow);
                         };
-                    })(this.item.uri, property));
+                    })(this.item.uri, property, domRow, domA));
                     domRow.append(domEditColumn);
 
                     let domDeleteColumn = $("<td class='hl'><a href='#'>DELETE</a></td>");
-                    domDeleteColumn.click((function (url, property) {
+                    var domA = $("a", domDeleteColumn);
+                    domDeleteColumn.click((function (url: string, property: string, idomRow: JQuery, idomA: JQuery) {
                         return function () {
-                            return tthis.configuration.deleteFunction(url, property);
+                            if (idomA.data("wasClicked") === true) {
+
+                                return tthis.configuration.deleteFunction(url, property, idomRow);
+                            } else {
+                                idomA.data("wasClicked", true);
+                                idomA.text("CONFIRM");
+                            }
+                            
                         };
-                    })(this.item.uri, property));
+                    })(this.item.uri, property, domRow, domA));
                     domRow.append(domDeleteColumn);
 
                     domTable.append(domRow);

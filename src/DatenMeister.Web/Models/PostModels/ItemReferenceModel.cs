@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Web.Models
+﻿namespace DatenMeister.Web.Models.PostModels
 {
     /// <summary>
     /// This class is used to reference a single object within the database

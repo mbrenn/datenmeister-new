@@ -5,11 +5,13 @@ using DatenMeister.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Results;
+using DatenMeister.Web.Models.PostModels;
 
 namespace DatenMeister.Web.Api
 {
@@ -120,7 +122,7 @@ namespace DatenMeister.Web.Api
             {
                 if (foundElement.isSet(property))
                 {
-                    itemModel.v[property.ToString()] = foundElement.get(property).ToString();
+                    itemModel.v[property.ToString()] = foundElement.get(property)?.ToString();
                 }
             }
 
@@ -128,24 +130,85 @@ namespace DatenMeister.Web.Api
         }
 
         [Route("item_delete")]
-        [HttpGet]
-        public object DeleteItem(string ws, string extent, string item)
+        [HttpPost]
+        public object DeleteItem([FromBody] ItemDeleteModel model)
         {
             try
             {
                 Workspace<IExtent> foundWorkspace;
                 IUriExtent foundExtent;
-                RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
-
-                var foundItem = foundExtent.element(item);
-                if (foundItem == null)
-                {
-                    return NotFound();
-                }
+                IElement foundItem;
+                FindItem(model, out foundWorkspace, out foundExtent, out foundItem);
 
                 if (!foundExtent.elements().remove(foundItem))
                 {
                     return NotFound();
+                }
+
+                return new {success = true};
+            }
+            catch (OperationFailedException)
+            {
+                return NotFound();
+            }
+        }
+
+        [Route("item_unset_property")]
+        [HttpPost]
+        public object UnsetPropertyValue([FromBody] ItemUnsetPropertyModel model)
+        {
+            try
+            {
+                Workspace<IExtent> foundWorkspace;
+                IUriExtent foundExtent;
+                IElement foundItem;
+                FindItem(model, out foundWorkspace, out foundExtent, out foundItem);
+
+                foundItem.unset(model.property);
+
+                return new { success = true };
+            }
+            catch (OperationFailedException)
+            {
+                return NotFound();
+            }
+        }
+
+        [Route("item_change_property")]
+        [HttpPost]
+        public object ChangePropertyValue([FromBody] ItemChangePropertyModel model)
+        {
+            try
+            {
+                Workspace<IExtent> foundWorkspace;
+                IUriExtent foundExtent;
+                IElement foundItem;
+                FindItem(model, out foundWorkspace, out foundExtent, out foundItem);
+
+                foundItem.set(model.property, model.value);
+
+                return new {success = true};
+            }
+            catch (OperationFailedException)
+            {
+                return NotFound();
+            }
+        }
+
+        [Route("item_change_properties")]
+        [HttpPost]
+        public object ChangePropertiesValue([FromBody] ItemChangePropertiesModel model)
+        {
+            try
+            {
+                Workspace<IExtent> foundWorkspace;
+                IUriExtent foundExtent;
+                IElement foundItem;
+                FindItem(model, out foundWorkspace, out foundExtent, out foundItem);
+
+                foreach (var pair in model.v)
+                {
+                    foundItem.set(pair.Key, pair.Value);
                 }
 
                 return new {success = true};
@@ -177,7 +240,20 @@ namespace DatenMeister.Web.Api
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public static void RetrieveWorkspaceAndExtent(string ws, string extent, out Workspace<IExtent> foundWorkspace, out IUriExtent foundExtent)
+        public static void RetrieveWorkspaceAndExtent(
+            ItemReferenceModel model, 
+            out Workspace<IExtent> foundWorkspace,
+            out IUriExtent foundExtent)
+        {
+            RetrieveWorkspaceAndExtent(model.ws, model.extent, out foundWorkspace, out foundExtent);
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public static void RetrieveWorkspaceAndExtent(
+            string ws, 
+            string extent, 
+            out Workspace<IExtent> foundWorkspace, 
+            out IUriExtent foundExtent)
         {
             foundWorkspace = Core.TheOne.Workspaces.FirstOrDefault(x => x.id == ws);
 
@@ -190,6 +266,22 @@ namespace DatenMeister.Web.Api
             if (foundExtent == null)
             {
                 throw new OperationFailedException("Extent_NotFound");
+            }
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public static void FindItem(
+            ItemReferenceModel model, 
+            out Workspace<IExtent> foundWorkspace, 
+            out IUriExtent foundExtent,
+            out IElement foundItem)
+        {
+            RetrieveWorkspaceAndExtent(model, out foundWorkspace, out foundExtent);
+
+            foundItem = foundExtent.element(model.item);
+            if (foundItem == null)
+            {
+                throw new OperationFailedException();
             }
         }
     }

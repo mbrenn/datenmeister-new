@@ -3,6 +3,7 @@ using DatenMeister.Web.Models;
 using System.Linq;
 using System.Web.Mvc;
 using DatenMeister.Web.Api;
+using DatenMeister.Web.Models.PostModels;
 
 namespace DatenMeister.Web.Server.Controllers
 {

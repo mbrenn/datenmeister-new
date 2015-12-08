@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(DatenMeister.Web.Server.Startup))]
 
 namespace DatenMeister.Web.Server
 {

@@ -216,7 +216,6 @@ var DatenMeister;
     var GUI;
     (function (GUI) {
         function loadWorkspaces() {
-            alert('X');
             $(document).ready(function () {
                 var workbenchLogic = new DatenMeister.WorkspaceLogic();
                 workbenchLogic.loadAndCreateHtmlForWorkbenchs($("#container_workspace")).done(function (data) {

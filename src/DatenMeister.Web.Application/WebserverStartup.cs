@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Web.Http;
 using System.Web.Routing;
 using BurnSystems.Owin.StaticFiles;
 using Microsoft.Owin;
@@ -25,7 +26,14 @@ namespace DatenMeister.Web.Application
             var configuration = new StaticFilesConfiguration(directory);
             configuration.AddIgnoredExtension(".ts");
             app.UseStaticFiles(configuration);
-            var routes = RouteTable.Routes;
+
+            // Initializes the DatenMeister
+            Core.TheOne.Init();
+
+            // Initializing of the WebAPI, needs to be called after the DatenMeister is initialized
+            var httpConfiguration = new HttpConfiguration();
+            httpConfiguration.MapHttpAttributeRoutes();
+            app.UseWebApi(httpConfiguration);
         }
     }
 }

@@ -253,7 +253,6 @@ module DatenMeister {
 
     export namespace GUI {
         export function loadWorkspaces() {
-            alert('X');
             $(document).ready(function () {
                 var workbenchLogic = new DatenMeister.WorkspaceLogic();
                 workbenchLogic.loadAndCreateHtmlForWorkbenchs($("#container_workspace")).done(function (data) {

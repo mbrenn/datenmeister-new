@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,6 +66,7 @@ namespace DatenMeister.Web
         {
             workspaces = new List<Workspace<EMOF.Interface.Identifiers.IExtent>>();
             workspaces.Add(new Workspace<EMOF.Interface.Identifiers.IExtent>("Data", "All the data workspaces"));
+            Debug.WriteLine("DatenMeister Webcore initialized");
         }
     }
 }

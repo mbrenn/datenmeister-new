@@ -1,20 +1,20 @@
-﻿using DatenMeister.EMOF.Interface.Common;
-using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.EMOF.Interface.Reflection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using DatenMeister.EMOF.Interface.Common;
+using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.InMemory
 {
     public class MofUriExtent : IUriExtent
     {
+        private readonly string _contextUri;
+
         /// <summary>
-        /// Stores all the elements
+        ///     Stores all the elements
         /// </summary>
-        List<object> _elements = new List<object>();
-        
-        private string _contextUri;
+        private readonly List<object> _elements = new List<object>();
 
         public MofUriExtent(string uri)
         {
@@ -38,7 +38,7 @@ namespace DatenMeister.EMOF.InMemory
 
             // Queries the object
             var queryObjectId = uriAsUri.Fragment.Substring(1);
-            
+
             // Now go through the list
             foreach (var element in elements())
             {
@@ -65,10 +65,10 @@ namespace DatenMeister.EMOF.InMemory
             var elementAsObject = element as MofObject;
             if (elementAsObject == null)
             {
-                throw new InvalidOperationException("element is not of type MofObject. Element is: " + element.ToString());
+                throw new InvalidOperationException("element is not of type MofObject. Element is: " + element);
             }
 
-            return _contextUri + "#" + elementAsObject.guid.ToString();
+            return _contextUri + "#" + elementAsObject.guid;
         }
 
         public bool useContainment()

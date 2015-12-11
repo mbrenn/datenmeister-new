@@ -4,14 +4,14 @@ using DatenMeister.EMOF.Interface.Reflection;
 namespace DatenMeister.SourcecodeGenerator
 {
     /// <summary>
-    /// Creates a class file which contains objects for all 
-    /// items within the given extent. 
-    /// It parses classes and packages.
+    ///     Creates a class file which contains objects for all
+    ///     items within the given extent.
+    ///     It parses classes and packages.
     /// </summary>
     public class ClassTreeGenerator : WalkPackageClass
     {
         /// <summary>
-        /// Initializes a new instance of the ClassTreeGenerator
+        ///     Initializes a new instance of the ClassTreeGenerator
         /// </summary>
         public ClassTreeGenerator()
         {
@@ -19,21 +19,22 @@ namespace DatenMeister.SourcecodeGenerator
         }
 
         /// <summary>
-        /// Creates a C# source code. Not to be used for recursive 
-        /// call since the namespace is just once created
+        ///     Creates a C# source code. Not to be used for recursive
+        ///     call since the namespace is just once created
         /// </summary>
-        /// <param name="element">Regards the given element as a package
-        /// and returns a full namespace for the package. 
-        ///</param>
+        /// <param name="element">
+        ///     Regards the given element as a package
+        ///     and returns a full namespace for the package.
+        /// </param>
         protected override void Walk(IObject element, CallStack stack)
         {
             WalkAndWriteNamespace(element, stack);
         }
 
         /// <summary>
-        /// Parses the packages and creates the C# Code for all the
-        /// packages by recursive calls to itself for packages and
-        /// ParseClasses for classes.
+        ///     Parses the packages and creates the C# Code for all the
+        ///     packages by recursive calls to itself for packages and
+        ///     ParseClasses for classes.
         /// </summary>
         /// <param name="element">Element being parsed</param>
         protected override void WalkPackage(IObject element, CallStack stack)
@@ -66,7 +67,7 @@ namespace DatenMeister.SourcecodeGenerator
         }
 
         /// <summary>
-        /// Parses the packages
+        ///     Parses the packages
         /// </summary>
         /// <param name="element">Element classInstance parsed</param>
         protected override void WalkClass(IObject classInstance, CallStack stack)
@@ -79,7 +80,7 @@ namespace DatenMeister.SourcecodeGenerator
             base.WalkClass(classInstance, stack);
 
             Result.AppendLine($"{stack.Indentation}}}");
-             
+
             Result.AppendLine();
             Result.AppendLine($"{stack.Indentation}public _{name} @{name} = new _{name}();");
             Result.AppendLine($"{stack.Indentation}public object @{name}Instance = new object();");

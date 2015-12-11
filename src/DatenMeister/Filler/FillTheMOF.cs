@@ -1,18 +1,21 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.EMOF.Interface.Reflection;
+
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.0.0.0
+
 namespace DatenMeister.Filler
 {
     public class FillTheMOF
     {
-        private static object[] EmptyList = new object[] { };
+        private static readonly object[] EmptyList = {};
+
         private static string GetNameOfElement(IObject element)
         {
             var nameAsObject = element.get("name");
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public static void DoFill(IEnumerable<object> collection, DatenMeister._MOF tree)
+        public static void DoFill(IEnumerable<object> collection, _MOF tree)
         {
             string name;
             IObject value;
@@ -24,7 +27,7 @@ namespace DatenMeister.Filler
                 if (name == "MOF") // Looking for package
                 {
                     isSet = value.isSet("packagedElement");
-                    collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                    collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
                     foreach (var item0 in collection)
                     {
                         value = item0 as IObject;
@@ -32,7 +35,7 @@ namespace DatenMeister.Filler
                         if (name == "Identifiers") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
@@ -41,7 +44,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.Identifiers.@URIExtentInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -52,7 +55,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.Identifiers.@ExtentInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -64,7 +67,7 @@ namespace DatenMeister.Filler
                         if (name == "EMOF") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
@@ -74,7 +77,7 @@ namespace DatenMeister.Filler
                         if (name == "CMOFExtension") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
@@ -83,7 +86,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.CMOFExtension.@TagInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -99,7 +102,7 @@ namespace DatenMeister.Filler
                         if (name == "Extension") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
@@ -108,7 +111,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.Extension.@TagInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -132,7 +135,7 @@ namespace DatenMeister.Filler
                         if (name == "Common") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
@@ -141,7 +144,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.Common.@ReflectiveSequenceInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -152,7 +155,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.Common.@ReflectiveCollectionInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -164,7 +167,7 @@ namespace DatenMeister.Filler
                         if (name == "CMOF") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
@@ -174,7 +177,7 @@ namespace DatenMeister.Filler
                         if (name == "CMOFReflection") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
@@ -183,7 +186,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.CMOFReflection.@FactoryInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -194,7 +197,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.CMOFReflection.@ElementInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -205,7 +208,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.CMOFReflection.@ArgumentInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -224,7 +227,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.CMOFReflection.@ExtentInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -235,7 +238,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.CMOFReflection.@LinkInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -258,7 +261,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.CMOFReflection.@ExceptionInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -282,7 +285,7 @@ namespace DatenMeister.Filler
                         if (name == "Reflection") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
@@ -291,7 +294,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.Reflection.@FactoryInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -306,7 +309,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.Reflection.@TypeInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -317,7 +320,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.Reflection.@ObjectInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -328,7 +331,7 @@ namespace DatenMeister.Filler
                                 {
                                     tree.Reflection.@ElementInstance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;

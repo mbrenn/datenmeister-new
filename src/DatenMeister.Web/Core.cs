@@ -2,39 +2,34 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DatenMeister.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Web
 {
     /// <summary>
-    /// Defines the core being used as the central connection point
+    ///     Defines the core being used as the central connection point
     /// </summary>
     public class Core
     {
         /// <summary>
-        /// Gets the singleton object
+        ///     Stores the workspace for all extents
         /// </summary>
-        public static Core TheOne
-        {
-            get;
-            private set;
-        }
+        private List<Workspace<IExtent>> workspaces;
 
         static Core()
         {
             TheOne = new Core();
         }
-        
-        /// <summary>
-        /// Stores the workspace for all extents
-        /// </summary>
-        private List<Workspace<EMOF.Interface.Identifiers.IExtent>> workspaces;
 
         /// <summary>
-        /// Gets all the workspaces 
+        ///     Gets the singleton object
         /// </summary>
-        public IEnumerable<Workspace<EMOF.Interface.Identifiers.IExtent>> Workspaces
+        public static Core TheOne { get; private set; }
+
+        /// <summary>
+        ///     Gets all the workspaces
+        /// </summary>
+        public IEnumerable<Workspace<IExtent>> Workspaces
         {
             get
             {
@@ -45,7 +40,7 @@ namespace DatenMeister.Web
             }
         }
 
-        public void AddWorkspace(Workspace<EMOF.Interface.Identifiers.IExtent> workspace)
+        public void AddWorkspace(Workspace<IExtent> workspace)
         {
             lock (workspaces)
             {
@@ -60,12 +55,12 @@ namespace DatenMeister.Web
         }
 
         /// <summary>
-        /// Initializes the information
+        ///     Initializes the information
         /// </summary>
         public void Init()
         {
-            workspaces = new List<Workspace<EMOF.Interface.Identifiers.IExtent>>();
-            workspaces.Add(new Workspace<EMOF.Interface.Identifiers.IExtent>("Data", "All the data workspaces"));
+            workspaces = new List<Workspace<IExtent>>();
+            workspaces.Add(new Workspace<IExtent>("Data", "All the data workspaces"));
             Debug.WriteLine("DatenMeister Webcore initialized");
         }
     }

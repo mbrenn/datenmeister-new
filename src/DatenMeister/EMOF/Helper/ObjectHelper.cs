@@ -1,19 +1,16 @@
-﻿using DatenMeister.EMOF.Interface.Reflection;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.Helper
 {
     /// <summary>
-    /// Includes several methods to support the handling of objects
+    ///     Includes several methods to support the handling of objects
     /// </summary>
     public static class ObjectHelper
     {
         public static Dictionary<object, object> AsDictionary(
-            this IObject value, 
+            this IObject value,
             IEnumerable<object> properties)
         {
             var result = new Dictionary<object, object>();

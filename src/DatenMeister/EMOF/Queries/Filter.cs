@@ -1,15 +1,11 @@
-﻿using DatenMeister.EMOF.Interface.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using DatenMeister.EMOF.Interface.Common;
 
 namespace DatenMeister.EMOF.Queries
 {
     /// <summary>
-    /// Defines a static helper class, which eases
-    /// the access to the filters.
+    ///     Defines a static helper class, which eases
+    ///     the access to the filters.
     /// </summary>
     public static class Filter
     {
@@ -21,18 +17,18 @@ namespace DatenMeister.EMOF.Queries
             return new FilterOnPropertyByPredicateCollection(
                 collection,
                 property,
-                (x) => ((string)x)?.StartsWith(value) == true);
+                x => ((string) x)?.StartsWith(value) == true);
         }
 
         public static IReflectiveCollection WhenPropertyIs(
-                        IReflectiveCollection collection,
+            IReflectiveCollection collection,
             object property,
             string value)
         {
             return new FilterOnPropertyByPredicateCollection(
                 collection,
                 property,
-                (x) => ((string)x) == value);
+                x => (string) x == value);
         }
 
         public static IReflectiveCollection WhenOneOfThePropertyContains(

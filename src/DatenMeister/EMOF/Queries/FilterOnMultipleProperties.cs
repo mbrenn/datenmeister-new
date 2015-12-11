@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.EMOF.Proxy;
 
 namespace DatenMeister.EMOF.Queries
 {
-    public class FilterOnMultipleProperties : Proxy.ProxyReflectiveCollection
+    public class FilterOnMultipleProperties : ProxyReflectiveCollection
     {
-        private StringComparison _comparison;
-        object[] _properties;
-        string _searchString;
+        private readonly StringComparison _comparison;
+        private readonly object[] _properties;
+        private readonly string _searchString;
 
         public FilterOnMultipleProperties(
-            IReflectiveCollection collection, 
-            object[] properties, 
+            IReflectiveCollection collection,
+            object[] properties,
             string searchString,
             StringComparison comparison = StringComparison.CurrentCulture)
             : base(collection)
@@ -25,7 +23,7 @@ namespace DatenMeister.EMOF.Queries
             _searchString = searchString;
             _comparison = comparison;
         }
-        
+
         public override IEnumerator<object> GetEnumerator()
         {
             foreach (var value in _collection)
@@ -40,7 +38,6 @@ namespace DatenMeister.EMOF.Queries
                             ?.IndexOf(_searchString, _comparison) >= 0))
                     {
                         yield return valueAsObject;
-                        continue;
                     }
                 }
             }

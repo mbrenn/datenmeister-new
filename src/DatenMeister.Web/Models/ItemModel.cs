@@ -2,18 +2,6 @@
 {
     public class ItemModel
     {
-        public ExtentModel extent
-        {
-            get;
-            private set;
-        }
-
-        public string url
-        {
-            get;
-            private set;
-        }
-
         public ItemModel()
         {
         }
@@ -23,5 +11,9 @@
             this.extent = extent;
             this.url = url;
         }
+
+        public ExtentModel extent { get; private set; }
+
+        public string url { get; private set; }
     }
 }

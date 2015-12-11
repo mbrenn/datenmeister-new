@@ -1,37 +1,18 @@
-﻿using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.XMI.UmlBootstrap;
-using System;
+﻿using System;
 using System.Text;
-using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.XMI;
+using DatenMeister.XMI.UmlBootstrap;
 
 namespace DatenMeister.SourcecodeGenerator
 {
     /// <summary>
-    /// Creates a class tree out of an XML which can be used to fill the appropriate instance
+    ///     Creates a class tree out of an XML which can be used to fill the appropriate instance
     /// </summary>
     public class WalkPackageClass
     {
         public Version FactoryVersion = new Version(1, 0, 0, 0);
-
-        /// <summary>
-        /// Gets or sets the namespace
-        /// </summary>
-        public string Namespace
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the result being delivered back
-        /// </summary>
-        public StringBuilder Result
-        {
-            get;
-            set;
-        }
 
         public WalkPackageClass()
         {
@@ -39,7 +20,17 @@ namespace DatenMeister.SourcecodeGenerator
         }
 
         /// <summary>
-        /// Creates a C# class instance for all the packages and classes within the extent
+        ///     Gets or sets the namespace
+        /// </summary>
+        public string Namespace { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the result being delivered back
+        /// </summary>
+        public StringBuilder Result { get; set; }
+
+        /// <summary>
+        ///     Creates a C# class instance for all the packages and classes within the extent
         /// </summary>
         /// <param name="extent">Extent to be used</param>
         public void Walk(IUriExtent extent)
@@ -47,7 +38,7 @@ namespace DatenMeister.SourcecodeGenerator
             foreach (var element in extent.elements())
             {
                 var elementAsObject = element as IObject;
-                var attributeXmi = "{" + Namespaces.Xmi.ToString() + "}type";
+                var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
                 // Work only on the UML:Packages as the entry node
                 if (elementAsObject.isSet(attributeXmi) &&
@@ -60,27 +51,29 @@ namespace DatenMeister.SourcecodeGenerator
         }
 
         /// <summary>
-        /// Creates a C# source code. Not to be used for recursive 
-        /// call since the namespace is just once created
+        ///     Creates a C# source code. Not to be used for recursive
+        ///     call since the namespace is just once created
         /// </summary>
-        /// <param name="element">Regards the given element as a package
-        /// and returns a full namespace for the package. 
-        ///</param>
+        /// <param name="element">
+        ///     Regards the given element as a package
+        ///     and returns a full namespace for the package.
+        /// </param>
         protected virtual void Walk(IObject element, CallStack stack)
         {
             WalkPackage(element, stack);
         }
 
         /// <summary>
-        /// Creates a C# source code. Not to be used for recursive 
-        /// call since the namespace is just once created
+        ///     Creates a C# source code. Not to be used for recursive
+        ///     call since the namespace is just once created
         /// </summary>
-        /// <param name="element">Regards the given element as a package
-        /// and returns a full namespace for the package. 
-        ///</param>
+        /// <param name="element">
+        ///     Regards the given element as a package
+        ///     and returns a full namespace for the package.
+        /// </param>
         protected void WalkAndWriteNamespace(IObject element, CallStack stack)
         {
-            Result.AppendLine($"{stack.Indentation}// Created by {this.GetType().FullName} Version {FactoryVersion}");
+            Result.AppendLine($"{stack.Indentation}// Created by {GetType().FullName} Version {FactoryVersion}");
 
             // Check, if we have namespaces
             Action preAction = () => { };
@@ -93,10 +86,7 @@ namespace DatenMeister.SourcecodeGenerator
                     Result.AppendLine($"{indentation}namespace {Namespace}");
                     Result.AppendLine($"{indentation}{{");
                 };
-                postAction = () =>
-                {
-                    Result.AppendLine($"{indentation}}}");
-                };
+                postAction = () => { Result.AppendLine($"{indentation}}}"); };
 
                 stack = new CallStack(stack);
                 stack.Level--;
@@ -109,16 +99,16 @@ namespace DatenMeister.SourcecodeGenerator
         }
 
         /// <summary>
-        /// Parses the packages and creates the C# Code for all the
-        /// packages by recursive calls to itself for packages and
-        /// ParseClasses for classes.
+        ///     Parses the packages and creates the C# Code for all the
+        ///     packages by recursive calls to itself for packages and
+        ///     ParseClasses for classes.
         /// </summary>
         /// <param name="element">Element being parsed</param>
         protected virtual void WalkPackage(IObject element, CallStack stack)
         {
             var innerStack = new CallStack(stack);
             var name = GetNameOfElement(element);
-            innerStack.Fullname = 
+            innerStack.Fullname =
                 string.IsNullOrEmpty(innerStack.Fullname) ? name : $"{innerStack.Fullname}.{name}";
 
             // Finds the subpackages
@@ -136,7 +126,7 @@ namespace DatenMeister.SourcecodeGenerator
         }
 
         /// <summary>
-        /// Parses the packages
+        ///     Parses the packages
         /// </summary>
         /// <param name="element">Element classInstance parsed</param>
         protected virtual void WalkClass(IObject classInstance, CallStack stack)
@@ -163,10 +153,15 @@ namespace DatenMeister.SourcecodeGenerator
         }
 
         /// <summary>
-        /// Defines the callstack
+        ///     Defines the callstack
         /// </summary>
         public class CallStack
         {
+            /// <summary>
+            ///     Stores the owner stack
+            /// </summary>
+            private CallStack _ownerStack;
+
             public CallStack(CallStack ownerStack)
             {
                 _ownerStack = ownerStack;
@@ -175,32 +170,15 @@ namespace DatenMeister.SourcecodeGenerator
                 Fullname = ownerStack?.Fullname;
             }
 
-            /// <summary>
-            /// Stores the owner stack
-            /// </summary>
-            private CallStack _ownerStack;
+            public int Level { get; set; }
 
-            public int Level
-            {
-                get;
-                set;
-            }
+            public string Fullname { get; set; }
 
-            public string Fullname
-            {
-                get;
-                set;
-            }
-
-            public string Indentation
-            {
-                get;
-                set;
-            }
+            public string Indentation { get; set; }
 
             public string NextIndentation
             {
-                get { return this.Indentation + "    "; }
+                get { return Indentation + "    "; }
             }
 
             public CallStack Next
@@ -209,7 +187,7 @@ namespace DatenMeister.SourcecodeGenerator
             }
 
             /// <summary>
-            /// Creates an indented callstack without increasing the level.
+            ///     Creates an indented callstack without increasing the level.
             /// </summary>
             public CallStack NextWithoutLevelIncrease
             {

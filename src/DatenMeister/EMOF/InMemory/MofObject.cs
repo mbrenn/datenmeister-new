@@ -1,34 +1,30 @@
-﻿using DatenMeister.EMOF.Exceptions;
-using DatenMeister.EMOF.Interface.Reflection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DatenMeister.EMOF.Exceptions;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.InMemory
 {
     /// <summary>
-    /// Describes the InMemory object, representing the Mof Object
+    ///     Describes the InMemory object, representing the Mof Object
     /// </summary>
     public class MofObject : IObject, IObjectExt
     {
         /// <summary>
-        /// Gets or sets the guid of the element
+        ///     Stores the values direct within the memory
         /// </summary>
-        public Guid guid
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Stores the values direct within the memory
-        /// </summary>
-        private Dictionary<object, object> values = new Dictionary<object, object>();
+        private readonly Dictionary<object, object> values = new Dictionary<object, object>();
 
         public MofObject()
         {
             guid = Guid.NewGuid();
         }
+
+        /// <summary>
+        ///     Gets or sets the guid of the element
+        /// </summary>
+        public Guid guid { get; private set; }
 
         public bool equals(object other)
         {
@@ -37,10 +33,7 @@ namespace DatenMeister.EMOF.InMemory
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public object get(object property)
@@ -51,7 +44,7 @@ namespace DatenMeister.EMOF.InMemory
                 return result;
             }
 
-            throw new MofException("Property not found: " + property.ToString());
+            throw new MofException("Property not found: " + property);
         }
 
         public bool isSet(object property)
@@ -69,26 +62,26 @@ namespace DatenMeister.EMOF.InMemory
             values[property] = null;
         }
 
+        /// <summary>
+        ///     Returns an enumeration with all properties which are currently set
+        /// </summary>
+        /// <returns>Enumeration of all objects</returns>
+        public IEnumerable<object> getPropertiesBeingSet()
+        {
+            return values.Keys;
+        }
+
         public override string ToString()
         {
             var builder = new StringBuilder();
             var komma = string.Empty;
             foreach (var pair in values)
             {
-                builder.Append($"{komma}{pair.Key.ToString()} = {pair.Value.ToString()}");
+                builder.Append($"{komma}{pair.Key} = {pair.Value}");
                 komma = ", ";
             }
 
             return builder.ToString();
-        }
-
-        /// <summary>
-        /// Returns an enumeration with all properties which are currently set
-        /// </summary>
-        /// <returns>Enumeration of all objects</returns>
-        public IEnumerable<object> getPropertiesBeingSet()
-        {
-            return values.Keys;
         }
     }
 }

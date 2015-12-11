@@ -1,17 +1,13 @@
-﻿using DatenMeister.EMOF.Interface.Identifiers;
+﻿using System.Collections.Generic;
+using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DatenMeister.EMOF.Helper
 {
     public static class ExtentHelper
     {
         /// <summary>
-        /// Returns an enumeration of all columns that are within the given extent
+        ///     Returns an enumeration of all columns that are within the given extent
         /// </summary>
         /// <param name="extent">Extent to be checked</param>
         /// <returns>Enumeration of all columns</returns>

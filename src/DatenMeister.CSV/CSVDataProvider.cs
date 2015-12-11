@@ -1,19 +1,19 @@
-﻿using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.EMOF.Interface.Reflection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.CSV
 {
     /// <summary>
-    /// Loads and stores the the extent from an CSV file
+    ///     Loads and stores the the extent from an CSV file
     /// </summary>
     public class CSVDataProvider
     {
         /// <summary>
-        /// Loads the CSV Extent out of the settings and stores the extent Uri
+        ///     Loads the CSV Extent out of the settings and stores the extent Uri
         /// </summary>
         /// <param name="extent">The uri being used for an extent</param>
         /// <param name="path">Path being used to load the extent</param>
@@ -25,7 +25,7 @@ namespace DatenMeister.CSV
         }
 
         /// <summary>
-        /// Loads the CSV Extent out of the settings and stores the extent Uri
+        ///     Loads the CSV Extent out of the settings and stores the extent Uri
         /// </summary>
         /// <param name="extent">The uri being used for an extent</param>
         /// <param name="path">Path being used to load the extent</param>
@@ -37,12 +37,14 @@ namespace DatenMeister.CSV
         }
 
         /// <summary>
-        /// Reads an extent from file
+        ///     Reads an extent from file
         /// </summary>
         /// <param name="path">Path being used to load the file</param>
         /// <param name="extent">Extet being stored</param>
-        /// <param name="settings">Settings being used to store it. 
-        /// When the settings are null, a default setting will be loaded</param>
+        /// <param name="settings">
+        ///     Settings being used to store it.
+        ///     When the settings are null, a default setting will be loaded
+        /// </param>
         private void ReadFromFile(string path, IUriExtent extent, IFactory factory, CSVSettings settings)
         {
             using (var fileStream = new FileStream(path, FileMode.Open))
@@ -52,12 +54,13 @@ namespace DatenMeister.CSV
         }
 
         /// <summary>
-        /// Reads the file from the stream
+        ///     Reads the file from the stream
         /// </summary>
         /// <param name="path">Path being used to load the file</param>
         /// <param name="extent">Extet being stored</param>
-        /// <param name="settings">Settings being used to store it. 
-        /// <param name="stream"></param>
+        /// <param name="settings">
+        ///     Settings being used to store it.
+        ///     <param name="stream"></param>
         public void ReadFromStream(IUriExtent extent, IFactory factory, CSVSettings settings, Stream stream)
         {
             if (settings == null)
@@ -98,7 +101,7 @@ namespace DatenMeister.CSV
                         if (settings.Columns.Count <= n && createColumns)
                         {
                             // Create new column
-                            foundColumn = (object)$"Column {n + 1}";
+                            foundColumn = $"Column {n + 1}";
                             settings.Columns.Add(foundColumn);
                         }
                         else
@@ -166,20 +169,21 @@ namespace DatenMeister.CSV
         }*/
 
         /// <summary>
-        /// Splits a CSV line into columns
+        ///     Splits a CSV line into columns
         /// </summary>
         /// <returns>List of column values</returns>
         private IList<string> SplitLine(string line, CSVSettings settings)
         {
-            return line.Split(new[] { settings.Separator }, StringSplitOptions.None);
+            return line.Split(new[] {settings.Separator}, StringSplitOptions.None);
         }
 
         /// <summary>
-        /// Writes a columete
+        ///     Writes a columete
         /// </summary>
         /// <param name="streamWriter"></param>
         /// <param name="values"></param>
-        private void WriteRow<T>(StreamWriter streamWriter, CSVSettings settings, IEnumerable<T> values, Func<T, object> conversion)
+        private void WriteRow<T>(StreamWriter streamWriter, CSVSettings settings, IEnumerable<T> values,
+            Func<T, object> conversion)
         {
             var builder = new StringBuilder();
             var first = true;

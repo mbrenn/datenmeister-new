@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿using System.Web.Routing;
+using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartup(typeof(DatenMeister.Web.Application.WebserverStartup))]
@@ -11,7 +12,7 @@ namespace DatenMeister.Web.Application
 #if DEBUG
             app.UseErrorPage();
 #endif
-            app.UseWelcomePage("/");
+            var routes = RouteTable.Routes;
         }
     }
 }

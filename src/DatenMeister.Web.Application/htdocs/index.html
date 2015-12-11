@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Der DatenMeister</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/datenmeister.css" rel="stylesheet"/>
+
+
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/modernizr-2.6.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/underscore.min.js"></script>
+    <script src="js/datenmeister.js"></script>
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="index.html" class="navbar-brand">Der DatenMeister</a>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <div class="jumbotron">
+            <h1>DatenMeister</h1>
+            <p class="lead">DatenMeister will be a MOF and UML compliant management tool for data of all kinds.</p>
+        </div>
+        <script type="text/x-jquery-tmpl" id="template_workspace">
+            <tr>
+                <td><a href="#" class="data"><%-id%></a></td>
+                <td><%-annotation%></td>
+            </tr>
+        </script>
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Workspaces</h2>
+                <table id="container_workspace" class="table">
+                    <tr><td><em>Loading...</em></td></tr>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <h2>Workspaces</h2>
+                <p>A workspace collects several sets of data into an isolated storage which can be loaded and unloaded. </p>
+                <p><a class="btn btn-default" href="http://www.omg.org/spec/MOFFOL/2.0/PDF/">OMG Documents</a></p>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            document.ready = function() { DatenMeister.GUI.loadWorkspaces(); };
+        </script>
+        <hr />
+        <footer>
+            <p>&copy; 2015 - Martin Brenn</p>
+        </footer>
+    </div>
+
+</body>
+</html>

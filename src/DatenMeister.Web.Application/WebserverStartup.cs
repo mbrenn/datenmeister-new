@@ -1,4 +1,6 @@
-﻿using System.Web.Routing;
+﻿using System.IO;
+using System.Web.Routing;
+using BurnSystems.Owin.StaticFiles;
 using Microsoft.Owin;
 using Owin;
 
@@ -12,6 +14,17 @@ namespace DatenMeister.Web.Application
 #if DEBUG
             app.UseErrorPage();
 #endif
+
+            var directory = "htdocs";
+#if DEBUG
+            if (Directory.Exists("..\\..\\htdocs"))
+            {
+                directory = "..\\..\\htdocs";
+            }
+#endif
+            var configuration = new StaticFilesConfiguration(directory);
+            configuration.AddIgnoredExtension(".ts");
+            app.UseStaticFiles(configuration);
             var routes = RouteTable.Routes;
         }
     }

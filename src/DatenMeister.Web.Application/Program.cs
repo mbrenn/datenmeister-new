@@ -10,7 +10,6 @@ namespace DatenMeister.Web.Application
         {
             using (WebApp.Start<WebserverStartup>("http://localhost:8080"))
             {
-                //AreaRegistration.RegisterAllAreas();
                 Console.WriteLine("Running on http://localhost:8080");
                 Console.WriteLine("Press key to stop the server");
                 Console.ReadLine();

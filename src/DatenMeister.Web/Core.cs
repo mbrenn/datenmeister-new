@@ -60,7 +60,7 @@ namespace DatenMeister.Web
         public void Init()
         {
             workspaces = new List<Workspace<IExtent>>();
-            workspaces.Add(new Workspace<IExtent>("Data", "All the data workspaces"));
+            AddWorkspace(new Workspace<IExtent>("Data", "All the data workspaces"));
             Debug.WriteLine("DatenMeister Webcore initialized");
         }
     }

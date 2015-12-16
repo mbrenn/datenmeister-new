@@ -54,6 +54,8 @@ module DatenMeister {
     }
 
     export class WorkspaceLogic {
+        onWorkspaceSelected: (id: string) => void;
+
         loadAndCreateHtmlForWorkbenchs(container: JQuery): JQueryPromise<Array<IWorkspace>> {
             var tthis = this;
             var callback = $.Deferred();
@@ -70,6 +72,7 @@ module DatenMeister {
         }
         
         createHtmlForWorkbenchs(container: JQuery, data: Array<IWorkspace>) {
+            var tthis = this;
             container.empty();
             var compiled = _.template($("#template_workspace").html());
             for (var n in data) {
@@ -77,9 +80,13 @@ module DatenMeister {
                 var line = compiled(entry);
                 var dom = $(line);
                 $(".data", dom).click(
-                    (function (localEntry) {                        
+                    (function (localEntry) {          
                         return function () {
-                            location.href = `/Home/workspace?ws=${encodeURIComponent(localEntry.id)}`;
+                            var workspaceId = localEntry.id;
+                            if (tthis.onWorkspaceSelected != null) {
+                                tthis.onWorkspaceSelected(localEntry.id);
+                            }
+
                         };
                     } (entry)));
 
@@ -101,6 +108,9 @@ module DatenMeister {
     }
 
     export class ExtentLogic {
+        onExtentSelected: (ws: string, extent: string) => void;
+        onItemSelected: (ws: string, extentUrl: string, itemUrl: string) => void;
+
         /* Deletes an item from the database and returns the value indicatng whether the deleteion was successful */
         deleteItem(ws: string, extent: string, item: string): JQueryPromise<boolean> {
             var callback = $.Deferred();
@@ -156,22 +166,31 @@ module DatenMeister {
             return callback;
         }
 
-        createHtmlForExtent(container: JQuery, ws: string, data: Array<IWorkspace>) {
+        createHtmlForExtent(container: JQuery, ws: string, data: Array<IExtent>) {
+            var tthis = this;
             container.empty();
-            var compiled = _.template($("#template_extent").html());
-            for (var n in data) {
-                var entry = data[n];
-                var line = compiled(entry);
-                var dom = $(line);
-                $(".data", dom).click(
-                    (function (localEntry) {
-                        return function () {
-                            location.href = "/Home/extent?ws=" + encodeURIComponent(ws)
-                                + "&extent=" + encodeURIComponent(localEntry.uri);
-                        };
-                    } (entry)));
 
-                container.append(dom);
+            if (data.length === 0) {
+
+                container.html("<tr><td>No extents were found</td></tr>");
+
+            } else {
+                var compiled = _.template($("#template_extent").html());
+                for (var n in data) {
+                    var entry = data[n];
+                    var line = compiled(entry);
+                    var dom = $(line);
+                    $(".data", dom).click(
+                    (function(localEntry) {
+                        return function() {
+                            if (tthis.onExtentSelected !== null) {
+                                tthis.onExtentSelected(ws, localEntry.uri);
+                            }
+                        };
+                    }(entry)));
+
+                    container.append(dom);
+                }
             }
         }
 
@@ -197,9 +216,9 @@ module DatenMeister {
             var configuration = new GUI.DataTableConfiguration();
             configuration.editFunction = function (url: string) {
 
-                location.href = "/Home/item?ws=" + encodeURIComponent(ws)
-                    + "&extent=" + encodeURIComponent(extentUrl)
-                    + "&item=" + encodeURIComponent(url);
+                if (tthis.onItemSelected !== null) {
+                    tthis.onItemSelected(ws, extentUrl, url);
+                }
                 return false;
             };
 
@@ -252,36 +271,48 @@ module DatenMeister {
     }
 
     export namespace GUI {
+        export function start() {
+            $(document).ready(() => { loadWorkspaces(); });
+        }
+
         export function loadWorkspaces() {
-            $(document).ready(function () {
-                var workbenchLogic = new DatenMeister.WorkspaceLogic();
-                workbenchLogic.loadAndCreateHtmlForWorkbenchs($("#container_workspace")).done(function (data) {
-                }).fail(function () {
+            var workbenchLogic = new DatenMeister.WorkspaceLogic();
+            workbenchLogic.onWorkspaceSelected = (id: string) => {
+                // Loads the extent of the workspace, if the user has clicked on one of the workbenches
+                loadExtents(id);
+            };
+            $(".container_title").text("Workspaces");
+            workbenchLogic.loadAndCreateHtmlForWorkbenchs($(".container_data"))
+                .done(function(data) {
+                })
+                .fail(function() {
                 });
-            });
         }
 
         export function loadExtents(workspaceId: string) {
-            $(document).ready(function () {
-                var extentLogic = new DatenMeister.ExtentLogic();
-                extentLogic.loadAndCreateHtmlForExtents($("#container_extents"), workspaceId).done(function (data) {
-                }).fail(function () {
-                });
+            var extentLogic = new DatenMeister.ExtentLogic();
+            var containerTitle = $(".container_title");
+            containerTitle.html("<a href='#' class='link_workspace'>Workspaces</a> - Extents");
+            $(".link_workspace", containerTitle).click(function () {
+                loadWorkspaces();
+                return false;
             });
+            extentLogic.loadAndCreateHtmlForExtents($(".container_data"), workspaceId)
+                .done(function(data) {
+                })
+                .fail(function() {
+                });
         }
 
         export function loadExtent(workspaceId: string, extentUrl: string) {
-            $(document).ready(function () {
-                var extentLogic = new DatenMeister.ExtentLogic();
-                extentLogic.loadAndCreateHtmlForItems($("#container_item"), workspaceId, extentUrl);
-            });
+            var extentLogic = new DatenMeister.ExtentLogic();
+            $(".container_title").text("Items");
+            extentLogic.loadAndCreateHtmlForItems($(".container_data"), workspaceId, extentUrl);
         }
 
         export function loadItem(workspaceId: string, extentUrl: string, itemUrl: string) {
-            $(document).ready(function () {
-                var extentLogic = new DatenMeister.ExtentLogic();
-                extentLogic.loadAndCreateHtmlForItem($("#container_item"), workspaceId, extentUrl, itemUrl);
-            });
+            var extentLogic = new DatenMeister.ExtentLogic();
+            extentLogic.loadAndCreateHtmlForItem($(".container_data"), workspaceId, extentUrl, itemUrl);
         }
 
         export class DataTableConfiguration {

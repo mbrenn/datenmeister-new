@@ -134,7 +134,7 @@
     <Content Include="htdocs\fonts\glyphicons-halflings-regular.woff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="htdocs\js\underscore.min.map">
+    <Content Include="htdocs\js\underscore-min.map">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="htdocs\js\jquery-1.10.2.min.map">

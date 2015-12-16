@@ -52,6 +52,7 @@ var DatenMeister;
             return callback;
         };
         WorkspaceLogic.prototype.createHtmlForWorkbenchs = function (container, data) {
+            var tthis = this;
             container.empty();
             var compiled = _.template($("#template_workspace").html());
             for (var n in data) {
@@ -60,7 +61,10 @@ var DatenMeister;
                 var dom = $(line);
                 $(".data", dom).click((function (localEntry) {
                     return function () {
-                        location.href = "/Home/workspace?ws=" + encodeURIComponent(localEntry.id);
+                        var workspaceId = localEntry.id;
+                        if (tthis.onWorkspaceSelected != null) {
+                            tthis.onWorkspaceSelected(localEntry.id);
+                        }
                     };
                 }(entry)));
                 container.append(dom);
@@ -134,19 +138,26 @@ var DatenMeister;
             return callback;
         };
         ExtentLogic.prototype.createHtmlForExtent = function (container, ws, data) {
+            var tthis = this;
             container.empty();
-            var compiled = _.template($("#template_extent").html());
-            for (var n in data) {
-                var entry = data[n];
-                var line = compiled(entry);
-                var dom = $(line);
-                $(".data", dom).click((function (localEntry) {
-                    return function () {
-                        location.href = "/Home/extent?ws=" + encodeURIComponent(ws)
-                            + "&extent=" + encodeURIComponent(localEntry.uri);
-                    };
-                }(entry)));
-                container.append(dom);
+            if (data.length === 0) {
+                container.html("<tr><td>No extents were found</td></tr>");
+            }
+            else {
+                var compiled = _.template($("#template_extent").html());
+                for (var n in data) {
+                    var entry = data[n];
+                    var line = compiled(entry);
+                    var dom = $(line);
+                    $(".data", dom).click((function (localEntry) {
+                        return function () {
+                            if (tthis.onExtentSelected !== null) {
+                                tthis.onExtentSelected(ws, localEntry.uri);
+                            }
+                        };
+                    }(entry)));
+                    container.append(dom);
+                }
             }
         };
         ExtentLogic.prototype.loadAndCreateHtmlForItems = function (container, ws, extentUrl) {
@@ -167,9 +178,9 @@ var DatenMeister;
             var tthis = this;
             var configuration = new GUI.DataTableConfiguration();
             configuration.editFunction = function (url) {
-                location.href = "/Home/item?ws=" + encodeURIComponent(ws)
-                    + "&extent=" + encodeURIComponent(extentUrl)
-                    + "&item=" + encodeURIComponent(url);
+                if (tthis.onItemSelected !== null) {
+                    tthis.onItemSelected(ws, extentUrl, url);
+                }
                 return false;
             };
             configuration.deleteFunction = function (url, domRow) {
@@ -215,36 +226,48 @@ var DatenMeister;
     DatenMeister.ExtentLogic = ExtentLogic;
     var GUI;
     (function (GUI) {
+        function start() {
+            $(document).ready(function () { loadWorkspaces(); });
+        }
+        GUI.start = start;
         function loadWorkspaces() {
-            $(document).ready(function () {
-                var workbenchLogic = new DatenMeister.WorkspaceLogic();
-                workbenchLogic.loadAndCreateHtmlForWorkbenchs($("#container_workspace")).done(function (data) {
-                }).fail(function () {
-                });
+            var workbenchLogic = new DatenMeister.WorkspaceLogic();
+            workbenchLogic.onWorkspaceSelected = function (id) {
+                // Loads the extent of the workspace, if the user has clicked on one of the workbenches
+                loadExtents(id);
+            };
+            $(".container_title").text("Workspaces");
+            workbenchLogic.loadAndCreateHtmlForWorkbenchs($(".container_data"))
+                .done(function (data) {
+            })
+                .fail(function () {
             });
         }
         GUI.loadWorkspaces = loadWorkspaces;
         function loadExtents(workspaceId) {
-            $(document).ready(function () {
-                var extentLogic = new DatenMeister.ExtentLogic();
-                extentLogic.loadAndCreateHtmlForExtents($("#container_extents"), workspaceId).done(function (data) {
-                }).fail(function () {
-                });
+            var extentLogic = new DatenMeister.ExtentLogic();
+            var containerTitle = $(".container_title");
+            containerTitle.html("<a href='#' class='link_workspace'>Workspaces</a> - Extents");
+            $(".link_workspace", containerTitle).click(function () {
+                loadWorkspaces();
+                return false;
+            });
+            extentLogic.loadAndCreateHtmlForExtents($(".container_data"), workspaceId)
+                .done(function (data) {
+            })
+                .fail(function () {
             });
         }
         GUI.loadExtents = loadExtents;
         function loadExtent(workspaceId, extentUrl) {
-            $(document).ready(function () {
-                var extentLogic = new DatenMeister.ExtentLogic();
-                extentLogic.loadAndCreateHtmlForItems($("#container_item"), workspaceId, extentUrl);
-            });
+            var extentLogic = new DatenMeister.ExtentLogic();
+            $(".container_title").text("Items");
+            extentLogic.loadAndCreateHtmlForItems($(".container_data"), workspaceId, extentUrl);
         }
         GUI.loadExtent = loadExtent;
         function loadItem(workspaceId, extentUrl, itemUrl) {
-            $(document).ready(function () {
-                var extentLogic = new DatenMeister.ExtentLogic();
-                extentLogic.loadAndCreateHtmlForItem($("#container_item"), workspaceId, extentUrl, itemUrl);
-            });
+            var extentLogic = new DatenMeister.ExtentLogic();
+            extentLogic.loadAndCreateHtmlForItem($(".container_data"), workspaceId, extentUrl, itemUrl);
         }
         GUI.loadItem = loadItem;
         var DataTableConfiguration = (function () {

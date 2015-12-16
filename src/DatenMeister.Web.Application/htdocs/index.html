@@ -8,13 +8,25 @@
     <title>Der DatenMeister</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/datenmeister.css" rel="stylesheet"/>
-
-
+    
     <script src="js/jquery-1.10.2.min.js"></script>
     <script src="js/modernizr-2.6.2.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/underscore-min.js"></script>
     <script src="js/datenmeister.js"></script>
+
+    <script type="text/x-jquery-tmpl" id="template_workspace">
+        <tr>
+            <td><a href="#" class="data"><%-id%></a></td>
+            <td><%-annotation%></td>
+        </tr>
+    </script>
+    <script type="text/x-jquery-tmpl" id="template_extent">
+        <tr>
+            <td><a href="#" class="data"><%-uri%></a></td>
+            <td><%-count%></td>
+        </tr>
+    </script>
 </head>
 
 <body>
@@ -35,16 +47,10 @@
             <h1>DatenMeister</h1>
             <p class="lead">DatenMeister will be a MOF and UML compliant management tool for data of all kinds.</p>
         </div>
-        <script type="text/x-jquery-tmpl" id="template_workspace">
-            <tr>
-                <td><a href="#" class="data"><%-id%></a></td>
-                <td><%-annotation%></td>
-            </tr>
-        </script>
         <div class="row">
             <div class="col-md-8">
-                <h2>Workspaces</h2>
-                <table id="container_workspace" class="table">
+                <h2 class="container_title">Workspaces</h2>
+                <table class="container_data table">
                     <tr><td><em>Loading...</em></td></tr>
                 </table>
             </div>

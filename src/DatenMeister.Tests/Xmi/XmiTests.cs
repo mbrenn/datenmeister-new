@@ -5,6 +5,7 @@ using NUnit.Framework;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.XMI.UmlBootstrap;
 using DatenMeister.EMOF.Queries;
+using DatenMeister.Filler;
 
 namespace DatenMeister.Tests.Xmi
 {
@@ -19,6 +20,7 @@ namespace DatenMeister.Tests.Xmi
         {
             var factory = new DatenMeister.EMOF.InMemory.MofFactory();
             var extent = new MofUriExtent("datenmeister:///target");
+            Assert.That(extent.elements().Count(), Is.EqualTo(0));
             var loader = new SimpleLoader(factory);
             loader.Load(extent, "Xmi/UML.xmi");
 
@@ -37,6 +39,12 @@ namespace DatenMeister.Tests.Xmi
             Assert.That(
                 AllDescendentsQuery.getDescendents(strapper.UmlInfrastructure).Count(),
                 Is.GreaterThan(500));
+
+            // Check, if the filled classes are working
+            var mof = new _MOF();
+            var uml = new _UML();
+            FillTheMOF.DoFill(strapper.MofInfrastructure.elements(), mof);
+            FillTheUML.DoFill(strapper.UmlInfrastructure.elements(), uml);
         }
     }
 }

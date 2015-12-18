@@ -54,6 +54,7 @@ var DatenMeister;
         WorkspaceLogic.prototype.createHtmlForWorkbenchs = function (container, data) {
             var tthis = this;
             container.empty();
+            var compiledTable = $($("#template_workspace_table").html());
             var compiled = _.template($("#template_workspace").html());
             for (var n in data) {
                 var entry = data[n];
@@ -63,12 +64,13 @@ var DatenMeister;
                     return function () {
                         var workspaceId = localEntry.id;
                         if (tthis.onWorkspaceSelected != null) {
-                            tthis.onWorkspaceSelected(localEntry.id);
+                            tthis.onWorkspaceSelected(workspaceId);
                         }
                     };
                 }(entry)));
-                container.append(dom);
+                $("table", compiledTable).append(dom);
             }
+            container.append(compiledTable);
         };
         return WorkspaceLogic;
     })();
@@ -141,7 +143,7 @@ var DatenMeister;
             var tthis = this;
             container.empty();
             if (data.length === 0) {
-                container.html("<tr><td>No extents were found</td></tr>");
+                container.html("<p>No extents were found</p>");
             }
             else {
                 var compiled = _.template($("#template_extent").html());

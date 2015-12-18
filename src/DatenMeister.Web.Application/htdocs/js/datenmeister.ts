@@ -74,24 +74,27 @@ module DatenMeister {
         createHtmlForWorkbenchs(container: JQuery, data: Array<IWorkspace>) {
             var tthis = this;
             container.empty();
+            var compiledTable = $($("#template_workspace_table").html());
             var compiled = _.template($("#template_workspace").html());
             for (var n in data) {
                 var entry = data[n];
                 var line = compiled(entry);
                 var dom = $(line);
                 $(".data", dom).click(
-                    (function (localEntry) {          
-                        return function () {
-                            var workspaceId = localEntry.id;
-                            if (tthis.onWorkspaceSelected != null) {
-                                tthis.onWorkspaceSelected(localEntry.id);
-                            }
+                (function(localEntry) {
+                    return function() {
+                        var workspaceId = localEntry.id;
+                        if (tthis.onWorkspaceSelected != null) {
+                            tthis.onWorkspaceSelected(workspaceId);
+                        }
 
-                        };
-                    } (entry)));
+                    };
+                }(entry)));
 
-                container.append(dom);
+                $("table", compiledTable).append(dom);
             }
+            
+            container.append(compiledTable);
         }
     };
 
@@ -172,7 +175,7 @@ module DatenMeister {
 
             if (data.length === 0) {
 
-                container.html("<tr><td>No extents were found</td></tr>");
+                container.html("<p>No extents were found</p>");
 
             } else {
                 var compiled = _.template($("#template_extent").html());

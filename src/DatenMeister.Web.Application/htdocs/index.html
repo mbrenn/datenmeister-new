@@ -15,11 +15,29 @@
     <script src="js/underscore-min.js"></script>
     <script src="js/datenmeister.js"></script>
 
-    <script type="text/x-jquery-tmpl" id="template_workspace">
+    <script type="text/x-jquery-tmpl" id="template_workspace_table">
+        <div>
+            <table class="table">
+                <tr>
+                    <th>ID</th>
+                    <th>Data</th>
+                </tr>
+            </table>
+        </div>
+    </script>
+    <script type="text/x-jquery-tmpl" id="template_workspace">        
         <tr>
             <td><a href="#" class="data"><%-id%></a></td>
             <td><%-annotation%></td>
         </tr>
+    </script>
+    <script type="text/x-jquery-tmpl" id="template_extent_table">
+        <table>
+            <tr>
+                <th>URI</th>
+                <th>Items</th>
+            </tr>
+        </table>
     </script>
     <script type="text/x-jquery-tmpl" id="template_extent">
         <tr>
@@ -50,9 +68,9 @@
         <div class="row">
             <div class="col-md-8">
                 <h2 class="container_title">Workspaces</h2>
-                <table class="container_data table">
-                    <tr><td><em>Loading...</em></td></tr>
-                </table>
+                <div class="container_data">
+                    <em>Loading...</em>
+                </div>
             </div>
             <div class="col-md-4">
                 <h2>Workspaces</h2>

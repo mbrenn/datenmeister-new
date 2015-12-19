@@ -150,7 +150,7 @@ var DatenMeister;
                     .fail(() => { alert("FAILED"); });
                 return false;
             };
-            var table = new GUI.DataTable(data.items, data.columns, configuration);
+            var table = new GUI.ItemListTable(data.items, data.columns, configuration);
             table.show(container);
         }
         loadAndCreateHtmlForItem(container, ws, extentUrl, itemUrl) {
@@ -225,7 +225,7 @@ var DatenMeister;
          * Used to show a lot of items in a database. The table will use an array of MofObjects
          * as the datasource
          */
-        class DataTable {
+        class ItemListTable {
             constructor(items, columns, configuration) {
                 this.items = items;
                 this.columns = columns;
@@ -287,7 +287,7 @@ var DatenMeister;
                 dom.append(domTable);
             }
         }
-        GUI.DataTable = DataTable;
+        GUI.ItemListTable = ItemListTable;
         class ItemContentConfiguration {
             constructor() {
                 this.editFunction = (url, property, domRow) => false;

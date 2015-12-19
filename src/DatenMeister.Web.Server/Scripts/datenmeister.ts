@@ -213,7 +213,7 @@ module DatenMeister {
                 return false;
             };
 
-            var table = new GUI.DataTable(data.items, data.columns, configuration);
+            var table = new GUI.ItemListTable(data.items, data.columns, configuration);
             table.show(container);
         }
 
@@ -297,7 +297,7 @@ module DatenMeister {
          * Used to show a lot of items in a database. The table will use an array of MofObjects
          * as the datasource
          */
-        export class DataTable {
+        export class ItemListTable {
             columns: Array<IDataTableColumn>;
             items: Array<IDataTableItem>;
             configuration: DataTableConfiguration;

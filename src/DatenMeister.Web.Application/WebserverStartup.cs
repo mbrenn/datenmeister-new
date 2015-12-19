@@ -27,7 +27,6 @@ namespace DatenMeister.Web.Application
             }
 #endif
             var configuration = new StaticFilesConfiguration(directory);
-            configuration.AddIgnoredExtension(".ts");
             app.UseStaticFiles(configuration);
 
             StartDatenmeister();

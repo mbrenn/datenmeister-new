@@ -33,7 +33,8 @@ namespace DatenMeister.EMOF.Helper
             foreach (var property in properties
                 .Where(property => value.isSet(property)))
             {
-                result[property.ToString()] = value.get(property).ToString();
+                var propertyValue = value.get(property).ToString();
+                result[property.ToString()] = propertyValue ?? "null";
             }
 
             return result;

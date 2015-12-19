@@ -63,12 +63,12 @@ var DatenMeister;
                 $(".data", dom).click((function (localEntry) {
                     return function () {
                         var workspaceId = localEntry.id;
-                        if (tthis.onWorkspaceSelected != null) {
+                        if (tthis.onWorkspaceSelected != undefined) {
                             tthis.onWorkspaceSelected(workspaceId);
                         }
                     };
                 }(entry)));
-                $("table", compiledTable).append(dom);
+                $(compiledTable).append(dom);
             }
             container.append(compiledTable);
         };
@@ -146,6 +146,7 @@ var DatenMeister;
                 container.html("<p>No extents were found</p>");
             }
             else {
+                var compiledTable = $($("#template_extent_table").html());
                 var compiled = _.template($("#template_extent").html());
                 for (var n in data) {
                     var entry = data[n];
@@ -153,13 +154,14 @@ var DatenMeister;
                     var dom = $(line);
                     $(".data", dom).click((function (localEntry) {
                         return function () {
-                            if (tthis.onExtentSelected !== null) {
+                            if (tthis.onExtentSelected !== undefined) {
                                 tthis.onExtentSelected(ws, localEntry.uri);
                             }
                         };
                     }(entry)));
-                    container.append(dom);
+                    compiledTable.append(dom);
                 }
+                container.append(compiledTable);
             }
         };
         ExtentLogic.prototype.loadAndCreateHtmlForItems = function (container, ws, extentUrl) {
@@ -180,7 +182,7 @@ var DatenMeister;
             var tthis = this;
             var configuration = new GUI.DataTableConfiguration();
             configuration.editFunction = function (url) {
-                if (tthis.onItemSelected !== null) {
+                if (tthis.onItemSelected !== undefined) {
                     tthis.onItemSelected(ws, extentUrl, url);
                 }
                 return false;
@@ -195,7 +197,7 @@ var DatenMeister;
                     .fail(function () { alert("FAILED"); });
                 return false;
             };
-            var table = new GUI.DataTable(data.items, data.columns, configuration);
+            var table = new GUI.ItemListTable(data.items, data.columns, configuration);
             table.show(container);
         };
         ExtentLogic.prototype.loadAndCreateHtmlForItem = function (container, ws, extentUrl, itemUrl) {
@@ -232,13 +234,40 @@ var DatenMeister;
             $(document).ready(function () { loadWorkspaces(); });
         }
         GUI.start = start;
+        function createTitle(ws, extentUrl, itemUrl) {
+            var containerTitle = $(".container_title");
+            if (ws === undefined) {
+                containerTitle.text("All Workspaces");
+                return;
+            }
+            if (extentUrl === undefined) {
+                containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - Extents");
+                $(".link_workspaces", containerTitle).click(function () {
+                    loadWorkspaces();
+                    return false;
+                });
+                return;
+            }
+            if (itemUrl == null) {
+                containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - All Items");
+                $(".link_workspaces", containerTitle).click(function () {
+                    loadWorkspaces();
+                    return false;
+                });
+                $(".link_extents", containerTitle).click(function () {
+                    loadExtents(ws);
+                    return false;
+                });
+                return;
+            }
+        }
         function loadWorkspaces() {
             var workbenchLogic = new DatenMeister.WorkspaceLogic();
             workbenchLogic.onWorkspaceSelected = function (id) {
                 // Loads the extent of the workspace, if the user has clicked on one of the workbenches
                 loadExtents(id);
             };
-            $(".container_title").text("Workspaces");
+            createTitle();
             workbenchLogic.loadAndCreateHtmlForWorkbenchs($(".container_data"))
                 .done(function (data) {
             })
@@ -248,12 +277,10 @@ var DatenMeister;
         GUI.loadWorkspaces = loadWorkspaces;
         function loadExtents(workspaceId) {
             var extentLogic = new DatenMeister.ExtentLogic();
-            var containerTitle = $(".container_title");
-            containerTitle.html("<a href='#' class='link_workspace'>Workspaces</a> - Extents");
-            $(".link_workspace", containerTitle).click(function () {
-                loadWorkspaces();
-                return false;
-            });
+            extentLogic.onExtentSelected = function (ws, extentUrl) {
+                loadExtent(ws, extentUrl);
+            };
+            createTitle(workspaceId);
             extentLogic.loadAndCreateHtmlForExtents($(".container_data"), workspaceId)
                 .done(function (data) {
             })
@@ -263,12 +290,16 @@ var DatenMeister;
         GUI.loadExtents = loadExtents;
         function loadExtent(workspaceId, extentUrl) {
             var extentLogic = new DatenMeister.ExtentLogic();
-            $(".container_title").text("Items");
+            extentLogic.onItemSelected = function (ws, extentUrl, itemUrl) {
+                loadItem(ws, extentUrl, itemUrl);
+            };
+            createTitle(workspaceId, extentUrl);
             extentLogic.loadAndCreateHtmlForItems($(".container_data"), workspaceId, extentUrl);
         }
         GUI.loadExtent = loadExtent;
         function loadItem(workspaceId, extentUrl, itemUrl) {
             var extentLogic = new DatenMeister.ExtentLogic();
+            createTitle(workspaceId, itemUrl);
             extentLogic.loadAndCreateHtmlForItem($(".container_data"), workspaceId, extentUrl, itemUrl);
         }
         GUI.loadItem = loadItem;
@@ -284,17 +315,17 @@ var DatenMeister;
          * Used to show a lot of items in a database. The table will use an array of MofObjects
          * as the datasource
          */
-        var DataTable = (function () {
-            function DataTable(items, columns, configuration) {
+        var ItemListTable = (function () {
+            function ItemListTable(items, columns, configuration) {
                 this.items = items;
                 this.columns = columns;
                 this.configuration = configuration;
             }
             // Replaces the content at the dom with the created table
-            DataTable.prototype.show = function (dom) {
+            ItemListTable.prototype.show = function (dom) {
                 var tthis = this;
                 dom.empty();
-                var domTable = $("<table></table>");
+                var domTable = $("<table class='table'></table>");
                 // First the headline
                 var domRow = $("<tr></tr>");
                 for (var c in this.columns) {
@@ -329,14 +360,14 @@ var DatenMeister;
                     domRow.append(domEditColumn);
                     domDeleteColumn = $("<td class='hl'><a href='#'>DELETE</a></td>");
                     var domA = $("a", domDeleteColumn);
-                    domDeleteColumn.click((function (url, idomRow, idomA) {
+                    domDeleteColumn.click((function (url, innerDomRow, innerDomA) {
                         return function () {
-                            if (idomA.data("wasClicked") === true) {
-                                return tthis.configuration.deleteFunction(url, idomRow);
+                            if (innerDomA.data("wasClicked") === true) {
+                                return tthis.configuration.deleteFunction(url, innerDomRow);
                             }
                             else {
-                                idomA.data("wasClicked", true);
-                                idomA.text("CONFIRM");
+                                innerDomA.data("wasClicked", true);
+                                innerDomA.text("CONFIRM");
                             }
                         };
                     })(item.uri, domRow, domA));
@@ -345,9 +376,9 @@ var DatenMeister;
                 }
                 dom.append(domTable);
             };
-            return DataTable;
+            return ItemListTable;
         })();
-        GUI.DataTable = DataTable;
+        GUI.ItemListTable = ItemListTable;
         var ItemContentConfiguration = (function () {
             function ItemContentConfiguration() {
                 this.editFunction = function (url, property, domRow) { return false; };
@@ -364,7 +395,7 @@ var DatenMeister;
             ItemContentTable.prototype.show = function (dom) {
                 var tthis = this;
                 dom.empty();
-                var domTable = $("<table></table>");
+                var domTable = $("<table class='table'></table>");
                 // First the headline
                 var domRow = $("<tr><th>Title</th><th>Value</th><th>EDIT</th><th>DELETE</th></tr>");
                 domTable.append(domRow);

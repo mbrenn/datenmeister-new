@@ -12,7 +12,7 @@ namespace DatenMeister.Web.Application
             {
                 Console.WriteLine("Running on http://localhost:8080");
                 Console.WriteLine("Press key to stop the server");
-                Console.ReadLine();
+                Console.ReadKey();
             }
         }
     }

@@ -15,24 +15,25 @@
     <script src="js/underscore-min.js"></script>
     <script src="js/datenmeister.js"></script>
 
+    <!-- Templates for the workspaces -->
     <script type="text/x-jquery-tmpl" id="template_workspace_table">
-        <div>
-            <table class="table">
-                <tr>
-                    <th>ID</th>
-                    <th>Data</th>
-                </tr>
-            </table>
-        </div>
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Data</th>
+            </tr>
+        </table>
     </script>
-    <script type="text/x-jquery-tmpl" id="template_workspace">        
+    <script type="text/x-jquery-tmpl" id="template_workspace">
         <tr>
             <td><a href="#" class="data"><%-id%></a></td>
             <td><%-annotation%></td>
         </tr>
     </script>
+
+    <!-- Templates for the extents -->
     <script type="text/x-jquery-tmpl" id="template_extent_table">
-        <table>
+        <table class="table">
             <tr>
                 <th>URI</th>
                 <th>Items</th>

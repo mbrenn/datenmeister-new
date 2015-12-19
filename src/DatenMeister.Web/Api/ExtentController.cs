@@ -105,13 +105,14 @@ namespace DatenMeister.Web.Api
 
             var itemModel = new ItemContentModel();
             itemModel.uri = item;
+            
 
             // Retrieves the values of the item
             var foundElement = foundExtent.element(item);
             if (foundElement == null)
             {
                 // Not found
-                return null;
+                return NotFound();
             }
 
             var foundProperties = foundExtent.GetProperties();

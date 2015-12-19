@@ -74,6 +74,8 @@ namespace DatenMeister.EMOF.InMemory
         public override string ToString()
         {
             var builder = new StringBuilder();
+            builder.Append($"#{guid} - ");
+
             var komma = string.Empty;
             foreach (var pair in values)
             {

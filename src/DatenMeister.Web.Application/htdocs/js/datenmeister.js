@@ -41,13 +41,16 @@ var DatenMeister;
         WorkspaceLogic.prototype.loadAndCreateHtmlForWorkbenchs = function (container) {
             var tthis = this;
             var callback = $.Deferred();
-            $.ajax("/api/datenmeister/workspace/all").
-                done(function (data) {
-                tthis.createHtmlForWorkbenchs(container, data);
-                callback.resolve(null);
-            })
-                .fail(function (data) {
-                callback.reject(null);
+            $.ajax({
+                url: "/api/datenmeister/workspace/all",
+                cache: false,
+                success: function (data) {
+                    tthis.createHtmlForWorkbenchs(container, data);
+                    callback.resolve(null);
+                },
+                error: function (data) {
+                    callback.reject(null);
+                }
             });
             return callback;
         };
@@ -66,6 +69,7 @@ var DatenMeister;
                         if (tthis.onWorkspaceSelected != undefined) {
                             tthis.onWorkspaceSelected(workspaceId);
                         }
+                        return false;
                     };
                 }(entry)));
                 $(compiledTable).append(dom);
@@ -103,12 +107,13 @@ var DatenMeister;
             postModel.ws = ws;
             postModel.extent = extent;
             postModel.item = item;
-            $.ajax("/api/datenmeister/extent/item_delete", {
+            $.ajax({
+                url: "/api/datenmeister/extent/item_delete",
                 data: postModel,
-                method: "POST"
-            })
-                .done(function (data) { callback.resolve(true); })
-                .fail(function (data) { callback.resolve(false); });
+                method: "POST",
+                success: function (data) { callback.resolve(true); },
+                error: function (data) { callback.reject(false); }
+            });
             return callback;
         };
         ExtentLogic.prototype.deleteProperty = function (ws, extent, item, property) {
@@ -118,24 +123,28 @@ var DatenMeister;
             postModel.extent = extent;
             postModel.item = item;
             postModel.property = property;
-            $.ajax("/api/datenmeister/extent/item_unset_property", {
+            $.ajax({
+                url: "/api/datenmeister/extent/item_unset_property",
                 data: postModel,
-                method: "POST"
-            })
-                .done(function (data) { callback.resolve(true); })
-                .fail(function (data) { callback.resolve(false); });
+                method: "POST",
+                success: function (data) { callback.resolve(true); },
+                error: function (data) { callback.resolve(false); }
+            });
             return callback;
         };
         ExtentLogic.prototype.loadAndCreateHtmlForExtents = function (container, ws) {
             var tthis = this;
             var callback = $.Deferred();
-            $.ajax("/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws))
-                .done(function (data) {
-                tthis.createHtmlForExtent(container, ws, data);
-                callback.resolve(null);
-            })
-                .fail(function (data) {
-                callback.reject(null);
+            $.ajax({
+                url: "/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws),
+                cache: false,
+                success: function (data) {
+                    tthis.createHtmlForExtent(container, ws, data);
+                    callback.resolve(null);
+                },
+                error: function (data) {
+                    callback.reject(null);
+                }
             });
             return callback;
         };
@@ -157,6 +166,7 @@ var DatenMeister;
                             if (tthis.onExtentSelected !== undefined) {
                                 tthis.onExtentSelected(ws, localEntry.uri);
                             }
+                            return false;
                         };
                     }(entry)));
                     compiledTable.append(dom);
@@ -167,14 +177,17 @@ var DatenMeister;
         ExtentLogic.prototype.loadAndCreateHtmlForItems = function (container, ws, extentUrl) {
             var tthis = this;
             var callback = $.Deferred();
-            $.ajax("/api/datenmeister/extent/items?ws=" + encodeURIComponent(ws)
-                + "&extent=" + encodeURIComponent(extentUrl)).
-                done(function (data) {
-                tthis.createHtmlForItems(container, ws, extentUrl, data);
-                callback.resolve(null);
-            })
-                .fail(function (data) {
-                callback.reject(null);
+            $.ajax({
+                url: "/api/datenmeister/extent/items?ws=" + encodeURIComponent(ws)
+                    + "&extent=" + encodeURIComponent(extentUrl),
+                cache: false,
+                success: function (data) {
+                    tthis.createHtmlForItems(container, ws, extentUrl, data);
+                    callback.resolve(null);
+                },
+                error: function (data) {
+                    callback.reject(null);
+                }
             });
             return callback;
         };
@@ -203,15 +216,18 @@ var DatenMeister;
         ExtentLogic.prototype.loadAndCreateHtmlForItem = function (container, ws, extentUrl, itemUrl) {
             var tthis = this;
             var callback = $.Deferred();
-            $.ajax("/api/datenmeister/extent/item?ws=" + encodeURIComponent(ws)
-                + "&extent=" + encodeURIComponent(extentUrl)
-                + "&item=" + encodeURIComponent(itemUrl)).
-                done(function (data) {
-                tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data);
-                callback.resolve(null);
-            })
-                .fail(function (data) {
-                callback.reject(null);
+            $.ajax({
+                url: "/api/datenmeister/extent/item?ws=" + encodeURIComponent(ws)
+                    + "&extent=" + encodeURIComponent(extentUrl)
+                    + "&item=" + encodeURIComponent(itemUrl),
+                cache: false,
+                success: function (data) {
+                    tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data);
+                    callback.resolve(null);
+                },
+                error: function (data) {
+                    callback.reject(null);
+                }
             });
             return callback;
         };
@@ -236,30 +252,48 @@ var DatenMeister;
         GUI.start = start;
         function createTitle(ws, extentUrl, itemUrl) {
             var containerTitle = $(".container_title");
+            var containerRefresh = $("<a href='#'>Refresh</a>");
             if (ws === undefined) {
-                containerTitle.text("All Workspaces");
-                return;
-            }
-            if (extentUrl === undefined) {
-                containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - Extents");
-                $(".link_workspaces", containerTitle).click(function () {
+                containerTitle.text("Workspaces - ");
+                containerRefresh.click(function () {
                     loadWorkspaces();
                     return false;
                 });
-                return;
             }
-            if (itemUrl == null) {
-                containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - All Items");
-                $(".link_workspaces", containerTitle).click(function () {
-                    loadWorkspaces();
-                    return false;
-                });
-                $(".link_extents", containerTitle).click(function () {
+            else if (extentUrl === undefined) {
+                containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - Extents - ");
+                containerRefresh.click(function () {
                     loadExtents(ws);
                     return false;
                 });
-                return;
             }
+            else if (itemUrl == undefined) {
+                containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - Items - ");
+                containerRefresh.click(function () {
+                    loadExtent(ws, extentUrl);
+                    return false;
+                });
+            }
+            else {
+                containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - <a href='#' class='link_items'>Items</a> - ");
+                containerRefresh.click(function () {
+                    loadItem(ws, extentUrl, itemUrl);
+                    return false;
+                });
+            }
+            containerTitle.append(containerRefresh);
+            $(".link_workspaces", containerTitle).click(function () {
+                loadWorkspaces();
+                return false;
+            });
+            $(".link_extents", containerTitle).click(function () {
+                loadExtents(ws);
+                return false;
+            });
+            $(".link_items", containerTitle).click(function () {
+                loadExtent(ws, extentUrl);
+                return false;
+            });
         }
         function loadWorkspaces() {
             var workbenchLogic = new DatenMeister.WorkspaceLogic();
@@ -267,9 +301,9 @@ var DatenMeister;
                 // Loads the extent of the workspace, if the user has clicked on one of the workbenches
                 loadExtents(id);
             };
-            createTitle();
             workbenchLogic.loadAndCreateHtmlForWorkbenchs($(".container_data"))
                 .done(function (data) {
+                createTitle();
             })
                 .fail(function () {
             });
@@ -279,10 +313,11 @@ var DatenMeister;
             var extentLogic = new DatenMeister.ExtentLogic();
             extentLogic.onExtentSelected = function (ws, extentUrl) {
                 loadExtent(ws, extentUrl);
+                return false;
             };
-            createTitle(workspaceId);
             extentLogic.loadAndCreateHtmlForExtents($(".container_data"), workspaceId)
                 .done(function (data) {
+                createTitle(workspaceId);
             })
                 .fail(function () {
             });
@@ -293,13 +328,14 @@ var DatenMeister;
             extentLogic.onItemSelected = function (ws, extentUrl, itemUrl) {
                 loadItem(ws, extentUrl, itemUrl);
             };
-            createTitle(workspaceId, extentUrl);
-            extentLogic.loadAndCreateHtmlForItems($(".container_data"), workspaceId, extentUrl);
+            extentLogic.loadAndCreateHtmlForItems($(".container_data"), workspaceId, extentUrl).done(function (data) {
+                createTitle(workspaceId, extentUrl);
+            });
         }
         GUI.loadExtent = loadExtent;
         function loadItem(workspaceId, extentUrl, itemUrl) {
             var extentLogic = new DatenMeister.ExtentLogic();
-            createTitle(workspaceId, itemUrl);
+            createTitle(workspaceId, extentUrl, itemUrl);
             extentLogic.loadAndCreateHtmlForItem($(".container_data"), workspaceId, extentUrl, itemUrl);
         }
         GUI.loadItem = loadItem;
@@ -327,7 +363,7 @@ var DatenMeister;
                 dom.empty();
                 var domTable = $("<table class='table'></table>");
                 // First the headline
-                var domRow = $("<tr></tr>");
+                var domRow = $("<tr><th>ID</th></tr>");
                 for (var c in this.columns) {
                     var column = this.columns[c];
                     var domColumn = $("<th></th>");
@@ -343,10 +379,19 @@ var DatenMeister;
                 // Now, the items
                 for (var i in this.items) {
                     var item = this.items[i];
+                    // Gets the id of the item
+                    var id = item.uri;
+                    var hashIndex = item.uri.indexOf('#');
+                    if (hashIndex !== -1) {
+                        id = item.uri.substring(hashIndex + 1);
+                    }
                     domRow = $("<tr></tr>");
+                    var domColumn = $("<td></td>");
+                    domColumn.text(id);
+                    domRow.append(domColumn);
                     for (var c in this.columns) {
                         var column = this.columns[c];
-                        var domColumn = $("<td></td>");
+                        domColumn = $("<td></td>");
                         domColumn.text(item.v[column.name]);
                         domRow.append(domColumn);
                     }
@@ -368,6 +413,7 @@ var DatenMeister;
                             else {
                                 innerDomA.data("wasClicked", true);
                                 innerDomA.text("CONFIRM");
+                                return false;
                             }
                         };
                     })(item.uri, domRow, domA));
@@ -427,6 +473,7 @@ var DatenMeister;
                             else {
                                 idomA.data("wasClicked", true);
                                 idomA.text("CONFIRM");
+                                return false;
                             }
                         };
                     })(this.item.uri, property, domRow, domA));

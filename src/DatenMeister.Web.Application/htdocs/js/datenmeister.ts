@@ -315,7 +315,11 @@ module DatenMeister {
                 return false;
             };
 
-            configuration.onEditPropertyFunction = (url: string, property: string, newValue: string) => {
+            configuration.onEditProperty = (url: string, property: string, newValue: string) => {
+                tthis.setProperty(ws, extentUrl, itemUrl, property, newValue);
+            };
+
+            configuration.onNewProperty = (url: string, property: string, newValue: string) => {
                 tthis.setProperty(ws, extentUrl, itemUrl, property, newValue);
             };
 
@@ -561,23 +565,26 @@ module DatenMeister {
                 dom.append(domTable);
             }
         }
-        
+
         export class ItemContentConfiguration {
             autoProperties: boolean;
 
             // Gets or sets a flag, that the user can change the content of a property within the table. 
             // If the editing was performed, the onEditProperty-function will get called
             supportInlineEditing: boolean;
+            supportNewProperties: boolean;
 
             editFunction: (url: string, property: string, domRow: JQuery) => boolean;
             deleteFunction: (url: string, property: string, domRow: JQuery) => boolean;
 
-            onEditPropertyFunction: (url: string, property: string, newValue: string) => void;
+            onEditProperty: (url: string, property: string, newValue: string) => void;
+            onNewProperty: (url: string, property: string, newValue: string) => void;
 
             constructor() {
                 this.editFunction = (url: string, property: string, domRow: JQuery) => false;
                 this.deleteFunction = (url: string, property: string, domRow: JQuery) => false;
                 this.supportInlineEditing = true;
+                this.supportNewProperties = true;
             }
         }
 
@@ -602,9 +609,7 @@ module DatenMeister {
                 domTable.append(domRow);
 
                 // Now, the items
-
                 for (var property in this.item.v) {
-
                     domRow = $("<tr></tr>");
                     var value = this.item.v[property];
                     var domColumn = $("<td class='table_column_name'></td>");
@@ -621,7 +626,7 @@ module DatenMeister {
                     let domEditColumn = $("<td class='hl table_column_edit'><a href='#'>EDIT</a></td>");
                     $("a", domEditColumn).click((function (url: string, property: string, idomRow: JQuery, idomA: JQuery) {
                         return function () {
-                            if (tthis.configuration.supportInlineEditing === true) {
+                            if (tthis.configuration.supportInlineEditing) {
                                 tthis.startInlineEditing(property, idomRow);
                                 return false;
                             } else {
@@ -650,6 +655,11 @@ module DatenMeister {
                     domTable.append(domRow);
                 }
 
+                // Add new property
+                if (this.configuration.supportNewProperties) {
+                    this.offerNewProperty(domTable);
+                }
+
                 dom.append(domTable);
             }
 
@@ -673,10 +683,10 @@ module DatenMeister {
                 //Sets the commands
                 domEditOK.on('click', () => {
                     var newValue = domTextBox.val();
-                    tthis.item.v[property] = newValue
+                    tthis.item.v[property] = newValue;
 
-                    if (tthis.configuration.onEditPropertyFunction !== undefined) {
-                        tthis.configuration.onEditPropertyFunction(tthis.item.uri, property, newValue);
+                    if (tthis.configuration.onEditProperty !== undefined) {
+                        tthis.configuration.onEditProperty(tthis.item.uri, property, newValue);
                     }
 
                     tthis.show(tthis.domContainer);
@@ -690,6 +700,49 @@ module DatenMeister {
                     return false;
                 });
 
+            }
+
+            offerNewProperty(domTable: JQuery) {
+                var tthis = this;
+                var domNewProperty = $("<tr><td colspan='4'><a href='#'>NEW PROPERTY</a></td></tr>");
+                $("a", domNewProperty).click(() => {
+                    domNewProperty.empty();
+                    var domNewPropertyName = $("<td class='table_column_name'><input type='textbox' /></td>");
+                    var domNewPropertyValue = $("<td class='table_column_value'><input type='textbox' /></td>");
+                    var domNewPropertyEdit = $("<td class='table_column_edit'><a href='#'>OK</a></td>");
+                    var domNewPropertyCancel = $("<td class='table_column_edit'><a href='#'>CANCEL</a></td>");
+                    domNewProperty.append(domNewPropertyName);
+                    domNewProperty.append(domNewPropertyValue);
+                    domNewProperty.append(domNewPropertyEdit);
+                    domNewProperty.append(domNewPropertyCancel);
+
+                    var inputProperty = $("input", domNewPropertyName);
+                    var inputValue = $("input", domNewPropertyValue);
+
+
+                    $("a", domNewPropertyEdit).click(() => {
+                        var property = inputProperty.val();
+                        var newValue = inputValue.val();
+
+                        tthis.item.v[property] = newValue;
+
+                        if (tthis.configuration.onNewProperty !== undefined) {
+                            tthis.configuration.onNewProperty(tthis.item.uri, property, newValue);
+                        }
+
+                        tthis.show(tthis.domContainer);
+                        return false;
+                    });
+
+                    $("a", domNewPropertyCancel).click(() => {
+                        tthis.show(tthis.domContainer);
+                        return false;
+                    });
+
+                    return false;
+                });
+
+                domTable.append(domNewProperty);
             }
         }
     }

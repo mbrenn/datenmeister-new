@@ -263,7 +263,10 @@ var DatenMeister;
                 tthis.deleteProperty(ws, extentUrl, itemUrl, property).done(function () { return domRow.find("td").fadeOut(500, function () { domRow.remove(); }); });
                 return false;
             };
-            configuration.onEditPropertyFunction = function (url, property, newValue) {
+            configuration.onEditProperty = function (url, property, newValue) {
+                tthis.setProperty(ws, extentUrl, itemUrl, property, newValue);
+            };
+            configuration.onNewProperty = function (url, property, newValue) {
                 tthis.setProperty(ws, extentUrl, itemUrl, property, newValue);
             };
             var table = new GUI.ItemContentTable(data, configuration);
@@ -497,6 +500,7 @@ var DatenMeister;
                 this.editFunction = function (url, property, domRow) { return false; };
                 this.deleteFunction = function (url, property, domRow) { return false; };
                 this.supportInlineEditing = true;
+                this.supportNewProperties = true;
             }
             return ItemContentConfiguration;
         })();
@@ -530,7 +534,7 @@ var DatenMeister;
                     var domEditColumn = $("<td class='hl table_column_edit'><a href='#'>EDIT</a></td>");
                     $("a", domEditColumn).click((function (url, property, idomRow, idomA) {
                         return function () {
-                            if (tthis.configuration.supportInlineEditing === true) {
+                            if (tthis.configuration.supportInlineEditing) {
                                 tthis.startInlineEditing(property, idomRow);
                                 return false;
                             }
@@ -557,6 +561,10 @@ var DatenMeister;
                     domRow.append(domDeleteColumn);
                     domTable.append(domRow);
                 }
+                // Add new property
+                if (this.configuration.supportNewProperties) {
+                    this.offerNewProperty(domTable);
+                }
                 dom.append(domTable);
             };
             ItemContentTable.prototype.startInlineEditing = function (property, domRow) {
@@ -576,8 +584,8 @@ var DatenMeister;
                 domEditOK.on('click', function () {
                     var newValue = domTextBox.val();
                     tthis.item.v[property] = newValue;
-                    if (tthis.configuration.onEditPropertyFunction !== undefined) {
-                        tthis.configuration.onEditPropertyFunction(tthis.item.uri, property, newValue);
+                    if (tthis.configuration.onEditProperty !== undefined) {
+                        tthis.configuration.onEditProperty(tthis.item.uri, property, newValue);
                     }
                     tthis.show(tthis.domContainer);
                     return false;
@@ -587,6 +595,39 @@ var DatenMeister;
                     tthis.show(tthis.domContainer);
                     return false;
                 });
+            };
+            ItemContentTable.prototype.offerNewProperty = function (domTable) {
+                var tthis = this;
+                var domNewProperty = $("<tr><td colspan='4'><a href='#'>NEW PROPERTY</a></td></tr>");
+                $("a", domNewProperty).click(function () {
+                    domNewProperty.empty();
+                    var domNewPropertyName = $("<td class='table_column_name'><input type='textbox' /></td>");
+                    var domNewPropertyValue = $("<td class='table_column_value'><input type='textbox' /></td>");
+                    var domNewPropertyEdit = $("<td class='table_column_edit'><a href='#'>OK</a></td>");
+                    var domNewPropertyCancel = $("<td class='table_column_edit'><a href='#'>CANCEL</a></td>");
+                    domNewProperty.append(domNewPropertyName);
+                    domNewProperty.append(domNewPropertyValue);
+                    domNewProperty.append(domNewPropertyEdit);
+                    domNewProperty.append(domNewPropertyCancel);
+                    var inputProperty = $("input", domNewPropertyName);
+                    var inputValue = $("input", domNewPropertyValue);
+                    $("a", domNewPropertyEdit).click(function () {
+                        var property = inputProperty.val();
+                        var newValue = inputValue.val();
+                        tthis.item.v[property] = newValue;
+                        if (tthis.configuration.onNewProperty !== undefined) {
+                            tthis.configuration.onNewProperty(tthis.item.uri, property, newValue);
+                        }
+                        tthis.show(tthis.domContainer);
+                        return false;
+                    });
+                    $("a", domNewPropertyCancel).click(function () {
+                        tthis.show(tthis.domContainer);
+                        return false;
+                    });
+                    return false;
+                });
+                domTable.append(domNewProperty);
             };
             return ItemContentTable;
         })();

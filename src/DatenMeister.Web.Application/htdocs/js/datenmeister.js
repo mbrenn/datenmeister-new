@@ -244,19 +244,47 @@ var DatenMeister;
         return ExtentLogic;
     })();
     DatenMeister.ExtentLogic = ExtentLogic;
+    var Helper;
+    (function (Helper) {
+        // Helper function out of http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+        function getParameterByNameFromHash(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&#]" + name + "=([^&#]*)"), results = regex.exec(location.hash);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+        Helper.getParameterByNameFromHash = getParameterByNameFromHash;
+    })(Helper = DatenMeister.Helper || (DatenMeister.Helper = {}));
     var GUI;
     (function (GUI) {
         function start() {
             $(document).ready(function () {
                 window.onpopstate = function (ev) {
-                    alert("Pop");
-                    alert(JSON.stringify(ev));
-                    alert(ev.state.path);
+                    parseAndNavigateToWindowLocation();
                 };
-                loadWorkspaces();
+                parseAndNavigateToWindowLocation();
             });
         }
         GUI.start = start;
+        function parseAndNavigateToWindowLocation() {
+            var location = document.location.hash;
+            alert(location);
+            var ws = Helper.getParameterByNameFromHash("ws");
+            var extentUrl = Helper.getParameterByNameFromHash("ext");
+            var itemUrl = Helper.getParameterByNameFromHash("item");
+            if (ws === "") {
+                loadWorkspaces();
+            }
+            else if (extentUrl === "") {
+                loadExtents(ws);
+            }
+            else if (itemUrl === "") {
+                loadExtent(ws, extentUrl);
+            }
+            else {
+                loadItem(ws, extentUrl, itemUrl);
+            }
+        }
+        GUI.parseAndNavigateToWindowLocation = parseAndNavigateToWindowLocation;
         function createTitle(ws, extentUrl, itemUrl) {
             var containerTitle = $(".container_title");
             var containerRefresh = $("<a href='#'>Refresh</a>");

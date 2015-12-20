@@ -34,6 +34,14 @@ var DatenMeister;
             return ItemDeleteModel;
         })(ItemReferenceModel);
         PostModels.ItemDeleteModel = ItemDeleteModel;
+        var ItemSetPropertyModel = (function (_super) {
+            __extends(ItemSetPropertyModel, _super);
+            function ItemSetPropertyModel() {
+                _super.apply(this, arguments);
+            }
+            return ItemSetPropertyModel;
+        })(ItemReferenceModel);
+        PostModels.ItemSetPropertyModel = ItemSetPropertyModel;
     })(PostModels = DatenMeister.PostModels || (DatenMeister.PostModels = {}));
     var WorkspaceLogic = (function () {
         function WorkspaceLogic() {
@@ -125,6 +133,23 @@ var DatenMeister;
             postModel.property = property;
             $.ajax({
                 url: "/api/datenmeister/extent/item_unset_property",
+                data: postModel,
+                method: "POST",
+                success: function (data) { callback.resolve(true); },
+                error: function (data) { callback.resolve(false); }
+            });
+            return callback;
+        };
+        ExtentLogic.prototype.setProperty = function (ws, extentUrl, itemUrl, property, newValue) {
+            var callback = $.Deferred();
+            var postModel = new PostModels.ItemSetPropertyModel();
+            postModel.ws = ws;
+            postModel.extent = extentUrl;
+            postModel.item = itemUrl;
+            postModel.property = property;
+            postModel.newValue = newValue;
+            $.ajax({
+                url: "/api/datenmeister/extent/item_set_property",
                 data: postModel,
                 method: "POST",
                 success: function (data) { callback.resolve(true); },
@@ -238,6 +263,9 @@ var DatenMeister;
                 tthis.deleteProperty(ws, extentUrl, itemUrl, property).done(function () { return domRow.find("td").fadeOut(500, function () { domRow.remove(); }); });
                 return false;
             };
+            configuration.onEditPropertyFunction = function (url, property, newValue) {
+                tthis.setProperty(ws, extentUrl, itemUrl, property, newValue);
+            };
             var table = new GUI.ItemContentTable(data, configuration);
             table.show(jQuery);
         };
@@ -266,8 +294,6 @@ var DatenMeister;
         }
         GUI.start = start;
         function parseAndNavigateToWindowLocation() {
-            var location = document.location.hash;
-            alert(location);
             var ws = Helper.getParameterByNameFromHash("ws");
             var extentUrl = Helper.getParameterByNameFromHash("ext");
             var itemUrl = Helper.getParameterByNameFromHash("item");
@@ -470,6 +496,7 @@ var DatenMeister;
             function ItemContentConfiguration() {
                 this.editFunction = function (url, property, domRow) { return false; };
                 this.deleteFunction = function (url, property, domRow) { return false; };
+                this.supportInlineEditing = true;
             }
             return ItemContentConfiguration;
         })();
@@ -481,6 +508,7 @@ var DatenMeister;
             }
             ItemContentTable.prototype.show = function (dom) {
                 var tthis = this;
+                this.domContainer = dom;
                 dom.empty();
                 var domTable = $("<table class='table'></table>");
                 // First the headline
@@ -490,23 +518,31 @@ var DatenMeister;
                 for (var property in this.item.v) {
                     domRow = $("<tr></tr>");
                     var value = this.item.v[property];
-                    var domColumn = $("<td></td>");
+                    var domColumn = $("<td class='table_column_name'></td>");
+                    domColumn.data("column", "name");
                     domColumn.text(property);
                     domRow.append(domColumn);
-                    domColumn = $("<td></td>");
+                    domColumn = $("<td class='table_column_value'></td>");
+                    domColumn.data("column", "value");
                     domColumn.text(value);
                     domRow.append(domColumn);
                     // Add Edit link
-                    var domEditColumn = $("<td class='hl'><a href='#'>EDIT</a></td>");
-                    domEditColumn.click((function (url, property, idomRow, idomA) {
+                    var domEditColumn = $("<td class='hl table_column_edit'><a href='#'>EDIT</a></td>");
+                    $("a", domEditColumn).click((function (url, property, idomRow, idomA) {
                         return function () {
-                            return tthis.configuration.editFunction(url, property, idomRow);
+                            if (tthis.configuration.supportInlineEditing === true) {
+                                tthis.startInlineEditing(property, idomRow);
+                                return false;
+                            }
+                            else {
+                                return tthis.configuration.editFunction(url, property, idomRow);
+                            }
                         };
                     })(this.item.uri, property, domRow, domA));
                     domRow.append(domEditColumn);
-                    var domDeleteColumn = $("<td class='hl'><a href='#'>DELETE</a></td>");
+                    var domDeleteColumn = $("<td class='hl table_column_delete'><a href='#'>DELETE</a></td>");
                     var domA = $("a", domDeleteColumn);
-                    domDeleteColumn.click((function (url, property, idomRow, idomA) {
+                    $("a", domDeleteColumn).click((function (url, property, idomRow, idomA) {
                         return function () {
                             if (idomA.data("wasClicked") === true) {
                                 return tthis.configuration.deleteFunction(url, property, idomRow);
@@ -522,6 +558,35 @@ var DatenMeister;
                     domTable.append(domRow);
                 }
                 dom.append(domTable);
+            };
+            ItemContentTable.prototype.startInlineEditing = function (property, domRow) {
+                var tthis = this;
+                var domValue = $(".table_column_value", domRow);
+                domValue.empty();
+                var domTextBox = $("<input type='textbox' />");
+                domTextBox.val(this.item.v[property]);
+                domValue.append(domTextBox);
+                var domEditColumn = $(".table_column_edit", domRow);
+                domEditColumn.empty();
+                var domEditOK = $("<a href='#'>OK</a>");
+                domEditColumn.append(domEditOK);
+                var domEditCancel = $("<a href='#'>Cancel</a>");
+                domEditColumn.append(domEditCancel);
+                //Sets the commands
+                domEditOK.on('click', function () {
+                    var newValue = domTextBox.val();
+                    tthis.item.v[property] = newValue;
+                    if (tthis.configuration.onEditPropertyFunction !== undefined) {
+                        tthis.configuration.onEditPropertyFunction(tthis.item.uri, property, newValue);
+                    }
+                    tthis.show(tthis.domContainer);
+                    return false;
+                });
+                domEditCancel.on('click', function () {
+                    // Rebuilds the complete table
+                    tthis.show(tthis.domContainer);
+                    return false;
+                });
             };
             return ItemContentTable;
         })();

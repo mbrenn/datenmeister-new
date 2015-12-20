@@ -51,6 +51,11 @@ module DatenMeister {
 
         export class ItemDeleteModel extends ItemReferenceModel {
         }
+
+        export class ItemSetPropertyModel extends ItemReferenceModel {
+            property: string; 
+            newValue: string;
+        }
     }
 
     export class WorkspaceLogic {
@@ -150,6 +155,27 @@ module DatenMeister {
 
             $.ajax({
                 url: "/api/datenmeister/extent/item_unset_property",
+                data: postModel,
+                method: "POST",
+                success: (data: any) => { callback.resolve(true); },
+                error: (data: any) => { callback.resolve(false); }
+            });
+
+            return callback;
+        }
+
+        setProperty(ws: string, extentUrl: string, itemUrl: string, property: string, newValue: string): JQueryPromise<boolean> {
+            var callback = $.Deferred();
+
+            var postModel = new PostModels.ItemSetPropertyModel();
+            postModel.ws = ws;
+            postModel.extent = extentUrl;
+            postModel.item = itemUrl;
+            postModel.property = property;
+            postModel.newValue = newValue;
+
+            $.ajax({
+                url: "/api/datenmeister/extent/item_set_property",
                 data: postModel,
                 method: "POST",
                 success: (data: any) => { callback.resolve(true); },
@@ -289,10 +315,14 @@ module DatenMeister {
                 return false;
             };
 
+            configuration.onEditPropertyFunction = (url: string, property: string, newValue: string) => {
+                tthis.setProperty(ws, extentUrl, itemUrl, property, newValue);
+            };
+
+
             var table = new GUI.ItemContentTable(data, configuration);
             table.show(jQuery);
         }
-
     }
 
     export namespace Helper {
@@ -308,7 +338,7 @@ module DatenMeister {
     export namespace GUI {
         export function start() {
             $(document).ready(() => {
-                window.onpopstate = function(ev) {
+                window.onpopstate = ev => {
                     parseAndNavigateToWindowLocation();
                 }; 
 
@@ -317,9 +347,6 @@ module DatenMeister {
         }
 
         export function parseAndNavigateToWindowLocation() {
-            var location = document.location.hash;
-            alert(location);
-
             var ws = Helper.getParameterByNameFromHash("ws");
             var extentUrl = Helper.getParameterByNameFromHash("ext");
             var itemUrl = Helper.getParameterByNameFromHash("item");
@@ -492,7 +519,6 @@ module DatenMeister {
                         id = item.uri.substring(hashIndex + 1);
                     }
 
-
                     domRow = $("<tr></tr>");
                     var domColumn = $("<td></td>");
                     domColumn.text(id);
@@ -519,7 +545,6 @@ module DatenMeister {
                     domDeleteColumn.click((function (url: string, innerDomRow: JQuery, innerDomA: JQuery) {
                         return function () {
                             if (innerDomA.data("wasClicked") === true) {
-                                
                                 return tthis.configuration.deleteFunction(url, innerDomRow);
                             } else {
                                 innerDomA.data("wasClicked", true);
@@ -540,18 +565,26 @@ module DatenMeister {
         export class ItemContentConfiguration {
             autoProperties: boolean;
 
+            // Gets or sets a flag, that the user can change the content of a property within the table. 
+            // If the editing was performed, the onEditProperty-function will get called
+            supportInlineEditing: boolean;
+
             editFunction: (url: string, property: string, domRow: JQuery) => boolean;
             deleteFunction: (url: string, property: string, domRow: JQuery) => boolean;
+
+            onEditPropertyFunction: (url: string, property: string, newValue: string) => void;
 
             constructor() {
                 this.editFunction = (url: string, property: string, domRow: JQuery) => false;
                 this.deleteFunction = (url: string, property: string, domRow: JQuery) => false;
+                this.supportInlineEditing = true;
             }
         }
 
         export class ItemContentTable {
             item: IDataTableItem;
             configuration: ItemContentConfiguration;
+            domContainer : JQuery;
 
             constructor(item: IDataTableItem, configuration: ItemContentConfiguration) {
                 this.item = item;
@@ -560,6 +593,7 @@ module DatenMeister {
 
             show(dom: JQuery) {
                 var tthis = this;
+                this.domContainer = dom;
                 dom.empty();
                 var domTable = $("<table class='table'></table>");
 
@@ -573,29 +607,35 @@ module DatenMeister {
 
                     domRow = $("<tr></tr>");
                     var value = this.item.v[property];
-                    var domColumn = $("<td></td>");
+                    var domColumn = $("<td class='table_column_name'></td>");
+                    domColumn.data("column", "name");
                     domColumn.text(property);
                     domRow.append(domColumn);
                         
-                    domColumn = $("<td></td>");
+                    domColumn = $("<td class='table_column_value'></td>");
+                    domColumn.data("column", "value");
                     domColumn.text(value);
                     domRow.append(domColumn);
 
                     // Add Edit link
-                    let domEditColumn = $("<td class='hl'><a href='#'>EDIT</a></td>");
-                    domEditColumn.click((function (url: string, property: string, idomRow: JQuery, idomA: JQuery) {
+                    let domEditColumn = $("<td class='hl table_column_edit'><a href='#'>EDIT</a></td>");
+                    $("a", domEditColumn).click((function (url: string, property: string, idomRow: JQuery, idomA: JQuery) {
                         return function () {
-                            return tthis.configuration.editFunction(url, property, idomRow);
+                            if (tthis.configuration.supportInlineEditing === true) {
+                                tthis.startInlineEditing(property, idomRow);
+                                return false;
+                            } else {
+                                return tthis.configuration.editFunction(url, property, idomRow);
+                            }
                         };
                     })(this.item.uri, property, domRow, domA));
                     domRow.append(domEditColumn);
 
-                    let domDeleteColumn = $("<td class='hl'><a href='#'>DELETE</a></td>");
+                    let domDeleteColumn = $("<td class='hl table_column_delete'><a href='#'>DELETE</a></td>");
                     var domA = $("a", domDeleteColumn);
-                    domDeleteColumn.click((function (url: string, property: string, idomRow: JQuery, idomA: JQuery) {
+                    $("a", domDeleteColumn).click((function (url: string, property: string, idomRow: JQuery, idomA: JQuery) {
                         return function () {
                             if (idomA.data("wasClicked") === true) {
-
                                 return tthis.configuration.deleteFunction(url, property, idomRow);
                             } else {
                                 idomA.data("wasClicked", true);
@@ -611,6 +651,44 @@ module DatenMeister {
                 }
 
                 dom.append(domTable);
+            }
+
+            startInlineEditing(property: string, domRow: JQuery) {
+                var tthis = this;
+                var domValue = $(".table_column_value", domRow);
+                domValue.empty();
+
+                var domTextBox = $("<input type='textbox' />");
+                domTextBox.val(this.item.v[property]);
+                domValue.append(domTextBox);
+                
+                var domEditColumn = $(".table_column_edit", domRow);
+                domEditColumn.empty();
+
+                var domEditOK = $("<a href='#'>OK</a>");
+                domEditColumn.append(domEditOK);
+                var domEditCancel = $("<a href='#'>Cancel</a>");
+                domEditColumn.append(domEditCancel);
+
+                //Sets the commands
+                domEditOK.on('click', () => {
+                    var newValue = domTextBox.val();
+                    tthis.item.v[property] = newValue
+
+                    if (tthis.configuration.onEditPropertyFunction !== undefined) {
+                        tthis.configuration.onEditPropertyFunction(tthis.item.uri, property, newValue);
+                    }
+
+                    tthis.show(tthis.domContainer);
+                    return false;
+                });
+
+                domEditCancel.on('click', () => {
+                    // Rebuilds the complete table
+                    tthis.show(tthis.domContainer);
+
+                    return false;
+                });
 
             }
         }

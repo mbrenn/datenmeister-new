@@ -1,9 +1,9 @@
 ﻿namespace DatenMeister.Web.Models.PostModels
 {
-    public class ItemChangePropertyModel : ItemReferenceModel
+    public class ItemSetPropertyModel : ItemReferenceModel
     {
         public string property { get; set; }
 
-        public string value { get; set; }
+        public string newValue { get; set; }
     }
 }

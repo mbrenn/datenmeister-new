@@ -172,9 +172,9 @@ namespace DatenMeister.Web.Api
             }
         }
 
-        [Route("item_change_property")]
+        [Route("item_set_property")]
         [HttpPost]
-        public object ChangePropertyValue([FromBody] ItemChangePropertyModel model)
+        public object SetPropertyValue([FromBody] ItemSetPropertyModel model)
         {
             try
             {
@@ -183,7 +183,7 @@ namespace DatenMeister.Web.Api
                 IElement foundItem;
                 FindItem(model, out foundWorkspace, out foundExtent, out foundItem);
 
-                foundItem.set(model.property, model.value);
+                foundItem.set(model.property, model.newValue);
 
                 return new {success = true};
             }
@@ -193,9 +193,9 @@ namespace DatenMeister.Web.Api
             }
         }
 
-        [Route("item_change_properties")]
+        [Route("item_set_properties")]
         [HttpPost]
-        public object ChangePropertiesValue([FromBody] ItemChangePropertiesModel model)
+        public object SetPropertiesValue([FromBody] ItemSetPropertiesModel model)
         {
             try
             {

@@ -2,9 +2,9 @@
 
 namespace DatenMeister.Web.Models.PostModels
 {
-    public class ItemChangePropertiesModel : ItemReferenceModel
+    public class ItemSetPropertiesModel : ItemReferenceModel
     {
-        public ItemChangePropertiesModel()
+        public ItemSetPropertiesModel()
         {
             v = new Dictionary<string, string>();
         }

@@ -247,7 +247,14 @@ var DatenMeister;
     var GUI;
     (function (GUI) {
         function start() {
-            $(document).ready(function () { loadWorkspaces(); });
+            $(document).ready(function () {
+                window.onpopstate = function (ev) {
+                    alert("Pop");
+                    alert(JSON.stringify(ev));
+                    alert(ev.state.path);
+                };
+                loadWorkspaces();
+            });
         }
         GUI.start = start;
         function createTitle(ws, extentUrl, itemUrl) {
@@ -299,6 +306,7 @@ var DatenMeister;
             var workbenchLogic = new DatenMeister.WorkspaceLogic();
             workbenchLogic.onWorkspaceSelected = function (id) {
                 // Loads the extent of the workspace, if the user has clicked on one of the workbenches
+                history.pushState({}, '', "#ws=" + encodeURIComponent(id));
                 loadExtents(id);
             };
             workbenchLogic.loadAndCreateHtmlForWorkbenchs($(".container_data"))
@@ -312,6 +320,8 @@ var DatenMeister;
         function loadExtents(workspaceId) {
             var extentLogic = new DatenMeister.ExtentLogic();
             extentLogic.onExtentSelected = function (ws, extentUrl) {
+                history.pushState({}, '', "#ws=" + encodeURIComponent(ws)
+                    + "&ext=" + encodeURIComponent(extentUrl));
                 loadExtent(ws, extentUrl);
                 return false;
             };
@@ -326,6 +336,9 @@ var DatenMeister;
         function loadExtent(workspaceId, extentUrl) {
             var extentLogic = new DatenMeister.ExtentLogic();
             extentLogic.onItemSelected = function (ws, extentUrl, itemUrl) {
+                history.pushState({}, '', "#ws=" + encodeURIComponent(ws)
+                    + "&ext=" + encodeURIComponent(extentUrl)
+                    + "&item=" + encodeURIComponent(itemUrl));
                 loadItem(ws, extentUrl, itemUrl);
             };
             extentLogic.loadAndCreateHtmlForItems($(".container_data"), workspaceId, extentUrl).done(function (data) {

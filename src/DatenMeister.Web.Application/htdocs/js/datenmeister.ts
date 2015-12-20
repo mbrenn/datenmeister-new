@@ -297,7 +297,14 @@ module DatenMeister {
 
     export namespace GUI {
         export function start() {
-            $(document).ready(() => { loadWorkspaces(); });
+            $(document).ready(() => {
+                window.onpopstate = function(ev) {
+                    alert("Pop");
+                    alert(JSON.stringify(ev));
+                    alert(ev.state.path);
+                }; 
+                loadWorkspaces();
+            });
         }
 
         function createTitle(ws?: string, extentUrl?: string, itemUrl?: string) {
@@ -346,6 +353,7 @@ module DatenMeister {
             var workbenchLogic = new DatenMeister.WorkspaceLogic();
             workbenchLogic.onWorkspaceSelected = (id: string) => {
                 // Loads the extent of the workspace, if the user has clicked on one of the workbenches
+                history.pushState({}, '', "#ws=" + encodeURIComponent(id));
                 loadExtents(id);
             };
 
@@ -359,7 +367,9 @@ module DatenMeister {
 
         export function loadExtents(workspaceId: string) {
             var extentLogic = new DatenMeister.ExtentLogic();
-            extentLogic.onExtentSelected = function(ws: string, extentUrl: string) {
+            extentLogic.onExtentSelected = function (ws: string, extentUrl: string) {
+                history.pushState({}, '', "#ws=" + encodeURIComponent(ws)
+                    + "&ext=" + encodeURIComponent(extentUrl));
                 loadExtent(ws, extentUrl);
                 return false;
             };
@@ -376,6 +386,9 @@ module DatenMeister {
         export function loadExtent(workspaceId: string, extentUrl: string) {
             var extentLogic = new DatenMeister.ExtentLogic();
             extentLogic.onItemSelected = function(ws: string, extentUrl: string, itemUrl: string) {
+                history.pushState({}, '', "#ws=" + encodeURIComponent(ws)
+                    + "&ext=" + encodeURIComponent(extentUrl)
+                    + "&item=" + encodeURIComponent(itemUrl));
                 loadItem(ws, extentUrl, itemUrl);
             };
 

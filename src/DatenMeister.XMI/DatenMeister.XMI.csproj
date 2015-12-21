@@ -39,6 +39,8 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EMOF\XmlObject.cs" />
+    <Compile Include="EMOF\XmlReflectiveSequence.cs" />
     <Compile Include="Namespaces.cs" />
     <Compile Include="SimpleLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

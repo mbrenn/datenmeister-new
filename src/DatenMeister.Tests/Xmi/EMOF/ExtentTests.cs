@@ -159,5 +159,14 @@ namespace DatenMeister.Tests.Xmi.EMOF
             Assert.Throws<InvalidOperationException>(() => extent.elements().add(mofElement));
 
         }
+
+        [Test]
+        public void TestXmlFactory()
+        {
+            var factory = new XmlFactory();
+            var mofElement = factory.create(null);
+            Assert.That(mofElement, Is.Not.Null);
+            Assert.That(mofElement, Is.TypeOf<XmlElement>());
+        }
     }
 }

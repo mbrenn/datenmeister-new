@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EMOF\XmlElement.cs" />
+    <Compile Include="EMOF\XmlFactory.cs" />
     <Compile Include="EMOF\XmlReflectiveSequence.cs" />
     <Compile Include="EMOF\XmlUriExtent.cs" />
     <Compile Include="Namespaces.cs" />

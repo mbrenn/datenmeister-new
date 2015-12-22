@@ -1,0 +1,33 @@
+﻿@model DatenMeister.Web.Models.WorkspaceModel
+
+<div class="jumbotron">
+    <p><a href="/">Back to overview</a></p>
+    <h1>Workspace '@Model.id'</h1>
+    <p class="lead">@Model.annotation</p>
+    <!--<p><a href="http://datenmeister.de" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>-->
+</div>
+<script type="text/x-jquery-tmpl" id="template_extent">
+    <tr>
+        <td><a href="#" class="data"><%-uri%></a></td>
+        <td><%-count%></td>
+    </tr>
+</script>
+<div class="row">
+    <div class="col-md-8">
+        <h2>Extents</h2>
+        <table id="container_extents" class="table">
+            <tr><td><em>Loading...</em></td></tr>
+        </table>
+    </div>
+    <div class="col-md-4">
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script type="text/javascript">
+    DatenMeister.GUI.loadExtents("@HttpUtility.JavaScriptStringEncode(Model.id)");
+    </script>
+
+}

@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Http;
 using BurnSystems.Owin.StaticFiles;
 using DatenMeister.App.Web.Zip;
-using DatenMeister.App.ZipCode;
+using DatenMeister.Apps.ZipCode;
 using DatenMeister.Web;
 using Microsoft.Owin;
 using Microsoft.Owin.Extensions;

@@ -61,7 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatenMeister.Apps.ZipCode\DatenMeister.Apps.ZipCode.csproj">
-      <Project>{3ec1dbf5-b87f-4807-96cf-5e68801c3629}</Project>
+      <Project>{3EC1DBF5-B87F-4807-96CF-5E68801C3629}</Project>
       <Name>DatenMeister.Apps.ZipCode</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Web\DatenMeister.Web.csproj">

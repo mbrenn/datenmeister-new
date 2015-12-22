@@ -20,7 +20,7 @@ namespace DatenMeister.XMI.EMOF
         {
             foreach (var subNode in _node.Elements())
             {
-                yield return new XmlObject(subNode);
+                yield return new XmlElement(subNode);
             }
         }
 
@@ -70,12 +70,21 @@ namespace DatenMeister.XMI.EMOF
 
         public void add(int index, object value)
         {
-            throw new System.NotImplementedException();
+            if (index == size())
+            {
+                add(value);
+            }
+            else
+            {
+                var valueAsXmlObject = ConvertValueAsXmlObject(value);
+                var addedBefore = _node.Elements().ElementAt(index);
+                addedBefore.AddBeforeSelf(valueAsXmlObject.XmlNode);
+            }
         }
 
         public object get(int index)
         {
-            return new XmlObject(_node.Elements().ElementAt(index));
+            return new XmlElement(_node.Elements().ElementAt(index));
         }
 
         public void remove(int index)
@@ -87,7 +96,11 @@ namespace DatenMeister.XMI.EMOF
         public object set(int index, object value)
         {
             var valueAsXmlObject = ConvertValueAsXmlObject(value);
-            throw new System.NotImplementedException();
+            var toBeReplaced = _node.Elements().ElementAt(index);
+            toBeReplaced.AddBeforeSelf(valueAsXmlObject.XmlNode);
+            toBeReplaced.Remove();
+
+            return new XmlElement(toBeReplaced);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -95,9 +108,9 @@ namespace DatenMeister.XMI.EMOF
             return GetEnumerator();
         }
 
-        private XmlObject ConvertValueAsXmlObject(object value)
+        private XmlElement ConvertValueAsXmlObject(object value)
         {
-            var valueAsXmlObject = value as XmlObject;
+            var valueAsXmlObject = value as XmlElement;
             if (valueAsXmlObject == null)
             {
                 throw new InvalidOperationException("Value is not an XmlObject: " + value.ToString());

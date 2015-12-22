@@ -20,7 +20,7 @@ namespace DatenMeister.EMOF.Queries
         /// <returns>An enumeration of all object and its descendents</returns>
         public static IEnumerable<IObject> getDescendents(IObject element)
         {
-            var elementAsIObjectExt = element as IObjectExt;
+            var elementAsIObjectExt = element as IObjectAllProperties;
             if (elementAsIObjectExt == null)
             {
                 throw new InvalidOperationException("element is not of type IObjectExt");

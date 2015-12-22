@@ -16,9 +16,9 @@ namespace DatenMeister.EMOF.Helper
             var result = new List<object>();
             foreach (var item in extent.elements())
             {
-                if (item is IObjectExt)
+                if (item is IObjectAllProperties)
                 {
-                    var itemAsObjectExt = item as IObjectExt;
+                    var itemAsObjectExt = item as IObjectAllProperties;
                     var properties = itemAsObjectExt.getPropertiesBeingSet();
 
                     foreach (var property in properties)

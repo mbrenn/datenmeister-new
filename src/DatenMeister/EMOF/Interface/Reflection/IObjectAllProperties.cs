@@ -8,7 +8,7 @@ namespace DatenMeister.EMOF.Interface.Reflection
     ///     This interface is not MOF-compliant and shall only be used when really
     ///     needed for typeless objects
     /// </summary>
-    public interface IObjectExt
+    public interface IObjectAllProperties
     {
         /// <summary>
         ///     Returns an enumeration of all Properties which are currently set in the object

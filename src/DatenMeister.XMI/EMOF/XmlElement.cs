@@ -9,8 +9,10 @@ namespace DatenMeister.XMI.EMOF
     /// <summary>
     /// Abstracts the IObject from EMOF
     /// </summary>
-    public class XmlObject : IObject
+    public class XmlElement : IElement, IHasId
     {
+        private static readonly XName _attributeNameForId = "id";
+
         private readonly XElement _node;
 
         public XElement XmlNode
@@ -18,10 +20,21 @@ namespace DatenMeister.XMI.EMOF
             get { return _node; }
         }
 
-        public XmlObject(XElement node)
+        public XmlElement(XElement node)
         {
             Debug.Assert(node != null, "node != null");
             _node = node;
+
+            // Checks, if an id is given. if not. set it. 
+            if (node.Attribute(_attributeNameForId) == null)
+            {
+                node.SetAttributeValue(_attributeNameForId, Guid.NewGuid().ToString());
+            }
+        }
+
+        public object Id
+        {
+            get { return _node.Attribute(_attributeNameForId).Value; }
         }
 
         public override bool Equals(object obj)
@@ -36,7 +49,7 @@ namespace DatenMeister.XMI.EMOF
 
         public bool equals(object other)
         {
-            var otherAsXmlObject = other as XmlObject;
+            var otherAsXmlObject = other as XmlElement;
             if (otherAsXmlObject == null)
             {
                 return false;
@@ -100,6 +113,18 @@ namespace DatenMeister.XMI.EMOF
             {
                 throw new InvalidOperationException("Only strings as properties are supported at the moment");
             }
+        }
+
+        public IElement metaclass => null;
+
+        public IElement getMetaClass()
+        {
+            return null;
+        }
+
+        public IElement container()
+        {
+            return null;
         }
     }
 }

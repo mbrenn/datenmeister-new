@@ -5,7 +5,7 @@ namespace DatenMeister.EMOF.InMemory
     /// <summary>
     ///     Implements the IElement according to the Mof specification
     /// </summary>
-    public class MofElement : MofObject, IElement, IElementExt
+    public class MofElement : MofObject, IElement, IElementSetMetaClass
     {
         private readonly IElement _container;
 

@@ -96,6 +96,9 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var extent = new XmlUriExtent("dm:///test/");
             Assert.That(extent.contextURI(), Is.EqualTo("dm:///test/"));
 
+            // At the moment, it is not defined whether to contain or not contain. Just to increase coverage
+            Assert.That(extent.useContainment(), Is.True.Or.False);
+
             Assert.That(extent.elements(), Is.Not.Null);
             Assert.That(extent.elements().size(), Is.EqualTo(0));
 

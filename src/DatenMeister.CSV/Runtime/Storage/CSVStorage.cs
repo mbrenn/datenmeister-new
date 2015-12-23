@@ -17,7 +17,7 @@ namespace DatenMeister.CSV.Runtime.Storage
             var mofExtent = new MofUriExtent(configuration.ExtentUri);
             var factory = new MofFactory();
 
-            provider.Load(mofExtent,factory, File.OpenRead(configuration.Path), configuration.Settings);
+            provider.Load(mofExtent,factory, configuration.Path, configuration.Settings);
 
             return mofExtent;
         }

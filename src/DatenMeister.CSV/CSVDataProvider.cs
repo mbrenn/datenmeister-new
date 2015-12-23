@@ -23,7 +23,10 @@ namespace DatenMeister.CSV
         /// <returns>The loaded extent</returns>
         public void Load(IUriExtent extent, IFactory factory, string path, CSVSettings settings)
         {
-            ReadFromFile(path, extent, factory, settings);
+            using (var fileStream = new FileStream(path, FileMode.Open))
+            {
+                Load(extent, factory, fileStream, settings);
+            }
         }
 
         /// <summary>
@@ -35,24 +38,7 @@ namespace DatenMeister.CSV
         /// <returns>The loaded extent</returns>
         public void Load(IUriExtent extent, IFactory factory, Stream stream, CSVSettings settings)
         {
-            ReadFromStream(extent, factory, settings, stream);
-        }
-
-        /// <summary>
-        ///     Reads an extent from file
-        /// </summary>
-        /// <param name="path">Path being used to load the file</param>
-        /// <param name="extent">Extet being stored</param>
-        /// <param name="settings">
-        ///     Settings being used to store it.
-        ///     When the settings are null, a default setting will be loaded
-        /// </param>
-        private void ReadFromFile(string path, IUriExtent extent, IFactory factory, CSVSettings settings)
-        {
-            using (var fileStream = new FileStream(path, FileMode.Open))
-            {
-                ReadFromStream(extent, factory, settings, fileStream);
-            }
+            ReadFromStream(extent, factory, stream, settings);
         }
 
         /// <summary>
@@ -63,7 +49,7 @@ namespace DatenMeister.CSV
         /// <param name="settings">
         ///     Settings being used to store it.
         ///     <param name="stream"></param>
-        public void ReadFromStream(IUriExtent extent, IFactory factory, CSVSettings settings, Stream stream)
+        private void ReadFromStream(IUriExtent extent, IFactory factory, Stream stream, CSVSettings settings)
         {
             if (settings == null)
             {

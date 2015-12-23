@@ -14,11 +14,26 @@ namespace DatenMeister.XMI.EMOF
         private XDocument _document;
         private XElement _rootNode;
 
+        internal XDocument Document => _document;
+
         public XmlUriExtent(string uri, string rootNodeName = "items")
         {
             _document = new XDocument();
             _rootNode = new XElement(rootNodeName);
             _document.Add(_rootNode);
+            _rootNode.SetAttributeValue(_urlPropertyName, uri);
+        }
+
+        public XmlUriExtent(XDocument document, string uri, string rootNodeName = "items")
+        {
+            _document = document;
+            _rootNode = _document.Element(rootNodeName);
+
+            if (_rootNode == null)
+            {
+                throw new InvalidOperationException($"The given document does not have a root node called {rootNodeName}.");
+            }
+            
             _rootNode.SetAttributeValue(_urlPropertyName, uri);
         }
 
@@ -34,7 +49,13 @@ namespace DatenMeister.XMI.EMOF
 
         public string contextURI()
         {
-            return _rootNode.Attribute("uri").Value;
+            var attribute = _rootNode.Attribute(_urlPropertyName);
+            if (attribute == null)
+            {
+                throw new InvalidOperationException("Extent does not have a uri");
+            }
+
+            return _rootNode.Attribute(_urlPropertyName).Value;
         }
 
         public string uri(IElement element)

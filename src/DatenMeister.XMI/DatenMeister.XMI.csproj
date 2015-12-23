@@ -43,6 +43,8 @@
     <Compile Include="EMOF\XmlFactory.cs" />
     <Compile Include="EMOF\XmlReflectiveSequence.cs" />
     <Compile Include="EMOF\XmlUriExtent.cs" />
+    <Compile Include="ExtentStorage\XmiStorage.cs" />
+    <Compile Include="ExtentStorage\XmiStorageConfiguration.cs" />
     <Compile Include="Namespaces.cs" />
     <Compile Include="SimpleLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -51,6 +53,10 @@
     <Compile Include="UmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
+      <Project>{4350A383-14F7-4A84-8CDF-96CA6828F8E9}</Project>
+      <Name>DatenMeister.Runtime</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>
       <Name>DatenMeister</Name>

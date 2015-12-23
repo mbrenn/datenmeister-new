@@ -12,7 +12,6 @@ namespace DatenMeister.XMI.EMOF
         private readonly string _urlPropertyName = "uri";
 
         private XDocument _document;
-        private string _rootNodeName;
         private XElement _rootNode;
 
         public XmlUriExtent(string uri, string rootNodeName = "items")
@@ -20,7 +19,7 @@ namespace DatenMeister.XMI.EMOF
             _document = new XDocument();
             _rootNode = new XElement(rootNodeName);
             _document.Add(_rootNode);
-            _rootNode.SetAttributeValue("uri", uri);
+            _rootNode.SetAttributeValue(_urlPropertyName, uri);
         }
 
         public bool useContainment()

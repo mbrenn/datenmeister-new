@@ -1,6 +1,6 @@
 ﻿namespace DatenMeister.EMOF.Interface.Reflection
 {
-    public interface IElementExt
+    public interface IElementSetMetaClass
     {
         /// <summary>
         ///     Offers to set the meta class after creation

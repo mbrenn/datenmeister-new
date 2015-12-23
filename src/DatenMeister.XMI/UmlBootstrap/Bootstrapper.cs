@@ -91,12 +91,12 @@ namespace DatenMeister.XMI.UmlBootstrap
                 if (name.StartsWith("uml:"))
                 {
                     name = name.Substring(4);
-                    (classInstance as IElementExt).setMetaClass(umlClasses[name]);
+                    (classInstance as IElementSetMetaClass).setMetaClass(umlClasses[name]);
                 }
                 else if (name.StartsWith("mofext:"))
                 {
                     name = name.Substring(7);
-                    (classInstance as IElementExt).setMetaClass(mofClasses[name]);
+                    (classInstance as IElementSetMetaClass).setMetaClass(mofClasses[name]);
                 }
                 else
                 {

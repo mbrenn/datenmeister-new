@@ -93,11 +93,11 @@
     <Compile Include="Models\ExtentContentModel.cs" />
     <Compile Include="Models\ExtentModel.cs" />
     <Compile Include="Models\ItemContentModel.cs" />
-    <Compile Include="Models\PostModels\ItemSetPropertiesModel.cs" />
-    <Compile Include="Models\PostModels\ItemSetPropertyModel.cs" />
     <Compile Include="Models\PostModels\ItemDeleteModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\PostModels\ItemReferenceModel.cs" />
+    <Compile Include="Models\PostModels\ItemSetPropertiesModel.cs" />
+    <Compile Include="Models\PostModels\ItemSetPropertyModel.cs" />
     <Compile Include="Models\PostModels\ItemUnsetPropertyModel.cs" />
     <Compile Include="Models\WorkspaceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

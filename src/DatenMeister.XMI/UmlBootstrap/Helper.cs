@@ -78,7 +78,7 @@ namespace DatenMeister.XMI.UmlBootstrap
         /// <returns>Enumeration of objects of the given type</returns>
         private static IEnumerable<IObject> XmlGetElementsOfType(IObject element, string typeName)
         {
-            var elementAsExt = (IObjectExt) element;
+            var elementAsExt = (IObjectAllProperties) element;
             if (elementAsExt == null)
             {
                 throw new ArgumentNullException("element is not Null");

@@ -9,7 +9,7 @@ namespace DatenMeister.EMOF.InMemory
     /// <summary>
     ///     Describes the InMemory object, representing the Mof Object
     /// </summary>
-    public class MofObject : IObject, IObjectExt
+    public class MofObject : IObject, IObjectAllProperties, IHasId
     {
         /// <summary>
         ///     Stores the values direct within the memory
@@ -25,6 +25,11 @@ namespace DatenMeister.EMOF.InMemory
         ///     Gets or sets the guid of the element
         /// </summary>
         public Guid guid { get; private set; }
+
+        object IHasId.Id
+        {
+            get { return this.guid; }
+        }
 
         public bool equals(object other)
         {

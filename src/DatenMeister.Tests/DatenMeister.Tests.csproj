@@ -77,6 +77,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="CSV\CSVExtentTests.cs" />
     <Compile Include="Mof\Core\MofObjectTests.cs" />
     <Compile Include="Mof\Queries\TestFilters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,6 +89,10 @@
     <ProjectReference Include="..\DatenMeister.CSV\DatenMeister.CSV.csproj">
       <Project>{39845115-f057-4641-9237-6960bb676684}</Project>
       <Name>DatenMeister.CSV</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
+      <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>
+      <Name>DatenMeister.Runtime</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj">
       <Project>{2aae5839-db41-429b-b7c4-b872506736c7}</Project>

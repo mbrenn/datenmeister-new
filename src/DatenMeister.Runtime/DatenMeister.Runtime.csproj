@@ -39,6 +39,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtentStorage\ExtentFileStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\ExtentStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\IExtentStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

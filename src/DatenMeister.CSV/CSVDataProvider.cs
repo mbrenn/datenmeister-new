@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 
@@ -28,7 +30,7 @@ namespace DatenMeister.CSV
         ///     Loads the CSV Extent out of the settings and stores the extent Uri
         /// </summary>
         /// <param name="extent">The uri being used for an extent</param>
-        /// <param name="path">Path being used to load the extent</param>
+        /// <param name="stream">Path being used to load the extent</param>
         /// <param name="settings">Settings to load the extent</param>
         /// <returns>The loaded extent</returns>
         public void Load(IUriExtent extent, IFactory factory, Stream stream, CSVSettings settings)
@@ -118,70 +120,66 @@ namespace DatenMeister.CSV
             }
         }
 
-        /*
+        /// <summary>
+        ///     Splits a CSV line into columns
+        /// </summary>
+        /// <returns>List of column values</returns>
+        private static IList<string> SplitLine(string line, CSVSettings settings)
+        {
+            return line.Split(new[] {settings.Separator}, StringSplitOptions.None);
+        }
+
         /// <summary>
         /// Saves the extent into database.
         /// </summary>
         /// <param name="extent">Extent to be stored</param>
         /// <param name="path">Path, where file shall be stored</param>
         /// <param name="settings">Settings being used</param>
-        public void Save(IURIExtent extent, string path, CSVSettings settings)
+        public void Save(IUriExtent extent, string path, CSVSettings settings)
         {
-            var columnHeaders = new List<string>();
-            var extentAsCSV = extent as CSVExtent;
+            var columns = new List<object>();
 
             // Retrieve the column headers
-            if (settings.HasHeader && extentAsCSV != null && extentAsCSV.HeaderNames.Count > 0)
+            if (settings.HasHeader && settings.Columns.Count > 0)
             {
                 // Column headers given by old extent
-                columnHeaders.AddRange(extentAsCSV.HeaderNames);
+                columns.AddRange(settings.Columns);
             }
             else
             {
                 // Column headers given by number by asking each object about the number of properties and
                 // then use the maximum value of the elements. This assumes that every element has the same type
-                var maxColumnCount = extent.Elements().Select(x => x.AsIObject().getAll().Count()).Max();
-                for (var n = 0; n < maxColumnCount; n++)
-                {
-                    columnHeaders.Add(string.Format("Column {0}", n));
-                }
+                columns = extent.GetProperties().ToList();
             }
 
             // Open File
-            using (var streamWriter = new StreamWriter(path, false, settings.Encoding))
+            using (var streamWriter = new StreamWriter(File.OpenWrite(path), settings.Encoding))
             {
                 // Writes the header
                 if (settings.HasHeader)
                 {
-                    this.WriteRow(streamWriter, settings, columnHeaders, x => x);
+                    WriteRow(streamWriter, settings, columns, x => x.ToString());
                 }
 
                 // Writes the elements
-                foreach (var element in extent.Elements().Select(x => x.AsIObject()))
+                foreach (var element in extent.elements().Select(x => x as IObject))
                 {
-                    this.WriteRow(
+                    WriteRow(
                         streamWriter,
                         settings,
-                        columnHeaders,
+                        columns,
                         x => element.get(x));
                 }
             }
-        }*/
-
-        /// <summary>
-        ///     Splits a CSV line into columns
-        /// </summary>
-        /// <returns>List of column values</returns>
-        private IList<string> SplitLine(string line, CSVSettings settings)
-        {
-            return line.Split(new[] {settings.Separator}, StringSplitOptions.None);
         }
 
         /// <summary>
         ///     Writes a columete
         /// </summary>
         /// <param name="streamWriter"></param>
+        /// <param name="settings">Settings to be used</param>
         /// <param name="values"></param>
+        /// <param name="conversion">Converter to be used, to show the content</param>
         private void WriteRow<T>(StreamWriter streamWriter, CSVSettings settings, IEnumerable<T> values,
             Func<T, object> conversion)
         {

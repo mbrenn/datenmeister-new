@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 
@@ -13,8 +14,15 @@ namespace DatenMeister.EMOF.Helper
         /// <returns>Enumeration of all columns</returns>
         public static IEnumerable<object> GetProperties(this IUriExtent extent)
         {
+            var elements = extent.elements();
+
+            return GetProperties(elements);
+        }
+
+        private static IEnumerable<object> GetProperties(this IReflectiveSequence elements)
+        {
             var result = new List<object>();
-            foreach (var item in extent.elements())
+            foreach (var item in elements)
             {
                 if (item is IObjectAllProperties)
                 {

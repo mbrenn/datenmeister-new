@@ -38,7 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{EA66AB2F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Web.Application", "DatenMeister.Web.Application\DatenMeister.Web.Application.csproj", "{394C2EC6-8505-405E-98DB-5403BE8E1145}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.App.Web.Zip", "DatenMeister.App.Web.Zip\DatenMeister.App.Web.Zip.csproj", "{ED5F12DF-C45A-4D94-941D-93D6C910A888}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Apps.ZipCode.AspNet", "DatenMeister.Apps.ZipCode.AspNet\DatenMeister.Apps.ZipCode.AspNet.csproj", "{ED5F12DF-C45A-4D94-941D-93D6C910A888}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Apps.ZipCode.Web", "DatenMeister.Apps.ZipCode.Web\DatenMeister.Apps.ZipCode.Web.csproj", "{56A5B821-42E7-46E2-B1EC-A843A576BD98}"
 EndProject

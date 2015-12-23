@@ -20,5 +20,11 @@ namespace DatenMeister.Web.Models
         public IEnumerable<DataTableColumn> columns { get; set; }
 
         public IEnumerable<DataTableItem> items { get; set; }
+
+        /// <summary>
+        /// Gets or sets the search string, which is used to validate that the correct 
+        /// request is evaluated. 
+        /// </summary>
+        public string search { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DatenMeister.EMOF.Interface.Common;
 
 namespace DatenMeister.EMOF.Queries
@@ -33,7 +34,7 @@ namespace DatenMeister.EMOF.Queries
 
         public static IReflectiveCollection WhenOneOfThePropertyContains(
             IReflectiveCollection collection,
-            object[] properties,
+            IEnumerable<object> properties,
             string value,
             StringComparison comparer = StringComparison.CurrentCulture)
         {

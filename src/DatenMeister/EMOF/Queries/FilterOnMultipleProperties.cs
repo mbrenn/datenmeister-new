@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Proxy;
@@ -9,12 +10,12 @@ namespace DatenMeister.EMOF.Queries
     public class FilterOnMultipleProperties : ProxyReflectiveCollection
     {
         private readonly StringComparison _comparison;
-        private readonly object[] _properties;
+        private readonly IEnumerable<object> _properties;
         private readonly string _searchString;
 
         public FilterOnMultipleProperties(
             IReflectiveCollection collection,
-            object[] properties,
+            IEnumerable<object> properties,
             string searchString,
             StringComparison comparison = StringComparison.CurrentCulture)
             : base(collection)
@@ -26,10 +27,11 @@ namespace DatenMeister.EMOF.Queries
 
         public override IEnumerator<object> GetEnumerator()
         {
+            var properties = _properties.ToList();
             foreach (var value in _collection)
             {
                 var valueAsObject = value as IObject;
-                foreach (var property in _properties)
+                foreach (var property in properties)
                 {
                     if ((valueAsObject?.isSet(property) == true) &&
                         (valueAsObject

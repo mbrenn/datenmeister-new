@@ -4,8 +4,10 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using DatenMeister.EMOF.Helper;
+using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.EMOF.Queries;
 using DatenMeister.Web.Models;
 using DatenMeister.Web.Models.PostModels;
 
@@ -53,7 +55,7 @@ namespace DatenMeister.Web.Api
         }
 
         [Route("items")]
-        public object GetItems(string ws, string extent)
+        public object GetItems(string ws, string extent, string search = null)
         {
             var amount = 100; // Return only the first 100 elements if no index is given
             var offset = 0;
@@ -72,26 +74,37 @@ namespace DatenMeister.Web.Api
 
             var properties = foundExtent.GetProperties().ToList();
 
-            var result = new ExtentContentModel();
-            result.url = extent;
-            result.columns = properties
-                .Select(x => new DataTableColumn
-                {
-                    name = x.ToString(),
-                    title = x.ToString()
-                })
-                .ToList();
-            result.totalItemCount = totalItems.Count();
-            result.filteredItemCount = foundItems.Count();
-            result.items = totalItems
-                .Skip(offset)
-                .Take(amount)
-                .Select(x => new DataTableItem
-                {
-                    uri = foundExtent.uri(x as IElement),
-                    v = (x as IElement).AsStringDictionary(properties)
-                })
-                .ToList();
+            // Perform the filtering
+            IReflectiveCollection filteredItems = foundItems;
+            if (!string.IsNullOrEmpty(search))
+            {
+                filteredItems = Filter.WhenOneOfThePropertyContains(
+                    foundItems, properties, search, StringComparison.CurrentCultureIgnoreCase);
+            }
+
+            var result = new ExtentContentModel
+            {
+                url = extent,
+                columns = properties
+                    .Select(x => new DataTableColumn
+                    {
+                        name = x.ToString(),
+                        title = x.ToString()
+                    })
+                    .ToList(),
+                totalItemCount = totalItems.Count(),
+                search = search,
+                filteredItemCount = filteredItems.Count(),
+                items = filteredItems
+                    .Skip(offset)
+                    .Take(amount)
+                    .Select(x => new DataTableItem
+                    {
+                        uri = foundExtent.uri(x as IElement),
+                        v = (x as IElement).AsStringDictionary(properties)
+                    })
+                    .ToList()
+            };
 
             return result;
         }

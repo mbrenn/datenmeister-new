@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Runtime.ExtentStorage
+﻿namespace DatenMeister.Runtime.ExtentStorage.Interfaces
 {
     public class ExtentFileStorageConfiguration : ExtentStorageConfiguration
     {

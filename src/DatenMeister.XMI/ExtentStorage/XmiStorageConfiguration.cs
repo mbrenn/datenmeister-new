@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.XMI.ExtentStorage
 {

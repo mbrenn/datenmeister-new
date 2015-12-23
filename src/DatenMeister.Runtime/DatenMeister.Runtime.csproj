@@ -39,9 +39,14 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExtentStorage\ExtentFileStorageConfiguration.cs" />
-    <Compile Include="ExtentStorage\ExtentStorageConfiguration.cs" />
-    <Compile Include="ExtentStorage\IExtentStorage.cs" />
+    <Compile Include="DMCore.cs" />
+    <Compile Include="ExtentStorage\IExtentStorageToConfigurationMap.cs" />
+    <Compile Include="ExtentStorage\Interfaces\ExtentFileStorageConfiguration.cs" />
+    <Compile Include="ExtentStorage\Interfaces\ExtentStorageConfiguration.cs" />
+    <Compile Include="ExtentStorage\ExtentStorageLogic.cs" />
+    <Compile Include="ExtentStorage\Interfaces\IExtentStorage.cs" />
+    <Compile Include="ExtentStorage\LoadedExtentInformation.cs" />
+    <Compile Include="ManualExtentStorageToConfigurationMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,33 +4,37 @@ using System.Xml;
 using System.Xml.Linq;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.XMI.EMOF;
 
 namespace DatenMeister.XMI.ExtentStorage
 {
-    public class XmiStorage  : IExtentStorage<XmiStorageConfiguration>
+    public class XmiStorage  : IExtentStorage
     {
-        public IUriExtent LoadExtent(XmiStorageConfiguration configuration)
+        public IUriExtent LoadExtent(ExtentStorageConfiguration configuration)
         {
-            if (!File.Exists(configuration.Path))
+            var xmiConfiguration = (XmiStorageConfiguration) configuration;
+            if (!File.Exists(xmiConfiguration.Path))
             {
                 throw new InvalidOperationException(
-                    $"File not found: {configuration.Path}");
+                    $"File not found: {xmiConfiguration.Path}");
             }
 
-            var xmlDocument = XDocument.Load(configuration.Path);
-            return new XmlUriExtent(xmlDocument, configuration.ExtentUri);
+            var xmlDocument = XDocument.Load(xmiConfiguration.Path);
+            return new XmlUriExtent(xmlDocument, xmiConfiguration.ExtentUri);
         }
 
-        public void StoreExtent(IUriExtent extent, XmiStorageConfiguration configuration)
+        public void StoreExtent(IUriExtent extent, ExtentStorageConfiguration configuration)
         {
+            var xmiConfiguration = (XmiStorageConfiguration)configuration;
+
             var xmlExtent = extent as XmlUriExtent;
             if (xmlExtent == null)
             {
                 throw new InvalidOperationException("Only XmlUriExtents are supported");
             }
 
-            using (var fileStream = File.OpenWrite(configuration.Path))
+            using (var fileStream = File.OpenWrite(xmiConfiguration.Path))
             {
                 xmlExtent.Document.Save(fileStream);
             }

@@ -5,8 +5,6 @@ using DatenMeister.XMI.UmlBootstrap;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System;
-using DatenMeister.EMOF.Helper;
 using DatenMeister.XMI;
 using DatenMeister.Filler;
 

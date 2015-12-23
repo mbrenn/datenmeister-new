@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Xml.Linq;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
@@ -65,7 +64,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             if (information == null)
             {
-                throw new InvalidOperationException($"The extent '{extent}was not loaded by this instance");
+                throw new InvalidOperationException($"The extent '{extent}' was not loaded by this instance");
             }
             
             var extentStorage = _map.CreateFor(information.Configuration);

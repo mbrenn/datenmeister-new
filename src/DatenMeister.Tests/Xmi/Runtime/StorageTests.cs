@@ -1,11 +1,9 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.XMI.EMOF;
 using DatenMeister.XMI.ExtentStorage;
 using NUnit.Framework;
-using NUnit.Util;
 
 namespace DatenMeister.Tests.Xmi.Runtime
 {

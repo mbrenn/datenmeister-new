@@ -5,25 +5,22 @@ namespace DatenMeister.SourcecodeGenerator
 {
     public class FillClassTreeByExtentCreator : WalkPackageClass
     {
-        public string ClassNameOfTree
-        {
-            get;
-            set;
-        }
-
         public FillClassTreeByExtentCreator(string classNameOfTree)
         {
             ClassNameOfTree = classNameOfTree;
             FactoryVersion = new Version(1, 0, 0, 0);
         }
-        
+
+        public string ClassNameOfTree { get; set; }
+
         /// <summary>
-        /// Creates a C# source code. Not to be used for recursive 
-        /// call since the namespace is just once created
+        ///     Creates a C# source code. Not to be used for recursive
+        ///     call since the namespace is just once created
         /// </summary>
-        /// <param name="element">Regards the given element as a package
-        /// and returns a full namespace for the package. 
-        ///</param>
+        /// <param name="element">
+        ///     Regards the given element as a package
+        ///     and returns a full namespace for the package.
+        /// </param>
         /// <param name="stack">Used as the callstack</param>
         protected override void Walk(IObject element, CallStack stack)
         {
@@ -61,11 +58,13 @@ namespace DatenMeister.SourcecodeGenerator
                 Result.AppendLine($"{methodStack.Indentation}private static string GetNameOfElement(IObject element)");
                 Result.AppendLine($"{methodStack.Indentation}{{");
                 Result.AppendLine($"{methodStack.Indentation}    var nameAsObject = element.get(\"name\");");
-                Result.AppendLine($"{methodStack.Indentation}    return nameAsObject == null ? string.Empty : nameAsObject.ToString();");
+                Result.AppendLine(
+                    $"{methodStack.Indentation}    return nameAsObject == null ? string.Empty : nameAsObject.ToString();");
                 Result.AppendLine($"{methodStack.Indentation}}}");
                 Result.AppendLine();
 
-                Result.AppendLine($"{methodStack.Indentation}public static void DoFill(IEnumerable<object> collection, {ClassNameOfTree} tree)");
+                Result.AppendLine(
+                    $"{methodStack.Indentation}public static void DoFill(IEnumerable<object> collection, {ClassNameOfTree} tree)");
                 Result.AppendLine($"{methodStack.Indentation}{{");
                 Result.AppendLine($"{foreachStack.Indentation}string name;");
                 Result.AppendLine($"{foreachStack.Indentation}IObject value;");
@@ -84,7 +83,8 @@ namespace DatenMeister.SourcecodeGenerator
             var ifStack = innerStack.NextWithoutLevelIncrease;
             var ifForeachStack = ifStack.NextWithoutLevelIncrease;
             Result.AppendLine($"{ifStack.Indentation}isSet = value.isSet(\"packagedElement\");");
-            Result.AppendLine($"{ifStack.Indentation}collection = isSet ? (value.get(\"packagedElement\") as IEnumerable<object>) : EmptyList;");
+            Result.AppendLine(
+                $"{ifStack.Indentation}collection = isSet ? (value.get(\"packagedElement\") as IEnumerable<object>) : EmptyList;");
             Result.AppendLine($"{ifStack.Indentation}foreach (var item{ifStack.Level} in collection)");
             Result.AppendLine($"{ifStack.Indentation}{{");
             Result.AppendLine($"{ifForeachStack.Indentation}value = item{ifStack.Level} as IObject;");
@@ -113,7 +113,8 @@ namespace DatenMeister.SourcecodeGenerator
             var ifForeachStack = ifStack.NextWithoutLevelIncrease;
             Result.AppendLine($"{ifStack.Indentation}tree.{stack.Fullname}.@{name}Instance = value;");
             Result.AppendLine($"{ifStack.Indentation}isSet = value.isSet(\"ownedAttribute\");");
-            Result.AppendLine($"{ifStack.Indentation}collection = isSet ? (value.get(\"ownedAttribute\") as IEnumerable<object>) : EmptyList;");
+            Result.AppendLine(
+                $"{ifStack.Indentation}collection = isSet ? (value.get(\"ownedAttribute\") as IEnumerable<object>) : EmptyList;");
             Result.AppendLine($"{ifStack.Indentation}foreach (var item{ifStack.Level} in collection)");
             Result.AppendLine($"{ifStack.Indentation}{{");
             Result.AppendLine($"{ifForeachStack.Indentation}value = item{ifStack.Level} as IObject;");

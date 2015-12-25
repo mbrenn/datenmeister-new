@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Web.Http;
 
 namespace DatenMeister.Web.Api
@@ -19,8 +15,8 @@ namespace DatenMeister.Web.Api
                 result.Add(
                     new
                     {
-                        id = workspace.id,
-                        annotation = workspace.annotation
+                        workspace.id,
+                        workspace.annotation
                     });
             }
 

@@ -1,24 +1,18 @@
-﻿using DatenMeister.EMOF.Interface.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
-using DatenMeister.EMOF.Proxy;
+﻿using System.Collections.Generic;
+using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.EMOF.Proxy;
 
 namespace DatenMeister.EMOF.Queries
 {
     public class FilterOnPropertyCollection : ProxyReflectiveCollection
     {
-        private object _property;
-
-        private object _filterValue;
+        private readonly object _filterValue;
+        private readonly object _property;
 
         public FilterOnPropertyCollection(
-            IReflectiveSequence collection, 
-            object property, 
+            IReflectiveSequence collection,
+            object property,
             object filterValue)
             : base(collection)
         {

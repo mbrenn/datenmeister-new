@@ -1,14 +1,8 @@
 ﻿using DatenMeister.EMOF.InMemory;
-using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.SourcecodeGenerator;
 using DatenMeister.XMI;
-using DatenMeister.XMI.UmlBootstrap;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DatenMeister.SourceGeneration
 {

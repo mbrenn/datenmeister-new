@@ -1,28 +1,32 @@
-﻿using DatenMeister.EMOF.Interface.Identifiers;
+﻿using System.Collections.Generic;
+using DatenMeister.EMOF.Interface.Common;
+using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DatenMeister.EMOF.Helper
 {
     public static class ExtentHelper
     {
         /// <summary>
-        /// Returns an enumeration of all columns that are within the given extent
+        ///     Returns an enumeration of all columns that are within the given extent
         /// </summary>
         /// <param name="extent">Extent to be checked</param>
         /// <returns>Enumeration of all columns</returns>
         public static IEnumerable<object> GetProperties(this IUriExtent extent)
         {
+            var elements = extent.elements();
+
+            return GetProperties(elements);
+        }
+
+        private static IEnumerable<object> GetProperties(this IReflectiveSequence elements)
+        {
             var result = new List<object>();
-            foreach (var item in extent.elements())
+            foreach (var item in elements)
             {
-                if (item is IObjectExt)
+                if (item is IObjectAllProperties)
                 {
-                    var itemAsObjectExt = item as IObjectExt;
+                    var itemAsObjectExt = item as IObjectAllProperties;
                     var properties = itemAsObjectExt.getPropertiesBeingSet();
 
                     foreach (var property in properties)

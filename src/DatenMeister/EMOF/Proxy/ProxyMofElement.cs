@@ -1,9 +1,4 @@
 ﻿using DatenMeister.EMOF.Interface.Reflection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DatenMeister.EMOF.Proxy
 {
@@ -18,10 +13,7 @@ namespace DatenMeister.EMOF.Proxy
 
         public virtual IElement metaclass
         {
-            get
-            {
-                return _element.metaclass;
-            }
+            get { return _element.metaclass; }
         }
 
         public virtual IElement container()

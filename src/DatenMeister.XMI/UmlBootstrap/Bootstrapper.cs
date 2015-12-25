@@ -1,55 +1,23 @@
-﻿using DatenMeister.EMOF.InMemory;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DatenMeister.XMI.UmlBootstrap
 {
     /// <summary>
-    /// Performs the bootstrap on the given object 
+    ///     Performs the bootstrap on the given object
     /// </summary>
     public class Bootstrapper
     {
         /// <summary>
-        /// Stores a vlaue indicating whether the run was already performed.
-        /// If yes, the method is locked
+        ///     Stores a vlaue indicating whether the run was already performed.
+        ///     If yes, the method is locked
         /// </summary>
-        private bool wasRun = false;
-
-        public Dictionary<string, IElement> mofClasses
-        {
-            get;
-            private set;
-        }
-
-        public Dictionary<string, IElement> umlClasses
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Stores the extent for the uml infrastructure
-        /// </summary>
-        public IUriExtent MofInfrastructure
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Stores the extent for the uml infrastructure
-        /// </summary>
-        public IUriExtent UmlInfrastructure
-        {
-            get;
-            private set;
-        }
+        private bool wasRun;
 
         public Bootstrapper(IUriExtent umlInfrastructure, IUriExtent mofInfrastructure)
         {
@@ -68,8 +36,22 @@ namespace DatenMeister.XMI.UmlBootstrap
             umlClasses = new Dictionary<string, IElement>();
         }
 
+        public Dictionary<string, IElement> mofClasses { get; }
+
+        public Dictionary<string, IElement> umlClasses { get; }
+
         /// <summary>
-        /// Performs the bootstrap
+        ///     Stores the extent for the uml infrastructure
+        /// </summary>
+        public IUriExtent MofInfrastructure { get; }
+
+        /// <summary>
+        ///     Stores the extent for the uml infrastructure
+        /// </summary>
+        public IUriExtent UmlInfrastructure { get; }
+
+        /// <summary>
+        ///     Performs the bootstrap
         /// </summary>
         public void Strap()
         {
@@ -79,7 +61,7 @@ namespace DatenMeister.XMI.UmlBootstrap
             }
 
             wasRun = true;
-            
+
             // First, find the all classes of the uml namespace...            
             var descendents = AllDescendentsQuery.getDescendents(UmlInfrastructure);
             var typeProperty = (Namespaces.Xmi + "type").ToString();
@@ -109,12 +91,12 @@ namespace DatenMeister.XMI.UmlBootstrap
                 if (name.StartsWith("uml:"))
                 {
                     name = name.Substring(4);
-                    (classInstance as IElementExt).setMetaClass(umlClasses[name]);
+                    (classInstance as IElementSetMetaClass).setMetaClass(umlClasses[name]);
                 }
                 else if (name.StartsWith("mofext:"))
                 {
                     name = name.Substring(7);
-                    (classInstance as IElementExt).setMetaClass(mofClasses[name]);
+                    (classInstance as IElementSetMetaClass).setMetaClass(mofClasses[name]);
                 }
                 else
                 {
@@ -124,7 +106,7 @@ namespace DatenMeister.XMI.UmlBootstrap
         }
 
         /// <summary>
-        /// Performs a full bootstrap by reading in the uml class
+        ///     Performs a full bootstrap by reading in the uml class
         /// </summary>
         /// <param name="pathUml">Path of XMI file containing the UML file to be used</param>
         /// <param name="pathMof">Path of XMI file containing the MOF specification being</param>

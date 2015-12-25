@@ -1,31 +1,28 @@
-﻿using DatenMeister.EMOF.Interface.Common;
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
+using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.Queries
 {
     public class OrderByQuery : IReflectiveCollection
     {
-        private IReflectiveCollection _parent;
+        private readonly object _orderByProperty;
+        private readonly IReflectiveCollection _parent;
 
-        private object _orderByProperty;
-
-        public OrderByQuery (IReflectiveCollection parent, object property)
+        public OrderByQuery(IReflectiveCollection parent, object property)
         {
             _parent = parent;
             _orderByProperty = property;
 
-            if ( _parent == null )
+            if (_parent == null)
             {
                 throw new ArgumentNullException(nameof(parent));
             }
 
-            if(_orderByProperty == null )
+            if (_orderByProperty == null)
             {
                 throw new ArgumentNullException(nameof(property));
             }

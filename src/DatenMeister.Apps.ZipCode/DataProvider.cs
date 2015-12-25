@@ -1,16 +1,15 @@
-﻿using DatenMeister.CSV;
-using DatenMeister.EMOF.InMemory;
-using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Queries;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using DatenMeister.CSV;
+using DatenMeister.EMOF.InMemory;
+using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.EMOF.Queries;
 
-namespace DatenMeister.App.ZipCode
+namespace DatenMeister.Apps.ZipCode
 {
     public class DataProvider
     {

@@ -18,7 +18,7 @@ namespace DatenMeister.Tests.Runtime
             File.WriteAllText("data.txt", csvFile);
             
             var mapper = new ManualExtentStorageToConfigurationMap();
-            mapper.AddMapping(typeof(CSVStorageConfiguration), typeof(CSVStorage));
+            mapper.AddMapping(typeof (CSVStorageConfiguration), () => new CSVStorage());
 
             var logic = new ExtentStorageLogic(mapper);
             var configuration = new CSVStorageConfiguration()
@@ -32,11 +32,11 @@ namespace DatenMeister.Tests.Runtime
                 }
             };
 
-            var csvExtent = logic.Load(configuration);
+            var csvExtent = logic.LoadExtent(configuration);
             Assert.That(csvExtent, Is.Not.Null);
             
             Assert.That(csvExtent.elements().Count(), Is.EqualTo(4));
-            logic.Store(csvExtent);
+            logic.StoreExtent(csvExtent);
 
             // Changes content, store it and check, if stored
             (csvExtent.elements().ElementAt(0) as IObject).set(configuration.Settings.Columns[0], "eens");

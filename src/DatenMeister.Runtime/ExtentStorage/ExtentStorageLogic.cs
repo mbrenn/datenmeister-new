@@ -25,7 +25,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             _map = map;
         }
 
-        public IUriExtent Load(ExtentStorageConfiguration configuration)
+        public IUriExtent LoadExtent(ExtentStorageConfiguration configuration)
         {
             var extentStorage = _map.CreateFor(configuration);
 
@@ -54,7 +54,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// If loading was not performed, an exception is thrown. 
         /// </summary>
         /// <param name="extent"></param>
-        public void Store(IUriExtent extent)
+        public void StoreExtent(IUriExtent extent)
         {
             LoadedExtentInformation information;
             lock (_loadedExtents)
@@ -81,7 +81,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             foreach (var info in copy)
             {
-                Store(info.Extent);
+                StoreExtent(info.Extent);
             }
         }
     }

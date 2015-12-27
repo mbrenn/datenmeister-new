@@ -21,7 +21,7 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// Sores the extent according to the given configuration
         /// </summary>
         /// <param name="extent">Extent to be stored</param>
-        /// <param name="configuration">Configuration to be used</param>
+        /// <param name="configuration">Configuration to be added</param>
         void StoreExtent(IUriExtent extent, ExtentStorageConfiguration configuration);
     }
 }

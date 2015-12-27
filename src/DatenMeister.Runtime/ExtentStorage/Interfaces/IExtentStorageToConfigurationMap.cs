@@ -1,6 +1,4 @@
-﻿using DatenMeister.Runtime.ExtentStorage.Interfaces;
-
-namespace DatenMeister.Runtime.ExtentStorage
+﻿namespace DatenMeister.Runtime.ExtentStorage.Interfaces
 {
     /// <summary>
     /// Maps the extent storage type to a configuration type which is used by the logic to find out the best type

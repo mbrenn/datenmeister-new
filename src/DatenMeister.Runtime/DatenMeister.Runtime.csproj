@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DMCore.cs" />
-    <Compile Include="ExtentStorage\IExtentStorageToConfigurationMap.cs" />
+    <Compile Include="ExtentStorage\Interfaces\IExtentStorageToConfigurationMap.cs" />
     <Compile Include="ExtentStorage\Interfaces\ExtentFileStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\Interfaces\ExtentStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\ExtentStorageLogic.cs" />
@@ -49,7 +49,7 @@
     <Compile Include="FactoryMapper\DefaultFactoryMapper.cs" />
     <Compile Include="FactoryMapper\Extensions.cs" />
     <Compile Include="FactoryMapper\IFactoryMapper.cs" />
-    <Compile Include="ManualExtentStorageToConfigurationMap.cs" />
+    <Compile Include="ExtentStorage\ManualExtentStorageToConfigurationMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

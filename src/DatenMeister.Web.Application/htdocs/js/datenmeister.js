@@ -12,12 +12,28 @@ var DatenMeister;
     var PostModels;
     (function (PostModels) {
         /** This class is used to reference a single object within the database */
-        var ItemReferenceModel = (function () {
+        var ExtentReferenceModel = (function () {
+            function ExtentReferenceModel() {
+            }
+            return ExtentReferenceModel;
+        })();
+        PostModels.ExtentReferenceModel = ExtentReferenceModel;
+        var ItemReferenceModel = (function (_super) {
+            __extends(ItemReferenceModel, _super);
             function ItemReferenceModel() {
+                _super.apply(this, arguments);
             }
             return ItemReferenceModel;
-        })();
+        })(ExtentReferenceModel);
         PostModels.ItemReferenceModel = ItemReferenceModel;
+        var ItemCreateModel = (function (_super) {
+            __extends(ItemCreateModel, _super);
+            function ItemCreateModel() {
+                _super.apply(this, arguments);
+            }
+            return ItemCreateModel;
+        })(ExtentReferenceModel);
+        PostModels.ItemCreateModel = ItemCreateModel;
         var ItemUnsetPropertyModel = (function (_super) {
             __extends(ItemUnsetPropertyModel, _super);
             function ItemUnsetPropertyModel() {
@@ -108,6 +124,20 @@ var DatenMeister;
     var ExtentLogic = (function () {
         function ExtentLogic() {
         }
+        ExtentLogic.prototype.createItem = function (ws, extentUrl, container) {
+            var callback = $.Deferred();
+            var postModel = new PostModels.ItemCreateModel();
+            postModel.ws = ws;
+            postModel.extent = extentUrl;
+            postModel.container = container;
+            $.ajax({
+                url: "/api/datenmeister/extent/item_create",
+                data: postModel,
+                method: "POST",
+                success: function (data) { callback.resolve(true); },
+                error: function (data) { callback.reject(false); }
+            });
+        };
         /* Deletes an item from the database and returns the value indicatng whether the deleteion was successful */
         ExtentLogic.prototype.deleteItem = function (ws, extent, item) {
             var callback = $.Deferred();

@@ -46,6 +46,9 @@
     <Compile Include="ExtentStorage\ExtentStorageLogic.cs" />
     <Compile Include="ExtentStorage\Interfaces\IExtentStorage.cs" />
     <Compile Include="ExtentStorage\LoadedExtentInformation.cs" />
+    <Compile Include="FactoryMapper\DefaultFactoryMapper.cs" />
+    <Compile Include="FactoryMapper\Extensions.cs" />
+    <Compile Include="FactoryMapper\IFactoryMapper.cs" />
     <Compile Include="ManualExtentStorageToConfigurationMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

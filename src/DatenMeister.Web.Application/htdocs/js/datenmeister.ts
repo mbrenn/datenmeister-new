@@ -40,10 +40,18 @@ module DatenMeister {
     export module PostModels {
 
         /** This class is used to reference a single object within the database */
-        export class ItemReferenceModel {
+        export class ExtentReferenceModel {
             ws: string;
             extent: string;
+        }
+
+        export class ItemReferenceModel extends ExtentReferenceModel {
             item: string;
+        }
+
+        export class ItemCreateModel extends ExtentReferenceModel
+        {
+            container: string
         }
 
         export class ItemUnsetPropertyModel extends ItemReferenceModel {
@@ -124,6 +132,23 @@ module DatenMeister {
         onExtentSelected: (ws: string, extent: string) => void;
         onItemSelected: (ws: string, extentUrl: string, itemUrl: string) => void;
 
+        createItem(ws: string, extentUrl: string, container?: string) {
+            var callback = $.Deferred();
+            var postModel = new PostModels.ItemCreateModel();
+            postModel.ws = ws;
+            postModel.extent = extentUrl;
+            postModel.container = container;
+
+            $.ajax(
+            {
+                url: "/api/datenmeister/extent/item_create",
+                data: postModel,
+                method: "POST",
+                success: (data: any) => { callback.resolve(true); },
+                error: (data: any) => { callback.reject(false); }
+            });
+        }
+
         /* Deletes an item from the database and returns the value indicatng whether the deleteion was successful */
         deleteItem(ws: string, extent: string, item: string): JQueryPromise<boolean> {
             var callback = $.Deferred();
@@ -140,7 +165,7 @@ module DatenMeister {
                 method: "POST",
                 success: (data: any) => { callback.resolve(true); },
                 error: (data: any) => { callback.reject(false); }
-                });
+            });
 
             return callback;
         }

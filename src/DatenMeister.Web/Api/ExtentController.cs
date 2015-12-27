@@ -8,6 +8,7 @@ using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Queries;
+using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Web.Models;
 using DatenMeister.Web.Models.PostModels;
 
@@ -16,6 +17,13 @@ namespace DatenMeister.Web.Api
     [RoutePrefix("api/datenmeister/extent")]
     public class ExtentController : ApiController
     {
+        private readonly IFactoryMapper _mapper;
+
+        public ExtentController(IFactoryMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         [Route("all")]
         public object GetAll(string ws)
         {
@@ -42,7 +50,7 @@ namespace DatenMeister.Web.Api
         /// <param name="ws">Name of the workspace to be queried</param>
         /// <returns>
         ///     The found workspace. If the workspace is not found, an
-        ///     exception is thrown/returns>
+        ///     exception is thrown</returns>
         private static Workspace<IExtent> GetWorkspace(string ws)
         {
             var workspace = Core.TheOne.Workspaces.First(x => x.id == ws);
@@ -119,7 +127,6 @@ namespace DatenMeister.Web.Api
             var itemModel = new ItemContentModel();
             itemModel.uri = item;
             
-
             // Retrieves the values of the item
             var foundElement = foundExtent.element(item);
             if (foundElement == null)
@@ -138,6 +145,27 @@ namespace DatenMeister.Web.Api
             }
 
             return itemModel;
+        }
+
+        [Route("item_create")]
+        [HttpPost]
+        public object CreateItem([FromBody] ItemCreateModel model)
+        {
+            Workspace<IExtent> foundWorkspace;
+            IUriExtent foundExtent;
+            RetrieveWorkspaceAndExtent(model.ws, model.extent, out foundWorkspace, out foundExtent);
+
+            if (!string.IsNullOrEmpty(model.container))
+            {
+                throw new InvalidOperationException("Element creation within container is not supported.");
+            }
+
+            var factory = _mapper.FindFactoryFor(foundExtent);
+            var element = factory.create(null);
+
+            foundExtent.elements().add(element);
+
+            return new { success = true };
         }
 
         [Route("item_delete")]

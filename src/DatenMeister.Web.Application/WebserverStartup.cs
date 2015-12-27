@@ -1,10 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web.Http;
 using BurnSystems.Owin.StaticFiles;
 using DatenMeister.Apps.ZipCode;
+using DatenMeister.Runtime.FactoryMapper;
 using Microsoft.Owin;
+using Ninject;
+using Ninject.Web.Common.OwinHost;
+using Ninject.Web.WebApi.OwinHost;
 using Owin;
 
 [assembly: OwinStartup(typeof(DatenMeister.Web.Application.WebserverStartup))]
@@ -33,7 +38,8 @@ namespace DatenMeister.Web.Application
             // Initializing of the WebAPI, needs to be called after the DatenMeister is initialized
             var httpConfiguration = new HttpConfiguration();
             httpConfiguration.MapHttpAttributeRoutes();
-            app.UseWebApi(httpConfiguration);
+            app.UseNinjectMiddleware(CreateKernel).UseNinjectWebApi(httpConfiguration);
+            //app.UseWebApi(httpConfiguration);
         }
 
         private static void StartDatenmeister()
@@ -53,6 +59,13 @@ namespace DatenMeister.Web.Application
                 DataProvider.TheOne.LoadZipCodes(stream);
                 workspaceData.AddExtent(DataProvider.TheOne.ZipCodes);
             }
+        }
+        private static StandardKernel CreateKernel()
+        {
+            var kernel = new StandardKernel();
+            kernel.Bind<IFactoryMapper>().To<DefaultFactoryMapper>();
+            // kernel.Load(Assembly.GetExecutingAssembly());
+            return kernel;
         }
     }
 }

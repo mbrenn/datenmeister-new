@@ -62,6 +62,7 @@ namespace DatenMeister.Web.Application
                 workspaceData.AddExtent(DataProvider.TheOne.ZipCodes);
             }
         }
+
         private static StandardKernel CreateKernel()
         {
             var kernel = new StandardKernel();

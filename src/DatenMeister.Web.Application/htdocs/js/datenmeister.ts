@@ -132,7 +132,7 @@ module DatenMeister {
         onExtentSelected: (ws: string, extent: string) => void;
         onItemSelected: (ws: string, extentUrl: string, itemUrl: string) => void;
 
-        createItem(ws: string, extentUrl: string, container?: string) {
+        createItem(ws: string, extentUrl: string, container?: string): JQueryDeferred<boolean> {
             var callback = $.Deferred();
             var postModel = new PostModels.ItemCreateModel();
             postModel.ws = ws;
@@ -147,6 +147,8 @@ module DatenMeister {
                 success: (data: any) => { callback.resolve(true); },
                 error: (data: any) => { callback.reject(false); }
             });
+
+            return callback;
         }
 
         /* Deletes an item from the database and returns the value indicatng whether the deleteion was successful */
@@ -298,17 +300,17 @@ module DatenMeister {
         createHtmlForItems(container: JQuery, ws: string, extentUrl: string, data: IExtentContent) {
             var tthis = this;
             var configuration = new GUI.DataTableConfiguration();
-            configuration.editFunction = function (url: string) {
+            configuration.editFunction = (url: string) => {
 
-                if (tthis.onItemSelected !== undefined) {
-                    tthis.onItemSelected(ws, extentUrl, url);
+                if (this.onItemSelected !== undefined) {
+                    this.onItemSelected(ws, extentUrl, url);
                 }
 
                 return false;
             };
 
-            configuration.deleteFunction = function (url: string, domRow: JQuery) {
-                var callback = tthis.deleteItem(ws, extentUrl, url);
+            configuration.deleteFunction = (url: string, domRow: JQuery) => {
+                var callback = this.deleteItem(ws, extentUrl, url);
                 callback
                     .done(() => {
                         // tthis.loadAndCreateHtmlForItems(container, ws, extentUrl);
@@ -318,16 +320,26 @@ module DatenMeister {
                 return false;
             };
 
-            var table = new GUI.ItemListTable(container, data.items, data.columns, configuration);
+            var table = new GUI.ItemListTable(container, data, configuration);
 
             configuration.onSearch = function (searchString) {
                 tthis.loadHtmlForItems(ws, extentUrl, searchString)
-                    .done((data: IExtentContent) => {
-                        if (table.lastProcessedSearchString === data.search) {
-                            table.updateItems(data.items);
+                    .done((innerData: IExtentContent) => {
+                        if (table.lastProcessedSearchString === innerData.search) {
+                            table.updateItems(innerData.items);
                         }
                     });
             };
+
+            configuration.onNewItemClicked = function() {
+                tthis.createItem(ws, extentUrl).done(() => {
+                    tthis.loadHtmlForItems(ws, extentUrl)
+                        .done((innerData: IExtentContent) => {
+                            table.updateItems(innerData.items);
+                        });
+                });
+
+            }
 
             table.show();
         }
@@ -439,15 +451,15 @@ module DatenMeister {
 
             containerTitle.append(containerRefresh);
 
-            $(".link_workspaces", containerTitle).click(function () {
+            $(".link_workspaces", containerTitle).click(() => {
                 loadWorkspaces();
                 return false;
             });
-            $(".link_extents", containerTitle).click(function () {
+            $(".link_extents", containerTitle).click(() => {
                 loadExtents(ws);
                 return false;
             });
-            $(".link_items", containerTitle).click(function () {
+            $(".link_items", containerTitle).click(() => {
                 loadExtent(ws, extentUrl);
                 return false;
             });
@@ -509,15 +521,22 @@ module DatenMeister {
         }
 
         export class DataTableConfiguration {
+            onNewItemClicked: () => void;
             editFunction: (url: string, domRow: JQuery) => boolean;
             deleteFunction: (url: string, domRow: JQuery) => boolean;
             supportSearchbox: boolean;
+
+            /* true, if new properties shall be supported */
+            supportNewItem: boolean;
+
+            /* This method is called each time, the user has changed content in the search field */
             onSearch: (searchText: string) => void;
 
             constructor() {
-                this.editFunction = function (url: string, domRow: JQuery) { return false; /*Ignoring*/ };
-                this.deleteFunction = function (url: string, domRow: JQuery) { return false; /*Ignoring*/ };
+                this.editFunction = (url: string, domRow: JQuery) => false;
+                this.deleteFunction = (url: string, domRow: JQuery) => false;
                 this.supportSearchbox = true;
+                this.supportNewItem = true;
             }
         }
         
@@ -526,17 +545,15 @@ module DatenMeister {
          * as the datasource
          */
         export class ItemListTable {
-            columns: Array<IDataTableColumn>;
-            items: Array<IDataTableItem>;
+            data: IExtentContent;
             configuration: DataTableConfiguration;
             domContainer: JQuery;
             domTable: JQuery;
             lastProcessedSearchString: string;
 
-            constructor(dom: JQuery, items: Array<IDataTableItem>, columns: Array<IDataTableColumn>, configuration: DataTableConfiguration) {
+            constructor(dom: JQuery, data: IExtentContent, configuration: DataTableConfiguration) {
                 this.domContainer = dom;
-                this.items = items;
-                this.columns = columns;
+                this.data = data;
                 this.configuration = configuration;
             }
 
@@ -559,12 +576,24 @@ module DatenMeister {
                     this.domContainer.append(domSearchBox);
                 }
 
+                if (this.configuration.supportNewItem) {
+                    var domNewItem = $("<div><a href='#'>Create new item</a></div>");
+                    domNewItem.click(() => {
+                        if (tthis.configuration.onNewItemClicked !== undefined) {
+                            tthis.configuration.onNewItemClicked();
+                        }
+                        
+                        return false;
+                    })
+                    this.domContainer.append(domNewItem);
+                }
+
                 this.domTable = $("<table class='table'></table>");
 
                 // First the headline
                 var domRow = $("<tr><th>ID</th></tr>");
-                for (var c in this.columns) {
-                    var column = this.columns[c];
+                for (var c in this.data.columns) {
+                    var column = this.data.columns[c];
                     var domColumn = $("<th></th>");
                     domColumn.text(column.title);
                     domRow.append(domColumn);
@@ -587,8 +616,8 @@ module DatenMeister {
             createRowsForData(): void {
                 var tthis = this;
                 // Now, the items
-                for (var i in this.items) {
-                    var item = this.items[i];
+                for (var i in this.data.items) {
+                    var item = this.data.items[i];
 
                     // Gets the id of the item
                     var id = item.uri;
@@ -602,8 +631,8 @@ module DatenMeister {
                     domColumn.text(id);
                     domRow.append(domColumn);
 
-                    for (var c in this.columns) {
-                        var column = this.columns[c];
+                    for (var c in this.data.columns) {
+                        var column = this.data.columns[c];
                         domColumn = $("<td></td>");
                         domColumn.text(item.v[column.name]);
                         domRow.append(domColumn);
@@ -638,7 +667,7 @@ module DatenMeister {
             }
 
             updateItems(items) {
-                this.items = items;
+                this.data.items = items;
                 $("tr", this.domTable).has("td")
                     .remove();
                 this.createRowsForData();

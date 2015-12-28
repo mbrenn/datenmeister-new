@@ -137,6 +137,7 @@ var DatenMeister;
                 success: function (data) { callback.resolve(true); },
                 error: function (data) { callback.reject(false); }
             });
+            return callback;
         };
         /* Deletes an item from the database and returns the value indicatng whether the deleteion was successful */
         ExtentLogic.prototype.deleteItem = function (ws, extent, item) {
@@ -254,16 +255,17 @@ var DatenMeister;
             });
         };
         ExtentLogic.prototype.createHtmlForItems = function (container, ws, extentUrl, data) {
+            var _this = this;
             var tthis = this;
             var configuration = new GUI.DataTableConfiguration();
             configuration.editFunction = function (url) {
-                if (tthis.onItemSelected !== undefined) {
-                    tthis.onItemSelected(ws, extentUrl, url);
+                if (_this.onItemSelected !== undefined) {
+                    _this.onItemSelected(ws, extentUrl, url);
                 }
                 return false;
             };
             configuration.deleteFunction = function (url, domRow) {
-                var callback = tthis.deleteItem(ws, extentUrl, url);
+                var callback = _this.deleteItem(ws, extentUrl, url);
                 callback
                     .done(function () {
                     // tthis.loadAndCreateHtmlForItems(container, ws, extentUrl);
@@ -272,13 +274,21 @@ var DatenMeister;
                     .fail(function () { alert("FAILED"); });
                 return false;
             };
-            var table = new GUI.ItemListTable(container, data.items, data.columns, configuration);
+            var table = new GUI.ItemListTable(container, data, configuration);
             configuration.onSearch = function (searchString) {
                 tthis.loadHtmlForItems(ws, extentUrl, searchString)
-                    .done(function (data) {
-                    if (table.lastProcessedSearchString === data.search) {
-                        table.updateItems(data.items);
+                    .done(function (innerData) {
+                    if (table.lastProcessedSearchString === innerData.search) {
+                        table.updateItems(innerData.items);
                     }
+                });
+            };
+            configuration.onNewItemClicked = function () {
+                tthis.createItem(ws, extentUrl).done(function () {
+                    tthis.loadHtmlForItems(ws, extentUrl)
+                        .done(function (innerData) {
+                        table.updateItems(innerData.items);
+                    });
                 });
             };
             table.show();
@@ -456,9 +466,10 @@ var DatenMeister;
         GUI.loadItem = loadItem;
         var DataTableConfiguration = (function () {
             function DataTableConfiguration() {
-                this.editFunction = function (url, domRow) { return false; /*Ignoring*/ };
-                this.deleteFunction = function (url, domRow) { return false; /*Ignoring*/ };
+                this.editFunction = function (url, domRow) { return false; };
+                this.deleteFunction = function (url, domRow) { return false; };
                 this.supportSearchbox = true;
+                this.supportNewItem = true;
             }
             return DataTableConfiguration;
         })();
@@ -468,10 +479,9 @@ var DatenMeister;
          * as the datasource
          */
         var ItemListTable = (function () {
-            function ItemListTable(dom, items, columns, configuration) {
+            function ItemListTable(dom, data, configuration) {
                 this.domContainer = dom;
-                this.items = items;
-                this.columns = columns;
+                this.data = data;
                 this.configuration = configuration;
             }
             // Replaces the content at the dom with the created table
@@ -490,11 +500,21 @@ var DatenMeister;
                     });
                     this.domContainer.append(domSearchBox);
                 }
+                if (this.configuration.supportNewItem) {
+                    var domNewItem = $("<div><a href='#'>Create new item</a></div>");
+                    domNewItem.click(function () {
+                        if (tthis.configuration.onNewItemClicked !== undefined) {
+                            tthis.configuration.onNewItemClicked();
+                        }
+                        return false;
+                    });
+                    this.domContainer.append(domNewItem);
+                }
                 this.domTable = $("<table class='table'></table>");
                 // First the headline
                 var domRow = $("<tr><th>ID</th></tr>");
-                for (var c in this.columns) {
-                    var column = this.columns[c];
+                for (var c in this.data.columns) {
+                    var column = this.data.columns[c];
                     var domColumn = $("<th></th>");
                     domColumn.text(column.title);
                     domRow.append(domColumn);
@@ -512,8 +532,8 @@ var DatenMeister;
             ItemListTable.prototype.createRowsForData = function () {
                 var tthis = this;
                 // Now, the items
-                for (var i in this.items) {
-                    var item = this.items[i];
+                for (var i in this.data.items) {
+                    var item = this.data.items[i];
                     // Gets the id of the item
                     var id = item.uri;
                     var hashIndex = item.uri.indexOf("#");
@@ -524,8 +544,8 @@ var DatenMeister;
                     var domColumn = $("<td></td>");
                     domColumn.text(id);
                     domRow.append(domColumn);
-                    for (var c in this.columns) {
-                        var column = this.columns[c];
+                    for (var c in this.data.columns) {
+                        var column = this.data.columns[c];
                         domColumn = $("<td></td>");
                         domColumn.text(item.v[column.name]);
                         domRow.append(domColumn);
@@ -557,7 +577,7 @@ var DatenMeister;
                 }
             };
             ItemListTable.prototype.updateItems = function (items) {
-                this.items = items;
+                this.data.items = items;
                 $("tr", this.domTable).has("td")
                     .remove();
                 this.createRowsForData();

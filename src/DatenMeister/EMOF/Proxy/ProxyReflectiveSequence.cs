@@ -13,61 +13,61 @@ namespace DatenMeister.EMOF.Proxy
         /// <summary>
         /// Stores the sequence
         /// </summary>
-        protected IReflectiveSequence _sequence;
+        protected IReflectiveSequence Sequence;
 
         public ProxyReflectiveSequence(IReflectiveSequence sequence)
         {
-            _sequence = sequence;
+            Sequence = sequence;
         }
 
         public virtual bool add(object value)
         {
-            return _sequence.add(value);
+            return Sequence.add(value);
         }
 
         public virtual void add(int index, object value)
         {
-            _sequence.add(index, value);
+            Sequence.add(index, value);
         }
 
         public virtual bool addAll(IReflectiveSequence value)
         {
-            return _sequence.addAll(value);
+            return Sequence.addAll(value);
         }
 
         public virtual void clear()
         {
-            _sequence.clear();
+            Sequence.clear();
         }
 
         public virtual object get(int index)
         {
-            return _sequence.get(index);
+            return Sequence.get(index);
         }
 
         public virtual IEnumerator<object> GetEnumerator()
         {
-            return _sequence.GetEnumerator();
+            return Sequence.GetEnumerator();
         }
 
         public virtual bool remove(object value)
         {
-            return _sequence.remove(value);
+            return Sequence.remove(value);
         }
 
         public virtual void remove(int index)
         {
-            _sequence.remove(index);
+            Sequence.remove(index);
         }
 
         public virtual object set(int index, object value)
         {
-            return _sequence.set(index, value);
+            return Sequence.set(index, value);
         }
 
         public virtual int size()
         {
-            return _sequence.size();
+            return Sequence.size();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

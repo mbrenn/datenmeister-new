@@ -11,36 +11,36 @@ namespace DatenMeister.EMOF.Proxy
 {
     public class ProxyUriExtent : IUriExtent
     {
-        protected IUriExtent _extent;
+        protected IUriExtent Extent;
 
         public ProxyUriExtent ( IUriExtent extent)
         {
-            _extent = extent;
+            Extent = extent;
         }
 
-        public string contextURI()
+        public virtual string contextURI()
         {
-            return _extent.contextURI();
+            return Extent.contextURI();
         }
 
-        public IElement element(string uri)
+        public virtual IElement element(string uri)
         {
-            return _extent.element(uri);
+            return Extent.element(uri);
         }
 
-        public IReflectiveSequence elements()
+        public virtual IReflectiveSequence elements()
         {
-            return _extent.elements();
+            return Extent.elements();
         }
 
-        public string uri(IElement element)
+        public virtual string uri(IElement element)
         {
-            return _extent.uri(element);
+            return Extent.uri(element);
         }
 
-        public bool useContainment()
+        public virtual bool useContainment()
         {
-            return _extent.useContainment();
+            return Extent.useContainment();
         }
     }
 }

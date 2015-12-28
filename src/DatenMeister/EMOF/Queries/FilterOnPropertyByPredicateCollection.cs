@@ -34,7 +34,7 @@ namespace DatenMeister.EMOF.Queries
 
         public override IEnumerator<object> GetEnumerator()
         {
-            foreach (var value in _collection)
+            foreach (var value in Collection)
             {
                 var valueAsObject = value as IObject;
                 if (_filter(valueAsObject?.get(_property)))
@@ -47,7 +47,7 @@ namespace DatenMeister.EMOF.Queries
         public override int size()
         {
             var result = 0;
-            foreach (var value in _collection)
+            foreach (var value in Collection)
             {
                 var valueAsObject = value as IObject;
                 if (_filter(valueAsObject?.get(_property)))

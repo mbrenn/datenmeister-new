@@ -9,54 +9,48 @@ namespace DatenMeister.EMOF.Proxy
 {
     public class ProxyMofElement : IElement
     {
-        protected IElement _element;
+        protected IElement Element;
 
         public ProxyMofElement(IElement element)
         {
-            _element = element;
+            Element = element;
         }
 
-        public virtual IElement metaclass
-        {
-            get
-            {
-                return _element.metaclass;
-            }
-        }
+        public virtual IElement metaclass => Element.metaclass;
 
         public virtual IElement container()
         {
-            return _element.container();
+            return Element.container();
         }
 
         public virtual bool equals(object other)
         {
-            return _element.equals(other);
+            return Element.equals(other);
         }
 
-        public object get(object property)
+        public virtual object get(object property)
         {
-            return _element.get(property);
+            return Element.get(property);
         }
 
-        public IElement getMetaClass()
+        public virtual IElement getMetaClass()
         {
-            return _element.getMetaClass();
+            return Element.getMetaClass();
         }
 
-        public bool isSet(object property)
+        public virtual bool isSet(object property)
         {
-            return _element.isSet(property);
+            return Element.isSet(property);
         }
 
-        public void set(object property, object value)
+        public virtual void set(object property, object value)
         {
-            _element.set(property, value);
+            Element.set(property, value);
         }
 
-        public void unset(object property)
+        public virtual void unset(object property)
         {
-            _element.unset(property);
+            Element.unset(property);
         }
     }
 }

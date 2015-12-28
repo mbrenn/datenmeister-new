@@ -8,7 +8,7 @@ using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.InMemory
 {
-    [DefaultFactoryAssignment(typeof(MofFactory))]
+    [AssignFactoryForExtentType(typeof(MofFactory))]
     public class MofUriExtent : IUriExtent
     {
         private readonly string _contextUri;

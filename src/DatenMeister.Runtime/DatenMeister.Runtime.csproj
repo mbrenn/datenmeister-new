@@ -41,12 +41,12 @@
   <ItemGroup>
     <Compile Include="DMCore.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="ExtentStorage\AssignConfigurationTypeToLoaderAttribute.cs" />
     <Compile Include="ExtentStorage\Interfaces\IExtentStorageToConfigurationMap.cs" />
     <Compile Include="ExtentStorage\Interfaces\ExtentFileStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\Interfaces\ExtentStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\ExtentStorageLogic.cs" />
     <Compile Include="ExtentStorage\Interfaces\IExtentStorage.cs" />
-    <Compile Include="ExtentStorage\LoadedExtentInformation.cs" />
     <Compile Include="FactoryMapper\DefaultFactoryMapper.cs" />
     <Compile Include="FactoryMapper\Extensions.cs" />
     <Compile Include="FactoryMapper\IFactoryMapper.cs" />

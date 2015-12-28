@@ -25,7 +25,7 @@ namespace DatenMeister.Runtime.FactoryMapper
 
             if (!mapping.TryGetValue(extentType, out result))
             {
-                return null;
+                throw new InvalidOperationException($"No factory define for extenttype '{extentType.ToString()}'.");
             }
 
             return result();

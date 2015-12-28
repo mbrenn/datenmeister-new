@@ -1,7 +1,7 @@
 ﻿namespace DatenMeister.EMOF.Interface.Reflection
 {
     /// <summary>
-    /// Implements the interface according to MOF Core Specificaton 2.5, clause 9.4
+    ///     Implements the interface according to MOF Core Specificaton 2.5, clause 9.4
     /// </summary>
     public interface IObject
     {

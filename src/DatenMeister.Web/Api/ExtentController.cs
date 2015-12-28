@@ -1,16 +1,15 @@
-﻿using DatenMeister.EMOF.Helper;
-using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.Web.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Results;
+using DatenMeister.EMOF.Helper;
+using DatenMeister.EMOF.Interface.Common;
+using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.EMOF.Queries;
+using DatenMeister.Runtime.FactoryMapper;
+using DatenMeister.Web.Models;
 using DatenMeister.Web.Models.PostModels;
 
 namespace DatenMeister.Web.Api
@@ -18,11 +17,18 @@ namespace DatenMeister.Web.Api
     [RoutePrefix("api/datenmeister/extent")]
     public class ExtentController : ApiController
     {
+        private readonly IFactoryMapper _mapper;
+
+        public ExtentController(IFactoryMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         [Route("all")]
         public object GetAll(string ws)
         {
             var result = new List<object>();
-            Workspace<IExtent> workspace = GetWorkspace(ws);
+            var workspace = GetWorkspace(ws);
 
             foreach (var extent in workspace.extent.Cast<IUriExtent>())
             {
@@ -38,12 +44,13 @@ namespace DatenMeister.Web.Api
         }
 
         /// <summary>
-        /// Gets the workspace by name, if workspace is not found, an exception 
-        /// will be thrown
+        ///     Gets the workspace by name, if workspace is not found, an exception
+        ///     will be thrown
         /// </summary>
         /// <param name="ws">Name of the workspace to be queried</param>
-        /// <returns>The found workspace. If the workspace is not found, an
-        /// exception is thrown/returns>
+        /// <returns>
+        ///     The found workspace. If the workspace is not found, an
+        ///     exception is thrown</returns>
         private static Workspace<IExtent> GetWorkspace(string ws)
         {
             var workspace = Core.TheOne.Workspaces.First(x => x.id == ws);
@@ -56,7 +63,7 @@ namespace DatenMeister.Web.Api
         }
 
         [Route("items")]
-        public object GetItems(string ws, string extent)
+        public object GetItems(string ws, string extent, string search = null)
         {
             var amount = 100; // Return only the first 100 elements if no index is given
             var offset = 0;
@@ -75,26 +82,37 @@ namespace DatenMeister.Web.Api
 
             var properties = foundExtent.GetProperties().ToList();
 
-            var result = new ExtentContentModel();
-            result.url = extent;
-            result.columns = properties
-                .Select(x => new DataTableColumn()
-                {
-                    name = x.ToString(),
-                    title = x.ToString()
-                })
-                .ToList();
-            result.totalItemCount = totalItems.Count();
-            result.filteredItemCount = foundItems.Count();
-            result.items = totalItems
-                .Skip(offset)
-                .Take(amount)
-                .Select(x => new DataTableItem()
-                {
-                    uri = foundExtent.uri(x as IElement),
-                    v = ObjectHelper.AsStringDictionary(x as IElement, properties)
-                })
-                .ToList();
+            // Perform the filtering
+            IReflectiveCollection filteredItems = foundItems;
+            if (!string.IsNullOrEmpty(search))
+            {
+                filteredItems = Filter.WhenOneOfThePropertyContains(
+                    foundItems, properties, search, StringComparison.CurrentCultureIgnoreCase);
+            }
+
+            var result = new ExtentContentModel
+            {
+                url = extent,
+                columns = properties
+                    .Select(x => new DataTableColumn
+                    {
+                        name = x.ToString(),
+                        title = x.ToString()
+                    })
+                    .ToList(),
+                totalItemCount = totalItems.Count(),
+                search = search,
+                filteredItemCount = filteredItems.Count(),
+                items = filteredItems
+                    .Skip(offset)
+                    .Take(amount)
+                    .Select(x => new DataTableItem
+                    {
+                        uri = foundExtent.uri(x as IElement),
+                        v = (x as IElement).AsStringDictionary(properties)
+                    })
+                    .ToList()
+            };
 
             return result;
         }
@@ -108,16 +126,16 @@ namespace DatenMeister.Web.Api
 
             var itemModel = new ItemContentModel();
             itemModel.uri = item;
-
+            
             // Retrieves the values of the item
             var foundElement = foundExtent.element(item);
             if (foundElement == null)
             {
                 // Not found
-                return null;
+                return NotFound();
             }
 
-            var foundProperties = ExtentHelper.GetProperties(foundExtent);
+            var foundProperties = foundExtent.GetProperties();
             foreach (var property in foundProperties)
             {
                 if (foundElement.isSet(property))
@@ -127,6 +145,27 @@ namespace DatenMeister.Web.Api
             }
 
             return itemModel;
+        }
+
+        [Route("item_create")]
+        [HttpPost]
+        public object CreateItem([FromBody] ItemCreateModel model)
+        {
+            Workspace<IExtent> foundWorkspace;
+            IUriExtent foundExtent;
+            RetrieveWorkspaceAndExtent(model.ws, model.extent, out foundWorkspace, out foundExtent);
+
+            if (!string.IsNullOrEmpty(model.container))
+            {
+                throw new InvalidOperationException("Element creation within container is not supported.");
+            }
+
+            var factory = _mapper.FindFactoryFor(foundExtent);
+            var element = factory.create(null);
+
+            foundExtent.elements().add(element);
+
+            return new { success = true };
         }
 
         [Route("item_delete")]
@@ -166,7 +205,7 @@ namespace DatenMeister.Web.Api
 
                 foundItem.unset(model.property);
 
-                return new { success = true };
+                return new {success = true};
             }
             catch (OperationFailedException)
             {
@@ -174,9 +213,9 @@ namespace DatenMeister.Web.Api
             }
         }
 
-        [Route("item_change_property")]
+        [Route("item_set_property")]
         [HttpPost]
-        public object ChangePropertyValue([FromBody] ItemChangePropertyModel model)
+        public object SetPropertyValue([FromBody] ItemSetPropertyModel model)
         {
             try
             {
@@ -185,7 +224,7 @@ namespace DatenMeister.Web.Api
                 IElement foundItem;
                 FindItem(model, out foundWorkspace, out foundExtent, out foundItem);
 
-                foundItem.set(model.property, model.value);
+                foundItem.set(model.property, model.newValue);
 
                 return new {success = true};
             }
@@ -195,9 +234,9 @@ namespace DatenMeister.Web.Api
             }
         }
 
-        [Route("item_change_properties")]
+        [Route("item_set_properties")]
         [HttpPost]
-        public object ChangePropertiesValue([FromBody] ItemChangePropertiesModel model)
+        public object SetPropertiesValue([FromBody] ItemSetPropertiesModel model)
         {
             try
             {
@@ -220,7 +259,7 @@ namespace DatenMeister.Web.Api
         }
 
         /// <summary>
-        /// Gets the extentmodel for a given extent
+        ///     Gets the extentmodel for a given extent
         /// </summary>
         /// <param name="ws">Workspace to be queried</param>
         /// <param name="extent">Extent to be querued</param>
@@ -241,7 +280,7 @@ namespace DatenMeister.Web.Api
 
         [ApiExplorerSettings(IgnoreApi = true)]
         public static void RetrieveWorkspaceAndExtent(
-            ItemReferenceModel model, 
+            ItemReferenceModel model,
             out Workspace<IExtent> foundWorkspace,
             out IUriExtent foundExtent)
         {
@@ -250,9 +289,9 @@ namespace DatenMeister.Web.Api
 
         [ApiExplorerSettings(IgnoreApi = true)]
         public static void RetrieveWorkspaceAndExtent(
-            string ws, 
-            string extent, 
-            out Workspace<IExtent> foundWorkspace, 
+            string ws,
+            string extent,
+            out Workspace<IExtent> foundWorkspace,
             out IUriExtent foundExtent)
         {
             foundWorkspace = Core.TheOne.Workspaces.FirstOrDefault(x => x.id == ws);
@@ -271,8 +310,8 @@ namespace DatenMeister.Web.Api
 
         [ApiExplorerSettings(IgnoreApi = true)]
         public static void FindItem(
-            ItemReferenceModel model, 
-            out Workspace<IExtent> foundWorkspace, 
+            ItemReferenceModel model,
+            out Workspace<IExtent> foundWorkspace,
             out IUriExtent foundExtent,
             out IElement foundItem)
         {

@@ -1,29 +1,26 @@
-﻿using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.EMOF.Interface.Reflection;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.Queries
 {
     /// <summary>
-    /// This query returns all objects which are descendents (and sub-descendents)
-    /// of an extent, an object or a reflecive collection
+    ///     This query returns all objects which are descendents (and sub-descendents)
+    ///     of an extent, an object or a reflecive collection
     /// </summary>
     public class AllDescendentsQuery
     {
         /// <summary>
-        /// Gets all descendents of an object, but does not
-        /// return this object itself
+        ///     Gets all descendents of an object, but does not
+        ///     return this object itself
         /// </summary>
         /// <param name="element">Element being queried</param>
         /// <returns>An enumeration of all object and its descendents</returns>
         public static IEnumerable<IObject> getDescendents(IObject element)
         {
-            var elementAsIObjectExt = element as IObjectExt;
+            var elementAsIObjectExt = element as IObjectAllProperties;
             if (elementAsIObjectExt == null)
             {
                 throw new InvalidOperationException("element is not of type IObjectExt");
@@ -38,7 +35,7 @@ namespace DatenMeister.EMOF.Queries
                     yield return value as IObject;
                 }
 
-                if (value is IEnumerable && value.GetType() != typeof(string))
+                if (value is IEnumerable && value.GetType() != typeof (string))
                 {
                     // Value is a real enumeration. Unfortunately strings are also
                     // enumeration, but we would like to skip them. Their content
@@ -53,7 +50,7 @@ namespace DatenMeister.EMOF.Queries
         }
 
         public static IEnumerable<IObject> getDescendents(IEnumerable valueAsEnumerable)
-        { 
+        {
             foreach (var element in valueAsEnumerable)
             {
                 if (element is IObject)
@@ -61,7 +58,7 @@ namespace DatenMeister.EMOF.Queries
                     var elementAsIObject = element as IObject;
                     yield return elementAsIObject;
 
-                    foreach (var value in getDescendents(elementAsIObject as IObject))
+                    foreach (var value in getDescendents(elementAsIObject))
                     {
                         yield return value;
                     }

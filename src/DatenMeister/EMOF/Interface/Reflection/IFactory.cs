@@ -1,14 +1,11 @@
 ﻿namespace DatenMeister.EMOF.Interface.Reflection
 {
     /// <summary>
-    /// Interface to Factory according to MOFSpecification 2.5, Clause 9.3
+    ///     Interface to Factory according to MOFSpecification 2.5, Clause 9.3
     /// </summary>
     public interface IFactory
     {
-        IElement package
-        {
-            get;
-        }
+        IElement package { get; }
 
         IElement create(IElement metaClass);
 

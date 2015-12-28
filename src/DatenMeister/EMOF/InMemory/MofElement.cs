@@ -3,29 +3,24 @@
 namespace DatenMeister.EMOF.InMemory
 {
     /// <summary>
-    /// Implements the IElement according to the Mof specification
+    ///     Implements the IElement according to the Mof specification
     /// </summary>
-    public class MofElement : MofObject, IElement, IElementExt
+    public class MofElement : MofObject, IElement, IElementSetMetaClass
     {
-        IElement _container;
-
-        IElement _metaclass;
-
-        public IElement metaclass
-        {
-            get { return _metaclass; }
-        }
+        private readonly IElement _container;
 
         public MofElement()
-        {   
+        {
         }
 
         public MofElement(IElement container, IElement metaClass) : this()
         {
             _container = container;
-            _metaclass = metaClass;
+            metaclass = metaClass;
         }
-         
+
+        public IElement metaclass { get; private set; }
+
         public IElement container()
         {
             return _container;
@@ -33,12 +28,12 @@ namespace DatenMeister.EMOF.InMemory
 
         public IElement getMetaClass()
         {
-            return _metaclass;
+            return metaclass;
         }
 
         public void setMetaClass(IElement metaClass)
         {
-            _metaclass = metaClass;
+            metaclass = metaClass;
         }
     }
 }

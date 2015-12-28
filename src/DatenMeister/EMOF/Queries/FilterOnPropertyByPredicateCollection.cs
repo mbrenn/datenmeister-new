@@ -1,30 +1,26 @@
-﻿using DatenMeister.EMOF.Interface.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
-using DatenMeister.EMOF.Proxy;
+using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.EMOF.Proxy;
 
 namespace DatenMeister.EMOF.Queries
 {
     public class FilterOnPropertyByPredicateCollection : ProxyReflectiveCollection
     {
         /// <summary>
-        /// Stores the property
+        ///     Stores the filter to filter on the property
         /// </summary>
-        private object _property;
+        private readonly Predicate<object> _filter;
 
         /// <summary>
-        /// Stores the filter to filter on the property
+        ///     Stores the property
         /// </summary>
-        private Predicate<object> _filter;
+        private readonly object _property;
 
         public FilterOnPropertyByPredicateCollection(
-            IReflectiveCollection collection, 
-            object property, 
+            IReflectiveCollection collection,
+            object property,
             Predicate<object> filter)
             : base(collection)
         {

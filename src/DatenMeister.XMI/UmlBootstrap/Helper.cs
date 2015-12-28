@@ -1,21 +1,19 @@
-﻿using DatenMeister.EMOF.Interface.Reflection;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.XMI.UmlBootstrap
 {
     /// <summary>
-    /// Contains some methods which help to parse and understand the xmi file
+    ///     Contains some methods which help to parse and understand the xmi file
     /// </summary>
     public static class Helper
     {
         /// <summary>
-        /// Gets all packages of a specific xml node
+        ///     Gets all packages of a specific xml node
         /// </summary>
         /// <param name="element"></param>
         public static IEnumerable<XElement> XmiGetPackages(this XElement element)
@@ -37,7 +35,7 @@ namespace DatenMeister.XMI.UmlBootstrap
         }
 
         /// <summary>
-        /// Gets all packages of a specific xml node
+        ///     Gets all packages of a specific xml node
         /// </summary>
         /// <param name="element"></param>
         public static IEnumerable<IObject> XmiGetPackages(this IObject element)
@@ -59,7 +57,7 @@ namespace DatenMeister.XMI.UmlBootstrap
         }
 
         /// <summary>
-        /// Returns an anumeration of all elements having a specific type
+        ///     Returns an anumeration of all elements having a specific type
         /// </summary>
         /// <param name="element">Element to be queried</param>
         /// <param name="typeName">Name of the type being queried</param>
@@ -72,21 +70,21 @@ namespace DatenMeister.XMI.UmlBootstrap
         }
 
         /// <summary>
-        /// Goes through the instance of the objects and returns the 
-        /// ones which are of a specific type
+        ///     Goes through the instance of the objects and returns the
+        ///     ones which are of a specific type
         /// </summary>
         /// <param name="element">Element to be queried</param>
         /// <param name="typeName">Only the elements of this type will be returned</param>
         /// <returns>Enumeration of objects of the given type</returns>
         private static IEnumerable<IObject> XmlGetElementsOfType(IObject element, string typeName)
         {
-            var elementAsExt = (IObjectExt)element;
+            var elementAsExt = (IObjectAllProperties) element;
             if (elementAsExt == null)
             {
                 throw new ArgumentNullException("element is not Null");
             }
 
-            var attributeXmi = "{" + Namespaces.Xmi.ToString() + "}type";
+            var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
             foreach (var property in elementAsExt.getPropertiesBeingSet())
             {
@@ -108,7 +106,7 @@ namespace DatenMeister.XMI.UmlBootstrap
         }
 
         /// <summary>
-        /// Gets the xmi name of the given xml Node
+        ///     Gets the xmi name of the given xml Node
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>

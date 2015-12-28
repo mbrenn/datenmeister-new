@@ -1,32 +1,30 @@
-﻿using DatenMeister.EMOF.Interface.Extension;
-using DatenMeister.EMOF.Interface.Identifiers;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DatenMeister.EMOF.Interface.Extension;
+using DatenMeister.EMOF.Interface.Identifiers;
 
 namespace DatenMeister
 {
     public class Workspace<T> where T : IExtent
     {
-        private string _id;
+        private readonly List<T> _extent = new List<T>();
 
-        private string _annotation;
+        private readonly List<ITag> _properties = new List<ITag>();
 
-        private List<ITag> _properties = new List<ITag>();
-
-        private List<T> _extent = new List<T>();
-
-        public string id
+        public Workspace(string id, string annotation = null)
         {
-            get { return _id; }
+            if (id == null)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            this.id = id;
+            this.annotation = annotation;
         }
-        
-        public string annotation
-        {
-            get { return _annotation; }
-        }
+
+        public string id { get; }
+
+        public string annotation { get; }
 
         public IEnumerable<T> extent
         {
@@ -38,17 +36,6 @@ namespace DatenMeister
             get { return _properties; }
         }
 
-        public Workspace(string id, string annotation = null)
-        {
-            if (id == null)
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
-
-            _id = id;
-            _annotation = annotation;
-        }
-
         public void AddExtent(T extent)
         {
             _extent.Add(extent);
@@ -56,15 +43,11 @@ namespace DatenMeister
 
         public override string ToString()
         {
-            if (!string.IsNullOrEmpty(_annotation))
+            if (!string.IsNullOrEmpty(annotation))
             {
-                return $"({_id}) {_annotation}";
+                return $"({id}) {annotation}";
             }
-            else
-            {
-                return $"({_id})";
-            }
+            return $"({id})";
         }
     }
-
 }

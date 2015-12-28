@@ -1,34 +1,30 @@
-﻿using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.EMOF.Interface.Reflection;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
+using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.XMI
 {
     public class SimpleLoader
     {
         /// <summary>
-        /// Stores the factory to be used to create the instances
+        ///     Stores the factory to be used to create the instances
         /// </summary>
-        IFactory _factory;
+        private readonly IFactory _factory;
 
         /// <summary>
-        /// Stores the workspace to find the meta types
+        ///     Stores the workspace to find the meta types
         /// </summary>
-        Workspace<IUriExtent> _metaWorkspace;
+        private Workspace<IUriExtent> _metaWorkspace;
 
         /// <summary>
-        /// Initializes a new instance of the Loader class.
+        ///     Initializes a new instance of the Loader class.
         /// </summary>
-        /// <param name="extent">Extent to be used</param>
+        /// <param name="metaWorkspace">Metaworkspace being used to find the type declarations</param>
         /// <param name="factory">Factory to be used</param>
         public SimpleLoader(
-            IFactory factory, 
+            IFactory factory,
             Workspace<IUriExtent> metaWorkspace = null)
         {
             _factory = factory;
@@ -44,7 +40,7 @@ namespace DatenMeister.XMI
         }
 
         /// <summary>
-        /// Loads the file from a stream
+        ///     Loads the file from a stream
         /// </summary>
         /// <param name="stream">Stream to be used for loading</param>
         public void Load(IUriExtent extent, Stream stream)
@@ -54,7 +50,7 @@ namespace DatenMeister.XMI
         }
 
         /// <summary>
-        /// Loads the document from an XDocument
+        ///     Loads the document from an XDocument
         /// </summary>
         /// <param name="document">Document to be loaded</param>
         public void Load(IUriExtent extent, XDocument document)
@@ -67,7 +63,7 @@ namespace DatenMeister.XMI
         }
 
         /// <summary>
-        /// Loads the specific element with a very simple loading algorithm
+        ///     Loads the specific element with a very simple loading algorithm
         /// </summary>
         /// <param name="element"></param>
         private IObject LoadElement(XElement element)
@@ -75,7 +71,7 @@ namespace DatenMeister.XMI
             var result = _factory.create(null);
             foreach (var attribute in element.Attributes())
             {
-                result.set(attribute.Name.ToString(), attribute.Value.ToString());
+                result.set(attribute.Name.ToString(), attribute.Value);
             }
 
             var dict = new Dictionary<string, List<object>>();

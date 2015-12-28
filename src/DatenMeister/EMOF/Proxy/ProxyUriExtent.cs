@@ -1,10 +1,5 @@
-﻿using DatenMeister.EMOF.Interface.Identifiers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DatenMeister.EMOF.Interface.Common;
+﻿using DatenMeister.EMOF.Interface.Common;
+using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.Proxy
@@ -13,7 +8,7 @@ namespace DatenMeister.EMOF.Proxy
     {
         protected IUriExtent Extent;
 
-        public ProxyUriExtent ( IUriExtent extent)
+        public ProxyUriExtent(IUriExtent extent)
         {
             Extent = extent;
         }

@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.EMOF.Interface.Common;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.Proxy
 {
@@ -9,7 +12,19 @@ namespace DatenMeister.EMOF.Proxy
         /// <summary>
         ///     Stores the sequence
         /// </summary>
-        protected IReflectiveSequence Sequence;
+        protected readonly IReflectiveSequence Sequence;
+
+        /// <summary>
+        /// Gets or sets the conversion method being used, when content of the 
+        /// reflective collection is being returned. 
+        /// </summary>
+        public Func<object, object> PublicizeElementFunc { get; set; }
+
+        /// <summary>
+        /// Gets or sets the conversion method being used, when content of the 
+        /// reflective collection is being returned. 
+        /// </summary>
+        public Func<object, object> PrivatizeElementFunc { get; set; }
 
         public ProxyReflectiveSequence(IReflectiveSequence sequence)
         {
@@ -18,17 +33,24 @@ namespace DatenMeister.EMOF.Proxy
 
         public virtual bool add(object value)
         {
-            return Sequence.add(value);
+            return Sequence.add(PrivatizeElementFunc(value));
         }
 
         public virtual void add(int index, object value)
         {
-            Sequence.add(index, value);
+            Sequence.add(index, PrivatizeElementFunc(value));
         }
 
         public virtual bool addAll(IReflectiveSequence value)
         {
-            return Sequence.addAll(value);
+            var result = false;
+
+            foreach (var element in value.Select(x => PrivatizeElementFunc(x)))
+            {
+                result |= Sequence.add(element);
+            }
+
+            return result;
         }
 
         public virtual void clear()
@@ -38,17 +60,20 @@ namespace DatenMeister.EMOF.Proxy
 
         public virtual object get(int index)
         {
-            return Sequence.get(index);
+            return PublicizeElementFunc( Sequence.get(index));
         }
 
         public virtual IEnumerator<object> GetEnumerator()
         {
-            return Sequence.GetEnumerator();
+            foreach (var obj in Sequence)
+            {
+                yield return PublicizeElementFunc(obj);
+            }
         }
 
         public virtual bool remove(object value)
         {
-            return Sequence.remove(value);
+            return Sequence.remove(PrivatizeElementFunc(value));
         }
 
         public virtual void remove(int index)
@@ -58,7 +83,7 @@ namespace DatenMeister.EMOF.Proxy
 
         public virtual object set(int index, object value)
         {
-            return Sequence.set(index, value);
+            return PublicizeElementFunc (Sequence.set(index, PrivatizeElementFunc(value)));
         }
 
         public virtual int size()
@@ -69,6 +94,33 @@ namespace DatenMeister.EMOF.Proxy
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public ProxyReflectiveSequence ActivateObjectConversion()
+        {
+            PublicizeElementFunc = x =>
+            {
+                var element = x as IElement;
+                if (element != null)
+                {
+                    return new ProxyMofElement(element);
+                }
+
+                if (x is IObject)
+                {
+                    throw new InvalidOperationException("Not supported");
+                }
+
+                return x;
+            };
+
+            PrivatizeElementFunc = x =>
+            {
+                var element = x as ProxyMofElement;
+                return element != null ? element.GetProxiedElement() : x;
+            };
+
+            return this;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using DatenMeister.EMOF.InMemory;
+﻿using System.Linq;
+using DatenMeister.EMOF.InMemory;
+using DatenMeister.EMOF.Proxy;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Mof.Core
@@ -50,6 +52,37 @@ namespace DatenMeister.Tests.Mof.Core
             Assert.That(found2, Is.Not.Null);
             Assert.That(found1, Is.SameAs(mofElement));
             Assert.That(found2, Is.SameAs(otherMofElement));
+        }
+
+        [Test]
+        public void TestProxyForUriExtent()
+        {
+            var uriExtent = new MofUriExtent("dm:///test");
+            var proxiedUriExtent = new ProxyUriExtent(uriExtent).ActivateObjectConversion();
+
+            var mofElement = new MofElement();
+            var otherMofElement = new MofElement();
+            proxiedUriExtent.elements().add(mofElement);
+            proxiedUriExtent.elements().add(otherMofElement);
+
+            var returned = proxiedUriExtent.elements().ElementAt(0);
+            Assert.That(returned, Is.TypeOf<ProxyMofElement>());
+
+            var proxiedElement = returned as ProxyMofElement;
+            Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<MofElement>());
+
+            Assert.That(proxiedUriExtent.elements().remove(proxiedElement), Is.True);
+            Assert.That(proxiedUriExtent.elements().size, Is.EqualTo(1));
+            proxiedUriExtent.elements().clear();
+            
+            // Check, if the dereferencing of ProxyMofElements are working
+            proxiedUriExtent.elements().add(proxiedElement);
+            returned = proxiedUriExtent.elements().ElementAt(0);
+            Assert.That(returned, Is.TypeOf<ProxyMofElement>());
+
+            proxiedElement = returned as ProxyMofElement;
+            Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<MofElement>());
+
         }
     }
 }

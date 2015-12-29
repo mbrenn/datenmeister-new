@@ -4,11 +4,21 @@ namespace DatenMeister.EMOF.Proxy
 {
     public class ProxyMofElement : IElement
     {
-        protected IElement Element;
+        protected readonly IElement Element;
 
         public ProxyMofElement(IElement element)
         {
             Element = element;
+        }
+
+        /// <summary>
+        /// Gets the proxied element which can be used to dereference the 
+        /// content
+        /// </summary>
+        /// <returns>Returns the proxied element</returns>
+        public IElement GetProxiedElement()
+        {
+            return Element;
         }
 
         public virtual IElement metaclass => Element.metaclass;

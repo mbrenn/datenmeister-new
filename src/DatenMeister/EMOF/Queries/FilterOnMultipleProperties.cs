@@ -54,7 +54,7 @@ namespace DatenMeister.EMOF.Queries
                 foreach (var property in _properties)
                 {
                     if ((valueAsObject?.isSet(property) == true) &&
-                        (valueAsObject?.get(property)?.ToString()?.Contains(_searchString) == true))
+                        (valueAsObject.get(property)?.ToString()?.Contains(_searchString) == true))
                     {
                         result++;
                     }

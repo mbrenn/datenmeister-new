@@ -340,7 +340,7 @@ module DatenMeister {
                 tthis.loadHtmlForItems(ws, extentUrl, { searchString: searchString })
                     .done((innerData: IExtentContent) => {
                         if (table.lastProcessedSearchString === innerData.search) {
-                            table.updateItems(innerData.items);
+                            table.updateItems(innerData);
                         }
                     });
             };
@@ -350,7 +350,7 @@ module DatenMeister {
                     .done(() => {
                         tthis.loadHtmlForItems(ws, extentUrl, { offset: -50 })
                             .done((innerData: IExtentContent) => {
-                                table.updateItems(innerData.items);
+                                table.updateItems(innerData);
                             });
                     });
 
@@ -565,6 +565,8 @@ module DatenMeister {
             domContainer: JQuery;
             domTable: JQuery;
             lastProcessedSearchString: string;
+            domTotalNumber: JQuery;
+            domFilteredNumber: JQuery;
 
             constructor(dom: JQuery, data: IExtentContent, configuration: DataTableConfiguration) {
                 this.domContainer = dom;
@@ -597,11 +599,18 @@ module DatenMeister {
                         if (tthis.configuration.onNewItemClicked !== undefined) {
                             tthis.configuration.onNewItemClicked();
                         }
-                        
+
                         return false;
-                    })
+                    });
+
                     this.domContainer.append(domNewItem);
                 }
+
+                var domAmount = $("<div>Total: <span class='totalnumber'>##</span>, Filtered: <span class='filterednumber'>##</span>");
+                this.domTotalNumber = $(".totalnumber", domAmount);
+                this.domFilteredNumber = $(".filterednumber", domAmount);
+
+                this.domContainer.append(domAmount);
 
                 this.domTable = $("<table class='table'></table>");
 
@@ -630,6 +639,10 @@ module DatenMeister {
 
             createRowsForData(): void {
                 var tthis = this;
+
+                this.domTotalNumber.text(this.data.totalItemCount);
+                this.domFilteredNumber.text(this.data.filteredItemCount);
+
                 // Now, the items
                 for (var i in this.data.items) {
                     var item = this.data.items[i];
@@ -681,8 +694,8 @@ module DatenMeister {
                 }
             }
 
-            updateItems(items) {
-                this.data.items = items;
+            updateItems(data: IExtentContent) {
+                this.data = data;
                 $("tr", this.domTable).has("td")
                     .remove();
                 this.createRowsForData();

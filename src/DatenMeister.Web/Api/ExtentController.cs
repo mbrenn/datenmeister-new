@@ -98,7 +98,7 @@ namespace DatenMeister.Web.Api
             var properties = foundExtent.GetProperties().ToList();
 
             // Perform the filtering
-            IReflectiveCollection filteredItems = foundItems;
+            IEnumerable<object> filteredItems = foundItems;
             if (!string.IsNullOrEmpty(search))
             {
                 filteredItems = Filter.WhenOneOfThePropertyContains(
@@ -106,18 +106,24 @@ namespace DatenMeister.Web.Api
             }
 
             // After having the filtered item, we reset the offset
+
+            var filteredAmount = filteredItems.Count();
             if (o < 0)
             {
                 // If o is negative, show the last values
-                o = filteredItems.Count() + o;
+                o = filteredAmount + o;
             }
             else
             {
-                if (o + amount > filteredItems.Count())
+                if (o + amount > filteredAmount)
                 {
-                    o = filteredItems.Count() - amount;
+                    o = filteredAmount - amount;
                 }
             }
+
+            filteredItems = filteredItems
+                .Skip(o)
+                .Take(amount);
 
             // Now return our stuff
             var result = new ExtentContentModel
@@ -132,10 +138,8 @@ namespace DatenMeister.Web.Api
                     .ToList(),
                 totalItemCount = totalItems.Count(),
                 search = search,
-                filteredItemCount = filteredItems.Count(),
+                filteredItemCount = filteredAmount,
                 items = filteredItems
-                    .Skip(o)
-                    .Take(amount)
                     .Select(x => new DataTableItem
                     {
                         uri = foundExtent.uri(x as IElement),
@@ -154,9 +158,8 @@ namespace DatenMeister.Web.Api
             IUriExtent foundExtent;
             RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
 
-            var itemModel = new ItemContentModel();
-            itemModel.uri = item;
-            
+            var itemModel = new ItemContentModel {uri = item};
+
             // Retrieves the values of the item
             var foundElement = foundExtent.element(item);
             if (foundElement == null)
@@ -295,7 +298,7 @@ namespace DatenMeister.Web.Api
         /// <param name="extent">Extent to be querued</param>
         /// <returns>The found extent or an exception.</returns>
         [ApiExplorerSettings(IgnoreApi = true)]
-        public static ExtentModel GetExtentModel(string ws, string extent)
+        private static ExtentModel GetExtentModel(string ws, string extent)
         {
             Workspace<IExtent> foundWorkspace;
             IUriExtent foundExtent;
@@ -309,7 +312,7 @@ namespace DatenMeister.Web.Api
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public static void RetrieveWorkspaceAndExtent(
+        private static void RetrieveWorkspaceAndExtent(
             ItemReferenceModel model,
             out Workspace<IExtent> foundWorkspace,
             out IUriExtent foundExtent)
@@ -318,7 +321,7 @@ namespace DatenMeister.Web.Api
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public static void RetrieveWorkspaceAndExtent(
+        private static void RetrieveWorkspaceAndExtent(
             string ws,
             string extent,
             out Workspace<IExtent> foundWorkspace,
@@ -339,7 +342,7 @@ namespace DatenMeister.Web.Api
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public static void FindItem(
+        private static void FindItem(
             ItemReferenceModel model,
             out Workspace<IExtent> foundWorkspace,
             out IUriExtent foundExtent,

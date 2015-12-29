@@ -287,7 +287,7 @@ var DatenMeister;
                 tthis.loadHtmlForItems(ws, extentUrl, { searchString: searchString })
                     .done(function (innerData) {
                     if (table.lastProcessedSearchString === innerData.search) {
-                        table.updateItems(innerData.items);
+                        table.updateItems(innerData);
                     }
                 });
             };
@@ -296,7 +296,7 @@ var DatenMeister;
                     .done(function () {
                     tthis.loadHtmlForItems(ws, extentUrl, { offset: -50 })
                         .done(function (innerData) {
-                        table.updateItems(innerData.items);
+                        table.updateItems(innerData);
                     });
                 });
             };
@@ -519,6 +519,10 @@ var DatenMeister;
                     });
                     this.domContainer.append(domNewItem);
                 }
+                var domAmount = $("<div>Total: <span class='totalnumber'>##</span>, Filtered: <span class='filterednumber'>##</span>");
+                this.domTotalNumber = $(".totalnumber", domAmount);
+                this.domFilteredNumber = $(".filterednumber", domAmount);
+                this.domContainer.append(domAmount);
                 this.domTable = $("<table class='table'></table>");
                 // First the headline
                 var domRow = $("<tr><th>ID</th></tr>");
@@ -540,6 +544,8 @@ var DatenMeister;
             };
             ItemListTable.prototype.createRowsForData = function () {
                 var tthis = this;
+                this.domTotalNumber.text(this.data.totalItemCount);
+                this.domFilteredNumber.text(this.data.filteredItemCount);
                 // Now, the items
                 for (var i in this.data.items) {
                     var item = this.data.items[i];
@@ -585,8 +591,8 @@ var DatenMeister;
                     this.domTable.append(domRow);
                 }
             };
-            ItemListTable.prototype.updateItems = function (items) {
-                this.data.items = items;
+            ItemListTable.prototype.updateItems = function (data) {
+                this.data = data;
                 $("tr", this.domTable).has("td")
                     .remove();
                 this.createRowsForData();

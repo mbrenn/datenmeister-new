@@ -11,14 +11,7 @@ namespace DatenMeister.EMOF.Proxy
             Element = element;
         }
 
-<<<<<<< HEAD
         public virtual IElement metaclass => Element.metaclass;
-=======
-        public virtual IElement metaclass
-        {
-            get { return _element.metaclass; }
-        }
->>>>>>> feature_web
 
         public virtual IElement container()
         {

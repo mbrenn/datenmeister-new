@@ -27,12 +27,8 @@ namespace DatenMeister.EMOF.Queries
 
         public override IEnumerator<object> GetEnumerator()
         {
-<<<<<<< HEAD
-            foreach (var value in Collection)
-=======
             var properties = _properties.ToList();
-            foreach (var value in _collection)
->>>>>>> feature_web
+            foreach (var value in Collection)
             {
                 var valueAsObject = value as IObject;
                 foreach (var property in properties)

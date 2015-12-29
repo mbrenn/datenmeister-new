@@ -17,6 +17,11 @@ namespace DatenMeister.Web.Api
     [RoutePrefix("api/datenmeister/extent")]
     public class ExtentController : ApiController
     {
+        /// <summary>
+        /// Defines the maximum numnber of items that shall be returned via GetItems
+        /// </summary>
+        private const int maxItemAmount = 100;
+
         private readonly IFactoryMapper _mapper;
 
         public ExtentController(IFactoryMapper mapper)
@@ -62,16 +67,26 @@ namespace DatenMeister.Web.Api
             return workspace;
         }
 
+        /// <summary>
+        /// Returns a list of items being in the query. 
+        /// The query contains a filter and a subset of elements
+        /// </summary>
+        /// <param name="ws">Workspace to be queried</param>
+        /// <param name="extent">Extent to be queried</param>
+        /// <param name="search">The searchtext being used for query</param>
+        /// <param name="o">Offset, defining the index of the first element within the response queue</param>
+        /// <param name="a">Number of items being shown</param>
+        /// <returns>Enumeration of items</returns>
         [Route("items")]
-        public object GetItems(string ws, string extent, string search = null)
+        public object GetItems(string ws, string extent, string search = null, int o = 0, int a = maxItemAmount)
         {
-            var amount = 100; // Return only the first 100 elements if no index is given
-            var offset = 0;
+            var amount = Math.Max(0, Math.Min(100, a)); // Return only the first 100 elements if no index is given
             var workspace = GetWorkspace(ws);
             var foundExtent =
                 workspace.extent
                     .Cast<IUriExtent>()
                     .FirstOrDefault(x => x.contextURI() == extent);
+
             if (foundExtent == null)
             {
                 throw new InvalidOperationException("Not found");
@@ -90,6 +105,21 @@ namespace DatenMeister.Web.Api
                     foundItems, properties, search, StringComparison.CurrentCultureIgnoreCase);
             }
 
+            // After having the filtered item, we reset the offset
+            if (o < 0)
+            {
+                // If o is negative, show the last values
+                o = filteredItems.Count() + o;
+            }
+            else
+            {
+                if (o + amount > filteredItems.Count())
+                {
+                    o = filteredItems.Count() - amount;
+                }
+            }
+
+            // Now return our stuff
             var result = new ExtentContentModel
             {
                 url = extent,
@@ -104,7 +134,7 @@ namespace DatenMeister.Web.Api
                 search = search,
                 filteredItemCount = filteredItems.Count(),
                 items = filteredItems
-                    .Skip(offset)
+                    .Skip(o)
                     .Take(amount)
                     .Select(x => new DataTableItem
                     {

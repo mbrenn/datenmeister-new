@@ -4,12 +4,25 @@ using System.Linq;
 using System.Reflection;
 using DatenMeister.EMOF.Attributes;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
+using Ninject;
 
 namespace DatenMeister.Full.Integration
 {
     public static class Integration
     {
+        public static void FillForDatenMeister(this StandardKernel kernel)
+        {
+            var factoryMapper = new DefaultFactoryMapper();
+            factoryMapper.PerformAutomaticMappingByAttribute();
+
+            var storageMap = new ManualExtentStorageToConfigurationMap();
+            storageMap.PerformMappingForConfigurationOfExtentLoaders();
+            kernel.Bind<IFactoryMapper>().ToConstant(factoryMapper);
+            kernel.Bind<IExtentStorageToConfigurationMap>().ToConstant(storageMap);
+        }
+
         public static void PerformAutomaticMappingByAttribute(this DefaultFactoryMapper mapper)
         {
             // Map extent types to factory

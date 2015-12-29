@@ -9,7 +9,7 @@ namespace DatenMeister.Runtime.FactoryMapper
     {
         public static IFactory FindFactoryFor(this IFactoryMapper mapper, IUriExtent extent)
         {
-            return mapper.FindFactoryFor(mapper.GetType());
+            return mapper.FindFactoryFor(extent.GetType());
         }
     }
 }

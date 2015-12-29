@@ -230,7 +230,7 @@ var DatenMeister;
                 container.append(compiledTable);
             }
         };
-        ExtentLogic.prototype.loadAndCreateHtmlForItems = function (container, ws, extentUrl) {
+        ExtentLogic.prototype.loadAndCreateHtmlForItems = function (container, ws, extentUrl, query) {
             var tthis = this;
             var callback = $.Deferred();
             this.loadHtmlForItems(ws, extentUrl)
@@ -243,11 +243,19 @@ var DatenMeister;
             });
             return callback;
         };
-        ExtentLogic.prototype.loadHtmlForItems = function (ws, extentUrl, searchString) {
+        ExtentLogic.prototype.loadHtmlForItems = function (ws, extentUrl, query) {
             var url = "/api/datenmeister/extent/items?ws=" + encodeURIComponent(ws)
                 + "&extent=" + encodeURIComponent(extentUrl);
-            if (searchString !== undefined) {
-                url += "&search=" + encodeURIComponent(searchString);
+            if (query !== undefined) {
+                if (query.searchString !== undefined) {
+                    url += "&search=" + encodeURIComponent(query.searchString);
+                }
+                if (query.offset !== undefined && query.offset !== null) {
+                    url += "&o=" + encodeURIComponent(query.offset.toString());
+                }
+                if (query.amount !== undefined && query.amount !== null) {
+                    url += "&a=" + encodeURIComponent(query.amount.toString());
+                }
             }
             return $.ajax({
                 url: url,
@@ -276,7 +284,7 @@ var DatenMeister;
             };
             var table = new GUI.ItemListTable(container, data, configuration);
             configuration.onSearch = function (searchString) {
-                tthis.loadHtmlForItems(ws, extentUrl, searchString)
+                tthis.loadHtmlForItems(ws, extentUrl, { searchString: searchString })
                     .done(function (innerData) {
                     if (table.lastProcessedSearchString === innerData.search) {
                         table.updateItems(innerData.items);
@@ -284,8 +292,9 @@ var DatenMeister;
                 });
             };
             configuration.onNewItemClicked = function () {
-                tthis.createItem(ws, extentUrl).done(function () {
-                    tthis.loadHtmlForItems(ws, extentUrl)
+                tthis.createItem(ws, extentUrl)
+                    .done(function () {
+                    tthis.loadHtmlForItems(ws, extentUrl, { offset: -50 })
                         .done(function (innerData) {
                         table.updateItems(innerData.items);
                     });
@@ -418,7 +427,7 @@ var DatenMeister;
             var workbenchLogic = new DatenMeister.WorkspaceLogic();
             workbenchLogic.onWorkspaceSelected = function (id) {
                 // Loads the extent of the workspace, if the user has clicked on one of the workbenches
-                history.pushState({}, '', "#ws=" + encodeURIComponent(id));
+                history.pushState({}, "", "#ws=" + encodeURIComponent(id));
                 loadExtents(id);
             };
             workbenchLogic.loadAndCreateHtmlForWorkbenchs($(".container_data"))

@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Web.Http;
 using BurnSystems.Owin.StaticFiles;
 using DatenMeister.Apps.ZipCode;
+using DatenMeister.Full.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
@@ -66,12 +67,7 @@ namespace DatenMeister.Web.Application
         private static StandardKernel CreateKernel()
         {
             var kernel = new StandardKernel();
-            
-            var factoryMapper = new DefaultFactoryMapper();
-            var storageMap = new ManualExtentStorageToConfigurationMap();
-            kernel.Bind<IFactoryMapper>().ToConstant(factoryMapper);
-            kernel.Bind<IExtentStorageToConfigurationMap>().ToConstant(storageMap);
-
+            kernel.FillForDatenMeister();
             return kernel;
         }
     }

@@ -84,5 +84,12 @@ namespace DatenMeister.Runtime.ExtentStorage
                 StoreExtent(info.Extent);
             }
         }
+
+        internal class LoadedExtentInformation
+        {
+            public IUriExtent Extent { get; set; }
+
+            public ExtentStorageConfiguration Configuration { get; set; }
+        }
     }
 }

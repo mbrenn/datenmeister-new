@@ -17,6 +17,11 @@ namespace DatenMeister.Web.Api
     [RoutePrefix("api/datenmeister/extent")]
     public class ExtentController : ApiController
     {
+        /// <summary>
+        /// Defines the maximum numnber of items that shall be returned via GetItems
+        /// </summary>
+        private const int maxItemAmount = 100;
+
         private readonly IFactoryMapper _mapper;
 
         public ExtentController(IFactoryMapper mapper)
@@ -62,16 +67,26 @@ namespace DatenMeister.Web.Api
             return workspace;
         }
 
+        /// <summary>
+        /// Returns a list of items being in the query. 
+        /// The query contains a filter and a subset of elements
+        /// </summary>
+        /// <param name="ws">Workspace to be queried</param>
+        /// <param name="extent">Extent to be queried</param>
+        /// <param name="search">The searchtext being used for query</param>
+        /// <param name="o">Offset, defining the index of the first element within the response queue</param>
+        /// <param name="a">Number of items being shown</param>
+        /// <returns>Enumeration of items</returns>
         [Route("items")]
-        public object GetItems(string ws, string extent, string search = null)
+        public object GetItems(string ws, string extent, string search = null, int o = 0, int a = maxItemAmount)
         {
-            var amount = 100; // Return only the first 100 elements if no index is given
-            var offset = 0;
+            var amount = Math.Max(0, Math.Min(100, a)); // Return only the first 100 elements if no index is given
             var workspace = GetWorkspace(ws);
             var foundExtent =
                 workspace.extent
                     .Cast<IUriExtent>()
                     .FirstOrDefault(x => x.contextURI() == extent);
+
             if (foundExtent == null)
             {
                 throw new InvalidOperationException("Not found");
@@ -83,13 +98,34 @@ namespace DatenMeister.Web.Api
             var properties = foundExtent.GetProperties().ToList();
 
             // Perform the filtering
-            IReflectiveCollection filteredItems = foundItems;
+            IEnumerable<object> filteredItems = foundItems;
             if (!string.IsNullOrEmpty(search))
             {
                 filteredItems = Filter.WhenOneOfThePropertyContains(
                     foundItems, properties, search, StringComparison.CurrentCultureIgnoreCase);
             }
 
+            // After having the filtered item, we reset the offset
+
+            var filteredAmount = filteredItems.Count();
+            if (o < 0)
+            {
+                // If o is negative, show the last values
+                o = filteredAmount + o;
+            }
+            else
+            {
+                if (o + amount > filteredAmount)
+                {
+                    o = filteredAmount - amount;
+                }
+            }
+
+            filteredItems = filteredItems
+                .Skip(o)
+                .Take(amount);
+
+            // Now return our stuff
             var result = new ExtentContentModel
             {
                 url = extent,
@@ -102,10 +138,8 @@ namespace DatenMeister.Web.Api
                     .ToList(),
                 totalItemCount = totalItems.Count(),
                 search = search,
-                filteredItemCount = filteredItems.Count(),
+                filteredItemCount = filteredAmount,
                 items = filteredItems
-                    .Skip(offset)
-                    .Take(amount)
                     .Select(x => new DataTableItem
                     {
                         uri = foundExtent.uri(x as IElement),
@@ -124,9 +158,8 @@ namespace DatenMeister.Web.Api
             IUriExtent foundExtent;
             RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
 
-            var itemModel = new ItemContentModel();
-            itemModel.uri = item;
-            
+            var itemModel = new ItemContentModel {uri = item};
+
             // Retrieves the values of the item
             var foundElement = foundExtent.element(item);
             if (foundElement == null)
@@ -265,7 +298,7 @@ namespace DatenMeister.Web.Api
         /// <param name="extent">Extent to be querued</param>
         /// <returns>The found extent or an exception.</returns>
         [ApiExplorerSettings(IgnoreApi = true)]
-        public static ExtentModel GetExtentModel(string ws, string extent)
+        private static ExtentModel GetExtentModel(string ws, string extent)
         {
             Workspace<IExtent> foundWorkspace;
             IUriExtent foundExtent;
@@ -279,7 +312,7 @@ namespace DatenMeister.Web.Api
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public static void RetrieveWorkspaceAndExtent(
+        private static void RetrieveWorkspaceAndExtent(
             ItemReferenceModel model,
             out Workspace<IExtent> foundWorkspace,
             out IUriExtent foundExtent)
@@ -288,7 +321,7 @@ namespace DatenMeister.Web.Api
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public static void RetrieveWorkspaceAndExtent(
+        private static void RetrieveWorkspaceAndExtent(
             string ws,
             string extent,
             out Workspace<IExtent> foundWorkspace,
@@ -309,7 +342,7 @@ namespace DatenMeister.Web.Api
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public static void FindItem(
+        private static void FindItem(
             ItemReferenceModel model,
             out Workspace<IExtent> foundWorkspace,
             out IUriExtent foundExtent,

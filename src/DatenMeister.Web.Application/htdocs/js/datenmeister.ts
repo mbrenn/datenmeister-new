@@ -37,6 +37,12 @@ module DatenMeister {
         v: Array<string>;
     }
 
+    export interface IItemTableQuery {
+        searchString?: string;
+        offset?: number;
+        amount? : number;
+    }
+
     export module PostModels {
 
         /** This class is used to reference a single object within the database */
@@ -266,7 +272,7 @@ module DatenMeister {
             }
         }
 
-        loadAndCreateHtmlForItems(container: JQuery, ws: string, extentUrl: string): JQueryPromise<Object>  {
+        loadAndCreateHtmlForItems(container: JQuery, ws: string, extentUrl: string, query?: IItemTableQuery): JQueryPromise<Object> {
             var tthis = this;
 
             var callback = $.Deferred();
@@ -282,12 +288,20 @@ module DatenMeister {
             return callback;
         }
 
-        loadHtmlForItems(ws: string, extentUrl: string, searchString?: string): JQueryXHR {
+        loadHtmlForItems(ws: string, extentUrl: string, query?: IItemTableQuery): JQueryXHR {
             var url = "/api/datenmeister/extent/items?ws=" + encodeURIComponent(ws)
                 + "&extent=" + encodeURIComponent(extentUrl);
 
-            if (searchString !== undefined) {
-                url += "&search=" + encodeURIComponent(searchString);
+            if (query !== undefined) {
+                if (query.searchString !== undefined) {
+                    url += "&search=" + encodeURIComponent(query.searchString);
+                }
+                if (query.offset !== undefined && query.offset !== null) {
+                    url += "&o=" + encodeURIComponent(query.offset.toString());
+                }
+                if (query.amount !== undefined && query.amount !== null) {
+                    url += "&a=" + encodeURIComponent(query.amount.toString());
+                }
             }
 
             return $.ajax(
@@ -323,21 +337,22 @@ module DatenMeister {
             var table = new GUI.ItemListTable(container, data, configuration);
 
             configuration.onSearch = function (searchString) {
-                tthis.loadHtmlForItems(ws, extentUrl, searchString)
+                tthis.loadHtmlForItems(ws, extentUrl, { searchString: searchString })
                     .done((innerData: IExtentContent) => {
                         if (table.lastProcessedSearchString === innerData.search) {
-                            table.updateItems(innerData.items);
+                            table.updateItems(innerData);
                         }
                     });
             };
 
             configuration.onNewItemClicked = function() {
-                tthis.createItem(ws, extentUrl).done(() => {
-                    tthis.loadHtmlForItems(ws, extentUrl)
-                        .done((innerData: IExtentContent) => {
-                            table.updateItems(innerData.items);
-                        });
-                });
+                tthis.createItem(ws, extentUrl)
+                    .done(() => {
+                        tthis.loadHtmlForItems(ws, extentUrl, { offset: -50 })
+                            .done((innerData: IExtentContent) => {
+                                table.updateItems(innerData);
+                            });
+                    });
 
             }
 
@@ -469,7 +484,7 @@ module DatenMeister {
             var workbenchLogic = new DatenMeister.WorkspaceLogic();
             workbenchLogic.onWorkspaceSelected = (id: string) => {
                 // Loads the extent of the workspace, if the user has clicked on one of the workbenches
-                history.pushState({}, '', "#ws=" + encodeURIComponent(id));
+                history.pushState({}, "", "#ws=" + encodeURIComponent(id));
                 loadExtents(id);
             };
 
@@ -550,6 +565,8 @@ module DatenMeister {
             domContainer: JQuery;
             domTable: JQuery;
             lastProcessedSearchString: string;
+            domTotalNumber: JQuery;
+            domFilteredNumber: JQuery;
 
             constructor(dom: JQuery, data: IExtentContent, configuration: DataTableConfiguration) {
                 this.domContainer = dom;
@@ -582,11 +599,18 @@ module DatenMeister {
                         if (tthis.configuration.onNewItemClicked !== undefined) {
                             tthis.configuration.onNewItemClicked();
                         }
-                        
+
                         return false;
-                    })
+                    });
+
                     this.domContainer.append(domNewItem);
                 }
+
+                var domAmount = $("<div>Total: <span class='totalnumber'>##</span>, Filtered: <span class='filterednumber'>##</span>");
+                this.domTotalNumber = $(".totalnumber", domAmount);
+                this.domFilteredNumber = $(".filterednumber", domAmount);
+
+                this.domContainer.append(domAmount);
 
                 this.domTable = $("<table class='table'></table>");
 
@@ -615,6 +639,10 @@ module DatenMeister {
 
             createRowsForData(): void {
                 var tthis = this;
+
+                this.domTotalNumber.text(this.data.totalItemCount);
+                this.domFilteredNumber.text(this.data.filteredItemCount);
+
                 // Now, the items
                 for (var i in this.data.items) {
                     var item = this.data.items[i];
@@ -666,8 +694,8 @@ module DatenMeister {
                 }
             }
 
-            updateItems(items) {
-                this.data.items = items;
+            updateItems(data: IExtentContent) {
+                this.data = data;
                 $("tr", this.domTable).has("td")
                     .remove();
                 this.createRowsForData();

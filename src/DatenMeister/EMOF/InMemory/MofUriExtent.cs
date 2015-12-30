@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using DatenMeister.EMOF.Attributes;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.InMemory
 {
+    [AssignFactoryForExtentType(typeof(MofFactory))]
     public class MofUriExtent : IUriExtent
     {
         private readonly string _contextUri;

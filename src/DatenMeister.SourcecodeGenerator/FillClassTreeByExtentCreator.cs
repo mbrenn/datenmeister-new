@@ -109,9 +109,22 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine($"{stack.Indentation}if(name == \"{name}\") // Looking for class");
             Result.AppendLine($"{stack.Indentation}{{");
 
+            string fullName; 
+            if (stack.Level == 1)
+            {
+                // Removes the name of the package of the first hierarchy level
+                // since it is already included into the class name
+                fullName = $"__{name}";
+            }
+            else
+            {
+                fullName = $"{stack.Fullname}.__{name}";
+            }
+            
+
             var ifStack = stack.NextWithoutLevelIncrease;
             var ifForeachStack = ifStack.NextWithoutLevelIncrease;
-            Result.AppendLine($"{ifStack.Indentation}tree.{stack.Fullname}.@{name}Instance = value;");
+            Result.AppendLine($"{ifStack.Indentation}tree.{fullName} = value;");
             Result.AppendLine($"{ifStack.Indentation}isSet = value.isSet(\"ownedAttribute\");");
             Result.AppendLine(
                 $"{ifStack.Indentation}collection = isSet ? (value.get(\"ownedAttribute\") as IEnumerable<object>) : EmptyList;");

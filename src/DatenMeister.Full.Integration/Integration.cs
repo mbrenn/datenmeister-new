@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using DatenMeister.EMOF.Attributes;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -16,11 +15,15 @@ namespace DatenMeister.Full.Integration
         {
             var factoryMapper = new DefaultFactoryMapper();
             factoryMapper.PerformAutomaticMappingByAttribute();
+            kernel.Bind<IFactoryMapper>().ToConstant(factoryMapper);
 
             var storageMap = new ManualExtentStorageToConfigurationMap();
             storageMap.PerformMappingForConfigurationOfExtentLoaders();
-            kernel.Bind<IFactoryMapper>().ToConstant(factoryMapper);
             kernel.Bind<IExtentStorageToConfigurationMap>().ToConstant(storageMap);
+
+            // Load the primitivetypes
+            var primitiveTypes = new _PrimitiveTypes();
+            kernel.Bind<_PrimitiveTypes>().ToConstant(primitiveTypes);
         }
 
         public static void PerformAutomaticMappingByAttribute(this DefaultFactoryMapper mapper)

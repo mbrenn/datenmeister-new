@@ -15,7 +15,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// </summary>
         public ClassTreeGenerator()
         {
-            FactoryVersion = new Version(1, 0, 0, 0);
+            FactoryVersion = new Version(1, 0, 1, 0);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace DatenMeister.SourcecodeGenerator
 
             Result.AppendLine();
             Result.AppendLine($"{stack.Indentation}public _{name} @{name} = new _{name}();");
-            Result.AppendLine($"{stack.Indentation}public object @{name}Instance = new object();");
+            Result.AppendLine($"{stack.Indentation}public object @__{name} = new object();");
             Result.AppendLine();
         }
 

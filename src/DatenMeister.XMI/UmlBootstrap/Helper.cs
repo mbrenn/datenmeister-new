@@ -50,6 +50,17 @@ namespace DatenMeister.XMI.UmlBootstrap
             return XmlGetElementsOfType(element, typeName);
         }
 
+        public static IEnumerable<IObject> XmiGetClassOrDerived(this IObject element)
+        {
+            var typeNames = new[]
+            {
+                "uml:Class",
+                "uml:PrimitiveType"
+            };
+
+            return XmlGetElementsOfTypes(element, typeNames);
+        }
+
         public static IEnumerable<IObject> XmiGetProperty(this IObject element)
         {
             var typeName = "uml:Property";
@@ -78,10 +89,15 @@ namespace DatenMeister.XMI.UmlBootstrap
         /// <returns>Enumeration of objects of the given type</returns>
         private static IEnumerable<IObject> XmlGetElementsOfType(IObject element, string typeName)
         {
+            return XmlGetElementsOfTypes(element, new string[] { typeName});
+        }
+
+        private static IEnumerable<IObject> XmlGetElementsOfTypes(IObject element, IEnumerable<string> typeNames)
+        {
             var elementAsExt = (IObjectAllProperties) element;
             if (elementAsExt == null)
             {
-                throw new ArgumentNullException("element is not Null");
+                throw new ArgumentNullException(nameof(element));
             }
 
             var attributeXmi = "{" + Namespaces.Xmi + "}type";
@@ -96,7 +112,7 @@ namespace DatenMeister.XMI.UmlBootstrap
                     if (innerValueAsObject != null && innerValueAsObject.isSet(attributeXmi))
                     {
                         var type = innerValueAsObject.get(attributeXmi).ToString();
-                        if (type == typeName)
+                        if (typeNames.Count(x => type == x) > 0)
                         {
                             yield return innerValueAsObject;
                         }

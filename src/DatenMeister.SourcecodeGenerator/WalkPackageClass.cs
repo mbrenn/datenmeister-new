@@ -12,7 +12,7 @@ namespace DatenMeister.SourcecodeGenerator
     /// </summary>
     public class WalkPackageClass
     {
-        public Version FactoryVersion = new Version(1, 0, 0, 0);
+        public Version FactoryVersion = new Version(1, 0, 1, 0);
 
         public WalkPackageClass()
         {
@@ -119,7 +119,7 @@ namespace DatenMeister.SourcecodeGenerator
 
             // Finds the classes in the package
 
-            foreach (var classInstance in Helper.XmiGetClass(element))
+            foreach (var classInstance in Helper.XmiGetClassOrDerived(element))
             {
                 WalkClass(classInstance, innerStack);
             }
@@ -129,6 +129,8 @@ namespace DatenMeister.SourcecodeGenerator
         ///     Parses the packages
         /// </summary>
         /// <param name="element">Element classInstance parsed</param>
+        /// <param name="classInstance">The classes that need to be parsed</param>
+        /// <param name="stack">Stack to be used</param>
         protected virtual void WalkClass(IObject classInstance, CallStack stack)
         {
             var innerStack = new CallStack(stack);
@@ -166,7 +168,7 @@ namespace DatenMeister.SourcecodeGenerator
             {
                 _ownerStack = ownerStack;
                 Indentation = ownerStack == null ? string.Empty : $"{ownerStack.Indentation}    ";
-                Level = ownerStack == null ? 0 : ownerStack.Level + 1;
+                Level = ownerStack?.Level + 1 ?? 0;
                 Fullname = ownerStack?.Fullname;
             }
 

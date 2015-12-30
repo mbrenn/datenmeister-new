@@ -59,6 +59,9 @@
     <None Include="data\MOF.xmi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="data\PrimitiveTypes.xmi">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="data\UML.xmi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

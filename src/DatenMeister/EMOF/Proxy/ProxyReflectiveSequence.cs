@@ -22,6 +22,7 @@ namespace DatenMeister.EMOF.Proxy
 
         public ProxyReflectiveSequence(IReflectiveSequence sequence) : base ( sequence)
         {
+            
         }
 
         public virtual void add(int index, object value)

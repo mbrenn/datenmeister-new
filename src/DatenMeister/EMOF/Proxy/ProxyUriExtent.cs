@@ -35,20 +35,6 @@ namespace DatenMeister.EMOF.Proxy
             PrivatizeElementFunc = x => x;
         }
 
-        public ProxyUriExtent ActivateObjectConversion()
-        {
-            PublicizeElementFunc = x => new ProxyMofElement(x);
-            PublicizeReflectiveSequenceFunc = x => 
-                new ProxyReflectiveSequence(x).ActivateObjectConversion();
-            PrivatizeElementFunc = x =>
-            {
-                var element = x as ProxyMofElement;
-                return element != null ? element.GetProxiedElement() : x;
-            };
-
-            return this;
-        }
-
         public virtual string contextURI()
         {
             return Extent.contextURI();
@@ -72,6 +58,20 @@ namespace DatenMeister.EMOF.Proxy
         public virtual bool useContainment()
         {
             return Extent.useContainment();
+        }
+
+        public ProxyUriExtent ActivateObjectConversion()
+        {
+            PublicizeElementFunc = x => new ProxyMofElement(x);
+            PublicizeReflectiveSequenceFunc = x =>
+                new ProxyReflectiveSequence(x).ActivateObjectConversion();
+            PrivatizeElementFunc = x =>
+            {
+                var element = x as ProxyMofElement;
+                return element != null ? element.GetProxiedElement() : x;
+            };
+
+            return this;
         }
     }
 }

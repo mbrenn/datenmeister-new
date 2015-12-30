@@ -82,7 +82,6 @@ namespace DatenMeister.Tests.Mof.Core
 
             proxiedElement = returned as ProxyMofElement;
             Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<MofElement>());
-
         }
     }
 }

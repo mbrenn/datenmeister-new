@@ -86,9 +86,10 @@ namespace DatenMeister.EMOF.Proxy
                     return new ProxyMofElement(element);
                 }
 
-                if (x is IObject)
+                var asObject = x as IObject;
+                if ( asObject != null )
                 {
-                    throw new InvalidOperationException("Not supported");
+                    return new ProxyMofObject(asObject);
                 }
 
                 return x;

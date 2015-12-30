@@ -1,21 +1,18 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using DatenMeister.EMOF.Interface.Reflection;
-
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.0.0.0
-
 namespace DatenMeister.Filler
 {
     public class FillTheMOF
     {
-        private static readonly object[] EmptyList = {};
-
+        private static object[] EmptyList = new object[] { };
         private static string GetNameOfElement(IObject element)
         {
             var nameAsObject = element.get("name");
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public static void DoFill(IEnumerable<object> collection, _MOF tree)
+        public static void DoFill(IEnumerable<object> collection, DatenMeister._MOF tree)
         {
             string name;
             IObject value;
@@ -27,7 +24,7 @@ namespace DatenMeister.Filler
                 if (name == "MOF") // Looking for package
                 {
                     isSet = value.isSet("packagedElement");
-                    collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
+                    collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                     foreach (var item0 in collection)
                     {
                         value = item0 as IObject;
@@ -35,27 +32,27 @@ namespace DatenMeister.Filler
                         if (name == "Identifiers") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
+                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
                                 name = GetNameOfElement(value);
-                                if (name == "URIExtent") // Looking for class
+                                if(name == "URIExtent") // Looking for class
                                 {
-                                    tree.Identifiers.@URIExtentInstance = value;
+                                    tree.Identifiers.__URIExtent = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
                                         name = GetNameOfElement(value);
                                     }
                                 }
-                                if (name == "Extent") // Looking for class
+                                if(name == "Extent") // Looking for class
                                 {
-                                    tree.Identifiers.@ExtentInstance = value;
+                                    tree.Identifiers.__Extent = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -67,7 +64,7 @@ namespace DatenMeister.Filler
                         if (name == "EMOF") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
+                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
@@ -77,21 +74,21 @@ namespace DatenMeister.Filler
                         if (name == "CMOFExtension") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
+                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
                                 name = GetNameOfElement(value);
-                                if (name == "Tag") // Looking for class
+                                if(name == "Tag") // Looking for class
                                 {
-                                    tree.CMOFExtension.@TagInstance = value;
+                                    tree.CMOFExtension.__Tag = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
                                         name = GetNameOfElement(value);
-                                        if (name == "tagOwner") // Looking for property
+                                        if(name == "tagOwner") // Looking for property
                                         {
                                             tree.CMOFExtension.Tag.@tagOwner = value;
                                         }
@@ -102,29 +99,29 @@ namespace DatenMeister.Filler
                         if (name == "Extension") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
+                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
                                 name = GetNameOfElement(value);
-                                if (name == "Tag") // Looking for class
+                                if(name == "Tag") // Looking for class
                                 {
-                                    tree.Extension.@TagInstance = value;
+                                    tree.Extension.__Tag = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
                                         name = GetNameOfElement(value);
-                                        if (name == "name") // Looking for property
+                                        if(name == "name") // Looking for property
                                         {
                                             tree.Extension.Tag.@name = value;
                                         }
-                                        if (name == "value") // Looking for property
+                                        if(name == "value") // Looking for property
                                         {
                                             tree.Extension.Tag.@value = value;
                                         }
-                                        if (name == "element") // Looking for property
+                                        if(name == "element") // Looking for property
                                         {
                                             tree.Extension.Tag.@element = value;
                                         }
@@ -135,27 +132,27 @@ namespace DatenMeister.Filler
                         if (name == "Common") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
+                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
                                 name = GetNameOfElement(value);
-                                if (name == "ReflectiveSequence") // Looking for class
+                                if(name == "ReflectiveSequence") // Looking for class
                                 {
-                                    tree.Common.@ReflectiveSequenceInstance = value;
+                                    tree.Common.__ReflectiveSequence = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
                                         name = GetNameOfElement(value);
                                     }
                                 }
-                                if (name == "ReflectiveCollection") // Looking for class
+                                if(name == "ReflectiveCollection") // Looking for class
                                 {
-                                    tree.Common.@ReflectiveCollectionInstance = value;
+                                    tree.Common.__ReflectiveCollection = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
@@ -167,7 +164,7 @@ namespace DatenMeister.Filler
                         if (name == "CMOF") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
+                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
@@ -177,104 +174,104 @@ namespace DatenMeister.Filler
                         if (name == "CMOFReflection") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
+                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
                                 name = GetNameOfElement(value);
-                                if (name == "Factory") // Looking for class
+                                if(name == "Factory") // Looking for class
                                 {
-                                    tree.CMOFReflection.@FactoryInstance = value;
+                                    tree.CMOFReflection.__Factory = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
                                         name = GetNameOfElement(value);
                                     }
                                 }
-                                if (name == "Element") // Looking for class
+                                if(name == "Element") // Looking for class
                                 {
-                                    tree.CMOFReflection.@ElementInstance = value;
+                                    tree.CMOFReflection.__Element = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
                                         name = GetNameOfElement(value);
                                     }
                                 }
-                                if (name == "Argument") // Looking for class
+                                if(name == "Argument") // Looking for class
                                 {
-                                    tree.CMOFReflection.@ArgumentInstance = value;
+                                    tree.CMOFReflection.__Argument = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
                                         name = GetNameOfElement(value);
-                                        if (name == "name") // Looking for property
+                                        if(name == "name") // Looking for property
                                         {
                                             tree.CMOFReflection.Argument.@name = value;
                                         }
-                                        if (name == "value") // Looking for property
+                                        if(name == "value") // Looking for property
                                         {
                                             tree.CMOFReflection.Argument.@value = value;
                                         }
                                     }
                                 }
-                                if (name == "Extent") // Looking for class
+                                if(name == "Extent") // Looking for class
                                 {
-                                    tree.CMOFReflection.@ExtentInstance = value;
+                                    tree.CMOFReflection.__Extent = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
                                         name = GetNameOfElement(value);
                                     }
                                 }
-                                if (name == "Link") // Looking for class
+                                if(name == "Link") // Looking for class
                                 {
-                                    tree.CMOFReflection.@LinkInstance = value;
+                                    tree.CMOFReflection.__Link = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
                                         name = GetNameOfElement(value);
-                                        if (name == "firstElement") // Looking for property
+                                        if(name == "firstElement") // Looking for property
                                         {
                                             tree.CMOFReflection.Link.@firstElement = value;
                                         }
-                                        if (name == "secondElement") // Looking for property
+                                        if(name == "secondElement") // Looking for property
                                         {
                                             tree.CMOFReflection.Link.@secondElement = value;
                                         }
-                                        if (name == "association") // Looking for property
+                                        if(name == "association") // Looking for property
                                         {
                                             tree.CMOFReflection.Link.@association = value;
                                         }
                                     }
                                 }
-                                if (name == "Exception") // Looking for class
+                                if(name == "Exception") // Looking for class
                                 {
-                                    tree.CMOFReflection.@ExceptionInstance = value;
+                                    tree.CMOFReflection.__Exception = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
                                         name = GetNameOfElement(value);
-                                        if (name == "objectInError") // Looking for property
+                                        if(name == "objectInError") // Looking for property
                                         {
                                             tree.CMOFReflection.Exception.@objectInError = value;
                                         }
-                                        if (name == "elementInError") // Looking for property
+                                        if(name == "elementInError") // Looking for property
                                         {
                                             tree.CMOFReflection.Exception.@elementInError = value;
                                         }
-                                        if (name == "description") // Looking for property
+                                        if(name == "description") // Looking for property
                                         {
                                             tree.CMOFReflection.Exception.@description = value;
                                         }
@@ -285,58 +282,58 @@ namespace DatenMeister.Filler
                         if (name == "Reflection") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? value.get("packagedElement") as IEnumerable<object> : EmptyList;
+                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IObject;
                                 name = GetNameOfElement(value);
-                                if (name == "Factory") // Looking for class
+                                if(name == "Factory") // Looking for class
                                 {
-                                    tree.Reflection.@FactoryInstance = value;
+                                    tree.Reflection.__Factory = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
                                         name = GetNameOfElement(value);
-                                        if (name == "package") // Looking for property
+                                        if(name == "package") // Looking for property
                                         {
                                             tree.Reflection.Factory.@package = value;
                                         }
                                     }
                                 }
-                                if (name == "Type") // Looking for class
+                                if(name == "Type") // Looking for class
                                 {
-                                    tree.Reflection.@TypeInstance = value;
+                                    tree.Reflection.__Type = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
                                         name = GetNameOfElement(value);
                                     }
                                 }
-                                if (name == "Object") // Looking for class
+                                if(name == "Object") // Looking for class
                                 {
-                                    tree.Reflection.@ObjectInstance = value;
+                                    tree.Reflection.__Object = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
                                         name = GetNameOfElement(value);
                                     }
                                 }
-                                if (name == "Element") // Looking for class
+                                if(name == "Element") // Looking for class
                                 {
-                                    tree.Reflection.@ElementInstance = value;
+                                    tree.Reflection.__Element = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? value.get("ownedAttribute") as IEnumerable<object> : EmptyList;
+                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IObject;
                                         name = GetNameOfElement(value);
-                                        if (name == "metaclass") // Looking for property
+                                        if(name == "metaclass") // Looking for property
                                         {
                                             tree.Reflection.Element.@metaclass = value;
                                         }

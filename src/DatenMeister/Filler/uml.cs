@@ -1,4 +1,4 @@
-// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.0.0.0
+// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.0.1.0
 namespace DatenMeister
 {
     public class _UML
@@ -26,7 +26,7 @@ namespace DatenMeister
             }
 
             public _Activity @Activity = new _Activity();
-            public object @ActivityInstance = new object();
+            public object @__Activity = new object();
 
             public class _ActivityEdge
             {
@@ -53,14 +53,14 @@ namespace DatenMeister
             }
 
             public _ActivityEdge @ActivityEdge = new _ActivityEdge();
-            public object @ActivityEdgeInstance = new object();
+            public object @__ActivityEdge = new object();
 
             public class _ActivityFinalNode
             {
             }
 
             public _ActivityFinalNode @ActivityFinalNode = new _ActivityFinalNode();
-            public object @ActivityFinalNodeInstance = new object();
+            public object @__ActivityFinalNode = new object();
 
             public class _ActivityGroup
             {
@@ -77,7 +77,7 @@ namespace DatenMeister
             }
 
             public _ActivityGroup @ActivityGroup = new _ActivityGroup();
-            public object @ActivityGroupInstance = new object();
+            public object @__ActivityGroup = new object();
 
             public class _ActivityNode
             {
@@ -100,7 +100,7 @@ namespace DatenMeister
             }
 
             public _ActivityNode @ActivityNode = new _ActivityNode();
-            public object @ActivityNodeInstance = new object();
+            public object @__ActivityNode = new object();
 
             public class _ActivityParameterNode
             {
@@ -109,7 +109,7 @@ namespace DatenMeister
             }
 
             public _ActivityParameterNode @ActivityParameterNode = new _ActivityParameterNode();
-            public object @ActivityParameterNodeInstance = new object();
+            public object @__ActivityParameterNode = new object();
 
             public class _ActivityPartition
             {
@@ -130,35 +130,35 @@ namespace DatenMeister
             }
 
             public _ActivityPartition @ActivityPartition = new _ActivityPartition();
-            public object @ActivityPartitionInstance = new object();
+            public object @__ActivityPartition = new object();
 
             public class _CentralBufferNode
             {
             }
 
             public _CentralBufferNode @CentralBufferNode = new _CentralBufferNode();
-            public object @CentralBufferNodeInstance = new object();
+            public object @__CentralBufferNode = new object();
 
             public class _ControlFlow
             {
             }
 
             public _ControlFlow @ControlFlow = new _ControlFlow();
-            public object @ControlFlowInstance = new object();
+            public object @__ControlFlow = new object();
 
             public class _ControlNode
             {
             }
 
             public _ControlNode @ControlNode = new _ControlNode();
-            public object @ControlNodeInstance = new object();
+            public object @__ControlNode = new object();
 
             public class _DataStoreNode
             {
             }
 
             public _DataStoreNode @DataStoreNode = new _DataStoreNode();
-            public object @DataStoreNodeInstance = new object();
+            public object @__DataStoreNode = new object();
 
             public class _DecisionNode
             {
@@ -169,7 +169,7 @@ namespace DatenMeister
             }
 
             public _DecisionNode @DecisionNode = new _DecisionNode();
-            public object @DecisionNodeInstance = new object();
+            public object @__DecisionNode = new object();
 
             public class _ExceptionHandler
             {
@@ -184,7 +184,7 @@ namespace DatenMeister
             }
 
             public _ExceptionHandler @ExceptionHandler = new _ExceptionHandler();
-            public object @ExceptionHandlerInstance = new object();
+            public object @__ExceptionHandler = new object();
 
             public class _ExecutableNode
             {
@@ -193,35 +193,35 @@ namespace DatenMeister
             }
 
             public _ExecutableNode @ExecutableNode = new _ExecutableNode();
-            public object @ExecutableNodeInstance = new object();
+            public object @__ExecutableNode = new object();
 
             public class _FinalNode
             {
             }
 
             public _FinalNode @FinalNode = new _FinalNode();
-            public object @FinalNodeInstance = new object();
+            public object @__FinalNode = new object();
 
             public class _FlowFinalNode
             {
             }
 
             public _FlowFinalNode @FlowFinalNode = new _FlowFinalNode();
-            public object @FlowFinalNodeInstance = new object();
+            public object @__FlowFinalNode = new object();
 
             public class _ForkNode
             {
             }
 
             public _ForkNode @ForkNode = new _ForkNode();
-            public object @ForkNodeInstance = new object();
+            public object @__ForkNode = new object();
 
             public class _InitialNode
             {
             }
 
             public _InitialNode @InitialNode = new _InitialNode();
-            public object @InitialNodeInstance = new object();
+            public object @__InitialNode = new object();
 
             public class _InterruptibleActivityRegion
             {
@@ -232,7 +232,7 @@ namespace DatenMeister
             }
 
             public _InterruptibleActivityRegion @InterruptibleActivityRegion = new _InterruptibleActivityRegion();
-            public object @InterruptibleActivityRegionInstance = new object();
+            public object @__InterruptibleActivityRegion = new object();
 
             public class _JoinNode
             {
@@ -243,14 +243,14 @@ namespace DatenMeister
             }
 
             public _JoinNode @JoinNode = new _JoinNode();
-            public object @JoinNodeInstance = new object();
+            public object @__JoinNode = new object();
 
             public class _MergeNode
             {
             }
 
             public _MergeNode @MergeNode = new _MergeNode();
-            public object @MergeNodeInstance = new object();
+            public object @__MergeNode = new object();
 
             public class _ObjectFlow
             {
@@ -265,7 +265,7 @@ namespace DatenMeister
             }
 
             public _ObjectFlow @ObjectFlow = new _ObjectFlow();
-            public object @ObjectFlowInstance = new object();
+            public object @__ObjectFlow = new object();
 
             public class _ObjectNode
             {
@@ -282,7 +282,7 @@ namespace DatenMeister
             }
 
             public _ObjectNode @ObjectNode = new _ObjectNode();
-            public object @ObjectNodeInstance = new object();
+            public object @__ObjectNode = new object();
 
             public class _Variable
             {
@@ -293,7 +293,7 @@ namespace DatenMeister
             }
 
             public _Variable @Variable = new _Variable();
-            public object @VariableInstance = new object();
+            public object @__Variable = new object();
 
         }
 
@@ -310,7 +310,7 @@ namespace DatenMeister
             }
 
             public _Duration @Duration = new _Duration();
-            public object @DurationInstance = new object();
+            public object @__Duration = new object();
 
             public class _DurationConstraint
             {
@@ -321,7 +321,7 @@ namespace DatenMeister
             }
 
             public _DurationConstraint @DurationConstraint = new _DurationConstraint();
-            public object @DurationConstraintInstance = new object();
+            public object @__DurationConstraint = new object();
 
             public class _DurationInterval
             {
@@ -332,7 +332,7 @@ namespace DatenMeister
             }
 
             public _DurationInterval @DurationInterval = new _DurationInterval();
-            public object @DurationIntervalInstance = new object();
+            public object @__DurationInterval = new object();
 
             public class _DurationObservation
             {
@@ -343,7 +343,7 @@ namespace DatenMeister
             }
 
             public _DurationObservation @DurationObservation = new _DurationObservation();
-            public object @DurationObservationInstance = new object();
+            public object @__DurationObservation = new object();
 
             public class _Expression
             {
@@ -354,7 +354,7 @@ namespace DatenMeister
             }
 
             public _Expression @Expression = new _Expression();
-            public object @ExpressionInstance = new object();
+            public object @__Expression = new object();
 
             public class _Interval
             {
@@ -365,7 +365,7 @@ namespace DatenMeister
             }
 
             public _Interval @Interval = new _Interval();
-            public object @IntervalInstance = new object();
+            public object @__Interval = new object();
 
             public class _IntervalConstraint
             {
@@ -374,7 +374,7 @@ namespace DatenMeister
             }
 
             public _IntervalConstraint @IntervalConstraint = new _IntervalConstraint();
-            public object @IntervalConstraintInstance = new object();
+            public object @__IntervalConstraint = new object();
 
             public class _LiteralBoolean
             {
@@ -383,7 +383,7 @@ namespace DatenMeister
             }
 
             public _LiteralBoolean @LiteralBoolean = new _LiteralBoolean();
-            public object @LiteralBooleanInstance = new object();
+            public object @__LiteralBoolean = new object();
 
             public class _LiteralInteger
             {
@@ -392,14 +392,14 @@ namespace DatenMeister
             }
 
             public _LiteralInteger @LiteralInteger = new _LiteralInteger();
-            public object @LiteralIntegerInstance = new object();
+            public object @__LiteralInteger = new object();
 
             public class _LiteralNull
             {
             }
 
             public _LiteralNull @LiteralNull = new _LiteralNull();
-            public object @LiteralNullInstance = new object();
+            public object @__LiteralNull = new object();
 
             public class _LiteralReal
             {
@@ -408,14 +408,14 @@ namespace DatenMeister
             }
 
             public _LiteralReal @LiteralReal = new _LiteralReal();
-            public object @LiteralRealInstance = new object();
+            public object @__LiteralReal = new object();
 
             public class _LiteralSpecification
             {
             }
 
             public _LiteralSpecification @LiteralSpecification = new _LiteralSpecification();
-            public object @LiteralSpecificationInstance = new object();
+            public object @__LiteralSpecification = new object();
 
             public class _LiteralString
             {
@@ -424,7 +424,7 @@ namespace DatenMeister
             }
 
             public _LiteralString @LiteralString = new _LiteralString();
-            public object @LiteralStringInstance = new object();
+            public object @__LiteralString = new object();
 
             public class _LiteralUnlimitedNatural
             {
@@ -433,14 +433,14 @@ namespace DatenMeister
             }
 
             public _LiteralUnlimitedNatural @LiteralUnlimitedNatural = new _LiteralUnlimitedNatural();
-            public object @LiteralUnlimitedNaturalInstance = new object();
+            public object @__LiteralUnlimitedNatural = new object();
 
             public class _Observation
             {
             }
 
             public _Observation @Observation = new _Observation();
-            public object @ObservationInstance = new object();
+            public object @__Observation = new object();
 
             public class _OpaqueExpression
             {
@@ -455,7 +455,7 @@ namespace DatenMeister
             }
 
             public _OpaqueExpression @OpaqueExpression = new _OpaqueExpression();
-            public object @OpaqueExpressionInstance = new object();
+            public object @__OpaqueExpression = new object();
 
             public class _StringExpression
             {
@@ -466,7 +466,7 @@ namespace DatenMeister
             }
 
             public _StringExpression @StringExpression = new _StringExpression();
-            public object @StringExpressionInstance = new object();
+            public object @__StringExpression = new object();
 
             public class _TimeConstraint
             {
@@ -477,7 +477,7 @@ namespace DatenMeister
             }
 
             public _TimeConstraint @TimeConstraint = new _TimeConstraint();
-            public object @TimeConstraintInstance = new object();
+            public object @__TimeConstraint = new object();
 
             public class _TimeExpression
             {
@@ -488,7 +488,7 @@ namespace DatenMeister
             }
 
             public _TimeExpression @TimeExpression = new _TimeExpression();
-            public object @TimeExpressionInstance = new object();
+            public object @__TimeExpression = new object();
 
             public class _TimeInterval
             {
@@ -499,7 +499,7 @@ namespace DatenMeister
             }
 
             public _TimeInterval @TimeInterval = new _TimeInterval();
-            public object @TimeIntervalInstance = new object();
+            public object @__TimeInterval = new object();
 
             public class _TimeObservation
             {
@@ -510,14 +510,14 @@ namespace DatenMeister
             }
 
             public _TimeObservation @TimeObservation = new _TimeObservation();
-            public object @TimeObservationInstance = new object();
+            public object @__TimeObservation = new object();
 
             public class _ValueSpecification
             {
             }
 
             public _ValueSpecification @ValueSpecification = new _ValueSpecification();
-            public object @ValueSpecificationInstance = new object();
+            public object @__ValueSpecification = new object();
 
         }
 
@@ -530,7 +530,7 @@ namespace DatenMeister
             }
 
             public _Actor @Actor = new _Actor();
-            public object @ActorInstance = new object();
+            public object @__Actor = new object();
 
             public class _Extend
             {
@@ -545,7 +545,7 @@ namespace DatenMeister
             }
 
             public _Extend @Extend = new _Extend();
-            public object @ExtendInstance = new object();
+            public object @__Extend = new object();
 
             public class _ExtensionPoint
             {
@@ -554,7 +554,7 @@ namespace DatenMeister
             }
 
             public _ExtensionPoint @ExtensionPoint = new _ExtensionPoint();
-            public object @ExtensionPointInstance = new object();
+            public object @__ExtensionPoint = new object();
 
             public class _Include
             {
@@ -565,7 +565,7 @@ namespace DatenMeister
             }
 
             public _Include @Include = new _Include();
-            public object @IncludeInstance = new object();
+            public object @__Include = new object();
 
             public class _UseCase
             {
@@ -580,7 +580,7 @@ namespace DatenMeister
             }
 
             public _UseCase @UseCase = new _UseCase();
-            public object @UseCaseInstance = new object();
+            public object @__UseCase = new object();
 
         }
 
@@ -603,14 +603,14 @@ namespace DatenMeister
             }
 
             public _Association @Association = new _Association();
-            public object @AssociationInstance = new object();
+            public object @__Association = new object();
 
             public class _AssociationClass
             {
             }
 
             public _AssociationClass @AssociationClass = new _AssociationClass();
-            public object @AssociationClassInstance = new object();
+            public object @__AssociationClass = new object();
 
             public class _Class
             {
@@ -633,7 +633,7 @@ namespace DatenMeister
             }
 
             public _Class @Class = new _Class();
-            public object @ClassInstance = new object();
+            public object @__Class = new object();
 
             public class _Collaboration
             {
@@ -642,7 +642,7 @@ namespace DatenMeister
             }
 
             public _Collaboration @Collaboration = new _Collaboration();
-            public object @CollaborationInstance = new object();
+            public object @__Collaboration = new object();
 
             public class _CollaborationUse
             {
@@ -653,7 +653,7 @@ namespace DatenMeister
             }
 
             public _CollaborationUse @CollaborationUse = new _CollaborationUse();
-            public object @CollaborationUseInstance = new object();
+            public object @__CollaborationUse = new object();
 
             public class _Component
             {
@@ -670,7 +670,7 @@ namespace DatenMeister
             }
 
             public _Component @Component = new _Component();
-            public object @ComponentInstance = new object();
+            public object @__Component = new object();
 
             public class _ComponentRealization
             {
@@ -681,7 +681,7 @@ namespace DatenMeister
             }
 
             public _ComponentRealization @ComponentRealization = new _ComponentRealization();
-            public object @ComponentRealizationInstance = new object();
+            public object @__ComponentRealization = new object();
 
             public class _ConnectableElement
             {
@@ -692,7 +692,7 @@ namespace DatenMeister
             }
 
             public _ConnectableElement @ConnectableElement = new _ConnectableElement();
-            public object @ConnectableElementInstance = new object();
+            public object @__ConnectableElement = new object();
 
             public class _ConnectableElementTemplateParameter
             {
@@ -701,7 +701,7 @@ namespace DatenMeister
             }
 
             public _ConnectableElementTemplateParameter @ConnectableElementTemplateParameter = new _ConnectableElementTemplateParameter();
-            public object @ConnectableElementTemplateParameterInstance = new object();
+            public object @__ConnectableElementTemplateParameter = new object();
 
             public class _Connector
             {
@@ -718,7 +718,7 @@ namespace DatenMeister
             }
 
             public _Connector @Connector = new _Connector();
-            public object @ConnectorInstance = new object();
+            public object @__Connector = new object();
 
             public class _ConnectorEnd
             {
@@ -731,7 +731,7 @@ namespace DatenMeister
             }
 
             public _ConnectorEnd @ConnectorEnd = new _ConnectorEnd();
-            public object @ConnectorEndInstance = new object();
+            public object @__ConnectorEnd = new object();
 
             public class _EncapsulatedClassifier
             {
@@ -740,7 +740,7 @@ namespace DatenMeister
             }
 
             public _EncapsulatedClassifier @EncapsulatedClassifier = new _EncapsulatedClassifier();
-            public object @EncapsulatedClassifierInstance = new object();
+            public object @__EncapsulatedClassifier = new object();
 
             public class _Port
             {
@@ -761,7 +761,7 @@ namespace DatenMeister
             }
 
             public _Port @Port = new _Port();
-            public object @PortInstance = new object();
+            public object @__Port = new object();
 
             public class _StructuredClassifier
             {
@@ -776,7 +776,7 @@ namespace DatenMeister
             }
 
             public _StructuredClassifier @StructuredClassifier = new _StructuredClassifier();
-            public object @StructuredClassifierInstance = new object();
+            public object @__StructuredClassifier = new object();
 
         }
 
@@ -795,14 +795,14 @@ namespace DatenMeister
             }
 
             public _ConnectionPointReference @ConnectionPointReference = new _ConnectionPointReference();
-            public object @ConnectionPointReferenceInstance = new object();
+            public object @__ConnectionPointReference = new object();
 
             public class _FinalState
             {
             }
 
             public _FinalState @FinalState = new _FinalState();
-            public object @FinalStateInstance = new object();
+            public object @__FinalState = new object();
 
             public class _ProtocolConformance
             {
@@ -813,7 +813,7 @@ namespace DatenMeister
             }
 
             public _ProtocolConformance @ProtocolConformance = new _ProtocolConformance();
-            public object @ProtocolConformanceInstance = new object();
+            public object @__ProtocolConformance = new object();
 
             public class _ProtocolStateMachine
             {
@@ -822,7 +822,7 @@ namespace DatenMeister
             }
 
             public _ProtocolStateMachine @ProtocolStateMachine = new _ProtocolStateMachine();
-            public object @ProtocolStateMachineInstance = new object();
+            public object @__ProtocolStateMachine = new object();
 
             public class _ProtocolTransition
             {
@@ -835,7 +835,7 @@ namespace DatenMeister
             }
 
             public _ProtocolTransition @ProtocolTransition = new _ProtocolTransition();
-            public object @ProtocolTransitionInstance = new object();
+            public object @__ProtocolTransition = new object();
 
             public class _Pseudostate
             {
@@ -848,7 +848,7 @@ namespace DatenMeister
             }
 
             public _Pseudostate @Pseudostate = new _Pseudostate();
-            public object @PseudostateInstance = new object();
+            public object @__Pseudostate = new object();
 
             public class _Region
             {
@@ -867,7 +867,7 @@ namespace DatenMeister
             }
 
             public _Region @Region = new _Region();
-            public object @RegionInstance = new object();
+            public object @__Region = new object();
 
             public class _State
             {
@@ -904,7 +904,7 @@ namespace DatenMeister
             }
 
             public _State @State = new _State();
-            public object @StateInstance = new object();
+            public object @__State = new object();
 
             public class _StateMachine
             {
@@ -919,7 +919,7 @@ namespace DatenMeister
             }
 
             public _StateMachine @StateMachine = new _StateMachine();
-            public object @StateMachineInstance = new object();
+            public object @__StateMachine = new object();
 
             public class _Transition
             {
@@ -944,7 +944,7 @@ namespace DatenMeister
             }
 
             public _Transition @Transition = new _Transition();
-            public object @TransitionInstance = new object();
+            public object @__Transition = new object();
 
             public class _Vertex
             {
@@ -957,7 +957,7 @@ namespace DatenMeister
             }
 
             public _Vertex @Vertex = new _Vertex();
-            public object @VertexInstance = new object();
+            public object @__Vertex = new object();
 
         }
 
@@ -976,7 +976,7 @@ namespace DatenMeister
             }
 
             public _BehavioredClassifier @BehavioredClassifier = new _BehavioredClassifier();
-            public object @BehavioredClassifierInstance = new object();
+            public object @__BehavioredClassifier = new object();
 
             public class _DataType
             {
@@ -987,7 +987,7 @@ namespace DatenMeister
             }
 
             public _DataType @DataType = new _DataType();
-            public object @DataTypeInstance = new object();
+            public object @__DataType = new object();
 
             public class _Enumeration
             {
@@ -996,7 +996,7 @@ namespace DatenMeister
             }
 
             public _Enumeration @Enumeration = new _Enumeration();
-            public object @EnumerationInstance = new object();
+            public object @__Enumeration = new object();
 
             public class _EnumerationLiteral
             {
@@ -1007,7 +1007,7 @@ namespace DatenMeister
             }
 
             public _EnumerationLiteral @EnumerationLiteral = new _EnumerationLiteral();
-            public object @EnumerationLiteralInstance = new object();
+            public object @__EnumerationLiteral = new object();
 
             public class _Interface
             {
@@ -1026,7 +1026,7 @@ namespace DatenMeister
             }
 
             public _Interface @Interface = new _Interface();
-            public object @InterfaceInstance = new object();
+            public object @__Interface = new object();
 
             public class _InterfaceRealization
             {
@@ -1037,14 +1037,14 @@ namespace DatenMeister
             }
 
             public _InterfaceRealization @InterfaceRealization = new _InterfaceRealization();
-            public object @InterfaceRealizationInstance = new object();
+            public object @__InterfaceRealization = new object();
 
             public class _PrimitiveType
             {
             }
 
             public _PrimitiveType @PrimitiveType = new _PrimitiveType();
-            public object @PrimitiveTypeInstance = new object();
+            public object @__PrimitiveType = new object();
 
             public class _Reception
             {
@@ -1053,7 +1053,7 @@ namespace DatenMeister
             }
 
             public _Reception @Reception = new _Reception();
-            public object @ReceptionInstance = new object();
+            public object @__Reception = new object();
 
             public class _Signal
             {
@@ -1062,7 +1062,7 @@ namespace DatenMeister
             }
 
             public _Signal @Signal = new _Signal();
-            public object @SignalInstance = new object();
+            public object @__Signal = new object();
 
         }
 
@@ -1081,7 +1081,7 @@ namespace DatenMeister
             }
 
             public _Extension @Extension = new _Extension();
-            public object @ExtensionInstance = new object();
+            public object @__Extension = new object();
 
             public class _ExtensionEnd
             {
@@ -1092,7 +1092,7 @@ namespace DatenMeister
             }
 
             public _ExtensionEnd @ExtensionEnd = new _ExtensionEnd();
-            public object @ExtensionEndInstance = new object();
+            public object @__ExtensionEnd = new object();
 
             public class _Image
             {
@@ -1105,7 +1105,7 @@ namespace DatenMeister
             }
 
             public _Image @Image = new _Image();
-            public object @ImageInstance = new object();
+            public object @__Image = new object();
 
             public class _Model
             {
@@ -1114,7 +1114,7 @@ namespace DatenMeister
             }
 
             public _Model @Model = new _Model();
-            public object @ModelInstance = new object();
+            public object @__Model = new object();
 
             public class _Package
             {
@@ -1137,7 +1137,7 @@ namespace DatenMeister
             }
 
             public _Package @Package = new _Package();
-            public object @PackageInstance = new object();
+            public object @__Package = new object();
 
             public class _PackageMerge
             {
@@ -1148,7 +1148,7 @@ namespace DatenMeister
             }
 
             public _PackageMerge @PackageMerge = new _PackageMerge();
-            public object @PackageMergeInstance = new object();
+            public object @__PackageMerge = new object();
 
             public class _Profile
             {
@@ -1159,7 +1159,7 @@ namespace DatenMeister
             }
 
             public _Profile @Profile = new _Profile();
-            public object @ProfileInstance = new object();
+            public object @__Profile = new object();
 
             public class _ProfileApplication
             {
@@ -1172,7 +1172,7 @@ namespace DatenMeister
             }
 
             public _ProfileApplication @ProfileApplication = new _ProfileApplication();
-            public object @ProfileApplicationInstance = new object();
+            public object @__ProfileApplication = new object();
 
             public class _Stereotype
             {
@@ -1183,7 +1183,7 @@ namespace DatenMeister
             }
 
             public _Stereotype @Stereotype = new _Stereotype();
-            public object @StereotypeInstance = new object();
+            public object @__Stereotype = new object();
 
         }
 
@@ -1198,7 +1198,7 @@ namespace DatenMeister
             }
 
             public _ActionExecutionSpecification @ActionExecutionSpecification = new _ActionExecutionSpecification();
-            public object @ActionExecutionSpecificationInstance = new object();
+            public object @__ActionExecutionSpecification = new object();
 
             public class _BehaviorExecutionSpecification
             {
@@ -1207,7 +1207,7 @@ namespace DatenMeister
             }
 
             public _BehaviorExecutionSpecification @BehaviorExecutionSpecification = new _BehaviorExecutionSpecification();
-            public object @BehaviorExecutionSpecificationInstance = new object();
+            public object @__BehaviorExecutionSpecification = new object();
 
             public class _CombinedFragment
             {
@@ -1220,7 +1220,7 @@ namespace DatenMeister
             }
 
             public _CombinedFragment @CombinedFragment = new _CombinedFragment();
-            public object @CombinedFragmentInstance = new object();
+            public object @__CombinedFragment = new object();
 
             public class _ConsiderIgnoreFragment
             {
@@ -1229,7 +1229,7 @@ namespace DatenMeister
             }
 
             public _ConsiderIgnoreFragment @ConsiderIgnoreFragment = new _ConsiderIgnoreFragment();
-            public object @ConsiderIgnoreFragmentInstance = new object();
+            public object @__ConsiderIgnoreFragment = new object();
 
             public class _Continuation
             {
@@ -1238,14 +1238,14 @@ namespace DatenMeister
             }
 
             public _Continuation @Continuation = new _Continuation();
-            public object @ContinuationInstance = new object();
+            public object @__Continuation = new object();
 
             public class _DestructionOccurrenceSpecification
             {
             }
 
             public _DestructionOccurrenceSpecification @DestructionOccurrenceSpecification = new _DestructionOccurrenceSpecification();
-            public object @DestructionOccurrenceSpecificationInstance = new object();
+            public object @__DestructionOccurrenceSpecification = new object();
 
             public class _ExecutionOccurrenceSpecification
             {
@@ -1254,7 +1254,7 @@ namespace DatenMeister
             }
 
             public _ExecutionOccurrenceSpecification @ExecutionOccurrenceSpecification = new _ExecutionOccurrenceSpecification();
-            public object @ExecutionOccurrenceSpecificationInstance = new object();
+            public object @__ExecutionOccurrenceSpecification = new object();
 
             public class _ExecutionSpecification
             {
@@ -1265,14 +1265,14 @@ namespace DatenMeister
             }
 
             public _ExecutionSpecification @ExecutionSpecification = new _ExecutionSpecification();
-            public object @ExecutionSpecificationInstance = new object();
+            public object @__ExecutionSpecification = new object();
 
             public class _Gate
             {
             }
 
             public _Gate @Gate = new _Gate();
-            public object @GateInstance = new object();
+            public object @__Gate = new object();
 
             public class _GeneralOrdering
             {
@@ -1283,7 +1283,7 @@ namespace DatenMeister
             }
 
             public _GeneralOrdering @GeneralOrdering = new _GeneralOrdering();
-            public object @GeneralOrderingInstance = new object();
+            public object @__GeneralOrdering = new object();
 
             public class _Interaction
             {
@@ -1300,7 +1300,7 @@ namespace DatenMeister
             }
 
             public _Interaction @Interaction = new _Interaction();
-            public object @InteractionInstance = new object();
+            public object @__Interaction = new object();
 
             public class _InteractionConstraint
             {
@@ -1311,7 +1311,7 @@ namespace DatenMeister
             }
 
             public _InteractionConstraint @InteractionConstraint = new _InteractionConstraint();
-            public object @InteractionConstraintInstance = new object();
+            public object @__InteractionConstraint = new object();
 
             public class _InteractionFragment
             {
@@ -1326,7 +1326,7 @@ namespace DatenMeister
             }
 
             public _InteractionFragment @InteractionFragment = new _InteractionFragment();
-            public object @InteractionFragmentInstance = new object();
+            public object @__InteractionFragment = new object();
 
             public class _InteractionOperand
             {
@@ -1337,7 +1337,7 @@ namespace DatenMeister
             }
 
             public _InteractionOperand @InteractionOperand = new _InteractionOperand();
-            public object @InteractionOperandInstance = new object();
+            public object @__InteractionOperand = new object();
 
             public class _InteractionUse
             {
@@ -1354,7 +1354,7 @@ namespace DatenMeister
             }
 
             public _InteractionUse @InteractionUse = new _InteractionUse();
-            public object @InteractionUseInstance = new object();
+            public object @__InteractionUse = new object();
 
             public class _Lifeline
             {
@@ -1371,7 +1371,7 @@ namespace DatenMeister
             }
 
             public _Lifeline @Lifeline = new _Lifeline();
-            public object @LifelineInstance = new object();
+            public object @__Lifeline = new object();
 
             public class _Message
             {
@@ -1394,7 +1394,7 @@ namespace DatenMeister
             }
 
             public _Message @Message = new _Message();
-            public object @MessageInstance = new object();
+            public object @__Message = new object();
 
             public class _MessageEnd
             {
@@ -1403,14 +1403,14 @@ namespace DatenMeister
             }
 
             public _MessageEnd @MessageEnd = new _MessageEnd();
-            public object @MessageEndInstance = new object();
+            public object @__MessageEnd = new object();
 
             public class _MessageOccurrenceSpecification
             {
             }
 
             public _MessageOccurrenceSpecification @MessageOccurrenceSpecification = new _MessageOccurrenceSpecification();
-            public object @MessageOccurrenceSpecificationInstance = new object();
+            public object @__MessageOccurrenceSpecification = new object();
 
             public class _OccurrenceSpecification
             {
@@ -1423,14 +1423,14 @@ namespace DatenMeister
             }
 
             public _OccurrenceSpecification @OccurrenceSpecification = new _OccurrenceSpecification();
-            public object @OccurrenceSpecificationInstance = new object();
+            public object @__OccurrenceSpecification = new object();
 
             public class _PartDecomposition
             {
             }
 
             public _PartDecomposition @PartDecomposition = new _PartDecomposition();
-            public object @PartDecompositionInstance = new object();
+            public object @__PartDecomposition = new object();
 
             public class _StateInvariant
             {
@@ -1441,7 +1441,7 @@ namespace DatenMeister
             }
 
             public _StateInvariant @StateInvariant = new _StateInvariant();
-            public object @StateInvariantInstance = new object();
+            public object @__StateInvariant = new object();
 
         }
 
@@ -1468,7 +1468,7 @@ namespace DatenMeister
             }
 
             public _InformationFlow @InformationFlow = new _InformationFlow();
-            public object @InformationFlowInstance = new object();
+            public object @__InformationFlow = new object();
 
             public class _InformationItem
             {
@@ -1477,7 +1477,7 @@ namespace DatenMeister
             }
 
             public _InformationItem @InformationItem = new _InformationItem();
-            public object @InformationItemInstance = new object();
+            public object @__InformationItem = new object();
 
         }
 
@@ -1500,21 +1500,21 @@ namespace DatenMeister
             }
 
             public _Artifact @Artifact = new _Artifact();
-            public object @ArtifactInstance = new object();
+            public object @__Artifact = new object();
 
             public class _CommunicationPath
             {
             }
 
             public _CommunicationPath @CommunicationPath = new _CommunicationPath();
-            public object @CommunicationPathInstance = new object();
+            public object @__CommunicationPath = new object();
 
             public class _DeployedArtifact
             {
             }
 
             public _DeployedArtifact @DeployedArtifact = new _DeployedArtifact();
-            public object @DeployedArtifactInstance = new object();
+            public object @__DeployedArtifact = new object();
 
             public class _Deployment
             {
@@ -1527,7 +1527,7 @@ namespace DatenMeister
             }
 
             public _Deployment @Deployment = new _Deployment();
-            public object @DeploymentInstance = new object();
+            public object @__Deployment = new object();
 
             public class _DeploymentSpecification
             {
@@ -1540,7 +1540,7 @@ namespace DatenMeister
             }
 
             public _DeploymentSpecification @DeploymentSpecification = new _DeploymentSpecification();
-            public object @DeploymentSpecificationInstance = new object();
+            public object @__DeploymentSpecification = new object();
 
             public class _DeploymentTarget
             {
@@ -1551,21 +1551,21 @@ namespace DatenMeister
             }
 
             public _DeploymentTarget @DeploymentTarget = new _DeploymentTarget();
-            public object @DeploymentTargetInstance = new object();
+            public object @__DeploymentTarget = new object();
 
             public class _Device
             {
             }
 
             public _Device @Device = new _Device();
-            public object @DeviceInstance = new object();
+            public object @__Device = new object();
 
             public class _ExecutionEnvironment
             {
             }
 
             public _ExecutionEnvironment @ExecutionEnvironment = new _ExecutionEnvironment();
-            public object @ExecutionEnvironmentInstance = new object();
+            public object @__ExecutionEnvironment = new object();
 
             public class _Manifestation
             {
@@ -1574,7 +1574,7 @@ namespace DatenMeister
             }
 
             public _Manifestation @Manifestation = new _Manifestation();
-            public object @ManifestationInstance = new object();
+            public object @__Manifestation = new object();
 
             public class _Node
             {
@@ -1583,7 +1583,7 @@ namespace DatenMeister
             }
 
             public _Node @Node = new _Node();
-            public object @NodeInstance = new object();
+            public object @__Node = new object();
 
         }
 
@@ -1598,7 +1598,7 @@ namespace DatenMeister
             }
 
             public _Abstraction @Abstraction = new _Abstraction();
-            public object @AbstractionInstance = new object();
+            public object @__Abstraction = new object();
 
             public class _Comment
             {
@@ -1609,7 +1609,7 @@ namespace DatenMeister
             }
 
             public _Comment @Comment = new _Comment();
-            public object @CommentInstance = new object();
+            public object @__Comment = new object();
 
             public class _Constraint
             {
@@ -1622,7 +1622,7 @@ namespace DatenMeister
             }
 
             public _Constraint @Constraint = new _Constraint();
-            public object @ConstraintInstance = new object();
+            public object @__Constraint = new object();
 
             public class _Dependency
             {
@@ -1633,7 +1633,7 @@ namespace DatenMeister
             }
 
             public _Dependency @Dependency = new _Dependency();
-            public object @DependencyInstance = new object();
+            public object @__Dependency = new object();
 
             public class _DirectedRelationship
             {
@@ -1644,7 +1644,7 @@ namespace DatenMeister
             }
 
             public _DirectedRelationship @DirectedRelationship = new _DirectedRelationship();
-            public object @DirectedRelationshipInstance = new object();
+            public object @__DirectedRelationship = new object();
 
             public class _Element
             {
@@ -1657,7 +1657,7 @@ namespace DatenMeister
             }
 
             public _Element @Element = new _Element();
-            public object @ElementInstance = new object();
+            public object @__Element = new object();
 
             public class _ElementImport
             {
@@ -1672,7 +1672,7 @@ namespace DatenMeister
             }
 
             public _ElementImport @ElementImport = new _ElementImport();
-            public object @ElementImportInstance = new object();
+            public object @__ElementImport = new object();
 
             public class _MultiplicityElement
             {
@@ -1691,7 +1691,7 @@ namespace DatenMeister
             }
 
             public _MultiplicityElement @MultiplicityElement = new _MultiplicityElement();
-            public object @MultiplicityElementInstance = new object();
+            public object @__MultiplicityElement = new object();
 
             public class _NamedElement
             {
@@ -1710,7 +1710,7 @@ namespace DatenMeister
             }
 
             public _NamedElement @NamedElement = new _NamedElement();
-            public object @NamedElementInstance = new object();
+            public object @__NamedElement = new object();
 
             public class _Namespace
             {
@@ -1729,7 +1729,7 @@ namespace DatenMeister
             }
 
             public _Namespace @Namespace = new _Namespace();
-            public object @NamespaceInstance = new object();
+            public object @__Namespace = new object();
 
             public class _PackageableElement
             {
@@ -1738,7 +1738,7 @@ namespace DatenMeister
             }
 
             public _PackageableElement @PackageableElement = new _PackageableElement();
-            public object @PackageableElementInstance = new object();
+            public object @__PackageableElement = new object();
 
             public class _PackageImport
             {
@@ -1751,7 +1751,7 @@ namespace DatenMeister
             }
 
             public _PackageImport @PackageImport = new _PackageImport();
-            public object @PackageImportInstance = new object();
+            public object @__PackageImport = new object();
 
             public class _ParameterableElement
             {
@@ -1762,14 +1762,14 @@ namespace DatenMeister
             }
 
             public _ParameterableElement @ParameterableElement = new _ParameterableElement();
-            public object @ParameterableElementInstance = new object();
+            public object @__ParameterableElement = new object();
 
             public class _Realization
             {
             }
 
             public _Realization @Realization = new _Realization();
-            public object @RealizationInstance = new object();
+            public object @__Realization = new object();
 
             public class _Relationship
             {
@@ -1778,7 +1778,7 @@ namespace DatenMeister
             }
 
             public _Relationship @Relationship = new _Relationship();
-            public object @RelationshipInstance = new object();
+            public object @__Relationship = new object();
 
             public class _TemplateableElement
             {
@@ -1789,7 +1789,7 @@ namespace DatenMeister
             }
 
             public _TemplateableElement @TemplateableElement = new _TemplateableElement();
-            public object @TemplateableElementInstance = new object();
+            public object @__TemplateableElement = new object();
 
             public class _TemplateBinding
             {
@@ -1802,7 +1802,7 @@ namespace DatenMeister
             }
 
             public _TemplateBinding @TemplateBinding = new _TemplateBinding();
-            public object @TemplateBindingInstance = new object();
+            public object @__TemplateBinding = new object();
 
             public class _TemplateParameter
             {
@@ -1819,7 +1819,7 @@ namespace DatenMeister
             }
 
             public _TemplateParameter @TemplateParameter = new _TemplateParameter();
-            public object @TemplateParameterInstance = new object();
+            public object @__TemplateParameter = new object();
 
             public class _TemplateParameterSubstitution
             {
@@ -1834,7 +1834,7 @@ namespace DatenMeister
             }
 
             public _TemplateParameterSubstitution @TemplateParameterSubstitution = new _TemplateParameterSubstitution();
-            public object @TemplateParameterSubstitutionInstance = new object();
+            public object @__TemplateParameterSubstitution = new object();
 
             public class _TemplateSignature
             {
@@ -1847,7 +1847,7 @@ namespace DatenMeister
             }
 
             public _TemplateSignature @TemplateSignature = new _TemplateSignature();
-            public object @TemplateSignatureInstance = new object();
+            public object @__TemplateSignature = new object();
 
             public class _Type
             {
@@ -1856,7 +1856,7 @@ namespace DatenMeister
             }
 
             public _Type @Type = new _Type();
-            public object @TypeInstance = new object();
+            public object @__Type = new object();
 
             public class _TypedElement
             {
@@ -1865,14 +1865,14 @@ namespace DatenMeister
             }
 
             public _TypedElement @TypedElement = new _TypedElement();
-            public object @TypedElementInstance = new object();
+            public object @__TypedElement = new object();
 
             public class _Usage
             {
             }
 
             public _Usage @Usage = new _Usage();
-            public object @UsageInstance = new object();
+            public object @__Usage = new object();
 
         }
 
@@ -1885,7 +1885,7 @@ namespace DatenMeister
             }
 
             public _AnyReceiveEvent @AnyReceiveEvent = new _AnyReceiveEvent();
-            public object @AnyReceiveEventInstance = new object();
+            public object @__AnyReceiveEvent = new object();
 
             public class _Behavior
             {
@@ -1908,7 +1908,7 @@ namespace DatenMeister
             }
 
             public _Behavior @Behavior = new _Behavior();
-            public object @BehaviorInstance = new object();
+            public object @__Behavior = new object();
 
             public class _CallEvent
             {
@@ -1917,7 +1917,7 @@ namespace DatenMeister
             }
 
             public _CallEvent @CallEvent = new _CallEvent();
-            public object @CallEventInstance = new object();
+            public object @__CallEvent = new object();
 
             public class _ChangeEvent
             {
@@ -1926,28 +1926,28 @@ namespace DatenMeister
             }
 
             public _ChangeEvent @ChangeEvent = new _ChangeEvent();
-            public object @ChangeEventInstance = new object();
+            public object @__ChangeEvent = new object();
 
             public class _Event
             {
             }
 
             public _Event @Event = new _Event();
-            public object @EventInstance = new object();
+            public object @__Event = new object();
 
             public class _FunctionBehavior
             {
             }
 
             public _FunctionBehavior @FunctionBehavior = new _FunctionBehavior();
-            public object @FunctionBehaviorInstance = new object();
+            public object @__FunctionBehavior = new object();
 
             public class _MessageEvent
             {
             }
 
             public _MessageEvent @MessageEvent = new _MessageEvent();
-            public object @MessageEventInstance = new object();
+            public object @__MessageEvent = new object();
 
             public class _OpaqueBehavior
             {
@@ -1958,7 +1958,7 @@ namespace DatenMeister
             }
 
             public _OpaqueBehavior @OpaqueBehavior = new _OpaqueBehavior();
-            public object @OpaqueBehaviorInstance = new object();
+            public object @__OpaqueBehavior = new object();
 
             public class _SignalEvent
             {
@@ -1967,7 +1967,7 @@ namespace DatenMeister
             }
 
             public _SignalEvent @SignalEvent = new _SignalEvent();
-            public object @SignalEventInstance = new object();
+            public object @__SignalEvent = new object();
 
             public class _TimeEvent
             {
@@ -1978,7 +1978,7 @@ namespace DatenMeister
             }
 
             public _TimeEvent @TimeEvent = new _TimeEvent();
-            public object @TimeEventInstance = new object();
+            public object @__TimeEvent = new object();
 
             public class _Trigger
             {
@@ -1989,7 +1989,7 @@ namespace DatenMeister
             }
 
             public _Trigger @Trigger = new _Trigger();
-            public object @TriggerInstance = new object();
+            public object @__Trigger = new object();
 
         }
 
@@ -2006,7 +2006,7 @@ namespace DatenMeister
             }
 
             public _Substitution @Substitution = new _Substitution();
-            public object @SubstitutionInstance = new object();
+            public object @__Substitution = new object();
 
             public class _BehavioralFeature
             {
@@ -2025,7 +2025,7 @@ namespace DatenMeister
             }
 
             public _BehavioralFeature @BehavioralFeature = new _BehavioralFeature();
-            public object @BehavioralFeatureInstance = new object();
+            public object @__BehavioralFeature = new object();
 
             public class _Classifier
             {
@@ -2064,7 +2064,7 @@ namespace DatenMeister
             }
 
             public _Classifier @Classifier = new _Classifier();
-            public object @ClassifierInstance = new object();
+            public object @__Classifier = new object();
 
             public class _ClassifierTemplateParameter
             {
@@ -2077,7 +2077,7 @@ namespace DatenMeister
             }
 
             public _ClassifierTemplateParameter @ClassifierTemplateParameter = new _ClassifierTemplateParameter();
-            public object @ClassifierTemplateParameterInstance = new object();
+            public object @__ClassifierTemplateParameter = new object();
 
             public class _Feature
             {
@@ -2088,7 +2088,7 @@ namespace DatenMeister
             }
 
             public _Feature @Feature = new _Feature();
-            public object @FeatureInstance = new object();
+            public object @__Feature = new object();
 
             public class _Generalization
             {
@@ -2103,7 +2103,7 @@ namespace DatenMeister
             }
 
             public _Generalization @Generalization = new _Generalization();
-            public object @GeneralizationInstance = new object();
+            public object @__Generalization = new object();
 
             public class _GeneralizationSet
             {
@@ -2118,7 +2118,7 @@ namespace DatenMeister
             }
 
             public _GeneralizationSet @GeneralizationSet = new _GeneralizationSet();
-            public object @GeneralizationSetInstance = new object();
+            public object @__GeneralizationSet = new object();
 
             public class _InstanceSpecification
             {
@@ -2131,7 +2131,7 @@ namespace DatenMeister
             }
 
             public _InstanceSpecification @InstanceSpecification = new _InstanceSpecification();
-            public object @InstanceSpecificationInstance = new object();
+            public object @__InstanceSpecification = new object();
 
             public class _InstanceValue
             {
@@ -2140,7 +2140,7 @@ namespace DatenMeister
             }
 
             public _InstanceValue @InstanceValue = new _InstanceValue();
-            public object @InstanceValueInstance = new object();
+            public object @__InstanceValue = new object();
 
             public class _Operation
             {
@@ -2179,7 +2179,7 @@ namespace DatenMeister
             }
 
             public _Operation @Operation = new _Operation();
-            public object @OperationInstance = new object();
+            public object @__Operation = new object();
 
             public class _OperationTemplateParameter
             {
@@ -2188,7 +2188,7 @@ namespace DatenMeister
             }
 
             public _OperationTemplateParameter @OperationTemplateParameter = new _OperationTemplateParameter();
-            public object @OperationTemplateParameterInstance = new object();
+            public object @__OperationTemplateParameter = new object();
 
             public class _Parameter
             {
@@ -2211,7 +2211,7 @@ namespace DatenMeister
             }
 
             public _Parameter @Parameter = new _Parameter();
-            public object @ParameterInstance = new object();
+            public object @__Parameter = new object();
 
             public class _ParameterSet
             {
@@ -2222,7 +2222,7 @@ namespace DatenMeister
             }
 
             public _ParameterSet @ParameterSet = new _ParameterSet();
-            public object @ParameterSetInstance = new object();
+            public object @__ParameterSet = new object();
 
             public class _Property
             {
@@ -2261,7 +2261,7 @@ namespace DatenMeister
             }
 
             public _Property @Property = new _Property();
-            public object @PropertyInstance = new object();
+            public object @__Property = new object();
 
             public class _RedefinableElement
             {
@@ -2274,7 +2274,7 @@ namespace DatenMeister
             }
 
             public _RedefinableElement @RedefinableElement = new _RedefinableElement();
-            public object @RedefinableElementInstance = new object();
+            public object @__RedefinableElement = new object();
 
             public class _RedefinableTemplateSignature
             {
@@ -2287,7 +2287,7 @@ namespace DatenMeister
             }
 
             public _RedefinableTemplateSignature @RedefinableTemplateSignature = new _RedefinableTemplateSignature();
-            public object @RedefinableTemplateSignatureInstance = new object();
+            public object @__RedefinableTemplateSignature = new object();
 
             public class _Slot
             {
@@ -2300,7 +2300,7 @@ namespace DatenMeister
             }
 
             public _Slot @Slot = new _Slot();
-            public object @SlotInstance = new object();
+            public object @__Slot = new object();
 
             public class _StructuralFeature
             {
@@ -2309,7 +2309,7 @@ namespace DatenMeister
             }
 
             public _StructuralFeature @StructuralFeature = new _StructuralFeature();
-            public object @StructuralFeatureInstance = new object();
+            public object @__StructuralFeature = new object();
 
         }
 
@@ -2326,7 +2326,7 @@ namespace DatenMeister
             }
 
             public _ValueSpecificationAction @ValueSpecificationAction = new _ValueSpecificationAction();
-            public object @ValueSpecificationActionInstance = new object();
+            public object @__ValueSpecificationAction = new object();
 
             public class _VariableAction
             {
@@ -2335,14 +2335,14 @@ namespace DatenMeister
             }
 
             public _VariableAction @VariableAction = new _VariableAction();
-            public object @VariableActionInstance = new object();
+            public object @__VariableAction = new object();
 
             public class _WriteLinkAction
             {
             }
 
             public _WriteLinkAction @WriteLinkAction = new _WriteLinkAction();
-            public object @WriteLinkActionInstance = new object();
+            public object @__WriteLinkAction = new object();
 
             public class _WriteStructuralFeatureAction
             {
@@ -2353,7 +2353,7 @@ namespace DatenMeister
             }
 
             public _WriteStructuralFeatureAction @WriteStructuralFeatureAction = new _WriteStructuralFeatureAction();
-            public object @WriteStructuralFeatureActionInstance = new object();
+            public object @__WriteStructuralFeatureAction = new object();
 
             public class _WriteVariableAction
             {
@@ -2362,7 +2362,7 @@ namespace DatenMeister
             }
 
             public _WriteVariableAction @WriteVariableAction = new _WriteVariableAction();
-            public object @WriteVariableActionInstance = new object();
+            public object @__WriteVariableAction = new object();
 
             public class _AcceptCallAction
             {
@@ -2371,7 +2371,7 @@ namespace DatenMeister
             }
 
             public _AcceptCallAction @AcceptCallAction = new _AcceptCallAction();
-            public object @AcceptCallActionInstance = new object();
+            public object @__AcceptCallAction = new object();
 
             public class _AcceptEventAction
             {
@@ -2384,7 +2384,7 @@ namespace DatenMeister
             }
 
             public _AcceptEventAction @AcceptEventAction = new _AcceptEventAction();
-            public object @AcceptEventActionInstance = new object();
+            public object @__AcceptEventAction = new object();
 
             public class _Action
             {
@@ -2403,7 +2403,7 @@ namespace DatenMeister
             }
 
             public _Action @Action = new _Action();
-            public object @ActionInstance = new object();
+            public object @__Action = new object();
 
             public class _ActionInputPin
             {
@@ -2412,7 +2412,7 @@ namespace DatenMeister
             }
 
             public _ActionInputPin @ActionInputPin = new _ActionInputPin();
-            public object @ActionInputPinInstance = new object();
+            public object @__ActionInputPin = new object();
 
             public class _AddStructuralFeatureValueAction
             {
@@ -2423,7 +2423,7 @@ namespace DatenMeister
             }
 
             public _AddStructuralFeatureValueAction @AddStructuralFeatureValueAction = new _AddStructuralFeatureValueAction();
-            public object @AddStructuralFeatureValueActionInstance = new object();
+            public object @__AddStructuralFeatureValueAction = new object();
 
             public class _AddVariableValueAction
             {
@@ -2434,7 +2434,7 @@ namespace DatenMeister
             }
 
             public _AddVariableValueAction @AddVariableValueAction = new _AddVariableValueAction();
-            public object @AddVariableValueActionInstance = new object();
+            public object @__AddVariableValueAction = new object();
 
             public class _BroadcastSignalAction
             {
@@ -2443,7 +2443,7 @@ namespace DatenMeister
             }
 
             public _BroadcastSignalAction @BroadcastSignalAction = new _BroadcastSignalAction();
-            public object @BroadcastSignalActionInstance = new object();
+            public object @__BroadcastSignalAction = new object();
 
             public class _CallAction
             {
@@ -2454,7 +2454,7 @@ namespace DatenMeister
             }
 
             public _CallAction @CallAction = new _CallAction();
-            public object @CallActionInstance = new object();
+            public object @__CallAction = new object();
 
             public class _CallBehaviorAction
             {
@@ -2463,7 +2463,7 @@ namespace DatenMeister
             }
 
             public _CallBehaviorAction @CallBehaviorAction = new _CallBehaviorAction();
-            public object @CallBehaviorActionInstance = new object();
+            public object @__CallBehaviorAction = new object();
 
             public class _CallOperationAction
             {
@@ -2474,7 +2474,7 @@ namespace DatenMeister
             }
 
             public _CallOperationAction @CallOperationAction = new _CallOperationAction();
-            public object @CallOperationActionInstance = new object();
+            public object @__CallOperationAction = new object();
 
             public class _Clause
             {
@@ -2493,7 +2493,7 @@ namespace DatenMeister
             }
 
             public _Clause @Clause = new _Clause();
-            public object @ClauseInstance = new object();
+            public object @__Clause = new object();
 
             public class _ClearAssociationAction
             {
@@ -2504,7 +2504,7 @@ namespace DatenMeister
             }
 
             public _ClearAssociationAction @ClearAssociationAction = new _ClearAssociationAction();
-            public object @ClearAssociationActionInstance = new object();
+            public object @__ClearAssociationAction = new object();
 
             public class _ClearStructuralFeatureAction
             {
@@ -2513,14 +2513,14 @@ namespace DatenMeister
             }
 
             public _ClearStructuralFeatureAction @ClearStructuralFeatureAction = new _ClearStructuralFeatureAction();
-            public object @ClearStructuralFeatureActionInstance = new object();
+            public object @__ClearStructuralFeatureAction = new object();
 
             public class _ClearVariableAction
             {
             }
 
             public _ClearVariableAction @ClearVariableAction = new _ClearVariableAction();
-            public object @ClearVariableActionInstance = new object();
+            public object @__ClearVariableAction = new object();
 
             public class _ConditionalNode
             {
@@ -2535,7 +2535,7 @@ namespace DatenMeister
             }
 
             public _ConditionalNode @ConditionalNode = new _ConditionalNode();
-            public object @ConditionalNodeInstance = new object();
+            public object @__ConditionalNode = new object();
 
             public class _CreateLinkAction
             {
@@ -2544,7 +2544,7 @@ namespace DatenMeister
             }
 
             public _CreateLinkAction @CreateLinkAction = new _CreateLinkAction();
-            public object @CreateLinkActionInstance = new object();
+            public object @__CreateLinkAction = new object();
 
             public class _CreateLinkObjectAction
             {
@@ -2553,7 +2553,7 @@ namespace DatenMeister
             }
 
             public _CreateLinkObjectAction @CreateLinkObjectAction = new _CreateLinkObjectAction();
-            public object @CreateLinkObjectActionInstance = new object();
+            public object @__CreateLinkObjectAction = new object();
 
             public class _CreateObjectAction
             {
@@ -2564,7 +2564,7 @@ namespace DatenMeister
             }
 
             public _CreateObjectAction @CreateObjectAction = new _CreateObjectAction();
-            public object @CreateObjectActionInstance = new object();
+            public object @__CreateObjectAction = new object();
 
             public class _DestroyLinkAction
             {
@@ -2573,7 +2573,7 @@ namespace DatenMeister
             }
 
             public _DestroyLinkAction @DestroyLinkAction = new _DestroyLinkAction();
-            public object @DestroyLinkActionInstance = new object();
+            public object @__DestroyLinkAction = new object();
 
             public class _DestroyObjectAction
             {
@@ -2586,7 +2586,7 @@ namespace DatenMeister
             }
 
             public _DestroyObjectAction @DestroyObjectAction = new _DestroyObjectAction();
-            public object @DestroyObjectActionInstance = new object();
+            public object @__DestroyObjectAction = new object();
 
             public class _ExpansionNode
             {
@@ -2597,7 +2597,7 @@ namespace DatenMeister
             }
 
             public _ExpansionNode @ExpansionNode = new _ExpansionNode();
-            public object @ExpansionNodeInstance = new object();
+            public object @__ExpansionNode = new object();
 
             public class _ExpansionRegion
             {
@@ -2610,14 +2610,14 @@ namespace DatenMeister
             }
 
             public _ExpansionRegion @ExpansionRegion = new _ExpansionRegion();
-            public object @ExpansionRegionInstance = new object();
+            public object @__ExpansionRegion = new object();
 
             public class _InputPin
             {
             }
 
             public _InputPin @InputPin = new _InputPin();
-            public object @InputPinInstance = new object();
+            public object @__InputPin = new object();
 
             public class _InvocationAction
             {
@@ -2628,7 +2628,7 @@ namespace DatenMeister
             }
 
             public _InvocationAction @InvocationAction = new _InvocationAction();
-            public object @InvocationActionInstance = new object();
+            public object @__InvocationAction = new object();
 
             public class _LinkAction
             {
@@ -2639,7 +2639,7 @@ namespace DatenMeister
             }
 
             public _LinkAction @LinkAction = new _LinkAction();
-            public object @LinkActionInstance = new object();
+            public object @__LinkAction = new object();
 
             public class _LinkEndCreationData
             {
@@ -2650,7 +2650,7 @@ namespace DatenMeister
             }
 
             public _LinkEndCreationData @LinkEndCreationData = new _LinkEndCreationData();
-            public object @LinkEndCreationDataInstance = new object();
+            public object @__LinkEndCreationData = new object();
 
             public class _LinkEndData
             {
@@ -2663,7 +2663,7 @@ namespace DatenMeister
             }
 
             public _LinkEndData @LinkEndData = new _LinkEndData();
-            public object @LinkEndDataInstance = new object();
+            public object @__LinkEndData = new object();
 
             public class _LinkEndDestructionData
             {
@@ -2674,7 +2674,7 @@ namespace DatenMeister
             }
 
             public _LinkEndDestructionData @LinkEndDestructionData = new _LinkEndDestructionData();
-            public object @LinkEndDestructionDataInstance = new object();
+            public object @__LinkEndDestructionData = new object();
 
             public class _LoopNode
             {
@@ -2699,7 +2699,7 @@ namespace DatenMeister
             }
 
             public _LoopNode @LoopNode = new _LoopNode();
-            public object @LoopNodeInstance = new object();
+            public object @__LoopNode = new object();
 
             public class _OpaqueAction
             {
@@ -2714,14 +2714,14 @@ namespace DatenMeister
             }
 
             public _OpaqueAction @OpaqueAction = new _OpaqueAction();
-            public object @OpaqueActionInstance = new object();
+            public object @__OpaqueAction = new object();
 
             public class _OutputPin
             {
             }
 
             public _OutputPin @OutputPin = new _OutputPin();
-            public object @OutputPinInstance = new object();
+            public object @__OutputPin = new object();
 
             public class _Pin
             {
@@ -2730,7 +2730,7 @@ namespace DatenMeister
             }
 
             public _Pin @Pin = new _Pin();
-            public object @PinInstance = new object();
+            public object @__Pin = new object();
 
             public class _QualifierValue
             {
@@ -2741,7 +2741,7 @@ namespace DatenMeister
             }
 
             public _QualifierValue @QualifierValue = new _QualifierValue();
-            public object @QualifierValueInstance = new object();
+            public object @__QualifierValue = new object();
 
             public class _RaiseExceptionAction
             {
@@ -2750,7 +2750,7 @@ namespace DatenMeister
             }
 
             public _RaiseExceptionAction @RaiseExceptionAction = new _RaiseExceptionAction();
-            public object @RaiseExceptionActionInstance = new object();
+            public object @__RaiseExceptionAction = new object();
 
             public class _ReadExtentAction
             {
@@ -2761,7 +2761,7 @@ namespace DatenMeister
             }
 
             public _ReadExtentAction @ReadExtentAction = new _ReadExtentAction();
-            public object @ReadExtentActionInstance = new object();
+            public object @__ReadExtentAction = new object();
 
             public class _ReadIsClassifiedObjectAction
             {
@@ -2776,7 +2776,7 @@ namespace DatenMeister
             }
 
             public _ReadIsClassifiedObjectAction @ReadIsClassifiedObjectAction = new _ReadIsClassifiedObjectAction();
-            public object @ReadIsClassifiedObjectActionInstance = new object();
+            public object @__ReadIsClassifiedObjectAction = new object();
 
             public class _ReadLinkAction
             {
@@ -2785,7 +2785,7 @@ namespace DatenMeister
             }
 
             public _ReadLinkAction @ReadLinkAction = new _ReadLinkAction();
-            public object @ReadLinkActionInstance = new object();
+            public object @__ReadLinkAction = new object();
 
             public class _ReadLinkObjectEndAction
             {
@@ -2798,7 +2798,7 @@ namespace DatenMeister
             }
 
             public _ReadLinkObjectEndAction @ReadLinkObjectEndAction = new _ReadLinkObjectEndAction();
-            public object @ReadLinkObjectEndActionInstance = new object();
+            public object @__ReadLinkObjectEndAction = new object();
 
             public class _ReadLinkObjectEndQualifierAction
             {
@@ -2811,7 +2811,7 @@ namespace DatenMeister
             }
 
             public _ReadLinkObjectEndQualifierAction @ReadLinkObjectEndQualifierAction = new _ReadLinkObjectEndQualifierAction();
-            public object @ReadLinkObjectEndQualifierActionInstance = new object();
+            public object @__ReadLinkObjectEndQualifierAction = new object();
 
             public class _ReadSelfAction
             {
@@ -2820,7 +2820,7 @@ namespace DatenMeister
             }
 
             public _ReadSelfAction @ReadSelfAction = new _ReadSelfAction();
-            public object @ReadSelfActionInstance = new object();
+            public object @__ReadSelfAction = new object();
 
             public class _ReadStructuralFeatureAction
             {
@@ -2829,7 +2829,7 @@ namespace DatenMeister
             }
 
             public _ReadStructuralFeatureAction @ReadStructuralFeatureAction = new _ReadStructuralFeatureAction();
-            public object @ReadStructuralFeatureActionInstance = new object();
+            public object @__ReadStructuralFeatureAction = new object();
 
             public class _ReadVariableAction
             {
@@ -2838,7 +2838,7 @@ namespace DatenMeister
             }
 
             public _ReadVariableAction @ReadVariableAction = new _ReadVariableAction();
-            public object @ReadVariableActionInstance = new object();
+            public object @__ReadVariableAction = new object();
 
             public class _ReclassifyObjectAction
             {
@@ -2853,7 +2853,7 @@ namespace DatenMeister
             }
 
             public _ReclassifyObjectAction @ReclassifyObjectAction = new _ReclassifyObjectAction();
-            public object @ReclassifyObjectActionInstance = new object();
+            public object @__ReclassifyObjectAction = new object();
 
             public class _ReduceAction
             {
@@ -2868,7 +2868,7 @@ namespace DatenMeister
             }
 
             public _ReduceAction @ReduceAction = new _ReduceAction();
-            public object @ReduceActionInstance = new object();
+            public object @__ReduceAction = new object();
 
             public class _RemoveStructuralFeatureValueAction
             {
@@ -2879,7 +2879,7 @@ namespace DatenMeister
             }
 
             public _RemoveStructuralFeatureValueAction @RemoveStructuralFeatureValueAction = new _RemoveStructuralFeatureValueAction();
-            public object @RemoveStructuralFeatureValueActionInstance = new object();
+            public object @__RemoveStructuralFeatureValueAction = new object();
 
             public class _RemoveVariableValueAction
             {
@@ -2890,7 +2890,7 @@ namespace DatenMeister
             }
 
             public _RemoveVariableValueAction @RemoveVariableValueAction = new _RemoveVariableValueAction();
-            public object @RemoveVariableValueActionInstance = new object();
+            public object @__RemoveVariableValueAction = new object();
 
             public class _ReplyAction
             {
@@ -2903,7 +2903,7 @@ namespace DatenMeister
             }
 
             public _ReplyAction @ReplyAction = new _ReplyAction();
-            public object @ReplyActionInstance = new object();
+            public object @__ReplyAction = new object();
 
             public class _SendObjectAction
             {
@@ -2914,7 +2914,7 @@ namespace DatenMeister
             }
 
             public _SendObjectAction @SendObjectAction = new _SendObjectAction();
-            public object @SendObjectActionInstance = new object();
+            public object @__SendObjectAction = new object();
 
             public class _SendSignalAction
             {
@@ -2925,7 +2925,7 @@ namespace DatenMeister
             }
 
             public _SendSignalAction @SendSignalAction = new _SendSignalAction();
-            public object @SendSignalActionInstance = new object();
+            public object @__SendSignalAction = new object();
 
             public class _SequenceNode
             {
@@ -2934,7 +2934,7 @@ namespace DatenMeister
             }
 
             public _SequenceNode @SequenceNode = new _SequenceNode();
-            public object @SequenceNodeInstance = new object();
+            public object @__SequenceNode = new object();
 
             public class _StartClassifierBehaviorAction
             {
@@ -2943,7 +2943,7 @@ namespace DatenMeister
             }
 
             public _StartClassifierBehaviorAction @StartClassifierBehaviorAction = new _StartClassifierBehaviorAction();
-            public object @StartClassifierBehaviorActionInstance = new object();
+            public object @__StartClassifierBehaviorAction = new object();
 
             public class _StartObjectBehaviorAction
             {
@@ -2952,7 +2952,7 @@ namespace DatenMeister
             }
 
             public _StartObjectBehaviorAction @StartObjectBehaviorAction = new _StartObjectBehaviorAction();
-            public object @StartObjectBehaviorActionInstance = new object();
+            public object @__StartObjectBehaviorAction = new object();
 
             public class _StructuralFeatureAction
             {
@@ -2963,7 +2963,7 @@ namespace DatenMeister
             }
 
             public _StructuralFeatureAction @StructuralFeatureAction = new _StructuralFeatureAction();
-            public object @StructuralFeatureActionInstance = new object();
+            public object @__StructuralFeatureAction = new object();
 
             public class _StructuredActivityNode
             {
@@ -2984,7 +2984,7 @@ namespace DatenMeister
             }
 
             public _StructuredActivityNode @StructuredActivityNode = new _StructuredActivityNode();
-            public object @StructuredActivityNodeInstance = new object();
+            public object @__StructuredActivityNode = new object();
 
             public class _TestIdentityAction
             {
@@ -2997,7 +2997,7 @@ namespace DatenMeister
             }
 
             public _TestIdentityAction @TestIdentityAction = new _TestIdentityAction();
-            public object @TestIdentityActionInstance = new object();
+            public object @__TestIdentityAction = new object();
 
             public class _UnmarshallAction
             {
@@ -3010,7 +3010,7 @@ namespace DatenMeister
             }
 
             public _UnmarshallAction @UnmarshallAction = new _UnmarshallAction();
-            public object @UnmarshallActionInstance = new object();
+            public object @__UnmarshallAction = new object();
 
             public class _ValuePin
             {
@@ -3019,7 +3019,7 @@ namespace DatenMeister
             }
 
             public _ValuePin @ValuePin = new _ValuePin();
-            public object @ValuePinInstance = new object();
+            public object @__ValuePin = new object();
 
         }
 

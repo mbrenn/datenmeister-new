@@ -1,4 +1,4 @@
-// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.0.0.0
+// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.0.1.0
 namespace DatenMeister
 {
     public class _MOF
@@ -10,14 +10,14 @@ namespace DatenMeister
             }
 
             public _URIExtent @URIExtent = new _URIExtent();
-            public object @URIExtentInstance = new object();
+            public object @__URIExtent = new object();
 
             public class _Extent
             {
             }
 
             public _Extent @Extent = new _Extent();
-            public object @ExtentInstance = new object();
+            public object @__Extent = new object();
 
         }
 
@@ -38,7 +38,7 @@ namespace DatenMeister
             }
 
             public _Tag @Tag = new _Tag();
-            public object @TagInstance = new object();
+            public object @__Tag = new object();
 
         }
 
@@ -57,7 +57,7 @@ namespace DatenMeister
             }
 
             public _Tag @Tag = new _Tag();
-            public object @TagInstance = new object();
+            public object @__Tag = new object();
 
         }
 
@@ -70,14 +70,14 @@ namespace DatenMeister
             }
 
             public _ReflectiveSequence @ReflectiveSequence = new _ReflectiveSequence();
-            public object @ReflectiveSequenceInstance = new object();
+            public object @__ReflectiveSequence = new object();
 
             public class _ReflectiveCollection
             {
             }
 
             public _ReflectiveCollection @ReflectiveCollection = new _ReflectiveCollection();
-            public object @ReflectiveCollectionInstance = new object();
+            public object @__ReflectiveCollection = new object();
 
         }
 
@@ -96,14 +96,14 @@ namespace DatenMeister
             }
 
             public _Factory @Factory = new _Factory();
-            public object @FactoryInstance = new object();
+            public object @__Factory = new object();
 
             public class _Element
             {
             }
 
             public _Element @Element = new _Element();
-            public object @ElementInstance = new object();
+            public object @__Element = new object();
 
             public class _Argument
             {
@@ -114,14 +114,14 @@ namespace DatenMeister
             }
 
             public _Argument @Argument = new _Argument();
-            public object @ArgumentInstance = new object();
+            public object @__Argument = new object();
 
             public class _Extent
             {
             }
 
             public _Extent @Extent = new _Extent();
-            public object @ExtentInstance = new object();
+            public object @__Extent = new object();
 
             public class _Link
             {
@@ -134,7 +134,7 @@ namespace DatenMeister
             }
 
             public _Link @Link = new _Link();
-            public object @LinkInstance = new object();
+            public object @__Link = new object();
 
             public class _Exception
             {
@@ -147,7 +147,7 @@ namespace DatenMeister
             }
 
             public _Exception @Exception = new _Exception();
-            public object @ExceptionInstance = new object();
+            public object @__Exception = new object();
 
         }
 
@@ -162,21 +162,21 @@ namespace DatenMeister
             }
 
             public _Factory @Factory = new _Factory();
-            public object @FactoryInstance = new object();
+            public object @__Factory = new object();
 
             public class _Type
             {
             }
 
             public _Type @Type = new _Type();
-            public object @TypeInstance = new object();
+            public object @__Type = new object();
 
             public class _Object
             {
             }
 
             public _Object @Object = new _Object();
-            public object @ObjectInstance = new object();
+            public object @__Object = new object();
 
             public class _Element
             {
@@ -185,7 +185,7 @@ namespace DatenMeister
             }
 
             public _Element @Element = new _Element();
-            public object @ElementInstance = new object();
+            public object @__Element = new object();
 
         }
 

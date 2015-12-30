@@ -73,9 +73,11 @@
     <Compile Include="EMOF\Queries\FilterOnPropertyByPredicateCollection.cs" />
     <Compile Include="EMOF\Queries\OrderByQuery.cs" />
     <Compile Include="Filler\FillTheMOF.cs" />
+    <Compile Include="Filler\FillThePrimitiveTypes.cs" />
     <Compile Include="Filler\FillTheUML.cs" />
-    <Compile Include="mof.cs" />
-    <Compile Include="uml.cs" />
+    <Compile Include="Filler\mof.cs" />
+    <Compile Include="Filler\primitivetypes.cs" />
+    <Compile Include="Filler\uml.cs" />
     <Compile Include="Workspace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkspaceExtension.cs" />

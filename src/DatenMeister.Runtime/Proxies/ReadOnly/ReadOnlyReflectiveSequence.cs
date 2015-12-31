@@ -8,6 +8,11 @@ namespace DatenMeister.Runtime.Proxies.ReadOnly
     {
         public ReadOnlyReflectiveSequence(IReflectiveSequence sequence) : base(sequence)
         {
+            ActivateObjectConversion(
+                x => new ReadOnlyElement(x),
+                x => new ReadOnlyObject(x),
+                x => x.GetProxiedElement(),
+                x => x.GetProxiedElement());
         }
 
         public override void add(int index, object value)

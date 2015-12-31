@@ -1,14 +1,17 @@
-﻿using DatenMeister.EMOF.Interface.Reflection;
+﻿using System;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.Proxy
 {
-    public class ProxyMofElement : IElement
+    public class ProxyMofElement : ProxyMofObject, IElement, IElementSetMetaClass
     {
-        protected readonly IElement Element;
-
-        public ProxyMofElement(IElement element)
+        protected IElement Element
         {
-            Element = element;
+            get { return Object as IElement; }
+        }
+
+        public ProxyMofElement(IElement element) : base(element)
+        {
         }
 
         /// <summary>
@@ -16,7 +19,7 @@ namespace DatenMeister.EMOF.Proxy
         /// content
         /// </summary>
         /// <returns>Returns the proxied element</returns>
-        public IElement GetProxiedElement()
+        public new IElement GetProxiedElement()
         {
             return Element;
         }
@@ -28,34 +31,20 @@ namespace DatenMeister.EMOF.Proxy
             return Element.container();
         }
 
-        public virtual bool equals(object other)
-        {
-            return Element.equals(other);
-        }
-
-        public virtual object get(object property)
-        {
-            return Element.get(property);
-        }
-
         public virtual IElement getMetaClass()
         {
             return Element.getMetaClass();
         }
 
-        public virtual bool isSet(object property)
+        public void setMetaClass(IElement metaClass)
         {
-            return Element.isSet(property);
-        }
+            var asSetMetaClass = Element as IElementSetMetaClass;
+            if (asSetMetaClass == null)
+            {
+                throw new InvalidOperationException("Element does not support interface IElementSetMetaClass");
+            }
 
-        public virtual void set(object property, object value)
-        {
-            Element.set(property, value);
-        }
-
-        public virtual void unset(object property)
-        {
-            Element.unset(property);
+            asSetMetaClass.setMetaClass(metaClass);
         }
     }
 }

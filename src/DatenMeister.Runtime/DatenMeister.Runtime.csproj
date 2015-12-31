@@ -51,6 +51,7 @@
     <Compile Include="FactoryMapper\IFactoryMapper.cs" />
     <Compile Include="ExtentStorage\ManualExtentStorageToConfigurationMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proxies\ReadOnly\ReadOnlyAccessException.cs" />
     <Compile Include="Proxies\ReadOnly\ReadOnlyElement.cs" />
     <Compile Include="Proxies\ReadOnly\ReadOnlyObject.cs" />
     <Compile Include="Proxies\ReadOnly\ReadOnlyReflectiveSequence.cs" />

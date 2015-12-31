@@ -4,7 +4,7 @@ using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.Proxy
 {
-    public class ProxyMofObject : IObject, IObjectAllProperties
+    public class ProxyMofObject : IHasProxiedObject, IObject, IObjectAllProperties
     {
         protected readonly IObject Object;
 
@@ -53,7 +53,7 @@ namespace DatenMeister.EMOF.Proxy
         /// supports the interface
         /// </summary>
         /// <returns>Enumeration of objects</returns>
-        public IEnumerable<object> getPropertiesBeingSet()
+        public virtual IEnumerable<object> getPropertiesBeingSet()
         {
             var asAllProperties = Object as IObjectAllProperties;
             if (asAllProperties == null)

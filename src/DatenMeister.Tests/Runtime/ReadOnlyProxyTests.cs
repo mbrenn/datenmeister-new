@@ -32,6 +32,8 @@ namespace DatenMeister.Tests.Runtime
 
             var property1  = ((IObjectAllProperties) element).getPropertiesBeingSet().ElementAt(0);
             Assert.That(element.get(property1), Is.Not.Null);
+
+            Assert.Throws<ReadOnlyAccessException>(() => ((IElementSetMetaClass) element).setMetaClass(null));
         }   
 
         /// <summary>

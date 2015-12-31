@@ -36,7 +36,7 @@ namespace DatenMeister.EMOF.Proxy
             return Element.getMetaClass();
         }
 
-        public void setMetaClass(IElement metaClass)
+        public virtual void setMetaClass(IElement metaClass)
         {
             var asSetMetaClass = Element as IElementSetMetaClass;
             if (asSetMetaClass == null)

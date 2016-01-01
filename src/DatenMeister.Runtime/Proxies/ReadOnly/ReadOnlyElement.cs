@@ -12,12 +12,17 @@ namespace DatenMeister.Runtime.Proxies.ReadOnly
 
         public override void set(object property, object value)
         {
-            throw new InvalidOperationException("Element is read-only");
+            throw new ReadOnlyAccessException("Element is read-only");
         }
 
         public override void unset(object property)
         {
-            throw new InvalidOperationException("Element is read-only");
+            throw new ReadOnlyAccessException("Element is read-only");
+        }
+
+        public override void setMetaClass(IElement metaClass)
+        {
+            throw new ReadOnlyAccessException("Element is read-only");
         }
     }
 }

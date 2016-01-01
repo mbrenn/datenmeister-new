@@ -22,12 +22,12 @@ namespace DatenMeister.EMOF.Proxy
         /// reflective collection is being returned. 
         /// </summary>
         public Func<object, object> PrivatizeElementFunc { get; set; }
+        
 
         public ProxyReflectiveCollection(IReflectiveCollection collection)
         {
             Collection = collection;
-            PublicizeElementFunc = x => x;
-            PrivatizeElementFunc = x => x;
+            ActivateObjectConversion();
         }
 
         public virtual bool add(object value)
@@ -76,20 +76,26 @@ namespace DatenMeister.EMOF.Proxy
             return GetEnumerator();
         }
 
-        public ProxyReflectiveCollection ActivateObjectConversion()
+        public ProxyReflectiveCollection ActivateObjectConversion<TObjectType, TElementType>(
+            Func<IElement, TElementType> publicizeElement,
+            Func<IObject, TObjectType> publicizeObject,
+            Func<TElementType, IElement> privatizeElement,
+            Func<TObjectType, IObject> privatizeObject) 
+            where TObjectType : class 
+            where TElementType : class
         {
             PublicizeElementFunc = x =>
             {
-                var element = x as IElement;
-                if (element != null)
+                var asElement = x as IElement;
+                if (asElement != null)
                 {
-                    return new ProxyMofElement(element);
+                    return publicizeElement(asElement);
                 }
 
                 var asObject = x as IObject;
-                if ( asObject != null )
+                if (asObject != null)
                 {
-                    return new ProxyMofObject(asObject);
+                    return publicizeObject(asObject);
                 }
 
                 return x;
@@ -97,11 +103,26 @@ namespace DatenMeister.EMOF.Proxy
 
             PrivatizeElementFunc = x =>
             {
-                var element = x as ProxyMofElement;
-                return element != null ? element.GetProxiedElement() : x;
+                var asElement = x as TElementType;
+                if (asElement != null)
+                {
+                    return privatizeElement(asElement);
+                }
+
+                var asObject = x as TObjectType;
+                return asObject != null ? privatizeObject(asObject) : x;
             };
 
             return this;
+        }
+
+        public ProxyReflectiveCollection ActivateObjectConversion()
+        {
+            return ActivateObjectConversion(
+                x => new ProxyMofElement(x),
+                x => new ProxyMofObject(x),
+                x => x.GetProxiedElement(),
+                x => x.GetProxiedElement());
         }
     }
 }

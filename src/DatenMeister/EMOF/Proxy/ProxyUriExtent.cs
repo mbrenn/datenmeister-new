@@ -62,13 +62,24 @@ namespace DatenMeister.EMOF.Proxy
 
         public ProxyUriExtent ActivateObjectConversion()
         {
-            PublicizeElementFunc = x => new ProxyMofElement(x);
-            PublicizeReflectiveSequenceFunc = x =>
-                new ProxyReflectiveSequence(x).ActivateObjectConversion();
+            return ActivateObjectConversion(
+                x => new ProxyMofElement(x),
+                x => new ProxyReflectiveSequence(x),
+                x => x.GetProxiedElement());
+        }
+
+        public ProxyUriExtent ActivateObjectConversion<TElementType>(
+            Func<IElement, TElementType> publicizeElement,
+            Func<IReflectiveSequence, IReflectiveSequence> publicizeReflectiveSequence,
+            Func<TElementType, IElement> privatizeElement)
+            where TElementType : class, IElement
+        {
+            PublicizeElementFunc = publicizeElement;
+            PublicizeReflectiveSequenceFunc = publicizeReflectiveSequence;
             PrivatizeElementFunc = x =>
             {
-                var element = x as ProxyMofElement;
-                return element != null ? element.GetProxiedElement() : x;
+                var element = x as TElementType;
+                return element != null ?privatizeElement(element) : x;
             };
 
             return this;

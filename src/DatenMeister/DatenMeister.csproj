@@ -61,6 +61,7 @@
     <Compile Include="EMOF\Interface\Reflection\IObject.cs" />
     <Compile Include="EMOF\Interface\Common\IReflectiveSequence.cs" />
     <Compile Include="EMOF\Interface\Reflection\IObjectAllProperties.cs" />
+    <Compile Include="EMOF\Proxy\IHasProxiedObject.cs" />
     <Compile Include="EMOF\Proxy\ProxyMofObject.cs" />
     <Compile Include="EMOF\Proxy\ProxyMofElement.cs" />
     <Compile Include="EMOF\Proxy\ProxyReflectiveCollection.cs" />

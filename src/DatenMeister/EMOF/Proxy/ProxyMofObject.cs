@@ -1,8 +1,10 @@
-﻿using DatenMeister.EMOF.Interface.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.Proxy
 {
-    public class ProxyMofObject : IObject
+    public class ProxyMofObject : IHasProxiedObject, IObject, IObjectAllProperties
     {
         protected readonly IObject Object;
 
@@ -44,6 +46,22 @@ namespace DatenMeister.EMOF.Proxy
         public virtual void unset(object property)
         {
             Object.unset(property);
+        }
+
+        /// <summary>
+        /// Gets the properties of the stored object, if the object 
+        /// supports the interface
+        /// </summary>
+        /// <returns>Enumeration of objects</returns>
+        public virtual IEnumerable<object> getPropertiesBeingSet()
+        {
+            var asAllProperties = Object as IObjectAllProperties;
+            if (asAllProperties == null)
+            {
+                throw new InvalidOperationException("Proxied element does not support interface IObjectAllProperties");
+            }
+
+            return asAllProperties.getPropertiesBeingSet();
         }
     }
 }

@@ -8,41 +8,46 @@ namespace DatenMeister.Runtime.Proxies.ReadOnly
     {
         public ReadOnlyReflectiveSequence(IReflectiveSequence sequence) : base(sequence)
         {
+            ActivateObjectConversion(
+                x => new ReadOnlyElement(x),
+                x => new ReadOnlyObject(x),
+                x => x.GetProxiedElement(),
+                x => x.GetProxiedElement());
         }
 
         public override void add(int index, object value)
         {
-            throw new InvalidOperationException("Sequence is read-only.");
+            throw new ReadOnlyAccessException("Sequence is read-only.");
         }
 
         public override bool add(object value)
         {
-            throw new InvalidOperationException("Sequence is read-only.");
+            throw new ReadOnlyAccessException("Sequence is read-only.");
         }
 
         public override bool addAll(IReflectiveSequence value)
         {
-            throw new InvalidOperationException("Sequence is read-only.");
+            throw new ReadOnlyAccessException("Sequence is read-only.");
         }
 
         public override void clear()
         {
-            throw new InvalidOperationException("Sequence is read-only.");
+            throw new ReadOnlyAccessException("Sequence is read-only.");
         }
 
         public override void remove(int index)
         {
-            throw new InvalidOperationException("Sequence is read-only.");
+            throw new ReadOnlyAccessException("Sequence is read-only.");
         }
 
         public override bool remove(object value)
         {
-            throw new InvalidOperationException("Sequence is read-only.");
+            throw new ReadOnlyAccessException("Sequence is read-only.");
         }
 
         public override object set(int index, object value)
         {
-            throw new InvalidOperationException("Sequence is read-only.");
+            throw new ReadOnlyAccessException("Sequence is read-only.");
         }
     }
 }

@@ -12,12 +12,12 @@ namespace DatenMeister.Runtime.Proxies.ReadOnly
 
         public override void set(object property, object value)
         {
-            throw new InvalidOperationException($"Element is readonly");
+            throw new ReadOnlyAccessException($"Element is readonly");
         }
 
         public override void unset(object property)
         {
-            throw new InvalidOperationException($"Element is readonly");
+            throw new ReadOnlyAccessException($"Element is readonly");
         }
     }
 }

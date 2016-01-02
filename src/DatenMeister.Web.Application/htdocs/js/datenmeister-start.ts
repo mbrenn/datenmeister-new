@@ -1,5 +1,5 @@
 ﻿import * as DatenMeister from "datenmeister"
 
 $(document).ready(() => {
-    DatenMeister.GUI.start();
+    DatenMeister.Navigation.start();
 });

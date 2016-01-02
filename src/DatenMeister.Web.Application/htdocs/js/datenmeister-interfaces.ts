@@ -4,7 +4,7 @@
 };
 
 export interface IExtent {
-    url: string;
+    uri: string;
 }
 
 export interface IExtentContent {

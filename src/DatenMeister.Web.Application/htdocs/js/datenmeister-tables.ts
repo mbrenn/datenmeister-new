@@ -145,11 +145,14 @@ export class ItemListTable {
             domRow.append(domColumn);
         }
 
-        for (var c in this.data.columns) {
-            var column = this.data.columns[c];
-            domColumn = $("<th></th>");
-            domColumn.text(column.title);
-            domRow.append(domColumn);
+        var columns = this.data.columns;
+        for (var c in columns) {
+            if (columns.hasOwnProperty(c)) {
+                var column = columns[c];
+                domColumn = $("<th></th>");
+                domColumn.text(column.title);
+                domRow.append(domColumn);
+            }
         }
 
         // Creates the edit and delete column
@@ -179,56 +182,62 @@ export class ItemListTable {
         }
 
         // Now, the items
-        for (var i in this.data.items) {
-            var item = this.data.items[i];
+        var items = this.data.items;
+        for (var i in items) {
+            if (items.hasOwnProperty(i)) {
+                var item = items[i];
 
-            // Gets the id of the item
-            var id = item.uri;
-            var hashIndex = item.uri.indexOf("#");
-            if (hashIndex !== -1) {
-                id = item.uri.substring(hashIndex + 1);
-            }
+                // Gets the id of the item
+                var id = item.uri;
+                var hashIndex = item.uri.indexOf("#");
+                if (hashIndex !== -1) {
+                    id = item.uri.substring(hashIndex + 1);
+                }
 
-            var domRow = $("<tr></tr>");
-            var domColumn;
-            if (this.configuration.showColumnForId) {
-                domColumn = $("<td></td>");
-                domColumn.text(id);
-                domRow.append(domColumn);
-            }
+                var domRow = $("<tr></tr>");
+                var domColumn;
+                if (this.configuration.showColumnForId) {
+                    domColumn = $("<td></td>");
+                    domColumn.text(id);
+                    domRow.append(domColumn);
+                }
 
-            for (var c in this.data.columns) {
-                var column = this.data.columns[c];
-                domColumn = $("<td></td>");
-                domColumn.text(item.v[column.name]);
-                domRow.append(domColumn);
-            }
-
-            // Add Edit link
-            var domEditColumn = $("<td class='hl'><a href='#'>EDIT</a></td>");
-            domEditColumn.click((function (url, iDomRow) {
-                return function () {
-                    return tthis.configuration.onItemEdit(url, iDomRow);
-                };
-            })(item.uri, domRow));
-            domRow.append(domEditColumn);
-
-            var domDeleteColumn = $("<td class='hl'><a href='#'>DELETE</a></td>");
-            var domA = $("a", domDeleteColumn);
-            domDeleteColumn.click((function (url: string, innerDomRow: JQuery, innerDomA: JQuery) {
-                return function () {
-                    if (innerDomA.data("wasClicked") === true) {
-                        return tthis.configuration.onItemDelete(url, innerDomRow);
-                    } else {
-                        innerDomA.data("wasClicked", true);
-                        innerDomA.text("CONFIRM");
-                        return false;
+                var columns = this.data.columns;
+                for (var c in columns) {
+                    if (columns.hasOwnProperty(c)) {
+                        var column = columns[c];
+                        domColumn = $("<td></td>");
+                        domColumn.text(item.v[column.name]);
+                        domRow.append(domColumn);
                     }
-                };
-            })(item.uri, domRow, domA));
+                }
 
-            domRow.append(domDeleteColumn);
-            this.domTable.append(domRow);
+                // Add Edit link
+                var domEditColumn = $("<td class='hl'><a href='#'>EDIT</a></td>");
+                domEditColumn.click((function(url, iDomRow) {
+                    return function() {
+                        return tthis.configuration.onItemEdit(url, iDomRow);
+                    };
+                })(item.uri, domRow));
+                domRow.append(domEditColumn);
+
+                var domDeleteColumn = $("<td class='hl'><a href='#'>DELETE</a></td>");
+                var domA = $("a", domDeleteColumn);
+                domDeleteColumn.click((function(url: string, innerDomRow: JQuery, innerDomA: JQuery) {
+                    return function() {
+                        if (innerDomA.data("wasClicked") === true) {
+                            return tthis.configuration.onItemDelete(url, innerDomRow);
+                        } else {
+                            innerDomA.data("wasClicked", true);
+                            innerDomA.text("CONFIRM");
+                            return false;
+                        }
+                    };
+                })(item.uri, domRow, domA));
+
+                domRow.append(domDeleteColumn);
+                this.domTable.append(domRow);
+            }
         }
     }
 
@@ -283,50 +292,53 @@ export class ItemContentTable {
         domTable.append(domRow);
 
         // Now, the items
-        for (var property in this.item.v) {
-            domRow = $("<tr></tr>");
-            var value = this.item.v[property];
-            var domColumn = $("<td class='table_column_name'></td>");
-            domColumn.data("column", "name");
-            domColumn.text(property);
-            domRow.append(domColumn);
+        var propertyValue = this.item.v;
+        for (var property in propertyValue) {
+            if (propertyValue.hasOwnProperty(property)) {
+                domRow = $("<tr></tr>");
+                var value = propertyValue[property];
+                var domColumn = $("<td class='table_column_name'></td>");
+                domColumn.data("column", "name");
+                domColumn.text(property);
+                domRow.append(domColumn);
 
-            domColumn = $("<td class='table_column_value'></td>");
-            domColumn.data("column", "value");
-            domColumn.text(value);
-            domRow.append(domColumn);
+                domColumn = $("<td class='table_column_value'></td>");
+                domColumn.data("column", "value");
+                domColumn.text(value);
+                domRow.append(domColumn);
 
-            // Add Edit link
-            let domEditColumn = $("<td class='hl table_column_edit'><a href='#'>EDIT</a></td>");
-            $("a", domEditColumn).click((function(url: string, property: string, idomRow: JQuery, idomA: JQuery) {
-                return function() {
-                    if (tthis.configuration.supportInlineEditing) {
-                        tthis.startInlineEditing(property, idomRow);
-                        return false;
-                    } else {
-                        return tthis.configuration.editFunction(url, property, idomRow);
-                    }
-                };
-            })(this.item.uri, property, domRow, domA));
-            domRow.append(domEditColumn);
+                // Add Edit link
+                let domEditColumn = $("<td class='hl table_column_edit'><a href='#'>EDIT</a></td>");
+                $("a", domEditColumn).click((function(url: string, property: string, idomRow: JQuery, idomA: JQuery) {
+                    return function() {
+                        if (tthis.configuration.supportInlineEditing) {
+                            tthis.startInlineEditing(property, idomRow);
+                            return false;
+                        } else {
+                            return tthis.configuration.editFunction(url, property, idomRow);
+                        }
+                    };
+                })(this.item.uri, property, domRow, domA));
+                domRow.append(domEditColumn);
 
-            let domDeleteColumn = $("<td class='hl table_column_delete'><a href='#'>DELETE</a></td>");
-            var domA = $("a", domDeleteColumn);
-            $("a", domDeleteColumn).click((function(url: string, property: string, idomRow: JQuery, idomA: JQuery) {
-                return function() {
-                    if (idomA.data("wasClicked") === true) {
-                        return tthis.configuration.deleteFunction(url, property, idomRow);
-                    } else {
-                        idomA.data("wasClicked", true);
-                        idomA.text("CONFIRM");
-                        return false;
-                    }
+                let domDeleteColumn = $("<td class='hl table_column_delete'><a href='#'>DELETE</a></td>");
+                var domA = $("a", domDeleteColumn);
+                $("a", domDeleteColumn).click((function(url: string, property: string, idomRow: JQuery, idomA: JQuery) {
+                    return function() {
+                        if (idomA.data("wasClicked") === true) {
+                            return tthis.configuration.deleteFunction(url, property, idomRow);
+                        } else {
+                            idomA.data("wasClicked", true);
+                            idomA.text("CONFIRM");
+                            return false;
+                        }
 
-                };
-            })(this.item.uri, property, domRow, domA));
-            domRow.append(domDeleteColumn);
+                    };
+                })(this.item.uri, property, domRow, domA));
+                domRow.append(domDeleteColumn);
 
-            domTable.append(domRow);
+                domTable.append(domRow);
+            }
         }
 
         // Add new property

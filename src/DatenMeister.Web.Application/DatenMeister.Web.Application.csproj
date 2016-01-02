@@ -235,8 +235,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="htdocs\js\datenmeister-client.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-helper.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-interfaces.ts" />
+    <TypeScriptCompile Include="htdocs\js\datenmeister-layout.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-start.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-tables.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister.ts">

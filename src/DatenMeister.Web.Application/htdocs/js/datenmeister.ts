@@ -228,7 +228,7 @@ module DatenMeister {
             return callback;
         }
 
-        loadAndCreateHtmlForExtents(container: JQuery, ws: string): JQueryPromise<Object> {
+        loadAndCreateHtmlForWorkspace(container: JQuery, ws: string): JQueryPromise<Object> {
             var tthis = this;
 
             var callback = $.Deferred();
@@ -237,7 +237,7 @@ module DatenMeister {
                 url: "/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws),
                 cache: false,
                 success: function(data) {
-                    tthis.createHtmlForExtent(container, ws, data);
+                    tthis.createHtmlForWorkspace(container, ws, data);
                     callback.resolve(null);
                 },
                 error: function(data) {
@@ -248,7 +248,7 @@ module DatenMeister {
             return callback;
         }
 
-        createHtmlForExtent(container: JQuery, ws: string, data: Array<IExtent>) {
+        createHtmlForWorkspace(container: JQuery, ws: string, data: Array<IExtent>) {
             var tthis = this;
             container.empty();
 
@@ -281,13 +281,13 @@ module DatenMeister {
             }
         }
 
-        loadAndCreateHtmlForItems(container: JQuery, ws: string, extentUrl: string, query?: IItemTableQuery): JQueryPromise<Object> {
+        loadAndCreateHtmlForExtent(container: JQuery, ws: string, extentUrl: string, query?: IItemTableQuery): JQueryPromise<Object> {
             var tthis = this;
 
             var callback = $.Deferred();
-            this.loadHtmlForItems(ws, extentUrl)
+            this.loadHtmlForExtent(ws, extentUrl)
                 .done(function(data: IExtentContent) {
-                    tthis.createHtmlForItems(container, ws, extentUrl, data);
+                    tthis.createHtmlForExtent(container, ws, extentUrl, data);
                     callback.resolve(null);
                 })
                 .fail(function(data) {
@@ -297,7 +297,7 @@ module DatenMeister {
             return callback;
         }
 
-        loadHtmlForItems(ws: string, extentUrl: string, query?: IItemTableQuery): JQueryXHR {
+        loadHtmlForExtent(ws: string, extentUrl: string, query?: IItemTableQuery): JQueryXHR {
             var url = "/api/datenmeister/extent/items?ws=" + encodeURIComponent(ws)
                 + "&extent=" + encodeURIComponent(extentUrl);
 
@@ -320,10 +320,10 @@ module DatenMeister {
                 });
         }
 
-        createHtmlForItems(container: JQuery, ws: string, extentUrl: string, data: IExtentContent) {
+        createHtmlForExtent(container: JQuery, ws: string, extentUrl: string, data: IExtentContent) {
             var tthis = this;
             var configuration = new GUI.DataTableConfiguration();
-            configuration.editFunction = (url: string) => {
+            configuration.onItemEdit = (url: string) => {
 
                 if (this.onItemSelected !== undefined) {
                     this.onItemSelected(ws, extentUrl, url);
@@ -332,7 +332,7 @@ module DatenMeister {
                 return false;
             };
 
-            configuration.deleteFunction = (url: string, domRow: JQuery) => {
+            configuration.onItemDelete = (url: string, domRow: JQuery) => {
                 var callback = this.deleteItem(ws, extentUrl, url);
                 callback
                     .done(() => {
@@ -346,7 +346,7 @@ module DatenMeister {
             var table = new GUI.ItemListTable(container, data, configuration);
 
             configuration.onSearch = function (searchString) {
-                tthis.loadHtmlForItems(ws, extentUrl, { searchString: searchString })
+                tthis.loadHtmlForExtent(ws, extentUrl, { searchString: searchString })
                     .done((innerData: IExtentContent) => {
                         if (table.lastProcessedSearchString === innerData.search) {
                             table.updateItems(innerData);
@@ -359,7 +359,18 @@ module DatenMeister {
                     .done((innerData: ReturnModule.ICreateItemResult) => {
                         tthis.onItemCreated(ws, extentUrl, innerData.newuri);
                     });
-            }
+            };
+
+            var itemsPerPage = 10;
+            configuration.onPageChange = (newPage: number) => {
+                tthis.loadHtmlForExtent(ws, extentUrl, {
+                        offset: itemsPerPage * (newPage - 1),
+                        amount: itemsPerPage
+                    })
+                    .done((innerData: IExtentContent) => {
+                            table.updateItems(innerData);
+                    });
+            };
 
             table.show();
         }
@@ -510,7 +521,7 @@ module DatenMeister {
                 return false;
             };
 
-            extentLogic.loadAndCreateHtmlForExtents($(".container_data"), workspaceId)
+            extentLogic.loadAndCreateHtmlForWorkspace($(".container_data"), workspaceId)
                 .done(function (data) {
                     createTitle(workspaceId);
                 })
@@ -528,7 +539,7 @@ module DatenMeister {
                 navigateToItem(ws, extentUrl, itemUrl);
             };
 
-            extentLogic.loadAndCreateHtmlForItems($(".container_data"), workspaceId, extentUrl).done(
+            extentLogic.loadAndCreateHtmlForExtent($(".container_data"), workspaceId, extentUrl).done(
                 data => {
                     createTitle(workspaceId, extentUrl);
                 });
@@ -550,8 +561,9 @@ module DatenMeister {
 
         export class DataTableConfiguration {
             onNewItemClicked: () => void;
-            editFunction: (url: string, domRow: JQuery) => boolean;
-            deleteFunction: (url: string, domRow: JQuery) => boolean;
+            onItemEdit: (url: string, domRow: JQuery) => boolean;
+            onItemDelete: (url: string, domRow: JQuery) => boolean;
+            onPageChange: (newPage: number) => void;
             supportSearchbox: boolean;
 
             /* true, if new properties shall be supported */
@@ -559,15 +571,21 @@ module DatenMeister {
 
             showColumnForId: boolean;
 
+            supportPaging: boolean;
+            itemsPerPage: number;
+
             /* This method is called each time, the user has changed content in the search field */
             onSearch: (searchText: string) => void;
 
             constructor() {
-                this.editFunction = (url: string, domRow: JQuery) => false;
-                this.deleteFunction = (url: string, domRow: JQuery) => false;
+                this.onItemEdit = (url: string, domRow: JQuery) => false;
+                this.onItemDelete = (url: string, domRow: JQuery) => false;
                 this.supportSearchbox = true;
                 this.supportNewItem = true;
                 this.showColumnForId = false;
+
+                this.supportPaging = true;
+                this.itemsPerPage = 20;
             }
         }
         
@@ -583,11 +601,21 @@ module DatenMeister {
             lastProcessedSearchString: string;
             domTotalNumber: JQuery;
             domFilteredNumber: JQuery;
+            currentPage: number;
+            totalPages: number;
 
             constructor(dom: JQuery, data: IExtentContent, configuration: DataTableConfiguration) {
                 this.domContainer = dom;
                 this.data = data;
                 this.configuration = configuration;
+                this.currentPage = 1;
+                this.totalPages = 0;
+            }
+
+            throwOnPageChange() : void {
+                if (this.configuration.onPageChange !== undefined) {
+                    this.configuration.onPageChange(this.currentPage);
+                }
             }
 
             // Replaces the content at the dom with the created table
@@ -622,6 +650,42 @@ module DatenMeister {
                     this.domContainer.append(domNewItem);
                 }
 
+                if (this.configuration.supportPaging) {
+                    var domPaging = $("<div><a href='#' class='dm_prevpage'>PREV</a> Page <input type='textbox' class='dm_page' value='1' " +
+                        "/> of <span class='dm_totalpages'> </span> <a href='#' class='dm_jumppage'>GO</a> <a href='#' class='dm_nextpage'>NEXT</a> ");
+                    this.domContainer.append(domPaging);
+
+                    var domPrev = $(".dm_prevpage", domPaging);
+                    var domNext = $(".dm_nextpage", domPaging);
+                    var domGo = $(".dm_jumppage", domPaging);
+                    var domCurrentPage = $(".dm_page", domPaging);
+
+                    domPrev.click(() => {
+                        tthis.currentPage--;
+                        tthis.currentPage = Math.max(1, tthis.currentPage);
+                        domCurrentPage.val(tthis.currentPage.toString());
+                        tthis.throwOnPageChange();
+                        return false;
+                    });
+
+                    domNext.click(() => {
+                        tthis.currentPage++;
+                        tthis.currentPage = Math.min(tthis.totalPages, tthis.currentPage);
+                        domCurrentPage.val(tthis.currentPage.toString());
+                        tthis.throwOnPageChange();
+                        return false;
+                    });
+
+                    domGo.click(() => {
+                        tthis.currentPage = domCurrentPage.val();
+                        tthis.currentPage = Math.max(1, tthis.currentPage);
+                        tthis.currentPage = Math.min(tthis.totalPages, tthis.currentPage);
+                        domCurrentPage.val(tthis.currentPage.toString());
+                        tthis.throwOnPageChange();
+                        return false;
+                    };
+                }
+
                 var domAmount = $("<div>Total: <span class='totalnumber'>##</span>, Filtered: <span class='filterednumber'>##</span>");
                 this.domTotalNumber = $(".totalnumber", domAmount);
                 this.domFilteredNumber = $(".filterednumber", domAmount);
@@ -631,6 +695,7 @@ module DatenMeister {
                 this.domTable = $("<table class='table'></table>");
 
                 // First the headline
+
                 var domRow = $("<tr></tr>");
                 var domColumn;
                 if (this.configuration.showColumnForId) {
@@ -666,6 +731,12 @@ module DatenMeister {
                 this.domTotalNumber.text(this.data.totalItemCount);
                 this.domFilteredNumber.text(this.data.filteredItemCount);
 
+                if (this.configuration.supportPaging) {
+                    var domTotalPages = $(".dm_totalpages", this.domContainer);
+                    this.totalPages = Math.floor((this.data.filteredItemCount - 1) / this.configuration.itemsPerPage) + 1;
+                    domTotalPages.text(this.totalPages);
+                }
+
                 // Now, the items
                 for (var i in this.data.items) {
                     var item = this.data.items[i];
@@ -696,7 +767,7 @@ module DatenMeister {
                     var domEditColumn = $("<td class='hl'><a href='#'>EDIT</a></td>");
                     domEditColumn.click((function (url, iDomRow) {
                         return function () {
-                            return tthis.configuration.editFunction(url, iDomRow);
+                            return tthis.configuration.onItemEdit(url, iDomRow);
                         };
                     })(item.uri, domRow));
                     domRow.append(domEditColumn);
@@ -706,7 +777,7 @@ module DatenMeister {
                     domDeleteColumn.click((function (url: string, innerDomRow: JQuery, innerDomA: JQuery) {
                         return function () {
                             if (innerDomA.data("wasClicked") === true) {
-                                return tthis.configuration.deleteFunction(url, innerDomRow);
+                                return tthis.configuration.onItemDelete(url, innerDomRow);
                             } else {
                                 innerDomA.data("wasClicked", true);
                                 innerDomA.text("CONFIRM");
@@ -909,3 +980,4 @@ module DatenMeister {
         }
     }
 };
+

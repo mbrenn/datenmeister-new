@@ -188,14 +188,14 @@ var DatenMeister;
             });
             return callback;
         };
-        ExtentLogic.prototype.loadAndCreateHtmlForExtents = function (container, ws) {
+        ExtentLogic.prototype.loadAndCreateHtmlForWorkspace = function (container, ws) {
             var tthis = this;
             var callback = $.Deferred();
             $.ajax({
                 url: "/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws),
                 cache: false,
                 success: function (data) {
-                    tthis.createHtmlForExtent(container, ws, data);
+                    tthis.createHtmlForWorkspace(container, ws, data);
                     callback.resolve(null);
                 },
                 error: function (data) {
@@ -204,7 +204,7 @@ var DatenMeister;
             });
             return callback;
         };
-        ExtentLogic.prototype.createHtmlForExtent = function (container, ws, data) {
+        ExtentLogic.prototype.createHtmlForWorkspace = function (container, ws, data) {
             var tthis = this;
             container.empty();
             if (data.length === 0) {
@@ -230,12 +230,12 @@ var DatenMeister;
                 container.append(compiledTable);
             }
         };
-        ExtentLogic.prototype.loadAndCreateHtmlForItems = function (container, ws, extentUrl, query) {
+        ExtentLogic.prototype.loadAndCreateHtmlForExtent = function (container, ws, extentUrl, query) {
             var tthis = this;
             var callback = $.Deferred();
-            this.loadHtmlForItems(ws, extentUrl)
+            this.loadHtmlForExtent(ws, extentUrl)
                 .done(function (data) {
-                tthis.createHtmlForItems(container, ws, extentUrl, data);
+                tthis.createHtmlForExtent(container, ws, extentUrl, data);
                 callback.resolve(null);
             })
                 .fail(function (data) {
@@ -243,7 +243,7 @@ var DatenMeister;
             });
             return callback;
         };
-        ExtentLogic.prototype.loadHtmlForItems = function (ws, extentUrl, query) {
+        ExtentLogic.prototype.loadHtmlForExtent = function (ws, extentUrl, query) {
             var url = "/api/datenmeister/extent/items?ws=" + encodeURIComponent(ws)
                 + "&extent=" + encodeURIComponent(extentUrl);
             if (query !== undefined) {
@@ -262,17 +262,17 @@ var DatenMeister;
                 cache: false
             });
         };
-        ExtentLogic.prototype.createHtmlForItems = function (container, ws, extentUrl, data) {
+        ExtentLogic.prototype.createHtmlForExtent = function (container, ws, extentUrl, data) {
             var _this = this;
             var tthis = this;
             var configuration = new GUI.DataTableConfiguration();
-            configuration.editFunction = function (url) {
+            configuration.onItemEdit = function (url) {
                 if (_this.onItemSelected !== undefined) {
                     _this.onItemSelected(ws, extentUrl, url);
                 }
                 return false;
             };
-            configuration.deleteFunction = function (url, domRow) {
+            configuration.onItemDelete = function (url, domRow) {
                 var callback = _this.deleteItem(ws, extentUrl, url);
                 callback
                     .done(function () {
@@ -284,7 +284,7 @@ var DatenMeister;
             };
             var table = new GUI.ItemListTable(container, data, configuration);
             configuration.onSearch = function (searchString) {
-                tthis.loadHtmlForItems(ws, extentUrl, { searchString: searchString })
+                tthis.loadHtmlForExtent(ws, extentUrl, { searchString: searchString })
                     .done(function (innerData) {
                     if (table.lastProcessedSearchString === innerData.search) {
                         table.updateItems(innerData);
@@ -295,6 +295,16 @@ var DatenMeister;
                 tthis.createItem(ws, extentUrl)
                     .done(function (innerData) {
                     tthis.onItemCreated(ws, extentUrl, innerData.newuri);
+                });
+            };
+            var itemsPerPage = 10;
+            configuration.onPageChange = function (newPage) {
+                tthis.loadHtmlForExtent(ws, extentUrl, {
+                    offset: itemsPerPage * (newPage - 1),
+                    amount: itemsPerPage
+                })
+                    .done(function (innerData) {
+                    table.updateItems(innerData);
                 });
             };
             table.show();
@@ -443,7 +453,7 @@ var DatenMeister;
                 loadExtent(ws, extentUrl);
                 return false;
             };
-            extentLogic.loadAndCreateHtmlForExtents($(".container_data"), workspaceId)
+            extentLogic.loadAndCreateHtmlForWorkspace($(".container_data"), workspaceId)
                 .done(function (data) {
                 createTitle(workspaceId);
             })
@@ -459,7 +469,7 @@ var DatenMeister;
             extentLogic.onItemCreated = function (ws, extentUrl, itemUrl) {
                 navigateToItem(ws, extentUrl, itemUrl);
             };
-            extentLogic.loadAndCreateHtmlForItems($(".container_data"), workspaceId, extentUrl).done(function (data) {
+            extentLogic.loadAndCreateHtmlForExtent($(".container_data"), workspaceId, extentUrl).done(function (data) {
                 createTitle(workspaceId, extentUrl);
             });
         }
@@ -479,11 +489,13 @@ var DatenMeister;
         GUI.loadItem = loadItem;
         var DataTableConfiguration = (function () {
             function DataTableConfiguration() {
-                this.editFunction = function (url, domRow) { return false; };
-                this.deleteFunction = function (url, domRow) { return false; };
+                this.onItemEdit = function (url, domRow) { return false; };
+                this.onItemDelete = function (url, domRow) { return false; };
                 this.supportSearchbox = true;
                 this.supportNewItem = true;
                 this.showColumnForId = false;
+                this.supportPaging = true;
+                this.itemsPerPage = 20;
             }
             return DataTableConfiguration;
         })();
@@ -497,7 +509,14 @@ var DatenMeister;
                 this.domContainer = dom;
                 this.data = data;
                 this.configuration = configuration;
+                this.currentPage = 1;
+                this.totalPages = 0;
             }
+            ItemListTable.prototype.throwOnPageChange = function () {
+                if (this.configuration.onPageChange !== undefined) {
+                    this.configuration.onPageChange(this.currentPage);
+                }
+            };
             // Replaces the content at the dom with the created table
             ItemListTable.prototype.show = function () {
                 var tthis = this;
@@ -523,6 +542,37 @@ var DatenMeister;
                         return false;
                     });
                     this.domContainer.append(domNewItem);
+                }
+                if (this.configuration.supportPaging) {
+                    var domPaging = $("<div><a href='#' class='dm_prevpage'>PREV</a> Page <input type='textbox' class='dm_page' value='1' " +
+                        "/> of <span class='dm_totalpages'> </span> <a href='#' class='dm_jumppage'>GO</a> <a href='#' class='dm_nextpage'>NEXT</a> ");
+                    this.domContainer.append(domPaging);
+                    var domPrev = $(".dm_prevpage", domPaging);
+                    var domNext = $(".dm_nextpage", domPaging);
+                    var domGo = $(".dm_jumppage", domPaging);
+                    var domCurrentPage = $(".dm_page", domPaging);
+                    domPrev.click(function () {
+                        tthis.currentPage--;
+                        tthis.currentPage = Math.max(1, tthis.currentPage);
+                        domCurrentPage.val(tthis.currentPage.toString());
+                        tthis.throwOnPageChange();
+                        return false;
+                    });
+                    domNext.click(function () {
+                        tthis.currentPage++;
+                        tthis.currentPage = Math.min(tthis.totalPages, tthis.currentPage);
+                        domCurrentPage.val(tthis.currentPage.toString());
+                        tthis.throwOnPageChange();
+                        return false;
+                    });
+                    domGo.click(function () {
+                        tthis.currentPage = domCurrentPage.val();
+                        tthis.currentPage = Math.max(1, tthis.currentPage);
+                        tthis.currentPage = Math.min(tthis.totalPages, tthis.currentPage);
+                        domCurrentPage.val(tthis.currentPage.toString());
+                        tthis.throwOnPageChange();
+                        return false;
+                    });
                 }
                 var domAmount = $("<div>Total: <span class='totalnumber'>##</span>, Filtered: <span class='filterednumber'>##</span>");
                 this.domTotalNumber = $(".totalnumber", domAmount);
@@ -556,6 +606,11 @@ var DatenMeister;
                 var tthis = this;
                 this.domTotalNumber.text(this.data.totalItemCount);
                 this.domFilteredNumber.text(this.data.filteredItemCount);
+                if (this.configuration.supportPaging) {
+                    var domTotalPages = $(".dm_totalpages", this.domContainer);
+                    this.totalPages = Math.floor((this.data.filteredItemCount - 1) / this.configuration.itemsPerPage) + 1;
+                    domTotalPages.text(this.totalPages);
+                }
                 // Now, the items
                 for (var i in this.data.items) {
                     var item = this.data.items[i];
@@ -582,7 +637,7 @@ var DatenMeister;
                     var domEditColumn = $("<td class='hl'><a href='#'>EDIT</a></td>");
                     domEditColumn.click((function (url, iDomRow) {
                         return function () {
-                            return tthis.configuration.editFunction(url, iDomRow);
+                            return tthis.configuration.onItemEdit(url, iDomRow);
                         };
                     })(item.uri, domRow));
                     domRow.append(domEditColumn);
@@ -591,7 +646,7 @@ var DatenMeister;
                     domDeleteColumn.click((function (url, innerDomRow, innerDomA) {
                         return function () {
                             if (innerDomA.data("wasClicked") === true) {
-                                return tthis.configuration.deleteFunction(url, innerDomRow);
+                                return tthis.configuration.onItemDelete(url, innerDomRow);
                             }
                             else {
                                 innerDomA.data("wasClicked", true);

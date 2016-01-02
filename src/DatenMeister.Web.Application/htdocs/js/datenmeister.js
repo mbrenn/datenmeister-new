@@ -483,6 +483,7 @@ var DatenMeister;
                 this.deleteFunction = function (url, domRow) { return false; };
                 this.supportSearchbox = true;
                 this.supportNewItem = true;
+                this.showColumnForId = false;
             }
             return DataTableConfiguration;
         })();
@@ -529,10 +530,15 @@ var DatenMeister;
                 this.domContainer.append(domAmount);
                 this.domTable = $("<table class='table'></table>");
                 // First the headline
-                var domRow = $("<tr><th>ID</th></tr>");
+                var domRow = $("<tr></tr>");
+                var domColumn;
+                if (this.configuration.showColumnForId) {
+                    domColumn = $("<th>ID</th>");
+                    domRow.append(domColumn);
+                }
                 for (var c in this.data.columns) {
                     var column = this.data.columns[c];
-                    var domColumn = $("<th></th>");
+                    domColumn = $("<th></th>");
                     domColumn.text(column.title);
                     domRow.append(domColumn);
                 }
@@ -560,9 +566,12 @@ var DatenMeister;
                         id = item.uri.substring(hashIndex + 1);
                     }
                     var domRow = $("<tr></tr>");
-                    var domColumn = $("<td></td>");
-                    domColumn.text(id);
-                    domRow.append(domColumn);
+                    var domColumn;
+                    if (this.configuration.showColumnForId) {
+                        domColumn = $("<td></td>");
+                        domColumn.text(id);
+                        domRow.append(domColumn);
+                    }
                     for (var c in this.data.columns) {
                         var column = this.data.columns[c];
                         domColumn = $("<td></td>");

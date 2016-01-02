@@ -557,6 +557,8 @@ module DatenMeister {
             /* true, if new properties shall be supported */
             supportNewItem: boolean;
 
+            showColumnForId: boolean;
+
             /* This method is called each time, the user has changed content in the search field */
             onSearch: (searchText: string) => void;
 
@@ -565,6 +567,7 @@ module DatenMeister {
                 this.deleteFunction = (url: string, domRow: JQuery) => false;
                 this.supportSearchbox = true;
                 this.supportNewItem = true;
+                this.showColumnForId = false;
             }
         }
         
@@ -628,10 +631,17 @@ module DatenMeister {
                 this.domTable = $("<table class='table'></table>");
 
                 // First the headline
-                var domRow = $("<tr><th>ID</th></tr>");
+                var domRow = $("<tr></tr>");
+                var domColumn;
+                if (this.configuration.showColumnForId) {
+
+                    domColumn = $("<th>ID</th>");
+                    domRow.append(domColumn);
+                }
+
                 for (var c in this.data.columns) {
                     var column = this.data.columns[c];
-                    var domColumn = $("<th></th>");
+                    domColumn = $("<th></th>");
                     domColumn.text(column.title);
                     domRow.append(domColumn);
                 }
@@ -668,9 +678,12 @@ module DatenMeister {
                     }
 
                     var domRow = $("<tr></tr>");
-                    var domColumn = $("<td></td>");
-                    domColumn.text(id);
-                    domRow.append(domColumn);
+                    var domColumn;
+                    if (this.configuration.showColumnForId) {
+                        domColumn = $("<td></td>");
+                        domColumn.text(id);
+                        domRow.append(domColumn);
+                    }
 
                     for (var c in this.data.columns) {
                         var column = this.data.columns[c];

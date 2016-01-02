@@ -1,64 +1,6 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/jquery/underscore.d.ts" />
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var DatenMeister;
-(function (DatenMeister) {
-    ;
-    ;
-    var PostModels;
-    (function (PostModels) {
-        /** This class is used to reference a single object within the database */
-        var ExtentReferenceModel = (function () {
-            function ExtentReferenceModel() {
-            }
-            return ExtentReferenceModel;
-        })();
-        PostModels.ExtentReferenceModel = ExtentReferenceModel;
-        var ItemReferenceModel = (function (_super) {
-            __extends(ItemReferenceModel, _super);
-            function ItemReferenceModel() {
-                _super.apply(this, arguments);
-            }
-            return ItemReferenceModel;
-        })(ExtentReferenceModel);
-        PostModels.ItemReferenceModel = ItemReferenceModel;
-        var ItemCreateModel = (function (_super) {
-            __extends(ItemCreateModel, _super);
-            function ItemCreateModel() {
-                _super.apply(this, arguments);
-            }
-            return ItemCreateModel;
-        })(ExtentReferenceModel);
-        PostModels.ItemCreateModel = ItemCreateModel;
-        var ItemUnsetPropertyModel = (function (_super) {
-            __extends(ItemUnsetPropertyModel, _super);
-            function ItemUnsetPropertyModel() {
-                _super.apply(this, arguments);
-            }
-            return ItemUnsetPropertyModel;
-        })(ItemReferenceModel);
-        PostModels.ItemUnsetPropertyModel = ItemUnsetPropertyModel;
-        var ItemDeleteModel = (function (_super) {
-            __extends(ItemDeleteModel, _super);
-            function ItemDeleteModel() {
-                _super.apply(this, arguments);
-            }
-            return ItemDeleteModel;
-        })(ItemReferenceModel);
-        PostModels.ItemDeleteModel = ItemDeleteModel;
-        var ItemSetPropertyModel = (function (_super) {
-            __extends(ItemSetPropertyModel, _super);
-            function ItemSetPropertyModel() {
-                _super.apply(this, arguments);
-            }
-            return ItemSetPropertyModel;
-        })(ItemReferenceModel);
-        PostModels.ItemSetPropertyModel = ItemSetPropertyModel;
-    })(PostModels = DatenMeister.PostModels || (DatenMeister.PostModels = {}));
+define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", "datenmeister-tables"], function (require, exports, DMHelper, DMI, DMTables) {
     var WorkspaceLogic = (function () {
         function WorkspaceLogic() {
         }
@@ -102,31 +44,13 @@ var DatenMeister;
         };
         return WorkspaceLogic;
     })();
-    DatenMeister.WorkspaceLogic = WorkspaceLogic;
-    ;
-    var Models;
-    (function (Models) {
-        var ItemReferenceModel = (function () {
-            function ItemReferenceModel() {
-            }
-            return ItemReferenceModel;
-        })();
-        Models.ItemReferenceModel = ItemReferenceModel;
-        var ItemDeleteModel = (function (_super) {
-            __extends(ItemDeleteModel, _super);
-            function ItemDeleteModel() {
-                _super.apply(this, arguments);
-            }
-            return ItemDeleteModel;
-        })(ItemReferenceModel);
-        Models.ItemDeleteModel = ItemDeleteModel;
-    })(Models = DatenMeister.Models || (DatenMeister.Models = {}));
+    exports.WorkspaceLogic = WorkspaceLogic;
     var ExtentLogic = (function () {
         function ExtentLogic() {
         }
         ExtentLogic.prototype.createItem = function (ws, extentUrl, container) {
             var callback = $.Deferred();
-            var postModel = new PostModels.ItemCreateModel();
+            var postModel = new DMI.PostModels.ItemCreateModel();
             postModel.ws = ws;
             postModel.extent = extentUrl;
             postModel.container = container;
@@ -142,7 +66,7 @@ var DatenMeister;
         /* Deletes an item from the database and returns the value indicatng whether the deleteion was successful */
         ExtentLogic.prototype.deleteItem = function (ws, extent, item) {
             var callback = $.Deferred();
-            var postModel = new PostModels.ItemDeleteModel();
+            var postModel = new DMI.PostModels.ItemDeleteModel();
             postModel.ws = ws;
             postModel.extent = extent;
             postModel.item = item;
@@ -157,7 +81,7 @@ var DatenMeister;
         };
         ExtentLogic.prototype.deleteProperty = function (ws, extent, item, property) {
             var callback = $.Deferred();
-            var postModel = new PostModels.ItemUnsetPropertyModel();
+            var postModel = new DMI.PostModels.ItemUnsetPropertyModel();
             postModel.ws = ws;
             postModel.extent = extent;
             postModel.item = item;
@@ -173,7 +97,7 @@ var DatenMeister;
         };
         ExtentLogic.prototype.setProperty = function (ws, extentUrl, itemUrl, property, newValue) {
             var callback = $.Deferred();
-            var postModel = new PostModels.ItemSetPropertyModel();
+            var postModel = new DMI.PostModels.ItemSetPropertyModel();
             postModel.ws = ws;
             postModel.extent = extentUrl;
             postModel.item = itemUrl;
@@ -265,7 +189,7 @@ var DatenMeister;
         ExtentLogic.prototype.createHtmlForExtent = function (container, ws, extentUrl, data) {
             var _this = this;
             var tthis = this;
-            var configuration = new GUI.DataTableConfiguration();
+            var configuration = new DMTables.ItemTableConfiguration();
             configuration.onItemEdit = function (url) {
                 if (_this.onItemSelected !== undefined) {
                     _this.onItemSelected(ws, extentUrl, url);
@@ -282,7 +206,7 @@ var DatenMeister;
                     .fail(function () { alert("FAILED"); });
                 return false;
             };
-            var table = new GUI.ItemListTable(container, data, configuration);
+            var table = new DMTables.ItemListTable(container, data, configuration);
             configuration.onSearch = function (searchString) {
                 tthis.loadHtmlForExtent(ws, extentUrl, { searchString: searchString })
                     .done(function (innerData) {
@@ -329,7 +253,7 @@ var DatenMeister;
         };
         ExtentLogic.prototype.createHtmlForItem = function (jQuery, ws, extentUrl, itemUrl, data) {
             var tthis = this;
-            var configuration = new GUI.ItemContentConfiguration();
+            var configuration = new DMTables.ItemContentConfiguration();
             configuration.deleteFunction = function (url, property, domRow) {
                 tthis.deleteProperty(ws, extentUrl, itemUrl, property).done(function () { return domRow.find("td").fadeOut(500, function () { domRow.remove(); }); });
                 return false;
@@ -340,22 +264,12 @@ var DatenMeister;
             configuration.onNewProperty = function (url, property, newValue) {
                 tthis.setProperty(ws, extentUrl, itemUrl, property, newValue);
             };
-            var table = new GUI.ItemContentTable(data, configuration);
+            var table = new DMTables.ItemContentTable(data, configuration);
             table.show(jQuery);
         };
         return ExtentLogic;
     })();
-    DatenMeister.ExtentLogic = ExtentLogic;
-    var Helper;
-    (function (Helper) {
-        // Helper function out of http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
-        function getParameterByNameFromHash(name) {
-            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-            var regex = new RegExp("[\\?&#]" + name + "=([^&#]*)"), results = regex.exec(location.hash);
-            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-        }
-        Helper.getParameterByNameFromHash = getParameterByNameFromHash;
-    })(Helper = DatenMeister.Helper || (DatenMeister.Helper = {}));
+    exports.ExtentLogic = ExtentLogic;
     var GUI;
     (function (GUI) {
         function start() {
@@ -368,9 +282,9 @@ var DatenMeister;
         }
         GUI.start = start;
         function parseAndNavigateToWindowLocation() {
-            var ws = Helper.getParameterByNameFromHash("ws");
-            var extentUrl = Helper.getParameterByNameFromHash("ext");
-            var itemUrl = Helper.getParameterByNameFromHash("item");
+            var ws = DMHelper.getParameterByNameFromHash("ws");
+            var extentUrl = DMHelper.getParameterByNameFromHash("ext");
+            var itemUrl = DMHelper.getParameterByNameFromHash("item");
             if (ws === "") {
                 loadWorkspaces();
             }
@@ -431,7 +345,7 @@ var DatenMeister;
             });
         }
         function loadWorkspaces() {
-            var workbenchLogic = new DatenMeister.WorkspaceLogic();
+            var workbenchLogic = new WorkspaceLogic();
             workbenchLogic.onWorkspaceSelected = function (id) {
                 // Loads the extent of the workspace, if the user has clicked on one of the workbenches
                 history.pushState({}, "", "#ws=" + encodeURIComponent(id));
@@ -446,7 +360,7 @@ var DatenMeister;
         }
         GUI.loadWorkspaces = loadWorkspaces;
         function loadExtents(workspaceId) {
-            var extentLogic = new DatenMeister.ExtentLogic();
+            var extentLogic = new ExtentLogic();
             extentLogic.onExtentSelected = function (ws, extentUrl) {
                 history.pushState({}, '', "#ws=" + encodeURIComponent(ws)
                     + "&ext=" + encodeURIComponent(extentUrl));
@@ -462,7 +376,7 @@ var DatenMeister;
         }
         GUI.loadExtents = loadExtents;
         function loadExtent(workspaceId, extentUrl) {
-            var extentLogic = new DatenMeister.ExtentLogic();
+            var extentLogic = new ExtentLogic();
             extentLogic.onItemSelected = function (ws, extentUrl, itemUrl) {
                 navigateToItem(ws, extentUrl, itemUrl);
             };
@@ -482,329 +396,11 @@ var DatenMeister;
         }
         GUI.navigateToItem = navigateToItem;
         function loadItem(workspaceId, extentUrl, itemUrl) {
-            var extentLogic = new DatenMeister.ExtentLogic();
+            var extentLogic = new ExtentLogic();
             createTitle(workspaceId, extentUrl, itemUrl);
             extentLogic.loadAndCreateHtmlForItem($(".container_data"), workspaceId, extentUrl, itemUrl);
         }
         GUI.loadItem = loadItem;
-        var DataTableConfiguration = (function () {
-            function DataTableConfiguration() {
-                this.onItemEdit = function (url, domRow) { return false; };
-                this.onItemDelete = function (url, domRow) { return false; };
-                this.supportSearchbox = true;
-                this.supportNewItem = true;
-                this.showColumnForId = false;
-                this.supportPaging = true;
-                this.itemsPerPage = 20;
-            }
-            return DataTableConfiguration;
-        })();
-        GUI.DataTableConfiguration = DataTableConfiguration;
-        /*
-         * Used to show a lot of items in a database. The table will use an array of MofObjects
-         * as the datasource
-         */
-        var ItemListTable = (function () {
-            function ItemListTable(dom, data, configuration) {
-                this.domContainer = dom;
-                this.data = data;
-                this.configuration = configuration;
-                this.currentPage = 1;
-                this.totalPages = 0;
-            }
-            ItemListTable.prototype.throwOnPageChange = function () {
-                if (this.configuration.onPageChange !== undefined) {
-                    this.configuration.onPageChange(this.currentPage);
-                }
-            };
-            // Replaces the content at the dom with the created table
-            ItemListTable.prototype.show = function () {
-                var tthis = this;
-                this.domContainer.empty();
-                if (this.configuration.supportSearchbox) {
-                    var domSearchBox = $("<div><input type='textbox' /></div>");
-                    var domInput = $("input", domSearchBox);
-                    $("input", domSearchBox).keyup(function () {
-                        var searchValue = domInput.val();
-                        if (tthis.configuration.onSearch !== undefined) {
-                            tthis.lastProcessedSearchString = searchValue;
-                            tthis.configuration.onSearch(searchValue);
-                        }
-                    });
-                    this.domContainer.append(domSearchBox);
-                }
-                if (this.configuration.supportNewItem) {
-                    var domNewItem = $("<div><a href='#'>Create new item</a></div>");
-                    domNewItem.click(function () {
-                        if (tthis.configuration.onNewItemClicked !== undefined) {
-                            tthis.configuration.onNewItemClicked();
-                        }
-                        return false;
-                    });
-                    this.domContainer.append(domNewItem);
-                }
-                if (this.configuration.supportPaging) {
-                    var domPaging = $("<div><a href='#' class='dm_prevpage'>PREV</a> Page <input type='textbox' class='dm_page' value='1' " +
-                        "/> of <span class='dm_totalpages'> </span> <a href='#' class='dm_jumppage'>GO</a> <a href='#' class='dm_nextpage'>NEXT</a> ");
-                    this.domContainer.append(domPaging);
-                    var domPrev = $(".dm_prevpage", domPaging);
-                    var domNext = $(".dm_nextpage", domPaging);
-                    var domGo = $(".dm_jumppage", domPaging);
-                    var domCurrentPage = $(".dm_page", domPaging);
-                    domPrev.click(function () {
-                        tthis.currentPage--;
-                        tthis.currentPage = Math.max(1, tthis.currentPage);
-                        domCurrentPage.val(tthis.currentPage.toString());
-                        tthis.throwOnPageChange();
-                        return false;
-                    });
-                    domNext.click(function () {
-                        tthis.currentPage++;
-                        tthis.currentPage = Math.min(tthis.totalPages, tthis.currentPage);
-                        domCurrentPage.val(tthis.currentPage.toString());
-                        tthis.throwOnPageChange();
-                        return false;
-                    });
-                    domGo.click(function () {
-                        tthis.currentPage = domCurrentPage.val();
-                        tthis.currentPage = Math.max(1, tthis.currentPage);
-                        tthis.currentPage = Math.min(tthis.totalPages, tthis.currentPage);
-                        domCurrentPage.val(tthis.currentPage.toString());
-                        tthis.throwOnPageChange();
-                        return false;
-                    });
-                }
-                var domAmount = $("<div>Total: <span class='totalnumber'>##</span>, Filtered: <span class='filterednumber'>##</span>");
-                this.domTotalNumber = $(".totalnumber", domAmount);
-                this.domFilteredNumber = $(".filterednumber", domAmount);
-                this.domContainer.append(domAmount);
-                this.domTable = $("<table class='table'></table>");
-                // First the headline
-                var domRow = $("<tr></tr>");
-                var domColumn;
-                if (this.configuration.showColumnForId) {
-                    domColumn = $("<th>ID</th>");
-                    domRow.append(domColumn);
-                }
-                for (var c in this.data.columns) {
-                    var column = this.data.columns[c];
-                    domColumn = $("<th></th>");
-                    domColumn.text(column.title);
-                    domRow.append(domColumn);
-                }
-                // Creates the edit and delete column
-                var domEditColumn = $("<th>EDIT</th>");
-                domRow.append(domEditColumn);
-                var domDeleteColumn = $("<th>DELETE</th>");
-                domRow.append(domDeleteColumn);
-                this.domTable.append(domRow);
-                // Now, the items
-                tthis.createRowsForData();
-                this.domContainer.append(this.domTable);
-            };
-            ItemListTable.prototype.createRowsForData = function () {
-                var tthis = this;
-                this.domTotalNumber.text(this.data.totalItemCount);
-                this.domFilteredNumber.text(this.data.filteredItemCount);
-                if (this.configuration.supportPaging) {
-                    var domTotalPages = $(".dm_totalpages", this.domContainer);
-                    this.totalPages = Math.floor((this.data.filteredItemCount - 1) / this.configuration.itemsPerPage) + 1;
-                    domTotalPages.text(this.totalPages);
-                }
-                // Now, the items
-                for (var i in this.data.items) {
-                    var item = this.data.items[i];
-                    // Gets the id of the item
-                    var id = item.uri;
-                    var hashIndex = item.uri.indexOf("#");
-                    if (hashIndex !== -1) {
-                        id = item.uri.substring(hashIndex + 1);
-                    }
-                    var domRow = $("<tr></tr>");
-                    var domColumn;
-                    if (this.configuration.showColumnForId) {
-                        domColumn = $("<td></td>");
-                        domColumn.text(id);
-                        domRow.append(domColumn);
-                    }
-                    for (var c in this.data.columns) {
-                        var column = this.data.columns[c];
-                        domColumn = $("<td></td>");
-                        domColumn.text(item.v[column.name]);
-                        domRow.append(domColumn);
-                    }
-                    // Add Edit link
-                    var domEditColumn = $("<td class='hl'><a href='#'>EDIT</a></td>");
-                    domEditColumn.click((function (url, iDomRow) {
-                        return function () {
-                            return tthis.configuration.onItemEdit(url, iDomRow);
-                        };
-                    })(item.uri, domRow));
-                    domRow.append(domEditColumn);
-                    var domDeleteColumn = $("<td class='hl'><a href='#'>DELETE</a></td>");
-                    var domA = $("a", domDeleteColumn);
-                    domDeleteColumn.click((function (url, innerDomRow, innerDomA) {
-                        return function () {
-                            if (innerDomA.data("wasClicked") === true) {
-                                return tthis.configuration.onItemDelete(url, innerDomRow);
-                            }
-                            else {
-                                innerDomA.data("wasClicked", true);
-                                innerDomA.text("CONFIRM");
-                                return false;
-                            }
-                        };
-                    })(item.uri, domRow, domA));
-                    domRow.append(domDeleteColumn);
-                    this.domTable.append(domRow);
-                }
-            };
-            ItemListTable.prototype.updateItems = function (data) {
-                this.data = data;
-                $("tr", this.domTable).has("td")
-                    .remove();
-                this.createRowsForData();
-            };
-            return ItemListTable;
-        })();
-        GUI.ItemListTable = ItemListTable;
-        var ItemContentConfiguration = (function () {
-            function ItemContentConfiguration() {
-                this.editFunction = function (url, property, domRow) { return false; };
-                this.deleteFunction = function (url, property, domRow) { return false; };
-                this.supportInlineEditing = true;
-                this.supportNewProperties = true;
-            }
-            return ItemContentConfiguration;
-        })();
-        GUI.ItemContentConfiguration = ItemContentConfiguration;
-        var ItemContentTable = (function () {
-            function ItemContentTable(item, configuration) {
-                this.item = item;
-                this.configuration = configuration;
-            }
-            ItemContentTable.prototype.show = function (dom) {
-                var tthis = this;
-                this.domContainer = dom;
-                dom.empty();
-                var domTable = $("<table class='table'></table>");
-                // First the headline
-                var domRow = $("<tr><th>Title</th><th>Value</th><th>EDIT</th><th>DELETE</th></tr>");
-                domTable.append(domRow);
-                // Now, the items
-                for (var property in this.item.v) {
-                    domRow = $("<tr></tr>");
-                    var value = this.item.v[property];
-                    var domColumn = $("<td class='table_column_name'></td>");
-                    domColumn.data("column", "name");
-                    domColumn.text(property);
-                    domRow.append(domColumn);
-                    domColumn = $("<td class='table_column_value'></td>");
-                    domColumn.data("column", "value");
-                    domColumn.text(value);
-                    domRow.append(domColumn);
-                    // Add Edit link
-                    var domEditColumn = $("<td class='hl table_column_edit'><a href='#'>EDIT</a></td>");
-                    $("a", domEditColumn).click((function (url, property, idomRow, idomA) {
-                        return function () {
-                            if (tthis.configuration.supportInlineEditing) {
-                                tthis.startInlineEditing(property, idomRow);
-                                return false;
-                            }
-                            else {
-                                return tthis.configuration.editFunction(url, property, idomRow);
-                            }
-                        };
-                    })(this.item.uri, property, domRow, domA));
-                    domRow.append(domEditColumn);
-                    var domDeleteColumn = $("<td class='hl table_column_delete'><a href='#'>DELETE</a></td>");
-                    var domA = $("a", domDeleteColumn);
-                    $("a", domDeleteColumn).click((function (url, property, idomRow, idomA) {
-                        return function () {
-                            if (idomA.data("wasClicked") === true) {
-                                return tthis.configuration.deleteFunction(url, property, idomRow);
-                            }
-                            else {
-                                idomA.data("wasClicked", true);
-                                idomA.text("CONFIRM");
-                                return false;
-                            }
-                        };
-                    })(this.item.uri, property, domRow, domA));
-                    domRow.append(domDeleteColumn);
-                    domTable.append(domRow);
-                }
-                // Add new property
-                if (this.configuration.supportNewProperties) {
-                    this.offerNewProperty(domTable);
-                }
-                dom.append(domTable);
-            };
-            ItemContentTable.prototype.startInlineEditing = function (property, domRow) {
-                var tthis = this;
-                var domValue = $(".table_column_value", domRow);
-                domValue.empty();
-                var domTextBox = $("<input type='textbox' />");
-                domTextBox.val(this.item.v[property]);
-                domValue.append(domTextBox);
-                var domEditColumn = $(".table_column_edit", domRow);
-                domEditColumn.empty();
-                var domEditOK = $("<a href='#'>OK</a>");
-                domEditColumn.append(domEditOK);
-                var domEditCancel = $("<a href='#'>Cancel</a>");
-                domEditColumn.append(domEditCancel);
-                //Sets the commands
-                domEditOK.on('click', function () {
-                    var newValue = domTextBox.val();
-                    tthis.item.v[property] = newValue;
-                    if (tthis.configuration.onEditProperty !== undefined) {
-                        tthis.configuration.onEditProperty(tthis.item.uri, property, newValue);
-                    }
-                    tthis.show(tthis.domContainer);
-                    return false;
-                });
-                domEditCancel.on('click', function () {
-                    // Rebuilds the complete table
-                    tthis.show(tthis.domContainer);
-                    return false;
-                });
-            };
-            ItemContentTable.prototype.offerNewProperty = function (domTable) {
-                var tthis = this;
-                var domNewProperty = $("<tr><td colspan='4'><a href='#'>NEW PROPERTY</a></td></tr>");
-                $("a", domNewProperty).click(function () {
-                    domNewProperty.empty();
-                    var domNewPropertyName = $("<td class='table_column_name'><input type='textbox' /></td>");
-                    var domNewPropertyValue = $("<td class='table_column_value'><input type='textbox' /></td>");
-                    var domNewPropertyEdit = $("<td class='table_column_edit'><a href='#'>OK</a></td>");
-                    var domNewPropertyCancel = $("<td class='table_column_edit'><a href='#'>CANCEL</a></td>");
-                    domNewProperty.append(domNewPropertyName);
-                    domNewProperty.append(domNewPropertyValue);
-                    domNewProperty.append(domNewPropertyEdit);
-                    domNewProperty.append(domNewPropertyCancel);
-                    var inputProperty = $("input", domNewPropertyName);
-                    var inputValue = $("input", domNewPropertyValue);
-                    $("a", domNewPropertyEdit).click(function () {
-                        var property = inputProperty.val();
-                        var newValue = inputValue.val();
-                        tthis.item.v[property] = newValue;
-                        if (tthis.configuration.onNewProperty !== undefined) {
-                            tthis.configuration.onNewProperty(tthis.item.uri, property, newValue);
-                        }
-                        tthis.show(tthis.domContainer);
-                        return false;
-                    });
-                    $("a", domNewPropertyCancel).click(function () {
-                        tthis.show(tthis.domContainer);
-                        return false;
-                    });
-                    return false;
-                });
-                domTable.append(domNewProperty);
-            };
-            return ItemContentTable;
-        })();
-        GUI.ItemContentTable = ItemContentTable;
-    })(GUI = DatenMeister.GUI || (DatenMeister.GUI = {}));
-})(DatenMeister || (DatenMeister = {}));
-;
+    })(GUI = exports.GUI || (exports.GUI = {}));
+});
+//# sourceMappingURL=datenmeister.js.map

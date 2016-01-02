@@ -13,7 +13,7 @@
     <script src="js/modernizr-2.6.2.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/underscore-min.js"></script>
-    <script src="js/datenmeister.js"></script>
+    <script src="js/require.js" data-main="js/datenmeister-start.js"></script>
 
     <!-- Templates for the workspaces -->
     <script type="text/x-jquery-tmpl" id="template_workspace_table">
@@ -79,10 +79,6 @@
                 <p><a class="btn btn-default" href="http://www.omg.org/spec/MOFFOL/2.0/PDF/">OMG Documents</a></p>
             </div>
         </div>
-
-        <script type="text/javascript">
-            document.ready = function() { DatenMeister.GUI.start(); };
-        </script>
         <hr />
         <footer>
             <p>&copy; 2015 - Martin Brenn</p>

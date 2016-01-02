@@ -43,6 +43,14 @@ module DatenMeister {
         amount? : number;
     }
 
+    /* Stores all the models that can be returned via one of the */
+    export module ReturnModule {
+        export interface ICreateItemResult {
+            success: boolean;
+            newuri: string;
+        }
+    }
+
     export module PostModels {
 
         /** This class is used to reference a single object within the database */
@@ -137,8 +145,9 @@ module DatenMeister {
     export class ExtentLogic {
         onExtentSelected: (ws: string, extent: string) => void;
         onItemSelected: (ws: string, extentUrl: string, itemUrl: string) => void;
+        onItemCreated: (ws: string, extentUrl: string, itemUrl: string) => void;
 
-        createItem(ws: string, extentUrl: string, container?: string): JQueryDeferred<boolean> {
+        createItem(ws: string, extentUrl: string, container?: string): JQueryDeferred<ReturnModule.ICreateItemResult> {
             var callback = $.Deferred();
             var postModel = new PostModels.ItemCreateModel();
             postModel.ws = ws;
@@ -150,7 +159,7 @@ module DatenMeister {
                 url: "/api/datenmeister/extent/item_create",
                 data: postModel,
                 method: "POST",
-                success: (data: any) => { callback.resolve(true); },
+                success: (data: any) => { callback.resolve(data); },
                 error: (data: any) => { callback.reject(false); }
             });
 
@@ -347,13 +356,9 @@ module DatenMeister {
 
             configuration.onNewItemClicked = function() {
                 tthis.createItem(ws, extentUrl)
-                    .done(() => {
-                        tthis.loadHtmlForItems(ws, extentUrl, { offset: -50 })
-                            .done((innerData: IExtentContent) => {
-                                table.updateItems(innerData);
-                            });
+                    .done((innerData: ReturnModule.ICreateItemResult) => {
+                        tthis.onItemCreated(ws, extentUrl, innerData.newuri);
                     });
-
             }
 
             table.show();
@@ -516,16 +521,24 @@ module DatenMeister {
         export function loadExtent(workspaceId: string, extentUrl: string) {
             var extentLogic = new DatenMeister.ExtentLogic();
             extentLogic.onItemSelected = function(ws: string, extentUrl: string, itemUrl: string) {
-                history.pushState({}, '', "#ws=" + encodeURIComponent(ws)
-                    + "&ext=" + encodeURIComponent(extentUrl)
-                    + "&item=" + encodeURIComponent(itemUrl));
-                loadItem(ws, extentUrl, itemUrl);
+                navigateToItem(ws, extentUrl, itemUrl);
+            };
+
+            extentLogic.onItemCreated = function (ws: string, extentUrl: string, itemUrl: string) {
+                navigateToItem(ws, extentUrl, itemUrl);
             };
 
             extentLogic.loadAndCreateHtmlForItems($(".container_data"), workspaceId, extentUrl).done(
-                function(data) {
+                data => {
                     createTitle(workspaceId, extentUrl);
                 });
+        }
+
+        export function navigateToItem(ws: string, extentUrl: string, itemUrl: string) {
+            history.pushState({}, '', "#ws=" + encodeURIComponent(ws)
+                + "&ext=" + encodeURIComponent(extentUrl)
+                + "&item=" + encodeURIComponent(itemUrl));
+            loadItem(ws, extentUrl, itemUrl);
         }
 
         export function loadItem(workspaceId: string, extentUrl: string, itemUrl: string) {

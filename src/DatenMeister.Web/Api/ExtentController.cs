@@ -197,8 +197,13 @@ namespace DatenMeister.Web.Api
             var element = factory.create(null);
 
             foundExtent.elements().add(element);
-
-            return new { success = true };
+            var newUrl = foundExtent.uri(element);
+            
+            return new
+            {
+                success = true,
+                newuri = newUrl
+            };
         }
 
         [Route("item_delete")]

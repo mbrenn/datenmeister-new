@@ -134,7 +134,7 @@ var DatenMeister;
                 url: "/api/datenmeister/extent/item_create",
                 data: postModel,
                 method: "POST",
-                success: function (data) { callback.resolve(true); },
+                success: function (data) { callback.resolve(data); },
                 error: function (data) { callback.reject(false); }
             });
             return callback;
@@ -293,11 +293,8 @@ var DatenMeister;
             };
             configuration.onNewItemClicked = function () {
                 tthis.createItem(ws, extentUrl)
-                    .done(function () {
-                    tthis.loadHtmlForItems(ws, extentUrl, { offset: -50 })
-                        .done(function (innerData) {
-                        table.updateItems(innerData);
-                    });
+                    .done(function (innerData) {
+                    tthis.onItemCreated(ws, extentUrl, innerData.newuri);
                 });
             };
             table.show();
@@ -457,16 +454,23 @@ var DatenMeister;
         function loadExtent(workspaceId, extentUrl) {
             var extentLogic = new DatenMeister.ExtentLogic();
             extentLogic.onItemSelected = function (ws, extentUrl, itemUrl) {
-                history.pushState({}, '', "#ws=" + encodeURIComponent(ws)
-                    + "&ext=" + encodeURIComponent(extentUrl)
-                    + "&item=" + encodeURIComponent(itemUrl));
-                loadItem(ws, extentUrl, itemUrl);
+                navigateToItem(ws, extentUrl, itemUrl);
+            };
+            extentLogic.onItemCreated = function (ws, extentUrl, itemUrl) {
+                navigateToItem(ws, extentUrl, itemUrl);
             };
             extentLogic.loadAndCreateHtmlForItems($(".container_data"), workspaceId, extentUrl).done(function (data) {
                 createTitle(workspaceId, extentUrl);
             });
         }
         GUI.loadExtent = loadExtent;
+        function navigateToItem(ws, extentUrl, itemUrl) {
+            history.pushState({}, '', "#ws=" + encodeURIComponent(ws)
+                + "&ext=" + encodeURIComponent(extentUrl)
+                + "&item=" + encodeURIComponent(itemUrl));
+            loadItem(ws, extentUrl, itemUrl);
+        }
+        GUI.navigateToItem = navigateToItem;
         function loadItem(workspaceId, extentUrl, itemUrl) {
             var extentLogic = new DatenMeister.ExtentLogic();
             createTitle(workspaceId, extentUrl, itemUrl);

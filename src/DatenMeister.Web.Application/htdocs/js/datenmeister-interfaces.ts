@@ -7,13 +7,16 @@ export interface IExtent {
     uri: string;
 }
 
-export interface IExtentContent {
-    url: string;
-    totalItemCount: number;
-    filteredItemCount: number;
+export interface IItemsContent {
     columns: Array<IDataTableColumn>;
     items: Array<IDataTableItem>;
     search: string;
+    totalItemCount: number;
+    filteredItemCount: number;    
+}
+
+export interface IExtentContent extends IItemsContent {
+    url: string;
 };
 
 export interface IItemContentModel {
@@ -36,6 +39,16 @@ export interface IItemTableQuery {
     searchString?: string;
     offset?: number;
     amount?: number;
+}
+
+export class ItemInExtentQuery implements IItemTableQuery {
+    searchString: string;
+    offset: number;
+    amount: number;
+}
+
+export interface IItemsProvider {
+    performQuery(query:  IItemTableQuery): JQueryDeferred<IItemsContent>;
 }
 
 /* Stores all the models that can be returned via one of the */

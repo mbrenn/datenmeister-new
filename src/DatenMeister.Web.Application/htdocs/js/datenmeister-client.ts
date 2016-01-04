@@ -60,9 +60,64 @@ export module ExtentApi {
 
         return callback;
     }
+
+    export function getItems(ws: string, extentUrl: string, query?: DMI.IItemTableQuery): JQueryDeferred<DMI.IExtentContent> {
+        var callback = $.Deferred();
+        getAjaxForItems(ws, extentUrl, query)
+            .done((data: DMI.IExtentContent) => {
+                callback.resolve(data);
+            })
+            .fail(data => {
+                callback.reject(data);
+            });
+
+        return callback;
+    }
+
+    function getAjaxForItems(ws: string, extentUrl: string, query?: DMI.IItemTableQuery): JQueryXHR {
+        var url = "/api/datenmeister/extent/items?ws=" + encodeURIComponent(ws)
+            + "&extent=" + encodeURIComponent(extentUrl);
+
+        if (query !== undefined && query !== null) {
+            if (query.searchString !== undefined) {
+                url += "&search=" + encodeURIComponent(query.searchString);
+            }
+            if (query.offset !== undefined && query.offset !== null) {
+                url += "&o=" + encodeURIComponent(query.offset.toString());
+            }
+            if (query.amount !== undefined && query.amount !== null) {
+                url += "&a=" + encodeURIComponent(query.amount.toString());
+            }
+        }
+
+        return $.ajax(
+            {
+                url: url,
+                cache: false
+            });
+    }
 }
 
-export module ItemApi {export function deleteProperty(ws: string, extent: string, item: string, property: string): JQueryPromise<boolean> {
+export module ItemApi {
+    export function getItem(ws: string, extentUrl: string, itemUrl: string): JQueryDeferred<DMI.IItemContentModel> {
+        var callback = $.Deferred();
+        $.ajax({
+            url: "/api/datenmeister/extent/item?ws=" + encodeURIComponent(ws)
+            + "&extent=" + encodeURIComponent(extentUrl)
+            + "&item=" + encodeURIComponent(itemUrl),
+            cache: false,
+            success: data => {
+                callback.resolve(data);
+            },
+            error: data => {
+                callback.reject(null);
+            }
+        });
+
+        return callback;
+    }
+
+    export function deleteProperty(ws: string, extent: string, item: string, property: string): JQueryPromise<boolean> {
         var callback = $.Deferred();
 
         var postModel = new DMI.PostModels.ItemUnsetPropertyModel();

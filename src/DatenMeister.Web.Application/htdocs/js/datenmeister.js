@@ -1,6 +1,6 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/jquery/underscore.d.ts" />
-define(["require", "exports", "datenmeister-helper", "datenmeister-layout"], function (require, exports, DMHelper, DMLayout) {
+define(["require", "exports", "datenmeister-helper", "datenmeister-view"], function (require, exports, DMHelper, DMLayout) {
     var Navigation;
     (function (Navigation) {
         function start() {
@@ -127,7 +127,7 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-layout"], fun
         }
         Navigation.navigateToItem = navigateToItem;
         function loadItem(workspaceId, extentUrl, itemUrl) {
-            var extentLogic = new DMLayout.ExtentLayout();
+            var extentLogic = new DMLayout.ItemView();
             createTitle(workspaceId, extentUrl, itemUrl);
             extentLogic.loadAndCreateHtmlForItem($(".container_data"), workspaceId, extentUrl, itemUrl);
         }

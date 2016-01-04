@@ -4,7 +4,7 @@
 import * as DMHelper from "datenmeister-helper";
 import * as DMI from "datenmeister-interfaces";
 import * as DMTables from "datenmeister-tables";
-import * as DMLayout from "datenmeister-layout";
+import * as DMLayout from "datenmeister-view";
 import * as DMClient from "datenmeister-client";
 
 
@@ -116,11 +116,11 @@ export namespace Navigation {
 
     export function loadExtent(workspaceId: string, extentUrl: string) {
         var extentLogic = new DMLayout.ExtentLayout();
-        extentLogic.onItemSelected = function(ws: string, extentUrl: string, itemUrl: string) {
+        extentLogic.onItemSelected = (ws: string, extentUrl: string, itemUrl: string) => {
             navigateToItem(ws, extentUrl, itemUrl);
         };
 
-        extentLogic.onItemCreated = function(ws: string, extentUrl: string, itemUrl: string) {
+        extentLogic.onItemCreated = (ws: string, extentUrl: string, itemUrl: string) => {
             navigateToItem(ws, extentUrl, itemUrl);
         };
 
@@ -138,7 +138,7 @@ export namespace Navigation {
     }
 
     export function loadItem(workspaceId: string, extentUrl: string, itemUrl: string) {
-        var extentLogic = new DMLayout.ExtentLayout();
+        var extentLogic = new DMLayout.ItemView();
 
         createTitle(workspaceId, extentUrl, itemUrl);
         extentLogic.loadAndCreateHtmlForItem($(".container_data"), workspaceId, extentUrl, itemUrl);

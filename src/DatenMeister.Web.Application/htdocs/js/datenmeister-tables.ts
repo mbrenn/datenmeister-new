@@ -35,7 +35,6 @@ export class ItemTableConfiguration {
     * as the datasource
     */
 export class ItemListTable {
-    data: DMI.IExtentContent;
     configuration: ItemTableConfiguration;
     domContainer: JQuery;
     domTable: JQuery;
@@ -45,22 +44,44 @@ export class ItemListTable {
     currentPage: number;
     totalPages: number;
 
-    constructor(dom: JQuery, data: DMI.IExtentContent, configuration: ItemTableConfiguration) {
+    provider: DMI.IItemsProvider;
+
+    currentQuery: DMI.IItemTableQuery;
+
+    constructor(dom: JQuery, provider: DMI.IItemsProvider, configuration: ItemTableConfiguration) {
         this.domContainer = dom;
-        this.data = data;
+        this.provider = provider;
         this.configuration = configuration;
         this.currentPage = 1;
         this.totalPages = 0;
+        this.currentQuery = new DMI.ItemInExtentQuery();
+        this.currentQuery.amount = configuration.itemsPerPage;
     }
 
     throwOnPageChange(): void {
+        this.currentQuery.offset = this.currentPage * (this.configuration.itemsPerPage - 1);
+        this.reload();
+
         if (this.configuration.onPageChange !== undefined) {
             this.configuration.onPageChange(this.currentPage);
         }
     }
 
     // Replaces the content at the dom with the created table
-    show() {
+    loadAndShow(): JQueryDeferred<DMI.IItemsContent> {
+        return this.provider.performQuery(this.currentQuery).done((data) => {
+            this.createDomForTable(data);
+        });
+    }
+
+    reload(): JQueryDeferred<DMI.IItemsContent> {
+        return this.provider.performQuery(this.currentQuery).done((data) => {
+            this.updateDomForItems(data);
+        });
+    }
+
+    createDomForTable(data: DMI.IItemsContent)
+    {
         var tthis = this;
         this.domContainer.empty();
 
@@ -69,8 +90,11 @@ export class ItemListTable {
             var domInput = $("input", domSearchBox);
             $("input", domSearchBox).keyup(() => {
                 var searchValue = domInput.val();
+                tthis.lastProcessedSearchString = searchValue;
+                tthis.currentQuery.searchString = searchValue;
+                tthis.reload();
+
                 if (tthis.configuration.onSearch !== undefined) {
-                    tthis.lastProcessedSearchString = searchValue;
                     tthis.configuration.onSearch(searchValue);
                 }
             });
@@ -145,7 +169,7 @@ export class ItemListTable {
             domRow.append(domColumn);
         }
 
-        var columns = this.data.columns;
+        var columns = data.columns;
         for (var c in columns) {
             if (columns.hasOwnProperty(c)) {
                 var column = columns[c];
@@ -164,25 +188,30 @@ export class ItemListTable {
         this.domTable.append(domRow);
 
         // Now, the items
-        tthis.createRowsForData();
-
+        tthis.createRowsForItems(data);
         this.domContainer.append(this.domTable);
     }
 
-    createRowsForData(): void {
+    updateDomForItems(data: DMI.IItemsContent) {
+        $("tr", this.domTable).has("td")
+            .remove();
+        this.createRowsForItems(data);
+    }
+
+    createRowsForItems(data: DMI.IItemsContent): void {
         var tthis = this;
 
-        this.domTotalNumber.text(this.data.totalItemCount);
-        this.domFilteredNumber.text(this.data.filteredItemCount);
+        this.domTotalNumber.text(data.totalItemCount);
+        this.domFilteredNumber.text(data.filteredItemCount);
 
         if (this.configuration.supportPaging) {
             var domTotalPages = $(".dm_totalpages", this.domContainer);
-            this.totalPages = Math.floor((this.data.filteredItemCount - 1) / this.configuration.itemsPerPage) + 1;
+            this.totalPages = Math.floor((data.filteredItemCount - 1) / this.configuration.itemsPerPage) + 1;
             domTotalPages.text(this.totalPages);
         }
 
         // Now, the items
-        var items = this.data.items;
+        var items = data.items;
         for (var i in items) {
             if (items.hasOwnProperty(i)) {
                 var item = items[i];
@@ -202,7 +231,7 @@ export class ItemListTable {
                     domRow.append(domColumn);
                 }
 
-                var columns = this.data.columns;
+                var columns = data.columns;
                 for (var c in columns) {
                     if (columns.hasOwnProperty(c)) {
                         var column = columns[c];
@@ -239,13 +268,6 @@ export class ItemListTable {
                 this.domTable.append(domRow);
             }
         }
-    }
-
-    updateItems(data: DMI.IExtentContent) {
-        this.data = data;
-        $("tr", this.domTable).has("td")
-            .remove();
-        this.createRowsForData();
     }
 }
 

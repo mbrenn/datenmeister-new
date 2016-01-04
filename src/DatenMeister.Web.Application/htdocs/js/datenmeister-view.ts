@@ -1,6 +1,7 @@
 ﻿import * as DMI from "datenmeister-interfaces";
 import * as DMTables from "datenmeister-tables";
 import * as DMClient from "datenmeister-client";
+import * as DMQuery from "datenmeister-query";
 
 export class WorkspaceLayout {
     onWorkspaceSelected: (id: string) => void;
@@ -52,21 +53,20 @@ export class ExtentLayout {
     onItemSelected: (ws: string, extentUrl: string, itemUrl: string) => void;
     onItemCreated: (ws: string, extentUrl: string, itemUrl: string) => void;
 
-
     loadAndCreateHtmlForWorkspace(container: JQuery, ws: string): JQueryPromise<Object> {
         var callback = $.Deferred();
         $.ajax(
-            {
-                url: "/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws),
-                cache: false,
-                success: data => {
-                    this.createHtmlForWorkspace(container, ws, data);
-                    callback.resolve(null);
-                },
-                error: data => {
-                    callback.reject(null);
-                }
-            });
+        {
+            url: "/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws),
+            cache: false,
+            success: data => {
+                this.createHtmlForWorkspace(container, ws, data);
+                callback.resolve(null);
+            },
+            error: data => {
+                callback.reject(null);
+            }
+        });
 
         return callback;
     }
@@ -108,44 +108,6 @@ export class ExtentLayout {
     }
 
     loadAndCreateHtmlForExtent(container: JQuery, ws: string, extentUrl: string, query?: DMI.IItemTableQuery): JQueryPromise<Object> {
-        var callback = $.Deferred();
-        this.loadHtmlForExtent(ws, extentUrl)
-            .done((data: DMI.IExtentContent) => {
-                this.createHtmlForExtent(container, ws, extentUrl, data);
-                callback.resolve(null);
-            })
-            .fail(data => {
-                callback.reject(null);
-            });
-
-        return callback;
-    }
-
-    loadHtmlForExtent(ws: string, extentUrl: string, query?: DMI.IItemTableQuery): JQueryXHR {
-        var url = "/api/datenmeister/extent/items?ws=" + encodeURIComponent(ws)
-            + "&extent=" + encodeURIComponent(extentUrl);
-
-        if (query !== undefined && query !== null) {
-            if (query.searchString !== undefined) {
-                url += "&search=" + encodeURIComponent(query.searchString);
-            }
-            if (query.offset !== undefined && query.offset !== null) {
-                url += "&o=" + encodeURIComponent(query.offset.toString());
-            }
-            if (query.amount !== undefined && query.amount !== null) {
-                url += "&a=" + encodeURIComponent(query.amount.toString());
-            }
-        }
-
-        return $.ajax(
-            {
-                url: url,
-                cache: false
-            });
-    }
-
-    createHtmlForExtent(container: JQuery, ws: string, extentUrl: string, data: DMI.IExtentContent) {
-        var tthis = this;
         var configuration = new DMTables.ItemTableConfiguration();
         configuration.onItemEdit = (url: string) => {
 
@@ -160,23 +122,17 @@ export class ExtentLayout {
             var callback = DMClient.ExtentApi.deleteItem(ws, extentUrl, url);
             callback
                 .done(() => {
-                    // tthis.loadAndCreateHtmlForItems(container, ws, extentUrl);
                     domRow.find("td").fadeOut(500, () => { domRow.remove(); });
                 })
                 .fail(() => { alert("FAILED"); });
             return false;
         };
 
-        var table = new DMTables.ItemListTable(container, data, configuration);
-
-        configuration.onSearch = searchString => {
-            this.loadHtmlForExtent(ws, extentUrl, { searchString: searchString })
-                .done((innerData: DMI.IExtentContent) => {
-                    if (table.lastProcessedSearchString === innerData.search) {
-                        table.updateItems(innerData);
-                    }
-                });
-        };
+        var provider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
+        var table = new DMTables.ItemListTable(container, provider, configuration);
+        if (query !== undefined && query !== null) {
+            table.currentQuery = query;
+        }
 
         configuration.onNewItemClicked = () => {
             DMClient.ExtentApi.createItem(ws, extentUrl)
@@ -185,37 +141,18 @@ export class ExtentLayout {
                 });
         };
 
-        var itemsPerPage = 10;
-        configuration.onPageChange = (newPage: number) => {
-            tthis.loadHtmlForExtent(ws, extentUrl, {
-                    offset: itemsPerPage * (newPage - 1),
-                    amount: itemsPerPage
-                })
-                .done((innerData: DMI.IExtentContent) => {
-                    table.updateItems(innerData);
-                });
-        };
-
-        table.show();
+        return table.loadAndShow();
     }
+}
 
-    loadAndCreateHtmlForItem(container: JQuery, ws: string, extentUrl: string, itemUrl: string) {
-        var callback = $.Deferred();
-        $.ajax({
-            url: "/api/datenmeister/extent/item?ws=" + encodeURIComponent(ws)
-            + "&extent=" + encodeURIComponent(extentUrl)
-            + "&item=" + encodeURIComponent(itemUrl),
-            cache: false,
-            success: data => {
-                this.createHtmlForItem(container, ws, extentUrl, itemUrl, data);
-                callback.resolve(null);
-            },
-            error: data => {
-                callback.reject(null);
-            }
-        });
-
-        return callback;
+export class ItemView
+{
+    loadAndCreateHtmlForItem(container: JQuery, ws: string, extentUrl: string, itemUrl: string): JQueryDeferred<Object> {
+        var tthis = this;
+        return DMClient.ItemApi.getItem(ws, extentUrl, itemUrl)
+            .done((data) => {
+                tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data);
+            });
     }
 
     createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: DMI.IItemContentModel) {

@@ -17,14 +17,22 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         private readonly List<LoadedExtentInformation> _loadedExtents = new List<LoadedExtentInformation>();
 
-        private readonly IExtentStorageToConfigurationMap _map;
+        /// <summary>
+        /// Stores the mapping
+        /// </summary>
+        private readonly IConfigurationToExtentStorageMapper _map;
 
-        public ExtentStorageLogic(IExtentStorageToConfigurationMap map)
+        public ExtentStorageLogic(IConfigurationToExtentStorageMapper map)
         {
             Debug.Assert(map != null, "map != null");
             _map = map;
         }
 
+        /// <summary>
+        /// Loads the extent by using the extent storage
+        /// </summary>
+        /// <param name="configuration">Configuration being used to load</param>
+        /// <returns>The loaded extent</returns>
         public IUriExtent LoadExtent(ExtentStorageConfiguration configuration)
         {
             var extentStorage = _map.CreateFor(configuration);
@@ -85,7 +93,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
         }
 
-        internal class LoadedExtentInformation
+        private class LoadedExtentInformation
         {
             public IUriExtent Extent { get; set; }
 

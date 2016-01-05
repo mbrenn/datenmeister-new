@@ -29,7 +29,7 @@ namespace DatenMeister.Tests.Integration
         [Test]
         public void TestFactoryMappingByAttributeForExtentLoaders()
         {
-            var mapper = new ManualExtentStorageToConfigurationMap();
+            var mapper = new ManualConfigurationToExtentStorageMapper();
             mapper.PerformMappingForConfigurationOfExtentLoaders();
 
             Assert.That(mapper.HasMappingFor(typeof(CSVStorageConfiguration)), Is.True);

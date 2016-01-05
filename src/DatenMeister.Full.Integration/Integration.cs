@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using DatenMeister.EMOF.Attributes;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
@@ -17,13 +18,17 @@ namespace DatenMeister.Full.Integration
             factoryMapper.PerformAutomaticMappingByAttribute();
             kernel.Bind<IFactoryMapper>().ToConstant(factoryMapper);
 
-            var storageMap = new ManualExtentStorageToConfigurationMap();
+            var storageMap = new ManualConfigurationToExtentStorageMapper();
             storageMap.PerformMappingForConfigurationOfExtentLoaders();
-            kernel.Bind<IExtentStorageToConfigurationMap>().ToConstant(storageMap);
+            kernel.Bind<IConfigurationToExtentStorageMapper>().ToConstant(storageMap);
 
             // Load the primitivetypes
             var primitiveTypes = new _PrimitiveTypes();
             kernel.Bind<_PrimitiveTypes>().ToConstant(primitiveTypes);
+
+            // Workspace collection
+            var workspaceCollection = new WorkspaceCollection();
+            kernel.Bind<WorkspaceCollection>().ToConstant(workspaceCollection);
         }
 
         public static void PerformAutomaticMappingByAttribute(this DefaultFactoryMapper mapper)
@@ -46,7 +51,7 @@ namespace DatenMeister.Full.Integration
             }
         }
 
-        public static void PerformMappingForConfigurationOfExtentLoaders(this ManualExtentStorageToConfigurationMap map)
+        public static void PerformMappingForConfigurationOfExtentLoaders(this ManualConfigurationToExtentStorageMapper map)
         {
             // Map configurations to extent loader
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());

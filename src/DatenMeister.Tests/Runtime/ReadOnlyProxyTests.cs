@@ -45,7 +45,7 @@ namespace DatenMeister.Tests.Runtime
             var csvFile = "eins 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
             File.WriteAllText("data.txt", csvFile);
 
-            var mapper = new ManualExtentStorageToConfigurationMap();
+            var mapper = new ManualConfigurationToExtentStorageMapper();
             mapper.AddMapping(typeof (CSVStorageConfiguration), () => new CSVStorage());
 
             var logic = new ExtentStorageLogic(mapper);

@@ -8,6 +8,7 @@ using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Queries;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Web.Models;
 using DatenMeister.Web.Models.PostModels;
@@ -23,10 +24,12 @@ namespace DatenMeister.Web.Api
         private const int maxItemAmount = 100;
 
         private readonly IFactoryMapper _mapper;
+        private readonly WorkspaceCollection _workspaceCollection;
 
-        public ExtentController(IFactoryMapper mapper)
+        public ExtentController(IFactoryMapper mapper, WorkspaceCollection workspaceCollection)
         {
             _mapper = mapper;
+            _workspaceCollection = workspaceCollection;
         }
 
         [Route("all")]
@@ -56,9 +59,9 @@ namespace DatenMeister.Web.Api
         /// <returns>
         ///     The found workspace. If the workspace is not found, an
         ///     exception is thrown</returns>
-        private static Workspace<IExtent> GetWorkspace(string ws)
+        private Workspace<IExtent> GetWorkspace(string ws)
         {
-            var workspace = Core.TheOne.Workspaces.First(x => x.id == ws);
+            var workspace = _workspaceCollection.Workspaces.First(x => x.id == ws);
             if (workspace == null)
             {
                 throw new InvalidOperationException("Workspace not found");
@@ -156,7 +159,7 @@ namespace DatenMeister.Web.Api
         {
             Workspace<IExtent> foundWorkspace;
             IUriExtent foundExtent;
-            RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
+            RetrieveWorkspaceAndExtent(_workspaceCollection, ws, extent, out foundWorkspace, out foundExtent);
 
             var itemModel = new ItemContentModel {uri = item};
 
@@ -186,7 +189,7 @@ namespace DatenMeister.Web.Api
         {
             Workspace<IExtent> foundWorkspace;
             IUriExtent foundExtent;
-            RetrieveWorkspaceAndExtent(model.ws, model.extent, out foundWorkspace, out foundExtent);
+            RetrieveWorkspaceAndExtent(_workspaceCollection, model.ws, model.extent, out foundWorkspace, out foundExtent);
 
             if (!string.IsNullOrEmpty(model.container))
             {
@@ -215,7 +218,7 @@ namespace DatenMeister.Web.Api
                 Workspace<IExtent> foundWorkspace;
                 IUriExtent foundExtent;
                 IElement foundItem;
-                FindItem(model, out foundWorkspace, out foundExtent, out foundItem);
+                FindItem(_workspaceCollection, model, out foundWorkspace, out foundExtent, out foundItem);
 
                 if (!foundExtent.elements().remove(foundItem))
                 {
@@ -239,7 +242,7 @@ namespace DatenMeister.Web.Api
                 Workspace<IExtent> foundWorkspace;
                 IUriExtent foundExtent;
                 IElement foundItem;
-                FindItem(model, out foundWorkspace, out foundExtent, out foundItem);
+                FindItem(_workspaceCollection, model, out foundWorkspace, out foundExtent, out foundItem);
 
                 foundItem.unset(model.property);
 
@@ -260,7 +263,7 @@ namespace DatenMeister.Web.Api
                 Workspace<IExtent> foundWorkspace;
                 IUriExtent foundExtent;
                 IElement foundItem;
-                FindItem(model, out foundWorkspace, out foundExtent, out foundItem);
+                FindItem(_workspaceCollection, model, out foundWorkspace, out foundExtent, out foundItem);
 
                 foundItem.set(model.property, model.newValue);
 
@@ -281,7 +284,7 @@ namespace DatenMeister.Web.Api
                 Workspace<IExtent> foundWorkspace;
                 IUriExtent foundExtent;
                 IElement foundItem;
-                FindItem(model, out foundWorkspace, out foundExtent, out foundItem);
+                FindItem(_workspaceCollection, model, out foundWorkspace, out foundExtent, out foundItem);
 
                 foreach (var pair in model.v)
                 {
@@ -303,11 +306,11 @@ namespace DatenMeister.Web.Api
         /// <param name="extent">Extent to be querued</param>
         /// <returns>The found extent or an exception.</returns>
         [ApiExplorerSettings(IgnoreApi = true)]
-        private static ExtentModel GetExtentModel(string ws, string extent)
+        private static ExtentModel GetExtentModel(WorkspaceCollection collection, string ws, string extent)
         {
             Workspace<IExtent> foundWorkspace;
             IUriExtent foundExtent;
-            RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
+            RetrieveWorkspaceAndExtent(collection, ws, extent, out foundWorkspace, out foundExtent);
 
             var extentModel = new ExtentModel(
                 foundExtent,
@@ -318,21 +321,28 @@ namespace DatenMeister.Web.Api
 
         [ApiExplorerSettings(IgnoreApi = true)]
         private static void RetrieveWorkspaceAndExtent(
+            WorkspaceCollection workspaceCollection,
             ItemReferenceModel model,
             out Workspace<IExtent> foundWorkspace,
             out IUriExtent foundExtent)
         {
-            RetrieveWorkspaceAndExtent(model.ws, model.extent, out foundWorkspace, out foundExtent);
+            RetrieveWorkspaceAndExtent(
+                workspaceCollection, 
+                model.ws, 
+                model.extent, 
+                out foundWorkspace, 
+                out foundExtent);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
         private static void RetrieveWorkspaceAndExtent(
+            WorkspaceCollection workspaceCollection,
             string ws,
             string extent,
             out Workspace<IExtent> foundWorkspace,
             out IUriExtent foundExtent)
         {
-            foundWorkspace = Core.TheOne.Workspaces.FirstOrDefault(x => x.id == ws);
+            foundWorkspace = workspaceCollection.Workspaces.FirstOrDefault(x => x.id == ws);
 
             if (foundWorkspace == null)
             {
@@ -348,12 +358,13 @@ namespace DatenMeister.Web.Api
 
         [ApiExplorerSettings(IgnoreApi = true)]
         private static void FindItem(
+            WorkspaceCollection collection, 
             ItemReferenceModel model,
             out Workspace<IExtent> foundWorkspace,
             out IUriExtent foundExtent,
             out IElement foundItem)
         {
-            RetrieveWorkspaceAndExtent(model, out foundWorkspace, out foundExtent);
+            RetrieveWorkspaceAndExtent(collection, model, out foundWorkspace, out foundExtent);
 
             foundItem = foundExtent.element(model.item);
             if (foundItem == null)

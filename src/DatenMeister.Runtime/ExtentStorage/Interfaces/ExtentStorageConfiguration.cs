@@ -10,5 +10,10 @@
         /// Gets or sets the extent uri
         /// </summary>
         public string ExtentUri { get; set; }
+
+        /// <summary>
+        /// Gets ors sets the workspace in which the data will be loaded
+        /// </summary>
+        public string Workspace { get; set; }
     }
 }

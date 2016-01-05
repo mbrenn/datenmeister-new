@@ -1,16 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Web.Api
 {
     [RoutePrefix("api/datenmeister/workspace")]
     public class WorkspaceController : ApiController
     {
+        private readonly WorkspaceCollection _workspaceCollection;
+
+        public WorkspaceController(WorkspaceCollection workspaceCollection)
+        {
+            _workspaceCollection = workspaceCollection;
+        }
+
         [Route("all")]
         public object Get()
         {
             var result = new List<object>();
-            foreach (var workspace in Core.TheOne.Workspaces)
+            foreach (var workspace in _workspaceCollection.Workspaces)
             {
                 result.Add(
                     new

@@ -4,53 +4,43 @@ using System.Diagnostics;
 using System.Linq;
 using DatenMeister.EMOF.Interface.Identifiers;
 
-namespace DatenMeister.Web
+namespace DatenMeister.Runtime
 {
     /// <summary>
     ///     Defines the core being used as the central connection point
     /// </summary>
-    public class Core
+    public class WorkspaceCollection
     {
         /// <summary>
         ///     Stores the workspace for all extents
         /// </summary>
-        private List<Workspace<IExtent>> workspaces;
-
-        static Core()
-        {
-            TheOne = new Core();
-        }
-
+        private List<Workspace<IExtent>> _workspaces = new List<Workspace<IExtent>>();
+        
         /// <summary>
-        ///     Gets the singleton object
-        /// </summary>
-        public static Core TheOne { get; private set; }
-
-        /// <summary>
-        ///     Gets all the workspaces
+        /// Gets all the workspaces
         /// </summary>
         public IEnumerable<Workspace<IExtent>> Workspaces
         {
             get
             {
-                lock (workspaces)
+                lock (_workspaces)
                 {
-                    return workspaces.ToList();
+                    return _workspaces.ToList();
                 }
             }
         }
 
         public void AddWorkspace(Workspace<IExtent> workspace)
         {
-            lock (workspaces)
+            lock (_workspaces)
             {
                 // Check, if id of workspace is already known
-                if (workspaces.Any(x => x.id == workspace.id))
+                if (_workspaces.Any(x => x.id == workspace.id))
                 {
                     throw new InvalidOperationException("id is already known");
                 }
 
-                workspaces.Add(workspace);
+                _workspaces.Add(workspace);
             }
         }
 
@@ -59,7 +49,7 @@ namespace DatenMeister.Web
         /// </summary>
         public void Init()
         {
-            workspaces = new List<Workspace<IExtent>>();
+            _workspaces = new List<Workspace<IExtent>>();
             AddWorkspace(new Workspace<IExtent>("Data", "All the data workspaces"));
             Debug.WriteLine("DatenMeister Webcore initialized");
         }

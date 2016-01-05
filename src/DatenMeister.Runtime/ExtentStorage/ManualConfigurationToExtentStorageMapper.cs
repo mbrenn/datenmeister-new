@@ -8,7 +8,7 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// Maps the extent storage type to a configuration type which is used by the logic to find out the best type
     /// which can be used to satisfy a load request. 
     /// </summary>
-    public class ManualExtentStorageToConfigurationMap : IExtentStorageToConfigurationMap
+    public class ManualConfigurationToExtentStorageMapper : IConfigurationToExtentStorageMapper
     {
         /// <summary>
         /// Checks, if a mapping for the given configuration type exists which configures a specific extet loader

@@ -10,6 +10,7 @@ using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Queries;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.FactoryMapper;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Web.Models;
 using DatenMeister.Web.Models.PostModels;
 
@@ -159,7 +160,7 @@ namespace DatenMeister.Web.Api
         {
             Workspace<IExtent> foundWorkspace;
             IUriExtent foundExtent;
-            RetrieveWorkspaceAndExtent(_workspaceCollection, ws, extent, out foundWorkspace, out foundExtent);
+            _workspaceCollection.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
 
             var itemModel = new ItemContentModel {uri = item};
 
@@ -189,7 +190,7 @@ namespace DatenMeister.Web.Api
         {
             Workspace<IExtent> foundWorkspace;
             IUriExtent foundExtent;
-            RetrieveWorkspaceAndExtent(_workspaceCollection, model.ws, model.extent, out foundWorkspace, out foundExtent);
+            _workspaceCollection.RetrieveWorkspaceAndExtent(model.ws, model.extent, out foundWorkspace, out foundExtent);
 
             if (!string.IsNullOrEmpty(model.container))
             {
@@ -218,7 +219,11 @@ namespace DatenMeister.Web.Api
                 Workspace<IExtent> foundWorkspace;
                 IUriExtent foundExtent;
                 IElement foundItem;
-                FindItem(_workspaceCollection, model, out foundWorkspace, out foundExtent, out foundItem);
+                _workspaceCollection.FindItem(
+                    model.AsItem(),
+                    out foundWorkspace, 
+                    out foundExtent, 
+                    out foundItem);
 
                 if (!foundExtent.elements().remove(foundItem))
                 {
@@ -242,7 +247,11 @@ namespace DatenMeister.Web.Api
                 Workspace<IExtent> foundWorkspace;
                 IUriExtent foundExtent;
                 IElement foundItem;
-                FindItem(_workspaceCollection, model, out foundWorkspace, out foundExtent, out foundItem);
+                _workspaceCollection.FindItem(
+                    model.AsItem(), 
+                    out foundWorkspace, 
+                    out foundExtent, 
+                    out foundItem);
 
                 foundItem.unset(model.property);
 
@@ -263,7 +272,11 @@ namespace DatenMeister.Web.Api
                 Workspace<IExtent> foundWorkspace;
                 IUriExtent foundExtent;
                 IElement foundItem;
-                FindItem(_workspaceCollection, model, out foundWorkspace, out foundExtent, out foundItem);
+                _workspaceCollection.FindItem(
+                    model.AsItem(), 
+                    out foundWorkspace, 
+                    out foundExtent, 
+                    out foundItem);
 
                 foundItem.set(model.property, model.newValue);
 
@@ -284,7 +297,11 @@ namespace DatenMeister.Web.Api
                 Workspace<IExtent> foundWorkspace;
                 IUriExtent foundExtent;
                 IElement foundItem;
-                FindItem(_workspaceCollection, model, out foundWorkspace, out foundExtent, out foundItem);
+                _workspaceCollection.FindItem(
+                    model.AsItem(), 
+                    out foundWorkspace, 
+                    out foundExtent, 
+                    out foundItem);
 
                 foreach (var pair in model.v)
                 {
@@ -296,80 +313,6 @@ namespace DatenMeister.Web.Api
             catch (OperationFailedException)
             {
                 return NotFound();
-            }
-        }
-
-        /// <summary>
-        ///     Gets the extentmodel for a given extent
-        /// </summary>
-        /// <param name="ws">Workspace to be queried</param>
-        /// <param name="extent">Extent to be querued</param>
-        /// <returns>The found extent or an exception.</returns>
-        [ApiExplorerSettings(IgnoreApi = true)]
-        private static ExtentModel GetExtentModel(WorkspaceCollection collection, string ws, string extent)
-        {
-            Workspace<IExtent> foundWorkspace;
-            IUriExtent foundExtent;
-            RetrieveWorkspaceAndExtent(collection, ws, extent, out foundWorkspace, out foundExtent);
-
-            var extentModel = new ExtentModel(
-                foundExtent,
-                new WorkspaceModel(foundWorkspace));
-
-            return extentModel;
-        }
-
-        [ApiExplorerSettings(IgnoreApi = true)]
-        private static void RetrieveWorkspaceAndExtent(
-            WorkspaceCollection workspaceCollection,
-            ItemReferenceModel model,
-            out Workspace<IExtent> foundWorkspace,
-            out IUriExtent foundExtent)
-        {
-            RetrieveWorkspaceAndExtent(
-                workspaceCollection, 
-                model.ws, 
-                model.extent, 
-                out foundWorkspace, 
-                out foundExtent);
-        }
-
-        [ApiExplorerSettings(IgnoreApi = true)]
-        private static void RetrieveWorkspaceAndExtent(
-            WorkspaceCollection workspaceCollection,
-            string ws,
-            string extent,
-            out Workspace<IExtent> foundWorkspace,
-            out IUriExtent foundExtent)
-        {
-            foundWorkspace = workspaceCollection.Workspaces.FirstOrDefault(x => x.id == ws);
-
-            if (foundWorkspace == null)
-            {
-                throw new OperationFailedException("Workspace_NotFound");
-            }
-
-            foundExtent = foundWorkspace.extent.Cast<IUriExtent>().FirstOrDefault(x => x.contextURI() == extent);
-            if (foundExtent == null)
-            {
-                throw new OperationFailedException("Extent_NotFound");
-            }
-        }
-
-        [ApiExplorerSettings(IgnoreApi = true)]
-        private static void FindItem(
-            WorkspaceCollection collection, 
-            ItemReferenceModel model,
-            out Workspace<IExtent> foundWorkspace,
-            out IUriExtent foundExtent,
-            out IElement foundItem)
-        {
-            RetrieveWorkspaceAndExtent(collection, model, out foundWorkspace, out foundExtent);
-
-            foundItem = foundExtent.element(model.item);
-            if (foundItem == null)
-            {
-                throw new OperationFailedException();
             }
         }
     }

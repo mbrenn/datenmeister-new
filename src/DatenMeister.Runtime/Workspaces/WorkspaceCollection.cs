@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using DatenMeister.EMOF.Interface.Identifiers;
 
-namespace DatenMeister.Runtime
+namespace DatenMeister.Runtime.Workspaces
 {
     /// <summary>
     ///     Defines the core being used as the central connection point

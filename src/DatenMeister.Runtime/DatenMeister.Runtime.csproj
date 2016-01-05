@@ -39,7 +39,8 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WorkspaceCollection.cs" />
+    <Compile Include="Workspaces\Extension.cs" />
+    <Compile Include="Workspaces\WorkspaceCollection.cs" />
     <Compile Include="ExtentStorage\AssignConfigurationTypeToLoaderAttribute.cs" />
     <Compile Include="ExtentStorage\ExtentStorageCollection.cs" />
     <Compile Include="ExtentStorage\ExtentStorageLoader.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Proxies\ReadOnly\ReadOnlyObject.cs" />
     <Compile Include="Proxies\ReadOnly\ReadOnlyReflectiveSequence.cs" />
     <Compile Include="Proxies\ReadOnly\ReadOnlyUriExtent.cs" />
+    <Compile Include="Workspaces\WorkspaceExtentAndItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">

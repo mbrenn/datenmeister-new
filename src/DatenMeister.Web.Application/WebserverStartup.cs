@@ -10,6 +10,7 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Web.Api;
 using Microsoft.Owin;
 using Ninject;

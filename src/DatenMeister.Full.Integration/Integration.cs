@@ -6,6 +6,7 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
+using DatenMeister.Runtime.Workspaces;
 using Ninject;
 
 namespace DatenMeister.Full.Integration

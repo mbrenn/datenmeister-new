@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Threading;
 using System.Web.Http;
 using BurnSystems.Owin.StaticFiles;
 using DatenMeister.Apps.ZipCode;
+using DatenMeister.CSV;
+using DatenMeister.CSV.Runtime.Storage;
+using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Full.Integration;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
@@ -13,6 +19,7 @@ using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Web.Api;
 using Microsoft.Owin;
+using Microsoft.Owin.BuilderProperties;
 using Ninject;
 using Ninject.Web.Common.OwinHost;
 using Ninject.Web.WebApi.OwinHost;
@@ -45,34 +52,58 @@ namespace DatenMeister.Web.Application
             // Initializing of the WebAPI, needs to be called after the DatenMeister is initialized
             var httpConfiguration = new HttpConfiguration();
             httpConfiguration.MapHttpAttributeRoutes();
-            app.UseNinjectMiddleware(CreateKernel).UseNinjectWebApi(httpConfiguration);
+            app.UseNinjectMiddleware(() => CreateKernel(app)).UseNinjectWebApi(httpConfiguration);
         }
 
-        private static StandardKernel CreateKernel()
+        private void OnShutDown()
+        {
+            Console.WriteLine("Shutdown");
+        }
+
+        private static StandardKernel CreateKernel(IAppBuilder app)
         {
             var kernel = new StandardKernel();
             kernel.FillForDatenMeister();
 
-            // Initialize start
-            var workSpaceCollection = kernel.Get<WorkspaceCollection>();
+            // Defines the shutdown
+            var properties = new AppProperties(app.Properties);
+            var token = properties.OnAppDisposing;
+            token.Register(() =>
+            {
+                kernel.Get<IExtentStorageLogic>().StoreAll();
+            });
 
-            // Initializes the DatenMeister
-            workSpaceCollection.Init();
-            var workspaceData = workSpaceCollection.Workspaces.First(x => x.id == "Data");
+            // Loading the zipcodes
+            LoadZipCodes(kernel);
 
+            return kernel;
+        }
+
+        private static void LoadZipCodes(StandardKernel kernel)
+        {
+            //////////////////////
+            // Loads the workspace
             var file = Path.Combine(
                 Path.Combine(
                     AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
                     "App_Data"),
                 "plz.csv");
 
-            using (var stream = new FileStream(file, FileMode.Open))
+            var defaultConfiguration = new CSVStorageConfiguration
             {
-                DataProvider.TheOne.LoadZipCodes(stream);
-                workspaceData.AddExtent(DataProvider.TheOne.ZipCodes);
-            }
+                ExtentUri = "datenmeister:///zipcodes",
+                Path = file,
+                Workspace = "Data",
+                Settings =
+                {
+                    HasHeader = false,
+                    Separator = '\t',
+                    Encoding = Encoding.UTF8
+                }
+            };
 
-            return kernel;
+            kernel.Get<IExtentStorageLogic>().LoadExtent(defaultConfiguration);
+            Debug.WriteLine("Zip codes loaded");
         }
     }
 }

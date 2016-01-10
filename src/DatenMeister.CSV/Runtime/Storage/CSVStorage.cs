@@ -9,6 +9,7 @@ namespace DatenMeister.CSV.Runtime.Storage
     /// The engine being used to load and store the extent into a csv file
     /// </summary>
     [ConfiguredBy(typeof(CSVStorageConfiguration))]
+    // ReSharper disable once InconsistentNaming
     public class CSVStorage : IExtentStorage
     { 
         public IUriExtent LoadExtent(ExtentStorageConfiguration configuration)

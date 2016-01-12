@@ -154,7 +154,7 @@ namespace DatenMeister.CSV
                         streamWriter,
                         settings,
                         columns,
-                        x => element.get(x));
+                        x => element.isSet(x) ? element.get(x) : string.Empty);
                 }
             }
         }

@@ -6,6 +6,7 @@ import * as DMI from "datenmeister-interfaces";
 import * as DMTables from "datenmeister-tables";
 import * as DMLayout from "datenmeister-view";
 import * as DMClient from "datenmeister-client";
+import * as DMRibbon from "datenmeister-ribbon";
 
 export function start() {
     $(document).ready(() => {
@@ -14,7 +15,21 @@ export function start() {
         };
 
         parseAndNavigateToWindowLocation();
+
+        buildRibbons();
     });
+
+
+}
+
+function buildRibbons() {
+    var domRibbon = $(".datenmeister-ribbon");
+    var ribbon = new DMRibbon.Ribbon(domRibbon);
+    var tab1 = ribbon.addTab("File");
+    tab1.addIcon("Close", "img/icons/close_window", () => { window.close(); });
+
+    var tab2 = ribbon.addTab("Data");
+    tab2.addIcon("Refresh", "img/icons/refresh_update", () => { alert('data') });
 }
 
 export function parseAndNavigateToWindowLocation() {
@@ -121,7 +136,7 @@ export class Layout
         tthis.switchLayout(PageType.Extents);
         var extentLogic = new DMLayout.ExtentLayout();
         extentLogic.onExtentSelected = (ws: string, extentUrl: string) => {
-            history.pushState({}, '', "#ws=" + encodeURIComponent(ws)
+            history.pushState({}, "", "#ws=" + encodeURIComponent(ws)
                 + "&ext=" + encodeURIComponent(extentUrl));
             tthis.showItems(ws, extentUrl);
             return false;

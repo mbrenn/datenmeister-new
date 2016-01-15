@@ -1,15 +1,24 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/jquery/underscore.d.ts" />
-define(["require", "exports", "datenmeister-helper", "datenmeister-view"], function (require, exports, DMHelper, DMLayout) {
+define(["require", "exports", "datenmeister-helper", "datenmeister-view", "datenmeister-ribbon"], function (require, exports, DMHelper, DMLayout, DMRibbon) {
     function start() {
         $(document).ready(function () {
             window.onpopstate = function (ev) {
                 parseAndNavigateToWindowLocation();
             };
             parseAndNavigateToWindowLocation();
+            buildRibbons();
         });
     }
     exports.start = start;
+    function buildRibbons() {
+        var domRibbon = $(".datenmeister-ribbon");
+        var ribbon = new DMRibbon.Ribbon(domRibbon);
+        var tab1 = ribbon.addTab("File");
+        tab1.addIcon("Close", "img/icons/close_window", function () { window.close(); });
+        var tab2 = ribbon.addTab("Data");
+        tab2.addIcon("Refresh", "img/icons/refresh_update", function () { alert('data'); });
+    }
     function parseAndNavigateToWindowLocation() {
         var ws = DMHelper.getParameterByNameFromHash("ws");
         var extentUrl = DMHelper.getParameterByNameFromHash("ext");
@@ -107,7 +116,7 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-view"], funct
             tthis.switchLayout(PageType.Extents);
             var extentLogic = new DMLayout.ExtentLayout();
             extentLogic.onExtentSelected = function (ws, extentUrl) {
-                history.pushState({}, '', "#ws=" + encodeURIComponent(ws)
+                history.pushState({}, "", "#ws=" + encodeURIComponent(ws)
                     + "&ext=" + encodeURIComponent(extentUrl));
                 tthis.showItems(ws, extentUrl);
                 return false;

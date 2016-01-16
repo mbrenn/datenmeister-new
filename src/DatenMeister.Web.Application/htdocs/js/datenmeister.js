@@ -7,17 +7,17 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-view", "daten
                 parseAndNavigateToWindowLocation();
             };
             parseAndNavigateToWindowLocation();
-            buildRibbons();
         });
     }
     exports.start = start;
-    function buildRibbons() {
+    function buildRibbons(layout) {
         var domRibbon = $(".datenmeister-ribbon");
         var ribbon = new DMRibbon.Ribbon(domRibbon);
         var tab1 = ribbon.addTab("File");
         tab1.addIcon("Close", "img/icons/close_window", function () { window.close(); });
+        tab1.addIcon("Open", "img/icons/close_window", function () { window.close(); });
         var tab2 = ribbon.addTab("Data");
-        tab2.addIcon("Refresh", "img/icons/refresh_update", function () { alert('data'); });
+        tab2.addIcon("Refresh", "img/icons/refresh_update", function () { layout.refreshView(); });
     }
     function parseAndNavigateToWindowLocation() {
         var ws = DMHelper.getParameterByNameFromHash("ws");
@@ -36,6 +36,7 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-view", "daten
         else {
             layout.showItem(ws, extentUrl, itemUrl);
         }
+        buildRibbons(layout);
     }
     exports.parseAndNavigateToWindowLocation = parseAndNavigateToWindowLocation;
     (function (PageType) {
@@ -52,36 +53,38 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-view", "daten
         Layout.prototype.createTitle = function (ws, extentUrl, itemUrl) {
             var tthis = this;
             var containerTitle = $(".container_title", this.parent);
-            var containerRefresh = $("<a href='#'>Refresh</a>");
             if (ws === undefined) {
-                containerTitle.text("Workspaces - ");
-                containerRefresh.click(function () {
+                containerTitle.text("Workspaces");
+                this.onRefresh = function () {
                     tthis.showWorkspaces();
                     return false;
-                });
+                };
+                ;
             }
             else if (extentUrl === undefined) {
-                containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - Extents - ");
-                containerRefresh.click(function () {
+                containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - Extents");
+                this.onRefresh = function () {
                     tthis.showExtents(ws);
                     return false;
-                });
+                };
+                ;
             }
             else if (itemUrl == undefined) {
-                containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - Items - ");
-                containerRefresh.click(function () {
+                containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - Items");
+                this.onRefresh = function () {
                     tthis.showItems(ws, extentUrl);
                     return false;
-                });
+                };
+                ;
             }
             else {
-                containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - <a href='#' class='link_items'>Items</a> - ");
-                containerRefresh.click(function () {
+                containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - <a href='#' class='link_items'>Items</a>");
+                this.onRefresh = function () {
                     tthis.showItem(ws, extentUrl, itemUrl);
                     return false;
-                });
+                };
+                ;
             }
-            containerTitle.append(containerRefresh);
             $(".link_workspaces", containerTitle).click(function () {
                 tthis.showWorkspaces();
                 return false;
@@ -94,6 +97,11 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-view", "daten
                 tthis.showItems(ws, extentUrl);
                 return false;
             });
+        };
+        Layout.prototype.refreshView = function () {
+            if (this.onRefresh !== undefined && this.onRefresh !== null) {
+                this.onRefresh();
+            }
         };
         Layout.prototype.showWorkspaces = function () {
             var tthis = this;

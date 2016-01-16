@@ -22,6 +22,50 @@ textarea {
 }
 
 
-.ribbon {
-    
+.dm-ribbon {
+    border-bottom: 1px black solid;
 }
+
+.dm-tab-titles {
+    border-bottom: 1px black solid;
+}
+
+.dm-tab-titles div {
+    display: inline-block;
+    cursor: pointer;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    font-weight: bold;
+}
+
+
+    .dm-tab-titles div.selected {
+        background-color: blue;
+        color: white;
+    }
+
+    .dm-tab-titles div.selected:hover {
+        background-color: blue;
+        color: white;
+    }
+
+    .dm-tab-titles div:hover {
+        background-color: lightblue;
+    }
+
+.dm-icon-container {
+    display: inline-block;
+    margin: 0px;
+    padding: 0px;
+}
+
+    .dm-icon-container div {
+        text-align: center;
+        margin: 0px;
+        padding: 0px;
+    }

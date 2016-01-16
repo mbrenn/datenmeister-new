@@ -34,7 +34,7 @@ export function parseAndNavigateToWindowLocation() {
     var extentUrl = DMHelper.getParameterByNameFromHash("ext");
     var itemUrl = DMHelper.getParameterByNameFromHash("item");
 
-    var layout = new Layout($(".body-content"));
+    var layout = new Layout($("body"));
 
     if (ws === "") {
         layout.showWorkspaces();
@@ -56,7 +56,7 @@ export enum PageType {
     ItemDetail
 }
 
-export class Layout
+export class Layout implements DMI.Api.ILayout
 {
     parent: JQuery;
     onRefresh: () => void;
@@ -67,32 +67,32 @@ export class Layout
 
     createTitle(ws?: string, extentUrl?: string, itemUrl?: string) {
         var tthis = this;
-        var containerTitle = $(".container_title", this.parent);
+        var containerTitle = $(".container-title", this.parent);
 
         if (ws === undefined) {
             containerTitle.text("Workspaces");
             this.onRefresh = () => {
                 tthis.showWorkspaces();
                 return false;
-            });
+            };
         } else if (extentUrl === undefined) {
             containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - Extents");
             this.onRefresh = () => {
                 tthis.showExtents(ws);
                 return false;
-            });
+            };
         } else if (itemUrl == undefined) {
             containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - Items");
             this.onRefresh = () => {
                 tthis.showItems(ws, extentUrl);
                 return false;
-            });
+            };
         } else {
             containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - <a href='#' class='link_items'>Items</a>");
             this.onRefresh = () => {
                 tthis.showItem(ws, extentUrl, itemUrl);
                 return false;
-            });
+            };
         }
 
         $(".link_workspaces", containerTitle).click(() => {
@@ -119,7 +119,7 @@ export class Layout
         var tthis = this;
         tthis.switchLayout(PageType.Workspaces);
 
-        var workbenchLogic = new DMLayout.WorkspaceLayout();
+        var workbenchLogic = new DMLayout.WorkspaceView();
         workbenchLogic.onWorkspaceSelected = (id: string) => {
             // Loads the extent of the workspace, if the user has clicked on one of the workbenches
             history.pushState({}, "", "#ws=" + encodeURIComponent(id));
@@ -137,7 +137,7 @@ export class Layout
     showExtents(workspaceId: string) {
         var tthis = this;
         tthis.switchLayout(PageType.Extents);
-        var extentLogic = new DMLayout.ExtentLayout();
+        var extentLogic = new DMLayout.ExtentView();
         extentLogic.onExtentSelected = (ws: string, extentUrl: string) => {
             history.pushState({}, "", "#ws=" + encodeURIComponent(ws)
                 + "&ext=" + encodeURIComponent(extentUrl));
@@ -156,7 +156,7 @@ export class Layout
     showItems(workspaceId: string, extentUrl: string) {
         var tthis = this;
         tthis.switchLayout(PageType.Items);
-        var extentLogic = new DMLayout.ExtentLayout();
+        var extentLogic = new DMLayout.ExtentView(this);
         extentLogic.onItemSelected = (ws: string, extentUrl: string, itemUrl: string) => {
             tthis.navigateToItem(ws, extentUrl, itemUrl);
         };
@@ -180,7 +180,7 @@ export class Layout
 
     showItem(workspaceId: string, extentUrl: string, itemUrl: string) {
         this.switchLayout(PageType.ItemDetail);
-        var extentLogic = new DMLayout.ItemView();
+        var extentLogic = new DMLayout.ItemView(this);
 
         this.createTitle(workspaceId, extentUrl, itemUrl);
         extentLogic.loadAndCreateHtmlForItem($(".data-itemdetail", this.parent), workspaceId, extentUrl, itemUrl);
@@ -201,5 +201,11 @@ export class Layout
         } else if (pageType === PageType.ItemDetail) {
             $(".only-itemdetail").show();
         }
+    }
+
+    setStatus(statusDom: JQuery): void {
+        var dom = $(".dm-statusline");
+        dom.empty();
+        dom.append(statusDom);
     }
 }

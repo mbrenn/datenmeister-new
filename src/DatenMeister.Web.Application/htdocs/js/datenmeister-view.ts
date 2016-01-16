@@ -3,7 +3,7 @@ import * as DMTables from "datenmeister-tables";
 import * as DMClient from "datenmeister-client";
 import * as DMQuery from "datenmeister-query";
 
-export class WorkspaceLayout {
+export class WorkspaceView {
     onWorkspaceSelected: (id: string) => void;
 
     loadAndCreateHtmlForWorkbenchs(container: JQuery): JQueryPromise<boolean> {
@@ -48,7 +48,13 @@ export class WorkspaceLayout {
     }
 }
 
-export class ExtentLayout {
+export class ExtentView {
+    layout: DMI.Api.ILayout;
+
+    constructor(layout?: DMI.Api.ILayout) {
+        this.layout = layout;
+    }
+
     onExtentSelected: (ws: string, extent: string) => void;
     onItemSelected: (ws: string, extentUrl: string, itemUrl: string) => void;
     onItemCreated: (ws: string, extentUrl: string, itemUrl: string) => void;
@@ -128,8 +134,11 @@ export class ExtentLayout {
             return false;
         };
 
+        configuration.layout = this.layout;
+
         var provider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
         var table = new DMTables.ItemListTable(container, provider, configuration);
+        
         if (query !== undefined && query !== null) {
             table.currentQuery = query;
         }
@@ -147,6 +156,12 @@ export class ExtentLayout {
 
 export class ItemView
 {
+    layout: DMI.Api.ILayout;
+
+    constructor(layout?: DMI.Api.ILayout) {
+        this.layout = layout;
+    }
+
     loadAndCreateHtmlForItem(container: JQuery, ws: string, extentUrl: string, itemUrl: string): JQueryDeferred<Object> {
         var tthis = this;
         return DMClient.ItemApi.getItem(ws, extentUrl, itemUrl)

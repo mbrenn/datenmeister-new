@@ -49,22 +49,8 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
         ItemListTable.prototype.createDomForTable = function (data) {
             var tthis = this;
             this.domContainer.empty();
-            if (this.configuration.supportSearchbox) {
-                var domSearchBox = $("<div><input type='textbox' /></div>");
-                var domInput = $("input", domSearchBox);
-                $("input", domSearchBox).keyup(function () {
-                    var searchValue = domInput.val();
-                    tthis.lastProcessedSearchString = searchValue;
-                    tthis.currentQuery.searchString = searchValue;
-                    tthis.reload();
-                    if (tthis.configuration.onSearch !== undefined) {
-                        tthis.configuration.onSearch(searchValue);
-                    }
-                });
-                this.domContainer.append(domSearchBox);
-            }
             if (this.configuration.supportNewItem) {
-                var domNewItem = $("<div><a href='#'>Create new item</a></div>");
+                var domNewItem = $("<div class='col-md-3'><a href='#' class='btn btn-default'>Create new item</a></div>");
                 domNewItem.click(function () {
                     if (tthis.configuration.onNewItemClicked !== undefined) {
                         tthis.configuration.onNewItemClicked();
@@ -74,13 +60,17 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                 this.domContainer.append(domNewItem);
             }
             if (this.configuration.supportPaging) {
-                var domPaging = $("<div><a href='#' class='dm_prevpage'>PREV</a> Page <input type='textbox' class='dm_page' value='1' " +
-                    "/> of <span class='dm_totalpages'> </span> <a href='#' class='dm_jumppage'>GO</a> <a href='#' class='dm_nextpage'>NEXT</a> ");
+                var domPaging = $("<div class='col-md-6 text-center form-inline'>"
+                    + "<a href='#' class='dm_prevpage btn btn-default'>&lt;&lt;</a> Page "
+                    + "<input class='form-control dm-page-selected' type='textbox' value='1'/> of "
+                    + "<span class='dm_totalpages'> </span> "
+                    + "<a href='#' class='dm-jumppage btn btn-default'>GO</a>&nbsp;"
+                    + "<a href='#' class='dm-nextpage btn btn-default'>&gt;&gt;</a>");
                 this.domContainer.append(domPaging);
-                var domPrev = $(".dm_prevpage", domPaging);
-                var domNext = $(".dm_nextpage", domPaging);
-                var domGo = $(".dm_jumppage", domPaging);
-                var domCurrentPage = $(".dm_page", domPaging);
+                var domPrev = $(".dm-prevpage", domPaging);
+                var domNext = $(".dm-nextpage", domPaging);
+                var domGo = $(".dm-jumppage", domPaging);
+                var domCurrentPage = $(".dm-page-selected", domPaging);
                 domPrev.click(function () {
                     tthis.currentPage--;
                     tthis.currentPage = Math.max(1, tthis.currentPage);
@@ -104,10 +94,29 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                     return false;
                 });
             }
+            if (this.configuration.supportSearchbox) {
+                var domSearchBox = $("<div class='form-inline col-md-3'><input type='textbox' class='form-control' placeholder='Search...' /></div>");
+                var domInput = $("input", domSearchBox);
+                $("input", domSearchBox).keyup(function () {
+                    var searchValue = domInput.val();
+                    tthis.lastProcessedSearchString = searchValue;
+                    tthis.currentQuery.searchString = searchValue;
+                    tthis.reload();
+                    if (tthis.configuration.onSearch !== undefined) {
+                        tthis.configuration.onSearch(searchValue);
+                    }
+                });
+                this.domContainer.append(domSearchBox);
+            }
             var domAmount = $("<div>Total: <span class='totalnumber'>##</span>, Filtered: <span class='filterednumber'>##</span>");
             this.domTotalNumber = $(".totalnumber", domAmount);
             this.domFilteredNumber = $(".filterednumber", domAmount);
-            this.domContainer.append(domAmount);
+            if (this.configuration.layout !== undefined) {
+                this.configuration.layout.setStatus(domAmount);
+            }
+            else {
+                this.domContainer.append(domAmount);
+            }
             this.domTable = $("<table class='table'></table>");
             // First the headline
             var domRow = $("<tr></tr>");

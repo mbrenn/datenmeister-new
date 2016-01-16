@@ -87,3 +87,9 @@ export module PostModels {
         newValue: string;
     }
 }
+
+export namespace Api {
+    export interface ILayout {
+        setStatus(statusDom: JQuery): void;
+    }
+}

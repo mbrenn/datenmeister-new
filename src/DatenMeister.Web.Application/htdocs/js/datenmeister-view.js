@@ -1,8 +1,8 @@
 define(["require", "exports", "datenmeister-tables", "datenmeister-client", "datenmeister-query"], function (require, exports, DMTables, DMClient, DMQuery) {
-    var WorkspaceLayout = (function () {
-        function WorkspaceLayout() {
+    var WorkspaceView = (function () {
+        function WorkspaceView() {
         }
-        WorkspaceLayout.prototype.loadAndCreateHtmlForWorkbenchs = function (container) {
+        WorkspaceView.prototype.loadAndCreateHtmlForWorkbenchs = function (container) {
             var result = $.Deferred();
             var tthis = this;
             DMClient.WorkspaceApi.getAllWorkspaces()
@@ -12,7 +12,7 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
             });
             return result;
         };
-        WorkspaceLayout.prototype.createHtmlForWorkbenchs = function (container, data) {
+        WorkspaceView.prototype.createHtmlForWorkbenchs = function (container, data) {
             var _this = this;
             container.empty();
             var compiledTable = $($("#template_workspace_table").html());
@@ -34,13 +34,14 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
             }
             container.append(compiledTable);
         };
-        return WorkspaceLayout;
+        return WorkspaceView;
     })();
-    exports.WorkspaceLayout = WorkspaceLayout;
-    var ExtentLayout = (function () {
-        function ExtentLayout() {
+    exports.WorkspaceView = WorkspaceView;
+    var ExtentView = (function () {
+        function ExtentView(layout) {
+            this.layout = layout;
         }
-        ExtentLayout.prototype.loadAndCreateHtmlForWorkspace = function (container, ws) {
+        ExtentView.prototype.loadAndCreateHtmlForWorkspace = function (container, ws) {
             var _this = this;
             var callback = $.Deferred();
             $.ajax({
@@ -56,7 +57,7 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
             });
             return callback;
         };
-        ExtentLayout.prototype.createHtmlForWorkspace = function (container, ws, data) {
+        ExtentView.prototype.createHtmlForWorkspace = function (container, ws, data) {
             var tthis = this;
             container.empty();
             if (data.length === 0) {
@@ -82,7 +83,7 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
                 container.append(compiledTable);
             }
         };
-        ExtentLayout.prototype.loadAndCreateHtmlForExtent = function (container, ws, extentUrl, query) {
+        ExtentView.prototype.loadAndCreateHtmlForExtent = function (container, ws, extentUrl, query) {
             var _this = this;
             var configuration = new DMTables.ItemTableConfiguration();
             configuration.onItemEdit = function (url) {
@@ -100,6 +101,7 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
                     .fail(function () { alert("FAILED"); });
                 return false;
             };
+            configuration.layout = this.layout;
             var provider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
             var table = new DMTables.ItemListTable(container, provider, configuration);
             if (query !== undefined && query !== null) {
@@ -113,11 +115,12 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
             };
             return table.loadAndShow();
         };
-        return ExtentLayout;
+        return ExtentView;
     })();
-    exports.ExtentLayout = ExtentLayout;
+    exports.ExtentView = ExtentView;
     var ItemView = (function () {
-        function ItemView() {
+        function ItemView(layout) {
+            this.layout = layout;
         }
         ItemView.prototype.loadAndCreateHtmlForItem = function (container, ws, extentUrl, itemUrl) {
             var tthis = this;

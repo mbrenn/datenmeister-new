@@ -22,11 +22,15 @@ function buildRibbons(layout: Layout) {
     var domRibbon = $(".datenmeister-ribbon");
     var ribbon = new DMRibbon.Ribbon(domRibbon);
     var tab1 = ribbon.addTab("File");
-    tab1.addIcon("Close", "img/icons/close_window", () => { window.close(); });
-    tab1.addIcon("Open", "img/icons/close_window", () => { window.close(); });
 
-    var tab2 = ribbon.addTab("Data");
-    tab2.addIcon("Refresh", "img/icons/refresh_update", () => { layout.refreshView(); });
+    tab1.addIcon("Refresh", "img/icons/refresh_update", () => { layout.refreshView(); });
+
+    tab1.addIcon("Workspaces", "img/icons/database", () => { layout.showWorkspaces(); });
+    tab1.addIcon("Add Workspace", "img/icons/database-add", () => { alert("X") });
+    tab1.addIcon("Delete Workspace", "img/icons/database-delete", () => { alert("X") });
+
+    tab1.addIcon("Close", "img/icons/close_window", () => { window.close(); });
+
 }
 
 export function parseAndNavigateToWindowLocation() {
@@ -96,11 +100,11 @@ export class Layout implements DMI.Api.ILayout
         }
 
         $(".link_workspaces", containerTitle).click(() => {
-            tthis.showWorkspaces();
+            tthis.navigateToWorkspaces();
             return false;
         });
         $(".link_extents", containerTitle).click(() => {
-            tthis.showExtents(ws);
+            tthis.navigateToExtents(ws);
             return false;
         });
         $(".link_items", containerTitle).click(() => {
@@ -115,28 +119,41 @@ export class Layout implements DMI.Api.ILayout
         }
     }
 
+    navigateToWorkspaces() {
+        history.pushState({}, "", "#");
+        this.showWorkspaces();
+    }
+
+    navigateToExtents(workspaceId: string) {
+        history.pushState({}, "", "#ws=" + encodeURIComponent(workspaceId));
+        this.showExtents(workspaceId);
+    }
+
+    navigateToItem(ws: string, extentUrl: string, itemUrl: string) {
+        history.pushState({}, "", "#ws=" + encodeURIComponent(ws)
+            + "&ext=" + encodeURIComponent(extentUrl)
+            + "&item=" + encodeURIComponent(itemUrl));
+        this.showItem(ws, extentUrl, itemUrl);
+    }
+
     showWorkspaces() {
         var tthis = this;
         tthis.switchLayout(PageType.Workspaces);
+        tthis.createTitle();
 
         var workbenchLogic = new DMLayout.WorkspaceView();
         workbenchLogic.onWorkspaceSelected = (id: string) => {
             // Loads the extent of the workspace, if the user has clicked on one of the workbenches
-            history.pushState({}, "", "#ws=" + encodeURIComponent(id));
-            tthis.showExtents(id);
+            tthis.navigateToExtents(id);
         };
 
-        workbenchLogic.loadAndCreateHtmlForWorkbenchs($(".data-workspaces", this.parent))
-            .done(data => {
-                tthis.createTitle();
-            })
-            .fail(() => {
-            });
+        workbenchLogic.loadAndCreateHtmlForWorkbenchs($(".data-workspaces", this.parent));
     }
 
     showExtents(workspaceId: string) {
         var tthis = this;
         tthis.switchLayout(PageType.Extents);
+        tthis.createTitle(workspaceId);    
         var extentLogic = new DMLayout.ExtentView();
         extentLogic.onExtentSelected = (ws: string, extentUrl: string) => {
             history.pushState({}, "", "#ws=" + encodeURIComponent(ws)
@@ -145,17 +162,13 @@ export class Layout implements DMI.Api.ILayout
             return false;
         };
 
-        extentLogic.loadAndCreateHtmlForWorkspace($(".data-extents", this.parent), workspaceId)
-            .done(data => {
-                tthis.createTitle(workspaceId);
-            })
-            .fail(() => {
-            });
+        extentLogic.loadAndCreateHtmlForWorkspace($(".data-extents", this.parent), workspaceId);
     }
 
     showItems(workspaceId: string, extentUrl: string) {
         var tthis = this;
-        tthis.switchLayout(PageType.Items);
+        this.switchLayout(PageType.Items);
+        this.createTitle(workspaceId, extentUrl);
         var extentLogic = new DMLayout.ExtentView(this);
         extentLogic.onItemSelected = (ws: string, extentUrl: string, itemUrl: string) => {
             tthis.navigateToItem(ws, extentUrl, itemUrl);
@@ -165,17 +178,7 @@ export class Layout implements DMI.Api.ILayout
             tthis.navigateToItem(ws, extentUrl, itemUrl);
         };
 
-        extentLogic.loadAndCreateHtmlForExtent($(".data-items", this.parent), workspaceId, extentUrl).done(
-            data => {
-                tthis.createTitle(workspaceId, extentUrl);
-            });
-    }
-
-    navigateToItem(ws: string, extentUrl: string, itemUrl: string) {
-        history.pushState({}, "", "#ws=" + encodeURIComponent(ws)
-            + "&ext=" + encodeURIComponent(extentUrl)
-            + "&item=" + encodeURIComponent(itemUrl));
-        this.showItem(ws, extentUrl, itemUrl);
+        extentLogic.loadAndCreateHtmlForExtent($(".data-items", this.parent), workspaceId, extentUrl);
     }
 
     showItem(workspaceId: string, extentUrl: string, itemUrl: string) {

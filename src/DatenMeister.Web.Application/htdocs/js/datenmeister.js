@@ -14,10 +14,11 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-view", "daten
         var domRibbon = $(".datenmeister-ribbon");
         var ribbon = new DMRibbon.Ribbon(domRibbon);
         var tab1 = ribbon.addTab("File");
+        tab1.addIcon("Refresh", "img/icons/refresh_update", function () { layout.refreshView(); });
+        tab1.addIcon("Workspaces", "img/icons/database", function () { layout.showWorkspaces(); });
+        tab1.addIcon("Add Workspace", "img/icons/database-add", function () { alert("X"); });
+        tab1.addIcon("Delete Workspace", "img/icons/database-delete", function () { alert("X"); });
         tab1.addIcon("Close", "img/icons/close_window", function () { window.close(); });
-        tab1.addIcon("Open", "img/icons/close_window", function () { window.close(); });
-        var tab2 = ribbon.addTab("Data");
-        tab2.addIcon("Refresh", "img/icons/refresh_update", function () { layout.refreshView(); });
     }
     function parseAndNavigateToWindowLocation() {
         var ws = DMHelper.getParameterByNameFromHash("ws");
@@ -82,11 +83,11 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-view", "daten
                 };
             }
             $(".link_workspaces", containerTitle).click(function () {
-                tthis.showWorkspaces();
+                tthis.navigateToWorkspaces();
                 return false;
             });
             $(".link_extents", containerTitle).click(function () {
-                tthis.showExtents(ws);
+                tthis.navigateToExtents(ws);
                 return false;
             });
             $(".link_items", containerTitle).click(function () {
@@ -99,25 +100,35 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-view", "daten
                 this.onRefresh();
             }
         };
+        Layout.prototype.navigateToWorkspaces = function () {
+            history.pushState({}, "", "#");
+            this.showWorkspaces();
+        };
+        Layout.prototype.navigateToExtents = function (workspaceId) {
+            history.pushState({}, "", "#ws=" + encodeURIComponent(workspaceId));
+            this.showExtents(workspaceId);
+        };
+        Layout.prototype.navigateToItem = function (ws, extentUrl, itemUrl) {
+            history.pushState({}, "", "#ws=" + encodeURIComponent(ws)
+                + "&ext=" + encodeURIComponent(extentUrl)
+                + "&item=" + encodeURIComponent(itemUrl));
+            this.showItem(ws, extentUrl, itemUrl);
+        };
         Layout.prototype.showWorkspaces = function () {
             var tthis = this;
             tthis.switchLayout(PageType.Workspaces);
+            tthis.createTitle();
             var workbenchLogic = new DMLayout.WorkspaceView();
             workbenchLogic.onWorkspaceSelected = function (id) {
                 // Loads the extent of the workspace, if the user has clicked on one of the workbenches
-                history.pushState({}, "", "#ws=" + encodeURIComponent(id));
-                tthis.showExtents(id);
+                tthis.navigateToExtents(id);
             };
-            workbenchLogic.loadAndCreateHtmlForWorkbenchs($(".data-workspaces", this.parent))
-                .done(function (data) {
-                tthis.createTitle();
-            })
-                .fail(function () {
-            });
+            workbenchLogic.loadAndCreateHtmlForWorkbenchs($(".data-workspaces", this.parent));
         };
         Layout.prototype.showExtents = function (workspaceId) {
             var tthis = this;
             tthis.switchLayout(PageType.Extents);
+            tthis.createTitle(workspaceId);
             var extentLogic = new DMLayout.ExtentView();
             extentLogic.onExtentSelected = function (ws, extentUrl) {
                 history.pushState({}, "", "#ws=" + encodeURIComponent(ws)
@@ -125,16 +136,12 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-view", "daten
                 tthis.showItems(ws, extentUrl);
                 return false;
             };
-            extentLogic.loadAndCreateHtmlForWorkspace($(".data-extents", this.parent), workspaceId)
-                .done(function (data) {
-                tthis.createTitle(workspaceId);
-            })
-                .fail(function () {
-            });
+            extentLogic.loadAndCreateHtmlForWorkspace($(".data-extents", this.parent), workspaceId);
         };
         Layout.prototype.showItems = function (workspaceId, extentUrl) {
             var tthis = this;
-            tthis.switchLayout(PageType.Items);
+            this.switchLayout(PageType.Items);
+            this.createTitle(workspaceId, extentUrl);
             var extentLogic = new DMLayout.ExtentView(this);
             extentLogic.onItemSelected = function (ws, extentUrl, itemUrl) {
                 tthis.navigateToItem(ws, extentUrl, itemUrl);
@@ -142,15 +149,7 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-view", "daten
             extentLogic.onItemCreated = function (ws, extentUrl, itemUrl) {
                 tthis.navigateToItem(ws, extentUrl, itemUrl);
             };
-            extentLogic.loadAndCreateHtmlForExtent($(".data-items", this.parent), workspaceId, extentUrl).done(function (data) {
-                tthis.createTitle(workspaceId, extentUrl);
-            });
-        };
-        Layout.prototype.navigateToItem = function (ws, extentUrl, itemUrl) {
-            history.pushState({}, "", "#ws=" + encodeURIComponent(ws)
-                + "&ext=" + encodeURIComponent(extentUrl)
-                + "&item=" + encodeURIComponent(itemUrl));
-            this.showItem(ws, extentUrl, itemUrl);
+            extentLogic.loadAndCreateHtmlForExtent($(".data-items", this.parent), workspaceId, extentUrl);
         };
         Layout.prototype.showItem = function (workspaceId, extentUrl, itemUrl) {
             this.switchLayout(PageType.ItemDetail);

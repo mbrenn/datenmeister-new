@@ -27,7 +27,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             this.currentQuery.amount = configuration.itemsPerPage;
         }
         ItemListTable.prototype.throwOnPageChange = function () {
-            this.currentQuery.offset = this.currentPage * (this.configuration.itemsPerPage - 1);
+            this.currentQuery.offset = (this.currentPage - 1) * this.configuration.itemsPerPage;
             this.reload();
             if (this.configuration.onPageChange !== undefined) {
                 this.configuration.onPageChange(this.currentPage);
@@ -61,7 +61,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             }
             if (this.configuration.supportPaging) {
                 var domPaging = $("<div class='col-md-6 text-center form-inline'>"
-                    + "<a href='#' class='dm_prevpage btn btn-default'>&lt;&lt;</a> Page "
+                    + "<a href='#' class='dm-prevpage btn btn-default'>&lt;&lt;</a> Page "
                     + "<input class='form-control dm-page-selected' type='textbox' value='1'/> of "
                     + "<span class='dm_totalpages'> </span> "
                     + "<a href='#' class='dm-jumppage btn btn-default'>GO</a>&nbsp;"

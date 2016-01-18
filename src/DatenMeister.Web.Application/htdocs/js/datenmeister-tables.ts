@@ -281,12 +281,23 @@ export class ItemListTable {
     }
 }
 
+export class ItemColumnConfiguration {
+    propertyName: string;
+    title: string;
+}
+
 export class ItemContentConfiguration {
     autoProperties: boolean;
+    columns: Array<ItemColumnConfiguration>;
 
     // Gets or sets a flag, that the user can change the content of a property within the table. 
     // If the editing was performed, the onEditProperty-function will get called
     supportInlineEditing: boolean;
+
+    // Gets or sets a flag, whether we should start with full edit mode
+    // if we start with edit mode, all property values will be shown as an edit field
+    // and an 'OK', 'Cancel'-button is added
+    startWithEditMode: boolean;
     supportNewProperties: boolean;
 
     editFunction: (url: string, property: string, domRow: JQuery) => boolean;
@@ -295,11 +306,21 @@ export class ItemContentConfiguration {
     onEditProperty: (url: string, property: string, newValue: string) => void;
     onNewProperty: (url: string, property: string, newValue: string) => void;
 
+    onOkForm: () => void;
+    onCancelForm: () => void;
+
     constructor() {
+        this.startWithEditMode = true;
+        this.autoProperties = true;
         this.editFunction = (url: string, property: string, domRow: JQuery) => false;
         this.deleteFunction = (url: string, property: string, domRow: JQuery) => false;
         this.supportInlineEditing = true;
         this.supportNewProperties = true;
+        this.columns = new Array<ItemColumnConfiguration>();
+    }
+
+    addColumn(column: ItemColumnConfiguration) {
+        this.columns[this.columns.length] = column;
     }
 }
 
@@ -307,6 +328,7 @@ export class ItemContentTable {
     item: DMI.IDataTableItem;
     configuration: ItemContentConfiguration;
     domContainer: JQuery;
+    domForEditArray: Array<JQuery>;
 
     constructor(item: DMI.IDataTableItem, configuration: ItemContentConfiguration) {
         this.item = item;
@@ -316,49 +338,81 @@ export class ItemContentTable {
     show(dom: JQuery) {
         var tthis = this;
         this.domContainer = dom;
+        this.domContainer.empty();
         dom.empty();
         var domTable = $("<table class='table'></table>");
 
         // First the headline
-        var domRow = $("<tr><th>Title</th><th>Value</th><th>EDIT</th><th>DELETE</th></tr>");
+        var domRow: JQuery;
+        if (this.configuration.startWithEditMode) {
+            domRow = $("<tr><th>Title</th><th>Value</th><th></th><th></th></tr>");
+        }
+
         domTable.append(domRow);
 
-        // Now, the items
         var propertyValue = this.item.v;
-        for (var property in propertyValue) {
-            if (propertyValue.hasOwnProperty(property)) {
-                domRow = $("<tr></tr>");
-                var value = propertyValue[property];
-                var domColumn = $("<td class='table_column_name'></td>");
-                domColumn.data("column", "name");
-                domColumn.text(property);
+        var column: ItemColumnConfiguration;
+
+        if (this.configuration.autoProperties) {
+            this.configuration.columns.length = 0;
+            for (let property in propertyValue) {
+                if (propertyValue.hasOwnProperty(property)) {
+                    column = new ItemColumnConfiguration();
+                    column.title = property;
+                    column.propertyName = property;
+                    this.configuration.columns[this.configuration.columns.length] = column;
+                }
+            }
+        }
+
+        this.domForEditArray = new Array<JQuery>();
+
+        // Now, the items
+        for (var columnNr in this.configuration.columns) {
+            column = this.configuration.columns[columnNr];
+            domRow = $("<tr></tr>");
+            var value = propertyValue[column.propertyName];
+            var domColumn = $("<td class='table_column_name'></td>");
+            domColumn.data("column", "name");
+            domColumn.text(column.title);
+            domRow.append(domColumn);
+            
+            if (this.configuration.startWithEditMode) {
+                domColumn = $("<td class='table_column_value'></td>");
+                domColumn.data("column", "value");
+                var domForEdit = this.getDomForEditField(column);
+                domColumn.append(domForEdit);
                 domRow.append(domColumn);
 
+                this.domForEditArray[column.propertyName] = domForEdit;
+            }
+            else
+            {
                 domColumn = $("<td class='table_column_value'></td>");
                 domColumn.data("column", "value");
                 domColumn.text(value);
                 domRow.append(domColumn);
 
                 // Add Edit link
-                let domEditColumn = $("<td class='hl table_column_edit'><a href='#'>EDIT</a></td>");
-                $("a", domEditColumn).click((function(url: string, property: string, idomRow: JQuery, idomA: JQuery) {
+                let domEditColumn = $("<td class='hl table_column_edit'><button class='btn btn-default'>EDIT</button></td>");
+                $("a", domEditColumn).click((function(url: string, column: ItemColumnConfiguration, idomRow: JQuery, idomA: JQuery) {
                     return function() {
                         if (tthis.configuration.supportInlineEditing) {
-                            tthis.startInlineEditing(property, idomRow);
+                            tthis.startInlineEditing(column, idomRow);
                             return false;
                         } else {
-                            return tthis.configuration.editFunction(url, property, idomRow);
+                            return tthis.configuration.editFunction(url, column.propertyName, idomRow);
                         }
                     };
-                })(this.item.uri, property, domRow, domA));
+                })(this.item.uri, column, domRow, domA));
                 domRow.append(domEditColumn);
 
-                let domDeleteColumn = $("<td class='hl table_column_delete'><a href='#'>DELETE</a></td>");
+                let domDeleteColumn = $("<td class='hl table_column_delete'><button class='btn btn-default'>DELETE</button></td>");
                 var domA = $("a", domDeleteColumn);
-                $("a", domDeleteColumn).click((function(url: string, property: string, idomRow: JQuery, idomA: JQuery) {
+                $("a", domDeleteColumn).click((function(url: string, column: ItemColumnConfiguration, idomRow: JQuery, idomA: JQuery) {
                     return function() {
                         if (idomA.data("wasClicked") === true) {
-                            return tthis.configuration.deleteFunction(url, property, idomRow);
+                            return tthis.configuration.deleteFunction(url, column.propertyName, idomRow);
                         } else {
                             idomA.data("wasClicked", true);
                             idomA.text("CONFIRM");
@@ -366,11 +420,11 @@ export class ItemContentTable {
                         }
 
                     };
-                })(this.item.uri, property, domRow, domA));
+                })(this.item.uri, column, domRow, domA));
                 domRow.append(domDeleteColumn);
-
-                domTable.append(domRow);
             }
+
+            domTable.append(domRow);
         }
 
         // Add new property
@@ -378,33 +432,71 @@ export class ItemContentTable {
             this.offerNewProperty(domTable);
         }
 
+        // Adds the OK, Cancel button
+        if (this.configuration.supportInlineEditing) {
+            var domOkCancel = $("<tr><td colspan='2' class='text-right'><button class='btn btn-default dm-ok'>OK</button><button class='btn btn-default dm-cancel'>Cancel</button></td></tr>");
+            var domOk = $(".dm-ok", domOkCancel);
+            var domCancel = $(".dm-cancel", domOkCancel);
+
+            domOk.click(() => {
+                this.submitForm();
+                if (this.configuration.onOkForm !== undefined) {
+                    this.configuration.onOkForm();
+                }
+            });
+
+            domCancel.click(() => {
+                    if (this.configuration.onCancelForm !== undefined) {
+                        this.configuration.onCancelForm();
+                    }
+                }
+            );
+
+            domTable.append(domOkCancel);
+        }
+
         dom.append(domTable);
     }
 
-    startInlineEditing(property: string, domRow: JQuery) {
+    submitForm() {
+        for (var columnNr in this.configuration.columns) {
+            var column = this.configuration.columns[columnNr];
+            var domEdit = this.domForEditArray[column.propertyName];
+
+            var value = domEdit.val();
+            this.item.v[column.propertyName] = value;
+        }
+    }
+
+    getDomForEditField(column: ItemColumnConfiguration) {
+        var domTextBox = $("<input type='textbox' />");
+        domTextBox.val(this.item.v[column.propertyName]);
+        return domTextBox;
+    }
+
+    startInlineEditing(column: ItemColumnConfiguration, domRow: JQuery) {
         var tthis = this;
         var domValue = $(".table_column_value", domRow);
         domValue.empty();
 
-        var domTextBox = $("<input type='textbox' />");
-        domTextBox.val(this.item.v[property]);
+        var domTextBox = this.getDomForEditField(column)
         domValue.append(domTextBox);
 
         var domEditColumn = $(".table_column_edit", domRow);
         domEditColumn.empty();
 
-        var domEditOK = $("<a href='#'>OK</a>");
-        domEditColumn.append(domEditOK);
+        var domEditOk = $("<a href='#'>OK</a>");
+        domEditColumn.append(domEditOk);
         var domEditCancel = $("<a href='#'>Cancel</a>");
         domEditColumn.append(domEditCancel);
 
         //Sets the commands
-        domEditOK.on('click', () => {
+        domEditOk.on('click', () => {
             var newValue = domTextBox.val();
-            tthis.item.v[property] = newValue;
+            tthis.item.v[column.propertyName] = newValue;
 
             if (tthis.configuration.onEditProperty !== undefined) {
-                tthis.configuration.onEditProperty(tthis.item.uri, property, newValue);
+                tthis.configuration.onEditProperty(tthis.item.uri, column.propertyName, newValue);
             }
 
             tthis.show(tthis.domContainer);
@@ -417,31 +509,30 @@ export class ItemContentTable {
 
             return false;
         });
-
     }
 
     offerNewProperty(domTable: JQuery) {
         var tthis = this;
-        var domNewProperty = $("<tr><td colspan='4'><a href='#'>NEW PROPERTY</a></td></tr>");
-        $("a", domNewProperty).click(() => {
+        var domNewProperty = $("<tr><td colspan='4'><button class='btn btn-default'>NEW PROPERTY</button></td></tr>");
+        $("button", domNewProperty).click(() => {
             domNewProperty.empty();
             var domNewPropertyName = $("<td class='table_column_name'><input type='textbox' /></td>");
             var domNewPropertyValue = $("<td class='table_column_value'><input type='textbox' /></td>");
-            var domNewPropertyEdit = $("<td class='table_column_edit'><a href='#'>OK</a></td>");
-            var domNewPropertyCancel = $("<td class='table_column_edit'><a href='#'>CANCEL</a></td>");
             domNewProperty.append(domNewPropertyName);
             domNewProperty.append(domNewPropertyValue);
-            domNewProperty.append(domNewPropertyEdit);
-            domNewProperty.append(domNewPropertyCancel);
-
             var inputProperty = $("input", domNewPropertyName);
             var inputValue = $("input", domNewPropertyValue);
 
+            var domNewPropertyEdit = $("<td class='table_column_edit'><button href='#'>OK</button></td>");
+            var domNewPropertyCancel = $("<td class='table_column_edit'><button href='#'>CANCEL</button></td>");
+            domNewProperty.append(domNewPropertyEdit);
+            domNewProperty.append(domNewPropertyCancel);
 
-            $("a", domNewPropertyEdit).click(() => {
+            $("button", domNewPropertyEdit).click(() => {
                 var property = inputProperty.val();
                 var newValue = inputValue.val();
 
+                tthis.submitForm();
                 tthis.item.v[property] = newValue;
 
                 if (tthis.configuration.onNewProperty !== undefined) {
@@ -452,7 +543,7 @@ export class ItemContentTable {
                 return false;
             });
 
-            $("a", domNewPropertyCancel).click(() => {
+            $("button", domNewPropertyCancel).click(() => {
                 tthis.show(tthis.domContainer);
                 return false;
             });

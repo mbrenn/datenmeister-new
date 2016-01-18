@@ -250,6 +250,7 @@
     <TypeScriptCompile Include="htdocs\js\datenmeister-client.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-helper.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-interfaces.ts" />
+    <TypeScriptCompile Include="htdocs\js\datenmeister-layout.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-query.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-ribbon.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-view.ts" />

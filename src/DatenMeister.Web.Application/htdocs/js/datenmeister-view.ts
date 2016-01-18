@@ -171,6 +171,7 @@ export class ItemView
     }
 
     createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: DMI.IItemContentModel) {
+        var tthis = this;
         var configuration = new DMTables.ItemContentConfiguration();
         configuration.deleteFunction = (url: string, property: string, domRow: JQuery) => {
             DMClient.ItemApi.deleteProperty(ws, extentUrl, itemUrl, property).done(() => domRow.find("td").fadeOut(500, () => { domRow.remove(); }));
@@ -181,11 +182,23 @@ export class ItemView
             DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
         };
 
-        configuration.onNewProperty = (url: string, property: string, newValue: string) => {
+        /*configuration.onNewProperty = (url: string, property: string, newValue: string) => {
             DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
-        };
+        };*/
 
         var table = new DMTables.ItemContentTable(data, configuration);
+        
+        configuration.onOkForm = () => {
+            DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item);
+            tthis.layout.navigateToItems(ws, extentUrl);
+        };
+
+        configuration.onCancelForm = () => {
+            tthis.layout.navigateToItems(ws, extentUrl);
+        }
+
         table.show(jQuery);
+
+
     }
 }

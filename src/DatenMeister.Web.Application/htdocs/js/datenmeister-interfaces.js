@@ -61,6 +61,14 @@ define(["require", "exports"], function (require, exports) {
             return ItemSetPropertyModel;
         })(ItemReferenceModel);
         PostModels.ItemSetPropertyModel = ItemSetPropertyModel;
+        var ItemSetPropertiesModel = (function (_super) {
+            __extends(ItemSetPropertiesModel, _super);
+            function ItemSetPropertiesModel() {
+                _super.apply(this, arguments);
+            }
+            return ItemSetPropertiesModel;
+        })(ItemReferenceModel);
+        PostModels.ItemSetPropertiesModel = ItemSetPropertiesModel;
     })(PostModels = exports.PostModels || (exports.PostModels = {}));
 });
 //# sourceMappingURL=datenmeister-interfaces.js.map

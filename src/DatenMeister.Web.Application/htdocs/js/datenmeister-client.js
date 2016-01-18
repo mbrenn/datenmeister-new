@@ -138,6 +138,31 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             return callback;
         }
         ItemApi.setProperty = setProperty;
+        function setProperties(ws, extentUrl, itemUrl, item) {
+            var callback = $.Deferred();
+            var postModel = new DMI.PostModels.ItemSetPropertiesModel();
+            postModel.ws = ws;
+            postModel.extent = extentUrl;
+            postModel.item = itemUrl;
+            postModel.v = new Array();
+            for (var k in item.v) {
+                var value = item.v[k];
+                var property = {
+                    Key: k,
+                    Value: value
+                };
+                postModel.v[postModel.v.length] = property;
+            }
+            $.ajax({
+                url: "/api/datenmeister/extent/item_set_properties",
+                data: postModel,
+                method: "POST",
+                success: function (data) { callback.resolve(true); },
+                error: function (data) { callback.resolve(false); }
+            });
+            return callback;
+        }
+        ItemApi.setProperties = setProperties;
     })(ItemApi = exports.ItemApi || (exports.ItemApi = {}));
 });
 //# sourceMappingURL=datenmeister-client.js.map

@@ -86,10 +86,18 @@ export module PostModels {
         property: string;
         newValue: string;
     }
+
+    export class ItemSetPropertiesModel extends ItemReferenceModel {
+        v: Array<any>;
+    }
 }
 
 export namespace Api {
     export interface ILayout {
+        navigateToWorkspaces(): void;
+        navigateToExtents(workspaceId: string): void;
+        navigateToItems(ws: string, extentUrl: string): void;
+        navigateToItem(ws: string, extentUrl: string, itemUrl: string): void;
         setStatus(statusDom: JQuery): void;
     }
 }

@@ -252,7 +252,7 @@ export class ItemListTable {
                 }
 
                 // Add Edit link
-                var domEditColumn = $("<td class='hl'><a href='#'>EDIT</a></td>");
+                var domEditColumn = $("<td class='hl'><button href='#' class='btn btn-default'>EDIT</button></td>");
                 domEditColumn.click((function(url, iDomRow) {
                     return function() {
                         return tthis.configuration.onItemEdit(url, iDomRow);
@@ -260,7 +260,7 @@ export class ItemListTable {
                 })(item.uri, domRow));
                 domRow.append(domEditColumn);
 
-                var domDeleteColumn = $("<td class='hl'><a href='#'>DELETE</a></td>");
+                var domDeleteColumn = $("<td class='hl'><button href='#' class='btn btn-default'>DELETE</button></td>");
                 var domA = $("a", domDeleteColumn);
                 domDeleteColumn.click((function(url: string, innerDomRow: JQuery, innerDomA: JQuery) {
                     return function() {
@@ -469,7 +469,7 @@ export class ItemContentTable {
     }
 
     getDomForEditField(column: ItemColumnConfiguration) {
-        var domTextBox = $("<input type='textbox' />");
+        var domTextBox = $("<input type='textbox' class='form-control' />");
         domTextBox.val(this.item.v[column.propertyName]);
         return domTextBox;
     }
@@ -516,15 +516,15 @@ export class ItemContentTable {
         var domNewProperty = $("<tr><td colspan='4'><button class='btn btn-default'>NEW PROPERTY</button></td></tr>");
         $("button", domNewProperty).click(() => {
             domNewProperty.empty();
-            var domNewPropertyName = $("<td class='table_column_name'><input type='textbox' /></td>");
-            var domNewPropertyValue = $("<td class='table_column_value'><input type='textbox' /></td>");
+            var domNewPropertyName = $("<td class='table_column_name'><input type='textbox' class='form-control' /></td>");
+            var domNewPropertyValue = $("<td class='table_column_value'><input type='textbox' class='form-control' /></td>");
             domNewProperty.append(domNewPropertyName);
             domNewProperty.append(domNewPropertyValue);
             var inputProperty = $("input", domNewPropertyName);
             var inputValue = $("input", domNewPropertyValue);
 
-            var domNewPropertyEdit = $("<td class='table_column_edit'><button href='#'>OK</button></td>");
-            var domNewPropertyCancel = $("<td class='table_column_edit'><button href='#'>CANCEL</button></td>");
+            var domNewPropertyEdit = $("<td class='table_column_edit'><button href='#' class='btn btn-default'>OK</button></td>");
+            var domNewPropertyCancel = $("<td class='table_column_edit'><button href='#' class='btn btn-default'>CANCEL</button></td>");
             domNewProperty.append(domNewPropertyEdit);
             domNewProperty.append(domNewPropertyCancel);
 

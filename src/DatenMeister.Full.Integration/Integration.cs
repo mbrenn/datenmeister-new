@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using DatenMeister.EMOF.Attributes;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
@@ -15,6 +16,9 @@ namespace DatenMeister.Full.Integration
     {
         public static void FillForDatenMeister(this StandardKernel kernel)
         {
+            // Do the full load
+            Helper.LoadAllReferenceAssemblies();
+            
             var factoryMapper = new DefaultFactoryMapper();
             factoryMapper.PerformAutomaticMappingByAttribute();
             kernel.Bind<IFactoryMapper>().ToConstant(factoryMapper);
@@ -23,13 +27,19 @@ namespace DatenMeister.Full.Integration
             storageMap.PerformMappingForConfigurationOfExtentLoaders();
             kernel.Bind<IConfigurationToExtentStorageMapper>().ToConstant(storageMap);
 
+            // Workspace collection
+            var workspaceCollection = new WorkspaceCollection();
+            workspaceCollection.Init();
+            kernel.Bind<IWorkspaceCollection>().ToConstant(workspaceCollection);
+
+            // Defines the extent storage data
+            var extentStorageData = new ExtentStorageData();
+            kernel.Bind<ExtentStorageData>().ToConstant(extentStorageData);
+            kernel.Bind<IExtentStorageLogic>().To<ExtentStorageLogic>();
+
             // Load the primitivetypes
             var primitiveTypes = new _PrimitiveTypes();
             kernel.Bind<_PrimitiveTypes>().ToConstant(primitiveTypes);
-
-            // Workspace collection
-            var workspaceCollection = new WorkspaceCollection();
-            kernel.Bind<WorkspaceCollection>().ToConstant(workspaceCollection);
         }
 
         public static void PerformAutomaticMappingByAttribute(this DefaultFactoryMapper mapper)

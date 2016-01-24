@@ -9,7 +9,7 @@ namespace DatenMeister.Runtime.Workspaces
     /// <summary>
     ///     Defines the core being used as the central connection point
     /// </summary>
-    public class WorkspaceCollection
+    public class WorkspaceCollection : IWorkspaceCollection
     {
         /// <summary>
         ///     Stores the workspace for all extents
@@ -43,6 +43,14 @@ namespace DatenMeister.Runtime.Workspaces
                 _workspaces.Add(workspace);
             }
         }
+
+        public Workspace<IExtent> GetWorkspace(string id)
+        {
+            lock (_workspaces)
+            {
+                return _workspaces.FirstOrDefault(x => x.id == id);
+            }
+        } 
 
         /// <summary>
         ///     Initializes the information

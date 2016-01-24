@@ -25,9 +25,9 @@ namespace DatenMeister.Web.Api
         private const int maxItemAmount = 100;
 
         private readonly IFactoryMapper _mapper;
-        private readonly WorkspaceCollection _workspaceCollection;
+        private readonly IWorkspaceCollection _workspaceCollection;
 
-        public ExtentController(IFactoryMapper mapper, WorkspaceCollection workspaceCollection)
+        public ExtentController(IFactoryMapper mapper, IWorkspaceCollection workspaceCollection)
         {
             _mapper = mapper;
             _workspaceCollection = workspaceCollection;

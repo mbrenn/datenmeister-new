@@ -8,7 +8,7 @@ namespace DatenMeister.Runtime.Workspaces
     public static class Extension
     {
         public static void RetrieveWorkspaceAndExtent(
-            this WorkspaceCollection workspaceCollection,
+            this IWorkspaceCollection workspaceCollection,
             WorkspaceExtentAndItem model,
             out Workspace<IExtent> foundWorkspace,
             out IUriExtent foundExtent)
@@ -22,7 +22,7 @@ namespace DatenMeister.Runtime.Workspaces
         }
 
         public static void RetrieveWorkspaceAndExtent(
-            this WorkspaceCollection workspaceCollection,
+            this IWorkspaceCollection workspaceCollection,
             string ws,
             string extent,
             out Workspace<IExtent> foundWorkspace,
@@ -43,7 +43,7 @@ namespace DatenMeister.Runtime.Workspaces
         }
 
         public static void FindItem(
-            this WorkspaceCollection collection,
+            this IWorkspaceCollection collection,
             WorkspaceExtentAndItem model,
             out Workspace<IExtent> foundWorkspace,
             out IUriExtent foundExtent,

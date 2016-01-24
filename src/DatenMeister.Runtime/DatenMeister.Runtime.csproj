@@ -39,11 +39,14 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtentStorage\ExtentStorageData.cs" />
+    <Compile Include="ExtentStorage\IExtentStorageLogic.cs" />
     <Compile Include="Workspaces\Extension.cs" />
+    <Compile Include="Workspaces\IWorkspaceCollection.cs" />
     <Compile Include="Workspaces\WorkspaceCollection.cs" />
     <Compile Include="ExtentStorage\AssignConfigurationTypeToLoaderAttribute.cs" />
-    <Compile Include="ExtentStorage\ExtentStorageCollection.cs" />
-    <Compile Include="ExtentStorage\ExtentStorageLoader.cs" />
+    <Compile Include="ExtentStorage\ExtentStorageConfigurationCollection.cs" />
+    <Compile Include="ExtentStorage\ExtentStorageConfigurationLoader.cs" />
     <Compile Include="ExtentStorage\Interfaces\IConfigurationToExtentStorageMapper.cs" />
     <Compile Include="ExtentStorage\Interfaces\ExtentFileStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\Interfaces\ExtentStorageConfiguration.cs" />

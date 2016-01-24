@@ -119,6 +119,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.FileSystem, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.4.0.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Net.Http.Formatting">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
@@ -206,6 +214,10 @@
       <Project>{3ec1dbf5-b87f-4807-96cf-5e68801c3629}</Project>
       <Name>DatenMeister.Apps.ZipCode</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.CSV\DatenMeister.CSV.csproj">
+      <Project>{39845115-F057-4641-9237-6960BB676684}</Project>
+      <Name>DatenMeister.CSV</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Full.Integration\DatenMeister.Full.Integration.csproj">
       <Project>{dd8ea307-d685-4a7b-b726-a1c87192600d}</Project>
       <Name>DatenMeister.Full.Integration</Name>
@@ -239,6 +251,7 @@
     <TypeScriptCompile Include="htdocs\js\datenmeister-helper.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-interfaces.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-query.ts" />
+    <TypeScriptCompile Include="htdocs\js\datenmeister-ribbon.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-view.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-start.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-tables.ts" />

@@ -32,6 +32,18 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void TestBootstrap()
         {
+            _MOF mof;
+            _UML uml;
+            CreateUmlAndMofInstance(out mof, out uml);
+        }
+
+        /// <summary>
+        /// Creates a filled MOF and UML instance which can be used for further testing
+        /// </summary>
+        /// <param name="mof">Mof instance to be returned</param>
+        /// <param name="uml">Uml instance to be returned</param>
+        public static void CreateUmlAndMofInstance(out _MOF mof, out _UML uml)
+        {
             var strapper = Bootstrapper.PerformFullBootstrap("Xmi/UML.xmi", "Xmi/MOF.xmi");
             Assert.That(strapper, Is.Not.Null);
             Assert.That(strapper.UmlInfrastructure, Is.Not.Null);
@@ -41,8 +53,8 @@ namespace DatenMeister.Tests.Xmi
                 Is.GreaterThan(500));
 
             // Check, if the filled classes are working
-            var mof = new _MOF();
-            var uml = new _UML();
+            mof = new _MOF();
+            uml = new _UML();
             FillTheMOF.DoFill(strapper.MofInfrastructure.elements(), mof);
             FillTheUML.DoFill(strapper.UmlInfrastructure.elements(), uml);
         }

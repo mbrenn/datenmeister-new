@@ -22,12 +22,6 @@ define(["require", "exports"], function (require, exports) {
     exports.ItemInExtentQuery = ItemInExtentQuery;
     var PostModels;
     (function (PostModels) {
-        var WorkspaceCreateModel = (function () {
-            function WorkspaceCreateModel() {
-            }
-            return WorkspaceCreateModel;
-        })();
-        PostModels.WorkspaceCreateModel = WorkspaceCreateModel;
         /** This class is used to reference a single object within the database */
         var ExtentReferenceModel = (function () {
             function ExtentReferenceModel() {
@@ -87,7 +81,9 @@ define(["require", "exports"], function (require, exports) {
     var Api;
     (function (Api) {
         var FieldConfiguration = (function () {
-            function FieldConfiguration() {
+            function FieldConfiguration(propertyName, title) {
+                this.propertyName = propertyName;
+                this.title = title;
             }
             return FieldConfiguration;
         })();

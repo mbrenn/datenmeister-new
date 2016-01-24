@@ -18,12 +18,30 @@ export module WorkspaceApi {
         return callback;
     }
 
-    export function createWorkspace(model: DMI.PostModels.WorkspaceCreateModel): JQueryPromise<boolean> {
+    export function createWorkspace(model: DMI.PostModels.IWorkspaceCreateModel): JQueryPromise<boolean> {
         var callback = $.Deferred();
         $.ajax({
             url: "/api/datenmeister/workspace/create",
             method: "POST",
             data: model,
+            cache: false,
+            success: data => {
+                callback.resolve(true);
+            },
+            error: data => {
+                callback.reject(false);
+            }
+        });
+
+        return callback;
+    }
+
+    export function deleteWorkspace(workspace: string): JQueryPromise<boolean> {
+        var callback = $.Deferred();
+        $.ajax({
+            url: "/api/datenmeister/workspace/delete",
+            method: "POST",
+            data: { name: workspace },
             cache: false,
             success: data => {
                 callback.resolve(true);

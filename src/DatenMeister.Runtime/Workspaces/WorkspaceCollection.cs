@@ -50,7 +50,20 @@ namespace DatenMeister.Runtime.Workspaces
             {
                 return _workspaces.FirstOrDefault(x => x.id == id);
             }
-        } 
+        }
+
+        public void RemoveWorkspace(string id)
+        {
+            lock (_workspaces)
+            {
+                var workspaceToBeDeleted = GetWorkspace(id);
+
+                if (workspaceToBeDeleted != null)
+                {
+                    _workspaces.Remove(workspaceToBeDeleted);
+                }
+            }
+        }
 
         /// <summary>
         ///     Initializes the information

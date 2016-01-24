@@ -12,9 +12,17 @@ export enum PageType {
     Dialog
 }
 
+export interface ILayoutChangedEvent {
+    type: PageType;
+    workspace: string;
+    extent: string;
+    item: string;
+}
+
 export class Layout implements DMI.Api.ILayout {
     parent: JQuery;
     onRefresh: () => void;
+    onLayoutChanged: (data: ILayoutChangedEvent) => void;
     currentPageType: PageType;
 
     constructor(parent: JQuery) {
@@ -42,7 +50,7 @@ export class Layout implements DMI.Api.ILayout {
             + "&ext=" + encodeURIComponent(extentUrl));
         this.showItems(ws, extentUrl);
     }
-    
+
     navigateToItem(ws: string, extentUrl: string, itemUrl: string) {
         history.pushState({}, "", "#ws=" + encodeURIComponent(ws)
             + "&ext=" + encodeURIComponent(extentUrl)
@@ -59,6 +67,7 @@ export class Layout implements DMI.Api.ILayout {
         tableConfiguration.autoProperties = false;
         tableConfiguration.columns = configuration.columns;
         tableConfiguration.startWithEditMode = true;
+        tableConfiguration.supportNewProperties = false;
         tableConfiguration.onCancelForm = () => {
             this.switchLayout(oldPageType);
 
@@ -67,7 +76,7 @@ export class Layout implements DMI.Api.ILayout {
             }
         };
 
-        tableConfiguration.onOkForm = () => {  
+        tableConfiguration.onOkForm = () => {
             this.switchLayout(oldPageType);
             if (configuration.onOkForm !== undefined) {
                 configuration.onOkForm(value);
@@ -76,6 +85,8 @@ export class Layout implements DMI.Api.ILayout {
 
         var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
         itemTable.show(domTable);
+
+        this.switchLayout(PageType.Dialog);
     }
 
     showWorkspaces() {
@@ -94,7 +105,7 @@ export class Layout implements DMI.Api.ILayout {
 
     showExtents(workspaceId: string) {
         var tthis = this;
-        tthis.switchLayout(PageType.Extents);
+        tthis.switchLayout(PageType.Extents, workspaceId);
         tthis.createTitle(workspaceId);
         var extentLogic = new DMView.ExtentView();
         extentLogic.onExtentSelected = (ws: string, extentUrl: string) => {
@@ -107,7 +118,7 @@ export class Layout implements DMI.Api.ILayout {
 
     showItems(workspaceId: string, extentUrl: string) {
         var tthis = this;
-        this.switchLayout(PageType.Items);
+        this.switchLayout(PageType.Items, workspaceId, extentUrl);
         this.createTitle(workspaceId, extentUrl);
         var extentLogic = new DMView.ExtentView(this);
         extentLogic.onItemSelected = (ws: string, extentUrl: string, itemUrl: string) => {
@@ -122,7 +133,7 @@ export class Layout implements DMI.Api.ILayout {
     }
 
     showItem(workspaceId: string, extentUrl: string, itemUrl: string) {
-        this.switchLayout(PageType.ItemDetail);
+        this.switchLayout(PageType.ItemDetail, workspaceId, extentUrl, itemUrl);
         var extentLogic = new DMView.ItemView(this);
 
         this.createTitle(workspaceId, extentUrl, itemUrl);
@@ -173,11 +184,12 @@ export class Layout implements DMI.Api.ILayout {
         });
     }
 
-    switchLayout(pageType: PageType) {
+    switchLayout(pageType: PageType, workspace?: string, extent?: string, item?: string) {
         $(".only-workspaces").hide();
         $(".only-extents").hide();
         $(".only-items").hide();
         $(".only-itemdetail").hide();
+        $(".only-dialog").hide();
 
         if (pageType === PageType.Workspaces) {
             $(".only-workspaces").show();
@@ -192,11 +204,26 @@ export class Layout implements DMI.Api.ILayout {
         }
 
         this.currentPageType = pageType;
+
+        this.throwLayoutChangedEvent(
+            {
+                type: pageType,
+                workspace: workspace,
+                extent: extent,
+                item: item
+            }
+        );
     }
 
     setStatus(statusDom: JQuery): void {
         var dom = $(".dm-statusline");
         dom.empty();
         dom.append(statusDom);
+    }
+
+    throwLayoutChangedEvent(data: ILayoutChangedEvent) {
+        if (this.onLayoutChanged !== undefined) {
+            this.onLayoutChanged(data);
+        }
     }
 }

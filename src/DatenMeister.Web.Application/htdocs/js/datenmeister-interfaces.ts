@@ -71,10 +71,10 @@ export module ReturnModule {
 }
 
 export module PostModels {
-    export class WorkspaceCreateModel {
-        title: string;
+    export interface IWorkspaceCreateModel {
+        name: string;
         annotation: string;
-        type: string;
+        type?: string;
     }
 
     /** This class is used to reference a single object within the database */
@@ -120,6 +120,11 @@ export namespace Api {
     export class FieldConfiguration {
         propertyName: string;
         title: string;
+
+        constructor(propertyName?: string, title?: string) {
+            this.propertyName = propertyName;
+            this.title = title;
+        }
     }
 
     export class FormForItemConfiguration {

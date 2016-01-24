@@ -1,6 +1,6 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/jquery/underscore.d.ts" />
-define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", "datenmeister-ribbon", "datenmeister-layout"], function (require, exports, DMHelper, DMI, DMRibbon, DMLayout) {
+define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", "datenmeister-client", "datenmeister-ribbon", "datenmeister-layout"], function (require, exports, DMHelper, DMI, DMClient, DMRibbon, DMLayout) {
     function start() {
         $(document).ready(function () {
             window.onpopstate = function (ev) {
@@ -15,6 +15,7 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
         var extentUrl = DMHelper.getParameterByNameFromHash("ext");
         var itemUrl = DMHelper.getParameterByNameFromHash("item");
         var layout = new DMLayout.Layout($("body"));
+        layout.onLayoutChanged = function (data) { return buildRibbons(layout, data); };
         if (ws === "") {
             layout.showWorkspaces();
         }
@@ -27,11 +28,10 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
         else {
             layout.showItem(ws, extentUrl, itemUrl);
         }
-        buildRibbons(layout);
         $(".body-content").show();
     }
     exports.parseAndNavigateToWindowLocation = parseAndNavigateToWindowLocation;
-    function buildRibbons(layout) {
+    function buildRibbons(layout, changeEvent) {
         var domRibbon = $(".datenmeister-ribbon");
         var ribbon = new DMRibbon.Ribbon(domRibbon);
         var tab1 = ribbon.addTab("File");
@@ -39,15 +39,25 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
         tab1.addIcon("Workspaces", "img/icons/database", function () { layout.showWorkspaces(); });
         tab1.addIcon("Add Workspace", "img/icons/database-add", function () {
             var configuration = new DMI.Api.FormForItemConfiguration();
-            configuration.onOkForm = function (data) { alert(data); };
-            configuration.onCancelForm = function () { alert("CANCEL"); };
-            var column = new DMI.Api.FieldConfiguration();
-            column.propertyName = "title";
-            column.title = "Title";
+            configuration.onOkForm = function (data) {
+                DMClient.WorkspaceApi.createWorkspace({
+                    name: data.v["name"],
+                    annotation: data.v["annotation"]
+                })
+                    .done(function () { return layout.navigateToWorkspaces(); });
+            };
+            var column = new DMI.Api.FieldConfiguration("name", "Title");
+            configuration.addColumn(column);
+            column = new DMI.Api.FieldConfiguration("annotation", "Annotation");
             configuration.addColumn(column);
             layout.navigateToDialog(configuration);
         });
-        tab1.addIcon("Delete Workspace", "img/icons/database-delete", function () { alert("X"); });
+        if (changeEvent.workspace !== undefined) {
+            tab1.addIcon("Delete Workspace", "img/icons/database-delete", function () {
+                DMClient.WorkspaceApi.deleteWorkspace(changeEvent.workspace)
+                    .done(function () { return layout.navigateToWorkspaces(); });
+            });
+        }
         tab1.addIcon("Close", "img/icons/close_window", function () { window.close(); });
     }
 });

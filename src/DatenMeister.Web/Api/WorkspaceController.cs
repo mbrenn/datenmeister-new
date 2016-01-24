@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Web.Http;
+using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Web.Models.PostModels;
@@ -35,9 +37,22 @@ namespace DatenMeister.Web.Api
         }
 
         [Route("create")]
+        [HttpPost]
         public object Create([FromBody] WorkspaceCreateModel model)
         {
-            throw new NotImplementedException();
+            var workspace = new Workspace<IExtent>(model.name, model.annotation);
+            _workspaceCollection.AddWorkspace(workspace);
+
+            return new {success = true};
+        }
+
+        [Route("delete")]
+        [HttpPost]
+        public object Delete([FromBody] WorkspaceDeleteModel model)
+        {
+            _workspaceCollection.RemoveWorkspace(model.name);
+
+            return new { success = true };
         }
     }
 }

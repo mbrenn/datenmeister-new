@@ -33,6 +33,23 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             return callback;
         }
         WorkspaceApi.createWorkspace = createWorkspace;
+        function deleteWorkspace(workspace) {
+            var callback = $.Deferred();
+            $.ajax({
+                url: "/api/datenmeister/workspace/delete",
+                method: "POST",
+                data: { name: workspace },
+                cache: false,
+                success: function (data) {
+                    callback.resolve(true);
+                },
+                error: function (data) {
+                    callback.reject(false);
+                }
+            });
+            return callback;
+        }
+        WorkspaceApi.deleteWorkspace = deleteWorkspace;
     })(WorkspaceApi = exports.WorkspaceApi || (exports.WorkspaceApi = {}));
     var ExtentApi;
     (function (ExtentApi) {

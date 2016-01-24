@@ -43,11 +43,9 @@ namespace DatenMeister
 
         public override string ToString()
         {
-            if (!string.IsNullOrEmpty(annotation))
-            {
-                return $"({id}) {annotation}";
-            }
-            return $"({id})";
+            return !string.IsNullOrEmpty(annotation) 
+                ? $"({id}) {annotation}" 
+                : $"({id})";
         }
     }
 }

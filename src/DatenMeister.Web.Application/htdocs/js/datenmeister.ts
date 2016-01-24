@@ -26,6 +26,7 @@ export function parseAndNavigateToWindowLocation() {
     var itemUrl = DMHelper.getParameterByNameFromHash("item");
 
     var layout = new DMLayout.Layout($("body"));
+    layout.onLayoutChanged = (data) => buildRibbons(layout, data);
 
     if (ws === "") {
         layout.showWorkspaces();
@@ -36,13 +37,12 @@ export function parseAndNavigateToWindowLocation() {
     } else {
         layout.showItem(ws, extentUrl, itemUrl);
     }
-
-    buildRibbons(layout);
+    
 
     $(".body-content").show();
 }
 
-function buildRibbons(layout: DMLayout.Layout) {
+function buildRibbons(layout: DMLayout.Layout, changeEvent: DMLayout.ILayoutChangedEvent) {
     var domRibbon = $(".datenmeister-ribbon");
     var ribbon = new DMRibbon.Ribbon(domRibbon);
     var tab1 = ribbon.addTab("File");
@@ -52,16 +52,29 @@ function buildRibbons(layout: DMLayout.Layout) {
     tab1.addIcon("Workspaces", "img/icons/database", () => { layout.showWorkspaces(); });
     tab1.addIcon("Add Workspace", "img/icons/database-add", () => {
         var configuration = new DMI.Api.FormForItemConfiguration();
-        configuration.onOkForm = data => { alert(data); };
-        configuration.onCancelForm = () => { alert("CANCEL"); };
-        var column = new DMI.Api.FieldConfiguration();
-        column.propertyName = "title";
-        column.title = "Title";
+        configuration.onOkForm = data => {
+            DMClient.WorkspaceApi.createWorkspace(
+                {
+                    name: data.v["name"],
+                    annotation: data.v["annotation"]
+                })
+                .done(() => layout.navigateToWorkspaces());
+        };
+
+        var column = new DMI.Api.FieldConfiguration("name", "Title");
         configuration.addColumn(column);
+        column = new DMI.Api.FieldConfiguration("annotation", "Annotation");
+        configuration.addColumn(column);
+
         layout.navigateToDialog(configuration);
     });
-    tab1.addIcon("Delete Workspace", "img/icons/database-delete", () => { alert("X") });
+
+    if (changeEvent.workspace !== undefined) {
+        tab1.addIcon("Delete Workspace", "img/icons/database-delete", () => {
+            DMClient.WorkspaceApi.deleteWorkspace(changeEvent.workspace)
+                .done(() => layout.navigateToWorkspaces());
+        });
+    }
 
     tab1.addIcon("Close", "img/icons/close_window", () => { window.close(); });
-
 }

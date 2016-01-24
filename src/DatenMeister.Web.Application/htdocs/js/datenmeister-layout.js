@@ -44,6 +44,7 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
             tableConfiguration.autoProperties = false;
             tableConfiguration.columns = configuration.columns;
             tableConfiguration.startWithEditMode = true;
+            tableConfiguration.supportNewProperties = false;
             tableConfiguration.onCancelForm = function () {
                 _this.switchLayout(oldPageType);
                 if (configuration.onCancelForm !== undefined) {
@@ -58,6 +59,7 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
             };
             var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
             itemTable.show(domTable);
+            this.switchLayout(PageType.Dialog);
         };
         Layout.prototype.showWorkspaces = function () {
             var tthis = this;
@@ -72,7 +74,7 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
         };
         Layout.prototype.showExtents = function (workspaceId) {
             var tthis = this;
-            tthis.switchLayout(PageType.Extents);
+            tthis.switchLayout(PageType.Extents, workspaceId);
             tthis.createTitle(workspaceId);
             var extentLogic = new DMView.ExtentView();
             extentLogic.onExtentSelected = function (ws, extentUrl) {
@@ -83,7 +85,7 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
         };
         Layout.prototype.showItems = function (workspaceId, extentUrl) {
             var tthis = this;
-            this.switchLayout(PageType.Items);
+            this.switchLayout(PageType.Items, workspaceId, extentUrl);
             this.createTitle(workspaceId, extentUrl);
             var extentLogic = new DMView.ExtentView(this);
             extentLogic.onItemSelected = function (ws, extentUrl, itemUrl) {
@@ -95,7 +97,7 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
             extentLogic.loadAndCreateHtmlForExtent($(".data-items", this.parent), workspaceId, extentUrl);
         };
         Layout.prototype.showItem = function (workspaceId, extentUrl, itemUrl) {
-            this.switchLayout(PageType.ItemDetail);
+            this.switchLayout(PageType.ItemDetail, workspaceId, extentUrl, itemUrl);
             var extentLogic = new DMView.ItemView(this);
             this.createTitle(workspaceId, extentUrl, itemUrl);
             extentLogic.loadAndCreateHtmlForItem($(".data-itemdetail", this.parent), workspaceId, extentUrl, itemUrl);
@@ -144,11 +146,12 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
                 return false;
             });
         };
-        Layout.prototype.switchLayout = function (pageType) {
+        Layout.prototype.switchLayout = function (pageType, workspace, extent, item) {
             $(".only-workspaces").hide();
             $(".only-extents").hide();
             $(".only-items").hide();
             $(".only-itemdetail").hide();
+            $(".only-dialog").hide();
             if (pageType === PageType.Workspaces) {
                 $(".only-workspaces").show();
             }
@@ -165,11 +168,22 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
                 $(".only-dialog").show();
             }
             this.currentPageType = pageType;
+            this.throwLayoutChangedEvent({
+                type: pageType,
+                workspace: workspace,
+                extent: extent,
+                item: item
+            });
         };
         Layout.prototype.setStatus = function (statusDom) {
             var dom = $(".dm-statusline");
             dom.empty();
             dom.append(statusDom);
+        };
+        Layout.prototype.throwLayoutChangedEvent = function (data) {
+            if (this.onLayoutChanged !== undefined) {
+                this.onLayoutChanged(data);
+            }
         };
         return Layout;
     })();

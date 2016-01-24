@@ -85,9 +85,22 @@ textarea {
     vertical-align: top;
     margin: 0px;
     padding: 0px;
-    cursor: pointer;
+    cursor: pointer;    
 }
 
+    .dm-icon-container img{
+        border-left: 1px solid white;
+        border-right: 1px solid white;
+        border-bottom: 1px solid white;
+    }
+    .dm-icon-container img:hover{
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+
+    }
+
+    /* Settings for the title text */
     .dm-icon-container div {
         text-align: center;
         margin: 0px;

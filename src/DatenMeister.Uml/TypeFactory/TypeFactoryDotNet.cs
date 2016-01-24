@@ -18,6 +18,11 @@ namespace DatenMeister.Uml.TypeFactory
             _factory = factory;
         }
 
+        /// <summary>
+        /// Creates a new dot net type
+        /// </summary>
+        /// <param name="type">DotNet Type to be converted to a Umlelement</param>
+        /// <returns>The Uml element</returns>
         public IElement CreateFromDotNetType(Type type)
         {
             var classAsIElement = _uml.StructuredClassifiers.__Class as IElement;

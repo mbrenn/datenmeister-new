@@ -3,6 +3,7 @@ using System.IO;
 using System.Xml.Linq;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.XMI.Standards;
 
 namespace DatenMeister.XMI
 {
@@ -74,6 +75,13 @@ namespace DatenMeister.XMI
             foreach (var attribute in element.Attributes())
             {
                 result.set(attribute.Name.ToString(), attribute.Value);
+            }
+
+            // Check, if element has id
+            var xmiId = XmiId.Get(element);
+            if (xmiId != null)
+            {
+                idToElement[xmiId] = result;
             }
 
             var dict = new Dictionary<string, List<object>>();

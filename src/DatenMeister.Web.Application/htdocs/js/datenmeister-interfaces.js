@@ -6,6 +6,14 @@ var __extends = (this && this.__extends) || function (d, b) {
 define(["require", "exports"], function (require, exports) {
     ;
     ;
+    var DataTableItem = (function () {
+        function DataTableItem() {
+            this.uri = "local:///";
+            this.v = new Array();
+        }
+        return DataTableItem;
+    })();
+    exports.DataTableItem = DataTableItem;
     var ItemInExtentQuery = (function () {
         function ItemInExtentQuery() {
         }
@@ -14,6 +22,12 @@ define(["require", "exports"], function (require, exports) {
     exports.ItemInExtentQuery = ItemInExtentQuery;
     var PostModels;
     (function (PostModels) {
+        var WorkspaceCreateModel = (function () {
+            function WorkspaceCreateModel() {
+            }
+            return WorkspaceCreateModel;
+        })();
+        PostModels.WorkspaceCreateModel = WorkspaceCreateModel;
         /** This class is used to reference a single object within the database */
         var ExtentReferenceModel = (function () {
             function ExtentReferenceModel() {
@@ -70,5 +84,24 @@ define(["require", "exports"], function (require, exports) {
         })(ItemReferenceModel);
         PostModels.ItemSetPropertiesModel = ItemSetPropertiesModel;
     })(PostModels = exports.PostModels || (exports.PostModels = {}));
+    var Api;
+    (function (Api) {
+        var FieldConfiguration = (function () {
+            function FieldConfiguration() {
+            }
+            return FieldConfiguration;
+        })();
+        Api.FieldConfiguration = FieldConfiguration;
+        var FormForItemConfiguration = (function () {
+            function FormForItemConfiguration() {
+                this.columns = new Array();
+            }
+            FormForItemConfiguration.prototype.addColumn = function (column) {
+                this.columns[this.columns.length] = column;
+            };
+            return FormForItemConfiguration;
+        })();
+        Api.FormForItemConfiguration = FormForItemConfiguration;
+    })(Api = exports.Api || (exports.Api = {}));
 });
 //# sourceMappingURL=datenmeister-interfaces.js.map

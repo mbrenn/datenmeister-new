@@ -215,12 +215,6 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
         return ItemListTable;
     })();
     exports.ItemListTable = ItemListTable;
-    var ItemColumnConfiguration = (function () {
-        function ItemColumnConfiguration() {
-        }
-        return ItemColumnConfiguration;
-    })();
-    exports.ItemColumnConfiguration = ItemColumnConfiguration;
     var ItemContentConfiguration = (function () {
         function ItemContentConfiguration() {
             this.startWithEditMode = true;
@@ -261,7 +255,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                 this.configuration.columns.length = 0;
                 for (var property in propertyValue) {
                     if (propertyValue.hasOwnProperty(property)) {
-                        column = new ItemColumnConfiguration();
+                        column = new DMI.Api.FieldConfiguration();
                         column.title = property;
                         column.propertyName = property;
                         this.configuration.columns[this.configuration.columns.length] = column;

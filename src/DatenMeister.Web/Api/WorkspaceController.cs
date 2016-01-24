@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Http;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Web.Models.PostModels;
 
 namespace DatenMeister.Web.Api
 {
@@ -30,6 +32,12 @@ namespace DatenMeister.Web.Api
             }
 
             return result;
+        }
+
+        [Route("create")]
+        public object Create([FromBody] WorkspaceCreateModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

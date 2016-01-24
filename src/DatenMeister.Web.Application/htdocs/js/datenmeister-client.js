@@ -16,6 +16,23 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             return callback;
         }
         WorkspaceApi.getAllWorkspaces = getAllWorkspaces;
+        function createWorkspace(model) {
+            var callback = $.Deferred();
+            $.ajax({
+                url: "/api/datenmeister/workspace/create",
+                method: "POST",
+                data: model,
+                cache: false,
+                success: function (data) {
+                    callback.resolve(true);
+                },
+                error: function (data) {
+                    callback.reject(false);
+                }
+            });
+            return callback;
+        }
+        WorkspaceApi.createWorkspace = createWorkspace;
     })(WorkspaceApi = exports.WorkspaceApi || (exports.WorkspaceApi = {}));
     var ExtentApi;
     (function (ExtentApi) {

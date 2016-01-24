@@ -281,14 +281,9 @@ export class ItemListTable {
     }
 }
 
-export class ItemColumnConfiguration {
-    propertyName: string;
-    title: string;
-}
-
 export class ItemContentConfiguration {
     autoProperties: boolean;
-    columns: Array<ItemColumnConfiguration>;
+    columns: Array<DMI.Api.FieldConfiguration>;
 
     // Gets or sets a flag, that the user can change the content of a property within the table. 
     // If the editing was performed, the onEditProperty-function will get called
@@ -316,10 +311,10 @@ export class ItemContentConfiguration {
         this.deleteFunction = (url: string, property: string, domRow: JQuery) => false;
         this.supportInlineEditing = true;
         this.supportNewProperties = true;
-        this.columns = new Array<ItemColumnConfiguration>();
+        this.columns = new Array<DMI.Api.FieldConfiguration>();
     }
 
-    addColumn(column: ItemColumnConfiguration) {
+    addColumn(column: DMI.Api.FieldConfiguration) {
         this.columns[this.columns.length] = column;
     }
 }
@@ -351,13 +346,13 @@ export class ItemContentTable {
         domTable.append(domRow);
 
         var propertyValue = this.item.v;
-        var column: ItemColumnConfiguration;
+        var column: DMI.Api.FieldConfiguration;
 
         if (this.configuration.autoProperties) {
             this.configuration.columns.length = 0;
             for (let property in propertyValue) {
                 if (propertyValue.hasOwnProperty(property)) {
-                    column = new ItemColumnConfiguration();
+                    column = new DMI.Api.FieldConfiguration();
                     column.title = property;
                     column.propertyName = property;
                     this.configuration.columns[this.configuration.columns.length] = column;
@@ -395,7 +390,7 @@ export class ItemContentTable {
 
                 // Add Edit link
                 let domEditColumn = $("<td class='hl table_column_edit'><button class='btn btn-default'>EDIT</button></td>");
-                $("a", domEditColumn).click((function(url: string, column: ItemColumnConfiguration, idomRow: JQuery, idomA: JQuery) {
+                $("a", domEditColumn).click((function (url: string, column: DMI.Api.FieldConfiguration, idomRow: JQuery, idomA: JQuery) {
                     return function() {
                         if (tthis.configuration.supportInlineEditing) {
                             tthis.startInlineEditing(column, idomRow);
@@ -409,7 +404,7 @@ export class ItemContentTable {
 
                 let domDeleteColumn = $("<td class='hl table_column_delete'><button class='btn btn-default'>DELETE</button></td>");
                 var domA = $("a", domDeleteColumn);
-                $("a", domDeleteColumn).click((function(url: string, column: ItemColumnConfiguration, idomRow: JQuery, idomA: JQuery) {
+                $("a", domDeleteColumn).click((function(url: string, column: DMI.Api.FieldConfiguration, idomRow: JQuery, idomA: JQuery) {
                     return function() {
                         if (idomA.data("wasClicked") === true) {
                             return tthis.configuration.deleteFunction(url, column.propertyName, idomRow);
@@ -468,13 +463,13 @@ export class ItemContentTable {
         }
     }
 
-    getDomForEditField(column: ItemColumnConfiguration) {
+    getDomForEditField(column: DMI.Api.FieldConfiguration) {
         var domTextBox = $("<input type='textbox' class='form-control' />");
         domTextBox.val(this.item.v[column.propertyName]);
         return domTextBox;
     }
 
-    startInlineEditing(column: ItemColumnConfiguration, domRow: JQuery) {
+    startInlineEditing(column: DMI.Api.FieldConfiguration, domRow: JQuery) {
         var tthis = this;
         var domValue = $(".table_column_value", domRow);
         domValue.empty();

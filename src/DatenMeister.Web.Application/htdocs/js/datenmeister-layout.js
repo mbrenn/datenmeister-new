@@ -1,9 +1,10 @@
-define(["require", "exports", "datenmeister-view"], function (require, exports, DMView) {
+define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "datenmeister-tables"], function (require, exports, DMI, DMView, DMTables) {
     (function (PageType) {
         PageType[PageType["Workspaces"] = 0] = "Workspaces";
         PageType[PageType["Extents"] = 1] = "Extents";
         PageType[PageType["Items"] = 2] = "Items";
         PageType[PageType["ItemDetail"] = 3] = "ItemDetail";
+        PageType[PageType["Dialog"] = 4] = "Dialog";
     })(exports.PageType || (exports.PageType = {}));
     var PageType = exports.PageType;
     var Layout = (function () {
@@ -34,7 +35,29 @@ define(["require", "exports", "datenmeister-view"], function (require, exports, 
                 + "&item=" + encodeURIComponent(itemUrl));
             this.showItem(ws, extentUrl, itemUrl);
         };
-        Layout.prototype.navigateToDialog = function () {
+        Layout.prototype.navigateToDialog = function (configuration) {
+            var _this = this;
+            var oldPageType = this.currentPageType;
+            var domTable = $(".data-dialog", this.parent);
+            var value = new DMI.DataTableItem();
+            var tableConfiguration = new DMTables.ItemContentConfiguration();
+            tableConfiguration.autoProperties = false;
+            tableConfiguration.columns = configuration.columns;
+            tableConfiguration.startWithEditMode = true;
+            tableConfiguration.onCancelForm = function () {
+                _this.switchLayout(oldPageType);
+                if (configuration.onCancelForm !== undefined) {
+                    configuration.onCancelForm();
+                }
+            };
+            tableConfiguration.onOkForm = function () {
+                _this.switchLayout(oldPageType);
+                if (configuration.onOkForm !== undefined) {
+                    configuration.onOkForm(value);
+                }
+            };
+            var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
+            itemTable.show(domTable);
         };
         Layout.prototype.showWorkspaces = function () {
             var tthis = this;
@@ -138,6 +161,10 @@ define(["require", "exports", "datenmeister-view"], function (require, exports, 
             else if (pageType === PageType.ItemDetail) {
                 $(".only-itemdetail").show();
             }
+            else if (pageType === PageType.Dialog) {
+                $(".only-dialog").show();
+            }
+            this.currentPageType = pageType;
         };
         Layout.prototype.setStatus = function (statusDom) {
             var dom = $(".dm-statusline");

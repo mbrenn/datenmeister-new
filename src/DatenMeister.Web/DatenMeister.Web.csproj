@@ -100,6 +100,7 @@
     <Compile Include="Models\PostModels\ItemSetPropertiesModel.cs" />
     <Compile Include="Models\PostModels\ItemSetPropertyModel.cs" />
     <Compile Include="Models\PostModels\ItemUnsetPropertyModel.cs" />
+    <Compile Include="Models\PostModels\WorkspaceCreateModel.cs" />
     <Compile Include="Models\WorkspaceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

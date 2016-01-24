@@ -35,6 +35,17 @@ export interface IDataTableItem {
     v: Array<string>;
 }
 
+export class DataTableItem {
+    // Stores the url of the object which can be used for reference
+    uri: string;
+    v: Array<string>;
+
+    constructor() {
+        this.uri = "local:///";
+        this.v = new Array<string>();
+    }
+}
+
 export interface IItemTableQuery {
     searchString?: string;
     offset?: number;
@@ -60,6 +71,11 @@ export module ReturnModule {
 }
 
 export module PostModels {
+    export class WorkspaceCreateModel {
+        title: string;
+        annotation: string;
+        type: string;
+    }
 
     /** This class is used to reference a single object within the database */
     export class ExtentReferenceModel {
@@ -100,4 +116,26 @@ export namespace Api {
         navigateToItem(ws: string, extentUrl: string, itemUrl: string): void;
         setStatus(statusDom: JQuery): void;
     }
+    
+    export class FieldConfiguration {
+        propertyName: string;
+        title: string;
+    }
+
+    export class FormForItemConfiguration {
+        columns: Array<FieldConfiguration>;
+
+        onOkForm: (data: any) => void;
+        onCancelForm: () => void;
+
+        constructor() {
+            this.columns = new Array<FieldConfiguration>();
+        }
+
+        addColumn(column: FieldConfiguration): void {
+            this.columns[this.columns.length] = column;
+        }
+    }
+
+    
 }

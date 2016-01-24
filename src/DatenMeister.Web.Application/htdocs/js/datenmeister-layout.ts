@@ -1,18 +1,21 @@
 ﻿
 import DMI = require("datenmeister-interfaces");
 import DMView = require("datenmeister-view");
+import DMTables = require("datenmeister-tables");
 
 
 export enum PageType {
     Workspaces,
     Extents,
     Items,
-    ItemDetail
+    ItemDetail,
+    Dialog
 }
 
 export class Layout implements DMI.Api.ILayout {
     parent: JQuery;
     onRefresh: () => void;
+    currentPageType: PageType;
 
     constructor(parent: JQuery) {
         this.parent = parent;
@@ -47,10 +50,33 @@ export class Layout implements DMI.Api.ILayout {
         this.showItem(ws, extentUrl, itemUrl);
     }
 
-    navigateToDialog() {
-        
-    }
+    navigateToDialog(configuration: DMI.Api.FormForItemConfiguration) {
+        var oldPageType = this.currentPageType;
 
+        var domTable = $(".data-dialog", this.parent);
+        var value = new DMI.DataTableItem();
+        var tableConfiguration = new DMTables.ItemContentConfiguration();
+        tableConfiguration.autoProperties = false;
+        tableConfiguration.columns = configuration.columns;
+        tableConfiguration.startWithEditMode = true;
+        tableConfiguration.onCancelForm = () => {
+            this.switchLayout(oldPageType);
+
+            if (configuration.onCancelForm !== undefined) {
+                configuration.onCancelForm();
+            }
+        };
+
+        tableConfiguration.onOkForm = () => {  
+            this.switchLayout(oldPageType);
+            if (configuration.onOkForm !== undefined) {
+                configuration.onOkForm(value);
+            }
+        }
+
+        var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
+        itemTable.show(domTable);
+    }
 
     showWorkspaces() {
         var tthis = this;
@@ -161,7 +187,11 @@ export class Layout implements DMI.Api.ILayout {
             $(".only-items").show();
         } else if (pageType === PageType.ItemDetail) {
             $(".only-itemdetail").show();
+        } else if (pageType === PageType.Dialog) {
+            $(".only-dialog").show();
         }
+
+        this.currentPageType = pageType;
     }
 
     setStatus(statusDom: JQuery): void {

@@ -50,7 +50,16 @@ function buildRibbons(layout: DMLayout.Layout) {
     tab1.addIcon("Refresh", "img/icons/refresh_update", () => { layout.refreshView(); });
 
     tab1.addIcon("Workspaces", "img/icons/database", () => { layout.showWorkspaces(); });
-    tab1.addIcon("Add Workspace", "img/icons/database-add", () => { alert("X") });
+    tab1.addIcon("Add Workspace", "img/icons/database-add", () => {
+        var configuration = new DMI.Api.FormForItemConfiguration();
+        configuration.onOkForm = data => { alert(data); };
+        configuration.onCancelForm = () => { alert("CANCEL"); };
+        var column = new DMI.Api.FieldConfiguration();
+        column.propertyName = "title";
+        column.title = "Title";
+        configuration.addColumn(column);
+        layout.navigateToDialog(configuration);
+    });
     tab1.addIcon("Delete Workspace", "img/icons/database-delete", () => { alert("X") });
 
     tab1.addIcon("Close", "img/icons/close_window", () => { window.close(); });

@@ -17,6 +17,24 @@ export module WorkspaceApi {
 
         return callback;
     }
+
+    export function createWorkspace(model: DMI.PostModels.WorkspaceCreateModel): JQueryPromise<boolean> {
+        var callback = $.Deferred();
+        $.ajax({
+            url: "/api/datenmeister/workspace/create",
+            method: "POST",
+            data: model,
+            cache: false,
+            success: data => {
+                callback.resolve(true);
+            },
+            error: data => {
+                callback.reject(false);
+            }
+        });
+
+        return callback;
+    }
 }
 
 export module ExtentApi {

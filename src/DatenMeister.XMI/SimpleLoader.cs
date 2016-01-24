@@ -18,6 +18,8 @@ namespace DatenMeister.XMI
         /// </summary>
         private Workspace<IUriExtent> _metaWorkspace;
 
+        private Dictionary<string, IElement> idToElement = new Dictionary<string, IElement>(); 
+
         /// <summary>
         ///     Initializes a new instance of the Loader class.
         /// </summary>

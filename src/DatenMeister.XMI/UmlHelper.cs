@@ -81,7 +81,7 @@ namespace DatenMeister.XMI
             var elementAsExt = (IObjectAllProperties) element;
             if (elementAsExt == null)
             {
-                throw new ArgumentNullException("element is not Null");
+                throw new ArgumentNullException("element");
             }
 
             var attributeXmi = "{" + Namespaces.Xmi + "}type";

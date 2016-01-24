@@ -72,6 +72,7 @@ namespace DatenMeister.Runtime.Workspaces
         {
             _workspaces = new List<Workspace<IExtent>>();
             AddWorkspace(new Workspace<IExtent>("Data", "All the data workspaces"));
+            AddWorkspace(new Workspace<IExtent>("Meta", "The meta information. "));
             Debug.WriteLine("DatenMeister Webcore initialized");
         }
     }

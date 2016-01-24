@@ -127,6 +127,9 @@
     <None Include="Xmi\MOF.xmi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Xmi\PrimitiveTypes.xmi">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Xmi\UML.xmi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

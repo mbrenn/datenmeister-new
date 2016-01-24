@@ -46,7 +46,7 @@ namespace DatenMeister.Tests.Xmi
         /// <param name="uml">Uml instance to be returned</param>
         public static void CreateUmlAndMofInstance(out _MOF mof, out _UML uml)
         {
-            var strapper = Bootstrapper.PerformFullBootstrap("Xmi/UML.xmi", "Xmi/MOF.xmi");
+            var strapper = Bootstrapper.PerformFullBootstrap("Xmi/PrimitiveTypes.xmi", "Xmi/UML.xmi", "Xmi/MOF.xmi");
             Assert.That(strapper, Is.Not.Null);
             Assert.That(strapper.UmlInfrastructure, Is.Not.Null);
 

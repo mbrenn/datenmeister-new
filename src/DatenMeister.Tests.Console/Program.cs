@@ -57,7 +57,7 @@ namespace DatenMeister.Tests.Console
 
             var watch = new Stopwatch();
             watch.Start();
-            var fullStrap = Bootstrapper.PerformFullBootstrap("data/UML.xmi", "data/MOF.xmi");
+            var fullStrap = Bootstrapper.PerformFullBootstrap("data/PrimitiveTypes", "data/UML.xmi", "data/MOF.xmi");
             watch.Stop();
 
             var descendents = AllDescendentsQuery.getDescendents(fullStrap.UmlInfrastructure);

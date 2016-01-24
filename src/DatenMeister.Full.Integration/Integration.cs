@@ -8,6 +8,7 @@ using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.XMI.UmlBootstrap;
 using Ninject;
 
 namespace DatenMeister.Full.Integration
@@ -37,9 +38,16 @@ namespace DatenMeister.Full.Integration
             kernel.Bind<ExtentStorageData>().ToConstant(extentStorageData);
             kernel.Bind<IExtentStorageLogic>().To<ExtentStorageLogic>();
 
+            // Load the default extents
             // Load the primitivetypes
             var primitiveTypes = new _PrimitiveTypes();
             kernel.Bind<_PrimitiveTypes>().ToConstant(primitiveTypes);
+
+            var strapper = Bootstrapper.PerformFullBootstrap("App_Data/PrimitiveTypes.xmi", "App_Data/UML.xmi", "App_Data/MOF.xmi");
+            var metaWorkspace = workspaceCollection.GetWorkspace("Meta");
+            metaWorkspace.AddExtent(strapper.PrimitiveInfrastructure);
+            metaWorkspace.AddExtent(strapper.MofInfrastructure);
+            metaWorkspace.AddExtent(strapper.UmlInfrastructure);
         }
 
         public static void PerformAutomaticMappingByAttribute(this DefaultFactoryMapper mapper)

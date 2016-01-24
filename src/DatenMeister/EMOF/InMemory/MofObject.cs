@@ -28,7 +28,7 @@ namespace DatenMeister.EMOF.InMemory
 
         object IHasId.Id
         {
-            get { return this.guid; }
+            get { return guid; }
         }
 
         public bool equals(object other)
@@ -64,7 +64,7 @@ namespace DatenMeister.EMOF.InMemory
 
         public void unset(object property)
         {
-            values[property] = null;
+            values.Remove(property);
         }
 
         /// <summary>

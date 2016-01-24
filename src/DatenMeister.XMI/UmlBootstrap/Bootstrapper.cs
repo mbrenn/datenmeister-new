@@ -76,6 +76,7 @@ namespace DatenMeister.XMI.UmlBootstrap
             // First, find the all classes of the uml namespace...            
             var descendents = AllDescendentsQuery.getDescendents(UmlInfrastructure);
             var typeProperty = (Namespaces.Xmi + "type").ToString();
+            var idProperty = (Namespaces.Xmi + "id").ToString();
             var allClasses = descendents
                 .Where(x => x.isSet(typeProperty) && x.get(typeProperty).ToString() == "uml:Class");
             foreach (var classInstance in allClasses.Cast<IElement>())
@@ -95,9 +96,12 @@ namespace DatenMeister.XMI.UmlBootstrap
             }
 
             // Ok, finally, set the metaclasses on base of the found classes
-            allClasses = descendents
-                .Where(x => x.isSet(typeProperty));
-            foreach (var classInstance in allClasses)
+            allClasses =
+                AllDescendentsQuery.getDescendents(MofInfrastructure)
+                    .Union(AllDescendentsQuery.getDescendents(UmlInfrastructure))
+                    .Union(AllDescendentsQuery.getDescendents(PrimitiveInfrastructure));
+                
+            foreach (var classInstance in allClasses.Where(x => x.isSet(typeProperty)))
             {
                 var name = classInstance.get(typeProperty).ToString();
                 if (name.StartsWith("uml:"))
@@ -114,7 +118,17 @@ namespace DatenMeister.XMI.UmlBootstrap
                 {
                     throw new InvalidOperationException($"Found unknown class: {name}");
                 }
+
+                // We strip out the property and id information. 
+                // It is not really required 
+                classInstance.unset(typeProperty);
             }
+
+            foreach (var classInstance in allClasses)
+            {
+                classInstance.unset(idProperty);
+            }
+
         }
 
         /// <summary>

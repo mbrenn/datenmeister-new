@@ -120,6 +120,12 @@ textarea {
     width: 5em;
 }
 
+.data-items table {
+    table-layout: fixed;
+    width: 100%;
+    word-wrap: break-word;
+}
+
 .dm-statusline {
     position: fixed;
     width: 100%;

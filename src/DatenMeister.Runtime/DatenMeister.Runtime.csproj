@@ -39,6 +39,8 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Copier\ExtentCopier.cs" />
+    <Compile Include="Copier\ObjectCopier.cs" />
     <Compile Include="ExtentStorage\ExtentStorageData.cs" />
     <Compile Include="ExtentStorage\IExtentStorageLogic.cs" />
     <Compile Include="Workspaces\Extension.cs" />

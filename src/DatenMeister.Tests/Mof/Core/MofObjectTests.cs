@@ -69,6 +69,7 @@ namespace DatenMeister.Tests.Mof.Core
             Assert.That(returned, Is.TypeOf<ProxyMofElement>());
 
             var proxiedElement = returned as ProxyMofElement;
+            Assert.That(proxiedElement, Is.Not.Null);
             Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<MofElement>());
 
             Assert.That(proxiedUriExtent.elements().remove(proxiedElement), Is.True);

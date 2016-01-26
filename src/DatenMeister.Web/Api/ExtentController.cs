@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -101,7 +102,7 @@ namespace DatenMeister.Web.Api
             var foundItems = totalItems;
 
             var columnCreator = new ColumnCreator();
-            var columns = columnCreator.GetColumnsForTable(foundExtent);
+            var columns = columnCreator.GetColumnsForTable(foundExtent).ToList();
             var properties = columnCreator.Properties;
 
             // Perform the filtering
@@ -136,7 +137,7 @@ namespace DatenMeister.Web.Api
             var result = new ExtentContentModel
             {
                 url = extent,
-                columns = columns.ToList(),
+                columns = columns,
                 totalItemCount = totalItems.Count(),
                 search = search,
                 filteredItemCount = filteredAmount,
@@ -144,10 +145,50 @@ namespace DatenMeister.Web.Api
                     .Select(x => new DataTableItem
                     {
                         uri = foundExtent.uri(x as IElement),
-                        v = (x as IElement).AsStringDictionary(properties)
+                        v = ConvertToJson(x as IElement, columnCreator)
                     })
                     .ToList()
             };
+
+            return result;
+        }
+
+        private static Dictionary<string, object> ConvertToJson(IObject element, ColumnCreator creator)
+        {
+            var result = new Dictionary<string, object>();
+
+            foreach (var property in creator.Properties
+                .Where(property => element.isSet(property)))
+            {
+                var propertyAsString = property.ToString();
+                var propertyValue = element.get(property);
+
+                if (creator.ColumnsOnProperty[property].isEnumeration)
+                {
+                    if (propertyValue is IEnumerable && !(propertyValue is string))
+                    {
+                        var list = new List<object>();
+                        foreach (var listValue in (propertyValue as IEnumerable))
+                        {
+                            list.Add(new
+                            {
+                                u = "xyz",
+                                v = listValue == null ? "null" : listValue.ToString()
+                            });
+                        }
+
+                        result[propertyAsString] = list;
+                    }
+                    else
+                    {
+                        result[propertyAsString] = propertyValue == null ? "null" : propertyValue.ToString();
+                    }
+                }
+                else
+                {
+                    result[propertyAsString] = propertyValue == null ? "null" : propertyValue.ToString();
+                }
+            }
 
             return result;
         }

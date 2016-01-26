@@ -12,11 +12,11 @@ namespace DatenMeister.Web.Helper
 {
     public class ColumnCreator
     {
-        public List<object>  Properties { get; private set; }
+        public Dictionary<object, DataTableColumn> ColumnsOnProperty { get; private set; }
 
-        public ColumnCreator()
+        public IList<object> Properties
         {
-            Properties = new List<object>();
+            get { return ColumnsOnProperty.Select(x => x.Key).ToList(); }
         }
 
         public IEnumerable<DataTableColumn> GetColumnsForTable(IUriExtent extent)
@@ -26,7 +26,7 @@ namespace DatenMeister.Web.Helper
 
         private IEnumerable<DataTableColumn> GetColumnsForTable(IReflectiveSequence elements)
         {
-            var result = new Dictionary<object, DataTableColumn>();
+            ColumnsOnProperty = new Dictionary<object, DataTableColumn>();
             foreach (var item in elements)
             {
                 if (item is IObjectAllProperties)
@@ -37,7 +37,7 @@ namespace DatenMeister.Web.Helper
                     foreach (var property in properties)
                     {
                         DataTableColumn column;
-                        if (!result.TryGetValue(property, out column))
+                        if (!ColumnsOnProperty.TryGetValue(property, out column))
                         {
                             column = new DataTableColumn
                             {
@@ -45,9 +45,7 @@ namespace DatenMeister.Web.Helper
                                 title = property.ToString()
                             };
 
-                            Properties.Add(property);
-
-                            result[property] = column;
+                            ColumnsOnProperty[property] = column;
                         }
 
                         var value = ((IObject) item).get(property);
@@ -56,7 +54,7 @@ namespace DatenMeister.Web.Helper
                 }
             }
 
-            return result.Select(x => x.Value);
+            return ColumnsOnProperty.Select(x => x.Value);
         }
     }
 }

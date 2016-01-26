@@ -306,7 +306,7 @@ export class ItemContentConfiguration {
 
     constructor() {
         this.startWithEditMode = true;
-        this.autoProperties = true;
+        this.autoProperties = false;
         this.editFunction = (url: string, property: string, domRow: JQuery) => false;
         this.deleteFunction = (url: string, property: string, domRow: JQuery) => false;
         this.supportInlineEditing = true;

@@ -218,7 +218,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
     var ItemContentConfiguration = (function () {
         function ItemContentConfiguration() {
             this.startWithEditMode = true;
-            this.autoProperties = true;
+            this.autoProperties = false;
             this.editFunction = function (url, property, domRow) { return false; };
             this.deleteFunction = function (url, property, domRow) { return false; };
             this.supportInlineEditing = true;

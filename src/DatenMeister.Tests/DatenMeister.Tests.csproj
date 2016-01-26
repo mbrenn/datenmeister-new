@@ -85,6 +85,7 @@
     <Compile Include="Runtime\ExtentStorageTests.cs" />
     <Compile Include="Runtime\ReadOnlyProxyTests.cs" />
     <Compile Include="Uml\TestClassFactories.cs" />
+    <Compile Include="Web\TestAutoColumnCreator.cs" />
     <Compile Include="WorkspaceTests.cs" />
     <Compile Include="Xmi\EMOF\ExtentTests.cs" />
     <Compile Include="Xmi\Runtime\StorageTests.cs" />
@@ -110,6 +111,10 @@
     <ProjectReference Include="..\DatenMeister.Uml\DatenMeister.Uml.csproj">
       <Project>{335399d1-b533-42d2-aea5-f398f35d8e66}</Project>
       <Name>DatenMeister.Uml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Web\DatenMeister.Web.csproj">
+      <Project>{200FE333-4D98-4F76-A8D6-E7C94A272FF2}</Project>
+      <Name>DatenMeister.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">
       <Project>{e44275c2-9e62-42be-b984-127f82c1766f}</Project>

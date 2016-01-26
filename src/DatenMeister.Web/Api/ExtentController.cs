@@ -11,6 +11,7 @@ using DatenMeister.EMOF.Queries;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Web.Helper;
 using DatenMeister.Web.Models;
 using DatenMeister.Web.Models.PostModels;
 
@@ -99,7 +100,9 @@ namespace DatenMeister.Web.Api
             var totalItems = foundExtent.elements();
             var foundItems = totalItems;
 
-            var properties = foundExtent.GetProperties().ToList();
+            var columnCreator = new ColumnCreator();
+            var columns = columnCreator.GetColumnsForTable(foundExtent);
+            var properties = columnCreator.Properties;
 
             // Perform the filtering
             IEnumerable<object> filteredItems = foundItems;
@@ -133,13 +136,7 @@ namespace DatenMeister.Web.Api
             var result = new ExtentContentModel
             {
                 url = extent,
-                columns = properties
-                    .Select(x => new DataTableColumn
-                    {
-                        name = x.ToString(),
-                        title = x.ToString()
-                    })
-                    .ToList(),
+                columns = columns.ToList(),
                 totalItemCount = totalItems.Count(),
                 search = search,
                 filteredItemCount = filteredAmount,
@@ -181,7 +178,30 @@ namespace DatenMeister.Web.Api
                 }
             }
 
+            AutoGenerateFormRows(foundElement, itemModel);
+
             return itemModel;
+        }
+
+        [NonAction]
+        private void AutoGenerateFormRows(IElement foundElement, ItemContentModel itemModel)
+        {
+            var asAllProperties = foundElement as IObjectAllProperties;
+            if (asAllProperties == null)
+            {
+                throw new InvalidOperationException("FoundElement is not an Instance of IObjectAllProperties");
+            }
+
+            foreach (var property in asAllProperties.getPropertiesBeingSet())
+            {
+                var newRow = new DataFormRow()
+                {
+                    name = property.ToString(),
+                    title = property.ToString()
+                };
+
+                itemModel.c.Add(newRow);
+            }
         }
 
         [Route("item_create")]

@@ -181,7 +181,7 @@ export class ItemView
         configuration.onEditProperty = (url: string, property: string, newValue: string) => {
             DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
         };
-
+        
         /*configuration.onNewProperty = (url: string, property: string, newValue: string) => {
             DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
         };*/

@@ -22,6 +22,12 @@ export interface IExtentContent extends IItemsContent {
 export interface IItemContentModel {
     uri: string;
     v: Array<string>;
+    c: Array<IDataTableColumn>;
+}
+
+export interface IDataFormRow {
+    title: string;
+    name: string;
 }
 
 export interface IDataTableColumn {

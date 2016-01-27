@@ -58,6 +58,10 @@
       <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>
       <Name>DatenMeister.Runtime</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Uml\DatenMeister.Uml.csproj">
+      <Project>{335399D1-B533-42D2-AEA5-F398F35D8E66}</Project>
+      <Name>DatenMeister.Uml</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Web\DatenMeister.Web.csproj">
       <Project>{200fe333-4d98-4f76-a8d6-e7c94a272ff2}</Project>
       <Name>DatenMeister.Web</Name>

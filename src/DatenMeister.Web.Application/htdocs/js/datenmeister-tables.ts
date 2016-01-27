@@ -2,7 +2,7 @@
 
 export class ItemTableConfiguration {
     onNewItemClicked: () => void;
-    onItemEdit: (url: string, domRow: JQuery) => boolean;
+    onItemEdit: (url: string) => boolean;
     onItemDelete: (url: string, domRow: JQuery) => boolean;
     onPageChange: (newPage: number) => void;
     supportSearchbox: boolean;
@@ -21,7 +21,7 @@ export class ItemTableConfiguration {
     onSearch: (searchText: string) => void;
 
     constructor() {
-        this.onItemEdit = (url: string, domRow: JQuery) => false;
+        this.onItemEdit = (url: string) => false;
         this.onItemDelete = (url: string, domRow: JQuery) => false;
         this.supportSearchbox = true;
         this.supportNewItem = true;
@@ -170,7 +170,6 @@ export class ItemListTable {
         this.domTable = $("<table class='table'></table>");
 
         // First the headline
-
         var domRow = $("<tr></tr>");
         var domColumn;
         if (this.configuration.showColumnForId) {
@@ -244,10 +243,7 @@ export class ItemListTable {
                 var columns = data.columns;
                 for (var c in columns) {
                     if (columns.hasOwnProperty(c)) {
-                        var column = columns[c];
-                        domColumn = $("<td></td>");
-                        domColumn.text(item.v[column.name]);
-                        domRow.append(domColumn);
+                        domRow.append(this.createDomForContent(item, columns[c]));
                     }
                 }
 
@@ -255,7 +251,7 @@ export class ItemListTable {
                 var domEditColumn = $("<td class='hl'><button href='#' class='btn btn-default'>EDIT</button></td>");
                 domEditColumn.click((function(url, iDomRow) {
                     return function() {
-                        return tthis.configuration.onItemEdit(url, iDomRow);
+                        return tthis.configuration.onItemEdit(url);
                     };
                 })(item.uri, domRow));
                 domRow.append(domEditColumn);
@@ -278,6 +274,35 @@ export class ItemListTable {
                 this.domTable.append(domRow);
             }
         }
+    }
+
+    createDomForContent(item: DMI.IDataTableItem, column: DMI.IDataTableColumn) {
+        var tthis = this;
+        var domColumn = $("<td></td>");
+        var contentValue = item.v[column.name];
+        if (column.isEnumeration) {
+            var domList = $("<ul></ul>");
+            if (contentValue !== undefined) {
+                for (var n in contentValue) {
+                    var listValue = contentValue[n];
+                    var domEntry = $("<li><a href='#'></a></li>");
+                    var domInner = $("a", domEntry);
+                    domInner.click(((innerListValue) => {
+                        return () => {
+                            tthis.configuration.onItemEdit(innerListValue.u);
+                        };
+                    })(listValue));
+                    domInner.text(listValue.v);
+                    domList.append(domEntry);
+                }
+            }
+
+            domColumn.append(domList);
+
+        } else {
+            domColumn.text(contentValue);
+        }
+        return domColumn;
     }
 }
 

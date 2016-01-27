@@ -12,6 +12,7 @@ using DatenMeister.EMOF.Queries;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.Web.Helper;
 using DatenMeister.Web.Models;
 using DatenMeister.Web.Models.PostModels;
@@ -28,11 +29,13 @@ namespace DatenMeister.Web.Api
 
         private readonly IFactoryMapper _mapper;
         private readonly IWorkspaceCollection _workspaceCollection;
+        private readonly IUmlNameResolution _resolution;
 
-        public ExtentController(IFactoryMapper mapper, IWorkspaceCollection workspaceCollection)
+        public ExtentController(IFactoryMapper mapper, IWorkspaceCollection workspaceCollection, IUmlNameResolution resolution)
         {
             _mapper = mapper;
             _workspaceCollection = workspaceCollection;
+            _resolution = resolution;
         }
 
         [Route("all")]
@@ -145,7 +148,7 @@ namespace DatenMeister.Web.Api
                     .Select(x => new DataTableItem
                     {
                         uri = foundExtent.uri(x as IElement),
-                        v = ConvertToJson(x as IElement, columnCreator)
+                        v = ConvertToJson(foundExtent, x as IElement, columnCreator)
                     })
                     .ToList()
             };
@@ -153,7 +156,7 @@ namespace DatenMeister.Web.Api
             return result;
         }
 
-        private static Dictionary<string, object> ConvertToJson(IObject element, ColumnCreator creator)
+        private Dictionary<string, object> ConvertToJson(IUriExtent extent, IObject element, ColumnCreator creator)
         {
             var result = new Dictionary<string, object>();
 
@@ -170,10 +173,21 @@ namespace DatenMeister.Web.Api
                         var list = new List<object>();
                         foreach (var listValue in (propertyValue as IEnumerable))
                         {
+                            var asElement = listValue as IElement;
+                            string url;
+                            if (asElement != null)
+                            {
+                                url = extent.uri(asElement);
+                            }
+                            else
+                            {
+                                url = null;
+                            }
+
                             list.Add(new
                             {
-                                u = "xyz",
-                                v = listValue == null ? "null" : listValue.ToString()
+                                u = url,
+                                v = listValue == null ? "null" : _resolution.GetName(listValue)
                             });
                         }
 
@@ -181,12 +195,12 @@ namespace DatenMeister.Web.Api
                     }
                     else
                     {
-                        result[propertyAsString] = propertyValue == null ? "null" : propertyValue.ToString();
+                        result[propertyAsString] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
                     }
                 }
                 else
                 {
-                    result[propertyAsString] = propertyValue == null ? "null" : propertyValue.ToString();
+                    result[propertyAsString] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
                 }
             }
 

@@ -126,6 +126,16 @@ textarea {
     word-wrap: break-word;
 }
 
+.data-items table ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.data-items table ul li {
+    margin: 0;
+    padding: 0;
+}
 .dm-statusline {
     position: fixed;
     width: 100%;

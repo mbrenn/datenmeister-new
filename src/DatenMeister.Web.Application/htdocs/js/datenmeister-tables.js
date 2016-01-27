@@ -1,7 +1,7 @@
 define(["require", "exports", "datenmeister-interfaces"], function (require, exports, DMI) {
     var ItemTableConfiguration = (function () {
         function ItemTableConfiguration() {
-            this.onItemEdit = function (url, domRow) { return false; };
+            this.onItemEdit = function (url) { return false; };
             this.onItemDelete = function (url, domRow) { return false; };
             this.supportSearchbox = true;
             this.supportNewItem = true;
@@ -179,17 +179,14 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                     var columns = data.columns;
                     for (var c in columns) {
                         if (columns.hasOwnProperty(c)) {
-                            var column = columns[c];
-                            domColumn = $("<td></td>");
-                            domColumn.text(item.v[column.name]);
-                            domRow.append(domColumn);
+                            domRow.append(this.createDomForContent(item, columns[c]));
                         }
                     }
                     // Add Edit link
                     var domEditColumn = $("<td class='hl'><button href='#' class='btn btn-default'>EDIT</button></td>");
                     domEditColumn.click((function (url, iDomRow) {
                         return function () {
-                            return tthis.configuration.onItemEdit(url, iDomRow);
+                            return tthis.configuration.onItemEdit(url);
                         };
                     })(item.uri, domRow));
                     domRow.append(domEditColumn);
@@ -211,6 +208,33 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                     this.domTable.append(domRow);
                 }
             }
+        };
+        ItemListTable.prototype.createDomForContent = function (item, column) {
+            var tthis = this;
+            var domColumn = $("<td></td>");
+            var contentValue = item.v[column.name];
+            if (column.isEnumeration) {
+                var domList = $("<ul></ul>");
+                if (contentValue !== undefined) {
+                    for (var n in contentValue) {
+                        var listValue = contentValue[n];
+                        var domEntry = $("<li><a href='#'></a></li>");
+                        var domInner = $("a", domEntry);
+                        domInner.click((function (innerListValue) {
+                            return function () {
+                                tthis.configuration.onItemEdit(innerListValue.u);
+                            };
+                        })(listValue));
+                        domInner.text(listValue.v);
+                        domList.append(domEntry);
+                    }
+                }
+                domColumn.append(domList);
+            }
+            else {
+                domColumn.text(contentValue);
+            }
+            return domColumn;
         };
         return ItemListTable;
     })();

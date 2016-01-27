@@ -8,6 +8,7 @@ using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.XMI.UmlBootstrap;
 using Ninject;
 
@@ -48,6 +49,8 @@ namespace DatenMeister.Full.Integration
             metaWorkspace.AddExtent(strapper.PrimitiveInfrastructure);
             metaWorkspace.AddExtent(strapper.MofInfrastructure);
             metaWorkspace.AddExtent(strapper.UmlInfrastructure);
+
+            kernel.Bind<IUmlNameResolution>().To<UmlNameResolution>();
         }
 
         public static void PerformAutomaticMappingByAttribute(this DefaultFactoryMapper mapper)

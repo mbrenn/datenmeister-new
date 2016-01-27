@@ -33,6 +33,7 @@ export interface IDataFormRow {
 export interface IDataTableColumn {
     title: string;
     name: string;
+    isEnumeration: boolean;
 }
 
 export interface IDataTableItem {
@@ -147,6 +148,4 @@ export namespace Api {
             this.columns[this.columns.length] = column;
         }
     }
-
-    
 }

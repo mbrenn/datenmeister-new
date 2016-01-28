@@ -25,15 +25,10 @@ export interface IItemContentModel {
     c: Array<IDataTableColumn>;
 }
 
-export interface IDataFormRow {
-    title: string;
-    name: string;
-}
-
 export interface IDataTableColumn {
-    title: string;
-    name: string;
-    isEnumeration: boolean;
+    title?: string;
+    name?: string;
+    isEnumeration?: boolean;
 }
 
 export interface IDataTableItem {
@@ -123,28 +118,18 @@ export namespace Api {
         navigateToItem(ws: string, extentUrl: string, itemUrl: string): void;
         setStatus(statusDom: JQuery): void;
     }
-    
-    export class FieldConfiguration {
-        propertyName: string;
-        title: string;
-
-        constructor(propertyName?: string, title?: string) {
-            this.propertyName = propertyName;
-            this.title = title;
-        }
-    }
 
     export class FormForItemConfiguration {
-        columns: Array<FieldConfiguration>;
+        columns: Array<IDataTableColumn>;
 
         onOkForm: (data: any) => void;
         onCancelForm: () => void;
 
         constructor() {
-            this.columns = new Array<FieldConfiguration>();
+            this.columns = new Array<IDataTableColumn>();
         }
 
-        addColumn(column: FieldConfiguration): void {
+        addColumn(column: IDataTableColumn): void {
             this.columns[this.columns.length] = column;
         }
     }

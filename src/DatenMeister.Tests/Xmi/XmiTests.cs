@@ -75,5 +75,26 @@ namespace DatenMeister.Tests.Xmi
 
             Assert.That(XmiId.IsValid(document), Is.False);
         }
+
+        [Test]
+        public void TestGetUriAndRetrieveElement()
+        {
+            var strapper = Bootstrapper.PerformFullBootstrap("Xmi/PrimitiveTypes.xmi", "Xmi/UML.xmi", "Xmi/MOF.xmi");
+            var umlExtent = strapper.UmlInfrastructure;
+            var element = umlExtent.elements().ElementAt(0) as IElement;
+
+            var elementUri = umlExtent.uri(element);
+            var foundElement = umlExtent.element(elementUri);
+            Assert.That(foundElement, Is.Not.Null);
+            Assert.That(foundElement, Is.EqualTo(element));
+
+            // Retrieve another element
+            element = AllDescendentsQuery.getDescendents(umlExtent).ElementAt(300) as IElement;
+            elementUri = umlExtent.uri(element);
+            foundElement = umlExtent.element(elementUri);
+            Assert.That(foundElement, Is.Not.Null);
+            Assert.That(foundElement, Is.EqualTo(element));
+        }
+
     }
 }

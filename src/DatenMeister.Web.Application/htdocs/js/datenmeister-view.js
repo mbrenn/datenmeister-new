@@ -132,6 +132,7 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
         ItemView.prototype.createHtmlForItem = function (jQuery, ws, extentUrl, itemUrl, data) {
             var tthis = this;
             var configuration = new DMTables.ItemContentConfiguration();
+            configuration.columns = data.c;
             configuration.deleteFunction = function (url, property, domRow) {
                 DMClient.ItemApi.deleteProperty(ws, extentUrl, itemUrl, property).done(function () { return domRow.find("td").fadeOut(500, function () { domRow.remove(); }); });
                 return false;

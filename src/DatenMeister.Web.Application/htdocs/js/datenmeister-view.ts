@@ -173,6 +173,7 @@ export class ItemView
     createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: DMI.IItemContentModel) {
         var tthis = this;
         var configuration = new DMTables.ItemContentConfiguration();
+        configuration.columns = data.c;
         configuration.deleteFunction = (url: string, property: string, domRow: JQuery) => {
             DMClient.ItemApi.deleteProperty(ws, extentUrl, itemUrl, property).done(() => domRow.find("td").fadeOut(500, () => { domRow.remove(); }));
             return false;

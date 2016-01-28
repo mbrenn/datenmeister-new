@@ -243,7 +243,10 @@ export class ItemListTable {
                 var columns = data.columns;
                 for (var c in columns) {
                     if (columns.hasOwnProperty(c)) {
-                        domRow.append(this.createDomForContent(item, columns[c]));
+                        domColumn = $("<td></td>");
+                        domColumn.append(createDomForContent(item, columns[c]));
+
+                        domRow.append(domColumn);
                     }
                 }
 
@@ -275,40 +278,50 @@ export class ItemListTable {
             }
         }
     }
+}
 
-    createDomForContent(item: DMI.IDataTableItem, column: DMI.IDataTableColumn) {
-        var tthis = this;
-        var domColumn = $("<td></td>");
-        var contentValue = item.v[column.name];
-        if (column.isEnumeration) {
-            var domList = $("<ul></ul>");
-            if (contentValue !== undefined) {
-                for (var n in contentValue) {
-                    var listValue = contentValue[n];
-                    var domEntry = $("<li><a href='#'></a></li>");
-                    var domInner = $("a", domEntry);
-                    domInner.click(((innerListValue) => {
-                        return () => {
-                            tthis.configuration.onItemEdit(innerListValue.u);
-                        };
-                    })(listValue));
-                    domInner.text(listValue.v);
-                    domList.append(domEntry);
-                }
+function createDomForContent(item: DMI.IDataTableItem, column: DMI.IDataTableColumn, inEditMode?: boolean) {
+    if (inEditMode === undefined) {
+        inEditMode = false;
+    }
+
+    var tthis = this;
+    var contentValue = item.v[column.name];
+    if (column.isEnumeration) {
+        let domResult = $("<ul></ul>");
+        if (contentValue !== undefined) {
+            for (var n in contentValue) {
+                var listValue = contentValue[n];
+                var domEntry = $("<li><a href='#'></a></li>");
+                var domInner = $("a", domEntry);
+                domInner.click(((innerListValue) => {
+                    return () => {
+                        tthis.configuration.onItemEdit(innerListValue.u);
+                    };
+                })(listValue));
+                domInner.text(listValue.v);
+                domResult.append(domEntry);
             }
-
-            domColumn.append(domList);
-
-        } else {
-            domColumn.text(contentValue);
         }
-        return domColumn;
+
+        return domResult;
+
+    } else {
+        if (inEditMode) {
+            var domTextBox = $("<input type='textbox' class='form-control' />");
+            domTextBox.val(contentValue);
+            return domTextBox;
+        } else {
+            let domResult = $("<span></span>");
+            domResult.text(contentValue);
+            return domResult;
+        }
     }
 }
 
 export class ItemContentConfiguration {
     autoProperties: boolean;
-    columns: Array<DMI.Api.FieldConfiguration>;
+    columns: Array<DMI.IDataTableColumn>;
 
     // Gets or sets a flag, that the user can change the content of a property within the table. 
     // If the editing was performed, the onEditProperty-function will get called
@@ -336,10 +349,10 @@ export class ItemContentConfiguration {
         this.deleteFunction = (url: string, property: string, domRow: JQuery) => false;
         this.supportInlineEditing = true;
         this.supportNewProperties = true;
-        this.columns = new Array<DMI.Api.FieldConfiguration>();
+        this.columns = new Array<DMI.IDataTableColumn>();
     }
 
-    addColumn(column: DMI.Api.FieldConfiguration) {
+    addColumn(column: DMI.IDataTableColumn) {
         this.columns[this.columns.length] = column;
     }
 }
@@ -371,15 +384,17 @@ export class ItemContentTable {
         domTable.append(domRow);
 
         var propertyValue = this.item.v;
-        var column: DMI.Api.FieldConfiguration;
+        var column: DMI.IDataTableColumn;
 
         if (this.configuration.autoProperties) {
             this.configuration.columns.length = 0;
             for (let property in propertyValue) {
                 if (propertyValue.hasOwnProperty(property)) {
-                    column = new DMI.Api.FieldConfiguration();
-                    column.title = property;
-                    column.propertyName = property;
+                    column = {
+                        title: property,
+                        name: property
+                    };
+
                     this.configuration.columns[this.configuration.columns.length] = column;
                 }
             }
@@ -391,7 +406,7 @@ export class ItemContentTable {
         for (var columnNr in this.configuration.columns) {
             column = this.configuration.columns[columnNr];
             domRow = $("<tr></tr>");
-            var value = propertyValue[column.propertyName];
+            var value = propertyValue[column.name];
             var domColumn = $("<td class='table_column_name'></td>");
             domColumn.data("column", "name");
             domColumn.text(column.title);
@@ -400,11 +415,11 @@ export class ItemContentTable {
             if (this.configuration.startWithEditMode) {
                 domColumn = $("<td class='table_column_value'></td>");
                 domColumn.data("column", "value");
-                var domForEdit = this.getDomForEditField(column);
+                var domForEdit = createDomForContent(this.item, column, true);
                 domColumn.append(domForEdit);
                 domRow.append(domColumn);
 
-                this.domForEditArray[column.propertyName] = domForEdit;
+                this.domForEditArray[column.name] = domForEdit;
             }
             else
             {
@@ -415,13 +430,13 @@ export class ItemContentTable {
 
                 // Add Edit link
                 let domEditColumn = $("<td class='hl table_column_edit'><button class='btn btn-default'>EDIT</button></td>");
-                $("a", domEditColumn).click((function (url: string, column: DMI.Api.FieldConfiguration, idomRow: JQuery, idomA: JQuery) {
+                $("a", domEditColumn).click((function (url: string, column: DMI.IDataTableColumn, idomRow: JQuery, idomA: JQuery) {
                     return function() {
                         if (tthis.configuration.supportInlineEditing) {
                             tthis.startInlineEditing(column, idomRow);
                             return false;
                         } else {
-                            return tthis.configuration.editFunction(url, column.propertyName, idomRow);
+                            return tthis.configuration.editFunction(url, column.name, idomRow);
                         }
                     };
                 })(this.item.uri, column, domRow, domA));
@@ -429,10 +444,10 @@ export class ItemContentTable {
 
                 let domDeleteColumn = $("<td class='hl table_column_delete'><button class='btn btn-default'>DELETE</button></td>");
                 var domA = $("a", domDeleteColumn);
-                $("a", domDeleteColumn).click((function(url: string, column: DMI.Api.FieldConfiguration, idomRow: JQuery, idomA: JQuery) {
+                $("a", domDeleteColumn).click((function (url: string, column: DMI.IDataTableColumn, idomRow: JQuery, idomA: JQuery) {
                     return function() {
                         if (idomA.data("wasClicked") === true) {
-                            return tthis.configuration.deleteFunction(url, column.propertyName, idomRow);
+                            return tthis.configuration.deleteFunction(url, column.name, idomRow);
                         } else {
                             idomA.data("wasClicked", true);
                             idomA.text("CONFIRM");
@@ -481,25 +496,19 @@ export class ItemContentTable {
     submitForm() {
         for (var columnNr in this.configuration.columns) {
             var column = this.configuration.columns[columnNr];
-            var domEdit = this.domForEditArray[column.propertyName];
+            var domEdit = this.domForEditArray[column.name];
 
             var value = domEdit.val();
-            this.item.v[column.propertyName] = value;
+            this.item.v[column.name] = value;
         }
     }
 
-    getDomForEditField(column: DMI.Api.FieldConfiguration) {
-        var domTextBox = $("<input type='textbox' class='form-control' />");
-        domTextBox.val(this.item.v[column.propertyName]);
-        return domTextBox;
-    }
-
-    startInlineEditing(column: DMI.Api.FieldConfiguration, domRow: JQuery) {
+    startInlineEditing(column: DMI.IDataTableColumn, domRow: JQuery) {
         var tthis = this;
         var domValue = $(".table_column_value", domRow);
         domValue.empty();
 
-        var domTextBox = this.getDomForEditField(column)
+        var domTextBox = createDomForContent(this.item, column, true);
         domValue.append(domTextBox);
 
         var domEditColumn = $(".table_column_edit", domRow);
@@ -513,10 +522,10 @@ export class ItemContentTable {
         //Sets the commands
         domEditOk.on('click', () => {
             var newValue = domTextBox.val();
-            tthis.item.v[column.propertyName] = newValue;
+            tthis.item.v[column.name] = newValue;
 
             if (tthis.configuration.onEditProperty !== undefined) {
-                tthis.configuration.onEditProperty(tthis.item.uri, column.propertyName, newValue);
+                tthis.configuration.onEditProperty(tthis.item.uri, column.name, newValue);
             }
 
             tthis.show(tthis.domContainer);

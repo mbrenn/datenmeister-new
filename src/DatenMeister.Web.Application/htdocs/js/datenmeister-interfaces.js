@@ -80,14 +80,6 @@ define(["require", "exports"], function (require, exports) {
     })(PostModels = exports.PostModels || (exports.PostModels = {}));
     var Api;
     (function (Api) {
-        var FieldConfiguration = (function () {
-            function FieldConfiguration(propertyName, title) {
-                this.propertyName = propertyName;
-                this.title = title;
-            }
-            return FieldConfiguration;
-        })();
-        Api.FieldConfiguration = FieldConfiguration;
         var FormForItemConfiguration = (function () {
             function FormForItemConfiguration() {
                 this.columns = new Array();

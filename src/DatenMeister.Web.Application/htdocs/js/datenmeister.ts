@@ -61,9 +61,19 @@ function buildRibbons(layout: DMLayout.Layout, changeEvent: DMLayout.ILayoutChan
                 .done(() => layout.navigateToWorkspaces());
         };
 
-        var column = new DMI.Api.FieldConfiguration("name", "Title");
+        var column =
+        {
+            title: "Title",
+            name: "name"
+        };
+
         configuration.addColumn(column);
-        column = new DMI.Api.FieldConfiguration("annotation", "Annotation");
+        column =
+        {
+            title: "Annotation",
+            name: "annotation"
+        };
+
         configuration.addColumn(column);
 
         layout.navigateToDialog(configuration);

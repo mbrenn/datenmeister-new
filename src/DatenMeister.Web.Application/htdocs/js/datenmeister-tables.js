@@ -179,7 +179,9 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                     var columns = data.columns;
                     for (var c in columns) {
                         if (columns.hasOwnProperty(c)) {
-                            domRow.append(this.createDomForContent(item, columns[c]));
+                            domColumn = $("<td></td>");
+                            domColumn.append(createDomForContent(item, columns[c]));
+                            domRow.append(domColumn);
                         }
                     }
                     // Add Edit link
@@ -209,36 +211,46 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                 }
             }
         };
-        ItemListTable.prototype.createDomForContent = function (item, column) {
-            var tthis = this;
-            var domColumn = $("<td></td>");
-            var contentValue = item.v[column.name];
-            if (column.isEnumeration) {
-                var domList = $("<ul></ul>");
-                if (contentValue !== undefined) {
-                    for (var n in contentValue) {
-                        var listValue = contentValue[n];
-                        var domEntry = $("<li><a href='#'></a></li>");
-                        var domInner = $("a", domEntry);
-                        domInner.click((function (innerListValue) {
-                            return function () {
-                                tthis.configuration.onItemEdit(innerListValue.u);
-                            };
-                        })(listValue));
-                        domInner.text(listValue.v);
-                        domList.append(domEntry);
-                    }
-                }
-                domColumn.append(domList);
-            }
-            else {
-                domColumn.text(contentValue);
-            }
-            return domColumn;
-        };
         return ItemListTable;
     })();
     exports.ItemListTable = ItemListTable;
+    function createDomForContent(item, column, inEditMode) {
+        if (inEditMode === undefined) {
+            inEditMode = false;
+        }
+        var tthis = this;
+        var contentValue = item.v[column.name];
+        if (column.isEnumeration) {
+            var domResult = $("<ul></ul>");
+            if (contentValue !== undefined) {
+                for (var n in contentValue) {
+                    var listValue = contentValue[n];
+                    var domEntry = $("<li><a href='#'></a></li>");
+                    var domInner = $("a", domEntry);
+                    domInner.click((function (innerListValue) {
+                        return function () {
+                            tthis.configuration.onItemEdit(innerListValue.u);
+                        };
+                    })(listValue));
+                    domInner.text(listValue.v);
+                    domResult.append(domEntry);
+                }
+            }
+            return domResult;
+        }
+        else {
+            if (inEditMode) {
+                var domTextBox = $("<input type='textbox' class='form-control' />");
+                domTextBox.val(contentValue);
+                return domTextBox;
+            }
+            else {
+                var domResult = $("<span></span>");
+                domResult.text(contentValue);
+                return domResult;
+            }
+        }
+    }
     var ItemContentConfiguration = (function () {
         function ItemContentConfiguration() {
             this.startWithEditMode = true;
@@ -279,9 +291,10 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                 this.configuration.columns.length = 0;
                 for (var property in propertyValue) {
                     if (propertyValue.hasOwnProperty(property)) {
-                        column = new DMI.Api.FieldConfiguration();
-                        column.title = property;
-                        column.propertyName = property;
+                        column = {
+                            title: property,
+                            name: property
+                        };
                         this.configuration.columns[this.configuration.columns.length] = column;
                     }
                 }
@@ -291,7 +304,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             for (var columnNr in this.configuration.columns) {
                 column = this.configuration.columns[columnNr];
                 domRow = $("<tr></tr>");
-                var value = propertyValue[column.propertyName];
+                var value = propertyValue[column.name];
                 var domColumn = $("<td class='table_column_name'></td>");
                 domColumn.data("column", "name");
                 domColumn.text(column.title);
@@ -299,10 +312,10 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                 if (this.configuration.startWithEditMode) {
                     domColumn = $("<td class='table_column_value'></td>");
                     domColumn.data("column", "value");
-                    var domForEdit = this.getDomForEditField(column);
+                    var domForEdit = createDomForContent(this.item, column, true);
                     domColumn.append(domForEdit);
                     domRow.append(domColumn);
-                    this.domForEditArray[column.propertyName] = domForEdit;
+                    this.domForEditArray[column.name] = domForEdit;
                 }
                 else {
                     domColumn = $("<td class='table_column_value'></td>");
@@ -318,7 +331,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                                 return false;
                             }
                             else {
-                                return tthis.configuration.editFunction(url, column.propertyName, idomRow);
+                                return tthis.configuration.editFunction(url, column.name, idomRow);
                             }
                         };
                     })(this.item.uri, column, domRow, domA));
@@ -328,7 +341,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                     $("a", domDeleteColumn).click((function (url, column, idomRow, idomA) {
                         return function () {
                             if (idomA.data("wasClicked") === true) {
-                                return tthis.configuration.deleteFunction(url, column.propertyName, idomRow);
+                                return tthis.configuration.deleteFunction(url, column.name, idomRow);
                             }
                             else {
                                 idomA.data("wasClicked", true);
@@ -368,21 +381,16 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
         ItemContentTable.prototype.submitForm = function () {
             for (var columnNr in this.configuration.columns) {
                 var column = this.configuration.columns[columnNr];
-                var domEdit = this.domForEditArray[column.propertyName];
+                var domEdit = this.domForEditArray[column.name];
                 var value = domEdit.val();
-                this.item.v[column.propertyName] = value;
+                this.item.v[column.name] = value;
             }
-        };
-        ItemContentTable.prototype.getDomForEditField = function (column) {
-            var domTextBox = $("<input type='textbox' class='form-control' />");
-            domTextBox.val(this.item.v[column.propertyName]);
-            return domTextBox;
         };
         ItemContentTable.prototype.startInlineEditing = function (column, domRow) {
             var tthis = this;
             var domValue = $(".table_column_value", domRow);
             domValue.empty();
-            var domTextBox = this.getDomForEditField(column);
+            var domTextBox = createDomForContent(this.item, column, true);
             domValue.append(domTextBox);
             var domEditColumn = $(".table_column_edit", domRow);
             domEditColumn.empty();
@@ -393,9 +401,9 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             //Sets the commands
             domEditOk.on('click', function () {
                 var newValue = domTextBox.val();
-                tthis.item.v[column.propertyName] = newValue;
+                tthis.item.v[column.name] = newValue;
                 if (tthis.configuration.onEditProperty !== undefined) {
-                    tthis.configuration.onEditProperty(tthis.item.uri, column.propertyName, newValue);
+                    tthis.configuration.onEditProperty(tthis.item.uri, column.name, newValue);
                 }
                 tthis.show(tthis.domContainer);
                 return false;

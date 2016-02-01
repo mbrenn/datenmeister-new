@@ -4,6 +4,9 @@ using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.FactoryMapper
 {
+    /// <summary>
+    /// Maps the type of an extent to a factory function, which creates a factor for the given extent
+    /// </summary>
     public class DefaultFactoryMapper : IFactoryMapper
     {
         /// <summary>

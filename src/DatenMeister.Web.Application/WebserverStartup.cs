@@ -17,6 +17,7 @@ using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Web.Api;
 using Microsoft.Owin;
 using Microsoft.Owin.BuilderProperties;
@@ -30,6 +31,8 @@ namespace DatenMeister.Web.Application
 {
     public class WebserverStartup
     {
+        private StandardKernel serverInjection;
+
         public void Configuration(IAppBuilder app)
         {
 #if DEBUG
@@ -52,18 +55,19 @@ namespace DatenMeister.Web.Application
             // Initializing of the WebAPI, needs to be called after the DatenMeister is initialized
             var httpConfiguration = new HttpConfiguration();
             httpConfiguration.MapHttpAttributeRoutes();
-            app.UseNinjectMiddleware(() => CreateKernel(app)).UseNinjectWebApi(httpConfiguration);
-        }
 
-        private void OnShutDown()
-        {
-            Console.WriteLine("Shutdown");
+            serverInjection = CreateKernel(app);
+            app.UseNinjectMiddleware(() => serverInjection).UseNinjectWebApi(httpConfiguration);
+
+            // Loading and storing
+            var loaded = new WorkspaceStorage(serverInjection.Get<IWorkspaceCollection>(), "workspaces.xml");
+            serverInjection.Bind<WorkspaceStorage>().ToConstant(loaded);
         }
 
         private static StandardKernel CreateKernel(IAppBuilder app)
         {
             var kernel = new StandardKernel();
-            kernel.FillForDatenMeister();
+            kernel.UseDatenMeister();
 
             // Defines the shutdown
             var properties = new AppProperties(app.Properties);
@@ -71,6 +75,7 @@ namespace DatenMeister.Web.Application
             token.Register(() =>
             {
                 kernel.Get<IExtentStorageLogic>().StoreAll();
+                kernel.Get<WorkspaceStorage>().Dispose();
             });
 
             // Loading the zipcodes
@@ -102,7 +107,9 @@ namespace DatenMeister.Web.Application
                 }
             };
 
-            kernel.Get<IExtentStorageLogic>().LoadExtent(defaultConfiguration);
+            var extentStorageLogic = kernel.Get<IExtentStorageLogic>();
+            extentStorageLogic.LoadExtent(defaultConfiguration);
+            
             Debug.WriteLine("Zip codes loaded");
         }
     }

@@ -24,7 +24,8 @@ namespace DatenMeister.Full.Integration
         /// <param name="assembly"></param>
         private static void LoadReferencedAssembly(Assembly assembly)
         {
-            // All assemblies, which do not start with Microsoft or System
+            // All assemblies, which do not start with Microsoft or System. 
+            // We will not find any extent or something like that within these assemblies. 
             foreach (AssemblyName name in assembly.GetReferencedAssemblies()
                 .Where(x => !(
                     x.FullName.StartsWith("Microsoft") ||

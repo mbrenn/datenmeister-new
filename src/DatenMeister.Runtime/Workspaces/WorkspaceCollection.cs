@@ -7,7 +7,7 @@ using DatenMeister.EMOF.Interface.Identifiers;
 namespace DatenMeister.Runtime.Workspaces
 {
     /// <summary>
-    ///     Defines the core being used as the central connection point
+    /// Defines the core being used as the central connection point
     /// </summary>
     public class WorkspaceCollection : IWorkspaceCollection
     {

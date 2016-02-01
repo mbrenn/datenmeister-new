@@ -16,7 +16,7 @@ namespace DatenMeister.Full.Integration
 {
     public static class Integration
     {
-        public static void FillForDatenMeister(this StandardKernel kernel)
+        public static void UseDatenMeister(this StandardKernel kernel)
         {
             // Do the full load
             Helper.LoadAllReferenceAssemblies();

@@ -99,7 +99,8 @@ namespace DatenMeister.XMI.UmlBootstrap
             allClasses =
                 AllDescendentsQuery.getDescendents(MofInfrastructure)
                     .Union(AllDescendentsQuery.getDescendents(UmlInfrastructure))
-                    .Union(AllDescendentsQuery.getDescendents(PrimitiveInfrastructure));
+                    .Union(AllDescendentsQuery.getDescendents(PrimitiveInfrastructure))
+                    .ToList();
                 
             foreach (var classInstance in allClasses.Where(x => x.isSet(typeProperty)))
             {

@@ -60,9 +60,9 @@ namespace DatenMeister.Web.Application
             app.UseNinjectMiddleware(() => serverInjection).UseNinjectWebApi(httpConfiguration);
 
             // Loading and storing the workspaces
-            var loaded = new WorkspaceStorage(serverInjection.Get<IWorkspaceCollection>(), "data/workspaces.xml");
-            loaded.Load();
-            serverInjection.Bind<WorkspaceStorage>().ToConstant(loaded);
+            var workspaceLoader = new WorkspaceStorage(serverInjection.Get<IWorkspaceCollection>(), "data/workspaces.xml");
+            workspaceLoader.Load();
+            serverInjection.Bind<WorkspaceStorage>().ToConstant(workspaceLoader);
         }
 
         private static StandardKernel CreateKernel(IAppBuilder app)

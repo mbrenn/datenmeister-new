@@ -85,6 +85,7 @@
     <Compile Include="Runtime\CopierTests.cs" />
     <Compile Include="Runtime\ExtentStorageTests.cs" />
     <Compile Include="Runtime\ReadOnlyProxyTests.cs" />
+    <Compile Include="Runtime\WorkspaceTests.cs" />
     <Compile Include="Uml\TestClassFactories.cs" />
     <Compile Include="Web\TestAutoColumnCreator.cs" />
     <Compile Include="WorkspaceTests.cs" />

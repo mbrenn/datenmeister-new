@@ -34,7 +34,7 @@ namespace DatenMeister.Apps.ZipCode
         public void LoadZipCodes(Stream stream)
         {
             var csvSettings = new CSVSettings();
-            csvSettings.Encoding = Encoding.UTF8;// Encoding.GetEncoding("ISO-8859-1");
+            csvSettings.Encoding = "UTF-8";// Encoding.GetEncoding("ISO-8859-1");
             csvSettings.Separator = '\t';
             csvSettings.HasHeader = false;
 

@@ -39,7 +39,7 @@ namespace DatenMeister.Tests.Console
             var factory = new MofFactory();
 
             var csvSettings = new CSVSettings();
-            csvSettings.Encoding = Encoding.GetEncoding("ISO-8859-1");
+            csvSettings.Encoding = "ISO-8859-1";
             csvSettings.Separator = '\t';
             csvSettings.HasHeader = false;
 

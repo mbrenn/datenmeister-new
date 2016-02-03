@@ -3,7 +3,7 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
-    public interface IExtentStorageLogic
+    public interface IExtentStorageLoader
     {
         /// <summary>
         /// Loads the extent by using the extent storage

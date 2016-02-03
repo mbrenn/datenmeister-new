@@ -6,9 +6,8 @@ namespace DatenMeister.CSV.Runtime.Storage
     {
         public CSVStorageConfiguration()
         {
-            Settings = new CSVSettings();
         } 
 
-        public CSVSettings Settings { get; private set; }
+        public CSVSettings Settings { get; set; } = new CSVSettings();
     }
 }

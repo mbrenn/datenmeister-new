@@ -14,11 +14,11 @@ namespace DatenMeister.Tests.Runtime
         {
             // Stores an empty workspace
             var workSpaceCollection = new WorkspaceCollection();
-            var workspaceLoader = new WorkspaceStorage(workSpaceCollection, "data/workspaces.xml");
+            var workspaceLoader = new WorkspaceLoader(workSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Store();
 
             var newWorkSpaceCollection = new WorkspaceCollection();
-            workspaceLoader = new WorkspaceStorage(newWorkSpaceCollection, "data/workspaces.xml");
+            workspaceLoader = new WorkspaceLoader(newWorkSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Load();
 
             Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(0));
@@ -31,11 +31,11 @@ namespace DatenMeister.Tests.Runtime
             var workSpaceCollection = new WorkspaceCollection();
             workSpaceCollection.AddWorkspace(new Workspace<IExtent>("test", "Continue"));
             workSpaceCollection.AddWorkspace(new Workspace<IExtent>("another", "annotation"));
-            var workspaceLoader = new WorkspaceStorage(workSpaceCollection, "data/workspaces.xml");
+            var workspaceLoader = new WorkspaceLoader(workSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Store();
 
             var newWorkSpaceCollection = new WorkspaceCollection();
-            workspaceLoader = new WorkspaceStorage(newWorkSpaceCollection, "data/workspaces.xml");
+            workspaceLoader = new WorkspaceLoader(newWorkSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Load();
 
             Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(2));
@@ -58,12 +58,12 @@ namespace DatenMeister.Tests.Runtime
             var workSpaceCollection = new WorkspaceCollection();
             workSpaceCollection.AddWorkspace(new Workspace<IExtent>("test", "Continue"));
             workSpaceCollection.AddWorkspace(new Workspace<IExtent>("another", "annotation"));
-            var workspaceLoader = new WorkspaceStorage(workSpaceCollection, "data/workspaces.xml");
+            var workspaceLoader = new WorkspaceLoader(workSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Store();
 
             var newWorkSpaceCollection = new WorkspaceCollection();
             newWorkSpaceCollection.AddWorkspace(new Workspace<IExtent>("test", "Continue"));
-            workspaceLoader = new WorkspaceStorage(newWorkSpaceCollection, "data/workspaces.xml");
+            workspaceLoader = new WorkspaceLoader(newWorkSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Load();
 
             Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(2));

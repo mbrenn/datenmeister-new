@@ -37,7 +37,7 @@ namespace DatenMeister.Full.Integration
             // Defines the extent storage data
             var extentStorageData = new ExtentStorageData();
             kernel.Bind<ExtentStorageData>().ToConstant(extentStorageData);
-            kernel.Bind<IExtentStorageLogic>().To<ExtentStorageLogic>();
+            kernel.Bind<IExtentStorageLoader>().To<ExtentStorageLoader>();
 
             // Load the default extents
             // Load the primitivetypes

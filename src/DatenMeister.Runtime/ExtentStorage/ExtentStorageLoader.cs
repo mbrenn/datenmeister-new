@@ -11,7 +11,7 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// <summary>
     /// This logic handles the loading and storing of extents automatically
     /// </summary>
-    public class ExtentStorageLogic : IExtentStorageLogic
+    public class ExtentStorageLoader : IExtentStorageLoader
     {
         private readonly ExtentStorageData _data;
 
@@ -22,7 +22,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         private readonly IWorkspaceCollection _workspaceCollection;
 
-        public ExtentStorageLogic(ExtentStorageData data, IConfigurationToExtentStorageMapper map)
+        public ExtentStorageLoader(ExtentStorageData data, IConfigurationToExtentStorageMapper map)
         {
             Debug.Assert(map != null, "map != null");
             Debug.Assert(data != null, "data != null");
@@ -31,7 +31,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             _map = map;
         }
 
-        public ExtentStorageLogic(ExtentStorageData data, IConfigurationToExtentStorageMapper map, IWorkspaceCollection workspaceCollection)
+        public ExtentStorageLoader(ExtentStorageData data, IConfigurationToExtentStorageMapper map, IWorkspaceCollection workspaceCollection)
         {
             Debug.Assert(map != null, "map != null");
             Debug.Assert(workspaceCollection != null, "collection != null");

@@ -56,7 +56,7 @@ namespace DatenMeister.CSV
                 settings = new CSVSettings();
             }
 
-            using (var streamReader = new StreamReader(stream, settings.Encoding))
+            using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(settings.Encoding)))
             {
                 var createColumns = false;
                 // Reads header, if necessary
@@ -139,7 +139,7 @@ namespace DatenMeister.CSV
             }
 
             // Open File
-            using (var streamWriter = new StreamWriter(File.OpenWrite(path), settings.Encoding))
+            using (var streamWriter = new StreamWriter(File.OpenWrite(path), Encoding.GetEncoding(settings.Encoding)))
             {
                 // Writes the header
                 if (settings.HasHeader)

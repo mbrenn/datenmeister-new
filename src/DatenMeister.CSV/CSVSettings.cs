@@ -7,12 +7,12 @@ namespace DatenMeister.CSV
     {
         public CSVSettings()
         {
-            Encoding = Encoding.UTF8;
+            Encoding = "UTF-8";
             HasHeader = true;
             Separator = ',';
         }
 
-        public Encoding Encoding { get; set; }
+        public string Encoding { get; set; }
 
         public bool HasHeader { get; set; }
 

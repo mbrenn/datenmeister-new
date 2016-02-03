@@ -21,7 +21,7 @@ namespace DatenMeister.Tests.Runtime
             mapper.AddMapping(typeof (CSVStorageConfiguration), () => new CSVStorage());
 
             var data = new ExtentStorageData();
-            var logic = new ExtentStorageLogic(data, mapper);
+            var logic = new ExtentStorageLoader(data, mapper);
             var configuration = new CSVStorageConfiguration()
             {
                 Path = "data.txt",

@@ -60,9 +60,20 @@ namespace DatenMeister.Web.Application
             app.UseNinjectMiddleware(() => serverInjection).UseNinjectWebApi(httpConfiguration);
 
             // Loading and storing the workspaces
-            var workspaceLoader = new WorkspaceStorage(serverInjection.Get<IWorkspaceCollection>(), "data/workspaces.xml");
+            var workspaceLoader = new WorkspaceLoader(serverInjection.Get<IWorkspaceCollection>(), "data/workspaces.xml");
             workspaceLoader.Load();
-            serverInjection.Bind<WorkspaceStorage>().ToConstant(workspaceLoader);
+            serverInjection.Bind<WorkspaceLoader>().ToConstant(workspaceLoader);
+
+            // Loading and storing the extents
+            var extentLoader = new ExtentStorageConfigurationStorage(
+                serverInjection.Get<ExtentStorageData>(),
+                serverInjection.Get<IExtentStorageLoader>(),
+                "data/extents.xml");
+
+            // A little bit hacky, but it works for first
+            extentLoader.AddAdditionalType(typeof(CSVStorageConfiguration));
+            extentLoader.Load();
+            serverInjection.Bind<ExtentStorageConfigurationStorage>().ToConstant(extentLoader);
         }
 
         private static StandardKernel CreateKernel(IAppBuilder app)
@@ -75,12 +86,13 @@ namespace DatenMeister.Web.Application
             var token = properties.OnAppDisposing;
             token.Register(() =>
             {
-                kernel.Get<IExtentStorageLogic>().StoreAll();
-                kernel.Get<WorkspaceStorage>().Store();
+                kernel.Get<IExtentStorageLoader>().StoreAll();
+                kernel.Get<WorkspaceLoader>().Store();
+                kernel.Get<ExtentStorageConfigurationStorage>().Store();
             });
 
             // Loading the zipcodes
-            LoadZipCodes(kernel);
+            // LoadZipCodes(kernel);
 
             return kernel;
         }
@@ -104,11 +116,11 @@ namespace DatenMeister.Web.Application
                 {
                     HasHeader = false,
                     Separator = '\t',
-                    Encoding = Encoding.UTF8
+                    Encoding = "UTF-8"
                 }
             };
 
-            var extentStorageLogic = kernel.Get<IExtentStorageLogic>();
+            var extentStorageLogic = kernel.Get<IExtentStorageLoader>();
             extentStorageLogic.LoadExtent(defaultConfiguration);
             
             Debug.WriteLine("Zip codes loaded");

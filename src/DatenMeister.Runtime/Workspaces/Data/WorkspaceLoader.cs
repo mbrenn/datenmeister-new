@@ -5,13 +5,13 @@ using DatenMeister.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Runtime.Workspaces.Data
 {
-    public class WorkspaceStorage : ObjectFileStorage<WorkspaceData>
+    public class WorkspaceLoader : ObjectFileStorage<WorkspaceData>
     {
         public string Filepath { get; set; }
 
         public IWorkspaceCollection WorkspaceCollection { get; set; }
 
-        public WorkspaceStorage(IWorkspaceCollection workspaceCollection, string filepath)
+        public WorkspaceLoader(IWorkspaceCollection workspaceCollection, string filepath)
         {
             Debug.Assert(workspaceCollection != null, "workspaceCollection != null");
             Debug.Assert(filepath != null, "filepath != null");

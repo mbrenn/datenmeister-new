@@ -42,11 +42,11 @@
     <Compile Include="Copier\ExtentCopier.cs" />
     <Compile Include="Copier\ObjectCopier.cs" />
     <Compile Include="ExtentStorage\ExtentStorageData.cs" />
-    <Compile Include="ExtentStorage\IExtentStorageLogic.cs" />
+    <Compile Include="ExtentStorage\IExtentStorageLoader.cs" />
     <Compile Include="ObjectFileStorage.cs" />
     <Compile Include="Workspaces\Data\WorkspaceData.cs" />
     <Compile Include="Workspaces\Data\WorkspaceInfo.cs" />
-    <Compile Include="Workspaces\Data\WorkspaceStorage.cs" />
+    <Compile Include="Workspaces\Data\WorkspaceLoader.cs" />
     <Compile Include="Workspaces\Extension.cs" />
     <Compile Include="Workspaces\IWorkspaceCollection.cs" />
     <Compile Include="Workspaces\WorkspaceCollection.cs" />
@@ -56,7 +56,7 @@
     <Compile Include="ExtentStorage\Interfaces\IConfigurationToExtentStorageMapper.cs" />
     <Compile Include="ExtentStorage\Interfaces\ExtentFileStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\Interfaces\ExtentStorageConfiguration.cs" />
-    <Compile Include="ExtentStorage\ExtentStorageLogic.cs" />
+    <Compile Include="ExtentStorage\ExtentStorageLoader.cs" />
     <Compile Include="ExtentStorage\Interfaces\IExtentStorage.cs" />
     <Compile Include="FactoryMapper\DefaultFactoryMapper.cs" />
     <Compile Include="FactoryMapper\Extensions.cs" />

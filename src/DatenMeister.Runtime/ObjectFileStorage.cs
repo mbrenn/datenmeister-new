@@ -8,6 +8,11 @@ namespace DatenMeister.Runtime
     {
         public static T Load(string filePath)
         {
+            if (!File.Exists(filePath))
+            {
+                return null;
+            }
+
             using (var fileStream = new FileStream(filePath, FileMode.Open))
             {
                 var serializer = new XmlSerializer(typeof(T));
@@ -17,6 +22,12 @@ namespace DatenMeister.Runtime
 
         public static void Save(string filePath, T collection)
         {
+            var directoryName = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(directoryName))
+            {
+                Directory.CreateDirectory(directoryName);
+            }
+
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 var serializer = new XmlSerializer(typeof(T));

@@ -59,8 +59,9 @@ namespace DatenMeister.Web.Application
             serverInjection = CreateKernel(app);
             app.UseNinjectMiddleware(() => serverInjection).UseNinjectWebApi(httpConfiguration);
 
-            // Loading and storing
-            var loaded = new WorkspaceStorage(serverInjection.Get<IWorkspaceCollection>(), "workspaces.xml");
+            // Loading and storing the workspaces
+            var loaded = new WorkspaceStorage(serverInjection.Get<IWorkspaceCollection>(), "data/workspaces.xml");
+            loaded.Load();
             serverInjection.Bind<WorkspaceStorage>().ToConstant(loaded);
         }
 
@@ -75,7 +76,7 @@ namespace DatenMeister.Web.Application
             token.Register(() =>
             {
                 kernel.Get<IExtentStorageLogic>().StoreAll();
-                kernel.Get<WorkspaceStorage>().Dispose();
+                kernel.Get<WorkspaceStorage>().Store();
             });
 
             // Loading the zipcodes

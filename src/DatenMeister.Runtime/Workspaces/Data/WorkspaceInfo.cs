@@ -5,6 +5,7 @@
     /// </summary>
     public class WorkspaceInfo
     {
-        public string Title { get; set; }
+        public string Id { get; set; }
+        public string Annotation { get; set; }
     }
 }

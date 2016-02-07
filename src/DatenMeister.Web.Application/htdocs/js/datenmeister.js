@@ -34,38 +34,55 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
     function buildRibbons(layout, changeEvent) {
         var domRibbon = $(".datenmeister-ribbon");
         var ribbon = new DMRibbon.Ribbon(domRibbon);
-        var tab1 = ribbon.addTab("File");
-        tab1.addIcon("Refresh", "img/icons/refresh_update", function () { layout.refreshView(); });
-        tab1.addIcon("Workspaces", "img/icons/database", function () { layout.showWorkspaces(); });
-        tab1.addIcon("Add Workspace", "img/icons/database-add", function () {
-            var configuration = new DMI.Api.FormForItemConfiguration();
-            configuration.onOkForm = function (data) {
-                DMClient.WorkspaceApi.createWorkspace({
-                    name: data.v["name"],
-                    annotation: data.v["annotation"]
-                })
-                    .done(function () { return layout.navigateToWorkspaces(); });
-            };
-            var column = {
-                title: "Title",
-                name: "name"
-            };
-            configuration.addColumn(column);
-            column =
-                {
-                    title: "Annotation",
-                    name: "annotation"
-                };
-            configuration.addColumn(column);
-            layout.navigateToDialog(configuration);
-        });
+        var tabFile = ribbon.addTab("File");
+        tabFile.addIcon("Refresh", "img/icons/refresh_update", function () { layout.refreshView(); });
+        tabFile.addIcon("Workspaces", "img/icons/database", function () { layout.showWorkspaces(); });
+        tabFile.addIcon("Add Workspace", "img/icons/database-add", function () { showDialogNewWorkspace(layout); });
         if (changeEvent.workspace !== undefined) {
-            tab1.addIcon("Delete Workspace", "img/icons/database-delete", function () {
+            // Ok, we have a workspace
+            tabFile.addIcon("Delete Workspace", "img/icons/database-delete", function () {
                 DMClient.WorkspaceApi.deleteWorkspace(changeEvent.workspace)
                     .done(function () { return layout.navigateToWorkspaces(); });
             });
+            tabFile.addIcon("Create Extent", "img/icons/folder_open-add", function () {
+                showDialogNewExtent(layout, changeEvent.workspace);
+            });
+            if (changeEvent.extent !== undefined) {
+                tabFile.addIcon("Delete Extent", "img/icons/folder_open-delete", function () {
+                    DMClient.ExtentApi.deleteExtent(changeEvent.workspace, changeEvent.extent)
+                        .done(function () { return layout.navigateToExtents(changeEvent.workspace); });
+                });
+            }
+            tabFile.addIcon("Add ZipCodes", "img/icons/folder_open-mail", function () {
+                DMClient.ExampleApi.addZipCodes(changeEvent.workspace);
+            });
         }
-        tab1.addIcon("Close", "img/icons/close_window", function () { window.close(); });
+        tabFile.addIcon("Close", "img/icons/close_window", function () { window.close(); });
+    }
+    function showDialogNewWorkspace(layout) {
+        var configuration = new DMI.Api.FormForItemConfiguration();
+        configuration.onOkForm = function (data) {
+            DMClient.WorkspaceApi.createWorkspace({
+                name: data.v["name"],
+                annotation: data.v["annotation"]
+            })
+                .done(function () { return layout.navigateToWorkspaces(); });
+        };
+        var column = {
+            title: "Title",
+            name: "name"
+        };
+        configuration.addColumn(column);
+        column =
+            {
+                title: "Annotation",
+                name: "annotation"
+            };
+        configuration.addColumn(column);
+        layout.navigateToDialog(configuration);
+    }
+    function showDialogNewExtent(layout, workspace) {
+        alert('X');
     }
 });
 //# sourceMappingURL=datenmeister.js.map

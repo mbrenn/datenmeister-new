@@ -1,8 +1,7 @@
 namespace DatenMeister.Web.Models.PostModels
 {
-    public class ExtentReferenceModel
+    public class ExtentReferenceModel : WorkspaceReferenceModel
     {
-        public string ws { get; set; }
         public string extent { get; set; }
     }
 }

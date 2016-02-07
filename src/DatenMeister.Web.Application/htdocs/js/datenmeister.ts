@@ -45,46 +45,68 @@ export function parseAndNavigateToWindowLocation() {
 function buildRibbons(layout: DMLayout.Layout, changeEvent: DMLayout.ILayoutChangedEvent) {
     var domRibbon = $(".datenmeister-ribbon");
     var ribbon = new DMRibbon.Ribbon(domRibbon);
-    var tab1 = ribbon.addTab("File");
+    var tabFile = ribbon.addTab("File");
 
-    tab1.addIcon("Refresh", "img/icons/refresh_update", () => { layout.refreshView(); });
+    tabFile.addIcon("Refresh", "img/icons/refresh_update", () => { layout.refreshView(); });
 
-    tab1.addIcon("Workspaces", "img/icons/database", () => { layout.showWorkspaces(); });
-    tab1.addIcon("Add Workspace", "img/icons/database-add", () => {
-        var configuration = new DMI.Api.FormForItemConfiguration();
-        configuration.onOkForm = data => {
-            DMClient.WorkspaceApi.createWorkspace(
-                {
-                    name: data.v["name"],
-                    annotation: data.v["annotation"]
-                })
+    tabFile.addIcon("Workspaces", "img/icons/database", () => { layout.showWorkspaces(); });
+    tabFile.addIcon("Add Workspace", "img/icons/database-add", () => { showDialogNewWorkspace(layout); });
+
+    if (changeEvent.workspace !== undefined) {
+        // Ok, we have a workspace
+        tabFile.addIcon("Delete Workspace", "img/icons/database-delete", () => {
+            DMClient.WorkspaceApi.deleteWorkspace(changeEvent.workspace)
                 .done(() => layout.navigateToWorkspaces());
-        };
+        });
 
-        var column =
+        tabFile.addIcon("Create Extent", "img/icons/folder_open-add", () => {
+            showDialogNewExtent(layout, changeEvent.workspace);
+        });
+
+        if (changeEvent.extent !== undefined) {
+            tabFile.addIcon("Delete Extent", "img/icons/folder_open-delete", () => {
+                DMClient.ExtentApi.deleteExtent(changeEvent.workspace, changeEvent.extent)
+                    .done(() => layout.navigateToExtents(changeEvent.workspace));
+            });
+        }
+
+        tabFile.addIcon("Add ZipCodes", "img/icons/folder_open-mail", () => {
+            DMClient.ExampleApi.addZipCodes(changeEvent.workspace);
+        });
+    }
+
+    tabFile.addIcon("Close", "img/icons/close_window", () => { window.close(); });
+}
+
+function showDialogNewWorkspace(layout: DMLayout.Layout) {
+    var configuration = new DMI.Api.FormForItemConfiguration();
+    configuration.onOkForm = data => {
+        DMClient.WorkspaceApi.createWorkspace(
+            {
+                name: data.v["name"],
+                annotation: data.v["annotation"]
+            })
+            .done(() => layout.navigateToWorkspaces());
+    };
+
+    var column =
         {
             title: "Title",
             name: "name"
         };
 
-        configuration.addColumn(column);
-        column =
+    configuration.addColumn(column);
+    column =
         {
             title: "Annotation",
             name: "annotation"
         };
 
-        configuration.addColumn(column);
+    configuration.addColumn(column);
 
-        layout.navigateToDialog(configuration);
-    });
+    layout.navigateToDialog(configuration);
+}
 
-    if (changeEvent.workspace !== undefined) {
-        tab1.addIcon("Delete Workspace", "img/icons/database-delete", () => {
-            DMClient.WorkspaceApi.deleteWorkspace(changeEvent.workspace)
-                .done(() => layout.navigateToWorkspaces());
-        });
-    }
-
-    tab1.addIcon("Close", "img/icons/close_window", () => { window.close(); });
+function showDialogNewExtent(layout: DMLayout.Layout, workspace: string) {
+    alert('X');
 }

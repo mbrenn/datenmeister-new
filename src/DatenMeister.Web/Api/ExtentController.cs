@@ -25,7 +25,7 @@ namespace DatenMeister.Web.Api
         /// <summary>
         /// Defines the maximum numnber of items that shall be returned via GetItems
         /// </summary>
-        private const int maxItemAmount = 100;
+        private const int MaxItemAmount = 100;
 
         private readonly IFactoryMapper _mapper;
         private readonly IWorkspaceCollection _workspaceCollection;
@@ -77,6 +77,24 @@ namespace DatenMeister.Web.Api
         }
 
         /// <summary>
+        /// Deletes a complete extent
+        /// </summary>
+        /// <param name="model">Model to be deleted</param>
+        /// <returns>true, if ok</returns>
+        [Route("extent_delete")]
+        [HttpPost]
+        public object DeleteExtent([FromBody] ExtentReferenceModel model)
+        {
+            var workspace = GetWorkspace(model.ws);
+            var removed = workspace.RemoveExtent(model.extent);
+
+            return new
+            {
+                success = removed
+            };
+        }
+
+        /// <summary>
         /// Returns a list of items being in the query. 
         /// The query contains a filter and a subset of elements
         /// </summary>
@@ -87,7 +105,7 @@ namespace DatenMeister.Web.Api
         /// <param name="a">Number of items being shown</param>
         /// <returns>Enumeration of items</returns>
         [Route("items")]
-        public object GetItems(string ws, string extent, string search = null, int o = 0, int a = maxItemAmount)
+        public object GetItems(string ws, string extent, string search = null, int o = 0, int a = MaxItemAmount)
         {
             var amount = Math.Max(0, Math.Min(100, a)); // Return only the first 100 elements if no index is given
             var workspace = GetWorkspace(ws);

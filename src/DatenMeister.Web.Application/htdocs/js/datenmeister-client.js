@@ -117,6 +117,21 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                 cache: false
             });
         }
+        function deleteExtent(ws, extent) {
+            var callback = $.Deferred();
+            var postModel = new DMI.PostModels.ExtentReferenceModel();
+            postModel.ws = ws;
+            postModel.extent = extent;
+            $.ajax({
+                url: "/api/datenmeister/extent/extent_delete",
+                data: postModel,
+                method: "POST",
+                success: function (data) { callback.resolve(true); },
+                error: function (data) { callback.reject(false); }
+            });
+            return callback;
+        }
+        ExtentApi.deleteExtent = deleteExtent;
     })(ExtentApi = exports.ExtentApi || (exports.ExtentApi = {}));
     var ItemApi;
     (function (ItemApi) {
@@ -198,5 +213,20 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
         }
         ItemApi.setProperties = setProperties;
     })(ItemApi = exports.ItemApi || (exports.ItemApi = {}));
+    var ExampleApi;
+    (function (ExampleApi) {
+        function addZipCodes(workspace) {
+            var callback = $.Deferred();
+            $.ajax({
+                url: "/api/datenmeister/example/addzipcodes",
+                data: { ws: workspace },
+                method: "POST",
+                success: function (data) { callback.resolve(true); },
+                error: function (data) { callback.resolve(false); }
+            });
+            return callback;
+        }
+        ExampleApi.addZipCodes = addZipCodes;
+    })(ExampleApi = exports.ExampleApi || (exports.ExampleApi = {}));
 });
 //# sourceMappingURL=datenmeister-client.js.map

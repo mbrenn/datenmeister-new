@@ -132,6 +132,25 @@ export module ExtentApi {
                 cache: false
             });
     }
+
+    export function deleteExtent(ws: string, extent: string) {
+        var callback = $.Deferred();
+
+        var postModel = new DMI.PostModels.ExtentReferenceModel();
+        postModel.ws = ws;
+        postModel.extent = extent;
+
+        $.ajax(
+            {
+                url: "/api/datenmeister/extent/extent_delete",
+                data: postModel,
+                method: "POST",
+                success: (data: any) => { callback.resolve(true); },
+                error: (data: any) => { callback.reject(false); }
+            });
+
+        return callback;
+    }
 }
 
 export module ItemApi {
@@ -215,6 +234,22 @@ export module ItemApi {
         $.ajax({
             url: "/api/datenmeister/extent/item_set_properties",
             data: postModel,
+            method: "POST",
+            success: (data: any) => { callback.resolve(true); },
+            error: (data: any) => { callback.resolve(false); }
+        });
+
+        return callback;
+    }
+}
+
+export module ExampleApi {
+    export function addZipCodes(workspace: string): JQueryPromise<boolean> {
+
+        var callback = $.Deferred();
+        $.ajax({
+            url: "/api/datenmeister/example/addzipcodes",
+            data: { ws: workspace },
             method: "POST",
             success: (data: any) => { callback.resolve(true); },
             error: (data: any) => { callback.resolve(false); }

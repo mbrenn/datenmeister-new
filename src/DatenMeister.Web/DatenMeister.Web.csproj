@@ -84,6 +84,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\ExampleController.cs" />
     <Compile Include="Api\ExtentController.cs" />
     <Compile Include="Api\OperationFailedException.cs" />
     <Compile Include="Api\WorkspaceController.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Models\PostModels\ItemUnsetPropertyModel.cs" />
     <Compile Include="Models\PostModels\WorkspaceCreateModel.cs" />
     <Compile Include="Models\PostModels\WorkspaceDeleteModel.cs" />
+    <Compile Include="Models\PostModels\WorkspaceReferenceModel.cs" />
     <Compile Include="Models\WorkspaceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

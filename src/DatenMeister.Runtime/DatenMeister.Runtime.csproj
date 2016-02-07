@@ -43,6 +43,15 @@
     <Compile Include="Copier\ObjectCopier.cs" />
     <Compile Include="ExtentStorage\ExtentStorageData.cs" />
     <Compile Include="ExtentStorage\IExtentStorageLoader.cs" />
+    <Compile Include="Functions\Aggregation\CountAggregator.cs" />
+    <Compile Include="Functions\Interfaces\Aggregator.cs" />
+    <Compile Include="Functions\Interfaces\AggregatorByFunction.cs" />
+    <Compile Include="Functions\Aggregation\AverageAggregator.cs" />
+    <Compile Include="Functions\Interfaces\DoubleAggregationByFunction.cs" />
+    <Compile Include="Functions\Interfaces\IAggregator.cs" />
+    <Compile Include="Functions\Aggregation\MaxAggregator.cs" />
+    <Compile Include="Functions\Aggregation\MinAggregator.cs" />
+    <Compile Include="Functions\Aggregation\SumAggregator.cs" />
     <Compile Include="ObjectFileStorage.cs" />
     <Compile Include="Workspaces\Data\WorkspaceData.cs" />
     <Compile Include="Workspaces\Data\WorkspaceInfo.cs" />

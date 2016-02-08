@@ -18,6 +18,30 @@ export function start() {
 
         parseAndNavigateToWindowLocation();
     });
+
+    // Information, when an ajax request failed
+    $(document).ajaxError((ev, xhr, settings, error) => {
+        if (xhr.responseJSON.ExceptionMessage !== undefined) {
+            alert(xhr.responseJSON.ExceptionMessage);
+        } else {
+            alert(`A server error occured: ${xhr.responseText}`);
+        }
+    });
+
+    // Ajax loading information
+    var ajaxRequests = 0;
+    $("#dm-ajaxloading").hide();
+    $(document).ajaxStart(() => {
+        $("#dm-ajaxloading").show();
+        ajaxRequests++;
+    });
+
+    $(document).ajaxStop(() => {
+        ajaxRequests--;
+        if (ajaxRequests === 0) {
+            $("#dm-ajaxloading").hide();
+        }
+    });
 }
 
 export function parseAndNavigateToWindowLocation() {
@@ -71,7 +95,8 @@ function buildRibbons(layout: DMLayout.Layout, changeEvent: DMLayout.ILayoutChan
         }
 
         tabFile.addIcon("Add ZipCodes", "img/icons/folder_open-mail", () => {
-            DMClient.ExampleApi.addZipCodes(changeEvent.workspace);
+            DMClient.ExampleApi.addZipCodes(changeEvent.workspace).done(
+                () => layout.refreshView());
         });
     }
 

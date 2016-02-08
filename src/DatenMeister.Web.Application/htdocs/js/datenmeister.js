@@ -8,6 +8,28 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
             };
             parseAndNavigateToWindowLocation();
         });
+        // Information, when an ajax request failed
+        $(document).ajaxError(function (ev, xhr, settings, error) {
+            if (xhr.responseJSON.ExceptionMessage !== undefined) {
+                alert(xhr.responseJSON.ExceptionMessage);
+            }
+            else {
+                alert("A server error occured: " + xhr.responseText);
+            }
+        });
+        // Ajax loading information
+        var ajaxRequests = 0;
+        $("#dm-ajaxloading").hide();
+        $(document).ajaxStart(function () {
+            $("#dm-ajaxloading").show();
+            ajaxRequests++;
+        });
+        $(document).ajaxStop(function () {
+            ajaxRequests--;
+            if (ajaxRequests === 0) {
+                $("#dm-ajaxloading").hide();
+            }
+        });
     }
     exports.start = start;
     function parseAndNavigateToWindowLocation() {
@@ -54,7 +76,7 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
                 });
             }
             tabFile.addIcon("Add ZipCodes", "img/icons/folder_open-mail", function () {
-                DMClient.ExampleApi.addZipCodes(changeEvent.workspace);
+                DMClient.ExampleApi.addZipCodes(changeEvent.workspace).done(function () { return layout.refreshView(); });
             });
         }
         tabFile.addIcon("Close", "img/icons/close_window", function () { window.close(); });

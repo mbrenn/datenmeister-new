@@ -21,6 +21,16 @@ textarea {
     cursor: pointer;
 }
 
+#dm-ajaxloading {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    padding: 10px;
+    border: 1px solid black;
+    background-color: white;
+    z-index: 2;
+}
+
 .dm-topbar {
     width: 100%;
     background-color: lightgray;

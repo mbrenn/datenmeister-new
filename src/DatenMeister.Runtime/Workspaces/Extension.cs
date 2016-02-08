@@ -7,7 +7,15 @@ namespace DatenMeister.Runtime.Workspaces
 {
     public static class Extension
     {
-        public static bool AddExtentNoDuplicate<T>(this Workspace<T> workspace, IUriExtent extent) where T : IExtent
+        /// <summary>
+        /// Adds an extent to the workspace, but checks, if the given uri is already existing
+        /// </summary>
+        /// <typeparam name="T">Type of the extents in the workspace</typeparam>
+        /// <typeparam name="Q">Type of the extent being added. Needs to be of type IUriExtent</typeparam>
+        /// <param name="workspace">Workspace where extent will be added</param>
+        /// <param name="extent">Extent being added</param>
+        /// <returns>true, if addition was succesfsul</returns>
+        public static bool AddExtentNoDuplicate<T, Q>(this Workspace<T> workspace, Q extent) where T : IExtent where Q : T, IUriExtent
         {
             var contextUri = extent.contextURI();
             var found = workspace.extent.FirstOrDefault(x =>
@@ -18,7 +26,7 @@ namespace DatenMeister.Runtime.Workspaces
 
             if (found == null)
             {
-                workspace.AddExtent((T) extent);
+                workspace.AddExtent(extent);
                 return true;
             }
 

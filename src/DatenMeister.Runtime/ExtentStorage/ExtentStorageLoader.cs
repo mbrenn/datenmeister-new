@@ -95,7 +95,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// Stores the extent according to the used configuration during loading. 
         /// If loading was not performed, an exception is thrown. 
         /// </summary>
-        /// <param name="extent"></param>
+        /// <param name="extent">Extent to be stored</param>
         public void StoreExtent(IUriExtent extent)
         {
             ExtentStorageData.LoadedExtentInformation information;

@@ -7,6 +7,50 @@ namespace DatenMeister.Runtime.Workspaces
 {
     public static class Extension
     {
+        public static bool AddExtentNoDuplicate<T>(this Workspace<T> workspace, IUriExtent extent) where T : IExtent
+        {
+            var contextUri = extent.contextURI();
+            var found = workspace.extent.FirstOrDefault(x =>
+            {
+                var uriExtent = x as IUriExtent;
+                return uriExtent != null && uriExtent.contextURI() == contextUri;
+            });
+
+            if (found == null)
+            {
+                workspace.AddExtent((T) extent);
+                return true;
+            }
+
+            throw new InvalidOperationException($"Extent with uri {contextUri} is already existing");
+        }
+
+        /// <summary>
+        /// Removes the extent with the given uri out of the database
+        /// </summary>
+        /// <param name="workspace">The workspace to be modified</param>
+        /// <param name="uri">Uri of the extent</param>
+        /// <returns>true, if the object can be deleted</returns>
+        public static bool RemoveExtent<T>(this Workspace<T> workspace, string uri) where T : IExtent
+        {
+            lock (workspace.SyncObject)
+            {
+                var found = workspace.extent.FirstOrDefault(x =>
+                {
+                    var uriExtent = x as IUriExtent;
+                    return uriExtent != null && uriExtent.contextURI() == uri;
+                });
+
+                if (found != null)
+                {
+                    workspace.extent.Remove(found);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static void RetrieveWorkspaceAndExtent(
             this IWorkspaceCollection workspaceCollection,
             WorkspaceExtentAndItem model,

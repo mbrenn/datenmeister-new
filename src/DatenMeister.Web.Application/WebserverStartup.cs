@@ -72,7 +72,7 @@ namespace DatenMeister.Web.Application
 
             // A little bit hacky, but it works for first
             extentLoader.AddAdditionalType(typeof(CSVStorageConfiguration));
-            extentLoader.Load();
+            extentLoader.LoadAllExtents();
             serverInjection.Bind<ExtentStorageConfigurationStorage>().ToConstant(extentLoader);
         }
 
@@ -86,9 +86,8 @@ namespace DatenMeister.Web.Application
             var token = properties.OnAppDisposing;
             token.Register(() =>
             {
-                kernel.Get<IExtentStorageLoader>().StoreAll();
                 kernel.Get<WorkspaceLoader>().Store();
-                kernel.Get<ExtentStorageConfigurationStorage>().Store();
+                kernel.Get<ExtentStorageConfigurationStorage>().StoreAllExtents();
             });
 
             // Loading the zipcodes

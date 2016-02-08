@@ -57,7 +57,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             if (loadedExtent == null)
             {
-                throw new InvalidOperationException("Extent for configuration coudd not be loaded");
+                throw new InvalidOperationException("Extent for configuration could not be loaded");
             }
 
             AddToWorkspaceIfPossible(configuration, loadedExtent);
@@ -87,7 +87,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     throw new InvalidOperationException($"Workspace {configuration.Workspace} not found");
                 }
 
-                workspace.AddExtent(loadedExtent);
+                workspace.AddExtentNoDuplicate(loadedExtent);
             }
         }
 

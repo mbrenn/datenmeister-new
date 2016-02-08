@@ -34,13 +34,19 @@ namespace DatenMeister.Runtime.ExtentStorage
             _additionalTypes.Add(type);
         }
 
+        /// <summary>
+        /// Gets the additional types for the xml parsing
+        /// </summary>
+        /// <returns>Array of additional types</returns>
         public override Type[] GetAdditionalTypes()
         {
             return _additionalTypes.ToArray();
         }
 
-
-        public void Load()
+        /// <summary>
+        /// Loads all extents
+        /// </summary>
+        public void LoadAllExtents()
         {
             var loaded = Load(Filepath);
             if (loaded == null)
@@ -50,12 +56,24 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             foreach (var info in loaded.Extents)
             {
-                ExtentLoaderLogic.LoadExtent(info);
+                try
+                {
+                    ExtentLoaderLogic.LoadExtent(info);
+                }
+                catch (Exception exc)
+                {
+                    Debug.WriteLine($"Loading extent of {info.ExtentUri} failed: {exc.Message}");
+                }
+                
             }
         }
 
-        public void Store()
+        /// <summary>
+        /// Stores all extents and the catalogue of the extents
+        /// </summary>
+        public void StoreAllExtents()
         {
+            ExtentLoaderLogic.StoreAll();
             var toBeStored = new ExtentStorageConfigurationCollection();
             foreach (var loadedExtent in ExtentStorageData.LoadedExtents)
             {

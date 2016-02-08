@@ -9,5 +9,15 @@ namespace DatenMeister.CSV.Runtime.Storage
         } 
 
         public CSVSettings Settings { get; set; } = new CSVSettings();
+
+        public override string ToString()
+        {
+            if (Settings != null)
+            {
+                return $"CSVStorageConfiguration: {ExtentUri}, {Path}";
+            }
+
+            return base.ToString();
+        }
     }
 }

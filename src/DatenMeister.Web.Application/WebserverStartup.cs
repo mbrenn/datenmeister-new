@@ -120,7 +120,7 @@ namespace DatenMeister.Web.Application
             };
 
             var extentStorageLogic = kernel.Get<IExtentStorageLoader>();
-            extentStorageLogic.LoadExtent(defaultConfiguration);
+            extentStorageLogic.LoadExtent(defaultConfiguration, false);
             
             Debug.WriteLine("Zip codes loaded");
         }

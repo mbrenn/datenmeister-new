@@ -46,13 +46,21 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// Loads the extent by using the extent storage
         /// </summary>
         /// <param name="configuration">Configuration being used to load</param>
+        /// <param name="createAlsoEmpty">true, if also empty extents will be created, if the file does not exist</param>
         /// <returns>The loaded extent</returns>
-        public IUriExtent LoadExtent(ExtentStorageConfiguration configuration)
+        public IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty = false)
         {
+            // Check, if the extent url is a real uri
+            if (!Uri.IsWellFormedUriString(configuration.ExtentUri, UriKind.Absolute))
+            {
+                throw new InvalidOperationException($"Uri is not well-formed: {configuration.ExtentUri}");
+            }
+
+            // Creates the extent storage, being capable to load or store an extent
             var extentStorage = _map.CreateFor(configuration);
         
             // Loads the extent
-            var loadedExtent = extentStorage.LoadExtent(configuration);
+            var loadedExtent = extentStorage.LoadExtent(configuration, createAlsoEmpty);
             Debug.WriteLine($"- Loading: {configuration}");
 
             if (loadedExtent == null)

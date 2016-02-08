@@ -28,7 +28,25 @@ export interface IItemContentModel {
 export interface IDataTableColumn {
     title?: string;
     name?: string;
+    defaultValue?: any;
     isEnumeration?: boolean;
+}
+
+export class DataTableColumn implements IDataTableColumn {
+    title: string;
+    name: string;
+    defaultValue: any;
+    isEnumeration: boolean;
+
+    constructor(title?: string, name?: string) {
+        this.title = title;
+        this.name = name;
+    }
+
+    withDefaultValue(value: any): DataTableColumn {
+        this.defaultValue = value;
+        return this;
+    }
 }
 
 export interface IDataTableItem {
@@ -77,6 +95,13 @@ export module PostModels {
         name: string;
         annotation: string;
         type?: string;
+    }
+
+    export interface IExtentCreateModel {
+        workspace: string;
+        contextUri: string;
+        filename: string;
+        columns: string;
     }
 
     /** This class is used to reference a single object within the database */

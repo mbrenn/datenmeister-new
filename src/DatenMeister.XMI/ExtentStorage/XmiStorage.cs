@@ -9,9 +9,15 @@ namespace DatenMeister.XMI.ExtentStorage
 {
     public class XmiStorage  : IExtentStorage
     {
-        public IUriExtent LoadExtent(ExtentStorageConfiguration configuration)
+        public IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty = false)
         {
             var xmiConfiguration = (XmiStorageConfiguration) configuration;
+
+            if (createAlsoEmpty)
+            {
+                throw new ArgumentException("Empty Xmi storages cannot be created at the moment.");
+            }
+
             if (!File.Exists(xmiConfiguration.Path))
             {
                 throw new InvalidOperationException(

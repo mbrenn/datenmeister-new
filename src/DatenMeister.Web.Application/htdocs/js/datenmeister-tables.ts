@@ -287,6 +287,10 @@ function createDomForContent(item: DMI.IDataTableItem, column: DMI.IDataTableCol
 
     var tthis = this;
     var contentValue = item.v[column.name];
+    if (contentValue === undefined) {
+        contentValue = column.defaultValue;
+    }
+
     if (column.isEnumeration) {
         let domResult = $("<ul></ul>");
         if (contentValue !== undefined) {

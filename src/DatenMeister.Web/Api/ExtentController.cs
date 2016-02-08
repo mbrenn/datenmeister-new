@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
+using DatenMeister.CSV;
+using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Queries;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -30,12 +34,19 @@ namespace DatenMeister.Web.Api
         private readonly IFactoryMapper _mapper;
         private readonly IWorkspaceCollection _workspaceCollection;
         private readonly IUmlNameResolution _resolution;
+        private readonly IExtentStorageLoader _extentStorageLoader;
 
-        public ExtentController(IFactoryMapper mapper, IWorkspaceCollection workspaceCollection, IUmlNameResolution resolution)
+
+        public ExtentController(
+            IFactoryMapper mapper, 
+            IWorkspaceCollection workspaceCollection, 
+            IUmlNameResolution resolution, 
+            IExtentStorageLoader extentStorageLoader)
         {
             _mapper = mapper;
             _workspaceCollection = workspaceCollection;
             _resolution = resolution;
+            _extentStorageLoader = extentStorageLoader;
         }
 
         [Route("all")]
@@ -74,6 +85,53 @@ namespace DatenMeister.Web.Api
             }
 
             return workspace;
+        }
+
+
+        /// <summary>
+        /// Deletes a complete extent
+        /// </summary>
+        /// <param name="model">Model to be deleted</param>
+        /// <returns>true, if ok</returns>
+        [Route("extent_create")]
+        [HttpPost]
+        public object CreateExtent([FromBody] ExtentCreateModel model)
+        {
+            var workspace = _workspaceCollection.Workspaces.First(x => x.id == model.workspace);
+            if (workspace == null)
+            {
+                throw new InvalidOperationException("Workspace not found");
+            }
+
+            var filename = Path.GetFileName(model.filename);
+            var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+            filename = Path.Combine(appBase, "data", filename);
+
+            // Creates the new workspace
+
+            IUriExtent createdExtent;
+            switch (model.extentType)
+            {
+                default:
+                    var extentData = new CSVStorageConfiguration
+                    {
+                        ExtentUri = model.contextUri,
+                        Path = filename,
+                        Workspace = model.workspace,
+                        Settings = new CSVSettings()
+                    };
+
+                    extentData.Settings.Columns.AddRange(model.ColumnsAsEnumerable);
+
+                    createdExtent = _extentStorageLoader.LoadExtent(extentData, true);
+                    break;
+            }
+
+            return new
+            {
+                success = true,
+                uri = createdExtent.contextURI()
+            };
         }
 
         /// <summary>

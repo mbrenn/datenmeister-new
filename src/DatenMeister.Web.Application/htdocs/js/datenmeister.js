@@ -90,21 +90,26 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
             })
                 .done(function () { return layout.navigateToWorkspaces(); });
         };
-        var column = {
-            title: "Title",
-            name: "name"
-        };
-        configuration.addColumn(column);
-        column =
-            {
-                title: "Annotation",
-                name: "annotation"
-            };
-        configuration.addColumn(column);
+        configuration.addColumn(new DMI.DataTableColumn("Title", "name"));
+        configuration.addColumn(new DMI.DataTableColumn("Annotation", "annotation"));
         layout.navigateToDialog(configuration);
     }
     function showDialogNewExtent(layout, workspace) {
-        alert('X');
+        var configuration = new DMI.Api.FormForItemConfiguration();
+        configuration.onOkForm = function (data) {
+            DMClient.ExtentApi.createExtent({
+                workspace: data.v["workspace"],
+                contextUri: data.v["contextUri"],
+                filename: data.v["filename"],
+                columns: data.v["columns"]
+            })
+                .done(function () { return layout.navigateToExtents(data.v["workspace"]); });
+        };
+        configuration.addColumn(new DMI.DataTableColumn("Workspace", "workspace").withDefaultValue(workspace));
+        configuration.addColumn(new DMI.DataTableColumn("URI", "contextUri").withDefaultValue("dm:///"));
+        configuration.addColumn(new DMI.DataTableColumn("Filename", "filename"));
+        configuration.addColumn(new DMI.DataTableColumn("Columns", "columns").withDefaultValue("Column1,Column2"));
+        layout.navigateToDialog(configuration);
     }
 });
 //# sourceMappingURL=datenmeister.js.map

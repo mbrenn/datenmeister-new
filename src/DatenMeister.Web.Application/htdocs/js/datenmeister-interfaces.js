@@ -6,6 +6,18 @@ var __extends = (this && this.__extends) || function (d, b) {
 define(["require", "exports"], function (require, exports) {
     ;
     ;
+    var DataTableColumn = (function () {
+        function DataTableColumn(title, name) {
+            this.title = title;
+            this.name = name;
+        }
+        DataTableColumn.prototype.withDefaultValue = function (value) {
+            this.defaultValue = value;
+            return this;
+        };
+        return DataTableColumn;
+    })();
+    exports.DataTableColumn = DataTableColumn;
     var DataTableItem = (function () {
         function DataTableItem() {
             this.uri = "local:///";

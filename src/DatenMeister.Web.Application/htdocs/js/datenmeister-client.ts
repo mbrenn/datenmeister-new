@@ -151,6 +151,21 @@ export module ExtentApi {
 
         return callback;
     }
+
+    export function createExtent(extentData: DMI.PostModels.IExtentCreateModel): JQueryDeferred<boolean> {
+        var callback = $.Deferred();
+
+        $.ajax(
+            {
+                url: "/api/datenmeister/extent/extent_create",
+                data: extentData,
+                method: "POST",
+                success: (data: any) => { callback.resolve(true); },
+                error: (data: any) => { callback.reject(false); }
+            });
+
+        return callback;
+    }
 }
 
 export module ItemApi {

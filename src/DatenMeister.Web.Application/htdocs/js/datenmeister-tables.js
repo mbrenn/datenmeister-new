@@ -220,6 +220,9 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
         }
         var tthis = this;
         var contentValue = item.v[column.name];
+        if (contentValue === undefined) {
+            contentValue = column.defaultValue;
+        }
         if (column.isEnumeration) {
             var domResult = $("<ul></ul>");
             if (contentValue !== undefined) {

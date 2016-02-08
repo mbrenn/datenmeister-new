@@ -50,7 +50,6 @@ namespace DatenMeister.Web.Api
 
             //////////////////////
             // Loads the workspace
-
             var defaultConfiguration = new CSVStorageConfiguration
             {
                 ExtentUri = $"datenmeister:///zipcodes/{randomNumber}",
@@ -64,7 +63,7 @@ namespace DatenMeister.Web.Api
                 }
             };
 
-            _loader.LoadExtent(defaultConfiguration);
+            _loader.LoadExtent(defaultConfiguration, false);
 
             Debug.WriteLine("Zip codes loaded");
         }

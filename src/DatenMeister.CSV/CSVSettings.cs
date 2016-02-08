@@ -10,7 +10,6 @@ namespace DatenMeister.CSV
             Encoding = "UTF-8";
             HasHeader = true;
             Separator = ',';
-            Columns = new List<object>();
         }
 
         public string Encoding { get; set; }

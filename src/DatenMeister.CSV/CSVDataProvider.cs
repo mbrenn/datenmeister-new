@@ -46,8 +46,7 @@ namespace DatenMeister.CSV
         /// </summary>
         /// <param name="path">Path being used to load the file</param>
         /// <param name="extent">Extet being stored</param>
-        /// <param name="settings">
-        ///     Settings being used to store it.
+        /// <param name="settings">Settings being used to store it.</param>
         ///     <param name="stream"></param>
         private void ReadFromStream(IUriExtent extent, IFactory factory, Stream stream, CSVSettings settings)
         {

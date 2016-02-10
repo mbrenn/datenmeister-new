@@ -133,20 +133,25 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
             var tthis = this;
             var configuration = new DMTables.ItemContentConfiguration();
             configuration.columns = data.c;
-            configuration.deleteFunction = function (url, property, domRow) {
-                DMClient.ItemApi.deleteProperty(ws, extentUrl, itemUrl, property).done(function () { return domRow.find("td").fadeOut(500, function () { domRow.remove(); }); });
+            /*
+            configuration.deleteFunction = (url: string, property: string, domRow: JQuery) => {
+                DMClient.ItemApi.deleteProperty(ws, extentUrl, itemUrl, property).done(() => domRow.find("td").fadeOut(500, () => { domRow.remove(); }));
                 return false;
             };
-            configuration.onEditProperty = function (url, property, newValue) {
+    
+            configuration.onEditProperty = (url: string, property: string, newValue: string) => {
                 DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
             };
-            /*configuration.onNewProperty = (url: string, property: string, newValue: string) => {
+            
+            configuration.onNewProperty = (url: string, property: string, newValue: string) => {
                 DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
             };*/
             var table = new DMTables.ItemContentTable(data, configuration);
             configuration.onOkForm = function () {
-                DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item);
-                tthis.layout.navigateToItems(ws, extentUrl);
+                DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item)
+                    .done(function () {
+                    tthis.layout.navigateToItems(ws, extentUrl);
+                });
             };
             configuration.onCancelForm = function () {
                 tthis.layout.navigateToItems(ws, extentUrl);

@@ -46,17 +46,17 @@ export class ItemListTable {
     currentPage: number;
     totalPages: number;
 
-    provider: DMI.IItemsProvider;
+    provider: DMI.Api.IItemsProvider;
 
-    currentQuery: DMI.IItemTableQuery;
+    currentQuery: DMI.PostModels.IItemTableQuery;
 
-    constructor(dom: JQuery, provider: DMI.IItemsProvider, configuration: ItemTableConfiguration) {
+    constructor(dom: JQuery, provider: DMI.Api.IItemsProvider, configuration: ItemTableConfiguration) {
         this.domContainer = dom;
         this.provider = provider;
         this.configuration = configuration;
         this.currentPage = 1;
         this.totalPages = 0;
-        this.currentQuery = new DMI.ItemInExtentQuery();
+        this.currentQuery = new DMI.PostModels.ItemInExtentQuery();
         this.currentQuery.amount = configuration.itemsPerPage;
     }
 
@@ -70,19 +70,19 @@ export class ItemListTable {
     }
 
     // Replaces the content at the dom with the created table
-    loadAndShow(): JQueryDeferred<DMI.IItemsContent> {
+    loadAndShow(): JQueryDeferred<DMI.ClientResponse.IItemsContent> {
         return this.provider.performQuery(this.currentQuery).done((data) => {
             this.createDomForTable(data);
         });
     }
 
-    reload(): JQueryDeferred<DMI.IItemsContent> {
+    reload(): JQueryDeferred<DMI.ClientResponse.IItemsContent> {
         return this.provider.performQuery(this.currentQuery).done((data) => {
             this.updateDomForItems(data);
         });
     }
 
-    createDomForTable(data: DMI.IItemsContent)
+    createDomForTable(data: DMI.ClientResponse.IItemsContent)
     {
         var tthis = this;
         this.domContainer.empty();
@@ -206,13 +206,13 @@ export class ItemListTable {
         this.domContainer.append(this.domTable);
     }
 
-    updateDomForItems(data: DMI.IItemsContent) {
+    updateDomForItems(data: DMI.ClientResponse.IItemsContent) {
         $("tr", this.domTable).has("td")
             .remove();
         this.createRowsForItems(data);
     }
 
-    createRowsForItems(data: DMI.IItemsContent): void {
+    createRowsForItems(data: DMI.ClientResponse.IItemsContent): void {
         this.domTotalNumber.text(data.totalItemCount);
         this.domFilteredNumber.text(data.filteredItemCount);
 
@@ -281,7 +281,11 @@ export class ItemListTable {
     }
 }
 
-function createDomForContent(item: DMI.IDataTableItem, column: DMI.IDataTableColumn, inEditMode?: boolean, configuration?: ItemTableConfiguration | ItemContentConfiguration) {
+function createDomForContent(
+    item: DMI.ClientResponse.IDataTableItem,
+    column: DMI.ClientResponse.IDataTableColumn,
+    inEditMode?: boolean,
+    configuration?: ItemTableConfiguration | ItemContentConfiguration) {
     if (inEditMode === undefined) {
         inEditMode = false;
     }
@@ -333,7 +337,7 @@ function createDomForContent(item: DMI.IDataTableItem, column: DMI.IDataTableCol
 
 export class ItemContentConfiguration {
     autoProperties: boolean;
-    columns: Array<DMI.IDataTableColumn>;
+    columns: Array<DMI.ClientResponse.IDataTableColumn>;
 
     // Gets or sets a flag, whether we should start with full edit mode
     // if we start with edit mode, all property values will be shown as an edit field
@@ -353,21 +357,21 @@ export class ItemContentConfiguration {
         this.startWithEditMode = true;
         this.autoProperties = false;
         this.supportNewProperties = true;
-        this.columns = new Array<DMI.IDataTableColumn>();
+        this.columns = new Array<DMI.ClientResponse.IDataTableColumn>();
     }
 
-    addColumn(column: DMI.IDataTableColumn) {
+    addColumn(column: DMI.ClientResponse.IDataTableColumn) {
         this.columns[this.columns.length] = column;
     }
 }
 
 export class ItemContentTable {
-    item: DMI.IDataTableItem;
+    item: DMI.ClientResponse.IDataTableItem;
     configuration: ItemContentConfiguration;
     domContainer: JQuery;
     domForEditArray: Array<JQuery>;
 
-    constructor(item: DMI.IDataTableItem, configuration: ItemContentConfiguration) {
+    constructor(item: DMI.ClientResponse.IDataTableItem, configuration: ItemContentConfiguration) {
         this.item = item;
         this.configuration = configuration;
     }
@@ -386,7 +390,7 @@ export class ItemContentTable {
         domTable.append(domRow);
 
         var propertyValue = this.item.v;
-        var column: DMI.IDataTableColumn;
+        var column: DMI.ClientResponse.IDataTableColumn;
 
         if (this.configuration.autoProperties) {
             this.configuration.columns.length = 0;

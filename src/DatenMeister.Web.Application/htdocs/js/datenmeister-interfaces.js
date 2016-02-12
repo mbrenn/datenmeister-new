@@ -4,36 +4,20 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 define(["require", "exports"], function (require, exports) {
-    ;
-    ;
-    var DataTableColumn = (function () {
-        function DataTableColumn(title, name) {
-            this.title = title;
-            this.name = name;
-        }
-        DataTableColumn.prototype.withDefaultValue = function (value) {
-            this.defaultValue = value;
-            return this;
-        };
-        return DataTableColumn;
-    })();
-    exports.DataTableColumn = DataTableColumn;
-    var DataTableItem = (function () {
-        function DataTableItem() {
-            this.uri = "local:///";
-            this.v = new Array();
-        }
-        return DataTableItem;
-    })();
-    exports.DataTableItem = DataTableItem;
-    var ItemInExtentQuery = (function () {
-        function ItemInExtentQuery() {
-        }
-        return ItemInExtentQuery;
-    })();
-    exports.ItemInExtentQuery = ItemInExtentQuery;
+    /* Stores all the models that can be returned via one of the */
+    var ClientResponse;
+    (function (ClientResponse) {
+        ;
+        ;
+    })(ClientResponse = exports.ClientResponse || (exports.ClientResponse = {}));
     var PostModels;
     (function (PostModels) {
+        var ItemInExtentQuery = (function () {
+            function ItemInExtentQuery() {
+            }
+            return ItemInExtentQuery;
+        })();
+        PostModels.ItemInExtentQuery = ItemInExtentQuery;
         /** This class is used to reference a single object within the database */
         var ExtentReferenceModel = (function () {
             function ExtentReferenceModel() {
@@ -90,6 +74,38 @@ define(["require", "exports"], function (require, exports) {
         })(ItemReferenceModel);
         PostModels.ItemSetPropertiesModel = ItemSetPropertiesModel;
     })(PostModels = exports.PostModels || (exports.PostModels = {}));
+    var View;
+    (function (View) {
+        var ItemViewSettings = (function () {
+            function ItemViewSettings() {
+            }
+            return ItemViewSettings;
+        })();
+        View.ItemViewSettings = ItemViewSettings;
+    })(View = exports.View || (exports.View = {}));
+    var Table;
+    (function (Table) {
+        var DataTableColumn = (function () {
+            function DataTableColumn(title, name) {
+                this.title = title;
+                this.name = name;
+            }
+            DataTableColumn.prototype.withDefaultValue = function (value) {
+                this.defaultValue = value;
+                return this;
+            };
+            return DataTableColumn;
+        })();
+        Table.DataTableColumn = DataTableColumn;
+        var DataTableItem = (function () {
+            function DataTableItem() {
+                this.uri = "local:///";
+                this.v = new Array();
+            }
+            return DataTableItem;
+        })();
+        Table.DataTableItem = DataTableItem;
+    })(Table = exports.Table || (exports.Table = {}));
     var Api;
     (function (Api) {
         var FormForItemConfiguration = (function () {

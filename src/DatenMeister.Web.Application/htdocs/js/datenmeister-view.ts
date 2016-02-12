@@ -18,7 +18,7 @@ export class WorkspaceView {
         return result;
     }
 
-    createHtmlForWorkbenchs(container: JQuery, data: Array<DMI.IWorkspace>) {
+    createHtmlForWorkbenchs(container: JQuery, data: Array<DMI.ClientResponse.IWorkspace>) {
         container.empty();
         var compiledTable = $($("#template_workspace_table").html());
         var compiled = _.template($("#template_workspace").html());
@@ -59,25 +59,25 @@ export class ExtentView {
     onItemSelected: (ws: string, extentUrl: string, itemUrl: string) => void;
     onItemCreated: (ws: string, extentUrl: string, itemUrl: string) => void;
 
-    loadAndCreateHtmlForWorkspace(container: JQuery, ws: string): JQueryPromise<Object> {
+    loadAndCreateHtmlForWorkspace(container: JQuery, ws: string): JQueryPromise<boolean> {
         var callback = $.Deferred();
         $.ajax(
         {
             url: "/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws),
             cache: false,
-            success: data => {
+            success: (data: Array<DMI.ClientResponse.IExtent>) => {
                 this.createHtmlForWorkspace(container, ws, data);
-                callback.resolve(null);
+                callback.resolve(true);
             },
             error: data => {
-                callback.reject(null);
+                callback.reject(false);
             }
         });
 
         return callback;
     }
 
-    createHtmlForWorkspace(container: JQuery, ws: string, data: Array<DMI.IExtent>) {
+    createHtmlForWorkspace(container: JQuery, ws: string, data: Array<DMI.ClientResponse.IExtent>) {
         var tthis = this;
         container.empty();
 
@@ -94,7 +94,7 @@ export class ExtentView {
                     var line = compiled(entry);
                     var dom = $(line);
                     $(".data", dom).click(
-                        ((localEntry: DMI.IExtent) => (
+                        ((localEntry: DMI.ClientResponse.IExtent) => (
                             () => {
                                 if (tthis.onExtentSelected !== undefined) {
                                     tthis.onExtentSelected(ws, localEntry.uri);
@@ -113,7 +113,7 @@ export class ExtentView {
         }
     }
 
-    loadAndCreateHtmlForExtent(container: JQuery, ws: string, extentUrl: string, query?: DMI.IItemTableQuery): JQueryPromise<Object> {
+    loadAndCreateHtmlForExtent(container: JQuery, ws: string, extentUrl: string, query?: DMI.PostModels.IItemTableQuery): JQueryPromise<Object> {
         var configuration = new DMTables.ItemTableConfiguration();
         configuration.onItemEdit = (url: string) => {
 
@@ -145,7 +145,7 @@ export class ExtentView {
 
         configuration.onNewItemClicked = () => {
             DMClient.ExtentApi.createItem(ws, extentUrl)
-                .done((innerData: DMI.ReturnModule.ICreateItemResult) => {
+                .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
                     this.onItemCreated(ws, extentUrl, innerData.newuri);
                 });
         };
@@ -162,7 +162,7 @@ export class ItemView
         this.layout = layout;
     }
 
-    loadAndCreateHtmlForItem(container: JQuery, ws: string, extentUrl: string, itemUrl: string): JQueryDeferred<Object> {
+    loadAndCreateHtmlForItem(container: JQuery, ws: string, extentUrl: string, itemUrl: string, settings?: DMI.View.ItemViewSettings): JQueryDeferred<Object> {
         var tthis = this;
         return DMClient.ItemApi.getItem(ws, extentUrl, itemUrl)
             .done((data) => {
@@ -170,7 +170,7 @@ export class ItemView
             });
     }
 
-    createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: DMI.IItemContentModel) {
+    createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMI.View.ItemViewSettings) {
         var tthis = this;
         var configuration = new DMTables.ItemContentConfiguration();
         configuration.columns = data.c;

@@ -62,7 +62,7 @@ export class Layout implements DMI.Api.ILayout {
         var oldPageType = this.currentPageType;
 
         var domTable = $(".data-dialog", this.parent);
-        var value = new DMI.DataTableItem();
+        var value = new DMI.Table.DataTableItem();
         var tableConfiguration = new DMTables.ItemContentConfiguration();
         tableConfiguration.autoProperties = false;
         tableConfiguration.columns = configuration.columns;
@@ -132,12 +132,12 @@ export class Layout implements DMI.Api.ILayout {
         extentLogic.loadAndCreateHtmlForExtent($(".data-items", this.parent), workspaceId, extentUrl);
     }
 
-    showItem(workspaceId: string, extentUrl: string, itemUrl: string) {
+    showItem(workspaceId: string, extentUrl: string, itemUrl: string, settings? : DMI.View.IItemViewSettings) {
         this.switchLayout(PageType.ItemDetail, workspaceId, extentUrl, itemUrl);
         var extentLogic = new DMView.ItemView(this);
 
         this.createTitle(workspaceId, extentUrl, itemUrl);
-        extentLogic.loadAndCreateHtmlForItem($(".data-itemdetail", this.parent), workspaceId, extentUrl, itemUrl);
+        extentLogic.loadAndCreateHtmlForItem($(".data-itemdetail", this.parent), workspaceId, extentUrl, itemUrl, settings);
     }
 
     createTitle(ws?: string, extentUrl?: string, itemUrl?: string) {

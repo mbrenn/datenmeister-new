@@ -23,7 +23,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             this.configuration = configuration;
             this.currentPage = 1;
             this.totalPages = 0;
-            this.currentQuery = new DMI.ItemInExtentQuery();
+            this.currentQuery = new DMI.PostModels.ItemInExtentQuery();
             this.currentQuery.amount = configuration.itemsPerPage;
         }
         ItemListTable.prototype.throwOnPageChange = function () {

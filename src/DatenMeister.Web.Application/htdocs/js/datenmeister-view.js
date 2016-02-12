@@ -49,10 +49,10 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
                 cache: false,
                 success: function (data) {
                     _this.createHtmlForWorkspace(container, ws, data);
-                    callback.resolve(null);
+                    callback.resolve(true);
                 },
                 error: function (data) {
-                    callback.reject(null);
+                    callback.reject(false);
                 }
             });
             return callback;
@@ -122,14 +122,14 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
         function ItemView(layout) {
             this.layout = layout;
         }
-        ItemView.prototype.loadAndCreateHtmlForItem = function (container, ws, extentUrl, itemUrl) {
+        ItemView.prototype.loadAndCreateHtmlForItem = function (container, ws, extentUrl, itemUrl, settings) {
             var tthis = this;
             return DMClient.ItemApi.getItem(ws, extentUrl, itemUrl)
                 .done(function (data) {
                 tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data);
             });
         };
-        ItemView.prototype.createHtmlForItem = function (jQuery, ws, extentUrl, itemUrl, data) {
+        ItemView.prototype.createHtmlForItem = function (jQuery, ws, extentUrl, itemUrl, data, settings) {
             var tthis = this;
             var configuration = new DMTables.ItemContentConfiguration();
             configuration.columns = data.c;

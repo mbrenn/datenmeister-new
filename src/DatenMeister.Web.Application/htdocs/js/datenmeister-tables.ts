@@ -330,10 +330,9 @@ export class ItemContentTable {
     }
 
     show(dom: JQuery) {
-        var tthis = this;
-        this.domContainer = dom;
-        this.domContainer.empty();
         dom.empty();
+        this.domContainer = dom;
+        
         var domTable = $("<table class='table table-condensed'></table>");
 
         // First the headline

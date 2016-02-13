@@ -138,6 +138,7 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
         };
         ItemView.prototype.createHtmlForItem = function (jQuery, ws, extentUrl, itemUrl, data, settings) {
             var tthis = this;
+            jQuery.empty();
             var configuration = new DMTables.ItemContentConfiguration();
             configuration.columns = data.c;
             var isReadonly = false;
@@ -181,7 +182,14 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
                     tthis.layout.navigateToItems(ws, extentUrl);
                 };
             }
-            table.show(jQuery);
+            var domTableOwner = $("<div></div>");
+            table.show(domTableOwner);
+            if (data.metaclass !== undefined && data.metaclass !== null) {
+                var domMetaClass = $("<div><span>Metaclass: </span></div>");
+                domMetaClass.append($("<span></span>").text(data.metaclass.name));
+                jQuery.append(domMetaClass);
+            }
+            jQuery.append(domTableOwner);
         };
         return ItemView;
     })();

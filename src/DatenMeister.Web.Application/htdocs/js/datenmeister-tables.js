@@ -238,10 +238,8 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
         }
         ItemContentTable.prototype.show = function (dom) {
             var _this = this;
-            var tthis = this;
-            this.domContainer = dom;
-            this.domContainer.empty();
             dom.empty();
+            this.domContainer = dom;
             var domTable = $("<table class='table table-condensed'></table>");
             // First the headline
             var domRow;

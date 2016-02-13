@@ -311,6 +311,15 @@ namespace DatenMeister.Web.Api
 
             AutoGenerateFormRows(foundElement, itemModel);
 
+            // Check, if item is of type IElement and has a metaclass
+            var metaClass = foundElement.getMetaClass();
+            if (metaClass != null)
+            {
+                var metaClassModel = new ItemModel();
+                metaClassModel.name = _resolution.GetName(metaClass);
+                itemModel.metaclass = metaClassModel;
+            }
+
             return itemModel;
         }
 

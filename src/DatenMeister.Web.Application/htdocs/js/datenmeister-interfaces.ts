@@ -27,10 +27,16 @@ export module ClientResponse {
         url: string;
     };
 
+    export interface IItemReferenceModel {
+        name: string;
+        uri: string;
+    }
+
     export interface IItemContentModel {
         uri: string;
         v: Array<string>;
         c: Array<IDataTableColumn>;
+        metaclass?: IItemReferenceModel;
     }
 
     export interface IDataTableColumn {

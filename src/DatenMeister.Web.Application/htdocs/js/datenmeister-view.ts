@@ -179,6 +179,7 @@ export class ItemView
 
     createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMI.View.IItemViewSettings) {
         var tthis = this;
+        jQuery.empty();
         var configuration = new DMTables.ItemContentConfiguration();
         configuration.columns = data.c;
         var isReadonly = false;
@@ -228,8 +229,15 @@ export class ItemView
             }
         }
 
-        table.show(jQuery);
+        var domTableOwner = $("<div></div>");
+        table.show(domTableOwner);
+        
+        if (data.metaclass !== undefined && data.metaclass !== null) {
+            var domMetaClass = $("<div><span>Metaclass: </span></div>");
+            domMetaClass.append($("<span></span>").text(data.metaclass.name));
+            jQuery.append(domMetaClass);
+        }
 
-
+        jQuery.append(domTableOwner);
     }
 }

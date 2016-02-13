@@ -107,11 +107,11 @@ export module PostModels {
 
 export namespace View {
     export interface IItemViewSettings {
-        readonly: boolean;
+        isReadonly?: boolean;
     }
 
     export class ItemViewSettings implements IItemViewSettings {
-        readonly: boolean;
+        isReadonly: boolean;
     }
 }
 

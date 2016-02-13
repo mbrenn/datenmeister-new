@@ -36,6 +36,7 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
         var ws = DMHelper.getParameterByNameFromHash("ws");
         var extentUrl = DMHelper.getParameterByNameFromHash("ext");
         var itemUrl = DMHelper.getParameterByNameFromHash("item");
+        var mode = DMHelper.getParameterByNameFromHash("mode");
         var layout = new DMLayout.Layout($("body"));
         layout.onLayoutChanged = function (data) { return buildRibbons(layout, data); };
         if (ws === "") {
@@ -48,7 +49,11 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
             layout.showItems(ws, extentUrl);
         }
         else {
-            layout.showItem(ws, extentUrl, itemUrl);
+            var settings = {};
+            if (mode === "readonly") {
+                settings.isReadonly = true;
+            }
+            layout.showItem(ws, extentUrl, itemUrl, settings);
         }
         $(".body-content").show();
     }

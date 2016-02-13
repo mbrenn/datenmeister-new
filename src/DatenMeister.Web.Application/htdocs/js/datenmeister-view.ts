@@ -56,7 +56,8 @@ export class ExtentView {
     }
 
     onExtentSelected: (ws: string, extent: string) => void;
-    onItemSelected: (ws: string, extentUrl: string, itemUrl: string) => void;
+    onItemEdit: (ws: string, extentUrl: string, itemUrl: string) => void;
+    onItemView: (ws: string, extentUrl: string, itemUrl: string) => void;
     onItemCreated: (ws: string, extentUrl: string, itemUrl: string) => void;
 
     loadAndCreateHtmlForWorkspace(container: JQuery, ws: string): JQueryPromise<boolean> {
@@ -82,9 +83,7 @@ export class ExtentView {
         container.empty();
 
         if (data.length === 0) {
-
             container.html("<p>No extents were found</p>");
-
         } else {
             var compiledTable = $($("#template_extent_table").html());
             var compiled = _.template($("#template_extent").html());
@@ -114,11 +113,19 @@ export class ExtentView {
     }
 
     loadAndCreateHtmlForExtent(container: JQuery, ws: string, extentUrl: string, query?: DMI.PostModels.IItemTableQuery): JQueryPromise<Object> {
+        var tthis = this;
         var configuration = new DMTables.ItemTableConfiguration();
         configuration.onItemEdit = (url: string) => {
+            if (tthis.onItemEdit !== undefined) {
+                tthis.onItemEdit(ws, extentUrl, url);
+            }
 
-            if (this.onItemSelected !== undefined) {
-                this.onItemSelected(ws, extentUrl, url);
+            return false;
+        };
+
+        configuration.onItemView = (url: string) => {
+            if (tthis.onItemView !== undefined) {
+                tthis.onItemView(ws, extentUrl, url);
             }
 
             return false;
@@ -162,18 +169,28 @@ export class ItemView
         this.layout = layout;
     }
 
-    loadAndCreateHtmlForItem(container: JQuery, ws: string, extentUrl: string, itemUrl: string, settings?: DMI.View.ItemViewSettings): JQueryDeferred<Object> {
+    loadAndCreateHtmlForItem(container: JQuery, ws: string, extentUrl: string, itemUrl: string, settings?: DMI.View.IItemViewSettings): JQueryDeferred<Object> {
         var tthis = this;
         return DMClient.ItemApi.getItem(ws, extentUrl, itemUrl)
             .done((data) => {
-                tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data);
+                tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data, settings);
             });
     }
 
-    createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMI.View.ItemViewSettings) {
+    createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMI.View.IItemViewSettings) {
         var tthis = this;
         var configuration = new DMTables.ItemContentConfiguration();
         configuration.columns = data.c;
+        var isReadonly = false;
+
+        if (settings !== undefined && settings !== null) {
+            if (settings.isReadonly !== undefined && settings.isReadonly !== null) {
+                isReadonly = settings.isReadonly;
+            }
+        }
+
+        configuration.isReadOnly = isReadonly;
+        configuration.supportNewProperties = !isReadonly;
 
         /*
         configuration.deleteFunction = (url: string, property: string, domRow: JQuery) => {
@@ -190,16 +207,25 @@ export class ItemView
         };*/
 
         var table = new DMTables.ItemContentTable(data, configuration);
-        
-        configuration.onOkForm = () => {
-            DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item)
-                .done(() => {
-                    tthis.layout.navigateToItems(ws, extentUrl);
-                });
-        };
+        if (isReadonly) {
+            configuration.onOkForm = () => {
+                tthis.layout.navigateToItems(ws, extentUrl);
+            }
 
-        configuration.onCancelForm = () => {
-            tthis.layout.navigateToItems(ws, extentUrl);
+            configuration.onCancelForm = () => {
+                tthis.layout.navigateToItems(ws, extentUrl);
+            }
+        } else {
+            configuration.onOkForm = () => {
+                DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item)
+                    .done(() => {
+                        tthis.layout.navigateToItems(ws, extentUrl);
+                    });
+            };
+
+            configuration.onCancelForm = () => {
+                tthis.layout.navigateToItems(ws, extentUrl);
+            }
         }
 
         table.show(jQuery);

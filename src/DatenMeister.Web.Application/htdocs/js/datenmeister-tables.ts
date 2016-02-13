@@ -4,6 +4,7 @@ export class ItemTableConfiguration {
     onNewItemClicked: () => void;
     onItemEdit: (url: string) => boolean;
     onItemDelete: (url: string, domRow: JQuery) => boolean;
+    onItemView: (url: string) => boolean;
     onPageChange: (newPage: number) => void;
     supportSearchbox: boolean;
 
@@ -193,11 +194,9 @@ export class ItemListTable {
             }
         }
 
-        // Creates the edit and delete column
-        var domEditColumn = $("<th></th>");
-        domRow.append(domEditColumn);
-        var domDeleteColumn = $("<th></th>");
-        domRow.append(domDeleteColumn);
+        // Creates the columns for commands
+        var domCommand = $("<th></th>");
+        domRow.append(domCommand);
 
         this.domTable.append(domRow);
 
@@ -247,90 +246,43 @@ export class ItemListTable {
                 for (var c in columns) {
                     if (columns.hasOwnProperty(c)) {
                         domColumn = $("<td></td>");
-                        domColumn.append(createDomForContent(item, columns[c], false, this.configuration));
+                        domColumn.append(createDomForContent(item, columns[c], false /* in readonly mode */, this.configuration));
 
                         domRow.append(domColumn);
                     }
                 }
 
                 // Add Edit link
-                var domEditColumn = $("<td class='hl'><button href='#' class='btn btn-primary'>Edit</button></td>");
+                var buttons = $("<td class='dm-itemtable-commands'></td>");
+                var domViewColumn = $("<button href='#' class='btn btn-primary'>View</button>");
+                domViewColumn.click((url => {
+                    return () => this.configuration.onItemView(url);
+                })(item.uri));
+                buttons.append(domViewColumn);
+
+                var domEditColumn = $("<button href='#' class='btn btn-primary'>Edit</button>");
                 domEditColumn.click((url => {
                     return () => this.configuration.onItemEdit(url);
                 })(item.uri));
-                domRow.append(domEditColumn);
+                buttons.append(domEditColumn);
 
-                var domDeleteColumn = $("<td class='hl'><button href='#' class='btn btn-danger'>Delete</button></td>");
-                var domA = $("button", domDeleteColumn);
-                domDeleteColumn.click(((url: string, innerDomRow: JQuery, innerDomA: JQuery) => {
+                var domDeleteColumn = $("<button href='#' class='btn btn-danger'>Delete</button>");
+                domDeleteColumn.click(((url: string, innerDomRow: JQuery, innerDomDelete: JQuery)=> {
                     return () => {
-                        if (innerDomA.data("wasClicked") === true) {
+                        if (innerDomDelete.data("wasClicked") === true) {
                             return this.configuration.onItemDelete(url, innerDomRow);
                         } else {
-                            innerDomA.data("wasClicked", true);
-                            innerDomA.text("Confirm");
+                            innerDomDelete.data("wasClicked", true);
+                            innerDomDelete.text("Confirm");
                             return false;
                         }
                     };
-                })(item.uri, domRow, domA));
+                })(item.uri, domRow, domDeleteColumn));
 
-                domRow.append(domDeleteColumn);
+                buttons.append(domDeleteColumn);
+                domRow.append(buttons);
                 this.domTable.append(domRow);
             }
-        }
-    }
-}
-
-function createDomForContent(
-    item: DMI.ClientResponse.IDataTableItem,
-    column: DMI.ClientResponse.IDataTableColumn,
-    inEditMode?: boolean,
-    configuration?: ItemTableConfiguration | ItemContentConfiguration) {
-    if (inEditMode === undefined) {
-        inEditMode = false;
-    }
-
-    var tthis = this;
-    var contentValue = item.v[column.name];
-    if (contentValue === undefined) {
-        contentValue = column.defaultValue;
-    }
-
-    // Enumerates all values
-    if (column.isEnumeration) {
-        let domResult = $("<ul></ul>");
-        if (contentValue !== undefined) {
-            for (var n in contentValue) {
-                var listValue = contentValue[n];
-                var domEntry = $("<li><a href='#'></a></li>");
-                var domInner = $("a", domEntry);
-                domInner.click(((innerListValue) => {
-                    return () => {
-                        if (configuration !== undefined && configuration.onItemEdit !== undefined) {
-                            configuration.onItemEdit(innerListValue.u);
-                        } else {
-                            alert('No Event handler within createDomForContent');
-                        }
-
-                        return false;
-                    };
-                })(listValue));
-                domInner.text(listValue.v);
-                domResult.append(domEntry);
-            }
-        }
-
-        return domResult;
-
-    } else {
-        if (inEditMode) {
-            var domTextBox = $("<input type='textbox' class='form-control' />");
-            domTextBox.val(contentValue);
-            return domTextBox;
-        } else {
-            let domResult = $("<span></span>");
-            domResult.text(contentValue);
-            return domResult;
         }
     }
 }
@@ -342,10 +294,11 @@ export class ItemContentConfiguration {
     // Gets or sets a flag, whether we should start with full edit mode
     // if we start with edit mode, all property values will be shown as an edit field
     // and an 'OK', 'Cancel'-button is added at the buttom of the table
-    startWithEditMode: boolean;
+    isReadOnly: boolean;
     supportNewProperties: boolean;
 
     onItemEdit: (url: string) => boolean;
+    onItemView: (url: string) => boolean;
 
     onEditProperty: (url: string, property: string, newValue: string) => void;
     onNewProperty: (url: string, property: string, newValue: string) => void;
@@ -354,7 +307,7 @@ export class ItemContentConfiguration {
     onCancelForm: () => void;
 
     constructor() {
-        this.startWithEditMode = true;
+        this.isReadOnly = false;
         this.autoProperties = false;
         this.supportNewProperties = true;
         this.columns = new Array<DMI.ClientResponse.IDataTableColumn>();
@@ -419,7 +372,7 @@ export class ItemContentTable {
 
             domColumn = $("<td class='table_column_value'></td>");
             domColumn.data("column", "value");
-            var domForEdit = createDomForContent(this.item, column, true);
+            var domForEdit = createDomForContent(this.item, column, !this.configuration.isReadOnly, this.configuration);
             domColumn.append(domForEdit);
             domRow.append(domColumn);
             
@@ -526,5 +479,59 @@ export class ItemContentTable {
         });
 
         domTable.append(domNewProperty);
+    }
+}
+
+
+function createDomForContent(
+    item: DMI.ClientResponse.IDataTableItem,
+    column: DMI.ClientResponse.IDataTableColumn,
+    inEditMode?: boolean,
+    configuration?: ItemTableConfiguration | ItemContentConfiguration) {
+    if (inEditMode === undefined) {
+        inEditMode = false;
+    }
+    
+    var contentValue = item.v[column.name];
+    if (contentValue === undefined) {
+        contentValue = column.defaultValue;
+    }
+
+    // Enumerates all values
+    if (column.isEnumeration) {
+        let domResult = $("<ul></ul>");
+        if (contentValue !== undefined) {
+            for (var n in contentValue) {
+                var listValue = contentValue[n];
+                var domEntry = $("<li><a href='#'></a></li>");
+                var domInner = $("a", domEntry);
+                domInner.click(((innerListValue) => {
+                    return () => {
+                        if (configuration !== undefined && configuration.onItemView !== undefined) {
+                            configuration.onItemView(innerListValue.u);
+                        } else {
+                            alert("No Event handler for 'onItemView' within createDomForContent");
+                        }
+
+                        return false;
+                    };
+                })(listValue));
+                domInner.text(listValue.v);
+                domResult.append(domEntry);
+            }
+        }
+
+        return domResult;
+
+    } else {
+        if (inEditMode) {
+            var domTextBox = $("<input type='textbox' class='form-control' />");
+            domTextBox.val(contentValue);
+            return domTextBox;
+        } else {
+            let domResult = $("<span class='dm-itemtable-data'></span>");
+            domResult.text(contentValue);
+            return domResult;
+        }
     }
 }

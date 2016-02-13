@@ -29,11 +29,17 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
                 + "&ext=" + encodeURIComponent(extentUrl));
             this.showItems(ws, extentUrl);
         };
-        Layout.prototype.navigateToItem = function (ws, extentUrl, itemUrl) {
-            history.pushState({}, "", "#ws=" + encodeURIComponent(ws)
+        Layout.prototype.navigateToItem = function (ws, extentUrl, itemUrl, settings) {
+            var url = "#ws=" + encodeURIComponent(ws)
                 + "&ext=" + encodeURIComponent(extentUrl)
-                + "&item=" + encodeURIComponent(itemUrl));
-            this.showItem(ws, extentUrl, itemUrl);
+                + "&item=" + encodeURIComponent(itemUrl);
+            if (settings !== undefined && settings !== null) {
+                if (settings.isReadonly) {
+                    url += "&mode=readonly";
+                }
+            }
+            history.pushState({}, "", url);
+            this.showItem(ws, extentUrl, itemUrl, settings);
         };
         Layout.prototype.navigateToDialog = function (configuration) {
             var _this = this;
@@ -43,7 +49,7 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
             var tableConfiguration = new DMTables.ItemContentConfiguration();
             tableConfiguration.autoProperties = false;
             tableConfiguration.columns = configuration.columns;
-            tableConfiguration.startWithEditMode = true;
+            tableConfiguration.isReadOnly = false;
             tableConfiguration.supportNewProperties = false;
             tableConfiguration.onCancelForm = function () {
                 _this.switchLayout(oldPageType);
@@ -88,8 +94,11 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
             this.switchLayout(PageType.Items, workspaceId, extentUrl);
             this.createTitle(workspaceId, extentUrl);
             var extentLogic = new DMView.ExtentView(this);
-            extentLogic.onItemSelected = function (ws, extentUrl, itemUrl) {
+            extentLogic.onItemEdit = function (ws, extentUrl, itemUrl) {
                 tthis.navigateToItem(ws, extentUrl, itemUrl);
+            };
+            extentLogic.onItemView = function (ws, extentUrl, itemUrl) {
+                tthis.navigateToItem(ws, extentUrl, itemUrl, { isReadonly: true });
             };
             extentLogic.onItemCreated = function (ws, extentUrl, itemUrl) {
                 tthis.navigateToItem(ws, extentUrl, itemUrl);

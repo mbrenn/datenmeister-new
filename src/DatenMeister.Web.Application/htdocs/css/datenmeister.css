@@ -113,8 +113,8 @@ textarea {
     /* Settings for the title text */
     .dm-icon-container div {
         text-align: center;
-        margin: 0px;
-        padding: 0px;
+        margin: 0;
+        padding: 0;
         width: 64px;
     }
 
@@ -140,12 +140,11 @@ textarea {
     table-layout: fixed;
     word-wrap: break-word;
     margin: 0 10px 0 10px;
-    width: auto;
+    width: 100%;
 }
 
-
 .data-items table tr td {
-    vertical-align: middle;
+    vertical-align: top;
     padding-right: 20px;
 }
 
@@ -159,6 +158,11 @@ textarea {
     margin: 0;
     padding: 0;
 }
+
+.dm-itemtable-commands {
+    white-space: nowrap;
+}
+
 .dm-statusline {
     position: fixed;
     width: 100%;

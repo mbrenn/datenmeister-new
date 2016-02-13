@@ -48,6 +48,7 @@ export function parseAndNavigateToWindowLocation() {
     var ws = DMHelper.getParameterByNameFromHash("ws");
     var extentUrl = DMHelper.getParameterByNameFromHash("ext");
     var itemUrl = DMHelper.getParameterByNameFromHash("item");
+    var mode = DMHelper.getParameterByNameFromHash("mode");
 
     var layout = new DMLayout.Layout($("body"));
     layout.onLayoutChanged = (data) => buildRibbons(layout, data);
@@ -59,9 +60,13 @@ export function parseAndNavigateToWindowLocation() {
     } else if (itemUrl === "") {
         layout.showItems(ws, extentUrl);
     } else {
-        layout.showItem(ws, extentUrl, itemUrl);
+        var settings: DMI.View.IItemViewSettings= {};
+        if (mode === "readonly") {
+            settings.isReadonly = true;
+        }
+
+        layout.showItem(ws, extentUrl, itemUrl, settings);
     }
-    
 
     $(".body-content").show();
 }

@@ -85,10 +85,17 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
         };
         ExtentView.prototype.loadAndCreateHtmlForExtent = function (container, ws, extentUrl, query) {
             var _this = this;
+            var tthis = this;
             var configuration = new DMTables.ItemTableConfiguration();
             configuration.onItemEdit = function (url) {
-                if (_this.onItemSelected !== undefined) {
-                    _this.onItemSelected(ws, extentUrl, url);
+                if (tthis.onItemEdit !== undefined) {
+                    tthis.onItemEdit(ws, extentUrl, url);
+                }
+                return false;
+            };
+            configuration.onItemView = function (url) {
+                if (tthis.onItemView !== undefined) {
+                    tthis.onItemView(ws, extentUrl, url);
                 }
                 return false;
             };
@@ -126,13 +133,21 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
             var tthis = this;
             return DMClient.ItemApi.getItem(ws, extentUrl, itemUrl)
                 .done(function (data) {
-                tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data);
+                tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data, settings);
             });
         };
         ItemView.prototype.createHtmlForItem = function (jQuery, ws, extentUrl, itemUrl, data, settings) {
             var tthis = this;
             var configuration = new DMTables.ItemContentConfiguration();
             configuration.columns = data.c;
+            var isReadonly = false;
+            if (settings !== undefined && settings !== null) {
+                if (settings.isReadonly !== undefined && settings.isReadonly !== null) {
+                    isReadonly = settings.isReadonly;
+                }
+            }
+            configuration.isReadOnly = isReadonly;
+            configuration.supportNewProperties = !isReadonly;
             /*
             configuration.deleteFunction = (url: string, property: string, domRow: JQuery) => {
                 DMClient.ItemApi.deleteProperty(ws, extentUrl, itemUrl, property).done(() => domRow.find("td").fadeOut(500, () => { domRow.remove(); }));
@@ -147,15 +162,25 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
                 DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
             };*/
             var table = new DMTables.ItemContentTable(data, configuration);
-            configuration.onOkForm = function () {
-                DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item)
-                    .done(function () {
+            if (isReadonly) {
+                configuration.onOkForm = function () {
                     tthis.layout.navigateToItems(ws, extentUrl);
-                });
-            };
-            configuration.onCancelForm = function () {
-                tthis.layout.navigateToItems(ws, extentUrl);
-            };
+                };
+                configuration.onCancelForm = function () {
+                    tthis.layout.navigateToItems(ws, extentUrl);
+                };
+            }
+            else {
+                configuration.onOkForm = function () {
+                    DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item)
+                        .done(function () {
+                        tthis.layout.navigateToItems(ws, extentUrl);
+                    });
+                };
+                configuration.onCancelForm = function () {
+                    tthis.layout.navigateToItems(ws, extentUrl);
+                };
+            }
             table.show(jQuery);
         };
         return ItemView;

@@ -243,19 +243,25 @@ export class ItemView
             "<th>Metaclass: </th><td class='dm-tablecell-metaclass'></td>" +
             "</tr>" +
             "</table>");
-         if (data.metaclass !== undefined && data.metaclass !== null) {
-             $(".dm-tablecell-metaclass", domTableInfo).text(data.metaclass.name);
+        if (data.metaclass !== undefined && data.metaclass !== null) {
+            var domMetaClassLink = $("<a href='#'>3</a>").text(data.metaclass.name);
+            domMetaClassLink.click(() => {
+                alert(data.metaclass.uri);
+            });
+
+            $(".dm-tablecell-metaclass", domTableInfo).append(domMetaClassLink);
         }
-         if (data.id !== undefined && data.id !== null) {
-            
-             $(".dm-tablecell-metaclass", domTableInfo).text(data.id);
-         }
-         if (data.uri !== undefined && data.uri !== null) {
 
-             $(".dm-tablecell-uri", domTableInfo).text(data.uri);
-         }
+        if (data.id !== undefined && data.id !== null) {
+            $(".dm-tablecell-id", domTableInfo).text(data.id);
+        }
 
-         jQuery.append(domTableOwner);
+        if (data.uri !== undefined && data.uri !== null) {
+
+            $(".dm-tablecell-uri", domTableInfo).text(data.uri);
+        }
+
+        jQuery.append(domTableOwner);
 
         jQuery.append(domTableInfo);
     }

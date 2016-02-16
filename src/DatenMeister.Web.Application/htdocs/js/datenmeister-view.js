@@ -196,10 +196,14 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
                 "</tr>" +
                 "</table>");
             if (data.metaclass !== undefined && data.metaclass !== null) {
-                $(".dm-tablecell-metaclass", domTableInfo).text(data.metaclass.name);
+                var domMetaClassLink = $("<a href='#'>3</a>").text(data.metaclass.name);
+                domMetaClassLink.click(function () {
+                    alert(data.metaclass.uri);
+                });
+                $(".dm-tablecell-metaclass", domTableInfo).append(domMetaClassLink);
             }
             if (data.id !== undefined && data.id !== null) {
-                $(".dm-tablecell-metaclass", domTableInfo).text(data.id);
+                $(".dm-tablecell-id", domTableInfo).text(data.id);
             }
             if (data.uri !== undefined && data.uri !== null) {
                 $(".dm-tablecell-uri", domTableInfo).text(data.uri);

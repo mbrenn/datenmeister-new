@@ -33,6 +33,7 @@ export module ClientResponse {
     }
 
     export interface IItemContentModel {
+        id: string;
         uri: string;
         v: Array<string>;
         c: Array<IDataTableColumn>;

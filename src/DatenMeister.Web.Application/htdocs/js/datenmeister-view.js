@@ -182,14 +182,30 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
                     tthis.layout.navigateToItems(ws, extentUrl);
                 };
             }
-            var domTableOwner = $("<div></div>");
+            var domTableOwner = $("<div class='data-items'></div>");
             table.show(domTableOwner);
+            var domTableInfo = $("<table class='dm-metatable'>" +
+                "<tr>" +
+                "<th>Id: </th><td class='dm-tablecell-id'>None</td>" +
+                "</tr>" +
+                "<tr>" +
+                "<th>Uri: </th><td class='dm-tablecell-uri'>None</td>" +
+                "</tr>" +
+                "<tr>" +
+                "<th>Metaclass: </th><td class='dm-tablecell-metaclass'></td>" +
+                "</tr>" +
+                "</table>");
             if (data.metaclass !== undefined && data.metaclass !== null) {
-                var domMetaClass = $("<div><span>Metaclass: </span></div>");
-                domMetaClass.append($("<span></span>").text(data.metaclass.name));
-                jQuery.append(domMetaClass);
+                $(".dm-tablecell-metaclass", domTableInfo).text(data.metaclass.name);
+            }
+            if (data.id !== undefined && data.id !== null) {
+                $(".dm-tablecell-metaclass", domTableInfo).text(data.id);
+            }
+            if (data.uri !== undefined && data.uri !== null) {
+                $(".dm-tablecell-uri", domTableInfo).text(data.uri);
             }
             jQuery.append(domTableOwner);
+            jQuery.append(domTableInfo);
         };
         return ItemView;
     })();

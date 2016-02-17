@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using DatenMeister.CSV;
 using DatenMeister.CSV.Runtime.Storage;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
@@ -35,18 +36,21 @@ namespace DatenMeister.Web.Api
         private readonly IWorkspaceCollection _workspaceCollection;
         private readonly IUmlNameResolution _resolution;
         private readonly IExtentStorageLoader _extentStorageLoader;
+        private readonly IDataLayerLogic _dataLayerLogic;
 
 
         public ExtentController(
             IFactoryMapper mapper, 
             IWorkspaceCollection workspaceCollection, 
             IUmlNameResolution resolution, 
-            IExtentStorageLoader extentStorageLoader)
+            IExtentStorageLoader extentStorageLoader, 
+            IDataLayerLogic dataLayerLogic)
         {
             _mapper = mapper;
             _workspaceCollection = workspaceCollection;
             _resolution = resolution;
             _extentStorageLoader = extentStorageLoader;
+            _dataLayerLogic = dataLayerLogic;
         }
 
         [Route("all")]
@@ -61,6 +65,7 @@ namespace DatenMeister.Web.Api
                     new
                     {
                         uri = extent.contextURI(),
+                        dataLayer = _dataLayerLogic.GetDataLayerOfExtent(extent).Name,
                         count = extent.elements().Count()
                     });
             }

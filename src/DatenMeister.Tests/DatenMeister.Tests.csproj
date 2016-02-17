@@ -77,6 +77,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Core\DataLayerTests.cs" />
     <Compile Include="CSV\CSVExtentTests.cs" />
     <Compile Include="Integration\TestIntegration.cs" />
     <Compile Include="Mof\Core\MofObjectTests.cs" />

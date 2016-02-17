@@ -3,7 +3,7 @@
 namespace DatenMeister.Runtime.Workspaces.Data
 {
     /// <summary>
-    /// Stores the workspaces as they will be stored within the Xml file from the WorkspaceLoader
+    /// Stores the workspaces as they will be serialized as an Xml file from the WorkspaceLoader
     /// </summary>
     public class WorkspaceData
     {

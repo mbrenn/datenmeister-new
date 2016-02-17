@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
@@ -50,6 +51,20 @@ namespace DatenMeister.Tests.Runtime
 
             Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(2));
         }
+
+        /*[Test]
+        public void TestIfMetaWorkspaceNeedsToExist()
+        {
+            // Stores an empty workspace
+            var workSpaceCollection = new WorkspaceCollection();
+            workSpaceCollection.AddWorkspace(new Workspace<IExtent>("test", "Continue"), "test");
+            workSpaceCollection.AddWorkspace(new Workspace<IExtent>("test2", "Continue"), "test");
+            workSpaceCollection.AddWorkspace(new Workspace<IExtent>("test3", "Continue"), "test2");
+            Assert.Throws<InvalidOperationException>(() =>
+                    {
+                        workSpaceCollection.AddWorkspace(new Workspace<IExtent>("test4", "Continue"), "test5");
+                    });
+        }*/
 
         [Test]
         public void TestStoreAndLoadHavingTwoWorkspacesWithConflict()

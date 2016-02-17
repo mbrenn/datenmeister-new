@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Attributes;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
@@ -38,6 +39,11 @@ namespace DatenMeister.Full.Integration
             var extentStorageData = new ExtentStorageData();
             kernel.Bind<ExtentStorageData>().ToConstant(extentStorageData);
             kernel.Bind<IExtentStorageLoader>().To<ExtentStorageLoader>();
+
+            // Defines the datalayers
+            var dataLayerData = new DataLayerData();
+            kernel.Bind<DataLayerData>().ToConstant(dataLayerData);
+            kernel.Bind<IDataLayerLogic>().To<DataLayerLogic>();
 
             // Load the default extents
             // Load the primitivetypes

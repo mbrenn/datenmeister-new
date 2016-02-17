@@ -52,7 +52,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
             {
                 workSpaceData.Workspaces.Add(new WorkspaceInfo()
                 {
-                    Id = workSpace.id, 
+                    Id = workSpace.id,
                     Annotation = workSpace.annotation
                 });
             }

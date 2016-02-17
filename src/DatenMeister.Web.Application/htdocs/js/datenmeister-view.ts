@@ -262,7 +262,6 @@ export class ItemView
         }
 
         jQuery.append(domTableOwner);
-
         jQuery.append(domTableInfo);
     }
 }

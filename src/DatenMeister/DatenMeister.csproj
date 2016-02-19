@@ -78,6 +78,7 @@
     <Compile Include="Filler\FillTheMOF.cs" />
     <Compile Include="Filler\FillThePrimitiveTypes.cs" />
     <Compile Include="Filler\FillTheUML.cs" />
+    <Compile Include="Filler\IFiller.cs" />
     <Compile Include="Filler\mof.cs" />
     <Compile Include="Filler\primitivetypes.cs" />
     <Compile Include="Filler\uml.cs" />

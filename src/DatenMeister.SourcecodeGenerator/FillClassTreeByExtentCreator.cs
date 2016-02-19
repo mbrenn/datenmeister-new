@@ -8,7 +8,7 @@ namespace DatenMeister.SourcecodeGenerator
         public FillClassTreeByExtentCreator(string classNameOfTree)
         {
             ClassNameOfTree = classNameOfTree;
-            FactoryVersion = new Version(1, 0, 0, 0);
+            FactoryVersion = new Version(1, 0, 1, 0);
         }
 
         public string ClassNameOfTree { get; set; }
@@ -50,16 +50,23 @@ namespace DatenMeister.SourcecodeGenerator
                 foreachStack = methodStack.NextWithoutLevelIncrease;
                 innerStack = foreachStack.NextWithoutLevelIncrease;
 
-                Result.AppendLine($"{stack.Indentation}public class FillThe{name}");
+                Result.AppendLine($"{stack.Indentation}public class FillThe{name} : DatenMeister.Filler.IFiller<{ClassNameOfTree}>");
                 Result.AppendLine($"{stack.Indentation}{{");
 
                 // Creates the GetNameOfElement helper method
-                Result.AppendLine($"{methodStack.Indentation}private static object[] EmptyList = new object[] {{ }};");
+                Result.AppendLine($"{methodStack.Indentation}private static readonly object[] EmptyList = new object[] {{ }};");
                 Result.AppendLine($"{methodStack.Indentation}private static string GetNameOfElement(IObject element)");
                 Result.AppendLine($"{methodStack.Indentation}{{");
                 Result.AppendLine($"{methodStack.Indentation}    var nameAsObject = element.get(\"name\");");
                 Result.AppendLine(
                     $"{methodStack.Indentation}    return nameAsObject == null ? string.Empty : nameAsObject.ToString();");
+                Result.AppendLine($"{methodStack.Indentation}}}");
+                Result.AppendLine();
+
+                Result.AppendLine(
+                    $"{methodStack.Indentation}public void Fill(IEnumerable<object> collection, {ClassNameOfTree} tree)");
+                Result.AppendLine($"{methodStack.Indentation}{{");
+                Result.AppendLine($"{foreachStack.Indentation}FillThe{name}.DoFill(collection, tree);");
                 Result.AppendLine($"{methodStack.Indentation}}}");
                 Result.AppendLine();
 

@@ -1,4 +1,7 @@
-﻿namespace DatenMeister.DataLayer
+﻿using System.Collections.Generic;
+using System.Numerics;
+
+namespace DatenMeister.DataLayer
 {
     /// <summary>
     /// Defines the datalayers being available. 
@@ -9,6 +12,11 @@
         /// Gets the name of the datalayer
         /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// Gets a list the cache which stores the filled types
+        /// </summary>
+        internal List<object> FilledTypeCache { get; } = new List<object>();
 
         /// <summary>
         /// Initializes a new instance of the element including the name

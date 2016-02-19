@@ -1,6 +1,7 @@
 ﻿using System;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Filler;
 
 namespace DatenMeister.DataLayer
 {
@@ -30,5 +31,22 @@ namespace DatenMeister.DataLayer
         /// <param name="data">Datalayer to be queried</param>
         /// <returns>The corresponding datalayer</returns>
         IDataLayer GetMetaLayerFor(IDataLayer data);
+
+        /// <summary>
+        /// Gets an instance of the filled type by using the filler. 
+        /// The instance will be cached on first call of the method
+        /// </summary>
+        /// <typeparam name="TFiller">Filler to be used to create the filled type</typeparam>
+        /// <typeparam name="TFilledType">The filled type which is returned</typeparam>
+        /// <returns>The filled type, could also be cached</returns>
+        TFilledType Get<TFiller, TFilledType>(IDataLayer layer)
+            where TFiller : IFiller<TFilledType>, new()
+            where TFilledType : class, new();
+
+        /// <summary>
+        /// Clears the cache, so a new instance can be created
+        /// </summary>
+        /// <param name="layer">Layer, whose cache needs to be deleted</param>
+        void ClearCache(IDataLayer layer);
     }
 }

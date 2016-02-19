@@ -1,5 +1,7 @@
 ﻿using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
+using DatenMeister.Filler;
+using DatenMeister.XMI.UmlBootstrap;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Core
@@ -28,6 +30,34 @@ namespace DatenMeister.Tests.Core
             Assert.That(logic.GetDataLayerOfExtent(umlExtent), Is.EqualTo(DataLayers.Uml));
             Assert.That(logic.GetDataLayerOfExtent(unAssignedExtent), Is.EqualTo(DataLayers.Data));
             Assert.That(logic.GetMetaLayerFor(DataLayers.Data), Is.EqualTo(DataLayers.Types));
+        }
+
+        [Test]
+        public void TestClassTreeUsage()
+        {
+            var strapper = Bootstrapper.PerformFullBootstrap("Xmi/PrimitiveTypes.xmi", "Xmi/UML.xmi", "Xmi/MOF.xmi");
+
+            var data = new DataLayerData();
+            IDataLayerLogic logic = new DataLayerLogic(data);
+            logic.SetRelationsForDefaultDataLayers();
+            logic.AssignToDataLayer(strapper.PrimitiveInfrastructure, DataLayers.Uml);
+
+            var primitiveTypes = logic.Get<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Uml);
+            Assert.That(primitiveTypes, Is.Not.Null );
+            Assert.That(primitiveTypes.__Real, Is.Not.Null);
+            Assert.That(primitiveTypes.__Real, Is.Not.TypeOf<object>());
+
+
+            var primitiveTypes2 = logic.Get<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Uml);
+            Assert.That(primitiveTypes2, Is.SameAs(primitiveTypes));
+
+            logic.ClearCache(DataLayers.Uml);
+            var primitiveTypes3 = logic.Get<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Uml);
+            Assert.That(primitiveTypes3, Is.Not.SameAs(primitiveTypes));
+
+            var primitiveTypes4 = logic.Get<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Types);
+            Assert.That(primitiveTypes4, Is.Not.Null);
+            Assert.That(primitiveTypes4.__Real, Is.TypeOf<object>());
         }
     }
 }

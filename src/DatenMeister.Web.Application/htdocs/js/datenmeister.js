@@ -1,21 +1,24 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/jquery/underscore.d.ts" />
-define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", "datenmeister-client", "datenmeister-ribbon", "datenmeister-layout"], function (require, exports, DMHelper, DMI, DMClient, DMRibbon, DMLayout) {
+define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", "datenmeister-client", "datenmeister-ribbon", "datenmeister-layout", "datenmeister-logging"], function (require, exports, DMHelper, DMI, DMClient, DMRibbon, DMLayout, DMLog) {
     function start() {
+        // Information, when an ajax request failed
+        $(document).ajaxError(function (ev, xhr, settings, error) {
+            if (xhr.responseJSON !== undefined &&
+                xhr.responseJSON !== null &&
+                xhr.responseJSON.ExceptionMessage !== undefined &&
+                xhr.responseJSON.ExceptionMessage !== null) {
+                DMLog.theLog.writeError(xhr.responseJSON.ExceptionMessage);
+            }
+            else {
+                DMLog.theLog.writeError(xhr);
+            }
+        });
         $(document).ready(function () {
             window.onpopstate = function (ev) {
                 parseAndNavigateToWindowLocation();
             };
             parseAndNavigateToWindowLocation();
-        });
-        // Information, when an ajax request failed
-        $(document).ajaxError(function (ev, xhr, settings, error) {
-            if (xhr.responseJSON.ExceptionMessage !== undefined) {
-                alert(xhr.responseJSON.ExceptionMessage);
-            }
-            else {
-                alert("A server error occured: " + xhr.responseText);
-            }
         });
         // Ajax loading information
         var ajaxRequests = 0;

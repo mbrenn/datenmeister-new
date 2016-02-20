@@ -7,25 +7,30 @@ import * as DMTables from "datenmeister-tables";
 import * as DMView from "datenmeister-view";
 import * as DMClient from "datenmeister-client";
 import * as DMRibbon from "datenmeister-ribbon";
-import * as DMLayout from "datenmeister-layout"
+import * as DMLayout from "datenmeister-layout";
+import * as DMLog from "datenmeister-logging";
 
 
 export function start() {
+
+    // Information, when an ajax request failed
+    $(document).ajaxError((ev, xhr, settings, error) => {
+        if (xhr.responseJSON !== undefined &&
+            xhr.responseJSON !== null &&
+            xhr.responseJSON.ExceptionMessage !== undefined &&
+            xhr.responseJSON.ExceptionMessage !== null) {
+            DMLog.theLog.writeError(xhr.responseJSON.ExceptionMessage);
+        } else {
+            DMLog.theLog.writeError(xhr);
+        }
+    });
+
     $(document).ready(() => {
         window.onpopstate = (ev) => {
             parseAndNavigateToWindowLocation();
         };
 
         parseAndNavigateToWindowLocation();
-    });
-
-    // Information, when an ajax request failed
-    $(document).ajaxError((ev, xhr, settings, error) => {
-        if (xhr.responseJSON.ExceptionMessage !== undefined) {
-            alert(xhr.responseJSON.ExceptionMessage);
-        } else {
-            alert(`A server error occured: ${xhr.responseText}`);
-        }
     });
 
     // Ajax loading information

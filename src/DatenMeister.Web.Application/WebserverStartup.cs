@@ -8,6 +8,7 @@ using DatenMeister.Full.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
+using DatenMeister.Web.Api;
 using Microsoft.Owin;
 using Microsoft.Owin.BuilderProperties;
 using Ninject;
@@ -39,7 +40,11 @@ namespace DatenMeister.Web.Application
             app.UseStaticFiles(configuration);
             
             // Do the full load of all assemblies
+            Full.Integration.Helper.LoadAllAssembliesInDirectory();
             Full.Integration.Helper.LoadAllReferenceAssemblies();
+
+            /*var controllerType = typeof (ExtentController);
+            Console.WriteLine( controllerType);*/
             
             // Initializing of the WebAPI, needs to be called after the DatenMeister is initialized
             var httpConfiguration = new HttpConfiguration();

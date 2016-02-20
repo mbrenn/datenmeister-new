@@ -270,6 +270,7 @@
     <TypeScriptCompile Include="htdocs\js\datenmeister-layout.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="htdocs\js\datenmeister-logging.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-query.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </TypeScriptCompile>

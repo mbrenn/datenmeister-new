@@ -28,7 +28,7 @@ namespace DatenMeister.Tests.CSV
             };
 
             var storage = new CSVStorage();
-            var extent = storage.LoadExtent(storageConfiguration);
+            var extent = storage.LoadExtent(storageConfiguration, false);
 
             Assert.That(storageConfiguration.Settings.Columns.Count, Is.EqualTo(3));
             Assert.That(extent.elements().Count(), Is.EqualTo(4));

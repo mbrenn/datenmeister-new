@@ -15,5 +15,7 @@ namespace DatenMeister.Web.Models
         public Dictionary<string, string> v { get; private set; }
 
         public List<DataFormRow> c { get; private set; }
+
+        public ItemModel metaclass { get; set; }
     }
 }

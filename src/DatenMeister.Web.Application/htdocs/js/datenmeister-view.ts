@@ -18,7 +18,7 @@ export class WorkspaceView {
         return result;
     }
 
-    createHtmlForWorkbenchs(container: JQuery, data: Array<DMI.IWorkspace>) {
+    createHtmlForWorkbenchs(container: JQuery, data: Array<DMI.ClientResponse.IWorkspace>) {
         container.empty();
         var compiledTable = $($("#template_workspace_table").html());
         var compiled = _.template($("#template_workspace").html());
@@ -56,35 +56,34 @@ export class ExtentView {
     }
 
     onExtentSelected: (ws: string, extent: string) => void;
-    onItemSelected: (ws: string, extentUrl: string, itemUrl: string) => void;
+    onItemEdit: (ws: string, extentUrl: string, itemUrl: string) => void;
+    onItemView: (ws: string, extentUrl: string, itemUrl: string) => void;
     onItemCreated: (ws: string, extentUrl: string, itemUrl: string) => void;
 
-    loadAndCreateHtmlForWorkspace(container: JQuery, ws: string): JQueryPromise<Object> {
+    loadAndCreateHtmlForWorkspace(container: JQuery, ws: string): JQueryPromise<boolean> {
         var callback = $.Deferred();
         $.ajax(
         {
             url: "/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws),
             cache: false,
-            success: data => {
+            success: (data: Array<DMI.ClientResponse.IExtent>) => {
                 this.createHtmlForWorkspace(container, ws, data);
-                callback.resolve(null);
+                callback.resolve(true);
             },
             error: data => {
-                callback.reject(null);
+                callback.reject(false);
             }
         });
 
         return callback;
     }
 
-    createHtmlForWorkspace(container: JQuery, ws: string, data: Array<DMI.IExtent>) {
+    createHtmlForWorkspace(container: JQuery, ws: string, data: Array<DMI.ClientResponse.IExtent>) {
         var tthis = this;
         container.empty();
 
         if (data.length === 0) {
-
             container.html("<p>No extents were found</p>");
-
         } else {
             var compiledTable = $($("#template_extent_table").html());
             var compiled = _.template($("#template_extent").html());
@@ -94,7 +93,7 @@ export class ExtentView {
                     var line = compiled(entry);
                     var dom = $(line);
                     $(".data", dom).click(
-                        ((localEntry: DMI.IExtent) => (
+                        ((localEntry: DMI.ClientResponse.IExtent) => (
                             () => {
                                 if (tthis.onExtentSelected !== undefined) {
                                     tthis.onExtentSelected(ws, localEntry.uri);
@@ -113,12 +112,20 @@ export class ExtentView {
         }
     }
 
-    loadAndCreateHtmlForExtent(container: JQuery, ws: string, extentUrl: string, query?: DMI.IItemTableQuery): JQueryPromise<Object> {
+    loadAndCreateHtmlForExtent(container: JQuery, ws: string, extentUrl: string, query?: DMI.PostModels.IItemTableQuery): JQueryPromise<Object> {
+        var tthis = this;
         var configuration = new DMTables.ItemTableConfiguration();
         configuration.onItemEdit = (url: string) => {
+            if (tthis.onItemEdit !== undefined) {
+                tthis.onItemEdit(ws, extentUrl, url);
+            }
 
-            if (this.onItemSelected !== undefined) {
-                this.onItemSelected(ws, extentUrl, url);
+            return false;
+        };
+
+        configuration.onItemView = (url: string) => {
+            if (tthis.onItemView !== undefined) {
+                tthis.onItemView(ws, extentUrl, url);
             }
 
             return false;
@@ -145,7 +152,7 @@ export class ExtentView {
 
         configuration.onNewItemClicked = () => {
             DMClient.ExtentApi.createItem(ws, extentUrl)
-                .done((innerData: DMI.ReturnModule.ICreateItemResult) => {
+                .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
                     this.onItemCreated(ws, extentUrl, innerData.newuri);
                 });
         };
@@ -162,18 +169,31 @@ export class ItemView
         this.layout = layout;
     }
 
-    loadAndCreateHtmlForItem(container: JQuery, ws: string, extentUrl: string, itemUrl: string): JQueryDeferred<Object> {
+    loadAndCreateHtmlForItem(container: JQuery, ws: string, extentUrl: string, itemUrl: string, settings?: DMI.View.IItemViewSettings): JQueryDeferred<Object> {
         var tthis = this;
         return DMClient.ItemApi.getItem(ws, extentUrl, itemUrl)
             .done((data) => {
-                tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data);
+                tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data, settings);
             });
     }
 
-    createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: DMI.IItemContentModel) {
+    createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMI.View.IItemViewSettings) {
         var tthis = this;
+        jQuery.empty();
         var configuration = new DMTables.ItemContentConfiguration();
         configuration.columns = data.c;
+        var isReadonly = false;
+
+        if (settings !== undefined && settings !== null) {
+            if (settings.isReadonly !== undefined && settings.isReadonly !== null) {
+                isReadonly = settings.isReadonly;
+            }
+        }
+
+        configuration.isReadOnly = isReadonly;
+        configuration.supportNewProperties = !isReadonly;
+
+        /*
         configuration.deleteFunction = (url: string, property: string, domRow: JQuery) => {
             DMClient.ItemApi.deleteProperty(ws, extentUrl, itemUrl, property).done(() => domRow.find("td").fadeOut(500, () => { domRow.remove(); }));
             return false;
@@ -183,23 +203,65 @@ export class ItemView
             DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
         };
         
-        /*configuration.onNewProperty = (url: string, property: string, newValue: string) => {
+        configuration.onNewProperty = (url: string, property: string, newValue: string) => {
             DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
         };*/
 
         var table = new DMTables.ItemContentTable(data, configuration);
-        
-        configuration.onOkForm = () => {
-            DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item);
-            tthis.layout.navigateToItems(ws, extentUrl);
-        };
+        if (isReadonly) {
+            configuration.onOkForm = () => {
+                tthis.layout.navigateToItems(ws, extentUrl);
+            }
 
-        configuration.onCancelForm = () => {
-            tthis.layout.navigateToItems(ws, extentUrl);
+            configuration.onCancelForm = () => {
+                tthis.layout.navigateToItems(ws, extentUrl);
+            }
+        } else {
+            configuration.onOkForm = () => {
+                DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item)
+                    .done(() => {
+                        tthis.layout.navigateToItems(ws, extentUrl);
+                    });
+            };
+
+            configuration.onCancelForm = () => {
+                tthis.layout.navigateToItems(ws, extentUrl);
+            }
         }
 
-        table.show(jQuery);
+        var domTableOwner = $("<div class='data-items'></div>");
+        table.show(domTableOwner);
 
+        var domTableInfo = $("<table class='dm-metatable'>" +
+            "<tr>" +
+            "<th>Id: </th><td class='dm-tablecell-id'>None</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<th>Uri: </th><td class='dm-tablecell-uri'>None</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<th>Metaclass: </th><td class='dm-tablecell-metaclass'></td>" +
+            "</tr>" +
+            "</table>");
+        if (data.metaclass !== undefined && data.metaclass !== null) {
+            var domMetaClassLink = $("<a href='#'>3</a>").text(data.metaclass.name);
+            domMetaClassLink.click(() => {
+                alert(data.metaclass.uri);
+            });
 
+            $(".dm-tablecell-metaclass", domTableInfo).append(domMetaClassLink);
+        }
+
+        if (data.id !== undefined && data.id !== null) {
+            $(".dm-tablecell-id", domTableInfo).text(data.id);
+        }
+
+        if (data.uri !== undefined && data.uri !== null) {
+
+            $(".dm-tablecell-uri", domTableInfo).text(data.uri);
+        }
+
+        jQuery.append(domTableOwner);
+        jQuery.append(domTableInfo);
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using DatenMeister.EMOF.Exceptions;
+using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.InMemory
@@ -14,7 +15,12 @@ namespace DatenMeister.EMOF.InMemory
         /// <summary>
         ///     Stores the values direct within the memory
         /// </summary>
-        private readonly Dictionary<object, object> values = new Dictionary<object, object>();
+        private readonly Dictionary<object, object> _values = new Dictionary<object, object>();
+
+        /// <summary>
+        /// Stores the extent into which the element is stored
+        /// </summary>
+        public IExtent Extent { get; set; }
 
         public MofObject()
         {
@@ -44,7 +50,7 @@ namespace DatenMeister.EMOF.InMemory
         public object get(object property)
         {
             object result;
-            if (values.TryGetValue(property, out result))
+            if (_values.TryGetValue(property, out result))
             {
                 return result;
             }
@@ -54,17 +60,17 @@ namespace DatenMeister.EMOF.InMemory
 
         public bool isSet(object property)
         {
-            return values.ContainsKey(property);
+            return _values.ContainsKey(property);
         }
 
         public void set(object property, object value)
         {
-            values[property] = value;
+            _values[property] = value;
         }
 
         public void unset(object property)
         {
-            values.Remove(property);
+            _values.Remove(property);
         }
 
         /// <summary>
@@ -73,7 +79,7 @@ namespace DatenMeister.EMOF.InMemory
         /// <returns>Enumeration of all objects</returns>
         public IEnumerable<object> getPropertiesBeingSet()
         {
-            return values.Keys;
+            return _values.Keys;
         }
 
         public override string ToString()
@@ -82,7 +88,7 @@ namespace DatenMeister.EMOF.InMemory
             builder.Append($"#{guid} - ");
 
             var komma = string.Empty;
-            foreach (var pair in values)
+            foreach (var pair in _values)
             {
                 builder.Append($"{komma}{pair.Key} = {pair.Value}");
                 komma = ", ";

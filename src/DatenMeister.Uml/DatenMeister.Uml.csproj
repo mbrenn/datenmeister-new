@@ -40,7 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helper\IUmlNameResolution.cs" />
+    <Compile Include="Logic\IUmlLogic.cs" />
     <Compile Include="Helper\UmlNameResolution.cs" />
+    <Compile Include="Logic\UmlLogicData.cs" />
+    <Compile Include="Logic\UmlLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeFactory\TypeFactoryDotNet.cs" />
   </ItemGroup>

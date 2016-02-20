@@ -39,6 +39,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataLayer\DataLayers.cs" />
     <Compile Include="EMOF\Attributes\AssignFactoryForExtentTypeAttribute.cs" />
     <Compile Include="EMOF\Exceptions\MofException.cs" />
     <Compile Include="EMOF\Helper\ExtentHelper.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="EMOF\Interface\Reflection\IObject.cs" />
     <Compile Include="EMOF\Interface\Common\IReflectiveSequence.cs" />
     <Compile Include="EMOF\Interface\Reflection\IObjectAllProperties.cs" />
+    <Compile Include="EMOF\Interface\Reflection\IObjectHasExtent.cs" />
     <Compile Include="EMOF\Proxy\IHasProxiedObject.cs" />
     <Compile Include="EMOF\Proxy\ProxyMofObject.cs" />
     <Compile Include="EMOF\Proxy\ProxyMofElement.cs" />
@@ -76,9 +78,15 @@
     <Compile Include="Filler\FillTheMOF.cs" />
     <Compile Include="Filler\FillThePrimitiveTypes.cs" />
     <Compile Include="Filler\FillTheUML.cs" />
+    <Compile Include="Filler\IFiller.cs" />
     <Compile Include="Filler\mof.cs" />
     <Compile Include="Filler\primitivetypes.cs" />
     <Compile Include="Filler\uml.cs" />
+    <Compile Include="DataLayer\IDataLayer.cs" />
+    <Compile Include="DataLayer\IDataLayerLogic.cs" />
+    <Compile Include="DataLayer\DataLayer.cs" />
+    <Compile Include="DataLayer\DataLayerData.cs" />
+    <Compile Include="DataLayer\DataLayerLogic.cs" />
     <Compile Include="Workspace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkspaceExtension.cs" />

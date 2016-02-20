@@ -6,14 +6,13 @@
         {
         }
 
-        public ItemModel(ExtentModel extent, string url)
+        public ItemModel(string name, string uri)
         {
-            this.extent = extent;
-            this.url = url;
+            this.name = name;
+            this.uri = uri;
         }
 
-        public ExtentModel extent { get; private set; }
-
-        public string url { get; private set; }
+        public string name { get; set; }
+        public string uri { get; set; }
     }
 }

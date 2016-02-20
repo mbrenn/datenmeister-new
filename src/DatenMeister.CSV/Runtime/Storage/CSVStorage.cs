@@ -1,4 +1,6 @@
-﻿using DatenMeister.EMOF.InMemory;
+﻿using System;
+using System.IO;
+using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -12,14 +14,23 @@ namespace DatenMeister.CSV.Runtime.Storage
     // ReSharper disable once InconsistentNaming
     public class CSVStorage : IExtentStorage
     { 
-        public IUriExtent LoadExtent(ExtentStorageConfiguration configuration)
+        public IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty)
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
             var provider = new CSVDataProvider();
             var mofExtent = new MofUriExtent(csvConfiguration.ExtentUri);
             var factory = new MofFactory();
 
-            provider.Load(mofExtent,factory, csvConfiguration.Path, csvConfiguration.Settings);
+            var doesFileExist = File.Exists(csvConfiguration.Path);
+            if (doesFileExist)
+            {
+                provider.Load(mofExtent, factory, csvConfiguration.Path, csvConfiguration.Settings);
+            }
+            else if (!createAlsoEmpty)
+            {
+                throw new InvalidOperationException(
+                    $"File does not exist and empty extents is not given in argument {nameof(createAlsoEmpty)}");
+            }
 
             return mofExtent;
         }

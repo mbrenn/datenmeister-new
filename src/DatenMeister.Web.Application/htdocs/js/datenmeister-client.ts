@@ -1,7 +1,7 @@
 ﻿import * as DMI from "datenmeister-interfaces"
 
 export module WorkspaceApi {
-    export function getAllWorkspaces() : JQueryPromise<Array<DMI.IWorkspace>>
+    export function getAllWorkspaces(): JQueryPromise<Array<DMI.ClientResponse.IWorkspace>>
     {
         var callback = $.Deferred();
         $.ajax({
@@ -57,7 +57,7 @@ export module WorkspaceApi {
 
 export module ExtentApi {
 
-    export function createItem(ws: string, extentUrl: string, container ?: string): JQueryDeferred<DMI.ReturnModule.ICreateItemResult> {
+    export function createItem(ws: string, extentUrl: string, container ?: string): JQueryDeferred<DMI.ClientResponse.ICreateItemResult> {
         var callback = $.Deferred();
         var postModel = new DMI.PostModels.ItemCreateModel();
         postModel.ws = ws;
@@ -97,10 +97,10 @@ export module ExtentApi {
         return callback;
     }
 
-    export function getItems(ws: string, extentUrl: string, query?: DMI.IItemTableQuery): JQueryDeferred<DMI.IExtentContent> {
+    export function getItems(ws: string, extentUrl: string, query?: DMI.PostModels.IItemTableQuery): JQueryDeferred<DMI.ClientResponse.IExtentContent> {
         var callback = $.Deferred();
         getAjaxForItems(ws, extentUrl, query)
-            .done((data: DMI.IExtentContent) => {
+            .done((data: DMI.ClientResponse.IExtentContent) => {
                 callback.resolve(data);
             })
             .fail(data => {
@@ -110,7 +110,7 @@ export module ExtentApi {
         return callback;
     }
 
-    function getAjaxForItems(ws: string, extentUrl: string, query?: DMI.IItemTableQuery): JQueryXHR {
+    function getAjaxForItems(ws: string, extentUrl: string, query?: DMI.PostModels.IItemTableQuery): JQueryXHR {
         var url = "/api/datenmeister/extent/items?ws=" + encodeURIComponent(ws)
             + "&extent=" + encodeURIComponent(extentUrl);
 
@@ -151,10 +151,25 @@ export module ExtentApi {
 
         return callback;
     }
+
+    export function createExtent(extentData: DMI.PostModels.IExtentCreateModel): JQueryDeferred<boolean> {
+        var callback = $.Deferred();
+
+        $.ajax(
+            {
+                url: "/api/datenmeister/extent/extent_create",
+                data: extentData,
+                method: "POST",
+                success: (data: any) => { callback.resolve(true); },
+                error: (data: any) => { callback.reject(false); }
+            });
+
+        return callback;
+    }
 }
 
 export module ItemApi {
-    export function getItem(ws: string, extentUrl: string, itemUrl: string): JQueryDeferred<DMI.IItemContentModel> {
+    export function getItem(ws: string, extentUrl: string, itemUrl: string): JQueryDeferred<DMI.ClientResponse.IItemContentModel> {
         var callback = $.Deferred();
         $.ajax({
             url: "/api/datenmeister/extent/item?ws=" + encodeURIComponent(ws)
@@ -213,7 +228,7 @@ export module ItemApi {
         return callback;
     }
 
-    export function setProperties(ws: string, extentUrl: string, itemUrl: string, item: DMI.IDataTableItem): JQueryPromise<boolean> {
+    export function setProperties(ws: string, extentUrl: string, itemUrl: string, item: DMI.ClientResponse.IDataTableItem): JQueryPromise<boolean> {
         var callback = $.Deferred();
 
         var postModel = new DMI.PostModels.ItemSetPropertiesModel();

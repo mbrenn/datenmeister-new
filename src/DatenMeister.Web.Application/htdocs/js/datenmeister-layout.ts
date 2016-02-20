@@ -51,22 +51,30 @@ export class Layout implements DMI.Api.ILayout {
         this.showItems(ws, extentUrl);
     }
 
-    navigateToItem(ws: string, extentUrl: string, itemUrl: string) {
-        history.pushState({}, "", "#ws=" + encodeURIComponent(ws)
+    navigateToItem(ws: string, extentUrl: string, itemUrl: string, settings?: DMI.View.IItemViewSettings) {
+        var url = "#ws=" + encodeURIComponent(ws)
             + "&ext=" + encodeURIComponent(extentUrl)
-            + "&item=" + encodeURIComponent(itemUrl));
-        this.showItem(ws, extentUrl, itemUrl);
+            + "&item=" + encodeURIComponent(itemUrl);
+        
+        if (settings !== undefined && settings !== null) {
+            if (settings.isReadonly) {
+                url += "&mode=readonly";
+            }
+        }
+
+        history.pushState({}, "", url);
+        this.showItem(ws, extentUrl, itemUrl, settings);
     }
 
     navigateToDialog(configuration: DMI.Api.FormForItemConfiguration) {
         var oldPageType = this.currentPageType;
 
         var domTable = $(".data-dialog", this.parent);
-        var value = new DMI.DataTableItem();
+        var value = new DMI.Table.DataTableItem();
         var tableConfiguration = new DMTables.ItemContentConfiguration();
         tableConfiguration.autoProperties = false;
         tableConfiguration.columns = configuration.columns;
-        tableConfiguration.startWithEditMode = true;
+        tableConfiguration.isReadOnly = false;
         tableConfiguration.supportNewProperties = false;
         tableConfiguration.onCancelForm = () => {
             this.switchLayout(oldPageType);
@@ -121,8 +129,12 @@ export class Layout implements DMI.Api.ILayout {
         this.switchLayout(PageType.Items, workspaceId, extentUrl);
         this.createTitle(workspaceId, extentUrl);
         var extentLogic = new DMView.ExtentView(this);
-        extentLogic.onItemSelected = (ws: string, extentUrl: string, itemUrl: string) => {
+        extentLogic.onItemEdit = (ws: string, extentUrl: string, itemUrl: string) => {
             tthis.navigateToItem(ws, extentUrl, itemUrl);
+        };
+
+        extentLogic.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
+            tthis.navigateToItem(ws, extentUrl, itemUrl, { isReadonly: true });
         };
 
         extentLogic.onItemCreated = (ws: string, extentUrl: string, itemUrl: string) => {
@@ -132,12 +144,12 @@ export class Layout implements DMI.Api.ILayout {
         extentLogic.loadAndCreateHtmlForExtent($(".data-items", this.parent), workspaceId, extentUrl);
     }
 
-    showItem(workspaceId: string, extentUrl: string, itemUrl: string) {
+    showItem(workspaceId: string, extentUrl: string, itemUrl: string, settings? : DMI.View.IItemViewSettings) {
         this.switchLayout(PageType.ItemDetail, workspaceId, extentUrl, itemUrl);
         var extentLogic = new DMView.ItemView(this);
 
         this.createTitle(workspaceId, extentUrl, itemUrl);
-        extentLogic.loadAndCreateHtmlForItem($(".data-itemdetail", this.parent), workspaceId, extentUrl, itemUrl);
+        extentLogic.loadAndCreateHtmlForItem($(".data-itemdetail", this.parent), workspaceId, extentUrl, itemUrl, settings);
     }
 
     createTitle(ws?: string, extentUrl?: string, itemUrl?: string) {

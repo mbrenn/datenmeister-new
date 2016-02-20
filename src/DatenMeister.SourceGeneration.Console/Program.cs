@@ -72,6 +72,15 @@ namespace DatenMeister.SourceGeneration
             File.WriteAllText("../../primitivetypes.cs", generator.Result.ToString());
             File.WriteAllText("../../FillThePrimitiveTypes.cs", extentCreator.Result.ToString());
             Console.WriteLine("C# Code for PrimitiveTypes written");
+
+#if !DEBUG
+            File.Copy("../../primitivetypes.cs", "../../../DatenMeister/Filler/primitivetypes.cs", true);
+            File.Copy("../../FillThePrimitiveTypes.cs", "../../../DatenMeister/Filler/FillThePrimitiveTypes.cs", true);
+            File.Copy("../../mof.cs", "../../../DatenMeister/Filler/mof.cs", true);
+            File.Copy("../../FillTheMOF.cs", "../../../DatenMeister/Filler/FillTheMOF.cs", true);
+            File.Copy("../../uml.cs", "../../../DatenMeister/Filler/uml.cs", true);
+            File.Copy("../../FillTheUML.cs", "../../../DatenMeister/Filler/FillTheUML.cs", true);
+#endif
         }
     }
 }

@@ -2,7 +2,7 @@
 import * as DMI from "datenmeister-interfaces"
 import * as DMClient from "datenmeister-client"
 
-export class ItemsFromExtentProvider implements DMI.IItemsProvider {
+export class ItemsFromExtentProvider implements DMI.Api.IItemsProvider {
 
     ws: string;
     extent: string;
@@ -13,7 +13,7 @@ export class ItemsFromExtentProvider implements DMI.IItemsProvider {
     }
 
 
-    performQuery(query: DMI.ItemInExtentQuery): JQueryDeferred<DMI.IItemsContent> {
+    performQuery(query: DMI.PostModels.IItemTableQuery): JQueryDeferred<DMI.ClientResponse.IItemsContent> {
 
         return DMClient.ExtentApi.getItems(this.ws, this.extent, query);
     }

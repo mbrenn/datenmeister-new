@@ -21,6 +21,16 @@ textarea {
     cursor: pointer;
 }
 
+#dm-ajaxloading {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    padding: 10px;
+    border: 1px solid black;
+    background-color: white;
+    z-index: 2;
+}
+
 .dm-topbar {
     width: 100%;
     background-color: lightgray;
@@ -103,8 +113,8 @@ textarea {
     /* Settings for the title text */
     .dm-icon-container div {
         text-align: center;
-        margin: 0px;
-        padding: 0px;
+        margin: 0;
+        padding: 0;
         width: 64px;
     }
 
@@ -120,10 +130,22 @@ textarea {
     width: 5em;
 }
 
+.dm-toolbar {
+    margin-bottom: 10px;
+    padding: 5px 5px 10px 5px;
+    border-bottom: 1px solid black;
+}
+
 .data-items table {
     table-layout: fixed;
-    width: 100%;
     word-wrap: break-word;
+    margin: 0 10px 0 10px;
+    width: 100%;
+}
+
+.data-items table tr td {
+    vertical-align: top;
+    padding-right: 20px;
 }
 
 .data-items table ul {
@@ -136,15 +158,46 @@ textarea {
     margin: 0;
     padding: 0;
 }
+
+.dm-itemtable-commands {
+    white-space: nowrap;
+}
+
+.dm-metatable {
+    border-collapse: collapse;
+    margin: 0 10px 0 10px;
+}
+
+.dm-metatable tr th {
+    border-top: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 20px;
+}
+
+.dm-metatable tr td {
+    border-top: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+
+
 .dm-statusline {
     position: fixed;
     width: 100%;
     height: 30px;
-    bottom: 0px;
+    bottom: 0;
     background-color: lightgray;
     font-weight: bold;
     border-top: 1px solid black;
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 3px;
+}
+
+.dm-button-ok {
+    margin-right: 10px;
 }

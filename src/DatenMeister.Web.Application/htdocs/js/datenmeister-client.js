@@ -132,6 +132,18 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             return callback;
         }
         ExtentApi.deleteExtent = deleteExtent;
+        function createExtent(extentData) {
+            var callback = $.Deferred();
+            $.ajax({
+                url: "/api/datenmeister/extent/extent_create",
+                data: extentData,
+                method: "POST",
+                success: function (data) { callback.resolve(true); },
+                error: function (data) { callback.reject(false); }
+            });
+            return callback;
+        }
+        ExtentApi.createExtent = createExtent;
     })(ExtentApi = exports.ExtentApi || (exports.ExtentApi = {}));
     var ItemApi;
     (function (ItemApi) {

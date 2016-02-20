@@ -58,7 +58,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             {
                 try
                 {
-                    ExtentLoaderLogic.LoadExtent(info);
+                    ExtentLoaderLogic.LoadExtent(info, false);
                 }
                 catch (Exception exc)
                 {

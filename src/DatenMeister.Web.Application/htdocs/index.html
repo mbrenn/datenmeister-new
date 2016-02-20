@@ -37,6 +37,7 @@
             <tr>
                 <th>URI</th>
                 <th>Items</th>
+                <th>Layer</th>
             </tr>
         </table>
     </script>
@@ -44,6 +45,7 @@
         <tr>
             <td><a href="#" class="data"><%-uri%></a></td>
             <td><%-count%></td>
+            <td><%-dataLayer%></td>
         </tr>
     </script>
 </head>
@@ -53,6 +55,9 @@
 </div>
 <div class="dm-topbar col-md-12 container-title">
 </div>
+    <div id="dm-ajaxloading">
+        LOADING
+    </div>
 <div class="fluid-container body-content" style="display: none">
     <div class="row">
         <div class="col-md-8 only-workspaces only-extents">
@@ -86,8 +91,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 only-items only-itemdetail">
-            <div class="container_data data-items data-itemdetail">
+        <div class="col-md-12 only-items">
+            <div class="container_data data-items">
+                <em>Loading...</em>
+            </div>
+        </div>
+        <div class="col-md-12 only-itemdetail">
+            <div class="container_data data-itemdetail">
                 <em>Loading...</em>
             </div>
         </div>

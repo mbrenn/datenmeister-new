@@ -18,9 +18,6 @@ namespace DatenMeister.Full.Integration
     {
         public static void UseDatenMeister(this StandardKernel kernel)
         {
-            // Do the full load
-            Helper.LoadAllReferenceAssemblies();
-            
             var factoryMapper = new DefaultFactoryMapper();
             factoryMapper.PerformAutomaticMappingByAttribute();
             kernel.Bind<IFactoryMapper>().ToConstant(factoryMapper);

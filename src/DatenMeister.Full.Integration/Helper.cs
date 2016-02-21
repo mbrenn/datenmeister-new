@@ -29,7 +29,7 @@ namespace DatenMeister.Full.Integration
         /// </summary>
         public static void LoadAllReferenceAssemblies()
         {
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()
                 .Where(x=>!IsDotNetLibrary(x.GetName())))
             {
                 LoadReferencedAssembly(assembly);
@@ -44,7 +44,7 @@ namespace DatenMeister.Full.Integration
         {
             // All assemblies, which do not start with Microsoft or System. 
             // We will not find any extent or something like that within these assemblies. 
-            foreach (AssemblyName name in assembly.GetReferencedAssemblies()
+            foreach (var name in assembly.GetReferencedAssemblies()
                 .Where(x => !IsDotNetLibrary(x)))
             {
                 if (AppDomain.CurrentDomain.GetAssemblies().All(a => a.FullName != name.FullName))

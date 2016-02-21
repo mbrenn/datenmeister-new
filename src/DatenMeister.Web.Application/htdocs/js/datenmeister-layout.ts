@@ -144,9 +144,14 @@ export class Layout implements DMI.Api.ILayout {
         extentLogic.loadAndCreateHtmlForExtent($(".data-items", this.parent), workspaceId, extentUrl);
     }
 
-    showItem(workspaceId: string, extentUrl: string, itemUrl: string, settings? : DMI.View.IItemViewSettings) {
+    showItem(workspaceId: string, extentUrl: string, itemUrl: string, settings?: DMI.View.IItemViewSettings) {
+        var tthis = this;
         this.switchLayout(PageType.ItemDetail, workspaceId, extentUrl, itemUrl);
         var extentLogic = new DMView.ItemView(this);
+
+        extentLogic.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
+            tthis.navigateToItem(ws, extentUrl, itemUrl, { isReadonly: true });
+        };
 
         this.createTitle(workspaceId, extentUrl, itemUrl);
         extentLogic.loadAndCreateHtmlForItem($(".data-itemdetail", this.parent), workspaceId, extentUrl, itemUrl, settings);

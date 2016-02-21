@@ -106,8 +106,12 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
             extentLogic.loadAndCreateHtmlForExtent($(".data-items", this.parent), workspaceId, extentUrl);
         };
         Layout.prototype.showItem = function (workspaceId, extentUrl, itemUrl, settings) {
+            var tthis = this;
             this.switchLayout(PageType.ItemDetail, workspaceId, extentUrl, itemUrl);
             var extentLogic = new DMView.ItemView(this);
+            extentLogic.onItemView = function (ws, extentUrl, itemUrl) {
+                tthis.navigateToItem(ws, extentUrl, itemUrl, { isReadonly: true });
+            };
             this.createTitle(workspaceId, extentUrl, itemUrl);
             extentLogic.loadAndCreateHtmlForItem($(".data-itemdetail", this.parent), workspaceId, extentUrl, itemUrl, settings);
         };

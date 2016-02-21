@@ -4,10 +4,6 @@ namespace DatenMeister.Web.Models
 {
     public class ItemContentModel
     {
-        public ItemContentModel()
-        {
-        }
-
         public string uri { get; set; }
 
         public Dictionary<string, object> v { get; set; }

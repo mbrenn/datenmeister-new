@@ -164,6 +164,7 @@ export class ExtentView {
 export class ItemView
 {
     layout: DMI.Api.ILayout;
+    onItemView: (ws: string, extentUrl: string, itemUrl: string) => void;
 
     constructor(layout?: DMI.Api.ILayout) {
         this.layout = layout;
@@ -228,6 +229,14 @@ export class ItemView
                 tthis.layout.navigateToItems(ws, extentUrl);
             }
         }
+
+        configuration.onItemView = (url: string) => {
+            if (tthis.onItemView !== undefined) {
+                tthis.onItemView(ws, extentUrl, url);
+            }
+
+            return false;
+        };
 
         var domTableOwner = $("<div class='data-items'></div>");
         table.show(domTableOwner);

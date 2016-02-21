@@ -182,6 +182,12 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
                     tthis.layout.navigateToItems(ws, extentUrl);
                 };
             }
+            configuration.onItemView = function (url) {
+                if (tthis.onItemView !== undefined) {
+                    tthis.onItemView(ws, extentUrl, url);
+                }
+                return false;
+            };
             var domTableOwner = $("<div class='data-items'></div>");
             table.show(domTableOwner);
             var domTableInfo = $("<table class='dm-metatable'>" +

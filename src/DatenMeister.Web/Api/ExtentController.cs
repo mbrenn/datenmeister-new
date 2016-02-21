@@ -310,7 +310,6 @@ namespace DatenMeister.Web.Api
             
             var columnCreator = new ColumnCreator();
             itemModel.c = columnCreator.FindColumnsForItem(foundElement).ToList();
-
             itemModel.v = ConvertToJson(foundExtent, foundElement, columnCreator);
 
             // Check, if item is of type IElement and has a metaclass

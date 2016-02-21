@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Attributes;
+using DatenMeister.Filler;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -52,6 +53,13 @@ namespace DatenMeister.Full.Integration
             metaWorkspace.AddExtent(strapper.PrimitiveInfrastructure);
             metaWorkspace.AddExtent(strapper.MofInfrastructure);
             metaWorkspace.AddExtent(strapper.UmlInfrastructure);
+            var dataLayerLogic = kernel.Get<IDataLayerLogic>();
+            dataLayerLogic.AssignToDataLayer(strapper.PrimitiveInfrastructure, DataLayers.Mof);
+            dataLayerLogic.AssignToDataLayer(strapper.MofInfrastructure, DataLayers.Mof);
+            dataLayerLogic.AssignToDataLayer(strapper.UmlInfrastructure, DataLayers.Mof);
+
+            var mof = dataLayerLogic.Get<FillTheMOF, _MOF>(DataLayers.Mof);
+
 
             kernel.Bind<IUmlNameResolution>().To<UmlNameResolution>();
         }

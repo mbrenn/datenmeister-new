@@ -13,10 +13,11 @@ namespace DatenMeister.Full.Integration
             var directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var files = Directory.GetFiles(directoryName)
                 .Where (x=>Path.GetExtension(x).ToLower() == ".dll");
-            foreach (var file in files.Select(Path.GetFileNameWithoutExtension))
+            foreach (var file in files)
             {
+                var filenameWithoutExtension = Path.GetFileNameWithoutExtension(file).ToLower();
                 if (AppDomain.CurrentDomain.GetAssemblies().All(
-                    x => x.GetName().Name.ToLower() != file.ToLower()))
+                    x => x.GetName().Name.ToLower() != filenameWithoutExtension))
                 {
                     Debug.WriteLine($"Loading by file: {file}");
                     Assembly.LoadFile(Path.Combine(directoryName, file));

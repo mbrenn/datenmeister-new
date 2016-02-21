@@ -6,15 +6,13 @@ namespace DatenMeister.Web.Models
     {
         public ItemContentModel()
         {
-            v = new Dictionary<string, string>();
-            c = new List<DataFormRow>();
         }
 
         public string uri { get; set; }
 
-        public Dictionary<string, string> v { get; private set; }
+        public Dictionary<string, object> v { get; set; }
 
-        public List<DataFormRow> c { get; private set; }
+        public List<DataTableColumn> c { get; set; }
 
         public ItemModel metaclass { get; set; }
     }

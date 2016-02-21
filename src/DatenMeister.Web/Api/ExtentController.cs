@@ -186,7 +186,7 @@ namespace DatenMeister.Web.Api
             var foundItems = totalItems;
 
             var columnCreator = new ColumnCreator();
-            var columns = columnCreator.GetColumnsForTable(foundExtent).ToList();
+            var columns = columnCreator.FindColumnsForTable(foundExtent).ToList();
             var properties = columnCreator.Properties;
 
             // Perform the filtering
@@ -295,7 +295,10 @@ namespace DatenMeister.Web.Api
             IUriExtent foundExtent;
             _workspaceCollection.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
 
-            var itemModel = new ItemContentModel {uri = item};
+            var itemModel = new ItemContentModel
+            {
+                uri = item
+            };
 
             // Retrieves the values of the item
             var foundElement = foundExtent.element(item);
@@ -304,49 +307,25 @@ namespace DatenMeister.Web.Api
                 // Not found
                 return NotFound();
             }
+            
+            var columnCreator = new ColumnCreator();
+            itemModel.c = columnCreator.FindColumnsForItem(foundElement).ToList();
 
-            var foundProperties = foundExtent.GetProperties();
-            foreach (var property in foundProperties)
-            {
-                if (foundElement.isSet(property))
-                {
-                    itemModel.v[property.ToString()] = foundElement.get(property)?.ToString();
-                }
-            }
-
-            AutoGenerateFormRows(foundElement, itemModel);
+            itemModel.v = ConvertToJson(foundExtent, foundElement, columnCreator);
 
             // Check, if item is of type IElement and has a metaclass
             var metaClass = foundElement.getMetaClass();
             if (metaClass != null)
             {
-                var metaClassModel = new ItemModel();
-                metaClassModel.name = _resolution.GetName(metaClass);
+                var metaClassModel = new ItemModel
+                {
+                    name = _resolution.GetName(metaClass)
+                };
+
                 itemModel.metaclass = metaClassModel;
             }
 
             return itemModel;
-        }
-
-        [NonAction]
-        private void AutoGenerateFormRows(IElement foundElement, ItemContentModel itemModel)
-        {
-            var asAllProperties = foundElement as IObjectAllProperties;
-            if (asAllProperties == null)
-            {
-                throw new InvalidOperationException("FoundElement is not an Instance of IObjectAllProperties");
-            }
-
-            foreach (var property in asAllProperties.getPropertiesBeingSet())
-            {
-                var newRow = new DataFormRow()
-                {
-                    name = property.ToString(),
-                    title = property.ToString()
-                };
-
-                itemModel.c.Add(newRow);
-            }
         }
 
         [Route("item_create")]

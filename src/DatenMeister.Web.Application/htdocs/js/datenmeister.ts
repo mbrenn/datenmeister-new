@@ -93,8 +93,12 @@ function buildRibbons(layout: DMLayout.Layout, changeEvent: DMLayout.ILayoutChan
                 .done(() => layout.navigateToWorkspaces());
         });
 
-        tabFile.addIcon("Create Extent", "img/icons/folder_open-add", () => {
+        tabFile.addIcon("Create Extent", "img/icons/folder_open-new", () => {
             showDialogNewExtent(layout, changeEvent.workspace);
+        });
+
+        tabFile.addIcon("Add Workspace", "img/icons/folder_open-add", () => {
+            showDialogAddExtent(layout, changeEvent.workspace);
         });
 
         if (changeEvent.extent !== undefined) {
@@ -151,4 +155,7 @@ function showDialogNewExtent(layout: DMLayout.Layout, workspace: string) {
     configuration.addColumn(new DMI.Table.DataTableColumn("Columns", "columns").withDefaultValue("Column1,Column2"));
 
     layout.navigateToDialog(configuration);
+}
+
+function showDialogAddExtent(layout: DMLayout.Layout, workspace: string) {
 }

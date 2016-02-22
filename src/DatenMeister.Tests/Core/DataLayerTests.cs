@@ -33,6 +33,28 @@ namespace DatenMeister.Tests.Core
         }
 
         [Test]
+        public void TestDataLayersForItem()
+        {
+            var data = new DataLayerData();
+            IDataLayerLogic logic = new DataLayerLogic(data);
+            logic.SetRelationsForDefaultDataLayers();
+
+            var dataExtent = new MofUriExtent("Data");
+            var umlExtent = new MofUriExtent("Uml");
+
+            logic.AssignToDataLayer(dataExtent, DataLayers.Data);
+            logic.AssignToDataLayer(umlExtent, DataLayers.Uml);
+
+            var value = new MofElement(null, null);
+            var logicLayer = logic.GetMetaLayerOfObject(value);
+            Assert.That(logicLayer, Is.Null);
+
+            dataExtent.elements().add(value);
+            logicLayer = logic.GetMetaLayerOfObject(value);
+            Assert.That(logicLayer, Is.SameAs(DataLayers.Data));
+        }
+
+        [Test]
         public void TestClassTreeUsage()
         {
             var strapper = Bootstrapper.PerformFullBootstrap("Xmi/PrimitiveTypes.xmi", "Xmi/UML.xmi", "Xmi/MOF.xmi");
@@ -42,20 +64,19 @@ namespace DatenMeister.Tests.Core
             logic.SetRelationsForDefaultDataLayers();
             logic.AssignToDataLayer(strapper.PrimitiveInfrastructure, DataLayers.Uml);
 
-            var primitiveTypes = logic.Get<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Uml);
+            var primitiveTypes = logic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Uml);
             Assert.That(primitiveTypes, Is.Not.Null );
             Assert.That(primitiveTypes.__Real, Is.Not.Null);
             Assert.That(primitiveTypes.__Real, Is.Not.TypeOf<object>());
 
-
-            var primitiveTypes2 = logic.Get<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Uml);
+            var primitiveTypes2 = logic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Uml);
             Assert.That(primitiveTypes2, Is.SameAs(primitiveTypes));
 
             logic.ClearCache(DataLayers.Uml);
-            var primitiveTypes3 = logic.Get<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Uml);
+            var primitiveTypes3 = logic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Uml);
             Assert.That(primitiveTypes3, Is.Not.SameAs(primitiveTypes));
 
-            var primitiveTypes4 = logic.Get<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Types);
+            var primitiveTypes4 = logic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Types);
             Assert.That(primitiveTypes4, Is.Not.Null);
             Assert.That(primitiveTypes4.__Real, Is.TypeOf<object>());
         }

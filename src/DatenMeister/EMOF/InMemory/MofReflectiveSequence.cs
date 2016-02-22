@@ -20,34 +20,39 @@ namespace DatenMeister.EMOF.InMemory
             _values = values;
         }
 
-        public bool add(object value)
+        public virtual bool add(object value)
+        {
+            return addInternal(value);
+        }
+
+        private bool addInternal(object value)
         {
             _values.Add(value);
             return true;
         }
 
-        public void add(int index, object value)
+        public virtual void add(int index, object value)
         {
             _values.Insert(index, value);
         }
 
-        public bool addAll(IReflectiveSequence values)
+        public virtual bool addAll(IReflectiveSequence values)
         {
             var result = false;
             foreach (var value in values)
             {
-                result |= add(value);
+                result |= addInternal(value);
             }
 
             return result;
         }
 
-        public void clear()
+        public virtual void clear()
         {
             _values.Clear();
         }
 
-        public object get(int index)
+        public virtual object get(int index)
         {
             CheckIndex(index);
 
@@ -59,19 +64,19 @@ namespace DatenMeister.EMOF.InMemory
             return _values.GetEnumerator();
         }
 
-        public bool remove(object value)
+        public virtual bool remove(object value)
         {
             return _values.Remove(value);
         }
 
-        public void remove(int index)
+        public virtual void remove(int index)
         {
             CheckIndex(index);
 
             _values.RemoveAt(index);
         }
 
-        public object set(int index, object value)
+        public virtual object set(int index, object value)
         {
             CheckIndex(index);
             var old = _values[index];
@@ -79,7 +84,7 @@ namespace DatenMeister.EMOF.InMemory
             return old;
         }
 
-        public int size()
+        public virtual int size()
         {
             return _values.Count;
         }

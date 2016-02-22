@@ -39,7 +39,7 @@ namespace DatenMeister.DataLayer
         /// <typeparam name="TFiller">Filler to be used to create the filled type</typeparam>
         /// <typeparam name="TFilledType">The filled type which is returned</typeparam>
         /// <returns>The filled type, could also be cached</returns>
-        TFilledType Get<TFiller, TFilledType>(IDataLayer layer)
+        TFilledType Create<TFiller, TFilledType>(IDataLayer layer)
             where TFiller : IFiller<TFilledType>, new()
             where TFilledType : class, new();
 

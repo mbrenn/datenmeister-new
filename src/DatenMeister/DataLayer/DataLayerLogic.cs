@@ -73,13 +73,12 @@ namespace DatenMeister.DataLayer
         {
             lock (_data)
             {
-                var asHasExtent = value as IObjectHasExtent;
-                if (asHasExtent == null)
-                {
-                    throw new InvalidOperationException("Not known to which extent this value belongs :-(");
-                }
+                var allExtents = from x in _data.Extents
+                    let extent = x.Key as IExtentCachesObject
+                    where extent != null
+                    select new {extent, x.Value};
 
-                return GetDataLayerOfExtent(asHasExtent.GetContainingExtent());
+                return allExtents.Where(x => x.extent.HasObject(value)).Select(x => x.Value).FirstOrDefault() ?? _data.Default;
             }
         }
 
@@ -97,13 +96,42 @@ namespace DatenMeister.DataLayer
             }
         }
 
-        public TFilledType Get<TFiller, TFilledType>(IDataLayer layer)
+        public TFilledType Create<TFiller, TFilledType>(IDataLayer layer)
             where TFiller : IFiller<TFilledType>, new()
             where TFilledType : class, new()
         {
             lock (_data)
             {
                 var layerAsObject = layer as DataLayer;
+                var filledType = Get<TFilledType>(layerAsObject);
+                if (filledType != null)
+                {
+                    return filledType;
+                }
+
+                // Not found, we need to fill it on our own... Congratulation
+                var filler = new TFiller();
+                filledType = new TFilledType();
+
+                // Go through all extents of this datalayer
+                foreach (var extent in GetExtentsOfDatalayer(layer))
+                {
+                    filler.Fill(extent.elements(), filledType);
+                }
+
+                // Adds it to the database
+                layerAsObject.FilledTypeCache.Add(filledType);
+                return filledType;
+            }
+        }
+
+        public TFilledType Get<TFilledType>(IDataLayer layer)
+            where TFilledType : class, new()
+        {
+            lock (_data)
+            {
+                var layerAsObject = layer as DataLayer;
+
                 if (layerAsObject == null)
                 {
                     throw new ArgumentException($"{nameof(layer)} is not of type DataLayer", nameof(layer));
@@ -118,19 +146,7 @@ namespace DatenMeister.DataLayer
                     }
                 }
 
-                // Not found, we need to fill it on our own... Congratulation
-                var filler = new TFiller();
-                var filledType = new TFilledType();
-
-                // Go through all extents of this datalayer
-                foreach (var extent in GetExtentsOfDatalayer(layer))
-                {
-                    filler.Fill(extent.elements(), filledType);
-                }
-
-                // Adds it to the database
-                layerAsObject.FilledTypeCache.Add(filledType);
-                return filledType;
+                return null;
             }
         }
 

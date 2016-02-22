@@ -74,8 +74,11 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
                 DMClient.WorkspaceApi.deleteWorkspace(changeEvent.workspace)
                     .done(function () { return layout.navigateToWorkspaces(); });
             });
-            tabFile.addIcon("Create Extent", "img/icons/folder_open-add", function () {
+            tabFile.addIcon("Create Extent", "img/icons/folder_open-new", function () {
                 showDialogNewExtent(layout, changeEvent.workspace);
+            });
+            tabFile.addIcon("Add Workspace", "img/icons/folder_open-add", function () {
+                showDialogAddExtent(layout, changeEvent.workspace);
             });
             if (changeEvent.extent !== undefined) {
                 tabFile.addIcon("Delete Extent", "img/icons/folder_open-delete", function () {
@@ -118,6 +121,8 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
         configuration.addColumn(new DMI.Table.DataTableColumn("Filename", "filename"));
         configuration.addColumn(new DMI.Table.DataTableColumn("Columns", "columns").withDefaultValue("Column1,Column2"));
         layout.navigateToDialog(configuration);
+    }
+    function showDialogAddExtent(layout, workspace) {
     }
 });
 //# sourceMappingURL=datenmeister.js.map

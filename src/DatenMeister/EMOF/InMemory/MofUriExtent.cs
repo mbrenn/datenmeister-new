@@ -10,10 +10,13 @@ using DatenMeister.EMOF.Queries;
 namespace DatenMeister.EMOF.InMemory
 {
     [AssignFactoryForExtentType(typeof(MofFactory))]
-    public class MofUriExtent : IUriExtent
+    public class MofUriExtent : IUriExtent, IExtentCachesObject
     {
-        private object _syncObject = new object();
+        private readonly object _syncObject = new object();
+
         private readonly string _contextUri;
+
+        private readonly MofExtentReflectiveSequence _reflectiveSequence;
 
         /// <summary>
         ///     Stores all the elements
@@ -25,6 +28,7 @@ namespace DatenMeister.EMOF.InMemory
         public MofUriExtent(string uri)
         {
             _contextUri = uri;
+            _reflectiveSequence = new MofExtentReflectiveSequence(_elements);
         }
 
         public string contextURI()
@@ -99,7 +103,15 @@ namespace DatenMeister.EMOF.InMemory
 
         public IReflectiveSequence elements()
         {
-            return new MofReflectiveSequence(_elements);
+            return _reflectiveSequence;
+        }
+
+        public bool HasObject(IObject value)
+        {
+            lock (_reflectiveSequence)
+            {
+                return _reflectiveSequence.HasObject(value);
+            }
         }
     }
 }

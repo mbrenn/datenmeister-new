@@ -44,6 +44,7 @@ namespace DatenMeister.EMOF.InMemory
             {
                 return true;
             }
+
             return false;
         }
 

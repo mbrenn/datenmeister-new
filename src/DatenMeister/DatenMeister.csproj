@@ -46,6 +46,7 @@
     <Compile Include="EMOF\Helper\ObjectHelper.cs" />
     <Compile Include="EMOF\Helper\UmlHelper.cs" />
     <Compile Include="EMOF\InMemory\MofElement.cs" />
+    <Compile Include="EMOF\InMemory\MofExtentReflectiveSequence.cs" />
     <Compile Include="EMOF\InMemory\MofFactory.cs" />
     <Compile Include="EMOF\InMemory\MofObject.cs" />
     <Compile Include="EMOF\InMemory\MofReflectiveSequence.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="EMOF\Interface\Common\IReflectiveCollection.cs" />
     <Compile Include="EMOF\Interface\Identifiers\IExtent.cs" />
     <Compile Include="EMOF\Interface\Extension\ITag.cs" />
+    <Compile Include="EMOF\Interface\Identifiers\IExtentCachesObject.cs" />
     <Compile Include="EMOF\Interface\Identifiers\IUriExtent.cs" />
     <Compile Include="EMOF\Interface\Reflection\IElement.cs" />
     <Compile Include="EMOF\Interface\Reflection\IElementSetMetaClass.cs" />
@@ -62,7 +64,6 @@
     <Compile Include="EMOF\Interface\Reflection\IObject.cs" />
     <Compile Include="EMOF\Interface\Common\IReflectiveSequence.cs" />
     <Compile Include="EMOF\Interface\Reflection\IObjectAllProperties.cs" />
-    <Compile Include="EMOF\Interface\Reflection\IObjectHasExtent.cs" />
     <Compile Include="EMOF\Proxy\IHasProxiedObject.cs" />
     <Compile Include="EMOF\Proxy\ProxyMofObject.cs" />
     <Compile Include="EMOF\Proxy\ProxyMofElement.cs" />

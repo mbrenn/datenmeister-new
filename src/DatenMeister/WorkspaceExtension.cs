@@ -10,14 +10,11 @@ namespace DatenMeister
             foreach (var extent in workspace.extent)
             {
                 var extentAsUriExtent = extent as IUriExtent;
-                if (extentAsUriExtent != null)
+                var result = extentAsUriExtent?.element(uri);
+                if (result != null)
                 {
-                    var result = extentAsUriExtent.element(uri);
-                    if (result != null)
-                    {
-                        // found it
-                        return result;
-                    }
+                    // found it
+                    return result;
                 }
             }
 

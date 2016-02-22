@@ -58,8 +58,8 @@ namespace DatenMeister.Full.Integration
             dataLayerLogic.AssignToDataLayer(strapper.MofInfrastructure, DataLayers.Mof);
             dataLayerLogic.AssignToDataLayer(strapper.UmlInfrastructure, DataLayers.Mof);
 
-            var mof = dataLayerLogic.Get<FillTheMOF, _MOF>(DataLayers.Mof);
-
+            // Let us create the filled object
+            dataLayerLogic.Create<FillTheMOF, _MOF>(DataLayers.Mof);
 
             kernel.Bind<IUmlNameResolution>().To<UmlNameResolution>();
         }

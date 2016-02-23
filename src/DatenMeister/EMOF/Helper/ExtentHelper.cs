@@ -3,6 +3,7 @@ using System.Linq;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.EMOF.Queries;
 
 namespace DatenMeister.EMOF.Helper
 {
@@ -48,24 +49,29 @@ namespace DatenMeister.EMOF.Helper
         /// <param name="extents">Extents to be parsed</param>
         /// <param name="element">Element to be found</param>
         /// <returns>the extent with the element or none</returns>
-        public static IUriExtent WithElement(this IEnumerable<IUriExtent> extents, IElement element)
+        public static IUriExtent WithElement(this IEnumerable<IUriExtent> extents, IObject element)
         {
-            foreach (var extent in extents)
+            // First, try to find it via the caching
+            var uriExtents = extents as IList<IUriExtent> ?? extents.ToList();
+
+            foreach (var extent in uriExtents)
             {
                 if (extent is IExtentCachesObject)
                 {
                     var extentAsObjectCache = extent as IExtentCachesObject;
-                    if( extentAsObjectCache.HasObject(element))
+                    if (extentAsObjectCache.HasObject(element))
                     {
                         return extent;
                     }
                 }
-                else
+            }
+
+            // If not successful, try to find it by traditional, but old approach
+            foreach (var extent in uriExtents)
+            {
+                if (extent.elements().GetAllDecendants().Any(x => x.Equals(element)))
                 {
-                    if (extent.elements().Any(x => x.Equals(element)))
-                    {
-                        return extent;
-                    }
+                    return extent;
                 }
             }
 

@@ -255,7 +255,11 @@ export class ItemView
         if (data.metaclass !== undefined && data.metaclass !== null) {
             var domMetaClassLink = $("<a href='#'>3</a>").text(data.metaclass.name);
             domMetaClassLink.click(() => {
-                alert(data.metaclass.uri);
+                tthis.layout.navigateToItem(
+                    data.metaclass.ws,
+                    data.metaclass.ext,
+                    data.metaclass.uri
+                );
             });
 
             $(".dm-tablecell-metaclass", domTableInfo).append(domMetaClassLink);

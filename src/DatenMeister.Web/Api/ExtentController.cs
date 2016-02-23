@@ -4,16 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Http;
-using System.Web.Http.Description;
 using DatenMeister.CSV;
 using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
-using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Queries;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
@@ -320,11 +317,13 @@ namespace DatenMeister.Web.Api
                 var metaLayer = _dataLayerLogic.GetMetaLayerFor(dataLayer);
                 var extents  = _dataLayerLogic.GetExtentsForDatalayer(metaLayer);
                 var extentWithMetaClass = extents.WithElement(metaClass);
-                
+
                 var metaClassModel = new ItemModel
                 {
                     name = _resolution.GetName(metaClass),
-                    uri = extentWithMetaClass?.uri(metaClass)
+                    uri = extentWithMetaClass?.uri(metaClass),
+                    ext = extentWithMetaClass?.contextURI(),
+                    ws = _workspaceCollection.Workspaces.FindWorkspace(extentWithMetaClass)?.id
                 };
 
                 itemModel.metaclass = metaClassModel;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Filler;
@@ -73,12 +74,16 @@ namespace DatenMeister.DataLayer
         {
             lock (_data)
             {
-                var allExtents = from x in _data.Extents
-                    let extent = x.Key as IExtentCachesObject
-                    where extent != null
-                    select new {extent, x.Value};
+                var extentContainingObject = _data.Extents.Select(x => x.Key).Cast<IUriExtent>().WithElement(value);
+                if (extentContainingObject == null)
+                {
+                    return _data.Default;
+                }
 
-                return allExtents.Where(x => x.extent.HasObject(value)).Select(x => x.Value).FirstOrDefault() ?? _data.Default;
+                IDataLayer result;
+                _data.Extents.TryGetValue(extentContainingObject, out result);
+
+                return result ?? _data.Default;
             }
         }
 

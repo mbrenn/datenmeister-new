@@ -27,9 +27,11 @@ export module ClientResponse {
         url: string;
     };
 
-    export interface IItemReferenceModel {
+    export interface IItemModel {
         name: string;
         uri: string;
+        ext: string;
+        ws: string;
     }
 
     export interface IItemContentModel {
@@ -37,7 +39,7 @@ export module ClientResponse {
         uri: string;
         v: Array<string>;
         c: Array<IDataTableColumn>;
-        metaclass?: IItemReferenceModel;
+        metaclass?: IItemModel;
     }
 
     export interface IDataTableColumn {

@@ -32,10 +32,7 @@ namespace DatenMeister.EMOF.InMemory
         /// </summary>
         public Guid guid { get; private set; }
 
-        object IHasId.Id
-        {
-            get { return guid; }
-        }
+        object IHasId.Id => guid;
 
         public bool equals(object other)
         {

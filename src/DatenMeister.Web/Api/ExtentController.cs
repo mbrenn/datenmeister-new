@@ -316,9 +316,15 @@ namespace DatenMeister.Web.Api
             var metaClass = foundElement.getMetaClass();
             if (metaClass != null)
             {
+                var dataLayer =_dataLayerLogic.GetMetaLayerOfObject(metaClass);
+                var metaLayer = _dataLayerLogic.GetMetaLayerFor(dataLayer);
+                var extents  = _dataLayerLogic.GetExtentsForDatalayer(metaLayer);
+                var extentWithMetaClass = extents.WithElement(metaClass);
+                
                 var metaClassModel = new ItemModel
                 {
-                    name = _resolution.GetName(metaClass)
+                    name = _resolution.GetName(metaClass),
+                    uri = extentWithMetaClass?.uri(metaClass)
                 };
 
                 itemModel.metaclass = metaClassModel;

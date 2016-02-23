@@ -54,6 +54,7 @@ namespace DatenMeister.Full.Integration
             metaWorkspace.AddExtent(strapper.MofInfrastructure);
             metaWorkspace.AddExtent(strapper.UmlInfrastructure);
             var dataLayerLogic = kernel.Get<IDataLayerLogic>();
+            dataLayerLogic.SetRelationsForDefaultDataLayers();
             dataLayerLogic.AssignToDataLayer(strapper.PrimitiveInfrastructure, DataLayers.Mof);
             dataLayerLogic.AssignToDataLayer(strapper.MofInfrastructure, DataLayers.Mof);
             dataLayerLogic.AssignToDataLayer(strapper.UmlInfrastructure, DataLayers.Mof);

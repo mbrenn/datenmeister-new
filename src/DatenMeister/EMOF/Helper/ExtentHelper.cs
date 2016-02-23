@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
@@ -39,6 +40,36 @@ namespace DatenMeister.EMOF.Helper
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Finds out of an enumeration of extents the extent that has the given element.
+        /// </summary>
+        /// <param name="extents">Extents to be parsed</param>
+        /// <param name="element">Element to be found</param>
+        /// <returns>the extent with the element or none</returns>
+        public static IUriExtent WithElement(this IEnumerable<IUriExtent> extents, IElement element)
+        {
+            foreach (var extent in extents)
+            {
+                if (extent is IExtentCachesObject)
+                {
+                    var extentAsObjectCache = extent as IExtentCachesObject;
+                    if( extentAsObjectCache.HasObject(element))
+                    {
+                        return extent;
+                    }
+                }
+                else
+                {
+                    if (extent.elements().Any(x => x.Equals(element)))
+                    {
+                        return extent;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Filler;
@@ -22,15 +24,33 @@ namespace DatenMeister.DataLayer
         /// <param name="dataLayer"></param>
         void AssignToDataLayer(IExtent extent, IDataLayer dataLayer);
 
+        /// <summary>
+        /// Gets the datalayer of a certain extent
+        /// </summary>
+        /// <param name="extent"></param>
+        /// <returns></returns>
         IDataLayer GetDataLayerOfExtent(IExtent extent);
 
+        /// <summary>
+        /// Gets the meta layer of a certain object
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         IDataLayer GetMetaLayerOfObject(IObject value);
+
         /// <summary>
         /// Gets the meta layer for the given data layer
         /// </summary>
         /// <param name="data">Datalayer to be queried</param>
         /// <returns>The corresponding datalayer</returns>
         IDataLayer GetMetaLayerFor(IDataLayer data);
+
+        /// <summary>
+        /// Gets all extents for a specific datalayer
+        /// </summary>
+        /// <param name="dataLayer">Datalayer to be retrieved</param>
+        /// <returns>enumeration of extents within the datalayer</returns>
+        IEnumerable<IUriExtent> GetExtentsForDatalayer(IDataLayer dataLayer);
 
         /// <summary>
         /// Gets an instance of the filled type by using the filler. 
@@ -48,5 +68,7 @@ namespace DatenMeister.DataLayer
         /// </summary>
         /// <param name="layer">Layer, whose cache needs to be deleted</param>
         void ClearCache(IDataLayer layer);
+
+        
     }
 }

@@ -96,6 +96,18 @@ namespace DatenMeister.DataLayer
             }
         }
 
+        public IEnumerable<IUriExtent> GetExtentsForDatalayer(IDataLayer dataLayer)
+        {
+            lock (_data)
+            {
+                return
+                    _data.Extents.Where(x => x.Value == dataLayer)
+                        .Select(x => x.Key as IUriExtent)
+                        .Where(x => x != null)
+                        .ToList();
+            }
+        }
+
         public TFilledType Create<TFiller, TFilledType>(IDataLayer layer)
             where TFiller : IFiller<TFilledType>, new()
             where TFilledType : class, new()

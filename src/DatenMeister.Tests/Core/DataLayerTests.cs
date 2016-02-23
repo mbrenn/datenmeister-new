@@ -47,11 +47,11 @@ namespace DatenMeister.Tests.Core
 
             var value = new MofElement(null, null);
             var logicLayer = logic.GetMetaLayerOfObject(value);
-            Assert.That(logicLayer, Is.Null);
+            Assert.That(logicLayer, Is.SameAs(DataLayers.Data)); // Per Default, only the Data
 
-            dataExtent.elements().add(value);
+            umlExtent.elements().add(value);
             logicLayer = logic.GetMetaLayerOfObject(value);
-            Assert.That(logicLayer, Is.SameAs(DataLayers.Data));
+            Assert.That(logicLayer, Is.SameAs(DataLayers.Uml));
         }
 
         [Test]

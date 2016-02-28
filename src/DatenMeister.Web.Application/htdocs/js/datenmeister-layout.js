@@ -65,7 +65,7 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
             };
             var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
             itemTable.show(domTable);
-            this.switchLayout(PageType.Dialog);
+            this.switchLayout(PageType.Dialog, configuration.ws, configuration.extent);
         };
         Layout.prototype.showWorkspaces = function () {
             var tthis = this;

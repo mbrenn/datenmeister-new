@@ -66,7 +66,7 @@ export class Layout implements DMI.Api.ILayout {
         this.showItem(ws, extentUrl, itemUrl, settings);
     }
 
-    navigateToDialog(configuration: DMI.Api.FormForItemConfiguration) {
+    navigateToDialog(configuration: DMI.Api.DialogConfiguration) {
         var oldPageType = this.currentPageType;
 
         var domTable = $(".data-dialog", this.parent);
@@ -94,7 +94,7 @@ export class Layout implements DMI.Api.ILayout {
         var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
         itemTable.show(domTable);
 
-        this.switchLayout(PageType.Dialog);
+        this.switchLayout(PageType.Dialog, configuration.ws, configuration.extent);
     }
 
     showWorkspaces() {

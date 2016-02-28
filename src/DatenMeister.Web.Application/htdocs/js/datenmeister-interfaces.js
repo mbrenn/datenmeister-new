@@ -118,6 +118,14 @@ define(["require", "exports"], function (require, exports) {
             return FormForItemConfiguration;
         })();
         Api.FormForItemConfiguration = FormForItemConfiguration;
+        var DialogConfiguration = (function (_super) {
+            __extends(DialogConfiguration, _super);
+            function DialogConfiguration() {
+                _super.apply(this, arguments);
+            }
+            return DialogConfiguration;
+        })(FormForItemConfiguration);
+        Api.DialogConfiguration = DialogConfiguration;
     })(Api = exports.Api || (exports.Api = {}));
 });
 //# sourceMappingURL=datenmeister-interfaces.js.map

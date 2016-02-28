@@ -182,4 +182,9 @@ export namespace Api {
             this.columns[this.columns.length] = column;
         }
     }
+
+    export class DialogConfiguration extends FormForItemConfiguration {
+        ws: string;
+        extent: string;
+    }
 }

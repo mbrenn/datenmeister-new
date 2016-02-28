@@ -118,7 +118,7 @@ function buildRibbons(layout: DMLayout.Layout, changeEvent: DMLayout.ILayoutChan
 }
 
 function showDialogNewWorkspace(layout: DMLayout.Layout) {
-    var configuration = new DMI.Api.FormForItemConfiguration();
+    var configuration = new DMI.Api.DialogConfiguration();
 
     configuration.onOkForm = data => {
         DMClient.WorkspaceApi.createWorkspace(
@@ -136,7 +136,7 @@ function showDialogNewWorkspace(layout: DMLayout.Layout) {
 }
 
 function showDialogNewExtent(layout: DMLayout.Layout, workspace: string) {
-    var configuration = new DMI.Api.FormForItemConfiguration();
+    var configuration = new DMI.Api.DialogConfiguration();
 
     configuration.onOkForm = data => {
         DMClient.ExtentApi.createExtent(
@@ -153,6 +153,7 @@ function showDialogNewExtent(layout: DMLayout.Layout, workspace: string) {
     configuration.addColumn(new DMI.Table.DataTableColumn("URI", "contextUri").withDefaultValue("dm:///"));
     configuration.addColumn(new DMI.Table.DataTableColumn("Filename", "filename"));
     configuration.addColumn(new DMI.Table.DataTableColumn("Columns", "columns").withDefaultValue("Column1,Column2"));
+    configuration.ws = workspace;
 
     layout.navigateToDialog(configuration);
 }

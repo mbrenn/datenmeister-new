@@ -93,7 +93,7 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
         tabFile.addIcon("Close", "img/icons/close_window", function () { window.close(); });
     }
     function showDialogNewWorkspace(layout) {
-        var configuration = new DMI.Api.FormForItemConfiguration();
+        var configuration = new DMI.Api.DialogConfiguration();
         configuration.onOkForm = function (data) {
             DMClient.WorkspaceApi.createWorkspace({
                 name: data.v["name"],
@@ -106,7 +106,7 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
         layout.navigateToDialog(configuration);
     }
     function showDialogNewExtent(layout, workspace) {
-        var configuration = new DMI.Api.FormForItemConfiguration();
+        var configuration = new DMI.Api.DialogConfiguration();
         configuration.onOkForm = function (data) {
             DMClient.ExtentApi.createExtent({
                 workspace: data.v["workspace"],
@@ -120,6 +120,7 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
         configuration.addColumn(new DMI.Table.DataTableColumn("URI", "contextUri").withDefaultValue("dm:///"));
         configuration.addColumn(new DMI.Table.DataTableColumn("Filename", "filename"));
         configuration.addColumn(new DMI.Table.DataTableColumn("Columns", "columns").withDefaultValue("Column1,Column2"));
+        configuration.ws = workspace;
         layout.navigateToDialog(configuration);
     }
     function showDialogAddExtent(layout, workspace) {

@@ -70,8 +70,17 @@ namespace DatenMeister.DataLayer
             }
         }
 
-        public IDataLayer GetMetaLayerOfObject(IObject value)
+        public IDataLayer GetDataLayerOfObject(IObject value)
         {
+            var objectKnowsExtent = value as IObjectKnowsExtent;
+            if (objectKnowsExtent != null)
+            {
+                var found = objectKnowsExtent.Extents.FirstOrDefault();
+                return found == null
+                    ? _data.Default
+                    : GetDataLayerOfExtent(found);
+            }
+
             lock (_data)
             {
                 var extentContainingObject = _data.Extents.Select(x => x.Key).Cast<IUriExtent>().WithElement(value);
@@ -120,6 +129,7 @@ namespace DatenMeister.DataLayer
             lock (_data)
             {
                 var layerAsObject = layer as DataLayer;
+
                 var filledType = Get<TFilledType>(layerAsObject);
                 if (filledType != null)
                 {

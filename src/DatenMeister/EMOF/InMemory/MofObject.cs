@@ -10,18 +10,18 @@ namespace DatenMeister.EMOF.InMemory
     /// <summary>
     ///     Describes the InMemory object, representing the Mof Object
     /// </summary>
-    public class MofObject : IObject, IObjectAllProperties, IHasId
+    public class MofObject : IObject, IObjectAllProperties, IHasId, IObjectKnowsExtent
     {
+        /// <summary>
+        /// Stores the list of extents to which this element is stored
+        /// </summary>
+        private List<IExtent> _extents = new List<IExtent>();
+
         /// <summary>
         ///     Stores the values direct within the memory
         /// </summary>
         private readonly Dictionary<object, object> _values = new Dictionary<object, object>();
-
-        /// <summary>
-        /// Stores the extent into which the element is stored
-        /// </summary>
-        public IExtent Extent { get; set; }
-
+       
         public MofObject()
         {
             guid = Guid.NewGuid();
@@ -33,6 +33,20 @@ namespace DatenMeister.EMOF.InMemory
         public Guid guid { get; private set; }
 
         object IHasId.Id => guid;
+        
+        IEnumerable<IExtent> IObjectKnowsExtent.Extents
+        {
+            get
+            {
+                lock (_extents)
+                {
+                    foreach (var extent in _extents)
+                    {
+                        yield return extent;
+                    }
+                }
+            }
+        }
 
         public bool equals(object other)
         {
@@ -93,6 +107,22 @@ namespace DatenMeister.EMOF.InMemory
             }
 
             return builder.ToString();
+        }
+
+        public void AddToExtent(IExtent extent)
+        {
+            lock (_extents)
+            {
+                _extents.Add(extent);
+            }
+        }
+
+        public void RemoveFromExtent(IExtent extent)
+        {
+            lock (_extents)
+            {
+                _extents.Remove(extent);
+            }
         }
     }
 }

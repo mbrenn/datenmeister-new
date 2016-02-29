@@ -39,6 +39,10 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DotNetElement.cs" />
+    <Compile Include="DotNetExtent.cs" />
+    <Compile Include="DotNetTypeGenerator.cs" />
+    <Compile Include="DotNetTypeLookup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

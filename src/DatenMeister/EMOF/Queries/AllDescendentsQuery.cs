@@ -10,7 +10,7 @@ namespace DatenMeister.EMOF.Queries
     ///     This query returns all objects which are descendents (and sub-descendents)
     ///     of an extent, an object or a reflecive collection
     /// </summary>
-    public class AllDescendentsQuery
+    public static class AllDescendentsQuery
     {
         /// <summary>
         ///     Gets all descendents of an object, but does not

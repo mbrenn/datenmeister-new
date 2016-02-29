@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Common;
 
 namespace DatenMeister.EMOF.Queries
@@ -11,7 +13,7 @@ namespace DatenMeister.EMOF.Queries
     public static class Filter
     {
         public static IReflectiveCollection WhenPropertyStartsWith(
-            IReflectiveCollection collection,
+            this IReflectiveCollection collection,
             object property,
             string value)
         {
@@ -22,7 +24,7 @@ namespace DatenMeister.EMOF.Queries
         }
 
         public static IReflectiveCollection WhenPropertyIs(
-            IReflectiveCollection collection,
+            this IReflectiveCollection collection,
             object property,
             string value)
         {
@@ -33,7 +35,7 @@ namespace DatenMeister.EMOF.Queries
         }
 
         public static IReflectiveCollection WhenOneOfThePropertyContains(
-            IReflectiveCollection collection,
+            this IReflectiveCollection collection,
             IEnumerable<object> properties,
             string value,
             StringComparison comparer = StringComparison.CurrentCulture)
@@ -43,6 +45,12 @@ namespace DatenMeister.EMOF.Queries
                 properties,
                 value,
                 comparer);
+        }
+
+        public static IReflectiveCollection GetAllDecendants(
+            this IReflectiveCollection collection)
+        {
+            return new MofReflectiveSequence(AllDescendentsQuery.getDescendents(collection).Cast<object>().ToList());
         }
     }
 }

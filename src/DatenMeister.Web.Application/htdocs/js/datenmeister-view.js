@@ -49,10 +49,10 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
                 cache: false,
                 success: function (data) {
                     _this.createHtmlForWorkspace(container, ws, data);
-                    callback.resolve(null);
+                    callback.resolve(true);
                 },
                 error: function (data) {
-                    callback.reject(null);
+                    callback.reject(false);
                 }
             });
             return callback;
@@ -85,10 +85,17 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
         };
         ExtentView.prototype.loadAndCreateHtmlForExtent = function (container, ws, extentUrl, query) {
             var _this = this;
+            var tthis = this;
             var configuration = new DMTables.ItemTableConfiguration();
             configuration.onItemEdit = function (url) {
-                if (_this.onItemSelected !== undefined) {
-                    _this.onItemSelected(ws, extentUrl, url);
+                if (tthis.onItemEdit !== undefined) {
+                    tthis.onItemEdit(ws, extentUrl, url);
+                }
+                return false;
+            };
+            configuration.onItemView = function (url) {
+                if (tthis.onItemView !== undefined) {
+                    tthis.onItemView(ws, extentUrl, url);
                 }
                 return false;
             };
@@ -122,36 +129,93 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
         function ItemView(layout) {
             this.layout = layout;
         }
-        ItemView.prototype.loadAndCreateHtmlForItem = function (container, ws, extentUrl, itemUrl) {
+        ItemView.prototype.loadAndCreateHtmlForItem = function (container, ws, extentUrl, itemUrl, settings) {
             var tthis = this;
             return DMClient.ItemApi.getItem(ws, extentUrl, itemUrl)
                 .done(function (data) {
-                tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data);
+                tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data, settings);
             });
         };
-        ItemView.prototype.createHtmlForItem = function (jQuery, ws, extentUrl, itemUrl, data) {
+        ItemView.prototype.createHtmlForItem = function (jQuery, ws, extentUrl, itemUrl, data, settings) {
             var tthis = this;
+            jQuery.empty();
             var configuration = new DMTables.ItemContentConfiguration();
             configuration.columns = data.c;
-            configuration.deleteFunction = function (url, property, domRow) {
-                DMClient.ItemApi.deleteProperty(ws, extentUrl, itemUrl, property).done(function () { return domRow.find("td").fadeOut(500, function () { domRow.remove(); }); });
+            var isReadonly = false;
+            if (settings !== undefined && settings !== null) {
+                if (settings.isReadonly !== undefined && settings.isReadonly !== null) {
+                    isReadonly = settings.isReadonly;
+                }
+            }
+            configuration.isReadOnly = isReadonly;
+            configuration.supportNewProperties = !isReadonly;
+            /*
+            configuration.deleteFunction = (url: string, property: string, domRow: JQuery) => {
+                DMClient.ItemApi.deleteProperty(ws, extentUrl, itemUrl, property).done(() => domRow.find("td").fadeOut(500, () => { domRow.remove(); }));
                 return false;
             };
-            configuration.onEditProperty = function (url, property, newValue) {
+    
+            configuration.onEditProperty = (url: string, property: string, newValue: string) => {
                 DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
             };
-            /*configuration.onNewProperty = (url: string, property: string, newValue: string) => {
+            
+            configuration.onNewProperty = (url: string, property: string, newValue: string) => {
                 DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
             };*/
             var table = new DMTables.ItemContentTable(data, configuration);
-            configuration.onOkForm = function () {
-                DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item);
-                tthis.layout.navigateToItems(ws, extentUrl);
+            if (isReadonly) {
+                configuration.onOkForm = function () {
+                    tthis.layout.navigateToItems(ws, extentUrl);
+                };
+                configuration.onCancelForm = function () {
+                    tthis.layout.navigateToItems(ws, extentUrl);
+                };
+            }
+            else {
+                configuration.onOkForm = function () {
+                    DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item)
+                        .done(function () {
+                        tthis.layout.navigateToItems(ws, extentUrl);
+                    });
+                };
+                configuration.onCancelForm = function () {
+                    tthis.layout.navigateToItems(ws, extentUrl);
+                };
+            }
+            configuration.onItemView = function (url) {
+                if (tthis.onItemView !== undefined) {
+                    tthis.onItemView(ws, extentUrl, url);
+                }
+                return false;
             };
-            configuration.onCancelForm = function () {
-                tthis.layout.navigateToItems(ws, extentUrl);
-            };
-            table.show(jQuery);
+            var domTableOwner = $("<div class='data-items'></div>");
+            table.show(domTableOwner);
+            var domTableInfo = $("<table class='dm-metatable'>" +
+                "<tr>" +
+                "<th>Id: </th><td class='dm-tablecell-id'>None</td>" +
+                "</tr>" +
+                "<tr>" +
+                "<th>Uri: </th><td class='dm-tablecell-uri'>None</td>" +
+                "</tr>" +
+                "<tr>" +
+                "<th>Metaclass: </th><td class='dm-tablecell-metaclass'></td>" +
+                "</tr>" +
+                "</table>");
+            if (data.metaclass !== undefined && data.metaclass !== null) {
+                var domMetaClassLink = $("<a href='#'>3</a>").text(data.metaclass.name);
+                domMetaClassLink.click(function () {
+                    tthis.layout.navigateToItem(data.metaclass.ws, data.metaclass.ext, data.metaclass.uri);
+                });
+                $(".dm-tablecell-metaclass", domTableInfo).append(domMetaClassLink);
+            }
+            if (data.id !== undefined && data.id !== null) {
+                $(".dm-tablecell-id", domTableInfo).text(data.id);
+            }
+            if (data.uri !== undefined && data.uri !== null) {
+                $(".dm-tablecell-uri", domTableInfo).text(data.uri);
+            }
+            jQuery.append(domTableOwner);
+            jQuery.append(domTableInfo);
         };
         return ItemView;
     })();

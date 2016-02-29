@@ -23,7 +23,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             this.configuration = configuration;
             this.currentPage = 1;
             this.totalPages = 0;
-            this.currentQuery = new DMI.ItemInExtentQuery();
+            this.currentQuery = new DMI.PostModels.ItemInExtentQuery();
             this.currentQuery.amount = configuration.itemsPerPage;
         }
         ItemListTable.prototype.throwOnPageChange = function () {
@@ -49,6 +49,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
         ItemListTable.prototype.createDomForTable = function (data) {
             var tthis = this;
             this.domContainer.empty();
+            var domToolbar = $("<div class='dm-toolbar row'></div>");
             if (this.configuration.supportNewItem) {
                 var domNewItem = $("<div class='col-md-3'><a href='#' class='btn btn-default'>Create new item</a></div>");
                 domNewItem.click(function () {
@@ -57,7 +58,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                     }
                     return false;
                 });
-                this.domContainer.append(domNewItem);
+                domToolbar.append(domNewItem);
             }
             if (this.configuration.supportPaging) {
                 var domPaging = $("<div class='col-md-6 text-center form-inline'>"
@@ -66,7 +67,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                     + "<span class='dm_totalpages'> </span> "
                     + "<a href='#' class='dm-jumppage btn btn-default'>GO</a>&nbsp;"
                     + "<a href='#' class='dm-nextpage btn btn-default'>&gt;&gt;</a>");
-                this.domContainer.append(domPaging);
+                domToolbar.append(domPaging);
                 var domPrev = $(".dm-prevpage", domPaging);
                 var domNext = $(".dm-nextpage", domPaging);
                 var domGo = $(".dm-jumppage", domPaging);
@@ -106,8 +107,9 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                         tthis.configuration.onSearch(searchValue);
                     }
                 });
-                this.domContainer.append(domSearchBox);
+                domToolbar.append(domSearchBox);
             }
+            this.domContainer.append(domToolbar);
             var domAmount = $("<div>Total: <span class='totalnumber'>##</span>, Filtered: <span class='filterednumber'>##</span>");
             this.domTotalNumber = $(".totalnumber", domAmount);
             this.domFilteredNumber = $(".filterednumber", domAmount);
@@ -117,7 +119,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             else {
                 this.domContainer.append(domAmount);
             }
-            this.domTable = $("<table class='table'></table>");
+            this.domTable = $("<table class='table table-condensed'></table>");
             // First the headline
             var domRow = $("<tr></tr>");
             var domColumn;
@@ -134,11 +136,9 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                     domRow.append(domColumn);
                 }
             }
-            // Creates the edit and delete column
-            var domEditColumn = $("<th>EDIT</th>");
-            domRow.append(domEditColumn);
-            var domDeleteColumn = $("<th>DELETE</th>");
-            domRow.append(domDeleteColumn);
+            // Creates the columns for commands
+            var domCommand = $("<th></th>");
+            domRow.append(domCommand);
             this.domTable.append(domRow);
             // Now, the items
             tthis.createRowsForItems(data);
@@ -150,7 +150,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             this.createRowsForItems(data);
         };
         ItemListTable.prototype.createRowsForItems = function (data) {
-            var tthis = this;
+            var _this = this;
             this.domTotalNumber.text(data.totalItemCount);
             this.domFilteredNumber.text(data.filteredItemCount);
             if (this.configuration.supportPaging) {
@@ -180,33 +180,37 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                     for (var c in columns) {
                         if (columns.hasOwnProperty(c)) {
                             domColumn = $("<td></td>");
-                            domColumn.append(createDomForContent(item, columns[c]));
+                            domColumn.append(createDomForContent(item, columns[c], false /* in readonly mode */, this.configuration));
                             domRow.append(domColumn);
                         }
                     }
                     // Add Edit link
-                    var domEditColumn = $("<td class='hl'><button href='#' class='btn btn-default'>EDIT</button></td>");
-                    domEditColumn.click((function (url, iDomRow) {
+                    var buttons = $("<td class='dm-itemtable-commands'></td>");
+                    var domViewColumn = $("<button href='#' class='btn btn-primary'>View</button>");
+                    domViewColumn.click((function (url) {
+                        return function () { return _this.configuration.onItemView(url); };
+                    })(item.uri));
+                    buttons.append(domViewColumn);
+                    var domEditColumn = $("<button href='#' class='btn btn-primary'>Edit</button>");
+                    domEditColumn.click((function (url) {
+                        return function () { return _this.configuration.onItemEdit(url); };
+                    })(item.uri));
+                    buttons.append(domEditColumn);
+                    var domDeleteColumn = $("<button href='#' class='btn btn-danger'>Delete</button>");
+                    domDeleteColumn.click((function (url, innerDomRow, innerDomDelete) {
                         return function () {
-                            return tthis.configuration.onItemEdit(url);
-                        };
-                    })(item.uri, domRow));
-                    domRow.append(domEditColumn);
-                    var domDeleteColumn = $("<td class='hl'><button href='#' class='btn btn-default'>DELETE</button></td>");
-                    var domA = $("a", domDeleteColumn);
-                    domDeleteColumn.click((function (url, innerDomRow, innerDomA) {
-                        return function () {
-                            if (innerDomA.data("wasClicked") === true) {
-                                return tthis.configuration.onItemDelete(url, innerDomRow);
+                            if (innerDomDelete.data("wasClicked") === true) {
+                                return _this.configuration.onItemDelete(url, innerDomRow);
                             }
                             else {
-                                innerDomA.data("wasClicked", true);
-                                innerDomA.text("CONFIRM");
+                                innerDomDelete.data("wasClicked", true);
+                                innerDomDelete.text("Confirm");
                                 return false;
                             }
                         };
-                    })(item.uri, domRow, domA));
-                    domRow.append(domDeleteColumn);
+                    })(item.uri, domRow, domDeleteColumn));
+                    buttons.append(domDeleteColumn);
+                    domRow.append(buttons);
                     this.domTable.append(domRow);
                 }
             }
@@ -214,50 +218,10 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
         return ItemListTable;
     })();
     exports.ItemListTable = ItemListTable;
-    function createDomForContent(item, column, inEditMode) {
-        if (inEditMode === undefined) {
-            inEditMode = false;
-        }
-        var tthis = this;
-        var contentValue = item.v[column.name];
-        if (column.isEnumeration) {
-            var domResult = $("<ul></ul>");
-            if (contentValue !== undefined) {
-                for (var n in contentValue) {
-                    var listValue = contentValue[n];
-                    var domEntry = $("<li><a href='#'></a></li>");
-                    var domInner = $("a", domEntry);
-                    domInner.click((function (innerListValue) {
-                        return function () {
-                            tthis.configuration.onItemEdit(innerListValue.u);
-                        };
-                    })(listValue));
-                    domInner.text(listValue.v);
-                    domResult.append(domEntry);
-                }
-            }
-            return domResult;
-        }
-        else {
-            if (inEditMode) {
-                var domTextBox = $("<input type='textbox' class='form-control' />");
-                domTextBox.val(contentValue);
-                return domTextBox;
-            }
-            else {
-                var domResult = $("<span></span>");
-                domResult.text(contentValue);
-                return domResult;
-            }
-        }
-    }
     var ItemContentConfiguration = (function () {
         function ItemContentConfiguration() {
-            this.startWithEditMode = true;
+            this.isReadOnly = false;
             this.autoProperties = false;
-            this.editFunction = function (url, property, domRow) { return false; };
-            this.deleteFunction = function (url, property, domRow) { return false; };
-            this.supportInlineEditing = true;
             this.supportNewProperties = true;
             this.columns = new Array();
         }
@@ -274,16 +238,12 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
         }
         ItemContentTable.prototype.show = function (dom) {
             var _this = this;
-            var tthis = this;
-            this.domContainer = dom;
-            this.domContainer.empty();
             dom.empty();
-            var domTable = $("<table class='table'></table>");
+            this.domContainer = dom;
+            var domTable = $("<table class='table table-condensed'></table>");
             // First the headline
             var domRow;
-            if (this.configuration.startWithEditMode) {
-                domRow = $("<tr><th>Title</th><th>Value</th><th></th><th></th></tr>");
-            }
+            domRow = $("<tr><th>Title</th><th>Value</th><th></th></tr>");
             domTable.append(domRow);
             var propertyValue = this.item.v;
             var column;
@@ -304,54 +264,18 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             for (var columnNr in this.configuration.columns) {
                 column = this.configuration.columns[columnNr];
                 domRow = $("<tr></tr>");
-                var value = propertyValue[column.name];
                 var domColumn = $("<td class='table_column_name'></td>");
                 domColumn.data("column", "name");
                 domColumn.text(column.title);
                 domRow.append(domColumn);
-                if (this.configuration.startWithEditMode) {
-                    domColumn = $("<td class='table_column_value'></td>");
-                    domColumn.data("column", "value");
-                    var domForEdit = createDomForContent(this.item, column, true);
-                    domColumn.append(domForEdit);
-                    domRow.append(domColumn);
-                    this.domForEditArray[column.name] = domForEdit;
-                }
-                else {
-                    domColumn = $("<td class='table_column_value'></td>");
-                    domColumn.data("column", "value");
-                    domColumn.text(value);
-                    domRow.append(domColumn);
-                    // Add Edit link
-                    var domEditColumn = $("<td class='hl table_column_edit'><button class='btn btn-default'>EDIT</button></td>");
-                    $("a", domEditColumn).click((function (url, column, idomRow, idomA) {
-                        return function () {
-                            if (tthis.configuration.supportInlineEditing) {
-                                tthis.startInlineEditing(column, idomRow);
-                                return false;
-                            }
-                            else {
-                                return tthis.configuration.editFunction(url, column.name, idomRow);
-                            }
-                        };
-                    })(this.item.uri, column, domRow, domA));
-                    domRow.append(domEditColumn);
-                    var domDeleteColumn = $("<td class='hl table_column_delete'><button class='btn btn-default'>DELETE</button></td>");
-                    var domA = $("a", domDeleteColumn);
-                    $("a", domDeleteColumn).click((function (url, column, idomRow, idomA) {
-                        return function () {
-                            if (idomA.data("wasClicked") === true) {
-                                return tthis.configuration.deleteFunction(url, column.name, idomRow);
-                            }
-                            else {
-                                idomA.data("wasClicked", true);
-                                idomA.text("CONFIRM");
-                                return false;
-                            }
-                        };
-                    })(this.item.uri, column, domRow, domA));
-                    domRow.append(domDeleteColumn);
-                }
+                domColumn = $("<td class='table_column_value'></td>");
+                domColumn.data("column", "value");
+                var domForEdit = createDomForContent(this.item, column, !this.configuration.isReadOnly, this.configuration);
+                domColumn.append(domForEdit);
+                domRow.append(domColumn);
+                domColumn = $("<td></td>");
+                domRow.append(domColumn);
+                this.domForEditArray[column.name] = domForEdit;
                 domTable.append(domRow);
             }
             // Add new property
@@ -359,62 +283,36 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                 this.offerNewProperty(domTable);
             }
             // Adds the OK, Cancel button
-            if (this.configuration.supportInlineEditing) {
-                var domOkCancel = $("<tr><td colspan='2' class='text-right'><button class='btn btn-default dm-ok'>OK</button><button class='btn btn-default dm-cancel'>Cancel</button></td></tr>");
-                var domOk = $(".dm-ok", domOkCancel);
-                var domCancel = $(".dm-cancel", domOkCancel);
-                domOk.click(function () {
-                    _this.submitForm();
-                    if (_this.configuration.onOkForm !== undefined) {
-                        _this.configuration.onOkForm();
-                    }
-                });
-                domCancel.click(function () {
-                    if (_this.configuration.onCancelForm !== undefined) {
-                        _this.configuration.onCancelForm();
-                    }
-                });
-                domTable.append(domOkCancel);
-            }
+            var domOkCancel = $("<tr><td colspan='3' class='text-right'><button class='btn btn-primary dm-button-ok'>OK</button><button class='btn btn-default dm-button-cancel'>Cancel</button></td></tr>");
+            var domOk = $(".dm-button-ok", domOkCancel);
+            var domCancel = $(".dm-button-cancel", domOkCancel);
+            domOk.click(function () {
+                _this.submitForm();
+                if (_this.configuration.onOkForm !== undefined) {
+                    _this.configuration.onOkForm();
+                }
+            });
+            domCancel.click(function () {
+                if (_this.configuration.onCancelForm !== undefined) {
+                    _this.configuration.onCancelForm();
+                }
+            });
+            domTable.append(domOkCancel);
             dom.append(domTable);
         };
         ItemContentTable.prototype.submitForm = function () {
-            for (var columnNr in this.configuration.columns) {
-                var column = this.configuration.columns[columnNr];
-                var domEdit = this.domForEditArray[column.name];
-                var value = domEdit.val();
-                this.item.v[column.name] = value;
+            var columns = this.configuration.columns;
+            for (var columnNr in columns) {
+                if (columns.hasOwnProperty(columnNr)) {
+                    var column = columns[columnNr];
+                    var domEdit = this.domForEditArray[column.name];
+                    var value = domEdit.val();
+                    this.item.v[column.name] = value;
+                }
             }
         };
-        ItemContentTable.prototype.startInlineEditing = function (column, domRow) {
-            var tthis = this;
-            var domValue = $(".table_column_value", domRow);
-            domValue.empty();
-            var domTextBox = createDomForContent(this.item, column, true);
-            domValue.append(domTextBox);
-            var domEditColumn = $(".table_column_edit", domRow);
-            domEditColumn.empty();
-            var domEditOk = $("<a href='#'>OK</a>");
-            domEditColumn.append(domEditOk);
-            var domEditCancel = $("<a href='#'>Cancel</a>");
-            domEditColumn.append(domEditCancel);
-            //Sets the commands
-            domEditOk.on('click', function () {
-                var newValue = domTextBox.val();
-                tthis.item.v[column.name] = newValue;
-                if (tthis.configuration.onEditProperty !== undefined) {
-                    tthis.configuration.onEditProperty(tthis.item.uri, column.name, newValue);
-                }
-                tthis.show(tthis.domContainer);
-                return false;
-            });
-            domEditCancel.on('click', function () {
-                // Rebuilds the complete table
-                tthis.show(tthis.domContainer);
-                return false;
-            });
-        };
         ItemContentTable.prototype.offerNewProperty = function (domTable) {
+            var _this = this;
             var tthis = this;
             var domNewProperty = $("<tr><td colspan='4'><button class='btn btn-default'>NEW PROPERTY</button></td></tr>");
             $("button", domNewProperty).click(function () {
@@ -425,11 +323,13 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                 domNewProperty.append(domNewPropertyValue);
                 var inputProperty = $("input", domNewPropertyName);
                 var inputValue = $("input", domNewPropertyValue);
-                var domNewPropertyEdit = $("<td class='table_column_edit'><button href='#' class='btn btn-default'>OK</button></td>");
-                var domNewPropertyCancel = $("<td class='table_column_edit'><button href='#' class='btn btn-default'>CANCEL</button></td>");
-                domNewProperty.append(domNewPropertyEdit);
-                domNewProperty.append(domNewPropertyCancel);
-                $("button", domNewPropertyEdit).click(function () {
+                var tdButtons = $("<td class='table_column_edit'></td>");
+                var domNewPropertyEdit = $("<button href='#' class='btn btn-default dm-button-ok'>OK</button>");
+                var domNewPropertyCancel = $("<button href='#' class='btn btn-default dm-button-cancel'>Cancel</button>");
+                tdButtons.append(domNewPropertyEdit);
+                tdButtons.append(domNewPropertyCancel);
+                domNewProperty.append(tdButtons);
+                domNewPropertyEdit.click(function () {
                     var property = inputProperty.val();
                     var newValue = inputValue.val();
                     tthis.submitForm();
@@ -437,10 +337,16 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                     if (tthis.configuration.onNewProperty !== undefined) {
                         tthis.configuration.onNewProperty(tthis.item.uri, property, newValue);
                     }
+                    // Adds the new property to the autogenerated rows                    
+                    var column = {
+                        title: property,
+                        name: property
+                    };
+                    tthis.configuration.columns[_this.configuration.columns.length] = column;
                     tthis.show(tthis.domContainer);
                     return false;
                 });
-                $("button", domNewPropertyCancel).click(function () {
+                domNewPropertyCancel.click(function () {
                     tthis.show(tthis.domContainer);
                     return false;
                 });
@@ -451,5 +357,51 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
         return ItemContentTable;
     })();
     exports.ItemContentTable = ItemContentTable;
+    function createDomForContent(item, column, inEditMode, configuration) {
+        if (inEditMode === undefined) {
+            inEditMode = false;
+        }
+        var contentValue = item.v[column.name];
+        if (contentValue === undefined) {
+            contentValue = column.defaultValue;
+        }
+        // Enumerates all values
+        if (column.isEnumeration) {
+            var domResult = $("<ul></ul>");
+            if (contentValue !== undefined) {
+                for (var n in contentValue) {
+                    var listValue = contentValue[n];
+                    var domEntry = $("<li><a href='#'></a></li>");
+                    var domInner = $("a", domEntry);
+                    domInner.click((function (innerListValue) {
+                        return function () {
+                            if (configuration !== undefined && configuration.onItemView !== undefined) {
+                                configuration.onItemView(innerListValue.u);
+                            }
+                            else {
+                                alert("No Event handler for 'onItemView' within createDomForContent");
+                            }
+                            return false;
+                        };
+                    })(listValue));
+                    domInner.text(listValue.v);
+                    domResult.append(domEntry);
+                }
+            }
+            return domResult;
+        }
+        else {
+            if (inEditMode) {
+                var domTextBox = $("<input type='textbox' class='form-control' />");
+                domTextBox.val(contentValue);
+                return domTextBox;
+            }
+            else {
+                var domResult = $("<span class='dm-itemtable-data'></span>");
+                domResult.text(contentValue);
+                return domResult;
+            }
+        }
+    }
 });
 //# sourceMappingURL=datenmeister-tables.js.map

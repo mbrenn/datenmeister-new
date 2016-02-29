@@ -26,7 +26,7 @@ namespace DatenMeister.Tests.Web
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
             var creator = new ColumnCreator();
-            var columns = creator.GetColumnsForTable(extent);
+            var columns = creator.FindColumnsForTable(extent);
             Assert.That(columns, Is.Not.Null);
             Assert.That(columns.Count(), Is.EqualTo(2));
             var firstColumn = columns.FirstOrDefault(x => x.name == "zip");
@@ -67,7 +67,7 @@ namespace DatenMeister.Tests.Web
 
             // Execute the stuff
             var creator = new ColumnCreator();
-            var columns = creator.GetColumnsForTable(extent);
+            var columns = creator.FindColumnsForTable(extent);
             Assert.That(columns, Is.Not.Null);
             Assert.That(columns.Count(), Is.EqualTo(3));
             var firstColumn = columns.FirstOrDefault(x => x.name == "zip");

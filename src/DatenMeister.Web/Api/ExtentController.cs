@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Http;
-using System.Web.Http.Description;
+using DatenMeister.CSV;
+using DatenMeister.CSV.Runtime.Storage;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
-using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Queries;
-using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -30,12 +32,22 @@ namespace DatenMeister.Web.Api
         private readonly IFactoryMapper _mapper;
         private readonly IWorkspaceCollection _workspaceCollection;
         private readonly IUmlNameResolution _resolution;
+        private readonly IExtentStorageLoader _extentStorageLoader;
+        private readonly IDataLayerLogic _dataLayerLogic;
 
-        public ExtentController(IFactoryMapper mapper, IWorkspaceCollection workspaceCollection, IUmlNameResolution resolution)
+
+        public ExtentController(
+            IFactoryMapper mapper, 
+            IWorkspaceCollection workspaceCollection, 
+            IUmlNameResolution resolution, 
+            IExtentStorageLoader extentStorageLoader, 
+            IDataLayerLogic dataLayerLogic)
         {
             _mapper = mapper;
             _workspaceCollection = workspaceCollection;
             _resolution = resolution;
+            _extentStorageLoader = extentStorageLoader;
+            _dataLayerLogic = dataLayerLogic;
         }
 
         [Route("all")]
@@ -50,6 +62,7 @@ namespace DatenMeister.Web.Api
                     new
                     {
                         uri = extent.contextURI(),
+                        dataLayer = _dataLayerLogic.GetDataLayerOfExtent(extent).Name,
                         count = extent.elements().Count()
                     });
             }
@@ -74,6 +87,53 @@ namespace DatenMeister.Web.Api
             }
 
             return workspace;
+        }
+
+
+        /// <summary>
+        /// Deletes a complete extent
+        /// </summary>
+        /// <param name="model">Model to be deleted</param>
+        /// <returns>true, if ok</returns>
+        [Route("extent_create")]
+        [HttpPost]
+        public object CreateExtent([FromBody] ExtentCreateModel model)
+        {
+            var workspace = _workspaceCollection.Workspaces.First(x => x.id == model.workspace);
+            if (workspace == null)
+            {
+                throw new InvalidOperationException("Workspace not found");
+            }
+
+            var filename = Path.GetFileName(model.filename);
+            var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+            filename = Path.Combine(appBase, "data", filename);
+
+            // Creates the new workspace
+
+            IUriExtent createdExtent;
+            switch (model.extentType)
+            {
+                default:
+                    var extentData = new CSVStorageConfiguration
+                    {
+                        ExtentUri = model.contextUri,
+                        Path = filename,
+                        Workspace = model.workspace,
+                        Settings = new CSVSettings()
+                    };
+
+                    extentData.Settings.Columns.AddRange(model.ColumnsAsEnumerable);
+
+                    createdExtent = _extentStorageLoader.LoadExtent(extentData, true);
+                    break;
+            }
+
+            return new
+            {
+                success = true,
+                uri = createdExtent.contextURI()
+            };
         }
 
         /// <summary>
@@ -123,7 +183,7 @@ namespace DatenMeister.Web.Api
             var foundItems = totalItems;
 
             var columnCreator = new ColumnCreator();
-            var columns = columnCreator.GetColumnsForTable(foundExtent).ToList();
+            var columns = columnCreator.FindColumnsForTable(foundExtent).ToList();
             var properties = columnCreator.Properties;
 
             // Perform the filtering
@@ -232,7 +292,10 @@ namespace DatenMeister.Web.Api
             IUriExtent foundExtent;
             _workspaceCollection.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
 
-            var itemModel = new ItemContentModel {uri = item};
+            var itemModel = new ItemContentModel
+            {
+                uri = item
+            };
 
             // Retrieves the values of the item
             var foundElement = foundExtent.element(item);
@@ -241,40 +304,32 @@ namespace DatenMeister.Web.Api
                 // Not found
                 return NotFound();
             }
+            
+            var columnCreator = new ColumnCreator();
+            itemModel.c = columnCreator.FindColumnsForItem(foundElement).ToList();
+            itemModel.v = ConvertToJson(foundExtent, foundElement, columnCreator);
 
-            var foundProperties = foundExtent.GetProperties();
-            foreach (var property in foundProperties)
+            // Check, if item is of type IElement and has a metaclass
+            var metaClass = foundElement.getMetaClass();
+            if (metaClass != null)
             {
-                if (foundElement.isSet(property))
+                var dataLayer =_dataLayerLogic.GetMetaLayerOfObject(metaClass);
+                var metaLayer = _dataLayerLogic.GetMetaLayerFor(dataLayer);
+                var extents  = _dataLayerLogic.GetExtentsForDatalayer(metaLayer);
+                var extentWithMetaClass = extents.WithElement(metaClass);
+
+                var metaClassModel = new ItemModel
                 {
-                    itemModel.v[property.ToString()] = foundElement.get(property)?.ToString();
-                }
-            }
-
-            AutoGenerateFormRows(foundElement, itemModel);
-
-            return itemModel;
-        }
-
-        [NonAction]
-        private void AutoGenerateFormRows(IElement foundElement, ItemContentModel itemModel)
-        {
-            var asAllProperties = foundElement as IObjectAllProperties;
-            if (asAllProperties == null)
-            {
-                throw new InvalidOperationException("FoundElement is not an Instance of IObjectAllProperties");
-            }
-
-            foreach (var property in asAllProperties.getPropertiesBeingSet())
-            {
-                var newRow = new DataFormRow()
-                {
-                    name = property.ToString(),
-                    title = property.ToString()
+                    name = _resolution.GetName(metaClass),
+                    uri = extentWithMetaClass?.uri(metaClass),
+                    ext = extentWithMetaClass?.contextURI(),
+                    ws = _workspaceCollection.Workspaces.FindWorkspace(extentWithMetaClass)?.id
                 };
 
-                itemModel.c.Add(newRow);
+                itemModel.metaclass = metaClassModel;
             }
+
+            return itemModel;
         }
 
         [Route("item_create")]

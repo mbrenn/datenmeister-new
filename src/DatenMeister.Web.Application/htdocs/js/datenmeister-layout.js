@@ -29,21 +29,27 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
                 + "&ext=" + encodeURIComponent(extentUrl));
             this.showItems(ws, extentUrl);
         };
-        Layout.prototype.navigateToItem = function (ws, extentUrl, itemUrl) {
-            history.pushState({}, "", "#ws=" + encodeURIComponent(ws)
+        Layout.prototype.navigateToItem = function (ws, extentUrl, itemUrl, settings) {
+            var url = "#ws=" + encodeURIComponent(ws)
                 + "&ext=" + encodeURIComponent(extentUrl)
-                + "&item=" + encodeURIComponent(itemUrl));
-            this.showItem(ws, extentUrl, itemUrl);
+                + "&item=" + encodeURIComponent(itemUrl);
+            if (settings !== undefined && settings !== null) {
+                if (settings.isReadonly) {
+                    url += "&mode=readonly";
+                }
+            }
+            history.pushState({}, "", url);
+            this.showItem(ws, extentUrl, itemUrl, settings);
         };
         Layout.prototype.navigateToDialog = function (configuration) {
             var _this = this;
             var oldPageType = this.currentPageType;
             var domTable = $(".data-dialog", this.parent);
-            var value = new DMI.DataTableItem();
+            var value = new DMI.Table.DataTableItem();
             var tableConfiguration = new DMTables.ItemContentConfiguration();
             tableConfiguration.autoProperties = false;
             tableConfiguration.columns = configuration.columns;
-            tableConfiguration.startWithEditMode = true;
+            tableConfiguration.isReadOnly = false;
             tableConfiguration.supportNewProperties = false;
             tableConfiguration.onCancelForm = function () {
                 _this.switchLayout(oldPageType);
@@ -59,7 +65,7 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
             };
             var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
             itemTable.show(domTable);
-            this.switchLayout(PageType.Dialog);
+            this.switchLayout(PageType.Dialog, configuration.ws, configuration.extent);
         };
         Layout.prototype.showWorkspaces = function () {
             var tthis = this;
@@ -88,19 +94,26 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
             this.switchLayout(PageType.Items, workspaceId, extentUrl);
             this.createTitle(workspaceId, extentUrl);
             var extentLogic = new DMView.ExtentView(this);
-            extentLogic.onItemSelected = function (ws, extentUrl, itemUrl) {
+            extentLogic.onItemEdit = function (ws, extentUrl, itemUrl) {
                 tthis.navigateToItem(ws, extentUrl, itemUrl);
+            };
+            extentLogic.onItemView = function (ws, extentUrl, itemUrl) {
+                tthis.navigateToItem(ws, extentUrl, itemUrl, { isReadonly: true });
             };
             extentLogic.onItemCreated = function (ws, extentUrl, itemUrl) {
                 tthis.navigateToItem(ws, extentUrl, itemUrl);
             };
             extentLogic.loadAndCreateHtmlForExtent($(".data-items", this.parent), workspaceId, extentUrl);
         };
-        Layout.prototype.showItem = function (workspaceId, extentUrl, itemUrl) {
+        Layout.prototype.showItem = function (workspaceId, extentUrl, itemUrl, settings) {
+            var tthis = this;
             this.switchLayout(PageType.ItemDetail, workspaceId, extentUrl, itemUrl);
             var extentLogic = new DMView.ItemView(this);
+            extentLogic.onItemView = function (ws, extentUrl, itemUrl) {
+                tthis.navigateToItem(ws, extentUrl, itemUrl, { isReadonly: true });
+            };
             this.createTitle(workspaceId, extentUrl, itemUrl);
-            extentLogic.loadAndCreateHtmlForItem($(".data-itemdetail", this.parent), workspaceId, extentUrl, itemUrl);
+            extentLogic.loadAndCreateHtmlForItem($(".data-itemdetail", this.parent), workspaceId, extentUrl, itemUrl, settings);
         };
         Layout.prototype.createTitle = function (ws, extentUrl, itemUrl) {
             var tthis = this;

@@ -28,9 +28,11 @@ namespace DatenMeister.Web.Api
             var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
             string filename;
             var tries = 0;
+            int randomNumber;
             do
             {
-                filename = Path.Combine(appBase, "Data", $"plz_{Random.Next(1000000)}");
+                randomNumber = Random.Next(1000000);
+                filename = Path.Combine(appBase, "Data", $"plz_{randomNumber}.csv");
                 tries++;
                 if (tries == 10000)
                 {
@@ -48,10 +50,9 @@ namespace DatenMeister.Web.Api
 
             //////////////////////
             // Loads the workspace
-
             var defaultConfiguration = new CSVStorageConfiguration
             {
-                ExtentUri = "datenmeister:///zipcodes",
+                ExtentUri = $"datenmeister:///zipcodes/{randomNumber}",
                 Path = filename,
                 Workspace = workspace.ws,
                 Settings =
@@ -62,7 +63,7 @@ namespace DatenMeister.Web.Api
                 }
             };
 
-            _loader.LoadExtent(defaultConfiguration);
+            _loader.LoadExtent(defaultConfiguration, false);
 
             Debug.WriteLine("Zip codes loaded");
         }

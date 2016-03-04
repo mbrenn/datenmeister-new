@@ -1,4 +1,7 @@
-// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.0.1.0
+using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.EMOF.InMemory;
+
+// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.1.0.0
 namespace DatenMeister
 {
     public class _UML
@@ -26,7 +29,7 @@ namespace DatenMeister
             }
 
             public _Activity @Activity = new _Activity();
-            public object @__Activity = new object();
+            public IElement @__Activity = new MofElement();
 
             public class _ActivityEdge
             {
@@ -53,14 +56,14 @@ namespace DatenMeister
             }
 
             public _ActivityEdge @ActivityEdge = new _ActivityEdge();
-            public object @__ActivityEdge = new object();
+            public IElement @__ActivityEdge = new MofElement();
 
             public class _ActivityFinalNode
             {
             }
 
             public _ActivityFinalNode @ActivityFinalNode = new _ActivityFinalNode();
-            public object @__ActivityFinalNode = new object();
+            public IElement @__ActivityFinalNode = new MofElement();
 
             public class _ActivityGroup
             {
@@ -77,7 +80,7 @@ namespace DatenMeister
             }
 
             public _ActivityGroup @ActivityGroup = new _ActivityGroup();
-            public object @__ActivityGroup = new object();
+            public IElement @__ActivityGroup = new MofElement();
 
             public class _ActivityNode
             {
@@ -100,7 +103,7 @@ namespace DatenMeister
             }
 
             public _ActivityNode @ActivityNode = new _ActivityNode();
-            public object @__ActivityNode = new object();
+            public IElement @__ActivityNode = new MofElement();
 
             public class _ActivityParameterNode
             {
@@ -109,7 +112,7 @@ namespace DatenMeister
             }
 
             public _ActivityParameterNode @ActivityParameterNode = new _ActivityParameterNode();
-            public object @__ActivityParameterNode = new object();
+            public IElement @__ActivityParameterNode = new MofElement();
 
             public class _ActivityPartition
             {
@@ -130,35 +133,35 @@ namespace DatenMeister
             }
 
             public _ActivityPartition @ActivityPartition = new _ActivityPartition();
-            public object @__ActivityPartition = new object();
+            public IElement @__ActivityPartition = new MofElement();
 
             public class _CentralBufferNode
             {
             }
 
             public _CentralBufferNode @CentralBufferNode = new _CentralBufferNode();
-            public object @__CentralBufferNode = new object();
+            public IElement @__CentralBufferNode = new MofElement();
 
             public class _ControlFlow
             {
             }
 
             public _ControlFlow @ControlFlow = new _ControlFlow();
-            public object @__ControlFlow = new object();
+            public IElement @__ControlFlow = new MofElement();
 
             public class _ControlNode
             {
             }
 
             public _ControlNode @ControlNode = new _ControlNode();
-            public object @__ControlNode = new object();
+            public IElement @__ControlNode = new MofElement();
 
             public class _DataStoreNode
             {
             }
 
             public _DataStoreNode @DataStoreNode = new _DataStoreNode();
-            public object @__DataStoreNode = new object();
+            public IElement @__DataStoreNode = new MofElement();
 
             public class _DecisionNode
             {
@@ -169,7 +172,7 @@ namespace DatenMeister
             }
 
             public _DecisionNode @DecisionNode = new _DecisionNode();
-            public object @__DecisionNode = new object();
+            public IElement @__DecisionNode = new MofElement();
 
             public class _ExceptionHandler
             {
@@ -184,7 +187,7 @@ namespace DatenMeister
             }
 
             public _ExceptionHandler @ExceptionHandler = new _ExceptionHandler();
-            public object @__ExceptionHandler = new object();
+            public IElement @__ExceptionHandler = new MofElement();
 
             public class _ExecutableNode
             {
@@ -193,35 +196,35 @@ namespace DatenMeister
             }
 
             public _ExecutableNode @ExecutableNode = new _ExecutableNode();
-            public object @__ExecutableNode = new object();
+            public IElement @__ExecutableNode = new MofElement();
 
             public class _FinalNode
             {
             }
 
             public _FinalNode @FinalNode = new _FinalNode();
-            public object @__FinalNode = new object();
+            public IElement @__FinalNode = new MofElement();
 
             public class _FlowFinalNode
             {
             }
 
             public _FlowFinalNode @FlowFinalNode = new _FlowFinalNode();
-            public object @__FlowFinalNode = new object();
+            public IElement @__FlowFinalNode = new MofElement();
 
             public class _ForkNode
             {
             }
 
             public _ForkNode @ForkNode = new _ForkNode();
-            public object @__ForkNode = new object();
+            public IElement @__ForkNode = new MofElement();
 
             public class _InitialNode
             {
             }
 
             public _InitialNode @InitialNode = new _InitialNode();
-            public object @__InitialNode = new object();
+            public IElement @__InitialNode = new MofElement();
 
             public class _InterruptibleActivityRegion
             {
@@ -232,7 +235,7 @@ namespace DatenMeister
             }
 
             public _InterruptibleActivityRegion @InterruptibleActivityRegion = new _InterruptibleActivityRegion();
-            public object @__InterruptibleActivityRegion = new object();
+            public IElement @__InterruptibleActivityRegion = new MofElement();
 
             public class _JoinNode
             {
@@ -243,14 +246,14 @@ namespace DatenMeister
             }
 
             public _JoinNode @JoinNode = new _JoinNode();
-            public object @__JoinNode = new object();
+            public IElement @__JoinNode = new MofElement();
 
             public class _MergeNode
             {
             }
 
             public _MergeNode @MergeNode = new _MergeNode();
-            public object @__MergeNode = new object();
+            public IElement @__MergeNode = new MofElement();
 
             public class _ObjectFlow
             {
@@ -265,7 +268,7 @@ namespace DatenMeister
             }
 
             public _ObjectFlow @ObjectFlow = new _ObjectFlow();
-            public object @__ObjectFlow = new object();
+            public IElement @__ObjectFlow = new MofElement();
 
             public class _ObjectNode
             {
@@ -282,7 +285,7 @@ namespace DatenMeister
             }
 
             public _ObjectNode @ObjectNode = new _ObjectNode();
-            public object @__ObjectNode = new object();
+            public IElement @__ObjectNode = new MofElement();
 
             public class _Variable
             {
@@ -293,7 +296,7 @@ namespace DatenMeister
             }
 
             public _Variable @Variable = new _Variable();
-            public object @__Variable = new object();
+            public IElement @__Variable = new MofElement();
 
         }
 
@@ -310,7 +313,7 @@ namespace DatenMeister
             }
 
             public _Duration @Duration = new _Duration();
-            public object @__Duration = new object();
+            public IElement @__Duration = new MofElement();
 
             public class _DurationConstraint
             {
@@ -321,7 +324,7 @@ namespace DatenMeister
             }
 
             public _DurationConstraint @DurationConstraint = new _DurationConstraint();
-            public object @__DurationConstraint = new object();
+            public IElement @__DurationConstraint = new MofElement();
 
             public class _DurationInterval
             {
@@ -332,7 +335,7 @@ namespace DatenMeister
             }
 
             public _DurationInterval @DurationInterval = new _DurationInterval();
-            public object @__DurationInterval = new object();
+            public IElement @__DurationInterval = new MofElement();
 
             public class _DurationObservation
             {
@@ -343,7 +346,7 @@ namespace DatenMeister
             }
 
             public _DurationObservation @DurationObservation = new _DurationObservation();
-            public object @__DurationObservation = new object();
+            public IElement @__DurationObservation = new MofElement();
 
             public class _Expression
             {
@@ -354,7 +357,7 @@ namespace DatenMeister
             }
 
             public _Expression @Expression = new _Expression();
-            public object @__Expression = new object();
+            public IElement @__Expression = new MofElement();
 
             public class _Interval
             {
@@ -365,7 +368,7 @@ namespace DatenMeister
             }
 
             public _Interval @Interval = new _Interval();
-            public object @__Interval = new object();
+            public IElement @__Interval = new MofElement();
 
             public class _IntervalConstraint
             {
@@ -374,7 +377,7 @@ namespace DatenMeister
             }
 
             public _IntervalConstraint @IntervalConstraint = new _IntervalConstraint();
-            public object @__IntervalConstraint = new object();
+            public IElement @__IntervalConstraint = new MofElement();
 
             public class _LiteralBoolean
             {
@@ -383,7 +386,7 @@ namespace DatenMeister
             }
 
             public _LiteralBoolean @LiteralBoolean = new _LiteralBoolean();
-            public object @__LiteralBoolean = new object();
+            public IElement @__LiteralBoolean = new MofElement();
 
             public class _LiteralInteger
             {
@@ -392,14 +395,14 @@ namespace DatenMeister
             }
 
             public _LiteralInteger @LiteralInteger = new _LiteralInteger();
-            public object @__LiteralInteger = new object();
+            public IElement @__LiteralInteger = new MofElement();
 
             public class _LiteralNull
             {
             }
 
             public _LiteralNull @LiteralNull = new _LiteralNull();
-            public object @__LiteralNull = new object();
+            public IElement @__LiteralNull = new MofElement();
 
             public class _LiteralReal
             {
@@ -408,14 +411,14 @@ namespace DatenMeister
             }
 
             public _LiteralReal @LiteralReal = new _LiteralReal();
-            public object @__LiteralReal = new object();
+            public IElement @__LiteralReal = new MofElement();
 
             public class _LiteralSpecification
             {
             }
 
             public _LiteralSpecification @LiteralSpecification = new _LiteralSpecification();
-            public object @__LiteralSpecification = new object();
+            public IElement @__LiteralSpecification = new MofElement();
 
             public class _LiteralString
             {
@@ -424,7 +427,7 @@ namespace DatenMeister
             }
 
             public _LiteralString @LiteralString = new _LiteralString();
-            public object @__LiteralString = new object();
+            public IElement @__LiteralString = new MofElement();
 
             public class _LiteralUnlimitedNatural
             {
@@ -433,14 +436,14 @@ namespace DatenMeister
             }
 
             public _LiteralUnlimitedNatural @LiteralUnlimitedNatural = new _LiteralUnlimitedNatural();
-            public object @__LiteralUnlimitedNatural = new object();
+            public IElement @__LiteralUnlimitedNatural = new MofElement();
 
             public class _Observation
             {
             }
 
             public _Observation @Observation = new _Observation();
-            public object @__Observation = new object();
+            public IElement @__Observation = new MofElement();
 
             public class _OpaqueExpression
             {
@@ -455,7 +458,7 @@ namespace DatenMeister
             }
 
             public _OpaqueExpression @OpaqueExpression = new _OpaqueExpression();
-            public object @__OpaqueExpression = new object();
+            public IElement @__OpaqueExpression = new MofElement();
 
             public class _StringExpression
             {
@@ -466,7 +469,7 @@ namespace DatenMeister
             }
 
             public _StringExpression @StringExpression = new _StringExpression();
-            public object @__StringExpression = new object();
+            public IElement @__StringExpression = new MofElement();
 
             public class _TimeConstraint
             {
@@ -477,7 +480,7 @@ namespace DatenMeister
             }
 
             public _TimeConstraint @TimeConstraint = new _TimeConstraint();
-            public object @__TimeConstraint = new object();
+            public IElement @__TimeConstraint = new MofElement();
 
             public class _TimeExpression
             {
@@ -488,7 +491,7 @@ namespace DatenMeister
             }
 
             public _TimeExpression @TimeExpression = new _TimeExpression();
-            public object @__TimeExpression = new object();
+            public IElement @__TimeExpression = new MofElement();
 
             public class _TimeInterval
             {
@@ -499,7 +502,7 @@ namespace DatenMeister
             }
 
             public _TimeInterval @TimeInterval = new _TimeInterval();
-            public object @__TimeInterval = new object();
+            public IElement @__TimeInterval = new MofElement();
 
             public class _TimeObservation
             {
@@ -510,14 +513,14 @@ namespace DatenMeister
             }
 
             public _TimeObservation @TimeObservation = new _TimeObservation();
-            public object @__TimeObservation = new object();
+            public IElement @__TimeObservation = new MofElement();
 
             public class _ValueSpecification
             {
             }
 
             public _ValueSpecification @ValueSpecification = new _ValueSpecification();
-            public object @__ValueSpecification = new object();
+            public IElement @__ValueSpecification = new MofElement();
 
         }
 
@@ -530,7 +533,7 @@ namespace DatenMeister
             }
 
             public _Actor @Actor = new _Actor();
-            public object @__Actor = new object();
+            public IElement @__Actor = new MofElement();
 
             public class _Extend
             {
@@ -545,7 +548,7 @@ namespace DatenMeister
             }
 
             public _Extend @Extend = new _Extend();
-            public object @__Extend = new object();
+            public IElement @__Extend = new MofElement();
 
             public class _ExtensionPoint
             {
@@ -554,7 +557,7 @@ namespace DatenMeister
             }
 
             public _ExtensionPoint @ExtensionPoint = new _ExtensionPoint();
-            public object @__ExtensionPoint = new object();
+            public IElement @__ExtensionPoint = new MofElement();
 
             public class _Include
             {
@@ -565,7 +568,7 @@ namespace DatenMeister
             }
 
             public _Include @Include = new _Include();
-            public object @__Include = new object();
+            public IElement @__Include = new MofElement();
 
             public class _UseCase
             {
@@ -580,7 +583,7 @@ namespace DatenMeister
             }
 
             public _UseCase @UseCase = new _UseCase();
-            public object @__UseCase = new object();
+            public IElement @__UseCase = new MofElement();
 
         }
 
@@ -603,14 +606,14 @@ namespace DatenMeister
             }
 
             public _Association @Association = new _Association();
-            public object @__Association = new object();
+            public IElement @__Association = new MofElement();
 
             public class _AssociationClass
             {
             }
 
             public _AssociationClass @AssociationClass = new _AssociationClass();
-            public object @__AssociationClass = new object();
+            public IElement @__AssociationClass = new MofElement();
 
             public class _Class
             {
@@ -633,7 +636,7 @@ namespace DatenMeister
             }
 
             public _Class @Class = new _Class();
-            public object @__Class = new object();
+            public IElement @__Class = new MofElement();
 
             public class _Collaboration
             {
@@ -642,7 +645,7 @@ namespace DatenMeister
             }
 
             public _Collaboration @Collaboration = new _Collaboration();
-            public object @__Collaboration = new object();
+            public IElement @__Collaboration = new MofElement();
 
             public class _CollaborationUse
             {
@@ -653,7 +656,7 @@ namespace DatenMeister
             }
 
             public _CollaborationUse @CollaborationUse = new _CollaborationUse();
-            public object @__CollaborationUse = new object();
+            public IElement @__CollaborationUse = new MofElement();
 
             public class _Component
             {
@@ -670,7 +673,7 @@ namespace DatenMeister
             }
 
             public _Component @Component = new _Component();
-            public object @__Component = new object();
+            public IElement @__Component = new MofElement();
 
             public class _ComponentRealization
             {
@@ -681,7 +684,7 @@ namespace DatenMeister
             }
 
             public _ComponentRealization @ComponentRealization = new _ComponentRealization();
-            public object @__ComponentRealization = new object();
+            public IElement @__ComponentRealization = new MofElement();
 
             public class _ConnectableElement
             {
@@ -692,7 +695,7 @@ namespace DatenMeister
             }
 
             public _ConnectableElement @ConnectableElement = new _ConnectableElement();
-            public object @__ConnectableElement = new object();
+            public IElement @__ConnectableElement = new MofElement();
 
             public class _ConnectableElementTemplateParameter
             {
@@ -701,7 +704,7 @@ namespace DatenMeister
             }
 
             public _ConnectableElementTemplateParameter @ConnectableElementTemplateParameter = new _ConnectableElementTemplateParameter();
-            public object @__ConnectableElementTemplateParameter = new object();
+            public IElement @__ConnectableElementTemplateParameter = new MofElement();
 
             public class _Connector
             {
@@ -718,7 +721,7 @@ namespace DatenMeister
             }
 
             public _Connector @Connector = new _Connector();
-            public object @__Connector = new object();
+            public IElement @__Connector = new MofElement();
 
             public class _ConnectorEnd
             {
@@ -731,7 +734,7 @@ namespace DatenMeister
             }
 
             public _ConnectorEnd @ConnectorEnd = new _ConnectorEnd();
-            public object @__ConnectorEnd = new object();
+            public IElement @__ConnectorEnd = new MofElement();
 
             public class _EncapsulatedClassifier
             {
@@ -740,7 +743,7 @@ namespace DatenMeister
             }
 
             public _EncapsulatedClassifier @EncapsulatedClassifier = new _EncapsulatedClassifier();
-            public object @__EncapsulatedClassifier = new object();
+            public IElement @__EncapsulatedClassifier = new MofElement();
 
             public class _Port
             {
@@ -761,7 +764,7 @@ namespace DatenMeister
             }
 
             public _Port @Port = new _Port();
-            public object @__Port = new object();
+            public IElement @__Port = new MofElement();
 
             public class _StructuredClassifier
             {
@@ -776,7 +779,7 @@ namespace DatenMeister
             }
 
             public _StructuredClassifier @StructuredClassifier = new _StructuredClassifier();
-            public object @__StructuredClassifier = new object();
+            public IElement @__StructuredClassifier = new MofElement();
 
         }
 
@@ -795,14 +798,14 @@ namespace DatenMeister
             }
 
             public _ConnectionPointReference @ConnectionPointReference = new _ConnectionPointReference();
-            public object @__ConnectionPointReference = new object();
+            public IElement @__ConnectionPointReference = new MofElement();
 
             public class _FinalState
             {
             }
 
             public _FinalState @FinalState = new _FinalState();
-            public object @__FinalState = new object();
+            public IElement @__FinalState = new MofElement();
 
             public class _ProtocolConformance
             {
@@ -813,7 +816,7 @@ namespace DatenMeister
             }
 
             public _ProtocolConformance @ProtocolConformance = new _ProtocolConformance();
-            public object @__ProtocolConformance = new object();
+            public IElement @__ProtocolConformance = new MofElement();
 
             public class _ProtocolStateMachine
             {
@@ -822,7 +825,7 @@ namespace DatenMeister
             }
 
             public _ProtocolStateMachine @ProtocolStateMachine = new _ProtocolStateMachine();
-            public object @__ProtocolStateMachine = new object();
+            public IElement @__ProtocolStateMachine = new MofElement();
 
             public class _ProtocolTransition
             {
@@ -835,7 +838,7 @@ namespace DatenMeister
             }
 
             public _ProtocolTransition @ProtocolTransition = new _ProtocolTransition();
-            public object @__ProtocolTransition = new object();
+            public IElement @__ProtocolTransition = new MofElement();
 
             public class _Pseudostate
             {
@@ -848,7 +851,7 @@ namespace DatenMeister
             }
 
             public _Pseudostate @Pseudostate = new _Pseudostate();
-            public object @__Pseudostate = new object();
+            public IElement @__Pseudostate = new MofElement();
 
             public class _Region
             {
@@ -867,7 +870,7 @@ namespace DatenMeister
             }
 
             public _Region @Region = new _Region();
-            public object @__Region = new object();
+            public IElement @__Region = new MofElement();
 
             public class _State
             {
@@ -904,7 +907,7 @@ namespace DatenMeister
             }
 
             public _State @State = new _State();
-            public object @__State = new object();
+            public IElement @__State = new MofElement();
 
             public class _StateMachine
             {
@@ -919,7 +922,7 @@ namespace DatenMeister
             }
 
             public _StateMachine @StateMachine = new _StateMachine();
-            public object @__StateMachine = new object();
+            public IElement @__StateMachine = new MofElement();
 
             public class _Transition
             {
@@ -944,7 +947,7 @@ namespace DatenMeister
             }
 
             public _Transition @Transition = new _Transition();
-            public object @__Transition = new object();
+            public IElement @__Transition = new MofElement();
 
             public class _Vertex
             {
@@ -957,7 +960,7 @@ namespace DatenMeister
             }
 
             public _Vertex @Vertex = new _Vertex();
-            public object @__Vertex = new object();
+            public IElement @__Vertex = new MofElement();
 
         }
 
@@ -976,7 +979,7 @@ namespace DatenMeister
             }
 
             public _BehavioredClassifier @BehavioredClassifier = new _BehavioredClassifier();
-            public object @__BehavioredClassifier = new object();
+            public IElement @__BehavioredClassifier = new MofElement();
 
             public class _DataType
             {
@@ -987,7 +990,7 @@ namespace DatenMeister
             }
 
             public _DataType @DataType = new _DataType();
-            public object @__DataType = new object();
+            public IElement @__DataType = new MofElement();
 
             public class _Enumeration
             {
@@ -996,7 +999,7 @@ namespace DatenMeister
             }
 
             public _Enumeration @Enumeration = new _Enumeration();
-            public object @__Enumeration = new object();
+            public IElement @__Enumeration = new MofElement();
 
             public class _EnumerationLiteral
             {
@@ -1007,7 +1010,7 @@ namespace DatenMeister
             }
 
             public _EnumerationLiteral @EnumerationLiteral = new _EnumerationLiteral();
-            public object @__EnumerationLiteral = new object();
+            public IElement @__EnumerationLiteral = new MofElement();
 
             public class _Interface
             {
@@ -1026,7 +1029,7 @@ namespace DatenMeister
             }
 
             public _Interface @Interface = new _Interface();
-            public object @__Interface = new object();
+            public IElement @__Interface = new MofElement();
 
             public class _InterfaceRealization
             {
@@ -1037,14 +1040,14 @@ namespace DatenMeister
             }
 
             public _InterfaceRealization @InterfaceRealization = new _InterfaceRealization();
-            public object @__InterfaceRealization = new object();
+            public IElement @__InterfaceRealization = new MofElement();
 
             public class _PrimitiveType
             {
             }
 
             public _PrimitiveType @PrimitiveType = new _PrimitiveType();
-            public object @__PrimitiveType = new object();
+            public IElement @__PrimitiveType = new MofElement();
 
             public class _Reception
             {
@@ -1053,7 +1056,7 @@ namespace DatenMeister
             }
 
             public _Reception @Reception = new _Reception();
-            public object @__Reception = new object();
+            public IElement @__Reception = new MofElement();
 
             public class _Signal
             {
@@ -1062,7 +1065,7 @@ namespace DatenMeister
             }
 
             public _Signal @Signal = new _Signal();
-            public object @__Signal = new object();
+            public IElement @__Signal = new MofElement();
 
         }
 
@@ -1081,7 +1084,7 @@ namespace DatenMeister
             }
 
             public _Extension @Extension = new _Extension();
-            public object @__Extension = new object();
+            public IElement @__Extension = new MofElement();
 
             public class _ExtensionEnd
             {
@@ -1092,7 +1095,7 @@ namespace DatenMeister
             }
 
             public _ExtensionEnd @ExtensionEnd = new _ExtensionEnd();
-            public object @__ExtensionEnd = new object();
+            public IElement @__ExtensionEnd = new MofElement();
 
             public class _Image
             {
@@ -1105,7 +1108,7 @@ namespace DatenMeister
             }
 
             public _Image @Image = new _Image();
-            public object @__Image = new object();
+            public IElement @__Image = new MofElement();
 
             public class _Model
             {
@@ -1114,7 +1117,7 @@ namespace DatenMeister
             }
 
             public _Model @Model = new _Model();
-            public object @__Model = new object();
+            public IElement @__Model = new MofElement();
 
             public class _Package
             {
@@ -1137,7 +1140,7 @@ namespace DatenMeister
             }
 
             public _Package @Package = new _Package();
-            public object @__Package = new object();
+            public IElement @__Package = new MofElement();
 
             public class _PackageMerge
             {
@@ -1148,7 +1151,7 @@ namespace DatenMeister
             }
 
             public _PackageMerge @PackageMerge = new _PackageMerge();
-            public object @__PackageMerge = new object();
+            public IElement @__PackageMerge = new MofElement();
 
             public class _Profile
             {
@@ -1159,7 +1162,7 @@ namespace DatenMeister
             }
 
             public _Profile @Profile = new _Profile();
-            public object @__Profile = new object();
+            public IElement @__Profile = new MofElement();
 
             public class _ProfileApplication
             {
@@ -1172,7 +1175,7 @@ namespace DatenMeister
             }
 
             public _ProfileApplication @ProfileApplication = new _ProfileApplication();
-            public object @__ProfileApplication = new object();
+            public IElement @__ProfileApplication = new MofElement();
 
             public class _Stereotype
             {
@@ -1183,7 +1186,7 @@ namespace DatenMeister
             }
 
             public _Stereotype @Stereotype = new _Stereotype();
-            public object @__Stereotype = new object();
+            public IElement @__Stereotype = new MofElement();
 
         }
 
@@ -1198,7 +1201,7 @@ namespace DatenMeister
             }
 
             public _ActionExecutionSpecification @ActionExecutionSpecification = new _ActionExecutionSpecification();
-            public object @__ActionExecutionSpecification = new object();
+            public IElement @__ActionExecutionSpecification = new MofElement();
 
             public class _BehaviorExecutionSpecification
             {
@@ -1207,7 +1210,7 @@ namespace DatenMeister
             }
 
             public _BehaviorExecutionSpecification @BehaviorExecutionSpecification = new _BehaviorExecutionSpecification();
-            public object @__BehaviorExecutionSpecification = new object();
+            public IElement @__BehaviorExecutionSpecification = new MofElement();
 
             public class _CombinedFragment
             {
@@ -1220,7 +1223,7 @@ namespace DatenMeister
             }
 
             public _CombinedFragment @CombinedFragment = new _CombinedFragment();
-            public object @__CombinedFragment = new object();
+            public IElement @__CombinedFragment = new MofElement();
 
             public class _ConsiderIgnoreFragment
             {
@@ -1229,7 +1232,7 @@ namespace DatenMeister
             }
 
             public _ConsiderIgnoreFragment @ConsiderIgnoreFragment = new _ConsiderIgnoreFragment();
-            public object @__ConsiderIgnoreFragment = new object();
+            public IElement @__ConsiderIgnoreFragment = new MofElement();
 
             public class _Continuation
             {
@@ -1238,14 +1241,14 @@ namespace DatenMeister
             }
 
             public _Continuation @Continuation = new _Continuation();
-            public object @__Continuation = new object();
+            public IElement @__Continuation = new MofElement();
 
             public class _DestructionOccurrenceSpecification
             {
             }
 
             public _DestructionOccurrenceSpecification @DestructionOccurrenceSpecification = new _DestructionOccurrenceSpecification();
-            public object @__DestructionOccurrenceSpecification = new object();
+            public IElement @__DestructionOccurrenceSpecification = new MofElement();
 
             public class _ExecutionOccurrenceSpecification
             {
@@ -1254,7 +1257,7 @@ namespace DatenMeister
             }
 
             public _ExecutionOccurrenceSpecification @ExecutionOccurrenceSpecification = new _ExecutionOccurrenceSpecification();
-            public object @__ExecutionOccurrenceSpecification = new object();
+            public IElement @__ExecutionOccurrenceSpecification = new MofElement();
 
             public class _ExecutionSpecification
             {
@@ -1265,14 +1268,14 @@ namespace DatenMeister
             }
 
             public _ExecutionSpecification @ExecutionSpecification = new _ExecutionSpecification();
-            public object @__ExecutionSpecification = new object();
+            public IElement @__ExecutionSpecification = new MofElement();
 
             public class _Gate
             {
             }
 
             public _Gate @Gate = new _Gate();
-            public object @__Gate = new object();
+            public IElement @__Gate = new MofElement();
 
             public class _GeneralOrdering
             {
@@ -1283,7 +1286,7 @@ namespace DatenMeister
             }
 
             public _GeneralOrdering @GeneralOrdering = new _GeneralOrdering();
-            public object @__GeneralOrdering = new object();
+            public IElement @__GeneralOrdering = new MofElement();
 
             public class _Interaction
             {
@@ -1300,7 +1303,7 @@ namespace DatenMeister
             }
 
             public _Interaction @Interaction = new _Interaction();
-            public object @__Interaction = new object();
+            public IElement @__Interaction = new MofElement();
 
             public class _InteractionConstraint
             {
@@ -1311,7 +1314,7 @@ namespace DatenMeister
             }
 
             public _InteractionConstraint @InteractionConstraint = new _InteractionConstraint();
-            public object @__InteractionConstraint = new object();
+            public IElement @__InteractionConstraint = new MofElement();
 
             public class _InteractionFragment
             {
@@ -1326,7 +1329,7 @@ namespace DatenMeister
             }
 
             public _InteractionFragment @InteractionFragment = new _InteractionFragment();
-            public object @__InteractionFragment = new object();
+            public IElement @__InteractionFragment = new MofElement();
 
             public class _InteractionOperand
             {
@@ -1337,7 +1340,7 @@ namespace DatenMeister
             }
 
             public _InteractionOperand @InteractionOperand = new _InteractionOperand();
-            public object @__InteractionOperand = new object();
+            public IElement @__InteractionOperand = new MofElement();
 
             public class _InteractionUse
             {
@@ -1354,7 +1357,7 @@ namespace DatenMeister
             }
 
             public _InteractionUse @InteractionUse = new _InteractionUse();
-            public object @__InteractionUse = new object();
+            public IElement @__InteractionUse = new MofElement();
 
             public class _Lifeline
             {
@@ -1371,7 +1374,7 @@ namespace DatenMeister
             }
 
             public _Lifeline @Lifeline = new _Lifeline();
-            public object @__Lifeline = new object();
+            public IElement @__Lifeline = new MofElement();
 
             public class _Message
             {
@@ -1394,7 +1397,7 @@ namespace DatenMeister
             }
 
             public _Message @Message = new _Message();
-            public object @__Message = new object();
+            public IElement @__Message = new MofElement();
 
             public class _MessageEnd
             {
@@ -1403,14 +1406,14 @@ namespace DatenMeister
             }
 
             public _MessageEnd @MessageEnd = new _MessageEnd();
-            public object @__MessageEnd = new object();
+            public IElement @__MessageEnd = new MofElement();
 
             public class _MessageOccurrenceSpecification
             {
             }
 
             public _MessageOccurrenceSpecification @MessageOccurrenceSpecification = new _MessageOccurrenceSpecification();
-            public object @__MessageOccurrenceSpecification = new object();
+            public IElement @__MessageOccurrenceSpecification = new MofElement();
 
             public class _OccurrenceSpecification
             {
@@ -1423,14 +1426,14 @@ namespace DatenMeister
             }
 
             public _OccurrenceSpecification @OccurrenceSpecification = new _OccurrenceSpecification();
-            public object @__OccurrenceSpecification = new object();
+            public IElement @__OccurrenceSpecification = new MofElement();
 
             public class _PartDecomposition
             {
             }
 
             public _PartDecomposition @PartDecomposition = new _PartDecomposition();
-            public object @__PartDecomposition = new object();
+            public IElement @__PartDecomposition = new MofElement();
 
             public class _StateInvariant
             {
@@ -1441,7 +1444,7 @@ namespace DatenMeister
             }
 
             public _StateInvariant @StateInvariant = new _StateInvariant();
-            public object @__StateInvariant = new object();
+            public IElement @__StateInvariant = new MofElement();
 
         }
 
@@ -1468,7 +1471,7 @@ namespace DatenMeister
             }
 
             public _InformationFlow @InformationFlow = new _InformationFlow();
-            public object @__InformationFlow = new object();
+            public IElement @__InformationFlow = new MofElement();
 
             public class _InformationItem
             {
@@ -1477,7 +1480,7 @@ namespace DatenMeister
             }
 
             public _InformationItem @InformationItem = new _InformationItem();
-            public object @__InformationItem = new object();
+            public IElement @__InformationItem = new MofElement();
 
         }
 
@@ -1500,21 +1503,21 @@ namespace DatenMeister
             }
 
             public _Artifact @Artifact = new _Artifact();
-            public object @__Artifact = new object();
+            public IElement @__Artifact = new MofElement();
 
             public class _CommunicationPath
             {
             }
 
             public _CommunicationPath @CommunicationPath = new _CommunicationPath();
-            public object @__CommunicationPath = new object();
+            public IElement @__CommunicationPath = new MofElement();
 
             public class _DeployedArtifact
             {
             }
 
             public _DeployedArtifact @DeployedArtifact = new _DeployedArtifact();
-            public object @__DeployedArtifact = new object();
+            public IElement @__DeployedArtifact = new MofElement();
 
             public class _Deployment
             {
@@ -1527,7 +1530,7 @@ namespace DatenMeister
             }
 
             public _Deployment @Deployment = new _Deployment();
-            public object @__Deployment = new object();
+            public IElement @__Deployment = new MofElement();
 
             public class _DeploymentSpecification
             {
@@ -1540,7 +1543,7 @@ namespace DatenMeister
             }
 
             public _DeploymentSpecification @DeploymentSpecification = new _DeploymentSpecification();
-            public object @__DeploymentSpecification = new object();
+            public IElement @__DeploymentSpecification = new MofElement();
 
             public class _DeploymentTarget
             {
@@ -1551,21 +1554,21 @@ namespace DatenMeister
             }
 
             public _DeploymentTarget @DeploymentTarget = new _DeploymentTarget();
-            public object @__DeploymentTarget = new object();
+            public IElement @__DeploymentTarget = new MofElement();
 
             public class _Device
             {
             }
 
             public _Device @Device = new _Device();
-            public object @__Device = new object();
+            public IElement @__Device = new MofElement();
 
             public class _ExecutionEnvironment
             {
             }
 
             public _ExecutionEnvironment @ExecutionEnvironment = new _ExecutionEnvironment();
-            public object @__ExecutionEnvironment = new object();
+            public IElement @__ExecutionEnvironment = new MofElement();
 
             public class _Manifestation
             {
@@ -1574,7 +1577,7 @@ namespace DatenMeister
             }
 
             public _Manifestation @Manifestation = new _Manifestation();
-            public object @__Manifestation = new object();
+            public IElement @__Manifestation = new MofElement();
 
             public class _Node
             {
@@ -1583,7 +1586,7 @@ namespace DatenMeister
             }
 
             public _Node @Node = new _Node();
-            public object @__Node = new object();
+            public IElement @__Node = new MofElement();
 
         }
 
@@ -1598,7 +1601,7 @@ namespace DatenMeister
             }
 
             public _Abstraction @Abstraction = new _Abstraction();
-            public object @__Abstraction = new object();
+            public IElement @__Abstraction = new MofElement();
 
             public class _Comment
             {
@@ -1609,7 +1612,7 @@ namespace DatenMeister
             }
 
             public _Comment @Comment = new _Comment();
-            public object @__Comment = new object();
+            public IElement @__Comment = new MofElement();
 
             public class _Constraint
             {
@@ -1622,7 +1625,7 @@ namespace DatenMeister
             }
 
             public _Constraint @Constraint = new _Constraint();
-            public object @__Constraint = new object();
+            public IElement @__Constraint = new MofElement();
 
             public class _Dependency
             {
@@ -1633,7 +1636,7 @@ namespace DatenMeister
             }
 
             public _Dependency @Dependency = new _Dependency();
-            public object @__Dependency = new object();
+            public IElement @__Dependency = new MofElement();
 
             public class _DirectedRelationship
             {
@@ -1644,7 +1647,7 @@ namespace DatenMeister
             }
 
             public _DirectedRelationship @DirectedRelationship = new _DirectedRelationship();
-            public object @__DirectedRelationship = new object();
+            public IElement @__DirectedRelationship = new MofElement();
 
             public class _Element
             {
@@ -1657,7 +1660,7 @@ namespace DatenMeister
             }
 
             public _Element @Element = new _Element();
-            public object @__Element = new object();
+            public IElement @__Element = new MofElement();
 
             public class _ElementImport
             {
@@ -1672,7 +1675,7 @@ namespace DatenMeister
             }
 
             public _ElementImport @ElementImport = new _ElementImport();
-            public object @__ElementImport = new object();
+            public IElement @__ElementImport = new MofElement();
 
             public class _MultiplicityElement
             {
@@ -1691,7 +1694,7 @@ namespace DatenMeister
             }
 
             public _MultiplicityElement @MultiplicityElement = new _MultiplicityElement();
-            public object @__MultiplicityElement = new object();
+            public IElement @__MultiplicityElement = new MofElement();
 
             public class _NamedElement
             {
@@ -1710,7 +1713,7 @@ namespace DatenMeister
             }
 
             public _NamedElement @NamedElement = new _NamedElement();
-            public object @__NamedElement = new object();
+            public IElement @__NamedElement = new MofElement();
 
             public class _Namespace
             {
@@ -1729,7 +1732,7 @@ namespace DatenMeister
             }
 
             public _Namespace @Namespace = new _Namespace();
-            public object @__Namespace = new object();
+            public IElement @__Namespace = new MofElement();
 
             public class _PackageableElement
             {
@@ -1738,7 +1741,7 @@ namespace DatenMeister
             }
 
             public _PackageableElement @PackageableElement = new _PackageableElement();
-            public object @__PackageableElement = new object();
+            public IElement @__PackageableElement = new MofElement();
 
             public class _PackageImport
             {
@@ -1751,7 +1754,7 @@ namespace DatenMeister
             }
 
             public _PackageImport @PackageImport = new _PackageImport();
-            public object @__PackageImport = new object();
+            public IElement @__PackageImport = new MofElement();
 
             public class _ParameterableElement
             {
@@ -1762,14 +1765,14 @@ namespace DatenMeister
             }
 
             public _ParameterableElement @ParameterableElement = new _ParameterableElement();
-            public object @__ParameterableElement = new object();
+            public IElement @__ParameterableElement = new MofElement();
 
             public class _Realization
             {
             }
 
             public _Realization @Realization = new _Realization();
-            public object @__Realization = new object();
+            public IElement @__Realization = new MofElement();
 
             public class _Relationship
             {
@@ -1778,7 +1781,7 @@ namespace DatenMeister
             }
 
             public _Relationship @Relationship = new _Relationship();
-            public object @__Relationship = new object();
+            public IElement @__Relationship = new MofElement();
 
             public class _TemplateableElement
             {
@@ -1789,7 +1792,7 @@ namespace DatenMeister
             }
 
             public _TemplateableElement @TemplateableElement = new _TemplateableElement();
-            public object @__TemplateableElement = new object();
+            public IElement @__TemplateableElement = new MofElement();
 
             public class _TemplateBinding
             {
@@ -1802,7 +1805,7 @@ namespace DatenMeister
             }
 
             public _TemplateBinding @TemplateBinding = new _TemplateBinding();
-            public object @__TemplateBinding = new object();
+            public IElement @__TemplateBinding = new MofElement();
 
             public class _TemplateParameter
             {
@@ -1819,7 +1822,7 @@ namespace DatenMeister
             }
 
             public _TemplateParameter @TemplateParameter = new _TemplateParameter();
-            public object @__TemplateParameter = new object();
+            public IElement @__TemplateParameter = new MofElement();
 
             public class _TemplateParameterSubstitution
             {
@@ -1834,7 +1837,7 @@ namespace DatenMeister
             }
 
             public _TemplateParameterSubstitution @TemplateParameterSubstitution = new _TemplateParameterSubstitution();
-            public object @__TemplateParameterSubstitution = new object();
+            public IElement @__TemplateParameterSubstitution = new MofElement();
 
             public class _TemplateSignature
             {
@@ -1847,7 +1850,7 @@ namespace DatenMeister
             }
 
             public _TemplateSignature @TemplateSignature = new _TemplateSignature();
-            public object @__TemplateSignature = new object();
+            public IElement @__TemplateSignature = new MofElement();
 
             public class _Type
             {
@@ -1856,7 +1859,7 @@ namespace DatenMeister
             }
 
             public _Type @Type = new _Type();
-            public object @__Type = new object();
+            public IElement @__Type = new MofElement();
 
             public class _TypedElement
             {
@@ -1865,14 +1868,14 @@ namespace DatenMeister
             }
 
             public _TypedElement @TypedElement = new _TypedElement();
-            public object @__TypedElement = new object();
+            public IElement @__TypedElement = new MofElement();
 
             public class _Usage
             {
             }
 
             public _Usage @Usage = new _Usage();
-            public object @__Usage = new object();
+            public IElement @__Usage = new MofElement();
 
         }
 
@@ -1885,7 +1888,7 @@ namespace DatenMeister
             }
 
             public _AnyReceiveEvent @AnyReceiveEvent = new _AnyReceiveEvent();
-            public object @__AnyReceiveEvent = new object();
+            public IElement @__AnyReceiveEvent = new MofElement();
 
             public class _Behavior
             {
@@ -1908,7 +1911,7 @@ namespace DatenMeister
             }
 
             public _Behavior @Behavior = new _Behavior();
-            public object @__Behavior = new object();
+            public IElement @__Behavior = new MofElement();
 
             public class _CallEvent
             {
@@ -1917,7 +1920,7 @@ namespace DatenMeister
             }
 
             public _CallEvent @CallEvent = new _CallEvent();
-            public object @__CallEvent = new object();
+            public IElement @__CallEvent = new MofElement();
 
             public class _ChangeEvent
             {
@@ -1926,28 +1929,28 @@ namespace DatenMeister
             }
 
             public _ChangeEvent @ChangeEvent = new _ChangeEvent();
-            public object @__ChangeEvent = new object();
+            public IElement @__ChangeEvent = new MofElement();
 
             public class _Event
             {
             }
 
             public _Event @Event = new _Event();
-            public object @__Event = new object();
+            public IElement @__Event = new MofElement();
 
             public class _FunctionBehavior
             {
             }
 
             public _FunctionBehavior @FunctionBehavior = new _FunctionBehavior();
-            public object @__FunctionBehavior = new object();
+            public IElement @__FunctionBehavior = new MofElement();
 
             public class _MessageEvent
             {
             }
 
             public _MessageEvent @MessageEvent = new _MessageEvent();
-            public object @__MessageEvent = new object();
+            public IElement @__MessageEvent = new MofElement();
 
             public class _OpaqueBehavior
             {
@@ -1958,7 +1961,7 @@ namespace DatenMeister
             }
 
             public _OpaqueBehavior @OpaqueBehavior = new _OpaqueBehavior();
-            public object @__OpaqueBehavior = new object();
+            public IElement @__OpaqueBehavior = new MofElement();
 
             public class _SignalEvent
             {
@@ -1967,7 +1970,7 @@ namespace DatenMeister
             }
 
             public _SignalEvent @SignalEvent = new _SignalEvent();
-            public object @__SignalEvent = new object();
+            public IElement @__SignalEvent = new MofElement();
 
             public class _TimeEvent
             {
@@ -1978,7 +1981,7 @@ namespace DatenMeister
             }
 
             public _TimeEvent @TimeEvent = new _TimeEvent();
-            public object @__TimeEvent = new object();
+            public IElement @__TimeEvent = new MofElement();
 
             public class _Trigger
             {
@@ -1989,7 +1992,7 @@ namespace DatenMeister
             }
 
             public _Trigger @Trigger = new _Trigger();
-            public object @__Trigger = new object();
+            public IElement @__Trigger = new MofElement();
 
         }
 
@@ -2006,7 +2009,7 @@ namespace DatenMeister
             }
 
             public _Substitution @Substitution = new _Substitution();
-            public object @__Substitution = new object();
+            public IElement @__Substitution = new MofElement();
 
             public class _BehavioralFeature
             {
@@ -2025,7 +2028,7 @@ namespace DatenMeister
             }
 
             public _BehavioralFeature @BehavioralFeature = new _BehavioralFeature();
-            public object @__BehavioralFeature = new object();
+            public IElement @__BehavioralFeature = new MofElement();
 
             public class _Classifier
             {
@@ -2064,7 +2067,7 @@ namespace DatenMeister
             }
 
             public _Classifier @Classifier = new _Classifier();
-            public object @__Classifier = new object();
+            public IElement @__Classifier = new MofElement();
 
             public class _ClassifierTemplateParameter
             {
@@ -2077,7 +2080,7 @@ namespace DatenMeister
             }
 
             public _ClassifierTemplateParameter @ClassifierTemplateParameter = new _ClassifierTemplateParameter();
-            public object @__ClassifierTemplateParameter = new object();
+            public IElement @__ClassifierTemplateParameter = new MofElement();
 
             public class _Feature
             {
@@ -2088,7 +2091,7 @@ namespace DatenMeister
             }
 
             public _Feature @Feature = new _Feature();
-            public object @__Feature = new object();
+            public IElement @__Feature = new MofElement();
 
             public class _Generalization
             {
@@ -2103,7 +2106,7 @@ namespace DatenMeister
             }
 
             public _Generalization @Generalization = new _Generalization();
-            public object @__Generalization = new object();
+            public IElement @__Generalization = new MofElement();
 
             public class _GeneralizationSet
             {
@@ -2118,7 +2121,7 @@ namespace DatenMeister
             }
 
             public _GeneralizationSet @GeneralizationSet = new _GeneralizationSet();
-            public object @__GeneralizationSet = new object();
+            public IElement @__GeneralizationSet = new MofElement();
 
             public class _InstanceSpecification
             {
@@ -2131,7 +2134,7 @@ namespace DatenMeister
             }
 
             public _InstanceSpecification @InstanceSpecification = new _InstanceSpecification();
-            public object @__InstanceSpecification = new object();
+            public IElement @__InstanceSpecification = new MofElement();
 
             public class _InstanceValue
             {
@@ -2140,7 +2143,7 @@ namespace DatenMeister
             }
 
             public _InstanceValue @InstanceValue = new _InstanceValue();
-            public object @__InstanceValue = new object();
+            public IElement @__InstanceValue = new MofElement();
 
             public class _Operation
             {
@@ -2179,7 +2182,7 @@ namespace DatenMeister
             }
 
             public _Operation @Operation = new _Operation();
-            public object @__Operation = new object();
+            public IElement @__Operation = new MofElement();
 
             public class _OperationTemplateParameter
             {
@@ -2188,7 +2191,7 @@ namespace DatenMeister
             }
 
             public _OperationTemplateParameter @OperationTemplateParameter = new _OperationTemplateParameter();
-            public object @__OperationTemplateParameter = new object();
+            public IElement @__OperationTemplateParameter = new MofElement();
 
             public class _Parameter
             {
@@ -2211,7 +2214,7 @@ namespace DatenMeister
             }
 
             public _Parameter @Parameter = new _Parameter();
-            public object @__Parameter = new object();
+            public IElement @__Parameter = new MofElement();
 
             public class _ParameterSet
             {
@@ -2222,7 +2225,7 @@ namespace DatenMeister
             }
 
             public _ParameterSet @ParameterSet = new _ParameterSet();
-            public object @__ParameterSet = new object();
+            public IElement @__ParameterSet = new MofElement();
 
             public class _Property
             {
@@ -2261,7 +2264,7 @@ namespace DatenMeister
             }
 
             public _Property @Property = new _Property();
-            public object @__Property = new object();
+            public IElement @__Property = new MofElement();
 
             public class _RedefinableElement
             {
@@ -2274,7 +2277,7 @@ namespace DatenMeister
             }
 
             public _RedefinableElement @RedefinableElement = new _RedefinableElement();
-            public object @__RedefinableElement = new object();
+            public IElement @__RedefinableElement = new MofElement();
 
             public class _RedefinableTemplateSignature
             {
@@ -2287,7 +2290,7 @@ namespace DatenMeister
             }
 
             public _RedefinableTemplateSignature @RedefinableTemplateSignature = new _RedefinableTemplateSignature();
-            public object @__RedefinableTemplateSignature = new object();
+            public IElement @__RedefinableTemplateSignature = new MofElement();
 
             public class _Slot
             {
@@ -2300,7 +2303,7 @@ namespace DatenMeister
             }
 
             public _Slot @Slot = new _Slot();
-            public object @__Slot = new object();
+            public IElement @__Slot = new MofElement();
 
             public class _StructuralFeature
             {
@@ -2309,7 +2312,7 @@ namespace DatenMeister
             }
 
             public _StructuralFeature @StructuralFeature = new _StructuralFeature();
-            public object @__StructuralFeature = new object();
+            public IElement @__StructuralFeature = new MofElement();
 
         }
 
@@ -2326,7 +2329,7 @@ namespace DatenMeister
             }
 
             public _ValueSpecificationAction @ValueSpecificationAction = new _ValueSpecificationAction();
-            public object @__ValueSpecificationAction = new object();
+            public IElement @__ValueSpecificationAction = new MofElement();
 
             public class _VariableAction
             {
@@ -2335,14 +2338,14 @@ namespace DatenMeister
             }
 
             public _VariableAction @VariableAction = new _VariableAction();
-            public object @__VariableAction = new object();
+            public IElement @__VariableAction = new MofElement();
 
             public class _WriteLinkAction
             {
             }
 
             public _WriteLinkAction @WriteLinkAction = new _WriteLinkAction();
-            public object @__WriteLinkAction = new object();
+            public IElement @__WriteLinkAction = new MofElement();
 
             public class _WriteStructuralFeatureAction
             {
@@ -2353,7 +2356,7 @@ namespace DatenMeister
             }
 
             public _WriteStructuralFeatureAction @WriteStructuralFeatureAction = new _WriteStructuralFeatureAction();
-            public object @__WriteStructuralFeatureAction = new object();
+            public IElement @__WriteStructuralFeatureAction = new MofElement();
 
             public class _WriteVariableAction
             {
@@ -2362,7 +2365,7 @@ namespace DatenMeister
             }
 
             public _WriteVariableAction @WriteVariableAction = new _WriteVariableAction();
-            public object @__WriteVariableAction = new object();
+            public IElement @__WriteVariableAction = new MofElement();
 
             public class _AcceptCallAction
             {
@@ -2371,7 +2374,7 @@ namespace DatenMeister
             }
 
             public _AcceptCallAction @AcceptCallAction = new _AcceptCallAction();
-            public object @__AcceptCallAction = new object();
+            public IElement @__AcceptCallAction = new MofElement();
 
             public class _AcceptEventAction
             {
@@ -2384,7 +2387,7 @@ namespace DatenMeister
             }
 
             public _AcceptEventAction @AcceptEventAction = new _AcceptEventAction();
-            public object @__AcceptEventAction = new object();
+            public IElement @__AcceptEventAction = new MofElement();
 
             public class _Action
             {
@@ -2403,7 +2406,7 @@ namespace DatenMeister
             }
 
             public _Action @Action = new _Action();
-            public object @__Action = new object();
+            public IElement @__Action = new MofElement();
 
             public class _ActionInputPin
             {
@@ -2412,7 +2415,7 @@ namespace DatenMeister
             }
 
             public _ActionInputPin @ActionInputPin = new _ActionInputPin();
-            public object @__ActionInputPin = new object();
+            public IElement @__ActionInputPin = new MofElement();
 
             public class _AddStructuralFeatureValueAction
             {
@@ -2423,7 +2426,7 @@ namespace DatenMeister
             }
 
             public _AddStructuralFeatureValueAction @AddStructuralFeatureValueAction = new _AddStructuralFeatureValueAction();
-            public object @__AddStructuralFeatureValueAction = new object();
+            public IElement @__AddStructuralFeatureValueAction = new MofElement();
 
             public class _AddVariableValueAction
             {
@@ -2434,7 +2437,7 @@ namespace DatenMeister
             }
 
             public _AddVariableValueAction @AddVariableValueAction = new _AddVariableValueAction();
-            public object @__AddVariableValueAction = new object();
+            public IElement @__AddVariableValueAction = new MofElement();
 
             public class _BroadcastSignalAction
             {
@@ -2443,7 +2446,7 @@ namespace DatenMeister
             }
 
             public _BroadcastSignalAction @BroadcastSignalAction = new _BroadcastSignalAction();
-            public object @__BroadcastSignalAction = new object();
+            public IElement @__BroadcastSignalAction = new MofElement();
 
             public class _CallAction
             {
@@ -2454,7 +2457,7 @@ namespace DatenMeister
             }
 
             public _CallAction @CallAction = new _CallAction();
-            public object @__CallAction = new object();
+            public IElement @__CallAction = new MofElement();
 
             public class _CallBehaviorAction
             {
@@ -2463,7 +2466,7 @@ namespace DatenMeister
             }
 
             public _CallBehaviorAction @CallBehaviorAction = new _CallBehaviorAction();
-            public object @__CallBehaviorAction = new object();
+            public IElement @__CallBehaviorAction = new MofElement();
 
             public class _CallOperationAction
             {
@@ -2474,7 +2477,7 @@ namespace DatenMeister
             }
 
             public _CallOperationAction @CallOperationAction = new _CallOperationAction();
-            public object @__CallOperationAction = new object();
+            public IElement @__CallOperationAction = new MofElement();
 
             public class _Clause
             {
@@ -2493,7 +2496,7 @@ namespace DatenMeister
             }
 
             public _Clause @Clause = new _Clause();
-            public object @__Clause = new object();
+            public IElement @__Clause = new MofElement();
 
             public class _ClearAssociationAction
             {
@@ -2504,7 +2507,7 @@ namespace DatenMeister
             }
 
             public _ClearAssociationAction @ClearAssociationAction = new _ClearAssociationAction();
-            public object @__ClearAssociationAction = new object();
+            public IElement @__ClearAssociationAction = new MofElement();
 
             public class _ClearStructuralFeatureAction
             {
@@ -2513,14 +2516,14 @@ namespace DatenMeister
             }
 
             public _ClearStructuralFeatureAction @ClearStructuralFeatureAction = new _ClearStructuralFeatureAction();
-            public object @__ClearStructuralFeatureAction = new object();
+            public IElement @__ClearStructuralFeatureAction = new MofElement();
 
             public class _ClearVariableAction
             {
             }
 
             public _ClearVariableAction @ClearVariableAction = new _ClearVariableAction();
-            public object @__ClearVariableAction = new object();
+            public IElement @__ClearVariableAction = new MofElement();
 
             public class _ConditionalNode
             {
@@ -2535,7 +2538,7 @@ namespace DatenMeister
             }
 
             public _ConditionalNode @ConditionalNode = new _ConditionalNode();
-            public object @__ConditionalNode = new object();
+            public IElement @__ConditionalNode = new MofElement();
 
             public class _CreateLinkAction
             {
@@ -2544,7 +2547,7 @@ namespace DatenMeister
             }
 
             public _CreateLinkAction @CreateLinkAction = new _CreateLinkAction();
-            public object @__CreateLinkAction = new object();
+            public IElement @__CreateLinkAction = new MofElement();
 
             public class _CreateLinkObjectAction
             {
@@ -2553,7 +2556,7 @@ namespace DatenMeister
             }
 
             public _CreateLinkObjectAction @CreateLinkObjectAction = new _CreateLinkObjectAction();
-            public object @__CreateLinkObjectAction = new object();
+            public IElement @__CreateLinkObjectAction = new MofElement();
 
             public class _CreateObjectAction
             {
@@ -2564,7 +2567,7 @@ namespace DatenMeister
             }
 
             public _CreateObjectAction @CreateObjectAction = new _CreateObjectAction();
-            public object @__CreateObjectAction = new object();
+            public IElement @__CreateObjectAction = new MofElement();
 
             public class _DestroyLinkAction
             {
@@ -2573,7 +2576,7 @@ namespace DatenMeister
             }
 
             public _DestroyLinkAction @DestroyLinkAction = new _DestroyLinkAction();
-            public object @__DestroyLinkAction = new object();
+            public IElement @__DestroyLinkAction = new MofElement();
 
             public class _DestroyObjectAction
             {
@@ -2586,7 +2589,7 @@ namespace DatenMeister
             }
 
             public _DestroyObjectAction @DestroyObjectAction = new _DestroyObjectAction();
-            public object @__DestroyObjectAction = new object();
+            public IElement @__DestroyObjectAction = new MofElement();
 
             public class _ExpansionNode
             {
@@ -2597,7 +2600,7 @@ namespace DatenMeister
             }
 
             public _ExpansionNode @ExpansionNode = new _ExpansionNode();
-            public object @__ExpansionNode = new object();
+            public IElement @__ExpansionNode = new MofElement();
 
             public class _ExpansionRegion
             {
@@ -2610,14 +2613,14 @@ namespace DatenMeister
             }
 
             public _ExpansionRegion @ExpansionRegion = new _ExpansionRegion();
-            public object @__ExpansionRegion = new object();
+            public IElement @__ExpansionRegion = new MofElement();
 
             public class _InputPin
             {
             }
 
             public _InputPin @InputPin = new _InputPin();
-            public object @__InputPin = new object();
+            public IElement @__InputPin = new MofElement();
 
             public class _InvocationAction
             {
@@ -2628,7 +2631,7 @@ namespace DatenMeister
             }
 
             public _InvocationAction @InvocationAction = new _InvocationAction();
-            public object @__InvocationAction = new object();
+            public IElement @__InvocationAction = new MofElement();
 
             public class _LinkAction
             {
@@ -2639,7 +2642,7 @@ namespace DatenMeister
             }
 
             public _LinkAction @LinkAction = new _LinkAction();
-            public object @__LinkAction = new object();
+            public IElement @__LinkAction = new MofElement();
 
             public class _LinkEndCreationData
             {
@@ -2650,7 +2653,7 @@ namespace DatenMeister
             }
 
             public _LinkEndCreationData @LinkEndCreationData = new _LinkEndCreationData();
-            public object @__LinkEndCreationData = new object();
+            public IElement @__LinkEndCreationData = new MofElement();
 
             public class _LinkEndData
             {
@@ -2663,7 +2666,7 @@ namespace DatenMeister
             }
 
             public _LinkEndData @LinkEndData = new _LinkEndData();
-            public object @__LinkEndData = new object();
+            public IElement @__LinkEndData = new MofElement();
 
             public class _LinkEndDestructionData
             {
@@ -2674,7 +2677,7 @@ namespace DatenMeister
             }
 
             public _LinkEndDestructionData @LinkEndDestructionData = new _LinkEndDestructionData();
-            public object @__LinkEndDestructionData = new object();
+            public IElement @__LinkEndDestructionData = new MofElement();
 
             public class _LoopNode
             {
@@ -2699,7 +2702,7 @@ namespace DatenMeister
             }
 
             public _LoopNode @LoopNode = new _LoopNode();
-            public object @__LoopNode = new object();
+            public IElement @__LoopNode = new MofElement();
 
             public class _OpaqueAction
             {
@@ -2714,14 +2717,14 @@ namespace DatenMeister
             }
 
             public _OpaqueAction @OpaqueAction = new _OpaqueAction();
-            public object @__OpaqueAction = new object();
+            public IElement @__OpaqueAction = new MofElement();
 
             public class _OutputPin
             {
             }
 
             public _OutputPin @OutputPin = new _OutputPin();
-            public object @__OutputPin = new object();
+            public IElement @__OutputPin = new MofElement();
 
             public class _Pin
             {
@@ -2730,7 +2733,7 @@ namespace DatenMeister
             }
 
             public _Pin @Pin = new _Pin();
-            public object @__Pin = new object();
+            public IElement @__Pin = new MofElement();
 
             public class _QualifierValue
             {
@@ -2741,7 +2744,7 @@ namespace DatenMeister
             }
 
             public _QualifierValue @QualifierValue = new _QualifierValue();
-            public object @__QualifierValue = new object();
+            public IElement @__QualifierValue = new MofElement();
 
             public class _RaiseExceptionAction
             {
@@ -2750,7 +2753,7 @@ namespace DatenMeister
             }
 
             public _RaiseExceptionAction @RaiseExceptionAction = new _RaiseExceptionAction();
-            public object @__RaiseExceptionAction = new object();
+            public IElement @__RaiseExceptionAction = new MofElement();
 
             public class _ReadExtentAction
             {
@@ -2761,7 +2764,7 @@ namespace DatenMeister
             }
 
             public _ReadExtentAction @ReadExtentAction = new _ReadExtentAction();
-            public object @__ReadExtentAction = new object();
+            public IElement @__ReadExtentAction = new MofElement();
 
             public class _ReadIsClassifiedObjectAction
             {
@@ -2776,7 +2779,7 @@ namespace DatenMeister
             }
 
             public _ReadIsClassifiedObjectAction @ReadIsClassifiedObjectAction = new _ReadIsClassifiedObjectAction();
-            public object @__ReadIsClassifiedObjectAction = new object();
+            public IElement @__ReadIsClassifiedObjectAction = new MofElement();
 
             public class _ReadLinkAction
             {
@@ -2785,7 +2788,7 @@ namespace DatenMeister
             }
 
             public _ReadLinkAction @ReadLinkAction = new _ReadLinkAction();
-            public object @__ReadLinkAction = new object();
+            public IElement @__ReadLinkAction = new MofElement();
 
             public class _ReadLinkObjectEndAction
             {
@@ -2798,7 +2801,7 @@ namespace DatenMeister
             }
 
             public _ReadLinkObjectEndAction @ReadLinkObjectEndAction = new _ReadLinkObjectEndAction();
-            public object @__ReadLinkObjectEndAction = new object();
+            public IElement @__ReadLinkObjectEndAction = new MofElement();
 
             public class _ReadLinkObjectEndQualifierAction
             {
@@ -2811,7 +2814,7 @@ namespace DatenMeister
             }
 
             public _ReadLinkObjectEndQualifierAction @ReadLinkObjectEndQualifierAction = new _ReadLinkObjectEndQualifierAction();
-            public object @__ReadLinkObjectEndQualifierAction = new object();
+            public IElement @__ReadLinkObjectEndQualifierAction = new MofElement();
 
             public class _ReadSelfAction
             {
@@ -2820,7 +2823,7 @@ namespace DatenMeister
             }
 
             public _ReadSelfAction @ReadSelfAction = new _ReadSelfAction();
-            public object @__ReadSelfAction = new object();
+            public IElement @__ReadSelfAction = new MofElement();
 
             public class _ReadStructuralFeatureAction
             {
@@ -2829,7 +2832,7 @@ namespace DatenMeister
             }
 
             public _ReadStructuralFeatureAction @ReadStructuralFeatureAction = new _ReadStructuralFeatureAction();
-            public object @__ReadStructuralFeatureAction = new object();
+            public IElement @__ReadStructuralFeatureAction = new MofElement();
 
             public class _ReadVariableAction
             {
@@ -2838,7 +2841,7 @@ namespace DatenMeister
             }
 
             public _ReadVariableAction @ReadVariableAction = new _ReadVariableAction();
-            public object @__ReadVariableAction = new object();
+            public IElement @__ReadVariableAction = new MofElement();
 
             public class _ReclassifyObjectAction
             {
@@ -2853,7 +2856,7 @@ namespace DatenMeister
             }
 
             public _ReclassifyObjectAction @ReclassifyObjectAction = new _ReclassifyObjectAction();
-            public object @__ReclassifyObjectAction = new object();
+            public IElement @__ReclassifyObjectAction = new MofElement();
 
             public class _ReduceAction
             {
@@ -2868,7 +2871,7 @@ namespace DatenMeister
             }
 
             public _ReduceAction @ReduceAction = new _ReduceAction();
-            public object @__ReduceAction = new object();
+            public IElement @__ReduceAction = new MofElement();
 
             public class _RemoveStructuralFeatureValueAction
             {
@@ -2879,7 +2882,7 @@ namespace DatenMeister
             }
 
             public _RemoveStructuralFeatureValueAction @RemoveStructuralFeatureValueAction = new _RemoveStructuralFeatureValueAction();
-            public object @__RemoveStructuralFeatureValueAction = new object();
+            public IElement @__RemoveStructuralFeatureValueAction = new MofElement();
 
             public class _RemoveVariableValueAction
             {
@@ -2890,7 +2893,7 @@ namespace DatenMeister
             }
 
             public _RemoveVariableValueAction @RemoveVariableValueAction = new _RemoveVariableValueAction();
-            public object @__RemoveVariableValueAction = new object();
+            public IElement @__RemoveVariableValueAction = new MofElement();
 
             public class _ReplyAction
             {
@@ -2903,7 +2906,7 @@ namespace DatenMeister
             }
 
             public _ReplyAction @ReplyAction = new _ReplyAction();
-            public object @__ReplyAction = new object();
+            public IElement @__ReplyAction = new MofElement();
 
             public class _SendObjectAction
             {
@@ -2914,7 +2917,7 @@ namespace DatenMeister
             }
 
             public _SendObjectAction @SendObjectAction = new _SendObjectAction();
-            public object @__SendObjectAction = new object();
+            public IElement @__SendObjectAction = new MofElement();
 
             public class _SendSignalAction
             {
@@ -2925,7 +2928,7 @@ namespace DatenMeister
             }
 
             public _SendSignalAction @SendSignalAction = new _SendSignalAction();
-            public object @__SendSignalAction = new object();
+            public IElement @__SendSignalAction = new MofElement();
 
             public class _SequenceNode
             {
@@ -2934,7 +2937,7 @@ namespace DatenMeister
             }
 
             public _SequenceNode @SequenceNode = new _SequenceNode();
-            public object @__SequenceNode = new object();
+            public IElement @__SequenceNode = new MofElement();
 
             public class _StartClassifierBehaviorAction
             {
@@ -2943,7 +2946,7 @@ namespace DatenMeister
             }
 
             public _StartClassifierBehaviorAction @StartClassifierBehaviorAction = new _StartClassifierBehaviorAction();
-            public object @__StartClassifierBehaviorAction = new object();
+            public IElement @__StartClassifierBehaviorAction = new MofElement();
 
             public class _StartObjectBehaviorAction
             {
@@ -2952,7 +2955,7 @@ namespace DatenMeister
             }
 
             public _StartObjectBehaviorAction @StartObjectBehaviorAction = new _StartObjectBehaviorAction();
-            public object @__StartObjectBehaviorAction = new object();
+            public IElement @__StartObjectBehaviorAction = new MofElement();
 
             public class _StructuralFeatureAction
             {
@@ -2963,7 +2966,7 @@ namespace DatenMeister
             }
 
             public _StructuralFeatureAction @StructuralFeatureAction = new _StructuralFeatureAction();
-            public object @__StructuralFeatureAction = new object();
+            public IElement @__StructuralFeatureAction = new MofElement();
 
             public class _StructuredActivityNode
             {
@@ -2984,7 +2987,7 @@ namespace DatenMeister
             }
 
             public _StructuredActivityNode @StructuredActivityNode = new _StructuredActivityNode();
-            public object @__StructuredActivityNode = new object();
+            public IElement @__StructuredActivityNode = new MofElement();
 
             public class _TestIdentityAction
             {
@@ -2997,7 +3000,7 @@ namespace DatenMeister
             }
 
             public _TestIdentityAction @TestIdentityAction = new _TestIdentityAction();
-            public object @__TestIdentityAction = new object();
+            public IElement @__TestIdentityAction = new MofElement();
 
             public class _UnmarshallAction
             {
@@ -3010,7 +3013,7 @@ namespace DatenMeister
             }
 
             public _UnmarshallAction @UnmarshallAction = new _UnmarshallAction();
-            public object @__UnmarshallAction = new object();
+            public IElement @__UnmarshallAction = new MofElement();
 
             public class _ValuePin
             {
@@ -3019,7 +3022,7 @@ namespace DatenMeister
             }
 
             public _ValuePin @ValuePin = new _ValuePin();
-            public object @__ValuePin = new object();
+            public IElement @__ValuePin = new MofElement();
 
         }
 

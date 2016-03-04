@@ -36,7 +36,7 @@ namespace DatenMeister
         {
             public class _Tag
             {
-                public object @tagOwner = new object();
+                public object @tagOwner = "tagOwner";
 
             }
 
@@ -51,11 +51,11 @@ namespace DatenMeister
         {
             public class _Tag
             {
-                public object @name = new object();
+                public object @name = "name";
 
-                public object @value = new object();
+                public object @value = "value";
 
-                public object @element = new object();
+                public object @element = "element";
 
             }
 
@@ -110,9 +110,9 @@ namespace DatenMeister
 
             public class _Argument
             {
-                public object @name = new object();
+                public object @name = "name";
 
-                public object @value = new object();
+                public object @value = "value";
 
             }
 
@@ -128,11 +128,11 @@ namespace DatenMeister
 
             public class _Link
             {
-                public object @firstElement = new object();
+                public object @firstElement = "firstElement";
 
-                public object @secondElement = new object();
+                public object @secondElement = "secondElement";
 
-                public object @association = new object();
+                public object @association = "association";
 
             }
 
@@ -141,11 +141,11 @@ namespace DatenMeister
 
             public class _Exception
             {
-                public object @objectInError = new object();
+                public object @objectInError = "objectInError";
 
-                public object @elementInError = new object();
+                public object @elementInError = "elementInError";
 
-                public object @description = new object();
+                public object @description = "description";
 
             }
 
@@ -160,7 +160,7 @@ namespace DatenMeister
         {
             public class _Factory
             {
-                public object @package = new object();
+                public object @package = "package";
 
             }
 
@@ -183,7 +183,7 @@ namespace DatenMeister
 
             public class _Element
             {
-                public object @metaclass = new object();
+                public object @metaclass = "metaclass";
 
             }
 

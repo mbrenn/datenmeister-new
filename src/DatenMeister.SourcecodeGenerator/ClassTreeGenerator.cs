@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.SourcecodeGenerator
@@ -100,8 +101,15 @@ namespace DatenMeister.SourcecodeGenerator
 
             var nameAsObject = propertyObject.get("name");
             var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
-            Result.AppendLine($"{stack.Indentation}public object @{name} = new object();");
-            Result.AppendLine();
+            if (name != null)
+            {
+                Result.AppendLine($"{stack.Indentation}public object @{name} = \"{name}\";");
+                Result.AppendLine();
+            }
+            else
+            {
+                Debug.WriteLine($"Found unknown property: {propertyObject}");
+            }
         }
     }
 }

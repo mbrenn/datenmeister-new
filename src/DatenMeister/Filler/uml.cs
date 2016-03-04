@@ -10,21 +10,21 @@ namespace DatenMeister
         {
             public class _Activity
             {
-                public object @edge = new object();
+                public object @edge = "edge";
 
-                public object @group = new object();
+                public object @group = "group";
 
-                public object @isReadOnly = new object();
+                public object @isReadOnly = "isReadOnly";
 
-                public object @isSingleExecution = new object();
+                public object @isSingleExecution = "isSingleExecution";
 
-                public object @node = new object();
+                public object @node = "node";
 
-                public object @partition = new object();
+                public object @partition = "partition";
 
-                public object @structuredNode = new object();
+                public object @structuredNode = "structuredNode";
 
-                public object @variable = new object();
+                public object @variable = "variable";
 
             }
 
@@ -33,25 +33,25 @@ namespace DatenMeister
 
             public class _ActivityEdge
             {
-                public object @activity = new object();
+                public object @activity = "activity";
 
-                public object @guard = new object();
+                public object @guard = "guard";
 
-                public object @inGroup = new object();
+                public object @inGroup = "inGroup";
 
-                public object @inPartition = new object();
+                public object @inPartition = "inPartition";
 
-                public object @inStructuredNode = new object();
+                public object @inStructuredNode = "inStructuredNode";
 
-                public object @interrupts = new object();
+                public object @interrupts = "interrupts";
 
-                public object @redefinedEdge = new object();
+                public object @redefinedEdge = "redefinedEdge";
 
-                public object @source = new object();
+                public object @source = "source";
 
-                public object @target = new object();
+                public object @target = "target";
 
-                public object @weight = new object();
+                public object @weight = "weight";
 
             }
 
@@ -67,15 +67,15 @@ namespace DatenMeister
 
             public class _ActivityGroup
             {
-                public object @containedEdge = new object();
+                public object @containedEdge = "containedEdge";
 
-                public object @containedNode = new object();
+                public object @containedNode = "containedNode";
 
-                public object @inActivity = new object();
+                public object @inActivity = "inActivity";
 
-                public object @subgroup = new object();
+                public object @subgroup = "subgroup";
 
-                public object @superGroup = new object();
+                public object @superGroup = "superGroup";
 
             }
 
@@ -84,21 +84,21 @@ namespace DatenMeister
 
             public class _ActivityNode
             {
-                public object @activity = new object();
+                public object @activity = "activity";
 
-                public object @inGroup = new object();
+                public object @inGroup = "inGroup";
 
-                public object @inInterruptibleRegion = new object();
+                public object @inInterruptibleRegion = "inInterruptibleRegion";
 
-                public object @inPartition = new object();
+                public object @inPartition = "inPartition";
 
-                public object @inStructuredNode = new object();
+                public object @inStructuredNode = "inStructuredNode";
 
-                public object @incoming = new object();
+                public object @incoming = "incoming";
 
-                public object @outgoing = new object();
+                public object @outgoing = "outgoing";
 
-                public object @redefinedNode = new object();
+                public object @redefinedNode = "redefinedNode";
 
             }
 
@@ -107,7 +107,7 @@ namespace DatenMeister
 
             public class _ActivityParameterNode
             {
-                public object @parameter = new object();
+                public object @parameter = "parameter";
 
             }
 
@@ -116,19 +116,19 @@ namespace DatenMeister
 
             public class _ActivityPartition
             {
-                public object @edge = new object();
+                public object @edge = "edge";
 
-                public object @isDimension = new object();
+                public object @isDimension = "isDimension";
 
-                public object @isExternal = new object();
+                public object @isExternal = "isExternal";
 
-                public object @node = new object();
+                public object @node = "node";
 
-                public object @represents = new object();
+                public object @represents = "represents";
 
-                public object @subpartition = new object();
+                public object @subpartition = "subpartition";
 
-                public object @superPartition = new object();
+                public object @superPartition = "superPartition";
 
             }
 
@@ -165,9 +165,9 @@ namespace DatenMeister
 
             public class _DecisionNode
             {
-                public object @decisionInput = new object();
+                public object @decisionInput = "decisionInput";
 
-                public object @decisionInputFlow = new object();
+                public object @decisionInputFlow = "decisionInputFlow";
 
             }
 
@@ -176,13 +176,13 @@ namespace DatenMeister
 
             public class _ExceptionHandler
             {
-                public object @exceptionInput = new object();
+                public object @exceptionInput = "exceptionInput";
 
-                public object @exceptionType = new object();
+                public object @exceptionType = "exceptionType";
 
-                public object @handlerBody = new object();
+                public object @handlerBody = "handlerBody";
 
-                public object @protectedNode = new object();
+                public object @protectedNode = "protectedNode";
 
             }
 
@@ -191,7 +191,7 @@ namespace DatenMeister
 
             public class _ExecutableNode
             {
-                public object @handler = new object();
+                public object @handler = "handler";
 
             }
 
@@ -228,9 +228,9 @@ namespace DatenMeister
 
             public class _InterruptibleActivityRegion
             {
-                public object @interruptingEdge = new object();
+                public object @interruptingEdge = "interruptingEdge";
 
-                public object @node = new object();
+                public object @node = "node";
 
             }
 
@@ -239,9 +239,9 @@ namespace DatenMeister
 
             public class _JoinNode
             {
-                public object @isCombineDuplicate = new object();
+                public object @isCombineDuplicate = "isCombineDuplicate";
 
-                public object @joinSpec = new object();
+                public object @joinSpec = "joinSpec";
 
             }
 
@@ -257,13 +257,13 @@ namespace DatenMeister
 
             public class _ObjectFlow
             {
-                public object @isMulticast = new object();
+                public object @isMulticast = "isMulticast";
 
-                public object @isMultireceive = new object();
+                public object @isMultireceive = "isMultireceive";
 
-                public object @selection = new object();
+                public object @selection = "selection";
 
-                public object @transformation = new object();
+                public object @transformation = "transformation";
 
             }
 
@@ -272,15 +272,15 @@ namespace DatenMeister
 
             public class _ObjectNode
             {
-                public object @inState = new object();
+                public object @inState = "inState";
 
-                public object @isControlType = new object();
+                public object @isControlType = "isControlType";
 
-                public object @ordering = new object();
+                public object @ordering = "ordering";
 
-                public object @selection = new object();
+                public object @selection = "selection";
 
-                public object @upperBound = new object();
+                public object @upperBound = "upperBound";
 
             }
 
@@ -289,9 +289,9 @@ namespace DatenMeister
 
             public class _Variable
             {
-                public object @activityScope = new object();
+                public object @activityScope = "activityScope";
 
-                public object @scope = new object();
+                public object @scope = "scope";
 
             }
 
@@ -306,9 +306,9 @@ namespace DatenMeister
         {
             public class _Duration
             {
-                public object @expr = new object();
+                public object @expr = "expr";
 
-                public object @observation = new object();
+                public object @observation = "observation";
 
             }
 
@@ -317,9 +317,9 @@ namespace DatenMeister
 
             public class _DurationConstraint
             {
-                public object @firstEvent = new object();
+                public object @firstEvent = "firstEvent";
 
-                public object @specification = new object();
+                public object @specification = "specification";
 
             }
 
@@ -328,9 +328,9 @@ namespace DatenMeister
 
             public class _DurationInterval
             {
-                public object @max = new object();
+                public object @max = "max";
 
-                public object @min = new object();
+                public object @min = "min";
 
             }
 
@@ -339,9 +339,9 @@ namespace DatenMeister
 
             public class _DurationObservation
             {
-                public object @event = new object();
+                public object @event = "event";
 
-                public object @firstEvent = new object();
+                public object @firstEvent = "firstEvent";
 
             }
 
@@ -350,9 +350,9 @@ namespace DatenMeister
 
             public class _Expression
             {
-                public object @operand = new object();
+                public object @operand = "operand";
 
-                public object @symbol = new object();
+                public object @symbol = "symbol";
 
             }
 
@@ -361,9 +361,9 @@ namespace DatenMeister
 
             public class _Interval
             {
-                public object @max = new object();
+                public object @max = "max";
 
-                public object @min = new object();
+                public object @min = "min";
 
             }
 
@@ -372,7 +372,7 @@ namespace DatenMeister
 
             public class _IntervalConstraint
             {
-                public object @specification = new object();
+                public object @specification = "specification";
 
             }
 
@@ -381,7 +381,7 @@ namespace DatenMeister
 
             public class _LiteralBoolean
             {
-                public object @value = new object();
+                public object @value = "value";
 
             }
 
@@ -390,7 +390,7 @@ namespace DatenMeister
 
             public class _LiteralInteger
             {
-                public object @value = new object();
+                public object @value = "value";
 
             }
 
@@ -406,7 +406,7 @@ namespace DatenMeister
 
             public class _LiteralReal
             {
-                public object @value = new object();
+                public object @value = "value";
 
             }
 
@@ -422,7 +422,7 @@ namespace DatenMeister
 
             public class _LiteralString
             {
-                public object @value = new object();
+                public object @value = "value";
 
             }
 
@@ -431,7 +431,7 @@ namespace DatenMeister
 
             public class _LiteralUnlimitedNatural
             {
-                public object @value = new object();
+                public object @value = "value";
 
             }
 
@@ -447,13 +447,13 @@ namespace DatenMeister
 
             public class _OpaqueExpression
             {
-                public object @behavior = new object();
+                public object @behavior = "behavior";
 
-                public object @body = new object();
+                public object @body = "body";
 
-                public object @language = new object();
+                public object @language = "language";
 
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -462,9 +462,9 @@ namespace DatenMeister
 
             public class _StringExpression
             {
-                public object @owningExpression = new object();
+                public object @owningExpression = "owningExpression";
 
-                public object @subExpression = new object();
+                public object @subExpression = "subExpression";
 
             }
 
@@ -473,9 +473,9 @@ namespace DatenMeister
 
             public class _TimeConstraint
             {
-                public object @firstEvent = new object();
+                public object @firstEvent = "firstEvent";
 
-                public object @specification = new object();
+                public object @specification = "specification";
 
             }
 
@@ -484,9 +484,9 @@ namespace DatenMeister
 
             public class _TimeExpression
             {
-                public object @expr = new object();
+                public object @expr = "expr";
 
-                public object @observation = new object();
+                public object @observation = "observation";
 
             }
 
@@ -495,9 +495,9 @@ namespace DatenMeister
 
             public class _TimeInterval
             {
-                public object @max = new object();
+                public object @max = "max";
 
-                public object @min = new object();
+                public object @min = "min";
 
             }
 
@@ -506,9 +506,9 @@ namespace DatenMeister
 
             public class _TimeObservation
             {
-                public object @event = new object();
+                public object @event = "event";
 
-                public object @firstEvent = new object();
+                public object @firstEvent = "firstEvent";
 
             }
 
@@ -537,13 +537,13 @@ namespace DatenMeister
 
             public class _Extend
             {
-                public object @condition = new object();
+                public object @condition = "condition";
 
-                public object @extendedCase = new object();
+                public object @extendedCase = "extendedCase";
 
-                public object @extension = new object();
+                public object @extension = "extension";
 
-                public object @extensionLocation = new object();
+                public object @extensionLocation = "extensionLocation";
 
             }
 
@@ -552,7 +552,7 @@ namespace DatenMeister
 
             public class _ExtensionPoint
             {
-                public object @useCase = new object();
+                public object @useCase = "useCase";
 
             }
 
@@ -561,9 +561,9 @@ namespace DatenMeister
 
             public class _Include
             {
-                public object @addition = new object();
+                public object @addition = "addition";
 
-                public object @includingCase = new object();
+                public object @includingCase = "includingCase";
 
             }
 
@@ -572,13 +572,13 @@ namespace DatenMeister
 
             public class _UseCase
             {
-                public object @extend = new object();
+                public object @extend = "extend";
 
-                public object @extensionPoint = new object();
+                public object @extensionPoint = "extensionPoint";
 
-                public object @include = new object();
+                public object @include = "include";
 
-                public object @subject = new object();
+                public object @subject = "subject";
 
             }
 
@@ -593,15 +593,15 @@ namespace DatenMeister
         {
             public class _Association
             {
-                public object @endType = new object();
+                public object @endType = "endType";
 
-                public object @isDerived = new object();
+                public object @isDerived = "isDerived";
 
-                public object @memberEnd = new object();
+                public object @memberEnd = "memberEnd";
 
-                public object @navigableOwnedEnd = new object();
+                public object @navigableOwnedEnd = "navigableOwnedEnd";
 
-                public object @ownedEnd = new object();
+                public object @ownedEnd = "ownedEnd";
 
             }
 
@@ -617,21 +617,21 @@ namespace DatenMeister
 
             public class _Class
             {
-                public object @extension = new object();
+                public object @extension = "extension";
 
-                public object @isAbstract = new object();
+                public object @isAbstract = "isAbstract";
 
-                public object @isActive = new object();
+                public object @isActive = "isActive";
 
-                public object @nestedClassifier = new object();
+                public object @nestedClassifier = "nestedClassifier";
 
-                public object @ownedAttribute = new object();
+                public object @ownedAttribute = "ownedAttribute";
 
-                public object @ownedOperation = new object();
+                public object @ownedOperation = "ownedOperation";
 
-                public object @ownedReception = new object();
+                public object @ownedReception = "ownedReception";
 
-                public object @superClass = new object();
+                public object @superClass = "superClass";
 
             }
 
@@ -640,7 +640,7 @@ namespace DatenMeister
 
             public class _Collaboration
             {
-                public object @collaborationRole = new object();
+                public object @collaborationRole = "collaborationRole";
 
             }
 
@@ -649,9 +649,9 @@ namespace DatenMeister
 
             public class _CollaborationUse
             {
-                public object @roleBinding = new object();
+                public object @roleBinding = "roleBinding";
 
-                public object @type = new object();
+                public object @type = "type";
 
             }
 
@@ -660,15 +660,15 @@ namespace DatenMeister
 
             public class _Component
             {
-                public object @isIndirectlyInstantiated = new object();
+                public object @isIndirectlyInstantiated = "isIndirectlyInstantiated";
 
-                public object @packagedElement = new object();
+                public object @packagedElement = "packagedElement";
 
-                public object @provided = new object();
+                public object @provided = "provided";
 
-                public object @realization = new object();
+                public object @realization = "realization";
 
-                public object @required = new object();
+                public object @required = "required";
 
             }
 
@@ -677,9 +677,9 @@ namespace DatenMeister
 
             public class _ComponentRealization
             {
-                public object @abstraction = new object();
+                public object @abstraction = "abstraction";
 
-                public object @realizingClassifier = new object();
+                public object @realizingClassifier = "realizingClassifier";
 
             }
 
@@ -688,9 +688,9 @@ namespace DatenMeister
 
             public class _ConnectableElement
             {
-                public object @end = new object();
+                public object @end = "end";
 
-                public object @templateParameter = new object();
+                public object @templateParameter = "templateParameter";
 
             }
 
@@ -699,7 +699,7 @@ namespace DatenMeister
 
             public class _ConnectableElementTemplateParameter
             {
-                public object @parameteredElement = new object();
+                public object @parameteredElement = "parameteredElement";
 
             }
 
@@ -708,15 +708,15 @@ namespace DatenMeister
 
             public class _Connector
             {
-                public object @contract = new object();
+                public object @contract = "contract";
 
-                public object @end = new object();
+                public object @end = "end";
 
-                public object @kind = new object();
+                public object @kind = "kind";
 
-                public object @redefinedConnector = new object();
+                public object @redefinedConnector = "redefinedConnector";
 
-                public object @type = new object();
+                public object @type = "type";
 
             }
 
@@ -725,11 +725,11 @@ namespace DatenMeister
 
             public class _ConnectorEnd
             {
-                public object @definingEnd = new object();
+                public object @definingEnd = "definingEnd";
 
-                public object @partWithPort = new object();
+                public object @partWithPort = "partWithPort";
 
-                public object @role = new object();
+                public object @role = "role";
 
             }
 
@@ -738,7 +738,7 @@ namespace DatenMeister
 
             public class _EncapsulatedClassifier
             {
-                public object @ownedPort = new object();
+                public object @ownedPort = "ownedPort";
 
             }
 
@@ -747,19 +747,19 @@ namespace DatenMeister
 
             public class _Port
             {
-                public object @isBehavior = new object();
+                public object @isBehavior = "isBehavior";
 
-                public object @isConjugated = new object();
+                public object @isConjugated = "isConjugated";
 
-                public object @isService = new object();
+                public object @isService = "isService";
 
-                public object @protocol = new object();
+                public object @protocol = "protocol";
 
-                public object @provided = new object();
+                public object @provided = "provided";
 
-                public object @redefinedPort = new object();
+                public object @redefinedPort = "redefinedPort";
 
-                public object @required = new object();
+                public object @required = "required";
 
             }
 
@@ -768,13 +768,13 @@ namespace DatenMeister
 
             public class _StructuredClassifier
             {
-                public object @ownedAttribute = new object();
+                public object @ownedAttribute = "ownedAttribute";
 
-                public object @ownedConnector = new object();
+                public object @ownedConnector = "ownedConnector";
 
-                public object @part = new object();
+                public object @part = "part";
 
-                public object @role = new object();
+                public object @role = "role";
 
             }
 
@@ -789,11 +789,11 @@ namespace DatenMeister
         {
             public class _ConnectionPointReference
             {
-                public object @entry = new object();
+                public object @entry = "entry";
 
-                public object @exit = new object();
+                public object @exit = "exit";
 
-                public object @state = new object();
+                public object @state = "state";
 
             }
 
@@ -809,9 +809,9 @@ namespace DatenMeister
 
             public class _ProtocolConformance
             {
-                public object @generalMachine = new object();
+                public object @generalMachine = "generalMachine";
 
-                public object @specificMachine = new object();
+                public object @specificMachine = "specificMachine";
 
             }
 
@@ -820,7 +820,7 @@ namespace DatenMeister
 
             public class _ProtocolStateMachine
             {
-                public object @conformance = new object();
+                public object @conformance = "conformance";
 
             }
 
@@ -829,11 +829,11 @@ namespace DatenMeister
 
             public class _ProtocolTransition
             {
-                public object @postCondition = new object();
+                public object @postCondition = "postCondition";
 
-                public object @preCondition = new object();
+                public object @preCondition = "preCondition";
 
-                public object @referred = new object();
+                public object @referred = "referred";
 
             }
 
@@ -842,11 +842,11 @@ namespace DatenMeister
 
             public class _Pseudostate
             {
-                public object @kind = new object();
+                public object @kind = "kind";
 
-                public object @state = new object();
+                public object @state = "state";
 
-                public object @stateMachine = new object();
+                public object @stateMachine = "stateMachine";
 
             }
 
@@ -855,17 +855,17 @@ namespace DatenMeister
 
             public class _Region
             {
-                public object @extendedRegion = new object();
+                public object @extendedRegion = "extendedRegion";
 
-                public object @redefinitionContext = new object();
+                public object @redefinitionContext = "redefinitionContext";
 
-                public object @state = new object();
+                public object @state = "state";
 
-                public object @stateMachine = new object();
+                public object @stateMachine = "stateMachine";
 
-                public object @subvertex = new object();
+                public object @subvertex = "subvertex";
 
-                public object @transition = new object();
+                public object @transition = "transition";
 
             }
 
@@ -874,35 +874,35 @@ namespace DatenMeister
 
             public class _State
             {
-                public object @connection = new object();
+                public object @connection = "connection";
 
-                public object @connectionPoint = new object();
+                public object @connectionPoint = "connectionPoint";
 
-                public object @deferrableTrigger = new object();
+                public object @deferrableTrigger = "deferrableTrigger";
 
-                public object @doActivity = new object();
+                public object @doActivity = "doActivity";
 
-                public object @entry = new object();
+                public object @entry = "entry";
 
-                public object @exit = new object();
+                public object @exit = "exit";
 
-                public object @isComposite = new object();
+                public object @isComposite = "isComposite";
 
-                public object @isOrthogonal = new object();
+                public object @isOrthogonal = "isOrthogonal";
 
-                public object @isSimple = new object();
+                public object @isSimple = "isSimple";
 
-                public object @isSubmachineState = new object();
+                public object @isSubmachineState = "isSubmachineState";
 
-                public object @redefinedState = new object();
+                public object @redefinedState = "redefinedState";
 
-                public object @redefinitionContext = new object();
+                public object @redefinitionContext = "redefinitionContext";
 
-                public object @region = new object();
+                public object @region = "region";
 
-                public object @stateInvariant = new object();
+                public object @stateInvariant = "stateInvariant";
 
-                public object @submachine = new object();
+                public object @submachine = "submachine";
 
             }
 
@@ -911,13 +911,13 @@ namespace DatenMeister
 
             public class _StateMachine
             {
-                public object @connectionPoint = new object();
+                public object @connectionPoint = "connectionPoint";
 
-                public object @extendedStateMachine = new object();
+                public object @extendedStateMachine = "extendedStateMachine";
 
-                public object @region = new object();
+                public object @region = "region";
 
-                public object @submachineState = new object();
+                public object @submachineState = "submachineState";
 
             }
 
@@ -926,23 +926,23 @@ namespace DatenMeister
 
             public class _Transition
             {
-                public object @container = new object();
+                public object @container = "container";
 
-                public object @effect = new object();
+                public object @effect = "effect";
 
-                public object @guard = new object();
+                public object @guard = "guard";
 
-                public object @kind = new object();
+                public object @kind = "kind";
 
-                public object @redefinedTransition = new object();
+                public object @redefinedTransition = "redefinedTransition";
 
-                public object @redefinitionContext = new object();
+                public object @redefinitionContext = "redefinitionContext";
 
-                public object @source = new object();
+                public object @source = "source";
 
-                public object @target = new object();
+                public object @target = "target";
 
-                public object @trigger = new object();
+                public object @trigger = "trigger";
 
             }
 
@@ -951,11 +951,11 @@ namespace DatenMeister
 
             public class _Vertex
             {
-                public object @container = new object();
+                public object @container = "container";
 
-                public object @incoming = new object();
+                public object @incoming = "incoming";
 
-                public object @outgoing = new object();
+                public object @outgoing = "outgoing";
 
             }
 
@@ -970,11 +970,11 @@ namespace DatenMeister
         {
             public class _BehavioredClassifier
             {
-                public object @classifierBehavior = new object();
+                public object @classifierBehavior = "classifierBehavior";
 
-                public object @interfaceRealization = new object();
+                public object @interfaceRealization = "interfaceRealization";
 
-                public object @ownedBehavior = new object();
+                public object @ownedBehavior = "ownedBehavior";
 
             }
 
@@ -983,9 +983,9 @@ namespace DatenMeister
 
             public class _DataType
             {
-                public object @ownedAttribute = new object();
+                public object @ownedAttribute = "ownedAttribute";
 
-                public object @ownedOperation = new object();
+                public object @ownedOperation = "ownedOperation";
 
             }
 
@@ -994,7 +994,7 @@ namespace DatenMeister
 
             public class _Enumeration
             {
-                public object @ownedLiteral = new object();
+                public object @ownedLiteral = "ownedLiteral";
 
             }
 
@@ -1003,9 +1003,9 @@ namespace DatenMeister
 
             public class _EnumerationLiteral
             {
-                public object @classifier = new object();
+                public object @classifier = "classifier";
 
-                public object @enumeration = new object();
+                public object @enumeration = "enumeration";
 
             }
 
@@ -1014,17 +1014,17 @@ namespace DatenMeister
 
             public class _Interface
             {
-                public object @nestedClassifier = new object();
+                public object @nestedClassifier = "nestedClassifier";
 
-                public object @ownedAttribute = new object();
+                public object @ownedAttribute = "ownedAttribute";
 
-                public object @ownedOperation = new object();
+                public object @ownedOperation = "ownedOperation";
 
-                public object @ownedReception = new object();
+                public object @ownedReception = "ownedReception";
 
-                public object @protocol = new object();
+                public object @protocol = "protocol";
 
-                public object @redefinedInterface = new object();
+                public object @redefinedInterface = "redefinedInterface";
 
             }
 
@@ -1033,9 +1033,9 @@ namespace DatenMeister
 
             public class _InterfaceRealization
             {
-                public object @contract = new object();
+                public object @contract = "contract";
 
-                public object @implementingClassifier = new object();
+                public object @implementingClassifier = "implementingClassifier";
 
             }
 
@@ -1051,7 +1051,7 @@ namespace DatenMeister
 
             public class _Reception
             {
-                public object @signal = new object();
+                public object @signal = "signal";
 
             }
 
@@ -1060,7 +1060,7 @@ namespace DatenMeister
 
             public class _Signal
             {
-                public object @ownedAttribute = new object();
+                public object @ownedAttribute = "ownedAttribute";
 
             }
 
@@ -1075,11 +1075,11 @@ namespace DatenMeister
         {
             public class _Extension
             {
-                public object @isRequired = new object();
+                public object @isRequired = "isRequired";
 
-                public object @metaclass = new object();
+                public object @metaclass = "metaclass";
 
-                public object @ownedEnd = new object();
+                public object @ownedEnd = "ownedEnd";
 
             }
 
@@ -1088,9 +1088,9 @@ namespace DatenMeister
 
             public class _ExtensionEnd
             {
-                public object @lower = new object();
+                public object @lower = "lower";
 
-                public object @type = new object();
+                public object @type = "type";
 
             }
 
@@ -1099,11 +1099,11 @@ namespace DatenMeister
 
             public class _Image
             {
-                public object @content = new object();
+                public object @content = "content";
 
-                public object @format = new object();
+                public object @format = "format";
 
-                public object @location = new object();
+                public object @location = "location";
 
             }
 
@@ -1112,7 +1112,7 @@ namespace DatenMeister
 
             public class _Model
             {
-                public object @viewpoint = new object();
+                public object @viewpoint = "viewpoint";
 
             }
 
@@ -1121,21 +1121,21 @@ namespace DatenMeister
 
             public class _Package
             {
-                public object @URI = new object();
+                public object @URI = "URI";
 
-                public object @nestedPackage = new object();
+                public object @nestedPackage = "nestedPackage";
 
-                public object @nestingPackage = new object();
+                public object @nestingPackage = "nestingPackage";
 
-                public object @ownedStereotype = new object();
+                public object @ownedStereotype = "ownedStereotype";
 
-                public object @ownedType = new object();
+                public object @ownedType = "ownedType";
 
-                public object @packageMerge = new object();
+                public object @packageMerge = "packageMerge";
 
-                public object @packagedElement = new object();
+                public object @packagedElement = "packagedElement";
 
-                public object @profileApplication = new object();
+                public object @profileApplication = "profileApplication";
 
             }
 
@@ -1144,9 +1144,9 @@ namespace DatenMeister
 
             public class _PackageMerge
             {
-                public object @mergedPackage = new object();
+                public object @mergedPackage = "mergedPackage";
 
-                public object @receivingPackage = new object();
+                public object @receivingPackage = "receivingPackage";
 
             }
 
@@ -1155,9 +1155,9 @@ namespace DatenMeister
 
             public class _Profile
             {
-                public object @metaclassReference = new object();
+                public object @metaclassReference = "metaclassReference";
 
-                public object @metamodelReference = new object();
+                public object @metamodelReference = "metamodelReference";
 
             }
 
@@ -1166,11 +1166,11 @@ namespace DatenMeister
 
             public class _ProfileApplication
             {
-                public object @appliedProfile = new object();
+                public object @appliedProfile = "appliedProfile";
 
-                public object @applyingPackage = new object();
+                public object @applyingPackage = "applyingPackage";
 
-                public object @isStrict = new object();
+                public object @isStrict = "isStrict";
 
             }
 
@@ -1179,9 +1179,9 @@ namespace DatenMeister
 
             public class _Stereotype
             {
-                public object @icon = new object();
+                public object @icon = "icon";
 
-                public object @profile = new object();
+                public object @profile = "profile";
 
             }
 
@@ -1196,7 +1196,7 @@ namespace DatenMeister
         {
             public class _ActionExecutionSpecification
             {
-                public object @action = new object();
+                public object @action = "action";
 
             }
 
@@ -1205,7 +1205,7 @@ namespace DatenMeister
 
             public class _BehaviorExecutionSpecification
             {
-                public object @behavior = new object();
+                public object @behavior = "behavior";
 
             }
 
@@ -1214,11 +1214,11 @@ namespace DatenMeister
 
             public class _CombinedFragment
             {
-                public object @cfragmentGate = new object();
+                public object @cfragmentGate = "cfragmentGate";
 
-                public object @interactionOperator = new object();
+                public object @interactionOperator = "interactionOperator";
 
-                public object @operand = new object();
+                public object @operand = "operand";
 
             }
 
@@ -1227,7 +1227,7 @@ namespace DatenMeister
 
             public class _ConsiderIgnoreFragment
             {
-                public object @message = new object();
+                public object @message = "message";
 
             }
 
@@ -1236,7 +1236,7 @@ namespace DatenMeister
 
             public class _Continuation
             {
-                public object @setting = new object();
+                public object @setting = "setting";
 
             }
 
@@ -1252,7 +1252,7 @@ namespace DatenMeister
 
             public class _ExecutionOccurrenceSpecification
             {
-                public object @execution = new object();
+                public object @execution = "execution";
 
             }
 
@@ -1261,9 +1261,9 @@ namespace DatenMeister
 
             public class _ExecutionSpecification
             {
-                public object @finish = new object();
+                public object @finish = "finish";
 
-                public object @start = new object();
+                public object @start = "start";
 
             }
 
@@ -1279,9 +1279,9 @@ namespace DatenMeister
 
             public class _GeneralOrdering
             {
-                public object @after = new object();
+                public object @after = "after";
 
-                public object @before = new object();
+                public object @before = "before";
 
             }
 
@@ -1290,15 +1290,15 @@ namespace DatenMeister
 
             public class _Interaction
             {
-                public object @action = new object();
+                public object @action = "action";
 
-                public object @formalGate = new object();
+                public object @formalGate = "formalGate";
 
-                public object @fragment = new object();
+                public object @fragment = "fragment";
 
-                public object @lifeline = new object();
+                public object @lifeline = "lifeline";
 
-                public object @message = new object();
+                public object @message = "message";
 
             }
 
@@ -1307,9 +1307,9 @@ namespace DatenMeister
 
             public class _InteractionConstraint
             {
-                public object @maxint = new object();
+                public object @maxint = "maxint";
 
-                public object @minint = new object();
+                public object @minint = "minint";
 
             }
 
@@ -1318,13 +1318,13 @@ namespace DatenMeister
 
             public class _InteractionFragment
             {
-                public object @covered = new object();
+                public object @covered = "covered";
 
-                public object @enclosingInteraction = new object();
+                public object @enclosingInteraction = "enclosingInteraction";
 
-                public object @enclosingOperand = new object();
+                public object @enclosingOperand = "enclosingOperand";
 
-                public object @generalOrdering = new object();
+                public object @generalOrdering = "generalOrdering";
 
             }
 
@@ -1333,9 +1333,9 @@ namespace DatenMeister
 
             public class _InteractionOperand
             {
-                public object @fragment = new object();
+                public object @fragment = "fragment";
 
-                public object @guard = new object();
+                public object @guard = "guard";
 
             }
 
@@ -1344,15 +1344,15 @@ namespace DatenMeister
 
             public class _InteractionUse
             {
-                public object @actualGate = new object();
+                public object @actualGate = "actualGate";
 
-                public object @argument = new object();
+                public object @argument = "argument";
 
-                public object @refersTo = new object();
+                public object @refersTo = "refersTo";
 
-                public object @returnValue = new object();
+                public object @returnValue = "returnValue";
 
-                public object @returnValueRecipient = new object();
+                public object @returnValueRecipient = "returnValueRecipient";
 
             }
 
@@ -1361,15 +1361,15 @@ namespace DatenMeister
 
             public class _Lifeline
             {
-                public object @coveredBy = new object();
+                public object @coveredBy = "coveredBy";
 
-                public object @decomposedAs = new object();
+                public object @decomposedAs = "decomposedAs";
 
-                public object @interaction = new object();
+                public object @interaction = "interaction";
 
-                public object @represents = new object();
+                public object @represents = "represents";
 
-                public object @selector = new object();
+                public object @selector = "selector";
 
             }
 
@@ -1378,21 +1378,21 @@ namespace DatenMeister
 
             public class _Message
             {
-                public object @argument = new object();
+                public object @argument = "argument";
 
-                public object @connector = new object();
+                public object @connector = "connector";
 
-                public object @interaction = new object();
+                public object @interaction = "interaction";
 
-                public object @messageKind = new object();
+                public object @messageKind = "messageKind";
 
-                public object @messageSort = new object();
+                public object @messageSort = "messageSort";
 
-                public object @receiveEvent = new object();
+                public object @receiveEvent = "receiveEvent";
 
-                public object @sendEvent = new object();
+                public object @sendEvent = "sendEvent";
 
-                public object @signature = new object();
+                public object @signature = "signature";
 
             }
 
@@ -1401,7 +1401,7 @@ namespace DatenMeister
 
             public class _MessageEnd
             {
-                public object @message = new object();
+                public object @message = "message";
 
             }
 
@@ -1417,11 +1417,11 @@ namespace DatenMeister
 
             public class _OccurrenceSpecification
             {
-                public object @covered = new object();
+                public object @covered = "covered";
 
-                public object @toAfter = new object();
+                public object @toAfter = "toAfter";
 
-                public object @toBefore = new object();
+                public object @toBefore = "toBefore";
 
             }
 
@@ -1437,9 +1437,9 @@ namespace DatenMeister
 
             public class _StateInvariant
             {
-                public object @covered = new object();
+                public object @covered = "covered";
 
-                public object @invariant = new object();
+                public object @invariant = "invariant";
 
             }
 
@@ -1454,19 +1454,19 @@ namespace DatenMeister
         {
             public class _InformationFlow
             {
-                public object @conveyed = new object();
+                public object @conveyed = "conveyed";
 
-                public object @informationSource = new object();
+                public object @informationSource = "informationSource";
 
-                public object @informationTarget = new object();
+                public object @informationTarget = "informationTarget";
 
-                public object @realization = new object();
+                public object @realization = "realization";
 
-                public object @realizingActivityEdge = new object();
+                public object @realizingActivityEdge = "realizingActivityEdge";
 
-                public object @realizingConnector = new object();
+                public object @realizingConnector = "realizingConnector";
 
-                public object @realizingMessage = new object();
+                public object @realizingMessage = "realizingMessage";
 
             }
 
@@ -1475,7 +1475,7 @@ namespace DatenMeister
 
             public class _InformationItem
             {
-                public object @represented = new object();
+                public object @represented = "represented";
 
             }
 
@@ -1490,15 +1490,15 @@ namespace DatenMeister
         {
             public class _Artifact
             {
-                public object @fileName = new object();
+                public object @fileName = "fileName";
 
-                public object @manifestation = new object();
+                public object @manifestation = "manifestation";
 
-                public object @nestedArtifact = new object();
+                public object @nestedArtifact = "nestedArtifact";
 
-                public object @ownedAttribute = new object();
+                public object @ownedAttribute = "ownedAttribute";
 
-                public object @ownedOperation = new object();
+                public object @ownedOperation = "ownedOperation";
 
             }
 
@@ -1521,11 +1521,11 @@ namespace DatenMeister
 
             public class _Deployment
             {
-                public object @configuration = new object();
+                public object @configuration = "configuration";
 
-                public object @deployedArtifact = new object();
+                public object @deployedArtifact = "deployedArtifact";
 
-                public object @location = new object();
+                public object @location = "location";
 
             }
 
@@ -1534,11 +1534,11 @@ namespace DatenMeister
 
             public class _DeploymentSpecification
             {
-                public object @deployment = new object();
+                public object @deployment = "deployment";
 
-                public object @deploymentLocation = new object();
+                public object @deploymentLocation = "deploymentLocation";
 
-                public object @executionLocation = new object();
+                public object @executionLocation = "executionLocation";
 
             }
 
@@ -1547,9 +1547,9 @@ namespace DatenMeister
 
             public class _DeploymentTarget
             {
-                public object @deployedElement = new object();
+                public object @deployedElement = "deployedElement";
 
-                public object @deployment = new object();
+                public object @deployment = "deployment";
 
             }
 
@@ -1572,7 +1572,7 @@ namespace DatenMeister
 
             public class _Manifestation
             {
-                public object @utilizedElement = new object();
+                public object @utilizedElement = "utilizedElement";
 
             }
 
@@ -1581,7 +1581,7 @@ namespace DatenMeister
 
             public class _Node
             {
-                public object @nestedNode = new object();
+                public object @nestedNode = "nestedNode";
 
             }
 
@@ -1596,7 +1596,7 @@ namespace DatenMeister
         {
             public class _Abstraction
             {
-                public object @mapping = new object();
+                public object @mapping = "mapping";
 
             }
 
@@ -1605,9 +1605,9 @@ namespace DatenMeister
 
             public class _Comment
             {
-                public object @annotatedElement = new object();
+                public object @annotatedElement = "annotatedElement";
 
-                public object @body = new object();
+                public object @body = "body";
 
             }
 
@@ -1616,11 +1616,11 @@ namespace DatenMeister
 
             public class _Constraint
             {
-                public object @constrainedElement = new object();
+                public object @constrainedElement = "constrainedElement";
 
-                public object @context = new object();
+                public object @context = "context";
 
-                public object @specification = new object();
+                public object @specification = "specification";
 
             }
 
@@ -1629,9 +1629,9 @@ namespace DatenMeister
 
             public class _Dependency
             {
-                public object @client = new object();
+                public object @client = "client";
 
-                public object @supplier = new object();
+                public object @supplier = "supplier";
 
             }
 
@@ -1640,9 +1640,9 @@ namespace DatenMeister
 
             public class _DirectedRelationship
             {
-                public object @source = new object();
+                public object @source = "source";
 
-                public object @target = new object();
+                public object @target = "target";
 
             }
 
@@ -1651,11 +1651,11 @@ namespace DatenMeister
 
             public class _Element
             {
-                public object @ownedComment = new object();
+                public object @ownedComment = "ownedComment";
 
-                public object @ownedElement = new object();
+                public object @ownedElement = "ownedElement";
 
-                public object @owner = new object();
+                public object @owner = "owner";
 
             }
 
@@ -1664,13 +1664,13 @@ namespace DatenMeister
 
             public class _ElementImport
             {
-                public object @alias = new object();
+                public object @alias = "alias";
 
-                public object @importedElement = new object();
+                public object @importedElement = "importedElement";
 
-                public object @importingNamespace = new object();
+                public object @importingNamespace = "importingNamespace";
 
-                public object @visibility = new object();
+                public object @visibility = "visibility";
 
             }
 
@@ -1679,17 +1679,17 @@ namespace DatenMeister
 
             public class _MultiplicityElement
             {
-                public object @isOrdered = new object();
+                public object @isOrdered = "isOrdered";
 
-                public object @isUnique = new object();
+                public object @isUnique = "isUnique";
 
-                public object @lower = new object();
+                public object @lower = "lower";
 
-                public object @lowerValue = new object();
+                public object @lowerValue = "lowerValue";
 
-                public object @upper = new object();
+                public object @upper = "upper";
 
-                public object @upperValue = new object();
+                public object @upperValue = "upperValue";
 
             }
 
@@ -1698,17 +1698,17 @@ namespace DatenMeister
 
             public class _NamedElement
             {
-                public object @clientDependency = new object();
+                public object @clientDependency = "clientDependency";
 
-                public object @name = new object();
+                public object @name = "name";
 
-                public object @nameExpression = new object();
+                public object @nameExpression = "nameExpression";
 
-                public object @namespace = new object();
+                public object @namespace = "namespace";
 
-                public object @qualifiedName = new object();
+                public object @qualifiedName = "qualifiedName";
 
-                public object @visibility = new object();
+                public object @visibility = "visibility";
 
             }
 
@@ -1717,17 +1717,17 @@ namespace DatenMeister
 
             public class _Namespace
             {
-                public object @elementImport = new object();
+                public object @elementImport = "elementImport";
 
-                public object @importedMember = new object();
+                public object @importedMember = "importedMember";
 
-                public object @member = new object();
+                public object @member = "member";
 
-                public object @ownedMember = new object();
+                public object @ownedMember = "ownedMember";
 
-                public object @ownedRule = new object();
+                public object @ownedRule = "ownedRule";
 
-                public object @packageImport = new object();
+                public object @packageImport = "packageImport";
 
             }
 
@@ -1736,7 +1736,7 @@ namespace DatenMeister
 
             public class _PackageableElement
             {
-                public object @visibility = new object();
+                public object @visibility = "visibility";
 
             }
 
@@ -1745,11 +1745,11 @@ namespace DatenMeister
 
             public class _PackageImport
             {
-                public object @importedPackage = new object();
+                public object @importedPackage = "importedPackage";
 
-                public object @importingNamespace = new object();
+                public object @importingNamespace = "importingNamespace";
 
-                public object @visibility = new object();
+                public object @visibility = "visibility";
 
             }
 
@@ -1758,9 +1758,9 @@ namespace DatenMeister
 
             public class _ParameterableElement
             {
-                public object @owningTemplateParameter = new object();
+                public object @owningTemplateParameter = "owningTemplateParameter";
 
-                public object @templateParameter = new object();
+                public object @templateParameter = "templateParameter";
 
             }
 
@@ -1776,7 +1776,7 @@ namespace DatenMeister
 
             public class _Relationship
             {
-                public object @relatedElement = new object();
+                public object @relatedElement = "relatedElement";
 
             }
 
@@ -1785,9 +1785,9 @@ namespace DatenMeister
 
             public class _TemplateableElement
             {
-                public object @ownedTemplateSignature = new object();
+                public object @ownedTemplateSignature = "ownedTemplateSignature";
 
-                public object @templateBinding = new object();
+                public object @templateBinding = "templateBinding";
 
             }
 
@@ -1796,11 +1796,11 @@ namespace DatenMeister
 
             public class _TemplateBinding
             {
-                public object @boundElement = new object();
+                public object @boundElement = "boundElement";
 
-                public object @parameterSubstitution = new object();
+                public object @parameterSubstitution = "parameterSubstitution";
 
-                public object @signature = new object();
+                public object @signature = "signature";
 
             }
 
@@ -1809,15 +1809,15 @@ namespace DatenMeister
 
             public class _TemplateParameter
             {
-                public object @default = new object();
+                public object @default = "default";
 
-                public object @ownedDefault = new object();
+                public object @ownedDefault = "ownedDefault";
 
-                public object @ownedParameteredElement = new object();
+                public object @ownedParameteredElement = "ownedParameteredElement";
 
-                public object @parameteredElement = new object();
+                public object @parameteredElement = "parameteredElement";
 
-                public object @signature = new object();
+                public object @signature = "signature";
 
             }
 
@@ -1826,13 +1826,13 @@ namespace DatenMeister
 
             public class _TemplateParameterSubstitution
             {
-                public object @actual = new object();
+                public object @actual = "actual";
 
-                public object @formal = new object();
+                public object @formal = "formal";
 
-                public object @ownedActual = new object();
+                public object @ownedActual = "ownedActual";
 
-                public object @templateBinding = new object();
+                public object @templateBinding = "templateBinding";
 
             }
 
@@ -1841,11 +1841,11 @@ namespace DatenMeister
 
             public class _TemplateSignature
             {
-                public object @ownedParameter = new object();
+                public object @ownedParameter = "ownedParameter";
 
-                public object @parameter = new object();
+                public object @parameter = "parameter";
 
-                public object @template = new object();
+                public object @template = "template";
 
             }
 
@@ -1854,7 +1854,7 @@ namespace DatenMeister
 
             public class _Type
             {
-                public object @package = new object();
+                public object @package = "package";
 
             }
 
@@ -1863,7 +1863,7 @@ namespace DatenMeister
 
             public class _TypedElement
             {
-                public object @type = new object();
+                public object @type = "type";
 
             }
 
@@ -1892,21 +1892,21 @@ namespace DatenMeister
 
             public class _Behavior
             {
-                public object @context = new object();
+                public object @context = "context";
 
-                public object @isReentrant = new object();
+                public object @isReentrant = "isReentrant";
 
-                public object @ownedParameter = new object();
+                public object @ownedParameter = "ownedParameter";
 
-                public object @ownedParameterSet = new object();
+                public object @ownedParameterSet = "ownedParameterSet";
 
-                public object @postcondition = new object();
+                public object @postcondition = "postcondition";
 
-                public object @precondition = new object();
+                public object @precondition = "precondition";
 
-                public object @specification = new object();
+                public object @specification = "specification";
 
-                public object @redefinedBehavior = new object();
+                public object @redefinedBehavior = "redefinedBehavior";
 
             }
 
@@ -1915,7 +1915,7 @@ namespace DatenMeister
 
             public class _CallEvent
             {
-                public object @operation = new object();
+                public object @operation = "operation";
 
             }
 
@@ -1924,7 +1924,7 @@ namespace DatenMeister
 
             public class _ChangeEvent
             {
-                public object @changeExpression = new object();
+                public object @changeExpression = "changeExpression";
 
             }
 
@@ -1954,9 +1954,9 @@ namespace DatenMeister
 
             public class _OpaqueBehavior
             {
-                public object @body = new object();
+                public object @body = "body";
 
-                public object @language = new object();
+                public object @language = "language";
 
             }
 
@@ -1965,7 +1965,7 @@ namespace DatenMeister
 
             public class _SignalEvent
             {
-                public object @signal = new object();
+                public object @signal = "signal";
 
             }
 
@@ -1974,9 +1974,9 @@ namespace DatenMeister
 
             public class _TimeEvent
             {
-                public object @isRelative = new object();
+                public object @isRelative = "isRelative";
 
-                public object @when = new object();
+                public object @when = "when";
 
             }
 
@@ -1985,9 +1985,9 @@ namespace DatenMeister
 
             public class _Trigger
             {
-                public object @event = new object();
+                public object @event = "event";
 
-                public object @port = new object();
+                public object @port = "port";
 
             }
 
@@ -2002,9 +2002,9 @@ namespace DatenMeister
         {
             public class _Substitution
             {
-                public object @contract = new object();
+                public object @contract = "contract";
 
-                public object @substitutingClassifier = new object();
+                public object @substitutingClassifier = "substitutingClassifier";
 
             }
 
@@ -2013,17 +2013,17 @@ namespace DatenMeister
 
             public class _BehavioralFeature
             {
-                public object @concurrency = new object();
+                public object @concurrency = "concurrency";
 
-                public object @isAbstract = new object();
+                public object @isAbstract = "isAbstract";
 
-                public object @method = new object();
+                public object @method = "method";
 
-                public object @ownedParameter = new object();
+                public object @ownedParameter = "ownedParameter";
 
-                public object @ownedParameterSet = new object();
+                public object @ownedParameterSet = "ownedParameterSet";
 
-                public object @raisedException = new object();
+                public object @raisedException = "raisedException";
 
             }
 
@@ -2032,37 +2032,37 @@ namespace DatenMeister
 
             public class _Classifier
             {
-                public object @attribute = new object();
+                public object @attribute = "attribute";
 
-                public object @collaborationUse = new object();
+                public object @collaborationUse = "collaborationUse";
 
-                public object @feature = new object();
+                public object @feature = "feature";
 
-                public object @general = new object();
+                public object @general = "general";
 
-                public object @generalization = new object();
+                public object @generalization = "generalization";
 
-                public object @inheritedMember = new object();
+                public object @inheritedMember = "inheritedMember";
 
-                public object @isAbstract = new object();
+                public object @isAbstract = "isAbstract";
 
-                public object @isFinalSpecialization = new object();
+                public object @isFinalSpecialization = "isFinalSpecialization";
 
-                public object @ownedTemplateSignature = new object();
+                public object @ownedTemplateSignature = "ownedTemplateSignature";
 
-                public object @ownedUseCase = new object();
+                public object @ownedUseCase = "ownedUseCase";
 
-                public object @powertypeExtent = new object();
+                public object @powertypeExtent = "powertypeExtent";
 
-                public object @redefinedClassifier = new object();
+                public object @redefinedClassifier = "redefinedClassifier";
 
-                public object @representation = new object();
+                public object @representation = "representation";
 
-                public object @substitution = new object();
+                public object @substitution = "substitution";
 
-                public object @templateParameter = new object();
+                public object @templateParameter = "templateParameter";
 
-                public object @useCase = new object();
+                public object @useCase = "useCase";
 
             }
 
@@ -2071,11 +2071,11 @@ namespace DatenMeister
 
             public class _ClassifierTemplateParameter
             {
-                public object @allowSubstitutable = new object();
+                public object @allowSubstitutable = "allowSubstitutable";
 
-                public object @constrainingClassifier = new object();
+                public object @constrainingClassifier = "constrainingClassifier";
 
-                public object @parameteredElement = new object();
+                public object @parameteredElement = "parameteredElement";
 
             }
 
@@ -2084,9 +2084,9 @@ namespace DatenMeister
 
             public class _Feature
             {
-                public object @featuringClassifier = new object();
+                public object @featuringClassifier = "featuringClassifier";
 
-                public object @isStatic = new object();
+                public object @isStatic = "isStatic";
 
             }
 
@@ -2095,13 +2095,13 @@ namespace DatenMeister
 
             public class _Generalization
             {
-                public object @general = new object();
+                public object @general = "general";
 
-                public object @generalizationSet = new object();
+                public object @generalizationSet = "generalizationSet";
 
-                public object @isSubstitutable = new object();
+                public object @isSubstitutable = "isSubstitutable";
 
-                public object @specific = new object();
+                public object @specific = "specific";
 
             }
 
@@ -2110,13 +2110,13 @@ namespace DatenMeister
 
             public class _GeneralizationSet
             {
-                public object @generalization = new object();
+                public object @generalization = "generalization";
 
-                public object @isCovering = new object();
+                public object @isCovering = "isCovering";
 
-                public object @isDisjoint = new object();
+                public object @isDisjoint = "isDisjoint";
 
-                public object @powertype = new object();
+                public object @powertype = "powertype";
 
             }
 
@@ -2125,11 +2125,11 @@ namespace DatenMeister
 
             public class _InstanceSpecification
             {
-                public object @classifier = new object();
+                public object @classifier = "classifier";
 
-                public object @slot = new object();
+                public object @slot = "slot";
 
-                public object @specification = new object();
+                public object @specification = "specification";
 
             }
 
@@ -2138,7 +2138,7 @@ namespace DatenMeister
 
             public class _InstanceValue
             {
-                public object @instance = new object();
+                public object @instance = "instance";
 
             }
 
@@ -2147,37 +2147,37 @@ namespace DatenMeister
 
             public class _Operation
             {
-                public object @bodyCondition = new object();
+                public object @bodyCondition = "bodyCondition";
 
-                public object @class = new object();
+                public object @class = "class";
 
-                public object @datatype = new object();
+                public object @datatype = "datatype";
 
-                public object @interface = new object();
+                public object @interface = "interface";
 
-                public object @isOrdered = new object();
+                public object @isOrdered = "isOrdered";
 
-                public object @isQuery = new object();
+                public object @isQuery = "isQuery";
 
-                public object @isUnique = new object();
+                public object @isUnique = "isUnique";
 
-                public object @lower = new object();
+                public object @lower = "lower";
 
-                public object @ownedParameter = new object();
+                public object @ownedParameter = "ownedParameter";
 
-                public object @postcondition = new object();
+                public object @postcondition = "postcondition";
 
-                public object @precondition = new object();
+                public object @precondition = "precondition";
 
-                public object @raisedException = new object();
+                public object @raisedException = "raisedException";
 
-                public object @redefinedOperation = new object();
+                public object @redefinedOperation = "redefinedOperation";
 
-                public object @templateParameter = new object();
+                public object @templateParameter = "templateParameter";
 
-                public object @type = new object();
+                public object @type = "type";
 
-                public object @upper = new object();
+                public object @upper = "upper";
 
             }
 
@@ -2186,7 +2186,7 @@ namespace DatenMeister
 
             public class _OperationTemplateParameter
             {
-                public object @parameteredElement = new object();
+                public object @parameteredElement = "parameteredElement";
 
             }
 
@@ -2195,21 +2195,21 @@ namespace DatenMeister
 
             public class _Parameter
             {
-                public object @default = new object();
+                public object @default = "default";
 
-                public object @defaultValue = new object();
+                public object @defaultValue = "defaultValue";
 
-                public object @direction = new object();
+                public object @direction = "direction";
 
-                public object @effect = new object();
+                public object @effect = "effect";
 
-                public object @isException = new object();
+                public object @isException = "isException";
 
-                public object @isStream = new object();
+                public object @isStream = "isStream";
 
-                public object @operation = new object();
+                public object @operation = "operation";
 
-                public object @parameterSet = new object();
+                public object @parameterSet = "parameterSet";
 
             }
 
@@ -2218,9 +2218,9 @@ namespace DatenMeister
 
             public class _ParameterSet
             {
-                public object @condition = new object();
+                public object @condition = "condition";
 
-                public object @parameter = new object();
+                public object @parameter = "parameter";
 
             }
 
@@ -2229,37 +2229,37 @@ namespace DatenMeister
 
             public class _Property
             {
-                public object @aggregation = new object();
+                public object @aggregation = "aggregation";
 
-                public object @association = new object();
+                public object @association = "association";
 
-                public object @associationEnd = new object();
+                public object @associationEnd = "associationEnd";
 
-                public object @class = new object();
+                public object @class = "class";
 
-                public object @datatype = new object();
+                public object @datatype = "datatype";
 
-                public object @defaultValue = new object();
+                public object @defaultValue = "defaultValue";
 
-                public object @interface = new object();
+                public object @interface = "interface";
 
-                public object @isComposite = new object();
+                public object @isComposite = "isComposite";
 
-                public object @isDerived = new object();
+                public object @isDerived = "isDerived";
 
-                public object @isDerivedUnion = new object();
+                public object @isDerivedUnion = "isDerivedUnion";
 
-                public object @isID = new object();
+                public object @isID = "isID";
 
-                public object @opposite = new object();
+                public object @opposite = "opposite";
 
-                public object @owningAssociation = new object();
+                public object @owningAssociation = "owningAssociation";
 
-                public object @qualifier = new object();
+                public object @qualifier = "qualifier";
 
-                public object @redefinedProperty = new object();
+                public object @redefinedProperty = "redefinedProperty";
 
-                public object @subsettedProperty = new object();
+                public object @subsettedProperty = "subsettedProperty";
 
             }
 
@@ -2268,11 +2268,11 @@ namespace DatenMeister
 
             public class _RedefinableElement
             {
-                public object @isLeaf = new object();
+                public object @isLeaf = "isLeaf";
 
-                public object @redefinedElement = new object();
+                public object @redefinedElement = "redefinedElement";
 
-                public object @redefinitionContext = new object();
+                public object @redefinitionContext = "redefinitionContext";
 
             }
 
@@ -2281,11 +2281,11 @@ namespace DatenMeister
 
             public class _RedefinableTemplateSignature
             {
-                public object @classifier = new object();
+                public object @classifier = "classifier";
 
-                public object @extendedSignature = new object();
+                public object @extendedSignature = "extendedSignature";
 
-                public object @inheritedParameter = new object();
+                public object @inheritedParameter = "inheritedParameter";
 
             }
 
@@ -2294,11 +2294,11 @@ namespace DatenMeister
 
             public class _Slot
             {
-                public object @definingFeature = new object();
+                public object @definingFeature = "definingFeature";
 
-                public object @owningInstance = new object();
+                public object @owningInstance = "owningInstance";
 
-                public object @value = new object();
+                public object @value = "value";
 
             }
 
@@ -2307,7 +2307,7 @@ namespace DatenMeister
 
             public class _StructuralFeature
             {
-                public object @isReadOnly = new object();
+                public object @isReadOnly = "isReadOnly";
 
             }
 
@@ -2322,9 +2322,9 @@ namespace DatenMeister
         {
             public class _ValueSpecificationAction
             {
-                public object @result = new object();
+                public object @result = "result";
 
-                public object @value = new object();
+                public object @value = "value";
 
             }
 
@@ -2333,7 +2333,7 @@ namespace DatenMeister
 
             public class _VariableAction
             {
-                public object @variable = new object();
+                public object @variable = "variable";
 
             }
 
@@ -2349,9 +2349,9 @@ namespace DatenMeister
 
             public class _WriteStructuralFeatureAction
             {
-                public object @result = new object();
+                public object @result = "result";
 
-                public object @value = new object();
+                public object @value = "value";
 
             }
 
@@ -2360,7 +2360,7 @@ namespace DatenMeister
 
             public class _WriteVariableAction
             {
-                public object @value = new object();
+                public object @value = "value";
 
             }
 
@@ -2369,7 +2369,7 @@ namespace DatenMeister
 
             public class _AcceptCallAction
             {
-                public object @returnInformation = new object();
+                public object @returnInformation = "returnInformation";
 
             }
 
@@ -2378,11 +2378,11 @@ namespace DatenMeister
 
             public class _AcceptEventAction
             {
-                public object @isUnmarshall = new object();
+                public object @isUnmarshall = "isUnmarshall";
 
-                public object @result = new object();
+                public object @result = "result";
 
-                public object @trigger = new object();
+                public object @trigger = "trigger";
 
             }
 
@@ -2391,17 +2391,17 @@ namespace DatenMeister
 
             public class _Action
             {
-                public object @context = new object();
+                public object @context = "context";
 
-                public object @input = new object();
+                public object @input = "input";
 
-                public object @isLocallyReentrant = new object();
+                public object @isLocallyReentrant = "isLocallyReentrant";
 
-                public object @localPostcondition = new object();
+                public object @localPostcondition = "localPostcondition";
 
-                public object @localPrecondition = new object();
+                public object @localPrecondition = "localPrecondition";
 
-                public object @output = new object();
+                public object @output = "output";
 
             }
 
@@ -2410,7 +2410,7 @@ namespace DatenMeister
 
             public class _ActionInputPin
             {
-                public object @fromAction = new object();
+                public object @fromAction = "fromAction";
 
             }
 
@@ -2419,9 +2419,9 @@ namespace DatenMeister
 
             public class _AddStructuralFeatureValueAction
             {
-                public object @insertAt = new object();
+                public object @insertAt = "insertAt";
 
-                public object @isReplaceAll = new object();
+                public object @isReplaceAll = "isReplaceAll";
 
             }
 
@@ -2430,9 +2430,9 @@ namespace DatenMeister
 
             public class _AddVariableValueAction
             {
-                public object @insertAt = new object();
+                public object @insertAt = "insertAt";
 
-                public object @isReplaceAll = new object();
+                public object @isReplaceAll = "isReplaceAll";
 
             }
 
@@ -2441,7 +2441,7 @@ namespace DatenMeister
 
             public class _BroadcastSignalAction
             {
-                public object @signal = new object();
+                public object @signal = "signal";
 
             }
 
@@ -2450,9 +2450,9 @@ namespace DatenMeister
 
             public class _CallAction
             {
-                public object @isSynchronous = new object();
+                public object @isSynchronous = "isSynchronous";
 
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -2461,7 +2461,7 @@ namespace DatenMeister
 
             public class _CallBehaviorAction
             {
-                public object @behavior = new object();
+                public object @behavior = "behavior";
 
             }
 
@@ -2470,9 +2470,9 @@ namespace DatenMeister
 
             public class _CallOperationAction
             {
-                public object @operation = new object();
+                public object @operation = "operation";
 
-                public object @target = new object();
+                public object @target = "target";
 
             }
 
@@ -2481,17 +2481,17 @@ namespace DatenMeister
 
             public class _Clause
             {
-                public object @body = new object();
+                public object @body = "body";
 
-                public object @bodyOutput = new object();
+                public object @bodyOutput = "bodyOutput";
 
-                public object @decider = new object();
+                public object @decider = "decider";
 
-                public object @predecessorClause = new object();
+                public object @predecessorClause = "predecessorClause";
 
-                public object @successorClause = new object();
+                public object @successorClause = "successorClause";
 
-                public object @test = new object();
+                public object @test = "test";
 
             }
 
@@ -2500,9 +2500,9 @@ namespace DatenMeister
 
             public class _ClearAssociationAction
             {
-                public object @association = new object();
+                public object @association = "association";
 
-                public object @object = new object();
+                public object @object = "object";
 
             }
 
@@ -2511,7 +2511,7 @@ namespace DatenMeister
 
             public class _ClearStructuralFeatureAction
             {
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -2527,13 +2527,13 @@ namespace DatenMeister
 
             public class _ConditionalNode
             {
-                public object @clause = new object();
+                public object @clause = "clause";
 
-                public object @isAssured = new object();
+                public object @isAssured = "isAssured";
 
-                public object @isDeterminate = new object();
+                public object @isDeterminate = "isDeterminate";
 
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -2542,7 +2542,7 @@ namespace DatenMeister
 
             public class _CreateLinkAction
             {
-                public object @endData = new object();
+                public object @endData = "endData";
 
             }
 
@@ -2551,7 +2551,7 @@ namespace DatenMeister
 
             public class _CreateLinkObjectAction
             {
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -2560,9 +2560,9 @@ namespace DatenMeister
 
             public class _CreateObjectAction
             {
-                public object @classifier = new object();
+                public object @classifier = "classifier";
 
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -2571,7 +2571,7 @@ namespace DatenMeister
 
             public class _DestroyLinkAction
             {
-                public object @endData = new object();
+                public object @endData = "endData";
 
             }
 
@@ -2580,11 +2580,11 @@ namespace DatenMeister
 
             public class _DestroyObjectAction
             {
-                public object @isDestroyLinks = new object();
+                public object @isDestroyLinks = "isDestroyLinks";
 
-                public object @isDestroyOwnedObjects = new object();
+                public object @isDestroyOwnedObjects = "isDestroyOwnedObjects";
 
-                public object @target = new object();
+                public object @target = "target";
 
             }
 
@@ -2593,9 +2593,9 @@ namespace DatenMeister
 
             public class _ExpansionNode
             {
-                public object @regionAsInput = new object();
+                public object @regionAsInput = "regionAsInput";
 
-                public object @regionAsOutput = new object();
+                public object @regionAsOutput = "regionAsOutput";
 
             }
 
@@ -2604,11 +2604,11 @@ namespace DatenMeister
 
             public class _ExpansionRegion
             {
-                public object @inputElement = new object();
+                public object @inputElement = "inputElement";
 
-                public object @mode = new object();
+                public object @mode = "mode";
 
-                public object @outputElement = new object();
+                public object @outputElement = "outputElement";
 
             }
 
@@ -2624,9 +2624,9 @@ namespace DatenMeister
 
             public class _InvocationAction
             {
-                public object @argument = new object();
+                public object @argument = "argument";
 
-                public object @onPort = new object();
+                public object @onPort = "onPort";
 
             }
 
@@ -2635,9 +2635,9 @@ namespace DatenMeister
 
             public class _LinkAction
             {
-                public object @endData = new object();
+                public object @endData = "endData";
 
-                public object @inputValue = new object();
+                public object @inputValue = "inputValue";
 
             }
 
@@ -2646,9 +2646,9 @@ namespace DatenMeister
 
             public class _LinkEndCreationData
             {
-                public object @insertAt = new object();
+                public object @insertAt = "insertAt";
 
-                public object @isReplaceAll = new object();
+                public object @isReplaceAll = "isReplaceAll";
 
             }
 
@@ -2657,11 +2657,11 @@ namespace DatenMeister
 
             public class _LinkEndData
             {
-                public object @end = new object();
+                public object @end = "end";
 
-                public object @qualifier = new object();
+                public object @qualifier = "qualifier";
 
-                public object @value = new object();
+                public object @value = "value";
 
             }
 
@@ -2670,9 +2670,9 @@ namespace DatenMeister
 
             public class _LinkEndDestructionData
             {
-                public object @destroyAt = new object();
+                public object @destroyAt = "destroyAt";
 
-                public object @isDestroyDuplicates = new object();
+                public object @isDestroyDuplicates = "isDestroyDuplicates";
 
             }
 
@@ -2681,23 +2681,23 @@ namespace DatenMeister
 
             public class _LoopNode
             {
-                public object @bodyOutput = new object();
+                public object @bodyOutput = "bodyOutput";
 
-                public object @bodyPart = new object();
+                public object @bodyPart = "bodyPart";
 
-                public object @decider = new object();
+                public object @decider = "decider";
 
-                public object @isTestedFirst = new object();
+                public object @isTestedFirst = "isTestedFirst";
 
-                public object @loopVariable = new object();
+                public object @loopVariable = "loopVariable";
 
-                public object @loopVariableInput = new object();
+                public object @loopVariableInput = "loopVariableInput";
 
-                public object @result = new object();
+                public object @result = "result";
 
-                public object @setupPart = new object();
+                public object @setupPart = "setupPart";
 
-                public object @test = new object();
+                public object @test = "test";
 
             }
 
@@ -2706,13 +2706,13 @@ namespace DatenMeister
 
             public class _OpaqueAction
             {
-                public object @body = new object();
+                public object @body = "body";
 
-                public object @inputValue = new object();
+                public object @inputValue = "inputValue";
 
-                public object @language = new object();
+                public object @language = "language";
 
-                public object @outputValue = new object();
+                public object @outputValue = "outputValue";
 
             }
 
@@ -2728,7 +2728,7 @@ namespace DatenMeister
 
             public class _Pin
             {
-                public object @isControl = new object();
+                public object @isControl = "isControl";
 
             }
 
@@ -2737,9 +2737,9 @@ namespace DatenMeister
 
             public class _QualifierValue
             {
-                public object @qualifier = new object();
+                public object @qualifier = "qualifier";
 
-                public object @value = new object();
+                public object @value = "value";
 
             }
 
@@ -2748,7 +2748,7 @@ namespace DatenMeister
 
             public class _RaiseExceptionAction
             {
-                public object @exception = new object();
+                public object @exception = "exception";
 
             }
 
@@ -2757,9 +2757,9 @@ namespace DatenMeister
 
             public class _ReadExtentAction
             {
-                public object @classifier = new object();
+                public object @classifier = "classifier";
 
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -2768,13 +2768,13 @@ namespace DatenMeister
 
             public class _ReadIsClassifiedObjectAction
             {
-                public object @classifier = new object();
+                public object @classifier = "classifier";
 
-                public object @isDirect = new object();
+                public object @isDirect = "isDirect";
 
-                public object @object = new object();
+                public object @object = "object";
 
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -2783,7 +2783,7 @@ namespace DatenMeister
 
             public class _ReadLinkAction
             {
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -2792,11 +2792,11 @@ namespace DatenMeister
 
             public class _ReadLinkObjectEndAction
             {
-                public object @end = new object();
+                public object @end = "end";
 
-                public object @object = new object();
+                public object @object = "object";
 
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -2805,11 +2805,11 @@ namespace DatenMeister
 
             public class _ReadLinkObjectEndQualifierAction
             {
-                public object @object = new object();
+                public object @object = "object";
 
-                public object @qualifier = new object();
+                public object @qualifier = "qualifier";
 
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -2818,7 +2818,7 @@ namespace DatenMeister
 
             public class _ReadSelfAction
             {
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -2827,7 +2827,7 @@ namespace DatenMeister
 
             public class _ReadStructuralFeatureAction
             {
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -2836,7 +2836,7 @@ namespace DatenMeister
 
             public class _ReadVariableAction
             {
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -2845,13 +2845,13 @@ namespace DatenMeister
 
             public class _ReclassifyObjectAction
             {
-                public object @isReplaceAll = new object();
+                public object @isReplaceAll = "isReplaceAll";
 
-                public object @newClassifier = new object();
+                public object @newClassifier = "newClassifier";
 
-                public object @object = new object();
+                public object @object = "object";
 
-                public object @oldClassifier = new object();
+                public object @oldClassifier = "oldClassifier";
 
             }
 
@@ -2860,13 +2860,13 @@ namespace DatenMeister
 
             public class _ReduceAction
             {
-                public object @collection = new object();
+                public object @collection = "collection";
 
-                public object @isOrdered = new object();
+                public object @isOrdered = "isOrdered";
 
-                public object @reducer = new object();
+                public object @reducer = "reducer";
 
-                public object @result = new object();
+                public object @result = "result";
 
             }
 
@@ -2875,9 +2875,9 @@ namespace DatenMeister
 
             public class _RemoveStructuralFeatureValueAction
             {
-                public object @isRemoveDuplicates = new object();
+                public object @isRemoveDuplicates = "isRemoveDuplicates";
 
-                public object @removeAt = new object();
+                public object @removeAt = "removeAt";
 
             }
 
@@ -2886,9 +2886,9 @@ namespace DatenMeister
 
             public class _RemoveVariableValueAction
             {
-                public object @isRemoveDuplicates = new object();
+                public object @isRemoveDuplicates = "isRemoveDuplicates";
 
-                public object @removeAt = new object();
+                public object @removeAt = "removeAt";
 
             }
 
@@ -2897,11 +2897,11 @@ namespace DatenMeister
 
             public class _ReplyAction
             {
-                public object @replyToCall = new object();
+                public object @replyToCall = "replyToCall";
 
-                public object @replyValue = new object();
+                public object @replyValue = "replyValue";
 
-                public object @returnInformation = new object();
+                public object @returnInformation = "returnInformation";
 
             }
 
@@ -2910,9 +2910,9 @@ namespace DatenMeister
 
             public class _SendObjectAction
             {
-                public object @request = new object();
+                public object @request = "request";
 
-                public object @target = new object();
+                public object @target = "target";
 
             }
 
@@ -2921,9 +2921,9 @@ namespace DatenMeister
 
             public class _SendSignalAction
             {
-                public object @signal = new object();
+                public object @signal = "signal";
 
-                public object @target = new object();
+                public object @target = "target";
 
             }
 
@@ -2932,7 +2932,7 @@ namespace DatenMeister
 
             public class _SequenceNode
             {
-                public object @executableNode = new object();
+                public object @executableNode = "executableNode";
 
             }
 
@@ -2941,7 +2941,7 @@ namespace DatenMeister
 
             public class _StartClassifierBehaviorAction
             {
-                public object @object = new object();
+                public object @object = "object";
 
             }
 
@@ -2950,7 +2950,7 @@ namespace DatenMeister
 
             public class _StartObjectBehaviorAction
             {
-                public object @object = new object();
+                public object @object = "object";
 
             }
 
@@ -2959,9 +2959,9 @@ namespace DatenMeister
 
             public class _StructuralFeatureAction
             {
-                public object @object = new object();
+                public object @object = "object";
 
-                public object @structuralFeature = new object();
+                public object @structuralFeature = "structuralFeature";
 
             }
 
@@ -2970,19 +2970,19 @@ namespace DatenMeister
 
             public class _StructuredActivityNode
             {
-                public object @activity = new object();
+                public object @activity = "activity";
 
-                public object @edge = new object();
+                public object @edge = "edge";
 
-                public object @mustIsolate = new object();
+                public object @mustIsolate = "mustIsolate";
 
-                public object @node = new object();
+                public object @node = "node";
 
-                public object @structuredNodeInput = new object();
+                public object @structuredNodeInput = "structuredNodeInput";
 
-                public object @structuredNodeOutput = new object();
+                public object @structuredNodeOutput = "structuredNodeOutput";
 
-                public object @variable = new object();
+                public object @variable = "variable";
 
             }
 
@@ -2991,11 +2991,11 @@ namespace DatenMeister
 
             public class _TestIdentityAction
             {
-                public object @first = new object();
+                public object @first = "first";
 
-                public object @result = new object();
+                public object @result = "result";
 
-                public object @second = new object();
+                public object @second = "second";
 
             }
 
@@ -3004,11 +3004,11 @@ namespace DatenMeister
 
             public class _UnmarshallAction
             {
-                public object @object = new object();
+                public object @object = "object";
 
-                public object @result = new object();
+                public object @result = "result";
 
-                public object @unmarshallType = new object();
+                public object @unmarshallType = "unmarshallType";
 
             }
 
@@ -3017,7 +3017,7 @@ namespace DatenMeister
 
             public class _ValuePin
             {
-                public object @value = new object();
+                public object @value = "value";
 
             }
 

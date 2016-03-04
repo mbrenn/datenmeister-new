@@ -79,7 +79,7 @@ namespace DatenMeister.Tests.Core
 
             var primitiveTypes4 = logic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Types);
             Assert.That(primitiveTypes4, Is.Not.Null);
-            Assert.That(primitiveTypes4.__Real, Is.TypeOf<IElement>());
+            Assert.That(primitiveTypes4.__Real, Is.InstanceOf<IElement>());
         }
     }
 }

@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Core\DataLayerTests.cs" />
     <Compile Include="CSV\CSVExtentTests.cs" />
+    <Compile Include="DotNet\DotNetTests.cs" />
     <Compile Include="Integration\TestIntegration.cs" />
     <Compile Include="Mof\Core\MofObjectTests.cs" />
     <Compile Include="Mof\Queries\TestFilters.cs" />
@@ -103,6 +104,10 @@
     <ProjectReference Include="..\DatenMeister.Full.Integration\DatenMeister.Full.Integration.csproj">
       <Project>{dd8ea307-d685-4a7b-b726-a1c87192600d}</Project>
       <Name>DatenMeister.Full.Integration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Provider.DotNet\DatenMeister.Provider.DotNet.csproj">
+      <Project>{DE772364-F233-40E8-BA39-519D42C20686}</Project>
+      <Name>DatenMeister.Provider.DotNet</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
       <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>

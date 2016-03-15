@@ -30,9 +30,9 @@ namespace DatenMeister.Runtime.ExtentStorage
             _mapping[typeConfiguration] = () => Activator.CreateInstance(typeExtentStorage) as IExtentStorage;
         }
 
-        public void AddMapping(Type typeConfiguration, Func<IExtentStorage> typeExtentStorage)
+        public void AddMapping(Type typeConfiguration, Func<IExtentStorage> factoryExtentStorage)
         {
-            _mapping[typeConfiguration] = typeExtentStorage;
+            _mapping[typeConfiguration] = factoryExtentStorage;
         }
 
         public IExtentStorage CreateFor(ExtentStorageConfiguration configuration)

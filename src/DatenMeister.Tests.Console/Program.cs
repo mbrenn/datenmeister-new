@@ -38,12 +38,14 @@ namespace DatenMeister.Tests.Console
             var extent = new MofUriExtent("mof:///plz");
             var factory = new MofFactory();
 
-            var csvSettings = new CSVSettings();
-            csvSettings.Encoding = "ISO-8859-1";
-            csvSettings.Separator = '\t';
-            csvSettings.HasHeader = false;
+            var csvSettings = new CSVSettings
+            {
+                Encoding = "ISO-8859-1",
+                Separator = '\t',
+                HasHeader = false
+            };
 
-            var provider = new CSVDataProvider();
+            var provider = new CSVDataProvider(null);
             provider.Load(extent, factory, "data/plz.csv", csvSettings);
 
             System.Console.WriteLine($"Loaded: {extent.elements().Count().ToString()} Zipcodes");

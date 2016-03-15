@@ -95,6 +95,7 @@
     <Compile Include="Models\ExtentModel.cs" />
     <Compile Include="Models\ItemContentModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
+    <Compile Include="Models\PostModels\ExtentAddModel.cs" />
     <Compile Include="Models\PostModels\ExtentCreateModel.cs" />
     <Compile Include="Models\PostModels\ExtentReferenceModel.cs" />
     <Compile Include="Models\PostModels\ItemCreateModel.cs" />

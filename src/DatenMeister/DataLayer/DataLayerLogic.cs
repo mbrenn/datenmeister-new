@@ -175,5 +175,13 @@ namespace DatenMeister.DataLayer
                 layerAsObject.FilledTypeCache.Clear();
             }
         }
+
+        public static IDataLayerLogic InitDefault()
+        {
+            var data = new DataLayerData();
+            var logic = new DataLayerLogic(data);
+            logic.SetRelationsForDefaultDataLayers();
+            return logic;
+        }
     }
 }

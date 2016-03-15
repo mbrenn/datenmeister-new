@@ -33,15 +33,17 @@ namespace DatenMeister.Apps.ZipCode
 
         public void LoadZipCodes(Stream stream)
         {
-            var csvSettings = new CSVSettings();
-            csvSettings.Encoding = "UTF-8";// Encoding.GetEncoding("ISO-8859-1");
-            csvSettings.Separator = '\t';
-            csvSettings.HasHeader = false;
+            var csvSettings = new CSVSettings
+            {
+                Encoding = "UTF-8",
+                Separator = '\t',
+                HasHeader = false
+            };
 
             ZipCodes = new MofUriExtent("datenmeister:///zipcodes");
             var factory = new MofFactory();
 
-            var csvProvider = new CSVDataProvider();
+            var csvProvider = new CSVDataProvider(null);
 
             csvProvider.Load(
                 ZipCodes,

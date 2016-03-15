@@ -35,9 +35,9 @@ namespace DatenMeister.Tests.Xmi.Runtime
             };
 
             var xmiStorage = new XmiStorage();
-            xmiStorage.StoreExtent(extent, xmiStorageConfiguration);
+            xmiStorage.StoreExtent(null, extent, xmiStorageConfiguration);
 
-            var otherExtent = xmiStorage.LoadExtent(xmiStorageConfiguration);
+            var otherExtent = xmiStorage.LoadExtent(null, xmiStorageConfiguration);
             Assert.That(otherExtent.elements().size(), Is.EqualTo(3));
             Assert.That(otherExtent.contextURI(), Is.EqualTo("dm:///test/"));
             Assert.That((otherExtent.elements().ElementAt(0) as IObject)?.get("name"), Is.EqualTo("Martin"));

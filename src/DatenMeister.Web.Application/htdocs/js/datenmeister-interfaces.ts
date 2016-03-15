@@ -70,6 +70,12 @@ export module PostModels {
         type?: string;
     }
 
+    export interface IExtentAddModel {
+        workspace: string;
+        contextUri: string;
+        filename: string;
+    }
+
     export interface IExtentCreateModel {
         workspace: string;
         contextUri: string;

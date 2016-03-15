@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
@@ -14,6 +15,16 @@ namespace DatenMeister.CSV
     /// </summary>
     public class CSVDataProvider
     {
+        /// <summary>
+        /// Defines the datalayer logic that can be used to create the properties
+        /// </summary>
+        private IDataLayerLogic dataLayerLogic;
+
+        public CSVDataProvider(IDataLayerLogic logic)
+        {
+            dataLayerLogic = logic;
+        }
+
         /// <summary>
         ///     Loads the CSV Extent out of the settings and stores the extent Uri
         /// </summary>
@@ -47,8 +58,7 @@ namespace DatenMeister.CSV
         /// <param name="path">Path being used to load the file</param>
         /// <param name="extent">Extet being stored</param>
         /// <param name="settings">Settings being used to store it.</param>
-        ///     <param name="stream"></param>
-        private void ReadFromStream(IUriExtent extent, IFactory factory, Stream stream, CSVSettings settings)
+        private static void ReadFromStream(IExtent extent, IFactory factory, Stream stream, CSVSettings settings)
         {
             if (settings == null)
             {
@@ -58,18 +68,24 @@ namespace DatenMeister.CSV
             using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(settings.Encoding)))
             {
                 var createColumns = false;
-                // Reads header, if necessary
-                if (settings.HasHeader)
-                {
-                    // TODO: Do not skip first line...
-                    //extent.HeaderNames.AddRange(this.SplitLine(stream.ReadLine(), settings));
-                    var ignoredLine = streamReader.ReadLine();
-                }
 
                 if (settings.Columns == null)
                 {
                     settings.Columns = new List<object>();
                     createColumns = true;
+                }
+
+                // Reads header, if necessary
+                if (settings.HasHeader)
+                {
+                    settings.Columns.Clear();
+                    // Creates the column names for the headline
+                    var ignoredLine = streamReader.ReadLine();
+                    var columnNames = SplitLine(ignoredLine, settings);
+                    foreach (var columnName in columnNames)
+                    {
+                        settings.Columns.Add(columnName);
+                    }
                 }
 
                 // Reads the data itself
@@ -85,6 +101,8 @@ namespace DatenMeister.CSV
                     for (var n = 0; n < valueCount; n++)
                     {
                         object foundColumn;
+
+                        // Check, if we have enough columns, if we don't have enough columns, create one
                         if (settings.Columns.Count <= n && createColumns)
                         {
                             // Create new column

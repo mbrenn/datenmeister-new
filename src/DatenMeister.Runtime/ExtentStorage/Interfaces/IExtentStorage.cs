@@ -1,4 +1,5 @@
-﻿using DatenMeister.EMOF.Interface.Identifiers;
+﻿using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Runtime.ExtentStorage.Interfaces
 {
@@ -17,13 +18,13 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// <param name="createAlsoEmpty">true, if the extent shall also be created, if it is empty.
         /// Can be used to create an empty extent. </param>
         /// <returns>Loaded extent</returns>
-        IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty);
+        IUriExtent LoadExtent(IDataLayerLogic dataLayerLogic, ExtentStorageConfiguration configuration, bool createAlsoEmpty);
 
         /// <summary>
         /// Sores the extent according to the given configuration
         /// </summary>
         /// <param name="extent">Extent to be stored</param>
         /// <param name="configuration">Configuration to be added</param>
-        void StoreExtent(IUriExtent extent, ExtentStorageConfiguration configuration);
+        void StoreExtent(IDataLayerLogic dataLayerLogic, IUriExtent extent, ExtentStorageConfiguration configuration);
     }
 }

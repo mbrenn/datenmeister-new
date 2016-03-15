@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -20,25 +21,29 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         private readonly IConfigurationToExtentStorageMapper _map;
 
+        private readonly IDataLayerLogic _dataLayerLogic;
+
         private readonly IWorkspaceCollection _workspaceCollection;
 
-        public ExtentStorageLoader(ExtentStorageData data, IConfigurationToExtentStorageMapper map)
+        public ExtentStorageLoader(ExtentStorageData data, IConfigurationToExtentStorageMapper map, IDataLayerLogic dataLayerLogic)
         {
             Debug.Assert(map != null, "map != null");
             Debug.Assert(data != null, "data != null");
+            Debug.Assert(dataLayerLogic != null, "dataLayerLogic != null");
 
             _data = data;
             _map = map;
+            _dataLayerLogic = dataLayerLogic;
         }
 
-        public ExtentStorageLoader(ExtentStorageData data, IConfigurationToExtentStorageMapper map, IWorkspaceCollection workspaceCollection)
+        public ExtentStorageLoader(
+            ExtentStorageData data, 
+            IConfigurationToExtentStorageMapper map,
+            IDataLayerLogic dataLayerLogic,
+            IWorkspaceCollection workspaceCollection
+            ) : this(data, map, dataLayerLogic)
         {
-            Debug.Assert(map != null, "map != null");
             Debug.Assert(workspaceCollection != null, "collection != null");
-            Debug.Assert(data != null, "data != null");
-
-            _data = data;
-            _map = map;
             _workspaceCollection = workspaceCollection;
         }
 
@@ -60,7 +65,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             var extentStorage = _map.CreateFor(configuration);
         
             // Loads the extent
-            var loadedExtent = extentStorage.LoadExtent(configuration, createAlsoEmpty);
+            var loadedExtent = extentStorage.LoadExtent(_dataLayerLogic, configuration, createAlsoEmpty);
             Debug.WriteLine($"- Loading: {configuration}");
 
             if (loadedExtent == null)
@@ -120,7 +125,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             Debug.WriteLine($"- Writing: {information.Configuration}");
 
             var extentStorage = _map.CreateFor(information.Configuration);
-            extentStorage.StoreExtent(extent, information.Configuration);
+            extentStorage.StoreExtent(_dataLayerLogic, information.Extent, information.Configuration);
         }
 
         public void StoreAll()

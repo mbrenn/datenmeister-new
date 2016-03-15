@@ -65,7 +65,7 @@ export function parseAndNavigateToWindowLocation() {
     } else if (itemUrl === "") {
         layout.showItems(ws, extentUrl);
     } else {
-        var settings: DMI.View.IItemViewSettings= {};
+        var settings: DMI.View.IItemViewSettings = {};
         if (mode === "readonly") {
             settings.isReadonly = true;
         }
@@ -97,7 +97,7 @@ function buildRibbons(layout: DMLayout.Layout, changeEvent: DMLayout.ILayoutChan
             showDialogNewExtent(layout, changeEvent.workspace);
         });
 
-        tabFile.addIcon("Add Workspace", "img/icons/folder_open-add", () => {
+        tabFile.addIcon("Add Extent", "img/icons/folder_open-add", () => {
             showDialogAddExtent(layout, changeEvent.workspace);
         });
 
@@ -159,4 +159,22 @@ function showDialogNewExtent(layout: DMLayout.Layout, workspace: string) {
 }
 
 function showDialogAddExtent(layout: DMLayout.Layout, workspace: string) {
+    var configuration = new DMI.Api.DialogConfiguration();
+
+    configuration.onOkForm = data => {
+        DMClient.ExtentApi.addExtent(
+            {
+                workspace: data.v["workspace"],
+                contextUri: data.v["contextUri"],
+                filename: data.v["filename"]
+            })
+            .done(() => layout.navigateToExtents(data.v["workspace"]));
+    };
+
+    configuration.addColumn(new DMI.Table.DataTableColumn("Workspace", "workspace").withDefaultValue(workspace));
+    configuration.addColumn(new DMI.Table.DataTableColumn("URI", "contextUri").withDefaultValue("dm:///"));
+    configuration.addColumn(new DMI.Table.DataTableColumn("Filename", "filename"));
+    configuration.ws = workspace;
+
+    layout.navigateToDialog(configuration);
 }

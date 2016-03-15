@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage;
@@ -14,10 +15,10 @@ namespace DatenMeister.CSV.Runtime.Storage
     // ReSharper disable once InconsistentNaming
     public class CSVStorage : IExtentStorage
     { 
-        public IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty)
+        public IUriExtent LoadExtent(IDataLayerLogic dataLayerLogic, ExtentStorageConfiguration configuration, bool createAlsoEmpty)
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
-            var provider = new CSVDataProvider();
+            var provider = new CSVDataProvider(dataLayerLogic);
             var mofExtent = new MofUriExtent(csvConfiguration.ExtentUri);
             var factory = new MofFactory();
 
@@ -35,11 +36,11 @@ namespace DatenMeister.CSV.Runtime.Storage
             return mofExtent;
         }
 
-        public void StoreExtent(IUriExtent extent, ExtentStorageConfiguration configuration)
+        public void StoreExtent(IDataLayerLogic dataLayerLogic, IUriExtent extent, ExtentStorageConfiguration configuration)
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
 
-            var provider = new CSVDataProvider();
+            var provider = new CSVDataProvider(dataLayerLogic);
             provider.Save(extent, csvConfiguration.Path, csvConfiguration.Settings);
         }
     }

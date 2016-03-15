@@ -28,13 +28,13 @@ namespace DatenMeister.Tests.CSV
             };
 
             var storage = new CSVStorage();
-            var extent = storage.LoadExtent(storageConfiguration, false);
+            var extent = storage.LoadExtent(null, storageConfiguration, false);
 
             Assert.That(storageConfiguration.Settings.Columns.Count, Is.EqualTo(3));
             Assert.That(extent.elements().Count(), Is.EqualTo(4));
 
             // Stores the csv file
-            storage.StoreExtent(extent, storageConfiguration);
+            storage.StoreExtent(null, extent, storageConfiguration);
             var readCsvFile = File.ReadAllText("data.txt");
 
             Assert.That(readCsvFile, Is.EqualTo(csvFile));
@@ -42,7 +42,7 @@ namespace DatenMeister.Tests.CSV
             var firstElement = extent.elements().ElementAt(0) as IObject;
             Assert.That(firstElement, Is.Not.Null);
             firstElement.set(storageConfiguration.Settings.Columns[0], "eens");
-            storage.StoreExtent(extent, storageConfiguration);
+            storage.StoreExtent(null, extent, storageConfiguration);
             readCsvFile = File.ReadAllText("data.txt");
             Assert.That(readCsvFile, Is.EqualTo(csvOtherFile));
 

@@ -90,6 +90,67 @@ namespace DatenMeister.Web.Api
         }
 
 
+
+        /// <summary>
+        /// Deletes a complete extent
+        /// </summary>
+        /// <param name="model">Model to be deleted</param>
+        /// <returns>true, if ok</returns>
+        [Route("extent_add")]
+        [HttpPost]
+        public object AddExtent([FromBody] ExtentAddModel model)
+        {
+            var workspace = _workspaceCollection.Workspaces.First(x => x.id == model.workspace);
+            if (workspace == null)
+            {
+                throw new InvalidOperationException("Workspace not found");
+            }
+
+            var filename = model.filename;
+
+            filename = RemoveQuotesFromFilename(filename);
+
+            if (!Path.IsPathRooted(filename))
+            {
+                filename = Path.GetFileName(filename);
+                var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+                filename = Path.Combine(appBase, "data", filename);
+            }
+
+            // Creates the new workspace
+            IUriExtent createdExtent;
+            switch (model.extentType)
+            {
+                default:
+                    var extentData = new CSVStorageConfiguration
+                    {
+                        ExtentUri = model.contextUri,
+                        Path = filename,
+                        Workspace = model.workspace,
+                        Settings = new CSVSettings()
+                    };
+
+                    createdExtent = _extentStorageLoader.LoadExtent(extentData, true);
+                    break;
+            }
+
+            return new
+            {
+                success = true,
+                uri = createdExtent.contextURI()
+            };
+        }
+
+        private static string RemoveQuotesFromFilename(string filename)
+        {
+            // Remove quotes, if filename is fully quoted
+            if (filename.StartsWith("\"") && filename.EndsWith("\"") && filename.Length >= 2)
+            {
+                filename = filename.Substring(1, filename.Length - 2);
+            }
+            return filename;
+        }
+
         /// <summary>
         /// Deletes a complete extent
         /// </summary>

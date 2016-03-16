@@ -43,6 +43,7 @@
     <Compile Include="Copier\ObjectCopier.cs" />
     <Compile Include="ExtentStorage\ExtentStorageData.cs" />
     <Compile Include="ExtentStorage\IExtentStorageLoader.cs" />
+    <Compile Include="Extents\ExtentFunctions.cs" />
     <Compile Include="Functions\Aggregation\CountAggregator.cs" />
     <Compile Include="Functions\Interfaces\Aggregator.cs" />
     <Compile Include="Functions\Interfaces\AggregatorByFunction.cs" />

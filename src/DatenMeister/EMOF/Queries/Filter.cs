@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Common;
+using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.EMOF.Queries
 {
@@ -21,6 +22,13 @@ namespace DatenMeister.EMOF.Queries
                 collection,
                 property,
                 x => ((string) x)?.StartsWith(value) == true);
+        }
+
+        public static IReflectiveCollection WhenMetaClassIs(
+            this IReflectiveCollection collection,
+            IElement metaClass)
+        {
+            return new FilterOnMetaClass(collection, metaClass);
         }
 
         public static IReflectiveCollection WhenPropertyIs(

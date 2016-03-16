@@ -76,7 +76,8 @@
     <Compile Include="EMOF\Queries\FilterOnMultipleProperties.cs" />
     <Compile Include="EMOF\Queries\FilterOnPropertyCollection.cs" />
     <Compile Include="EMOF\Queries\FilterOnPropertyByPredicateCollection.cs" />
-    <Compile Include="EMOF\Queries\OrderByQuery.cs" />
+    <Compile Include="EMOF\Queries\FilterOnMetaClass.cs" />
+    <Compile Include="EMOF\Queries\OrderByProperty.cs" />
     <Compile Include="Filler\FillTheMOF.cs" />
     <Compile Include="Filler\FillThePrimitiveTypes.cs" />
     <Compile Include="Filler\FillTheUML.cs" />

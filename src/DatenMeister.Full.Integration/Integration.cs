@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using DatenMeister.DataLayer;
@@ -19,7 +20,7 @@ namespace DatenMeister.Full.Integration
 {
     public static class Integration
     {
-        public static void UseDatenMeister(this StandardKernel kernel)
+        public static void UseDatenMeister(this StandardKernel kernel, string pathToXmiFiles = "App_Data")
         {
             var factoryMapper = new DefaultFactoryMapper();
             factoryMapper.PerformAutomaticMappingByAttribute();
@@ -49,7 +50,10 @@ namespace DatenMeister.Full.Integration
             var primitiveTypes = new _PrimitiveTypes();
             kernel.Bind<_PrimitiveTypes>().ToConstant(primitiveTypes);
 
-            var strapper = Bootstrapper.PerformFullBootstrap("App_Data/PrimitiveTypes.xmi", "App_Data/UML.xmi", "App_Data/MOF.xmi");
+            var strapper = Bootstrapper.PerformFullBootstrap(
+                Path.Combine(pathToXmiFiles, "PrimitiveTypes.xmi"),
+                Path.Combine(pathToXmiFiles, "UML.xmi"),
+                Path.Combine(pathToXmiFiles, "MOF.xmi"));
             var metaWorkspace = workspaceCollection.GetWorkspace("Meta");
             metaWorkspace.AddExtent(strapper.PrimitiveInfrastructure);
             metaWorkspace.AddExtent(strapper.MofInfrastructure);

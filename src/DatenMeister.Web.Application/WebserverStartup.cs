@@ -43,9 +43,6 @@ namespace DatenMeister.Web.Application
             // Do the full load of all assemblies
             Full.Integration.Helper.LoadAllAssembliesInDirectory();
             Full.Integration.Helper.LoadAllReferenceAssemblies();
-
-            /*var controllerType = typeof (ExtentController);
-            Console.WriteLine( controllerType);*/
             
             // Initializing of the WebAPI, needs to be called after the DatenMeister is initialized
             var httpConfiguration = new HttpConfiguration();
@@ -69,8 +66,7 @@ namespace DatenMeister.Web.Application
             extentLoader.AddAdditionalType(typeof(CSVStorageConfiguration));
             extentLoader.LoadAllExtents();
             _serverInjection.Bind<ExtentStorageConfigurationStorage>().ToConstant(extentLoader);
-
-
+            
             // Apply for zipcodes
             var integrateZipCodes = _serverInjection.Get<Integrate>();
             integrateZipCodes.Into(_serverInjection.Get<IWorkspaceCollection>().FindExtent("dm:///types"));

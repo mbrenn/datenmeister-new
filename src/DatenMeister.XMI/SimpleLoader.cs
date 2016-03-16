@@ -19,7 +19,7 @@ namespace DatenMeister.XMI
         /// </summary>
         private Workspace<IUriExtent> _metaWorkspace;
 
-        private Dictionary<string, IElement> idToElement = new Dictionary<string, IElement>(); 
+        private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>(); 
 
         /// <summary>
         ///     Initializes a new instance of the Loader class.
@@ -45,6 +45,7 @@ namespace DatenMeister.XMI
         /// <summary>
         ///     Loads the file from a stream
         /// </summary>
+        /// <param name="extent">Extent to which the data is loaded</param>
         /// <param name="stream">Stream to be used for loading</param>
         public void Load(IUriExtent extent, Stream stream)
         {
@@ -55,6 +56,7 @@ namespace DatenMeister.XMI
         /// <summary>
         ///     Loads the document from an XDocument
         /// </summary>
+        /// <param name="extent">Extent to which the data is loaded</param>
         /// <param name="document">Document to be loaded</param>
         public void Load(IUriExtent extent, XDocument document)
         {
@@ -81,7 +83,7 @@ namespace DatenMeister.XMI
             var xmiId = XmiId.Get(element);
             if (xmiId != null)
             {
-                idToElement[xmiId] = result;
+                _idToElement[xmiId] = result;
             }
 
             var dict = new Dictionary<string, List<object>>();

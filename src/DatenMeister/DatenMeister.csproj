@@ -43,7 +43,7 @@
     <Compile Include="EMOF\Attributes\AssignFactoryForExtentTypeAttribute.cs" />
     <Compile Include="EMOF\Exceptions\MofException.cs" />
     <Compile Include="EMOF\Helper\ExtentHelper.cs" />
-    <Compile Include="EMOF\Helper\ObjectHelper.cs" />
+    <Compile Include="DataLayer\ObjectHelper.cs" />
     <Compile Include="EMOF\Helper\UmlHelper.cs" />
     <Compile Include="EMOF\InMemory\MofElement.cs" />
     <Compile Include="EMOF\InMemory\MofExtentReflectiveSequence.cs" />
@@ -64,6 +64,7 @@
     <Compile Include="EMOF\Interface\Reflection\IObject.cs" />
     <Compile Include="EMOF\Interface\Common\IReflectiveSequence.cs" />
     <Compile Include="EMOF\Interface\Reflection\IObjectAllProperties.cs" />
+    <Compile Include="EMOF\Interface\Reflection\IObjectKnowsExtent.cs" />
     <Compile Include="EMOF\Proxy\IHasProxiedObject.cs" />
     <Compile Include="EMOF\Proxy\ProxyMofObject.cs" />
     <Compile Include="EMOF\Proxy\ProxyMofElement.cs" />
@@ -86,7 +87,7 @@
     <Compile Include="DataLayer\IDataLayer.cs" />
     <Compile Include="DataLayer\IDataLayerLogic.cs" />
     <Compile Include="DataLayer\DataLayer.cs" />
-    <Compile Include="DataLayer\DataLayerData.cs" />
+    <Compile Include="EMOF\Attributes\DataLayerData.cs" />
     <Compile Include="DataLayer\DataLayerLogic.cs" />
     <Compile Include="Workspace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

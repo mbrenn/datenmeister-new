@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using DatenMeister.EMOF.Interface.Reflection;
-// Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.0.1.0
+// Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
 namespace DatenMeister.Filler
 {
     public class FillThePrimitiveTypes : DatenMeister.Filler.IFiller<DatenMeister._PrimitiveTypes>
@@ -20,11 +20,11 @@ namespace DatenMeister.Filler
         public static void DoFill(IEnumerable<object> collection, DatenMeister._PrimitiveTypes tree)
         {
             string name;
-            IObject value;
+            IElement value;
             bool isSet;
             foreach (var item in collection)
             {
-                value = item as IObject;
+                value = item as IElement;
                 name = GetNameOfElement(value);
                 if (name == "PrimitiveTypes") // Looking for package
                 {
@@ -32,7 +32,7 @@ namespace DatenMeister.Filler
                     collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                     foreach (var item0 in collection)
                     {
-                        value = item0 as IObject;
+                        value = item0 as IElement;
                         name = GetNameOfElement(value);
                         if(name == "Boolean") // Looking for class
                         {
@@ -41,7 +41,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                             }
                         }
@@ -52,7 +52,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                             }
                         }
@@ -63,7 +63,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                             }
                         }
@@ -74,7 +74,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                             }
                         }
@@ -85,7 +85,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                             }
                         }

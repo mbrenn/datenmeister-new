@@ -374,7 +374,7 @@ namespace DatenMeister.Web.Api
             var metaClass = foundElement.getMetaClass();
             if (metaClass != null)
             {
-                var dataLayer =_dataLayerLogic.GetMetaLayerOfObject(metaClass);
+                var dataLayer =_dataLayerLogic.GetDataLayerOfObject(metaClass);
                 var metaLayer = _dataLayerLogic.GetMetaLayerFor(dataLayer);
                 var extents  = _dataLayerLogic.GetExtentsForDatalayer(metaLayer);
                 var extentWithMetaClass = extents.WithElement(metaClass);

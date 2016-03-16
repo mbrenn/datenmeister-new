@@ -8,7 +8,7 @@ namespace DatenMeister.SourcecodeGenerator
         public FillClassTreeByExtentCreator(string classNameOfTree)
         {
             ClassNameOfTree = classNameOfTree;
-            FactoryVersion = new Version(1, 0, 1, 0);
+            FactoryVersion = new Version(1, 1, 0, 0);
         }
 
         public string ClassNameOfTree { get; set; }
@@ -74,12 +74,12 @@ namespace DatenMeister.SourcecodeGenerator
                     $"{methodStack.Indentation}public static void DoFill(IEnumerable<object> collection, {ClassNameOfTree} tree)");
                 Result.AppendLine($"{methodStack.Indentation}{{");
                 Result.AppendLine($"{foreachStack.Indentation}string name;");
-                Result.AppendLine($"{foreachStack.Indentation}IObject value;");
+                Result.AppendLine($"{foreachStack.Indentation}IElement value;");
                 Result.AppendLine($"{foreachStack.Indentation}bool isSet;");
 
                 Result.AppendLine($"{foreachStack.Indentation}foreach (var item in collection)");
                 Result.AppendLine($"{foreachStack.Indentation}{{");
-                Result.AppendLine($"{innerStack.Indentation}value = item as IObject;");
+                Result.AppendLine($"{innerStack.Indentation}value = item as IElement;");
                 Result.AppendLine($"{innerStack.Indentation}name = GetNameOfElement(value);");
             }
 
@@ -94,7 +94,7 @@ namespace DatenMeister.SourcecodeGenerator
                 $"{ifStack.Indentation}collection = isSet ? (value.get(\"packagedElement\") as IEnumerable<object>) : EmptyList;");
             Result.AppendLine($"{ifStack.Indentation}foreach (var item{ifStack.Level} in collection)");
             Result.AppendLine($"{ifStack.Indentation}{{");
-            Result.AppendLine($"{ifForeachStack.Indentation}value = item{ifStack.Level} as IObject;");
+            Result.AppendLine($"{ifForeachStack.Indentation}value = item{ifStack.Level} as IElement;");
             Result.AppendLine($"{ifForeachStack.Indentation}name = GetNameOfElement(value);");
 
             base.WalkPackage(element, ifStack);
@@ -137,7 +137,7 @@ namespace DatenMeister.SourcecodeGenerator
                 $"{ifStack.Indentation}collection = isSet ? (value.get(\"ownedAttribute\") as IEnumerable<object>) : EmptyList;");
             Result.AppendLine($"{ifStack.Indentation}foreach (var item{ifStack.Level} in collection)");
             Result.AppendLine($"{ifStack.Indentation}{{");
-            Result.AppendLine($"{ifForeachStack.Indentation}value = item{ifStack.Level} as IObject;");
+            Result.AppendLine($"{ifForeachStack.Indentation}value = item{ifStack.Level} as IElement;");
             Result.AppendLine($"{ifForeachStack.Indentation}name = GetNameOfElement(value);");
 
             base.WalkClass(classInstance, ifStack);

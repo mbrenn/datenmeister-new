@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.SourcecodeGenerator
@@ -15,7 +16,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// </summary>
         public ClassTreeGenerator()
         {
-            FactoryVersion = new Version(1, 0, 1, 0);
+            FactoryVersion = new Version(1, 1, 0, 0);
         }
 
         /// <summary>
@@ -28,6 +29,12 @@ namespace DatenMeister.SourcecodeGenerator
         /// </param>
         protected override void Walk(IObject element, CallStack stack)
         {
+            WriteUsages(new[]
+            {
+                "DatenMeister.EMOF.Interface.Reflection",
+                "DatenMeister.EMOF.InMemory"
+            });
+
             WalkAndWriteNamespace(element, stack);
         }
 
@@ -69,7 +76,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// <summary>
         ///     Parses the packages
         /// </summary>
-        /// <param name="element">Element classInstance parsed</param>
+        /// <param name="classInstance">The class that shall be retrieved</param>
         protected override void WalkClass(IObject classInstance, CallStack stack)
         {
             var name = GetNameOfElement(classInstance);
@@ -83,8 +90,8 @@ namespace DatenMeister.SourcecodeGenerator
 
             Result.AppendLine();
             Result.AppendLine($"{stack.Indentation}public _{name} @{name} = new _{name}();");
-            Result.AppendLine($"{stack.Indentation}public object @__{name} = new object();");
-            Result.AppendLine();
+            Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new MofElement();");
+            Result.AppendLine(); 
         }
 
 
@@ -94,8 +101,15 @@ namespace DatenMeister.SourcecodeGenerator
 
             var nameAsObject = propertyObject.get("name");
             var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
-            Result.AppendLine($"{stack.Indentation}public object @{name} = new object();");
-            Result.AppendLine();
+            if (name != null)
+            {
+                Result.AppendLine($"{stack.Indentation}public object @{name} = \"{name}\";");
+                Result.AppendLine();
+            }
+            else
+            {
+                Debug.WriteLine($"Found unknown property: {propertyObject}");
+            }
         }
     }
 }

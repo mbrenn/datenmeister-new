@@ -28,7 +28,7 @@ namespace DatenMeister.EMOF.InMemory
         public MofUriExtent(string uri)
         {
             _contextUri = uri;
-            _reflectiveSequence = new MofExtentReflectiveSequence(_elements);
+            _reflectiveSequence = new MofExtentReflectiveSequence(this, _elements);
         }
 
         public string contextURI()

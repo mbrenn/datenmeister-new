@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
@@ -7,10 +8,13 @@ namespace DatenMeister.EMOF.InMemory
 {
     public class MofExtentReflectiveSequence : MofReflectiveSequence, IExtentCachesObject
     {
+        private readonly MofUriExtent _extent;
         private readonly HashSet<object> _cachedObjects = new HashSet<object>();
 
-        public MofExtentReflectiveSequence(List<object> values) : base(values)
+        public MofExtentReflectiveSequence(MofUriExtent extent, List<object> values) : base(values)
         {
+            Debug.Assert(extent != null, "extent != null");
+            _extent = extent;
         }
 
         public override bool add(object value)
@@ -22,6 +26,8 @@ namespace DatenMeister.EMOF.InMemory
                 {
                     _cachedObjects.Add(value);
                 }
+
+                (value as MofObject)?.AddToExtent(_extent);
 
                 return result;
             }
@@ -84,6 +90,8 @@ namespace DatenMeister.EMOF.InMemory
                     _cachedObjects.Remove(value);
                 }
 
+                (value as MofObject)?.RemoveFromExtent(_extent);
+
                 return result;
             }
         }
@@ -96,6 +104,8 @@ namespace DatenMeister.EMOF.InMemory
 
                 _cachedObjects.Remove(value);
                 _cachedObjects.Add(value);
+
+                (oldObject as MofObject)?.RemoveFromExtent(_extent);
 
                 return oldObject;
             }

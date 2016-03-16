@@ -1,4 +1,7 @@
-// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.0.1.0
+using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.EMOF.InMemory;
+
+// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.1.0.0
 namespace DatenMeister
 {
     public class _MOF
@@ -10,14 +13,14 @@ namespace DatenMeister
             }
 
             public _URIExtent @URIExtent = new _URIExtent();
-            public object @__URIExtent = new object();
+            public IElement @__URIExtent = new MofElement();
 
             public class _Extent
             {
             }
 
             public _Extent @Extent = new _Extent();
-            public object @__Extent = new object();
+            public IElement @__Extent = new MofElement();
 
         }
 
@@ -33,12 +36,12 @@ namespace DatenMeister
         {
             public class _Tag
             {
-                public object @tagOwner = new object();
+                public object @tagOwner = "tagOwner";
 
             }
 
             public _Tag @Tag = new _Tag();
-            public object @__Tag = new object();
+            public IElement @__Tag = new MofElement();
 
         }
 
@@ -48,16 +51,16 @@ namespace DatenMeister
         {
             public class _Tag
             {
-                public object @name = new object();
+                public object @name = "name";
 
-                public object @value = new object();
+                public object @value = "value";
 
-                public object @element = new object();
+                public object @element = "element";
 
             }
 
             public _Tag @Tag = new _Tag();
-            public object @__Tag = new object();
+            public IElement @__Tag = new MofElement();
 
         }
 
@@ -70,14 +73,14 @@ namespace DatenMeister
             }
 
             public _ReflectiveSequence @ReflectiveSequence = new _ReflectiveSequence();
-            public object @__ReflectiveSequence = new object();
+            public IElement @__ReflectiveSequence = new MofElement();
 
             public class _ReflectiveCollection
             {
             }
 
             public _ReflectiveCollection @ReflectiveCollection = new _ReflectiveCollection();
-            public object @__ReflectiveCollection = new object();
+            public IElement @__ReflectiveCollection = new MofElement();
 
         }
 
@@ -96,58 +99,58 @@ namespace DatenMeister
             }
 
             public _Factory @Factory = new _Factory();
-            public object @__Factory = new object();
+            public IElement @__Factory = new MofElement();
 
             public class _Element
             {
             }
 
             public _Element @Element = new _Element();
-            public object @__Element = new object();
+            public IElement @__Element = new MofElement();
 
             public class _Argument
             {
-                public object @name = new object();
+                public object @name = "name";
 
-                public object @value = new object();
+                public object @value = "value";
 
             }
 
             public _Argument @Argument = new _Argument();
-            public object @__Argument = new object();
+            public IElement @__Argument = new MofElement();
 
             public class _Extent
             {
             }
 
             public _Extent @Extent = new _Extent();
-            public object @__Extent = new object();
+            public IElement @__Extent = new MofElement();
 
             public class _Link
             {
-                public object @firstElement = new object();
+                public object @firstElement = "firstElement";
 
-                public object @secondElement = new object();
+                public object @secondElement = "secondElement";
 
-                public object @association = new object();
+                public object @association = "association";
 
             }
 
             public _Link @Link = new _Link();
-            public object @__Link = new object();
+            public IElement @__Link = new MofElement();
 
             public class _Exception
             {
-                public object @objectInError = new object();
+                public object @objectInError = "objectInError";
 
-                public object @elementInError = new object();
+                public object @elementInError = "elementInError";
 
-                public object @description = new object();
+                public object @description = "description";
 
             }
 
             public _Exception @Exception = new _Exception();
-            public object @__Exception = new object();
+            public IElement @__Exception = new MofElement();
 
         }
 
@@ -157,35 +160,35 @@ namespace DatenMeister
         {
             public class _Factory
             {
-                public object @package = new object();
+                public object @package = "package";
 
             }
 
             public _Factory @Factory = new _Factory();
-            public object @__Factory = new object();
+            public IElement @__Factory = new MofElement();
 
             public class _Type
             {
             }
 
             public _Type @Type = new _Type();
-            public object @__Type = new object();
+            public IElement @__Type = new MofElement();
 
             public class _Object
             {
             }
 
             public _Object @Object = new _Object();
-            public object @__Object = new object();
+            public IElement @__Object = new MofElement();
 
             public class _Element
             {
-                public object @metaclass = new object();
+                public object @metaclass = "metaclass";
 
             }
 
             public _Element @Element = new _Element();
-            public object @__Element = new object();
+            public IElement @__Element = new MofElement();
 
         }
 

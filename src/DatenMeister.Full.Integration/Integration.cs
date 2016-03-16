@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Attributes;
+using DatenMeister.EMOF.InMemory;
 using DatenMeister.Filler;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
@@ -53,6 +54,7 @@ namespace DatenMeister.Full.Integration
             metaWorkspace.AddExtent(strapper.PrimitiveInfrastructure);
             metaWorkspace.AddExtent(strapper.MofInfrastructure);
             metaWorkspace.AddExtent(strapper.UmlInfrastructure);
+
             var dataLayerLogic = kernel.Get<IDataLayerLogic>();
             dataLayerLogic.SetRelationsForDefaultDataLayers();
             dataLayerLogic.AssignToDataLayer(strapper.PrimitiveInfrastructure, DataLayers.Mof);
@@ -61,6 +63,14 @@ namespace DatenMeister.Full.Integration
 
             // Let us create the filled object
             dataLayerLogic.Create<FillTheMOF, _MOF>(DataLayers.Mof);
+            dataLayerLogic.Create<FillTheUML, _UML>(DataLayers.Mof);
+            dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Mof);
+
+            // Creates the workspace and extent for the types layer which are belonging to the types
+            var extentTypes = new MofUriExtent("dm:///types");
+            var typeWorkspace = workspaceCollection.GetWorkspace("Types");
+            typeWorkspace.AddExtent(extentTypes);
+            dataLayerLogic.AssignToDataLayer(extentTypes, DataLayers.Types);
 
             kernel.Bind<IUmlNameResolution>().To<UmlNameResolution>();
         }

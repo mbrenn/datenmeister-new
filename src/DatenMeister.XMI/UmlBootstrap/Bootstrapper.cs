@@ -103,8 +103,9 @@ namespace DatenMeister.XMI.UmlBootstrap
                     {
                         throw new InvalidOperationException($"ID '{id}' is duplicate");
                     }
+
                     idToElementCache[id] = classInstance;
-                    Debug.WriteLine($"ID: {id}");
+                    //Debug.WriteLine($"ID: {id}");
                 }
             }
 

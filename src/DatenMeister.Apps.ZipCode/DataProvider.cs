@@ -13,12 +13,7 @@ namespace DatenMeister.Apps.ZipCode
 {
     public class DataProvider
     {
-        private static DataProvider Singleton;
-
-        public static DataProvider TheOne
-        {
-            get { return Singleton; }
-        }
+        public static DataProvider TheOne { get; }
 
         public MofUriExtent ZipCodes
         {
@@ -28,7 +23,7 @@ namespace DatenMeister.Apps.ZipCode
 
         static DataProvider()
         {
-            Singleton = new DataProvider();
+            TheOne = new DataProvider();
         }
 
         public void LoadZipCodes(Stream stream)
@@ -54,7 +49,7 @@ namespace DatenMeister.Apps.ZipCode
             Columns.ZipCode = csvSettings.Columns[1];
             Columns.Name = csvSettings.Columns[4];
 
-            Debug.WriteLine($"Loaded: {ZipCodes.elements().Count().ToString()} Zipcodes");
+            Debug.WriteLine($"Loaded: {ZipCodes.elements().Count()} Zipcodes");
         }
 
         /// <summary>

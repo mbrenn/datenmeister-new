@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Web.Http;
 using BurnSystems.Owin.StaticFiles;
+using DatenMeister.Apps.ZipCode;
 using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.Full.Integration;
 using DatenMeister.Runtime.ExtentStorage;
@@ -68,6 +69,11 @@ namespace DatenMeister.Web.Application
             extentLoader.AddAdditionalType(typeof(CSVStorageConfiguration));
             extentLoader.LoadAllExtents();
             _serverInjection.Bind<ExtentStorageConfigurationStorage>().ToConstant(extentLoader);
+
+
+            // Apply for zipcodes
+            var integrateZipCodes = _serverInjection.Get<Integrate>();
+            integrateZipCodes.Into(_serverInjection.Get<IWorkspaceCollection>().FindExtent("dm:///types"));
         }
 
         private static StandardKernel CreateKernel(IAppBuilder app)

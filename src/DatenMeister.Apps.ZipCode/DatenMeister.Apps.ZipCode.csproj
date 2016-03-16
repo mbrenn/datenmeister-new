@@ -40,12 +40,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataProvider.cs" />
+    <Compile Include="Integrate.cs" />
+    <Compile Include="Model\ZipCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatenMeister.CSV\DatenMeister.CSV.csproj">
       <Project>{39845115-f057-4641-9237-6960bb676684}</Project>
       <Name>DatenMeister.CSV</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Provider.DotNet\DatenMeister.Provider.DotNet.csproj">
+      <Project>{de772364-f233-40e8-ba39-519d42c20686}</Project>
+      <Name>DatenMeister.Provider.DotNet</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>

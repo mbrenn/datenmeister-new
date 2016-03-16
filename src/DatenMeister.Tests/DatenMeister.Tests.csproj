@@ -99,8 +99,13 @@
     <Compile Include="Xmi\EMOF\ExtentTests.cs" />
     <Compile Include="Xmi\Runtime\StorageTests.cs" />
     <Compile Include="Xmi\XmiTests.cs" />
+    <Compile Include="ZipCodes\ZipCodeTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DatenMeister.Apps.ZipCode\DatenMeister.Apps.ZipCode.csproj">
+      <Project>{3EC1DBF5-B87F-4807-96CF-5E68801C3629}</Project>
+      <Name>DatenMeister.Apps.ZipCode</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.CSV\DatenMeister.CSV.csproj">
       <Project>{39845115-f057-4641-9237-6960bb676684}</Project>
       <Name>DatenMeister.CSV</Name>

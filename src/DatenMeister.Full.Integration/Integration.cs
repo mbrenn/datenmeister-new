@@ -57,14 +57,14 @@ namespace DatenMeister.Full.Integration
 
             var dataLayerLogic = kernel.Get<IDataLayerLogic>();
             dataLayerLogic.SetRelationsForDefaultDataLayers();
-            dataLayerLogic.AssignToDataLayer(strapper.PrimitiveInfrastructure, DataLayers.Mof);
-            dataLayerLogic.AssignToDataLayer(strapper.MofInfrastructure, DataLayers.Mof);
-            dataLayerLogic.AssignToDataLayer(strapper.UmlInfrastructure, DataLayers.Mof);
+            dataLayerLogic.AssignToDataLayer(strapper.PrimitiveInfrastructure, DataLayers.Uml);
+            dataLayerLogic.AssignToDataLayer(strapper.MofInfrastructure, DataLayers.Uml);
+            dataLayerLogic.AssignToDataLayer(strapper.UmlInfrastructure, DataLayers.Uml);
 
             // Let us create the filled object
-            dataLayerLogic.Create<FillTheMOF, _MOF>(DataLayers.Mof);
-            dataLayerLogic.Create<FillTheUML, _UML>(DataLayers.Mof);
-            dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Mof);
+            dataLayerLogic.Create<FillTheMOF, _MOF>(DataLayers.Uml);
+            dataLayerLogic.Create<FillTheUML, _UML>(DataLayers.Uml);
+            dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Uml);
 
             // Creates the workspace and extent for the types layer which are belonging to the types
             var extentTypes = new MofUriExtent("dm:///types");

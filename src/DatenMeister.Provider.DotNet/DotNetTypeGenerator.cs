@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using DatenMeister.EMOF.Interface.Reflection;
@@ -21,16 +22,19 @@ namespace DatenMeister.Provider.DotNet
 
         public IElement CreateTypeFor(Type type)
         {
-            var result = _factoryForTypes.create(_umlHost.StructuredClassifiers.__Class as IElement);
+            var result = _factoryForTypes.create(_umlHost.StructuredClassifiers.__Class);
             result.set(_umlHost.CommonStructure.NamedElement.name, type.Name);
 
+            var properties = new List<IObject>();
             foreach (var property in type.GetProperties())
             {
-                var umlProperty = _factoryForTypes.create(_umlHost.Classification.__Property as IElement);
-                umlProperty.set(_umlHost.CommonStructure.NamedElement.name, property);
-
-                // TODO: Add it to the type
+                var umlProperty = _factoryForTypes.create(_umlHost.Classification.__Property);
+                umlProperty.set(_umlHost.CommonStructure.NamedElement.name, property.Name);
+                
+                properties.Add(umlProperty);
             }
+
+            result.set(_umlHost.Classification.Classifier.attribute, properties);
 
             return result;
         }

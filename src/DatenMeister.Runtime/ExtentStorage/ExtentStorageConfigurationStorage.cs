@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices.ComTypes;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {

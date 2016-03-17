@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using DatenMeister.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Runtime.Workspaces.Data

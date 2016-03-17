@@ -1,5 +1,4 @@
 ﻿using DatenMeister.EMOF.InMemory;
-using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Tests.Xmi;
 using NUnit.Framework;

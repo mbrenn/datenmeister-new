@@ -9,7 +9,6 @@ using DatenMeister.Full.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
-using DatenMeister.Web.Api;
 using Microsoft.Owin;
 using Microsoft.Owin.BuilderProperties;
 using Ninject;

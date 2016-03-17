@@ -4,7 +4,6 @@ using DatenMeister.EMOF.Queries;
 using DatenMeister.XMI.UmlBootstrap;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using DatenMeister.XMI;
 using DatenMeister.Filler;
 

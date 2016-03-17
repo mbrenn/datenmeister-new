@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using DatenMeister.CSV;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Reflection;
@@ -57,13 +56,12 @@ namespace DatenMeister.Apps.ZipCode
         /// </summary>
         /// <param name="searchString">String to be used for searching</param>
         /// <returns>Enumeration of objects</returns>
-        public static IEnumerable<IObject> FindBySearchString(string searchString)
+        public IEnumerable<IObject> FindBySearchString(string searchString)
         {
             var columns = new[] { DataProvider.Columns.Name, DataProvider.Columns.ZipCode };
             var typedZipCode = searchString.Trim();
-            var found = Filter.WhenOneOfThePropertyContains(
-                    DataProvider.TheOne.ZipCodes.elements(),
-                    columns,
+            var found = ZipCodes.elements()
+                .WhenOneOfThePropertyContains(columns,
                     typedZipCode,
                     StringComparison.CurrentCultureIgnoreCase);
             

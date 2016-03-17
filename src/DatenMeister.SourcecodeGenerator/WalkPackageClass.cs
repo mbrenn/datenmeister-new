@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Text;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;

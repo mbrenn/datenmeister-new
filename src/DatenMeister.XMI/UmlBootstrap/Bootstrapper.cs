@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;

@@ -1,5 +1,4 @@
-﻿using System;
-using DatenMeister.Runtime.Functions.Interfaces;
+﻿using DatenMeister.Runtime.Functions.Interfaces;
 
 namespace DatenMeister.Runtime.Functions.Aggregation
 {

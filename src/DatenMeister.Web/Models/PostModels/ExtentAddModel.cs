@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace DatenMeister.Web.Models.PostModels
+﻿namespace DatenMeister.Web.Models.PostModels
 {
     /// <summary>
     /// Used to create a new extent

@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using DatenMeister.Apps.ZipCode.Model;
+﻿using DatenMeister.Apps.ZipCode.Model;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.Provider.DotNet;
-using DatenMeister.Tests.DotNet;
 using DatenMeister.Tests.Xmi;
 using NUnit.Framework;
 using System.Collections.Generic;

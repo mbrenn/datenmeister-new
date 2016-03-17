@@ -21,8 +21,14 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         private readonly IConfigurationToExtentStorageMapper _map;
 
+        /// <summary>
+        /// Stores the datalayer logic for the given 
+        /// </summary>
         private readonly IDataLayerLogic _dataLayerLogic;
 
+        /// <summary>
+        /// Stores the access to the workspaces
+        /// </summary>
         private readonly IWorkspaceCollection _workspaceCollection;
 
         public ExtentStorageLoader(ExtentStorageData data, IConfigurationToExtentStorageMapper map, IDataLayerLogic dataLayerLogic)

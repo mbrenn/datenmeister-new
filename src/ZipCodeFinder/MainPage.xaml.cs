@@ -78,13 +78,13 @@ namespace ZipCodeFinder
         {
             // Performs the scaling
             var fullSize = 1200.0;
-            var fontSize = Math.Min(fullSize, newSize.Height) / fullSize * 64;
+            var fontSize = Math.Min(fullSize, newSize.Height) / fullSize * 48;
             txtCity.FontSize = fontSize;
             txtCityHeader.FontSize = fontSize;
             txtZipCode.FontSize = fontSize;
             txtZipCodeHeader.FontSize = fontSize;
 
-            if (newSize.Height > newSize.Width)
+            if (newSize.Height > newSize.Width || true)
             {
                 // Vertical layout
                 columnFirst.Width = new GridLength(1, GridUnitType.Star);

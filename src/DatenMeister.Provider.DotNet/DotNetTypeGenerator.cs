@@ -22,21 +22,23 @@ namespace DatenMeister.Provider.DotNet
 
         public IElement CreateTypeFor(Type type)
         {
-            var result = _factoryForTypes.create(_umlHost.StructuredClassifiers.__Class);
-            result.set(_umlHost.CommonStructure.NamedElement.name, type.Name);
+            var umlClass = _factoryForTypes.create(_umlHost.StructuredClassifiers.__Class);
+            umlClass.set(_umlHost.CommonStructure.NamedElement.name, type.Name);
 
             var properties = new List<IObject>();
+
             foreach (var property in type.GetProperties())
             {
                 var umlProperty = _factoryForTypes.create(_umlHost.Classification.__Property);
+                (umlProperty as IElementSetMetaClass)?.setContainer(umlClass);
                 umlProperty.set(_umlHost.CommonStructure.NamedElement.name, property.Name);
                 
                 properties.Add(umlProperty);
             }
 
-            result.set(_umlHost.Classification.Classifier.attribute, properties);
+            umlClass.set(_umlHost.Classification.Classifier.attribute, properties);
 
-            return result;
+            return umlClass;
         }
     }
 }

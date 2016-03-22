@@ -34,6 +34,7 @@ namespace DatenMeister.Web.Api
         private readonly IUmlNameResolution _resolution;
         private readonly IExtentStorageLoader _extentStorageLoader;
         private readonly IDataLayerLogic _dataLayerLogic;
+        private readonly ColumnCreator _columnCreator;
 
 
         public ExtentController(
@@ -41,13 +42,15 @@ namespace DatenMeister.Web.Api
             IWorkspaceCollection workspaceCollection, 
             IUmlNameResolution resolution, 
             IExtentStorageLoader extentStorageLoader, 
-            IDataLayerLogic dataLayerLogic)
+            IDataLayerLogic dataLayerLogic,
+            ColumnCreator columnCreator)
         {
             _mapper = mapper;
             _workspaceCollection = workspaceCollection;
             _resolution = resolution;
             _extentStorageLoader = extentStorageLoader;
             _dataLayerLogic = dataLayerLogic;
+            _columnCreator = columnCreator;
         }
 
         [Route("all")]
@@ -243,9 +246,9 @@ namespace DatenMeister.Web.Api
             var totalItems = foundExtent.elements();
             var foundItems = totalItems;
 
-            var columnCreator = new ColumnCreator();
-            var columns = columnCreator.FindColumnsForTable(foundExtent).ToList();
-            var properties = columnCreator.Properties;
+
+            var result = _columnCreator.FindColumnsForTable(foundExtent);
+            var properties = result.Properties;
 
             // Perform the filtering
             IEnumerable<object> filteredItems = foundItems;
@@ -276,10 +279,10 @@ namespace DatenMeister.Web.Api
                 .Take(amount);
 
             // Now return our stuff
-            var result = new ExtentContentModel
+            var resultModel = new ExtentContentModel
             {
                 url = extent,
-                columns = columns,
+                columns = result.Columns,
                 totalItemCount = totalItems.Count(),
                 search = search,
                 filteredItemCount = filteredAmount,
@@ -287,15 +290,15 @@ namespace DatenMeister.Web.Api
                     .Select(x => new DataTableItem
                     {
                         uri = foundExtent.uri(x as IElement),
-                        v = ConvertToJson(foundExtent, x as IElement, columnCreator)
+                        v = ConvertToJson(foundExtent, x as IElement, result)
                     })
                     .ToList()
             };
 
-            return result;
+            return resultModel;
         }
 
-        private Dictionary<string, object> ConvertToJson(IUriExtent extent, IObject element, ColumnCreator creator)
+        private Dictionary<string, object> ConvertToJson(IUriExtent extent, IObject element, ColumnCreationResult creator)
         {
             var result = new Dictionary<string, object>();
 
@@ -365,10 +368,10 @@ namespace DatenMeister.Web.Api
                 // Not found
                 return NotFound();
             }
-            
-            var columnCreator = new ColumnCreator();
-            itemModel.c = columnCreator.FindColumnsForItem(foundElement).ToList();
-            itemModel.v = ConvertToJson(foundExtent, foundElement, columnCreator);
+
+            var result = _columnCreator.FindColumnsForItem(foundElement);
+            itemModel.c = result.Columns.ToList();
+            itemModel.v = ConvertToJson(foundExtent, foundElement, result);
 
             // Check, if item is of type IElement and has a metaclass
             var metaClass = foundElement.getMetaClass();

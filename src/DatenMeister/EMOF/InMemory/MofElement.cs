@@ -7,7 +7,7 @@ namespace DatenMeister.EMOF.InMemory
     /// </summary>
     public class MofElement : MofObject, IElement, IElementSetMetaClass
     {
-        private readonly IElement _container;
+        private IElement _container;
 
         public MofElement()
         {
@@ -34,6 +34,11 @@ namespace DatenMeister.EMOF.InMemory
         public void setMetaClass(IElement metaClass)
         {
             metaclass = metaClass;
+        }
+
+        public void setContainer(IElement container)
+        {
+            _container = container;
         }
     }
 }

@@ -25,21 +25,21 @@ namespace DatenMeister.Tests.Web
             var extent = new MofUriExtent("datenmeister:///test");
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
-            var creator = new ColumnCreator();
-            var columns = creator.FindColumnsForTable(extent);
-            Assert.That(columns, Is.Not.Null);
-            Assert.That(columns.Count(), Is.EqualTo(2));
-            var firstColumn = columns.FirstOrDefault(x => x.name == "zip");
-            var secondColumn = columns.FirstOrDefault(x => x.name == "location");
+            var creator = new ColumnCreator(null);
+            var result = creator.FindColumnsForTable(extent);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Columns.Count(), Is.EqualTo(2));
+            var firstColumn = result.Columns.FirstOrDefault(x => x.name == "zip");
+            var secondColumn = result.Columns.FirstOrDefault(x => x.name == "location");
 
             Assert.That(firstColumn, Is.Not.Null);
             Assert.That(secondColumn, Is.Not.Null);
 
             Assert.That(firstColumn.isEnumeration, Is.False);
 
-            Assert.That(creator.Properties.Count, Is.EqualTo(2));
-            Assert.That(creator.Properties[0], Is.EqualTo("zip"));
-            Assert.That(creator.Properties[1], Is.EqualTo("location"));
+            Assert.That(result.Properties.Count, Is.EqualTo(2));
+            Assert.That(result.Properties[0], Is.EqualTo("zip"));
+            Assert.That(result.Properties[1], Is.EqualTo("location"));
         }
 
         [Test]
@@ -66,13 +66,13 @@ namespace DatenMeister.Tests.Web
             extent.elements().add(mofObject2);
 
             // Execute the stuff
-            var creator = new ColumnCreator();
-            var columns = creator.FindColumnsForTable(extent);
-            Assert.That(columns, Is.Not.Null);
-            Assert.That(columns.Count(), Is.EqualTo(3));
-            var firstColumn = columns.FirstOrDefault(x => x.name == "zip");
-            var secondColumn = columns.FirstOrDefault(x => x.name == "location");
-            var thirdColumn = columns.FirstOrDefault(x => x.name == "other");
+            var creator = new ColumnCreator(null);
+            var result = creator.FindColumnsForTable(extent);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Columns.Count(), Is.EqualTo(3));
+            var firstColumn = result.Columns.FirstOrDefault(x => x.name == "zip");
+            var secondColumn = result.Columns.FirstOrDefault(x => x.name == "location");
+            var thirdColumn = result.Columns.FirstOrDefault(x => x.name == "other");
 
             Assert.That(firstColumn, Is.Not.Null);
             Assert.That(secondColumn, Is.Not.Null);

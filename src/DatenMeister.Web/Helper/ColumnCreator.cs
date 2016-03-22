@@ -4,43 +4,44 @@ using System.Linq;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Uml.Helper;
 using DatenMeister.Web.Models;
 
 namespace DatenMeister.Web.Helper
 {
     public class ColumnCreator
     {
-        public Dictionary<object, DataTableColumn> ColumnsOnProperty { get; private set; }
+        private readonly IUmlNameResolution _nameResolution;
 
-        public IList<object> Properties
+        public ColumnCreator(IUmlNameResolution nameResolution)
         {
-            get { return ColumnsOnProperty.Select(x => x.Key).ToList(); }
+            _nameResolution = nameResolution;
         }
 
-        public IEnumerable<DataTableColumn> FindColumnsForTable(IUriExtent extent)
+        public ColumnCreationResult FindColumnsForTable(IUriExtent extent)
         {
             return FindColumnsForTable(extent.elements());
         }
 
-        public IEnumerable<DataTableColumn> FindColumnsForTable(IReflectiveSequence elements)
+        public ColumnCreationResult FindColumnsForTable(IReflectiveSequence elements)
         {
-            ColumnsOnProperty = new Dictionary<object, DataTableColumn>();
+            var result = new ColumnCreationResult();
             foreach (var item in elements)
             {
-                EvaluateColumnsForItem(item);
+                EvaluateColumnsForItem(result, item);
             }
 
-            return ColumnsOnProperty.Select(x => x.Value);
+            return result;
         }
 
-        public IEnumerable<DataTableColumn> FindColumnsForItem(object item)
+        public ColumnCreationResult FindColumnsForItem(object item)
         {
-            ColumnsOnProperty = new Dictionary<object, DataTableColumn>();
-            EvaluateColumnsForItem(item);
-            return ColumnsOnProperty.Select(x => x.Value);
+            var result = new ColumnCreationResult();
+            EvaluateColumnsForItem(result, item);
+            return result;
         }
 
-        private void EvaluateColumnsForItem(object item)
+        private void EvaluateColumnsForItem(ColumnCreationResult result, object item)
         {
             if (item is IObjectAllProperties)
             {
@@ -50,15 +51,15 @@ namespace DatenMeister.Web.Helper
                 foreach (var property in properties)
                 {
                     DataTableColumn column;
-                    if (!ColumnsOnProperty.TryGetValue(property, out column))
+                    if (!result.ColumnsOnProperty.TryGetValue(property, out column))
                     {
                         column = new DataTableColumn
                         {
                             name = property.ToString(),
-                            title = property.ToString()
+                            title = _nameResolution == null ? property.ToString() : _nameResolution.GetName(property)
                         };
 
-                        ColumnsOnProperty[property] = column;
+                        result.ColumnsOnProperty[property] = column;
                     }
 
                     var value = ((IObject) item).get(property);

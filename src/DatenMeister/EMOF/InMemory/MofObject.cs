@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using DatenMeister.EMOF.Exceptions;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.EMOF.Proxy;
 
 namespace DatenMeister.EMOF.InMemory
 {
@@ -15,7 +17,7 @@ namespace DatenMeister.EMOF.InMemory
         /// <summary>
         /// Stores the list of extents to which this element is stored
         /// </summary>
-        private List<IExtent> _extents = new List<IExtent>();
+        private readonly HashSet<IExtent> _extents = new HashSet<IExtent>();
 
         /// <summary>
         ///     Stores the values direct within the memory

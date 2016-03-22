@@ -16,7 +16,8 @@ namespace DatenMeister.Uml.Helper
         {
             // Returns the name by the uml logic. 
             var dataLayer = _dataLayerLogic?.GetDataLayerOfObject(element);
-            var uml = _dataLayerLogic?.Get<_UML>(dataLayer);
+            var metaLayer = _dataLayerLogic?.GetMetaLayerFor(dataLayer);
+            var uml = _dataLayerLogic?.Get<_UML>(metaLayer);
             if (uml != null)
             {
                 var result = element.get(uml.CommonStructure.NamedElement.name);

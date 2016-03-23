@@ -95,6 +95,21 @@ namespace DatenMeister.Runtime.Workspaces
         }
 
         /// <summary>
+        /// Returns the given workspace out of a collection to which the extent is associated
+        /// </summary>
+        /// <param name="workspaceCollection">The workspace collection to be queried</param>
+        /// <param name="extent">The extent to which the workspace is required</param>
+        /// <returns>Found workspace or null, if not found</returns>
+        public static Workspace<IExtent> FindWorkspace(
+            this IWorkspaceCollection workspaceCollection,
+            IExtent extent)
+        {
+            return workspaceCollection.Workspaces.FirstOrDefault(x => x.extent.Contains(extent));
+        }
+
+
+
+        /// <summary>
         /// Finds the extent with the given uri in one of the workspaces in the database
         /// </summary>
         /// <param name="collection">Collection to be evaluated</param>
@@ -107,6 +122,24 @@ namespace DatenMeister.Runtime.Workspaces
             return collection.Workspaces
                 .SelectMany(x => x.extent)
                 .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == uri);
+        }
+
+
+
+        /// <summary>
+        /// Finds the extent with the given uri in one of the workspaces in the database
+        /// </summary>
+        /// <param name="collection">Collection to be evaluated</param>
+        /// <param name="uri">Uri, which needs to be retrieved</param>
+        /// <returns>Found extent or null if not found</returns>
+        public static IElement FindItem(
+            this IWorkspaceCollection collection,
+            string uri)
+        {
+            return collection.Workspaces
+                .SelectMany(x => x.extent)
+                .Select(x => (x as IUriExtent)?.element(uri))
+                .FirstOrDefault(x => x != null);
         }
 
         public static void FindItem(

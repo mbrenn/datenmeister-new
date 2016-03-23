@@ -58,12 +58,13 @@ export module WorkspaceApi {
 
 export module ExtentApi {
 
-    export function createItem(ws: string, extentUrl: string, container ?: string): JQueryDeferred<DMI.ClientResponse.ICreateItemResult> {
+    export function createItem(ws: string, extentUrl: string, container ?: string, metaclass?: string): JQueryDeferred<DMI.ClientResponse.ICreateItemResult> {
         var callback = $.Deferred();
         var postModel = new DMI.PostModels.ItemCreateModel();
         postModel.ws = ws;
         postModel.extent = extentUrl;
         postModel.container = container;
+        postModel.metaclass = metaclass;
 
         $.ajax(
             {
@@ -179,6 +180,23 @@ export module ExtentApi {
                 success: (data: any) => { callback.resolve(true); },
                 error: (data: any) => { callback.reject(false); }
             });
+
+        return callback;
+    }
+
+    export function getCreatableTypes(ws: string, extent: string) : JQueryDeferred<DMI.ClientResponse.IExtentCreateableTypeResult>{
+        var callback = $.Deferred();
+        $.ajax({
+            url: "/api/datenmeister/extent/get_creatable_types?ws=" + encodeURIComponent(ws)
+            + "&extent=" + encodeURIComponent(extent),
+            cache: false,
+            success: data => {
+                callback.resolve(data);
+            },
+            error: data => {
+                callback.reject(null);
+            }
+        });
 
         return callback;
     }

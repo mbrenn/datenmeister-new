@@ -114,6 +114,8 @@ export class ExtentView {
 
     loadAndCreateHtmlForExtent(container: JQuery, ws: string, extentUrl: string, query?: DMI.PostModels.IItemTableQuery): JQueryPromise<Object> {
         var tthis = this;
+
+        // Creates the layout configuration and the handling on requests of the user
         var configuration = new DMTables.ItemTableConfiguration();
         configuration.onItemEdit = (url: string) => {
             if (tthis.onItemEdit !== undefined) {
@@ -122,7 +124,6 @@ export class ExtentView {
 
             return false;
         };
-
         configuration.onItemView = (url: string) => {
             if (tthis.onItemView !== undefined) {
                 tthis.onItemView(ws, extentUrl, url);
@@ -143,6 +144,7 @@ export class ExtentView {
 
         configuration.layout = this.layout;
 
+        // Creates the layout
         var provider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
         var table = new DMTables.ItemListTable(container, provider, configuration);
         
@@ -150,12 +152,18 @@ export class ExtentView {
             table.currentQuery = query;
         }
 
-        configuration.onNewItemClicked = () => {
-            DMClient.ExtentApi.createItem(ws, extentUrl)
+        configuration.onNewItemClicked = (metaclass) => {
+            DMClient.ExtentApi.createItem(ws, extentUrl, undefined, metaclass)
                 .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
                     this.onItemCreated(ws, extentUrl, innerData.newuri);
                 });
         };
+        
+        DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done(
+            (data) => {
+                table.setCreatableTypes(data.types);
+            });
+
 
         return table.loadAndShow();
     }

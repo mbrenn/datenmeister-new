@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Apps.ZipCode;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.Full.Integration;
 using DatenMeister.Runtime.Extents;
@@ -25,7 +26,8 @@ namespace DatenMeister.Tests.Runtime
             var dataExtent = new MofUriExtent("dm:///test");
             var creatableTypes = extentFunctions.GetCreatableTypes(dataExtent);
             Assert.That(creatableTypes, Is.Not.Null);
-            Assert.That(creatableTypes.Count, Is.EqualTo(1));
+            Assert.That(creatableTypes.MetaLayer, Is.EqualTo(DataLayers.Types));
+            Assert.That(creatableTypes.CreatableTypes.Count, Is.EqualTo(1));
         }
     }
 }

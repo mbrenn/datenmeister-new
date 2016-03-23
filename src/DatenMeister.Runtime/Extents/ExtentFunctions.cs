@@ -15,7 +15,13 @@ namespace DatenMeister.Runtime.Extents
             _dataLayerLogic = dataLayerLogic;
         }
 
-        public IList<IElement> GetCreatableTypes(IUriExtent extent)
+        /// <summary>
+        /// Gets an enumeration of creatable types for a given extent. 
+        /// It navigates to the meta extent and looks for all classes
+        /// </summary>
+        /// <param name="extent">The extent into which a new instance shall be created</param>
+        /// <returns>Enumeration of types</returns>
+        public CreateableTypeResult GetCreatableTypes(IUriExtent extent)
         {
             var dataLayer = _dataLayerLogic.GetDataLayerOfExtent(extent);
             var typeLayer = _dataLayerLogic.GetMetaLayerFor(dataLayer);
@@ -24,11 +30,22 @@ namespace DatenMeister.Runtime.Extents
             var uml = _dataLayerLogic.Get<_UML>(umlLayer);
             var classType = uml.StructuredClassifiers.__Class;
 
-            return
-                _dataLayerLogic.GetExtentsForDatalayer(typeLayer)
+            var result = new CreateableTypeResult
+            {
+                MetaLayer = typeLayer,
+                CreatableTypes = _dataLayerLogic.GetExtentsForDatalayer(typeLayer)
                     .SelectMany(x => x.elements().WhenMetaClassIs(classType))
                     .Cast<IElement>()
-                    .ToList();
+                    .ToList()
+            };
+
+            return result;
+        }
+
+        public class CreateableTypeResult
+        {
+            public IDataLayer MetaLayer { get; set; }
+            public IList<IElement> CreatableTypes { get; set; }
         }
     }
 }

@@ -11,6 +11,7 @@ using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Queries;
+using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
@@ -35,6 +36,7 @@ namespace DatenMeister.Web.Api
         private readonly IExtentStorageLoader _extentStorageLoader;
         private readonly IDataLayerLogic _dataLayerLogic;
         private readonly ColumnCreator _columnCreator;
+        private readonly ExtentFunctions _extentFunctions;
 
 
         public ExtentController(
@@ -43,7 +45,8 @@ namespace DatenMeister.Web.Api
             IUmlNameResolution resolution, 
             IExtentStorageLoader extentStorageLoader, 
             IDataLayerLogic dataLayerLogic,
-            ColumnCreator columnCreator)
+            ColumnCreator columnCreator, 
+            ExtentFunctions extentFunctions)
         {
             _mapper = mapper;
             _workspaceCollection = workspaceCollection;
@@ -51,6 +54,7 @@ namespace DatenMeister.Web.Api
             _extentStorageLoader = extentStorageLoader;
             _dataLayerLogic = dataLayerLogic;
             _columnCreator = columnCreator;
+            _extentFunctions = extentFunctions;
         }
 
         [Route("all")]
@@ -215,6 +219,37 @@ namespace DatenMeister.Web.Api
             return new
             {
                 success = removed
+            };
+        }
+
+        /// <summary>
+        /// Gets an enumeration of creatable types for the given extent.
+        /// The user can create a new instance by using this list
+        /// </summary>
+        /// <param name="ws">Workspace being used</param>
+        /// <param name="extent">Extent being used</param>
+        /// <returns>Array of creatable types</returns>
+        [Route("get_creatable_types")]
+        [HttpGet]
+        public object GetCreatableTypes(string ws, string extent)
+        {
+            Workspace<IExtent> foundWorkspace;
+            IUriExtent foundExtent;
+            _workspaceCollection.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
+
+            var foundTypes = _extentFunctions.GetCreatableTypes(foundExtent);
+
+            return new
+            {
+                types = from type in foundTypes.CreatableTypes
+                    let typeExtent = type.GetUriExtentOf()
+                    select new
+                    {
+                        name = _resolution.GetName(type),
+                        uri = typeExtent.uri(type),
+                        ext = typeExtent.contextURI(),
+                        ws = _workspaceCollection.FindWorkspace(typeExtent)
+                    }
             };
         }
 
@@ -409,8 +444,16 @@ namespace DatenMeister.Web.Api
                 throw new InvalidOperationException("Element creation within container is not supported.");
             }
 
+            // If the metaclass was given, look for it, otherwise we do not have a type
+            IElement metaclass = null;
+            if (!string.IsNullOrEmpty(model.metaclass))
+            {
+                metaclass = _workspaceCollection.FindItem(model.metaclass);
+            }
+
+            // Creates the type
             var factory = _mapper.FindFactoryFor(foundExtent);
-            var element = factory.create(null);
+            var element = factory.create(metaclass);
 
             foundExtent.elements().add(element);
             var newUrl = foundExtent.uri(element);

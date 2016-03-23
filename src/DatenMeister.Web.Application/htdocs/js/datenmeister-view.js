@@ -86,6 +86,7 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
         ExtentView.prototype.loadAndCreateHtmlForExtent = function (container, ws, extentUrl, query) {
             var _this = this;
             var tthis = this;
+            // Creates the layout configuration and the handling on requests of the user
             var configuration = new DMTables.ItemTableConfiguration();
             configuration.onItemEdit = function (url) {
                 if (tthis.onItemEdit !== undefined) {
@@ -109,17 +110,21 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
                 return false;
             };
             configuration.layout = this.layout;
+            // Creates the layout
             var provider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
             var table = new DMTables.ItemListTable(container, provider, configuration);
             if (query !== undefined && query !== null) {
                 table.currentQuery = query;
             }
-            configuration.onNewItemClicked = function () {
-                DMClient.ExtentApi.createItem(ws, extentUrl)
+            configuration.onNewItemClicked = function (metaclass) {
+                DMClient.ExtentApi.createItem(ws, extentUrl, undefined, metaclass)
                     .done(function (innerData) {
                     _this.onItemCreated(ws, extentUrl, innerData.newuri);
                 });
             };
+            DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done(function (data) {
+                table.setCreatableTypes(data.types);
+            });
             return table.loadAndShow();
         };
         return ExtentView;

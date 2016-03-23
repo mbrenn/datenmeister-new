@@ -54,6 +54,10 @@ export module ClientResponse {
         uri: string;
         v: Array<string>;
     }
+
+    export interface IExtentCreateableTypeResult {
+        types: Array<IItemModel>
+    }
 }
 
 export module PostModels {
@@ -100,7 +104,8 @@ export module PostModels {
     }
 
     export class ItemCreateModel extends ExtentReferenceModel {
-        container: string
+        container: string;
+        metaclass: string;
     }
 
     export class ItemUnsetPropertyModel extends ItemReferenceModel {

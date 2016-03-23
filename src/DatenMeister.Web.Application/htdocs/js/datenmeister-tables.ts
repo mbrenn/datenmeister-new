@@ -1,7 +1,7 @@
 ﻿import * as DMI from "datenmeister-interfaces"
 
 export class ItemTableConfiguration {
-    onNewItemClicked: () => void;
+    onNewItemClicked: (typeUrl?: string) => void;
     onItemEdit: (url: string) => boolean;
     onItemDelete: (url: string, domRow: JQuery) => boolean;
     onItemView: (url: string) => boolean;
@@ -46,6 +46,8 @@ export class ItemListTable {
     domFilteredNumber: JQuery;
     currentPage: number;
     totalPages: number;
+    domNewItem: JQuery;
+    createableTypes : Array<DMI.ClientResponse.IItemModel>;
 
     provider: DMI.Api.IItemsProvider;
 
@@ -91,8 +93,8 @@ export class ItemListTable {
         var domToolbar = $("<div class='dm-toolbar row'></div>");
 
         if (this.configuration.supportNewItem) {
-            var domNewItem = $("<div class='col-md-3'><a href='#' class='btn btn-default'>Create new item</a></div>");
-            domNewItem.click(() => {
+            this.domNewItem = $("<div class='col-md-3'><a href='#' class='btn btn-default'>Create new item</a></div>");
+            $("a", this.domNewItem).click(() => {
                 if (tthis.configuration.onNewItemClicked !== undefined) {
                     tthis.configuration.onNewItemClicked();
                 }
@@ -100,7 +102,7 @@ export class ItemListTable {
                 return false;
             });
 
-            domToolbar.append(domNewItem);
+            domToolbar.append(this.domNewItem);
         }
 
         if (this.configuration.supportPaging) {
@@ -203,6 +205,39 @@ export class ItemListTable {
         // Now, the items
         tthis.createRowsForItems(data);
         this.domContainer.append(this.domTable);
+
+        // Updates the layout for the creatable types
+        this.updateLayoutForCreatableTypes();
+    }
+
+    setCreatableTypes(data: Array<DMI.ClientResponse.IItemModel>) {
+        this.createableTypes = data;
+        this.updateLayoutForCreatableTypes();
+    }
+
+    updateLayoutForCreatableTypes() {
+        var tthis = this;
+        if (this.createableTypes !== null && this.createableTypes !== undefined) {
+            var data = this.createableTypes;
+            this.domNewItem.empty();
+            var domDropDown = $("<select><option>Create Type...</option><option value='unspecified'>Unspecified</option></select>");
+            for (var n in data) {
+                var type = data[n];
+                var domOption = $("<option value='" + type.uri + "'></option>");
+                domOption.text(type.name);
+                /*domOption.click(((innerType: DMI.ClientResponse.IItemModel) => {
+                    return () => alert(innerType.uri);
+                })(type));*/
+
+                domDropDown.append(domOption);
+            }
+
+            domDropDown.change(() => {
+                tthis.configuration.onNewItemClicked(domDropDown.val());
+            });
+
+            this.domNewItem.append(domDropDown);
+        }
     }
 
     updateDomForItems(data: DMI.ClientResponse.IItemsContent) {

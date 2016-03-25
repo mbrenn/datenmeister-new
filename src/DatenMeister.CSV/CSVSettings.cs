@@ -23,5 +23,10 @@ namespace DatenMeister.CSV
         /// and stored within the instance (this means that the instance gets changed)
         /// </summary>
         public List<object> Columns { get; set; }
+
+        /// <summary>
+        /// Gets or sets the uri to the metaclass to be used to load the given extent
+        /// </summary>
+        public string MetaclassUri { get; set; }
     }
 }

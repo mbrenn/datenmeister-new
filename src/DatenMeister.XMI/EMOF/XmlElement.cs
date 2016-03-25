@@ -32,7 +32,7 @@ namespace DatenMeister.XMI.EMOF
             }
         }
 
-        public object Id
+        public string Id
         {
             get { return _node.Attribute(_attributeNameForId).Value; }
         }

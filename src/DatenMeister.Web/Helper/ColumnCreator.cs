@@ -46,60 +46,63 @@ namespace DatenMeister.Web.Helper
 
         private void EvaluateColumnsForItem(ColumnCreationResult result, object item)
         {
+            // First phase: Get the properties by using the metaclass
             var asElement = item as IElement;
             var metaClass = asElement?.metaclass;
 
-            if (metaClass != null && _dataLayerLogic != null)
+            if (metaClass != null)
             {
-                var dataLayer = _dataLayerLogic.GetMetaLayerFor(_dataLayerLogic.GetDataLayerOfObject(metaClass));
-                var uml = _dataLayerLogic.Get<_UML>(dataLayer);
+                var dataLayer = _dataLayerLogic?.GetDataLayerOfObject(metaClass);
+                var metaLayer = _dataLayerLogic?.GetMetaLayerFor(dataLayer);
+                var uml = _dataLayerLogic?.Get<_UML>(metaLayer);
 
-                var properties = metaClass.get(uml.Classification.Classifier.attribute) as IEnumerable;
-                if (properties != null)
+                if (uml != null)
                 {
-                    foreach (var property in properties.Cast<IObject>())
+                    var properties = metaClass.get(uml.Classification.Classifier.attribute) as IEnumerable;
+                    if (properties != null)
                     {
-
-                        DataTableColumn column;
-                        if (!result.ColumnsOnProperty.TryGetValue(property, out column))
+                        foreach (var property in properties.Cast<IObject>())
                         {
-                            column = new DataTableColumn
+                            DataTableColumn column;
+                            if (!result.ColumnsOnProperty.TryGetValue(property, out column))
                             {
-                                name = property.ToString(),
-                                title = property.get(uml.CommonStructure.NamedElement.name).ToString()
-                            };
+                                column = new DataTableColumn
+                                {
+                                    name = property.ToString(),
+                                    title = property.get(uml.CommonStructure.NamedElement.name).ToString()
+                                };
 
-                            result.ColumnsOnProperty[property] = column;
+                                result.ColumnsOnProperty[property] = column;
+                            }
                         }
                     }
                 }
             }
-            else
+
+            // Second phase: Get properties by the object iself
+            // This item does not have a metaclass and also no properties, so we try to find them by using the item
+            var itemAsAllProperties = item as IObjectAllProperties;
+            if (itemAsAllProperties != null)
             {
-                // This item does not have a metaclass and also no properties, so we try to find them by using the item
-                var itemAsAllProperties = item as IObjectAllProperties;
-                if (itemAsAllProperties != null)
+                var properties = itemAsAllProperties.getPropertiesBeingSet();
+
+                foreach (var property in properties)
                 {
-                    var properties = itemAsAllProperties.getPropertiesBeingSet();
-
-                    foreach (var property in properties)
+                    DataTableColumn column;
+                    if (!result.ColumnsOnProperty.TryGetValue(property, out column))
                     {
-                        DataTableColumn column;
-                        if (!result.ColumnsOnProperty.TryGetValue(property, out column))
+                        column = new DataTableColumn
                         {
-                            column = new DataTableColumn
-                            {
-                                name = property.ToString(),
-                                title =
-                                    _nameResolution == null ? property.ToString() : _nameResolution.GetName(property)
-                            };
+                            name = property.ToString(),
+                            title =
+                                _nameResolution == null ? property.ToString() : _nameResolution.GetName(property)
+                        };
 
-                            result.ColumnsOnProperty[property] = column;
-                        }
-
-                        var value = ((IObject) item).get(property);
-                        column.isEnumeration |= value is IEnumerable && !(value is string);
+                        result.ColumnsOnProperty[property] = column;
                     }
+
+                    var value = ((IObject) item).get(property);
+                    column.isEnumeration |= value is IEnumerable && !(value is string);
                 }
             }
         }

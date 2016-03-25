@@ -12,7 +12,7 @@ namespace DatenMeister.EMOF.InMemory
     /// <summary>
     ///     Describes the InMemory object, representing the Mof Object
     /// </summary>
-    public class MofObject : IObject, IObjectAllProperties, IHasId, IObjectKnowsExtent
+    public class MofObject : IObject, IObjectAllProperties, IHasId, IObjectKnowsExtent, ICanSetId
     {
         /// <summary>
         /// Stores the list of extents to which this element is stored
@@ -26,15 +26,10 @@ namespace DatenMeister.EMOF.InMemory
        
         public MofObject()
         {
-            guid = Guid.NewGuid();
+            Id = Guid.NewGuid().ToString();
         }
 
-        /// <summary>
-        ///     Gets or sets the guid of the element
-        /// </summary>
-        public Guid guid { get; private set; }
-
-        object IHasId.Id => guid;
+        public string Id { get; set; }
         
         IEnumerable<IExtent> IObjectKnowsExtent.Extents
         {
@@ -99,7 +94,7 @@ namespace DatenMeister.EMOF.InMemory
         public override string ToString()
         {
             var builder = new StringBuilder();
-            builder.Append($"#{guid} - ");
+            builder.Append($"#{Id} - ");
 
             var komma = string.Empty;
             foreach (var pair in _values)

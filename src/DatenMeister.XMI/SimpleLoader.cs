@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 using DatenMeister.EMOF.Interface.Identifiers;
@@ -14,11 +15,6 @@ namespace DatenMeister.XMI
         /// </summary>
         private readonly IFactory _factory;
 
-        /// <summary>
-        ///     Stores the workspace to find the meta types
-        /// </summary>
-        private Workspace<IUriExtent> _metaWorkspace;
-
         private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>(); 
 
         /// <summary>
@@ -27,11 +23,9 @@ namespace DatenMeister.XMI
         /// <param name="metaWorkspace">Metaworkspace being used to find the type declarations</param>
         /// <param name="factory">Factory to be used</param>
         public SimpleLoader(
-            IFactory factory,
-            Workspace<IUriExtent> metaWorkspace = null)
+            IFactory factory)
         {
             _factory = factory;
-            _metaWorkspace = metaWorkspace;
         }
 
         public void Load(IUriExtent extent, string filePath)
@@ -60,6 +54,8 @@ namespace DatenMeister.XMI
         /// <param name="document">Document to be loaded</param>
         public void Load(IUriExtent extent, XDocument document)
         {
+            _idToElement.Clear();
+
             // Skip the first element
             foreach (var element in document.Elements().Elements())
             {
@@ -83,7 +79,17 @@ namespace DatenMeister.XMI
             var xmiId = XmiId.Get(element);
             if (xmiId != null)
             {
-                _idToElement[xmiId] = result;
+                // In some Xmi files, the Xmi-id is used multiple times (e.g. Uml). We only assign it the first time
+                if (!_idToElement.ContainsKey(xmiId))
+                {
+                    _idToElement[xmiId] = result;
+
+                    var resultSetId = result as ICanSetId;
+                    if (resultSetId != null)
+                    {
+                        resultSetId.Id = xmiId;
+                    }
+                }
             }
 
             var dict = new Dictionary<string, List<object>>();

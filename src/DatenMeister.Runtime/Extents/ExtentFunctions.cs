@@ -28,9 +28,20 @@ namespace DatenMeister.Runtime.Extents
             var umlLayer= _dataLayerLogic.GetMetaLayerFor(typeLayer);
 
             var uml = _dataLayerLogic.Get<_UML>(umlLayer);
-            var classType = uml.StructuredClassifiers.__Class;
+            var classType = uml?.StructuredClassifiers.__Class;
 
-            var result = new CreateableTypeResult
+            if (classType == null)
+            {
+                // We did not find the corresponding class type
+                return new CreateableTypeResult()
+                {
+
+                    MetaLayer = typeLayer,
+                    CreatableTypes = new IElement[] {}
+                };
+            }
+
+            return new CreateableTypeResult
             {
                 MetaLayer = typeLayer,
                 CreatableTypes = _dataLayerLogic.GetExtentsForDatalayer(typeLayer)
@@ -38,8 +49,6 @@ namespace DatenMeister.Runtime.Extents
                     .Cast<IElement>()
                     .ToList()
             };
-
-            return result;
         }
 
         public class CreateableTypeResult

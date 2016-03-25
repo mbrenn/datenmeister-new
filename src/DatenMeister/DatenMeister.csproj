@@ -60,6 +60,7 @@
     <Compile Include="EMOF\Interface\Reflection\IElement.cs" />
     <Compile Include="EMOF\Interface\Reflection\IElementSetMetaClass.cs" />
     <Compile Include="EMOF\Interface\Reflection\IFactory.cs" />
+    <Compile Include="EMOF\Interface\Reflection\ICanSetId.cs" />
     <Compile Include="EMOF\Interface\Reflection\IHasId.cs" />
     <Compile Include="EMOF\Interface\Reflection\IObject.cs" />
     <Compile Include="EMOF\Interface\Common\IReflectiveSequence.cs" />

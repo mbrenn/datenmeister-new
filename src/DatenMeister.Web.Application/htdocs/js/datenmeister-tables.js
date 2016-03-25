@@ -151,6 +151,10 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             this.updateLayoutForCreatableTypes();
         };
         ItemListTable.prototype.updateLayoutForCreatableTypes = function () {
+            if (this.domNewItem === undefined || this.domNewItem === null) {
+                // Html for this element was not yet created
+                return;
+            }
             var tthis = this;
             if (this.createableTypes !== null && this.createableTypes !== undefined) {
                 var data = this.createableTypes;

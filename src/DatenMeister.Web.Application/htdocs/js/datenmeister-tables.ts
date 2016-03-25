@@ -216,6 +216,11 @@ export class ItemListTable {
     }
 
     updateLayoutForCreatableTypes() {
+        if (this.domNewItem === undefined || this.domNewItem === null) {
+            // Html for this element was not yet created
+            return;
+        }
+
         var tthis = this;
         if (this.createableTypes !== null && this.createableTypes !== undefined) {
             var data = this.createableTypes;

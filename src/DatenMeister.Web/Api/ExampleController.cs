@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Web.Http;
 using DatenMeister.CSV.Runtime.Storage;
+using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Web.Models.PostModels;
 
 namespace DatenMeister.Web.Api
@@ -12,12 +16,16 @@ namespace DatenMeister.Web.Api
     [RoutePrefix("api/datenmeister/example")]
     public class ExampleController : ApiController
     {
+        private readonly IDataLayerLogic _dataLayerLogic;
+        private readonly IWorkspaceCollection _collection;
         private readonly IExtentStorageLoader _loader;
 
-        private static readonly  Random Random = new Random();
+        private static readonly Random Random = new Random();
 
-        public ExampleController(IExtentStorageLoader loader)
+        public ExampleController(IDataLayerLogic dataLayerLogic, IWorkspaceCollection collection, IExtentStorageLoader loader)
         {
+            _dataLayerLogic = dataLayerLogic;
+            _collection = collection;
             _loader = loader;
         }
 
@@ -50,6 +58,15 @@ namespace DatenMeister.Web.Api
 
             //////////////////////
             // Loads the workspace
+            var uml = _dataLayerLogic.Get<_UML>(DataLayers.Uml);
+            var element = _collection.FindItem("dm:///types#DatenMeister.Apps.ZipCode.Model.ZipCode");
+            var idProperty = element.GetByPropertyFromCollection(uml.Classification.Classifier.attribute, uml.CommonStructure.NamedElement.name, "Id").FirstOrDefault();
+            var zipProperty = element.GetByPropertyFromCollection(uml.Classification.Classifier.attribute, uml.CommonStructure.NamedElement.name, "Zip").FirstOrDefault();
+            var positionLongProperty = element.GetByPropertyFromCollection(uml.Classification.Classifier.attribute, uml.CommonStructure.NamedElement.name, "PositionLong").FirstOrDefault();
+            var positionLatProperty = element.GetByPropertyFromCollection(uml.Classification.Classifier.attribute, uml.CommonStructure.NamedElement.name, "PositionLat").FirstOrDefault();
+            var citynameProperty = element.GetByPropertyFromCollection(uml.Classification.Classifier.attribute, uml.CommonStructure.NamedElement.name, "CityName").FirstOrDefault();
+
+
             var defaultConfiguration = new CSVStorageConfiguration
             {
                 ExtentUri = $"datenmeister:///zipcodes/{randomNumber}",
@@ -59,7 +76,9 @@ namespace DatenMeister.Web.Api
                 {
                     HasHeader = false,
                     Separator = '\t',
-                    Encoding = "UTF-8"
+                    Encoding = "UTF-8",
+                    Columns = new object[] { idProperty, zipProperty, positionLongProperty, positionLatProperty, citynameProperty }.ToList(),
+                    MetaclassUri = "dm:///types#DatenMeister.Apps.ZipCode.Model.ZipCode"
                 }
             };
 

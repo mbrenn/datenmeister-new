@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Runtime.ExtentStorage.Interfaces
+﻿namespace DatenMeister.Runtime.ExtentStorage.Configuration
 {
     /// <summary>
     /// Defines the storage configuration, which allows the extent getting loaded and saved. 

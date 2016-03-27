@@ -4,13 +4,16 @@ using System.Diagnostics;
 using System.Linq;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
     /// <summary>
-    /// This logic handles the loading and storing of extents automatically
+    /// This logic handles the loading and storing of extents automatically. 
+    /// This loader is responsible to retrieve an extent by the given ExtentStorageConfiguration
+    /// and storing it afterwards at the same location
     /// </summary>
     public class ExtentStorageLoader : IExtentStorageLoader
     {
@@ -54,7 +57,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
-        /// Loads the extent by using the extent storage
+        /// Loads the extent by using the extent storage by using the configuration and finding
+        /// the correct storage engine 
         /// </summary>
         /// <param name="configuration">Configuration being used to load</param>
         /// <param name="createAlsoEmpty">true, if also empty extents will be created, if the file does not exist</param>
@@ -71,7 +75,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             var extentStorage = _map.CreateFor(configuration);
         
             // Loads the extent
-            var loadedExtent = extentStorage.LoadExtent(_dataLayerLogic, configuration, createAlsoEmpty);
+            var loadedExtent = extentStorage.LoadExtent(configuration, createAlsoEmpty);
             Debug.WriteLine($"- Loading: {configuration}");
 
             if (loadedExtent == null)
@@ -131,7 +135,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             Debug.WriteLine($"- Writing: {information.Configuration}");
 
             var extentStorage = _map.CreateFor(information.Configuration);
-            extentStorage.StoreExtent(_dataLayerLogic, information.Extent, information.Configuration);
+            extentStorage.StoreExtent(information.Extent, information.Configuration);
         }
 
         public void StoreAll()

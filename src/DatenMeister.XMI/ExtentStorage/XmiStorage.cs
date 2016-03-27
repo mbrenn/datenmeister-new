@@ -3,14 +3,15 @@ using System.IO;
 using System.Xml.Linq;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.XMI.EMOF;
 
 namespace DatenMeister.XMI.ExtentStorage
 {
-    public class XmiStorage  : IExtentStorage
+    public class XmiStorage : IExtentStorage
     {
-        public IUriExtent LoadExtent(IDataLayerLogic dataLayerLogic, ExtentStorageConfiguration configuration, bool createAlsoEmpty = false)
+        public IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty = false)
         {
             var xmiConfiguration = (XmiStorageConfiguration) configuration;
 
@@ -29,7 +30,7 @@ namespace DatenMeister.XMI.ExtentStorage
             return new XmlUriExtent(xmlDocument, xmiConfiguration.ExtentUri);
         }
 
-        public void StoreExtent(IDataLayerLogic dataLayerLogic, IUriExtent extent, ExtentStorageConfiguration configuration)
+        public void StoreExtent(IUriExtent extent, ExtentStorageConfiguration configuration)
         {
             var xmiConfiguration = (XmiStorageConfiguration)configuration;
 

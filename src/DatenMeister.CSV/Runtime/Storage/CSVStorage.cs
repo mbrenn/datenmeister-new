@@ -4,7 +4,9 @@ using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.CSV.Runtime.Storage
 {
@@ -14,11 +16,18 @@ namespace DatenMeister.CSV.Runtime.Storage
     [ConfiguredBy(typeof(CSVStorageConfiguration))]
     // ReSharper disable once InconsistentNaming
     public class CSVStorage : IExtentStorage
-    { 
-        public IUriExtent LoadExtent(IDataLayerLogic dataLayerLogic, ExtentStorageConfiguration configuration, bool createAlsoEmpty)
+    {
+        private readonly IWorkspaceCollection _workspaceCollection;
+
+        public CSVStorage(IWorkspaceCollection workspaceCollection)
+        {
+            _workspaceCollection = workspaceCollection;
+        }
+
+        public IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty)
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
-            var provider = new CSVDataProvider(dataLayerLogic);
+            var provider = new CSVDataProvider(_workspaceCollection); 
             var mofExtent = new MofUriExtent(csvConfiguration.ExtentUri);
             var factory = new MofFactory();
 
@@ -36,11 +45,11 @@ namespace DatenMeister.CSV.Runtime.Storage
             return mofExtent;
         }
 
-        public void StoreExtent(IDataLayerLogic dataLayerLogic, IUriExtent extent, ExtentStorageConfiguration configuration)
+        public void StoreExtent(IUriExtent extent, ExtentStorageConfiguration configuration)
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
 
-            var provider = new CSVDataProvider(dataLayerLogic);
+            var provider = new CSVDataProvider(_workspaceCollection);
             provider.Save(extent, csvConfiguration.Path, csvConfiguration.Settings);
         }
     }

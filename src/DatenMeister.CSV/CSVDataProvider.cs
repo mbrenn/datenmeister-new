@@ -7,6 +7,7 @@ using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.CSV
 {
@@ -15,20 +16,18 @@ namespace DatenMeister.CSV
     /// </summary>
     public class CSVDataProvider
     {
-        /// <summary>
-        /// Defines the datalayer logic that can be used to create the properties
-        /// </summary>
-        private IDataLayerLogic dataLayerLogic;
+        private readonly IWorkspaceCollection _workspaceCollection;
 
-        public CSVDataProvider(IDataLayerLogic logic)
+        public CSVDataProvider(IWorkspaceCollection workspaceCollection)
         {
-            dataLayerLogic = logic;
+            _workspaceCollection = workspaceCollection;
         }
 
         /// <summary>
         ///     Loads the CSV Extent out of the settings and stores the extent Uri
         /// </summary>
         /// <param name="extent">The uri being used for an extent</param>
+        /// <param name="factory">Factory being used to create a new instance</param>
         /// <param name="path">Path being used to load the extent</param>
         /// <param name="settings">Settings to load the extent</param>
         /// <returns>The loaded extent</returns>
@@ -44,6 +43,7 @@ namespace DatenMeister.CSV
         ///     Loads the CSV Extent out of the settings and stores the extent Uri
         /// </summary>
         /// <param name="extent">The uri being used for an extent</param>
+        /// <param name="factory">Factory being used to create a new instance</param>
         /// <param name="stream">Path being used to load the extent</param>
         /// <param name="settings">Settings to load the extent</param>
         /// <returns>The loaded extent</returns>
@@ -58,12 +58,14 @@ namespace DatenMeister.CSV
         /// <param name="path">Path being used to load the file</param>
         /// <param name="extent">Extet being stored</param>
         /// <param name="settings">Settings being used to store it.</param>
-        private static void ReadFromStream(IExtent extent, IFactory factory, Stream stream, CSVSettings settings)
+        private void ReadFromStream(IExtent extent, IFactory factory, Stream stream, CSVSettings settings)
         {
             if (settings == null)
             {
                 settings = new CSVSettings();
             }
+
+            var metaClass = GetMetaClassOfItems(settings);
 
             using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(settings.Encoding)))
             {
@@ -94,7 +96,7 @@ namespace DatenMeister.CSV
                 {
                     var values = SplitLine(line, settings);
 
-                    var csvObject = factory.create(null);
+                    var csvObject = factory.create(metaClass);
 
                     // we now have the created object, let's fill it
                     var valueCount = values.Count;
@@ -121,6 +123,32 @@ namespace DatenMeister.CSV
                     extent.elements().add(csvObject);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the metaclass as given in the settings
+        /// Returns null, if the metaclass is not defined
+        /// </summary>
+        /// <param name="settings">Settings being used</param>
+        /// <returns>The metaclass of the object</returns>
+        private IElement GetMetaClassOfItems(CSVSettings settings)
+        {
+            IElement metaClass = null;
+            if (!string.IsNullOrEmpty(settings.MetaclassUri))
+            {
+                if (_workspaceCollection == null)
+                {
+                    throw new InvalidOperationException("Uri by metaclass is given, but we do not have a workspace collection");
+                }
+
+                metaClass = _workspaceCollection.FindItem(settings.MetaclassUri);
+                if (metaClass == null)
+                {
+                    throw new InvalidOperationException($"Type with ID: {settings.MetaclassUri} was not found");
+                }
+            }
+
+            return metaClass;
         }
 
         /// <summary>

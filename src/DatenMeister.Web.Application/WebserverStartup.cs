@@ -7,6 +7,7 @@ using DatenMeister.Apps.ZipCode;
 using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.Full.Integration;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using Microsoft.Owin;
@@ -56,7 +57,7 @@ namespace DatenMeister.Web.Application
             _serverInjection.Bind<WorkspaceLoader>().ToConstant(workspaceLoader);
 
             // Loading and storing the extents
-            var extentLoader = new ExtentStorageConfigurationStorage(
+            var extentLoader = new ExtentStorageConfigurationLoader(
                 _serverInjection.Get<ExtentStorageData>(),
                 _serverInjection.Get<IExtentStorageLoader>(),
                 "data/extents.xml");
@@ -64,7 +65,7 @@ namespace DatenMeister.Web.Application
             // A little bit hacky, but it works for first
             extentLoader.AddAdditionalType(typeof(CSVStorageConfiguration));
             extentLoader.LoadAllExtents();
-            _serverInjection.Bind<ExtentStorageConfigurationStorage>().ToConstant(extentLoader);
+            _serverInjection.Bind<ExtentStorageConfigurationLoader>().ToConstant(extentLoader);
             
             // Apply for zipcodes
             var integrateZipCodes = _serverInjection.Get<Integrate>();
@@ -82,7 +83,7 @@ namespace DatenMeister.Web.Application
             token.Register(() =>
             {
                 kernel.Get<WorkspaceLoader>().Store();
-                kernel.Get<ExtentStorageConfigurationStorage>().StoreAllExtents();
+                kernel.Get<ExtentStorageConfigurationLoader>().StoreAllExtents();
             });
 
             // Loading the zipcodes

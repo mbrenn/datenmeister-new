@@ -25,7 +25,7 @@ namespace DatenMeister.Full.Integration
             kernel.Bind<IFactoryMapper>().ToConstant(factoryMapper);
 
             var storageMap = new ManualConfigurationToExtentStorageMapper();
-            storageMap.PerformMappingForConfigurationOfExtentLoaders();
+            storageMap.PerformMappingForConfigurationOfExtentLoaders(kernel);
             kernel.Bind<IConfigurationToExtentStorageMapper>().ToConstant(storageMap);
 
             // Workspace collection
@@ -97,7 +97,7 @@ namespace DatenMeister.Full.Integration
             }
         }
 
-        public static void PerformMappingForConfigurationOfExtentLoaders(this ManualConfigurationToExtentStorageMapper map)
+        public static void PerformMappingForConfigurationOfExtentLoaders(this ManualConfigurationToExtentStorageMapper map, StandardKernel kernel)
         {
             // Map configurations to extent loader
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
@@ -109,7 +109,7 @@ namespace DatenMeister.Full.Integration
                     var configuredByAttribute = customAttribute as ConfiguredByAttribute;
                     if (configuredByAttribute != null)
                     {
-                        map.AddMapping(configuredByAttribute.ConfigurationType, type);
+                        map.AddMapping(configuredByAttribute.ConfigurationType, () => (IExtentStorage) kernel.Get(type));
 
                         Debug.WriteLine($"Extent loader '{configuredByAttribute.ConfigurationType}' is configured by '{type.FullName}'");
                     }

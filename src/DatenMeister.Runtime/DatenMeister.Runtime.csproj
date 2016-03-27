@@ -61,8 +61,10 @@
   <ItemGroup>
     <Compile Include="Copier\ExtentCopier.cs" />
     <Compile Include="Copier\ObjectCopier.cs" />
+    <Compile Include="ExtentStorage\Configuration\ExtentFileStorageConfiguration.cs" />
+    <Compile Include="ExtentStorage\Configuration\ExtentStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\ExtentStorageData.cs" />
-    <Compile Include="ExtentStorage\IExtentStorageLoader.cs" />
+    <Compile Include="ExtentStorage\Interfaces\IExtentStorageLoader.cs" />
     <Compile Include="Extents\ExtentFunctions.cs" />
     <Compile Include="Functions\Aggregation\CountAggregator.cs" />
     <Compile Include="Functions\Interfaces\Aggregator.cs" />
@@ -82,10 +84,8 @@
     <Compile Include="Workspaces\WorkspaceCollection.cs" />
     <Compile Include="ExtentStorage\AssignConfigurationTypeToLoaderAttribute.cs" />
     <Compile Include="ExtentStorage\ExtentStorageConfigurationCollection.cs" />
-    <Compile Include="ExtentStorage\ExtentStorageConfigurationStorage.cs" />
+    <Compile Include="ExtentStorage\ExtentStorageConfigurationLoader.cs" />
     <Compile Include="ExtentStorage\Interfaces\IConfigurationToExtentStorageMapper.cs" />
-    <Compile Include="ExtentStorage\Interfaces\ExtentFileStorageConfiguration.cs" />
-    <Compile Include="ExtentStorage\Interfaces\ExtentStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\ExtentStorageLoader.cs" />
     <Compile Include="ExtentStorage\Interfaces\IExtentStorage.cs" />
     <Compile Include="FactoryMapper\DefaultFactoryMapper.cs" />

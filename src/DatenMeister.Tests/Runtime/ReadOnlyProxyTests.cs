@@ -45,7 +45,7 @@ namespace DatenMeister.Tests.Runtime
             File.WriteAllText("data.txt", csvFile);
 
             var mapper = new ManualConfigurationToExtentStorageMapper();
-            mapper.AddMapping(typeof (CSVStorageConfiguration), () => new CSVStorage(null));
+            mapper.AddMapping(typeof (CSVStorageConfiguration), () => new CSVStorage(null, null));
             var dataLayerLogic = DataLayerLogic.InitDefault();
 
             var data = new ExtentStorageData();

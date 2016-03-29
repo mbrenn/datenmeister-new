@@ -18,16 +18,18 @@ namespace DatenMeister.CSV.Runtime.Storage
     public class CSVStorage : IExtentStorage
     {
         private readonly IWorkspaceCollection _workspaceCollection;
+        private readonly IDataLayerLogic _dataLayerLogic;
 
-        public CSVStorage(IWorkspaceCollection workspaceCollection)
+        public CSVStorage(IWorkspaceCollection workspaceCollection, IDataLayerLogic dataLayerLogic)
         {
             _workspaceCollection = workspaceCollection;
+            _dataLayerLogic = dataLayerLogic;
         }
 
         public IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty)
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
-            var provider = new CSVDataProvider(_workspaceCollection); 
+            var provider = new CSVDataProvider(_workspaceCollection, _dataLayerLogic); 
             var mofExtent = new MofUriExtent(csvConfiguration.ExtentUri);
             var factory = new MofFactory();
 
@@ -49,7 +51,7 @@ namespace DatenMeister.CSV.Runtime.Storage
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
 
-            var provider = new CSVDataProvider(_workspaceCollection);
+            var provider = new CSVDataProvider(_workspaceCollection, _dataLayerLogic);
             provider.Save(extent, csvConfiguration.Path, csvConfiguration.Settings);
         }
     }

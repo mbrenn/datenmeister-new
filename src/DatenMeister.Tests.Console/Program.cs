@@ -44,7 +44,7 @@ namespace DatenMeister.Tests.Console
                 HasHeader = false
             };
 
-            var provider = new CSVDataProvider(null);
+            var provider = new CSVDataProvider(null, null);
             provider.Load(extent, factory, "data/plz.csv", csvSettings);
 
             System.Console.WriteLine($"Loaded: {extent.elements().Count().ToString()} Zipcodes");

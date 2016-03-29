@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,10 +18,12 @@ namespace DatenMeister.CSV
     public class CSVDataProvider
     {
         private readonly IWorkspaceCollection _workspaceCollection;
+        private readonly IDataLayerLogic _dataLayerLogic;
 
-        public CSVDataProvider(IWorkspaceCollection workspaceCollection)
+        public CSVDataProvider(IWorkspaceCollection workspaceCollection, IDataLayerLogic dataLayerLogic)
         {
             _workspaceCollection = workspaceCollection;
+            _dataLayerLogic = dataLayerLogic;
         }
 
         /// <summary>
@@ -66,27 +69,28 @@ namespace DatenMeister.CSV
             }
 
             var metaClass = GetMetaClassOfItems(settings);
+            var columns = ConvertColumnsToPropertyValues(metaClass, settings);
+            var createColumns = false;
 
             using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(settings.Encoding)))
             {
-                var createColumns = false;
 
-                if (settings.Columns == null)
+                if (columns == null)
                 {
-                    settings.Columns = new List<object>();
+                    columns = new List<object>();
                     createColumns = true;
                 }
 
                 // Reads header, if necessary
                 if (settings.HasHeader)
                 {
-                    settings.Columns.Clear();
+                    columns.Clear();
                     // Creates the column names for the headline
                     var ignoredLine = streamReader.ReadLine();
                     var columnNames = SplitLine(ignoredLine, settings);
                     foreach (var columnName in columnNames)
                     {
-                        settings.Columns.Add(columnName);
+                        columns.Add(columnName);
                     }
                 }
 
@@ -105,15 +109,15 @@ namespace DatenMeister.CSV
                         object foundColumn;
 
                         // Check, if we have enough columns, if we don't have enough columns, create one
-                        if (settings.Columns.Count <= n && createColumns)
+                        if (columns.Count <= n && createColumns)
                         {
                             // Create new column
                             foundColumn = $"Column {n + 1}";
-                            settings.Columns.Add(foundColumn);
+                            columns.Add(foundColumn);
                         }
                         else
                         {
-                            foundColumn = settings.Columns[n];
+                            foundColumn = columns[n];
                         }
 
                         csvObject.set(foundColumn, values[n]);
@@ -123,6 +127,46 @@ namespace DatenMeister.CSV
                     extent.elements().add(csvObject);
                 }
             }
+
+            if (createColumns)
+            {
+                settings.Columns = columns;
+            }
+        }
+
+        private IList<object> ConvertColumnsToPropertyValues(IElement metaClass, CSVSettings settings)
+        {
+            if (metaClass == null)
+            {
+                return settings.Columns;
+            }
+
+            //////////////////////
+            // Loads the workspace
+            if (_dataLayerLogic == null)
+            {
+                throw new InvalidOperationException("No DataLayerLogic was given, even though we need to do Uml navigation");
+            }
+
+            var metaLayer = _dataLayerLogic.GetMetaLayerOfObject(metaClass);
+            var uml = _dataLayerLogic.Get<_UML>(metaLayer);
+
+            var result = new List<object>();
+            foreach (var column in settings.Columns)
+            {
+                var found = metaClass.GetByPropertyFromCollection(
+                    uml.Classification.Classifier.attribute,
+                    uml.CommonStructure.NamedElement.name,
+                    column.ToString()).FirstOrDefault();
+                if (found == null)
+                {
+                    throw new InvalidOperationException($"Column {column} not found as property in metaclass");
+                }
+
+                result.Add(found);
+            }
+
+            return result;
         }
 
         /// <summary>

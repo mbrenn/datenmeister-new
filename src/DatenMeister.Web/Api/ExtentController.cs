@@ -192,7 +192,10 @@ namespace DatenMeister.Web.Api
                         Settings = new CSVSettings()
                     };
 
-                    extentData.Settings.Columns.AddRange(model.ColumnsAsEnumerable);
+                    foreach (var c in model.ColumnsAsEnumerable)
+                    {
+                        extentData.Settings.Columns.Add(c);
+                    }
 
                     createdExtent = _extentStorageLoader.LoadExtent(extentData, true);
                     break;

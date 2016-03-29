@@ -56,17 +56,6 @@ namespace DatenMeister.Web.Api
 
             File.Copy(originalFilename, filename);
 
-            //////////////////////
-            // Loads the workspace
-            var uml = _dataLayerLogic.Get<_UML>(DataLayers.Uml);
-            var element = _collection.FindItem("dm:///types#DatenMeister.Apps.ZipCode.Model.ZipCode");
-            var idProperty = element.GetByPropertyFromCollection(uml.Classification.Classifier.attribute, uml.CommonStructure.NamedElement.name, "Id").FirstOrDefault();
-            var zipProperty = element.GetByPropertyFromCollection(uml.Classification.Classifier.attribute, uml.CommonStructure.NamedElement.name, "Zip").FirstOrDefault();
-            var positionLongProperty = element.GetByPropertyFromCollection(uml.Classification.Classifier.attribute, uml.CommonStructure.NamedElement.name, "PositionLong").FirstOrDefault();
-            var positionLatProperty = element.GetByPropertyFromCollection(uml.Classification.Classifier.attribute, uml.CommonStructure.NamedElement.name, "PositionLat").FirstOrDefault();
-            var citynameProperty = element.GetByPropertyFromCollection(uml.Classification.Classifier.attribute, uml.CommonStructure.NamedElement.name, "CityName").FirstOrDefault();
-
-
             var defaultConfiguration = new CSVStorageConfiguration
             {
                 ExtentUri = $"datenmeister:///zipcodes/{randomNumber}",
@@ -77,7 +66,8 @@ namespace DatenMeister.Web.Api
                     HasHeader = false,
                     Separator = '\t',
                     Encoding = "UTF-8",
-                    Columns = new object[] { idProperty, zipProperty, positionLongProperty, positionLatProperty, citynameProperty }.ToList(),
+                    Columns = new object[] { "Id", "Zip", "PositionLong", "PositionLat", "CityName" }.ToList(),
+                    // Columns = new object[] { idProperty, zipProperty, positionLongProperty, positionLatProperty, citynameProperty }.ToList(),
                     MetaclassUri = "dm:///types#DatenMeister.Apps.ZipCode.Model.ZipCode"
                 }
             };

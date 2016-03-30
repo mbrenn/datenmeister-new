@@ -52,7 +52,16 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         public void LoadAllExtents()
         {
-            var loaded = Load(Filepath);
+            ExtentStorageConfigurationCollection loaded = null;
+            try
+            {
+                loaded = Load(Filepath);
+            }
+            catch (Exception exc)
+            {
+                Debug.WriteLine("Exception during loading of Extents: " + exc.Message);
+            }
+
             if (loaded == null)
             {
                 return;

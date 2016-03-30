@@ -16,7 +16,7 @@ namespace DatenMeister.Tests.Console
             var property = new object();
             System.Console.WriteLine("DatenMeister Testing");
 
-            var element = new EMOF.InMemory.MofElement();
+            var element = new MofElement();
             element.set(property, "Test");
 
             TestZipCodes();

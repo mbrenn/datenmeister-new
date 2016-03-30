@@ -22,7 +22,7 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void LoadUmlInfrastructure()
         {
-            var factory = new DatenMeister.EMOF.InMemory.MofFactory();
+            var factory = new MofFactory();
             var extent = new MofUriExtent("datenmeister:///target");
             Assert.That(extent.elements().Count(), Is.EqualTo(0));
             var loader = new SimpleLoader(factory);

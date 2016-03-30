@@ -329,63 +329,12 @@ namespace DatenMeister.Web.Api
                     .Select(x => new DataTableItem
                     {
                         uri = foundExtent.uri(x as IElement),
-                        v = ConvertToJson(foundExtent, x as IElement, result)
+                        v = ConvertToJson(x as IElement, result)
                     })
                     .ToList()
             };
 
             return resultModel;
-        }
-
-        private Dictionary<string, object> ConvertToJson(IUriExtent extent, IObject element, ColumnCreationResult creator)
-        {
-            var result = new Dictionary<string, object>();
-
-            foreach (var property in creator.Properties
-                .Where(property => element.isSet(property)))
-            {
-                var propertyAsString = property.ToString();
-                var propertyValue = element.get(property);
-
-                if (creator.ColumnsOnProperty[property].isEnumeration)
-                {
-                    if (propertyValue is IEnumerable && !(propertyValue is string))
-                    {
-                        var list = new List<object>();
-                        foreach (var listValue in (propertyValue as IEnumerable))
-                        {
-                            var asElement = listValue as IElement;
-                            string url;
-                            if (asElement != null)
-                            {
-                                url = extent.uri(asElement);
-                            }
-                            else
-                            {
-                                url = null;
-                            }
-
-                            list.Add(new
-                            {
-                                u = url,
-                                v = listValue == null ? "null" : _resolution.GetName(listValue)
-                            });
-                        }
-
-                        result[propertyAsString] = list;
-                    }
-                    else
-                    {
-                        result[propertyAsString] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
-                    }
-                }
-                else
-                {
-                    result[propertyAsString] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
-                }
-            }
-
-            return result;
         }
 
         [Route("item")]
@@ -410,7 +359,7 @@ namespace DatenMeister.Web.Api
 
             var result = _columnCreator.FindColumnsForItem(foundElement);
             itemModel.c = result.Columns.ToList();
-            itemModel.v = ConvertToJson(foundExtent, foundElement, result);
+            itemModel.v = ConvertToJson(foundElement, result);
 
             // Check, if item is of type IElement and has a metaclass
             var metaClass = foundElement.getMetaClass();
@@ -512,7 +461,8 @@ namespace DatenMeister.Web.Api
                     out foundExtent, 
                     out foundItem);
 
-                foundItem.unset(model.property);
+                var property = _columnCreator.ConvertColumnNameToProperty(model.property);
+                foundItem.unset(property);
 
                 return new {success = true};
             }
@@ -537,7 +487,8 @@ namespace DatenMeister.Web.Api
                     out foundExtent, 
                     out foundItem);
 
-                foundItem.set(model.property, model.newValue);
+                var property = _columnCreator.ConvertColumnNameToProperty(model.property);
+                foundItem.set(property, model.newValue);
 
                 return new {success = true};
             }
@@ -564,7 +515,8 @@ namespace DatenMeister.Web.Api
 
                 foreach (var pair in model.v)
                 {
-                    foundItem.set(pair.Key, pair.Value);
+                    var property = _columnCreator.ConvertColumnNameToProperty(pair.Key);
+                    foundItem.set(property, pair.Value);
                 }
 
                 return new {success = true};
@@ -574,5 +526,65 @@ namespace DatenMeister.Web.Api
                 return NotFound();
             }
         }
+
+        /// <summary>
+        /// Converts a given element to a json string, dependent on the column definition as given by the 
+        /// ColumnCreationResult
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="creatorResult"></param>
+        /// <returns></returns>
+        private Dictionary<string, object> ConvertToJson(IObject element, ColumnCreationResult creatorResult)
+        {
+            var result = new Dictionary<string, object>();
+
+            foreach (var property in creatorResult.Properties
+                .Where(property => element.isSet(property)))
+            {
+                var propertyAsString = ColumnCreator.ConvertPropertyToColumnName(property);
+
+                var propertyValue = element.get(property);
+
+                if (creatorResult.ColumnsOnProperty[property].isEnumeration)
+                {
+                    if (propertyValue is IEnumerable && !(propertyValue is string))
+                    {
+                        var list = new List<object>();
+                        foreach (var listValue in (propertyValue as IEnumerable))
+                        {
+                            var asElement = listValue as IElement;
+                            string url;
+                            if (asElement != null)
+                            {
+                                url = asElement.GetUri();
+                            }
+                            else
+                            {
+                                url = null;
+                            }
+
+                            list.Add(new
+                            {
+                                u = url,
+                                v = listValue == null ? "null" : _resolution.GetName(listValue)
+                            });
+                        }
+
+                        result[propertyAsString] = list;
+                    }
+                    else
+                    {
+                        result[propertyAsString] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
+                    }
+                }
+                else
+                {
+                    result[propertyAsString] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
+                }
+            }
+
+            return result;
+        }
+
     }
 }

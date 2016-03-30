@@ -25,7 +25,7 @@ namespace DatenMeister.Tests.Web
             var extent = new MofUriExtent("datenmeister:///test");
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
-            var creator = new ColumnCreator(null, null);
+            var creator = new ColumnCreator(null, null, null);
             var result = creator.FindColumnsForTable(extent);
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Columns.Count(), Is.EqualTo(2));
@@ -66,7 +66,7 @@ namespace DatenMeister.Tests.Web
             extent.elements().add(mofObject2);
 
             // Execute the stuff
-            var creator = new ColumnCreator(null, null);
+            var creator = new ColumnCreator(null, null, null);
             var result = creator.FindColumnsForTable(extent);
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Columns.Count(), Is.EqualTo(3));

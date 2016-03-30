@@ -134,7 +134,7 @@ namespace DatenMeister.CSV
             }
         }
 
-        private IList<object> ConvertColumnsToPropertyValues(IElement metaClass, CSVSettings settings)
+        private List<object> ConvertColumnsToPropertyValues(IElement metaClass, CSVSettings settings)
         {
             if (metaClass == null)
             {

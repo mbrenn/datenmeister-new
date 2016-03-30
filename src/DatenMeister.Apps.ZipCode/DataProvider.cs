@@ -58,7 +58,7 @@ namespace DatenMeister.Apps.ZipCode
         /// <returns>Enumeration of objects</returns>
         public IEnumerable<IObject> FindBySearchString(string searchString)
         {
-            var columns = new[] { DataProvider.Columns.Name, DataProvider.Columns.ZipCode };
+            var columns = new[] { Columns.Name, Columns.ZipCode };
             var typedZipCode = searchString.Trim();
             var found = ZipCodes.elements()
                 .WhenOneOfThePropertyContains(columns,

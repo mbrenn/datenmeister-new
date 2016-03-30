@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Web.Models;
 
@@ -14,11 +17,13 @@ namespace DatenMeister.Web.Helper
     {
         private readonly IUmlNameResolution _nameResolution;
         private readonly IDataLayerLogic _dataLayerLogic;
+        private readonly IWorkspaceCollection _workspaceCollection;
 
-        public ColumnCreator(IUmlNameResolution nameResolution, IDataLayerLogic _dataLayerLogic)
+        public ColumnCreator(IUmlNameResolution nameResolution, IDataLayerLogic dataLayerLogic, IWorkspaceCollection workspaceCollection)
         {
             _nameResolution = nameResolution;
-            this._dataLayerLogic = _dataLayerLogic;
+            _dataLayerLogic = dataLayerLogic;
+            _workspaceCollection = workspaceCollection;
         }
 
         public ColumnCreationResult FindColumnsForTable(IUriExtent extent)
@@ -42,6 +47,48 @@ namespace DatenMeister.Web.Helper
             var result = new ColumnCreationResult();
             EvaluateColumnsForItem(result, item);
             return result;
+        }
+
+        public static string ConvertPropertyToColumnName(object property)
+        {
+            if (property == null)
+            {
+                throw new ArgumentNullException(nameof(property));
+            }
+            var asElement = property as IElement;
+            if (asElement != null)
+            {
+                // Property is an IElement, so retrieve the information by url
+                return string.Format($"#uml#{asElement.GetUri()}");
+            }
+            else
+            {
+                // Property is a string, so return it by ToString()
+                var propertyAsString = property.ToString();
+
+                if (propertyAsString.StartsWith("#"))
+                {
+                    throw new InvalidOperationException("Property may not start with a '#': " + propertyAsString);
+                }
+
+                return propertyAsString;
+            }
+        }
+
+        public object ConvertColumnNameToProperty(string property)
+        {
+            if (property.StartsWith("#"))
+            {
+                if (property.StartsWith("#uml#"))
+                {
+                    property = property.Substring("#uml#".Length);
+                    return _workspaceCollection.FindItem(property);
+                }
+
+                throw new InvalidOperationException($"Property with name '{property}' starts with '#' but format is not known. ");
+            }
+
+            return property;
         }
 
         private void EvaluateColumnsForItem(ColumnCreationResult result, object item)
@@ -68,7 +115,7 @@ namespace DatenMeister.Web.Helper
                             {
                                 column = new DataTableColumn
                                 {
-                                    name = property.ToString(),
+                                    name = ConvertPropertyToColumnName(property),
                                     title = property.get(uml.CommonStructure.NamedElement.name).ToString()
                                 };
 

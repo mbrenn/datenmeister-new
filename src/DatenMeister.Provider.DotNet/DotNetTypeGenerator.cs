@@ -16,8 +16,8 @@ namespace DatenMeister.Provider.DotNet
         {
             Debug.Assert(umlHost != null, "umlHost != null");
             Debug.Assert(factoryForTypes != null, "factoryForTypes != null");
-            this._factoryForTypes = factoryForTypes;
-            this._umlHost = umlHost;
+            _factoryForTypes = factoryForTypes;
+            _umlHost = umlHost;
         }
 
         public IElement CreateTypeFor(Type type)

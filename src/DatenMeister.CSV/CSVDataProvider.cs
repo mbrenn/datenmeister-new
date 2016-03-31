@@ -109,7 +109,7 @@ namespace DatenMeister.CSV
                         object foundColumn;
 
                         // Check, if we have enough columns, if we don't have enough columns, create one
-                        if (columns.Count <= n && createColumns)
+                        if (columns.Count <= n && (createColumns || !settings.HasHeader))
                         {
                             // Create new column
                             foundColumn = $"Column {n + 1}";

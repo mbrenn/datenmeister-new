@@ -360,14 +360,14 @@ namespace DatenMeister.Web.Api
             var result = _columnCreator.FindColumnsForItem(foundElement);
             itemModel.c = result.Columns.ToList();
             itemModel.v = ConvertToJson(foundElement, result);
+            itemModel.layer = _dataLayerLogic?.GetDataLayerOfObject(foundElement)?.Name;
 
             // Check, if item is of type IElement and has a metaclass
             var metaClass = foundElement.getMetaClass();
             if (metaClass != null)
             {
-                var dataLayer =_dataLayerLogic.GetDataLayerOfObject(metaClass);
-                var metaLayer = _dataLayerLogic.GetMetaLayerFor(dataLayer);
-                var extents  = _dataLayerLogic.GetExtentsForDatalayer(metaLayer);
+                var dataLayer =_dataLayerLogic?.GetDataLayerOfObject(metaClass);
+                var extents  = _dataLayerLogic?.GetExtentsForDatalayer(dataLayer);
                 var extentWithMetaClass = extents.WithElement(metaClass);
 
                 var metaClassModel = new ItemModel
@@ -375,7 +375,8 @@ namespace DatenMeister.Web.Api
                     name = _resolution.GetName(metaClass),
                     uri = extentWithMetaClass?.uri(metaClass),
                     ext = extentWithMetaClass?.contextURI(),
-                    ws = _workspaceCollection.Workspaces.FindWorkspace(extentWithMetaClass)?.id
+                    ws = _workspaceCollection.Workspaces.FindWorkspace(extentWithMetaClass)?.id,
+                    layer = dataLayer?.Name
                 };
 
                 itemModel.metaclass = metaClassModel;

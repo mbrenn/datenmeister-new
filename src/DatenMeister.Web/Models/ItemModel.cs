@@ -16,5 +16,6 @@
         public string uri { get; set; }
         public string ext { get; set; }
         public string ws { get; set; }
+        public string layer { get; set; }
     }
 }

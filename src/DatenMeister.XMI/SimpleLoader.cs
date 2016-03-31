@@ -69,10 +69,10 @@ namespace DatenMeister.XMI
         /// <param name="element"></param>
         private IObject LoadElement(XElement element)
         {
-            var result = _factory.create(null);
+            var resultingElement = _factory.create(null);
             foreach (var attribute in element.Attributes())
             {
-                result.set(attribute.Name.ToString(), attribute.Value);
+                resultingElement.set(attribute.Name.ToString(), attribute.Value);
             }
 
             // Check, if element has id
@@ -82,9 +82,9 @@ namespace DatenMeister.XMI
                 // In some Xmi files, the Xmi-id is used multiple times (e.g. Uml). We only assign it the first time
                 if (!_idToElement.ContainsKey(xmiId))
                 {
-                    _idToElement[xmiId] = result;
+                    _idToElement[xmiId] = resultingElement;
 
-                    var resultSetId = result as ICanSetId;
+                    var resultSetId = resultingElement as ICanSetId;
                     if (resultSetId != null)
                     {
                         resultSetId.Id = xmiId;
@@ -106,12 +106,19 @@ namespace DatenMeister.XMI
                 {
                     currentList = new List<object>();
                     dict[name] = currentList;
-                    result.set(name, currentList);
+                    resultingElement.set(name, currentList);
                 }
 
                 if (subElement.HasElements || subElement.HasAttributes)
                 {
-                    currentList.Add(LoadElement(subElement));
+                    var loadedElement = LoadElement(subElement);
+
+                    // Sets the container being used
+                    var asSetContainer = loadedElement as IElementSetContainer;
+                    asSetContainer?.setContainer(resultingElement);
+
+                    // Adds the item to the current list
+                    currentList.Add(loadedElement);
                 }
                 else
                 {
@@ -119,7 +126,7 @@ namespace DatenMeister.XMI
                 }
             }
 
-            return result;
+            return resultingElement;
         }
     }
 }

@@ -32,6 +32,7 @@ export module ClientResponse {
         uri: string;
         ext: string;
         ws: string;
+        layer: string;
     }
 
     export interface IItemContentModel {
@@ -40,6 +41,7 @@ export module ClientResponse {
         v: Array<string>;
         c: Array<IDataTableColumn>;
         metaclass?: IItemModel;
+        layer: string;
     }
 
     export interface IDataTableColumn {

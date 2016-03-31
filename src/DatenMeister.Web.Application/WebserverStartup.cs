@@ -62,14 +62,14 @@ namespace DatenMeister.Web.Application
                 _serverInjection.Get<IExtentStorageLoader>(),
                 "data/extents.xml");
 
+            // Apply for zipcodes
+            var integrateZipCodes = _serverInjection.Get<Integrate>();
+            integrateZipCodes.Into(_serverInjection.Get<IWorkspaceCollection>().FindExtent("dm:///types"));
+
             // A little bit hacky, but it works for first
             extentLoader.AddAdditionalType(typeof(CSVStorageConfiguration));
             extentLoader.LoadAllExtents();
             _serverInjection.Bind<ExtentStorageConfigurationLoader>().ToConstant(extentLoader);
-            
-            // Apply for zipcodes
-            var integrateZipCodes = _serverInjection.Get<Integrate>();
-            integrateZipCodes.Into(_serverInjection.Get<IWorkspaceCollection>().FindExtent("dm:///types"));
         }
 
         private static StandardKernel CreateKernel(IAppBuilder app)

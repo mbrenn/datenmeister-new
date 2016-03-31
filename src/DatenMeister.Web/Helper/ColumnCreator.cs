@@ -140,7 +140,7 @@ namespace DatenMeister.Web.Helper
                     {
                         column = new DataTableColumn
                         {
-                            name = property.ToString(),
+                            name = ConvertPropertyToColumnName(property),
                             title =
                                 _nameResolution == null ? property.ToString() : _nameResolution.GetName(property)
                         };

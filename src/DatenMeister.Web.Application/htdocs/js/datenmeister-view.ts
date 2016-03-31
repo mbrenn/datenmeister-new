@@ -259,6 +259,9 @@ export class ItemView
             "<tr>" +
             "<th>Metaclass: </th><td class='dm-tablecell-metaclass'></td>" +
             "</tr>" +
+            "<tr>" +
+            "<th>Layer: </th><td class='dm-tablecell-layer'></td>" +
+            "</tr>" +
             "</table>");
         if (data.metaclass !== undefined && data.metaclass !== null) {
             var domMetaClassLink = $("<a href='#'>3</a>").text(data.metaclass.name);
@@ -275,6 +278,10 @@ export class ItemView
 
         if (data.id !== undefined && data.id !== null) {
             $(".dm-tablecell-id", domTableInfo).text(data.id);
+        }
+
+        if (data.layer !== undefined && data.layer !== null) {
+            $(".dm-tablecell-layer", domTableInfo).text(data.layer);
         }
 
         if (data.uri !== undefined && data.uri !== null) {

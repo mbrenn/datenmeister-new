@@ -59,6 +59,7 @@
     <Compile Include="EMOF\Interface\Identifiers\IExtentCachesObject.cs" />
     <Compile Include="EMOF\Interface\Identifiers\IUriExtent.cs" />
     <Compile Include="EMOF\Interface\Reflection\IElement.cs" />
+    <Compile Include="EMOF\Interface\Reflection\IElementSetContainer.cs" />
     <Compile Include="EMOF\Interface\Reflection\IElementSetMetaClass.cs" />
     <Compile Include="EMOF\Interface\Reflection\IFactory.cs" />
     <Compile Include="EMOF\Interface\Reflection\ICanSetId.cs" />

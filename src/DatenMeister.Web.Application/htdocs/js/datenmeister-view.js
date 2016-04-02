@@ -219,5 +219,24 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
         return ItemView;
     }());
     exports.ItemView = ItemView;
+    // This class gives a navigation view with some links which can be clicked by the user and
+    // a user-defined action is being performed
+    var NavigationView = (function () {
+        function NavigationView(layout) {
+            this.layout = layout;
+            this.domList = $("<ul class='dm-navigation-list'></ul>");
+        }
+        NavigationView.prototype.addLink = function (displayText, onClick) {
+            var domItem = $("<li></li>");
+            domItem.text(displayText);
+            domItem.click(onClick);
+            this.domList.append(domItem);
+        };
+        NavigationView.prototype.show = function (container) {
+            container.append(this.domList);
+        };
+        return NavigationView;
+    }());
+    exports.NavigationView = NavigationView;
 });
 //# sourceMappingURL=datenmeister-view.js.map

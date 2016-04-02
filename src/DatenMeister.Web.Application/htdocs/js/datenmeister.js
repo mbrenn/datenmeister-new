@@ -1,6 +1,6 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/jquery/underscore.d.ts" />
-define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", "datenmeister-client", "datenmeister-ribbon", "datenmeister-layout", "datenmeister-logging"], function (require, exports, DMHelper, DMI, DMClient, DMRibbon, DMLayout, DMLog) {
+define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", "datenmeister-view", "datenmeister-client", "datenmeister-ribbon", "datenmeister-layout", "datenmeister-logging"], function (require, exports, DMHelper, DMI, DMView, DMClient, DMRibbon, DMLayout, DMLog) {
     "use strict";
     function start() {
         // Information, when an ajax request failed
@@ -76,7 +76,7 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
                     .done(function () { return layout.navigateToWorkspaces(); });
             });
             tabFile.addIcon("Create Extent", "img/icons/folder_open-new", function () {
-                showDialogNewExtent(layout, changeEvent.workspace);
+                showNavigationForNewExtents(layout, changeEvent.workspace);
             });
             tabFile.addIcon("Add Extent", "img/icons/folder_open-add", function () {
                 showDialogAddExtent(layout, changeEvent.workspace);
@@ -105,6 +105,20 @@ define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", 
         configuration.addColumn(new DMI.Table.DataTableColumn("Title", "name"));
         configuration.addColumn(new DMI.Table.DataTableColumn("Annotation", "annotation"));
         layout.navigateToDialog(configuration);
+    }
+    function showNavigationForNewExtents(layout, workspace) {
+        var view = new DMView.NavigationView(layout);
+        view.addLink("New CSV Extent", function () {
+            showDialogNewExtent(layout, workspace);
+        });
+        view.addLink("New CSV Extent for UML class", function () {
+            // showDialogNewExtent(layout, workspace);
+        });
+        view.addLink("New XmlExtent", function () {
+            alert("NEW");
+            // showDialogNewExtent(layout, workspace);
+        });
+        layout.setView(view);
     }
     function showDialogNewExtent(layout, workspace) {
         var configuration = new DMI.Api.DialogConfiguration();

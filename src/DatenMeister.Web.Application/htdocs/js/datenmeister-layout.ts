@@ -250,6 +250,17 @@ export class Layout implements DMI.Api.ILayout {
         dom.append(statusDom);
     }
 
+    setView(view: DMView.IView) {
+        this.switchLayout(
+        {
+            type: PageType.Dialog
+        });
+
+        var container = $(".data-dialog", this.parent);
+        container.empty();
+        view.show(container);
+    }
+
     throwLayoutChangedEvent(data: ILayoutChangedEvent) {
         if (this.onLayoutChanged !== undefined) {
             this.onLayoutChanged(data);

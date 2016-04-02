@@ -94,7 +94,7 @@ function buildRibbons(layout: DMLayout.Layout, changeEvent: DMLayout.ILayoutChan
         });
 
         tabFile.addIcon("Create Extent", "img/icons/folder_open-new", () => {
-            showDialogNewExtent(layout, changeEvent.workspace);
+            showNavigationForNewExtents(layout, changeEvent.workspace);
         });
 
         tabFile.addIcon("Add Extent", "img/icons/folder_open-add", () => {
@@ -134,6 +134,27 @@ function showDialogNewWorkspace(layout: DMLayout.Layout) {
 
     layout.navigateToDialog(configuration);
 }
+
+function showNavigationForNewExtents(layout: DMLayout.Layout, workspace: string) {
+
+    var view = new DMView.NavigationView(layout);
+
+    view.addLink("New CSV Extent", () => {
+        showDialogNewExtent(layout, workspace);
+    });
+
+    view.addLink("New CSV Extent for UML class", () => {
+        // showDialogNewExtent(layout, workspace);
+    });
+
+    view.addLink("New XmlExtent", () => {
+        alert("NEW");
+        // showDialogNewExtent(layout, workspace);
+    });
+
+    layout.setView(view);
+}
+
 
 function showDialogNewExtent(layout: DMLayout.Layout, workspace: string) {
     var configuration = new DMI.Api.DialogConfiguration();

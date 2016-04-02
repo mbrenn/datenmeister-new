@@ -279,3 +279,31 @@ export class ItemView
         jQuery.append(domTableInfo);
     }
 }
+
+// This interface should be implemented by all views that can be added via 'setView' to a layout
+export interface IView {
+    show(container: JQuery): void;
+}
+
+// This class gives a navigation view with some links which can be clicked by the user and
+// a user-defined action is being performed
+export class NavigationView implements IView {
+    private layout: DMI.Api.ILayout;
+    private domList: JQuery;
+
+    constructor(layout?: DMI.Api.ILayout) {
+        this.layout = layout;
+        this.domList = $("<ul class='dm-navigation-list'></ul>");
+    }
+
+    addLink(displayText: string, onClick: () => void): void {
+        let domItem = $("<li></li>");
+        domItem.text(displayText);
+        domItem.click(onClick);
+        this.domList.append(domItem);
+    }
+
+    show(container: JQuery) {
+        container.append(this.domList);
+    }
+}

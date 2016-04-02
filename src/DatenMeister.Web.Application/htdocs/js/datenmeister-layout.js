@@ -204,6 +204,14 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
             dom.empty();
             dom.append(statusDom);
         };
+        Layout.prototype.setView = function (view) {
+            this.switchLayout({
+                type: PageType.Dialog
+            });
+            var container = $(".data-dialog", this.parent);
+            container.empty();
+            view.show(container);
+        };
         Layout.prototype.throwLayoutChangedEvent = function (data) {
             if (this.onLayoutChanged !== undefined) {
                 this.onLayoutChanged(data);

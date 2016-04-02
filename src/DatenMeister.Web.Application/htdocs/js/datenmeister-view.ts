@@ -202,20 +202,6 @@ export class ItemView
         configuration.isReadOnly = isReadonly;
         configuration.supportNewProperties = !isReadonly;
 
-        /*
-        configuration.deleteFunction = (url: string, property: string, domRow: JQuery) => {
-            DMClient.ItemApi.deleteProperty(ws, extentUrl, itemUrl, property).done(() => domRow.find("td").fadeOut(500, () => { domRow.remove(); }));
-            return false;
-        };
-
-        configuration.onEditProperty = (url: string, property: string, newValue: string) => {
-            DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
-        };
-        
-        configuration.onNewProperty = (url: string, property: string, newValue: string) => {
-            DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
-        };*/
-
         var table = new DMTables.ItemContentTable(data, configuration);
         if (isReadonly) {
             configuration.onOkForm = () => {

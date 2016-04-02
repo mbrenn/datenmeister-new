@@ -45,10 +45,15 @@ export module ClientResponse {
     }
 
     export interface IDataTableColumn {
+        type: string;
         title?: string;
         name?: string;
         defaultValue?: any;
         isEnumeration?: boolean;
+    }
+
+    export interface IDataTableDropDown extends IDataTableColumn {
+        values: Array<string>;
     }
 
     export interface IDataTableItem {
@@ -140,12 +145,14 @@ export namespace View {
 export namespace Table {
 
     export class DataTableColumn implements ClientResponse.IDataTableColumn {
+        type: string;
         title: string;
         name: string;
         defaultValue: any;
         isEnumeration: boolean;
 
         constructor(title?: string, name?: string) {
+            this.type = ColumnTypes.textbox;
             this.title = title;
             this.name = name;
         }
@@ -154,6 +161,20 @@ export namespace Table {
             this.defaultValue = value;
             return this;
         }
+    }
+
+    export class DataTableDropDown extends DataTableColumn  implements  ClientResponse.IDataTableDropDown{
+        values: Array<string>;
+
+        constructor(title?: string, name?: string) {
+            super(title, name);
+            this.type = ColumnTypes.dropdown;
+        }
+    }
+
+    export class ColumnTypes {
+        static textbox = "textbox";
+        static dropdown = "dropdown";
     }
 
     export class DataTableItem {

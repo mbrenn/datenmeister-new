@@ -1,4 +1,5 @@
 define(["require", "exports", "datenmeister-client"], function (require, exports, DMClient) {
+    "use strict";
     var ItemsFromExtentProvider = (function () {
         function ItemsFromExtentProvider(ws, extent) {
             this.ws = ws;
@@ -8,7 +9,7 @@ define(["require", "exports", "datenmeister-client"], function (require, exports
             return DMClient.ExtentApi.getItems(this.ws, this.extent, query);
         };
         return ItemsFromExtentProvider;
-    })();
+    }());
     exports.ItemsFromExtentProvider = ItemsFromExtentProvider;
 });
 //# sourceMappingURL=datenmeister-query.js.map

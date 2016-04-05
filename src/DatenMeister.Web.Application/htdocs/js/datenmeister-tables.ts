@@ -225,7 +225,7 @@ export class ItemListTable {
         if (this.createableTypes !== null && this.createableTypes !== undefined) {
             var data = this.createableTypes;
             this.domNewItem.empty();
-            var domDropDown = $("<select><option>Create Type...</option><option value='unspecified'>Unspecified</option></select>");
+            var domDropDown = $("<select><option>Create Type...</option><option value=''>Unspecified</option></select>");
             for (var n in data) {
                 var type = data[n];
                 var domOption = $("<option value='" + type.uri + "'></option>");

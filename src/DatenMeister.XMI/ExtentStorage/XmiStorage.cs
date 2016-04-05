@@ -16,18 +16,26 @@ namespace DatenMeister.XMI.ExtentStorage
         {
             var xmiConfiguration = (XmiStorageConfiguration) configuration;
 
-            if (createAlsoEmpty)
-            {
-                throw new ArgumentException("Empty Xmi storages cannot be created at the moment.");
-            }
-
+            XDocument xmlDocument;
             if (!File.Exists(xmiConfiguration.Path))
             {
-                throw new InvalidOperationException(
-                    $"File not found: {xmiConfiguration.Path}");
+                if (createAlsoEmpty)
+                {
+                    // We need to create an empty Xmi file... Not the best thing at the moment, but we try it. 
+                    xmlDocument = new XDocument(
+                        new XElement(XmlUriExtent.DefaultRootNodeName));
+                }
+                else
+                {
+                    throw new InvalidOperationException(
+                        $"File not found: {xmiConfiguration.Path}");
+                }
+            }
+            else
+            {
+                xmlDocument = XDocument.Load(xmiConfiguration.Path);
             }
 
-            var xmlDocument = XDocument.Load(xmiConfiguration.Path);
             return new XmlUriExtent(xmlDocument, xmiConfiguration.ExtentUri);
         }
 

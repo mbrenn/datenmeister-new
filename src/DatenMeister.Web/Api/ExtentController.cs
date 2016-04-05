@@ -530,10 +530,13 @@ namespace DatenMeister.Web.Api
                     out foundExtent, 
                     out foundItem);
 
-                foreach (var pair in model.v)
+                if (model.v != null)
                 {
-                    var property = _columnCreator.ConvertColumnNameToProperty(pair.Key);
-                    foundItem.set(property, pair.Value);
+                    foreach (var pair in model.v)
+                    {
+                        var property = _columnCreator.ConvertColumnNameToProperty(pair.Key);
+                        foundItem.set(property, pair.Value);
+                    }
                 }
 
                 return new {success = true};

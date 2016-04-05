@@ -98,7 +98,7 @@ function buildRibbons(layout: DMLayout.Layout, changeEvent: DMLayout.ILayoutChan
         });
 
         tabFile.addIcon("Add Extent", "img/icons/folder_open-add", () => {
-            showDialogAddExtent(layout, changeEvent.workspace);
+            showDialogAddCsvExtent(layout, changeEvent.workspace);
         });
 
         if (changeEvent.extent !== undefined) {
@@ -140,7 +140,7 @@ function showNavigationForNewExtents(layout: DMLayout.Layout, workspace: string)
     var view = new DMView.NavigationView(layout);
 
     view.addLink("New CSV Extent", () => {
-        showDialogNewExtent(layout, workspace);
+        showDialogNewCsvExtent(layout, workspace);
     });
 
     view.addLink("New CSV Extent for UML class", () => {
@@ -148,20 +148,20 @@ function showNavigationForNewExtents(layout: DMLayout.Layout, workspace: string)
     });
 
     view.addLink("New XmlExtent", () => {
-        alert("NEW");
-        // showDialogNewExtent(layout, workspace);
+        showDialogNewXmiExtent(layout, workspace);
     });
 
     layout.setView(view);
 }
 
 
-function showDialogNewExtent(layout: DMLayout.Layout, workspace: string) {
+function showDialogNewCsvExtent(layout: DMLayout.Layout, workspace: string) {
     var configuration = new DMI.Api.DialogConfiguration();
 
     configuration.onOkForm = data => {
         DMClient.ExtentApi.createExtent(
             {
+                type: "csv",
                 workspace: data.v["workspace"],
                 contextUri: data.v["contextUri"],
                 filename: data.v["filename"], 
@@ -179,12 +179,13 @@ function showDialogNewExtent(layout: DMLayout.Layout, workspace: string) {
     layout.navigateToDialog(configuration);
 }
 
-function showDialogAddExtent(layout: DMLayout.Layout, workspace: string) {
+function showDialogAddCsvExtent(layout: DMLayout.Layout, workspace: string) {
     var configuration = new DMI.Api.DialogConfiguration();
 
     configuration.onOkForm = data => {
         DMClient.ExtentApi.addExtent(
             {
+                type: "csv",
                 workspace: data.v["workspace"],
                 contextUri: data.v["contextUri"],
                 filename: data.v["filename"]
@@ -196,6 +197,26 @@ function showDialogAddExtent(layout: DMLayout.Layout, workspace: string) {
     configuration.addColumn(new DMI.Table.DataTableColumn("URI", "contextUri").withDefaultValue("dm:///"));
     configuration.addColumn(new DMI.Table.DataTableColumn("Filename", "filename"));
     configuration.ws = workspace;
+
+    layout.navigateToDialog(configuration);
+}
+
+function showDialogNewXmiExtent(layout: DMLayout.Layout, workspace: string) {
+    var configuration = new DMI.Api.DialogConfiguration();
+    configuration.onOkForm = data => {
+        DMClient.ExtentApi.createExtent(
+            {
+                type: "xmi",
+                workspace: data.v["workspace"],
+                contextUri: data.v["contextUri"],
+                filename: data.v["filename"]
+            })
+            .done(() => layout.navigateToExtents(data.v["workspace"]));
+    };
+
+    configuration.addColumn(new DMI.Table.DataTableColumn("Workspace", "workspace").withDefaultValue(workspace));
+    configuration.addColumn(new DMI.Table.DataTableColumn("URI", "contextUri").withDefaultValue("dm:///"));
+    configuration.addColumn(new DMI.Table.DataTableColumn("Filename", "filename").withDefaultValue("d:\\file.xml"));
 
     layout.navigateToDialog(configuration);
 }

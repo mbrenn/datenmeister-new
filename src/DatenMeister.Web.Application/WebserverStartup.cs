@@ -10,6 +10,7 @@ using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
+using DatenMeister.XMI.ExtentStorage;
 using Microsoft.Owin;
 using Microsoft.Owin.BuilderProperties;
 using Ninject;
@@ -68,6 +69,7 @@ namespace DatenMeister.Web.Application
 
             // A little bit hacky, but it works for first
             extentLoader.AddAdditionalType(typeof(CSVStorageConfiguration));
+            extentLoader.AddAdditionalType(typeof(XmiStorageConfiguration));
             extentLoader.LoadAllExtents();
             _serverInjection.Bind<ExtentStorageConfigurationLoader>().ToConstant(extentLoader);
         }

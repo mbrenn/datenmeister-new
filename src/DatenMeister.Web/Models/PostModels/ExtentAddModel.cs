@@ -6,6 +6,13 @@
     public class ExtentAddModel
     {
         /// <summary>
+        /// Gets or sets the type of the 
+        /// extent to be created.
+        /// It can be 'xmi' or 'csv'
+        /// </summary>
+        public string type { get; set; }
+
+        /// <summary>
         /// Gets or sets the workspace, where extent will be created
         /// </summary>
         public string workspace { get; set; }
@@ -19,10 +26,5 @@
         /// Gets or sets the filename
         /// </summary>
         public string filename { get; set; }
-
-        /// <summary>
-        /// Gets or sets the extent type to be created
-        /// </summary>
-        public string extentType { get; set; }
     }
 }

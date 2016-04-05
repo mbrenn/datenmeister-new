@@ -13,6 +13,7 @@ using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Queries;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
@@ -20,6 +21,7 @@ using DatenMeister.Uml.Helper;
 using DatenMeister.Web.Helper;
 using DatenMeister.Web.Models;
 using DatenMeister.Web.Models.PostModels;
+using DatenMeister.XMI.ExtentStorage;
 
 namespace DatenMeister.Web.Api
 {
@@ -98,7 +100,16 @@ namespace DatenMeister.Web.Api
         }
 
 
-
+        private static string RemoveQuotesFromFilename(string filename)
+        {
+            // Remove quotes, if filename is fully quoted
+            if (filename.StartsWith("\"") && filename.EndsWith("\"") && filename.Length >= 2)
+            {
+                filename = filename.Substring(1, filename.Length - 2);
+            }
+            return filename;
+        }
+        
         /// <summary>
         /// Deletes a complete extent
         /// </summary>
@@ -113,34 +124,13 @@ namespace DatenMeister.Web.Api
             {
                 throw new InvalidOperationException("Workspace not found");
             }
-
-            var filename = model.filename;
-
-            filename = RemoveQuotesFromFilename(filename);
-
-            if (!Path.IsPathRooted(filename))
-            {
-                filename = Path.GetFileName(filename);
-                var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-                filename = Path.Combine(appBase, "data", filename);
-            }
+            
+            var filename = RemoveQuotesFromFilename(model.filename);
+            filename = MakePathAbsolute(filename);
 
             // Creates the new workspace
-            IUriExtent createdExtent;
-            switch (model.extentType)
-            {
-                default:
-                    var extentData = new CSVStorageConfiguration
-                    {
-                        ExtentUri = model.contextUri,
-                        Path = filename,
-                        Workspace = model.workspace,
-                        Settings = new CSVSettings()
-                    };
-
-                    createdExtent = _extentStorageLoader.LoadExtent(extentData, true);
-                    break;
-            }
+            var configuration = GetStorageConfiguration(model, filename);
+            var createdExtent = _extentStorageLoader.LoadExtent(configuration, true);
 
             return new
             {
@@ -149,12 +139,13 @@ namespace DatenMeister.Web.Api
             };
         }
 
-        private static string RemoveQuotesFromFilename(string filename)
+        private static string MakePathAbsolute(string filename)
         {
-            // Remove quotes, if filename is fully quoted
-            if (filename.StartsWith("\"") && filename.EndsWith("\"") && filename.Length >= 2)
+            if (!Path.IsPathRooted(filename))
             {
-                filename = filename.Substring(1, filename.Length - 2);
+                filename = Path.GetFileName(filename);
+                var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+                filename = Path.Combine(appBase, "data", filename);
             }
             return filename;
         }
@@ -174,17 +165,41 @@ namespace DatenMeister.Web.Api
                 throw new InvalidOperationException("Workspace not found");
             }
 
-            var filename = Path.GetFileName(model.filename);
-            var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-            filename = Path.Combine(appBase, "data", filename);
+            var filename = MakePathAbsolute(model.filename);
 
             // Creates the new workspace
+            var configuration = GetStorageConfiguration(model, filename);
+            var createdExtent = _extentStorageLoader.LoadExtent(configuration, true);
 
-            IUriExtent createdExtent;
-            switch (model.extentType)
+            return new
             {
-                default:
-                    var extentData = new CSVStorageConfiguration
+                success = true,
+                uri = createdExtent.contextURI()
+            };
+        }
+
+        /// <summary>
+        /// Gets the configuration by using the given model and their filename
+        /// </summary>
+        /// <param name="model">Model to be used to retrieve the information</param>
+        /// <param name="filename">Filename to be used</param>
+        /// <returns></returns>
+        private static ExtentStorageConfiguration GetStorageConfiguration(ExtentAddModel model, string filename)
+        {
+            ExtentStorageConfiguration configuration;
+            switch (model.type)
+            {
+                case "xmi":
+                    configuration = new XmiStorageConfiguration
+                    {
+                        ExtentUri = model.contextUri,
+                        Path = filename,
+                        Workspace = model.workspace
+                    };
+
+                    break;
+                case "csv":
+                    var csvExtentData = new CSVStorageConfiguration
                     {
                         ExtentUri = model.contextUri,
                         Path = filename,
@@ -192,20 +207,21 @@ namespace DatenMeister.Web.Api
                         Settings = new CSVSettings()
                     };
 
-                    foreach (var c in model.ColumnsAsEnumerable)
+                    var modelAsCreateModel = model as ExtentCreateModel;
+                    if (modelAsCreateModel != null)
                     {
-                        extentData.Settings.Columns.Add(c);
+                        foreach (var c in modelAsCreateModel.ColumnsAsEnumerable)
+                        {
+                            csvExtentData.Settings.Columns.Add(c);
+                        }
                     }
 
-                    createdExtent = _extentStorageLoader.LoadExtent(extentData, true);
+                    configuration = csvExtentData;
                     break;
+                default:
+                    throw new InvalidOperationException($"Unknown extent type: {model.type}");
             }
-
-            return new
-            {
-                success = true,
-                uri = createdExtent.contextURI()
-            };
+            return configuration;
         }
 
         /// <summary>

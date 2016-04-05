@@ -145,6 +145,10 @@
       <Project>{335399d1-b533-42d2-aea5-f398f35d8e66}</Project>
       <Name>DatenMeister.Uml</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">
+      <Project>{E44275C2-9E62-42BE-B984-127F82C1766F}</Project>
+      <Name>DatenMeister.XMI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>
       <Name>DatenMeister</Name>

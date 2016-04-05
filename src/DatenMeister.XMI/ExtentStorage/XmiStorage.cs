@@ -1,14 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Linq;
-using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.XMI.EMOF;
 
 namespace DatenMeister.XMI.ExtentStorage
 {
+    [ConfiguredBy(typeof(XmiStorageConfiguration))]
     public class XmiStorage : IExtentStorage
     {
         public IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty = false)

@@ -90,7 +90,7 @@ namespace DatenMeister.XMI.EMOF
 
             foreach (var innerElement in elements().Cast<XmlElement>())
             {
-                if (((IHasId) innerElement).Id.ToString() == id)
+                if (((IHasId) innerElement).Id == id)
                 {
                     return innerElement;
                 }

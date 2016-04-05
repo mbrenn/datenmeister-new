@@ -82,16 +82,18 @@ export module PostModels {
     }
 
     export interface IExtentAddModel {
+        type: string;
         workspace: string;
         contextUri: string;
         filename: string;
     }
 
     export interface IExtentCreateModel {
+        type: string;
         workspace: string;
         contextUri: string;
         filename: string;
-        columns: string;
+        columns?: string;
     }
 
     export class ItemInExtentQuery implements IItemTableQuery {

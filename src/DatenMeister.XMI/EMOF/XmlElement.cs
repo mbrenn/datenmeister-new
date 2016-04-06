@@ -11,14 +11,17 @@ namespace DatenMeister.XMI.EMOF
     /// </summary>
     public class XmlElement : IElement, IHasId
     {
+        public static readonly XName typeAttribute = Namespaces.Xmi + "type";
         private static readonly XName _attributeNameForId = "id";
 
         private readonly XElement _node;
 
-        public XElement XmlNode
-        {
-            get { return _node; }
-        }
+        public XElement XmlNode => _node;
+
+        /// <summary>
+        /// Gets the id of the XmlElement
+        /// </summary>
+        public string Id => _node.Attribute(_attributeNameForId).Value;
 
         public XmlElement(XElement node)
         {
@@ -30,11 +33,6 @@ namespace DatenMeister.XMI.EMOF
             {
                 node.SetAttributeValue(_attributeNameForId, Guid.NewGuid().ToString());
             }
-        }
-
-        public string Id
-        {
-            get { return _node.Attribute(_attributeNameForId).Value; }
         }
 
         public override bool Equals(object obj)
@@ -115,11 +113,20 @@ namespace DatenMeister.XMI.EMOF
             }
         }
 
-        public IElement metaclass => null;
+        public IElement metaclass => getMetaClass();
 
         public IElement getMetaClass()
         {
-            return null;
+            // Find the metaclass uri.
+            var attribute = XmlNode.Attribute(typeAttribute);
+            if (attribute == null)
+            {
+                return null;
+            }
+
+            // We have it, now try to find it. 
+            // First of all, we need to get a list of all extents in the meta layer
+            throw new InvalidOperationException("We have a metaclass but cannot find it at the moment");
         }
 
         public IElement container()

@@ -138,6 +138,19 @@ namespace DatenMeister.Runtime.ExtentStorage
             extentStorage.StoreExtent(information.Extent, information.Configuration);
         }
 
+        public void DetachExtent(IUriExtent extent)
+        {
+            lock (_data.LoadedExtents)
+            {
+                var information = _data.LoadedExtents.FirstOrDefault(x => x.Extent == extent);
+                if (information != null)
+                {
+                    _data.LoadedExtents.Remove(information);
+                    Debug.WriteLine($"- Detaching: {information.Configuration}");
+                }
+            }
+        }
+
         public void StoreAll()
         {
             Debug.WriteLine("Writing all extents");

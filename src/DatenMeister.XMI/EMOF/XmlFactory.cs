@@ -18,7 +18,7 @@ namespace DatenMeister.XMI.EMOF
             var node = new XElement("item");
             if (metaClass != null)
             {
-                node.Add(new XAttribute(Namespaces.Xmi + "type", metaClass.GetUri()));
+                node.Add(new XAttribute(XmlElement.typeAttribute, metaClass.GetUri()));
             }
 
             return new XmlElement(node);

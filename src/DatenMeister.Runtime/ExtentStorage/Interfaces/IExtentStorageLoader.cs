@@ -20,6 +20,12 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// <param name="extent"></param>
         void StoreExtent(IUriExtent extent);
 
+        /// <summary>
+        /// Detaches a specific extent in a way that is not known to the storage loader anymore
+        /// </summary>
+        /// <param name="extent">Extent to be detached</param>
+        void DetachExtent(IUriExtent extent);
+
         void StoreAll();
     }
 }

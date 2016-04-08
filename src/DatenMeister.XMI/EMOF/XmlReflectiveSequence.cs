@@ -9,18 +9,20 @@ namespace DatenMeister.XMI.EMOF
 {
     public class XmlReflectiveSequence : IReflectiveSequence
     {
-        private XElement _node;
+        private readonly XmlUriExtent _extent;
+        private readonly XElement _node;
 
-        public XmlReflectiveSequence(XElement node)
+        public XmlReflectiveSequence(XmlUriExtent extent, XElement node)
         {
+            _extent = extent;
             _node = node;
         }
-        
+
         public IEnumerator<object> GetEnumerator()
         {
             foreach (var subNode in _node.Elements())
             {
-                yield return new XmlElement(subNode);
+                yield return new XmlElement(subNode, _extent);
             }
         }
 
@@ -84,7 +86,7 @@ namespace DatenMeister.XMI.EMOF
 
         public object get(int index)
         {
-            return new XmlElement(_node.Elements().ElementAt(index));
+            return new XmlElement(_node.Elements().ElementAt(index), _extent);
         }
 
         public void remove(int index)
@@ -100,7 +102,7 @@ namespace DatenMeister.XMI.EMOF
             toBeReplaced.AddBeforeSelf(valueAsXmlObject.XmlNode);
             toBeReplaced.Remove();
 
-            return new XmlElement(toBeReplaced);
+            return new XmlElement(toBeReplaced, _extent);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

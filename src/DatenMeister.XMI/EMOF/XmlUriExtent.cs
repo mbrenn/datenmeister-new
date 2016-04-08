@@ -5,6 +5,7 @@ using DatenMeister.EMOF.Attributes;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.XMI.EMOF
 {
@@ -18,6 +19,8 @@ namespace DatenMeister.XMI.EMOF
         private readonly XElement _rootNode;
 
         internal XDocument Document => _document;
+
+        public IWorkspaceCollection Workspaces { get; set; }
 
         public XmlUriExtent(string uri, string rootNodeName = DefaultRootNodeName)
         {
@@ -47,7 +50,7 @@ namespace DatenMeister.XMI.EMOF
 
         public IReflectiveSequence elements()
         {
-            return new XmlReflectiveSequence(_rootNode);
+            return new XmlReflectiveSequence(this, _rootNode);
         }
 
         public string contextURI()

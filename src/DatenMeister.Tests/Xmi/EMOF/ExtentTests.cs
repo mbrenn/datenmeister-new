@@ -43,7 +43,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var mofObject3 = new XmlElement(new XElement("item"));
             var mofObject4 = new XmlElement(new XElement("item"));
 
-            var mofReflectiveSequence = new XmlReflectiveSequence(new XElement("items"));
+            var mofReflectiveSequence = new XmlReflectiveSequence(null, new XElement("items"));
             Assert.That(mofReflectiveSequence.size(), Is.EqualTo(0));
             Assert.That(mofReflectiveSequence.ToArray().Count, Is.EqualTo(0));
 
@@ -66,7 +66,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             mofReflectiveSequence.add(mofObject1);
             mofReflectiveSequence.add(mofObject2);
 
-            var otherMofReflectiveSequence = new XmlReflectiveSequence(new XElement("items"));
+            var otherMofReflectiveSequence = new XmlReflectiveSequence(null, new XElement("items"));
             otherMofReflectiveSequence.addAll(mofReflectiveSequence);
             Assert.That(otherMofReflectiveSequence.size(), Is.EqualTo(2));
             Assert.That(otherMofReflectiveSequence.ToArray().Count, Is.EqualTo(2));
@@ -76,7 +76,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             Assert.That(otherMofReflectiveSequence.ToArray().Count, Is.EqualTo(0));
 
 
-            otherMofReflectiveSequence = new XmlReflectiveSequence(new XElement("items"));
+            otherMofReflectiveSequence = new XmlReflectiveSequence(null, new XElement("items"));
             otherMofReflectiveSequence.add(0, mofObject1);
             otherMofReflectiveSequence.add(0, mofObject2);
             otherMofReflectiveSequence.add(1, mofObject3);

@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
+using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.XMI.EMOF
 {
     /// <summary>
     /// Abstracts the IObject from EMOF
     /// </summary>
-    public class XmlElement : IElement, IHasId
+    public class XmlElement : IElement, IHasId, IObjectKnowsExtent
     {
         public static readonly XName typeAttribute = Namespaces.Xmi + "type";
         private static readonly XName _attributeNameForId = "id";
@@ -19,20 +22,43 @@ namespace DatenMeister.XMI.EMOF
         public XElement XmlNode => _node;
 
         /// <summary>
+        /// Stores the owning element of the element. 
+        /// </summary>
+        private XmlElement _container;
+
+        /// <summary>
+        /// Stores the owning extent of the object.
+        /// This object or the container should be set
+        /// </summary>
+        private XmlUriExtent _owningExtent;
+
+        /// <summary>
         /// Gets the id of the XmlElement
         /// </summary>
         public string Id => _node.Attribute(_attributeNameForId).Value;
 
-        public XmlElement(XElement node)
+        public XmlElement(XElement node, XmlElement container = null)
         {
             Debug.Assert(node != null, "node != null");
             _node = node;
+            _container = container;
 
             // Checks, if an id is given. if not. set it. 
             if (node.Attribute(_attributeNameForId) == null)
             {
                 node.SetAttributeValue(_attributeNameForId, Guid.NewGuid().ToString());
             }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the XmlElement class.
+        /// </summary>
+        /// <param name="node">Node to be used</param>
+        /// <param name="extent">Extent to be set</param>
+        public XmlElement(XElement node, XmlUriExtent extent)
+            : this(node)
+        {
+            _owningExtent = extent;
         }
 
         public override bool Equals(object obj)
@@ -124,14 +150,31 @@ namespace DatenMeister.XMI.EMOF
                 return null;
             }
 
-            // We have it, now try to find it. 
-            // First of all, we need to get a list of all extents in the meta layer
-            throw new InvalidOperationException("We have a metaclass but cannot find it at the moment");
+            var extent = GetExtent();
+            if (extent == null)
+            {
+                // We have it, now try to find it. 
+                // First of all, we need to get a list of all extents in the meta layer
+                throw new InvalidOperationException("We have a metaclass but cannot find it due to missing extent");
+            }
+
+            return extent.Workspaces?.FindItem(attribute.Value);
         }
+
+        public XmlUriExtent GetExtent()
+        {
+            return _owningExtent ?? _container?.GetExtent();
+        }
+             
 
         public IElement container()
         {
             return null;
+        }
+
+        public IEnumerable<IExtent> Extents
+        {
+            get { yield return _owningExtent; }
         }
     }
 }

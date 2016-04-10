@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using DatenMeister.EMOF.InMemory;
+using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Proxy;
 using NUnit.Framework;
 
@@ -83,6 +84,28 @@ namespace DatenMeister.Tests.Mof.Core
 
             proxiedElement = returned as ProxyMofElement;
             Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<MofElement>());
+        }
+
+        [Test]
+        public void TestKnowsExtent()
+        {
+            var uriExtent = new MofUriExtent("dm:///test");
+
+            var mofElement = new MofElement();
+            var otherMofElement = new MofElement();
+
+            Assert.That(((IObjectKnowsExtent)mofElement).Extents.FirstOrDefault(), Is.Null);
+            Assert.That(((IObjectKnowsExtent)otherMofElement).Extents.FirstOrDefault(), Is.Null);
+
+            uriExtent.elements().add(mofElement);
+
+            Assert.That(((IObjectKnowsExtent)mofElement).Extents.First(), Is.SameAs(uriExtent));
+            Assert.That(((IObjectKnowsExtent)otherMofElement).Extents.FirstOrDefault(), Is.Null);
+
+            uriExtent.elements().add(otherMofElement);
+
+            Assert.That(((IObjectKnowsExtent)mofElement).Extents.First(), Is.SameAs(uriExtent));
+            Assert.That(((IObjectKnowsExtent)otherMofElement).Extents.First(), Is.SameAs(uriExtent));
         }
     }
 }

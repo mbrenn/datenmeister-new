@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
@@ -25,14 +26,19 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         private readonly Dictionary<Type, Func<IExtentStorage>> _mapping = new Dictionary<Type, Func<IExtentStorage>>();
 
+        /// <summary>
+        /// Adds the mapping by defining the type of the configuration object and the corresponding ExtentStorageLoader
+        /// </summary>
+        /// <param name="typeConfiguration">Type of the configuration</param>
+        /// <param name="typeExtentStorage">Type of the Extent</param>
         public void AddMapping(Type typeConfiguration, Type typeExtentStorage)
         {
             _mapping[typeConfiguration] = () => Activator.CreateInstance(typeExtentStorage) as IExtentStorage;
         }
 
-        public void AddMapping(Type typeConfiguration, Func<IExtentStorage> typeExtentStorage)
+        public void AddMapping(Type typeConfiguration, Func<IExtentStorage> factoryExtentStorage)
         {
-            _mapping[typeConfiguration] = typeExtentStorage;
+            _mapping[typeConfiguration] = factoryExtentStorage;
         }
 
         public IExtentStorage CreateFor(ExtentStorageConfiguration configuration)

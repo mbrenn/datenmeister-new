@@ -28,7 +28,7 @@ namespace DatenMeister.EMOF.InMemory
         public MofUriExtent(string uri)
         {
             _contextUri = uri;
-            _reflectiveSequence = new MofExtentReflectiveSequence(_elements);
+            _reflectiveSequence = new MofExtentReflectiveSequence(this, _elements);
         }
 
         public virtual string contextURI()
@@ -68,7 +68,7 @@ namespace DatenMeister.EMOF.InMemory
                     var elementAsMofObject = element as MofElement;
                     Debug.Assert(elementAsMofObject != null, "elementAsMofObject != null");
 
-                    if (elementAsMofObject.guid.ToString() == queryObjectId)
+                    if (elementAsMofObject.Id == queryObjectId)
                     {
                         _cacheIds[uri] = elementAsMofObject;
                         return elementAsMofObject;
@@ -93,7 +93,7 @@ namespace DatenMeister.EMOF.InMemory
                 throw new InvalidOperationException("element is not of type MofObject. Element is: " + element);
             }
 
-            return _contextUri + "#" + elementAsObject.guid;
+            return _contextUri + "#" + elementAsObject.Id;
         }
 
         public virtual bool useContainment()

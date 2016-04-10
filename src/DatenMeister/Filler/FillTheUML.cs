@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using DatenMeister.EMOF.Interface.Reflection;
-// Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.0.1.0
+// Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
 namespace DatenMeister.Filler
 {
-    public class FillTheUML : DatenMeister.Filler.IFiller<DatenMeister._UML>
+    public class FillTheUML : IFiller<_UML>
     {
         private static readonly object[] EmptyList = new object[] { };
         private static string GetNameOfElement(IObject element)
@@ -12,19 +12,19 @@ namespace DatenMeister.Filler
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, DatenMeister._UML tree)
+        public void Fill(IEnumerable<object> collection, _UML tree)
         {
-            FillTheUML.DoFill(collection, tree);
+            DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, DatenMeister._UML tree)
+        public static void DoFill(IEnumerable<object> collection, _UML tree)
         {
             string name;
-            IObject value;
+            IElement value;
             bool isSet;
             foreach (var item in collection)
             {
-                value = item as IObject;
+                value = item as IElement;
                 name = GetNameOfElement(value);
                 if (name == "UML") // Looking for package
                 {
@@ -32,7 +32,7 @@ namespace DatenMeister.Filler
                     collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                     foreach (var item0 in collection)
                     {
-                        value = item0 as IObject;
+                        value = item0 as IElement;
                         name = GetNameOfElement(value);
                         if (name == "Activities") // Looking for package
                         {
@@ -40,7 +40,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                                 if(name == "Activity") // Looking for class
                                 {
@@ -49,7 +49,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "edge") // Looking for property
                                         {
@@ -92,7 +92,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "activity") // Looking for property
                                         {
@@ -143,7 +143,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -154,7 +154,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "containedEdge") // Looking for property
                                         {
@@ -185,7 +185,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "activity") // Looking for property
                                         {
@@ -228,7 +228,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "parameter") // Looking for property
                                         {
@@ -243,7 +243,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "edge") // Looking for property
                                         {
@@ -282,7 +282,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -293,7 +293,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -304,7 +304,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -315,7 +315,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -326,7 +326,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "decisionInput") // Looking for property
                                         {
@@ -345,7 +345,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "exceptionInput") // Looking for property
                                         {
@@ -372,7 +372,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "handler") // Looking for property
                                         {
@@ -387,7 +387,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -398,7 +398,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -409,7 +409,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -420,7 +420,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -431,7 +431,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "interruptingEdge") // Looking for property
                                         {
@@ -450,7 +450,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isCombineDuplicate") // Looking for property
                                         {
@@ -469,7 +469,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -480,7 +480,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isMulticast") // Looking for property
                                         {
@@ -507,7 +507,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "inState") // Looking for property
                                         {
@@ -538,7 +538,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "activityScope") // Looking for property
                                         {
@@ -558,7 +558,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                                 if(name == "Duration") // Looking for class
                                 {
@@ -567,7 +567,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "expr") // Looking for property
                                         {
@@ -586,7 +586,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "firstEvent") // Looking for property
                                         {
@@ -605,7 +605,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "max") // Looking for property
                                         {
@@ -624,7 +624,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "event") // Looking for property
                                         {
@@ -643,7 +643,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "operand") // Looking for property
                                         {
@@ -662,7 +662,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "max") // Looking for property
                                         {
@@ -681,7 +681,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "specification") // Looking for property
                                         {
@@ -696,7 +696,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "value") // Looking for property
                                         {
@@ -711,7 +711,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "value") // Looking for property
                                         {
@@ -726,7 +726,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -737,7 +737,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "value") // Looking for property
                                         {
@@ -752,7 +752,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -763,7 +763,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "value") // Looking for property
                                         {
@@ -778,7 +778,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "value") // Looking for property
                                         {
@@ -793,7 +793,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -804,7 +804,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "behavior") // Looking for property
                                         {
@@ -831,7 +831,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "owningExpression") // Looking for property
                                         {
@@ -850,7 +850,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "firstEvent") // Looking for property
                                         {
@@ -869,7 +869,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "expr") // Looking for property
                                         {
@@ -888,7 +888,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "max") // Looking for property
                                         {
@@ -907,7 +907,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "event") // Looking for property
                                         {
@@ -926,7 +926,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -938,7 +938,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                                 if(name == "Actor") // Looking for class
                                 {
@@ -947,7 +947,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -958,7 +958,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "condition") // Looking for property
                                         {
@@ -985,7 +985,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "useCase") // Looking for property
                                         {
@@ -1000,7 +1000,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "addition") // Looking for property
                                         {
@@ -1019,7 +1019,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "extend") // Looking for property
                                         {
@@ -1047,7 +1047,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                                 if(name == "Association") // Looking for class
                                 {
@@ -1056,7 +1056,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "endType") // Looking for property
                                         {
@@ -1087,7 +1087,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -1098,7 +1098,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "extension") // Looking for property
                                         {
@@ -1141,7 +1141,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "collaborationRole") // Looking for property
                                         {
@@ -1156,7 +1156,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "roleBinding") // Looking for property
                                         {
@@ -1175,7 +1175,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isIndirectlyInstantiated") // Looking for property
                                         {
@@ -1206,7 +1206,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "abstraction") // Looking for property
                                         {
@@ -1225,7 +1225,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "end") // Looking for property
                                         {
@@ -1244,7 +1244,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "parameteredElement") // Looking for property
                                         {
@@ -1259,7 +1259,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "contract") // Looking for property
                                         {
@@ -1290,7 +1290,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "definingEnd") // Looking for property
                                         {
@@ -1313,7 +1313,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "ownedPort") // Looking for property
                                         {
@@ -1328,7 +1328,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isBehavior") // Looking for property
                                         {
@@ -1367,7 +1367,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "ownedAttribute") // Looking for property
                                         {
@@ -1395,7 +1395,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                                 if(name == "ConnectionPointReference") // Looking for class
                                 {
@@ -1404,7 +1404,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "entry") // Looking for property
                                         {
@@ -1427,7 +1427,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -1438,7 +1438,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "generalMachine") // Looking for property
                                         {
@@ -1457,7 +1457,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "conformance") // Looking for property
                                         {
@@ -1472,7 +1472,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "postCondition") // Looking for property
                                         {
@@ -1495,7 +1495,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "kind") // Looking for property
                                         {
@@ -1518,7 +1518,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "extendedRegion") // Looking for property
                                         {
@@ -1553,7 +1553,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "connection") // Looking for property
                                         {
@@ -1624,7 +1624,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "connectionPoint") // Looking for property
                                         {
@@ -1651,7 +1651,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "container") // Looking for property
                                         {
@@ -1698,7 +1698,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "container") // Looking for property
                                         {
@@ -1722,7 +1722,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                                 if(name == "BehavioredClassifier") // Looking for class
                                 {
@@ -1731,7 +1731,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "classifierBehavior") // Looking for property
                                         {
@@ -1754,7 +1754,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "ownedAttribute") // Looking for property
                                         {
@@ -1773,7 +1773,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "ownedLiteral") // Looking for property
                                         {
@@ -1788,7 +1788,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "classifier") // Looking for property
                                         {
@@ -1807,7 +1807,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "nestedClassifier") // Looking for property
                                         {
@@ -1842,7 +1842,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "contract") // Looking for property
                                         {
@@ -1861,7 +1861,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -1872,7 +1872,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "signal") // Looking for property
                                         {
@@ -1887,7 +1887,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "ownedAttribute") // Looking for property
                                         {
@@ -1903,7 +1903,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                                 if(name == "Extension") // Looking for class
                                 {
@@ -1912,7 +1912,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isRequired") // Looking for property
                                         {
@@ -1935,7 +1935,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "lower") // Looking for property
                                         {
@@ -1954,7 +1954,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "content") // Looking for property
                                         {
@@ -1977,7 +1977,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "viewpoint") // Looking for property
                                         {
@@ -1992,7 +1992,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "URI") // Looking for property
                                         {
@@ -2035,7 +2035,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "mergedPackage") // Looking for property
                                         {
@@ -2054,7 +2054,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "metaclassReference") // Looking for property
                                         {
@@ -2073,7 +2073,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "appliedProfile") // Looking for property
                                         {
@@ -2096,7 +2096,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "icon") // Looking for property
                                         {
@@ -2116,7 +2116,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                                 if(name == "ActionExecutionSpecification") // Looking for class
                                 {
@@ -2125,7 +2125,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "action") // Looking for property
                                         {
@@ -2140,7 +2140,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "behavior") // Looking for property
                                         {
@@ -2155,7 +2155,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "cfragmentGate") // Looking for property
                                         {
@@ -2178,7 +2178,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "message") // Looking for property
                                         {
@@ -2193,7 +2193,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "setting") // Looking for property
                                         {
@@ -2208,7 +2208,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -2219,7 +2219,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "execution") // Looking for property
                                         {
@@ -2234,7 +2234,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "finish") // Looking for property
                                         {
@@ -2253,7 +2253,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -2264,7 +2264,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "after") // Looking for property
                                         {
@@ -2283,7 +2283,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "action") // Looking for property
                                         {
@@ -2314,7 +2314,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "maxint") // Looking for property
                                         {
@@ -2333,7 +2333,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "covered") // Looking for property
                                         {
@@ -2360,7 +2360,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "fragment") // Looking for property
                                         {
@@ -2379,7 +2379,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "actualGate") // Looking for property
                                         {
@@ -2410,7 +2410,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "coveredBy") // Looking for property
                                         {
@@ -2441,7 +2441,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "argument") // Looking for property
                                         {
@@ -2484,7 +2484,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "message") // Looking for property
                                         {
@@ -2499,7 +2499,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -2510,7 +2510,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "covered") // Looking for property
                                         {
@@ -2533,7 +2533,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -2544,7 +2544,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "covered") // Looking for property
                                         {
@@ -2564,7 +2564,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                                 if(name == "InformationFlow") // Looking for class
                                 {
@@ -2573,7 +2573,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "conveyed") // Looking for property
                                         {
@@ -2612,7 +2612,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "represented") // Looking for property
                                         {
@@ -2628,7 +2628,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                                 if(name == "Artifact") // Looking for class
                                 {
@@ -2637,7 +2637,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "fileName") // Looking for property
                                         {
@@ -2668,7 +2668,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -2679,7 +2679,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -2690,7 +2690,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "configuration") // Looking for property
                                         {
@@ -2713,7 +2713,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "deployment") // Looking for property
                                         {
@@ -2736,7 +2736,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "deployedElement") // Looking for property
                                         {
@@ -2755,7 +2755,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -2766,7 +2766,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -2777,7 +2777,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "utilizedElement") // Looking for property
                                         {
@@ -2792,7 +2792,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "nestedNode") // Looking for property
                                         {
@@ -2808,7 +2808,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                                 if(name == "Abstraction") // Looking for class
                                 {
@@ -2817,7 +2817,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "mapping") // Looking for property
                                         {
@@ -2832,7 +2832,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "annotatedElement") // Looking for property
                                         {
@@ -2851,7 +2851,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "constrainedElement") // Looking for property
                                         {
@@ -2874,7 +2874,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "client") // Looking for property
                                         {
@@ -2893,7 +2893,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "source") // Looking for property
                                         {
@@ -2912,7 +2912,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "ownedComment") // Looking for property
                                         {
@@ -2935,7 +2935,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "alias") // Looking for property
                                         {
@@ -2962,7 +2962,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isOrdered") // Looking for property
                                         {
@@ -2997,7 +2997,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "clientDependency") // Looking for property
                                         {
@@ -3032,7 +3032,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "elementImport") // Looking for property
                                         {
@@ -3067,7 +3067,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "visibility") // Looking for property
                                         {
@@ -3082,7 +3082,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "importedPackage") // Looking for property
                                         {
@@ -3105,7 +3105,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "owningTemplateParameter") // Looking for property
                                         {
@@ -3124,7 +3124,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -3135,7 +3135,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "relatedElement") // Looking for property
                                         {
@@ -3150,7 +3150,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "ownedTemplateSignature") // Looking for property
                                         {
@@ -3169,7 +3169,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "boundElement") // Looking for property
                                         {
@@ -3192,7 +3192,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "default") // Looking for property
                                         {
@@ -3223,7 +3223,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "actual") // Looking for property
                                         {
@@ -3250,7 +3250,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "ownedParameter") // Looking for property
                                         {
@@ -3273,7 +3273,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "package") // Looking for property
                                         {
@@ -3288,7 +3288,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "type") // Looking for property
                                         {
@@ -3303,7 +3303,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -3315,7 +3315,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                                 if(name == "AnyReceiveEvent") // Looking for class
                                 {
@@ -3324,7 +3324,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -3335,7 +3335,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "context") // Looking for property
                                         {
@@ -3378,7 +3378,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "operation") // Looking for property
                                         {
@@ -3393,7 +3393,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "changeExpression") // Looking for property
                                         {
@@ -3408,7 +3408,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -3419,7 +3419,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -3430,7 +3430,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -3441,7 +3441,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "body") // Looking for property
                                         {
@@ -3460,7 +3460,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "signal") // Looking for property
                                         {
@@ -3475,7 +3475,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isRelative") // Looking for property
                                         {
@@ -3494,7 +3494,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "event") // Looking for property
                                         {
@@ -3514,7 +3514,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                                 if(name == "Substitution") // Looking for class
                                 {
@@ -3523,7 +3523,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "contract") // Looking for property
                                         {
@@ -3542,7 +3542,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "concurrency") // Looking for property
                                         {
@@ -3577,7 +3577,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "attribute") // Looking for property
                                         {
@@ -3652,7 +3652,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "allowSubstitutable") // Looking for property
                                         {
@@ -3675,7 +3675,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "featuringClassifier") // Looking for property
                                         {
@@ -3694,7 +3694,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "general") // Looking for property
                                         {
@@ -3721,7 +3721,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "generalization") // Looking for property
                                         {
@@ -3748,7 +3748,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "classifier") // Looking for property
                                         {
@@ -3771,7 +3771,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "instance") // Looking for property
                                         {
@@ -3786,7 +3786,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "bodyCondition") // Looking for property
                                         {
@@ -3861,7 +3861,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "parameteredElement") // Looking for property
                                         {
@@ -3876,7 +3876,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "default") // Looking for property
                                         {
@@ -3919,7 +3919,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "condition") // Looking for property
                                         {
@@ -3938,7 +3938,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "aggregation") // Looking for property
                                         {
@@ -4013,7 +4013,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isLeaf") // Looking for property
                                         {
@@ -4036,7 +4036,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "classifier") // Looking for property
                                         {
@@ -4059,7 +4059,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "definingFeature") // Looking for property
                                         {
@@ -4082,7 +4082,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isReadOnly") // Looking for property
                                         {
@@ -4098,7 +4098,7 @@ namespace DatenMeister.Filler
                             collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IObject;
+                                value = item1 as IElement;
                                 name = GetNameOfElement(value);
                                 if(name == "ValueSpecificationAction") // Looking for class
                                 {
@@ -4107,7 +4107,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
@@ -4126,7 +4126,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "variable") // Looking for property
                                         {
@@ -4141,7 +4141,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -4152,7 +4152,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
@@ -4171,7 +4171,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "value") // Looking for property
                                         {
@@ -4186,7 +4186,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "returnInformation") // Looking for property
                                         {
@@ -4201,7 +4201,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isUnmarshall") // Looking for property
                                         {
@@ -4224,7 +4224,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "context") // Looking for property
                                         {
@@ -4259,7 +4259,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "fromAction") // Looking for property
                                         {
@@ -4274,7 +4274,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "insertAt") // Looking for property
                                         {
@@ -4293,7 +4293,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "insertAt") // Looking for property
                                         {
@@ -4312,7 +4312,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "signal") // Looking for property
                                         {
@@ -4327,7 +4327,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isSynchronous") // Looking for property
                                         {
@@ -4346,7 +4346,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "behavior") // Looking for property
                                         {
@@ -4361,7 +4361,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "operation") // Looking for property
                                         {
@@ -4380,7 +4380,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "body") // Looking for property
                                         {
@@ -4415,7 +4415,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "association") // Looking for property
                                         {
@@ -4434,7 +4434,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
@@ -4449,7 +4449,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -4460,7 +4460,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "clause") // Looking for property
                                         {
@@ -4487,7 +4487,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "endData") // Looking for property
                                         {
@@ -4502,7 +4502,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
@@ -4517,7 +4517,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "classifier") // Looking for property
                                         {
@@ -4536,7 +4536,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "endData") // Looking for property
                                         {
@@ -4551,7 +4551,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isDestroyLinks") // Looking for property
                                         {
@@ -4574,7 +4574,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "regionAsInput") // Looking for property
                                         {
@@ -4593,7 +4593,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "inputElement") // Looking for property
                                         {
@@ -4616,7 +4616,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -4627,7 +4627,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "argument") // Looking for property
                                         {
@@ -4646,7 +4646,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "endData") // Looking for property
                                         {
@@ -4665,7 +4665,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "insertAt") // Looking for property
                                         {
@@ -4684,7 +4684,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "end") // Looking for property
                                         {
@@ -4707,7 +4707,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "destroyAt") // Looking for property
                                         {
@@ -4726,7 +4726,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "bodyOutput") // Looking for property
                                         {
@@ -4773,7 +4773,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "body") // Looking for property
                                         {
@@ -4800,7 +4800,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -4811,7 +4811,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isControl") // Looking for property
                                         {
@@ -4826,7 +4826,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "qualifier") // Looking for property
                                         {
@@ -4845,7 +4845,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "exception") // Looking for property
                                         {
@@ -4860,7 +4860,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "classifier") // Looking for property
                                         {
@@ -4879,7 +4879,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "classifier") // Looking for property
                                         {
@@ -4906,7 +4906,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
@@ -4921,7 +4921,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "end") // Looking for property
                                         {
@@ -4944,7 +4944,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "object") // Looking for property
                                         {
@@ -4967,7 +4967,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
@@ -4982,7 +4982,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
@@ -4997,7 +4997,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
@@ -5012,7 +5012,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isReplaceAll") // Looking for property
                                         {
@@ -5039,7 +5039,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "collection") // Looking for property
                                         {
@@ -5066,7 +5066,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isRemoveDuplicates") // Looking for property
                                         {
@@ -5085,7 +5085,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "isRemoveDuplicates") // Looking for property
                                         {
@@ -5104,7 +5104,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "replyToCall") // Looking for property
                                         {
@@ -5127,7 +5127,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "request") // Looking for property
                                         {
@@ -5146,7 +5146,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "signal") // Looking for property
                                         {
@@ -5165,7 +5165,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "executableNode") // Looking for property
                                         {
@@ -5180,7 +5180,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "object") // Looking for property
                                         {
@@ -5195,7 +5195,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "object") // Looking for property
                                         {
@@ -5210,7 +5210,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "object") // Looking for property
                                         {
@@ -5229,7 +5229,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "activity") // Looking for property
                                         {
@@ -5268,7 +5268,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "first") // Looking for property
                                         {
@@ -5291,7 +5291,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "object") // Looking for property
                                         {
@@ -5314,7 +5314,7 @@ namespace DatenMeister.Filler
                                     collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IObject;
+                                        value = item2 as IElement;
                                         name = GetNameOfElement(value);
                                         if(name == "value") // Looking for property
                                         {

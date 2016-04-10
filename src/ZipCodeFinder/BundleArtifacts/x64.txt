@@ -1,2 +1,2 @@
-MainPackage=D:\Projekte\DatenMeister\src\ZipCodeFinder\bin\x64\Release\ZipCodeFinder_1.2.0.0_x64.appx
-SymbolPackage=D:\Projekte\DatenMeister\src\ZipCodeFinder\AppPackages\ZipCodeFinder_1.2.0.0\ZipCodeFinder_1.2.0.0_x64.appxsym
+MainPackage=D:\Projekte\datenmeister-new\src\ZipCodeFinder\bin\x64\Release\ZipCodeFinder_1.3.0.0_x64.appx
+SymbolPackage=D:\Projekte\datenmeister-new\src\ZipCodeFinder\AppPackages\ZipCodeFinder_1.3.0.0_Test\ZipCodeFinder_1.3.0.0_x64.appxsym

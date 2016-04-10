@@ -19,9 +19,9 @@ namespace DatenMeister.XMI.UmlBootstrap
         /// </summary>
         private bool _wasRun;
 
-        public Dictionary<string, IElement> mofClasses { get; }
+        public Dictionary<string, IElement> MofClasses { get; }
 
-        public Dictionary<string, IElement> umlClasses { get; }
+        public Dictionary<string, IElement> UmlClasses { get; }
 
         /// <summary>
         ///     Stores the extent for the uml infrastructure
@@ -38,7 +38,15 @@ namespace DatenMeister.XMI.UmlBootstrap
         /// </summary>
         public IUriExtent PrimitiveInfrastructure { get; }
 
-        public Bootstrapper(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure,
+        /// <summary>
+        /// Initializes the bootstrapper after having the the necessary extents
+        /// </summary>
+        /// <param name="primitiveInfrastructure">Extent reflecting the primitive structure XMI definition</param>
+        /// <param name="umlInfrastructure">Extent reflecting the Uml infrastructure XMI definition</param>
+        /// <param name="mofInfrastructure">Extent reflecting the MOF infrastructure XMI definition</param>
+        public Bootstrapper(
+            IUriExtent primitiveInfrastructure, 
+            IUriExtent umlInfrastructure,
             IUriExtent mofInfrastructure)
         {
             if (umlInfrastructure == null)
@@ -57,8 +65,8 @@ namespace DatenMeister.XMI.UmlBootstrap
             UmlInfrastructure = umlInfrastructure;
             MofInfrastructure = mofInfrastructure;
             PrimitiveInfrastructure = primitiveInfrastructure;
-            mofClasses = new Dictionary<string, IElement>();
-            umlClasses = new Dictionary<string, IElement>();
+            MofClasses = new Dictionary<string, IElement>();
+            UmlClasses = new Dictionary<string, IElement>();
         }
 
         /// <summary>
@@ -77,12 +85,27 @@ namespace DatenMeister.XMI.UmlBootstrap
             var descendents = AllDescendentsQuery.getDescendents(UmlInfrastructure);
             var typeProperty = (Namespaces.Xmi + "type").ToString();
             var idProperty = (Namespaces.Xmi + "id").ToString();
+
+            var idToElementCache = new Dictionary<string, IElement>();
             var allClasses = descendents
                 .Where(x => x.isSet(typeProperty) && x.get(typeProperty).ToString() == "uml:Class");
+
             foreach (var classInstance in allClasses.Cast<IElement>())
             {
                 var name = classInstance.get("name").ToString();
-                umlClasses[name] = classInstance;
+                UmlClasses[name] = classInstance;
+
+                if (classInstance.isSet(idProperty))
+                {
+                    var id = classInstance.get(idProperty).ToString();
+                    if (idToElementCache.ContainsKey(id))
+                    {
+                        throw new InvalidOperationException($"ID '{id}' is duplicate");
+                    }
+
+                    idToElementCache[id] = classInstance;
+                    //Debug.WriteLine($"ID: {id}");
+                }
             }
 
             // Second step: Find all classes in the Mof namespace
@@ -92,7 +115,7 @@ namespace DatenMeister.XMI.UmlBootstrap
             foreach (var classInstance in allClasses.Cast<IElement>())
             {
                 var name = classInstance.get("name").ToString();
-                mofClasses[name] = classInstance;
+                MofClasses[name] = classInstance;
             }
 
             // Ok, finally, set the metaclasses on base of the found classes
@@ -108,12 +131,12 @@ namespace DatenMeister.XMI.UmlBootstrap
                 if (name.StartsWith("uml:"))
                 {
                     name = name.Substring(4);
-                    ((IElementSetMetaClass) classInstance).setMetaClass(umlClasses[name]);
+                    ((IElementSetMetaClass) classInstance).setMetaClass(UmlClasses[name]);
                 }
                 else if (name.StartsWith("mofext:"))
                 {
                     name = name.Substring(7);
-                    ((IElementSetMetaClass) classInstance).setMetaClass(mofClasses[name]);
+                    ((IElementSetMetaClass) classInstance).setMetaClass(MofClasses[name]);
                 }
                 else
                 {
@@ -125,10 +148,13 @@ namespace DatenMeister.XMI.UmlBootstrap
                 classInstance.unset(typeProperty);
             }
 
+            // Unsets the id property, it is already stored in
             foreach (var classInstance in allClasses)
             {
                 classInstance.unset(idProperty);
             }
+
+            // Now we handle the generalization information. 
 
         }
 

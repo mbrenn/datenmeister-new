@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Filler;
@@ -36,7 +34,7 @@ namespace DatenMeister.DataLayer
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        IDataLayer GetMetaLayerOfObject(IObject value);
+        IDataLayer GetDataLayerOfObject(IObject value);
 
         /// <summary>
         /// Gets the meta layer for the given data layer
@@ -61,6 +59,17 @@ namespace DatenMeister.DataLayer
         /// <returns>The filled type, could also be cached</returns>
         TFilledType Create<TFiller, TFilledType>(IDataLayer layer)
             where TFiller : IFiller<TFilledType>, new()
+            where TFilledType : class, new();
+
+        /// <summary>
+        /// Gets a cached instance of the filled type. 
+        /// This cached instance has to be created by the Create method before. If not found, 
+        /// null will be returned
+        /// </summary>
+        /// <typeparam name="TFilledType">Type of the filled type</typeparam>
+        /// <param name="layer">Layer whose filled type shall be retrieved</param>
+        /// <returns>The found instance</returns>
+        TFilledType Get<TFilledType>(IDataLayer layer)
             where TFilledType : class, new();
 
         /// <summary>

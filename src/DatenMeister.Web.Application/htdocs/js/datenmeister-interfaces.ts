@@ -32,6 +32,7 @@ export module ClientResponse {
         uri: string;
         ext: string;
         ws: string;
+        layer: string;
     }
 
     export interface IItemContentModel {
@@ -40,19 +41,29 @@ export module ClientResponse {
         v: Array<string>;
         c: Array<IDataTableColumn>;
         metaclass?: IItemModel;
+        layer: string;
     }
 
     export interface IDataTableColumn {
+        type: string;
         title?: string;
         name?: string;
         defaultValue?: any;
         isEnumeration?: boolean;
     }
 
+    export interface IDataTableDropDown extends IDataTableColumn {
+        values: Array<string>;
+    }
+
     export interface IDataTableItem {
         // Stores the url of the object which can be used for reference
         uri: string;
         v: Array<string>;
+    }
+
+    export interface IExtentCreateableTypeResult {
+        types: Array<IItemModel>
     }
 }
 
@@ -70,11 +81,19 @@ export module PostModels {
         type?: string;
     }
 
-    export interface IExtentCreateModel {
+    export interface IExtentAddModel {
+        type: string;
         workspace: string;
         contextUri: string;
         filename: string;
-        columns: string;
+    }
+
+    export interface IExtentCreateModel {
+        type: string;
+        workspace: string;
+        contextUri: string;
+        filename: string;
+        columns?: string;
     }
 
     export class ItemInExtentQuery implements IItemTableQuery {
@@ -94,7 +113,8 @@ export module PostModels {
     }
 
     export class ItemCreateModel extends ExtentReferenceModel {
-        container: string
+        container: string;
+        metaclass: string;
     }
 
     export class ItemUnsetPropertyModel extends ItemReferenceModel {
@@ -127,12 +147,14 @@ export namespace View {
 export namespace Table {
 
     export class DataTableColumn implements ClientResponse.IDataTableColumn {
+        type: string;
         title: string;
         name: string;
         defaultValue: any;
         isEnumeration: boolean;
 
         constructor(title?: string, name?: string) {
+            this.type = ColumnTypes.textbox;
             this.title = title;
             this.name = name;
         }
@@ -141,6 +163,20 @@ export namespace Table {
             this.defaultValue = value;
             return this;
         }
+    }
+
+    export class DataTableDropDown extends DataTableColumn  implements  ClientResponse.IDataTableDropDown{
+        values: Array<string>;
+
+        constructor(title?: string, name?: string) {
+            super(title, name);
+            this.type = ColumnTypes.dropdown;
+        }
+    }
+
+    export class ColumnTypes {
+        static textbox = "textbox";
+        static dropdown = "dropdown";
     }
 
     export class DataTableItem {

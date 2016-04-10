@@ -1,9 +1,12 @@
 ﻿using System;
 using System.IO;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.CSV.Runtime.Storage
 {
@@ -13,11 +16,20 @@ namespace DatenMeister.CSV.Runtime.Storage
     [ConfiguredBy(typeof(CSVStorageConfiguration))]
     // ReSharper disable once InconsistentNaming
     public class CSVStorage : IExtentStorage
-    { 
+    {
+        private readonly IWorkspaceCollection _workspaceCollection;
+        private readonly IDataLayerLogic _dataLayerLogic;
+
+        public CSVStorage(IWorkspaceCollection workspaceCollection, IDataLayerLogic dataLayerLogic)
+        {
+            _workspaceCollection = workspaceCollection;
+            _dataLayerLogic = dataLayerLogic;
+        }
+
         public IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty)
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
-            var provider = new CSVDataProvider();
+            var provider = new CSVDataProvider(_workspaceCollection, _dataLayerLogic); 
             var mofExtent = new MofUriExtent(csvConfiguration.ExtentUri);
             var factory = new MofFactory();
 
@@ -39,7 +51,7 @@ namespace DatenMeister.CSV.Runtime.Storage
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
 
-            var provider = new CSVDataProvider();
+            var provider = new CSVDataProvider(_workspaceCollection, _dataLayerLogic);
             provider.Save(extent, csvConfiguration.Path, csvConfiguration.Settings);
         }
     }

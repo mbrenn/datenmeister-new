@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.CSV
 {
@@ -14,10 +17,20 @@ namespace DatenMeister.CSV
     /// </summary>
     public class CSVDataProvider
     {
+        private readonly IWorkspaceCollection _workspaceCollection;
+        private readonly IDataLayerLogic _dataLayerLogic;
+
+        public CSVDataProvider(IWorkspaceCollection workspaceCollection, IDataLayerLogic dataLayerLogic)
+        {
+            _workspaceCollection = workspaceCollection;
+            _dataLayerLogic = dataLayerLogic;
+        }
+
         /// <summary>
         ///     Loads the CSV Extent out of the settings and stores the extent Uri
         /// </summary>
         /// <param name="extent">The uri being used for an extent</param>
+        /// <param name="factory">Factory being used to create a new instance</param>
         /// <param name="path">Path being used to load the extent</param>
         /// <param name="settings">Settings to load the extent</param>
         /// <returns>The loaded extent</returns>
@@ -33,6 +46,7 @@ namespace DatenMeister.CSV
         ///     Loads the CSV Extent out of the settings and stores the extent Uri
         /// </summary>
         /// <param name="extent">The uri being used for an extent</param>
+        /// <param name="factory">Factory being used to create a new instance</param>
         /// <param name="stream">Path being used to load the extent</param>
         /// <param name="settings">Settings to load the extent</param>
         /// <returns>The loaded extent</returns>
@@ -47,29 +61,37 @@ namespace DatenMeister.CSV
         /// <param name="path">Path being used to load the file</param>
         /// <param name="extent">Extet being stored</param>
         /// <param name="settings">Settings being used to store it.</param>
-        ///     <param name="stream"></param>
-        private void ReadFromStream(IUriExtent extent, IFactory factory, Stream stream, CSVSettings settings)
+        private void ReadFromStream(IExtent extent, IFactory factory, Stream stream, CSVSettings settings)
         {
             if (settings == null)
             {
                 settings = new CSVSettings();
             }
 
+            var metaClass = GetMetaClassOfItems(settings);
+            var columns = ConvertColumnsToPropertyValues(metaClass, settings);
+            var createColumns = false;
+
             using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(settings.Encoding)))
             {
-                var createColumns = false;
+
+                if (columns == null)
+                {
+                    columns = new List<object>();
+                    createColumns = true;
+                }
+
                 // Reads header, if necessary
                 if (settings.HasHeader)
                 {
-                    // TODO: Do not skip first line...
-                    //extent.HeaderNames.AddRange(this.SplitLine(stream.ReadLine(), settings));
+                    columns.Clear();
+                    // Creates the column names for the headline
                     var ignoredLine = streamReader.ReadLine();
-                }
-
-                if (settings.Columns == null)
-                {
-                    settings.Columns = new List<object>();
-                    createColumns = true;
+                    var columnNames = SplitLine(ignoredLine, settings);
+                    foreach (var columnName in columnNames)
+                    {
+                        columns.Add(columnName);
+                    }
                 }
 
                 // Reads the data itself
@@ -78,22 +100,24 @@ namespace DatenMeister.CSV
                 {
                     var values = SplitLine(line, settings);
 
-                    var csvObject = factory.create(null);
+                    var csvObject = factory.create(metaClass);
 
                     // we now have the created object, let's fill it
                     var valueCount = values.Count;
                     for (var n = 0; n < valueCount; n++)
                     {
                         object foundColumn;
-                        if (settings.Columns.Count <= n && createColumns)
+
+                        // Check, if we have enough columns, if we don't have enough columns, create one
+                        if (columns.Count <= n && (createColumns || !settings.HasHeader))
                         {
                             // Create new column
                             foundColumn = $"Column {n + 1}";
-                            settings.Columns.Add(foundColumn);
+                            columns.Add(foundColumn);
                         }
                         else
                         {
-                            foundColumn = settings.Columns[n];
+                            foundColumn = columns[n];
                         }
 
                         csvObject.set(foundColumn, values[n]);
@@ -103,6 +127,72 @@ namespace DatenMeister.CSV
                     extent.elements().add(csvObject);
                 }
             }
+
+            if (createColumns)
+            {
+                settings.Columns = columns;
+            }
+        }
+
+        private List<object> ConvertColumnsToPropertyValues(IElement metaClass, CSVSettings settings)
+        {
+            if (metaClass == null)
+            {
+                return settings.Columns;
+            }
+
+            //////////////////////
+            // Loads the workspace
+            if (_dataLayerLogic == null)
+            {
+                throw new InvalidOperationException("No DataLayerLogic was given, even though we need to do Uml navigation");
+            }
+
+            var metaLayer = _dataLayerLogic.GetMetaLayerOfObject(metaClass);
+            var uml = _dataLayerLogic.Get<_UML>(metaLayer);
+
+            var result = new List<object>();
+            foreach (var column in settings.Columns)
+            {
+                var found = metaClass.GetByPropertyFromCollection(
+                    uml.Classification.Classifier.attribute,
+                    uml.CommonStructure.NamedElement.name,
+                    column.ToString()).FirstOrDefault();
+                if (found == null)
+                {
+                    throw new InvalidOperationException($"Column {column} not found as property in metaclass");
+                }
+
+                result.Add(found);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the metaclass as given in the settings
+        /// Returns null, if the metaclass is not defined
+        /// </summary>
+        /// <param name="settings">Settings being used</param>
+        /// <returns>The metaclass of the object</returns>
+        private IElement GetMetaClassOfItems(CSVSettings settings)
+        {
+            IElement metaClass = null;
+            if (!string.IsNullOrEmpty(settings.MetaclassUri))
+            {
+                if (_workspaceCollection == null)
+                {
+                    throw new InvalidOperationException("Uri by metaclass is given, but we do not have a workspace collection");
+                }
+
+                metaClass = _workspaceCollection.FindItem(settings.MetaclassUri);
+                if (metaClass == null)
+                {
+                    throw new InvalidOperationException($"Type with ID: {settings.MetaclassUri} was not found");
+                }
+            }
+
+            return metaClass;
         }
 
         /// <summary>

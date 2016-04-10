@@ -20,13 +20,13 @@ namespace DatenMeister.Tests
             workspace.AddExtent(extent);
 
             var elementAsMofElement = (MofElement) element;
-            var guid = elementAsMofElement.guid;
+            var guid = elementAsMofElement.Id;
 
             // Now check, if everything is working
-            var found = extent.element("http://test/#" + guid.ToString());
+            var found = extent.element("http://test/#" + guid);
             Assert.That(found, Is.EqualTo(element));
 
-            var anotherFound = workspace.FindElementByUri("http://test/#" + guid.ToString());
+            var anotherFound = workspace.FindElementByUri("http://test/#" + guid);
             Assert.That(anotherFound, Is.EqualTo(element));
         }
 

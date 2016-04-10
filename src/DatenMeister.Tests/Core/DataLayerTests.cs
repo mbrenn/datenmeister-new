@@ -1,5 +1,6 @@
 ﻿using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
+using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Filler;
 using DatenMeister.XMI.UmlBootstrap;
 using NUnit.Framework;
@@ -46,11 +47,11 @@ namespace DatenMeister.Tests.Core
             logic.AssignToDataLayer(umlExtent, DataLayers.Uml);
 
             var value = new MofElement(null, null);
-            var logicLayer = logic.GetMetaLayerOfObject(value);
+            var logicLayer = logic.GetDataLayerOfObject(value);
             Assert.That(logicLayer, Is.SameAs(DataLayers.Data)); // Per Default, only the Data
 
             umlExtent.elements().add(value);
-            logicLayer = logic.GetMetaLayerOfObject(value);
+            logicLayer = logic.GetDataLayerOfObject(value);
             Assert.That(logicLayer, Is.SameAs(DataLayers.Uml));
         }
 
@@ -78,7 +79,7 @@ namespace DatenMeister.Tests.Core
 
             var primitiveTypes4 = logic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Types);
             Assert.That(primitiveTypes4, Is.Not.Null);
-            Assert.That(primitiveTypes4.__Real, Is.TypeOf<object>());
+            Assert.That(primitiveTypes4.__Real, Is.InstanceOf<IElement>());
         }
     }
 }

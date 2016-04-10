@@ -4,6 +4,7 @@ using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.XMI;
 using DatenMeister.XMI.UmlBootstrap;
+using System.Collections.Generic;
 
 namespace DatenMeister.SourcecodeGenerator
 {
@@ -61,6 +62,25 @@ namespace DatenMeister.SourcecodeGenerator
         protected virtual void Walk(IObject element, CallStack stack)
         {
             WalkPackage(element, stack);
+        }
+
+        /// <summary>
+        /// Writes the usage decleration for each element as given in the namespaces parameter
+        /// </summary>
+        /// <param name="namespaces">Namespaces to be used within the file</param>
+        protected void WriteUsages(IEnumerable<string> namespaces)
+        {
+            if (namespaces == null)
+            {
+                throw new ArgumentNullException(nameof(namespaces));
+            }
+
+            foreach (var space in namespaces)
+            {
+                Result.AppendLine($"using {space};");
+            }
+
+            Result.AppendLine();
         }
 
         /// <summary>

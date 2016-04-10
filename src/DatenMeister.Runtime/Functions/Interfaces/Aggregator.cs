@@ -1,6 +1,5 @@
 ﻿using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.Runtime.Functions.Aggregation;
 
 namespace DatenMeister.Runtime.Functions.Interfaces
 {

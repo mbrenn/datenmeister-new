@@ -70,8 +70,28 @@ namespace DatenMeister.DataLayer
             }
         }
 
-        public IDataLayer GetMetaLayerOfObject(IObject value)
+        public IDataLayer GetDataLayerOfObject(IObject value)
         {
+            // If the object is contained by another object, query the contained objects 
+            // because the extents will only be stored in the root elements
+            var asElement = value as IElement;
+            var parent = asElement?.container();
+            if (parent != null)
+            {
+                return GetDataLayerOfObject(parent);
+            }
+
+            // If the object knows the extent to which it belongs to, it will return it
+            var objectKnowsExtent = value as IObjectKnowsExtent;
+            if (objectKnowsExtent != null)
+            {
+                var found = objectKnowsExtent.Extents.FirstOrDefault();
+                return found == null
+                    ? _data.Default
+                    : GetDataLayerOfExtent(found);
+            }
+
+            // Otherwise check it by the dataextent
             lock (_data)
             {
                 var extentContainingObject = _data.Extents.Select(x => x.Key).Cast<IUriExtent>().WithElement(value);
@@ -120,6 +140,7 @@ namespace DatenMeister.DataLayer
             lock (_data)
             {
                 var layerAsObject = layer as DataLayer;
+
                 var filledType = Get<TFilledType>(layerAsObject);
                 if (filledType != null)
                 {
@@ -174,6 +195,14 @@ namespace DatenMeister.DataLayer
                 var layerAsObject = layer as DataLayer;
                 layerAsObject.FilledTypeCache.Clear();
             }
+        }
+
+        public static IDataLayerLogic InitDefault()
+        {
+            var data = new DataLayerData();
+            var logic = new DataLayerLogic(data);
+            logic.SetRelationsForDefaultDataLayers();
+            return logic;
         }
     }
 }

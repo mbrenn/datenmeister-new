@@ -4,7 +4,6 @@ using DatenMeister.EMOF.Queries;
 using DatenMeister.XMI.UmlBootstrap;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using DatenMeister.XMI;
 using DatenMeister.Filler;
 
@@ -17,7 +16,7 @@ namespace DatenMeister.Tests.Console
             var property = new object();
             System.Console.WriteLine("DatenMeister Testing");
 
-            var element = new EMOF.InMemory.MofElement();
+            var element = new MofElement();
             element.set(property, "Test");
 
             TestZipCodes();
@@ -38,12 +37,14 @@ namespace DatenMeister.Tests.Console
             var extent = new MofUriExtent("mof:///plz");
             var factory = new MofFactory();
 
-            var csvSettings = new CSVSettings();
-            csvSettings.Encoding = "ISO-8859-1";
-            csvSettings.Separator = '\t';
-            csvSettings.HasHeader = false;
+            var csvSettings = new CSVSettings
+            {
+                Encoding = "ISO-8859-1",
+                Separator = '\t',
+                HasHeader = false
+            };
 
-            var provider = new CSVDataProvider();
+            var provider = new CSVDataProvider(null, null);
             provider.Load(extent, factory, "data/plz.csv", csvSettings);
 
             System.Console.WriteLine($"Loaded: {extent.elements().Count().ToString()} Zipcodes");

@@ -183,6 +183,22 @@ textarea {
     padding-bottom: 5px;
 }
 
+.dm-navigation-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+    .dm-navigation-list li {
+        color: #428bca;
+        cursor: pointer;
+    }
+
+        .dm-navigation-list li:hover {
+            text-decoration: underline;
+            color: #2a6496;
+        }
+
 
 
 .dm-statusline {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using DatenMeister.CSV;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Reflection;
@@ -13,12 +12,7 @@ namespace DatenMeister.Apps.ZipCode
 {
     public class DataProvider
     {
-        private static DataProvider Singleton;
-
-        public static DataProvider TheOne
-        {
-            get { return Singleton; }
-        }
+        public static DataProvider TheOne { get; }
 
         public MofUriExtent ZipCodes
         {
@@ -28,20 +22,22 @@ namespace DatenMeister.Apps.ZipCode
 
         static DataProvider()
         {
-            Singleton = new DataProvider();
+            TheOne = new DataProvider();
         }
 
         public void LoadZipCodes(Stream stream)
         {
-            var csvSettings = new CSVSettings();
-            csvSettings.Encoding = "UTF-8";// Encoding.GetEncoding("ISO-8859-1");
-            csvSettings.Separator = '\t';
-            csvSettings.HasHeader = false;
+            var csvSettings = new CSVSettings
+            {
+                Encoding = "UTF-8",
+                Separator = '\t',
+                HasHeader = false
+            };
 
             ZipCodes = new MofUriExtent("datenmeister:///zipcodes");
             var factory = new MofFactory();
 
-            var csvProvider = new CSVDataProvider();
+            var csvProvider = new CSVDataProvider(null, null);
 
             csvProvider.Load(
                 ZipCodes,
@@ -52,7 +48,7 @@ namespace DatenMeister.Apps.ZipCode
             Columns.ZipCode = csvSettings.Columns[1];
             Columns.Name = csvSettings.Columns[4];
 
-            Debug.WriteLine($"Loaded: {ZipCodes.elements().Count().ToString()} Zipcodes");
+            Debug.WriteLine($"Loaded: {ZipCodes.elements().Count()} Zipcodes");
         }
 
         /// <summary>
@@ -60,13 +56,12 @@ namespace DatenMeister.Apps.ZipCode
         /// </summary>
         /// <param name="searchString">String to be used for searching</param>
         /// <returns>Enumeration of objects</returns>
-        public static IEnumerable<IObject> FindBySearchString(string searchString)
+        public IEnumerable<IObject> FindBySearchString(string searchString)
         {
-            var columns = new[] { DataProvider.Columns.Name, DataProvider.Columns.ZipCode };
+            var columns = new[] { Columns.Name, Columns.ZipCode };
             var typedZipCode = searchString.Trim();
-            var found = Filter.WhenOneOfThePropertyContains(
-                    DataProvider.TheOne.ZipCodes.elements(),
-                    columns,
+            var found = ZipCodes.elements()
+                .WhenOneOfThePropertyContains(columns,
                     typedZipCode,
                     StringComparison.CurrentCultureIgnoreCase);
             

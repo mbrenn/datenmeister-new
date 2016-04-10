@@ -1,4 +1,5 @@
 define(["require", "exports", "datenmeister-interfaces"], function (require, exports, DMI) {
+    "use strict";
     var ItemTableConfiguration = (function () {
         function ItemTableConfiguration() {
             this.onItemEdit = function (url) { return false; };
@@ -10,7 +11,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             this.itemsPerPage = 20;
         }
         return ItemTableConfiguration;
-    })();
+    }());
     exports.ItemTableConfiguration = ItemTableConfiguration;
     /*
         * Used to show a lot of items in a database. The table will use an array of MofObjects
@@ -51,14 +52,14 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             this.domContainer.empty();
             var domToolbar = $("<div class='dm-toolbar row'></div>");
             if (this.configuration.supportNewItem) {
-                var domNewItem = $("<div class='col-md-3'><a href='#' class='btn btn-default'>Create new item</a></div>");
-                domNewItem.click(function () {
+                this.domNewItem = $("<div class='col-md-3'><a href='#' class='btn btn-default'>Create new item</a></div>");
+                $("a", this.domNewItem).click(function () {
                     if (tthis.configuration.onNewItemClicked !== undefined) {
                         tthis.configuration.onNewItemClicked();
                     }
                     return false;
                 });
-                domToolbar.append(domNewItem);
+                domToolbar.append(this.domNewItem);
             }
             if (this.configuration.supportPaging) {
                 var domPaging = $("<div class='col-md-6 text-center form-inline'>"
@@ -143,6 +144,37 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             // Now, the items
             tthis.createRowsForItems(data);
             this.domContainer.append(this.domTable);
+            // Updates the layout for the creatable types
+            this.updateLayoutForCreatableTypes();
+        };
+        ItemListTable.prototype.setCreatableTypes = function (data) {
+            this.createableTypes = data;
+            this.updateLayoutForCreatableTypes();
+        };
+        ItemListTable.prototype.updateLayoutForCreatableTypes = function () {
+            if (this.domNewItem === undefined || this.domNewItem === null) {
+                // Html for this element was not yet created
+                return;
+            }
+            var tthis = this;
+            if (this.createableTypes !== null && this.createableTypes !== undefined) {
+                var data = this.createableTypes;
+                this.domNewItem.empty();
+                var domDropDown = $("<select><option>Create Type...</option><option value=''>Unspecified</option></select>");
+                for (var n in data) {
+                    var type = data[n];
+                    var domOption = $("<option value='" + type.uri + "'></option>");
+                    domOption.text(type.name);
+                    /*domOption.click(((innerType: DMI.ClientResponse.IItemModel) => {
+                        return () => alert(innerType.uri);
+                    })(type));*/
+                    domDropDown.append(domOption);
+                }
+                domDropDown.change(function () {
+                    tthis.configuration.onNewItemClicked(domDropDown.val());
+                });
+                this.domNewItem.append(domDropDown);
+            }
         };
         ItemListTable.prototype.updateDomForItems = function (data) {
             $("tr", this.domTable).has("td")
@@ -216,7 +248,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             }
         };
         return ItemListTable;
-    })();
+    }());
     exports.ItemListTable = ItemListTable;
     var ItemContentConfiguration = (function () {
         function ItemContentConfiguration() {
@@ -229,7 +261,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             this.columns[this.columns.length] = column;
         };
         return ItemContentConfiguration;
-    })();
+    }());
     exports.ItemContentConfiguration = ItemContentConfiguration;
     var ItemContentTable = (function () {
         function ItemContentTable(item, configuration) {
@@ -252,6 +284,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                 for (var property in propertyValue) {
                     if (propertyValue.hasOwnProperty(property)) {
                         column = {
+                            type: "textbox",
                             title: property,
                             name: property
                         };
@@ -339,6 +372,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
                     }
                     // Adds the new property to the autogenerated rows                    
                     var column = {
+                        type: "textbox",
                         title: property,
                         name: property
                     };
@@ -355,7 +389,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             domTable.append(domNewProperty);
         };
         return ItemContentTable;
-    })();
+    }());
     exports.ItemContentTable = ItemContentTable;
     function createDomForContent(item, column, inEditMode, configuration) {
         if (inEditMode === undefined) {
@@ -392,9 +426,22 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
         }
         else {
             if (inEditMode) {
-                var domTextBox = $("<input type='textbox' class='form-control' />");
-                domTextBox.val(contentValue);
-                return domTextBox;
+                if (column.type === DMI.Table.ColumnTypes.dropdown) {
+                    var domDD = $("<select></select>");
+                    var asDD = column;
+                    for (var name in asDD.values) {
+                        var displayText = asDD.values[name];
+                        var domOption = $("<option></option>").attr("value", name).text(displayText);
+                        domDD.append(domOption);
+                    }
+                    domDD.val(contentValue);
+                    return domDD;
+                }
+                else {
+                    var domTextBox = $("<input type='textbox' class='form-control' />");
+                    domTextBox.val(contentValue);
+                    return domTextBox;
+                }
             }
             else {
                 var domResult = $("<span class='dm-itemtable-data'></span>");

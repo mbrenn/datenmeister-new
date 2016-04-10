@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
+using DatenMeister.EMOF.Attributes;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.XMI.EMOF
 {
+    [AssignFactoryForExtentType(typeof(XmlFactory))]
     public class XmlUriExtent : IUriExtent
     {
+        public const string DefaultRootNodeName = "xmi";
         private readonly string _urlPropertyName = "uri";
 
-        private XDocument _document;
-        private XElement _rootNode;
+        private readonly XDocument _document;
+        private readonly XElement _rootNode;
 
         internal XDocument Document => _document;
 
-        public XmlUriExtent(string uri, string rootNodeName = "items")
+        public XmlUriExtent(string uri, string rootNodeName = DefaultRootNodeName)
         {
             _document = new XDocument();
             _rootNode = new XElement(rootNodeName);
@@ -24,7 +27,7 @@ namespace DatenMeister.XMI.EMOF
             _rootNode.SetAttributeValue(_urlPropertyName, uri);
         }
 
-        public XmlUriExtent(XDocument document, string uri, string rootNodeName = "items")
+        public XmlUriExtent(XDocument document, string uri, string rootNodeName = DefaultRootNodeName)
         {
             _document = document;
             _rootNode = _document.Element(rootNodeName);
@@ -90,7 +93,7 @@ namespace DatenMeister.XMI.EMOF
 
             foreach (var innerElement in elements().Cast<XmlElement>())
             {
-                if (((IHasId) innerElement).Id.ToString() == id)
+                if (((IHasId) innerElement).Id == id)
                 {
                     return innerElement;
                 }

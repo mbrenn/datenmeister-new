@@ -4,6 +4,7 @@ using DatenMeister.EMOF.InMemory;
 using DatenMeister.Full.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.FactoryMapper;
+using Ninject;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Integration
@@ -29,8 +30,11 @@ namespace DatenMeister.Tests.Integration
         [Test]
         public void TestFactoryMappingByAttributeForExtentLoaders()
         {
+            var kernel = new StandardKernel();
+            kernel.UseDatenMeister("Xmi");
+
             var mapper = new ManualConfigurationToExtentStorageMapper();
-            mapper.PerformMappingForConfigurationOfExtentLoaders();
+            mapper.PerformMappingForConfigurationOfExtentLoaders(kernel);
 
             Assert.That(mapper.HasMappingFor(typeof(CSVStorageConfiguration)), Is.True);
             Assert.That(mapper.HasMappingFor(typeof(CSVDataProvider)), Is.False);

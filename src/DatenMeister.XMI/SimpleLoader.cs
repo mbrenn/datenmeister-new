@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 using DatenMeister.EMOF.Interface.Identifiers;
@@ -14,12 +15,7 @@ namespace DatenMeister.XMI
         /// </summary>
         private readonly IFactory _factory;
 
-        /// <summary>
-        ///     Stores the workspace to find the meta types
-        /// </summary>
-        private Workspace<IUriExtent> _metaWorkspace;
-
-        private Dictionary<string, IElement> idToElement = new Dictionary<string, IElement>(); 
+        private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>(); 
 
         /// <summary>
         ///     Initializes a new instance of the Loader class.
@@ -27,11 +23,9 @@ namespace DatenMeister.XMI
         /// <param name="metaWorkspace">Metaworkspace being used to find the type declarations</param>
         /// <param name="factory">Factory to be used</param>
         public SimpleLoader(
-            IFactory factory,
-            Workspace<IUriExtent> metaWorkspace = null)
+            IFactory factory)
         {
             _factory = factory;
-            _metaWorkspace = metaWorkspace;
         }
 
         public void Load(IUriExtent extent, string filePath)
@@ -45,6 +39,7 @@ namespace DatenMeister.XMI
         /// <summary>
         ///     Loads the file from a stream
         /// </summary>
+        /// <param name="extent">Extent to which the data is loaded</param>
         /// <param name="stream">Stream to be used for loading</param>
         public void Load(IUriExtent extent, Stream stream)
         {
@@ -55,9 +50,12 @@ namespace DatenMeister.XMI
         /// <summary>
         ///     Loads the document from an XDocument
         /// </summary>
+        /// <param name="extent">Extent to which the data is loaded</param>
         /// <param name="document">Document to be loaded</param>
         public void Load(IUriExtent extent, XDocument document)
         {
+            _idToElement.Clear();
+
             // Skip the first element
             foreach (var element in document.Elements().Elements())
             {
@@ -71,17 +69,27 @@ namespace DatenMeister.XMI
         /// <param name="element"></param>
         private IObject LoadElement(XElement element)
         {
-            var result = _factory.create(null);
+            var resultingElement = _factory.create(null);
             foreach (var attribute in element.Attributes())
             {
-                result.set(attribute.Name.ToString(), attribute.Value);
+                resultingElement.set(attribute.Name.ToString(), attribute.Value);
             }
 
             // Check, if element has id
             var xmiId = XmiId.Get(element);
             if (xmiId != null)
             {
-                idToElement[xmiId] = result;
+                // In some Xmi files, the Xmi-id is used multiple times (e.g. Uml). We only assign it the first time
+                if (!_idToElement.ContainsKey(xmiId))
+                {
+                    _idToElement[xmiId] = resultingElement;
+
+                    var resultSetId = resultingElement as ICanSetId;
+                    if (resultSetId != null)
+                    {
+                        resultSetId.Id = xmiId;
+                    }
+                }
             }
 
             var dict = new Dictionary<string, List<object>>();
@@ -98,12 +106,19 @@ namespace DatenMeister.XMI
                 {
                     currentList = new List<object>();
                     dict[name] = currentList;
-                    result.set(name, currentList);
+                    resultingElement.set(name, currentList);
                 }
 
                 if (subElement.HasElements || subElement.HasAttributes)
                 {
-                    currentList.Add(LoadElement(subElement));
+                    var loadedElement = LoadElement(subElement);
+
+                    // Sets the container being used
+                    var asSetContainer = loadedElement as IElementSetContainer;
+                    asSetContainer?.setContainer(resultingElement);
+
+                    // Adds the item to the current list
+                    currentList.Add(loadedElement);
                 }
                 else
                 {
@@ -111,7 +126,7 @@ namespace DatenMeister.XMI
                 }
             }
 
-            return result;
+            return resultingElement;
         }
     }
 }

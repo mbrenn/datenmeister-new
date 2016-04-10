@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using DatenMeister.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Runtime.Workspaces.Data
@@ -48,7 +46,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
         public void Store()
         {
             var workSpaceData = new WorkspaceData();
-            foreach (var workSpace in  this.WorkspaceCollection.Workspaces)
+            foreach (var workSpace in  WorkspaceCollection.Workspaces)
             {
                 workSpaceData.Workspaces.Add(new WorkspaceInfo()
                 {

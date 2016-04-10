@@ -29,6 +29,24 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -88,6 +106,7 @@
     <Compile Include="Api\ExtentController.cs" />
     <Compile Include="Api\OperationFailedException.cs" />
     <Compile Include="Api\WorkspaceController.cs" />
+    <Compile Include="Helper\ColumnCreationResult.cs" />
     <Compile Include="Helper\ColumnCreator.cs" />
     <Compile Include="Models\DataTableColumn.cs" />
     <Compile Include="Models\DataTableItem.cs" />
@@ -95,6 +114,7 @@
     <Compile Include="Models\ExtentModel.cs" />
     <Compile Include="Models\ItemContentModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
+    <Compile Include="Models\PostModels\ExtentAddModel.cs" />
     <Compile Include="Models\PostModels\ExtentCreateModel.cs" />
     <Compile Include="Models\PostModels\ExtentReferenceModel.cs" />
     <Compile Include="Models\PostModels\ItemCreateModel.cs" />
@@ -124,6 +144,10 @@
     <ProjectReference Include="..\DatenMeister.Uml\DatenMeister.Uml.csproj">
       <Project>{335399d1-b533-42d2-aea5-f398f35d8e66}</Project>
       <Name>DatenMeister.Uml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">
+      <Project>{E44275C2-9E62-42BE-B984-127F82C1766F}</Project>
+      <Name>DatenMeister.XMI</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>

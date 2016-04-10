@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Linq;
 using DatenMeister.CSV.Runtime.Storage;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using NUnit.Framework;
 
@@ -18,10 +18,11 @@ namespace DatenMeister.Tests.Runtime
             File.WriteAllText("data.txt", csvFile);
             
             var mapper = new ManualConfigurationToExtentStorageMapper();
-            mapper.AddMapping(typeof (CSVStorageConfiguration), () => new CSVStorage());
+            mapper.AddMapping(typeof (CSVStorageConfiguration), () => new CSVStorage(null, null));
+            var dataLayerLogic = DataLayerLogic.InitDefault();
 
             var data = new ExtentStorageData();
-            var logic = new ExtentStorageLoader(data, mapper);
+            var logic = new ExtentStorageLoader(data, mapper, dataLayerLogic);
             var configuration = new CSVStorageConfiguration()
             {
                 Path = "data.txt",

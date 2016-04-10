@@ -1,64 +1,151 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.Web.Models;
 
 namespace DatenMeister.Web.Helper
 {
     public class ColumnCreator
     {
-        public Dictionary<object, DataTableColumn> ColumnsOnProperty { get; private set; }
+        private readonly IUmlNameResolution _nameResolution;
+        private readonly IDataLayerLogic _dataLayerLogic;
+        private readonly IWorkspaceCollection _workspaceCollection;
 
-        public IList<object> Properties
+        public ColumnCreator(IUmlNameResolution nameResolution, IDataLayerLogic dataLayerLogic, IWorkspaceCollection workspaceCollection)
         {
-            get { return ColumnsOnProperty.Select(x => x.Key).ToList(); }
+            _nameResolution = nameResolution;
+            _dataLayerLogic = dataLayerLogic;
+            _workspaceCollection = workspaceCollection;
         }
 
-        public IEnumerable<DataTableColumn> FindColumnsForTable(IUriExtent extent)
+        public ColumnCreationResult FindColumnsForTable(IUriExtent extent)
         {
             return FindColumnsForTable(extent.elements());
         }
 
-        public IEnumerable<DataTableColumn> FindColumnsForTable(IReflectiveSequence elements)
+        public ColumnCreationResult FindColumnsForTable(IReflectiveSequence elements)
         {
-            ColumnsOnProperty = new Dictionary<object, DataTableColumn>();
+            var result = new ColumnCreationResult();
             foreach (var item in elements)
             {
-                EvaluateColumnsForItem(item);
+                EvaluateColumnsForItem(result, item);
             }
 
-            return ColumnsOnProperty.Select(x => x.Value);
+            return result;
         }
 
-        public IEnumerable<DataTableColumn> FindColumnsForItem(object item)
+        public ColumnCreationResult FindColumnsForItem(object item)
         {
-            ColumnsOnProperty = new Dictionary<object, DataTableColumn>();
-            EvaluateColumnsForItem(item);
-            return ColumnsOnProperty.Select(x => x.Value);
+            var result = new ColumnCreationResult();
+            EvaluateColumnsForItem(result, item);
+            return result;
         }
 
-        private void EvaluateColumnsForItem(object item)
+        public static string ConvertPropertyToColumnName(object property)
         {
-            if (item is IObjectAllProperties)
+            if (property == null)
             {
-                var itemAsObjectExt = item as IObjectAllProperties;
-                var properties = itemAsObjectExt.getPropertiesBeingSet();
+                throw new ArgumentNullException(nameof(property));
+            }
+            var asElement = property as IElement;
+            if (asElement != null)
+            {
+                // Property is an IElement, so retrieve the information by url
+                return string.Format($"#uml#{asElement.GetUri()}");
+            }
+            else
+            {
+                // Property is a string, so return it by ToString()
+                var propertyAsString = property.ToString();
+
+                if (propertyAsString.StartsWith("#"))
+                {
+                    throw new InvalidOperationException("Property may not start with a '#': " + propertyAsString);
+                }
+
+                return propertyAsString;
+            }
+        }
+
+        public object ConvertColumnNameToProperty(string property)
+        {
+            if (property.StartsWith("#"))
+            {
+                if (property.StartsWith("#uml#"))
+                {
+                    property = property.Substring("#uml#".Length);
+                    return _workspaceCollection.FindItem(property);
+                }
+
+                throw new InvalidOperationException($"Property with name '{property}' starts with '#' but format is not known. ");
+            }
+
+            return property;
+        }
+
+        private void EvaluateColumnsForItem(ColumnCreationResult result, object item)
+        {
+            // First phase: Get the properties by using the metaclass
+            var asElement = item as IElement;
+            var metaClass = asElement?.metaclass;
+
+            if (metaClass != null)
+            {
+                var dataLayer = _dataLayerLogic?.GetDataLayerOfObject(metaClass);
+                var metaLayer = _dataLayerLogic?.GetMetaLayerFor(dataLayer);
+                var uml = _dataLayerLogic?.Get<_UML>(metaLayer);
+
+                if (uml != null)
+                {
+                    var properties = metaClass.get(uml.Classification.Classifier.attribute) as IEnumerable;
+                    if (properties != null)
+                    {
+                        foreach (var property in properties.Cast<IObject>())
+                        {
+                            DataTableColumn column;
+                            if (!result.ColumnsOnProperty.TryGetValue(property, out column))
+                            {
+                                column = new DataTableColumn
+                                {
+                                    name = ConvertPropertyToColumnName(property),
+                                    title = property.get(uml.CommonStructure.NamedElement.name).ToString()
+                                };
+
+                                result.ColumnsOnProperty[property] = column;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Second phase: Get properties by the object iself
+            // This item does not have a metaclass and also no properties, so we try to find them by using the item
+            var itemAsAllProperties = item as IObjectAllProperties;
+            if (itemAsAllProperties != null)
+            {
+                var properties = itemAsAllProperties.getPropertiesBeingSet();
 
                 foreach (var property in properties)
                 {
                     DataTableColumn column;
-                    if (!ColumnsOnProperty.TryGetValue(property, out column))
+                    if (!result.ColumnsOnProperty.TryGetValue(property, out column))
                     {
                         column = new DataTableColumn
                         {
-                            name = property.ToString(),
-                            title = property.ToString()
+                            name = ConvertPropertyToColumnName(property),
+                            title =
+                                _nameResolution == null ? property.ToString() : _nameResolution.GetName(property)
                         };
 
-                        ColumnsOnProperty[property] = column;
+                        result.ColumnsOnProperty[property] = column;
                     }
 
                     var value = ((IObject) item).get(property);

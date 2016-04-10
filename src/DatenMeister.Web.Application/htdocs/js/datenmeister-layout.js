@@ -1,4 +1,5 @@
 define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "datenmeister-tables"], function (require, exports, DMI, DMView, DMTables) {
+    "use strict";
     (function (PageType) {
         PageType[PageType["Workspaces"] = 0] = "Workspaces";
         PageType[PageType["Extents"] = 1] = "Extents";
@@ -43,7 +44,7 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
         };
         Layout.prototype.navigateToDialog = function (configuration) {
             var _this = this;
-            var oldPageType = this.currentPageType;
+            var oldPageType = this.currentLayoutInformation;
             var domTable = $(".data-dialog", this.parent);
             var value = new DMI.Table.DataTableItem();
             var tableConfiguration = new DMTables.ItemContentConfiguration();
@@ -58,18 +59,21 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
                 }
             };
             tableConfiguration.onOkForm = function () {
-                _this.switchLayout(oldPageType);
                 if (configuration.onOkForm !== undefined) {
                     configuration.onOkForm(value);
                 }
             };
             var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
             itemTable.show(domTable);
-            this.switchLayout(PageType.Dialog, configuration.ws, configuration.extent);
+            this.switchLayout({
+                type: PageType.Dialog,
+                workspace: configuration.ws,
+                extent: configuration.extent
+            });
         };
         Layout.prototype.showWorkspaces = function () {
             var tthis = this;
-            tthis.switchLayout(PageType.Workspaces);
+            tthis.switchLayout({ type: PageType.Workspaces });
             tthis.createTitle();
             var workbenchLogic = new DMView.WorkspaceView();
             workbenchLogic.onWorkspaceSelected = function (id) {
@@ -80,7 +84,10 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
         };
         Layout.prototype.showExtents = function (workspaceId) {
             var tthis = this;
-            tthis.switchLayout(PageType.Extents, workspaceId);
+            tthis.switchLayout({
+                type: PageType.Extents,
+                workspace: workspaceId
+            });
             tthis.createTitle(workspaceId);
             var extentLogic = new DMView.ExtentView();
             extentLogic.onExtentSelected = function (ws, extentUrl) {
@@ -91,7 +98,11 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
         };
         Layout.prototype.showItems = function (workspaceId, extentUrl) {
             var tthis = this;
-            this.switchLayout(PageType.Items, workspaceId, extentUrl);
+            this.switchLayout({
+                type: PageType.Items,
+                workspace: workspaceId,
+                extent: extentUrl
+            });
             this.createTitle(workspaceId, extentUrl);
             var extentLogic = new DMView.ExtentView(this);
             extentLogic.onItemEdit = function (ws, extentUrl, itemUrl) {
@@ -107,7 +118,12 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
         };
         Layout.prototype.showItem = function (workspaceId, extentUrl, itemUrl, settings) {
             var tthis = this;
-            this.switchLayout(PageType.ItemDetail, workspaceId, extentUrl, itemUrl);
+            this.switchLayout({
+                type: PageType.ItemDetail,
+                workspace: workspaceId,
+                extent: extentUrl,
+                item: itemUrl
+            });
             var extentLogic = new DMView.ItemView(this);
             extentLogic.onItemView = function (ws, extentUrl, itemUrl) {
                 tthis.navigateToItem(ws, extentUrl, itemUrl, { isReadonly: true });
@@ -159,39 +175,42 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
                 return false;
             });
         };
-        Layout.prototype.switchLayout = function (pageType, workspace, extent, item) {
+        Layout.prototype.switchLayout = function (layoutInformation) {
             $(".only-workspaces").hide();
             $(".only-extents").hide();
             $(".only-items").hide();
             $(".only-itemdetail").hide();
             $(".only-dialog").hide();
-            if (pageType === PageType.Workspaces) {
+            if (layoutInformation.type === PageType.Workspaces) {
                 $(".only-workspaces").show();
             }
-            else if (pageType === PageType.Extents) {
+            else if (layoutInformation.type === PageType.Extents) {
                 $(".only-extents").show();
             }
-            else if (pageType === PageType.Items) {
+            else if (layoutInformation.type === PageType.Items) {
                 $(".only-items").show();
             }
-            else if (pageType === PageType.ItemDetail) {
+            else if (layoutInformation.type === PageType.ItemDetail) {
                 $(".only-itemdetail").show();
             }
-            else if (pageType === PageType.Dialog) {
+            else if (layoutInformation.type === PageType.Dialog) {
                 $(".only-dialog").show();
             }
-            this.currentPageType = pageType;
-            this.throwLayoutChangedEvent({
-                type: pageType,
-                workspace: workspace,
-                extent: extent,
-                item: item
-            });
+            this.currentLayoutInformation = layoutInformation;
+            this.throwLayoutChangedEvent(layoutInformation);
         };
         Layout.prototype.setStatus = function (statusDom) {
             var dom = $(".dm-statusline");
             dom.empty();
             dom.append(statusDom);
+        };
+        Layout.prototype.setView = function (view) {
+            this.switchLayout({
+                type: PageType.Dialog
+            });
+            var container = $(".data-dialog", this.parent);
+            container.empty();
+            view.show(container);
         };
         Layout.prototype.throwLayoutChangedEvent = function (data) {
             if (this.onLayoutChanged !== undefined) {
@@ -199,7 +218,7 @@ define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "d
             }
         };
         return Layout;
-    })();
+    }());
     exports.Layout = Layout;
 });
 //# sourceMappingURL=datenmeister-layout.js.map

@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataLayer\DataLayers.cs" />
+    <Compile Include="DataLayer\Extensions.cs" />
     <Compile Include="EMOF\Attributes\AssignFactoryForExtentTypeAttribute.cs" />
     <Compile Include="EMOF\Exceptions\MofException.cs" />
     <Compile Include="EMOF\Helper\ExtentHelper.cs" />
@@ -58,12 +59,15 @@
     <Compile Include="EMOF\Interface\Identifiers\IExtentCachesObject.cs" />
     <Compile Include="EMOF\Interface\Identifiers\IUriExtent.cs" />
     <Compile Include="EMOF\Interface\Reflection\IElement.cs" />
+    <Compile Include="EMOF\Interface\Reflection\IElementSetContainer.cs" />
     <Compile Include="EMOF\Interface\Reflection\IElementSetMetaClass.cs" />
     <Compile Include="EMOF\Interface\Reflection\IFactory.cs" />
+    <Compile Include="EMOF\Interface\Reflection\ICanSetId.cs" />
     <Compile Include="EMOF\Interface\Reflection\IHasId.cs" />
     <Compile Include="EMOF\Interface\Reflection\IObject.cs" />
     <Compile Include="EMOF\Interface\Common\IReflectiveSequence.cs" />
     <Compile Include="EMOF\Interface\Reflection\IObjectAllProperties.cs" />
+    <Compile Include="EMOF\Interface\Reflection\IObjectKnowsExtent.cs" />
     <Compile Include="EMOF\Proxy\IHasProxiedObject.cs" />
     <Compile Include="EMOF\Proxy\ProxyMofObject.cs" />
     <Compile Include="EMOF\Proxy\ProxyMofElement.cs" />
@@ -75,7 +79,8 @@
     <Compile Include="EMOF\Queries\FilterOnMultipleProperties.cs" />
     <Compile Include="EMOF\Queries\FilterOnPropertyCollection.cs" />
     <Compile Include="EMOF\Queries\FilterOnPropertyByPredicateCollection.cs" />
-    <Compile Include="EMOF\Queries\OrderByQuery.cs" />
+    <Compile Include="EMOF\Queries\FilterOnMetaClass.cs" />
+    <Compile Include="EMOF\Queries\OrderByProperty.cs" />
     <Compile Include="Filler\FillTheMOF.cs" />
     <Compile Include="Filler\FillThePrimitiveTypes.cs" />
     <Compile Include="Filler\FillTheUML.cs" />
@@ -86,7 +91,7 @@
     <Compile Include="DataLayer\IDataLayer.cs" />
     <Compile Include="DataLayer\IDataLayerLogic.cs" />
     <Compile Include="DataLayer\DataLayer.cs" />
-    <Compile Include="DataLayer\DataLayerData.cs" />
+    <Compile Include="EMOF\Attributes\DataLayerData.cs" />
     <Compile Include="DataLayer\DataLayerLogic.cs" />
     <Compile Include="Workspace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,4 +1,5 @@
 define(["require", "exports", "datenmeister-interfaces"], function (require, exports, DMI) {
+    "use strict";
     var ItemTableConfiguration = (function () {
         function ItemTableConfiguration() {
             this.onItemEdit = function (url) { return false; };
@@ -10,7 +11,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             this.itemsPerPage = 20;
         }
         return ItemTableConfiguration;
-    })();
+    }());
     exports.ItemTableConfiguration = ItemTableConfiguration;
     /*
         * Used to show a lot of items in a database. The table will use an array of MofObjects
@@ -216,7 +217,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             }
         };
         return ItemListTable;
-    })();
+    }());
     exports.ItemListTable = ItemListTable;
     var ItemContentConfiguration = (function () {
         function ItemContentConfiguration() {
@@ -229,7 +230,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             this.columns[this.columns.length] = column;
         };
         return ItemContentConfiguration;
-    })();
+    }());
     exports.ItemContentConfiguration = ItemContentConfiguration;
     var ItemContentTable = (function () {
         function ItemContentTable(item, configuration) {
@@ -355,7 +356,7 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             domTable.append(domNewProperty);
         };
         return ItemContentTable;
-    })();
+    }());
     exports.ItemContentTable = ItemContentTable;
     function createDomForContent(item, column, inEditMode, configuration) {
         if (inEditMode === undefined) {

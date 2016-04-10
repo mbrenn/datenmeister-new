@@ -1,4 +1,5 @@
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     var Ribbon = (function () {
         function Ribbon(domContainer) {
             this.tabs = new Array();
@@ -37,7 +38,7 @@ define(["require", "exports"], function (require, exports) {
             this.tabs[index].domTitle.addClass("selected");
         };
         return Ribbon;
-    })();
+    }());
     exports.Ribbon = Ribbon;
     var RibbonTabContent = (function () {
         function RibbonTabContent(domContainer, name) {
@@ -61,7 +62,7 @@ define(["require", "exports"], function (require, exports) {
             this.domTab.hide();
         };
         return RibbonTabContent;
-    })();
+    }());
     exports.RibbonTabContent = RibbonTabContent;
     var RibbonIconType;
     (function (RibbonIconType) {
@@ -111,7 +112,7 @@ define(["require", "exports"], function (require, exports) {
             }
         };
         return RibbonIcon;
-    })();
+    }());
     exports.RibbonIcon = RibbonIcon;
 });
 //# sourceMappingURL=datenmeister-ribbon.js.map

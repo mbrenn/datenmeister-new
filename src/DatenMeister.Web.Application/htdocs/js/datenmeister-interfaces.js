@@ -4,6 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     /* Stores all the models that can be returned via one of the */
     var ClientResponse;
     (function (ClientResponse) {
@@ -16,14 +17,14 @@ define(["require", "exports"], function (require, exports) {
             function ItemInExtentQuery() {
             }
             return ItemInExtentQuery;
-        })();
+        }());
         PostModels.ItemInExtentQuery = ItemInExtentQuery;
         /** This class is used to reference a single object within the database */
         var ExtentReferenceModel = (function () {
             function ExtentReferenceModel() {
             }
             return ExtentReferenceModel;
-        })();
+        }());
         PostModels.ExtentReferenceModel = ExtentReferenceModel;
         var ItemReferenceModel = (function (_super) {
             __extends(ItemReferenceModel, _super);
@@ -31,7 +32,7 @@ define(["require", "exports"], function (require, exports) {
                 _super.apply(this, arguments);
             }
             return ItemReferenceModel;
-        })(ExtentReferenceModel);
+        }(ExtentReferenceModel));
         PostModels.ItemReferenceModel = ItemReferenceModel;
         var ItemCreateModel = (function (_super) {
             __extends(ItemCreateModel, _super);
@@ -39,7 +40,7 @@ define(["require", "exports"], function (require, exports) {
                 _super.apply(this, arguments);
             }
             return ItemCreateModel;
-        })(ExtentReferenceModel);
+        }(ExtentReferenceModel));
         PostModels.ItemCreateModel = ItemCreateModel;
         var ItemUnsetPropertyModel = (function (_super) {
             __extends(ItemUnsetPropertyModel, _super);
@@ -47,7 +48,7 @@ define(["require", "exports"], function (require, exports) {
                 _super.apply(this, arguments);
             }
             return ItemUnsetPropertyModel;
-        })(ItemReferenceModel);
+        }(ItemReferenceModel));
         PostModels.ItemUnsetPropertyModel = ItemUnsetPropertyModel;
         var ItemDeleteModel = (function (_super) {
             __extends(ItemDeleteModel, _super);
@@ -55,7 +56,7 @@ define(["require", "exports"], function (require, exports) {
                 _super.apply(this, arguments);
             }
             return ItemDeleteModel;
-        })(ItemReferenceModel);
+        }(ItemReferenceModel));
         PostModels.ItemDeleteModel = ItemDeleteModel;
         var ItemSetPropertyModel = (function (_super) {
             __extends(ItemSetPropertyModel, _super);
@@ -63,7 +64,7 @@ define(["require", "exports"], function (require, exports) {
                 _super.apply(this, arguments);
             }
             return ItemSetPropertyModel;
-        })(ItemReferenceModel);
+        }(ItemReferenceModel));
         PostModels.ItemSetPropertyModel = ItemSetPropertyModel;
         var ItemSetPropertiesModel = (function (_super) {
             __extends(ItemSetPropertiesModel, _super);
@@ -71,7 +72,7 @@ define(["require", "exports"], function (require, exports) {
                 _super.apply(this, arguments);
             }
             return ItemSetPropertiesModel;
-        })(ItemReferenceModel);
+        }(ItemReferenceModel));
         PostModels.ItemSetPropertiesModel = ItemSetPropertiesModel;
     })(PostModels = exports.PostModels || (exports.PostModels = {}));
     var View;
@@ -80,7 +81,7 @@ define(["require", "exports"], function (require, exports) {
             function ItemViewSettings() {
             }
             return ItemViewSettings;
-        })();
+        }());
         View.ItemViewSettings = ItemViewSettings;
     })(View = exports.View || (exports.View = {}));
     var Table;
@@ -95,7 +96,7 @@ define(["require", "exports"], function (require, exports) {
                 return this;
             };
             return DataTableColumn;
-        })();
+        }());
         Table.DataTableColumn = DataTableColumn;
         var DataTableItem = (function () {
             function DataTableItem() {
@@ -103,7 +104,7 @@ define(["require", "exports"], function (require, exports) {
                 this.v = new Array();
             }
             return DataTableItem;
-        })();
+        }());
         Table.DataTableItem = DataTableItem;
     })(Table = exports.Table || (exports.Table = {}));
     var Api;
@@ -116,7 +117,7 @@ define(["require", "exports"], function (require, exports) {
                 this.columns[this.columns.length] = column;
             };
             return FormForItemConfiguration;
-        })();
+        }());
         Api.FormForItemConfiguration = FormForItemConfiguration;
         var DialogConfiguration = (function (_super) {
             __extends(DialogConfiguration, _super);
@@ -124,7 +125,7 @@ define(["require", "exports"], function (require, exports) {
                 _super.apply(this, arguments);
             }
             return DialogConfiguration;
-        })(FormForItemConfiguration);
+        }(FormForItemConfiguration));
         Api.DialogConfiguration = DialogConfiguration;
     })(Api = exports.Api || (exports.Api = {}));
 });

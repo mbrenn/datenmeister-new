@@ -1,4 +1,5 @@
 define(["require", "exports", "datenmeister-tables", "datenmeister-client", "datenmeister-query"], function (require, exports, DMTables, DMClient, DMQuery) {
+    "use strict";
     var WorkspaceView = (function () {
         function WorkspaceView() {
         }
@@ -35,7 +36,7 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
             container.append(compiledTable);
         };
         return WorkspaceView;
-    })();
+    }());
     exports.WorkspaceView = WorkspaceView;
     var ExtentView = (function () {
         function ExtentView(layout) {
@@ -123,7 +124,7 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
             return table.loadAndShow();
         };
         return ExtentView;
-    })();
+    }());
     exports.ExtentView = ExtentView;
     var ItemView = (function () {
         function ItemView(layout) {
@@ -218,7 +219,7 @@ define(["require", "exports", "datenmeister-tables", "datenmeister-client", "dat
             jQuery.append(domTableInfo);
         };
         return ItemView;
-    })();
+    }());
     exports.ItemView = ItemView;
 });
 //# sourceMappingURL=datenmeister-view.js.map

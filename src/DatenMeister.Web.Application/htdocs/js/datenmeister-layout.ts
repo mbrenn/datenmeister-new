@@ -14,16 +14,16 @@ export enum PageType {
 
 export interface ILayoutChangedEvent {
     type: PageType;
-    workspace: string;
-    extent: string;
-    item: string;
+    workspace?: string;
+    extent?: string;
+    item?: string;
 }
 
 export class Layout implements DMI.Api.ILayout {
     parent: JQuery;
     onRefresh: () => void;
     onLayoutChanged: (data: ILayoutChangedEvent) => void;
-    currentPageType: PageType;
+    currentLayoutInformation: ILayoutChangedEvent;
 
     constructor(parent: JQuery) {
         this.parent = parent;
@@ -67,7 +67,7 @@ export class Layout implements DMI.Api.ILayout {
     }
 
     navigateToDialog(configuration: DMI.Api.DialogConfiguration) {
-        var oldPageType = this.currentPageType;
+        var oldPageType = this.currentLayoutInformation;
 
         var domTable = $(".data-dialog", this.parent);
         var value = new DMI.Table.DataTableItem();
@@ -85,7 +85,6 @@ export class Layout implements DMI.Api.ILayout {
         };
 
         tableConfiguration.onOkForm = () => {
-            this.switchLayout(oldPageType);
             if (configuration.onOkForm !== undefined) {
                 configuration.onOkForm(value);
             }
@@ -94,12 +93,17 @@ export class Layout implements DMI.Api.ILayout {
         var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
         itemTable.show(domTable);
 
-        this.switchLayout(PageType.Dialog, configuration.ws, configuration.extent);
+        this.switchLayout(
+        {
+            type: PageType.Dialog,
+            workspace: configuration.ws,
+            extent: configuration.extent
+        });
     }
 
     showWorkspaces() {
         var tthis = this;
-        tthis.switchLayout(PageType.Workspaces);
+        tthis.switchLayout({ type: PageType.Workspaces });
         tthis.createTitle();
 
         var workbenchLogic = new DMView.WorkspaceView();
@@ -113,7 +117,10 @@ export class Layout implements DMI.Api.ILayout {
 
     showExtents(workspaceId: string) {
         var tthis = this;
-        tthis.switchLayout(PageType.Extents, workspaceId);
+        tthis.switchLayout({
+            type: PageType.Extents,
+            workspace: workspaceId
+        });
         tthis.createTitle(workspaceId);
         var extentLogic = new DMView.ExtentView();
         extentLogic.onExtentSelected = (ws: string, extentUrl: string) => {
@@ -126,7 +133,13 @@ export class Layout implements DMI.Api.ILayout {
 
     showItems(workspaceId: string, extentUrl: string) {
         var tthis = this;
-        this.switchLayout(PageType.Items, workspaceId, extentUrl);
+        this.switchLayout(
+        {
+            type: PageType.Items,
+            workspace: workspaceId,
+            extent: extentUrl
+            });
+
         this.createTitle(workspaceId, extentUrl);
         var extentLogic = new DMView.ExtentView(this);
         extentLogic.onItemEdit = (ws: string, extentUrl: string, itemUrl: string) => {
@@ -146,7 +159,13 @@ export class Layout implements DMI.Api.ILayout {
 
     showItem(workspaceId: string, extentUrl: string, itemUrl: string, settings?: DMI.View.IItemViewSettings) {
         var tthis = this;
-        this.switchLayout(PageType.ItemDetail, workspaceId, extentUrl, itemUrl);
+        this.switchLayout({
+            type: PageType.ItemDetail,
+            workspace: workspaceId,
+            extent: extentUrl,
+            item: itemUrl
+        });
+
         var extentLogic = new DMView.ItemView(this);
 
         extentLogic.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
@@ -201,41 +220,45 @@ export class Layout implements DMI.Api.ILayout {
         });
     }
 
-    switchLayout(pageType: PageType, workspace?: string, extent?: string, item?: string) {
+    switchLayout(layoutInformation: ILayoutChangedEvent) {
         $(".only-workspaces").hide();
         $(".only-extents").hide();
         $(".only-items").hide();
         $(".only-itemdetail").hide();
         $(".only-dialog").hide();
 
-        if (pageType === PageType.Workspaces) {
+        if (layoutInformation.type === PageType.Workspaces) {
             $(".only-workspaces").show();
-        } else if (pageType === PageType.Extents) {
+        } else if (layoutInformation.type === PageType.Extents) {
             $(".only-extents").show();
-        } else if (pageType === PageType.Items) {
+        } else if (layoutInformation.type === PageType.Items) {
             $(".only-items").show();
-        } else if (pageType === PageType.ItemDetail) {
+        } else if (layoutInformation.type === PageType.ItemDetail) {
             $(".only-itemdetail").show();
-        } else if (pageType === PageType.Dialog) {
+        } else if (layoutInformation.type === PageType.Dialog) {
             $(".only-dialog").show();
         }
 
-        this.currentPageType = pageType;
+        this.currentLayoutInformation = layoutInformation;
 
-        this.throwLayoutChangedEvent(
-            {
-                type: pageType,
-                workspace: workspace,
-                extent: extent,
-                item: item
-            }
-        );
+        this.throwLayoutChangedEvent(layoutInformation);
     }
 
     setStatus(statusDom: JQuery): void {
         var dom = $(".dm-statusline");
         dom.empty();
         dom.append(statusDom);
+    }
+
+    setView(view: DMView.IView) {
+        this.switchLayout(
+        {
+            type: PageType.Dialog
+        });
+
+        var container = $(".data-dialog", this.parent);
+        container.empty();
+        view.show(container);
     }
 
     throwLayoutChangedEvent(data: ILayoutChangedEvent) {

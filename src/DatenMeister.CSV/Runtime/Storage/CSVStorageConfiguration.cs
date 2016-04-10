@@ -1,4 +1,5 @@
-﻿using DatenMeister.Runtime.ExtentStorage.Interfaces;
+﻿using DatenMeister.Runtime.ExtentStorage.Configuration;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.CSV.Runtime.Storage
 {

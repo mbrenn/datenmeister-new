@@ -3,12 +3,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Web.Http;
 using BurnSystems.Owin.StaticFiles;
+using DatenMeister.Apps.ZipCode;
 using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.Full.Integration;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
-using DatenMeister.Web.Api;
+using DatenMeister.XMI.ExtentStorage;
 using Microsoft.Owin;
 using Microsoft.Owin.BuilderProperties;
 using Ninject;
@@ -42,9 +44,6 @@ namespace DatenMeister.Web.Application
             // Do the full load of all assemblies
             Full.Integration.Helper.LoadAllAssembliesInDirectory();
             Full.Integration.Helper.LoadAllReferenceAssemblies();
-
-            /*var controllerType = typeof (ExtentController);
-            Console.WriteLine( controllerType);*/
             
             // Initializing of the WebAPI, needs to be called after the DatenMeister is initialized
             var httpConfiguration = new HttpConfiguration();
@@ -59,15 +58,20 @@ namespace DatenMeister.Web.Application
             _serverInjection.Bind<WorkspaceLoader>().ToConstant(workspaceLoader);
 
             // Loading and storing the extents
-            var extentLoader = new ExtentStorageConfigurationStorage(
+            var extentLoader = new ExtentStorageConfigurationLoader(
                 _serverInjection.Get<ExtentStorageData>(),
                 _serverInjection.Get<IExtentStorageLoader>(),
                 "data/extents.xml");
 
+            // Apply for zipcodes
+            var integrateZipCodes = _serverInjection.Get<Integrate>();
+            integrateZipCodes.Into(_serverInjection.Get<IWorkspaceCollection>().FindExtent("dm:///types"));
+
             // A little bit hacky, but it works for first
             extentLoader.AddAdditionalType(typeof(CSVStorageConfiguration));
+            extentLoader.AddAdditionalType(typeof(XmiStorageConfiguration));
             extentLoader.LoadAllExtents();
-            _serverInjection.Bind<ExtentStorageConfigurationStorage>().ToConstant(extentLoader);
+            _serverInjection.Bind<ExtentStorageConfigurationLoader>().ToConstant(extentLoader);
         }
 
         private static StandardKernel CreateKernel(IAppBuilder app)
@@ -81,7 +85,7 @@ namespace DatenMeister.Web.Application
             token.Register(() =>
             {
                 kernel.Get<WorkspaceLoader>().Store();
-                kernel.Get<ExtentStorageConfigurationStorage>().StoreAllExtents();
+                kernel.Get<ExtentStorageConfigurationLoader>().StoreAllExtents();
             });
 
             // Loading the zipcodes

@@ -11,13 +11,17 @@ using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Queries;
+using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Web.Helper;
 using DatenMeister.Web.Models;
 using DatenMeister.Web.Models.PostModels;
+using DatenMeister.XMI.ExtentStorage;
 
 namespace DatenMeister.Web.Api
 {
@@ -34,6 +38,8 @@ namespace DatenMeister.Web.Api
         private readonly IUmlNameResolution _resolution;
         private readonly IExtentStorageLoader _extentStorageLoader;
         private readonly IDataLayerLogic _dataLayerLogic;
+        private readonly ColumnCreator _columnCreator;
+        private readonly ExtentFunctions _extentFunctions;
 
 
         public ExtentController(
@@ -41,13 +47,17 @@ namespace DatenMeister.Web.Api
             IWorkspaceCollection workspaceCollection, 
             IUmlNameResolution resolution, 
             IExtentStorageLoader extentStorageLoader, 
-            IDataLayerLogic dataLayerLogic)
+            IDataLayerLogic dataLayerLogic,
+            ColumnCreator columnCreator, 
+            ExtentFunctions extentFunctions)
         {
             _mapper = mapper;
             _workspaceCollection = workspaceCollection;
             _resolution = resolution;
             _extentStorageLoader = extentStorageLoader;
             _dataLayerLogic = dataLayerLogic;
+            _columnCreator = columnCreator;
+            _extentFunctions = extentFunctions;
         }
 
         [Route("all")]
@@ -90,6 +100,56 @@ namespace DatenMeister.Web.Api
         }
 
 
+        private static string RemoveQuotesFromFilename(string filename)
+        {
+            // Remove quotes, if filename is fully quoted
+            if (filename.StartsWith("\"") && filename.EndsWith("\"") && filename.Length >= 2)
+            {
+                filename = filename.Substring(1, filename.Length - 2);
+            }
+            return filename;
+        }
+        
+        /// <summary>
+        /// Deletes a complete extent
+        /// </summary>
+        /// <param name="model">Model to be deleted</param>
+        /// <returns>true, if ok</returns>
+        [Route("extent_add")]
+        [HttpPost]
+        public object AddExtent([FromBody] ExtentAddModel model)
+        {
+            var workspace = _workspaceCollection.Workspaces.First(x => x.id == model.workspace);
+            if (workspace == null)
+            {
+                throw new InvalidOperationException("Workspace not found");
+            }
+            
+            var filename = RemoveQuotesFromFilename(model.filename);
+            filename = MakePathAbsolute(filename);
+
+            // Creates the new workspace
+            var configuration = GetStorageConfiguration(model, filename);
+            var createdExtent = _extentStorageLoader.LoadExtent(configuration, true);
+
+            return new
+            {
+                success = true,
+                uri = createdExtent.contextURI()
+            };
+        }
+
+        private static string MakePathAbsolute(string filename)
+        {
+            if (!Path.IsPathRooted(filename))
+            {
+                filename = Path.GetFileName(filename);
+                var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+                filename = Path.Combine(appBase, "data", filename);
+            }
+            return filename;
+        }
+
         /// <summary>
         /// Deletes a complete extent
         /// </summary>
@@ -105,17 +165,41 @@ namespace DatenMeister.Web.Api
                 throw new InvalidOperationException("Workspace not found");
             }
 
-            var filename = Path.GetFileName(model.filename);
-            var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-            filename = Path.Combine(appBase, "data", filename);
+            var filename = MakePathAbsolute(model.filename);
 
             // Creates the new workspace
+            var configuration = GetStorageConfiguration(model, filename);
+            var createdExtent = _extentStorageLoader.LoadExtent(configuration, true);
 
-            IUriExtent createdExtent;
-            switch (model.extentType)
+            return new
             {
-                default:
-                    var extentData = new CSVStorageConfiguration
+                success = true,
+                uri = createdExtent.contextURI()
+            };
+        }
+
+        /// <summary>
+        /// Gets the configuration by using the given model and their filename
+        /// </summary>
+        /// <param name="model">Model to be used to retrieve the information</param>
+        /// <param name="filename">Filename to be used</param>
+        /// <returns></returns>
+        private static ExtentStorageConfiguration GetStorageConfiguration(ExtentAddModel model, string filename)
+        {
+            ExtentStorageConfiguration configuration;
+            switch (model.type)
+            {
+                case "xmi":
+                    configuration = new XmiStorageConfiguration
+                    {
+                        ExtentUri = model.contextUri,
+                        Path = filename,
+                        Workspace = model.workspace
+                    };
+
+                    break;
+                case "csv":
+                    var csvExtentData = new CSVStorageConfiguration
                     {
                         ExtentUri = model.contextUri,
                         Path = filename,
@@ -123,17 +207,21 @@ namespace DatenMeister.Web.Api
                         Settings = new CSVSettings()
                     };
 
-                    extentData.Settings.Columns.AddRange(model.ColumnsAsEnumerable);
+                    var modelAsCreateModel = model as ExtentCreateModel;
+                    if (modelAsCreateModel != null)
+                    {
+                        foreach (var c in modelAsCreateModel.ColumnsAsEnumerable)
+                        {
+                            csvExtentData.Settings.Columns.Add(c);
+                        }
+                    }
 
-                    createdExtent = _extentStorageLoader.LoadExtent(extentData, true);
+                    configuration = csvExtentData;
                     break;
+                default:
+                    throw new InvalidOperationException($"Unknown extent type: {model.type}");
             }
-
-            return new
-            {
-                success = true,
-                uri = createdExtent.contextURI()
-            };
+            return configuration;
         }
 
         /// <summary>
@@ -151,6 +239,37 @@ namespace DatenMeister.Web.Api
             return new
             {
                 success = removed
+            };
+        }
+
+        /// <summary>
+        /// Gets an enumeration of creatable types for the given extent.
+        /// The user can create a new instance by using this list
+        /// </summary>
+        /// <param name="ws">Workspace being used</param>
+        /// <param name="extent">Extent being used</param>
+        /// <returns>Array of creatable types</returns>
+        [Route("get_creatable_types")]
+        [HttpGet]
+        public object GetCreatableTypes(string ws, string extent)
+        {
+            Workspace<IExtent> foundWorkspace;
+            IUriExtent foundExtent;
+            _workspaceCollection.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
+
+            var foundTypes = _extentFunctions.GetCreatableTypes(foundExtent);
+
+            return new
+            {
+                types = from type in foundTypes.CreatableTypes
+                    let typeExtent = type.GetUriExtentOf()
+                    select new
+                    {
+                        name = _resolution.GetName(type),
+                        uri = typeExtent.uri(type),
+                        ext = typeExtent.contextURI(),
+                        ws = _workspaceCollection.FindWorkspace(typeExtent)
+                    }
             };
         }
 
@@ -182,9 +301,9 @@ namespace DatenMeister.Web.Api
             var totalItems = foundExtent.elements();
             var foundItems = totalItems;
 
-            var columnCreator = new ColumnCreator();
-            var columns = columnCreator.FindColumnsForTable(foundExtent).ToList();
-            var properties = columnCreator.Properties;
+
+            var result = _columnCreator.FindColumnsForTable(foundExtent);
+            var properties = result.Properties;
 
             // Perform the filtering
             IEnumerable<object> filteredItems = foundItems;
@@ -215,10 +334,10 @@ namespace DatenMeister.Web.Api
                 .Take(amount);
 
             // Now return our stuff
-            var result = new ExtentContentModel
+            var resultModel = new ExtentContentModel
             {
                 url = extent,
-                columns = columns,
+                columns = result.Columns,
                 totalItemCount = totalItems.Count(),
                 search = search,
                 filteredItemCount = filteredAmount,
@@ -226,63 +345,12 @@ namespace DatenMeister.Web.Api
                     .Select(x => new DataTableItem
                     {
                         uri = foundExtent.uri(x as IElement),
-                        v = ConvertToJson(foundExtent, x as IElement, columnCreator)
+                        v = ConvertToJson(x as IElement, result)
                     })
                     .ToList()
             };
 
-            return result;
-        }
-
-        private Dictionary<string, object> ConvertToJson(IUriExtent extent, IObject element, ColumnCreator creator)
-        {
-            var result = new Dictionary<string, object>();
-
-            foreach (var property in creator.Properties
-                .Where(property => element.isSet(property)))
-            {
-                var propertyAsString = property.ToString();
-                var propertyValue = element.get(property);
-
-                if (creator.ColumnsOnProperty[property].isEnumeration)
-                {
-                    if (propertyValue is IEnumerable && !(propertyValue is string))
-                    {
-                        var list = new List<object>();
-                        foreach (var listValue in (propertyValue as IEnumerable))
-                        {
-                            var asElement = listValue as IElement;
-                            string url;
-                            if (asElement != null)
-                            {
-                                url = extent.uri(asElement);
-                            }
-                            else
-                            {
-                                url = null;
-                            }
-
-                            list.Add(new
-                            {
-                                u = url,
-                                v = listValue == null ? "null" : _resolution.GetName(listValue)
-                            });
-                        }
-
-                        result[propertyAsString] = list;
-                    }
-                    else
-                    {
-                        result[propertyAsString] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
-                    }
-                }
-                else
-                {
-                    result[propertyAsString] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
-                }
-            }
-
-            return result;
+            return resultModel;
         }
 
         [Route("item")]
@@ -304,18 +372,18 @@ namespace DatenMeister.Web.Api
                 // Not found
                 return NotFound();
             }
-            
-            var columnCreator = new ColumnCreator();
-            itemModel.c = columnCreator.FindColumnsForItem(foundElement).ToList();
-            itemModel.v = ConvertToJson(foundExtent, foundElement, columnCreator);
+
+            var result = _columnCreator.FindColumnsForItem(foundElement);
+            itemModel.c = result.Columns.ToList();
+            itemModel.v = ConvertToJson(foundElement, result);
+            itemModel.layer = _dataLayerLogic?.GetDataLayerOfObject(foundElement)?.Name;
 
             // Check, if item is of type IElement and has a metaclass
             var metaClass = foundElement.getMetaClass();
             if (metaClass != null)
             {
-                var dataLayer =_dataLayerLogic.GetDataLayerOfObject(metaClass);
-                var metaLayer = _dataLayerLogic.GetMetaLayerFor(dataLayer);
-                var extents  = _dataLayerLogic.GetExtentsForDatalayer(metaLayer);
+                var dataLayer =_dataLayerLogic?.GetDataLayerOfObject(metaClass);
+                var extents  = _dataLayerLogic?.GetExtentsForDatalayer(dataLayer);
                 var extentWithMetaClass = extents.WithElement(metaClass);
 
                 var metaClassModel = new ItemModel
@@ -323,7 +391,8 @@ namespace DatenMeister.Web.Api
                     name = _resolution.GetName(metaClass),
                     uri = extentWithMetaClass?.uri(metaClass),
                     ext = extentWithMetaClass?.contextURI(),
-                    ws = _workspaceCollection.Workspaces.FindWorkspace(extentWithMetaClass)?.id
+                    ws = _workspaceCollection.Workspaces.FindWorkspace(extentWithMetaClass)?.id,
+                    layer = dataLayer?.Name
                 };
 
                 itemModel.metaclass = metaClassModel;
@@ -345,8 +414,16 @@ namespace DatenMeister.Web.Api
                 throw new InvalidOperationException("Element creation within container is not supported.");
             }
 
+            // If the metaclass was given, look for it, otherwise we do not have a type
+            IElement metaclass = null;
+            if (!string.IsNullOrEmpty(model.metaclass))
+            {
+                metaclass = _workspaceCollection.FindItem(model.metaclass);
+            }
+
+            // Creates the type
             var factory = _mapper.FindFactoryFor(foundExtent);
-            var element = factory.create(null);
+            var element = factory.create(metaclass);
 
             foundExtent.elements().add(element);
             var newUrl = foundExtent.uri(element);
@@ -401,7 +478,8 @@ namespace DatenMeister.Web.Api
                     out foundExtent, 
                     out foundItem);
 
-                foundItem.unset(model.property);
+                var property = _columnCreator.ConvertColumnNameToProperty(model.property);
+                foundItem.unset(property);
 
                 return new {success = true};
             }
@@ -426,7 +504,8 @@ namespace DatenMeister.Web.Api
                     out foundExtent, 
                     out foundItem);
 
-                foundItem.set(model.property, model.newValue);
+                var property = _columnCreator.ConvertColumnNameToProperty(model.property);
+                foundItem.set(property, model.newValue);
 
                 return new {success = true};
             }
@@ -451,9 +530,13 @@ namespace DatenMeister.Web.Api
                     out foundExtent, 
                     out foundItem);
 
-                foreach (var pair in model.v)
+                if (model.v != null)
                 {
-                    foundItem.set(pair.Key, pair.Value);
+                    foreach (var pair in model.v)
+                    {
+                        var property = _columnCreator.ConvertColumnNameToProperty(pair.Key);
+                        foundItem.set(property, pair.Value);
+                    }
                 }
 
                 return new {success = true};
@@ -463,5 +546,65 @@ namespace DatenMeister.Web.Api
                 return NotFound();
             }
         }
+
+        /// <summary>
+        /// Converts a given element to a json string, dependent on the column definition as given by the 
+        /// ColumnCreationResult
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="creatorResult"></param>
+        /// <returns></returns>
+        private Dictionary<string, object> ConvertToJson(IObject element, ColumnCreationResult creatorResult)
+        {
+            var result = new Dictionary<string, object>();
+
+            foreach (var property in creatorResult.Properties
+                .Where(property => element.isSet(property)))
+            {
+                var propertyAsString = ColumnCreator.ConvertPropertyToColumnName(property);
+
+                var propertyValue = element.get(property);
+
+                if (creatorResult.ColumnsOnProperty[property].isEnumeration)
+                {
+                    if (propertyValue is IEnumerable && !(propertyValue is string))
+                    {
+                        var list = new List<object>();
+                        foreach (var listValue in (propertyValue as IEnumerable))
+                        {
+                            var asElement = listValue as IElement;
+                            string url;
+                            if (asElement != null)
+                            {
+                                url = asElement.GetUri();
+                            }
+                            else
+                            {
+                                url = null;
+                            }
+
+                            list.Add(new
+                            {
+                                u = url,
+                                v = listValue == null ? "null" : _resolution.GetName(listValue)
+                            });
+                        }
+
+                        result[propertyAsString] = list;
+                    }
+                    else
+                    {
+                        result[propertyAsString] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
+                    }
+                }
+                else
+                {
+                    result[propertyAsString] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
+                }
+            }
+
+            return result;
+        }
+
     }
 }

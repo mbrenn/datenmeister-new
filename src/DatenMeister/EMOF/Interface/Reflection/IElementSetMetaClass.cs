@@ -7,5 +7,11 @@
         /// </summary>
         /// <param name="metaClass">Metaclass to be set</param>
         void setMetaClass(IElement metaClass);
+
+        /// <summary>
+        /// Sets the container of the given element in a hard way
+        /// </summary>
+        /// <param name="container">Container to be set</param>
+        void setContainer(IElement container);
     }
 }

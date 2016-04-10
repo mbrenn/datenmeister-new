@@ -88,6 +88,7 @@ define(["require", "exports"], function (require, exports) {
     (function (Table) {
         var DataTableColumn = (function () {
             function DataTableColumn(title, name) {
+                this.type = ColumnTypes.textbox;
                 this.title = title;
                 this.name = name;
             }
@@ -98,6 +99,23 @@ define(["require", "exports"], function (require, exports) {
             return DataTableColumn;
         }());
         Table.DataTableColumn = DataTableColumn;
+        var DataTableDropDown = (function (_super) {
+            __extends(DataTableDropDown, _super);
+            function DataTableDropDown(title, name) {
+                _super.call(this, title, name);
+                this.type = ColumnTypes.dropdown;
+            }
+            return DataTableDropDown;
+        }(DataTableColumn));
+        Table.DataTableDropDown = DataTableDropDown;
+        var ColumnTypes = (function () {
+            function ColumnTypes() {
+            }
+            ColumnTypes.textbox = "textbox";
+            ColumnTypes.dropdown = "dropdown";
+            return ColumnTypes;
+        }());
+        Table.ColumnTypes = ColumnTypes;
         var DataTableItem = (function () {
             function DataTableItem() {
                 this.uri = "local:///";

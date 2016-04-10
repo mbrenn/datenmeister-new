@@ -40,10 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataLayer\DataLayers.cs" />
+    <Compile Include="DataLayer\Extensions.cs" />
     <Compile Include="EMOF\Attributes\AssignFactoryForExtentTypeAttribute.cs" />
     <Compile Include="EMOF\Exceptions\MofException.cs" />
     <Compile Include="EMOF\Helper\ExtentHelper.cs" />
-    <Compile Include="DataLayer\ObjectHelper.cs" />
+    <Compile Include="EMOF\Helper\ObjectHelper.cs" />
     <Compile Include="EMOF\Helper\UmlHelper.cs" />
     <Compile Include="EMOF\InMemory\MofElement.cs" />
     <Compile Include="EMOF\InMemory\MofExtentReflectiveSequence.cs" />
@@ -58,8 +59,10 @@
     <Compile Include="EMOF\Interface\Identifiers\IExtentCachesObject.cs" />
     <Compile Include="EMOF\Interface\Identifiers\IUriExtent.cs" />
     <Compile Include="EMOF\Interface\Reflection\IElement.cs" />
+    <Compile Include="EMOF\Interface\Reflection\IElementSetContainer.cs" />
     <Compile Include="EMOF\Interface\Reflection\IElementSetMetaClass.cs" />
     <Compile Include="EMOF\Interface\Reflection\IFactory.cs" />
+    <Compile Include="EMOF\Interface\Reflection\ICanSetId.cs" />
     <Compile Include="EMOF\Interface\Reflection\IHasId.cs" />
     <Compile Include="EMOF\Interface\Reflection\IObject.cs" />
     <Compile Include="EMOF\Interface\Common\IReflectiveSequence.cs" />
@@ -76,7 +79,8 @@
     <Compile Include="EMOF\Queries\FilterOnMultipleProperties.cs" />
     <Compile Include="EMOF\Queries\FilterOnPropertyCollection.cs" />
     <Compile Include="EMOF\Queries\FilterOnPropertyByPredicateCollection.cs" />
-    <Compile Include="EMOF\Queries\OrderByQuery.cs" />
+    <Compile Include="EMOF\Queries\FilterOnMetaClass.cs" />
+    <Compile Include="EMOF\Queries\OrderByProperty.cs" />
     <Compile Include="Filler\FillTheMOF.cs" />
     <Compile Include="Filler\FillThePrimitiveTypes.cs" />
     <Compile Include="Filler\FillTheUML.cs" />

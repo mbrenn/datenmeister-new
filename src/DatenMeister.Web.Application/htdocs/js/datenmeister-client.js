@@ -54,12 +54,13 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
     })(WorkspaceApi = exports.WorkspaceApi || (exports.WorkspaceApi = {}));
     var ExtentApi;
     (function (ExtentApi) {
-        function createItem(ws, extentUrl, container) {
+        function createItem(ws, extentUrl, container, metaclass) {
             var callback = $.Deferred();
             var postModel = new DMI.PostModels.ItemCreateModel();
             postModel.ws = ws;
             postModel.extent = extentUrl;
             postModel.container = container;
+            postModel.metaclass = metaclass;
             $.ajax({
                 url: "/api/datenmeister/extent/item_create",
                 data: postModel,
@@ -145,6 +146,34 @@ define(["require", "exports", "datenmeister-interfaces"], function (require, exp
             return callback;
         }
         ExtentApi.createExtent = createExtent;
+        function addExtent(extentData) {
+            var callback = $.Deferred();
+            $.ajax({
+                url: "/api/datenmeister/extent/extent_add",
+                data: extentData,
+                method: "POST",
+                success: function (data) { callback.resolve(true); },
+                error: function (data) { callback.reject(false); }
+            });
+            return callback;
+        }
+        ExtentApi.addExtent = addExtent;
+        function getCreatableTypes(ws, extent) {
+            var callback = $.Deferred();
+            $.ajax({
+                url: "/api/datenmeister/extent/get_creatable_types?ws=" + encodeURIComponent(ws)
+                    + "&extent=" + encodeURIComponent(extent),
+                cache: false,
+                success: function (data) {
+                    callback.resolve(data);
+                },
+                error: function (data) {
+                    callback.reject(null);
+                }
+            });
+            return callback;
+        }
+        ExtentApi.getCreatableTypes = getCreatableTypes;
     })(ExtentApi = exports.ExtentApi || (exports.ExtentApi = {}));
     var ItemApi;
     (function (ItemApi) {

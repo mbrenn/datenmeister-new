@@ -1,7 +1,7 @@
 ﻿using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
 
-namespace DatenMeister.Runtime.ExtentStorage
+namespace DatenMeister.Runtime.ExtentStorage.Interfaces
 {
     public interface IExtentStorageLoader
     {
@@ -19,6 +19,12 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         /// <param name="extent"></param>
         void StoreExtent(IUriExtent extent);
+
+        /// <summary>
+        /// Detaches a specific extent in a way that is not known to the storage loader anymore
+        /// </summary>
+        /// <param name="extent">Extent to be detached</param>
+        void DetachExtent(IUriExtent extent);
 
         void StoreAll();
     }

@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
     /// <summary>
-    /// This logic handles the loading and storing of extents automatically
+    /// This logic handles the loading and storing of extents automatically. 
+    /// This loader is responsible to retrieve an extent by the given ExtentStorageConfiguration
+    /// and storing it afterwards at the same location
     /// </summary>
     public class ExtentStorageLoader : IExtentStorageLoader
     {
@@ -20,30 +24,41 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         private readonly IConfigurationToExtentStorageMapper _map;
 
+        /// <summary>
+        /// Stores the datalayer logic for the given 
+        /// </summary>
+        private readonly IDataLayerLogic _dataLayerLogic;
+
+        /// <summary>
+        /// Stores the access to the workspaces
+        /// </summary>
         private readonly IWorkspaceCollection _workspaceCollection;
 
-        public ExtentStorageLoader(ExtentStorageData data, IConfigurationToExtentStorageMapper map)
+        public ExtentStorageLoader(ExtentStorageData data, IConfigurationToExtentStorageMapper map, IDataLayerLogic dataLayerLogic)
         {
             Debug.Assert(map != null, "map != null");
             Debug.Assert(data != null, "data != null");
+            Debug.Assert(dataLayerLogic != null, "dataLayerLogic != null");
 
             _data = data;
             _map = map;
+            _dataLayerLogic = dataLayerLogic;
         }
 
-        public ExtentStorageLoader(ExtentStorageData data, IConfigurationToExtentStorageMapper map, IWorkspaceCollection workspaceCollection)
+        public ExtentStorageLoader(
+            ExtentStorageData data, 
+            IConfigurationToExtentStorageMapper map,
+            IDataLayerLogic dataLayerLogic,
+            IWorkspaceCollection workspaceCollection
+            ) : this(data, map, dataLayerLogic)
         {
-            Debug.Assert(map != null, "map != null");
             Debug.Assert(workspaceCollection != null, "collection != null");
-            Debug.Assert(data != null, "data != null");
-
-            _data = data;
-            _map = map;
             _workspaceCollection = workspaceCollection;
         }
 
         /// <summary>
-        /// Loads the extent by using the extent storage
+        /// Loads the extent by using the extent storage by using the configuration and finding
+        /// the correct storage engine 
         /// </summary>
         /// <param name="configuration">Configuration being used to load</param>
         /// <param name="createAlsoEmpty">true, if also empty extents will be created, if the file does not exist</param>
@@ -120,7 +135,20 @@ namespace DatenMeister.Runtime.ExtentStorage
             Debug.WriteLine($"- Writing: {information.Configuration}");
 
             var extentStorage = _map.CreateFor(information.Configuration);
-            extentStorage.StoreExtent(extent, information.Configuration);
+            extentStorage.StoreExtent(information.Extent, information.Configuration);
+        }
+
+        public void DetachExtent(IUriExtent extent)
+        {
+            lock (_data.LoadedExtents)
+            {
+                var information = _data.LoadedExtents.FirstOrDefault(x => x.Extent == extent);
+                if (information != null)
+                {
+                    _data.LoadedExtents.Remove(information);
+                    Debug.WriteLine($"- Detaching: {information.Configuration}");
+                }
+            }
         }
 
         public void StoreAll()

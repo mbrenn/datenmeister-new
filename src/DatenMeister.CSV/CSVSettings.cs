@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 
 namespace DatenMeister.CSV
 {
@@ -23,6 +22,11 @@ namespace DatenMeister.CSV
         /// If this value is null for loading, the columns will be auto-generated
         /// and stored within the instance (this means that the instance gets changed)
         /// </summary>
-        public List<object> Columns { get; set; }
+        public List<object> Columns { get; set; } = new List<object>();
+
+        /// <summary>
+        /// Gets or sets the uri to the metaclass to be used to load the given extent
+        /// </summary>
+        public string MetaclassUri { get; set; }
     }
 }

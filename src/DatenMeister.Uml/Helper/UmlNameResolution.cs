@@ -1,4 +1,5 @@
-﻿using DatenMeister.DataLayer;
+﻿using System;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Uml.Helper
@@ -16,7 +17,8 @@ namespace DatenMeister.Uml.Helper
         {
             // Returns the name by the uml logic. 
             var dataLayer = _dataLayerLogic?.GetDataLayerOfObject(element);
-            var uml = _dataLayerLogic?.Get<_UML>(dataLayer);
+            var metaLayer = _dataLayerLogic?.GetMetaLayerFor(dataLayer);
+            var uml = _dataLayerLogic?.Get<_UML>(metaLayer);
             if (uml != null)
             {
                 var result = element.get(uml.CommonStructure.NamedElement.name);
@@ -33,11 +35,17 @@ namespace DatenMeister.Uml.Helper
                 return element.get("name").ToString();
             }
 
+            // Ok, finally, we don't know what to do, so request retrieve the name just via ToString
             return element.ToString();
         }
 
         public string GetName(object element)
         {
+            if (element == null)
+            {
+                throw new ArgumentNullException(nameof(element));
+            }
+
             var asObject = element as IObject;
             return asObject == null ? element.ToString() : GetName(asObject);
         }

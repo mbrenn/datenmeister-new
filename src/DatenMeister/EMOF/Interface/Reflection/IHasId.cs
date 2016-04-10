@@ -8,6 +8,6 @@
         /// <summary>
         /// Gets the id of the object
         /// </summary>
-        object Id { get; }
+        string Id { get; }
     }
 }

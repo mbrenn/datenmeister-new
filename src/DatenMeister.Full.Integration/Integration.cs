@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Threading;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Attributes;
+using DatenMeister.EMOF.InMemory;
 using DatenMeister.Filler;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
@@ -18,14 +18,14 @@ namespace DatenMeister.Full.Integration
 {
     public static class Integration
     {
-        public static void UseDatenMeister(this StandardKernel kernel)
+        public static void UseDatenMeister(this StandardKernel kernel, string pathToXmiFiles = "App_Data")
         {
             var factoryMapper = new DefaultFactoryMapper();
             factoryMapper.PerformAutomaticMappingByAttribute();
             kernel.Bind<IFactoryMapper>().ToConstant(factoryMapper);
 
             var storageMap = new ManualConfigurationToExtentStorageMapper();
-            storageMap.PerformMappingForConfigurationOfExtentLoaders();
+            storageMap.PerformMappingForConfigurationOfExtentLoaders(kernel);
             kernel.Bind<IConfigurationToExtentStorageMapper>().ToConstant(storageMap);
 
             // Workspace collection
@@ -48,19 +48,31 @@ namespace DatenMeister.Full.Integration
             var primitiveTypes = new _PrimitiveTypes();
             kernel.Bind<_PrimitiveTypes>().ToConstant(primitiveTypes);
 
-            var strapper = Bootstrapper.PerformFullBootstrap("App_Data/PrimitiveTypes.xmi", "App_Data/UML.xmi", "App_Data/MOF.xmi");
+            var strapper = Bootstrapper.PerformFullBootstrap(
+                Path.Combine(pathToXmiFiles, "PrimitiveTypes.xmi"),
+                Path.Combine(pathToXmiFiles, "UML.xmi"),
+                Path.Combine(pathToXmiFiles, "MOF.xmi"));
             var metaWorkspace = workspaceCollection.GetWorkspace("Meta");
             metaWorkspace.AddExtent(strapper.PrimitiveInfrastructure);
             metaWorkspace.AddExtent(strapper.MofInfrastructure);
             metaWorkspace.AddExtent(strapper.UmlInfrastructure);
+
             var dataLayerLogic = kernel.Get<IDataLayerLogic>();
             dataLayerLogic.SetRelationsForDefaultDataLayers();
-            dataLayerLogic.AssignToDataLayer(strapper.PrimitiveInfrastructure, DataLayers.Mof);
-            dataLayerLogic.AssignToDataLayer(strapper.MofInfrastructure, DataLayers.Mof);
-            dataLayerLogic.AssignToDataLayer(strapper.UmlInfrastructure, DataLayers.Mof);
+            dataLayerLogic.AssignToDataLayer(strapper.PrimitiveInfrastructure, DataLayers.Uml);
+            dataLayerLogic.AssignToDataLayer(strapper.MofInfrastructure, DataLayers.Uml);
+            dataLayerLogic.AssignToDataLayer(strapper.UmlInfrastructure, DataLayers.Uml);
 
             // Let us create the filled object
-            dataLayerLogic.Create<FillTheMOF, _MOF>(DataLayers.Mof);
+            dataLayerLogic.Create<FillTheMOF, _MOF>(DataLayers.Uml);
+            dataLayerLogic.Create<FillTheUML, _UML>(DataLayers.Uml);
+            dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Uml);
+
+            // Creates the workspace and extent for the types layer which are belonging to the types
+            var extentTypes = new MofUriExtent("dm:///types");
+            var typeWorkspace = workspaceCollection.GetWorkspace("Types");
+            typeWorkspace.AddExtent(extentTypes);
+            dataLayerLogic.AssignToDataLayer(extentTypes, DataLayers.Types);
 
             kernel.Bind<IUmlNameResolution>().To<UmlNameResolution>();
         }
@@ -85,7 +97,7 @@ namespace DatenMeister.Full.Integration
             }
         }
 
-        public static void PerformMappingForConfigurationOfExtentLoaders(this ManualConfigurationToExtentStorageMapper map)
+        public static void PerformMappingForConfigurationOfExtentLoaders(this ManualConfigurationToExtentStorageMapper map, StandardKernel kernel)
         {
             // Map configurations to extent loader
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
@@ -97,7 +109,7 @@ namespace DatenMeister.Full.Integration
                     var configuredByAttribute = customAttribute as ConfiguredByAttribute;
                     if (configuredByAttribute != null)
                     {
-                        map.AddMapping(configuredByAttribute.ConfigurationType, type);
+                        map.AddMapping(configuredByAttribute.ConfigurationType, () => (IExtentStorage) kernel.Get(type));
 
                         Debug.WriteLine($"Extent loader '{configuredByAttribute.ConfigurationType}' is configured by '{type.FullName}'");
                     }

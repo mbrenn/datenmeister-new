@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Security.Cryptography.X509Certificates;
+using System.Linq;
 using System.Web.Http;
 using DatenMeister.CSV.Runtime.Storage;
+using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Web.Models.PostModels;
 
 namespace DatenMeister.Web.Api
@@ -12,12 +16,16 @@ namespace DatenMeister.Web.Api
     [RoutePrefix("api/datenmeister/example")]
     public class ExampleController : ApiController
     {
+        private readonly IDataLayerLogic _dataLayerLogic;
+        private readonly IWorkspaceCollection _collection;
         private readonly IExtentStorageLoader _loader;
 
-        private static readonly  Random Random = new Random();
+        private static readonly Random Random = new Random();
 
-        public ExampleController(IExtentStorageLoader loader)
+        public ExampleController(IDataLayerLogic dataLayerLogic, IWorkspaceCollection collection, IExtentStorageLoader loader)
         {
+            _dataLayerLogic = dataLayerLogic;
+            _collection = collection;
             _loader = loader;
         }
 
@@ -48,8 +56,6 @@ namespace DatenMeister.Web.Api
 
             File.Copy(originalFilename, filename);
 
-            //////////////////////
-            // Loads the workspace
             var defaultConfiguration = new CSVStorageConfiguration
             {
                 ExtentUri = $"datenmeister:///zipcodes/{randomNumber}",
@@ -59,7 +65,10 @@ namespace DatenMeister.Web.Api
                 {
                     HasHeader = false,
                     Separator = '\t',
-                    Encoding = "UTF-8"
+                    Encoding = "UTF-8",
+                    Columns = new object[] { "Id", "Zip", "PositionLong", "PositionLat", "CityName" }.ToList(),
+                    // Columns = new object[] { idProperty, zipProperty, positionLongProperty, positionLatProperty, citynameProperty }.ToList(),
+                    MetaclassUri = "dm:///types#DatenMeister.Apps.ZipCode.Model.ZipCode"
                 }
             };
 

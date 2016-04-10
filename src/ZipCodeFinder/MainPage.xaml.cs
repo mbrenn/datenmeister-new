@@ -1,23 +1,13 @@
-﻿using DatenMeister.App.ZipCode;
-using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Queries;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+using DatenMeister.Apps.ZipCode;
 
 // Die Vorlage "Leere Seite" ist unter http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 dokumentiert.
 
@@ -88,13 +78,13 @@ namespace ZipCodeFinder
         {
             // Performs the scaling
             var fullSize = 1200.0;
-            var fontSize = Math.Min(fullSize, newSize.Height) / fullSize * 64;
+            var fontSize = Math.Min(fullSize, newSize.Height) / fullSize * 48;
             txtCity.FontSize = fontSize;
             txtCityHeader.FontSize = fontSize;
             txtZipCode.FontSize = fontSize;
             txtZipCodeHeader.FontSize = fontSize;
 
-            if (newSize.Height > newSize.Width)
+            if (newSize.Height > newSize.Width || true)
             {
                 // Vertical layout
                 columnFirst.Width = new GridLength(1, GridUnitType.Star);

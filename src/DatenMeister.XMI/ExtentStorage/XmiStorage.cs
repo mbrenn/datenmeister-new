@@ -2,29 +2,40 @@
 using System.IO;
 using System.Xml.Linq;
 using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.XMI.EMOF;
 
 namespace DatenMeister.XMI.ExtentStorage
 {
-    public class XmiStorage  : IExtentStorage
+    [ConfiguredBy(typeof(XmiStorageConfiguration))]
+    public class XmiStorage : IExtentStorage
     {
         public IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty = false)
         {
             var xmiConfiguration = (XmiStorageConfiguration) configuration;
 
-            if (createAlsoEmpty)
-            {
-                throw new ArgumentException("Empty Xmi storages cannot be created at the moment.");
-            }
-
+            XDocument xmlDocument;
             if (!File.Exists(xmiConfiguration.Path))
             {
-                throw new InvalidOperationException(
-                    $"File not found: {xmiConfiguration.Path}");
+                if (createAlsoEmpty)
+                {
+                    // We need to create an empty Xmi file... Not the best thing at the moment, but we try it. 
+                    xmlDocument = new XDocument(
+                        new XElement(XmlUriExtent.DefaultRootNodeName));
+                }
+                else
+                {
+                    throw new InvalidOperationException(
+                        $"File not found: {xmiConfiguration.Path}");
+                }
+            }
+            else
+            {
+                xmlDocument = XDocument.Load(xmiConfiguration.Path);
             }
 
-            var xmlDocument = XDocument.Load(xmiConfiguration.Path);
             return new XmlUriExtent(xmlDocument, xmiConfiguration.ExtentUri);
         }
 

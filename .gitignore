@@ -158,3 +158,9 @@ $RECYCLE.BIN/
 .DS_Store
 /src/.vs/config/applicationhost.config
 icons
+/src/DatenMeister.SourceGeneration.Console/uml.cs
+/src/DatenMeister.SourceGeneration.Console/primitivetypes.cs
+/src/DatenMeister.SourceGeneration.Console/mof.cs
+/src/DatenMeister.SourceGeneration.Console/FillTheUML.cs
+/src/DatenMeister.SourceGeneration.Console/FillThePrimitiveTypes.cs
+/src/DatenMeister.SourceGeneration.Console/FillTheMOF.cs

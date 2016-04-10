@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" SizeChanged="Page_SizeChanged" Loaded="Page_Loaded" >
 
-    <Grid Background="{ThemeResource SystemAccentColor}">
+    <Grid Background="{ThemeResource SystemControlHighlightAccentBrush}">
+        <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition x:Name="rowFirst"/>
             <RowDefinition x:Name="rowSecond"/>
@@ -24,11 +25,11 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom"
-                       FontSize="46" FontWeight="Light" 
-                       x:Name="txtZipCodeHeader">Suche nach:</TextBlock>
+                       FontSize="46" FontWeight="Light"
+                       x:Name="txtZipCodeHeader" Foreground="{StaticResource ApplicationForegroundThemeBrush}">Suche nach:</TextBlock>
             <TextBox Grid.Row="1" x:Name="txtZipCode" VerticalAlignment="Top"                     
-                     TextChanged="txtZipCode_TextChanged" Width="300" 
-                     TextAlignment="Center"
+                     TextChanged="txtZipCode_TextChanged" Width="280" 
+                     TextAlignment="Center" 
                      IsSpellCheckEnabled="False" FontSize="46"></TextBox>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="2" x:Name="viewBoxLocation" Margin="10">
@@ -39,12 +40,14 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" HorizontalAlignment="Center" 
                            VerticalAlignment="Bottom"
-                           FontSize="46" FontWeight="Light" x:Name="txtCityHeader">Ort:</TextBlock>
+                           FontSize="46" FontWeight="Light" x:Name="txtCityHeader"
+                           Foreground="{StaticResource ApplicationForegroundThemeBrush}">Ort:</TextBlock>
                 <ScrollViewer Grid.Row="1" >                
                     <TextBlock x:Name="txtCity" HorizontalAlignment="Center" 
                            FontWeight="Bold" FontSize="36"
                            TextAlignment="Center"
-                           TextWrapping="Wrap">55130 Mainz</TextBlock>
+                           TextWrapping="Wrap"
+                           Foreground="{StaticResource ApplicationForegroundThemeBrush}">55130 Mainz</TextBlock>
                 </ScrollViewer>
 
             </Grid>
@@ -52,5 +55,6 @@
         <StackPanel Grid.Row="3" Grid.ColumnSpan="2">
             <Button x:Name="btnClipboard" HorizontalAlignment="Center" Click="PasteToClipboard_Click" Margin="20" VerticalAlignment="Bottom">In Zwischenablage</Button>
         </StackPanel>
+        </Grid>
     </Grid>
 </Page>

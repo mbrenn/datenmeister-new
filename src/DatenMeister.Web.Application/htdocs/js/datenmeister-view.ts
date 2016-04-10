@@ -114,6 +114,8 @@ export class ExtentView {
 
     loadAndCreateHtmlForExtent(container: JQuery, ws: string, extentUrl: string, query?: DMI.PostModels.IItemTableQuery): JQueryPromise<Object> {
         var tthis = this;
+
+        // Creates the layout configuration and the handling on requests of the user
         var configuration = new DMTables.ItemTableConfiguration();
         configuration.onItemEdit = (url: string) => {
             if (tthis.onItemEdit !== undefined) {
@@ -122,7 +124,6 @@ export class ExtentView {
 
             return false;
         };
-
         configuration.onItemView = (url: string) => {
             if (tthis.onItemView !== undefined) {
                 tthis.onItemView(ws, extentUrl, url);
@@ -143,6 +144,7 @@ export class ExtentView {
 
         configuration.layout = this.layout;
 
+        // Creates the layout
         var provider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
         var table = new DMTables.ItemListTable(container, provider, configuration);
         
@@ -150,12 +152,18 @@ export class ExtentView {
             table.currentQuery = query;
         }
 
-        configuration.onNewItemClicked = () => {
-            DMClient.ExtentApi.createItem(ws, extentUrl)
+        configuration.onNewItemClicked = (metaclass) => {
+            DMClient.ExtentApi.createItem(ws, extentUrl, undefined, metaclass)
                 .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
                     this.onItemCreated(ws, extentUrl, innerData.newuri);
                 });
         };
+        
+        DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done(
+            (data) => {
+                table.setCreatableTypes(data.types);
+            });
+
 
         return table.loadAndShow();
     }
@@ -193,20 +201,6 @@ export class ItemView
 
         configuration.isReadOnly = isReadonly;
         configuration.supportNewProperties = !isReadonly;
-
-        /*
-        configuration.deleteFunction = (url: string, property: string, domRow: JQuery) => {
-            DMClient.ItemApi.deleteProperty(ws, extentUrl, itemUrl, property).done(() => domRow.find("td").fadeOut(500, () => { domRow.remove(); }));
-            return false;
-        };
-
-        configuration.onEditProperty = (url: string, property: string, newValue: string) => {
-            DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
-        };
-        
-        configuration.onNewProperty = (url: string, property: string, newValue: string) => {
-            DMClient.ItemApi.setProperty(ws, extentUrl, itemUrl, property, newValue);
-        };*/
 
         var table = new DMTables.ItemContentTable(data, configuration);
         if (isReadonly) {
@@ -251,6 +245,9 @@ export class ItemView
             "<tr>" +
             "<th>Metaclass: </th><td class='dm-tablecell-metaclass'></td>" +
             "</tr>" +
+            "<tr>" +
+            "<th>Layer: </th><td class='dm-tablecell-layer'></td>" +
+            "</tr>" +
             "</table>");
         if (data.metaclass !== undefined && data.metaclass !== null) {
             var domMetaClassLink = $("<a href='#'>3</a>").text(data.metaclass.name);
@@ -269,6 +266,10 @@ export class ItemView
             $(".dm-tablecell-id", domTableInfo).text(data.id);
         }
 
+        if (data.layer !== undefined && data.layer !== null) {
+            $(".dm-tablecell-layer", domTableInfo).text(data.layer);
+        }
+
         if (data.uri !== undefined && data.uri !== null) {
 
             $(".dm-tablecell-uri", domTableInfo).text(data.uri);
@@ -276,5 +277,33 @@ export class ItemView
 
         jQuery.append(domTableOwner);
         jQuery.append(domTableInfo);
+    }
+}
+
+// This interface should be implemented by all views that can be added via 'setView' to a layout
+export interface IView {
+    show(container: JQuery): void;
+}
+
+// This class gives a navigation view with some links which can be clicked by the user and
+// a user-defined action is being performed
+export class NavigationView implements IView {
+    private layout: DMI.Api.ILayout;
+    private domList: JQuery;
+
+    constructor(layout?: DMI.Api.ILayout) {
+        this.layout = layout;
+        this.domList = $("<ul class='dm-navigation-list'></ul>");
+    }
+
+    addLink(displayText: string, onClick: () => void): void {
+        let domItem = $("<li></li>");
+        domItem.text(displayText);
+        domItem.click(onClick);
+        this.domList.append(domItem);
+    }
+
+    show(container: JQuery) {
+        container.append(this.domList);
     }
 }

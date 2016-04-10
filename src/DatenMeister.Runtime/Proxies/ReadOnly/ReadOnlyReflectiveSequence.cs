@@ -1,5 +1,4 @@
-﻿using System;
-using DatenMeister.EMOF.Interface.Common;
+﻿using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Proxy;
 
 namespace DatenMeister.Runtime.Proxies.ReadOnly

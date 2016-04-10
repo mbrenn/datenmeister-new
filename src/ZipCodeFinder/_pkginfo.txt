@@ -1,1 +1,1 @@
-D:\Projekte\DatenMeister\src\ZipCodeFinder\AppPackages\ZipCodeFinder_1.2.0.0\ZipCodeFinder_1.2.0.0_x86_x64_arm.appxbundle
+D:\Projekte\datenmeister-new\src\ZipCodeFinder\AppPackages\ZipCodeFinder_1.3.0.0\ZipCodeFinder_1.3.0.0_x86_x64_arm.appxbundle

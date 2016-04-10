@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
@@ -103,8 +102,9 @@ namespace DatenMeister.XMI.UmlBootstrap
                     {
                         throw new InvalidOperationException($"ID '{id}' is duplicate");
                     }
+
                     idToElementCache[id] = classInstance;
-                    Debug.WriteLine($"ID: {id}");
+                    //Debug.WriteLine($"ID: {id}");
                 }
             }
 

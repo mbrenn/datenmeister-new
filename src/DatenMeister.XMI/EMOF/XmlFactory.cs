@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.XMI.EMOF
@@ -15,6 +16,11 @@ namespace DatenMeister.XMI.EMOF
         public IElement create(IElement metaClass)
         {
             var node = new XElement("item");
+            if (metaClass != null)
+            {
+                node.Add(new XAttribute(XmlElement.typeAttribute, metaClass.GetUri()));
+            }
+
             return new XmlElement(node);
         }
 

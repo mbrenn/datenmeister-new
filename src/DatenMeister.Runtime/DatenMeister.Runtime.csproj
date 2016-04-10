@@ -34,6 +34,26 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="project.json" />
     <!-- A reference to the entire .NET Framework is automatically included -->
@@ -41,8 +61,11 @@
   <ItemGroup>
     <Compile Include="Copier\ExtentCopier.cs" />
     <Compile Include="Copier\ObjectCopier.cs" />
+    <Compile Include="ExtentStorage\Configuration\ExtentFileStorageConfiguration.cs" />
+    <Compile Include="ExtentStorage\Configuration\ExtentStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\ExtentStorageData.cs" />
-    <Compile Include="ExtentStorage\IExtentStorageLoader.cs" />
+    <Compile Include="ExtentStorage\Interfaces\IExtentStorageLoader.cs" />
+    <Compile Include="Extents\ExtentFunctions.cs" />
     <Compile Include="Functions\Aggregation\CountAggregator.cs" />
     <Compile Include="Functions\Interfaces\Aggregator.cs" />
     <Compile Include="Functions\Interfaces\AggregatorByFunction.cs" />
@@ -61,10 +84,8 @@
     <Compile Include="Workspaces\WorkspaceCollection.cs" />
     <Compile Include="ExtentStorage\AssignConfigurationTypeToLoaderAttribute.cs" />
     <Compile Include="ExtentStorage\ExtentStorageConfigurationCollection.cs" />
-    <Compile Include="ExtentStorage\ExtentStorageConfigurationStorage.cs" />
+    <Compile Include="ExtentStorage\ExtentStorageConfigurationLoader.cs" />
     <Compile Include="ExtentStorage\Interfaces\IConfigurationToExtentStorageMapper.cs" />
-    <Compile Include="ExtentStorage\Interfaces\ExtentFileStorageConfiguration.cs" />
-    <Compile Include="ExtentStorage\Interfaces\ExtentStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\ExtentStorageLoader.cs" />
     <Compile Include="ExtentStorage\Interfaces\IExtentStorage.cs" />
     <Compile Include="FactoryMapper\DefaultFactoryMapper.cs" />

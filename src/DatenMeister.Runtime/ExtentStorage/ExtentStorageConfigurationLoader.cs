@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices.ComTypes;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
     /// <summary>
     /// This loader is used to store and load extents out of a file
     /// </summary>
-    public class ExtentStorageConfigurationStorage : ObjectFileStorage<ExtentStorageConfigurationCollection>
+    public class ExtentStorageConfigurationLoader : ObjectFileStorage<ExtentStorageConfigurationCollection>
     {
         private readonly List<Type> _additionalTypes = new List<Type>();
 
-        public string Filepath { get; }
-        public ExtentStorageData ExtentStorageData { get; }
-        public IExtentStorageLoader ExtentLoaderLogic { get; }
+        private string Filepath { get; }
+        private ExtentStorageData ExtentStorageData { get; }
+        private IExtentStorageLoader ExtentLoaderLogic { get; }
 
-        public ExtentStorageConfigurationStorage(
+        public ExtentStorageConfigurationLoader(
             ExtentStorageData extentStorageData,
             IExtentStorageLoader extentLoaderLogic,
             string filepath)
@@ -29,6 +28,11 @@ namespace DatenMeister.Runtime.ExtentStorage
             Filepath = filepath;
         }
 
+        /// <summary>
+        /// Adds a type for the serialization of the configuration file since the 
+        /// ExtentStorageConfiguration instances might be derived
+        /// </summary>
+        /// <param name="type"></param>
         public void AddAdditionalType(Type type)
         {
             _additionalTypes.Add(type);
@@ -48,7 +52,16 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         public void LoadAllExtents()
         {
-            var loaded = Load(Filepath);
+            ExtentStorageConfigurationCollection loaded = null;
+            try
+            {
+                loaded = Load(Filepath);
+            }
+            catch (Exception exc)
+            {
+                Debug.WriteLine("Exception during loading of Extents: " + exc.Message);
+            }
+
             if (loaded == null)
             {
                 return;
@@ -73,7 +86,10 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         public void StoreAllExtents()
         {
+            // Stores the extents themselves into the different database
             ExtentLoaderLogic.StoreAll();
+
+            // Stores the information abotu the used extends
             var toBeStored = new ExtentStorageConfigurationCollection();
             foreach (var loadedExtent in ExtentStorageData.LoadedExtents)
             {

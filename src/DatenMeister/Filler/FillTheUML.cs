@@ -3,7 +3,7 @@ using DatenMeister.EMOF.Interface.Reflection;
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
 namespace DatenMeister.Filler
 {
-    public class FillTheUML : DatenMeister.Filler.IFiller<DatenMeister._UML>
+    public class FillTheUML : IFiller<_UML>
     {
         private static readonly object[] EmptyList = new object[] { };
         private static string GetNameOfElement(IObject element)
@@ -12,12 +12,12 @@ namespace DatenMeister.Filler
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, DatenMeister._UML tree)
+        public void Fill(IEnumerable<object> collection, _UML tree)
         {
-            FillTheUML.DoFill(collection, tree);
+            DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, DatenMeister._UML tree)
+        public static void DoFill(IEnumerable<object> collection, _UML tree)
         {
             string name;
             IElement value;

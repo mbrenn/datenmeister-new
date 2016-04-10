@@ -15,7 +15,7 @@ namespace ZipCodeFinderWeb.Controllers
             }
 
             var result = new List<object>();
-            var found = DataProvider.FindBySearchString(zip).Take(100);
+            var found = DataProvider.TheOne.FindBySearchString(zip).Take(100);
             foreach (var foundObject in found)
             {
                 result.Add(

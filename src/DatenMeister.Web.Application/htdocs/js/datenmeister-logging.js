@@ -1,6 +1,7 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/jquery/underscore.d.ts" />
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     var Logging = (function () {
         function Logging() {
         }
@@ -20,7 +21,7 @@ define(["require", "exports"], function (require, exports) {
             return JSON.stringify(value, null, "    ");
         };
         return Logging;
-    })();
+    }());
     exports.Logging = Logging;
     exports.theLog = new Logging();
 });

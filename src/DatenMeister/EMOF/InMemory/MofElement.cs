@@ -19,19 +19,19 @@ namespace DatenMeister.EMOF.InMemory
             metaclass = metaClass;
         }
 
-        public IElement metaclass { get; private set; }
+        public virtual IElement metaclass { get; private set; }
 
-        public IElement container()
+        public virtual IElement container()
         {
             return _container;
         }
 
-        public IElement getMetaClass()
+        public virtual IElement getMetaClass()
         {
             return metaclass;
         }
 
-        public void setMetaClass(IElement metaClass)
+        public virtual void setMetaClass(IElement metaClass)
         {
             metaclass = metaClass;
         }

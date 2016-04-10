@@ -84,6 +84,7 @@
     <Compile Include="Core\DataLayerTests.cs" />
     <Compile Include="CSV\CSVExtentTests.cs" />
     <Compile Include="Integration\TestIntegration.cs" />
+    <Compile Include="ManualMapping\ManualMappingTests.cs" />
     <Compile Include="Mof\Core\MofObjectTests.cs" />
     <Compile Include="Mof\Queries\TestFilters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -107,6 +108,10 @@
     <ProjectReference Include="..\DatenMeister.Full.Integration\DatenMeister.Full.Integration.csproj">
       <Project>{dd8ea307-d685-4a7b-b726-a1c87192600d}</Project>
       <Name>DatenMeister.Full.Integration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.ManualMapping\DatenMeister.ManualMapping.csproj">
+      <Project>{F2A1929F-7253-4EA0-8368-88EA22BB4915}</Project>
+      <Name>DatenMeister.ManualMapping</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
       <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>

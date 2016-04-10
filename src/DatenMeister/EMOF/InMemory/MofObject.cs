@@ -45,7 +45,7 @@ namespace DatenMeister.EMOF.InMemory
             return false;
         }
 
-        public object get(object property)
+        public virtual object get(object property)
         {
             object result;
             if (_values.TryGetValue(property, out result))
@@ -56,17 +56,17 @@ namespace DatenMeister.EMOF.InMemory
             throw new MofException("Property not found: " + property);
         }
 
-        public bool isSet(object property)
+        public virtual bool isSet(object property)
         {
             return _values.ContainsKey(property);
         }
 
-        public void set(object property, object value)
+        public virtual void set(object property, object value)
         {
             _values[property] = value;
         }
 
-        public void unset(object property)
+        public virtual void unset(object property)
         {
             _values.Remove(property);
         }
@@ -75,7 +75,7 @@ namespace DatenMeister.EMOF.InMemory
         ///     Returns an enumeration with all properties which are currently set
         /// </summary>
         /// <returns>Enumeration of all objects</returns>
-        public IEnumerable<object> getPropertiesBeingSet()
+        public virtual IEnumerable<object> getPropertiesBeingSet()
         {
             return _values.Keys;
         }

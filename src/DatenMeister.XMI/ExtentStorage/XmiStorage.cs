@@ -5,6 +5,7 @@ using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.XMI.EMOF;
 
 namespace DatenMeister.XMI.ExtentStorage
@@ -12,6 +13,18 @@ namespace DatenMeister.XMI.ExtentStorage
     [ConfiguredBy(typeof(XmiStorageConfiguration))]
     public class XmiStorage : IExtentStorage
     {
+        private readonly IWorkspaceCollection _workspaceCollection;
+
+        public XmiStorage()
+        {
+            
+        }
+
+        public XmiStorage(IWorkspaceCollection workspaceCollection)
+        {
+            _workspaceCollection = workspaceCollection;
+        }
+
         public IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty = false)
         {
             var xmiConfiguration = (XmiStorageConfiguration) configuration;
@@ -36,7 +49,9 @@ namespace DatenMeister.XMI.ExtentStorage
                 xmlDocument = XDocument.Load(xmiConfiguration.Path);
             }
 
-            return new XmlUriExtent(xmlDocument, xmiConfiguration.ExtentUri);
+            var result =  new XmlUriExtent(xmlDocument, xmiConfiguration.ExtentUri);
+            result.Workspaces = _workspaceCollection;
+            return result;
         }
 
         public void StoreExtent(IUriExtent extent, ExtentStorageConfiguration configuration)

@@ -15,8 +15,9 @@ namespace DatenMeister.Tests.Integration
         [Test]
         public void TestFactoryMappingByAttributeForFactories()
         {
+            var kernel = new StandardKernel();
             var mapper = new DefaultFactoryMapper();
-            mapper.PerformAutomaticMappingByAttribute();
+            mapper.PerformAutomaticMappingByAttribute(kernel);
 
             Assert.That(mapper.HasMappingForExtentType(typeof(MofUriExtent)), Is.True);
             Assert.That(mapper.HasMappingForExtentType(typeof(MofElement)), Is.False);

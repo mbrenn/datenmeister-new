@@ -73,6 +73,7 @@ namespace DatenMeister.XMI.EMOF
 
         public bool equals(object other)
         {
+            Debug.Write($"this:{GetHashCode()} other:{other.GetHashCode()}");
             var otherAsXmlObject = other as XmlElement;
             if (otherAsXmlObject == null)
             {

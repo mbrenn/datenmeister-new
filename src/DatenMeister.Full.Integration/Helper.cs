@@ -50,7 +50,7 @@ namespace DatenMeister.Full.Integration
             {
                 if (AppDomain.CurrentDomain.GetAssemblies().All(a => a.FullName != name.FullName))
                 {
-                    Debug.WriteLine($"Loading: " + name);
+                    Debug.WriteLine($"Loading: {name}");
                     LoadReferencedAssembly(Assembly.Load(name));
                 }
             }

@@ -115,7 +115,7 @@ namespace DatenMeister.XMI.EMOF
             var valueAsXmlObject = value as XmlElement;
             if (valueAsXmlObject == null)
             {
-                throw new InvalidOperationException("Value is not an XmlObject: " + value.ToString());
+                throw new InvalidOperationException("Value is not an XmlObject: " + value);
             }
 
             return valueAsXmlObject;

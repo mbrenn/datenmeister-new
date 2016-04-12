@@ -31,12 +31,12 @@ namespace DatenMeister.EMOF.InMemory
             _reflectiveSequence = new MofExtentReflectiveSequence(this, _elements);
         }
 
-        public string contextURI()
+        public virtual string contextURI()
         {
             return _contextUri;
         }
 
-        public IElement element(string uri)
+        public virtual IElement element(string uri)
         {
             lock (_syncObject)
             {
@@ -80,7 +80,7 @@ namespace DatenMeister.EMOF.InMemory
             }
         }
 
-        public string uri(IElement element)
+        public virtual string uri(IElement element)
         {
             if (element == null)
             {
@@ -96,17 +96,17 @@ namespace DatenMeister.EMOF.InMemory
             return _contextUri + "#" + elementAsObject.Id;
         }
 
-        public bool useContainment()
+        public virtual bool useContainment()
         {
             return false;
         }
 
-        public IReflectiveSequence elements()
+        public virtual IReflectiveSequence elements()
         {
             return _reflectiveSequence;
         }
 
-        public bool HasObject(IObject value)
+        public virtual bool HasObject(IObject value)
         {
             lock (_reflectiveSequence)
             {

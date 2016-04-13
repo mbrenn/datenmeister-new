@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
@@ -19,9 +20,10 @@ namespace DatenMeister.XMI.UmlBootstrap
         /// </summary>
         private bool _wasRun;
 
-        public Dictionary<string, IElement> MofClasses { get; }
+        public Dictionary<string, IElement> MofClasses { get; } = new Dictionary<string, IElement>();
 
-        public Dictionary<string, IElement> UmlClasses { get; }
+        public Dictionary<string, IElement> UmlClasses { get; } = new Dictionary<string, IElement>();
+        public Dictionary<string, IElement> UmlAssociations { get; } = new Dictionary<string, IElement>();
 
         /// <summary>
         ///     Stores the extent for the uml infrastructure
@@ -65,8 +67,6 @@ namespace DatenMeister.XMI.UmlBootstrap
             UmlInfrastructure = umlInfrastructure;
             MofInfrastructure = mofInfrastructure;
             PrimitiveInfrastructure = primitiveInfrastructure;
-            MofClasses = new Dictionary<string, IElement>();
-            UmlClasses = new Dictionary<string, IElement>();
         }
 
         /// <summary>
@@ -80,37 +80,69 @@ namespace DatenMeister.XMI.UmlBootstrap
             }
 
             _wasRun = true;
+            
+            var umlDescendents = AllDescendentsQuery.getDescendents(UmlInfrastructure).ToList();
+            var mofDescendents = AllDescendentsQuery.getDescendents(MofInfrastructure).ToList();
+            var primitiveDescendents = AllDescendentsQuery.getDescendents(PrimitiveInfrastructure).ToList();
+            var allElements =
+                mofDescendents
+                    .Union(umlDescendents)
+                    .Union(primitiveDescendents)
+                    .ToList();
 
-            // First, find the all classes of the uml namespace...            
-            var descendents = AllDescendentsQuery.getDescendents(UmlInfrastructure);
+            // First, find the all classes of the uml namespace...
             var typeProperty = (Namespaces.Xmi + "type").ToString();
             var idProperty = (Namespaces.Xmi + "id").ToString();
 
             var idToElementCache = new Dictionary<string, IElement>();
-            var allClasses = descendents
-                .Where(x => x.isSet(typeProperty) && x.get(typeProperty).ToString() == "uml:Class");
 
-            foreach (var classInstance in allClasses.Cast<IElement>())
+            // Go through all elements and set the id
+            foreach (var element in allElements.OfType<IElement>())
             {
-                var name = classInstance.get("name").ToString();
-                UmlClasses[name] = classInstance;
-
-                if (classInstance.isSet(idProperty))
+                if (element.isSet(typeProperty) && element.get(typeProperty).ToString() == "uml:PackageImport")
                 {
-                    var id = classInstance.get(idProperty).ToString();
+                    continue;
+                }
+
+                if (element.isSet(idProperty))
+                {
+                    var id = element.get(idProperty).ToString();
+                    if (id.StartsWith("_"))
+                    {
+                        // Due to a problem in the uml.xmi, duplicate IDs might be in the packageImport
+                        // We also skip this... uml.xmi and primitivetypes.xmi have this id. Not used
+                        // All duplicate items start with an underscore
+                        continue;
+                    }
+
                     if (idToElementCache.ContainsKey(id))
                     {
                         throw new InvalidOperationException($"ID '{id}' is duplicate");
                     }
 
-                    idToElementCache[id] = classInstance;
-                    //Debug.WriteLine($"ID: {id}");
+                    idToElementCache[id] = element;
+                }
+
+                element.unset(idProperty);
+            }
+
+            // Go through all found classes and store them into the dictionaries
+            foreach (var classInstance in umlDescendents.OfType<IElement>().Where(x => x.isSet("name")))
+            {
+                var name = classInstance.get("name").ToString();
+                var typeValue = classInstance.isSet(typeProperty) ? classInstance.get(typeProperty).ToString() : null;
+                if ( typeValue == "uml:Class")
+                { 
+                    UmlClasses[name] = classInstance;
+                }
+                if (typeValue == "uml:Association")
+                {
+                    UmlAssociations[name] = classInstance;
                 }
             }
 
             // Second step: Find all classes in the Mof namespace
-            descendents = AllDescendentsQuery.getDescendents(MofInfrastructure);
-            allClasses = descendents
+            var allClasses = mofDescendents
                 .Where(x => x.isSet(typeProperty) && x.get(typeProperty).ToString() == "uml:Class");
             foreach (var classInstance in allClasses.Cast<IElement>())
             {
@@ -118,25 +150,20 @@ namespace DatenMeister.XMI.UmlBootstrap
                 MofClasses[name] = classInstance;
             }
 
-            // Ok, finally, set the metaclasses on base of the found classes
-            allClasses =
-                AllDescendentsQuery.getDescendents(MofInfrastructure)
-                    .Union(AllDescendentsQuery.getDescendents(UmlInfrastructure))
-                    .Union(AllDescendentsQuery.getDescendents(PrimitiveInfrastructure))
-                    .ToList();
-                
-            foreach (var classInstance in allClasses.Where(x => x.isSet(typeProperty)))
+            // After having the classes from MOF and UML, go through all classes and set
+            // the metaclass of these element depending on the attribute value of Xmi:Type
+            foreach (var elementInstance in allElements.Where(x => x.isSet(typeProperty)))
             {
-                var name = classInstance.get(typeProperty).ToString();
+                var name = elementInstance.get(typeProperty).ToString();
                 if (name.StartsWith("uml:"))
                 {
                     name = name.Substring(4);
-                    ((IElementSetMetaClass) classInstance).setMetaClass(UmlClasses[name]);
+                    ((IElementSetMetaClass) elementInstance).setMetaClass(UmlClasses[name]);
                 }
                 else if (name.StartsWith("mofext:"))
                 {
                     name = name.Substring(7);
-                    ((IElementSetMetaClass) classInstance).setMetaClass(MofClasses[name]);
+                    ((IElementSetMetaClass) elementInstance).setMetaClass(MofClasses[name]);
                 }
                 else
                 {
@@ -145,17 +172,31 @@ namespace DatenMeister.XMI.UmlBootstrap
 
                 // We strip out the property and id information. 
                 // It is not really required 
-                classInstance.unset(typeProperty);
-            }
-
-            // Unsets the id property, it is already stored in
-            foreach (var classInstance in allClasses)
-            {
-                classInstance.unset(idProperty);
+                elementInstance.unset(typeProperty);
             }
 
             // Now we handle the generalization information. 
-
+            // For all classes and associations, whose type is class or associations, get the generalization property and convert it to a list of classes
+            foreach (var elementInstance in umlDescendents
+                .Where(x => (x as IElement)?.metaclass?.Equals(UmlClasses["Generalization"]) == true))
+            {
+                if (elementInstance.isSet("general"))
+                {
+                    var general = elementInstance.get("general").ToString();
+                    if (UmlClasses.ContainsKey(general))
+                    {
+                        elementInstance.set("general", UmlClasses[general]);
+                    }
+                    else if (UmlAssociations.ContainsKey(general))
+                    {
+                        elementInstance.set("general", UmlAssociations[general]);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"Found unknown generalization: {general}");
+                    }
+                }
+            }
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace DatenMeister.Web.Application
     {
         static void Main(string[] args)
         {
-            using (WebApp.Start<WebserverStartup>("http://localhost:8080"))
+          using (WebApp.Start<WebserverStartup>("http://localhost:8080"))
             {
                 Console.WriteLine("Running on http://localhost:8080");
                 Console.WriteLine("Press key to stop the server");

@@ -59,6 +59,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\ClassifierMethods.cs" />
     <Compile Include="Helper\IUmlNameResolution.cs" />
     <Compile Include="Logic\IUmlLogic.cs" />
     <Compile Include="Helper\UmlNameResolution.cs" />

@@ -60,7 +60,13 @@ namespace DatenMeister.Tests.Core
         [Test]
         public void TestClassTreeUsage()
         {
-            var strapper = Bootstrapper.PerformFullBootstrap("Xmi/PrimitiveTypes.xmi", "Xmi/UML.xmi", "Xmi/MOF.xmi");
+            var strapper = Bootstrapper.PerformFullBootstrap(
+                new Bootstrapper.FilePaths()
+                {
+                    PathPrimitive = "Xmi/PrimitiveTypes.xmi",
+                    PathUml = "Xmi/UML.xmi",
+                    PathMof = "Xmi/MOF.xmi"
+                });
 
             var dataLayers = new DataLayers();
             var data = new DataLayerData(dataLayers);

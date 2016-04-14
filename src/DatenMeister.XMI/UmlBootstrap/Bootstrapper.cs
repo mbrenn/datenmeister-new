@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Queries;
+using DatenMeister.Filler;
 
 namespace DatenMeister.XMI.UmlBootstrap
 {
@@ -202,23 +204,61 @@ namespace DatenMeister.XMI.UmlBootstrap
         /// <summary>
         ///     Performs a full bootstrap by reading in the uml class
         /// </summary>
-        /// <param name="pathUml">Path of XMI file containing the UML file to be used</param>
-        /// <param name="pathMof">Path of XMI file containing the MOF specification being</param>
+        /// <param name="paths">Paths storing the uml information</param>
         /// <returns>The instance of the bootstrapper</returns>
-        public static Bootstrapper PerformFullBootstrap(string pathPrimitive, string pathUml, string pathMof)
+        public static Bootstrapper PerformFullBootstrap(FilePaths paths)
         {
             var factory = new MofFactory();
             var umlExtent = new MofUriExtent("datenmeister:///uml");
             var mofExtent = new MofUriExtent("datenmeister:///mof");
             var primitiveExtent = new MofUriExtent("datenmeister:///prototypes");
             var loader = new SimpleLoader(factory);
-            loader.Load(primitiveExtent, pathPrimitive);
-            loader.Load(umlExtent, pathUml);
-            loader.Load(mofExtent, pathMof);
+            loader.Load(primitiveExtent, paths.PathPrimitive);
+            loader.Load(umlExtent, paths.PathUml);
+            loader.Load(mofExtent, paths.PathMof);
 
             var bootStrapper = new Bootstrapper(primitiveExtent, umlExtent, mofExtent);
             bootStrapper.Strap();
             return bootStrapper;
+        }
+
+        /// <summary>
+        /// Performs a full bootstrap by reading the uml classes 
+        /// </summary>
+        /// <param name="filePaths">Paths storing the uml</param>
+        /// <param name="workspace">The workspace to which the extents will be aded</param>
+        /// <param name="layerLogic">The datalayerlogic being used to add the </param>
+        /// <param name="dataLayer">The datalayer to which the new extents will be added</param>
+        /// <returns></returns>
+        public static Bootstrapper PerformFullBootstrap(FilePaths filePaths, Workspace<IExtent> workspace,
+            IDataLayerLogic layerLogic, IDataLayer dataLayer)
+        {
+            if (workspace == null) throw new ArgumentNullException(nameof(workspace));
+            if (layerLogic == null) throw new ArgumentNullException(nameof(layerLogic));
+            if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
+
+            var strapper = PerformFullBootstrap(filePaths);
+            workspace.AddExtent(strapper.MofInfrastructure);
+            workspace.AddExtent(strapper.UmlInfrastructure);
+            workspace.AddExtent(strapper.PrimitiveInfrastructure);
+            layerLogic.AssignToDataLayer(strapper.MofInfrastructure, dataLayer);
+            layerLogic.AssignToDataLayer(strapper.UmlInfrastructure, dataLayer);
+            layerLogic.AssignToDataLayer(strapper.PrimitiveInfrastructure, dataLayer);
+            layerLogic.Create<FillTheMOF, _MOF>(dataLayer);
+            layerLogic.Create<FillTheUML, _UML>(dataLayer);
+            layerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(dataLayer);
+            return strapper;
+        }
+
+        /// <summary>
+        /// Defines the file paths for doing the boot strap. 
+        /// This avoids the clutterin of arguments
+        /// </summary>
+        public class FilePaths
+        {
+            public string PathPrimitive { get; set; }
+            public string PathUml { get; set; }
+            public string PathMof { get; set; }
         }
     }
 }

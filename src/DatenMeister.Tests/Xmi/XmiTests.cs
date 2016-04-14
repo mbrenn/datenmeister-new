@@ -59,7 +59,13 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void TestGetUriAndRetrieveElement()
         {
-            var strapper = Bootstrapper.PerformFullBootstrap("Xmi/PrimitiveTypes.xmi", "Xmi/UML.xmi", "Xmi/MOF.xmi");
+            var strapper = Bootstrapper.PerformFullBootstrap(
+                new Bootstrapper.FilePaths()
+                {
+                    PathPrimitive = "Xmi/PrimitiveTypes.xmi",
+                    PathUml = "Xmi/UML.xmi",
+                    PathMof = "Xmi/MOF.xmi"
+                });
             var umlExtent = strapper.UmlInfrastructure;
             var element = umlExtent.elements().ElementAt(0) as IElement;
 
@@ -129,7 +135,13 @@ namespace DatenMeister.Tests.Xmi
         /// <param name="uml">Uml instance to be returned</param>
         public static void CreateUmlAndMofInstance(out _MOF mof, out _UML uml)
         {
-            var strapper = Bootstrapper.PerformFullBootstrap("Xmi/PrimitiveTypes.xmi", "Xmi/UML.xmi", "Xmi/MOF.xmi");
+            var strapper = Bootstrapper.PerformFullBootstrap(
+                new Bootstrapper.FilePaths()
+                {
+                    PathPrimitive = "Xmi/PrimitiveTypes.xmi",
+                    PathUml = "Xmi/UML.xmi",
+                    PathMof = "Xmi/MOF.xmi"
+                });
             Assert.That(strapper, Is.Not.Null);
             Assert.That(strapper.UmlInfrastructure, Is.Not.Null);
 
@@ -146,7 +158,13 @@ namespace DatenMeister.Tests.Xmi
 
         private static _UML GetFilledUml()
         {
-            var strapper = Bootstrapper.PerformFullBootstrap("Xmi/PrimitiveTypes.xmi", "Xmi/UML.xmi", "Xmi/MOF.xmi");
+            var strapper = Bootstrapper.PerformFullBootstrap(
+                new Bootstrapper.FilePaths()
+                {
+                    PathPrimitive = "Xmi/PrimitiveTypes.xmi",
+                    PathUml = "Xmi/UML.xmi",
+                    PathMof = "Xmi/MOF.xmi"
+                });
             var uml = new _UML();
             FillTheUML.DoFill(strapper.UmlInfrastructure.elements(), uml);
             return uml;

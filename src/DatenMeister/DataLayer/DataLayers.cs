@@ -16,7 +16,7 @@ namespace DatenMeister.DataLayer
         {
             logic.SetRelationShip(Data, Types);
             logic.SetRelationShip(Types, Uml);
-            logic.SetRelationShip(Uml, Mof);
+            logic.SetRelationShip(Uml, Uml);
             logic.SetRelationShip(Mof, Mof);
         }
     }

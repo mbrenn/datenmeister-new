@@ -99,7 +99,15 @@ namespace DatenMeister.EMOF.InMemory
             var komma = string.Empty;
             foreach (var pair in _values)
             {
-                builder.Append($"{komma}{pair.Key} = {pair.Value}");
+                var key = pair.Key;
+                if (key is string)
+                {
+                    builder.Append($"{komma}{key} = {pair.Value}");
+                }
+                else
+                {
+                    builder.Append($"{komma}Prop = {pair.Value}");
+                }
                 komma = ", ";
             }
 

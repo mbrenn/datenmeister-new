@@ -19,7 +19,7 @@ namespace DatenMeister.Uml.Helper
             var dataLayer = _dataLayerLogic?.GetDataLayerOfObject(element);
             var metaLayer = _dataLayerLogic?.GetMetaLayerFor(dataLayer);
             var uml = _dataLayerLogic?.Get<_UML>(metaLayer);
-            if (uml != null)
+            if (uml != null && element.isSet(uml.CommonStructure.NamedElement.name))
             {
                 var result = element.get(uml.CommonStructure.NamedElement.name);
                 if (result != null)

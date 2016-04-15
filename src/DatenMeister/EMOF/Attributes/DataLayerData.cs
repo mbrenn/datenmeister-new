@@ -10,6 +10,7 @@ namespace DatenMeister.DataLayer
     {
         public DataLayerData()
         {
+            Default = new DataLayer("Default");
         }
 
         public DataLayerData(DataLayers dataLayers)

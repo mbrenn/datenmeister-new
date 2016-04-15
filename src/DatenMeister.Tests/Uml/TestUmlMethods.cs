@@ -17,13 +17,14 @@ namespace DatenMeister.Tests.Uml
             kernel.UseDatenMeister("Xmi");
 
             var classifierMethods = kernel.Get<ClassifierMethods>();
+            classifierMethods.Legacy = true;
             var dataLayers = kernel.Get<DataLayers>();
             var dataLayerLogic = kernel.Get<DataLayerLogic>();
 
             // Gets the logic
             var uml = dataLayerLogic.Get<_UML>(dataLayers.Uml);
             var feature = uml.Classification.__Feature;
-            var properties = classifierMethods.GetPropertiesOfClassifier(feature, true).ToList();
+            var properties = classifierMethods.GetPropertiesOfClassifier(feature).ToList();
 
             Assert.That(properties.Contains(uml.Classification.Feature.isStatic), Is.True, "isStatic");
             Assert.That(properties.Contains(uml.Classification.RedefinableElement.isLeaf), Is.True, "isLeaf (Parent)");

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.XMI;
 using NUnit.Framework;
@@ -59,13 +60,16 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void TestGetUriAndRetrieveElement()
         {
+            var dataLayerLogic = new DataLayerLogic(new DataLayerData());
             var strapper = Bootstrapper.PerformFullBootstrap(
                 new Bootstrapper.FilePaths()
                 {
                     PathPrimitive = "Xmi/PrimitiveTypes.xmi",
                     PathUml = "Xmi/UML.xmi",
                     PathMof = "Xmi/MOF.xmi"
-                });
+                },
+                dataLayerLogic,
+                null);
             var umlExtent = strapper.UmlInfrastructure;
             var element = umlExtent.elements().ElementAt(0) as IElement;
 
@@ -89,6 +93,12 @@ namespace DatenMeister.Tests.Xmi
 
             Assert.That(uml.CommonStructure.__Comment, Is.InstanceOf<IElement>());
             Assert.That(uml.CommonStructure.Comment.body, Is.InstanceOf<IElement>());
+
+            Assert.That(
+                (uml.CommonStructure.Comment.body as IElement)
+                    .isSet(uml.CommonStructure.NamedElement.name),
+                Is.True);
+
             Assert.That(
                 (uml.CommonStructure.Comment.body as IElement)
                     .get(uml.CommonStructure.NamedElement.name),
@@ -135,13 +145,16 @@ namespace DatenMeister.Tests.Xmi
         /// <param name="uml">Uml instance to be returned</param>
         public static void CreateUmlAndMofInstance(out _MOF mof, out _UML uml)
         {
+            var dataLayerLogic = new DataLayerLogic(new DataLayerData());
             var strapper = Bootstrapper.PerformFullBootstrap(
                 new Bootstrapper.FilePaths()
                 {
                     PathPrimitive = "Xmi/PrimitiveTypes.xmi",
                     PathUml = "Xmi/UML.xmi",
                     PathMof = "Xmi/MOF.xmi"
-                });
+                },
+                dataLayerLogic,
+                null);
             Assert.That(strapper, Is.Not.Null);
             Assert.That(strapper.UmlInfrastructure, Is.Not.Null);
 
@@ -158,13 +171,16 @@ namespace DatenMeister.Tests.Xmi
 
         private static _UML GetFilledUml()
         {
+            var dataLayerLogic = new DataLayerLogic(new DataLayerData());
             var strapper = Bootstrapper.PerformFullBootstrap(
                 new Bootstrapper.FilePaths()
                 {
                     PathPrimitive = "Xmi/PrimitiveTypes.xmi",
                     PathUml = "Xmi/UML.xmi",
                     PathMof = "Xmi/MOF.xmi"
-                });
+                },
+                dataLayerLogic,
+                null);
             var uml = new _UML();
             FillTheUML.DoFill(strapper.UmlInfrastructure.elements(), uml);
             return uml;

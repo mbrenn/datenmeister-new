@@ -10,10 +10,12 @@ namespace DatenMeister.Uml.Helper
     public class ClassifierMethods
     {
         private readonly IDataLayerLogic _dataLayerLogic;
+        public bool Legacy { get; set; }
 
-        public ClassifierMethods(IDataLayerLogic dataLayerLogic)
+        public ClassifierMethods(IDataLayerLogic dataLayerLogic, bool legacy)
         {
             _dataLayerLogic = dataLayerLogic;
+            Legacy = legacy;
         }
 
         /// <summary>
@@ -24,13 +26,15 @@ namespace DatenMeister.Uml.Helper
         /// <param name="legacy">true, if legacy access to the attributes shall be used. 
         /// This means that the methods are accessed via string definitions and not via the properties</param>
         /// <returns></returns>
-        public IEnumerable<IElement> GetPropertiesOfClassifier(IElement classifier, bool legacy = false)
+        public IEnumerable<IElement> GetPropertiesOfClassifier(IElement classifier)
         {
-            var metaLayer = _dataLayerLogic.GetMetaLayerFor(_dataLayerLogic.GetDataLayerOfObject(classifier));
-            var uml = legacy ? null : _dataLayerLogic.Get<_UML>(metaLayer);
-            var propertyOwnedAttribute = legacy ? "ownedAttribute" : uml.Classification.Classifier.attribute;
-            var propertyGeneralization = legacy ? "generalization" : uml.Classification.Classifier.generalization;
-            var propertyGeneral = legacy ? "general" : uml.Classification.Generalization.general;
+            if (classifier == null) throw new ArgumentNullException(nameof(classifier));
+
+            var metaLayer = Legacy ? null : _dataLayerLogic.GetMetaLayerFor(_dataLayerLogic.GetDataLayerOfObject(classifier));
+            var uml = Legacy ? null : _dataLayerLogic.Get<_UML>(metaLayer);
+            var propertyOwnedAttribute = Legacy ? "ownedAttribute" : uml.Classification.Classifier.attribute;
+            var propertyGeneralization = Legacy ? "generalization" : uml.Classification.Classifier.generalization;
+            var propertyGeneral = Legacy ? "general" : uml.Classification.Generalization.general;
 
             if (classifier.isSet(propertyOwnedAttribute))
             {
@@ -48,9 +52,15 @@ namespace DatenMeister.Uml.Helper
                 foreach (var generalization in generalizations.Cast<IElement>())
                 {
                     var general = generalization.get(propertyGeneral) as IElement;
-                    foreach (var found in GetPropertiesOfClassifier(general, legacy))
+
+                    // Especially for the MOF extent, the generalizations are references in xml and are
+                    // filled out by the simple loader
+                    if (general != null)
                     {
-                        yield return found;
+                        foreach (var found in GetPropertiesOfClassifier(general))
+                        {
+                            yield return found;
+                        }
                     }
                 }
             }

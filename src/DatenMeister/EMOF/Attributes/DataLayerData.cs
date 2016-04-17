@@ -8,6 +8,16 @@ namespace DatenMeister.DataLayer
     /// </summary>
     public class DataLayerData
     {
+        public DataLayerData()
+        {
+            Default = new DataLayer("Default");
+        }
+
+        public DataLayerData(DataLayers dataLayers)
+        {
+            Default = dataLayers.Data;
+        }
+
         /// <summary>
         /// Stores the relations between the layer and the metalayer. 
         /// Key is the layer, value is the metalayer

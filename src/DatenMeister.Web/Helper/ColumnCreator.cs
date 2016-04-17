@@ -103,7 +103,7 @@ namespace DatenMeister.Web.Helper
                 var metaLayer = _dataLayerLogic?.GetMetaLayerFor(dataLayer);
                 var uml = _dataLayerLogic?.Get<_UML>(metaLayer);
 
-                if (uml != null)
+                if (uml != null && metaClass.isSet(uml.Classification.Classifier.attribute))
                 {
                     var properties = metaClass.get(uml.Classification.Classifier.attribute) as IEnumerable;
                     if (properties != null)

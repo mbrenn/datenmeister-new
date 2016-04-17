@@ -5,7 +5,7 @@ namespace DatenMeister.Filler
 {
     public class FillTheMOF : IFiller<_MOF>
     {
-        private static readonly object[] EmptyList = new object[] { };
+        private static readonly object[] EmptyList = { };
         private static string GetNameOfElement(IObject element)
         {
             var nameAsObject = element.get("name");

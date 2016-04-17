@@ -4,6 +4,7 @@ using DatenMeister.EMOF.Queries;
 using DatenMeister.XMI.UmlBootstrap;
 using System.Diagnostics;
 using System.Linq;
+using DatenMeister.DataLayer;
 using DatenMeister.XMI;
 using DatenMeister.Filler;
 
@@ -58,7 +59,17 @@ namespace DatenMeister.Tests.Console
 
             var watch = new Stopwatch();
             watch.Start();
-            var fullStrap = Bootstrapper.PerformFullBootstrap("data/PrimitiveTypes", "data/UML.xmi", "data/MOF.xmi");
+
+            var dataLayerLogic = new DataLayerLogic(new DataLayerData());
+            var fullStrap = Bootstrapper.PerformFullBootstrap(
+                new Bootstrapper.FilePaths()
+                {
+                    PathPrimitive = "data/PrimitiveTypes.xmi",
+                    PathUml = "data/UML.xmi",
+                    PathMof = "data/MOF.xmi"
+                },
+                dataLayerLogic,
+                null);
             watch.Stop();
 
             var descendents = AllDescendentsQuery.getDescendents(fullStrap.UmlInfrastructure);

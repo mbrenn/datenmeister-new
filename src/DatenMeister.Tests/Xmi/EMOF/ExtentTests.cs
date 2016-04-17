@@ -8,6 +8,7 @@ using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Full.Integration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.XMI.EMOF;
 using DatenMeister.XMI.ExtentStorage;
 using Ninject;
@@ -43,7 +44,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var mofObject3 = new XmlElement(new XElement("item"));
             var mofObject4 = new XmlElement(new XElement("item"));
 
-            var mofReflectiveSequence = new XmlReflectiveSequence(new XElement("items"));
+            var mofReflectiveSequence = new XmlReflectiveSequence(null, new XElement("items"));
             Assert.That(mofReflectiveSequence.size(), Is.EqualTo(0));
             Assert.That(mofReflectiveSequence.ToArray().Count, Is.EqualTo(0));
 
@@ -66,7 +67,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             mofReflectiveSequence.add(mofObject1);
             mofReflectiveSequence.add(mofObject2);
 
-            var otherMofReflectiveSequence = new XmlReflectiveSequence(new XElement("items"));
+            var otherMofReflectiveSequence = new XmlReflectiveSequence(null, new XElement("items"));
             otherMofReflectiveSequence.addAll(mofReflectiveSequence);
             Assert.That(otherMofReflectiveSequence.size(), Is.EqualTo(2));
             Assert.That(otherMofReflectiveSequence.ToArray().Count, Is.EqualTo(2));
@@ -76,7 +77,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             Assert.That(otherMofReflectiveSequence.ToArray().Count, Is.EqualTo(0));
 
 
-            otherMofReflectiveSequence = new XmlReflectiveSequence(new XElement("items"));
+            otherMofReflectiveSequence = new XmlReflectiveSequence(null, new XElement("items"));
             otherMofReflectiveSequence.add(0, mofObject1);
             otherMofReflectiveSequence.add(0, mofObject2);
             otherMofReflectiveSequence.add(1, mofObject3);
@@ -232,16 +233,19 @@ namespace DatenMeister.Tests.Xmi.EMOF
             kernel.UseDatenMeister("Xmi");
 
             var dataLayerLogic = kernel.Get<IDataLayerLogic>();
-            var umlDataLayer = DataLayers.Uml;
+            var dataLayers = kernel.Get<DataLayers>();
+            var umlDataLayer = dataLayers.Uml;
             var uml = dataLayerLogic.Get<_UML>(umlDataLayer);
             Assert.That(uml, Is.Not.Null);
 
             var extent = new XmlUriExtent("dm:///test");
-            dataLayerLogic.AssignToDataLayer(extent, DataLayers.Types);
+            extent.Workspaces = kernel.Get<IWorkspaceCollection>();
+            dataLayerLogic.AssignToDataLayer(extent, dataLayers.Types);
 
             var factory = kernel.Get<IFactoryMapper>().FindFactoryFor(extent);
 
-            var element = factory.create(uml.SimpleClassifiers.__Interface);
+            var interfaceClass = uml.SimpleClassifiers.__Interface;
+            var element = factory.create(interfaceClass);
             Assert.That(element, Is.Not.Null);
 
             extent.elements().add(element);
@@ -251,8 +255,8 @@ namespace DatenMeister.Tests.Xmi.EMOF
             Assert.That(retrievedElement, Is.Not.Null);
             Assert.That(retrievedElement.getMetaClass(), Is.Not.Null);
             Assert.That(retrievedElement.metaclass, Is.Not.Null);
-            Assert.That(retrievedElement.metaclass, Is.EqualTo(uml.SimpleClassifiers.__Interface));
+            var foundMetaClass = retrievedElement.metaclass;
+            Assert.That(foundMetaClass.Equals(interfaceClass), Is.True);
         }
-
     }
 }

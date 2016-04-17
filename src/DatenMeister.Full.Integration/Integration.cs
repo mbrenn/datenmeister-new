@@ -5,7 +5,7 @@ using System.Linq;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Attributes;
 using DatenMeister.EMOF.InMemory;
-using DatenMeister.Filler;
+using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
@@ -20,8 +20,11 @@ namespace DatenMeister.Full.Integration
     {
         public static void UseDatenMeister(this StandardKernel kernel, string pathToXmiFiles = "App_Data")
         {
+            var watch = new Stopwatch();
+            watch.Start();
+
             var factoryMapper = new DefaultFactoryMapper();
-            factoryMapper.PerformAutomaticMappingByAttribute();
+            factoryMapper.PerformAutomaticMappingByAttribute(kernel);
             kernel.Bind<IFactoryMapper>().ToConstant(factoryMapper);
 
             var storageMap = new ManualConfigurationToExtentStorageMapper();
@@ -39,45 +42,54 @@ namespace DatenMeister.Full.Integration
             kernel.Bind<IExtentStorageLoader>().To<ExtentStorageLoader>();
 
             // Defines the datalayers
-            var dataLayerData = new DataLayerData();
+            var dataLayers = new DataLayers();
+            kernel.Bind<DataLayers>().ToConstant(dataLayers);
+
+            var dataLayerData = new DataLayerData(dataLayers);
             kernel.Bind<DataLayerData>().ToConstant(dataLayerData);
             kernel.Bind<IDataLayerLogic>().To<DataLayerLogic>();
+
+            var dataLayerLogic = kernel.Get<IDataLayerLogic>();
+            dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
 
             // Load the default extents
             // Load the primitivetypes
             var primitiveTypes = new _PrimitiveTypes();
             kernel.Bind<_PrimitiveTypes>().ToConstant(primitiveTypes);
 
-            var strapper = Bootstrapper.PerformFullBootstrap(
-                Path.Combine(pathToXmiFiles, "PrimitiveTypes.xmi"),
-                Path.Combine(pathToXmiFiles, "UML.xmi"),
-                Path.Combine(pathToXmiFiles, "MOF.xmi"));
-            var metaWorkspace = workspaceCollection.GetWorkspace("Meta");
-            metaWorkspace.AddExtent(strapper.PrimitiveInfrastructure);
-            metaWorkspace.AddExtent(strapper.MofInfrastructure);
-            metaWorkspace.AddExtent(strapper.UmlInfrastructure);
+            // Performs the bootstrap
+            var paths =
+                new Bootstrapper.FilePaths()
+                {
+                    PathPrimitive = Path.Combine(pathToXmiFiles, "PrimitiveTypes.xmi"),
+                    PathUml = Path.Combine(pathToXmiFiles, "UML.xmi"),
+                    PathMof = Path.Combine(pathToXmiFiles, "MOF.xmi")
+                };
 
-            var dataLayerLogic = kernel.Get<IDataLayerLogic>();
-            dataLayerLogic.SetRelationsForDefaultDataLayers();
-            dataLayerLogic.AssignToDataLayer(strapper.PrimitiveInfrastructure, DataLayers.Uml);
-            dataLayerLogic.AssignToDataLayer(strapper.MofInfrastructure, DataLayers.Uml);
-            dataLayerLogic.AssignToDataLayer(strapper.UmlInfrastructure, DataLayers.Uml);
-
-            // Let us create the filled object
-            dataLayerLogic.Create<FillTheMOF, _MOF>(DataLayers.Uml);
-            dataLayerLogic.Create<FillTheUML, _UML>(DataLayers.Uml);
-            dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(DataLayers.Uml);
+            Bootstrapper.PerformFullBootstrap(
+                paths,
+                workspaceCollection.GetWorkspace("UML"),
+                dataLayerLogic,
+                dataLayers.Uml);
+            Bootstrapper.PerformFullBootstrap(
+                paths,
+                workspaceCollection.GetWorkspace("MOF"),
+                dataLayerLogic,
+                dataLayers.Mof);
 
             // Creates the workspace and extent for the types layer which are belonging to the types
             var extentTypes = new MofUriExtent("dm:///types");
             var typeWorkspace = workspaceCollection.GetWorkspace("Types");
             typeWorkspace.AddExtent(extentTypes);
-            dataLayerLogic.AssignToDataLayer(extentTypes, DataLayers.Types);
+            dataLayerLogic.AssignToDataLayer(extentTypes, dataLayers.Types);
 
             kernel.Bind<IUmlNameResolution>().To<UmlNameResolution>();
+
+            watch.Stop();
+            Debug.WriteLine($"Elapsed time for boostrap: {watch.Elapsed}");
         }
 
-        public static void PerformAutomaticMappingByAttribute(this DefaultFactoryMapper mapper)
+        public static void PerformAutomaticMappingByAttribute(this DefaultFactoryMapper mapper, StandardKernel kernel)
         {
             // Map extent types to factory
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
@@ -89,7 +101,7 @@ namespace DatenMeister.Full.Integration
                     var factoryAssignmentAttribute = customAttribute as AssignFactoryForExtentTypeAttribute;
                     if (factoryAssignmentAttribute != null)
                     {
-                        mapper.AddMapping(type, factoryAssignmentAttribute.FactoryType);
+                        mapper.AddMapping(type, () => (IFactory)kernel.Get(factoryAssignmentAttribute.FactoryType));
 
                         Debug.WriteLine($"Assigned extent type '{type.FullName}' to '{factoryAssignmentAttribute.FactoryType}'");
                     }

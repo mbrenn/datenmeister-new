@@ -22,11 +22,12 @@ namespace DatenMeister.Tests.Runtime
             integrateZipCodes.Into(kernel.Get<IWorkspaceCollection>().FindExtent("dm:///types"));
             
             var extentFunctions = kernel.Get<ExtentFunctions>();
+            var dataLayers = kernel.Get<DataLayers>();
              
             var dataExtent = new MofUriExtent("dm:///test");
             var creatableTypes = extentFunctions.GetCreatableTypes(dataExtent);
             Assert.That(creatableTypes, Is.Not.Null);
-            Assert.That(creatableTypes.MetaLayer, Is.EqualTo(DataLayers.Types));
+            Assert.That(creatableTypes.MetaLayer, Is.EqualTo(dataLayers.Types));
             Assert.That(creatableTypes.CreatableTypes.Count, Is.EqualTo(1));
         }
     }

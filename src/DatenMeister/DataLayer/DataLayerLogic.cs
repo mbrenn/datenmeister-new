@@ -20,7 +20,7 @@ namespace DatenMeister.DataLayer
             _data = data;
             if (_data.Default == null)
             {
-                _data.Default = DataLayers.Data;
+                throw new InvalidOperationException("DataLayer.Default was not set");
             }
         }
 
@@ -197,11 +197,12 @@ namespace DatenMeister.DataLayer
             }
         }
 
-        public static IDataLayerLogic InitDefault()
+        public static IDataLayerLogic InitDefault(out DataLayers dataLayers)
         {
-            var data = new DataLayerData();
+            dataLayers = new DataLayers();
+            var data = new DataLayerData(dataLayers);
             var logic = new DataLayerLogic(data);
-            logic.SetRelationsForDefaultDataLayers();
+            dataLayers.SetRelationsForDefaultDataLayers(logic);
             return logic;
         }
     }

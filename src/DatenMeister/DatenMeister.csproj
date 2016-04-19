@@ -81,6 +81,7 @@
     <Compile Include="EMOF\Queries\FilterOnPropertyByPredicateCollection.cs" />
     <Compile Include="EMOF\Queries\FilterOnMetaClass.cs" />
     <Compile Include="EMOF\Queries\OrderByProperty.cs" />
+    <Compile Include="Filler\DummyFiller.cs" />
     <Compile Include="Filler\FillTheMOF.cs" />
     <Compile Include="Filler\FillThePrimitiveTypes.cs" />
     <Compile Include="Filler\FillTheUML.cs" />

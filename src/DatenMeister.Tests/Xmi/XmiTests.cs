@@ -10,6 +10,7 @@ using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.XMI.UmlBootstrap;
 using DatenMeister.EMOF.Queries;
 using DatenMeister.Filler;
+using DatenMeister.Uml;
 using DatenMeister.XMI.Standards;
 
 namespace DatenMeister.Tests.Xmi
@@ -61,6 +62,8 @@ namespace DatenMeister.Tests.Xmi
         public void TestGetUriAndRetrieveElement()
         {
             var dataLayerLogic = new DataLayerLogic(new DataLayerData());
+            var dataLayers = new DataLayers();
+            dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
             var strapper = Bootstrapper.PerformFullBootstrap(
                 new Bootstrapper.FilePaths()
                 {
@@ -69,7 +72,7 @@ namespace DatenMeister.Tests.Xmi
                     PathMof = "Xmi/MOF.xmi"
                 },
                 dataLayerLogic,
-                null);
+                dataLayers.Uml);
             var umlExtent = strapper.UmlInfrastructure;
             var element = umlExtent.elements().ElementAt(0) as IElement;
 
@@ -146,6 +149,8 @@ namespace DatenMeister.Tests.Xmi
         public static void CreateUmlAndMofInstance(out _MOF mof, out _UML uml)
         {
             var dataLayerLogic = new DataLayerLogic(new DataLayerData());
+            var dataLayers = new DataLayers();
+            dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
             var strapper = Bootstrapper.PerformFullBootstrap(
                 new Bootstrapper.FilePaths()
                 {
@@ -154,7 +159,7 @@ namespace DatenMeister.Tests.Xmi
                     PathMof = "Xmi/MOF.xmi"
                 },
                 dataLayerLogic,
-                null);
+                dataLayers.Mof);
             Assert.That(strapper, Is.Not.Null);
             Assert.That(strapper.UmlInfrastructure, Is.Not.Null);
 
@@ -163,15 +168,17 @@ namespace DatenMeister.Tests.Xmi
                 Is.GreaterThan(500));
 
             // Check, if the filled classes are working
-            mof = new _MOF();
-            uml = new _UML();
-            FillTheMOF.DoFill(strapper.MofInfrastructure.elements(), mof);
-            FillTheUML.DoFill(strapper.UmlInfrastructure.elements(), uml);
+            mof = dataLayerLogic.Get<_MOF>(dataLayers.Mof);
+            uml = dataLayerLogic.Get<_UML>(dataLayers.Mof);
+            Assert.That(mof, Is.Not.Null);
+            Assert.That(uml, Is.Not.Null);
         }
 
         private static _UML GetFilledUml()
         {
             var dataLayerLogic = new DataLayerLogic(new DataLayerData());
+            var dataLayers = new DataLayers();
+            dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
             var strapper = Bootstrapper.PerformFullBootstrap(
                 new Bootstrapper.FilePaths()
                 {
@@ -180,10 +187,9 @@ namespace DatenMeister.Tests.Xmi
                     PathMof = "Xmi/MOF.xmi"
                 },
                 dataLayerLogic,
-                null);
-            var uml = new _UML();
-            FillTheUML.DoFill(strapper.UmlInfrastructure.elements(), uml);
-            return uml;
+                dataLayers.Mof);
+
+            return dataLayerLogic.Get<_UML>(dataLayers.Mof);
         }
     }
 }

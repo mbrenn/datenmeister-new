@@ -2,7 +2,7 @@
 Import-Module -Name "./Invoke-MsBuild.psm1" 
 
 
-$projects = "DatenMeister", "DatenMeister.Runtime", "DatenMeister.CSV", "DatenMeister.XMI", "DatenMeister.Uml"
+$projects = "DatenMeister", "DatenMeister.Runtime", "DatenMeister.CSV", "DatenMeister.XMI", "DatenMeister.Uml", "DatenMeister.Provider.DotNet"
 
 ForEach ($project in $projects)
 {

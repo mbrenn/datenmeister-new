@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DatenMeister.CSV</id>
+    <version>1.0.0.0</version>
+    <title>DatenMeister.CSV</title>
+    <authors>Martin Brenn</authors>
+    <owners>Martin Brenn</owners>
+    <licenseUrl>https://github.com/mbrenn/datenmeister-new/blob/master/license.txt</licenseUrl>
+    <projectUrl>http://datenmeister.net</projectUrl>
+    <iconUrl>http://datenmeister.net/favicon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The DatenMeister.CSV.dll stores the entities of an extent in a simple CSV file. Several import and exporters are supported</description>
+    <releaseNotes>First release of the DatenMeister.CSV library</releaseNotes>
+    <copyright>Alle Rechte vorbehalten, Martin Brenn, Released unter MIT License</copyright>
+    <tags>MOF UML DatenMeister CSV</tags>
+	<dependencies>
+	  <dependency id="DatenMeister" version="1.0.0.0" />
+    <dependency id="DatenMeister.Runtime" version="1.0.0.0" />
+	</dependencies>
+  </metadata>
+</package>

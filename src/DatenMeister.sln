@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister", "DatenMeister\DatenMeister.csproj", "{67F8BCA3-8438-4E91-9DEA-4189C1776E26}"
 EndProject
@@ -53,6 +53,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Provider.DotNet", "DatenMeister.Provider.DotNet\DatenMeister.Provider.DotNet.csproj", "{DE772364-F233-40E8-BA39-519D42C20686}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjektMeister", "ProjektMeister", "{FE7A0941-B64B-4A8E-AFC4-AEF3BAF71732}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6522826C-81A1-4FA7-8CE9-A36AF594C18B}"
+	ProjectSection(SolutionItems) = preProject
+		..\nuget-packages\DatenMeister\DatenMeister.nuspec = ..\nuget-packages\DatenMeister\DatenMeister.nuspec
+		..\nuget-packages\pack.ps1 = ..\nuget-packages\pack.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

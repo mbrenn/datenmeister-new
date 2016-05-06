@@ -6,7 +6,9 @@ $projects = "DatenMeister", "DatenMeister.Runtime", "DatenMeister.CSV", "DatenMe
 
 ForEach ($project in $projects)
 {
-    Write-Host "Creating package for $project"
+    
+    ## Build the project
+    Write-Host "{$project}: Building"
     Push-Location
 
     cd ..\src\$project
@@ -19,6 +21,9 @@ ForEach ($project in $projects)
     }
 
     Pop-Location
+    
+    ## Copy the binaries to the $project/lib/dotnet folder
+    Write-Host "{$project}: Copying binaries"
 
     if (Test-Path .\$project\lib)
     {
@@ -31,7 +36,8 @@ ForEach ($project in $projects)
     Copy-Item ..\src\$project\bin\Release\$project.dll $project/lib/dotnet 
     Copy-Item ..\src\$project\bin\Release\$project.pdb $project/lib/dotnet 
 
-
+    ## Creates the packages
+    Write-Host "{$project}: Create NuGet-Packages"
     Push-Location
 
     cd $project
@@ -41,8 +47,9 @@ ForEach ($project in $projects)
 
     New-Item -ItemType Directory -Path All -Force | Out-Null
     Copy-Item $project/*.nupkg All/
-
-    # Now clean the created directories, only the 'All' folder shall contain values. 
+    
+    ## Now clean the created directories, only the 'All' folder shall contain values.
+    Write-Host "{$project}: Cleaning" 
     Remove-Item $project/*.nupkg    
     Remove-Item -Path .\$project\lib -Recurse
 }

@@ -61,7 +61,7 @@ namespace DatenMeister.ManualMapping
         public void unset(object property)
         {
             if (property == null) throw new ArgumentNullException(nameof(property));
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IElement metaclass => _typeMapping.metaClass;
@@ -81,7 +81,7 @@ namespace DatenMeister.ManualMapping
             var mapping = _typeMapping.FindProperty(property);
             if (mapping == null)
             {
-                throw new InvalidOperationException($"Mapping for '{property.ToString()}' unknown.");
+                throw new InvalidOperationException($"Mapping for '{property}' unknown.");
             }
 
             return mapping;

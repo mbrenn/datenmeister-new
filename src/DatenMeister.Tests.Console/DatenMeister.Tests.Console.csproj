@@ -101,6 +101,10 @@
       <Project>{2aae5839-db41-429b-b7c4-b872506736c7}</Project>
       <Name>DatenMeister.SourcecodeGenerator</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Uml\DatenMeister.Uml.csproj">
+      <Project>{335399d1-b533-42d2-aea5-f398f35d8e66}</Project>
+      <Name>DatenMeister.Uml</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">
       <Project>{e44275c2-9e62-42be-b984-127f82c1766f}</Project>
       <Name>DatenMeister.XMI</Name>

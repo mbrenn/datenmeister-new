@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DatenMeister</id>
+    <version>1.0.0.0</version>
+    <title>DatenMeister</title>
+    <authors>Martin Brenn</authors>
+    <owners>Martin Brenn</owners>
+    <licenseUrl>https://github.com/mbrenn/datenmeister-new/blob/master/license.txt</licenseUrl>
+    <projectUrl>http://datenmeister.net</projectUrl>
+    <iconUrl>http://datenmeister.net/favicon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The DatenMeister.dll offers a simple implementation of the MOF interfaces as required by the MOF Specification</description>
+    <releaseNotes>First release of the DatenMeister library</releaseNotes>
+    <copyright>Alle Rechte vorbehalten, Martin Brenn, Released unter MIT License</copyright>
+    <tags>MOF UML DatenMeister</tags>
+  </metadata>
+</package>

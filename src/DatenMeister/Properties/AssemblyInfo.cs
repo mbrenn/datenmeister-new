@@ -6,11 +6,11 @@ using System.Resources;
 // die einer Assembly zugeordnet sind.
 
 [assembly: AssemblyTitle("DatenMeister")]
-[assembly: AssemblyDescription("The core implementation to define the MOF interfaces")]
+[assembly: AssemblyDescription("The DatenMeister.dll offers a simple implementation of the MOF interfaces as required by the MOF Specification")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Martin Brenn")]
 [assembly: AssemblyProduct("DatenMeister")]
-[assembly: AssemblyCopyright("Copyright ©  2015 / Alle Rechte vorbehalten")]
+[assembly: AssemblyCopyright("Alle Rechte vorbehalten / 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("de")]

@@ -7,6 +7,7 @@ using System.Linq;
 using DatenMeister.DataLayer;
 using DatenMeister.XMI;
 using DatenMeister.Filler;
+using DatenMeister.Uml;
 
 namespace DatenMeister.Tests.Console
 {

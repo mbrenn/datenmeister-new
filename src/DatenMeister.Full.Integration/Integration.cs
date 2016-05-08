@@ -10,6 +10,7 @@ using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
 using DatenMeister.XMI.UmlBootstrap;
 using Ninject;

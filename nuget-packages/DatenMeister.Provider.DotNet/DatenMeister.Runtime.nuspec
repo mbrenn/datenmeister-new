@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DatenMeister.Provider.DotNet</id>
+    <version>1.0.0.0</version>
+    <title>DatenMeister.Provider.DotNet</title>
+    <authors>Martin Brenn</authors>
+    <owners>Martin Brenn</owners>
+    <licenseUrl>https://github.com/mbrenn/datenmeister-new/blob/master/license.txt</licenseUrl>
+    <projectUrl>http://datenmeister.net</projectUrl>
+    <iconUrl>http://datenmeister.net/favicon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The DatenMeister.Provider.DotNet.dll connects native .Net objects to the DatenMeister-API and makes them UML/Mof compliant. .</description>
+    <releaseNotes>First release of the DatenMeister.Provider.DotNet library</releaseNotes>
+    <copyright>Alle Rechte vorbehalten, Martin Brenn, Released unter MIT License</copyright>
+    <tags>MOF UML DatenMeister</tags>
+	<dependencies>
+	  <dependency id="DatenMeister" version="1.0.0.0" />
+	</dependencies>
+  </metadata>
+</package>

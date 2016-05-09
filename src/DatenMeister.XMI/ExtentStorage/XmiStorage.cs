@@ -56,17 +56,30 @@ namespace DatenMeister.XMI.ExtentStorage
 
         public void StoreExtent(IUriExtent extent, ExtentStorageConfiguration configuration)
         {
-            var xmiConfiguration = (XmiStorageConfiguration)configuration;
-
-            var xmlExtent = extent as XmlUriExtent;
-            if (xmlExtent == null)
+            var xmiConfiguration = configuration as XmiStorageConfiguration;
+            if (xmiConfiguration != null)
             {
-                throw new InvalidOperationException("Only XmlUriExtents are supported");
+                var xmlExtent = extent as XmlUriExtent;
+                if (xmlExtent == null)
+                {
+                    throw new InvalidOperationException("Only XmlUriExtents are supported");
+                }
+
+                // Deletes existing file
+                if (File.Exists(xmiConfiguration.Path))
+                {
+                    File.Delete(xmiConfiguration.Path);
+                }
+
+                // Loads existing file
+                using (var fileStream = File.OpenWrite(xmiConfiguration.Path))
+                {
+                    xmlExtent.Document.Save(fileStream);
+                }
             }
-
-            using (var fileStream = File.OpenWrite(xmiConfiguration.Path))
+            else
             {
-                xmlExtent.Document.Save(fileStream);
+                throw new ArgumentException("Configuration is of an unknown type");
             }
         }
     }

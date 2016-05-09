@@ -78,6 +78,12 @@ namespace DatenMeister.DataLayer
         /// <param name="layer">Layer, whose cache needs to be deleted</param>
         void ClearCache(IDataLayer layer);
 
-        
+        /// <summary>
+        /// Sets a filled type which is already prepared
+        /// </summary>
+        /// <param name="layer">Datalayer being filled</param>
+        /// <param name="value">Value to be set for the datalayer</param>
+        void Set<TFilledType>(IDataLayer layer, TFilledType value)
+            where TFilledType : class, new();
     }
 }

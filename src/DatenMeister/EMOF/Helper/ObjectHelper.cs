@@ -98,7 +98,7 @@ namespace DatenMeister.EMOF.Helper
         /// <returns>Uri of the element</returns>
         public static string GetUri(this IElement element)
         {
-            return element.GetUriExtentOf().uri(element);
+            return element.GetUriExtentOf()?.uri(element);
         }
 
         /// <summary>

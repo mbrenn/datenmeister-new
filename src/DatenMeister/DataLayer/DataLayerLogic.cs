@@ -188,6 +188,21 @@ namespace DatenMeister.DataLayer
             }
         }
 
+        public void Set<TFilledType>(IDataLayer layer, TFilledType value) where TFilledType : class, new()
+        {
+            lock (_data)
+            {
+                var layerAsObject = layer as DataLayer;
+
+                if (layerAsObject == null)
+                {
+                    throw new ArgumentException($"{nameof(layer)} is not of type DataLayer", nameof(layer));
+                }
+
+                layerAsObject.FilledTypeCache.Add(value);
+            }
+        }
+
         public void ClearCache(IDataLayer layer)
         {
             lock (_data)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.EMOF.Interface.Identifiers;
@@ -134,10 +135,18 @@ namespace DatenMeister.XMI.EMOF
             {
                 return property.ToString();
             }
-            else
+
+            if (property is DateTime)
             {
-                throw new InvalidOperationException("Only strings as properties are supported at the moment");
+                return ((DateTime) property).ToUniversalTime().ToString(CultureInfo.InvariantCulture);
             }
+
+            if (property == null)
+            {
+                throw new ArgumentNullException(nameof(property));
+            }
+
+            throw new InvalidOperationException($"Only strings as properties are supported at the moment. Type is: {property.GetType()}");
         }
 
         public IElement metaclass => getMetaClass();

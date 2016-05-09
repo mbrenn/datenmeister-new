@@ -25,9 +25,10 @@ namespace DatenMeister.ManualMapping
         /// Adds a mapping for a specific type. 
         /// The properties of the type are not explicitly addedl 
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="metaClass"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">Type being added</typeparam>
+        /// <param name="metaClass">Metaclass which is used to 
+        /// talk about the class</param>
+        /// <returns>The created type mapping</returns>
         public TypeMapping AddMappingForType<T>(IElement metaClass)
         {
             if (metaClass == null)

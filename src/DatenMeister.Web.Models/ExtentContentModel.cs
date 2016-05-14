@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.Web.Models.Fields;
 
 namespace DatenMeister.Web.Models
 {
@@ -17,7 +18,7 @@ namespace DatenMeister.Web.Models
         /// </summary>
         public int filteredItemCount { get; set; }
 
-        public IEnumerable<DataTableColumn> columns { get; set; }
+        public IEnumerable<DataField> columns { get; set; }
 
         public IEnumerable<DataTableItem> items { get; set; }
 

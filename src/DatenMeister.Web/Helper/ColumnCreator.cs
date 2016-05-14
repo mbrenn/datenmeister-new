@@ -10,6 +10,7 @@ using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Web.Models;
+using DatenMeister.Web.Models.Fields;
 
 namespace DatenMeister.Web.Helper
 {
@@ -110,10 +111,10 @@ namespace DatenMeister.Web.Helper
                     {
                         foreach (var property in properties.Cast<IObject>())
                         {
-                            DataTableColumn column;
+                            DataField column;
                             if (!result.ColumnsOnProperty.TryGetValue(property, out column))
                             {
-                                column = new DataTableColumn
+                                column = new DataField
                                 {
                                     name = ConvertPropertyToColumnName(property),
                                     title = property.get(uml.CommonStructure.NamedElement.name).ToString()
@@ -135,10 +136,10 @@ namespace DatenMeister.Web.Helper
 
                 foreach (var property in properties)
                 {
-                    DataTableColumn column;
+                    DataField column;
                     if (!result.ColumnsOnProperty.TryGetValue(property, out column))
                     {
-                        column = new DataTableColumn
+                        column = new DataField
                         {
                             name = ConvertPropertyToColumnName(property),
                             title =

@@ -108,25 +108,6 @@
     <Compile Include="Api\WorkspaceController.cs" />
     <Compile Include="Helper\ColumnCreationResult.cs" />
     <Compile Include="Helper\ColumnCreator.cs" />
-    <Compile Include="Models\DataTableColumn.cs" />
-    <Compile Include="Models\DataTableItem.cs" />
-    <Compile Include="Models\ExtentContentModel.cs" />
-    <Compile Include="Models\ExtentModel.cs" />
-    <Compile Include="Models\ItemContentModel.cs" />
-    <Compile Include="Models\ItemModel.cs" />
-    <Compile Include="Models\PostModels\ExtentAddModel.cs" />
-    <Compile Include="Models\PostModels\ExtentCreateModel.cs" />
-    <Compile Include="Models\PostModels\ExtentReferenceModel.cs" />
-    <Compile Include="Models\PostModels\ItemCreateModel.cs" />
-    <Compile Include="Models\PostModels\ItemDeleteModel.cs" />
-    <Compile Include="Models\PostModels\ItemReferenceModel.cs" />
-    <Compile Include="Models\PostModels\ItemSetPropertiesModel.cs" />
-    <Compile Include="Models\PostModels\ItemSetPropertyModel.cs" />
-    <Compile Include="Models\PostModels\ItemUnsetPropertyModel.cs" />
-    <Compile Include="Models\PostModels\WorkspaceCreateModel.cs" />
-    <Compile Include="Models\PostModels\WorkspaceDeleteModel.cs" />
-    <Compile Include="Models\PostModels\WorkspaceReferenceModel.cs" />
-    <Compile Include="Models\WorkspaceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +125,10 @@
     <ProjectReference Include="..\DatenMeister.Uml\DatenMeister.Uml.csproj">
       <Project>{335399d1-b533-42d2-aea5-f398f35d8e66}</Project>
       <Name>DatenMeister.Uml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Web.Models.csproj">
+      <Project>{5E01C76D-A969-4238-8D8C-1CB22C92DA7A}</Project>
+      <Name>DatenMeister.Web.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">
       <Project>{E44275C2-9E62-42BE-B984-127F82C1766F}</Project>

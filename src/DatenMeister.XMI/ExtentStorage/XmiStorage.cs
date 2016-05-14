@@ -49,8 +49,11 @@ namespace DatenMeister.XMI.ExtentStorage
                 xmlDocument = XDocument.Load(xmiConfiguration.Path);
             }
 
-            var result =  new XmlUriExtent(xmlDocument, xmiConfiguration.ExtentUri);
-            result.Workspaces = _workspaceCollection;
+            var result = new XmlUriExtent(xmlDocument, xmiConfiguration.ExtentUri)
+            {
+                Workspaces = _workspaceCollection
+            };
+
             return result;
         }
 

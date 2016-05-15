@@ -32,7 +32,7 @@ namespace DatenMeister.Tests.Integration
         public void TestFactoryMappingByAttributeForExtentLoaders()
         {
             var kernel = new StandardKernel();
-            kernel.UseDatenMeister("Xmi");
+            kernel.UseDatenMeister(new IntegrationSettings {PathToXmiFiles = "Xmi"});
 
             var mapper = new ManualConfigurationToExtentStorageMapper();
             mapper.PerformMappingForConfigurationOfExtentLoaders(kernel);

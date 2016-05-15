@@ -14,7 +14,7 @@ namespace DatenMeister.Tests.Uml
         public void TestGeneralizedProperties()
         {
             var kernel = new StandardKernel();
-            kernel.UseDatenMeister("Xmi");
+            kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
 
             var classifierMethods = kernel.Get<ClassifierMethods>();
             classifierMethods.Legacy = true;

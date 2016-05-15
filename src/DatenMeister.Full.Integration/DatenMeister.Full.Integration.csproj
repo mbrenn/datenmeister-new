@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Helper.cs" />
     <Compile Include="Integration.cs" />
+    <Compile Include="IntegrationSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

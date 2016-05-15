@@ -19,8 +19,14 @@ namespace DatenMeister.Full.Integration
 {
     public static class Integration
     {
-        public static void UseDatenMeister(this StandardKernel kernel, string pathToXmiFiles = "App_Data")
+        public static void UseDatenMeister(this StandardKernel kernel, IntegrationSettings settings)
         {
+            if (settings == null)
+            {
+                Debug.WriteLine("No integration settings were given. Loading the default values.");
+                settings = new IntegrationSettings();
+            }
+
             var watch = new Stopwatch();
             watch.Start();
 
@@ -62,9 +68,9 @@ namespace DatenMeister.Full.Integration
             var paths =
                 new Bootstrapper.FilePaths()
                 {
-                    PathPrimitive = Path.Combine(pathToXmiFiles, "PrimitiveTypes.xmi"),
-                    PathUml = Path.Combine(pathToXmiFiles, "UML.xmi"),
-                    PathMof = Path.Combine(pathToXmiFiles, "MOF.xmi")
+                    PathPrimitive = Path.Combine(settings.PathToXmiFiles, "PrimitiveTypes.xmi"),
+                    PathUml = Path.Combine(settings.PathToXmiFiles, "UML.xmi"),
+                    PathMof = Path.Combine(settings.PathToXmiFiles, "MOF.xmi")
                 };
 
             Bootstrapper.PerformFullBootstrap(

@@ -181,7 +181,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestXmlExtentStorage()
         {
             var kernel = new StandardKernel();
-            kernel.UseDatenMeister("Xmi");
+            kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
 
             var path = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
@@ -230,7 +230,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestWithMetaClass()
         {
             var kernel = new StandardKernel();
-            kernel.UseDatenMeister("Xmi");
+            kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
 
             var dataLayerLogic = kernel.Get<IDataLayerLogic>();
             var dataLayers = kernel.Get<DataLayers>();

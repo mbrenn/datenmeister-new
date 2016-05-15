@@ -76,8 +76,13 @@ namespace DatenMeister.Web.Application
 
         private static StandardKernel CreateKernel(IAppBuilder app)
         {
+            var settings = new IntegrationSettings
+            {
+                PathToXmiFiles = "App_Data/Xmi"
+            };
+
             var kernel = new StandardKernel();
-            kernel.UseDatenMeister();
+            kernel.UseDatenMeister(settings);
 
             // Defines the shutdown
             var properties = new AppProperties(app.Properties);

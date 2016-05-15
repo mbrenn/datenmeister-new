@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web.Http;
@@ -141,11 +142,16 @@ namespace DatenMeister.Web.Api
 
         private static string MakePathAbsolute(string filename)
         {
+            if (string.IsNullOrEmpty(filename))
+            {
+                throw new ArgumentException("Value cannot be null or empty.", nameof(filename));
+            }
+
             if (!Path.IsPathRooted(filename))
             {
                 filename = Path.GetFileName(filename);
                 var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-                filename = Path.Combine(appBase, "data", filename);
+                filename = Path.Combine(appBase, "App_Data/Database", filename);
             }
             return filename;
         }

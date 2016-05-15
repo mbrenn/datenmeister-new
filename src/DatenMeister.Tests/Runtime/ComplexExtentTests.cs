@@ -15,7 +15,7 @@ namespace DatenMeister.Tests.Runtime
         public void TestCreatabeTypes()
         {
             var kernel = new StandardKernel();
-            kernel.UseDatenMeister("Xmi");
+            kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
 
             // Apply for zipcodes
             var integrateZipCodes = kernel.Get<Integrate>();

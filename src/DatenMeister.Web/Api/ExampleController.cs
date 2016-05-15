@@ -37,10 +37,10 @@ namespace DatenMeister.Web.Api
             string filename;
             var tries = 0;
             int randomNumber;
-            do
+            do // while File.Exists
             {
-                randomNumber = Random.Next(1000000);
-                filename = Path.Combine(appBase, "Data", $"plz_{randomNumber}.csv");
+                randomNumber = Random.Next(int.MaxValue);
+                filename = Path.Combine(appBase, "App_Data/Database", $"plz_{randomNumber}.csv");
                 tries++;
                 if (tries == 10000)
                 {
@@ -51,7 +51,7 @@ namespace DatenMeister.Web.Api
 
             var originalFilename = Path.Combine(
                 appBase,
-                "App_Data",
+                "App_Data/Example",
                 "plz.csv");
 
             File.Copy(originalFilename, filename);

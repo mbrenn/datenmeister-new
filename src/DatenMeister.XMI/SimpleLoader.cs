@@ -15,12 +15,11 @@ namespace DatenMeister.XMI
         /// </summary>
         private readonly IFactory _factory;
 
-        private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>(); 
+        private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>();
 
         /// <summary>
         ///     Initializes a new instance of the Loader class.
         /// </summary>
-        /// <param name="metaWorkspace">Metaworkspace being used to find the type declarations</param>
         /// <param name="factory">Factory to be used</param>
         public SimpleLoader(
             IFactory factory)

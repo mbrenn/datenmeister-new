@@ -68,16 +68,15 @@ namespace DatenMeister.Web.Application
                 _serverInjection.Get<ExtentStorageData>(),
                 _serverInjection.Get<IExtentStorageLoader>(),
                 "App_Date/Database/workspaces.xml");
+            _serverInjection.Bind<ExtentStorageConfigurationLoader>().ToConstant(extentLoader);
 
             // Apply for zipcodes
             var integrateZipCodes = _serverInjection.Get<Integrate>();
             integrateZipCodes.Into(_serverInjection.Get<IWorkspaceCollection>().FindExtent("dm:///types"));
 
             // A little bit hacky, but it works for first
-            extentLoader.AddAdditionalType(typeof(CSVStorageConfiguration));
             extentLoader.AddAdditionalType(typeof(XmiStorageConfiguration));
             extentLoader.LoadAllExtents();
-            _serverInjection.Bind<ExtentStorageConfigurationLoader>().ToConstant(extentLoader);
             
             // Now start the plugins
             Integration.Helper.StartPlugins(_serverInjection);

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using DatenMeister.Integration.Plugins;
+using DatenMeister.Plugins;
 using Ninject;
 
 namespace DatenMeister.Integration
@@ -81,7 +81,7 @@ namespace DatenMeister.Integration
                     // Checks, if one of the class implements the IDatenMeisterPlugin
                     if (type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
                     {
-                        Debug.WriteLine($"Loading plugin type: {type}");
+                        Debug.WriteLine($"Starting plugin: {type}");
                         ((IDatenMeisterPlugin) kernel.Get(type)).Start();
                     }
                 }

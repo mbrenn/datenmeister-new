@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {

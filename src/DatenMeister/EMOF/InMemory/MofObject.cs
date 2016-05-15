@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using DatenMeister.EMOF.Exceptions;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Proxy;
 
 namespace DatenMeister.EMOF.InMemory
 {

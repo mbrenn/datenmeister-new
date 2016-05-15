@@ -13,7 +13,6 @@ using DatenMeister.XMI.EMOF;
 using DatenMeister.XMI.ExtentStorage;
 using Ninject;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace DatenMeister.Tests.Xmi.EMOF
 {

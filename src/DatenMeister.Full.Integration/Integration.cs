@@ -12,7 +12,6 @@ using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
-using DatenMeister.XMI.UmlBootstrap;
 using Ninject;
 
 namespace DatenMeister.Full.Integration

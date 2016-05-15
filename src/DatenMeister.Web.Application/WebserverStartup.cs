@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Web.Http;
 using Autofac;
+using Autofac.Integration.WebApi;
 using BurnSystems.Owin.StaticFiles;
 using DatenMeister.Apps.ZipCode;
 using DatenMeister.CSV.Runtime.Storage;
@@ -53,14 +55,21 @@ namespace DatenMeister.Web.Application
             httpConfiguration.MapHttpAttributeRoutes();
 
             _serverInjection = CreateKernel(app);
-            
+
+            var builder = new ContainerBuilder();
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+            builder.Update(_serverInjection);
+
+            httpConfiguration.DependencyResolver = new AutofacWebApiDependencyResolver(_serverInjection);
+
             _lifetimeScope = _serverInjection.BeginLifetimeScope();
 
             app.UseAutofacMiddleware(_lifetimeScope);
 
             var configuration = new StaticFilesConfiguration(directory);
             app.UseStaticFiles(configuration);
-            //app.UseNinjectMiddleware(() => _serverInjection).UseNinjectWebApi(httpConfiguration);
+            app.UseAutofacWebApi(httpConfiguration);
+            app.UseWebApi(httpConfiguration);
         }
 
         private IContainer CreateKernel(IAppBuilder app)

@@ -59,6 +59,9 @@ namespace DatenMeister.Integration
             kernel.RegisterInstance(dataLayerData).As<DataLayerData>();
             kernel.RegisterType<DataLayerLogic>().As<IDataLayerLogic>();
 
+            // Adds the name resolution
+            kernel.RegisterType<UmlNameResolution>().As<IUmlNameResolution>();
+
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
@@ -103,8 +106,6 @@ namespace DatenMeister.Integration
                 var typeWorkspace = workspaceCollection.GetWorkspace("Types");
                 typeWorkspace.AddExtent(extentTypes);
                 dataLayerLogic.AssignToDataLayer(extentTypes, dataLayers.Types);
-
-                kernel.RegisterType<UmlNameResolution>().As<IUmlNameResolution>();
 
                 // Boots up the typical DatenMeister Environment
                 if (settings.EstablishDataEnvironment)

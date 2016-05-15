@@ -131,6 +131,11 @@ namespace DatenMeister.Integration
             extentLoader.LoadAllExtents();
         }
 
+        /// <summary>
+        /// Stores all data that needs to be stored persistant on the hard drive
+        /// This method is typically called at the end of the lifecycle of the applciation
+        /// </summary>
+        /// <param name="kernel">Kernel to be used to find the appropriate methods</param>
         public static void UnuseDatenMeister(this StandardKernel kernel)
         {
             kernel.Get<WorkspaceLoader>().Store();

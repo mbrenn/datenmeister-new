@@ -41,8 +41,9 @@ namespace DatenMeister.Integration
             {
                 if (AppDomain.CurrentDomain.GetAssemblies().All(a => a.FullName != name.FullName))
                 {
-                    Debug.WriteLine($"Loading Assembly: {name}");
-                    LoadReferencedAssembly(Assembly.Load(name));
+                    var innerAssembly = Assembly.Load(name);
+                    Debug.WriteLine($"Loaded: {innerAssembly}");
+                    LoadReferencedAssembly(innerAssembly);
                 }
             }
         }
@@ -59,9 +60,15 @@ namespace DatenMeister.Integration
                     if (AppDomain.CurrentDomain.GetAssemblies().All(
                         x => x.GetName().Name.ToLower() != filenameWithoutExtension))
                     {
-                        Debug.WriteLine($"Loading by file: {file}");
-                        var assembly = Assembly.LoadFile(Path.Combine(path, file));
-                        Debug.WriteLine($"Loaded  by file: {assembly.FullName}");
+                        try
+                        {
+                            var assembly = Assembly.LoadFile(Path.Combine(path, file));
+                            Debug.WriteLine($"Loaded : {assembly.FullName}");
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine($"Loading of assembly {file} failed: {e}");
+                        }
                     }
                 }
             }

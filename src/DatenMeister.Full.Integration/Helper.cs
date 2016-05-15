@@ -3,26 +3,17 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using DatenMeister.Integration.Plugins;
+using Ninject;
 
-namespace DatenMeister.Full.Integration
+namespace DatenMeister.Integration
 {
     public static class Helper
     {
-        public static void LoadAllAssembliesInDirectory()
+        public static void LoadAllAssembliesFromCurrentDirectory()
         {
             var directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var files = Directory.GetFiles(directoryName)
-                .Where (x=>Path.GetExtension(x).ToLower() == ".dll");
-            foreach (var file in files)
-            {
-                var filenameWithoutExtension = Path.GetFileNameWithoutExtension(file).ToLower();
-                if (AppDomain.CurrentDomain.GetAssemblies().All(
-                    x => x.GetName().Name.ToLower() != filenameWithoutExtension))
-                {
-                    Debug.WriteLine($"Loading by file: {file}");
-                    Assembly.LoadFile(Path.Combine(directoryName, file));
-                }
-            }
+            LoadAssembliesFromFolder(directoryName);
         }
 
         /// <summary>
@@ -50,8 +41,49 @@ namespace DatenMeister.Full.Integration
             {
                 if (AppDomain.CurrentDomain.GetAssemblies().All(a => a.FullName != name.FullName))
                 {
-                    Debug.WriteLine($"Loading: {name}");
+                    Debug.WriteLine($"Loading Assembly: {name}");
                     LoadReferencedAssembly(Assembly.Load(name));
+                }
+            }
+        }
+
+        public static void LoadAssembliesFromFolder(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                var files = Directory.GetFiles(path)
+                    .Where(x => Path.GetExtension(x).ToLower() == ".dll");
+                foreach (var file in files)
+                {
+                    var filenameWithoutExtension = Path.GetFileNameWithoutExtension(file).ToLower();
+                    if (AppDomain.CurrentDomain.GetAssemblies().All(
+                        x => x.GetName().Name.ToLower() != filenameWithoutExtension))
+                    {
+                        Debug.WriteLine($"Loading by file: {file}");
+                        var assembly = Assembly.LoadFile(Path.Combine(path, file));
+                        Debug.WriteLine($"Loaded  by file: {assembly.FullName}");
+                    }
+                }
+            }
+            else
+            {
+                 Debug.WriteLine($"Directory does not exist: {path}");
+            }
+        }
+
+        public static void StartPlugins(StandardKernel kernel)
+        {
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                // Go through all types and check, if the type has implemented the interface for the pluging
+                foreach (var type in assembly.GetTypes())
+                {
+                    // Checks, if one of the class implements the IDatenMeisterPlugin
+                    if (type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
+                    {
+                        Debug.WriteLine($"Loading plugin type: {type}");
+                        ((IDatenMeisterPlugin) kernel.Get(type)).Start();
+                    }
                 }
             }
         }

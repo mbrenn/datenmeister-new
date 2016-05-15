@@ -1,7 +1,7 @@
 ﻿using DatenMeister.CSV;
 using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.EMOF.InMemory;
-using DatenMeister.Full.Integration;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.FactoryMapper;
 using Ninject;

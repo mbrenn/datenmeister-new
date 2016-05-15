@@ -5,7 +5,7 @@ using System.Web.Http;
 using BurnSystems.Owin.StaticFiles;
 using DatenMeister.Apps.ZipCode;
 using DatenMeister.CSV.Runtime.Storage;
-using DatenMeister.Full.Integration;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -47,8 +47,9 @@ namespace DatenMeister.Web.Application
             app.UseStaticFiles(configuration);
             
             // Do the full load of all assemblies
-            Full.Integration.Helper.LoadAllAssembliesInDirectory();
-            Full.Integration.Helper.LoadAllReferenceAssemblies();
+            Integration.Helper.LoadAllAssembliesFromCurrentDirectory();
+            Integration.Helper.LoadAllReferenceAssemblies();
+            Integration.Helper.LoadAssembliesFromFolder("plugins");
             
             // Initializing of the WebAPI, needs to be called after the DatenMeister is initialized
             var httpConfiguration = new HttpConfiguration();
@@ -58,7 +59,7 @@ namespace DatenMeister.Web.Application
             app.UseNinjectMiddleware(() => _serverInjection).UseNinjectWebApi(httpConfiguration);
 
             // Loading and storing the workspaces
-            var workspaceLoader = new WorkspaceLoader(_serverInjection.Get<IWorkspaceCollection>(), "data/workspaces.xml");
+            var workspaceLoader = new WorkspaceLoader(_serverInjection.Get<IWorkspaceCollection>(), "App_Date/Database/workspaces.xml");
             workspaceLoader.Load();
             _serverInjection.Bind<WorkspaceLoader>().ToConstant(workspaceLoader);
 
@@ -66,7 +67,7 @@ namespace DatenMeister.Web.Application
             var extentLoader = new ExtentStorageConfigurationLoader(
                 _serverInjection.Get<ExtentStorageData>(),
                 _serverInjection.Get<IExtentStorageLoader>(),
-                "data/extents.xml");
+                "App_Date/Database/workspaces.xml");
 
             // Apply for zipcodes
             var integrateZipCodes = _serverInjection.Get<Integrate>();
@@ -77,6 +78,9 @@ namespace DatenMeister.Web.Application
             extentLoader.AddAdditionalType(typeof(XmiStorageConfiguration));
             extentLoader.LoadAllExtents();
             _serverInjection.Bind<ExtentStorageConfigurationLoader>().ToConstant(extentLoader);
+            
+            // Now start the plugins
+            Integration.Helper.StartPlugins(_serverInjection);
         }
 
         private static StandardKernel CreateKernel(IAppBuilder app)
@@ -94,8 +98,7 @@ namespace DatenMeister.Web.Application
             var token = properties.OnAppDisposing;
             token.Register(() =>
             {
-                kernel.Get<WorkspaceLoader>().Store();
-                kernel.Get<ExtentStorageConfigurationLoader>().StoreAllExtents();
+                kernel.UnuseDatenMeister();
             });
 
             // Loading the zipcodes
@@ -111,7 +114,7 @@ namespace DatenMeister.Web.Application
             var file = Path.Combine(
                 Path.Combine(
                     AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
-                    "App_Data"),
+                    "App_Data/Database"),
                 "plz.csv");
 
             var defaultConfiguration = new CSVStorageConfiguration

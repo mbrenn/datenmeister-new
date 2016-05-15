@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Integration
+﻿namespace DatenMeister.Full.Integration
 {
     public class IntegrationSettings
     {

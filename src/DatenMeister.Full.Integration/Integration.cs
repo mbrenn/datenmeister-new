@@ -10,11 +10,12 @@ using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
 using Ninject;
 
-namespace DatenMeister.Full.Integration
+namespace DatenMeister.Integration
 {
     public static class Integration
     {
@@ -92,6 +93,12 @@ namespace DatenMeister.Full.Integration
 
             watch.Stop();
             Debug.WriteLine($"Elapsed time for boostrap: {watch.Elapsed}");
+        }
+
+        public static void UnuseDatenMeister(this StandardKernel kernel)
+        {
+            kernel.Get<WorkspaceLoader>().Store();
+            kernel.Get<ExtentStorageConfigurationLoader>().StoreAllExtents();
         }
 
         public static void PerformAutomaticMappingByAttribute(this DefaultFactoryMapper mapper, StandardKernel kernel)

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using DatenMeister.DataLayer;
-using DatenMeister.Full.Integration;
+using DatenMeister.Integration;
 using DatenMeister.Uml.Helper;
 using Ninject;
 using NUnit.Framework;

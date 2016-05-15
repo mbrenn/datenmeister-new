@@ -44,7 +44,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Apps.ZipCode.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Runtime", "DatenMeister.Runtime\DatenMeister.Runtime.csproj", "{4350A383-14F7-4A84-8CDF-96CA6828F8E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Full.Integration", "DatenMeister.Full.Integration\DatenMeister.Full.Integration.csproj", "{DD8EA307-D685-4A7B-B726-A1C87192600D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Integration", "DatenMeister.Full.Integration\DatenMeister.Integration.csproj", "{DD8EA307-D685-4A7B-B726-A1C87192600D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Uml", "DatenMeister.Uml\DatenMeister.Uml.csproj", "{335399D1-B533-42D2-AEA5-F398F35D8E66}"
 EndProject

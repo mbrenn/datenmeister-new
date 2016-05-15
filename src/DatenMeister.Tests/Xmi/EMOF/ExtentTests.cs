@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.Full.Integration;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;

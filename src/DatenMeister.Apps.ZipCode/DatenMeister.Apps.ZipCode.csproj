@@ -63,6 +63,7 @@
     <Compile Include="Integrate.cs" />
     <Compile Include="Model\ZipCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZipCodePlugin.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatenMeister.CSV\DatenMeister.CSV.csproj">

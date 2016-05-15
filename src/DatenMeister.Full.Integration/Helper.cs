@@ -19,7 +19,7 @@ namespace DatenMeister.Integration
         /// <summary>
         /// Loads all referenced assemblies
         /// </summary>
-        public static void LoadAllReferenceAssemblies()
+        public static void LoadAllReferencedAssemblies()
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()
                 .Where(x=>!IsDotNetLibrary(x.GetName())))

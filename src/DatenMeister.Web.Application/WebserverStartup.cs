@@ -48,7 +48,7 @@ namespace DatenMeister.Web.Application
             
             // Do the full load of all assemblies
             Integration.Helper.LoadAllAssembliesFromCurrentDirectory();
-            Integration.Helper.LoadAllReferenceAssemblies();
+            Integration.Helper.LoadAllReferencedAssemblies();
             Integration.Helper.LoadAssembliesFromFolder("plugins");
             
             // Initializing of the WebAPI, needs to be called after the DatenMeister is initialized
@@ -57,10 +57,6 @@ namespace DatenMeister.Web.Application
 
             _serverInjection = CreateKernel(app);
             app.UseNinjectMiddleware(() => _serverInjection).UseNinjectWebApi(httpConfiguration);
-
-            // Apply for zipcodes
-            var integrateZipCodes = _serverInjection.Get<Integrate>();
-            integrateZipCodes.Into(_serverInjection.Get<IWorkspaceCollection>().FindExtent("dm:///types"));
         }
 
         private static StandardKernel CreateKernel(IAppBuilder app)
@@ -81,9 +77,6 @@ namespace DatenMeister.Web.Application
             {
                 kernel.UnuseDatenMeister();
             });
-
-            // Loading the zipcodes
-            // LoadZipCodes(kernel);
 
             return kernel;
         }

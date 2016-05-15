@@ -29,10 +29,12 @@ namespace DatenMeister.Full.Integration
             var watch = new Stopwatch();
             watch.Start();
 
+            // Defines the factory method for a certain extent type
             var factoryMapper = new DefaultFactoryMapper();
             factoryMapper.PerformAutomaticMappingByAttribute(kernel);
             kernel.Bind<IFactoryMapper>().ToConstant(factoryMapper);
 
+            // Finds the loader for a certain extent type
             var storageMap = new ManualConfigurationToExtentStorageMapper();
             storageMap.PerformMappingForConfigurationOfExtentLoaders(kernel);
             kernel.Bind<IConfigurationToExtentStorageMapper>().ToConstant(storageMap);
@@ -59,9 +61,6 @@ namespace DatenMeister.Full.Integration
             dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
 
             // Load the default extents
-            // Load the primitivetypes
-            var primitiveTypes = new _PrimitiveTypes();
-            kernel.Bind<_PrimitiveTypes>().ToConstant(primitiveTypes);
 
             // Performs the bootstrap
             var paths =

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Web.Http;
+using Autofac;
 using BurnSystems.Owin.StaticFiles;
 using DatenMeister.Apps.ZipCode;
 using DatenMeister.CSV.Runtime.Storage;
@@ -13,9 +14,6 @@ using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.XMI.ExtentStorage;
 using Microsoft.Owin;
 using Microsoft.Owin.BuilderProperties;
-using Ninject;
-using Ninject.Web.Common.OwinHost;
-using Ninject.Web.WebApi.OwinHost;
 using Owin;
 
 [assembly: OwinStartup(typeof(DatenMeister.Web.Application.WebserverStartup))]
@@ -23,7 +21,8 @@ namespace DatenMeister.Web.Application
 {
     public class WebserverStartup
     {
-        private StandardKernel _serverInjection;
+        private IContainer _serverInjection;
+        private ILifetimeScope _lifetimeScope;
 
         public void Configuration(IAppBuilder app)
         {
@@ -43,8 +42,6 @@ namespace DatenMeister.Web.Application
                 directory = "..\\..\\..\\htdocs";
             }
 #endif
-            var configuration = new StaticFilesConfiguration(directory);
-            app.UseStaticFiles(configuration);
             
             // Do the full load of all assemblies
             Integration.Helper.LoadAllAssembliesFromCurrentDirectory();
@@ -56,10 +53,17 @@ namespace DatenMeister.Web.Application
             httpConfiguration.MapHttpAttributeRoutes();
 
             _serverInjection = CreateKernel(app);
-            app.UseNinjectMiddleware(() => _serverInjection).UseNinjectWebApi(httpConfiguration);
+            
+            _lifetimeScope = _serverInjection.BeginLifetimeScope();
+
+            app.UseAutofacMiddleware(_lifetimeScope);
+
+            var configuration = new StaticFilesConfiguration(directory);
+            app.UseStaticFiles(configuration);
+            //app.UseNinjectMiddleware(() => _serverInjection).UseNinjectWebApi(httpConfiguration);
         }
 
-        private static StandardKernel CreateKernel(IAppBuilder app)
+        private IContainer CreateKernel(IAppBuilder app)
         {
             var settings = new IntegrationSettings
             {
@@ -67,21 +71,21 @@ namespace DatenMeister.Web.Application
                 EstablishDataEnvironment = true
             };
 
-            var kernel = new StandardKernel();
-            kernel.UseDatenMeister(settings);
+            var kernel = new ContainerBuilder();
+            var container = kernel.UseDatenMeister(settings);
 
             // Defines the shutdown
             var properties = new AppProperties(app.Properties);
             var token = properties.OnAppDisposing;
             token.Register(() =>
             {
-                kernel.UnuseDatenMeister();
+                _lifetimeScope.UnuseDatenMeister();
             });
 
-            return kernel;
+            return container;
         }
 
-        private static void LoadZipCodes(StandardKernel kernel)
+        private static void LoadZipCodes(ILifetimeScope scope)
         {
             //////////////////////
             // Loads the workspace
@@ -104,7 +108,7 @@ namespace DatenMeister.Web.Application
                 }
             };
 
-            var extentStorageLogic = kernel.Get<IExtentStorageLoader>();
+            var extentStorageLogic = scope.Resolve<IExtentStorageLoader>();
             extentStorageLogic.LoadExtent(defaultConfiguration, false);
             
             Debug.WriteLine("Zip codes loaded");

@@ -3,9 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Autofac;
 using DatenMeister.Plugins;
-using Ninject;
-
 namespace DatenMeister.Integration
 {
     public static class Helper
@@ -78,7 +77,7 @@ namespace DatenMeister.Integration
             }
         }
 
-        public static void StartPlugins(StandardKernel kernel)
+        public static void StartPlugins(ILifetimeScope kernel)
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -89,7 +88,7 @@ namespace DatenMeister.Integration
                     if (type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
                     {
                         Debug.WriteLine($"Starting plugin: {type}");
-                        ((IDatenMeisterPlugin) kernel.Get(type)).Start();
+                        ((IDatenMeisterPlugin) kernel.Resolve(type)).Start();
                     }
                 }
             }

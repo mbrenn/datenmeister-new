@@ -1,26 +1,26 @@
-﻿using DatenMeister.CSV.Runtime.Storage;
-using DatenMeister.Plugins;
+﻿using DatenMeister.Plugins;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.XMI.ExtentStorage;
 
-namespace DatenMeister.CSV
+namespace DatenMeister.XMI
 {
     /// <summary>
     /// This plugin is loaded during the bootup
     /// </summary>
     // ReSharper disable once UnusedMember.Global
     // ReSharper disable once InconsistentNaming
-    public class CSVPlugin : IDatenMeisterPlugin
+    public class XmiPlugin : IDatenMeisterPlugin
     {
         private readonly ExtentStorageConfigurationLoader _extentStorageLoader;
 
-        public CSVPlugin(ExtentStorageConfigurationLoader extentStorageLoader)
+        public XmiPlugin(ExtentStorageConfigurationLoader extentStorageLoader)
         {
             _extentStorageLoader = extentStorageLoader;
         }
 
         public void Start()
         {
-            _extentStorageLoader.AddAdditionalType(typeof(CSVStorageConfiguration));
+            _extentStorageLoader.AddAdditionalType(typeof(XmiStorageConfiguration));
         }
     }
 }

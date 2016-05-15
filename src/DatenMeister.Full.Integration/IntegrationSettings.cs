@@ -10,5 +10,7 @@
         public bool PerformSlimIntegration { get; set; }
 
         public string PathToXmiFiles { get; set; } = "App_Data";
+
+        public bool EstablishDataEnvironment { get; set; }
     }
 }

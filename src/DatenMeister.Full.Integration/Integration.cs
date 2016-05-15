@@ -72,16 +72,24 @@ namespace DatenMeister.Integration
                     PathMof = Path.Combine(settings.PathToXmiFiles, "MOF.xmi")
                 };
 
-            Bootstrapper.PerformFullBootstrap(
-                paths,
-                workspaceCollection.GetWorkspace("UML"),
-                dataLayerLogic,
-                dataLayers.Uml);
-            Bootstrapper.PerformFullBootstrap(
-                paths,
-                workspaceCollection.GetWorkspace("MOF"),
-                dataLayerLogic,
-                dataLayers.Mof);
+            if (settings.PerformSlimIntegration)
+            {
+                throw new InvalidOperationException("Slim integration is currently not supported");
+            }
+            else
+            {
+                Bootstrapper.PerformFullBootstrap(
+                    paths,
+                    workspaceCollection.GetWorkspace("UML"),
+                    dataLayerLogic,
+                    dataLayers.Uml);
+                Bootstrapper.PerformFullBootstrap(
+                    paths,
+                    workspaceCollection.GetWorkspace("MOF"),
+                    dataLayerLogic,
+                    dataLayers.Mof);
+            }
+
 
             // Creates the workspace and extent for the types layer which are belonging to the types
             var extentTypes = new MofUriExtent("dm:///types");
@@ -91,8 +99,36 @@ namespace DatenMeister.Integration
 
             kernel.Bind<IUmlNameResolution>().To<UmlNameResolution>();
 
+            // Boots up the typical DatenMeister Environment
+            if (settings.EstablishDataEnvironment)
+            {
+                EstablishDataEnvironment(kernel);
+            }
+
             watch.Stop();
             Debug.WriteLine($"Elapsed time for boostrap: {watch.Elapsed}");
+        }
+
+        private static void EstablishDataEnvironment(StandardKernel kernel)
+        {
+            // Loading and storing the workspaces
+            var workspaceLoader = new WorkspaceLoader(kernel.Get<IWorkspaceCollection>(),
+                "App_Data/Database/workspaces.xml");
+            workspaceLoader.Load();
+            kernel.Bind<WorkspaceLoader>().ToConstant(workspaceLoader);
+
+            // Loading and storing the extents
+            var extentLoader = new ExtentStorageConfigurationLoader(
+                kernel.Get<ExtentStorageData>(),
+                kernel.Get<IExtentStorageLoader>(),
+                "App_Data/Database/extents.xml");
+            kernel.Bind<ExtentStorageConfigurationLoader>().ToConstant(extentLoader);
+
+            // Now start the plugins
+            Helper.StartPlugins(kernel);
+
+            // Loads all extents after all plugins were started
+            extentLoader.LoadAllExtents();
         }
 
         public static void UnuseDatenMeister(this StandardKernel kernel)

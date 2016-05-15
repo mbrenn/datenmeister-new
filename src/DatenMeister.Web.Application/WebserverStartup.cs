@@ -58,35 +58,17 @@ namespace DatenMeister.Web.Application
             _serverInjection = CreateKernel(app);
             app.UseNinjectMiddleware(() => _serverInjection).UseNinjectWebApi(httpConfiguration);
 
-            // Loading and storing the workspaces
-            var workspaceLoader = new WorkspaceLoader(_serverInjection.Get<IWorkspaceCollection>(), "App_Data/Database/workspaces.xml");
-            workspaceLoader.Load();
-            _serverInjection.Bind<WorkspaceLoader>().ToConstant(workspaceLoader);
-
-            // Loading and storing the extents
-            var extentLoader = new ExtentStorageConfigurationLoader(
-                _serverInjection.Get<ExtentStorageData>(),
-                _serverInjection.Get<IExtentStorageLoader>(),
-                "App_Data/Database/workspaces.xml");
-            _serverInjection.Bind<ExtentStorageConfigurationLoader>().ToConstant(extentLoader);
-
             // Apply for zipcodes
             var integrateZipCodes = _serverInjection.Get<Integrate>();
             integrateZipCodes.Into(_serverInjection.Get<IWorkspaceCollection>().FindExtent("dm:///types"));
-
-            // A little bit hacky, but it works for first
-            extentLoader.AddAdditionalType(typeof(XmiStorageConfiguration));
-            extentLoader.LoadAllExtents();
-            
-            // Now start the plugins
-            Integration.Helper.StartPlugins(_serverInjection);
         }
 
         private static StandardKernel CreateKernel(IAppBuilder app)
         {
             var settings = new IntegrationSettings
             {
-                PathToXmiFiles = "App_Data/Xmi"
+                PathToXmiFiles = "App_Data/Xmi",
+                EstablishDataEnvironment = true
             };
 
             var kernel = new StandardKernel();

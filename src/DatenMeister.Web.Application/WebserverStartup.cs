@@ -37,6 +37,11 @@ namespace DatenMeister.Web.Application
             {
                 directory = "..\\..\\htdocs";
             }
+
+            if (Directory.Exists("..\\..\\..\\htdocs"))
+            {
+                directory = "..\\..\\..\\htdocs";
+            }
 #endif
             var configuration = new StaticFilesConfiguration(directory);
             app.UseStaticFiles(configuration);

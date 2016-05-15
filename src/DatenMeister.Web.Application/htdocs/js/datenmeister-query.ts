@@ -1,6 +1,6 @@
 ﻿
-import * as DMI from "datenmeister-interfaces"
-import * as DMClient from "datenmeister-client"
+import * as DMI from "./datenmeister-interfaces"
+import * as DMClient from "./datenmeister-client"
 
 export class ItemsFromExtentProvider implements DMI.Api.IItemsProvider {
 

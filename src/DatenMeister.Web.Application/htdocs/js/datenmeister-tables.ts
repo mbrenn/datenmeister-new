@@ -1,4 +1,4 @@
-﻿import * as DMI from "datenmeister-interfaces"
+﻿import * as DMI from "./datenmeister-interfaces"
 
 export class ItemTableConfiguration {
     onNewItemClicked: (typeUrl?: string) => void;

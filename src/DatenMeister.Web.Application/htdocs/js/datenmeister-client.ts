@@ -1,4 +1,4 @@
-﻿import * as DMI from "datenmeister-interfaces";
+﻿import * as DMI from "./datenmeister-interfaces";
 
 export module WorkspaceApi {
     export function getAllWorkspaces(): JQueryPromise<Array<DMI.ClientResponse.IWorkspace>>

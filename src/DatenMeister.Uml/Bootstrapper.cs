@@ -219,7 +219,11 @@ namespace DatenMeister.Uml
 
             // Now we replace the property information from string form to real properties
             List<Action> actions = new List<Action>();
-            var classifierMethod = new ClassifierMethods(_dataLayerLogic, true);
+            var classifierMethod = new ClassifierMethods(_dataLayerLogic)
+            {
+                Legacy = true
+            };
+
             foreach (var element in allElements.OfType<IObjectAllProperties>())
             {
                 var asElement = element as IElement;

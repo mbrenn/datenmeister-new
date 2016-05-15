@@ -15,8 +15,7 @@ namespace DatenMeister.Tests.Runtime
         public void TestCreatabeTypes()
         {
             var kernel = new ContainerBuilder();
-            kernel.UseDatenMeister(new IntegrationSettings {PathToXmiFiles = "Xmi"});
-            var builder = kernel.Build();
+            var builder = kernel.UseDatenMeister(new IntegrationSettings {PathToXmiFiles = "Xmi"});
             using (var scope = builder.BeginLifetimeScope())
             {
                 // Apply for zipcodes

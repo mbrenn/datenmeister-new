@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Autofac;
+using Autofac.Features.ResolveAnything;
 using DatenMeister.DataLayer;
 using DatenMeister.Integration;
 using DatenMeister.Uml.Helper;
@@ -14,8 +15,8 @@ namespace DatenMeister.Tests.Uml
         public void TestGeneralizedProperties()
         {
             var kernel = new ContainerBuilder();
-            kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
-            var builder = kernel.Build();
+            kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
+            var builder = kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
             using (var scope = builder.BeginLifetimeScope())
             {
                 var classifierMethods = scope.Resolve<ClassifierMethods>();

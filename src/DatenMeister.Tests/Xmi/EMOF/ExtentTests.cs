@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Autofac;
+using Autofac.Features.ResolveAnything;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Reflection;
@@ -180,8 +181,8 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestXmlExtentStorage()
         {
             var kernel = new ContainerBuilder();
-            kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
-            var builder = kernel.Build();
+
+            var builder = kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
             using (var scope = builder.BeginLifetimeScope())
             {
                 var path = Path.Combine(
@@ -232,8 +233,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestWithMetaClass()
         {
             var kernel = new ContainerBuilder();
-            kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
-            var builder = kernel.Build();
+            var builder = kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
             using (var scope = builder.BeginLifetimeScope())
             {
                 var dataLayerLogic = scope.Resolve<IDataLayerLogic>();

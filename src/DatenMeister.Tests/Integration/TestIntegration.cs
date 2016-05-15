@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Autofac.Features.ResolveAnything;
 using DatenMeister.CSV;
 using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.EMOF.InMemory;
@@ -17,7 +18,9 @@ namespace DatenMeister.Tests.Integration
         public void TestFactoryMappingByAttributeForFactories()
         {
             var kernel = new ContainerBuilder();
+            kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
             var builder = kernel.Build();
+
             using (var scope = builder.BeginLifetimeScope())
             {
                 var mapper = new DefaultFactoryMapper();
@@ -37,8 +40,7 @@ namespace DatenMeister.Tests.Integration
         public void TestFactoryMappingByAttributeForExtentLoaders()
         {
             var kernel = new ContainerBuilder();
-            kernel.UseDatenMeister(new IntegrationSettings {PathToXmiFiles = "Xmi"});
-            var builder = kernel.Build();
+            var builder = kernel.UseDatenMeister(new IntegrationSettings {PathToXmiFiles = "Xmi"});
             using (var scope = builder.BeginLifetimeScope())
             {
 

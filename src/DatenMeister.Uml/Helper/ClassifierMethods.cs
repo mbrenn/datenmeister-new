@@ -12,10 +12,9 @@ namespace DatenMeister.Uml.Helper
         private readonly IDataLayerLogic _dataLayerLogic;
         public bool Legacy { get; set; }
 
-        public ClassifierMethods(IDataLayerLogic dataLayerLogic, bool legacy)
+        public ClassifierMethods(IDataLayerLogic dataLayerLogic)
         {
             _dataLayerLogic = dataLayerLogic;
-            Legacy = legacy;
         }
 
         /// <summary>

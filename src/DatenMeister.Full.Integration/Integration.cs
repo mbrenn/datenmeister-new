@@ -169,6 +169,7 @@ namespace DatenMeister.Integration
                     var factoryAssignmentAttribute = customAttribute as AssignFactoryForExtentTypeAttribute;
                     if (factoryAssignmentAttribute != null)
                     {
+                        // TODO: We cannot use scope here. It might already be disposed
                         mapper.AddMapping(type, () => (IFactory)scope.Resolve(factoryAssignmentAttribute.FactoryType));
 
                         Debug.WriteLine($"Assigned extent type '{type.FullName}' to '{factoryAssignmentAttribute.FactoryType}'");
@@ -189,6 +190,7 @@ namespace DatenMeister.Integration
                     var configuredByAttribute = customAttribute as ConfiguredByAttribute;
                     if (configuredByAttribute != null)
                     {
+                        // TODO: We cannot use scope here. It might already be disposed
                         map.AddMapping(configuredByAttribute.ConfigurationType,
                             () => (IExtentStorage) scope.Resolve(type));
 

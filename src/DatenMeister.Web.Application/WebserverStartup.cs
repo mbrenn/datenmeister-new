@@ -59,7 +59,7 @@ namespace DatenMeister.Web.Application
             app.UseNinjectMiddleware(() => _serverInjection).UseNinjectWebApi(httpConfiguration);
 
             // Loading and storing the workspaces
-            var workspaceLoader = new WorkspaceLoader(_serverInjection.Get<IWorkspaceCollection>(), "App_Date/Database/workspaces.xml");
+            var workspaceLoader = new WorkspaceLoader(_serverInjection.Get<IWorkspaceCollection>(), "App_Data/Database/workspaces.xml");
             workspaceLoader.Load();
             _serverInjection.Bind<WorkspaceLoader>().ToConstant(workspaceLoader);
 
@@ -67,7 +67,7 @@ namespace DatenMeister.Web.Application
             var extentLoader = new ExtentStorageConfigurationLoader(
                 _serverInjection.Get<ExtentStorageData>(),
                 _serverInjection.Get<IExtentStorageLoader>(),
-                "App_Date/Database/workspaces.xml");
+                "App_Data/Database/workspaces.xml");
             _serverInjection.Bind<ExtentStorageConfigurationLoader>().ToConstant(extentLoader);
 
             // Apply for zipcodes

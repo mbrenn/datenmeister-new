@@ -12,6 +12,6 @@
             
         }
 
-        public int LineHeights { get; set; }
+        public int lineHeight { get; set; }
     }
 }

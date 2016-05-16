@@ -129,8 +129,10 @@ function showDialogNewWorkspace(layout: DMLayout.Layout) {
             .done(() => layout.navigateToWorkspaces());
     };
 
-    configuration.addColumn(new DMI.Table.DataTableColumn("Title", "name"));
-    configuration.addColumn(new DMI.Table.DataTableColumn("Annotation", "annotation"));
+    configuration.addColumn(new DMI.Table.DataField("Title", "name"));
+    var annotationColumn = new DMI.Table.TextDataField("Annotation", "annotation");
+    annotationColumn.lineHeight = 4;
+    configuration.addColumn(annotationColumn);
 
     layout.navigateToDialog(configuration);
 }
@@ -170,10 +172,10 @@ function showDialogNewCsvExtent(layout: DMLayout.Layout, workspace: string) {
             .done(() => layout.navigateToExtents(data.v["workspace"]));
     };
 
-    configuration.addColumn(new DMI.Table.DataTableColumn("Workspace", "workspace").withDefaultValue(workspace));
-    configuration.addColumn(new DMI.Table.DataTableColumn("URI", "contextUri").withDefaultValue("dm:///"));
-    configuration.addColumn(new DMI.Table.DataTableColumn("Filename", "filename"));
-    configuration.addColumn(new DMI.Table.DataTableColumn("Columns", "columns").withDefaultValue("Column1,Column2"));
+    configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace));
+    configuration.addColumn(new DMI.Table.DataField("URI", "contextUri").withDefaultValue("dm:///"));
+    configuration.addColumn(new DMI.Table.DataField("Filename", "filename"));
+    configuration.addColumn(new DMI.Table.DataField("Columns", "columns").withDefaultValue("Column1,Column2"));
     configuration.ws = workspace;
 
     layout.navigateToDialog(configuration);
@@ -193,9 +195,9 @@ function showDialogAddCsvExtent(layout: DMLayout.Layout, workspace: string) {
             .done(() => layout.navigateToExtents(data.v["workspace"]));
     };
 
-    configuration.addColumn(new DMI.Table.DataTableColumn("Workspace", "workspace").withDefaultValue(workspace));
-    configuration.addColumn(new DMI.Table.DataTableColumn("URI", "contextUri").withDefaultValue("dm:///"));
-    configuration.addColumn(new DMI.Table.DataTableColumn("Filename", "filename"));
+    configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace));
+    configuration.addColumn(new DMI.Table.DataField("URI", "contextUri").withDefaultValue("dm:///"));
+    configuration.addColumn(new DMI.Table.DataField("Filename", "filename"));
     configuration.ws = workspace;
 
     layout.navigateToDialog(configuration);
@@ -214,9 +216,9 @@ function showDialogNewXmiExtent(layout: DMLayout.Layout, workspace: string) {
             .done(() => layout.navigateToExtents(data.v["workspace"]));
     };
 
-    configuration.addColumn(new DMI.Table.DataTableColumn("Workspace", "workspace").withDefaultValue(workspace));
-    configuration.addColumn(new DMI.Table.DataTableColumn("URI", "contextUri").withDefaultValue("dm:///"));
-    configuration.addColumn(new DMI.Table.DataTableColumn("Filename", "filename").withDefaultValue("d:\\file.xml"));
+    configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace));
+    configuration.addColumn(new DMI.Table.DataField("URI", "contextUri").withDefaultValue("dm:///"));
+    configuration.addColumn(new DMI.Table.DataField("Filename", "filename").withDefaultValue("d:\\file.xml"));
 
     layout.navigateToDialog(configuration);
 }

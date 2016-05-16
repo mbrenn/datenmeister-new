@@ -24,7 +24,7 @@ namespace DatenMeister.Tests.Integration
             using (var scope = builder.BeginLifetimeScope())
             {
                 var mapper = new DefaultFactoryMapper();
-                mapper.PerformAutomaticMappingByAttribute(scope);
+                mapper.PerformAutomaticMappingByAttribute();
 
                 Assert.That(mapper.HasMappingForExtentType(typeof(MofUriExtent)), Is.True);
                 Assert.That(mapper.HasMappingForExtentType(typeof(MofElement)), Is.False);
@@ -45,7 +45,7 @@ namespace DatenMeister.Tests.Integration
             {
 
                 var mapper = new ManualConfigurationToExtentStorageMapper();
-                mapper.PerformMappingForConfigurationOfExtentLoaders(scope);
+                mapper.PerformMappingForConfigurationOfExtentLoaders();
 
                 Assert.That(mapper.HasMappingFor(typeof(CSVStorageConfiguration)), Is.True);
                 Assert.That(mapper.HasMappingFor(typeof(CSVDataProvider)), Is.False);

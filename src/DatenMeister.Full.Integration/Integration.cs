@@ -65,8 +65,8 @@ namespace DatenMeister.Integration
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
-                factoryMapper.PerformAutomaticMappingByAttribute(scope);
-                storageMap.PerformMappingForConfigurationOfExtentLoaders(scope);
+                factoryMapper.PerformAutomaticMappingByAttribute();
+                storageMap.PerformMappingForConfigurationOfExtentLoaders();
 
                 var dataLayerLogic = scope.Resolve<IDataLayerLogic>();
                 dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
@@ -157,7 +157,7 @@ namespace DatenMeister.Integration
             scope.Resolve<ExtentStorageConfigurationLoader>().StoreAllExtents();
         }
 
-        public static void PerformAutomaticMappingByAttribute(this DefaultFactoryMapper mapper, ILifetimeScope scope)
+        public static void PerformAutomaticMappingByAttribute(this DefaultFactoryMapper mapper)
         {
             // Map extent types to factory
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
@@ -170,7 +170,9 @@ namespace DatenMeister.Integration
                     if (factoryAssignmentAttribute != null)
                     {
                         // TODO: We cannot use scope here. It might already be disposed
-                        mapper.AddMapping(type, () => (IFactory)scope.Resolve(factoryAssignmentAttribute.FactoryType));
+                        mapper.AddMapping(
+                            type,
+                            () => (IFactory) Activator.CreateInstance(factoryAssignmentAttribute.FactoryType));
 
                         Debug.WriteLine($"Assigned extent type '{type.FullName}' to '{factoryAssignmentAttribute.FactoryType}'");
                     }
@@ -178,10 +180,11 @@ namespace DatenMeister.Integration
             }
         }
 
-        public static void PerformMappingForConfigurationOfExtentLoaders(this ManualConfigurationToExtentStorageMapper map, ILifetimeScope scope)
+        public static void PerformMappingForConfigurationOfExtentLoaders(
+            this ManualConfigurationToExtentStorageMapper map)
         {
-                // Map configurations to extent loader
-                var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
+            // Map configurations to extent loader
+            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
             foreach (var type in types)
             {
                 foreach (
@@ -192,7 +195,7 @@ namespace DatenMeister.Integration
                     {
                         // TODO: We cannot use scope here. It might already be disposed
                         map.AddMapping(configuredByAttribute.ConfigurationType,
-                            () => (IExtentStorage) scope.Resolve(type));
+                            () => (IExtentStorage) Activator.CreateInstance(type));
 
                         Debug.WriteLine(
                             $"Extent loader '{configuredByAttribute.ConfigurationType}' is configured by '{type.FullName}'");

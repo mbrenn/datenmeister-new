@@ -31,7 +31,7 @@ namespace DatenMeister.Uml.Helper
 
             var metaLayer = Legacy ? null : _dataLayerLogic.GetMetaLayerFor(_dataLayerLogic.GetDataLayerOfObject(classifier));
             var uml = Legacy ? null : _dataLayerLogic.Get<_UML>(metaLayer);
-            var propertyOwnedAttribute = Legacy ? "ownedAttribute" : uml.Classification.Classifier.attribute;
+            var propertyOwnedAttribute = Legacy ? "ownedAttribute" : uml.StructuredClassifiers.StructuredClassifier.ownedAttribute;
             var propertyGeneralization = Legacy ? "generalization" : uml.Classification.Classifier.generalization;
             var propertyGeneral = Legacy ? "general" : uml.Classification.Generalization.general;
 

@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.Uml
             using (var scope = builder.BeginLifetimeScope())
             {
                 var classifierMethods = scope.Resolve<ClassifierMethods>();
-                classifierMethods.Legacy = true;
+                classifierMethods.Legacy = false;
                 var dataLayers = scope.Resolve<DataLayers>();
                 var dataLayerLogic = scope.Resolve<DataLayerLogic>();
 

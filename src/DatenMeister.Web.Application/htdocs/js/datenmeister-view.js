@@ -1,4 +1,4 @@
-define(["require", "exports", "datenmeister-tables", "datenmeister-client", "datenmeister-query"], function (require, exports, DMTables, DMClient, DMQuery) {
+define(["require", "exports", "./datenmeister-tables", "./datenmeister-client", "./datenmeister-query"], function (require, exports, DMTables, DMClient, DMQuery) {
     "use strict";
     var WorkspaceView = (function () {
         function WorkspaceView() {

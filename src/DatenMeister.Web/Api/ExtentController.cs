@@ -12,7 +12,6 @@ using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Queries;
 using DatenMeister.Runtime.Extents;
-using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
@@ -141,11 +140,16 @@ namespace DatenMeister.Web.Api
 
         private static string MakePathAbsolute(string filename)
         {
+            if (string.IsNullOrEmpty(filename))
+            {
+                throw new ArgumentException("Value cannot be null or empty.", nameof(filename));
+            }
+
             if (!Path.IsPathRooted(filename))
             {
                 filename = Path.GetFileName(filename);
                 var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-                filename = Path.Combine(appBase, "data", filename);
+                filename = Path.Combine(appBase, "App_Data/Database", filename);
             }
             return filename;
         }

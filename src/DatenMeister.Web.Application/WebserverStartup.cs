@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Web.Http;
+using Autofac;
+using Autofac.Integration.WebApi;
 using BurnSystems.Owin.StaticFiles;
 using DatenMeister.Apps.ZipCode;
 using DatenMeister.CSV.Runtime.Storage;
-using DatenMeister.Full.Integration;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -13,9 +16,6 @@ using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.XMI.ExtentStorage;
 using Microsoft.Owin;
 using Microsoft.Owin.BuilderProperties;
-using Ninject;
-using Ninject.Web.Common.OwinHost;
-using Ninject.Web.WebApi.OwinHost;
 using Owin;
 
 [assembly: OwinStartup(typeof(DatenMeister.Web.Application.WebserverStartup))]
@@ -23,7 +23,8 @@ namespace DatenMeister.Web.Application
 {
     public class WebserverStartup
     {
-        private StandardKernel _serverInjection;
+        private IContainer _serverInjection;
+        private ILifetimeScope _lifetimeScope;
 
         public void Configuration(IAppBuilder app)
         {
@@ -37,71 +38,70 @@ namespace DatenMeister.Web.Application
             {
                 directory = "..\\..\\htdocs";
             }
+
+            if (Directory.Exists("..\\..\\..\\htdocs"))
+            {
+                directory = "..\\..\\..\\htdocs";
+            }
 #endif
-            var configuration = new StaticFilesConfiguration(directory);
-            app.UseStaticFiles(configuration);
             
             // Do the full load of all assemblies
-            Full.Integration.Helper.LoadAllAssembliesInDirectory();
-            Full.Integration.Helper.LoadAllReferenceAssemblies();
+            Integration.Helper.LoadAllAssembliesFromCurrentDirectory();
+            Integration.Helper.LoadAllReferencedAssemblies();
+            Integration.Helper.LoadAssembliesFromFolder("plugins");
             
             // Initializing of the WebAPI, needs to be called after the DatenMeister is initialized
             var httpConfiguration = new HttpConfiguration();
             httpConfiguration.MapHttpAttributeRoutes();
 
             _serverInjection = CreateKernel(app);
-            app.UseNinjectMiddleware(() => _serverInjection).UseNinjectWebApi(httpConfiguration);
 
-            // Loading and storing the workspaces
-            var workspaceLoader = new WorkspaceLoader(_serverInjection.Get<IWorkspaceCollection>(), "data/workspaces.xml");
-            workspaceLoader.Load();
-            _serverInjection.Bind<WorkspaceLoader>().ToConstant(workspaceLoader);
+            var builder = new ContainerBuilder();
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+            builder.Update(_serverInjection);
 
-            // Loading and storing the extents
-            var extentLoader = new ExtentStorageConfigurationLoader(
-                _serverInjection.Get<ExtentStorageData>(),
-                _serverInjection.Get<IExtentStorageLoader>(),
-                "data/extents.xml");
+            httpConfiguration.DependencyResolver = new AutofacWebApiDependencyResolver(_serverInjection);
 
-            // Apply for zipcodes
-            var integrateZipCodes = _serverInjection.Get<Integrate>();
-            integrateZipCodes.Into(_serverInjection.Get<IWorkspaceCollection>().FindExtent("dm:///types"));
+            _lifetimeScope = _serverInjection.BeginLifetimeScope();
 
-            // A little bit hacky, but it works for first
-            extentLoader.AddAdditionalType(typeof(CSVStorageConfiguration));
-            extentLoader.AddAdditionalType(typeof(XmiStorageConfiguration));
-            extentLoader.LoadAllExtents();
-            _serverInjection.Bind<ExtentStorageConfigurationLoader>().ToConstant(extentLoader);
+            app.UseAutofacMiddleware(_lifetimeScope);
+
+            var configuration = new StaticFilesConfiguration(directory);
+            app.UseStaticFiles(configuration);
+            app.UseAutofacWebApi(httpConfiguration);
+            app.UseWebApi(httpConfiguration);
         }
 
-        private static StandardKernel CreateKernel(IAppBuilder app)
+        private IContainer CreateKernel(IAppBuilder app)
         {
-            var kernel = new StandardKernel();
-            kernel.UseDatenMeister();
+            var settings = new IntegrationSettings
+            {
+                PathToXmiFiles = "App_Data/Xmi",
+                EstablishDataEnvironment = true
+            };
+
+            var kernel = new ContainerBuilder();
+            var container = kernel.UseDatenMeister(settings);
 
             // Defines the shutdown
             var properties = new AppProperties(app.Properties);
             var token = properties.OnAppDisposing;
             token.Register(() =>
             {
-                kernel.Get<WorkspaceLoader>().Store();
-                kernel.Get<ExtentStorageConfigurationLoader>().StoreAllExtents();
+                _lifetimeScope.UnuseDatenMeister();
             });
 
-            // Loading the zipcodes
-            // LoadZipCodes(kernel);
-
-            return kernel;
+            return container;
         }
 
-        private static void LoadZipCodes(StandardKernel kernel)
+        private static void LoadZipCodes(ILifetimeScope scope)
         {
             //////////////////////
             // Loads the workspace
             var file = Path.Combine(
                 Path.Combine(
                     AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
-                    "App_Data"),
+                    "App_Data/Database"),
                 "plz.csv");
 
             var defaultConfiguration = new CSVStorageConfiguration
@@ -117,7 +117,7 @@ namespace DatenMeister.Web.Application
                 }
             };
 
-            var extentStorageLogic = kernel.Get<IExtentStorageLoader>();
+            var extentStorageLogic = scope.Resolve<IExtentStorageLoader>();
             extentStorageLogic.LoadExtent(defaultConfiguration, false);
             
             Debug.WriteLine("Zip codes loaded");

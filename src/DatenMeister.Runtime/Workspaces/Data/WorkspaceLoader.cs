@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using DatenMeister.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Runtime.Workspaces.Data
@@ -20,27 +21,36 @@ namespace DatenMeister.Runtime.Workspaces.Data
 
         public WorkspaceData Load()
         {
-            var loaded = Load(Filepath);
-
-            if (loaded == null)
+            try
             {
-                // Not existing
-                return null;
-            }
+                var loaded = Load(Filepath);
 
-            foreach (var workspaceInfo in loaded.Workspaces)
-            {
-                if (WorkspaceCollection.GetWorkspace(workspaceInfo.Id) != null)
+                if (loaded == null)
                 {
-                    // Already exists
-                    continue;
+                    // Not existing
+                    return null;
                 }
 
-                var workspace = new Workspace<IExtent>(workspaceInfo.Id, workspaceInfo.Annotation);
-                WorkspaceCollection.AddWorkspace(workspace);
-            }
+            
+                foreach (var workspaceInfo in loaded.Workspaces)
+                {
+                    if (WorkspaceCollection.GetWorkspace(workspaceInfo.Id) != null)
+                    {
+                        // Already exists
+                        continue;
+                    }
 
-            return loaded;
+                    var workspace = new Workspace<IExtent>(workspaceInfo.Id, workspaceInfo.Annotation);
+                    WorkspaceCollection.AddWorkspace(workspace);
+                }
+
+                return loaded;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Loading of workspaces failed: {e}");
+                return null;
+            }
         }
 
         public void Store()

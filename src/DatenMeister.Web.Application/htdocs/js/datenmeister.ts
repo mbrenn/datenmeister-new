@@ -1,14 +1,14 @@
 ﻿/// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/jquery/underscore.d.ts" />
 
-import * as DMHelper from "datenmeister-helper";
-import * as DMI from "datenmeister-interfaces";
-import * as DMTables from "datenmeister-tables";
-import * as DMView from "datenmeister-view";
-import * as DMClient from "datenmeister-client";
-import * as DMRibbon from "datenmeister-ribbon";
-import * as DMLayout from "datenmeister-layout";
-import * as DMLog from "datenmeister-logging";
+import * as DMHelper from "./datenmeister-helper";
+import * as DMI from "./datenmeister-interfaces";
+import * as DMTables from "./datenmeister-tables";
+import * as DMView from "./datenmeister-view";
+import * as DMClient from "./datenmeister-client";
+import * as DMRibbon from "./datenmeister-ribbon";
+import * as DMLayout from "./datenmeister-layout";
+import * as DMLog from "./datenmeister-logging";
 
 
 export function start() {

@@ -1,5 +1,4 @@
 ﻿using System;
-using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.ManualMapping

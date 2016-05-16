@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DatenMeister.DataLayer
+﻿namespace DatenMeister.DataLayer
 {
     public class DataLayers
     {

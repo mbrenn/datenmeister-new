@@ -1,4 +1,4 @@
-define(["require", "exports", "datenmeister-interfaces", "datenmeister-view", "datenmeister-tables"], function (require, exports, DMI, DMView, DMTables) {
+define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-view", "./datenmeister-tables"], function (require, exports, DMI, DMView, DMTables) {
     "use strict";
     (function (PageType) {
         PageType[PageType["Workspaces"] = 0] = "Workspaces";

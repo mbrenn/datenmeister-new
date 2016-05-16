@@ -1,6 +1,6 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/jquery/underscore.d.ts" />
-define(["require", "exports", "datenmeister-helper", "datenmeister-interfaces", "datenmeister-view", "datenmeister-client", "datenmeister-ribbon", "datenmeister-layout", "datenmeister-logging"], function (require, exports, DMHelper, DMI, DMView, DMClient, DMRibbon, DMLayout, DMLog) {
+define(["require", "exports", "./datenmeister-helper", "./datenmeister-interfaces", "./datenmeister-view", "./datenmeister-client", "./datenmeister-ribbon", "./datenmeister-layout", "./datenmeister-logging"], function (require, exports, DMHelper, DMI, DMView, DMClient, DMRibbon, DMLayout, DMLog) {
     "use strict";
     function start() {
         // Information, when an ajax request failed

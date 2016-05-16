@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
@@ -9,7 +8,6 @@ using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
-using DatenMeister.Web.Models;
 using DatenMeister.Web.Models.Fields;
 
 namespace DatenMeister.Web.Helper

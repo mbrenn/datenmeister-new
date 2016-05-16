@@ -3,32 +3,22 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-
-namespace DatenMeister.Full.Integration
+using Autofac;
+using DatenMeister.Plugins;
+namespace DatenMeister.Integration
 {
     public static class Helper
     {
-        public static void LoadAllAssembliesInDirectory()
+        public static void LoadAllAssembliesFromCurrentDirectory()
         {
             var directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var files = Directory.GetFiles(directoryName)
-                .Where (x=>Path.GetExtension(x).ToLower() == ".dll");
-            foreach (var file in files)
-            {
-                var filenameWithoutExtension = Path.GetFileNameWithoutExtension(file).ToLower();
-                if (AppDomain.CurrentDomain.GetAssemblies().All(
-                    x => x.GetName().Name.ToLower() != filenameWithoutExtension))
-                {
-                    Debug.WriteLine($"Loading by file: {file}");
-                    Assembly.LoadFile(Path.Combine(directoryName, file));
-                }
-            }
+            LoadAssembliesFromFolder(directoryName);
         }
 
         /// <summary>
         /// Loads all referenced assemblies
         /// </summary>
-        public static void LoadAllReferenceAssemblies()
+        public static void LoadAllReferencedAssemblies()
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()
                 .Where(x=>!IsDotNetLibrary(x.GetName())))
@@ -50,8 +40,56 @@ namespace DatenMeister.Full.Integration
             {
                 if (AppDomain.CurrentDomain.GetAssemblies().All(a => a.FullName != name.FullName))
                 {
-                    Debug.WriteLine($"Loading: {name}");
-                    LoadReferencedAssembly(Assembly.Load(name));
+                    var innerAssembly = Assembly.Load(name);
+                    Debug.WriteLine($"Loaded: {innerAssembly}");
+                    LoadReferencedAssembly(innerAssembly);
+                }
+            }
+        }
+
+        public static void LoadAssembliesFromFolder(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                var files = Directory.GetFiles(path)
+                    .Where(x => Path.GetExtension(x).ToLower() == ".dll");
+                foreach (var file in files)
+                {
+                    var filenameWithoutExtension = Path.GetFileNameWithoutExtension(file).ToLower();
+                    if (AppDomain.CurrentDomain.GetAssemblies().All(
+                        x => x.GetName().Name.ToLower() != filenameWithoutExtension))
+                    {
+                        try
+                        {
+                            var assembly = Assembly.LoadFile(Path.Combine(path, file));
+                            Debug.WriteLine($"Loaded : {assembly.FullName}");
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine($"Loading of assembly {file} failed: {e}");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                 Debug.WriteLine($"Directory does not exist: {path}");
+            }
+        }
+
+        public static void StartPlugins(ILifetimeScope kernel)
+        {
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                // Go through all types and check, if the type has implemented the interface for the pluging
+                foreach (var type in assembly.GetTypes())
+                {
+                    // Checks, if one of the class implements the IDatenMeisterPlugin
+                    if (type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
+                    {
+                        Debug.WriteLine($"Starting plugin: {type}");
+                        ((IDatenMeisterPlugin) kernel.Resolve(type)).Start();
+                    }
                 }
             }
         }

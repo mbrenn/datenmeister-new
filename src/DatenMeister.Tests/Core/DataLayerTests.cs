@@ -1,9 +1,7 @@
 ﻿using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
-using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Filler;
 using DatenMeister.Uml;
-using DatenMeister.XMI.UmlBootstrap;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Core

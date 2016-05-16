@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Autofac;
+using Autofac.Features.ResolveAnything;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Attributes;
 using DatenMeister.EMOF.InMemory;
@@ -10,87 +12,152 @@ using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
-using DatenMeister.XMI.UmlBootstrap;
-using Ninject;
 
-namespace DatenMeister.Full.Integration
+namespace DatenMeister.Integration
 {
     public static class Integration
     {
-        public static void UseDatenMeister(this StandardKernel kernel, string pathToXmiFiles = "App_Data")
+        public static IContainer UseDatenMeister(this ContainerBuilder kernel, IntegrationSettings settings)
         {
+            if (settings == null)
+            {
+                Debug.WriteLine("No integration settings were given. Loading the default values.");
+                settings = new IntegrationSettings();
+            }
+
+            kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
+
             var watch = new Stopwatch();
             watch.Start();
 
+            // Defines the factory method for a certain extent type
             var factoryMapper = new DefaultFactoryMapper();
-            factoryMapper.PerformAutomaticMappingByAttribute(kernel);
-            kernel.Bind<IFactoryMapper>().ToConstant(factoryMapper);
+            kernel.RegisterInstance(factoryMapper).As<IFactoryMapper>();
 
+            // Finds the loader for a certain extent type
             var storageMap = new ManualConfigurationToExtentStorageMapper();
-            storageMap.PerformMappingForConfigurationOfExtentLoaders(kernel);
-            kernel.Bind<IConfigurationToExtentStorageMapper>().ToConstant(storageMap);
+            kernel.RegisterInstance(storageMap).As<IConfigurationToExtentStorageMapper>();
 
             // Workspace collection
             var workspaceCollection = new WorkspaceCollection();
             workspaceCollection.Init();
-            kernel.Bind<IWorkspaceCollection>().ToConstant(workspaceCollection);
+            kernel.RegisterInstance(workspaceCollection).As<IWorkspaceCollection>();
 
             // Defines the extent storage data
             var extentStorageData = new ExtentStorageData();
-            kernel.Bind<ExtentStorageData>().ToConstant(extentStorageData);
-            kernel.Bind<IExtentStorageLoader>().To<ExtentStorageLoader>();
+            kernel.RegisterInstance(extentStorageData).As<ExtentStorageData>();
+            kernel.RegisterType<ExtentStorageLoader>().As<IExtentStorageLoader>();
 
             // Defines the datalayers
             var dataLayers = new DataLayers();
-            kernel.Bind<DataLayers>().ToConstant(dataLayers);
+            kernel.RegisterInstance(dataLayers).As<DataLayers>();
 
             var dataLayerData = new DataLayerData(dataLayers);
-            kernel.Bind<DataLayerData>().ToConstant(dataLayerData);
-            kernel.Bind<IDataLayerLogic>().To<DataLayerLogic>();
+            kernel.RegisterInstance(dataLayerData).As<DataLayerData>();
+            kernel.RegisterType<DataLayerLogic>().As<IDataLayerLogic>();
 
-            var dataLayerLogic = kernel.Get<IDataLayerLogic>();
-            dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
+            // Adds the name resolution
+            kernel.RegisterType<UmlNameResolution>().As<IUmlNameResolution>();
 
-            // Load the default extents
-            // Load the primitivetypes
-            var primitiveTypes = new _PrimitiveTypes();
-            kernel.Bind<_PrimitiveTypes>().ToConstant(primitiveTypes);
+            var builder = kernel.Build();
+            using (var scope = builder.BeginLifetimeScope())
+            {
+                factoryMapper.PerformAutomaticMappingByAttribute();
+                storageMap.PerformMappingForConfigurationOfExtentLoaders();
 
-            // Performs the bootstrap
-            var paths =
-                new Bootstrapper.FilePaths()
+                var dataLayerLogic = scope.Resolve<IDataLayerLogic>();
+                dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
+
+                // Load the default extents
+
+                // Performs the bootstrap
+                var paths =
+                    new Bootstrapper.FilePaths()
+                    {
+                        PathPrimitive = Path.Combine(settings.PathToXmiFiles, "PrimitiveTypes.xmi"),
+                        PathUml = Path.Combine(settings.PathToXmiFiles, "UML.xmi"),
+                        PathMof = Path.Combine(settings.PathToXmiFiles, "MOF.xmi")
+                    };
+
+                if (settings.PerformSlimIntegration)
                 {
-                    PathPrimitive = Path.Combine(pathToXmiFiles, "PrimitiveTypes.xmi"),
-                    PathUml = Path.Combine(pathToXmiFiles, "UML.xmi"),
-                    PathMof = Path.Combine(pathToXmiFiles, "MOF.xmi")
-                };
+                    throw new InvalidOperationException("Slim integration is currently not supported");
+                }
+                else
+                {
+                    Bootstrapper.PerformFullBootstrap(
+                        paths,
+                        workspaceCollection.GetWorkspace("UML"),
+                        dataLayerLogic,
+                        dataLayers.Uml);
+                    Bootstrapper.PerformFullBootstrap(
+                        paths,
+                        workspaceCollection.GetWorkspace("MOF"),
+                        dataLayerLogic,
+                        dataLayers.Mof);
+                }
 
-            Bootstrapper.PerformFullBootstrap(
-                paths,
-                workspaceCollection.GetWorkspace("UML"),
-                dataLayerLogic,
-                dataLayers.Uml);
-            Bootstrapper.PerformFullBootstrap(
-                paths,
-                workspaceCollection.GetWorkspace("MOF"),
-                dataLayerLogic,
-                dataLayers.Mof);
 
-            // Creates the workspace and extent for the types layer which are belonging to the types
-            var extentTypes = new MofUriExtent("dm:///types");
-            var typeWorkspace = workspaceCollection.GetWorkspace("Types");
-            typeWorkspace.AddExtent(extentTypes);
-            dataLayerLogic.AssignToDataLayer(extentTypes, dataLayers.Types);
+                // Creates the workspace and extent for the types layer which are belonging to the types
+                var extentTypes = new MofUriExtent("dm:///types");
+                var typeWorkspace = workspaceCollection.GetWorkspace("Types");
+                typeWorkspace.AddExtent(extentTypes);
+                dataLayerLogic.AssignToDataLayer(extentTypes, dataLayers.Types);
 
-            kernel.Bind<IUmlNameResolution>().To<UmlNameResolution>();
+                // Boots up the typical DatenMeister Environment
+                if (settings.EstablishDataEnvironment)
+                {
+                    EstablishDataEnvironment(builder, scope);
+                }
+            }
 
             watch.Stop();
             Debug.WriteLine($"Elapsed time for boostrap: {watch.Elapsed}");
+
+            return builder;
         }
 
-        public static void PerformAutomaticMappingByAttribute(this DefaultFactoryMapper mapper, StandardKernel kernel)
+        private static void EstablishDataEnvironment(IContainer builder, ILifetimeScope scope)
+        {
+            var innerContainer = new ContainerBuilder();
+            // Loading and storing the workspaces
+            var workspaceLoader = new WorkspaceLoader(scope.Resolve<IWorkspaceCollection>(),
+                "App_Data/Database/workspaces.xml");
+            workspaceLoader.Load();
+            innerContainer.RegisterInstance(workspaceLoader).As<WorkspaceLoader>();
+
+            // Loading and storing the extents
+            var extentLoader = new ExtentStorageConfigurationLoader(
+                scope.Resolve<ExtentStorageData>(),
+                scope.Resolve<IExtentStorageLoader>(),
+                "App_Data/Database/extents.xml");
+            innerContainer.RegisterInstance(extentLoader).As<ExtentStorageConfigurationLoader>();
+            
+            innerContainer.Update(builder);
+           
+
+            // Now start the plugins
+            Helper.StartPlugins(scope);
+
+            // Loads all extents after all plugins were started
+            extentLoader.LoadAllExtents();
+        }
+
+        /// <summary>
+        /// Stores all data that needs to be stored persistant on the hard drive
+        /// This method is typically called at the end of the lifecycle of the applciation
+        /// </summary>
+        /// <param name="scope">Kernel to be used to find the appropriate methods</param>
+        public static void UnuseDatenMeister(this ILifetimeScope scope)
+        {
+            scope.Resolve<WorkspaceLoader>().Store();
+            scope.Resolve<ExtentStorageConfigurationLoader>().StoreAllExtents();
+        }
+
+        public static void PerformAutomaticMappingByAttribute(this DefaultFactoryMapper mapper)
         {
             // Map extent types to factory
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
@@ -102,7 +169,10 @@ namespace DatenMeister.Full.Integration
                     var factoryAssignmentAttribute = customAttribute as AssignFactoryForExtentTypeAttribute;
                     if (factoryAssignmentAttribute != null)
                     {
-                        mapper.AddMapping(type, () => (IFactory)kernel.Get(factoryAssignmentAttribute.FactoryType));
+                        // TODO: We cannot use scope here. It might already be disposed
+                        mapper.AddMapping(
+                            type,
+                            () => (IFactory) Activator.CreateInstance(factoryAssignmentAttribute.FactoryType));
 
                         Debug.WriteLine($"Assigned extent type '{type.FullName}' to '{factoryAssignmentAttribute.FactoryType}'");
                     }
@@ -110,7 +180,8 @@ namespace DatenMeister.Full.Integration
             }
         }
 
-        public static void PerformMappingForConfigurationOfExtentLoaders(this ManualConfigurationToExtentStorageMapper map, StandardKernel kernel)
+        public static void PerformMappingForConfigurationOfExtentLoaders(
+            this ManualConfigurationToExtentStorageMapper map)
         {
             // Map configurations to extent loader
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
@@ -122,9 +193,12 @@ namespace DatenMeister.Full.Integration
                     var configuredByAttribute = customAttribute as ConfiguredByAttribute;
                     if (configuredByAttribute != null)
                     {
-                        map.AddMapping(configuredByAttribute.ConfigurationType, () => (IExtentStorage) kernel.Get(type));
+                        // TODO: We cannot use scope here. It might already be disposed
+                        map.AddMapping(configuredByAttribute.ConfigurationType,
+                            () => (IExtentStorage) Activator.CreateInstance(type));
 
-                        Debug.WriteLine($"Extent loader '{configuredByAttribute.ConfigurationType}' is configured by '{type.FullName}'");
+                        Debug.WriteLine(
+                            $"Extent loader '{configuredByAttribute.ConfigurationType}' is configured by '{type.FullName}'");
                     }
                 }
             }

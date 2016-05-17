@@ -12,7 +12,7 @@
 
         }
 
-        public bool ShowDate { get; set; } = true;
-        public bool ShowTime { get; set; } = true;
+        public bool showDate { get; set; } = true;
+        public bool showTime { get; set; } = true;
     }
 }

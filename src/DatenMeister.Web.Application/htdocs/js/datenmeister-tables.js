@@ -438,9 +438,18 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
                     return domDD;
                 }
                 else {
-                    var domTextBox = $("<input type='textbox' class='form-control' />");
-                    domTextBox.val(contentValue);
-                    return domTextBox;
+                    var asTextBox = column;
+                    // We have a textbox, so check if we have multiple line
+                    if (asTextBox.lineHeight !== undefined && asTextBox.lineHeight > 1) {
+                        var domTextBoxMultiple = $("<textarea class='form-control'></textarea>").attr('rows', asTextBox.lineHeight);
+                        domTextBoxMultiple.val(contentValue);
+                        return domTextBoxMultiple;
+                    }
+                    else {
+                        var domTextBox = $("<input type='textbox' class='form-control' />");
+                        domTextBox.val(contentValue);
+                        return domTextBox;
+                    }
                 }
             }
             else {

@@ -24,7 +24,9 @@ namespace DatenMeister.Runtime.Functions.Interfaces
         {
         }
 
-        public AggregatorByFunction(object property, T start, Func<object, object, T> aggregation)
+        public AggregatorByFunction(
+            object property,
+            T start, Func<object, object, T> aggregation)
             : this(property)
         {
             _start = start;

@@ -66,6 +66,7 @@
     <Compile Include="ExtentStorage\ExtentStorageData.cs" />
     <Compile Include="ExtentStorage\Interfaces\IExtentStorageLoader.cs" />
     <Compile Include="Extents\ExtentFunctions.cs" />
+    <Compile Include="Functions\Aggregation\AggregationReflectiveCollection.cs" />
     <Compile Include="Functions\Aggregation\CountAggregator.cs" />
     <Compile Include="Functions\Interfaces\Aggregator.cs" />
     <Compile Include="Functions\Interfaces\AggregatorByFunction.cs" />
@@ -82,6 +83,12 @@
     <Compile Include="Functions\Queries\FilterOnPropertyCollection.cs" />
     <Compile Include="Functions\Queries\OrderByProperty.cs" />
     <Compile Include="ObjectFileStorage.cs" />
+    <Compile Include="Proxies\Proxy\IHasProxiedObject.cs" />
+    <Compile Include="Proxies\Proxy\ProxyMofElement.cs" />
+    <Compile Include="Proxies\Proxy\ProxyMofObject.cs" />
+    <Compile Include="Proxies\Proxy\ProxyReflectiveCollection.cs" />
+    <Compile Include="Proxies\Proxy\ProxyReflectiveSequence.cs" />
+    <Compile Include="Proxies\Proxy\ProxyUriExtent.cs" />
     <Compile Include="Workspaces\Data\WorkspaceData.cs" />
     <Compile Include="Workspaces\Data\WorkspaceInfo.cs" />
     <Compile Include="Workspaces\Data\WorkspaceLoader.cs" />

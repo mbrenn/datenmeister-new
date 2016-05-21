@@ -5,10 +5,14 @@ namespace DatenMeister.Runtime.Functions.Interfaces
     public interface IAggregator<T>
     {
         /// <summary>
-        /// Aggregates the values of a property into a single value
+        /// Adds a value to the aggregation
         /// </summary>
-        /// <param name="sequence">Sequence to be evaluated</param>
-        /// <returns>The aggregated value</returns>
-        T Aggregate(IReflectiveSequence sequence);
+        /// <param name="value">Value to be added</param>
+        void Add(T value);
+
+        /// <summary>
+        /// Gets the current value
+        /// </summary>
+        T Result { get; }
     }
 }

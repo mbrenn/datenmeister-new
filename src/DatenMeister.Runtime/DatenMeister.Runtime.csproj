@@ -66,7 +66,7 @@
     <Compile Include="ExtentStorage\ExtentStorageData.cs" />
     <Compile Include="ExtentStorage\Interfaces\IExtentStorageLoader.cs" />
     <Compile Include="Extents\ExtentFunctions.cs" />
-    <Compile Include="Functions\Aggregation\AggregationReflectiveCollection.cs" />
+    <Compile Include="Functions\Aggregation\GroupByReflectiveCollection.cs" />
     <Compile Include="Functions\Aggregation\CountAggregator.cs" />
     <Compile Include="Functions\Interfaces\Aggregator.cs" />
     <Compile Include="Functions\Interfaces\AggregatorByFunction.cs" />
@@ -89,6 +89,7 @@
     <Compile Include="Proxies\ProxyReflectiveCollection.cs" />
     <Compile Include="Proxies\ProxyReflectiveSequence.cs" />
     <Compile Include="Proxies\ProxyUriExtent.cs" />
+    <Compile Include="Proxies\ReadOnly\ReadOnlyReflectiveCollection.cs" />
     <Compile Include="Workspaces\Data\WorkspaceData.cs" />
     <Compile Include="Workspaces\Data\WorkspaceInfo.cs" />
     <Compile Include="Workspaces\Data\WorkspaceLoader.cs" />

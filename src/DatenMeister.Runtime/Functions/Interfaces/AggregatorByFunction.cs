@@ -20,14 +20,13 @@ namespace DatenMeister.Runtime.Functions.Interfaces
             set { _start = value; }
         }
 
-        internal AggregatorByFunction(object property) : base(property)
+        public AggregatorByFunction()
         {
+            
         }
 
         public AggregatorByFunction(
-            object property,
             T start, Func<object, object, T> aggregation)
-            : this(property)
         {
             _start = start;
             _aggregation = aggregation;

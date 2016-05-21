@@ -75,6 +75,12 @@
     <Compile Include="Functions\Aggregation\MaxAggregator.cs" />
     <Compile Include="Functions\Aggregation\MinAggregator.cs" />
     <Compile Include="Functions\Aggregation\SumAggregator.cs" />
+    <Compile Include="Functions\Queries\Filter.cs" />
+    <Compile Include="Functions\Queries\FilterOnMetaClass.cs" />
+    <Compile Include="Functions\Queries\FilterOnMultipleProperties.cs" />
+    <Compile Include="Functions\Queries\FilterOnPropertyByPredicateCollection.cs" />
+    <Compile Include="Functions\Queries\FilterOnPropertyCollection.cs" />
+    <Compile Include="Functions\Queries\OrderByProperty.cs" />
     <Compile Include="ObjectFileStorage.cs" />
     <Compile Include="Workspaces\Data\WorkspaceData.cs" />
     <Compile Include="Workspaces\Data\WorkspaceInfo.cs" />

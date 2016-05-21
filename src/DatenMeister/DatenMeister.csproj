@@ -43,6 +43,7 @@
     <Compile Include="DataLayer\Extensions.cs" />
     <Compile Include="EMOF\Attributes\AssignFactoryForExtentTypeAttribute.cs" />
     <Compile Include="EMOF\Exceptions\MofException.cs" />
+    <Compile Include="EMOF\Helper\AllDescendentsQuery.cs" />
     <Compile Include="EMOF\Helper\ExtentHelper.cs" />
     <Compile Include="EMOF\Helper\ObjectHelper.cs" />
     <Compile Include="EMOF\Helper\UmlHelper.cs" />
@@ -74,13 +75,6 @@
     <Compile Include="EMOF\Proxy\ProxyReflectiveCollection.cs" />
     <Compile Include="EMOF\Proxy\ProxyReflectiveSequence.cs" />
     <Compile Include="EMOF\Proxy\ProxyUriExtent.cs" />
-    <Compile Include="EMOF\Queries\AllDescendentsQuery.cs" />
-    <Compile Include="EMOF\Queries\Filter.cs" />
-    <Compile Include="EMOF\Queries\FilterOnMultipleProperties.cs" />
-    <Compile Include="EMOF\Queries\FilterOnPropertyCollection.cs" />
-    <Compile Include="EMOF\Queries\FilterOnPropertyByPredicateCollection.cs" />
-    <Compile Include="EMOF\Queries\FilterOnMetaClass.cs" />
-    <Compile Include="EMOF\Queries\OrderByProperty.cs" />
     <Compile Include="Filler\DummyFiller.cs" />
     <Compile Include="Filler\FillTheMOF.cs" />
     <Compile Include="Filler\FillThePrimitiveTypes.cs" />

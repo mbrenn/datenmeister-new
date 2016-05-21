@@ -1,31 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.Proxy;
 
-namespace DatenMeister.EMOF.Queries
+namespace DatenMeister.Runtime.Functions.Queries
 {
-    public class FilterOnPropertyByPredicateCollection : ProxyReflectiveCollection
+    public class FilterOnPropertyCollection : ProxyReflectiveCollection
     {
-        /// <summary>
-        ///     Stores the filter to filter on the property
-        /// </summary>
-        private readonly Predicate<object> _filter;
-
-        /// <summary>
-        ///     Stores the property
-        /// </summary>
+        private readonly object _filterValue;
         private readonly object _property;
 
-        public FilterOnPropertyByPredicateCollection(
-            IReflectiveCollection collection,
+        public FilterOnPropertyCollection(
+            IReflectiveSequence collection,
             object property,
-            Predicate<object> filter)
+            object filterValue)
             : base(collection)
         {
             _property = property;
-            _filter = filter;
+            _filterValue = filterValue;
         }
 
         public override IEnumerator<object> GetEnumerator()
@@ -33,7 +25,7 @@ namespace DatenMeister.EMOF.Queries
             foreach (var value in Collection)
             {
                 var valueAsObject = value as IObject;
-                if (_filter(valueAsObject?.get(_property)))
+                if (valueAsObject?.get(_property)?.Equals(_filterValue) == true)
                 {
                     yield return valueAsObject;
                 }
@@ -46,7 +38,7 @@ namespace DatenMeister.EMOF.Queries
             foreach (var value in Collection)
             {
                 var valueAsObject = value as IObject;
-                if (_filter(valueAsObject?.get(_property)))
+                if (valueAsObject?.get(_property)?.Equals(_filterValue) == true)
                 {
                     result++;
                 }

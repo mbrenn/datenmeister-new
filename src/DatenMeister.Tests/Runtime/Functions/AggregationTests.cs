@@ -13,8 +13,8 @@ namespace DatenMeister.Tests.Runtime.Functions
             object property1;
             var reflectiveSequence = CreateReflectiveSequence(out property1);
 
-            var aggregator = new MaxAggregator(property1);
-            var finalValue  = aggregator.Aggregate(reflectiveSequence);
+            var aggregator = new MaxAggregator();
+            var finalValue = reflectiveSequence.Aggregate(aggregator, property1);
 
             Assert.That(finalValue, Is.EqualTo(4));
         }
@@ -25,8 +25,8 @@ namespace DatenMeister.Tests.Runtime.Functions
             object property1;
             var reflectiveSequence = CreateReflectiveSequence(out property1);
 
-            var aggregator = new MinAggregator(property1);
-            var finalValue = aggregator.Aggregate(reflectiveSequence);
+            var aggregator = new MinAggregator();
+            var finalValue = reflectiveSequence.Aggregate(aggregator, property1);
 
             Assert.That(finalValue, Is.EqualTo(1));
         }
@@ -37,8 +37,8 @@ namespace DatenMeister.Tests.Runtime.Functions
             object property1;
             var reflectiveSequence = CreateReflectiveSequence(out property1);
 
-            var aggregator = new SumAggregator(property1);
-            var finalValue = aggregator.Aggregate(reflectiveSequence);
+            var aggregator = new SumAggregator();
+            var finalValue = reflectiveSequence.Aggregate(aggregator, property1);
 
             Assert.That(finalValue, Is.EqualTo(13));
         }
@@ -49,8 +49,8 @@ namespace DatenMeister.Tests.Runtime.Functions
             object property1;
             var reflectiveSequence = CreateReflectiveSequence(out property1);
 
-            var aggregator = new AverageAggregator(property1);
-            var finalValue = aggregator.Aggregate(reflectiveSequence);
+            var aggregator = new AverageAggregator();
+            var finalValue = reflectiveSequence.Aggregate(aggregator, property1);
 
             Assert.That(finalValue, Is.EqualTo(2.6));
         }
@@ -61,8 +61,8 @@ namespace DatenMeister.Tests.Runtime.Functions
             object property1;
             var reflectiveSequence = CreateReflectiveSequence(out property1);
 
-            var aggregator = new CountAggregator(property1);
-            var finalValue = aggregator.Aggregate(reflectiveSequence);
+            var aggregator = new CountAggregator();
+            var finalValue = reflectiveSequence.Aggregate(aggregator, property1);
 
             Assert.That(finalValue, Is.EqualTo(5));
         }

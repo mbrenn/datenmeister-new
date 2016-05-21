@@ -1,7 +1,7 @@
 ﻿using System;
 using DatenMeister.EMOF.Interface.Reflection;
 
-namespace DatenMeister.EMOF.Proxy
+namespace DatenMeister.Runtime.Proxies
 {
     public class ProxyMofElement : ProxyMofObject, IElement, IElementSetMetaClass
     {

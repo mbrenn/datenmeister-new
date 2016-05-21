@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using DatenMeister.EMOF.Interface.Common;
 
-namespace DatenMeister.EMOF.Proxy
+namespace DatenMeister.Runtime.Proxies
 {
     public class ProxyReflectiveSequence : ProxyReflectiveCollection, IReflectiveSequence
     {

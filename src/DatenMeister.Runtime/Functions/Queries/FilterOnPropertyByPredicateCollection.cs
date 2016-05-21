@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Proxy;
+using DatenMeister.Runtime.Proxies;
 
 namespace DatenMeister.Runtime.Functions.Queries
 {

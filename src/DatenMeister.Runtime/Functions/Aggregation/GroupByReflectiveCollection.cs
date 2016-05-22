@@ -17,7 +17,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             IReflectiveCollection collectionToBeAggregated,
             object groupByColumn,
             object aggregateColumn,
-            IAggregator<T> aggregator)
+            Func<IAggregator<T>> aggregator)
             : base(new MofReflectiveSequence())
         {
             Aggregate(collectionToBeAggregated,
@@ -26,14 +26,24 @@ namespace DatenMeister.Runtime.Functions.Aggregation
                 aggregator);
         }
 
+        /// <summary>
+        /// Performs the aggregation of a reflective collection
+        /// </summary>
+        /// <param name="collectionToBeAggregated">
+        /// The reflective collection that shall be aggregated</param>
+        /// <param name="groupByColumn">The column that shall be 
+        /// used to group the values</param>
+        /// <param name="aggregateColumn">The value that is used</param>
+        /// <param name="aggregatorFunc">The function being used to 
+        /// create a new aggregator</param>
         private void Aggregate(
             IReflectiveCollection collectionToBeAggregated, 
             object groupByColumn, 
             object aggregateColumn,
-            IAggregator<T> aggregator)
+            Func<IAggregator<T>> aggregatorFunc)
         {
-            Dictionary<object, T> aggregatedValues = 
-                new Dictionary<object, T>();
+            Dictionary<object, IAggregator<T>> aggregatedValues = 
+                new Dictionary<object, IAggregator<T>>();
             foreach (var element in collectionToBeAggregated.Cast<IObject>())
             {
                 if (!element.isSet(groupByColumn)
@@ -43,7 +53,31 @@ namespace DatenMeister.Runtime.Functions.Aggregation
                     continue;
                 }
 
-                T value;
+                var value = element.get(groupByColumn);
+                IAggregator<T> aggregator;
+                if (!aggregatedValues.TryGetValue(
+                    value,
+                    out aggregator))
+                {
+                    aggregator = aggregatorFunc();
+                    aggregatedValues[value] = aggregator;
+                }
+
+                // Add the value to the result
+                aggregator.Add(
+                    (T) Convert.ChangeType(
+                        value, 
+                        typeof(T)));
+            }
+
+            // Now store the values into the aggregation
+            var mofFactory = new MofFactory();
+            foreach (var pair in aggregatedValues)
+            {
+                var element = mofFactory.create(null);
+                element.set(groupByColumn, pair.Key);
+                element.set(aggregatedValues, pair.Value);
+                add(element);
             }
         }
     }

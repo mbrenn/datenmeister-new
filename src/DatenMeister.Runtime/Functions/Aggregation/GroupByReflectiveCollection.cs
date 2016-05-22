@@ -66,7 +66,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
                 // Add the value to the result
                 aggregator.Add(
                     (T) Convert.ChangeType(
-                        value, 
+                        element.get(aggregateColumn), 
                         typeof(T)));
             }
 
@@ -76,7 +76,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             {
                 var element = mofFactory.create(null);
                 element.set(groupByColumn, pair.Key);
-                element.set(aggregatedValues, pair.Value);
+                element.set(aggregateColumn, pair.Value.Result);
                 add(element);
             }
         }

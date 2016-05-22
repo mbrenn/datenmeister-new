@@ -5,6 +5,8 @@ using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Functions.Aggregation;
+using DatenMeister.Runtime.Functions.Interfaces;
 
 namespace DatenMeister.Runtime.Functions.Queries
 {
@@ -60,6 +62,19 @@ namespace DatenMeister.Runtime.Functions.Queries
             this IReflectiveCollection collection)
         {
             return new MofReflectiveSequence(AllDescendentsQuery.getDescendents(collection).Cast<object>().ToList());
+        }
+
+        public static IReflectiveCollection GroupBy<T>(
+            this IReflectiveCollection collection,
+            object groupByColumn,
+            object aggregateColumn,
+            Func<IAggregator<T>> aggregatorFunc)
+        {
+            return  new GroupByReflectiveCollection<T>(
+                collection,
+                groupByColumn,
+                aggregateColumn,
+                aggregatorFunc);
         }
     }
 }

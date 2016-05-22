@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Queries;
-using DatenMeister.Filler;
+using DatenMeister.EMOF.Interface.Reflection;using DatenMeister.Filler;
 using DatenMeister.Uml.Helper;
 using DatenMeister.XMI;
 

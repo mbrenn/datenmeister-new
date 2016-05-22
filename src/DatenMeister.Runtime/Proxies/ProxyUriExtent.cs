@@ -3,7 +3,7 @@ using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 
-namespace DatenMeister.EMOF.Proxy
+namespace DatenMeister.Runtime.Proxies
 {
     public class ProxyUriExtent : IUriExtent
     {

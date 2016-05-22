@@ -1,7 +1,7 @@
 ﻿using DatenMeister.EMOF.InMemory;
-using DatenMeister.EMOF.Queries;
 using NUnit.Framework;
 using System.Linq;
+using DatenMeister.Runtime.Functions.Queries;
 
 namespace DatenMeister.Tests.Mof.Queries
 {

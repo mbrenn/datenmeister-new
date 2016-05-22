@@ -6,7 +6,7 @@ using System.Linq;
 using DatenMeister.CSV;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Queries;
+using DatenMeister.Runtime.Functions.Queries;
 
 namespace DatenMeister.Apps.ZipCode
 {

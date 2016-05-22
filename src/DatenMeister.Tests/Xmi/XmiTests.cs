@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.XMI;
 using NUnit.Framework;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.XMI.UmlBootstrap;
-using DatenMeister.EMOF.Queries;
 using DatenMeister.Filler;
+using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Uml;
 using DatenMeister.XMI.Standards;
 

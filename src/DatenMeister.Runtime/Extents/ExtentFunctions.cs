@@ -3,7 +3,7 @@ using System.Linq;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Queries;
+using DatenMeister.Runtime.Functions.Queries;
 
 namespace DatenMeister.Runtime.Extents
 {

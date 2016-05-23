@@ -1,8 +1,4 @@
-﻿using System.Threading;
-using DatenMeister.EMOF.Interface.Common;
-using DatenMeister.EMOF.Interface.Reflection;
-
-namespace DatenMeister.Runtime.Functions.Interfaces
+﻿namespace DatenMeister.Runtime.Functions.Interfaces
 {
     public abstract class Aggregator<T> : IAggregator<T>
     {

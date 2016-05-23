@@ -1,5 +1,3 @@
-using DatenMeister.EMOF.Interface.Common;
-
 namespace DatenMeister.Runtime.Functions.Interfaces
 {
     public interface IAggregator<T>

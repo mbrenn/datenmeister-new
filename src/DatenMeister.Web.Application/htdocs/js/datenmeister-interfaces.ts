@@ -16,7 +16,7 @@ export module ClientResponse {
     }
 
     export interface IItemsContent {
-        columns: Array<IDataTableColumn>;
+        columns: Array<IDataField>;
         items: Array<IDataTableItem>;
         search: string;
         totalItemCount: number;
@@ -39,12 +39,12 @@ export module ClientResponse {
         id: string;
         uri: string;
         v: Array<string>;
-        c: Array<IDataTableColumn>;
+        c: Array<IDataField>;
         metaclass?: IItemModel;
         layer: string;
     }
 
-    export interface IDataTableColumn {
+    export interface IDataField {
         type: string;
         title?: string;
         name?: string;
@@ -52,8 +52,17 @@ export module ClientResponse {
         isEnumeration?: boolean;
     }
 
-    export interface IDataTableDropDown extends IDataTableColumn {
+    export interface IDropDownDataField extends IDataField {
         values: Array<string>;
+    }
+
+    export interface ITextDataField extends IDataField {
+        lineHeight: number;
+    }
+
+    export interface IDateTimeDataField extends IDataField {
+        showDate: boolean;
+        showTime: boolean;
     }
 
     export interface IDataTableItem {
@@ -146,7 +155,7 @@ export namespace View {
 
 export namespace Table {
 
-    export class DataTableColumn implements ClientResponse.IDataTableColumn {
+    export class DataField implements ClientResponse.IDataField {
         type: string;
         title: string;
         name: string;
@@ -159,13 +168,37 @@ export namespace Table {
             this.name = name;
         }
 
-        withDefaultValue(value: any): DataTableColumn {
+        withDefaultValue(value: any): DataField {
             this.defaultValue = value;
             return this;
         }
     }
 
-    export class DataTableDropDown extends DataTableColumn  implements  ClientResponse.IDataTableDropDown{
+    export class TextDataField extends DataField implements ClientResponse.ITextDataField {
+
+        lineHeight: number;
+
+        constructor(title?: string, name?: string) {
+            super(title, name);
+            this.type = ColumnTypes.textbox;
+            this.lineHeight = 1;
+        }
+    }
+
+    export class DateTimeDataField extends DataField implements ClientResponse.IDateTimeDataField {
+
+        showDate: boolean;
+        showTime: boolean;
+
+        constructor(title?: string, name?: string) {
+            super(title, name);
+            this.type = ColumnTypes.dropdown;
+            this.showDate = true;
+            this.showTime = true;
+        }
+    }
+
+    export class DropDownDataField extends DataField implements ClientResponse.IDropDownDataField {
         values: Array<string>;
 
         constructor(title?: string, name?: string) {
@@ -177,6 +210,7 @@ export namespace Table {
     export class ColumnTypes {
         static textbox = "textbox";
         static dropdown = "dropdown";
+        static dateTime = "datetime";
     }
 
     export class DataTableItem {
@@ -205,16 +239,16 @@ export namespace Api {
     }
 
     export class FormForItemConfiguration {
-        columns: Array<ClientResponse.IDataTableColumn>;
+        columns: Array<ClientResponse.IDataField>;
 
         onOkForm: (data: any) => void;
         onCancelForm: () => void;
 
         constructor() {
-            this.columns = new Array<ClientResponse.IDataTableColumn>();
+            this.columns = new Array<ClientResponse.IDataField>();
         }
 
-        addColumn(column: ClientResponse.IDataTableColumn): void {
+        addColumn(column: ClientResponse.IDataField): void {
             this.columns[this.columns.length] = column;
         }
     }

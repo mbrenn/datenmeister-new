@@ -9,6 +9,7 @@ using BurnSystems.Owin.StaticFiles;
 using DatenMeister.Apps.ZipCode;
 using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -46,9 +47,9 @@ namespace DatenMeister.Web.Application
 #endif
             
             // Do the full load of all assemblies
-            Integration.Helper.LoadAllAssembliesFromCurrentDirectory();
-            Integration.Helper.LoadAllReferencedAssemblies();
-            Integration.Helper.LoadAssembliesFromFolder("plugins");
+            Integration.DotNet.LoadingHelper.LoadAllAssembliesFromCurrentDirectory();
+            Integration.DotNet.LoadingHelper.LoadAllReferencedAssemblies();
+            Integration.DotNet.LoadingHelper.LoadAssembliesFromFolder("plugins");
             
             // Initializing of the WebAPI, needs to be called after the DatenMeister is initialized
             var httpConfiguration = new HttpConfiguration();
@@ -81,7 +82,7 @@ namespace DatenMeister.Web.Application
             };
 
             var kernel = new ContainerBuilder();
-            var container = kernel.UseDatenMeister(settings);
+            var container = kernel.UseDatenMeisterDotNet(settings);
 
             // Defines the shutdown
             var properties = new AppProperties(app.Properties);

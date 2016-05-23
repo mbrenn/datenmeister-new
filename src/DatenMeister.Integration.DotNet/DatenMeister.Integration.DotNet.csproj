@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DD8EA307-D685-4A7B-B726-A1C87192600D}</ProjectGuid>
+    <ProjectGuid>{DDE7E649-F341-4D2D-8F54-21F0CCDF3FB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DatenMeister.Integration</RootNamespace>
-    <AssemblyName>DatenMeister.Integration</AssemblyName>
+    <RootNamespace>DatenMeister.Integration.DotNet</RootNamespace>
+    <AssemblyName>DatenMeister.Integration.DotNet</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -30,24 +30,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
@@ -63,31 +45,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributeHelper.cs" />
+    <Compile Include="DotNetIntegrationHooks.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="Integration.cs" />
-    <Compile Include="IntegrationSettings.cs" />
+    <Compile Include="LoadingHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DatenMeister.CSV\DatenMeister.CSV.csproj">
-      <Project>{39845115-f057-4641-9237-6960bb676684}</Project>
-      <Name>DatenMeister.CSV</Name>
+    <ProjectReference Include="..\DatenMeister.Integration\DatenMeister.Integration.csproj">
+      <Project>{dd8ea307-d685-4a7b-b726-a1c87192600d}</Project>
+      <Name>DatenMeister.Integration</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
       <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>
       <Name>DatenMeister.Runtime</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Uml\DatenMeister.Uml.csproj">
-      <Project>{335399D1-B533-42D2-AEA5-F398F35D8E66}</Project>
-      <Name>DatenMeister.Uml</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Web\DatenMeister.Web.csproj">
-      <Project>{200fe333-4d98-4f76-a8d6-e7c94a272ff2}</Project>
-      <Name>DatenMeister.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">
-      <Project>{e44275c2-9e62-42be-b984-127f82c1766f}</Project>
-      <Name>DatenMeister.XMI</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>

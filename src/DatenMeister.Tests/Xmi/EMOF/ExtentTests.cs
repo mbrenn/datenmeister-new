@@ -8,6 +8,7 @@ using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
@@ -182,7 +183,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         {
             var kernel = new ContainerBuilder();
 
-            var builder = kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings { PathToXmiFiles = "Xmi" });
             using (var scope = builder.BeginLifetimeScope())
             {
                 var path = Path.Combine(
@@ -233,7 +234,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestWithMetaClass()
         {
             var kernel = new ContainerBuilder();
-            var builder = kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings { PathToXmiFiles = "Xmi" });
             using (var scope = builder.BeginLifetimeScope())
             {
                 var dataLayerLogic = scope.Resolve<IDataLayerLogic>();

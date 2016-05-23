@@ -5,7 +5,7 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8024235E-A226-4666-B1A2-1ACD7A8A330C}</ProjectGuid>
+    <ProjectGuid>{DD8EA307-D685-4A7B-B726-A1C87192600D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DatenMeister.Integration</RootNamespace>

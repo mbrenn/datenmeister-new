@@ -1,6 +1,13 @@
 
 Import-Module -Name "./Invoke-MsBuild.psm1" 
-$projects = "DatenMeister", "DatenMeister.Runtime", "DatenMeister.CSV", "DatenMeister.XMI", "DatenMeister.Uml", "DatenMeister.Provider.DotNet"
+$projects = "DatenMeister", 
+    "DatenMeister.Runtime", 
+    "DatenMeister.CSV", 
+    "DatenMeister.XMI", 
+    "DatenMeister.Uml", 
+    "DatenMeister.Provider.DotNet", 
+    "DatenMeister.ManualMapping", 
+    "DatenMeister.Full.Integration"
 
 if (!(Test-Path -Path .\scripts\assembly))
 {
@@ -8,8 +15,7 @@ if (!(Test-Path -Path .\scripts\assembly))
 }
 
 ForEach ($project in $projects)
-{
-    
+{    
     ## Build the project
     Write-Host "{$project}: Building"
     Push-Location

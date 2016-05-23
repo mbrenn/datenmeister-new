@@ -4,6 +4,7 @@ using DatenMeister.CSV;
 using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.FactoryMapper;
 
@@ -40,7 +41,7 @@ namespace DatenMeister.Tests.Integration
         public void TestFactoryMappingByAttributeForExtentLoaders()
         {
             var kernel = new ContainerBuilder();
-            var builder = kernel.UseDatenMeister(new IntegrationSettings {PathToXmiFiles = "Xmi"});
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings {PathToXmiFiles = "Xmi"});
             using (var scope = builder.BeginLifetimeScope())
             {
 

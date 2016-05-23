@@ -336,6 +336,10 @@
       <Project>{39845115-F057-4641-9237-6960BB676684}</Project>
       <Name>DatenMeister.CSV</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj">
+      <Project>{dde7e649-f341-4d2d-8f54-21f0ccdf3fb2}</Project>
+      <Name>DatenMeister.Integration.DotNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Integration\DatenMeister.Integration.csproj">
       <Project>{dd8ea307-d685-4a7b-b726-a1c87192600d}</Project>
       <Name>DatenMeister.Integration</Name>

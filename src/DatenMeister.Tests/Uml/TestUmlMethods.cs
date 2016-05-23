@@ -3,6 +3,7 @@ using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.DataLayer;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Uml.Helper;
 using NUnit.Framework;
 
@@ -16,7 +17,7 @@ namespace DatenMeister.Tests.Uml
         {
             var kernel = new ContainerBuilder();
             kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
-            var builder = kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings { PathToXmiFiles = "Xmi" });
             using (var scope = builder.BeginLifetimeScope())
             {
                 var classifierMethods = scope.Resolve<ClassifierMethods>();

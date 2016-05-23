@@ -3,6 +3,7 @@ using DatenMeister.Apps.ZipCode;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
@@ -15,7 +16,7 @@ namespace DatenMeister.Tests.Runtime
         public void TestCreatabeTypes()
         {
             var kernel = new ContainerBuilder();
-            var builder = kernel.UseDatenMeister(new IntegrationSettings {PathToXmiFiles = "Xmi"});
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings {PathToXmiFiles = "Xmi"});
             using (var scope = builder.BeginLifetimeScope())
             {
                 // Apply for zipcodes

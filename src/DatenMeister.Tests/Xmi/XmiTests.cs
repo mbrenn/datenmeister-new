@@ -8,13 +8,9 @@ using DatenMeister.EMOF.InMemory;
 using DatenMeister.XMI;
 using NUnit.Framework;
 using DatenMeister.EMOF.Interface.Reflection;
-<<<<<<< HEAD
-using DatenMeister.EMOF.Queries;
-=======
 using DatenMeister.XMI.UmlBootstrap;
 using DatenMeister.Filler;
 using DatenMeister.Runtime.Functions.Queries;
->>>>>>> develop
 using DatenMeister.Uml;
 using DatenMeister.XMI.Standards;
 

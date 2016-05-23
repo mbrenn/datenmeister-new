@@ -1,10 +1,6 @@
 ﻿using DatenMeister.CSV;
 using DatenMeister.EMOF.InMemory;
-<<<<<<< HEAD
-using DatenMeister.EMOF.Queries;
-=======
 using DatenMeister.XMI.UmlBootstrap;
->>>>>>> develop
 using System.Diagnostics;
 using System.Linq;
 using DatenMeister.DataLayer;

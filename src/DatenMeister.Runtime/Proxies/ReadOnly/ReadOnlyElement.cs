@@ -1,5 +1,4 @@
 ﻿using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Proxy;
 
 namespace DatenMeister.Runtime.Proxies.ReadOnly
 {

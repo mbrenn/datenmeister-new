@@ -5,7 +5,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
 {
     public class MaxAggregator : DoubleAggregationByFunction
     {
-        public MaxAggregator(object property) : base(property, Math.Max)
+        public MaxAggregator() : base(Math.Max)
         {
             Start = Double.MinValue;
         }

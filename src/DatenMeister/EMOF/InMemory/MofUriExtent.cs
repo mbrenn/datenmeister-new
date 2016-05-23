@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using DatenMeister.EMOF.Attributes;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Queries;
 
 namespace DatenMeister.EMOF.InMemory
 {

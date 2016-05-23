@@ -4,8 +4,8 @@ namespace DatenMeister.Runtime.Functions.Aggregation
 {
     public class CountAggregator : DoubleAggregationByFunction
     {
-        public CountAggregator(object property)
-            : base(property, (a, b) => a + 1)
+        public CountAggregator()
+            : base((a, b) => a + 1)
         {
         }
     }

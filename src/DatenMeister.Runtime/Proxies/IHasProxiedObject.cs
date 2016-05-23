@@ -1,6 +1,6 @@
 ﻿using DatenMeister.EMOF.Interface.Reflection;
 
-namespace DatenMeister.EMOF.Proxy
+namespace DatenMeister.Runtime.Proxies
 {
     public interface IHasProxiedObject
     {

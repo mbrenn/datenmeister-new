@@ -3,7 +3,6 @@ using System.Linq;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Queries;
 
 namespace DatenMeister.EMOF.Helper
 {
@@ -86,7 +85,8 @@ namespace DatenMeister.EMOF.Helper
             // If not successful, try to find it by traditional, but old approach
             foreach (var extent in uriExtents)
             {
-                if (extent.elements().GetAllDecendants().Any(x => x.Equals(value)))
+                if (AllDescendentsQuery.getDescendents(extent.elements())
+                    .Any(x => x.Equals(value)))
                 {
                     return extent;
                 }

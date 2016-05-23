@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Proxy;
+using DatenMeister.Runtime.Proxies;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Mof.Core

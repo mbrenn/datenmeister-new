@@ -56,7 +56,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZipCode", "ZipCode", "{D6DA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TaskMeister", "TaskMeister", "{5E939A01-A1CD-4D1C-83AB-3A79AF6DA972}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.UWP", "..\..\taskmeister\src\DatenMeister.UWP\DatenMeister.UWP.csproj", "{A458585D-5DF7-4E14-9344-BB788BE4D917}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.UWP", "DatenMeister.UWP\DatenMeister.UWP.csproj", "{A458585D-5DF7-4E14-9344-BB788BE4D917}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskMeisterLib", "..\..\taskmeister\src\TaskMeisterLib\TaskMeisterLib.csproj", "{1988DBBC-5D98-454E-8BE1-62A5E9194FA3}"
 EndProject

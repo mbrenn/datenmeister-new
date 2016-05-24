@@ -108,6 +108,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DetailFormHelper.cs" />
+    <Compile Include="Forms\DateTimeField.cs" />
+    <Compile Include="Forms\IField.cs" />
+    <Compile Include="Forms\TextField.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\DatenMeister.UWP.rd.xml" />
   </ItemGroup>

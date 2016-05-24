@@ -1,13 +1,13 @@
 ﻿namespace DatenMeister.Web.Models.Fields
 {
-    public class TextDataField : DataField
+    public class TextFieldData : FieldData
     {
-        public TextDataField()
+        public TextFieldData()
         {
                 
         }
 
-        public TextDataField(string name, string title) : base(name, title)
+        public TextFieldData(string name, string title) : base(name, title)
         {
             
         }

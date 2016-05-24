@@ -1,13 +1,13 @@
 ﻿namespace DatenMeister.Web.Models.Fields
 {
-    public class DateTimeDataField : DataField
+    public class DateTimeFieldData : FieldData
     {
-        public DateTimeDataField()
+        public DateTimeFieldData()
         {
 
         }
 
-        public DateTimeDataField(string name, string title) : base(name, title)
+        public DateTimeFieldData(string name, string title) : base(name, title)
         {
 
         }

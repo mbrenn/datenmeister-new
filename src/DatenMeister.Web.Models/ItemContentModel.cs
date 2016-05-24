@@ -11,7 +11,7 @@ namespace DatenMeister.Web.Models
 
         public Dictionary<string, object> v { get; set; }
 
-        public List<DataField> c { get; set; }
+        public List<FieldData> c { get; set; }
 
         public ItemModel metaclass { get; set; }
     }

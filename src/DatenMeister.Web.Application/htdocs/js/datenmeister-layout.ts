@@ -266,4 +266,8 @@ export class Layout implements DMI.Api.ILayout {
             this.onLayoutChanged(data);
         }
     }
+
+    gotoHome() {
+        this.navigateToWorkspaces();
+    }
 }

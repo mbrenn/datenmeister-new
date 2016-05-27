@@ -217,6 +217,9 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-view"
                 this.onLayoutChanged(data);
             }
         };
+        Layout.prototype.gotoHome = function () {
+            this.navigateToWorkspaces();
+        };
         return Layout;
     }());
     exports.Layout = Layout;

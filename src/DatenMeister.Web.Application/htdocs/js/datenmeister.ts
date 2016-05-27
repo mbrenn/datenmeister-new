@@ -81,6 +81,7 @@ function buildRibbons(layout: DMLayout.Layout, changeEvent: DMLayout.ILayoutChan
     var ribbon = new DMRibbon.Ribbon(domRibbon);
     var tabFile = ribbon.addTab("File");
 
+    tabFile.addIcon("Home", "img/icons/home", () => { layout.gotoHome(); });
     tabFile.addIcon("Refresh", "img/icons/refresh_update", () => { layout.refreshView(); });
 
     tabFile.addIcon("Workspaces", "img/icons/database", () => { layout.showWorkspaces(); });

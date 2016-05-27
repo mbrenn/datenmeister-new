@@ -113,7 +113,7 @@
     <Compile Include="Proxies\ReadOnly\ReadOnlyObject.cs" />
     <Compile Include="Proxies\ReadOnly\ReadOnlyReflectiveSequence.cs" />
     <Compile Include="Proxies\ReadOnly\ReadOnlyUriExtent.cs" />
-    <Compile Include="Workspaces\WorkspaceExtentAndItem.cs" />
+    <Compile Include="Workspaces\WorkspaceExtentAndItemReference.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">

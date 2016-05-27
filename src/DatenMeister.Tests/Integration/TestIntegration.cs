@@ -30,10 +30,10 @@ namespace DatenMeister.Tests.Integration
                 Assert.That(mapper.HasMappingForExtentType(typeof(MofUriExtent)), Is.True);
                 Assert.That(mapper.HasMappingForExtentType(typeof(MofElement)), Is.False);
 
-                Assert.That(mapper.FindFactoryFor(typeof(MofUriExtent)), Is.TypeOf<MofFactory>());
+                Assert.That(mapper.FindFactoryFor(scope, typeof(MofUriExtent)), Is.TypeOf<MofFactory>());
 
                 var uriExtent = new MofUriExtent("dm:///localhost");
-                Assert.That(mapper.FindFactoryFor(uriExtent), Is.TypeOf<MofFactory>());
+                Assert.That(mapper.FindFactoryFor(scope, uriExtent), Is.TypeOf<MofFactory>());
             }
         }
 

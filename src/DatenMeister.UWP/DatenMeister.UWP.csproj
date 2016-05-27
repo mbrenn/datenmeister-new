@@ -107,6 +107,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converter\DateTimeConverter.cs" />
     <Compile Include="DetailFormHelper.cs" />
     <Compile Include="Forms\DateTimeField.cs" />
     <Compile Include="Forms\IField.cs" />

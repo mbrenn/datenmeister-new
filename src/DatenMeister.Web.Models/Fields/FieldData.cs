@@ -1,13 +1,13 @@
 ﻿namespace DatenMeister.Web.Models.Fields
 {
-    public class DataField
+    public class FieldData
     {
-        public DataField()
+        public FieldData()
         {
             this.fieldType = "text";
         }
 
-        public DataField(string name, string title) : this()
+        public FieldData(string name, string title) : this()
         {
             this.name = name;
             this.title = title;

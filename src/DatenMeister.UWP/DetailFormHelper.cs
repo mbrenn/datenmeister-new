@@ -4,6 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.UWP.Forms;
 using DatenMeister.Web.Models;
 using DatenMeister.Web.Models.Fields;
 
@@ -14,61 +15,76 @@ namespace DatenMeister.UWP
     /// </summary>
     public class DetailFormHelper
     {
-        private readonly FormViewSettings _settings;
-        private readonly IElement _element;
-        private readonly Grid _fields;
-        private readonly Grid _buttons;
+        public FormViewSettings Settings { get; }
+
+        private readonly Grid _gridButtons;
 
         public int CurrentRow { get; set; }
 
         private bool _deleteClickedOnce = false;
 
         /// <summary>
+        /// Stores the element containing data
+        /// </summary>
+        public IElement DataElement { get; }
+
+        /// <summary>
         /// Stores the list of binding actions being used to close the dialog
         /// </summary>
-        private readonly List<Action> _bindingActions = new List<Action>();
+        public List<Action> BindingActions { get; } = new List<Action>();
 
-        public DetailFormHelper(FormViewSettings settings, IElement element, Grid fields, Grid buttons)
+        /// <summary>
+        /// Stores the element containing all the fields
+        /// </summary>
+        public Grid GridFields { get; }
+
+        public DetailFormHelper(FormViewSettings settings, IElement element, Grid gridFields, Grid gridButtons)
         {
-            _settings = settings;
-            _element = element;
-            _fields = fields;
-            _buttons = buttons;
-            _fields.VerticalAlignment = VerticalAlignment.Top;
+            Settings = settings;
+            DataElement = element;
+            GridFields = gridFields;
+            _gridButtons = gridButtons;
+            GridFields.VerticalAlignment = VerticalAlignment.Top;
         }
 
-        public void AddRows(IEnumerable<DataField> columns)
+        public void AddRows(IEnumerable<FieldData> fields)
         {
-            foreach (var column in columns)
+            foreach (var fieldData in fields)
             {
-                if (column is TextDataField)
+                if (fieldData is TextFieldData)
                 {
-                    AddTextColumn(column as TextDataField);
+                    AddTextColumn(fieldData as TextFieldData);
                 }
-                else if (column is DateTimeDataField)
+                else if (fieldData is DateTimeFieldData)
                 {
-                    AddDateTimeColumn(column as DateTimeDataField);
+                    AddDateTimeColumn(fieldData as DateTimeFieldData);
                 }
                 else
                 {
-                    AddTextColumn(new TextDataField(column.title, column.name));
+                    AddTextColumn(new TextFieldData(fieldData.title, fieldData.name));
                 }
             }
         }
 
-        private TextBlock AddRow(DataField textField, out int row)
+        /// <summary>
+        /// Adds a row
+        /// </summary>
+        /// <param name="fieldData">Field Data to be used to create a new row</param>
+        /// <param name="row">Number of row that was created</param>
+        /// <returns>Textblock storing the key</returns>
+        public TextBlock AddRow(FieldData fieldData, out int row)
         {
             row = CurrentRow;
 
             CurrentRow++;
-            _fields.RowDefinitions.Insert(row, new RowDefinition()
+            GridFields.RowDefinitions.Insert(row, new RowDefinition()
             {
                 Height = GridLength.Auto
             });
 
             var textBlock = new TextBlock()
             {
-                Text = $"{textField.title}: ",
+                Text = $"{fieldData.title}: ",
                 Margin = new Thickness(5),
                 VerticalAlignment = VerticalAlignment.Center
             };
@@ -76,75 +92,18 @@ namespace DatenMeister.UWP
             Grid.SetColumn(textBlock, 0);
             Grid.SetRow(textBlock, row);
 
-            _fields.Children.Add(textBlock);
+            GridFields.Children.Add(textBlock);
             return textBlock;
         }
 
-        private void AddTextColumn(TextDataField textField)
+        private void AddTextColumn(TextFieldData fieldData)
         {
-            int row;
-            var textBlock = AddRow(textField, out row);
-
-            var textBox = new TextBox
-            {
-                Text = GetValue(_element, textField.name),
-                Margin = new Thickness(5),
-                TextWrapping = TextWrapping.Wrap
-            };
-
-            var lineHeight = Math.Max(1, textField.lineHeight);
-            textBox.Height = 20 * lineHeight;
-            if (lineHeight > 1)
-            {
-                textBlock.VerticalAlignment = VerticalAlignment.Top;
-                textBox.AcceptsReturn = true;
-            }
-
-            Grid.SetColumn(textBox, 1);
-            Grid.SetRow(textBox, row);
-
-            _fields.Children.Add(textBox);
-
-            _bindingActions.Add(
-                () => _element.set(textField.name, textBox.Text));
+            new TextField().CreateField(this, fieldData);
         }
 
-        private void AddDateTimeColumn(DateTimeDataField dateTimeDataField)
+        private void AddDateTimeColumn(DateTimeFieldData fieldData)
         {
-            int row;
-            AddRow(dateTimeDataField, out row);
-            var stackPanel = new StackPanel()
-            {
-                Orientation = Orientation.Horizontal
-            };
-
-            var dateTime = new DatePicker
-            {
-                Margin = new Thickness(5)
-            };
-
-            var time = new TimePicker
-            {
-                Margin = new Thickness(5)
-            };
-
-            Grid.SetColumn(stackPanel, 1);
-            Grid.SetRow(stackPanel, row);
-
-            if (dateTimeDataField.showDate)
-            {
-                stackPanel.Children.Add(dateTime);
-            }
-
-            if (dateTimeDataField.showTime)
-            {
-                stackPanel.Children.Add(time);
-            }
-
-            _fields.Children.Add(stackPanel);
-
-            _bindingActions.Add(
-                () => _element.set(dateTimeDataField.name, dateTime.Date.Date));
+            new DateTimeField().CreateField(this, fieldData);
         }
 
         public void AddButtons(Action<DialogResult> onClose)
@@ -170,7 +129,7 @@ namespace DatenMeister.UWP
 
             btnOk.Click += (x, y) =>
             {
-                foreach (var action in _bindingActions)
+                foreach (var action in BindingActions)
                 {
                     action();
                 }
@@ -183,7 +142,7 @@ namespace DatenMeister.UWP
                 onClose(DialogResult.Cancel);
             };
 
-            if (_settings.AllowDelete)
+            if (Settings.AllowDelete)
             {
                 var btnDelete = new Button()
                 {
@@ -200,12 +159,11 @@ namespace DatenMeister.UWP
                     }
                     else
                     {
-                        var correspondingExtent = _element.GetExtentOf();
-                        correspondingExtent.elements().remove(_element);
+                        var correspondingExtent = DataElement.GetExtentOf();
+                        correspondingExtent.elements().remove(DataElement);
                         onClose(DialogResult.Delete);
                     }
                 };
-
 
                 stackPanel.Children.Add(btnDelete);
             }
@@ -214,7 +172,7 @@ namespace DatenMeister.UWP
             stackPanel.Children.Add(btnOk);
 
             // Adds the stackpanel itself
-            _buttons.Children.Add(stackPanel);
+            _gridButtons.Children.Add(stackPanel);
             CurrentRow++;
         }
 

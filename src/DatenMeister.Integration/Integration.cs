@@ -117,7 +117,7 @@ namespace DatenMeister.Integration
             }
 
             watch.Stop();
-            Debug.WriteLine($"Elapsed time for boostrap: {watch.Elapsed}");
+            Debug.WriteLine($"Elapsed time for bootstrap: {watch.Elapsed}");
 
             return builder;
         }

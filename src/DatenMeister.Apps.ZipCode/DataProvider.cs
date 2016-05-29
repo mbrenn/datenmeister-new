@@ -7,6 +7,7 @@ using DatenMeister.CSV;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Reflection;
 
 namespace DatenMeister.Apps.ZipCode
 {

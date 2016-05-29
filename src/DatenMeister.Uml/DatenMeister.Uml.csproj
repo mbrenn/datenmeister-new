@@ -62,14 +62,15 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Helper\ClassifierMethods.cs" />
     <Compile Include="Helper\IUmlNameResolution.cs" />
-    <Compile Include="Logic\IUmlLogic.cs" />
     <Compile Include="Helper\UmlNameResolution.cs" />
-    <Compile Include="Logic\UmlLogicData.cs" />
-    <Compile Include="Logic\UmlLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeFactory\TypeFactoryDotNet.cs" />
+    <Compile Include="UmlToDmMLConverter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
+      <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>
+      <Name>DatenMeister.Runtime</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">
       <Project>{e44275c2-9e62-42be-b984-127f82c1766f}</Project>
       <Name>DatenMeister.XMI</Name>

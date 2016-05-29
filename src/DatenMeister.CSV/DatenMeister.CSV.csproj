@@ -62,6 +62,7 @@
     <Compile Include="CSVDataProvider.cs" />
     <Compile Include="CSVPlugin.cs" />
     <Compile Include="CSVSettings.cs" />
+    <Compile Include="EMOF\CSVExtent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\Storage\CSVStorage.cs" />
     <Compile Include="Runtime\Storage\CSVStorageConfiguration.cs" />

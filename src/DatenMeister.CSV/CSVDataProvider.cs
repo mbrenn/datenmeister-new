@@ -105,7 +105,7 @@ namespace DatenMeister.CSV
                     var valueCount = values.Count;
                     for (var n = 0; n < valueCount; n++)
                     {
-                        object foundColumn;
+                        string foundColumn;
 
                         // Check, if we have enough columns, if we don't have enough columns, create one
                         if (columns.Count <= n && (createColumns || !settings.HasHeader))
@@ -128,7 +128,7 @@ namespace DatenMeister.CSV
             }
         }
 
-        private IList<object> ConvertColumnsToPropertyValues(IExtent extent, IElement metaClass, CSVSettings settings)
+        private IList<string> ConvertColumnsToPropertyValues(IExtent extent, IElement metaClass, CSVSettings settings)
         {
             //////////////////////
             // Loads the workspace
@@ -139,10 +139,10 @@ namespace DatenMeister.CSV
 
             var dmml = _dataLayerLogic.GetFromMetaLayer<DmML>(extent);
 
-            var result = (IList<object>) metaClass.get(dmml.Class.Attribute);
+            var result = (IList<string>) metaClass.get(dmml.Class.Attribute);
             if (result == null)
             {
-                result = new List<object>();
+                result = new List<string>();
                 metaClass.set(dmml.Class.Attribute, result);
             }
 
@@ -213,7 +213,7 @@ namespace DatenMeister.CSV
         /// <param name="settings">Settings being used</param>
         public void Save(IUriExtent extent, string path, CSVSettings settings)
         {
-            var columns = new List<object>();
+            var columns = new List<string>();
             var dmml = _dataLayerLogic.GetFromMetaLayer<DmML>(extent);
             var metaClass = new ClassWrapper(GetMetaClassOfItems(extent, settings), dmml);
             
@@ -222,7 +222,7 @@ namespace DatenMeister.CSV
             if (settings.HasHeader && metaClass.Attributes.Any())
             {
                 // Column headers given by old extent
-                columns.AddRange(metaClass.Attributes.Select(x => x.Unwrap()));
+                columns.AddRange(metaClass.Attributes.Select(x => x.Name));
             }
             else
             {
@@ -259,8 +259,8 @@ namespace DatenMeister.CSV
         /// <param name="settings">Settings to be used</param>
         /// <param name="values"></param>
         /// <param name="conversion">Converter to be used, to show the content</param>
-        private void WriteRow<T>(StreamWriter streamWriter, CSVSettings settings, IEnumerable<T> values,
-            Func<T, object> conversion)
+        private void WriteRow(StreamWriter streamWriter, CSVSettings settings, IEnumerable<string> values,
+            Func<string, object> conversion)
         {
             var builder = new StringBuilder();
             var first = true;

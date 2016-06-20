@@ -10,12 +10,12 @@ namespace DatenMeister.Runtime.Functions.Queries
     public class FilterOnMultipleProperties : ProxyReflectiveCollection
     {
         private readonly StringComparison _comparison;
-        private readonly IEnumerable<object> _properties;
+        private readonly IEnumerable<string> _properties;
         private readonly string _searchString;
 
         public FilterOnMultipleProperties(
             IReflectiveCollection collection,
-            IEnumerable<object> properties,
+            IEnumerable<string> properties,
             string searchString,
             StringComparison comparison = StringComparison.CurrentCulture)
             : base(collection)

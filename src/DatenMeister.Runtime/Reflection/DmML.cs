@@ -12,7 +12,7 @@ namespace DatenMeister.Runtime.Reflection
     {
         public class _NamedElement
         {
-            public object Name = "name";
+            public string Name = "name";
         }
 
         public class _Property
@@ -22,7 +22,7 @@ namespace DatenMeister.Runtime.Reflection
 
         public class _Class
         {
-            public object Attribute = "attribute";
+            public string Attribute = "attribute";
         }
 
         public IElement __NamedElement = new MofElement();

@@ -29,8 +29,8 @@ namespace DatenMeister.Runtime.Reflection
 
         public string Name
         {
-            get { return _element.isSet(_dmml.NamedElement) ? _element.get(_dmml.NamedElement).ToString() : string.Empty; }
-            set { _element.set(_dmml.NamedElement, value); }
+            get { return _element.isSet(_dmml.NamedElement.Name) ? _element.get(_dmml.NamedElement.Name).ToString() : string.Empty; }
+            set { _element.set(_dmml.NamedElement.Name, value); }
         }
 
         public IEnumerable<AttributeWrapper> Attributes
@@ -40,7 +40,7 @@ namespace DatenMeister.Runtime.Reflection
                 if (!_element.isSet(_dmml.Class.Attribute))
                 {
                     var value = new List<AttributeWrapper>();
-                    _element.set(value, _dmml.Class.Attribute);
+                    _element.set(_dmml.Class.Attribute, value);
                 }
 
                 return (_element.get(_dmml.Class.Attribute) as IReflectiveCollection).ToList<AttributeWrapper>(

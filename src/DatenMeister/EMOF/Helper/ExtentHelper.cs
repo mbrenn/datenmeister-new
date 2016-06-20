@@ -13,14 +13,14 @@ namespace DatenMeister.EMOF.Helper
         /// </summary>
         /// <param name="extent">Extent to be checked</param>
         /// <returns>Enumeration of all columns</returns>
-        public static IEnumerable<object> GetProperties(this IUriExtent extent)
+        public static IEnumerable<string> GetProperties(this IUriExtent extent)
         {
             var elements = extent.elements();
 
             return GetProperties(elements);
         }
 
-        private static IEnumerable<object> GetProperties(this IReflectiveSequence elements)
+        private static IEnumerable<string> GetProperties(this IReflectiveSequence elements)
         {
             var result = new List<object>();
             foreach (var item in elements)

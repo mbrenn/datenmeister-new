@@ -103,7 +103,7 @@ namespace DatenMeister.SourcecodeGenerator
             var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
             if (name != null)
             {
-                Result.AppendLine($"{stack.Indentation}public object @{name} = \"{name}\";");
+                Result.AppendLine($"{stack.Indentation}public string @{name} = \"{name}\";");
                 Result.AppendLine();
             }
             else

@@ -10,8 +10,6 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// </summary>
     public class ExtentStorageConfigurationLoader : ObjectFileStorage<ExtentStorageConfigurationCollection>
     {
-        private readonly List<Type> _additionalTypes = new List<Type>();
-
         private string Filepath { get; }
         private ExtentStorageData ExtentStorageData { get; }
         private IExtentStorageLoader ExtentLoaderLogic { get; }
@@ -35,7 +33,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="type"></param>
         public void AddAdditionalType(Type type)
         {
-            _additionalTypes.Add(type);
+            ExtentStorageData.AdditionalTypes.Add(type);
         }
 
         /// <summary>
@@ -44,7 +42,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <returns>Array of additional types</returns>
         public override Type[] GetAdditionalTypes()
         {
-            return _additionalTypes.ToArray();
+            return ExtentStorageData.AdditionalTypes.ToArray();
         }
 
         /// <summary>

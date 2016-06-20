@@ -66,6 +66,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         var domRibbon = $(".datenmeister-ribbon");
         var ribbon = new DMRibbon.Ribbon(domRibbon);
         var tabFile = ribbon.addTab("File");
+        tabFile.addIcon("Home", "img/icons/home", function () { layout.gotoHome(); });
         tabFile.addIcon("Refresh", "img/icons/refresh_update", function () { layout.refreshView(); });
         tabFile.addIcon("Workspaces", "img/icons/database", function () { layout.showWorkspaces(); });
         tabFile.addIcon("Add Workspace", "img/icons/database-add", function () { showDialogNewWorkspace(layout); });

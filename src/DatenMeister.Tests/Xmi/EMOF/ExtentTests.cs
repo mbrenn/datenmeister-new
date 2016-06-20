@@ -206,7 +206,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 Assert.That(loadedExtent, Is.TypeOf<XmlUriExtent>());
 
                 // Includes some data
-                var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(loadedExtent);
+                var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(scope, loadedExtent);
                 var createdElement = factory.create(null);
                 Assert.That(createdElement, Is.TypeOf<XmlElement>());
                 loadedExtent.elements().add(createdElement);
@@ -246,7 +246,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 extent.Workspaces = scope.Resolve<IWorkspaceCollection>();
                 dataLayerLogic.AssignToDataLayer(extent, dataLayers.Types);
 
-                var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(extent);
+                var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(scope, extent);
 
                 var interfaceClass = uml.SimpleClassifiers.__Interface;
                 var element = factory.create(interfaceClass);

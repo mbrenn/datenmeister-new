@@ -3,13 +3,13 @@
     /// <summary>
     ///     This class is used to reference a single object within the database
     /// </summary>
-    public class WorkspaceExtentAndItem
+    public class WorkspaceExtentAndItemReference
     {
         public string ws { get; }
         public string extent { get; }
         public string item { get; }
 
-        public WorkspaceExtentAndItem(string ws, string extent, string item)
+        public WorkspaceExtentAndItemReference(string ws, string extent, string item)
         {
             this.ws = ws;
             this.extent = extent;

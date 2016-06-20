@@ -69,6 +69,7 @@ namespace DatenMeister.Integration
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
+                // Is used by .Net Provider to include the mappings for extent storages and factory types
                 _settings?.Hooks?.OnStartScope(scope);
 
                 var dataLayerLogic = scope.Resolve<IDataLayerLogic>();
@@ -117,7 +118,7 @@ namespace DatenMeister.Integration
             }
 
             watch.Stop();
-            Debug.WriteLine($"Elapsed time for boostrap: {watch.Elapsed}");
+            Debug.WriteLine($"Elapsed time for bootstrap: {watch.Elapsed}");
 
             return builder;
         }
@@ -136,7 +137,11 @@ namespace DatenMeister.Integration
                 scope.Resolve<ExtentStorageData>(),
                 scope.Resolve<IExtentStorageLoader>(),
                 "App_Data/Database/extents.xml");
-            innerContainer.RegisterInstance(extentLoader).As<ExtentStorageConfigurationLoader>();
+            innerContainer.Register(c => new ExtentStorageConfigurationLoader(
+                    c.Resolve<ExtentStorageData>(),
+                    c.Resolve<IExtentStorageLoader>(),
+                    "App_Data/Database/extents.xml"))
+                .As<ExtentStorageConfigurationLoader>();
 
             innerContainer.Update(builder);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using Autofac;
 using DatenMeister.EMOF.Attributes;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.ExtentStorage;
@@ -23,10 +24,9 @@ namespace DatenMeister.Integration.DotNet
                     var factoryAssignmentAttribute = customAttribute as AssignFactoryForExtentTypeAttribute;
                     if (factoryAssignmentAttribute != null)
                     {
-                        // TODO: We cannot use scope here. It might already be disposed  
                         mapper.AddMapping(
                             type,
-                            () => (IFactory)Activator.CreateInstance(factoryAssignmentAttribute.FactoryType));
+                            scope => (IFactory)scope.Resolve(factoryAssignmentAttribute.FactoryType));
 
                         Debug.WriteLine($"Assigned extent type '{type.FullName}' to '{factoryAssignmentAttribute.FactoryType}'");
                     }
@@ -47,9 +47,8 @@ namespace DatenMeister.Integration.DotNet
                     var configuredByAttribute = customAttribute as ConfiguredByAttribute;
                     if (configuredByAttribute != null)
                     {
-                        // TODO: We cannot use scope here. It might already be disposed  
                         map.AddMapping(configuredByAttribute.ConfigurationType,
-                            () => (IExtentStorage)Activator.CreateInstance(type));
+                            scope => (IExtentStorage)scope.Resolve(type));
 
                         Debug.WriteLine(
                             $"Extent loader '{configuredByAttribute.ConfigurationType}' is configured by '{type.FullName}'");

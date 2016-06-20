@@ -117,7 +117,6 @@
     <Compile Include="Runtime\Functions\AggregationTests.cs" />
     <Compile Include="Runtime\ReadOnlyProxyTests.cs" />
     <Compile Include="Runtime\WorkspaceTests.cs" />
-    <Compile Include="Uml\TestClassFactories.cs" />
     <Compile Include="Uml\TestUmlMethods.cs" />
     <Compile Include="Web\TestAutoColumnCreator.cs" />
     <Compile Include="WorkspaceTests.cs" />

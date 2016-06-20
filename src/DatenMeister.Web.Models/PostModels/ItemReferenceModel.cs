@@ -9,9 +9,9 @@ namespace DatenMeister.Web.Models.PostModels
     {
         public string item { get; set; }
 
-        public WorkspaceExtentAndItem AsItem()
+        public WorkspaceExtentAndItemReference AsItem()
         {
-            return new WorkspaceExtentAndItem(ws, extent, item);
+            return new WorkspaceExtentAndItemReference(ws, extent, item);
         }
     }
 }

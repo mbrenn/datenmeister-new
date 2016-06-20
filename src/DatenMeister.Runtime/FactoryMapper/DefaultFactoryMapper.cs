@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Autofac;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.FactoryMapper
@@ -12,15 +13,15 @@ namespace DatenMeister.Runtime.FactoryMapper
         /// <summary>
         /// Stores the mapping
         /// </summary>
-        private readonly Dictionary<Type, Func<IFactory>> _mapping = 
-            new Dictionary<Type, Func<IFactory>>(); 
+        private readonly Dictionary<Type, Func<ILifetimeScope, IFactory>> _mapping = 
+            new Dictionary<Type, Func<ILifetimeScope, IFactory>>(); 
 
         /// <summary>
         /// Adds a mapping of the type of an extent to the factory
         /// </summary>
         /// <param name="type">Type of the extent</param>
         /// <param name="createFunc">Creation function</param>
-        public void AddMapping(Type type, Func<IFactory> createFunc)
+        public void AddMapping(Type type, Func<ILifetimeScope, IFactory> createFunc)
         {
             if (_mapping.ContainsKey(type))
             {
@@ -32,7 +33,7 @@ namespace DatenMeister.Runtime.FactoryMapper
 
         public void AddMapping(Type type, Type factoryType)
         {
-            AddMapping(type, () => Activator.CreateInstance(factoryType) as IFactory);
+            AddMapping(type, scope => scope.Resolve(factoryType) as IFactory);
         }
 
         public bool HasMappingForExtentType(Type type)
@@ -40,16 +41,16 @@ namespace DatenMeister.Runtime.FactoryMapper
             return _mapping.ContainsKey(type);
         }
 
-        public IFactory FindFactoryFor(Type extentType)
+        public IFactory FindFactoryFor(ILifetimeScope scope, Type extentType)
         {
-            Func<IFactory> result;
+            Func<ILifetimeScope, IFactory> result;
 
             if (!_mapping.TryGetValue(extentType, out result))
             {
                 throw new InvalidOperationException($"No factory define for extenttype '{extentType}'.");
             }
 
-            return result();
+            return result(scope);
         }
     }
 }

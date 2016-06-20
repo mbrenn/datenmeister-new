@@ -104,6 +104,7 @@ namespace DatenMeister.SourcecodeGenerator
             if (name != null)
             {
                 Result.AppendLine($"{stack.Indentation}public string @{name} = \"{name}\";");
+                Result.AppendLine($"{stack.Indentation}public IElement _{name} = null;");
                 Result.AppendLine();
             }
             else

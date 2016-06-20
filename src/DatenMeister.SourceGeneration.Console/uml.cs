@@ -10,21 +10,29 @@ namespace DatenMeister
         {
             public class _Activity
             {
-                public object @edge = "edge";
+                public string @edge = "edge";
+                public IElement _edge = null;
 
-                public object @group = "group";
+                public string @group = "group";
+                public IElement _group = null;
 
-                public object @isReadOnly = "isReadOnly";
+                public string @isReadOnly = "isReadOnly";
+                public IElement _isReadOnly = null;
 
-                public object @isSingleExecution = "isSingleExecution";
+                public string @isSingleExecution = "isSingleExecution";
+                public IElement _isSingleExecution = null;
 
-                public object @node = "node";
+                public string @node = "node";
+                public IElement _node = null;
 
-                public object @partition = "partition";
+                public string @partition = "partition";
+                public IElement _partition = null;
 
-                public object @structuredNode = "structuredNode";
+                public string @structuredNode = "structuredNode";
+                public IElement _structuredNode = null;
 
-                public object @variable = "variable";
+                public string @variable = "variable";
+                public IElement _variable = null;
 
             }
 
@@ -33,25 +41,35 @@ namespace DatenMeister
 
             public class _ActivityEdge
             {
-                public object @activity = "activity";
+                public string @activity = "activity";
+                public IElement _activity = null;
 
-                public object @guard = "guard";
+                public string @guard = "guard";
+                public IElement _guard = null;
 
-                public object @inGroup = "inGroup";
+                public string @inGroup = "inGroup";
+                public IElement _inGroup = null;
 
-                public object @inPartition = "inPartition";
+                public string @inPartition = "inPartition";
+                public IElement _inPartition = null;
 
-                public object @inStructuredNode = "inStructuredNode";
+                public string @inStructuredNode = "inStructuredNode";
+                public IElement _inStructuredNode = null;
 
-                public object @interrupts = "interrupts";
+                public string @interrupts = "interrupts";
+                public IElement _interrupts = null;
 
-                public object @redefinedEdge = "redefinedEdge";
+                public string @redefinedEdge = "redefinedEdge";
+                public IElement _redefinedEdge = null;
 
-                public object @source = "source";
+                public string @source = "source";
+                public IElement _source = null;
 
-                public object @target = "target";
+                public string @target = "target";
+                public IElement _target = null;
 
-                public object @weight = "weight";
+                public string @weight = "weight";
+                public IElement _weight = null;
 
             }
 
@@ -67,15 +85,20 @@ namespace DatenMeister
 
             public class _ActivityGroup
             {
-                public object @containedEdge = "containedEdge";
+                public string @containedEdge = "containedEdge";
+                public IElement _containedEdge = null;
 
-                public object @containedNode = "containedNode";
+                public string @containedNode = "containedNode";
+                public IElement _containedNode = null;
 
-                public object @inActivity = "inActivity";
+                public string @inActivity = "inActivity";
+                public IElement _inActivity = null;
 
-                public object @subgroup = "subgroup";
+                public string @subgroup = "subgroup";
+                public IElement _subgroup = null;
 
-                public object @superGroup = "superGroup";
+                public string @superGroup = "superGroup";
+                public IElement _superGroup = null;
 
             }
 
@@ -84,21 +107,29 @@ namespace DatenMeister
 
             public class _ActivityNode
             {
-                public object @activity = "activity";
+                public string @activity = "activity";
+                public IElement _activity = null;
 
-                public object @inGroup = "inGroup";
+                public string @inGroup = "inGroup";
+                public IElement _inGroup = null;
 
-                public object @inInterruptibleRegion = "inInterruptibleRegion";
+                public string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement _inInterruptibleRegion = null;
 
-                public object @inPartition = "inPartition";
+                public string @inPartition = "inPartition";
+                public IElement _inPartition = null;
 
-                public object @inStructuredNode = "inStructuredNode";
+                public string @inStructuredNode = "inStructuredNode";
+                public IElement _inStructuredNode = null;
 
-                public object @incoming = "incoming";
+                public string @incoming = "incoming";
+                public IElement _incoming = null;
 
-                public object @outgoing = "outgoing";
+                public string @outgoing = "outgoing";
+                public IElement _outgoing = null;
 
-                public object @redefinedNode = "redefinedNode";
+                public string @redefinedNode = "redefinedNode";
+                public IElement _redefinedNode = null;
 
             }
 
@@ -107,7 +138,8 @@ namespace DatenMeister
 
             public class _ActivityParameterNode
             {
-                public object @parameter = "parameter";
+                public string @parameter = "parameter";
+                public IElement _parameter = null;
 
             }
 
@@ -116,19 +148,26 @@ namespace DatenMeister
 
             public class _ActivityPartition
             {
-                public object @edge = "edge";
+                public string @edge = "edge";
+                public IElement _edge = null;
 
-                public object @isDimension = "isDimension";
+                public string @isDimension = "isDimension";
+                public IElement _isDimension = null;
 
-                public object @isExternal = "isExternal";
+                public string @isExternal = "isExternal";
+                public IElement _isExternal = null;
 
-                public object @node = "node";
+                public string @node = "node";
+                public IElement _node = null;
 
-                public object @represents = "represents";
+                public string @represents = "represents";
+                public IElement _represents = null;
 
-                public object @subpartition = "subpartition";
+                public string @subpartition = "subpartition";
+                public IElement _subpartition = null;
 
-                public object @superPartition = "superPartition";
+                public string @superPartition = "superPartition";
+                public IElement _superPartition = null;
 
             }
 
@@ -165,9 +204,11 @@ namespace DatenMeister
 
             public class _DecisionNode
             {
-                public object @decisionInput = "decisionInput";
+                public string @decisionInput = "decisionInput";
+                public IElement _decisionInput = null;
 
-                public object @decisionInputFlow = "decisionInputFlow";
+                public string @decisionInputFlow = "decisionInputFlow";
+                public IElement _decisionInputFlow = null;
 
             }
 
@@ -176,13 +217,17 @@ namespace DatenMeister
 
             public class _ExceptionHandler
             {
-                public object @exceptionInput = "exceptionInput";
+                public string @exceptionInput = "exceptionInput";
+                public IElement _exceptionInput = null;
 
-                public object @exceptionType = "exceptionType";
+                public string @exceptionType = "exceptionType";
+                public IElement _exceptionType = null;
 
-                public object @handlerBody = "handlerBody";
+                public string @handlerBody = "handlerBody";
+                public IElement _handlerBody = null;
 
-                public object @protectedNode = "protectedNode";
+                public string @protectedNode = "protectedNode";
+                public IElement _protectedNode = null;
 
             }
 
@@ -191,7 +236,8 @@ namespace DatenMeister
 
             public class _ExecutableNode
             {
-                public object @handler = "handler";
+                public string @handler = "handler";
+                public IElement _handler = null;
 
             }
 
@@ -228,9 +274,11 @@ namespace DatenMeister
 
             public class _InterruptibleActivityRegion
             {
-                public object @interruptingEdge = "interruptingEdge";
+                public string @interruptingEdge = "interruptingEdge";
+                public IElement _interruptingEdge = null;
 
-                public object @node = "node";
+                public string @node = "node";
+                public IElement _node = null;
 
             }
 
@@ -239,9 +287,11 @@ namespace DatenMeister
 
             public class _JoinNode
             {
-                public object @isCombineDuplicate = "isCombineDuplicate";
+                public string @isCombineDuplicate = "isCombineDuplicate";
+                public IElement _isCombineDuplicate = null;
 
-                public object @joinSpec = "joinSpec";
+                public string @joinSpec = "joinSpec";
+                public IElement _joinSpec = null;
 
             }
 
@@ -257,13 +307,17 @@ namespace DatenMeister
 
             public class _ObjectFlow
             {
-                public object @isMulticast = "isMulticast";
+                public string @isMulticast = "isMulticast";
+                public IElement _isMulticast = null;
 
-                public object @isMultireceive = "isMultireceive";
+                public string @isMultireceive = "isMultireceive";
+                public IElement _isMultireceive = null;
 
-                public object @selection = "selection";
+                public string @selection = "selection";
+                public IElement _selection = null;
 
-                public object @transformation = "transformation";
+                public string @transformation = "transformation";
+                public IElement _transformation = null;
 
             }
 
@@ -272,15 +326,20 @@ namespace DatenMeister
 
             public class _ObjectNode
             {
-                public object @inState = "inState";
+                public string @inState = "inState";
+                public IElement _inState = null;
 
-                public object @isControlType = "isControlType";
+                public string @isControlType = "isControlType";
+                public IElement _isControlType = null;
 
-                public object @ordering = "ordering";
+                public string @ordering = "ordering";
+                public IElement _ordering = null;
 
-                public object @selection = "selection";
+                public string @selection = "selection";
+                public IElement _selection = null;
 
-                public object @upperBound = "upperBound";
+                public string @upperBound = "upperBound";
+                public IElement _upperBound = null;
 
             }
 
@@ -289,9 +348,11 @@ namespace DatenMeister
 
             public class _Variable
             {
-                public object @activityScope = "activityScope";
+                public string @activityScope = "activityScope";
+                public IElement _activityScope = null;
 
-                public object @scope = "scope";
+                public string @scope = "scope";
+                public IElement _scope = null;
 
             }
 
@@ -306,9 +367,11 @@ namespace DatenMeister
         {
             public class _Duration
             {
-                public object @expr = "expr";
+                public string @expr = "expr";
+                public IElement _expr = null;
 
-                public object @observation = "observation";
+                public string @observation = "observation";
+                public IElement _observation = null;
 
             }
 
@@ -317,9 +380,11 @@ namespace DatenMeister
 
             public class _DurationConstraint
             {
-                public object @firstEvent = "firstEvent";
+                public string @firstEvent = "firstEvent";
+                public IElement _firstEvent = null;
 
-                public object @specification = "specification";
+                public string @specification = "specification";
+                public IElement _specification = null;
 
             }
 
@@ -328,9 +393,11 @@ namespace DatenMeister
 
             public class _DurationInterval
             {
-                public object @max = "max";
+                public string @max = "max";
+                public IElement _max = null;
 
-                public object @min = "min";
+                public string @min = "min";
+                public IElement _min = null;
 
             }
 
@@ -339,9 +406,11 @@ namespace DatenMeister
 
             public class _DurationObservation
             {
-                public object @event = "event";
+                public string @event = "event";
+                public IElement _event = null;
 
-                public object @firstEvent = "firstEvent";
+                public string @firstEvent = "firstEvent";
+                public IElement _firstEvent = null;
 
             }
 
@@ -350,9 +419,11 @@ namespace DatenMeister
 
             public class _Expression
             {
-                public object @operand = "operand";
+                public string @operand = "operand";
+                public IElement _operand = null;
 
-                public object @symbol = "symbol";
+                public string @symbol = "symbol";
+                public IElement _symbol = null;
 
             }
 
@@ -361,9 +432,11 @@ namespace DatenMeister
 
             public class _Interval
             {
-                public object @max = "max";
+                public string @max = "max";
+                public IElement _max = null;
 
-                public object @min = "min";
+                public string @min = "min";
+                public IElement _min = null;
 
             }
 
@@ -372,7 +445,8 @@ namespace DatenMeister
 
             public class _IntervalConstraint
             {
-                public object @specification = "specification";
+                public string @specification = "specification";
+                public IElement _specification = null;
 
             }
 
@@ -381,7 +455,8 @@ namespace DatenMeister
 
             public class _LiteralBoolean
             {
-                public object @value = "value";
+                public string @value = "value";
+                public IElement _value = null;
 
             }
 
@@ -390,7 +465,8 @@ namespace DatenMeister
 
             public class _LiteralInteger
             {
-                public object @value = "value";
+                public string @value = "value";
+                public IElement _value = null;
 
             }
 
@@ -406,7 +482,8 @@ namespace DatenMeister
 
             public class _LiteralReal
             {
-                public object @value = "value";
+                public string @value = "value";
+                public IElement _value = null;
 
             }
 
@@ -422,7 +499,8 @@ namespace DatenMeister
 
             public class _LiteralString
             {
-                public object @value = "value";
+                public string @value = "value";
+                public IElement _value = null;
 
             }
 
@@ -431,7 +509,8 @@ namespace DatenMeister
 
             public class _LiteralUnlimitedNatural
             {
-                public object @value = "value";
+                public string @value = "value";
+                public IElement _value = null;
 
             }
 
@@ -447,13 +526,17 @@ namespace DatenMeister
 
             public class _OpaqueExpression
             {
-                public object @behavior = "behavior";
+                public string @behavior = "behavior";
+                public IElement _behavior = null;
 
-                public object @body = "body";
+                public string @body = "body";
+                public IElement _body = null;
 
-                public object @language = "language";
+                public string @language = "language";
+                public IElement _language = null;
 
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -462,9 +545,11 @@ namespace DatenMeister
 
             public class _StringExpression
             {
-                public object @owningExpression = "owningExpression";
+                public string @owningExpression = "owningExpression";
+                public IElement _owningExpression = null;
 
-                public object @subExpression = "subExpression";
+                public string @subExpression = "subExpression";
+                public IElement _subExpression = null;
 
             }
 
@@ -473,9 +558,11 @@ namespace DatenMeister
 
             public class _TimeConstraint
             {
-                public object @firstEvent = "firstEvent";
+                public string @firstEvent = "firstEvent";
+                public IElement _firstEvent = null;
 
-                public object @specification = "specification";
+                public string @specification = "specification";
+                public IElement _specification = null;
 
             }
 
@@ -484,9 +571,11 @@ namespace DatenMeister
 
             public class _TimeExpression
             {
-                public object @expr = "expr";
+                public string @expr = "expr";
+                public IElement _expr = null;
 
-                public object @observation = "observation";
+                public string @observation = "observation";
+                public IElement _observation = null;
 
             }
 
@@ -495,9 +584,11 @@ namespace DatenMeister
 
             public class _TimeInterval
             {
-                public object @max = "max";
+                public string @max = "max";
+                public IElement _max = null;
 
-                public object @min = "min";
+                public string @min = "min";
+                public IElement _min = null;
 
             }
 
@@ -506,9 +597,11 @@ namespace DatenMeister
 
             public class _TimeObservation
             {
-                public object @event = "event";
+                public string @event = "event";
+                public IElement _event = null;
 
-                public object @firstEvent = "firstEvent";
+                public string @firstEvent = "firstEvent";
+                public IElement _firstEvent = null;
 
             }
 
@@ -537,13 +630,17 @@ namespace DatenMeister
 
             public class _Extend
             {
-                public object @condition = "condition";
+                public string @condition = "condition";
+                public IElement _condition = null;
 
-                public object @extendedCase = "extendedCase";
+                public string @extendedCase = "extendedCase";
+                public IElement _extendedCase = null;
 
-                public object @extension = "extension";
+                public string @extension = "extension";
+                public IElement _extension = null;
 
-                public object @extensionLocation = "extensionLocation";
+                public string @extensionLocation = "extensionLocation";
+                public IElement _extensionLocation = null;
 
             }
 
@@ -552,7 +649,8 @@ namespace DatenMeister
 
             public class _ExtensionPoint
             {
-                public object @useCase = "useCase";
+                public string @useCase = "useCase";
+                public IElement _useCase = null;
 
             }
 
@@ -561,9 +659,11 @@ namespace DatenMeister
 
             public class _Include
             {
-                public object @addition = "addition";
+                public string @addition = "addition";
+                public IElement _addition = null;
 
-                public object @includingCase = "includingCase";
+                public string @includingCase = "includingCase";
+                public IElement _includingCase = null;
 
             }
 
@@ -572,13 +672,17 @@ namespace DatenMeister
 
             public class _UseCase
             {
-                public object @extend = "extend";
+                public string @extend = "extend";
+                public IElement _extend = null;
 
-                public object @extensionPoint = "extensionPoint";
+                public string @extensionPoint = "extensionPoint";
+                public IElement _extensionPoint = null;
 
-                public object @include = "include";
+                public string @include = "include";
+                public IElement _include = null;
 
-                public object @subject = "subject";
+                public string @subject = "subject";
+                public IElement _subject = null;
 
             }
 
@@ -593,15 +697,20 @@ namespace DatenMeister
         {
             public class _Association
             {
-                public object @endType = "endType";
+                public string @endType = "endType";
+                public IElement _endType = null;
 
-                public object @isDerived = "isDerived";
+                public string @isDerived = "isDerived";
+                public IElement _isDerived = null;
 
-                public object @memberEnd = "memberEnd";
+                public string @memberEnd = "memberEnd";
+                public IElement _memberEnd = null;
 
-                public object @navigableOwnedEnd = "navigableOwnedEnd";
+                public string @navigableOwnedEnd = "navigableOwnedEnd";
+                public IElement _navigableOwnedEnd = null;
 
-                public object @ownedEnd = "ownedEnd";
+                public string @ownedEnd = "ownedEnd";
+                public IElement _ownedEnd = null;
 
             }
 
@@ -617,21 +726,29 @@ namespace DatenMeister
 
             public class _Class
             {
-                public object @extension = "extension";
+                public string @extension = "extension";
+                public IElement _extension = null;
 
-                public object @isAbstract = "isAbstract";
+                public string @isAbstract = "isAbstract";
+                public IElement _isAbstract = null;
 
-                public object @isActive = "isActive";
+                public string @isActive = "isActive";
+                public IElement _isActive = null;
 
-                public object @nestedClassifier = "nestedClassifier";
+                public string @nestedClassifier = "nestedClassifier";
+                public IElement _nestedClassifier = null;
 
-                public object @ownedAttribute = "ownedAttribute";
+                public string @ownedAttribute = "ownedAttribute";
+                public IElement _ownedAttribute = null;
 
-                public object @ownedOperation = "ownedOperation";
+                public string @ownedOperation = "ownedOperation";
+                public IElement _ownedOperation = null;
 
-                public object @ownedReception = "ownedReception";
+                public string @ownedReception = "ownedReception";
+                public IElement _ownedReception = null;
 
-                public object @superClass = "superClass";
+                public string @superClass = "superClass";
+                public IElement _superClass = null;
 
             }
 
@@ -640,7 +757,8 @@ namespace DatenMeister
 
             public class _Collaboration
             {
-                public object @collaborationRole = "collaborationRole";
+                public string @collaborationRole = "collaborationRole";
+                public IElement _collaborationRole = null;
 
             }
 
@@ -649,9 +767,11 @@ namespace DatenMeister
 
             public class _CollaborationUse
             {
-                public object @roleBinding = "roleBinding";
+                public string @roleBinding = "roleBinding";
+                public IElement _roleBinding = null;
 
-                public object @type = "type";
+                public string @type = "type";
+                public IElement _type = null;
 
             }
 
@@ -660,15 +780,20 @@ namespace DatenMeister
 
             public class _Component
             {
-                public object @isIndirectlyInstantiated = "isIndirectlyInstantiated";
+                public string @isIndirectlyInstantiated = "isIndirectlyInstantiated";
+                public IElement _isIndirectlyInstantiated = null;
 
-                public object @packagedElement = "packagedElement";
+                public string @packagedElement = "packagedElement";
+                public IElement _packagedElement = null;
 
-                public object @provided = "provided";
+                public string @provided = "provided";
+                public IElement _provided = null;
 
-                public object @realization = "realization";
+                public string @realization = "realization";
+                public IElement _realization = null;
 
-                public object @required = "required";
+                public string @required = "required";
+                public IElement _required = null;
 
             }
 
@@ -677,9 +802,11 @@ namespace DatenMeister
 
             public class _ComponentRealization
             {
-                public object @abstraction = "abstraction";
+                public string @abstraction = "abstraction";
+                public IElement _abstraction = null;
 
-                public object @realizingClassifier = "realizingClassifier";
+                public string @realizingClassifier = "realizingClassifier";
+                public IElement _realizingClassifier = null;
 
             }
 
@@ -688,9 +815,11 @@ namespace DatenMeister
 
             public class _ConnectableElement
             {
-                public object @end = "end";
+                public string @end = "end";
+                public IElement _end = null;
 
-                public object @templateParameter = "templateParameter";
+                public string @templateParameter = "templateParameter";
+                public IElement _templateParameter = null;
 
             }
 
@@ -699,7 +828,8 @@ namespace DatenMeister
 
             public class _ConnectableElementTemplateParameter
             {
-                public object @parameteredElement = "parameteredElement";
+                public string @parameteredElement = "parameteredElement";
+                public IElement _parameteredElement = null;
 
             }
 
@@ -708,15 +838,20 @@ namespace DatenMeister
 
             public class _Connector
             {
-                public object @contract = "contract";
+                public string @contract = "contract";
+                public IElement _contract = null;
 
-                public object @end = "end";
+                public string @end = "end";
+                public IElement _end = null;
 
-                public object @kind = "kind";
+                public string @kind = "kind";
+                public IElement _kind = null;
 
-                public object @redefinedConnector = "redefinedConnector";
+                public string @redefinedConnector = "redefinedConnector";
+                public IElement _redefinedConnector = null;
 
-                public object @type = "type";
+                public string @type = "type";
+                public IElement _type = null;
 
             }
 
@@ -725,11 +860,14 @@ namespace DatenMeister
 
             public class _ConnectorEnd
             {
-                public object @definingEnd = "definingEnd";
+                public string @definingEnd = "definingEnd";
+                public IElement _definingEnd = null;
 
-                public object @partWithPort = "partWithPort";
+                public string @partWithPort = "partWithPort";
+                public IElement _partWithPort = null;
 
-                public object @role = "role";
+                public string @role = "role";
+                public IElement _role = null;
 
             }
 
@@ -738,7 +876,8 @@ namespace DatenMeister
 
             public class _EncapsulatedClassifier
             {
-                public object @ownedPort = "ownedPort";
+                public string @ownedPort = "ownedPort";
+                public IElement _ownedPort = null;
 
             }
 
@@ -747,19 +886,26 @@ namespace DatenMeister
 
             public class _Port
             {
-                public object @isBehavior = "isBehavior";
+                public string @isBehavior = "isBehavior";
+                public IElement _isBehavior = null;
 
-                public object @isConjugated = "isConjugated";
+                public string @isConjugated = "isConjugated";
+                public IElement _isConjugated = null;
 
-                public object @isService = "isService";
+                public string @isService = "isService";
+                public IElement _isService = null;
 
-                public object @protocol = "protocol";
+                public string @protocol = "protocol";
+                public IElement _protocol = null;
 
-                public object @provided = "provided";
+                public string @provided = "provided";
+                public IElement _provided = null;
 
-                public object @redefinedPort = "redefinedPort";
+                public string @redefinedPort = "redefinedPort";
+                public IElement _redefinedPort = null;
 
-                public object @required = "required";
+                public string @required = "required";
+                public IElement _required = null;
 
             }
 
@@ -768,13 +914,17 @@ namespace DatenMeister
 
             public class _StructuredClassifier
             {
-                public object @ownedAttribute = "ownedAttribute";
+                public string @ownedAttribute = "ownedAttribute";
+                public IElement _ownedAttribute = null;
 
-                public object @ownedConnector = "ownedConnector";
+                public string @ownedConnector = "ownedConnector";
+                public IElement _ownedConnector = null;
 
-                public object @part = "part";
+                public string @part = "part";
+                public IElement _part = null;
 
-                public object @role = "role";
+                public string @role = "role";
+                public IElement _role = null;
 
             }
 
@@ -789,11 +939,14 @@ namespace DatenMeister
         {
             public class _ConnectionPointReference
             {
-                public object @entry = "entry";
+                public string @entry = "entry";
+                public IElement _entry = null;
 
-                public object @exit = "exit";
+                public string @exit = "exit";
+                public IElement _exit = null;
 
-                public object @state = "state";
+                public string @state = "state";
+                public IElement _state = null;
 
             }
 
@@ -809,9 +962,11 @@ namespace DatenMeister
 
             public class _ProtocolConformance
             {
-                public object @generalMachine = "generalMachine";
+                public string @generalMachine = "generalMachine";
+                public IElement _generalMachine = null;
 
-                public object @specificMachine = "specificMachine";
+                public string @specificMachine = "specificMachine";
+                public IElement _specificMachine = null;
 
             }
 
@@ -820,7 +975,8 @@ namespace DatenMeister
 
             public class _ProtocolStateMachine
             {
-                public object @conformance = "conformance";
+                public string @conformance = "conformance";
+                public IElement _conformance = null;
 
             }
 
@@ -829,11 +985,14 @@ namespace DatenMeister
 
             public class _ProtocolTransition
             {
-                public object @postCondition = "postCondition";
+                public string @postCondition = "postCondition";
+                public IElement _postCondition = null;
 
-                public object @preCondition = "preCondition";
+                public string @preCondition = "preCondition";
+                public IElement _preCondition = null;
 
-                public object @referred = "referred";
+                public string @referred = "referred";
+                public IElement _referred = null;
 
             }
 
@@ -842,11 +1001,14 @@ namespace DatenMeister
 
             public class _Pseudostate
             {
-                public object @kind = "kind";
+                public string @kind = "kind";
+                public IElement _kind = null;
 
-                public object @state = "state";
+                public string @state = "state";
+                public IElement _state = null;
 
-                public object @stateMachine = "stateMachine";
+                public string @stateMachine = "stateMachine";
+                public IElement _stateMachine = null;
 
             }
 
@@ -855,17 +1017,23 @@ namespace DatenMeister
 
             public class _Region
             {
-                public object @extendedRegion = "extendedRegion";
+                public string @extendedRegion = "extendedRegion";
+                public IElement _extendedRegion = null;
 
-                public object @redefinitionContext = "redefinitionContext";
+                public string @redefinitionContext = "redefinitionContext";
+                public IElement _redefinitionContext = null;
 
-                public object @state = "state";
+                public string @state = "state";
+                public IElement _state = null;
 
-                public object @stateMachine = "stateMachine";
+                public string @stateMachine = "stateMachine";
+                public IElement _stateMachine = null;
 
-                public object @subvertex = "subvertex";
+                public string @subvertex = "subvertex";
+                public IElement _subvertex = null;
 
-                public object @transition = "transition";
+                public string @transition = "transition";
+                public IElement _transition = null;
 
             }
 
@@ -874,35 +1042,50 @@ namespace DatenMeister
 
             public class _State
             {
-                public object @connection = "connection";
+                public string @connection = "connection";
+                public IElement _connection = null;
 
-                public object @connectionPoint = "connectionPoint";
+                public string @connectionPoint = "connectionPoint";
+                public IElement _connectionPoint = null;
 
-                public object @deferrableTrigger = "deferrableTrigger";
+                public string @deferrableTrigger = "deferrableTrigger";
+                public IElement _deferrableTrigger = null;
 
-                public object @doActivity = "doActivity";
+                public string @doActivity = "doActivity";
+                public IElement _doActivity = null;
 
-                public object @entry = "entry";
+                public string @entry = "entry";
+                public IElement _entry = null;
 
-                public object @exit = "exit";
+                public string @exit = "exit";
+                public IElement _exit = null;
 
-                public object @isComposite = "isComposite";
+                public string @isComposite = "isComposite";
+                public IElement _isComposite = null;
 
-                public object @isOrthogonal = "isOrthogonal";
+                public string @isOrthogonal = "isOrthogonal";
+                public IElement _isOrthogonal = null;
 
-                public object @isSimple = "isSimple";
+                public string @isSimple = "isSimple";
+                public IElement _isSimple = null;
 
-                public object @isSubmachineState = "isSubmachineState";
+                public string @isSubmachineState = "isSubmachineState";
+                public IElement _isSubmachineState = null;
 
-                public object @redefinedState = "redefinedState";
+                public string @redefinedState = "redefinedState";
+                public IElement _redefinedState = null;
 
-                public object @redefinitionContext = "redefinitionContext";
+                public string @redefinitionContext = "redefinitionContext";
+                public IElement _redefinitionContext = null;
 
-                public object @region = "region";
+                public string @region = "region";
+                public IElement _region = null;
 
-                public object @stateInvariant = "stateInvariant";
+                public string @stateInvariant = "stateInvariant";
+                public IElement _stateInvariant = null;
 
-                public object @submachine = "submachine";
+                public string @submachine = "submachine";
+                public IElement _submachine = null;
 
             }
 
@@ -911,13 +1094,17 @@ namespace DatenMeister
 
             public class _StateMachine
             {
-                public object @connectionPoint = "connectionPoint";
+                public string @connectionPoint = "connectionPoint";
+                public IElement _connectionPoint = null;
 
-                public object @extendedStateMachine = "extendedStateMachine";
+                public string @extendedStateMachine = "extendedStateMachine";
+                public IElement _extendedStateMachine = null;
 
-                public object @region = "region";
+                public string @region = "region";
+                public IElement _region = null;
 
-                public object @submachineState = "submachineState";
+                public string @submachineState = "submachineState";
+                public IElement _submachineState = null;
 
             }
 
@@ -926,23 +1113,32 @@ namespace DatenMeister
 
             public class _Transition
             {
-                public object @container = "container";
+                public string @container = "container";
+                public IElement _container = null;
 
-                public object @effect = "effect";
+                public string @effect = "effect";
+                public IElement _effect = null;
 
-                public object @guard = "guard";
+                public string @guard = "guard";
+                public IElement _guard = null;
 
-                public object @kind = "kind";
+                public string @kind = "kind";
+                public IElement _kind = null;
 
-                public object @redefinedTransition = "redefinedTransition";
+                public string @redefinedTransition = "redefinedTransition";
+                public IElement _redefinedTransition = null;
 
-                public object @redefinitionContext = "redefinitionContext";
+                public string @redefinitionContext = "redefinitionContext";
+                public IElement _redefinitionContext = null;
 
-                public object @source = "source";
+                public string @source = "source";
+                public IElement _source = null;
 
-                public object @target = "target";
+                public string @target = "target";
+                public IElement _target = null;
 
-                public object @trigger = "trigger";
+                public string @trigger = "trigger";
+                public IElement _trigger = null;
 
             }
 
@@ -951,11 +1147,14 @@ namespace DatenMeister
 
             public class _Vertex
             {
-                public object @container = "container";
+                public string @container = "container";
+                public IElement _container = null;
 
-                public object @incoming = "incoming";
+                public string @incoming = "incoming";
+                public IElement _incoming = null;
 
-                public object @outgoing = "outgoing";
+                public string @outgoing = "outgoing";
+                public IElement _outgoing = null;
 
             }
 
@@ -970,11 +1169,14 @@ namespace DatenMeister
         {
             public class _BehavioredClassifier
             {
-                public object @classifierBehavior = "classifierBehavior";
+                public string @classifierBehavior = "classifierBehavior";
+                public IElement _classifierBehavior = null;
 
-                public object @interfaceRealization = "interfaceRealization";
+                public string @interfaceRealization = "interfaceRealization";
+                public IElement _interfaceRealization = null;
 
-                public object @ownedBehavior = "ownedBehavior";
+                public string @ownedBehavior = "ownedBehavior";
+                public IElement _ownedBehavior = null;
 
             }
 
@@ -983,9 +1185,11 @@ namespace DatenMeister
 
             public class _DataType
             {
-                public object @ownedAttribute = "ownedAttribute";
+                public string @ownedAttribute = "ownedAttribute";
+                public IElement _ownedAttribute = null;
 
-                public object @ownedOperation = "ownedOperation";
+                public string @ownedOperation = "ownedOperation";
+                public IElement _ownedOperation = null;
 
             }
 
@@ -994,7 +1198,8 @@ namespace DatenMeister
 
             public class _Enumeration
             {
-                public object @ownedLiteral = "ownedLiteral";
+                public string @ownedLiteral = "ownedLiteral";
+                public IElement _ownedLiteral = null;
 
             }
 
@@ -1003,9 +1208,11 @@ namespace DatenMeister
 
             public class _EnumerationLiteral
             {
-                public object @classifier = "classifier";
+                public string @classifier = "classifier";
+                public IElement _classifier = null;
 
-                public object @enumeration = "enumeration";
+                public string @enumeration = "enumeration";
+                public IElement _enumeration = null;
 
             }
 
@@ -1014,17 +1221,23 @@ namespace DatenMeister
 
             public class _Interface
             {
-                public object @nestedClassifier = "nestedClassifier";
+                public string @nestedClassifier = "nestedClassifier";
+                public IElement _nestedClassifier = null;
 
-                public object @ownedAttribute = "ownedAttribute";
+                public string @ownedAttribute = "ownedAttribute";
+                public IElement _ownedAttribute = null;
 
-                public object @ownedOperation = "ownedOperation";
+                public string @ownedOperation = "ownedOperation";
+                public IElement _ownedOperation = null;
 
-                public object @ownedReception = "ownedReception";
+                public string @ownedReception = "ownedReception";
+                public IElement _ownedReception = null;
 
-                public object @protocol = "protocol";
+                public string @protocol = "protocol";
+                public IElement _protocol = null;
 
-                public object @redefinedInterface = "redefinedInterface";
+                public string @redefinedInterface = "redefinedInterface";
+                public IElement _redefinedInterface = null;
 
             }
 
@@ -1033,9 +1246,11 @@ namespace DatenMeister
 
             public class _InterfaceRealization
             {
-                public object @contract = "contract";
+                public string @contract = "contract";
+                public IElement _contract = null;
 
-                public object @implementingClassifier = "implementingClassifier";
+                public string @implementingClassifier = "implementingClassifier";
+                public IElement _implementingClassifier = null;
 
             }
 
@@ -1051,7 +1266,8 @@ namespace DatenMeister
 
             public class _Reception
             {
-                public object @signal = "signal";
+                public string @signal = "signal";
+                public IElement _signal = null;
 
             }
 
@@ -1060,7 +1276,8 @@ namespace DatenMeister
 
             public class _Signal
             {
-                public object @ownedAttribute = "ownedAttribute";
+                public string @ownedAttribute = "ownedAttribute";
+                public IElement _ownedAttribute = null;
 
             }
 
@@ -1075,11 +1292,14 @@ namespace DatenMeister
         {
             public class _Extension
             {
-                public object @isRequired = "isRequired";
+                public string @isRequired = "isRequired";
+                public IElement _isRequired = null;
 
-                public object @metaclass = "metaclass";
+                public string @metaclass = "metaclass";
+                public IElement _metaclass = null;
 
-                public object @ownedEnd = "ownedEnd";
+                public string @ownedEnd = "ownedEnd";
+                public IElement _ownedEnd = null;
 
             }
 
@@ -1088,9 +1308,11 @@ namespace DatenMeister
 
             public class _ExtensionEnd
             {
-                public object @lower = "lower";
+                public string @lower = "lower";
+                public IElement _lower = null;
 
-                public object @type = "type";
+                public string @type = "type";
+                public IElement _type = null;
 
             }
 
@@ -1099,11 +1321,14 @@ namespace DatenMeister
 
             public class _Image
             {
-                public object @content = "content";
+                public string @content = "content";
+                public IElement _content = null;
 
-                public object @format = "format";
+                public string @format = "format";
+                public IElement _format = null;
 
-                public object @location = "location";
+                public string @location = "location";
+                public IElement _location = null;
 
             }
 
@@ -1112,7 +1337,8 @@ namespace DatenMeister
 
             public class _Model
             {
-                public object @viewpoint = "viewpoint";
+                public string @viewpoint = "viewpoint";
+                public IElement _viewpoint = null;
 
             }
 
@@ -1121,21 +1347,29 @@ namespace DatenMeister
 
             public class _Package
             {
-                public object @URI = "URI";
+                public string @URI = "URI";
+                public IElement _URI = null;
 
-                public object @nestedPackage = "nestedPackage";
+                public string @nestedPackage = "nestedPackage";
+                public IElement _nestedPackage = null;
 
-                public object @nestingPackage = "nestingPackage";
+                public string @nestingPackage = "nestingPackage";
+                public IElement _nestingPackage = null;
 
-                public object @ownedStereotype = "ownedStereotype";
+                public string @ownedStereotype = "ownedStereotype";
+                public IElement _ownedStereotype = null;
 
-                public object @ownedType = "ownedType";
+                public string @ownedType = "ownedType";
+                public IElement _ownedType = null;
 
-                public object @packageMerge = "packageMerge";
+                public string @packageMerge = "packageMerge";
+                public IElement _packageMerge = null;
 
-                public object @packagedElement = "packagedElement";
+                public string @packagedElement = "packagedElement";
+                public IElement _packagedElement = null;
 
-                public object @profileApplication = "profileApplication";
+                public string @profileApplication = "profileApplication";
+                public IElement _profileApplication = null;
 
             }
 
@@ -1144,9 +1378,11 @@ namespace DatenMeister
 
             public class _PackageMerge
             {
-                public object @mergedPackage = "mergedPackage";
+                public string @mergedPackage = "mergedPackage";
+                public IElement _mergedPackage = null;
 
-                public object @receivingPackage = "receivingPackage";
+                public string @receivingPackage = "receivingPackage";
+                public IElement _receivingPackage = null;
 
             }
 
@@ -1155,9 +1391,11 @@ namespace DatenMeister
 
             public class _Profile
             {
-                public object @metaclassReference = "metaclassReference";
+                public string @metaclassReference = "metaclassReference";
+                public IElement _metaclassReference = null;
 
-                public object @metamodelReference = "metamodelReference";
+                public string @metamodelReference = "metamodelReference";
+                public IElement _metamodelReference = null;
 
             }
 
@@ -1166,11 +1404,14 @@ namespace DatenMeister
 
             public class _ProfileApplication
             {
-                public object @appliedProfile = "appliedProfile";
+                public string @appliedProfile = "appliedProfile";
+                public IElement _appliedProfile = null;
 
-                public object @applyingPackage = "applyingPackage";
+                public string @applyingPackage = "applyingPackage";
+                public IElement _applyingPackage = null;
 
-                public object @isStrict = "isStrict";
+                public string @isStrict = "isStrict";
+                public IElement _isStrict = null;
 
             }
 
@@ -1179,9 +1420,11 @@ namespace DatenMeister
 
             public class _Stereotype
             {
-                public object @icon = "icon";
+                public string @icon = "icon";
+                public IElement _icon = null;
 
-                public object @profile = "profile";
+                public string @profile = "profile";
+                public IElement _profile = null;
 
             }
 
@@ -1196,7 +1439,8 @@ namespace DatenMeister
         {
             public class _ActionExecutionSpecification
             {
-                public object @action = "action";
+                public string @action = "action";
+                public IElement _action = null;
 
             }
 
@@ -1205,7 +1449,8 @@ namespace DatenMeister
 
             public class _BehaviorExecutionSpecification
             {
-                public object @behavior = "behavior";
+                public string @behavior = "behavior";
+                public IElement _behavior = null;
 
             }
 
@@ -1214,11 +1459,14 @@ namespace DatenMeister
 
             public class _CombinedFragment
             {
-                public object @cfragmentGate = "cfragmentGate";
+                public string @cfragmentGate = "cfragmentGate";
+                public IElement _cfragmentGate = null;
 
-                public object @interactionOperator = "interactionOperator";
+                public string @interactionOperator = "interactionOperator";
+                public IElement _interactionOperator = null;
 
-                public object @operand = "operand";
+                public string @operand = "operand";
+                public IElement _operand = null;
 
             }
 
@@ -1227,7 +1475,8 @@ namespace DatenMeister
 
             public class _ConsiderIgnoreFragment
             {
-                public object @message = "message";
+                public string @message = "message";
+                public IElement _message = null;
 
             }
 
@@ -1236,7 +1485,8 @@ namespace DatenMeister
 
             public class _Continuation
             {
-                public object @setting = "setting";
+                public string @setting = "setting";
+                public IElement _setting = null;
 
             }
 
@@ -1252,7 +1502,8 @@ namespace DatenMeister
 
             public class _ExecutionOccurrenceSpecification
             {
-                public object @execution = "execution";
+                public string @execution = "execution";
+                public IElement _execution = null;
 
             }
 
@@ -1261,9 +1512,11 @@ namespace DatenMeister
 
             public class _ExecutionSpecification
             {
-                public object @finish = "finish";
+                public string @finish = "finish";
+                public IElement _finish = null;
 
-                public object @start = "start";
+                public string @start = "start";
+                public IElement _start = null;
 
             }
 
@@ -1279,9 +1532,11 @@ namespace DatenMeister
 
             public class _GeneralOrdering
             {
-                public object @after = "after";
+                public string @after = "after";
+                public IElement _after = null;
 
-                public object @before = "before";
+                public string @before = "before";
+                public IElement _before = null;
 
             }
 
@@ -1290,15 +1545,20 @@ namespace DatenMeister
 
             public class _Interaction
             {
-                public object @action = "action";
+                public string @action = "action";
+                public IElement _action = null;
 
-                public object @formalGate = "formalGate";
+                public string @formalGate = "formalGate";
+                public IElement _formalGate = null;
 
-                public object @fragment = "fragment";
+                public string @fragment = "fragment";
+                public IElement _fragment = null;
 
-                public object @lifeline = "lifeline";
+                public string @lifeline = "lifeline";
+                public IElement _lifeline = null;
 
-                public object @message = "message";
+                public string @message = "message";
+                public IElement _message = null;
 
             }
 
@@ -1307,9 +1567,11 @@ namespace DatenMeister
 
             public class _InteractionConstraint
             {
-                public object @maxint = "maxint";
+                public string @maxint = "maxint";
+                public IElement _maxint = null;
 
-                public object @minint = "minint";
+                public string @minint = "minint";
+                public IElement _minint = null;
 
             }
 
@@ -1318,13 +1580,17 @@ namespace DatenMeister
 
             public class _InteractionFragment
             {
-                public object @covered = "covered";
+                public string @covered = "covered";
+                public IElement _covered = null;
 
-                public object @enclosingInteraction = "enclosingInteraction";
+                public string @enclosingInteraction = "enclosingInteraction";
+                public IElement _enclosingInteraction = null;
 
-                public object @enclosingOperand = "enclosingOperand";
+                public string @enclosingOperand = "enclosingOperand";
+                public IElement _enclosingOperand = null;
 
-                public object @generalOrdering = "generalOrdering";
+                public string @generalOrdering = "generalOrdering";
+                public IElement _generalOrdering = null;
 
             }
 
@@ -1333,9 +1599,11 @@ namespace DatenMeister
 
             public class _InteractionOperand
             {
-                public object @fragment = "fragment";
+                public string @fragment = "fragment";
+                public IElement _fragment = null;
 
-                public object @guard = "guard";
+                public string @guard = "guard";
+                public IElement _guard = null;
 
             }
 
@@ -1344,15 +1612,20 @@ namespace DatenMeister
 
             public class _InteractionUse
             {
-                public object @actualGate = "actualGate";
+                public string @actualGate = "actualGate";
+                public IElement _actualGate = null;
 
-                public object @argument = "argument";
+                public string @argument = "argument";
+                public IElement _argument = null;
 
-                public object @refersTo = "refersTo";
+                public string @refersTo = "refersTo";
+                public IElement _refersTo = null;
 
-                public object @returnValue = "returnValue";
+                public string @returnValue = "returnValue";
+                public IElement _returnValue = null;
 
-                public object @returnValueRecipient = "returnValueRecipient";
+                public string @returnValueRecipient = "returnValueRecipient";
+                public IElement _returnValueRecipient = null;
 
             }
 
@@ -1361,15 +1634,20 @@ namespace DatenMeister
 
             public class _Lifeline
             {
-                public object @coveredBy = "coveredBy";
+                public string @coveredBy = "coveredBy";
+                public IElement _coveredBy = null;
 
-                public object @decomposedAs = "decomposedAs";
+                public string @decomposedAs = "decomposedAs";
+                public IElement _decomposedAs = null;
 
-                public object @interaction = "interaction";
+                public string @interaction = "interaction";
+                public IElement _interaction = null;
 
-                public object @represents = "represents";
+                public string @represents = "represents";
+                public IElement _represents = null;
 
-                public object @selector = "selector";
+                public string @selector = "selector";
+                public IElement _selector = null;
 
             }
 
@@ -1378,21 +1656,29 @@ namespace DatenMeister
 
             public class _Message
             {
-                public object @argument = "argument";
+                public string @argument = "argument";
+                public IElement _argument = null;
 
-                public object @connector = "connector";
+                public string @connector = "connector";
+                public IElement _connector = null;
 
-                public object @interaction = "interaction";
+                public string @interaction = "interaction";
+                public IElement _interaction = null;
 
-                public object @messageKind = "messageKind";
+                public string @messageKind = "messageKind";
+                public IElement _messageKind = null;
 
-                public object @messageSort = "messageSort";
+                public string @messageSort = "messageSort";
+                public IElement _messageSort = null;
 
-                public object @receiveEvent = "receiveEvent";
+                public string @receiveEvent = "receiveEvent";
+                public IElement _receiveEvent = null;
 
-                public object @sendEvent = "sendEvent";
+                public string @sendEvent = "sendEvent";
+                public IElement _sendEvent = null;
 
-                public object @signature = "signature";
+                public string @signature = "signature";
+                public IElement _signature = null;
 
             }
 
@@ -1401,7 +1687,8 @@ namespace DatenMeister
 
             public class _MessageEnd
             {
-                public object @message = "message";
+                public string @message = "message";
+                public IElement _message = null;
 
             }
 
@@ -1417,11 +1704,14 @@ namespace DatenMeister
 
             public class _OccurrenceSpecification
             {
-                public object @covered = "covered";
+                public string @covered = "covered";
+                public IElement _covered = null;
 
-                public object @toAfter = "toAfter";
+                public string @toAfter = "toAfter";
+                public IElement _toAfter = null;
 
-                public object @toBefore = "toBefore";
+                public string @toBefore = "toBefore";
+                public IElement _toBefore = null;
 
             }
 
@@ -1437,9 +1727,11 @@ namespace DatenMeister
 
             public class _StateInvariant
             {
-                public object @covered = "covered";
+                public string @covered = "covered";
+                public IElement _covered = null;
 
-                public object @invariant = "invariant";
+                public string @invariant = "invariant";
+                public IElement _invariant = null;
 
             }
 
@@ -1454,19 +1746,26 @@ namespace DatenMeister
         {
             public class _InformationFlow
             {
-                public object @conveyed = "conveyed";
+                public string @conveyed = "conveyed";
+                public IElement _conveyed = null;
 
-                public object @informationSource = "informationSource";
+                public string @informationSource = "informationSource";
+                public IElement _informationSource = null;
 
-                public object @informationTarget = "informationTarget";
+                public string @informationTarget = "informationTarget";
+                public IElement _informationTarget = null;
 
-                public object @realization = "realization";
+                public string @realization = "realization";
+                public IElement _realization = null;
 
-                public object @realizingActivityEdge = "realizingActivityEdge";
+                public string @realizingActivityEdge = "realizingActivityEdge";
+                public IElement _realizingActivityEdge = null;
 
-                public object @realizingConnector = "realizingConnector";
+                public string @realizingConnector = "realizingConnector";
+                public IElement _realizingConnector = null;
 
-                public object @realizingMessage = "realizingMessage";
+                public string @realizingMessage = "realizingMessage";
+                public IElement _realizingMessage = null;
 
             }
 
@@ -1475,7 +1774,8 @@ namespace DatenMeister
 
             public class _InformationItem
             {
-                public object @represented = "represented";
+                public string @represented = "represented";
+                public IElement _represented = null;
 
             }
 
@@ -1490,15 +1790,20 @@ namespace DatenMeister
         {
             public class _Artifact
             {
-                public object @fileName = "fileName";
+                public string @fileName = "fileName";
+                public IElement _fileName = null;
 
-                public object @manifestation = "manifestation";
+                public string @manifestation = "manifestation";
+                public IElement _manifestation = null;
 
-                public object @nestedArtifact = "nestedArtifact";
+                public string @nestedArtifact = "nestedArtifact";
+                public IElement _nestedArtifact = null;
 
-                public object @ownedAttribute = "ownedAttribute";
+                public string @ownedAttribute = "ownedAttribute";
+                public IElement _ownedAttribute = null;
 
-                public object @ownedOperation = "ownedOperation";
+                public string @ownedOperation = "ownedOperation";
+                public IElement _ownedOperation = null;
 
             }
 
@@ -1521,11 +1826,14 @@ namespace DatenMeister
 
             public class _Deployment
             {
-                public object @configuration = "configuration";
+                public string @configuration = "configuration";
+                public IElement _configuration = null;
 
-                public object @deployedArtifact = "deployedArtifact";
+                public string @deployedArtifact = "deployedArtifact";
+                public IElement _deployedArtifact = null;
 
-                public object @location = "location";
+                public string @location = "location";
+                public IElement _location = null;
 
             }
 
@@ -1534,11 +1842,14 @@ namespace DatenMeister
 
             public class _DeploymentSpecification
             {
-                public object @deployment = "deployment";
+                public string @deployment = "deployment";
+                public IElement _deployment = null;
 
-                public object @deploymentLocation = "deploymentLocation";
+                public string @deploymentLocation = "deploymentLocation";
+                public IElement _deploymentLocation = null;
 
-                public object @executionLocation = "executionLocation";
+                public string @executionLocation = "executionLocation";
+                public IElement _executionLocation = null;
 
             }
 
@@ -1547,9 +1858,11 @@ namespace DatenMeister
 
             public class _DeploymentTarget
             {
-                public object @deployedElement = "deployedElement";
+                public string @deployedElement = "deployedElement";
+                public IElement _deployedElement = null;
 
-                public object @deployment = "deployment";
+                public string @deployment = "deployment";
+                public IElement _deployment = null;
 
             }
 
@@ -1572,7 +1885,8 @@ namespace DatenMeister
 
             public class _Manifestation
             {
-                public object @utilizedElement = "utilizedElement";
+                public string @utilizedElement = "utilizedElement";
+                public IElement _utilizedElement = null;
 
             }
 
@@ -1581,7 +1895,8 @@ namespace DatenMeister
 
             public class _Node
             {
-                public object @nestedNode = "nestedNode";
+                public string @nestedNode = "nestedNode";
+                public IElement _nestedNode = null;
 
             }
 
@@ -1596,7 +1911,8 @@ namespace DatenMeister
         {
             public class _Abstraction
             {
-                public object @mapping = "mapping";
+                public string @mapping = "mapping";
+                public IElement _mapping = null;
 
             }
 
@@ -1605,9 +1921,11 @@ namespace DatenMeister
 
             public class _Comment
             {
-                public object @annotatedElement = "annotatedElement";
+                public string @annotatedElement = "annotatedElement";
+                public IElement _annotatedElement = null;
 
-                public object @body = "body";
+                public string @body = "body";
+                public IElement _body = null;
 
             }
 
@@ -1616,11 +1934,14 @@ namespace DatenMeister
 
             public class _Constraint
             {
-                public object @constrainedElement = "constrainedElement";
+                public string @constrainedElement = "constrainedElement";
+                public IElement _constrainedElement = null;
 
-                public object @context = "context";
+                public string @context = "context";
+                public IElement _context = null;
 
-                public object @specification = "specification";
+                public string @specification = "specification";
+                public IElement _specification = null;
 
             }
 
@@ -1629,9 +1950,11 @@ namespace DatenMeister
 
             public class _Dependency
             {
-                public object @client = "client";
+                public string @client = "client";
+                public IElement _client = null;
 
-                public object @supplier = "supplier";
+                public string @supplier = "supplier";
+                public IElement _supplier = null;
 
             }
 
@@ -1640,9 +1963,11 @@ namespace DatenMeister
 
             public class _DirectedRelationship
             {
-                public object @source = "source";
+                public string @source = "source";
+                public IElement _source = null;
 
-                public object @target = "target";
+                public string @target = "target";
+                public IElement _target = null;
 
             }
 
@@ -1651,11 +1976,14 @@ namespace DatenMeister
 
             public class _Element
             {
-                public object @ownedComment = "ownedComment";
+                public string @ownedComment = "ownedComment";
+                public IElement _ownedComment = null;
 
-                public object @ownedElement = "ownedElement";
+                public string @ownedElement = "ownedElement";
+                public IElement _ownedElement = null;
 
-                public object @owner = "owner";
+                public string @owner = "owner";
+                public IElement _owner = null;
 
             }
 
@@ -1664,13 +1992,17 @@ namespace DatenMeister
 
             public class _ElementImport
             {
-                public object @alias = "alias";
+                public string @alias = "alias";
+                public IElement _alias = null;
 
-                public object @importedElement = "importedElement";
+                public string @importedElement = "importedElement";
+                public IElement _importedElement = null;
 
-                public object @importingNamespace = "importingNamespace";
+                public string @importingNamespace = "importingNamespace";
+                public IElement _importingNamespace = null;
 
-                public object @visibility = "visibility";
+                public string @visibility = "visibility";
+                public IElement _visibility = null;
 
             }
 
@@ -1679,17 +2011,23 @@ namespace DatenMeister
 
             public class _MultiplicityElement
             {
-                public object @isOrdered = "isOrdered";
+                public string @isOrdered = "isOrdered";
+                public IElement _isOrdered = null;
 
-                public object @isUnique = "isUnique";
+                public string @isUnique = "isUnique";
+                public IElement _isUnique = null;
 
-                public object @lower = "lower";
+                public string @lower = "lower";
+                public IElement _lower = null;
 
-                public object @lowerValue = "lowerValue";
+                public string @lowerValue = "lowerValue";
+                public IElement _lowerValue = null;
 
-                public object @upper = "upper";
+                public string @upper = "upper";
+                public IElement _upper = null;
 
-                public object @upperValue = "upperValue";
+                public string @upperValue = "upperValue";
+                public IElement _upperValue = null;
 
             }
 
@@ -1698,17 +2036,23 @@ namespace DatenMeister
 
             public class _NamedElement
             {
-                public object @clientDependency = "clientDependency";
+                public string @clientDependency = "clientDependency";
+                public IElement _clientDependency = null;
 
-                public object @name = "name";
+                public string @name = "name";
+                public IElement _name = null;
 
-                public object @nameExpression = "nameExpression";
+                public string @nameExpression = "nameExpression";
+                public IElement _nameExpression = null;
 
-                public object @namespace = "namespace";
+                public string @namespace = "namespace";
+                public IElement _namespace = null;
 
-                public object @qualifiedName = "qualifiedName";
+                public string @qualifiedName = "qualifiedName";
+                public IElement _qualifiedName = null;
 
-                public object @visibility = "visibility";
+                public string @visibility = "visibility";
+                public IElement _visibility = null;
 
             }
 
@@ -1717,17 +2061,23 @@ namespace DatenMeister
 
             public class _Namespace
             {
-                public object @elementImport = "elementImport";
+                public string @elementImport = "elementImport";
+                public IElement _elementImport = null;
 
-                public object @importedMember = "importedMember";
+                public string @importedMember = "importedMember";
+                public IElement _importedMember = null;
 
-                public object @member = "member";
+                public string @member = "member";
+                public IElement _member = null;
 
-                public object @ownedMember = "ownedMember";
+                public string @ownedMember = "ownedMember";
+                public IElement _ownedMember = null;
 
-                public object @ownedRule = "ownedRule";
+                public string @ownedRule = "ownedRule";
+                public IElement _ownedRule = null;
 
-                public object @packageImport = "packageImport";
+                public string @packageImport = "packageImport";
+                public IElement _packageImport = null;
 
             }
 
@@ -1736,7 +2086,8 @@ namespace DatenMeister
 
             public class _PackageableElement
             {
-                public object @visibility = "visibility";
+                public string @visibility = "visibility";
+                public IElement _visibility = null;
 
             }
 
@@ -1745,11 +2096,14 @@ namespace DatenMeister
 
             public class _PackageImport
             {
-                public object @importedPackage = "importedPackage";
+                public string @importedPackage = "importedPackage";
+                public IElement _importedPackage = null;
 
-                public object @importingNamespace = "importingNamespace";
+                public string @importingNamespace = "importingNamespace";
+                public IElement _importingNamespace = null;
 
-                public object @visibility = "visibility";
+                public string @visibility = "visibility";
+                public IElement _visibility = null;
 
             }
 
@@ -1758,9 +2112,11 @@ namespace DatenMeister
 
             public class _ParameterableElement
             {
-                public object @owningTemplateParameter = "owningTemplateParameter";
+                public string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement _owningTemplateParameter = null;
 
-                public object @templateParameter = "templateParameter";
+                public string @templateParameter = "templateParameter";
+                public IElement _templateParameter = null;
 
             }
 
@@ -1776,7 +2132,8 @@ namespace DatenMeister
 
             public class _Relationship
             {
-                public object @relatedElement = "relatedElement";
+                public string @relatedElement = "relatedElement";
+                public IElement _relatedElement = null;
 
             }
 
@@ -1785,9 +2142,11 @@ namespace DatenMeister
 
             public class _TemplateableElement
             {
-                public object @ownedTemplateSignature = "ownedTemplateSignature";
+                public string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement _ownedTemplateSignature = null;
 
-                public object @templateBinding = "templateBinding";
+                public string @templateBinding = "templateBinding";
+                public IElement _templateBinding = null;
 
             }
 
@@ -1796,11 +2155,14 @@ namespace DatenMeister
 
             public class _TemplateBinding
             {
-                public object @boundElement = "boundElement";
+                public string @boundElement = "boundElement";
+                public IElement _boundElement = null;
 
-                public object @parameterSubstitution = "parameterSubstitution";
+                public string @parameterSubstitution = "parameterSubstitution";
+                public IElement _parameterSubstitution = null;
 
-                public object @signature = "signature";
+                public string @signature = "signature";
+                public IElement _signature = null;
 
             }
 
@@ -1809,15 +2171,20 @@ namespace DatenMeister
 
             public class _TemplateParameter
             {
-                public object @default = "default";
+                public string @default = "default";
+                public IElement _default = null;
 
-                public object @ownedDefault = "ownedDefault";
+                public string @ownedDefault = "ownedDefault";
+                public IElement _ownedDefault = null;
 
-                public object @ownedParameteredElement = "ownedParameteredElement";
+                public string @ownedParameteredElement = "ownedParameteredElement";
+                public IElement _ownedParameteredElement = null;
 
-                public object @parameteredElement = "parameteredElement";
+                public string @parameteredElement = "parameteredElement";
+                public IElement _parameteredElement = null;
 
-                public object @signature = "signature";
+                public string @signature = "signature";
+                public IElement _signature = null;
 
             }
 
@@ -1826,13 +2193,17 @@ namespace DatenMeister
 
             public class _TemplateParameterSubstitution
             {
-                public object @actual = "actual";
+                public string @actual = "actual";
+                public IElement _actual = null;
 
-                public object @formal = "formal";
+                public string @formal = "formal";
+                public IElement _formal = null;
 
-                public object @ownedActual = "ownedActual";
+                public string @ownedActual = "ownedActual";
+                public IElement _ownedActual = null;
 
-                public object @templateBinding = "templateBinding";
+                public string @templateBinding = "templateBinding";
+                public IElement _templateBinding = null;
 
             }
 
@@ -1841,11 +2212,14 @@ namespace DatenMeister
 
             public class _TemplateSignature
             {
-                public object @ownedParameter = "ownedParameter";
+                public string @ownedParameter = "ownedParameter";
+                public IElement _ownedParameter = null;
 
-                public object @parameter = "parameter";
+                public string @parameter = "parameter";
+                public IElement _parameter = null;
 
-                public object @template = "template";
+                public string @template = "template";
+                public IElement _template = null;
 
             }
 
@@ -1854,7 +2228,8 @@ namespace DatenMeister
 
             public class _Type
             {
-                public object @package = "package";
+                public string @package = "package";
+                public IElement _package = null;
 
             }
 
@@ -1863,7 +2238,8 @@ namespace DatenMeister
 
             public class _TypedElement
             {
-                public object @type = "type";
+                public string @type = "type";
+                public IElement _type = null;
 
             }
 
@@ -1892,21 +2268,29 @@ namespace DatenMeister
 
             public class _Behavior
             {
-                public object @context = "context";
+                public string @context = "context";
+                public IElement _context = null;
 
-                public object @isReentrant = "isReentrant";
+                public string @isReentrant = "isReentrant";
+                public IElement _isReentrant = null;
 
-                public object @ownedParameter = "ownedParameter";
+                public string @ownedParameter = "ownedParameter";
+                public IElement _ownedParameter = null;
 
-                public object @ownedParameterSet = "ownedParameterSet";
+                public string @ownedParameterSet = "ownedParameterSet";
+                public IElement _ownedParameterSet = null;
 
-                public object @postcondition = "postcondition";
+                public string @postcondition = "postcondition";
+                public IElement _postcondition = null;
 
-                public object @precondition = "precondition";
+                public string @precondition = "precondition";
+                public IElement _precondition = null;
 
-                public object @specification = "specification";
+                public string @specification = "specification";
+                public IElement _specification = null;
 
-                public object @redefinedBehavior = "redefinedBehavior";
+                public string @redefinedBehavior = "redefinedBehavior";
+                public IElement _redefinedBehavior = null;
 
             }
 
@@ -1915,7 +2299,8 @@ namespace DatenMeister
 
             public class _CallEvent
             {
-                public object @operation = "operation";
+                public string @operation = "operation";
+                public IElement _operation = null;
 
             }
 
@@ -1924,7 +2309,8 @@ namespace DatenMeister
 
             public class _ChangeEvent
             {
-                public object @changeExpression = "changeExpression";
+                public string @changeExpression = "changeExpression";
+                public IElement _changeExpression = null;
 
             }
 
@@ -1954,9 +2340,11 @@ namespace DatenMeister
 
             public class _OpaqueBehavior
             {
-                public object @body = "body";
+                public string @body = "body";
+                public IElement _body = null;
 
-                public object @language = "language";
+                public string @language = "language";
+                public IElement _language = null;
 
             }
 
@@ -1965,7 +2353,8 @@ namespace DatenMeister
 
             public class _SignalEvent
             {
-                public object @signal = "signal";
+                public string @signal = "signal";
+                public IElement _signal = null;
 
             }
 
@@ -1974,9 +2363,11 @@ namespace DatenMeister
 
             public class _TimeEvent
             {
-                public object @isRelative = "isRelative";
+                public string @isRelative = "isRelative";
+                public IElement _isRelative = null;
 
-                public object @when = "when";
+                public string @when = "when";
+                public IElement _when = null;
 
             }
 
@@ -1985,9 +2376,11 @@ namespace DatenMeister
 
             public class _Trigger
             {
-                public object @event = "event";
+                public string @event = "event";
+                public IElement _event = null;
 
-                public object @port = "port";
+                public string @port = "port";
+                public IElement _port = null;
 
             }
 
@@ -2002,9 +2395,11 @@ namespace DatenMeister
         {
             public class _Substitution
             {
-                public object @contract = "contract";
+                public string @contract = "contract";
+                public IElement _contract = null;
 
-                public object @substitutingClassifier = "substitutingClassifier";
+                public string @substitutingClassifier = "substitutingClassifier";
+                public IElement _substitutingClassifier = null;
 
             }
 
@@ -2013,17 +2408,23 @@ namespace DatenMeister
 
             public class _BehavioralFeature
             {
-                public object @concurrency = "concurrency";
+                public string @concurrency = "concurrency";
+                public IElement _concurrency = null;
 
-                public object @isAbstract = "isAbstract";
+                public string @isAbstract = "isAbstract";
+                public IElement _isAbstract = null;
 
-                public object @method = "method";
+                public string @method = "method";
+                public IElement _method = null;
 
-                public object @ownedParameter = "ownedParameter";
+                public string @ownedParameter = "ownedParameter";
+                public IElement _ownedParameter = null;
 
-                public object @ownedParameterSet = "ownedParameterSet";
+                public string @ownedParameterSet = "ownedParameterSet";
+                public IElement _ownedParameterSet = null;
 
-                public object @raisedException = "raisedException";
+                public string @raisedException = "raisedException";
+                public IElement _raisedException = null;
 
             }
 
@@ -2032,37 +2433,53 @@ namespace DatenMeister
 
             public class _Classifier
             {
-                public object @attribute = "attribute";
+                public string @attribute = "attribute";
+                public IElement _attribute = null;
 
-                public object @collaborationUse = "collaborationUse";
+                public string @collaborationUse = "collaborationUse";
+                public IElement _collaborationUse = null;
 
-                public object @feature = "feature";
+                public string @feature = "feature";
+                public IElement _feature = null;
 
-                public object @general = "general";
+                public string @general = "general";
+                public IElement _general = null;
 
-                public object @generalization = "generalization";
+                public string @generalization = "generalization";
+                public IElement _generalization = null;
 
-                public object @inheritedMember = "inheritedMember";
+                public string @inheritedMember = "inheritedMember";
+                public IElement _inheritedMember = null;
 
-                public object @isAbstract = "isAbstract";
+                public string @isAbstract = "isAbstract";
+                public IElement _isAbstract = null;
 
-                public object @isFinalSpecialization = "isFinalSpecialization";
+                public string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement _isFinalSpecialization = null;
 
-                public object @ownedTemplateSignature = "ownedTemplateSignature";
+                public string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement _ownedTemplateSignature = null;
 
-                public object @ownedUseCase = "ownedUseCase";
+                public string @ownedUseCase = "ownedUseCase";
+                public IElement _ownedUseCase = null;
 
-                public object @powertypeExtent = "powertypeExtent";
+                public string @powertypeExtent = "powertypeExtent";
+                public IElement _powertypeExtent = null;
 
-                public object @redefinedClassifier = "redefinedClassifier";
+                public string @redefinedClassifier = "redefinedClassifier";
+                public IElement _redefinedClassifier = null;
 
-                public object @representation = "representation";
+                public string @representation = "representation";
+                public IElement _representation = null;
 
-                public object @substitution = "substitution";
+                public string @substitution = "substitution";
+                public IElement _substitution = null;
 
-                public object @templateParameter = "templateParameter";
+                public string @templateParameter = "templateParameter";
+                public IElement _templateParameter = null;
 
-                public object @useCase = "useCase";
+                public string @useCase = "useCase";
+                public IElement _useCase = null;
 
             }
 
@@ -2071,11 +2488,14 @@ namespace DatenMeister
 
             public class _ClassifierTemplateParameter
             {
-                public object @allowSubstitutable = "allowSubstitutable";
+                public string @allowSubstitutable = "allowSubstitutable";
+                public IElement _allowSubstitutable = null;
 
-                public object @constrainingClassifier = "constrainingClassifier";
+                public string @constrainingClassifier = "constrainingClassifier";
+                public IElement _constrainingClassifier = null;
 
-                public object @parameteredElement = "parameteredElement";
+                public string @parameteredElement = "parameteredElement";
+                public IElement _parameteredElement = null;
 
             }
 
@@ -2084,9 +2504,11 @@ namespace DatenMeister
 
             public class _Feature
             {
-                public object @featuringClassifier = "featuringClassifier";
+                public string @featuringClassifier = "featuringClassifier";
+                public IElement _featuringClassifier = null;
 
-                public object @isStatic = "isStatic";
+                public string @isStatic = "isStatic";
+                public IElement _isStatic = null;
 
             }
 
@@ -2095,13 +2517,17 @@ namespace DatenMeister
 
             public class _Generalization
             {
-                public object @general = "general";
+                public string @general = "general";
+                public IElement _general = null;
 
-                public object @generalizationSet = "generalizationSet";
+                public string @generalizationSet = "generalizationSet";
+                public IElement _generalizationSet = null;
 
-                public object @isSubstitutable = "isSubstitutable";
+                public string @isSubstitutable = "isSubstitutable";
+                public IElement _isSubstitutable = null;
 
-                public object @specific = "specific";
+                public string @specific = "specific";
+                public IElement _specific = null;
 
             }
 
@@ -2110,13 +2536,17 @@ namespace DatenMeister
 
             public class _GeneralizationSet
             {
-                public object @generalization = "generalization";
+                public string @generalization = "generalization";
+                public IElement _generalization = null;
 
-                public object @isCovering = "isCovering";
+                public string @isCovering = "isCovering";
+                public IElement _isCovering = null;
 
-                public object @isDisjoint = "isDisjoint";
+                public string @isDisjoint = "isDisjoint";
+                public IElement _isDisjoint = null;
 
-                public object @powertype = "powertype";
+                public string @powertype = "powertype";
+                public IElement _powertype = null;
 
             }
 
@@ -2125,11 +2555,14 @@ namespace DatenMeister
 
             public class _InstanceSpecification
             {
-                public object @classifier = "classifier";
+                public string @classifier = "classifier";
+                public IElement _classifier = null;
 
-                public object @slot = "slot";
+                public string @slot = "slot";
+                public IElement _slot = null;
 
-                public object @specification = "specification";
+                public string @specification = "specification";
+                public IElement _specification = null;
 
             }
 
@@ -2138,7 +2571,8 @@ namespace DatenMeister
 
             public class _InstanceValue
             {
-                public object @instance = "instance";
+                public string @instance = "instance";
+                public IElement _instance = null;
 
             }
 
@@ -2147,37 +2581,53 @@ namespace DatenMeister
 
             public class _Operation
             {
-                public object @bodyCondition = "bodyCondition";
+                public string @bodyCondition = "bodyCondition";
+                public IElement _bodyCondition = null;
 
-                public object @class = "class";
+                public string @class = "class";
+                public IElement _class = null;
 
-                public object @datatype = "datatype";
+                public string @datatype = "datatype";
+                public IElement _datatype = null;
 
-                public object @interface = "interface";
+                public string @interface = "interface";
+                public IElement _interface = null;
 
-                public object @isOrdered = "isOrdered";
+                public string @isOrdered = "isOrdered";
+                public IElement _isOrdered = null;
 
-                public object @isQuery = "isQuery";
+                public string @isQuery = "isQuery";
+                public IElement _isQuery = null;
 
-                public object @isUnique = "isUnique";
+                public string @isUnique = "isUnique";
+                public IElement _isUnique = null;
 
-                public object @lower = "lower";
+                public string @lower = "lower";
+                public IElement _lower = null;
 
-                public object @ownedParameter = "ownedParameter";
+                public string @ownedParameter = "ownedParameter";
+                public IElement _ownedParameter = null;
 
-                public object @postcondition = "postcondition";
+                public string @postcondition = "postcondition";
+                public IElement _postcondition = null;
 
-                public object @precondition = "precondition";
+                public string @precondition = "precondition";
+                public IElement _precondition = null;
 
-                public object @raisedException = "raisedException";
+                public string @raisedException = "raisedException";
+                public IElement _raisedException = null;
 
-                public object @redefinedOperation = "redefinedOperation";
+                public string @redefinedOperation = "redefinedOperation";
+                public IElement _redefinedOperation = null;
 
-                public object @templateParameter = "templateParameter";
+                public string @templateParameter = "templateParameter";
+                public IElement _templateParameter = null;
 
-                public object @type = "type";
+                public string @type = "type";
+                public IElement _type = null;
 
-                public object @upper = "upper";
+                public string @upper = "upper";
+                public IElement _upper = null;
 
             }
 
@@ -2186,7 +2636,8 @@ namespace DatenMeister
 
             public class _OperationTemplateParameter
             {
-                public object @parameteredElement = "parameteredElement";
+                public string @parameteredElement = "parameteredElement";
+                public IElement _parameteredElement = null;
 
             }
 
@@ -2195,21 +2646,29 @@ namespace DatenMeister
 
             public class _Parameter
             {
-                public object @default = "default";
+                public string @default = "default";
+                public IElement _default = null;
 
-                public object @defaultValue = "defaultValue";
+                public string @defaultValue = "defaultValue";
+                public IElement _defaultValue = null;
 
-                public object @direction = "direction";
+                public string @direction = "direction";
+                public IElement _direction = null;
 
-                public object @effect = "effect";
+                public string @effect = "effect";
+                public IElement _effect = null;
 
-                public object @isException = "isException";
+                public string @isException = "isException";
+                public IElement _isException = null;
 
-                public object @isStream = "isStream";
+                public string @isStream = "isStream";
+                public IElement _isStream = null;
 
-                public object @operation = "operation";
+                public string @operation = "operation";
+                public IElement _operation = null;
 
-                public object @parameterSet = "parameterSet";
+                public string @parameterSet = "parameterSet";
+                public IElement _parameterSet = null;
 
             }
 
@@ -2218,9 +2677,11 @@ namespace DatenMeister
 
             public class _ParameterSet
             {
-                public object @condition = "condition";
+                public string @condition = "condition";
+                public IElement _condition = null;
 
-                public object @parameter = "parameter";
+                public string @parameter = "parameter";
+                public IElement _parameter = null;
 
             }
 
@@ -2229,37 +2690,53 @@ namespace DatenMeister
 
             public class _Property
             {
-                public object @aggregation = "aggregation";
+                public string @aggregation = "aggregation";
+                public IElement _aggregation = null;
 
-                public object @association = "association";
+                public string @association = "association";
+                public IElement _association = null;
 
-                public object @associationEnd = "associationEnd";
+                public string @associationEnd = "associationEnd";
+                public IElement _associationEnd = null;
 
-                public object @class = "class";
+                public string @class = "class";
+                public IElement _class = null;
 
-                public object @datatype = "datatype";
+                public string @datatype = "datatype";
+                public IElement _datatype = null;
 
-                public object @defaultValue = "defaultValue";
+                public string @defaultValue = "defaultValue";
+                public IElement _defaultValue = null;
 
-                public object @interface = "interface";
+                public string @interface = "interface";
+                public IElement _interface = null;
 
-                public object @isComposite = "isComposite";
+                public string @isComposite = "isComposite";
+                public IElement _isComposite = null;
 
-                public object @isDerived = "isDerived";
+                public string @isDerived = "isDerived";
+                public IElement _isDerived = null;
 
-                public object @isDerivedUnion = "isDerivedUnion";
+                public string @isDerivedUnion = "isDerivedUnion";
+                public IElement _isDerivedUnion = null;
 
-                public object @isID = "isID";
+                public string @isID = "isID";
+                public IElement _isID = null;
 
-                public object @opposite = "opposite";
+                public string @opposite = "opposite";
+                public IElement _opposite = null;
 
-                public object @owningAssociation = "owningAssociation";
+                public string @owningAssociation = "owningAssociation";
+                public IElement _owningAssociation = null;
 
-                public object @qualifier = "qualifier";
+                public string @qualifier = "qualifier";
+                public IElement _qualifier = null;
 
-                public object @redefinedProperty = "redefinedProperty";
+                public string @redefinedProperty = "redefinedProperty";
+                public IElement _redefinedProperty = null;
 
-                public object @subsettedProperty = "subsettedProperty";
+                public string @subsettedProperty = "subsettedProperty";
+                public IElement _subsettedProperty = null;
 
             }
 
@@ -2268,11 +2745,14 @@ namespace DatenMeister
 
             public class _RedefinableElement
             {
-                public object @isLeaf = "isLeaf";
+                public string @isLeaf = "isLeaf";
+                public IElement _isLeaf = null;
 
-                public object @redefinedElement = "redefinedElement";
+                public string @redefinedElement = "redefinedElement";
+                public IElement _redefinedElement = null;
 
-                public object @redefinitionContext = "redefinitionContext";
+                public string @redefinitionContext = "redefinitionContext";
+                public IElement _redefinitionContext = null;
 
             }
 
@@ -2281,11 +2761,14 @@ namespace DatenMeister
 
             public class _RedefinableTemplateSignature
             {
-                public object @classifier = "classifier";
+                public string @classifier = "classifier";
+                public IElement _classifier = null;
 
-                public object @extendedSignature = "extendedSignature";
+                public string @extendedSignature = "extendedSignature";
+                public IElement _extendedSignature = null;
 
-                public object @inheritedParameter = "inheritedParameter";
+                public string @inheritedParameter = "inheritedParameter";
+                public IElement _inheritedParameter = null;
 
             }
 
@@ -2294,11 +2777,14 @@ namespace DatenMeister
 
             public class _Slot
             {
-                public object @definingFeature = "definingFeature";
+                public string @definingFeature = "definingFeature";
+                public IElement _definingFeature = null;
 
-                public object @owningInstance = "owningInstance";
+                public string @owningInstance = "owningInstance";
+                public IElement _owningInstance = null;
 
-                public object @value = "value";
+                public string @value = "value";
+                public IElement _value = null;
 
             }
 
@@ -2307,7 +2793,8 @@ namespace DatenMeister
 
             public class _StructuralFeature
             {
-                public object @isReadOnly = "isReadOnly";
+                public string @isReadOnly = "isReadOnly";
+                public IElement _isReadOnly = null;
 
             }
 
@@ -2322,9 +2809,11 @@ namespace DatenMeister
         {
             public class _ValueSpecificationAction
             {
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
-                public object @value = "value";
+                public string @value = "value";
+                public IElement _value = null;
 
             }
 
@@ -2333,7 +2822,8 @@ namespace DatenMeister
 
             public class _VariableAction
             {
-                public object @variable = "variable";
+                public string @variable = "variable";
+                public IElement _variable = null;
 
             }
 
@@ -2349,9 +2839,11 @@ namespace DatenMeister
 
             public class _WriteStructuralFeatureAction
             {
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
-                public object @value = "value";
+                public string @value = "value";
+                public IElement _value = null;
 
             }
 
@@ -2360,7 +2852,8 @@ namespace DatenMeister
 
             public class _WriteVariableAction
             {
-                public object @value = "value";
+                public string @value = "value";
+                public IElement _value = null;
 
             }
 
@@ -2369,7 +2862,8 @@ namespace DatenMeister
 
             public class _AcceptCallAction
             {
-                public object @returnInformation = "returnInformation";
+                public string @returnInformation = "returnInformation";
+                public IElement _returnInformation = null;
 
             }
 
@@ -2378,11 +2872,14 @@ namespace DatenMeister
 
             public class _AcceptEventAction
             {
-                public object @isUnmarshall = "isUnmarshall";
+                public string @isUnmarshall = "isUnmarshall";
+                public IElement _isUnmarshall = null;
 
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
-                public object @trigger = "trigger";
+                public string @trigger = "trigger";
+                public IElement _trigger = null;
 
             }
 
@@ -2391,17 +2888,23 @@ namespace DatenMeister
 
             public class _Action
             {
-                public object @context = "context";
+                public string @context = "context";
+                public IElement _context = null;
 
-                public object @input = "input";
+                public string @input = "input";
+                public IElement _input = null;
 
-                public object @isLocallyReentrant = "isLocallyReentrant";
+                public string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement _isLocallyReentrant = null;
 
-                public object @localPostcondition = "localPostcondition";
+                public string @localPostcondition = "localPostcondition";
+                public IElement _localPostcondition = null;
 
-                public object @localPrecondition = "localPrecondition";
+                public string @localPrecondition = "localPrecondition";
+                public IElement _localPrecondition = null;
 
-                public object @output = "output";
+                public string @output = "output";
+                public IElement _output = null;
 
             }
 
@@ -2410,7 +2913,8 @@ namespace DatenMeister
 
             public class _ActionInputPin
             {
-                public object @fromAction = "fromAction";
+                public string @fromAction = "fromAction";
+                public IElement _fromAction = null;
 
             }
 
@@ -2419,9 +2923,11 @@ namespace DatenMeister
 
             public class _AddStructuralFeatureValueAction
             {
-                public object @insertAt = "insertAt";
+                public string @insertAt = "insertAt";
+                public IElement _insertAt = null;
 
-                public object @isReplaceAll = "isReplaceAll";
+                public string @isReplaceAll = "isReplaceAll";
+                public IElement _isReplaceAll = null;
 
             }
 
@@ -2430,9 +2936,11 @@ namespace DatenMeister
 
             public class _AddVariableValueAction
             {
-                public object @insertAt = "insertAt";
+                public string @insertAt = "insertAt";
+                public IElement _insertAt = null;
 
-                public object @isReplaceAll = "isReplaceAll";
+                public string @isReplaceAll = "isReplaceAll";
+                public IElement _isReplaceAll = null;
 
             }
 
@@ -2441,7 +2949,8 @@ namespace DatenMeister
 
             public class _BroadcastSignalAction
             {
-                public object @signal = "signal";
+                public string @signal = "signal";
+                public IElement _signal = null;
 
             }
 
@@ -2450,9 +2959,11 @@ namespace DatenMeister
 
             public class _CallAction
             {
-                public object @isSynchronous = "isSynchronous";
+                public string @isSynchronous = "isSynchronous";
+                public IElement _isSynchronous = null;
 
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -2461,7 +2972,8 @@ namespace DatenMeister
 
             public class _CallBehaviorAction
             {
-                public object @behavior = "behavior";
+                public string @behavior = "behavior";
+                public IElement _behavior = null;
 
             }
 
@@ -2470,9 +2982,11 @@ namespace DatenMeister
 
             public class _CallOperationAction
             {
-                public object @operation = "operation";
+                public string @operation = "operation";
+                public IElement _operation = null;
 
-                public object @target = "target";
+                public string @target = "target";
+                public IElement _target = null;
 
             }
 
@@ -2481,17 +2995,23 @@ namespace DatenMeister
 
             public class _Clause
             {
-                public object @body = "body";
+                public string @body = "body";
+                public IElement _body = null;
 
-                public object @bodyOutput = "bodyOutput";
+                public string @bodyOutput = "bodyOutput";
+                public IElement _bodyOutput = null;
 
-                public object @decider = "decider";
+                public string @decider = "decider";
+                public IElement _decider = null;
 
-                public object @predecessorClause = "predecessorClause";
+                public string @predecessorClause = "predecessorClause";
+                public IElement _predecessorClause = null;
 
-                public object @successorClause = "successorClause";
+                public string @successorClause = "successorClause";
+                public IElement _successorClause = null;
 
-                public object @test = "test";
+                public string @test = "test";
+                public IElement _test = null;
 
             }
 
@@ -2500,9 +3020,11 @@ namespace DatenMeister
 
             public class _ClearAssociationAction
             {
-                public object @association = "association";
+                public string @association = "association";
+                public IElement _association = null;
 
-                public object @object = "object";
+                public string @object = "object";
+                public IElement _object = null;
 
             }
 
@@ -2511,7 +3033,8 @@ namespace DatenMeister
 
             public class _ClearStructuralFeatureAction
             {
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -2527,13 +3050,17 @@ namespace DatenMeister
 
             public class _ConditionalNode
             {
-                public object @clause = "clause";
+                public string @clause = "clause";
+                public IElement _clause = null;
 
-                public object @isAssured = "isAssured";
+                public string @isAssured = "isAssured";
+                public IElement _isAssured = null;
 
-                public object @isDeterminate = "isDeterminate";
+                public string @isDeterminate = "isDeterminate";
+                public IElement _isDeterminate = null;
 
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -2542,7 +3069,8 @@ namespace DatenMeister
 
             public class _CreateLinkAction
             {
-                public object @endData = "endData";
+                public string @endData = "endData";
+                public IElement _endData = null;
 
             }
 
@@ -2551,7 +3079,8 @@ namespace DatenMeister
 
             public class _CreateLinkObjectAction
             {
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -2560,9 +3089,11 @@ namespace DatenMeister
 
             public class _CreateObjectAction
             {
-                public object @classifier = "classifier";
+                public string @classifier = "classifier";
+                public IElement _classifier = null;
 
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -2571,7 +3102,8 @@ namespace DatenMeister
 
             public class _DestroyLinkAction
             {
-                public object @endData = "endData";
+                public string @endData = "endData";
+                public IElement _endData = null;
 
             }
 
@@ -2580,11 +3112,14 @@ namespace DatenMeister
 
             public class _DestroyObjectAction
             {
-                public object @isDestroyLinks = "isDestroyLinks";
+                public string @isDestroyLinks = "isDestroyLinks";
+                public IElement _isDestroyLinks = null;
 
-                public object @isDestroyOwnedObjects = "isDestroyOwnedObjects";
+                public string @isDestroyOwnedObjects = "isDestroyOwnedObjects";
+                public IElement _isDestroyOwnedObjects = null;
 
-                public object @target = "target";
+                public string @target = "target";
+                public IElement _target = null;
 
             }
 
@@ -2593,9 +3128,11 @@ namespace DatenMeister
 
             public class _ExpansionNode
             {
-                public object @regionAsInput = "regionAsInput";
+                public string @regionAsInput = "regionAsInput";
+                public IElement _regionAsInput = null;
 
-                public object @regionAsOutput = "regionAsOutput";
+                public string @regionAsOutput = "regionAsOutput";
+                public IElement _regionAsOutput = null;
 
             }
 
@@ -2604,11 +3141,14 @@ namespace DatenMeister
 
             public class _ExpansionRegion
             {
-                public object @inputElement = "inputElement";
+                public string @inputElement = "inputElement";
+                public IElement _inputElement = null;
 
-                public object @mode = "mode";
+                public string @mode = "mode";
+                public IElement _mode = null;
 
-                public object @outputElement = "outputElement";
+                public string @outputElement = "outputElement";
+                public IElement _outputElement = null;
 
             }
 
@@ -2624,9 +3164,11 @@ namespace DatenMeister
 
             public class _InvocationAction
             {
-                public object @argument = "argument";
+                public string @argument = "argument";
+                public IElement _argument = null;
 
-                public object @onPort = "onPort";
+                public string @onPort = "onPort";
+                public IElement _onPort = null;
 
             }
 
@@ -2635,9 +3177,11 @@ namespace DatenMeister
 
             public class _LinkAction
             {
-                public object @endData = "endData";
+                public string @endData = "endData";
+                public IElement _endData = null;
 
-                public object @inputValue = "inputValue";
+                public string @inputValue = "inputValue";
+                public IElement _inputValue = null;
 
             }
 
@@ -2646,9 +3190,11 @@ namespace DatenMeister
 
             public class _LinkEndCreationData
             {
-                public object @insertAt = "insertAt";
+                public string @insertAt = "insertAt";
+                public IElement _insertAt = null;
 
-                public object @isReplaceAll = "isReplaceAll";
+                public string @isReplaceAll = "isReplaceAll";
+                public IElement _isReplaceAll = null;
 
             }
 
@@ -2657,11 +3203,14 @@ namespace DatenMeister
 
             public class _LinkEndData
             {
-                public object @end = "end";
+                public string @end = "end";
+                public IElement _end = null;
 
-                public object @qualifier = "qualifier";
+                public string @qualifier = "qualifier";
+                public IElement _qualifier = null;
 
-                public object @value = "value";
+                public string @value = "value";
+                public IElement _value = null;
 
             }
 
@@ -2670,9 +3219,11 @@ namespace DatenMeister
 
             public class _LinkEndDestructionData
             {
-                public object @destroyAt = "destroyAt";
+                public string @destroyAt = "destroyAt";
+                public IElement _destroyAt = null;
 
-                public object @isDestroyDuplicates = "isDestroyDuplicates";
+                public string @isDestroyDuplicates = "isDestroyDuplicates";
+                public IElement _isDestroyDuplicates = null;
 
             }
 
@@ -2681,23 +3232,32 @@ namespace DatenMeister
 
             public class _LoopNode
             {
-                public object @bodyOutput = "bodyOutput";
+                public string @bodyOutput = "bodyOutput";
+                public IElement _bodyOutput = null;
 
-                public object @bodyPart = "bodyPart";
+                public string @bodyPart = "bodyPart";
+                public IElement _bodyPart = null;
 
-                public object @decider = "decider";
+                public string @decider = "decider";
+                public IElement _decider = null;
 
-                public object @isTestedFirst = "isTestedFirst";
+                public string @isTestedFirst = "isTestedFirst";
+                public IElement _isTestedFirst = null;
 
-                public object @loopVariable = "loopVariable";
+                public string @loopVariable = "loopVariable";
+                public IElement _loopVariable = null;
 
-                public object @loopVariableInput = "loopVariableInput";
+                public string @loopVariableInput = "loopVariableInput";
+                public IElement _loopVariableInput = null;
 
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
-                public object @setupPart = "setupPart";
+                public string @setupPart = "setupPart";
+                public IElement _setupPart = null;
 
-                public object @test = "test";
+                public string @test = "test";
+                public IElement _test = null;
 
             }
 
@@ -2706,13 +3266,17 @@ namespace DatenMeister
 
             public class _OpaqueAction
             {
-                public object @body = "body";
+                public string @body = "body";
+                public IElement _body = null;
 
-                public object @inputValue = "inputValue";
+                public string @inputValue = "inputValue";
+                public IElement _inputValue = null;
 
-                public object @language = "language";
+                public string @language = "language";
+                public IElement _language = null;
 
-                public object @outputValue = "outputValue";
+                public string @outputValue = "outputValue";
+                public IElement _outputValue = null;
 
             }
 
@@ -2728,7 +3292,8 @@ namespace DatenMeister
 
             public class _Pin
             {
-                public object @isControl = "isControl";
+                public string @isControl = "isControl";
+                public IElement _isControl = null;
 
             }
 
@@ -2737,9 +3302,11 @@ namespace DatenMeister
 
             public class _QualifierValue
             {
-                public object @qualifier = "qualifier";
+                public string @qualifier = "qualifier";
+                public IElement _qualifier = null;
 
-                public object @value = "value";
+                public string @value = "value";
+                public IElement _value = null;
 
             }
 
@@ -2748,7 +3315,8 @@ namespace DatenMeister
 
             public class _RaiseExceptionAction
             {
-                public object @exception = "exception";
+                public string @exception = "exception";
+                public IElement _exception = null;
 
             }
 
@@ -2757,9 +3325,11 @@ namespace DatenMeister
 
             public class _ReadExtentAction
             {
-                public object @classifier = "classifier";
+                public string @classifier = "classifier";
+                public IElement _classifier = null;
 
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -2768,13 +3338,17 @@ namespace DatenMeister
 
             public class _ReadIsClassifiedObjectAction
             {
-                public object @classifier = "classifier";
+                public string @classifier = "classifier";
+                public IElement _classifier = null;
 
-                public object @isDirect = "isDirect";
+                public string @isDirect = "isDirect";
+                public IElement _isDirect = null;
 
-                public object @object = "object";
+                public string @object = "object";
+                public IElement _object = null;
 
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -2783,7 +3357,8 @@ namespace DatenMeister
 
             public class _ReadLinkAction
             {
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -2792,11 +3367,14 @@ namespace DatenMeister
 
             public class _ReadLinkObjectEndAction
             {
-                public object @end = "end";
+                public string @end = "end";
+                public IElement _end = null;
 
-                public object @object = "object";
+                public string @object = "object";
+                public IElement _object = null;
 
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -2805,11 +3383,14 @@ namespace DatenMeister
 
             public class _ReadLinkObjectEndQualifierAction
             {
-                public object @object = "object";
+                public string @object = "object";
+                public IElement _object = null;
 
-                public object @qualifier = "qualifier";
+                public string @qualifier = "qualifier";
+                public IElement _qualifier = null;
 
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -2818,7 +3399,8 @@ namespace DatenMeister
 
             public class _ReadSelfAction
             {
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -2827,7 +3409,8 @@ namespace DatenMeister
 
             public class _ReadStructuralFeatureAction
             {
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -2836,7 +3419,8 @@ namespace DatenMeister
 
             public class _ReadVariableAction
             {
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -2845,13 +3429,17 @@ namespace DatenMeister
 
             public class _ReclassifyObjectAction
             {
-                public object @isReplaceAll = "isReplaceAll";
+                public string @isReplaceAll = "isReplaceAll";
+                public IElement _isReplaceAll = null;
 
-                public object @newClassifier = "newClassifier";
+                public string @newClassifier = "newClassifier";
+                public IElement _newClassifier = null;
 
-                public object @object = "object";
+                public string @object = "object";
+                public IElement _object = null;
 
-                public object @oldClassifier = "oldClassifier";
+                public string @oldClassifier = "oldClassifier";
+                public IElement _oldClassifier = null;
 
             }
 
@@ -2860,13 +3448,17 @@ namespace DatenMeister
 
             public class _ReduceAction
             {
-                public object @collection = "collection";
+                public string @collection = "collection";
+                public IElement _collection = null;
 
-                public object @isOrdered = "isOrdered";
+                public string @isOrdered = "isOrdered";
+                public IElement _isOrdered = null;
 
-                public object @reducer = "reducer";
+                public string @reducer = "reducer";
+                public IElement _reducer = null;
 
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
             }
 
@@ -2875,9 +3467,11 @@ namespace DatenMeister
 
             public class _RemoveStructuralFeatureValueAction
             {
-                public object @isRemoveDuplicates = "isRemoveDuplicates";
+                public string @isRemoveDuplicates = "isRemoveDuplicates";
+                public IElement _isRemoveDuplicates = null;
 
-                public object @removeAt = "removeAt";
+                public string @removeAt = "removeAt";
+                public IElement _removeAt = null;
 
             }
 
@@ -2886,9 +3480,11 @@ namespace DatenMeister
 
             public class _RemoveVariableValueAction
             {
-                public object @isRemoveDuplicates = "isRemoveDuplicates";
+                public string @isRemoveDuplicates = "isRemoveDuplicates";
+                public IElement _isRemoveDuplicates = null;
 
-                public object @removeAt = "removeAt";
+                public string @removeAt = "removeAt";
+                public IElement _removeAt = null;
 
             }
 
@@ -2897,11 +3493,14 @@ namespace DatenMeister
 
             public class _ReplyAction
             {
-                public object @replyToCall = "replyToCall";
+                public string @replyToCall = "replyToCall";
+                public IElement _replyToCall = null;
 
-                public object @replyValue = "replyValue";
+                public string @replyValue = "replyValue";
+                public IElement _replyValue = null;
 
-                public object @returnInformation = "returnInformation";
+                public string @returnInformation = "returnInformation";
+                public IElement _returnInformation = null;
 
             }
 
@@ -2910,9 +3509,11 @@ namespace DatenMeister
 
             public class _SendObjectAction
             {
-                public object @request = "request";
+                public string @request = "request";
+                public IElement _request = null;
 
-                public object @target = "target";
+                public string @target = "target";
+                public IElement _target = null;
 
             }
 
@@ -2921,9 +3522,11 @@ namespace DatenMeister
 
             public class _SendSignalAction
             {
-                public object @signal = "signal";
+                public string @signal = "signal";
+                public IElement _signal = null;
 
-                public object @target = "target";
+                public string @target = "target";
+                public IElement _target = null;
 
             }
 
@@ -2932,7 +3535,8 @@ namespace DatenMeister
 
             public class _SequenceNode
             {
-                public object @executableNode = "executableNode";
+                public string @executableNode = "executableNode";
+                public IElement _executableNode = null;
 
             }
 
@@ -2941,7 +3545,8 @@ namespace DatenMeister
 
             public class _StartClassifierBehaviorAction
             {
-                public object @object = "object";
+                public string @object = "object";
+                public IElement _object = null;
 
             }
 
@@ -2950,7 +3555,8 @@ namespace DatenMeister
 
             public class _StartObjectBehaviorAction
             {
-                public object @object = "object";
+                public string @object = "object";
+                public IElement _object = null;
 
             }
 
@@ -2959,9 +3565,11 @@ namespace DatenMeister
 
             public class _StructuralFeatureAction
             {
-                public object @object = "object";
+                public string @object = "object";
+                public IElement _object = null;
 
-                public object @structuralFeature = "structuralFeature";
+                public string @structuralFeature = "structuralFeature";
+                public IElement _structuralFeature = null;
 
             }
 
@@ -2970,19 +3578,26 @@ namespace DatenMeister
 
             public class _StructuredActivityNode
             {
-                public object @activity = "activity";
+                public string @activity = "activity";
+                public IElement _activity = null;
 
-                public object @edge = "edge";
+                public string @edge = "edge";
+                public IElement _edge = null;
 
-                public object @mustIsolate = "mustIsolate";
+                public string @mustIsolate = "mustIsolate";
+                public IElement _mustIsolate = null;
 
-                public object @node = "node";
+                public string @node = "node";
+                public IElement _node = null;
 
-                public object @structuredNodeInput = "structuredNodeInput";
+                public string @structuredNodeInput = "structuredNodeInput";
+                public IElement _structuredNodeInput = null;
 
-                public object @structuredNodeOutput = "structuredNodeOutput";
+                public string @structuredNodeOutput = "structuredNodeOutput";
+                public IElement _structuredNodeOutput = null;
 
-                public object @variable = "variable";
+                public string @variable = "variable";
+                public IElement _variable = null;
 
             }
 
@@ -2991,11 +3606,14 @@ namespace DatenMeister
 
             public class _TestIdentityAction
             {
-                public object @first = "first";
+                public string @first = "first";
+                public IElement _first = null;
 
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
-                public object @second = "second";
+                public string @second = "second";
+                public IElement _second = null;
 
             }
 
@@ -3004,11 +3622,14 @@ namespace DatenMeister
 
             public class _UnmarshallAction
             {
-                public object @object = "object";
+                public string @object = "object";
+                public IElement _object = null;
 
-                public object @result = "result";
+                public string @result = "result";
+                public IElement _result = null;
 
-                public object @unmarshallType = "unmarshallType";
+                public string @unmarshallType = "unmarshallType";
+                public IElement _unmarshallType = null;
 
             }
 
@@ -3017,7 +3638,8 @@ namespace DatenMeister
 
             public class _ValuePin
             {
-                public object @value = "value";
+                public string @value = "value";
+                public IElement _value = null;
 
             }
 

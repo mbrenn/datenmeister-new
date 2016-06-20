@@ -151,7 +151,7 @@ namespace DatenMeister.SourcecodeGenerator
             var name = GetNameOfElement(propertyInstance);
             Result.AppendLine($"{stack.Indentation}if(name == \"{name}\") // Looking for property");
             Result.AppendLine($"{stack.Indentation}{{");
-            Result.AppendLine($"{stack.NextIndentation}tree.{stack.Fullname}.@{name} = value;");
+            Result.AppendLine($"{stack.NextIndentation}tree.{stack.Fullname}._{name} = value;");
 
             base.WalkProperty(propertyInstance, stack);
 

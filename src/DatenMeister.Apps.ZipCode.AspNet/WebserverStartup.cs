@@ -2,16 +2,14 @@
 using System.Web;
 using System.Web.Http;
 using BurnSystems.Owin.StaticFiles;
-using DatenMeister.App.Web.Zip;
-using DatenMeister.Apps.ZipCode;
-using DatenMeister.Web;
+using DatenMeister.Apps.ZipCode.AspNet;
 using Microsoft.Owin;
 using Microsoft.Owin.Extensions;
 using Owin;
 using ZipCodeFinderWeb.Controllers;
 
 [assembly: OwinStartup(typeof(WebserverStartup))]
-namespace DatenMeister.App.Web.Zip
+namespace DatenMeister.Apps.ZipCode.AspNet
 {
     public class WebserverStartup
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -69,8 +70,7 @@ namespace DatenMeister.CSV
                 settings = new CSVSettings();
             }
 
-            var metaClass = GetMetaClassOfItems(extent, settings);
-            var columns = ConvertColumnsToPropertyValues(extent, metaClass, settings);
+            var columns = settings.Columns;
             var createColumns = false;
 
             using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(settings.Encoding)))
@@ -99,8 +99,8 @@ namespace DatenMeister.CSV
                 {
                     var values = SplitLine(line, settings);
 
-                    var csvObject = factory.create(metaClass);
-
+                    var csvObject = factory.create(null);
+                    
                     // we now have the created object, let's fill it
                     var valueCount = values.Count;
                     for (var n = 0; n < valueCount; n++)
@@ -128,74 +128,6 @@ namespace DatenMeister.CSV
             }
         }
 
-        private IList<string> ConvertColumnsToPropertyValues(IExtent extent, IElement metaClass, CSVSettings settings)
-        {
-            //////////////////////
-            // Loads the workspace
-            if (_dataLayerLogic == null)
-            {
-                throw new InvalidOperationException("No DataLayerLogic was given, even though we need to do Uml navigation");
-            }
-
-            var dmml = _dataLayerLogic.GetFromMetaLayer<DmML>(extent);
-
-            var result = (IList<string>) metaClass.get(dmml.Class.Attribute);
-            if (result == null)
-            {
-                result = new List<string>();
-                metaClass.set(dmml.Class.Attribute, result);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Caches the metaclass being stored 
-        /// </summary>
-        private IElement _metaClassCache;
-
-        /// <summary>
-        /// Gets the metaclass as given in the settings
-        /// Returns null, if the metaclass is not defined
-        /// </summary>
-        /// <param name="extent">Extent to be used to find the instance</param>
-        /// <param name="settings">Settings being used</param>
-        /// <returns>The metaclass of the object</returns>
-        private IElement GetMetaClassOfItems(IExtent extent, CSVSettings settings)
-        {
-            if (_metaClassCache == null)
-            {
-                IElement metaClass = null;
-                if (!string.IsNullOrEmpty(settings.MetaclassUri))
-                {
-                    if (_workspaceCollection == null)
-                    {
-                        throw new InvalidOperationException(
-                            "Uri by metaclass is given, but we do not have a workspace collection");
-                    }
-
-                    // Finds the given item all the workspaces
-                    metaClass = _workspaceCollection.FindItem(settings.MetaclassUri);
-                    if (metaClass == null)
-                    {
-                        throw new InvalidOperationException($"Type with ID: {settings.MetaclassUri} was not found");
-                    }
-                }
-
-                _metaClassCache = metaClass;
-            }
-
-            if (_metaClassCache == null)
-            {
-                // Ok, wie did not find the metaclass, we have to create a new class
-                var dmMl = _dataLayerLogic.GetFromMetaLayer<DmML>(extent);
-                var mofElement = new MofElement(dmMl.__Class, null);
-                mofElement.set(dmMl.Class.Attribute, new MofReflectiveSequence());
-            }
-
-            return _metaClassCache;
-        }
-
         /// <summary>
         ///     Splits a CSV line into columns
         /// </summary>
@@ -214,15 +146,12 @@ namespace DatenMeister.CSV
         public void Save(IUriExtent extent, string path, CSVSettings settings)
         {
             var columns = new List<string>();
-            var dmml = _dataLayerLogic.GetFromMetaLayer<DmML>(extent);
-            var metaClass = new ClassWrapper(GetMetaClassOfItems(extent, settings), dmml);
-            
 
             // Retrieve the column headers
-            if (settings.HasHeader && metaClass.Attributes.Any())
+            if (settings.HasHeader && settings.Columns.Any())
             {
                 // Column headers given by old extent
-                columns.AddRange(metaClass.Attributes.Select(x => x.Name));
+                columns.AddRange(settings.Columns);
             }
             else
             {

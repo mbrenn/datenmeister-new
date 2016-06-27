@@ -8,17 +8,18 @@ namespace DatenMeister.Runtime.Reflection
     public class ClassWrapper
     {
         private readonly IElement _element;
-        private readonly DmML _dmml;
+
+        private DmML _dmml;
         
         public ClassWrapper(DmML dmml)
         {
             _dmml = dmml;
-            _element = new MofElement(_dmml.__Class, null);
+            _element = new MofElement(_dmml?.__Class, null);
         }
 
         public ClassWrapper(IElement element, DmML dmml)
         {
-            _element = element;
+            _element = element ?? new MofElement(_dmml?.__Class, null);
             _dmml = dmml;
         }
 
@@ -29,21 +30,21 @@ namespace DatenMeister.Runtime.Reflection
 
         public string Name
         {
-            get { return _element.isSet(_dmml.NamedElement.Name) ? _element.get(_dmml.NamedElement.Name).ToString() : string.Empty; }
-            set { _element.set(_dmml.NamedElement.Name, value); }
+            get { return _element.isSet("name") ? _element.get("name").ToString() : string.Empty; }
+            set { _element.set("name", value); }
         }
 
         public IEnumerable<AttributeWrapper> Attributes
         {
             get
             {
-                if (!_element.isSet(_dmml.Class.Attribute))
+                if (!_element.isSet("attribute"))
                 {
                     var value = new List<AttributeWrapper>();
-                    _element.set(_dmml.Class.Attribute, value);
+                    _element.set("attribute", value);
                 }
 
-                return (_element.get(_dmml.Class.Attribute) as IReflectiveCollection).ToList<AttributeWrapper>(
+                return (_element.get("attribute") as IReflectiveCollection).ToList<AttributeWrapper>(
                     x=> new AttributeWrapper(x as IElement, _dmml), 
                     x => x.Unwrap());
             }

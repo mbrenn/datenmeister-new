@@ -93,7 +93,8 @@ namespace DatenMeister.Tests.Xmi
             var uml = GetFilledUml();
 
             Assert.That(uml.CommonStructure.__Comment, Is.InstanceOf<IElement>());
-            Assert.That(uml.CommonStructure.Comment.body, Is.InstanceOf<IElement>());
+            Assert.That(uml.CommonStructure.Comment.body, Is.InstanceOf<string>());
+            Assert.That(uml.CommonStructure.Comment._body, Is.InstanceOf<IElement>());
 
             Assert.That(
                 uml.CommonStructure.Comment._body

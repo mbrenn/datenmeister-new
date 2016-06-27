@@ -1,6 +1,9 @@
+/// <reference path="typings/jquery/jquery.d.ts" />
+/// <reference path="typings/jquery/underscore.d.ts" />
 define(["require", "exports", "./datenmeister-helper", "./datenmeister-interfaces", "./datenmeister-view", "./datenmeister-client", "./datenmeister-ribbon", "./datenmeister-layout", "./datenmeister-logging"], function (require, exports, DMHelper, DMI, DMView, DMClient, DMRibbon, DMLayout, DMLog) {
     "use strict";
     function start() {
+        // Information, when an ajax request failed
         $(document).ajaxError(function (ev, xhr, settings, error) {
             if (xhr.responseJSON !== undefined &&
                 xhr.responseJSON !== null &&
@@ -18,6 +21,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
             };
             parseAndNavigateToWindowLocation();
         });
+        // Ajax loading information
         var ajaxRequests = 0;
         $("#dm-ajaxloading").hide();
         $(document).ajaxStart(function () {
@@ -67,6 +71,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         tabFile.addIcon("Workspaces", "img/icons/database", function () { layout.showWorkspaces(); });
         tabFile.addIcon("Add Workspace", "img/icons/database-add", function () { showDialogNewWorkspace(layout); });
         if (changeEvent.workspace !== undefined) {
+            // Ok, we have a workspace
             tabFile.addIcon("Delete Extent", "img/icons/database-delete", function () {
                 DMClient.WorkspaceApi.deleteWorkspace(changeEvent.workspace)
                     .done(function () { return layout.navigateToWorkspaces(); });
@@ -110,6 +115,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
             showDialogNewCsvExtent(layout, workspace);
         });
         view.addLink("New CSV Extent for UML class", function () {
+            // showDialogNewExtent(layout, workspace);
         });
         view.addLink("New XmlExtent", function () {
             showDialogNewXmiExtent(layout, workspace);

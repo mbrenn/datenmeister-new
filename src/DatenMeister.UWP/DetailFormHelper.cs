@@ -183,7 +183,7 @@ namespace DatenMeister.UWP
             Delete
         }
 
-        public static string GetValue(IElement element, object property)
+        public static string GetValue(IElement element, string property)
         {
             return element.isSet(property) ? element.get(property).ToString() : string.Empty;
         }

@@ -25,7 +25,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="legacy">true, if legacy access to the attributes shall be used. 
         /// This means that the methods are accessed via string definitions and not via the properties</param>
         /// <returns></returns>
-        public IEnumerable<IElement> GetPropertiesOfClassifier(IElement classifier)
+        public IEnumerable<string> GetPropertiesOfClassifier(IElement classifier)
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
 
@@ -40,7 +40,7 @@ namespace DatenMeister.Uml.Helper
                 var result = classifier.get(propertyOwnedAttribute) as IEnumerable;
                 foreach (var item in result)
                 {
-                    yield return item as IElement;
+                    yield return item.ToString();
                 }
             }
 

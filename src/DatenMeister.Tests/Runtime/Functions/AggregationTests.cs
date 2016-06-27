@@ -12,9 +12,9 @@ namespace DatenMeister.Tests.Runtime.Functions
     [TestFixture]
     public class AggregationTests
     {
-        private object property1;
-        private object property2;
-        private object property3;
+        private string property1 ="Prop1";
+        private string property2="Prop2";
+        private string property3="Prop3";
 
         [Test]
         public void TestMax()
@@ -95,9 +95,6 @@ namespace DatenMeister.Tests.Runtime.Functions
 
         private MofReflectiveSequence CreateReflectiveSequence()
         {
-            property1 = new object();
-            property2 = new object();
-            property3 = new object();
             var reflectiveSequence = new MofReflectiveSequence();
 
             var value = new MofObject();

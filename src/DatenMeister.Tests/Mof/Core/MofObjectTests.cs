@@ -12,12 +12,12 @@ namespace DatenMeister.Tests.Mof.Core
     [TestFixture]
     public class MofObjectTests
     {
+        private static string property1 = "Prop1";
+        private static string property2 = "Prop2";
+
         [Test]
         public void TestInMemoryMofObject()
-        {
-            var property1 = new object();
-            var property2 = new object();
-
+        { 
             var mofObject = new MofObject();
             Assert.That(mofObject.isSet(property1), Is.False);
             mofObject.set(property1, "Test");

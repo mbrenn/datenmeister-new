@@ -96,12 +96,12 @@ namespace DatenMeister.Tests.Xmi
             Assert.That(uml.CommonStructure.Comment.body, Is.InstanceOf<IElement>());
 
             Assert.That(
-                (uml.CommonStructure.Comment.body as IElement)
+                uml.CommonStructure.Comment._body
                     .isSet(uml.CommonStructure.NamedElement.name),
                 Is.True);
 
             Assert.That(
-                (uml.CommonStructure.Comment.body as IElement)
+                uml.CommonStructure.Comment._body
                     .get(uml.CommonStructure.NamedElement.name),
                 Is.Not.Null);
         }
@@ -114,7 +114,7 @@ namespace DatenMeister.Tests.Xmi
 
             // Old behavior
             IEnumerable<object> generalizedElements;
-            object generalProperty;
+            string generalProperty;
             if (package.isSet("generalization"))
             {
                 generalizedElements = package.get("generalization") as IEnumerable<object>;

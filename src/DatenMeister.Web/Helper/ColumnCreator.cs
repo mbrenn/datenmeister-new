@@ -109,8 +109,9 @@ namespace DatenMeister.Web.Helper
                     {
                         foreach (var property in properties.Cast<IObject>())
                         {
+                            var propertyName = property.get("name").ToString();
                             FieldData column;
-                            if (!result.ColumnsOnProperty.TryGetValue(property, out column))
+                            if (!result.ColumnsOnProperty.TryGetValue(propertyName, out column))
                             {
                                 column = new FieldData
                                 {
@@ -118,7 +119,7 @@ namespace DatenMeister.Web.Helper
                                     title = property.get(uml.CommonStructure.NamedElement.name).ToString()
                                 };
 
-                                result.ColumnsOnProperty[property] = column;
+                                result.ColumnsOnProperty[propertyName] = column;
                             }
                         }
                     }

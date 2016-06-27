@@ -10,6 +10,7 @@ namespace DatenMeister.CSV
             Encoding = "UTF-8";
             HasHeader = true;
             Separator = ',';
+            Columns = new List<string>();
         }
 
         public string Encoding { get; set; }
@@ -22,7 +23,7 @@ namespace DatenMeister.CSV
         /// Gets or sets the type that is used within the associated csv extent.
         /// If the type is not set at loading of the instance, a new type will be automatically created
         /// </summary>
-        public IElement Type { get; set; }
+        public IList<string> Columns { get; set; }
 
         /// <summary>
         /// Gets or sets the uri to the metaclass to be used to load the given extent

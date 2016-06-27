@@ -240,10 +240,10 @@ namespace DatenMeister.Uml
                 }
 
                 var propertiesOfMetaClass = classifierMethod.GetPropertiesOfClassifier(metaClass).ToList();
-                var mapping = new Dictionary<string, IElement>();
+                var mapping = new Dictionary<string, string>();
                 foreach (var property in propertiesOfMetaClass)
                 {
-                    mapping[property.get("name").ToString()] = property;
+                    mapping[property] = property;
                 }
                 
                 foreach (var property in element.getPropertiesBeingSet())

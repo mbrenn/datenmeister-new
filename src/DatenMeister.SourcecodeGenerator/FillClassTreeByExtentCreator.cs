@@ -1,11 +1,13 @@
 ﻿using System;
+using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator
 {
     public class FillClassTreeByExtentCreator : WalkPackageClass
     {
-        public FillClassTreeByExtentCreator(string classNameOfTree)
+        public FillClassTreeByExtentCreator(string classNameOfTree, ISourceParser parser = null) : base(parser)
         {
             ClassNameOfTree = classNameOfTree;
             FactoryVersion = new Version(1, 1, 0, 0);
@@ -22,11 +24,11 @@ namespace DatenMeister.SourcecodeGenerator
         ///     and returns a full namespace for the package.
         /// </param>
         /// <param name="stack">Used as the callstack</param>
-        protected override void Walk(IObject element, CallStack stack)
+        public override void Walk(IUriExtent extent)
         {
             Result.AppendLine("using System.Collections.Generic;");
             Result.AppendLine("using DatenMeister.EMOF.Interface.Reflection;");
-            WalkAndWriteNamespace(element, stack);
+            base.Walk(extent);
         }
 
         protected override void WalkPackage(IObject element, CallStack stack)

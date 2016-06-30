@@ -34,61 +34,6 @@ namespace DatenMeister.Filler
                     {
                         value = item0 as IElement;
                         name = GetNameOfElement(value);
-                        if(name == "Boolean") // Looking for class
-                        {
-                            tree.__Boolean = value;
-                            isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
-                            foreach (var item1 in collection)
-                            {
-                                value = item1 as IElement;
-                                name = GetNameOfElement(value);
-                            }
-                        }
-                        if(name == "Integer") // Looking for class
-                        {
-                            tree.__Integer = value;
-                            isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
-                            foreach (var item1 in collection)
-                            {
-                                value = item1 as IElement;
-                                name = GetNameOfElement(value);
-                            }
-                        }
-                        if(name == "Real") // Looking for class
-                        {
-                            tree.__Real = value;
-                            isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
-                            foreach (var item1 in collection)
-                            {
-                                value = item1 as IElement;
-                                name = GetNameOfElement(value);
-                            }
-                        }
-                        if(name == "String") // Looking for class
-                        {
-                            tree.__String = value;
-                            isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
-                            foreach (var item1 in collection)
-                            {
-                                value = item1 as IElement;
-                                name = GetNameOfElement(value);
-                            }
-                        }
-                        if(name == "UnlimitedNatural") // Looking for class
-                        {
-                            tree.__UnlimitedNatural = value;
-                            isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
-                            foreach (var item1 in collection)
-                            {
-                                value = item1 as IElement;
-                                name = GetNameOfElement(value);
-                            }
-                        }
                     }
                 }
             }

@@ -91,6 +91,11 @@ namespace DatenMeister.EMOF.InMemory
 
         public override string ToString()
         {
+            if (isSet("name"))
+            {
+                return get("name").ToString();
+            }
+
             var builder = new StringBuilder();
             builder.Append($"#{Id} - ");
 
@@ -98,7 +103,7 @@ namespace DatenMeister.EMOF.InMemory
             foreach (var pair in _values)
             {
                 var key = pair.Key;
-                if (key is string)
+                if (key != null)
                 {
                     builder.Append($"{komma}{key} = {pair.Value}");
                 }
@@ -106,6 +111,7 @@ namespace DatenMeister.EMOF.InMemory
                 {
                     builder.Append($"{komma}Prop = {pair.Value}");
                 }
+
                 komma = ", ";
             }
 

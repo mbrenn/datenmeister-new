@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator
 {
@@ -14,7 +16,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// <summary>
         ///     Initializes a new instance of the ClassTreeGenerator
         /// </summary>
-        public ClassTreeGenerator()
+        public ClassTreeGenerator(ISourceParser parser = null) : base(parser)
         {
             FactoryVersion = new Version(1, 1, 0, 0);
         }
@@ -27,15 +29,15 @@ namespace DatenMeister.SourcecodeGenerator
         ///     Regards the given element as a package
         ///     and returns a full namespace for the package.
         /// </param>
-        protected override void Walk(IObject element, CallStack stack)
+        public override void Walk(IUriExtent extent)
         {
             WriteUsages(new[]
             {
                 "DatenMeister.EMOF.Interface.Reflection",
                 "DatenMeister.EMOF.InMemory"
             });
-
-            WalkAndWriteNamespace(element, stack);
+            
+            base.Walk(extent);
         }
 
         /// <summary>
@@ -103,7 +105,7 @@ namespace DatenMeister.SourcecodeGenerator
             var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
             if (name != null)
             {
-                Result.AppendLine($"{stack.Indentation}public string @{name} = \"{name}\";");
+                Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
                 Result.AppendLine($"{stack.Indentation}public IElement _{name} = null;");
                 Result.AppendLine();
             }

@@ -123,7 +123,7 @@ namespace DatenMeister.SourcecodeGenerator
             {
                 // Removes the name of the package of the first hierarchy level
                 // since it is already included into the class name
-                fullName = $"__{name}";
+                fullName = $".__{name}";
             }
             else
             {

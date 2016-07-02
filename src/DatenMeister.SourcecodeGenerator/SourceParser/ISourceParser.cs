@@ -25,5 +25,12 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
         /// <param name="element">Element to be queried</param>
         /// <returns>true, if the element is a package</returns>
         bool IsProperty(IObject element);
+
+        /// <summary>
+        /// Returns the information whether the given element is a primitive type
+        /// </summary>
+        /// <param name="element">Element to be queried</param>
+        /// <returns>True, if the element is a primitive type</returns>
+        bool IsPrimitiveType(IObject element);
     }
 }

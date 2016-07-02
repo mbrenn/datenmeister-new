@@ -75,9 +75,9 @@ namespace DatenMeister.Tests.Core
 
             var primitiveTypes = dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(dataLayers.Uml);
             Assert.That(primitiveTypes, Is.Not.Null );
-            /*Assert.That(primitiveTypes.__Real, Is.Not.Null);
+            Assert.That(primitiveTypes.__Real, Is.Not.Null);
             Assert.That(primitiveTypes.__Real, Is.Not.TypeOf<object>());
-            */
+            
             var primitiveTypes2 = dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(dataLayers.Uml);
             Assert.That(primitiveTypes2, Is.SameAs(primitiveTypes));
         }

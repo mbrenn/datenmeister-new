@@ -31,5 +31,13 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
             return element.isSet(attributeXmi) &&
                    element.get(attributeXmi).ToString() == "uml:Property";
         }
+
+        public bool IsPrimitiveType(IObject element)
+        {
+            var attributeXmi = "{" + Namespaces.Xmi + "}type";
+
+            return element.isSet(attributeXmi) &&
+                   element.get(attributeXmi).ToString() == "uml:PrimitiveType";
+        }
     }
 }

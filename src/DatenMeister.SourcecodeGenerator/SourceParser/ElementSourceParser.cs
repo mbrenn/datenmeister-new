@@ -29,5 +29,11 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
             var asElement = element as IElement;
             return Equals(asElement?.getMetaClass(), _uml.Classification.__Property);
         }
+
+        public bool IsPrimitiveType(IObject element)
+        {
+            var asElement = element as IElement;
+            return Equals(asElement?.getMetaClass(), _uml.SimpleClassifiers.__PrimitiveType);
+        }
     }
 }

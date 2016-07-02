@@ -172,7 +172,7 @@ namespace DatenMeister.SourcecodeGenerator
                     WalkPackage(subElement, innerStack);
                 }
 
-                if (_parser.IsClass(subElement))
+                if (_parser.IsClass(subElement) || _parser.IsPrimitiveType(subElement))
                 {
                     WalkClass(subElement, innerStack);
                 }

@@ -14,6 +14,11 @@ namespace DatenMeister.SourcecodeGenerator
     public class ClassTreeGenerator : WalkPackageClass
     {
         /// <summary>
+        /// Gets or sets the name of the class that is used for the model
+        /// </summary>
+        public string UsedClassName { get; set; }
+
+        /// <summary>
         ///     Initializes a new instance of the ClassTreeGenerator
         /// </summary>
         public ClassTreeGenerator(ISourceParser parser = null) : base(parser)
@@ -46,6 +51,7 @@ namespace DatenMeister.SourcecodeGenerator
         ///     ParseClasses for classes.
         /// </summary>
         /// <param name="element">Element being parsed</param>
+        /// <param name="stack">Callstack being used</param>
         protected override void WalkPackage(IObject element, CallStack stack)
         {
             var name = GetNameOfElement(element);
@@ -60,6 +66,7 @@ namespace DatenMeister.SourcecodeGenerator
 
             if (stack.Level == 0)
             {
+                UsedClassName = $"_{name}";
                 Result.AppendLine($"{innerStack.Indentation}public static _{name} TheOne = new _{name}();");
                 Result.AppendLine();
             }

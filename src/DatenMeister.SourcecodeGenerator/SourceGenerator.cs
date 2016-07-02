@@ -37,7 +37,11 @@ namespace DatenMeister.SourcecodeGenerator
             var sourceParser = new ElementSourceParser(uml);
             
             // Creates the class tree
-            var classTreeGenerator = new ClassTreeGenerator(sourceParser);
+            var classTreeGenerator = new ClassTreeGenerator(sourceParser)
+            {
+                Namespace = options.Namespace
+            };
+
             classTreeGenerator.Walk(extent);
             var sourceClass = classTreeGenerator.Result.ToString();
 
@@ -51,7 +55,12 @@ namespace DatenMeister.SourcecodeGenerator
             File.WriteAllText(pathOfClassTree, sourceClass);
 
             // Creates now the filler
-            var fillerGenerator = new FillClassTreeByExtentCreator(options.Name + "Filler", sourceParser);
+            var fillerGenerator = new FillClassTreeByExtentCreator(options.Name + "Filler", sourceParser)
+            {
+                Namespace = options.Namespace,
+                ClassNameOfTree = classTreeGenerator.UsedClassName
+            };
+
             fillerGenerator.Walk(extent);
             var sourceFiller = fillerGenerator.Result.ToString();
             

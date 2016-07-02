@@ -5,17 +5,25 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
     public interface ISourceParser
     {
         /// <summary>
-        /// Returns the information whether the given element is a pacage
+        /// Returns the information whether the given element is a package
         ///  </summary>
         /// <param name="element">Element to be queried</param>
         /// <returns>true, if the element is a package</returns>
         bool IsPackage(IObject element);
 
         /// <summary>
-        /// Returns the information whether the given element is a pacage
+        /// Returns the information whether the given element is a class
         ///  </summary>
         /// <param name="element">Element to be queried</param>
         /// <returns>true, if the element is a package</returns>
         bool IsClass(IObject element);
+
+
+        /// <summary>
+        /// Returns the information whether the given element is a property
+        ///  </summary>
+        /// <param name="element">Element to be queried</param>
+        /// <returns>true, if the element is a package</returns>
+        bool IsProperty(IObject element);
     }
 }

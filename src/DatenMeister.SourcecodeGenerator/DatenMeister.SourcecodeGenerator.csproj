@@ -71,11 +71,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatenMeister.Provider.DotNet\DatenMeister.Provider.DotNet.csproj">
-      <Project>{de772364-f233-40e8-ba39-519d42c20686}</Project>
+      <Project>{DE772364-F233-40E8-BA39-519D42C20686}</Project>
       <Name>DatenMeister.Provider.DotNet</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">
-      <Project>{e44275c2-9e62-42be-b984-127f82c1766f}</Project>
+      <Project>{E44275C2-9E62-42BE-B984-127F82C1766F}</Project>
       <Name>DatenMeister.XMI</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">

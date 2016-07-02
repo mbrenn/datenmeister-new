@@ -184,9 +184,13 @@ namespace DatenMeister.SourcecodeGenerator
             var name = GetNameOfElement(classInstance);
             innerStack.Fullname += $".{name}";
 
-            foreach (var propertyObject in Helper.XmiGetProperty(classInstance))
+            // Needs to be updated
+            foreach (var propertyObject in Helper.GetSubProperties(classInstance))
             {
-                WalkProperty(propertyObject, innerStack);
+                if (_parser.IsProperty(propertyObject))
+                {
+                    WalkProperty(propertyObject, innerStack);
+                }
             }
         }
 
@@ -214,7 +218,7 @@ namespace DatenMeister.SourcecodeGenerator
             public CallStack(CallStack ownerStack)
             {
                 _ownerStack = ownerStack;
-                Indentation = ownerStack == null ? string.Empty : $"{ownerStack.Indentation}    ";
+                Indentation = ownerStack == null ? string.Empty : $"{ownerStack.NextIndentation}";
                 Level = ownerStack?.Level + 1 ?? 0;
                 Fullname = ownerStack?.Fullname;
             }

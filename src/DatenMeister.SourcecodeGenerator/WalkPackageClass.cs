@@ -161,7 +161,7 @@ namespace DatenMeister.SourcecodeGenerator
             else
             {
                 innerStack.Fullname =
-                    string.IsNullOrEmpty(innerStack.Fullname) ? name : $"{innerStack.Fullname}.{name}";
+                    string.IsNullOrEmpty(innerStack.Fullname) ? $".{name}" : $"{innerStack.Fullname}.{name}";
             }
 
             // Finds the subpackages and classes

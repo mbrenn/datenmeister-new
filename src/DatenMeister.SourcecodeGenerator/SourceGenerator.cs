@@ -29,7 +29,7 @@ namespace DatenMeister.SourcecodeGenerator
                 elements.Add(typeObject);
             }
 
-            package.set(uml.Packages.Package.packagedElement, elements);
+            package.set(_UML._Packages._Package.packagedElement, elements);
 
             // Adds the package
             extent.elements().add(package);

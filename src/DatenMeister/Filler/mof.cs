@@ -36,7 +36,7 @@ namespace DatenMeister
         {
             public class _Tag
             {
-                public string @tagOwner = "tagOwner";
+                public static string @tagOwner = "tagOwner";
                 public IElement _tagOwner = null;
 
             }
@@ -52,13 +52,13 @@ namespace DatenMeister
         {
             public class _Tag
             {
-                public string @name = "name";
+                public static string @name = "name";
                 public IElement _name = null;
 
-                public string @value = "value";
+                public static string @value = "value";
                 public IElement _value = null;
 
-                public string @element = "element";
+                public static string @element = "element";
                 public IElement _element = null;
 
             }
@@ -114,10 +114,10 @@ namespace DatenMeister
 
             public class _Argument
             {
-                public string @name = "name";
+                public static string @name = "name";
                 public IElement _name = null;
 
-                public string @value = "value";
+                public static string @value = "value";
                 public IElement _value = null;
 
             }
@@ -134,13 +134,13 @@ namespace DatenMeister
 
             public class _Link
             {
-                public string @firstElement = "firstElement";
+                public static string @firstElement = "firstElement";
                 public IElement _firstElement = null;
 
-                public string @secondElement = "secondElement";
+                public static string @secondElement = "secondElement";
                 public IElement _secondElement = null;
 
-                public string @association = "association";
+                public static string @association = "association";
                 public IElement _association = null;
 
             }
@@ -150,13 +150,13 @@ namespace DatenMeister
 
             public class _Exception
             {
-                public string @objectInError = "objectInError";
+                public static string @objectInError = "objectInError";
                 public IElement _objectInError = null;
 
-                public string @elementInError = "elementInError";
+                public static string @elementInError = "elementInError";
                 public IElement _elementInError = null;
 
-                public string @description = "description";
+                public static string @description = "description";
                 public IElement _description = null;
 
             }
@@ -172,7 +172,7 @@ namespace DatenMeister
         {
             public class _Factory
             {
-                public string @package = "package";
+                public static string @package = "package";
                 public IElement _package = null;
 
             }
@@ -196,7 +196,7 @@ namespace DatenMeister
 
             public class _Element
             {
-                public string @metaclass = "metaclass";
+                public static string @metaclass = "metaclass";
                 public IElement _metaclass = null;
 
             }

@@ -93,17 +93,17 @@ namespace DatenMeister.Tests.Xmi
             var uml = GetFilledUml();
 
             Assert.That(uml.CommonStructure.__Comment, Is.InstanceOf<IElement>());
-            Assert.That(uml.CommonStructure.Comment.body, Is.InstanceOf<string>());
+            Assert.That(_UML._CommonStructure._Comment.body, Is.InstanceOf<string>());
             Assert.That(uml.CommonStructure.Comment._body, Is.InstanceOf<IElement>());
 
             Assert.That(
                 uml.CommonStructure.Comment._body
-                    .isSet(uml.CommonStructure.NamedElement.name),
+                    .isSet(_UML._CommonStructure._NamedElement.name),
                 Is.True);
 
             Assert.That(
                 uml.CommonStructure.Comment._body
-                    .get(uml.CommonStructure.NamedElement.name),
+                    .get(_UML._CommonStructure._NamedElement.name),
                 Is.Not.Null);
         }
 
@@ -124,8 +124,8 @@ namespace DatenMeister.Tests.Xmi
             else
             {
                 generalizedElements = package.get(
-                    uml.Classification.Classifier.generalization) as IEnumerable<object>;
-                generalProperty = uml.Classification.Generalization.general;
+                    _UML._Classification._Classifier.generalization) as IEnumerable<object>;
+                generalProperty = _UML._Classification._Generalization.general;
                 throw new InvalidOperationException("Not supported at the moment");
             }
 

@@ -102,9 +102,9 @@ namespace DatenMeister.Web.Helper
                 var metaLayer = _dataLayerLogic?.GetMetaLayerFor(dataLayer);
                 var uml = _dataLayerLogic?.Get<_UML>(metaLayer);
 
-                if (uml != null && metaClass.isSet(uml.Classification.Classifier.attribute))
+                if (uml != null && metaClass.isSet(_UML._Classification._Classifier.attribute))
                 {
-                    var properties = metaClass.get(uml.Classification.Classifier.attribute) as IEnumerable;
+                    var properties = metaClass.get(_UML._Classification._Classifier.attribute) as IEnumerable;
                     if (properties != null)
                     {
                         foreach (var property in properties.Cast<IObject>())
@@ -116,7 +116,7 @@ namespace DatenMeister.Web.Helper
                                 column = new FieldData
                                 {
                                     name = ConvertPropertyToColumnName(property),
-                                    title = property.get(uml.CommonStructure.NamedElement.name).ToString()
+                                    title = property.get(_UML._CommonStructure._NamedElement.name).ToString()
                                 };
 
                                 result.ColumnsOnProperty[propertyName] = column;

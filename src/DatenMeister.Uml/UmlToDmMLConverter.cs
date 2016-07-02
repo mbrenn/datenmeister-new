@@ -17,8 +17,8 @@ namespace DatenMeister.Uml
             dmMl.__Property = uml.Classification.__Property;
             
             // Sets the attributes
-            dmMl.NamedElement.Name = uml.CommonStructure.NamedElement.name;
-            dmMl.Class.Attribute = uml.Classification.Classifier.attribute;
+            dmMl.NamedElement.Name = _UML._CommonStructure._NamedElement.name;
+            dmMl.Class.Attribute = _UML._Classification._Classifier.attribute;
         }
     }
 }

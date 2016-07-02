@@ -5,7 +5,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 define(["require", "exports"], function (require, exports) {
     "use strict";
-    /* Stores all the models that can be returned via one of the */
     var ClientResponse;
     (function (ClientResponse) {
         ;
@@ -19,7 +18,6 @@ define(["require", "exports"], function (require, exports) {
             return ItemInExtentQuery;
         }());
         PostModels.ItemInExtentQuery = ItemInExtentQuery;
-        /** This class is used to reference a single object within the database */
         var ExtentReferenceModel = (function () {
             function ExtentReferenceModel() {
             }

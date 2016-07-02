@@ -154,8 +154,15 @@ namespace DatenMeister.SourcecodeGenerator
         {
             var innerStack = new CallStack(stack);
             var name = GetNameOfElement(element);
-            innerStack.Fullname =
-                string.IsNullOrEmpty(innerStack.Fullname) ? name : $"{innerStack.Fullname}.{name}";
+            if (stack.Level == 0)
+            {
+                innerStack.Fullname = string.Empty;
+            }
+            else
+            {
+                innerStack.Fullname =
+                    string.IsNullOrEmpty(innerStack.Fullname) ? name : $"{innerStack.Fullname}.{name}";
+            }
 
             // Finds the subpackages and classes
             foreach (var subElement in Helper.GetSubProperties(element))

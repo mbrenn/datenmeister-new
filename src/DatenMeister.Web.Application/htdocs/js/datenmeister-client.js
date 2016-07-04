@@ -71,6 +71,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             return callback;
         }
         ExtentApi.createItem = createItem;
+        /* Deletes an item from the database and returns the value indicatng whether the deleteion was successful */
         function deleteItem(ws, extent, item) {
             var callback = $.Deferred();
             var postModel = new DMI.PostModels.ItemDeleteModel();

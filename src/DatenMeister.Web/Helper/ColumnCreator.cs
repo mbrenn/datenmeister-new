@@ -113,7 +113,7 @@ namespace DatenMeister.Web.Helper
                             FieldData column;
                             if (!result.ColumnsOnProperty.TryGetValue(propertyName, out column))
                             {
-                                column = new FieldData
+                                column = new TextFieldData
                                 {
                                     name = ConvertPropertyToColumnName(property),
                                     title = property.get(_UML._CommonStructure._NamedElement.name).ToString()
@@ -138,7 +138,7 @@ namespace DatenMeister.Web.Helper
                     FieldData column;
                     if (!result.ColumnsOnProperty.TryGetValue(property, out column))
                     {
-                        column = new FieldData
+                        column = new TextFieldData
                         {
                             name = ConvertPropertyToColumnName(property),
                             title =

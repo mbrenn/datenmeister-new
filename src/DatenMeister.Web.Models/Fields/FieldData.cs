@@ -2,12 +2,12 @@
 {
     public class FieldData
     {
-        public FieldData()
+        public FieldData(string fieldType)
         {
-            this.fieldType = "text";
+            this.fieldType = fieldType;
         }
 
-        public FieldData(string name, string title) : this()
+        public FieldData(string fieldType, string name, string title) : this(fieldType)
         {
             this.name = name;
             this.title = title;

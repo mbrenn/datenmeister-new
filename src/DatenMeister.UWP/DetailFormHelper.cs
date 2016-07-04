@@ -57,7 +57,11 @@ namespace DatenMeister.UWP
                 }
                 else if (fieldData is DateTimeFieldData)
                 {
-                    AddDateTimeColumn(fieldData as DateTimeFieldData);
+                    new DateTimeField().CreateField(this, fieldData as DateTimeFieldData);
+                }
+                else if (fieldData is DropDownFieldData)
+                {
+                    new DropDownField().CreateField(this, fieldData as DropDownFieldData);
                 }
                 else
                 {
@@ -99,11 +103,6 @@ namespace DatenMeister.UWP
         private void AddTextColumn(TextFieldData fieldData)
         {
             new TextField().CreateField(this, fieldData);
-        }
-
-        private void AddDateTimeColumn(DateTimeFieldData fieldData)
-        {
-            new DateTimeField().CreateField(this, fieldData);
         }
 
         public void AddButtons(Action<DialogResult> onClose)

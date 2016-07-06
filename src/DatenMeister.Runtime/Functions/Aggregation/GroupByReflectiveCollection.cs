@@ -13,8 +13,8 @@ namespace DatenMeister.Runtime.Functions.Aggregation
     {
         public GroupByReflectiveCollection(
             IReflectiveCollection collectionToBeAggregated,
-            object groupByColumn,
-            object aggregateColumn,
+            string groupByColumn,
+            string aggregateColumn,
             Func<IAggregator<T>> aggregator)
             : base(new MofReflectiveSequence())
         {
@@ -35,9 +35,9 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         /// <param name="aggregatorFunc">The function being used to 
         /// create a new aggregator</param>
         private void Aggregate(
-            IReflectiveCollection collectionToBeAggregated, 
-            object groupByColumn, 
-            object aggregateColumn,
+            IReflectiveCollection collectionToBeAggregated,
+            string groupByColumn,
+            string aggregateColumn,
             Func<IAggregator<T>> aggregatorFunc)
         {
             Dictionary<object, IAggregator<T>> aggregatedValues = 

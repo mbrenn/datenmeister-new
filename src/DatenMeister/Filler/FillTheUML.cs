@@ -3,7 +3,7 @@ using DatenMeister.EMOF.Interface.Reflection;
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
 namespace DatenMeister.Filler
 {
-    public class FillTheUML : IFiller<_UML>
+    public class FillTheUML : DatenMeister.Filler.IFiller<DatenMeister._UML>
     {
         private static readonly object[] EmptyList = new object[] { };
         private static string GetNameOfElement(IObject element)
@@ -12,12 +12,12 @@ namespace DatenMeister.Filler
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, _UML tree)
+        public void Fill(IEnumerable<object> collection, DatenMeister._UML tree)
         {
-            DoFill(collection, tree);
+            FillTheUML.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, _UML tree)
+        public static void DoFill(IEnumerable<object> collection, DatenMeister._UML tree)
         {
             string name;
             IElement value;
@@ -53,35 +53,35 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "edge") // Looking for property
                                         {
-                                            tree.Activities.Activity.@edge = value;
+                                            tree.Activities.Activity._edge = value;
                                         }
                                         if(name == "group") // Looking for property
                                         {
-                                            tree.Activities.Activity.@group = value;
+                                            tree.Activities.Activity._group = value;
                                         }
                                         if(name == "isReadOnly") // Looking for property
                                         {
-                                            tree.Activities.Activity.@isReadOnly = value;
+                                            tree.Activities.Activity._isReadOnly = value;
                                         }
                                         if(name == "isSingleExecution") // Looking for property
                                         {
-                                            tree.Activities.Activity.@isSingleExecution = value;
+                                            tree.Activities.Activity._isSingleExecution = value;
                                         }
                                         if(name == "node") // Looking for property
                                         {
-                                            tree.Activities.Activity.@node = value;
+                                            tree.Activities.Activity._node = value;
                                         }
                                         if(name == "partition") // Looking for property
                                         {
-                                            tree.Activities.Activity.@partition = value;
+                                            tree.Activities.Activity._partition = value;
                                         }
                                         if(name == "structuredNode") // Looking for property
                                         {
-                                            tree.Activities.Activity.@structuredNode = value;
+                                            tree.Activities.Activity._structuredNode = value;
                                         }
                                         if(name == "variable") // Looking for property
                                         {
-                                            tree.Activities.Activity.@variable = value;
+                                            tree.Activities.Activity._variable = value;
                                         }
                                     }
                                 }
@@ -96,43 +96,43 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "activity") // Looking for property
                                         {
-                                            tree.Activities.ActivityEdge.@activity = value;
+                                            tree.Activities.ActivityEdge._activity = value;
                                         }
                                         if(name == "guard") // Looking for property
                                         {
-                                            tree.Activities.ActivityEdge.@guard = value;
+                                            tree.Activities.ActivityEdge._guard = value;
                                         }
                                         if(name == "inGroup") // Looking for property
                                         {
-                                            tree.Activities.ActivityEdge.@inGroup = value;
+                                            tree.Activities.ActivityEdge._inGroup = value;
                                         }
                                         if(name == "inPartition") // Looking for property
                                         {
-                                            tree.Activities.ActivityEdge.@inPartition = value;
+                                            tree.Activities.ActivityEdge._inPartition = value;
                                         }
                                         if(name == "inStructuredNode") // Looking for property
                                         {
-                                            tree.Activities.ActivityEdge.@inStructuredNode = value;
+                                            tree.Activities.ActivityEdge._inStructuredNode = value;
                                         }
                                         if(name == "interrupts") // Looking for property
                                         {
-                                            tree.Activities.ActivityEdge.@interrupts = value;
+                                            tree.Activities.ActivityEdge._interrupts = value;
                                         }
                                         if(name == "redefinedEdge") // Looking for property
                                         {
-                                            tree.Activities.ActivityEdge.@redefinedEdge = value;
+                                            tree.Activities.ActivityEdge._redefinedEdge = value;
                                         }
                                         if(name == "source") // Looking for property
                                         {
-                                            tree.Activities.ActivityEdge.@source = value;
+                                            tree.Activities.ActivityEdge._source = value;
                                         }
                                         if(name == "target") // Looking for property
                                         {
-                                            tree.Activities.ActivityEdge.@target = value;
+                                            tree.Activities.ActivityEdge._target = value;
                                         }
                                         if(name == "weight") // Looking for property
                                         {
-                                            tree.Activities.ActivityEdge.@weight = value;
+                                            tree.Activities.ActivityEdge._weight = value;
                                         }
                                     }
                                 }
@@ -158,23 +158,23 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "containedEdge") // Looking for property
                                         {
-                                            tree.Activities.ActivityGroup.@containedEdge = value;
+                                            tree.Activities.ActivityGroup._containedEdge = value;
                                         }
                                         if(name == "containedNode") // Looking for property
                                         {
-                                            tree.Activities.ActivityGroup.@containedNode = value;
+                                            tree.Activities.ActivityGroup._containedNode = value;
                                         }
                                         if(name == "inActivity") // Looking for property
                                         {
-                                            tree.Activities.ActivityGroup.@inActivity = value;
+                                            tree.Activities.ActivityGroup._inActivity = value;
                                         }
                                         if(name == "subgroup") // Looking for property
                                         {
-                                            tree.Activities.ActivityGroup.@subgroup = value;
+                                            tree.Activities.ActivityGroup._subgroup = value;
                                         }
                                         if(name == "superGroup") // Looking for property
                                         {
-                                            tree.Activities.ActivityGroup.@superGroup = value;
+                                            tree.Activities.ActivityGroup._superGroup = value;
                                         }
                                     }
                                 }
@@ -189,35 +189,35 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "activity") // Looking for property
                                         {
-                                            tree.Activities.ActivityNode.@activity = value;
+                                            tree.Activities.ActivityNode._activity = value;
                                         }
                                         if(name == "inGroup") // Looking for property
                                         {
-                                            tree.Activities.ActivityNode.@inGroup = value;
+                                            tree.Activities.ActivityNode._inGroup = value;
                                         }
                                         if(name == "inInterruptibleRegion") // Looking for property
                                         {
-                                            tree.Activities.ActivityNode.@inInterruptibleRegion = value;
+                                            tree.Activities.ActivityNode._inInterruptibleRegion = value;
                                         }
                                         if(name == "inPartition") // Looking for property
                                         {
-                                            tree.Activities.ActivityNode.@inPartition = value;
+                                            tree.Activities.ActivityNode._inPartition = value;
                                         }
                                         if(name == "inStructuredNode") // Looking for property
                                         {
-                                            tree.Activities.ActivityNode.@inStructuredNode = value;
+                                            tree.Activities.ActivityNode._inStructuredNode = value;
                                         }
                                         if(name == "incoming") // Looking for property
                                         {
-                                            tree.Activities.ActivityNode.@incoming = value;
+                                            tree.Activities.ActivityNode._incoming = value;
                                         }
                                         if(name == "outgoing") // Looking for property
                                         {
-                                            tree.Activities.ActivityNode.@outgoing = value;
+                                            tree.Activities.ActivityNode._outgoing = value;
                                         }
                                         if(name == "redefinedNode") // Looking for property
                                         {
-                                            tree.Activities.ActivityNode.@redefinedNode = value;
+                                            tree.Activities.ActivityNode._redefinedNode = value;
                                         }
                                     }
                                 }
@@ -232,7 +232,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "parameter") // Looking for property
                                         {
-                                            tree.Activities.ActivityParameterNode.@parameter = value;
+                                            tree.Activities.ActivityParameterNode._parameter = value;
                                         }
                                     }
                                 }
@@ -247,31 +247,31 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "edge") // Looking for property
                                         {
-                                            tree.Activities.ActivityPartition.@edge = value;
+                                            tree.Activities.ActivityPartition._edge = value;
                                         }
                                         if(name == "isDimension") // Looking for property
                                         {
-                                            tree.Activities.ActivityPartition.@isDimension = value;
+                                            tree.Activities.ActivityPartition._isDimension = value;
                                         }
                                         if(name == "isExternal") // Looking for property
                                         {
-                                            tree.Activities.ActivityPartition.@isExternal = value;
+                                            tree.Activities.ActivityPartition._isExternal = value;
                                         }
                                         if(name == "node") // Looking for property
                                         {
-                                            tree.Activities.ActivityPartition.@node = value;
+                                            tree.Activities.ActivityPartition._node = value;
                                         }
                                         if(name == "represents") // Looking for property
                                         {
-                                            tree.Activities.ActivityPartition.@represents = value;
+                                            tree.Activities.ActivityPartition._represents = value;
                                         }
                                         if(name == "subpartition") // Looking for property
                                         {
-                                            tree.Activities.ActivityPartition.@subpartition = value;
+                                            tree.Activities.ActivityPartition._subpartition = value;
                                         }
                                         if(name == "superPartition") // Looking for property
                                         {
-                                            tree.Activities.ActivityPartition.@superPartition = value;
+                                            tree.Activities.ActivityPartition._superPartition = value;
                                         }
                                     }
                                 }
@@ -330,11 +330,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "decisionInput") // Looking for property
                                         {
-                                            tree.Activities.DecisionNode.@decisionInput = value;
+                                            tree.Activities.DecisionNode._decisionInput = value;
                                         }
                                         if(name == "decisionInputFlow") // Looking for property
                                         {
-                                            tree.Activities.DecisionNode.@decisionInputFlow = value;
+                                            tree.Activities.DecisionNode._decisionInputFlow = value;
                                         }
                                     }
                                 }
@@ -349,19 +349,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "exceptionInput") // Looking for property
                                         {
-                                            tree.Activities.ExceptionHandler.@exceptionInput = value;
+                                            tree.Activities.ExceptionHandler._exceptionInput = value;
                                         }
                                         if(name == "exceptionType") // Looking for property
                                         {
-                                            tree.Activities.ExceptionHandler.@exceptionType = value;
+                                            tree.Activities.ExceptionHandler._exceptionType = value;
                                         }
                                         if(name == "handlerBody") // Looking for property
                                         {
-                                            tree.Activities.ExceptionHandler.@handlerBody = value;
+                                            tree.Activities.ExceptionHandler._handlerBody = value;
                                         }
                                         if(name == "protectedNode") // Looking for property
                                         {
-                                            tree.Activities.ExceptionHandler.@protectedNode = value;
+                                            tree.Activities.ExceptionHandler._protectedNode = value;
                                         }
                                     }
                                 }
@@ -376,7 +376,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "handler") // Looking for property
                                         {
-                                            tree.Activities.ExecutableNode.@handler = value;
+                                            tree.Activities.ExecutableNode._handler = value;
                                         }
                                     }
                                 }
@@ -435,11 +435,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "interruptingEdge") // Looking for property
                                         {
-                                            tree.Activities.InterruptibleActivityRegion.@interruptingEdge = value;
+                                            tree.Activities.InterruptibleActivityRegion._interruptingEdge = value;
                                         }
                                         if(name == "node") // Looking for property
                                         {
-                                            tree.Activities.InterruptibleActivityRegion.@node = value;
+                                            tree.Activities.InterruptibleActivityRegion._node = value;
                                         }
                                     }
                                 }
@@ -454,11 +454,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isCombineDuplicate") // Looking for property
                                         {
-                                            tree.Activities.JoinNode.@isCombineDuplicate = value;
+                                            tree.Activities.JoinNode._isCombineDuplicate = value;
                                         }
                                         if(name == "joinSpec") // Looking for property
                                         {
-                                            tree.Activities.JoinNode.@joinSpec = value;
+                                            tree.Activities.JoinNode._joinSpec = value;
                                         }
                                     }
                                 }
@@ -484,19 +484,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isMulticast") // Looking for property
                                         {
-                                            tree.Activities.ObjectFlow.@isMulticast = value;
+                                            tree.Activities.ObjectFlow._isMulticast = value;
                                         }
                                         if(name == "isMultireceive") // Looking for property
                                         {
-                                            tree.Activities.ObjectFlow.@isMultireceive = value;
+                                            tree.Activities.ObjectFlow._isMultireceive = value;
                                         }
                                         if(name == "selection") // Looking for property
                                         {
-                                            tree.Activities.ObjectFlow.@selection = value;
+                                            tree.Activities.ObjectFlow._selection = value;
                                         }
                                         if(name == "transformation") // Looking for property
                                         {
-                                            tree.Activities.ObjectFlow.@transformation = value;
+                                            tree.Activities.ObjectFlow._transformation = value;
                                         }
                                     }
                                 }
@@ -511,23 +511,23 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "inState") // Looking for property
                                         {
-                                            tree.Activities.ObjectNode.@inState = value;
+                                            tree.Activities.ObjectNode._inState = value;
                                         }
                                         if(name == "isControlType") // Looking for property
                                         {
-                                            tree.Activities.ObjectNode.@isControlType = value;
+                                            tree.Activities.ObjectNode._isControlType = value;
                                         }
                                         if(name == "ordering") // Looking for property
                                         {
-                                            tree.Activities.ObjectNode.@ordering = value;
+                                            tree.Activities.ObjectNode._ordering = value;
                                         }
                                         if(name == "selection") // Looking for property
                                         {
-                                            tree.Activities.ObjectNode.@selection = value;
+                                            tree.Activities.ObjectNode._selection = value;
                                         }
                                         if(name == "upperBound") // Looking for property
                                         {
-                                            tree.Activities.ObjectNode.@upperBound = value;
+                                            tree.Activities.ObjectNode._upperBound = value;
                                         }
                                     }
                                 }
@@ -542,11 +542,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "activityScope") // Looking for property
                                         {
-                                            tree.Activities.Variable.@activityScope = value;
+                                            tree.Activities.Variable._activityScope = value;
                                         }
                                         if(name == "scope") // Looking for property
                                         {
-                                            tree.Activities.Variable.@scope = value;
+                                            tree.Activities.Variable._scope = value;
                                         }
                                     }
                                 }
@@ -571,11 +571,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "expr") // Looking for property
                                         {
-                                            tree.Values.Duration.@expr = value;
+                                            tree.Values.Duration._expr = value;
                                         }
                                         if(name == "observation") // Looking for property
                                         {
-                                            tree.Values.Duration.@observation = value;
+                                            tree.Values.Duration._observation = value;
                                         }
                                     }
                                 }
@@ -590,11 +590,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "firstEvent") // Looking for property
                                         {
-                                            tree.Values.DurationConstraint.@firstEvent = value;
+                                            tree.Values.DurationConstraint._firstEvent = value;
                                         }
                                         if(name == "specification") // Looking for property
                                         {
-                                            tree.Values.DurationConstraint.@specification = value;
+                                            tree.Values.DurationConstraint._specification = value;
                                         }
                                     }
                                 }
@@ -609,11 +609,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "max") // Looking for property
                                         {
-                                            tree.Values.DurationInterval.@max = value;
+                                            tree.Values.DurationInterval._max = value;
                                         }
                                         if(name == "min") // Looking for property
                                         {
-                                            tree.Values.DurationInterval.@min = value;
+                                            tree.Values.DurationInterval._min = value;
                                         }
                                     }
                                 }
@@ -628,11 +628,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "event") // Looking for property
                                         {
-                                            tree.Values.DurationObservation.@event = value;
+                                            tree.Values.DurationObservation._event = value;
                                         }
                                         if(name == "firstEvent") // Looking for property
                                         {
-                                            tree.Values.DurationObservation.@firstEvent = value;
+                                            tree.Values.DurationObservation._firstEvent = value;
                                         }
                                     }
                                 }
@@ -647,11 +647,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "operand") // Looking for property
                                         {
-                                            tree.Values.Expression.@operand = value;
+                                            tree.Values.Expression._operand = value;
                                         }
                                         if(name == "symbol") // Looking for property
                                         {
-                                            tree.Values.Expression.@symbol = value;
+                                            tree.Values.Expression._symbol = value;
                                         }
                                     }
                                 }
@@ -666,11 +666,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "max") // Looking for property
                                         {
-                                            tree.Values.Interval.@max = value;
+                                            tree.Values.Interval._max = value;
                                         }
                                         if(name == "min") // Looking for property
                                         {
-                                            tree.Values.Interval.@min = value;
+                                            tree.Values.Interval._min = value;
                                         }
                                     }
                                 }
@@ -685,7 +685,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "specification") // Looking for property
                                         {
-                                            tree.Values.IntervalConstraint.@specification = value;
+                                            tree.Values.IntervalConstraint._specification = value;
                                         }
                                     }
                                 }
@@ -700,7 +700,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "value") // Looking for property
                                         {
-                                            tree.Values.LiteralBoolean.@value = value;
+                                            tree.Values.LiteralBoolean._value = value;
                                         }
                                     }
                                 }
@@ -715,7 +715,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "value") // Looking for property
                                         {
-                                            tree.Values.LiteralInteger.@value = value;
+                                            tree.Values.LiteralInteger._value = value;
                                         }
                                     }
                                 }
@@ -741,7 +741,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "value") // Looking for property
                                         {
-                                            tree.Values.LiteralReal.@value = value;
+                                            tree.Values.LiteralReal._value = value;
                                         }
                                     }
                                 }
@@ -767,7 +767,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "value") // Looking for property
                                         {
-                                            tree.Values.LiteralString.@value = value;
+                                            tree.Values.LiteralString._value = value;
                                         }
                                     }
                                 }
@@ -782,7 +782,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "value") // Looking for property
                                         {
-                                            tree.Values.LiteralUnlimitedNatural.@value = value;
+                                            tree.Values.LiteralUnlimitedNatural._value = value;
                                         }
                                     }
                                 }
@@ -808,19 +808,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "behavior") // Looking for property
                                         {
-                                            tree.Values.OpaqueExpression.@behavior = value;
+                                            tree.Values.OpaqueExpression._behavior = value;
                                         }
                                         if(name == "body") // Looking for property
                                         {
-                                            tree.Values.OpaqueExpression.@body = value;
+                                            tree.Values.OpaqueExpression._body = value;
                                         }
                                         if(name == "language") // Looking for property
                                         {
-                                            tree.Values.OpaqueExpression.@language = value;
+                                            tree.Values.OpaqueExpression._language = value;
                                         }
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Values.OpaqueExpression.@result = value;
+                                            tree.Values.OpaqueExpression._result = value;
                                         }
                                     }
                                 }
@@ -835,11 +835,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "owningExpression") // Looking for property
                                         {
-                                            tree.Values.StringExpression.@owningExpression = value;
+                                            tree.Values.StringExpression._owningExpression = value;
                                         }
                                         if(name == "subExpression") // Looking for property
                                         {
-                                            tree.Values.StringExpression.@subExpression = value;
+                                            tree.Values.StringExpression._subExpression = value;
                                         }
                                     }
                                 }
@@ -854,11 +854,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "firstEvent") // Looking for property
                                         {
-                                            tree.Values.TimeConstraint.@firstEvent = value;
+                                            tree.Values.TimeConstraint._firstEvent = value;
                                         }
                                         if(name == "specification") // Looking for property
                                         {
-                                            tree.Values.TimeConstraint.@specification = value;
+                                            tree.Values.TimeConstraint._specification = value;
                                         }
                                     }
                                 }
@@ -873,11 +873,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "expr") // Looking for property
                                         {
-                                            tree.Values.TimeExpression.@expr = value;
+                                            tree.Values.TimeExpression._expr = value;
                                         }
                                         if(name == "observation") // Looking for property
                                         {
-                                            tree.Values.TimeExpression.@observation = value;
+                                            tree.Values.TimeExpression._observation = value;
                                         }
                                     }
                                 }
@@ -892,11 +892,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "max") // Looking for property
                                         {
-                                            tree.Values.TimeInterval.@max = value;
+                                            tree.Values.TimeInterval._max = value;
                                         }
                                         if(name == "min") // Looking for property
                                         {
-                                            tree.Values.TimeInterval.@min = value;
+                                            tree.Values.TimeInterval._min = value;
                                         }
                                     }
                                 }
@@ -911,11 +911,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "event") // Looking for property
                                         {
-                                            tree.Values.TimeObservation.@event = value;
+                                            tree.Values.TimeObservation._event = value;
                                         }
                                         if(name == "firstEvent") // Looking for property
                                         {
-                                            tree.Values.TimeObservation.@firstEvent = value;
+                                            tree.Values.TimeObservation._firstEvent = value;
                                         }
                                     }
                                 }
@@ -962,19 +962,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "condition") // Looking for property
                                         {
-                                            tree.UseCases.Extend.@condition = value;
+                                            tree.UseCases.Extend._condition = value;
                                         }
                                         if(name == "extendedCase") // Looking for property
                                         {
-                                            tree.UseCases.Extend.@extendedCase = value;
+                                            tree.UseCases.Extend._extendedCase = value;
                                         }
                                         if(name == "extension") // Looking for property
                                         {
-                                            tree.UseCases.Extend.@extension = value;
+                                            tree.UseCases.Extend._extension = value;
                                         }
                                         if(name == "extensionLocation") // Looking for property
                                         {
-                                            tree.UseCases.Extend.@extensionLocation = value;
+                                            tree.UseCases.Extend._extensionLocation = value;
                                         }
                                     }
                                 }
@@ -989,7 +989,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "useCase") // Looking for property
                                         {
-                                            tree.UseCases.ExtensionPoint.@useCase = value;
+                                            tree.UseCases.ExtensionPoint._useCase = value;
                                         }
                                     }
                                 }
@@ -1004,11 +1004,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "addition") // Looking for property
                                         {
-                                            tree.UseCases.Include.@addition = value;
+                                            tree.UseCases.Include._addition = value;
                                         }
                                         if(name == "includingCase") // Looking for property
                                         {
-                                            tree.UseCases.Include.@includingCase = value;
+                                            tree.UseCases.Include._includingCase = value;
                                         }
                                     }
                                 }
@@ -1023,19 +1023,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "extend") // Looking for property
                                         {
-                                            tree.UseCases.UseCase.@extend = value;
+                                            tree.UseCases.UseCase._extend = value;
                                         }
                                         if(name == "extensionPoint") // Looking for property
                                         {
-                                            tree.UseCases.UseCase.@extensionPoint = value;
+                                            tree.UseCases.UseCase._extensionPoint = value;
                                         }
                                         if(name == "include") // Looking for property
                                         {
-                                            tree.UseCases.UseCase.@include = value;
+                                            tree.UseCases.UseCase._include = value;
                                         }
                                         if(name == "subject") // Looking for property
                                         {
-                                            tree.UseCases.UseCase.@subject = value;
+                                            tree.UseCases.UseCase._subject = value;
                                         }
                                     }
                                 }
@@ -1060,23 +1060,23 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "endType") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Association.@endType = value;
+                                            tree.StructuredClassifiers.Association._endType = value;
                                         }
                                         if(name == "isDerived") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Association.@isDerived = value;
+                                            tree.StructuredClassifiers.Association._isDerived = value;
                                         }
                                         if(name == "memberEnd") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Association.@memberEnd = value;
+                                            tree.StructuredClassifiers.Association._memberEnd = value;
                                         }
                                         if(name == "navigableOwnedEnd") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Association.@navigableOwnedEnd = value;
+                                            tree.StructuredClassifiers.Association._navigableOwnedEnd = value;
                                         }
                                         if(name == "ownedEnd") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Association.@ownedEnd = value;
+                                            tree.StructuredClassifiers.Association._ownedEnd = value;
                                         }
                                     }
                                 }
@@ -1102,35 +1102,35 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "extension") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Class.@extension = value;
+                                            tree.StructuredClassifiers.Class._extension = value;
                                         }
                                         if(name == "isAbstract") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Class.@isAbstract = value;
+                                            tree.StructuredClassifiers.Class._isAbstract = value;
                                         }
                                         if(name == "isActive") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Class.@isActive = value;
+                                            tree.StructuredClassifiers.Class._isActive = value;
                                         }
                                         if(name == "nestedClassifier") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Class.@nestedClassifier = value;
+                                            tree.StructuredClassifiers.Class._nestedClassifier = value;
                                         }
                                         if(name == "ownedAttribute") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Class.@ownedAttribute = value;
+                                            tree.StructuredClassifiers.Class._ownedAttribute = value;
                                         }
                                         if(name == "ownedOperation") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Class.@ownedOperation = value;
+                                            tree.StructuredClassifiers.Class._ownedOperation = value;
                                         }
                                         if(name == "ownedReception") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Class.@ownedReception = value;
+                                            tree.StructuredClassifiers.Class._ownedReception = value;
                                         }
                                         if(name == "superClass") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Class.@superClass = value;
+                                            tree.StructuredClassifiers.Class._superClass = value;
                                         }
                                     }
                                 }
@@ -1145,7 +1145,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "collaborationRole") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Collaboration.@collaborationRole = value;
+                                            tree.StructuredClassifiers.Collaboration._collaborationRole = value;
                                         }
                                     }
                                 }
@@ -1160,11 +1160,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "roleBinding") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.CollaborationUse.@roleBinding = value;
+                                            tree.StructuredClassifiers.CollaborationUse._roleBinding = value;
                                         }
                                         if(name == "type") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.CollaborationUse.@type = value;
+                                            tree.StructuredClassifiers.CollaborationUse._type = value;
                                         }
                                     }
                                 }
@@ -1179,23 +1179,23 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isIndirectlyInstantiated") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Component.@isIndirectlyInstantiated = value;
+                                            tree.StructuredClassifiers.Component._isIndirectlyInstantiated = value;
                                         }
                                         if(name == "packagedElement") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Component.@packagedElement = value;
+                                            tree.StructuredClassifiers.Component._packagedElement = value;
                                         }
                                         if(name == "provided") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Component.@provided = value;
+                                            tree.StructuredClassifiers.Component._provided = value;
                                         }
                                         if(name == "realization") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Component.@realization = value;
+                                            tree.StructuredClassifiers.Component._realization = value;
                                         }
                                         if(name == "required") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Component.@required = value;
+                                            tree.StructuredClassifiers.Component._required = value;
                                         }
                                     }
                                 }
@@ -1210,11 +1210,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "abstraction") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.ComponentRealization.@abstraction = value;
+                                            tree.StructuredClassifiers.ComponentRealization._abstraction = value;
                                         }
                                         if(name == "realizingClassifier") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.ComponentRealization.@realizingClassifier = value;
+                                            tree.StructuredClassifiers.ComponentRealization._realizingClassifier = value;
                                         }
                                     }
                                 }
@@ -1229,11 +1229,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "end") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.ConnectableElement.@end = value;
+                                            tree.StructuredClassifiers.ConnectableElement._end = value;
                                         }
                                         if(name == "templateParameter") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.ConnectableElement.@templateParameter = value;
+                                            tree.StructuredClassifiers.ConnectableElement._templateParameter = value;
                                         }
                                     }
                                 }
@@ -1248,7 +1248,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "parameteredElement") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.ConnectableElementTemplateParameter.@parameteredElement = value;
+                                            tree.StructuredClassifiers.ConnectableElementTemplateParameter._parameteredElement = value;
                                         }
                                     }
                                 }
@@ -1263,23 +1263,23 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "contract") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Connector.@contract = value;
+                                            tree.StructuredClassifiers.Connector._contract = value;
                                         }
                                         if(name == "end") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Connector.@end = value;
+                                            tree.StructuredClassifiers.Connector._end = value;
                                         }
                                         if(name == "kind") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Connector.@kind = value;
+                                            tree.StructuredClassifiers.Connector._kind = value;
                                         }
                                         if(name == "redefinedConnector") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Connector.@redefinedConnector = value;
+                                            tree.StructuredClassifiers.Connector._redefinedConnector = value;
                                         }
                                         if(name == "type") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Connector.@type = value;
+                                            tree.StructuredClassifiers.Connector._type = value;
                                         }
                                     }
                                 }
@@ -1294,15 +1294,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "definingEnd") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.ConnectorEnd.@definingEnd = value;
+                                            tree.StructuredClassifiers.ConnectorEnd._definingEnd = value;
                                         }
                                         if(name == "partWithPort") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.ConnectorEnd.@partWithPort = value;
+                                            tree.StructuredClassifiers.ConnectorEnd._partWithPort = value;
                                         }
                                         if(name == "role") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.ConnectorEnd.@role = value;
+                                            tree.StructuredClassifiers.ConnectorEnd._role = value;
                                         }
                                     }
                                 }
@@ -1317,7 +1317,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "ownedPort") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.EncapsulatedClassifier.@ownedPort = value;
+                                            tree.StructuredClassifiers.EncapsulatedClassifier._ownedPort = value;
                                         }
                                     }
                                 }
@@ -1332,31 +1332,31 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isBehavior") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Port.@isBehavior = value;
+                                            tree.StructuredClassifiers.Port._isBehavior = value;
                                         }
                                         if(name == "isConjugated") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Port.@isConjugated = value;
+                                            tree.StructuredClassifiers.Port._isConjugated = value;
                                         }
                                         if(name == "isService") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Port.@isService = value;
+                                            tree.StructuredClassifiers.Port._isService = value;
                                         }
                                         if(name == "protocol") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Port.@protocol = value;
+                                            tree.StructuredClassifiers.Port._protocol = value;
                                         }
                                         if(name == "provided") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Port.@provided = value;
+                                            tree.StructuredClassifiers.Port._provided = value;
                                         }
                                         if(name == "redefinedPort") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Port.@redefinedPort = value;
+                                            tree.StructuredClassifiers.Port._redefinedPort = value;
                                         }
                                         if(name == "required") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.Port.@required = value;
+                                            tree.StructuredClassifiers.Port._required = value;
                                         }
                                     }
                                 }
@@ -1371,19 +1371,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "ownedAttribute") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.StructuredClassifier.@ownedAttribute = value;
+                                            tree.StructuredClassifiers.StructuredClassifier._ownedAttribute = value;
                                         }
                                         if(name == "ownedConnector") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.StructuredClassifier.@ownedConnector = value;
+                                            tree.StructuredClassifiers.StructuredClassifier._ownedConnector = value;
                                         }
                                         if(name == "part") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.StructuredClassifier.@part = value;
+                                            tree.StructuredClassifiers.StructuredClassifier._part = value;
                                         }
                                         if(name == "role") // Looking for property
                                         {
-                                            tree.StructuredClassifiers.StructuredClassifier.@role = value;
+                                            tree.StructuredClassifiers.StructuredClassifier._role = value;
                                         }
                                     }
                                 }
@@ -1408,15 +1408,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "entry") // Looking for property
                                         {
-                                            tree.StateMachines.ConnectionPointReference.@entry = value;
+                                            tree.StateMachines.ConnectionPointReference._entry = value;
                                         }
                                         if(name == "exit") // Looking for property
                                         {
-                                            tree.StateMachines.ConnectionPointReference.@exit = value;
+                                            tree.StateMachines.ConnectionPointReference._exit = value;
                                         }
                                         if(name == "state") // Looking for property
                                         {
-                                            tree.StateMachines.ConnectionPointReference.@state = value;
+                                            tree.StateMachines.ConnectionPointReference._state = value;
                                         }
                                     }
                                 }
@@ -1442,11 +1442,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "generalMachine") // Looking for property
                                         {
-                                            tree.StateMachines.ProtocolConformance.@generalMachine = value;
+                                            tree.StateMachines.ProtocolConformance._generalMachine = value;
                                         }
                                         if(name == "specificMachine") // Looking for property
                                         {
-                                            tree.StateMachines.ProtocolConformance.@specificMachine = value;
+                                            tree.StateMachines.ProtocolConformance._specificMachine = value;
                                         }
                                     }
                                 }
@@ -1461,7 +1461,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "conformance") // Looking for property
                                         {
-                                            tree.StateMachines.ProtocolStateMachine.@conformance = value;
+                                            tree.StateMachines.ProtocolStateMachine._conformance = value;
                                         }
                                     }
                                 }
@@ -1476,15 +1476,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "postCondition") // Looking for property
                                         {
-                                            tree.StateMachines.ProtocolTransition.@postCondition = value;
+                                            tree.StateMachines.ProtocolTransition._postCondition = value;
                                         }
                                         if(name == "preCondition") // Looking for property
                                         {
-                                            tree.StateMachines.ProtocolTransition.@preCondition = value;
+                                            tree.StateMachines.ProtocolTransition._preCondition = value;
                                         }
                                         if(name == "referred") // Looking for property
                                         {
-                                            tree.StateMachines.ProtocolTransition.@referred = value;
+                                            tree.StateMachines.ProtocolTransition._referred = value;
                                         }
                                     }
                                 }
@@ -1499,15 +1499,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "kind") // Looking for property
                                         {
-                                            tree.StateMachines.Pseudostate.@kind = value;
+                                            tree.StateMachines.Pseudostate._kind = value;
                                         }
                                         if(name == "state") // Looking for property
                                         {
-                                            tree.StateMachines.Pseudostate.@state = value;
+                                            tree.StateMachines.Pseudostate._state = value;
                                         }
                                         if(name == "stateMachine") // Looking for property
                                         {
-                                            tree.StateMachines.Pseudostate.@stateMachine = value;
+                                            tree.StateMachines.Pseudostate._stateMachine = value;
                                         }
                                     }
                                 }
@@ -1522,27 +1522,27 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "extendedRegion") // Looking for property
                                         {
-                                            tree.StateMachines.Region.@extendedRegion = value;
+                                            tree.StateMachines.Region._extendedRegion = value;
                                         }
                                         if(name == "redefinitionContext") // Looking for property
                                         {
-                                            tree.StateMachines.Region.@redefinitionContext = value;
+                                            tree.StateMachines.Region._redefinitionContext = value;
                                         }
                                         if(name == "state") // Looking for property
                                         {
-                                            tree.StateMachines.Region.@state = value;
+                                            tree.StateMachines.Region._state = value;
                                         }
                                         if(name == "stateMachine") // Looking for property
                                         {
-                                            tree.StateMachines.Region.@stateMachine = value;
+                                            tree.StateMachines.Region._stateMachine = value;
                                         }
                                         if(name == "subvertex") // Looking for property
                                         {
-                                            tree.StateMachines.Region.@subvertex = value;
+                                            tree.StateMachines.Region._subvertex = value;
                                         }
                                         if(name == "transition") // Looking for property
                                         {
-                                            tree.StateMachines.Region.@transition = value;
+                                            tree.StateMachines.Region._transition = value;
                                         }
                                     }
                                 }
@@ -1557,63 +1557,63 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "connection") // Looking for property
                                         {
-                                            tree.StateMachines.State.@connection = value;
+                                            tree.StateMachines.State._connection = value;
                                         }
                                         if(name == "connectionPoint") // Looking for property
                                         {
-                                            tree.StateMachines.State.@connectionPoint = value;
+                                            tree.StateMachines.State._connectionPoint = value;
                                         }
                                         if(name == "deferrableTrigger") // Looking for property
                                         {
-                                            tree.StateMachines.State.@deferrableTrigger = value;
+                                            tree.StateMachines.State._deferrableTrigger = value;
                                         }
                                         if(name == "doActivity") // Looking for property
                                         {
-                                            tree.StateMachines.State.@doActivity = value;
+                                            tree.StateMachines.State._doActivity = value;
                                         }
                                         if(name == "entry") // Looking for property
                                         {
-                                            tree.StateMachines.State.@entry = value;
+                                            tree.StateMachines.State._entry = value;
                                         }
                                         if(name == "exit") // Looking for property
                                         {
-                                            tree.StateMachines.State.@exit = value;
+                                            tree.StateMachines.State._exit = value;
                                         }
                                         if(name == "isComposite") // Looking for property
                                         {
-                                            tree.StateMachines.State.@isComposite = value;
+                                            tree.StateMachines.State._isComposite = value;
                                         }
                                         if(name == "isOrthogonal") // Looking for property
                                         {
-                                            tree.StateMachines.State.@isOrthogonal = value;
+                                            tree.StateMachines.State._isOrthogonal = value;
                                         }
                                         if(name == "isSimple") // Looking for property
                                         {
-                                            tree.StateMachines.State.@isSimple = value;
+                                            tree.StateMachines.State._isSimple = value;
                                         }
                                         if(name == "isSubmachineState") // Looking for property
                                         {
-                                            tree.StateMachines.State.@isSubmachineState = value;
+                                            tree.StateMachines.State._isSubmachineState = value;
                                         }
                                         if(name == "redefinedState") // Looking for property
                                         {
-                                            tree.StateMachines.State.@redefinedState = value;
+                                            tree.StateMachines.State._redefinedState = value;
                                         }
                                         if(name == "redefinitionContext") // Looking for property
                                         {
-                                            tree.StateMachines.State.@redefinitionContext = value;
+                                            tree.StateMachines.State._redefinitionContext = value;
                                         }
                                         if(name == "region") // Looking for property
                                         {
-                                            tree.StateMachines.State.@region = value;
+                                            tree.StateMachines.State._region = value;
                                         }
                                         if(name == "stateInvariant") // Looking for property
                                         {
-                                            tree.StateMachines.State.@stateInvariant = value;
+                                            tree.StateMachines.State._stateInvariant = value;
                                         }
                                         if(name == "submachine") // Looking for property
                                         {
-                                            tree.StateMachines.State.@submachine = value;
+                                            tree.StateMachines.State._submachine = value;
                                         }
                                     }
                                 }
@@ -1628,19 +1628,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "connectionPoint") // Looking for property
                                         {
-                                            tree.StateMachines.StateMachine.@connectionPoint = value;
+                                            tree.StateMachines.StateMachine._connectionPoint = value;
                                         }
                                         if(name == "extendedStateMachine") // Looking for property
                                         {
-                                            tree.StateMachines.StateMachine.@extendedStateMachine = value;
+                                            tree.StateMachines.StateMachine._extendedStateMachine = value;
                                         }
                                         if(name == "region") // Looking for property
                                         {
-                                            tree.StateMachines.StateMachine.@region = value;
+                                            tree.StateMachines.StateMachine._region = value;
                                         }
                                         if(name == "submachineState") // Looking for property
                                         {
-                                            tree.StateMachines.StateMachine.@submachineState = value;
+                                            tree.StateMachines.StateMachine._submachineState = value;
                                         }
                                     }
                                 }
@@ -1655,39 +1655,39 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "container") // Looking for property
                                         {
-                                            tree.StateMachines.Transition.@container = value;
+                                            tree.StateMachines.Transition._container = value;
                                         }
                                         if(name == "effect") // Looking for property
                                         {
-                                            tree.StateMachines.Transition.@effect = value;
+                                            tree.StateMachines.Transition._effect = value;
                                         }
                                         if(name == "guard") // Looking for property
                                         {
-                                            tree.StateMachines.Transition.@guard = value;
+                                            tree.StateMachines.Transition._guard = value;
                                         }
                                         if(name == "kind") // Looking for property
                                         {
-                                            tree.StateMachines.Transition.@kind = value;
+                                            tree.StateMachines.Transition._kind = value;
                                         }
                                         if(name == "redefinedTransition") // Looking for property
                                         {
-                                            tree.StateMachines.Transition.@redefinedTransition = value;
+                                            tree.StateMachines.Transition._redefinedTransition = value;
                                         }
                                         if(name == "redefinitionContext") // Looking for property
                                         {
-                                            tree.StateMachines.Transition.@redefinitionContext = value;
+                                            tree.StateMachines.Transition._redefinitionContext = value;
                                         }
                                         if(name == "source") // Looking for property
                                         {
-                                            tree.StateMachines.Transition.@source = value;
+                                            tree.StateMachines.Transition._source = value;
                                         }
                                         if(name == "target") // Looking for property
                                         {
-                                            tree.StateMachines.Transition.@target = value;
+                                            tree.StateMachines.Transition._target = value;
                                         }
                                         if(name == "trigger") // Looking for property
                                         {
-                                            tree.StateMachines.Transition.@trigger = value;
+                                            tree.StateMachines.Transition._trigger = value;
                                         }
                                     }
                                 }
@@ -1702,15 +1702,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "container") // Looking for property
                                         {
-                                            tree.StateMachines.Vertex.@container = value;
+                                            tree.StateMachines.Vertex._container = value;
                                         }
                                         if(name == "incoming") // Looking for property
                                         {
-                                            tree.StateMachines.Vertex.@incoming = value;
+                                            tree.StateMachines.Vertex._incoming = value;
                                         }
                                         if(name == "outgoing") // Looking for property
                                         {
-                                            tree.StateMachines.Vertex.@outgoing = value;
+                                            tree.StateMachines.Vertex._outgoing = value;
                                         }
                                     }
                                 }
@@ -1735,15 +1735,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "classifierBehavior") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.BehavioredClassifier.@classifierBehavior = value;
+                                            tree.SimpleClassifiers.BehavioredClassifier._classifierBehavior = value;
                                         }
                                         if(name == "interfaceRealization") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.BehavioredClassifier.@interfaceRealization = value;
+                                            tree.SimpleClassifiers.BehavioredClassifier._interfaceRealization = value;
                                         }
                                         if(name == "ownedBehavior") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.BehavioredClassifier.@ownedBehavior = value;
+                                            tree.SimpleClassifiers.BehavioredClassifier._ownedBehavior = value;
                                         }
                                     }
                                 }
@@ -1758,11 +1758,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "ownedAttribute") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.DataType.@ownedAttribute = value;
+                                            tree.SimpleClassifiers.DataType._ownedAttribute = value;
                                         }
                                         if(name == "ownedOperation") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.DataType.@ownedOperation = value;
+                                            tree.SimpleClassifiers.DataType._ownedOperation = value;
                                         }
                                     }
                                 }
@@ -1777,7 +1777,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "ownedLiteral") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.Enumeration.@ownedLiteral = value;
+                                            tree.SimpleClassifiers.Enumeration._ownedLiteral = value;
                                         }
                                     }
                                 }
@@ -1792,11 +1792,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "classifier") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.EnumerationLiteral.@classifier = value;
+                                            tree.SimpleClassifiers.EnumerationLiteral._classifier = value;
                                         }
                                         if(name == "enumeration") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.EnumerationLiteral.@enumeration = value;
+                                            tree.SimpleClassifiers.EnumerationLiteral._enumeration = value;
                                         }
                                     }
                                 }
@@ -1811,27 +1811,27 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "nestedClassifier") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.Interface.@nestedClassifier = value;
+                                            tree.SimpleClassifiers.Interface._nestedClassifier = value;
                                         }
                                         if(name == "ownedAttribute") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.Interface.@ownedAttribute = value;
+                                            tree.SimpleClassifiers.Interface._ownedAttribute = value;
                                         }
                                         if(name == "ownedOperation") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.Interface.@ownedOperation = value;
+                                            tree.SimpleClassifiers.Interface._ownedOperation = value;
                                         }
                                         if(name == "ownedReception") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.Interface.@ownedReception = value;
+                                            tree.SimpleClassifiers.Interface._ownedReception = value;
                                         }
                                         if(name == "protocol") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.Interface.@protocol = value;
+                                            tree.SimpleClassifiers.Interface._protocol = value;
                                         }
                                         if(name == "redefinedInterface") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.Interface.@redefinedInterface = value;
+                                            tree.SimpleClassifiers.Interface._redefinedInterface = value;
                                         }
                                     }
                                 }
@@ -1846,11 +1846,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "contract") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.InterfaceRealization.@contract = value;
+                                            tree.SimpleClassifiers.InterfaceRealization._contract = value;
                                         }
                                         if(name == "implementingClassifier") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.InterfaceRealization.@implementingClassifier = value;
+                                            tree.SimpleClassifiers.InterfaceRealization._implementingClassifier = value;
                                         }
                                     }
                                 }
@@ -1876,7 +1876,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "signal") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.Reception.@signal = value;
+                                            tree.SimpleClassifiers.Reception._signal = value;
                                         }
                                     }
                                 }
@@ -1891,7 +1891,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "ownedAttribute") // Looking for property
                                         {
-                                            tree.SimpleClassifiers.Signal.@ownedAttribute = value;
+                                            tree.SimpleClassifiers.Signal._ownedAttribute = value;
                                         }
                                     }
                                 }
@@ -1916,15 +1916,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isRequired") // Looking for property
                                         {
-                                            tree.Packages.Extension.@isRequired = value;
+                                            tree.Packages.Extension._isRequired = value;
                                         }
                                         if(name == "metaclass") // Looking for property
                                         {
-                                            tree.Packages.Extension.@metaclass = value;
+                                            tree.Packages.Extension._metaclass = value;
                                         }
                                         if(name == "ownedEnd") // Looking for property
                                         {
-                                            tree.Packages.Extension.@ownedEnd = value;
+                                            tree.Packages.Extension._ownedEnd = value;
                                         }
                                     }
                                 }
@@ -1939,11 +1939,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "lower") // Looking for property
                                         {
-                                            tree.Packages.ExtensionEnd.@lower = value;
+                                            tree.Packages.ExtensionEnd._lower = value;
                                         }
                                         if(name == "type") // Looking for property
                                         {
-                                            tree.Packages.ExtensionEnd.@type = value;
+                                            tree.Packages.ExtensionEnd._type = value;
                                         }
                                     }
                                 }
@@ -1958,15 +1958,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "content") // Looking for property
                                         {
-                                            tree.Packages.Image.@content = value;
+                                            tree.Packages.Image._content = value;
                                         }
                                         if(name == "format") // Looking for property
                                         {
-                                            tree.Packages.Image.@format = value;
+                                            tree.Packages.Image._format = value;
                                         }
                                         if(name == "location") // Looking for property
                                         {
-                                            tree.Packages.Image.@location = value;
+                                            tree.Packages.Image._location = value;
                                         }
                                     }
                                 }
@@ -1981,7 +1981,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "viewpoint") // Looking for property
                                         {
-                                            tree.Packages.Model.@viewpoint = value;
+                                            tree.Packages.Model._viewpoint = value;
                                         }
                                     }
                                 }
@@ -1996,35 +1996,35 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "URI") // Looking for property
                                         {
-                                            tree.Packages.Package.@URI = value;
+                                            tree.Packages.Package._URI = value;
                                         }
                                         if(name == "nestedPackage") // Looking for property
                                         {
-                                            tree.Packages.Package.@nestedPackage = value;
+                                            tree.Packages.Package._nestedPackage = value;
                                         }
                                         if(name == "nestingPackage") // Looking for property
                                         {
-                                            tree.Packages.Package.@nestingPackage = value;
+                                            tree.Packages.Package._nestingPackage = value;
                                         }
                                         if(name == "ownedStereotype") // Looking for property
                                         {
-                                            tree.Packages.Package.@ownedStereotype = value;
+                                            tree.Packages.Package._ownedStereotype = value;
                                         }
                                         if(name == "ownedType") // Looking for property
                                         {
-                                            tree.Packages.Package.@ownedType = value;
+                                            tree.Packages.Package._ownedType = value;
                                         }
                                         if(name == "packageMerge") // Looking for property
                                         {
-                                            tree.Packages.Package.@packageMerge = value;
+                                            tree.Packages.Package._packageMerge = value;
                                         }
                                         if(name == "packagedElement") // Looking for property
                                         {
-                                            tree.Packages.Package.@packagedElement = value;
+                                            tree.Packages.Package._packagedElement = value;
                                         }
                                         if(name == "profileApplication") // Looking for property
                                         {
-                                            tree.Packages.Package.@profileApplication = value;
+                                            tree.Packages.Package._profileApplication = value;
                                         }
                                     }
                                 }
@@ -2039,11 +2039,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "mergedPackage") // Looking for property
                                         {
-                                            tree.Packages.PackageMerge.@mergedPackage = value;
+                                            tree.Packages.PackageMerge._mergedPackage = value;
                                         }
                                         if(name == "receivingPackage") // Looking for property
                                         {
-                                            tree.Packages.PackageMerge.@receivingPackage = value;
+                                            tree.Packages.PackageMerge._receivingPackage = value;
                                         }
                                     }
                                 }
@@ -2058,11 +2058,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "metaclassReference") // Looking for property
                                         {
-                                            tree.Packages.Profile.@metaclassReference = value;
+                                            tree.Packages.Profile._metaclassReference = value;
                                         }
                                         if(name == "metamodelReference") // Looking for property
                                         {
-                                            tree.Packages.Profile.@metamodelReference = value;
+                                            tree.Packages.Profile._metamodelReference = value;
                                         }
                                     }
                                 }
@@ -2077,15 +2077,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "appliedProfile") // Looking for property
                                         {
-                                            tree.Packages.ProfileApplication.@appliedProfile = value;
+                                            tree.Packages.ProfileApplication._appliedProfile = value;
                                         }
                                         if(name == "applyingPackage") // Looking for property
                                         {
-                                            tree.Packages.ProfileApplication.@applyingPackage = value;
+                                            tree.Packages.ProfileApplication._applyingPackage = value;
                                         }
                                         if(name == "isStrict") // Looking for property
                                         {
-                                            tree.Packages.ProfileApplication.@isStrict = value;
+                                            tree.Packages.ProfileApplication._isStrict = value;
                                         }
                                     }
                                 }
@@ -2100,11 +2100,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "icon") // Looking for property
                                         {
-                                            tree.Packages.Stereotype.@icon = value;
+                                            tree.Packages.Stereotype._icon = value;
                                         }
                                         if(name == "profile") // Looking for property
                                         {
-                                            tree.Packages.Stereotype.@profile = value;
+                                            tree.Packages.Stereotype._profile = value;
                                         }
                                     }
                                 }
@@ -2129,7 +2129,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "action") // Looking for property
                                         {
-                                            tree.Interactions.ActionExecutionSpecification.@action = value;
+                                            tree.Interactions.ActionExecutionSpecification._action = value;
                                         }
                                     }
                                 }
@@ -2144,7 +2144,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "behavior") // Looking for property
                                         {
-                                            tree.Interactions.BehaviorExecutionSpecification.@behavior = value;
+                                            tree.Interactions.BehaviorExecutionSpecification._behavior = value;
                                         }
                                     }
                                 }
@@ -2159,15 +2159,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "cfragmentGate") // Looking for property
                                         {
-                                            tree.Interactions.CombinedFragment.@cfragmentGate = value;
+                                            tree.Interactions.CombinedFragment._cfragmentGate = value;
                                         }
                                         if(name == "interactionOperator") // Looking for property
                                         {
-                                            tree.Interactions.CombinedFragment.@interactionOperator = value;
+                                            tree.Interactions.CombinedFragment._interactionOperator = value;
                                         }
                                         if(name == "operand") // Looking for property
                                         {
-                                            tree.Interactions.CombinedFragment.@operand = value;
+                                            tree.Interactions.CombinedFragment._operand = value;
                                         }
                                     }
                                 }
@@ -2182,7 +2182,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "message") // Looking for property
                                         {
-                                            tree.Interactions.ConsiderIgnoreFragment.@message = value;
+                                            tree.Interactions.ConsiderIgnoreFragment._message = value;
                                         }
                                     }
                                 }
@@ -2197,7 +2197,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "setting") // Looking for property
                                         {
-                                            tree.Interactions.Continuation.@setting = value;
+                                            tree.Interactions.Continuation._setting = value;
                                         }
                                     }
                                 }
@@ -2223,7 +2223,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "execution") // Looking for property
                                         {
-                                            tree.Interactions.ExecutionOccurrenceSpecification.@execution = value;
+                                            tree.Interactions.ExecutionOccurrenceSpecification._execution = value;
                                         }
                                     }
                                 }
@@ -2238,11 +2238,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "finish") // Looking for property
                                         {
-                                            tree.Interactions.ExecutionSpecification.@finish = value;
+                                            tree.Interactions.ExecutionSpecification._finish = value;
                                         }
                                         if(name == "start") // Looking for property
                                         {
-                                            tree.Interactions.ExecutionSpecification.@start = value;
+                                            tree.Interactions.ExecutionSpecification._start = value;
                                         }
                                     }
                                 }
@@ -2268,11 +2268,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "after") // Looking for property
                                         {
-                                            tree.Interactions.GeneralOrdering.@after = value;
+                                            tree.Interactions.GeneralOrdering._after = value;
                                         }
                                         if(name == "before") // Looking for property
                                         {
-                                            tree.Interactions.GeneralOrdering.@before = value;
+                                            tree.Interactions.GeneralOrdering._before = value;
                                         }
                                     }
                                 }
@@ -2287,23 +2287,23 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "action") // Looking for property
                                         {
-                                            tree.Interactions.Interaction.@action = value;
+                                            tree.Interactions.Interaction._action = value;
                                         }
                                         if(name == "formalGate") // Looking for property
                                         {
-                                            tree.Interactions.Interaction.@formalGate = value;
+                                            tree.Interactions.Interaction._formalGate = value;
                                         }
                                         if(name == "fragment") // Looking for property
                                         {
-                                            tree.Interactions.Interaction.@fragment = value;
+                                            tree.Interactions.Interaction._fragment = value;
                                         }
                                         if(name == "lifeline") // Looking for property
                                         {
-                                            tree.Interactions.Interaction.@lifeline = value;
+                                            tree.Interactions.Interaction._lifeline = value;
                                         }
                                         if(name == "message") // Looking for property
                                         {
-                                            tree.Interactions.Interaction.@message = value;
+                                            tree.Interactions.Interaction._message = value;
                                         }
                                     }
                                 }
@@ -2318,11 +2318,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "maxint") // Looking for property
                                         {
-                                            tree.Interactions.InteractionConstraint.@maxint = value;
+                                            tree.Interactions.InteractionConstraint._maxint = value;
                                         }
                                         if(name == "minint") // Looking for property
                                         {
-                                            tree.Interactions.InteractionConstraint.@minint = value;
+                                            tree.Interactions.InteractionConstraint._minint = value;
                                         }
                                     }
                                 }
@@ -2337,19 +2337,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "covered") // Looking for property
                                         {
-                                            tree.Interactions.InteractionFragment.@covered = value;
+                                            tree.Interactions.InteractionFragment._covered = value;
                                         }
                                         if(name == "enclosingInteraction") // Looking for property
                                         {
-                                            tree.Interactions.InteractionFragment.@enclosingInteraction = value;
+                                            tree.Interactions.InteractionFragment._enclosingInteraction = value;
                                         }
                                         if(name == "enclosingOperand") // Looking for property
                                         {
-                                            tree.Interactions.InteractionFragment.@enclosingOperand = value;
+                                            tree.Interactions.InteractionFragment._enclosingOperand = value;
                                         }
                                         if(name == "generalOrdering") // Looking for property
                                         {
-                                            tree.Interactions.InteractionFragment.@generalOrdering = value;
+                                            tree.Interactions.InteractionFragment._generalOrdering = value;
                                         }
                                     }
                                 }
@@ -2364,11 +2364,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "fragment") // Looking for property
                                         {
-                                            tree.Interactions.InteractionOperand.@fragment = value;
+                                            tree.Interactions.InteractionOperand._fragment = value;
                                         }
                                         if(name == "guard") // Looking for property
                                         {
-                                            tree.Interactions.InteractionOperand.@guard = value;
+                                            tree.Interactions.InteractionOperand._guard = value;
                                         }
                                     }
                                 }
@@ -2383,23 +2383,23 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "actualGate") // Looking for property
                                         {
-                                            tree.Interactions.InteractionUse.@actualGate = value;
+                                            tree.Interactions.InteractionUse._actualGate = value;
                                         }
                                         if(name == "argument") // Looking for property
                                         {
-                                            tree.Interactions.InteractionUse.@argument = value;
+                                            tree.Interactions.InteractionUse._argument = value;
                                         }
                                         if(name == "refersTo") // Looking for property
                                         {
-                                            tree.Interactions.InteractionUse.@refersTo = value;
+                                            tree.Interactions.InteractionUse._refersTo = value;
                                         }
                                         if(name == "returnValue") // Looking for property
                                         {
-                                            tree.Interactions.InteractionUse.@returnValue = value;
+                                            tree.Interactions.InteractionUse._returnValue = value;
                                         }
                                         if(name == "returnValueRecipient") // Looking for property
                                         {
-                                            tree.Interactions.InteractionUse.@returnValueRecipient = value;
+                                            tree.Interactions.InteractionUse._returnValueRecipient = value;
                                         }
                                     }
                                 }
@@ -2414,23 +2414,23 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "coveredBy") // Looking for property
                                         {
-                                            tree.Interactions.Lifeline.@coveredBy = value;
+                                            tree.Interactions.Lifeline._coveredBy = value;
                                         }
                                         if(name == "decomposedAs") // Looking for property
                                         {
-                                            tree.Interactions.Lifeline.@decomposedAs = value;
+                                            tree.Interactions.Lifeline._decomposedAs = value;
                                         }
                                         if(name == "interaction") // Looking for property
                                         {
-                                            tree.Interactions.Lifeline.@interaction = value;
+                                            tree.Interactions.Lifeline._interaction = value;
                                         }
                                         if(name == "represents") // Looking for property
                                         {
-                                            tree.Interactions.Lifeline.@represents = value;
+                                            tree.Interactions.Lifeline._represents = value;
                                         }
                                         if(name == "selector") // Looking for property
                                         {
-                                            tree.Interactions.Lifeline.@selector = value;
+                                            tree.Interactions.Lifeline._selector = value;
                                         }
                                     }
                                 }
@@ -2445,35 +2445,35 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "argument") // Looking for property
                                         {
-                                            tree.Interactions.Message.@argument = value;
+                                            tree.Interactions.Message._argument = value;
                                         }
                                         if(name == "connector") // Looking for property
                                         {
-                                            tree.Interactions.Message.@connector = value;
+                                            tree.Interactions.Message._connector = value;
                                         }
                                         if(name == "interaction") // Looking for property
                                         {
-                                            tree.Interactions.Message.@interaction = value;
+                                            tree.Interactions.Message._interaction = value;
                                         }
                                         if(name == "messageKind") // Looking for property
                                         {
-                                            tree.Interactions.Message.@messageKind = value;
+                                            tree.Interactions.Message._messageKind = value;
                                         }
                                         if(name == "messageSort") // Looking for property
                                         {
-                                            tree.Interactions.Message.@messageSort = value;
+                                            tree.Interactions.Message._messageSort = value;
                                         }
                                         if(name == "receiveEvent") // Looking for property
                                         {
-                                            tree.Interactions.Message.@receiveEvent = value;
+                                            tree.Interactions.Message._receiveEvent = value;
                                         }
                                         if(name == "sendEvent") // Looking for property
                                         {
-                                            tree.Interactions.Message.@sendEvent = value;
+                                            tree.Interactions.Message._sendEvent = value;
                                         }
                                         if(name == "signature") // Looking for property
                                         {
-                                            tree.Interactions.Message.@signature = value;
+                                            tree.Interactions.Message._signature = value;
                                         }
                                     }
                                 }
@@ -2488,7 +2488,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "message") // Looking for property
                                         {
-                                            tree.Interactions.MessageEnd.@message = value;
+                                            tree.Interactions.MessageEnd._message = value;
                                         }
                                     }
                                 }
@@ -2514,15 +2514,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "covered") // Looking for property
                                         {
-                                            tree.Interactions.OccurrenceSpecification.@covered = value;
+                                            tree.Interactions.OccurrenceSpecification._covered = value;
                                         }
                                         if(name == "toAfter") // Looking for property
                                         {
-                                            tree.Interactions.OccurrenceSpecification.@toAfter = value;
+                                            tree.Interactions.OccurrenceSpecification._toAfter = value;
                                         }
                                         if(name == "toBefore") // Looking for property
                                         {
-                                            tree.Interactions.OccurrenceSpecification.@toBefore = value;
+                                            tree.Interactions.OccurrenceSpecification._toBefore = value;
                                         }
                                     }
                                 }
@@ -2548,11 +2548,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "covered") // Looking for property
                                         {
-                                            tree.Interactions.StateInvariant.@covered = value;
+                                            tree.Interactions.StateInvariant._covered = value;
                                         }
                                         if(name == "invariant") // Looking for property
                                         {
-                                            tree.Interactions.StateInvariant.@invariant = value;
+                                            tree.Interactions.StateInvariant._invariant = value;
                                         }
                                     }
                                 }
@@ -2577,31 +2577,31 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "conveyed") // Looking for property
                                         {
-                                            tree.InformationFlows.InformationFlow.@conveyed = value;
+                                            tree.InformationFlows.InformationFlow._conveyed = value;
                                         }
                                         if(name == "informationSource") // Looking for property
                                         {
-                                            tree.InformationFlows.InformationFlow.@informationSource = value;
+                                            tree.InformationFlows.InformationFlow._informationSource = value;
                                         }
                                         if(name == "informationTarget") // Looking for property
                                         {
-                                            tree.InformationFlows.InformationFlow.@informationTarget = value;
+                                            tree.InformationFlows.InformationFlow._informationTarget = value;
                                         }
                                         if(name == "realization") // Looking for property
                                         {
-                                            tree.InformationFlows.InformationFlow.@realization = value;
+                                            tree.InformationFlows.InformationFlow._realization = value;
                                         }
                                         if(name == "realizingActivityEdge") // Looking for property
                                         {
-                                            tree.InformationFlows.InformationFlow.@realizingActivityEdge = value;
+                                            tree.InformationFlows.InformationFlow._realizingActivityEdge = value;
                                         }
                                         if(name == "realizingConnector") // Looking for property
                                         {
-                                            tree.InformationFlows.InformationFlow.@realizingConnector = value;
+                                            tree.InformationFlows.InformationFlow._realizingConnector = value;
                                         }
                                         if(name == "realizingMessage") // Looking for property
                                         {
-                                            tree.InformationFlows.InformationFlow.@realizingMessage = value;
+                                            tree.InformationFlows.InformationFlow._realizingMessage = value;
                                         }
                                     }
                                 }
@@ -2616,7 +2616,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "represented") // Looking for property
                                         {
-                                            tree.InformationFlows.InformationItem.@represented = value;
+                                            tree.InformationFlows.InformationItem._represented = value;
                                         }
                                     }
                                 }
@@ -2641,23 +2641,23 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "fileName") // Looking for property
                                         {
-                                            tree.Deployments.Artifact.@fileName = value;
+                                            tree.Deployments.Artifact._fileName = value;
                                         }
                                         if(name == "manifestation") // Looking for property
                                         {
-                                            tree.Deployments.Artifact.@manifestation = value;
+                                            tree.Deployments.Artifact._manifestation = value;
                                         }
                                         if(name == "nestedArtifact") // Looking for property
                                         {
-                                            tree.Deployments.Artifact.@nestedArtifact = value;
+                                            tree.Deployments.Artifact._nestedArtifact = value;
                                         }
                                         if(name == "ownedAttribute") // Looking for property
                                         {
-                                            tree.Deployments.Artifact.@ownedAttribute = value;
+                                            tree.Deployments.Artifact._ownedAttribute = value;
                                         }
                                         if(name == "ownedOperation") // Looking for property
                                         {
-                                            tree.Deployments.Artifact.@ownedOperation = value;
+                                            tree.Deployments.Artifact._ownedOperation = value;
                                         }
                                     }
                                 }
@@ -2694,15 +2694,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "configuration") // Looking for property
                                         {
-                                            tree.Deployments.Deployment.@configuration = value;
+                                            tree.Deployments.Deployment._configuration = value;
                                         }
                                         if(name == "deployedArtifact") // Looking for property
                                         {
-                                            tree.Deployments.Deployment.@deployedArtifact = value;
+                                            tree.Deployments.Deployment._deployedArtifact = value;
                                         }
                                         if(name == "location") // Looking for property
                                         {
-                                            tree.Deployments.Deployment.@location = value;
+                                            tree.Deployments.Deployment._location = value;
                                         }
                                     }
                                 }
@@ -2717,15 +2717,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "deployment") // Looking for property
                                         {
-                                            tree.Deployments.DeploymentSpecification.@deployment = value;
+                                            tree.Deployments.DeploymentSpecification._deployment = value;
                                         }
                                         if(name == "deploymentLocation") // Looking for property
                                         {
-                                            tree.Deployments.DeploymentSpecification.@deploymentLocation = value;
+                                            tree.Deployments.DeploymentSpecification._deploymentLocation = value;
                                         }
                                         if(name == "executionLocation") // Looking for property
                                         {
-                                            tree.Deployments.DeploymentSpecification.@executionLocation = value;
+                                            tree.Deployments.DeploymentSpecification._executionLocation = value;
                                         }
                                     }
                                 }
@@ -2740,11 +2740,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "deployedElement") // Looking for property
                                         {
-                                            tree.Deployments.DeploymentTarget.@deployedElement = value;
+                                            tree.Deployments.DeploymentTarget._deployedElement = value;
                                         }
                                         if(name == "deployment") // Looking for property
                                         {
-                                            tree.Deployments.DeploymentTarget.@deployment = value;
+                                            tree.Deployments.DeploymentTarget._deployment = value;
                                         }
                                     }
                                 }
@@ -2781,7 +2781,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "utilizedElement") // Looking for property
                                         {
-                                            tree.Deployments.Manifestation.@utilizedElement = value;
+                                            tree.Deployments.Manifestation._utilizedElement = value;
                                         }
                                     }
                                 }
@@ -2796,7 +2796,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "nestedNode") // Looking for property
                                         {
-                                            tree.Deployments.Node.@nestedNode = value;
+                                            tree.Deployments.Node._nestedNode = value;
                                         }
                                     }
                                 }
@@ -2821,7 +2821,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "mapping") // Looking for property
                                         {
-                                            tree.CommonStructure.Abstraction.@mapping = value;
+                                            tree.CommonStructure.Abstraction._mapping = value;
                                         }
                                     }
                                 }
@@ -2836,11 +2836,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "annotatedElement") // Looking for property
                                         {
-                                            tree.CommonStructure.Comment.@annotatedElement = value;
+                                            tree.CommonStructure.Comment._annotatedElement = value;
                                         }
                                         if(name == "body") // Looking for property
                                         {
-                                            tree.CommonStructure.Comment.@body = value;
+                                            tree.CommonStructure.Comment._body = value;
                                         }
                                     }
                                 }
@@ -2855,15 +2855,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "constrainedElement") // Looking for property
                                         {
-                                            tree.CommonStructure.Constraint.@constrainedElement = value;
+                                            tree.CommonStructure.Constraint._constrainedElement = value;
                                         }
                                         if(name == "context") // Looking for property
                                         {
-                                            tree.CommonStructure.Constraint.@context = value;
+                                            tree.CommonStructure.Constraint._context = value;
                                         }
                                         if(name == "specification") // Looking for property
                                         {
-                                            tree.CommonStructure.Constraint.@specification = value;
+                                            tree.CommonStructure.Constraint._specification = value;
                                         }
                                     }
                                 }
@@ -2878,11 +2878,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "client") // Looking for property
                                         {
-                                            tree.CommonStructure.Dependency.@client = value;
+                                            tree.CommonStructure.Dependency._client = value;
                                         }
                                         if(name == "supplier") // Looking for property
                                         {
-                                            tree.CommonStructure.Dependency.@supplier = value;
+                                            tree.CommonStructure.Dependency._supplier = value;
                                         }
                                     }
                                 }
@@ -2897,11 +2897,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "source") // Looking for property
                                         {
-                                            tree.CommonStructure.DirectedRelationship.@source = value;
+                                            tree.CommonStructure.DirectedRelationship._source = value;
                                         }
                                         if(name == "target") // Looking for property
                                         {
-                                            tree.CommonStructure.DirectedRelationship.@target = value;
+                                            tree.CommonStructure.DirectedRelationship._target = value;
                                         }
                                     }
                                 }
@@ -2916,15 +2916,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "ownedComment") // Looking for property
                                         {
-                                            tree.CommonStructure.Element.@ownedComment = value;
+                                            tree.CommonStructure.Element._ownedComment = value;
                                         }
                                         if(name == "ownedElement") // Looking for property
                                         {
-                                            tree.CommonStructure.Element.@ownedElement = value;
+                                            tree.CommonStructure.Element._ownedElement = value;
                                         }
                                         if(name == "owner") // Looking for property
                                         {
-                                            tree.CommonStructure.Element.@owner = value;
+                                            tree.CommonStructure.Element._owner = value;
                                         }
                                     }
                                 }
@@ -2939,19 +2939,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "alias") // Looking for property
                                         {
-                                            tree.CommonStructure.ElementImport.@alias = value;
+                                            tree.CommonStructure.ElementImport._alias = value;
                                         }
                                         if(name == "importedElement") // Looking for property
                                         {
-                                            tree.CommonStructure.ElementImport.@importedElement = value;
+                                            tree.CommonStructure.ElementImport._importedElement = value;
                                         }
                                         if(name == "importingNamespace") // Looking for property
                                         {
-                                            tree.CommonStructure.ElementImport.@importingNamespace = value;
+                                            tree.CommonStructure.ElementImport._importingNamespace = value;
                                         }
                                         if(name == "visibility") // Looking for property
                                         {
-                                            tree.CommonStructure.ElementImport.@visibility = value;
+                                            tree.CommonStructure.ElementImport._visibility = value;
                                         }
                                     }
                                 }
@@ -2966,27 +2966,27 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isOrdered") // Looking for property
                                         {
-                                            tree.CommonStructure.MultiplicityElement.@isOrdered = value;
+                                            tree.CommonStructure.MultiplicityElement._isOrdered = value;
                                         }
                                         if(name == "isUnique") // Looking for property
                                         {
-                                            tree.CommonStructure.MultiplicityElement.@isUnique = value;
+                                            tree.CommonStructure.MultiplicityElement._isUnique = value;
                                         }
                                         if(name == "lower") // Looking for property
                                         {
-                                            tree.CommonStructure.MultiplicityElement.@lower = value;
+                                            tree.CommonStructure.MultiplicityElement._lower = value;
                                         }
                                         if(name == "lowerValue") // Looking for property
                                         {
-                                            tree.CommonStructure.MultiplicityElement.@lowerValue = value;
+                                            tree.CommonStructure.MultiplicityElement._lowerValue = value;
                                         }
                                         if(name == "upper") // Looking for property
                                         {
-                                            tree.CommonStructure.MultiplicityElement.@upper = value;
+                                            tree.CommonStructure.MultiplicityElement._upper = value;
                                         }
                                         if(name == "upperValue") // Looking for property
                                         {
-                                            tree.CommonStructure.MultiplicityElement.@upperValue = value;
+                                            tree.CommonStructure.MultiplicityElement._upperValue = value;
                                         }
                                     }
                                 }
@@ -3001,27 +3001,27 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "clientDependency") // Looking for property
                                         {
-                                            tree.CommonStructure.NamedElement.@clientDependency = value;
+                                            tree.CommonStructure.NamedElement._clientDependency = value;
                                         }
                                         if(name == "name") // Looking for property
                                         {
-                                            tree.CommonStructure.NamedElement.@name = value;
+                                            tree.CommonStructure.NamedElement._name = value;
                                         }
                                         if(name == "nameExpression") // Looking for property
                                         {
-                                            tree.CommonStructure.NamedElement.@nameExpression = value;
+                                            tree.CommonStructure.NamedElement._nameExpression = value;
                                         }
                                         if(name == "namespace") // Looking for property
                                         {
-                                            tree.CommonStructure.NamedElement.@namespace = value;
+                                            tree.CommonStructure.NamedElement._namespace = value;
                                         }
                                         if(name == "qualifiedName") // Looking for property
                                         {
-                                            tree.CommonStructure.NamedElement.@qualifiedName = value;
+                                            tree.CommonStructure.NamedElement._qualifiedName = value;
                                         }
                                         if(name == "visibility") // Looking for property
                                         {
-                                            tree.CommonStructure.NamedElement.@visibility = value;
+                                            tree.CommonStructure.NamedElement._visibility = value;
                                         }
                                     }
                                 }
@@ -3036,27 +3036,27 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "elementImport") // Looking for property
                                         {
-                                            tree.CommonStructure.Namespace.@elementImport = value;
+                                            tree.CommonStructure.Namespace._elementImport = value;
                                         }
                                         if(name == "importedMember") // Looking for property
                                         {
-                                            tree.CommonStructure.Namespace.@importedMember = value;
+                                            tree.CommonStructure.Namespace._importedMember = value;
                                         }
                                         if(name == "member") // Looking for property
                                         {
-                                            tree.CommonStructure.Namespace.@member = value;
+                                            tree.CommonStructure.Namespace._member = value;
                                         }
                                         if(name == "ownedMember") // Looking for property
                                         {
-                                            tree.CommonStructure.Namespace.@ownedMember = value;
+                                            tree.CommonStructure.Namespace._ownedMember = value;
                                         }
                                         if(name == "ownedRule") // Looking for property
                                         {
-                                            tree.CommonStructure.Namespace.@ownedRule = value;
+                                            tree.CommonStructure.Namespace._ownedRule = value;
                                         }
                                         if(name == "packageImport") // Looking for property
                                         {
-                                            tree.CommonStructure.Namespace.@packageImport = value;
+                                            tree.CommonStructure.Namespace._packageImport = value;
                                         }
                                     }
                                 }
@@ -3071,7 +3071,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "visibility") // Looking for property
                                         {
-                                            tree.CommonStructure.PackageableElement.@visibility = value;
+                                            tree.CommonStructure.PackageableElement._visibility = value;
                                         }
                                     }
                                 }
@@ -3086,15 +3086,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "importedPackage") // Looking for property
                                         {
-                                            tree.CommonStructure.PackageImport.@importedPackage = value;
+                                            tree.CommonStructure.PackageImport._importedPackage = value;
                                         }
                                         if(name == "importingNamespace") // Looking for property
                                         {
-                                            tree.CommonStructure.PackageImport.@importingNamespace = value;
+                                            tree.CommonStructure.PackageImport._importingNamespace = value;
                                         }
                                         if(name == "visibility") // Looking for property
                                         {
-                                            tree.CommonStructure.PackageImport.@visibility = value;
+                                            tree.CommonStructure.PackageImport._visibility = value;
                                         }
                                     }
                                 }
@@ -3109,11 +3109,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "owningTemplateParameter") // Looking for property
                                         {
-                                            tree.CommonStructure.ParameterableElement.@owningTemplateParameter = value;
+                                            tree.CommonStructure.ParameterableElement._owningTemplateParameter = value;
                                         }
                                         if(name == "templateParameter") // Looking for property
                                         {
-                                            tree.CommonStructure.ParameterableElement.@templateParameter = value;
+                                            tree.CommonStructure.ParameterableElement._templateParameter = value;
                                         }
                                     }
                                 }
@@ -3139,7 +3139,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "relatedElement") // Looking for property
                                         {
-                                            tree.CommonStructure.Relationship.@relatedElement = value;
+                                            tree.CommonStructure.Relationship._relatedElement = value;
                                         }
                                     }
                                 }
@@ -3154,11 +3154,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "ownedTemplateSignature") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateableElement.@ownedTemplateSignature = value;
+                                            tree.CommonStructure.TemplateableElement._ownedTemplateSignature = value;
                                         }
                                         if(name == "templateBinding") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateableElement.@templateBinding = value;
+                                            tree.CommonStructure.TemplateableElement._templateBinding = value;
                                         }
                                     }
                                 }
@@ -3173,15 +3173,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "boundElement") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateBinding.@boundElement = value;
+                                            tree.CommonStructure.TemplateBinding._boundElement = value;
                                         }
                                         if(name == "parameterSubstitution") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateBinding.@parameterSubstitution = value;
+                                            tree.CommonStructure.TemplateBinding._parameterSubstitution = value;
                                         }
                                         if(name == "signature") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateBinding.@signature = value;
+                                            tree.CommonStructure.TemplateBinding._signature = value;
                                         }
                                     }
                                 }
@@ -3196,23 +3196,23 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "default") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateParameter.@default = value;
+                                            tree.CommonStructure.TemplateParameter._default = value;
                                         }
                                         if(name == "ownedDefault") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateParameter.@ownedDefault = value;
+                                            tree.CommonStructure.TemplateParameter._ownedDefault = value;
                                         }
                                         if(name == "ownedParameteredElement") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateParameter.@ownedParameteredElement = value;
+                                            tree.CommonStructure.TemplateParameter._ownedParameteredElement = value;
                                         }
                                         if(name == "parameteredElement") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateParameter.@parameteredElement = value;
+                                            tree.CommonStructure.TemplateParameter._parameteredElement = value;
                                         }
                                         if(name == "signature") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateParameter.@signature = value;
+                                            tree.CommonStructure.TemplateParameter._signature = value;
                                         }
                                     }
                                 }
@@ -3227,19 +3227,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "actual") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateParameterSubstitution.@actual = value;
+                                            tree.CommonStructure.TemplateParameterSubstitution._actual = value;
                                         }
                                         if(name == "formal") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateParameterSubstitution.@formal = value;
+                                            tree.CommonStructure.TemplateParameterSubstitution._formal = value;
                                         }
                                         if(name == "ownedActual") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateParameterSubstitution.@ownedActual = value;
+                                            tree.CommonStructure.TemplateParameterSubstitution._ownedActual = value;
                                         }
                                         if(name == "templateBinding") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateParameterSubstitution.@templateBinding = value;
+                                            tree.CommonStructure.TemplateParameterSubstitution._templateBinding = value;
                                         }
                                     }
                                 }
@@ -3254,15 +3254,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "ownedParameter") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateSignature.@ownedParameter = value;
+                                            tree.CommonStructure.TemplateSignature._ownedParameter = value;
                                         }
                                         if(name == "parameter") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateSignature.@parameter = value;
+                                            tree.CommonStructure.TemplateSignature._parameter = value;
                                         }
                                         if(name == "template") // Looking for property
                                         {
-                                            tree.CommonStructure.TemplateSignature.@template = value;
+                                            tree.CommonStructure.TemplateSignature._template = value;
                                         }
                                     }
                                 }
@@ -3277,7 +3277,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "package") // Looking for property
                                         {
-                                            tree.CommonStructure.Type.@package = value;
+                                            tree.CommonStructure.Type._package = value;
                                         }
                                     }
                                 }
@@ -3292,7 +3292,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "type") // Looking for property
                                         {
-                                            tree.CommonStructure.TypedElement.@type = value;
+                                            tree.CommonStructure.TypedElement._type = value;
                                         }
                                     }
                                 }
@@ -3339,35 +3339,35 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "context") // Looking for property
                                         {
-                                            tree.CommonBehavior.Behavior.@context = value;
+                                            tree.CommonBehavior.Behavior._context = value;
                                         }
                                         if(name == "isReentrant") // Looking for property
                                         {
-                                            tree.CommonBehavior.Behavior.@isReentrant = value;
+                                            tree.CommonBehavior.Behavior._isReentrant = value;
                                         }
                                         if(name == "ownedParameter") // Looking for property
                                         {
-                                            tree.CommonBehavior.Behavior.@ownedParameter = value;
+                                            tree.CommonBehavior.Behavior._ownedParameter = value;
                                         }
                                         if(name == "ownedParameterSet") // Looking for property
                                         {
-                                            tree.CommonBehavior.Behavior.@ownedParameterSet = value;
+                                            tree.CommonBehavior.Behavior._ownedParameterSet = value;
                                         }
                                         if(name == "postcondition") // Looking for property
                                         {
-                                            tree.CommonBehavior.Behavior.@postcondition = value;
+                                            tree.CommonBehavior.Behavior._postcondition = value;
                                         }
                                         if(name == "precondition") // Looking for property
                                         {
-                                            tree.CommonBehavior.Behavior.@precondition = value;
+                                            tree.CommonBehavior.Behavior._precondition = value;
                                         }
                                         if(name == "specification") // Looking for property
                                         {
-                                            tree.CommonBehavior.Behavior.@specification = value;
+                                            tree.CommonBehavior.Behavior._specification = value;
                                         }
                                         if(name == "redefinedBehavior") // Looking for property
                                         {
-                                            tree.CommonBehavior.Behavior.@redefinedBehavior = value;
+                                            tree.CommonBehavior.Behavior._redefinedBehavior = value;
                                         }
                                     }
                                 }
@@ -3382,7 +3382,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "operation") // Looking for property
                                         {
-                                            tree.CommonBehavior.CallEvent.@operation = value;
+                                            tree.CommonBehavior.CallEvent._operation = value;
                                         }
                                     }
                                 }
@@ -3397,7 +3397,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "changeExpression") // Looking for property
                                         {
-                                            tree.CommonBehavior.ChangeEvent.@changeExpression = value;
+                                            tree.CommonBehavior.ChangeEvent._changeExpression = value;
                                         }
                                     }
                                 }
@@ -3445,11 +3445,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "body") // Looking for property
                                         {
-                                            tree.CommonBehavior.OpaqueBehavior.@body = value;
+                                            tree.CommonBehavior.OpaqueBehavior._body = value;
                                         }
                                         if(name == "language") // Looking for property
                                         {
-                                            tree.CommonBehavior.OpaqueBehavior.@language = value;
+                                            tree.CommonBehavior.OpaqueBehavior._language = value;
                                         }
                                     }
                                 }
@@ -3464,7 +3464,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "signal") // Looking for property
                                         {
-                                            tree.CommonBehavior.SignalEvent.@signal = value;
+                                            tree.CommonBehavior.SignalEvent._signal = value;
                                         }
                                     }
                                 }
@@ -3479,11 +3479,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isRelative") // Looking for property
                                         {
-                                            tree.CommonBehavior.TimeEvent.@isRelative = value;
+                                            tree.CommonBehavior.TimeEvent._isRelative = value;
                                         }
                                         if(name == "when") // Looking for property
                                         {
-                                            tree.CommonBehavior.TimeEvent.@when = value;
+                                            tree.CommonBehavior.TimeEvent._when = value;
                                         }
                                     }
                                 }
@@ -3498,11 +3498,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "event") // Looking for property
                                         {
-                                            tree.CommonBehavior.Trigger.@event = value;
+                                            tree.CommonBehavior.Trigger._event = value;
                                         }
                                         if(name == "port") // Looking for property
                                         {
-                                            tree.CommonBehavior.Trigger.@port = value;
+                                            tree.CommonBehavior.Trigger._port = value;
                                         }
                                     }
                                 }
@@ -3527,11 +3527,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "contract") // Looking for property
                                         {
-                                            tree.Classification.Substitution.@contract = value;
+                                            tree.Classification.Substitution._contract = value;
                                         }
                                         if(name == "substitutingClassifier") // Looking for property
                                         {
-                                            tree.Classification.Substitution.@substitutingClassifier = value;
+                                            tree.Classification.Substitution._substitutingClassifier = value;
                                         }
                                     }
                                 }
@@ -3546,27 +3546,27 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "concurrency") // Looking for property
                                         {
-                                            tree.Classification.BehavioralFeature.@concurrency = value;
+                                            tree.Classification.BehavioralFeature._concurrency = value;
                                         }
                                         if(name == "isAbstract") // Looking for property
                                         {
-                                            tree.Classification.BehavioralFeature.@isAbstract = value;
+                                            tree.Classification.BehavioralFeature._isAbstract = value;
                                         }
                                         if(name == "method") // Looking for property
                                         {
-                                            tree.Classification.BehavioralFeature.@method = value;
+                                            tree.Classification.BehavioralFeature._method = value;
                                         }
                                         if(name == "ownedParameter") // Looking for property
                                         {
-                                            tree.Classification.BehavioralFeature.@ownedParameter = value;
+                                            tree.Classification.BehavioralFeature._ownedParameter = value;
                                         }
                                         if(name == "ownedParameterSet") // Looking for property
                                         {
-                                            tree.Classification.BehavioralFeature.@ownedParameterSet = value;
+                                            tree.Classification.BehavioralFeature._ownedParameterSet = value;
                                         }
                                         if(name == "raisedException") // Looking for property
                                         {
-                                            tree.Classification.BehavioralFeature.@raisedException = value;
+                                            tree.Classification.BehavioralFeature._raisedException = value;
                                         }
                                     }
                                 }
@@ -3581,67 +3581,67 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "attribute") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@attribute = value;
+                                            tree.Classification.Classifier._attribute = value;
                                         }
                                         if(name == "collaborationUse") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@collaborationUse = value;
+                                            tree.Classification.Classifier._collaborationUse = value;
                                         }
                                         if(name == "feature") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@feature = value;
+                                            tree.Classification.Classifier._feature = value;
                                         }
                                         if(name == "general") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@general = value;
+                                            tree.Classification.Classifier._general = value;
                                         }
                                         if(name == "generalization") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@generalization = value;
+                                            tree.Classification.Classifier._generalization = value;
                                         }
                                         if(name == "inheritedMember") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@inheritedMember = value;
+                                            tree.Classification.Classifier._inheritedMember = value;
                                         }
                                         if(name == "isAbstract") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@isAbstract = value;
+                                            tree.Classification.Classifier._isAbstract = value;
                                         }
                                         if(name == "isFinalSpecialization") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@isFinalSpecialization = value;
+                                            tree.Classification.Classifier._isFinalSpecialization = value;
                                         }
                                         if(name == "ownedTemplateSignature") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@ownedTemplateSignature = value;
+                                            tree.Classification.Classifier._ownedTemplateSignature = value;
                                         }
                                         if(name == "ownedUseCase") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@ownedUseCase = value;
+                                            tree.Classification.Classifier._ownedUseCase = value;
                                         }
                                         if(name == "powertypeExtent") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@powertypeExtent = value;
+                                            tree.Classification.Classifier._powertypeExtent = value;
                                         }
                                         if(name == "redefinedClassifier") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@redefinedClassifier = value;
+                                            tree.Classification.Classifier._redefinedClassifier = value;
                                         }
                                         if(name == "representation") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@representation = value;
+                                            tree.Classification.Classifier._representation = value;
                                         }
                                         if(name == "substitution") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@substitution = value;
+                                            tree.Classification.Classifier._substitution = value;
                                         }
                                         if(name == "templateParameter") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@templateParameter = value;
+                                            tree.Classification.Classifier._templateParameter = value;
                                         }
                                         if(name == "useCase") // Looking for property
                                         {
-                                            tree.Classification.Classifier.@useCase = value;
+                                            tree.Classification.Classifier._useCase = value;
                                         }
                                     }
                                 }
@@ -3656,15 +3656,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "allowSubstitutable") // Looking for property
                                         {
-                                            tree.Classification.ClassifierTemplateParameter.@allowSubstitutable = value;
+                                            tree.Classification.ClassifierTemplateParameter._allowSubstitutable = value;
                                         }
                                         if(name == "constrainingClassifier") // Looking for property
                                         {
-                                            tree.Classification.ClassifierTemplateParameter.@constrainingClassifier = value;
+                                            tree.Classification.ClassifierTemplateParameter._constrainingClassifier = value;
                                         }
                                         if(name == "parameteredElement") // Looking for property
                                         {
-                                            tree.Classification.ClassifierTemplateParameter.@parameteredElement = value;
+                                            tree.Classification.ClassifierTemplateParameter._parameteredElement = value;
                                         }
                                     }
                                 }
@@ -3679,11 +3679,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "featuringClassifier") // Looking for property
                                         {
-                                            tree.Classification.Feature.@featuringClassifier = value;
+                                            tree.Classification.Feature._featuringClassifier = value;
                                         }
                                         if(name == "isStatic") // Looking for property
                                         {
-                                            tree.Classification.Feature.@isStatic = value;
+                                            tree.Classification.Feature._isStatic = value;
                                         }
                                     }
                                 }
@@ -3698,19 +3698,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "general") // Looking for property
                                         {
-                                            tree.Classification.Generalization.@general = value;
+                                            tree.Classification.Generalization._general = value;
                                         }
                                         if(name == "generalizationSet") // Looking for property
                                         {
-                                            tree.Classification.Generalization.@generalizationSet = value;
+                                            tree.Classification.Generalization._generalizationSet = value;
                                         }
                                         if(name == "isSubstitutable") // Looking for property
                                         {
-                                            tree.Classification.Generalization.@isSubstitutable = value;
+                                            tree.Classification.Generalization._isSubstitutable = value;
                                         }
                                         if(name == "specific") // Looking for property
                                         {
-                                            tree.Classification.Generalization.@specific = value;
+                                            tree.Classification.Generalization._specific = value;
                                         }
                                     }
                                 }
@@ -3725,19 +3725,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "generalization") // Looking for property
                                         {
-                                            tree.Classification.GeneralizationSet.@generalization = value;
+                                            tree.Classification.GeneralizationSet._generalization = value;
                                         }
                                         if(name == "isCovering") // Looking for property
                                         {
-                                            tree.Classification.GeneralizationSet.@isCovering = value;
+                                            tree.Classification.GeneralizationSet._isCovering = value;
                                         }
                                         if(name == "isDisjoint") // Looking for property
                                         {
-                                            tree.Classification.GeneralizationSet.@isDisjoint = value;
+                                            tree.Classification.GeneralizationSet._isDisjoint = value;
                                         }
                                         if(name == "powertype") // Looking for property
                                         {
-                                            tree.Classification.GeneralizationSet.@powertype = value;
+                                            tree.Classification.GeneralizationSet._powertype = value;
                                         }
                                     }
                                 }
@@ -3752,15 +3752,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "classifier") // Looking for property
                                         {
-                                            tree.Classification.InstanceSpecification.@classifier = value;
+                                            tree.Classification.InstanceSpecification._classifier = value;
                                         }
                                         if(name == "slot") // Looking for property
                                         {
-                                            tree.Classification.InstanceSpecification.@slot = value;
+                                            tree.Classification.InstanceSpecification._slot = value;
                                         }
                                         if(name == "specification") // Looking for property
                                         {
-                                            tree.Classification.InstanceSpecification.@specification = value;
+                                            tree.Classification.InstanceSpecification._specification = value;
                                         }
                                     }
                                 }
@@ -3775,7 +3775,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "instance") // Looking for property
                                         {
-                                            tree.Classification.InstanceValue.@instance = value;
+                                            tree.Classification.InstanceValue._instance = value;
                                         }
                                     }
                                 }
@@ -3790,67 +3790,67 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "bodyCondition") // Looking for property
                                         {
-                                            tree.Classification.Operation.@bodyCondition = value;
+                                            tree.Classification.Operation._bodyCondition = value;
                                         }
                                         if(name == "class") // Looking for property
                                         {
-                                            tree.Classification.Operation.@class = value;
+                                            tree.Classification.Operation._class = value;
                                         }
                                         if(name == "datatype") // Looking for property
                                         {
-                                            tree.Classification.Operation.@datatype = value;
+                                            tree.Classification.Operation._datatype = value;
                                         }
                                         if(name == "interface") // Looking for property
                                         {
-                                            tree.Classification.Operation.@interface = value;
+                                            tree.Classification.Operation._interface = value;
                                         }
                                         if(name == "isOrdered") // Looking for property
                                         {
-                                            tree.Classification.Operation.@isOrdered = value;
+                                            tree.Classification.Operation._isOrdered = value;
                                         }
                                         if(name == "isQuery") // Looking for property
                                         {
-                                            tree.Classification.Operation.@isQuery = value;
+                                            tree.Classification.Operation._isQuery = value;
                                         }
                                         if(name == "isUnique") // Looking for property
                                         {
-                                            tree.Classification.Operation.@isUnique = value;
+                                            tree.Classification.Operation._isUnique = value;
                                         }
                                         if(name == "lower") // Looking for property
                                         {
-                                            tree.Classification.Operation.@lower = value;
+                                            tree.Classification.Operation._lower = value;
                                         }
                                         if(name == "ownedParameter") // Looking for property
                                         {
-                                            tree.Classification.Operation.@ownedParameter = value;
+                                            tree.Classification.Operation._ownedParameter = value;
                                         }
                                         if(name == "postcondition") // Looking for property
                                         {
-                                            tree.Classification.Operation.@postcondition = value;
+                                            tree.Classification.Operation._postcondition = value;
                                         }
                                         if(name == "precondition") // Looking for property
                                         {
-                                            tree.Classification.Operation.@precondition = value;
+                                            tree.Classification.Operation._precondition = value;
                                         }
                                         if(name == "raisedException") // Looking for property
                                         {
-                                            tree.Classification.Operation.@raisedException = value;
+                                            tree.Classification.Operation._raisedException = value;
                                         }
                                         if(name == "redefinedOperation") // Looking for property
                                         {
-                                            tree.Classification.Operation.@redefinedOperation = value;
+                                            tree.Classification.Operation._redefinedOperation = value;
                                         }
                                         if(name == "templateParameter") // Looking for property
                                         {
-                                            tree.Classification.Operation.@templateParameter = value;
+                                            tree.Classification.Operation._templateParameter = value;
                                         }
                                         if(name == "type") // Looking for property
                                         {
-                                            tree.Classification.Operation.@type = value;
+                                            tree.Classification.Operation._type = value;
                                         }
                                         if(name == "upper") // Looking for property
                                         {
-                                            tree.Classification.Operation.@upper = value;
+                                            tree.Classification.Operation._upper = value;
                                         }
                                     }
                                 }
@@ -3865,7 +3865,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "parameteredElement") // Looking for property
                                         {
-                                            tree.Classification.OperationTemplateParameter.@parameteredElement = value;
+                                            tree.Classification.OperationTemplateParameter._parameteredElement = value;
                                         }
                                     }
                                 }
@@ -3880,35 +3880,35 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "default") // Looking for property
                                         {
-                                            tree.Classification.Parameter.@default = value;
+                                            tree.Classification.Parameter._default = value;
                                         }
                                         if(name == "defaultValue") // Looking for property
                                         {
-                                            tree.Classification.Parameter.@defaultValue = value;
+                                            tree.Classification.Parameter._defaultValue = value;
                                         }
                                         if(name == "direction") // Looking for property
                                         {
-                                            tree.Classification.Parameter.@direction = value;
+                                            tree.Classification.Parameter._direction = value;
                                         }
                                         if(name == "effect") // Looking for property
                                         {
-                                            tree.Classification.Parameter.@effect = value;
+                                            tree.Classification.Parameter._effect = value;
                                         }
                                         if(name == "isException") // Looking for property
                                         {
-                                            tree.Classification.Parameter.@isException = value;
+                                            tree.Classification.Parameter._isException = value;
                                         }
                                         if(name == "isStream") // Looking for property
                                         {
-                                            tree.Classification.Parameter.@isStream = value;
+                                            tree.Classification.Parameter._isStream = value;
                                         }
                                         if(name == "operation") // Looking for property
                                         {
-                                            tree.Classification.Parameter.@operation = value;
+                                            tree.Classification.Parameter._operation = value;
                                         }
                                         if(name == "parameterSet") // Looking for property
                                         {
-                                            tree.Classification.Parameter.@parameterSet = value;
+                                            tree.Classification.Parameter._parameterSet = value;
                                         }
                                     }
                                 }
@@ -3923,11 +3923,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "condition") // Looking for property
                                         {
-                                            tree.Classification.ParameterSet.@condition = value;
+                                            tree.Classification.ParameterSet._condition = value;
                                         }
                                         if(name == "parameter") // Looking for property
                                         {
-                                            tree.Classification.ParameterSet.@parameter = value;
+                                            tree.Classification.ParameterSet._parameter = value;
                                         }
                                     }
                                 }
@@ -3942,67 +3942,67 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "aggregation") // Looking for property
                                         {
-                                            tree.Classification.Property.@aggregation = value;
+                                            tree.Classification.Property._aggregation = value;
                                         }
                                         if(name == "association") // Looking for property
                                         {
-                                            tree.Classification.Property.@association = value;
+                                            tree.Classification.Property._association = value;
                                         }
                                         if(name == "associationEnd") // Looking for property
                                         {
-                                            tree.Classification.Property.@associationEnd = value;
+                                            tree.Classification.Property._associationEnd = value;
                                         }
                                         if(name == "class") // Looking for property
                                         {
-                                            tree.Classification.Property.@class = value;
+                                            tree.Classification.Property._class = value;
                                         }
                                         if(name == "datatype") // Looking for property
                                         {
-                                            tree.Classification.Property.@datatype = value;
+                                            tree.Classification.Property._datatype = value;
                                         }
                                         if(name == "defaultValue") // Looking for property
                                         {
-                                            tree.Classification.Property.@defaultValue = value;
+                                            tree.Classification.Property._defaultValue = value;
                                         }
                                         if(name == "interface") // Looking for property
                                         {
-                                            tree.Classification.Property.@interface = value;
+                                            tree.Classification.Property._interface = value;
                                         }
                                         if(name == "isComposite") // Looking for property
                                         {
-                                            tree.Classification.Property.@isComposite = value;
+                                            tree.Classification.Property._isComposite = value;
                                         }
                                         if(name == "isDerived") // Looking for property
                                         {
-                                            tree.Classification.Property.@isDerived = value;
+                                            tree.Classification.Property._isDerived = value;
                                         }
                                         if(name == "isDerivedUnion") // Looking for property
                                         {
-                                            tree.Classification.Property.@isDerivedUnion = value;
+                                            tree.Classification.Property._isDerivedUnion = value;
                                         }
                                         if(name == "isID") // Looking for property
                                         {
-                                            tree.Classification.Property.@isID = value;
+                                            tree.Classification.Property._isID = value;
                                         }
                                         if(name == "opposite") // Looking for property
                                         {
-                                            tree.Classification.Property.@opposite = value;
+                                            tree.Classification.Property._opposite = value;
                                         }
                                         if(name == "owningAssociation") // Looking for property
                                         {
-                                            tree.Classification.Property.@owningAssociation = value;
+                                            tree.Classification.Property._owningAssociation = value;
                                         }
                                         if(name == "qualifier") // Looking for property
                                         {
-                                            tree.Classification.Property.@qualifier = value;
+                                            tree.Classification.Property._qualifier = value;
                                         }
                                         if(name == "redefinedProperty") // Looking for property
                                         {
-                                            tree.Classification.Property.@redefinedProperty = value;
+                                            tree.Classification.Property._redefinedProperty = value;
                                         }
                                         if(name == "subsettedProperty") // Looking for property
                                         {
-                                            tree.Classification.Property.@subsettedProperty = value;
+                                            tree.Classification.Property._subsettedProperty = value;
                                         }
                                     }
                                 }
@@ -4017,15 +4017,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isLeaf") // Looking for property
                                         {
-                                            tree.Classification.RedefinableElement.@isLeaf = value;
+                                            tree.Classification.RedefinableElement._isLeaf = value;
                                         }
                                         if(name == "redefinedElement") // Looking for property
                                         {
-                                            tree.Classification.RedefinableElement.@redefinedElement = value;
+                                            tree.Classification.RedefinableElement._redefinedElement = value;
                                         }
                                         if(name == "redefinitionContext") // Looking for property
                                         {
-                                            tree.Classification.RedefinableElement.@redefinitionContext = value;
+                                            tree.Classification.RedefinableElement._redefinitionContext = value;
                                         }
                                     }
                                 }
@@ -4040,15 +4040,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "classifier") // Looking for property
                                         {
-                                            tree.Classification.RedefinableTemplateSignature.@classifier = value;
+                                            tree.Classification.RedefinableTemplateSignature._classifier = value;
                                         }
                                         if(name == "extendedSignature") // Looking for property
                                         {
-                                            tree.Classification.RedefinableTemplateSignature.@extendedSignature = value;
+                                            tree.Classification.RedefinableTemplateSignature._extendedSignature = value;
                                         }
                                         if(name == "inheritedParameter") // Looking for property
                                         {
-                                            tree.Classification.RedefinableTemplateSignature.@inheritedParameter = value;
+                                            tree.Classification.RedefinableTemplateSignature._inheritedParameter = value;
                                         }
                                     }
                                 }
@@ -4063,15 +4063,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "definingFeature") // Looking for property
                                         {
-                                            tree.Classification.Slot.@definingFeature = value;
+                                            tree.Classification.Slot._definingFeature = value;
                                         }
                                         if(name == "owningInstance") // Looking for property
                                         {
-                                            tree.Classification.Slot.@owningInstance = value;
+                                            tree.Classification.Slot._owningInstance = value;
                                         }
                                         if(name == "value") // Looking for property
                                         {
-                                            tree.Classification.Slot.@value = value;
+                                            tree.Classification.Slot._value = value;
                                         }
                                     }
                                 }
@@ -4086,7 +4086,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isReadOnly") // Looking for property
                                         {
-                                            tree.Classification.StructuralFeature.@isReadOnly = value;
+                                            tree.Classification.StructuralFeature._isReadOnly = value;
                                         }
                                     }
                                 }
@@ -4111,11 +4111,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.ValueSpecificationAction.@result = value;
+                                            tree.Actions.ValueSpecificationAction._result = value;
                                         }
                                         if(name == "value") // Looking for property
                                         {
-                                            tree.Actions.ValueSpecificationAction.@value = value;
+                                            tree.Actions.ValueSpecificationAction._value = value;
                                         }
                                     }
                                 }
@@ -4130,7 +4130,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "variable") // Looking for property
                                         {
-                                            tree.Actions.VariableAction.@variable = value;
+                                            tree.Actions.VariableAction._variable = value;
                                         }
                                     }
                                 }
@@ -4156,11 +4156,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.WriteStructuralFeatureAction.@result = value;
+                                            tree.Actions.WriteStructuralFeatureAction._result = value;
                                         }
                                         if(name == "value") // Looking for property
                                         {
-                                            tree.Actions.WriteStructuralFeatureAction.@value = value;
+                                            tree.Actions.WriteStructuralFeatureAction._value = value;
                                         }
                                     }
                                 }
@@ -4175,7 +4175,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "value") // Looking for property
                                         {
-                                            tree.Actions.WriteVariableAction.@value = value;
+                                            tree.Actions.WriteVariableAction._value = value;
                                         }
                                     }
                                 }
@@ -4190,7 +4190,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "returnInformation") // Looking for property
                                         {
-                                            tree.Actions.AcceptCallAction.@returnInformation = value;
+                                            tree.Actions.AcceptCallAction._returnInformation = value;
                                         }
                                     }
                                 }
@@ -4205,15 +4205,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isUnmarshall") // Looking for property
                                         {
-                                            tree.Actions.AcceptEventAction.@isUnmarshall = value;
+                                            tree.Actions.AcceptEventAction._isUnmarshall = value;
                                         }
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.AcceptEventAction.@result = value;
+                                            tree.Actions.AcceptEventAction._result = value;
                                         }
                                         if(name == "trigger") // Looking for property
                                         {
-                                            tree.Actions.AcceptEventAction.@trigger = value;
+                                            tree.Actions.AcceptEventAction._trigger = value;
                                         }
                                     }
                                 }
@@ -4228,27 +4228,27 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "context") // Looking for property
                                         {
-                                            tree.Actions.Action.@context = value;
+                                            tree.Actions.Action._context = value;
                                         }
                                         if(name == "input") // Looking for property
                                         {
-                                            tree.Actions.Action.@input = value;
+                                            tree.Actions.Action._input = value;
                                         }
                                         if(name == "isLocallyReentrant") // Looking for property
                                         {
-                                            tree.Actions.Action.@isLocallyReentrant = value;
+                                            tree.Actions.Action._isLocallyReentrant = value;
                                         }
                                         if(name == "localPostcondition") // Looking for property
                                         {
-                                            tree.Actions.Action.@localPostcondition = value;
+                                            tree.Actions.Action._localPostcondition = value;
                                         }
                                         if(name == "localPrecondition") // Looking for property
                                         {
-                                            tree.Actions.Action.@localPrecondition = value;
+                                            tree.Actions.Action._localPrecondition = value;
                                         }
                                         if(name == "output") // Looking for property
                                         {
-                                            tree.Actions.Action.@output = value;
+                                            tree.Actions.Action._output = value;
                                         }
                                     }
                                 }
@@ -4263,7 +4263,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "fromAction") // Looking for property
                                         {
-                                            tree.Actions.ActionInputPin.@fromAction = value;
+                                            tree.Actions.ActionInputPin._fromAction = value;
                                         }
                                     }
                                 }
@@ -4278,11 +4278,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "insertAt") // Looking for property
                                         {
-                                            tree.Actions.AddStructuralFeatureValueAction.@insertAt = value;
+                                            tree.Actions.AddStructuralFeatureValueAction._insertAt = value;
                                         }
                                         if(name == "isReplaceAll") // Looking for property
                                         {
-                                            tree.Actions.AddStructuralFeatureValueAction.@isReplaceAll = value;
+                                            tree.Actions.AddStructuralFeatureValueAction._isReplaceAll = value;
                                         }
                                     }
                                 }
@@ -4297,11 +4297,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "insertAt") // Looking for property
                                         {
-                                            tree.Actions.AddVariableValueAction.@insertAt = value;
+                                            tree.Actions.AddVariableValueAction._insertAt = value;
                                         }
                                         if(name == "isReplaceAll") // Looking for property
                                         {
-                                            tree.Actions.AddVariableValueAction.@isReplaceAll = value;
+                                            tree.Actions.AddVariableValueAction._isReplaceAll = value;
                                         }
                                     }
                                 }
@@ -4316,7 +4316,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "signal") // Looking for property
                                         {
-                                            tree.Actions.BroadcastSignalAction.@signal = value;
+                                            tree.Actions.BroadcastSignalAction._signal = value;
                                         }
                                     }
                                 }
@@ -4331,11 +4331,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isSynchronous") // Looking for property
                                         {
-                                            tree.Actions.CallAction.@isSynchronous = value;
+                                            tree.Actions.CallAction._isSynchronous = value;
                                         }
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.CallAction.@result = value;
+                                            tree.Actions.CallAction._result = value;
                                         }
                                     }
                                 }
@@ -4350,7 +4350,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "behavior") // Looking for property
                                         {
-                                            tree.Actions.CallBehaviorAction.@behavior = value;
+                                            tree.Actions.CallBehaviorAction._behavior = value;
                                         }
                                     }
                                 }
@@ -4365,11 +4365,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "operation") // Looking for property
                                         {
-                                            tree.Actions.CallOperationAction.@operation = value;
+                                            tree.Actions.CallOperationAction._operation = value;
                                         }
                                         if(name == "target") // Looking for property
                                         {
-                                            tree.Actions.CallOperationAction.@target = value;
+                                            tree.Actions.CallOperationAction._target = value;
                                         }
                                     }
                                 }
@@ -4384,27 +4384,27 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "body") // Looking for property
                                         {
-                                            tree.Actions.Clause.@body = value;
+                                            tree.Actions.Clause._body = value;
                                         }
                                         if(name == "bodyOutput") // Looking for property
                                         {
-                                            tree.Actions.Clause.@bodyOutput = value;
+                                            tree.Actions.Clause._bodyOutput = value;
                                         }
                                         if(name == "decider") // Looking for property
                                         {
-                                            tree.Actions.Clause.@decider = value;
+                                            tree.Actions.Clause._decider = value;
                                         }
                                         if(name == "predecessorClause") // Looking for property
                                         {
-                                            tree.Actions.Clause.@predecessorClause = value;
+                                            tree.Actions.Clause._predecessorClause = value;
                                         }
                                         if(name == "successorClause") // Looking for property
                                         {
-                                            tree.Actions.Clause.@successorClause = value;
+                                            tree.Actions.Clause._successorClause = value;
                                         }
                                         if(name == "test") // Looking for property
                                         {
-                                            tree.Actions.Clause.@test = value;
+                                            tree.Actions.Clause._test = value;
                                         }
                                     }
                                 }
@@ -4419,11 +4419,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "association") // Looking for property
                                         {
-                                            tree.Actions.ClearAssociationAction.@association = value;
+                                            tree.Actions.ClearAssociationAction._association = value;
                                         }
                                         if(name == "object") // Looking for property
                                         {
-                                            tree.Actions.ClearAssociationAction.@object = value;
+                                            tree.Actions.ClearAssociationAction._object = value;
                                         }
                                     }
                                 }
@@ -4438,7 +4438,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.ClearStructuralFeatureAction.@result = value;
+                                            tree.Actions.ClearStructuralFeatureAction._result = value;
                                         }
                                     }
                                 }
@@ -4464,19 +4464,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "clause") // Looking for property
                                         {
-                                            tree.Actions.ConditionalNode.@clause = value;
+                                            tree.Actions.ConditionalNode._clause = value;
                                         }
                                         if(name == "isAssured") // Looking for property
                                         {
-                                            tree.Actions.ConditionalNode.@isAssured = value;
+                                            tree.Actions.ConditionalNode._isAssured = value;
                                         }
                                         if(name == "isDeterminate") // Looking for property
                                         {
-                                            tree.Actions.ConditionalNode.@isDeterminate = value;
+                                            tree.Actions.ConditionalNode._isDeterminate = value;
                                         }
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.ConditionalNode.@result = value;
+                                            tree.Actions.ConditionalNode._result = value;
                                         }
                                     }
                                 }
@@ -4491,7 +4491,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "endData") // Looking for property
                                         {
-                                            tree.Actions.CreateLinkAction.@endData = value;
+                                            tree.Actions.CreateLinkAction._endData = value;
                                         }
                                     }
                                 }
@@ -4506,7 +4506,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.CreateLinkObjectAction.@result = value;
+                                            tree.Actions.CreateLinkObjectAction._result = value;
                                         }
                                     }
                                 }
@@ -4521,11 +4521,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "classifier") // Looking for property
                                         {
-                                            tree.Actions.CreateObjectAction.@classifier = value;
+                                            tree.Actions.CreateObjectAction._classifier = value;
                                         }
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.CreateObjectAction.@result = value;
+                                            tree.Actions.CreateObjectAction._result = value;
                                         }
                                     }
                                 }
@@ -4540,7 +4540,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "endData") // Looking for property
                                         {
-                                            tree.Actions.DestroyLinkAction.@endData = value;
+                                            tree.Actions.DestroyLinkAction._endData = value;
                                         }
                                     }
                                 }
@@ -4555,15 +4555,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isDestroyLinks") // Looking for property
                                         {
-                                            tree.Actions.DestroyObjectAction.@isDestroyLinks = value;
+                                            tree.Actions.DestroyObjectAction._isDestroyLinks = value;
                                         }
                                         if(name == "isDestroyOwnedObjects") // Looking for property
                                         {
-                                            tree.Actions.DestroyObjectAction.@isDestroyOwnedObjects = value;
+                                            tree.Actions.DestroyObjectAction._isDestroyOwnedObjects = value;
                                         }
                                         if(name == "target") // Looking for property
                                         {
-                                            tree.Actions.DestroyObjectAction.@target = value;
+                                            tree.Actions.DestroyObjectAction._target = value;
                                         }
                                     }
                                 }
@@ -4578,11 +4578,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "regionAsInput") // Looking for property
                                         {
-                                            tree.Actions.ExpansionNode.@regionAsInput = value;
+                                            tree.Actions.ExpansionNode._regionAsInput = value;
                                         }
                                         if(name == "regionAsOutput") // Looking for property
                                         {
-                                            tree.Actions.ExpansionNode.@regionAsOutput = value;
+                                            tree.Actions.ExpansionNode._regionAsOutput = value;
                                         }
                                     }
                                 }
@@ -4597,15 +4597,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "inputElement") // Looking for property
                                         {
-                                            tree.Actions.ExpansionRegion.@inputElement = value;
+                                            tree.Actions.ExpansionRegion._inputElement = value;
                                         }
                                         if(name == "mode") // Looking for property
                                         {
-                                            tree.Actions.ExpansionRegion.@mode = value;
+                                            tree.Actions.ExpansionRegion._mode = value;
                                         }
                                         if(name == "outputElement") // Looking for property
                                         {
-                                            tree.Actions.ExpansionRegion.@outputElement = value;
+                                            tree.Actions.ExpansionRegion._outputElement = value;
                                         }
                                     }
                                 }
@@ -4631,11 +4631,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "argument") // Looking for property
                                         {
-                                            tree.Actions.InvocationAction.@argument = value;
+                                            tree.Actions.InvocationAction._argument = value;
                                         }
                                         if(name == "onPort") // Looking for property
                                         {
-                                            tree.Actions.InvocationAction.@onPort = value;
+                                            tree.Actions.InvocationAction._onPort = value;
                                         }
                                     }
                                 }
@@ -4650,11 +4650,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "endData") // Looking for property
                                         {
-                                            tree.Actions.LinkAction.@endData = value;
+                                            tree.Actions.LinkAction._endData = value;
                                         }
                                         if(name == "inputValue") // Looking for property
                                         {
-                                            tree.Actions.LinkAction.@inputValue = value;
+                                            tree.Actions.LinkAction._inputValue = value;
                                         }
                                     }
                                 }
@@ -4669,11 +4669,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "insertAt") // Looking for property
                                         {
-                                            tree.Actions.LinkEndCreationData.@insertAt = value;
+                                            tree.Actions.LinkEndCreationData._insertAt = value;
                                         }
                                         if(name == "isReplaceAll") // Looking for property
                                         {
-                                            tree.Actions.LinkEndCreationData.@isReplaceAll = value;
+                                            tree.Actions.LinkEndCreationData._isReplaceAll = value;
                                         }
                                     }
                                 }
@@ -4688,15 +4688,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "end") // Looking for property
                                         {
-                                            tree.Actions.LinkEndData.@end = value;
+                                            tree.Actions.LinkEndData._end = value;
                                         }
                                         if(name == "qualifier") // Looking for property
                                         {
-                                            tree.Actions.LinkEndData.@qualifier = value;
+                                            tree.Actions.LinkEndData._qualifier = value;
                                         }
                                         if(name == "value") // Looking for property
                                         {
-                                            tree.Actions.LinkEndData.@value = value;
+                                            tree.Actions.LinkEndData._value = value;
                                         }
                                     }
                                 }
@@ -4711,11 +4711,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "destroyAt") // Looking for property
                                         {
-                                            tree.Actions.LinkEndDestructionData.@destroyAt = value;
+                                            tree.Actions.LinkEndDestructionData._destroyAt = value;
                                         }
                                         if(name == "isDestroyDuplicates") // Looking for property
                                         {
-                                            tree.Actions.LinkEndDestructionData.@isDestroyDuplicates = value;
+                                            tree.Actions.LinkEndDestructionData._isDestroyDuplicates = value;
                                         }
                                     }
                                 }
@@ -4730,39 +4730,39 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "bodyOutput") // Looking for property
                                         {
-                                            tree.Actions.LoopNode.@bodyOutput = value;
+                                            tree.Actions.LoopNode._bodyOutput = value;
                                         }
                                         if(name == "bodyPart") // Looking for property
                                         {
-                                            tree.Actions.LoopNode.@bodyPart = value;
+                                            tree.Actions.LoopNode._bodyPart = value;
                                         }
                                         if(name == "decider") // Looking for property
                                         {
-                                            tree.Actions.LoopNode.@decider = value;
+                                            tree.Actions.LoopNode._decider = value;
                                         }
                                         if(name == "isTestedFirst") // Looking for property
                                         {
-                                            tree.Actions.LoopNode.@isTestedFirst = value;
+                                            tree.Actions.LoopNode._isTestedFirst = value;
                                         }
                                         if(name == "loopVariable") // Looking for property
                                         {
-                                            tree.Actions.LoopNode.@loopVariable = value;
+                                            tree.Actions.LoopNode._loopVariable = value;
                                         }
                                         if(name == "loopVariableInput") // Looking for property
                                         {
-                                            tree.Actions.LoopNode.@loopVariableInput = value;
+                                            tree.Actions.LoopNode._loopVariableInput = value;
                                         }
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.LoopNode.@result = value;
+                                            tree.Actions.LoopNode._result = value;
                                         }
                                         if(name == "setupPart") // Looking for property
                                         {
-                                            tree.Actions.LoopNode.@setupPart = value;
+                                            tree.Actions.LoopNode._setupPart = value;
                                         }
                                         if(name == "test") // Looking for property
                                         {
-                                            tree.Actions.LoopNode.@test = value;
+                                            tree.Actions.LoopNode._test = value;
                                         }
                                     }
                                 }
@@ -4777,19 +4777,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "body") // Looking for property
                                         {
-                                            tree.Actions.OpaqueAction.@body = value;
+                                            tree.Actions.OpaqueAction._body = value;
                                         }
                                         if(name == "inputValue") // Looking for property
                                         {
-                                            tree.Actions.OpaqueAction.@inputValue = value;
+                                            tree.Actions.OpaqueAction._inputValue = value;
                                         }
                                         if(name == "language") // Looking for property
                                         {
-                                            tree.Actions.OpaqueAction.@language = value;
+                                            tree.Actions.OpaqueAction._language = value;
                                         }
                                         if(name == "outputValue") // Looking for property
                                         {
-                                            tree.Actions.OpaqueAction.@outputValue = value;
+                                            tree.Actions.OpaqueAction._outputValue = value;
                                         }
                                     }
                                 }
@@ -4815,7 +4815,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isControl") // Looking for property
                                         {
-                                            tree.Actions.Pin.@isControl = value;
+                                            tree.Actions.Pin._isControl = value;
                                         }
                                     }
                                 }
@@ -4830,11 +4830,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "qualifier") // Looking for property
                                         {
-                                            tree.Actions.QualifierValue.@qualifier = value;
+                                            tree.Actions.QualifierValue._qualifier = value;
                                         }
                                         if(name == "value") // Looking for property
                                         {
-                                            tree.Actions.QualifierValue.@value = value;
+                                            tree.Actions.QualifierValue._value = value;
                                         }
                                     }
                                 }
@@ -4849,7 +4849,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "exception") // Looking for property
                                         {
-                                            tree.Actions.RaiseExceptionAction.@exception = value;
+                                            tree.Actions.RaiseExceptionAction._exception = value;
                                         }
                                     }
                                 }
@@ -4864,11 +4864,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "classifier") // Looking for property
                                         {
-                                            tree.Actions.ReadExtentAction.@classifier = value;
+                                            tree.Actions.ReadExtentAction._classifier = value;
                                         }
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.ReadExtentAction.@result = value;
+                                            tree.Actions.ReadExtentAction._result = value;
                                         }
                                     }
                                 }
@@ -4883,19 +4883,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "classifier") // Looking for property
                                         {
-                                            tree.Actions.ReadIsClassifiedObjectAction.@classifier = value;
+                                            tree.Actions.ReadIsClassifiedObjectAction._classifier = value;
                                         }
                                         if(name == "isDirect") // Looking for property
                                         {
-                                            tree.Actions.ReadIsClassifiedObjectAction.@isDirect = value;
+                                            tree.Actions.ReadIsClassifiedObjectAction._isDirect = value;
                                         }
                                         if(name == "object") // Looking for property
                                         {
-                                            tree.Actions.ReadIsClassifiedObjectAction.@object = value;
+                                            tree.Actions.ReadIsClassifiedObjectAction._object = value;
                                         }
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.ReadIsClassifiedObjectAction.@result = value;
+                                            tree.Actions.ReadIsClassifiedObjectAction._result = value;
                                         }
                                     }
                                 }
@@ -4910,7 +4910,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.ReadLinkAction.@result = value;
+                                            tree.Actions.ReadLinkAction._result = value;
                                         }
                                     }
                                 }
@@ -4925,15 +4925,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "end") // Looking for property
                                         {
-                                            tree.Actions.ReadLinkObjectEndAction.@end = value;
+                                            tree.Actions.ReadLinkObjectEndAction._end = value;
                                         }
                                         if(name == "object") // Looking for property
                                         {
-                                            tree.Actions.ReadLinkObjectEndAction.@object = value;
+                                            tree.Actions.ReadLinkObjectEndAction._object = value;
                                         }
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.ReadLinkObjectEndAction.@result = value;
+                                            tree.Actions.ReadLinkObjectEndAction._result = value;
                                         }
                                     }
                                 }
@@ -4948,15 +4948,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "object") // Looking for property
                                         {
-                                            tree.Actions.ReadLinkObjectEndQualifierAction.@object = value;
+                                            tree.Actions.ReadLinkObjectEndQualifierAction._object = value;
                                         }
                                         if(name == "qualifier") // Looking for property
                                         {
-                                            tree.Actions.ReadLinkObjectEndQualifierAction.@qualifier = value;
+                                            tree.Actions.ReadLinkObjectEndQualifierAction._qualifier = value;
                                         }
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.ReadLinkObjectEndQualifierAction.@result = value;
+                                            tree.Actions.ReadLinkObjectEndQualifierAction._result = value;
                                         }
                                     }
                                 }
@@ -4971,7 +4971,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.ReadSelfAction.@result = value;
+                                            tree.Actions.ReadSelfAction._result = value;
                                         }
                                     }
                                 }
@@ -4986,7 +4986,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.ReadStructuralFeatureAction.@result = value;
+                                            tree.Actions.ReadStructuralFeatureAction._result = value;
                                         }
                                     }
                                 }
@@ -5001,7 +5001,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.ReadVariableAction.@result = value;
+                                            tree.Actions.ReadVariableAction._result = value;
                                         }
                                     }
                                 }
@@ -5016,19 +5016,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isReplaceAll") // Looking for property
                                         {
-                                            tree.Actions.ReclassifyObjectAction.@isReplaceAll = value;
+                                            tree.Actions.ReclassifyObjectAction._isReplaceAll = value;
                                         }
                                         if(name == "newClassifier") // Looking for property
                                         {
-                                            tree.Actions.ReclassifyObjectAction.@newClassifier = value;
+                                            tree.Actions.ReclassifyObjectAction._newClassifier = value;
                                         }
                                         if(name == "object") // Looking for property
                                         {
-                                            tree.Actions.ReclassifyObjectAction.@object = value;
+                                            tree.Actions.ReclassifyObjectAction._object = value;
                                         }
                                         if(name == "oldClassifier") // Looking for property
                                         {
-                                            tree.Actions.ReclassifyObjectAction.@oldClassifier = value;
+                                            tree.Actions.ReclassifyObjectAction._oldClassifier = value;
                                         }
                                     }
                                 }
@@ -5043,19 +5043,19 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "collection") // Looking for property
                                         {
-                                            tree.Actions.ReduceAction.@collection = value;
+                                            tree.Actions.ReduceAction._collection = value;
                                         }
                                         if(name == "isOrdered") // Looking for property
                                         {
-                                            tree.Actions.ReduceAction.@isOrdered = value;
+                                            tree.Actions.ReduceAction._isOrdered = value;
                                         }
                                         if(name == "reducer") // Looking for property
                                         {
-                                            tree.Actions.ReduceAction.@reducer = value;
+                                            tree.Actions.ReduceAction._reducer = value;
                                         }
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.ReduceAction.@result = value;
+                                            tree.Actions.ReduceAction._result = value;
                                         }
                                     }
                                 }
@@ -5070,11 +5070,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isRemoveDuplicates") // Looking for property
                                         {
-                                            tree.Actions.RemoveStructuralFeatureValueAction.@isRemoveDuplicates = value;
+                                            tree.Actions.RemoveStructuralFeatureValueAction._isRemoveDuplicates = value;
                                         }
                                         if(name == "removeAt") // Looking for property
                                         {
-                                            tree.Actions.RemoveStructuralFeatureValueAction.@removeAt = value;
+                                            tree.Actions.RemoveStructuralFeatureValueAction._removeAt = value;
                                         }
                                     }
                                 }
@@ -5089,11 +5089,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "isRemoveDuplicates") // Looking for property
                                         {
-                                            tree.Actions.RemoveVariableValueAction.@isRemoveDuplicates = value;
+                                            tree.Actions.RemoveVariableValueAction._isRemoveDuplicates = value;
                                         }
                                         if(name == "removeAt") // Looking for property
                                         {
-                                            tree.Actions.RemoveVariableValueAction.@removeAt = value;
+                                            tree.Actions.RemoveVariableValueAction._removeAt = value;
                                         }
                                     }
                                 }
@@ -5108,15 +5108,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "replyToCall") // Looking for property
                                         {
-                                            tree.Actions.ReplyAction.@replyToCall = value;
+                                            tree.Actions.ReplyAction._replyToCall = value;
                                         }
                                         if(name == "replyValue") // Looking for property
                                         {
-                                            tree.Actions.ReplyAction.@replyValue = value;
+                                            tree.Actions.ReplyAction._replyValue = value;
                                         }
                                         if(name == "returnInformation") // Looking for property
                                         {
-                                            tree.Actions.ReplyAction.@returnInformation = value;
+                                            tree.Actions.ReplyAction._returnInformation = value;
                                         }
                                     }
                                 }
@@ -5131,11 +5131,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "request") // Looking for property
                                         {
-                                            tree.Actions.SendObjectAction.@request = value;
+                                            tree.Actions.SendObjectAction._request = value;
                                         }
                                         if(name == "target") // Looking for property
                                         {
-                                            tree.Actions.SendObjectAction.@target = value;
+                                            tree.Actions.SendObjectAction._target = value;
                                         }
                                     }
                                 }
@@ -5150,11 +5150,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "signal") // Looking for property
                                         {
-                                            tree.Actions.SendSignalAction.@signal = value;
+                                            tree.Actions.SendSignalAction._signal = value;
                                         }
                                         if(name == "target") // Looking for property
                                         {
-                                            tree.Actions.SendSignalAction.@target = value;
+                                            tree.Actions.SendSignalAction._target = value;
                                         }
                                     }
                                 }
@@ -5169,7 +5169,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "executableNode") // Looking for property
                                         {
-                                            tree.Actions.SequenceNode.@executableNode = value;
+                                            tree.Actions.SequenceNode._executableNode = value;
                                         }
                                     }
                                 }
@@ -5184,7 +5184,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "object") // Looking for property
                                         {
-                                            tree.Actions.StartClassifierBehaviorAction.@object = value;
+                                            tree.Actions.StartClassifierBehaviorAction._object = value;
                                         }
                                     }
                                 }
@@ -5199,7 +5199,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "object") // Looking for property
                                         {
-                                            tree.Actions.StartObjectBehaviorAction.@object = value;
+                                            tree.Actions.StartObjectBehaviorAction._object = value;
                                         }
                                     }
                                 }
@@ -5214,11 +5214,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "object") // Looking for property
                                         {
-                                            tree.Actions.StructuralFeatureAction.@object = value;
+                                            tree.Actions.StructuralFeatureAction._object = value;
                                         }
                                         if(name == "structuralFeature") // Looking for property
                                         {
-                                            tree.Actions.StructuralFeatureAction.@structuralFeature = value;
+                                            tree.Actions.StructuralFeatureAction._structuralFeature = value;
                                         }
                                     }
                                 }
@@ -5233,31 +5233,31 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "activity") // Looking for property
                                         {
-                                            tree.Actions.StructuredActivityNode.@activity = value;
+                                            tree.Actions.StructuredActivityNode._activity = value;
                                         }
                                         if(name == "edge") // Looking for property
                                         {
-                                            tree.Actions.StructuredActivityNode.@edge = value;
+                                            tree.Actions.StructuredActivityNode._edge = value;
                                         }
                                         if(name == "mustIsolate") // Looking for property
                                         {
-                                            tree.Actions.StructuredActivityNode.@mustIsolate = value;
+                                            tree.Actions.StructuredActivityNode._mustIsolate = value;
                                         }
                                         if(name == "node") // Looking for property
                                         {
-                                            tree.Actions.StructuredActivityNode.@node = value;
+                                            tree.Actions.StructuredActivityNode._node = value;
                                         }
                                         if(name == "structuredNodeInput") // Looking for property
                                         {
-                                            tree.Actions.StructuredActivityNode.@structuredNodeInput = value;
+                                            tree.Actions.StructuredActivityNode._structuredNodeInput = value;
                                         }
                                         if(name == "structuredNodeOutput") // Looking for property
                                         {
-                                            tree.Actions.StructuredActivityNode.@structuredNodeOutput = value;
+                                            tree.Actions.StructuredActivityNode._structuredNodeOutput = value;
                                         }
                                         if(name == "variable") // Looking for property
                                         {
-                                            tree.Actions.StructuredActivityNode.@variable = value;
+                                            tree.Actions.StructuredActivityNode._variable = value;
                                         }
                                     }
                                 }
@@ -5272,15 +5272,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "first") // Looking for property
                                         {
-                                            tree.Actions.TestIdentityAction.@first = value;
+                                            tree.Actions.TestIdentityAction._first = value;
                                         }
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.TestIdentityAction.@result = value;
+                                            tree.Actions.TestIdentityAction._result = value;
                                         }
                                         if(name == "second") // Looking for property
                                         {
-                                            tree.Actions.TestIdentityAction.@second = value;
+                                            tree.Actions.TestIdentityAction._second = value;
                                         }
                                     }
                                 }
@@ -5295,15 +5295,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "object") // Looking for property
                                         {
-                                            tree.Actions.UnmarshallAction.@object = value;
+                                            tree.Actions.UnmarshallAction._object = value;
                                         }
                                         if(name == "result") // Looking for property
                                         {
-                                            tree.Actions.UnmarshallAction.@result = value;
+                                            tree.Actions.UnmarshallAction._result = value;
                                         }
                                         if(name == "unmarshallType") // Looking for property
                                         {
-                                            tree.Actions.UnmarshallAction.@unmarshallType = value;
+                                            tree.Actions.UnmarshallAction._unmarshallType = value;
                                         }
                                     }
                                 }
@@ -5318,7 +5318,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "value") // Looking for property
                                         {
-                                            tree.Actions.ValuePin.@value = value;
+                                            tree.Actions.ValuePin._value = value;
                                         }
                                     }
                                 }

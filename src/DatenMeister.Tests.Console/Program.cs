@@ -14,7 +14,7 @@ namespace DatenMeister.Tests.Console
     {
         static void Main(string[] args)
         {
-            var property = new object();
+            var property = "Prop";
             System.Console.WriteLine("DatenMeister Testing");
 
             var element = new MofElement();

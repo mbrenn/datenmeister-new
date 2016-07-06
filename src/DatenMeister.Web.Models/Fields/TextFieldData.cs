@@ -2,12 +2,12 @@
 {
     public class TextFieldData : FieldData
     {
-        public TextFieldData()
+        public TextFieldData() : base("text")
         {
-                
+
         }
 
-        public TextFieldData(string name, string title) : base(name, title)
+        public TextFieldData(string name, string title) : base("text", name, title)
         {
             
         }

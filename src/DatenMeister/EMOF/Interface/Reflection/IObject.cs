@@ -7,12 +7,12 @@
     {
         bool equals(object other);
 
-        object get(object property);
+        object get(string property);
 
-        void set(object property, object value);
+        void set(string property, object value);
 
-        bool isSet(object property);
+        bool isSet(string property);
 
-        void unset(object property);
+        void unset(string property);
     }
 }

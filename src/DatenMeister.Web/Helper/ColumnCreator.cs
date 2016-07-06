@@ -102,23 +102,24 @@ namespace DatenMeister.Web.Helper
                 var metaLayer = _dataLayerLogic?.GetMetaLayerFor(dataLayer);
                 var uml = _dataLayerLogic?.Get<_UML>(metaLayer);
 
-                if (uml != null && metaClass.isSet(uml.Classification.Classifier.attribute))
+                if (uml != null && metaClass.isSet(_UML._Classification._Classifier.attribute))
                 {
-                    var properties = metaClass.get(uml.Classification.Classifier.attribute) as IEnumerable;
+                    var properties = metaClass.get(_UML._Classification._Classifier.attribute) as IEnumerable;
                     if (properties != null)
                     {
                         foreach (var property in properties.Cast<IObject>())
                         {
+                            var propertyName = property.get("name").ToString();
                             FieldData column;
-                            if (!result.ColumnsOnProperty.TryGetValue(property, out column))
+                            if (!result.ColumnsOnProperty.TryGetValue(propertyName, out column))
                             {
-                                column = new FieldData
+                                column = new TextFieldData
                                 {
                                     name = ConvertPropertyToColumnName(property),
-                                    title = property.get(uml.CommonStructure.NamedElement.name).ToString()
+                                    title = property.get(_UML._CommonStructure._NamedElement.name).ToString()
                                 };
 
-                                result.ColumnsOnProperty[property] = column;
+                                result.ColumnsOnProperty[propertyName] = column;
                             }
                         }
                     }
@@ -137,7 +138,7 @@ namespace DatenMeister.Web.Helper
                     FieldData column;
                     if (!result.ColumnsOnProperty.TryGetValue(property, out column))
                     {
-                        column = new FieldData
+                        column = new TextFieldData
                         {
                             name = ConvertPropertyToColumnName(property),
                             title =

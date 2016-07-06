@@ -486,8 +486,7 @@ namespace DatenMeister.Web.Api
                     out foundExtent, 
                     out foundItem);
 
-                var property = _columnCreator.ConvertColumnNameToProperty(model.property);
-                foundItem.unset(property);
+                foundItem.unset(model.property);
 
                 return new {success = true};
             }
@@ -512,8 +511,7 @@ namespace DatenMeister.Web.Api
                     out foundExtent, 
                     out foundItem);
 
-                var property = _columnCreator.ConvertColumnNameToProperty(model.property);
-                foundItem.set(property, model.newValue);
+                foundItem.set(model.property, model.newValue);
 
                 return new {success = true};
             }
@@ -542,8 +540,7 @@ namespace DatenMeister.Web.Api
                 {
                     foreach (var pair in model.v)
                     {
-                        var property = _columnCreator.ConvertColumnNameToProperty(pair.Key);
-                        foundItem.set(property, pair.Value);
+                        foundItem.set(pair.Key, pair.Value);
                     }
                 }
 

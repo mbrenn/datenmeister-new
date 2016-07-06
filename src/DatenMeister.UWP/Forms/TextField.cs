@@ -7,9 +7,9 @@ namespace DatenMeister.UWP.Forms
 {
     public class TextField : IField
     {
-        public void CreateField(DetailFormHelper helper, FieldData field)
+        public void CreateField(DetailFormHelper helper, FieldData fieldData)
         {
-            var text = field as TextFieldData;
+            var text = fieldData as TextFieldData;
             int row;
             var textBlock  = helper.AddRow(text, out row);
 

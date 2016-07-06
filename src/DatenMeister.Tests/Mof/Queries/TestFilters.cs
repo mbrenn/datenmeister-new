@@ -8,11 +8,12 @@ namespace DatenMeister.Tests.Mof.Queries
     [TestFixture]
     public class TestFilters
     {
+        private static string property1 = "Prop1";
+        private static string property2 = "Prop2";
+
         [Test]
         public void TestMultiplePropertyFilter()
         {
-            var property1 = new object();
-            var property2 = new object();
             var properties = new[] { property1, property2 };
 
             var mofObject = new MofObject();

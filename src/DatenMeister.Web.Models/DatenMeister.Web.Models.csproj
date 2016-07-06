@@ -59,6 +59,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fields\DropDownFieldData.cs" />
     <Compile Include="Fields\FieldData.cs" />
     <Compile Include="DataTableItem.cs" />
     <Compile Include="ExtentContentModel.cs" />

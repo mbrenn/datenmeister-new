@@ -30,11 +30,11 @@ namespace DatenMeister.Tests.Uml
                 var feature = uml.Classification.__Feature;
                 var properties = classifierMethods.GetPropertiesOfClassifier(feature).ToList();
 
-                Assert.That(properties.Contains(uml.Classification.Feature.isStatic), Is.True, 
+                Assert.That(properties.Contains(_UML._Classification._Feature.isStatic), Is.True, 
                     "isStatic");
-                Assert.That(properties.Contains(uml.Classification.RedefinableElement.isLeaf), Is.True,
+                Assert.That(properties.Contains(_UML._Classification._RedefinableElement.isLeaf), Is.True,
                     "isLeaf (Parent)");
-                Assert.That(properties.Contains(uml.CommonStructure.NamedElement.name), Is.True,
+                Assert.That(properties.Contains(_UML._CommonStructure._NamedElement.name), Is.True,
                     "name (Parent of Parent)");
             }
         }

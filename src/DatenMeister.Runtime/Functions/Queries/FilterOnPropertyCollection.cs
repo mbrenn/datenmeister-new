@@ -8,11 +8,11 @@ namespace DatenMeister.Runtime.Functions.Queries
     public class FilterOnPropertyCollection : ProxyReflectiveCollection
     {
         private readonly object _filterValue;
-        private readonly object _property;
+        private readonly string _property;
 
         public FilterOnPropertyCollection(
             IReflectiveSequence collection,
-            object property,
+            string property,
             object filterValue)
             : base(collection)
         {

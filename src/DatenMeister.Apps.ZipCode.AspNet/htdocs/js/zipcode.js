@@ -22,5 +22,5 @@ var ZipCode = (function () {
         }
     };
     return ZipCode;
-})();
+}());
 //# sourceMappingURL=zipcode.js.map

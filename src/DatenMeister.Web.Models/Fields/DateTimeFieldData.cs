@@ -2,12 +2,11 @@
 {
     public class DateTimeFieldData : FieldData
     {
-        public DateTimeFieldData()
+        public DateTimeFieldData() : base ("datetime")
         {
-
         }
 
-        public DateTimeFieldData(string name, string title) : base(name, title)
+        public DateTimeFieldData(string name, string title) : base("datetime", name, title)
         {
 
         }

@@ -28,22 +28,22 @@ namespace DatenMeister.Runtime.Proxies
             return Object.@equals(other);
         }
 
-        public virtual object get(object property)
+        public virtual object get(string property)
         {
             return Object.get(property);
         }
 
-        public virtual void set(object property, object value)
+        public virtual void set(string property, object value)
         {
             Object.set(property, value);
         }
 
-        public virtual bool isSet(object property)
+        public virtual bool isSet(string property)
         {
             return Object.isSet(property);
         }
 
-        public virtual void unset(object property)
+        public virtual void unset(string property)
         {
             Object.unset(property);
         }
@@ -53,7 +53,7 @@ namespace DatenMeister.Runtime.Proxies
         /// supports the interface
         /// </summary>
         /// <returns>Enumeration of objects</returns>
-        public virtual IEnumerable<object> getPropertiesBeingSet()
+        public virtual IEnumerable<string> getPropertiesBeingSet()
         {
             var asAllProperties = Object as IObjectAllProperties;
             if (asAllProperties == null)

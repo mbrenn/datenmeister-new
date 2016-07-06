@@ -61,7 +61,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         public static T Aggregate<T>(
             this IReflectiveCollection items,
             IAggregator<T> aggregator,
-            object property)
+            string property)
         {
             foreach (var item in items.Cast<IObject>())
             {

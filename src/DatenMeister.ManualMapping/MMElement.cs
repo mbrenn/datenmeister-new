@@ -33,7 +33,7 @@ namespace DatenMeister.ManualMapping
             return _instance.Equals(other);
         }
 
-        public object get(object property)
+        public object get(string property)
         {
             if (property == null) throw new ArgumentNullException(nameof(property));
 
@@ -41,7 +41,7 @@ namespace DatenMeister.ManualMapping
             return mapping.GetValueFunc(_instance);
         }
 
-        public void set(object property, object value)
+        public void set(string property, object value)
         {
             if (property == null) throw new ArgumentNullException(nameof(property));
 
@@ -49,7 +49,7 @@ namespace DatenMeister.ManualMapping
             mapping.SetValueFunc(_instance, value);
         }
 
-        public bool isSet(object property)
+        public bool isSet(string property)
         {
             if (property == null) throw new ArgumentNullException(nameof(property));
             var mapping = _typeMapping.FindProperty(property);
@@ -57,7 +57,7 @@ namespace DatenMeister.ManualMapping
             return mapping != null;
         }
 
-        public void unset(object property)
+        public void unset(string property)
         {
             if (property == null) throw new ArgumentNullException(nameof(property));
             throw new NotImplementedException();
@@ -75,7 +75,7 @@ namespace DatenMeister.ManualMapping
             return _container;
         }
 
-        private PropertyMapping FindProperty(object property)
+        private PropertyMapping FindProperty(string property)
         {
             var mapping = _typeMapping.FindProperty(property);
             if (mapping == null)

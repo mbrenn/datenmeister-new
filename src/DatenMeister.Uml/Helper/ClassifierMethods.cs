@@ -25,22 +25,22 @@ namespace DatenMeister.Uml.Helper
         /// <param name="legacy">true, if legacy access to the attributes shall be used. 
         /// This means that the methods are accessed via string definitions and not via the properties</param>
         /// <returns></returns>
-        public IEnumerable<IElement> GetPropertiesOfClassifier(IElement classifier)
+        public IEnumerable<string> GetPropertiesOfClassifier(IElement classifier)
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
 
             var metaLayer = Legacy ? null : _dataLayerLogic.GetMetaLayerFor(_dataLayerLogic.GetDataLayerOfObject(classifier));
             var uml = Legacy ? null : _dataLayerLogic.Get<_UML>(metaLayer);
-            var propertyOwnedAttribute = Legacy ? "ownedAttribute" : uml.StructuredClassifiers.StructuredClassifier.ownedAttribute;
-            var propertyGeneralization = Legacy ? "generalization" : uml.Classification.Classifier.generalization;
-            var propertyGeneral = Legacy ? "general" : uml.Classification.Generalization.general;
+            var propertyOwnedAttribute = Legacy ? "ownedAttribute" : _UML._StructuredClassifiers._StructuredClassifier.ownedAttribute;
+            var propertyGeneralization = Legacy ? "generalization" : _UML._Classification._Classifier.generalization;
+            var propertyGeneral = Legacy ? "general" : _UML._Classification._Generalization.general;
 
             if (classifier.isSet(propertyOwnedAttribute))
             {
                 var result = classifier.get(propertyOwnedAttribute) as IEnumerable;
                 foreach (var item in result)
                 {
-                    yield return item as IElement;
+                    yield return item.ToString();
                 }
             }
 

@@ -19,7 +19,7 @@ namespace DatenMeister.Tests.DotNet
             var dotNetTypeCreator = new DotNetTypeGenerator(mofFactory, uml);
             var dotNetClass = dotNetTypeCreator.CreateTypeFor(typeof (TestClass));
 
-            Assert.That(dotNetClass.get(uml.CommonStructure.NamedElement.name), Is.EqualTo("TestClass"));
+            Assert.That(dotNetClass.get(_UML._CommonStructure._NamedElement.name), Is.EqualTo("TestClass"));
         }
 
         public class TestClass

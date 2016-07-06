@@ -72,13 +72,13 @@ namespace DatenMeister.Apps.ZipCode
 
         public static class Columns
         {
-            public static object ZipCode
+            public static string ZipCode
             {
                 get;
                 set;
             }
 
-            public static object Name
+            public static string Name
             {
                 get;
                 set;

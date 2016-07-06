@@ -216,7 +216,18 @@ namespace DatenMeister.Uml
                     }
                 }
             }
+          
+            // ConvertPropertiesToRealProperties(allElements);
+        }
 
+        /// <summary>
+        /// Converts all properties of all objects to the real property function. 
+        /// This method is not needed anymore, since we are using now strings as the property reference
+        /// and not the real properties anymore
+        /// </summary>
+        /// <param name="allElements"></param>
+        private void ConvertPropertiesToRealProperties(List<IObject> allElements)
+        {
             // Now we replace the property information from string form to real properties
             List<Action> actions = new List<Action>();
             var classifierMethod = new ClassifierMethods(_dataLayerLogic)
@@ -240,12 +251,12 @@ namespace DatenMeister.Uml
                 }
 
                 var propertiesOfMetaClass = classifierMethod.GetPropertiesOfClassifier(metaClass).ToList();
-                var mapping = new Dictionary<string, IElement>();
+                var mapping = new Dictionary<string, string>();
                 foreach (var property in propertiesOfMetaClass)
                 {
-                    mapping[property.get("name").ToString()] = property;
+                    mapping[property] = property;
                 }
-                
+
                 foreach (var property in element.getPropertiesBeingSet())
                 {
                     var textProperty = property.ToString();

@@ -9,10 +9,10 @@ namespace DatenMeister.Runtime.Functions.Queries
 {
     public class OrderByProperty : IReflectiveCollection
     {
-        private readonly object _orderByProperty;
+        private readonly string _orderByProperty;
         private readonly IReflectiveCollection _parent;
 
-        public OrderByProperty(IReflectiveCollection parent, object property)
+        public OrderByProperty(IReflectiveCollection parent, string property)
         {
             _parent = parent;
             _orderByProperty = property;

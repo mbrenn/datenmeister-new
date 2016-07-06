@@ -16,11 +16,11 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <summary>
         ///     Stores the property
         /// </summary>
-        private readonly object _property;
+        private readonly string _property;
 
         public FilterOnPropertyByPredicateCollection(
             IReflectiveCollection collection,
-            object property,
+            string property,
             Predicate<object> filter)
             : base(collection)
         {

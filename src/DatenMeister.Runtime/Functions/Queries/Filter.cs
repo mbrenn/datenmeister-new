@@ -18,7 +18,7 @@ namespace DatenMeister.Runtime.Functions.Queries
     {
         public static IReflectiveCollection WhenPropertyStartsWith(
             this IReflectiveCollection collection,
-            object property,
+            string property,
             string value)
         {
             return new FilterOnPropertyByPredicateCollection(
@@ -36,7 +36,7 @@ namespace DatenMeister.Runtime.Functions.Queries
 
         public static IReflectiveCollection WhenPropertyIs(
             this IReflectiveCollection collection,
-            object property,
+            string property,
             string value)
         {
             return new FilterOnPropertyByPredicateCollection(
@@ -47,7 +47,7 @@ namespace DatenMeister.Runtime.Functions.Queries
 
         public static IReflectiveCollection WhenOneOfThePropertyContains(
             this IReflectiveCollection collection,
-            IEnumerable<object> properties,
+            IEnumerable<string> properties,
             string value,
             StringComparison comparer = StringComparison.CurrentCulture)
         {
@@ -66,8 +66,8 @@ namespace DatenMeister.Runtime.Functions.Queries
 
         public static IReflectiveCollection GroupBy<T>(
             this IReflectiveCollection collection,
-            object groupByColumn,
-            object aggregateColumn,
+            string groupByColumn,
+            string aggregateColumn,
             Func<IAggregator<T>> aggregatorFunc)
         {
             return  new GroupByReflectiveCollection<T>(

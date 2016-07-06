@@ -29,7 +29,7 @@ namespace DatenMeister.Provider.DotNet
                 umlClassAsSet.Id = type.FullName;
             }
 
-            umlClass.set(_umlHost.CommonStructure.NamedElement.name, type.Name);
+            umlClass.set(_UML._CommonStructure._NamedElement.name, type.Name);
 
             var properties = new List<IObject>();
 
@@ -37,12 +37,12 @@ namespace DatenMeister.Provider.DotNet
             {
                 var umlProperty = _factoryForTypes.create(_umlHost.Classification.__Property);
                 (umlProperty as IElementSetMetaClass)?.setContainer(umlClass);
-                umlProperty.set(_umlHost.CommonStructure.NamedElement.name, property.Name);
+                umlProperty.set(_UML._CommonStructure._NamedElement.name, property.Name);
                 
                 properties.Add(umlProperty);
             }
 
-            umlClass.set(_umlHost.Classification.Classifier.attribute, properties);
+            umlClass.set(_UML._Classification._Classifier.attribute, properties);
 
             return umlClass;
         }

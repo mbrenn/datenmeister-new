@@ -11,7 +11,7 @@ namespace DatenMeister.Runtime.Reflection
         public AttributeWrapper(DmML dmml)
         {
             _dmml = dmml;
-            _element = new MofElement(_dmml.__Property, null);
+            _element = new MofElement(_dmml?.__Property, null);
         }
 
         public AttributeWrapper(IElement element, DmML dmml)
@@ -27,8 +27,8 @@ namespace DatenMeister.Runtime.Reflection
 
         public string Name
         {
-            get { return _element.isSet(_dmml.NamedElement) ? _element.get(_dmml.NamedElement).ToString() : string.Empty; }
-            set { _element.set(_dmml.NamedElement, value); }
+            get { return _element.isSet("name") ? _element.get("name").ToString() : string.Empty; }
+            set { _element.set("name", value); }
         }
     }
 }

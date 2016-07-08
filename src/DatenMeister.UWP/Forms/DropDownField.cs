@@ -29,7 +29,7 @@ namespace DatenMeister.UWP.Forms
             };
 
             // Tries to find the selected element
-            var value = helper.DataElement.isSet(fieldData.name) ? helper.DataElement.get(fieldData.name) : string.Empty;
+            var value = DetailFormHelper.GetValue(helper.DataElement, fieldData.name, fieldData.defaultValue);
             var found = itemsSource.FirstOrDefault(x => x.value == value);
             dropDown.SelectedItem = found;
 

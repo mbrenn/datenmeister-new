@@ -25,9 +25,9 @@ namespace DatenMeister.UWP.Forms
             var valueObj =
                 helper.DataElement.isSet(dateTimeFieldData.name) ?
                     helper.DataElement.get(dateTimeFieldData.name) :
-                    DateTime.Now;
+                    (dateTimeFieldData.defaultValue as DateTime?) ?? DateTime.Now;
 
-            var valueDateTime = DateTimeOffset.Now.ToUniversalTime();
+            DateTimeOffset valueDateTime;
             if (!(valueObj is DateTime))
             {
                 if (!DateTimeOffset.TryParse(valueObj.ToString(), CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out valueDateTime))
@@ -41,8 +41,7 @@ namespace DatenMeister.UWP.Forms
             }
 
             var asLocal = valueDateTime.ToLocalTime();
-
-
+            
 
             var stackPanel = new StackPanel()
             {
@@ -106,7 +105,7 @@ namespace DatenMeister.UWP.Forms
                 });
         }
 
-        private static void AddOffsetButton(StackPanel stackPanel, DatePicker dateTime, string text, TimeSpan offset)
+        private static void AddOffsetButton(Panel stackPanel, DatePicker dateTime, string text, TimeSpan offset)
         {
             var button = new Button();
             button.Content = text;

@@ -59,6 +59,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectionHelper.cs" />
     <Compile Include="Copier\ExtentCopier.cs" />
     <Compile Include="Copier\ObjectCopier.cs" />
     <Compile Include="ExtentStorage\Configuration\ExtentFileStorageConfiguration.cs" />
@@ -66,6 +67,8 @@
     <Compile Include="ExtentStorage\ExtentStorageData.cs" />
     <Compile Include="ExtentStorage\Interfaces\IExtentStorageLoader.cs" />
     <Compile Include="Extents\ExtentFunctions.cs" />
+    <Compile Include="Functions\Aggregation\Extensions.cs" />
+    <Compile Include="Functions\Aggregation\GroupByReflectiveCollection.cs" />
     <Compile Include="Functions\Aggregation\CountAggregator.cs" />
     <Compile Include="Functions\Interfaces\Aggregator.cs" />
     <Compile Include="Functions\Interfaces\AggregatorByFunction.cs" />
@@ -75,7 +78,24 @@
     <Compile Include="Functions\Aggregation\MaxAggregator.cs" />
     <Compile Include="Functions\Aggregation\MinAggregator.cs" />
     <Compile Include="Functions\Aggregation\SumAggregator.cs" />
+    <Compile Include="Functions\Queries\Filter.cs" />
+    <Compile Include="Functions\Queries\FilterOnMetaClass.cs" />
+    <Compile Include="Functions\Queries\FilterOnMultipleProperties.cs" />
+    <Compile Include="Functions\Queries\FilterOnPropertyByPredicateCollection.cs" />
+    <Compile Include="Functions\Queries\FilterOnPropertyCollection.cs" />
+    <Compile Include="Functions\Queries\OrderByProperty.cs" />
     <Compile Include="ObjectFileStorage.cs" />
+    <Compile Include="Proxies\IHasProxiedObject.cs" />
+    <Compile Include="Proxies\ProxyMofElement.cs" />
+    <Compile Include="Proxies\ProxyMofObject.cs" />
+    <Compile Include="Proxies\ProxyReflectiveCollection.cs" />
+    <Compile Include="Proxies\ProxyReflectiveSequence.cs" />
+    <Compile Include="Proxies\ProxyUriExtent.cs" />
+    <Compile Include="Proxies\ReadOnly\ReadOnlyReflectiveCollection.cs" />
+    <Compile Include="Proxies\ReflectiveList.cs" />
+    <Compile Include="Reflection\AttributeWrapper.cs" />
+    <Compile Include="Reflection\DmML.cs" />
+    <Compile Include="Reflection\ClassWrapper.cs" />
     <Compile Include="Workspaces\Data\WorkspaceData.cs" />
     <Compile Include="Workspaces\Data\WorkspaceInfo.cs" />
     <Compile Include="Workspaces\Data\WorkspaceLoader.cs" />
@@ -98,7 +118,7 @@
     <Compile Include="Proxies\ReadOnly\ReadOnlyObject.cs" />
     <Compile Include="Proxies\ReadOnly\ReadOnlyReflectiveSequence.cs" />
     <Compile Include="Proxies\ReadOnly\ReadOnlyUriExtent.cs" />
-    <Compile Include="Workspaces\WorkspaceExtentAndItem.cs" />
+    <Compile Include="Workspaces\WorkspaceExtentAndItemReference.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">

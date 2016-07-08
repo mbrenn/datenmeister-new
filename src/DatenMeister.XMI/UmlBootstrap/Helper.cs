@@ -92,6 +92,12 @@ namespace DatenMeister.XMI.UmlBootstrap
             return XmlGetElementsOfTypes(element, new string[] { typeName});
         }
 
+        /// <summary>
+        /// Gets all elements of a specific type in the proeprty
+        /// </summary>
+        /// <param name="element">Element, whose property is queried </param>
+        /// <param name="typeNames">Type names to be queried</param>
+        /// <returns>Enumeration of all elements</returns>
         private static IEnumerable<IObject> XmlGetElementsOfTypes(IObject element, IEnumerable<string> typeNames)
         {
             var elementAsExt = (IObjectAllProperties) element;
@@ -101,6 +107,7 @@ namespace DatenMeister.XMI.UmlBootstrap
             }
 
             var attributeXmi = "{" + Namespaces.Xmi + "}type";
+            var typeNamesList = typeNames.ToList();
 
             foreach (var property in elementAsExt.getPropertiesBeingSet())
             {
@@ -112,7 +119,32 @@ namespace DatenMeister.XMI.UmlBootstrap
                     if (innerValueAsObject != null && innerValueAsObject.isSet(attributeXmi))
                     {
                         var type = innerValueAsObject.get(attributeXmi).ToString();
-                        if (typeNames.Count(x => type == x) > 0)
+                        if (typeNamesList.Count(x => type == x) > 0)
+                        {
+                            yield return innerValueAsObject;
+                        }
+                    }
+                }
+            }
+        }
+        public static IEnumerable<IObject> GetSubProperties(IObject element)
+        {
+            var elementAsExt = (IObjectAllProperties)element;
+            if (elementAsExt == null)
+            {
+                throw new ArgumentNullException(nameof(element));
+            }
+
+            foreach (var property in elementAsExt.getPropertiesBeingSet())
+            {
+                var propertyValue = element.get(property);
+                var propertyAsEnumerable = propertyValue as IEnumerable;
+                if (propertyAsEnumerable != null)
+                {
+                    foreach (var innerValue in propertyAsEnumerable)
+                    {
+                        var innerValueAsObject = innerValue as IObject;
+                        if (innerValueAsObject != null)
                         {
                             yield return innerValueAsObject;
                         }

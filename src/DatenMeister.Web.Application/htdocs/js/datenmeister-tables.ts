@@ -1,4 +1,4 @@
-﻿import * as DMI from "datenmeister-interfaces"
+﻿import * as DMI from "./datenmeister-interfaces"
 
 export class ItemTableConfiguration {
     onNewItemClicked: (typeUrl?: string) => void;
@@ -329,7 +329,7 @@ export class ItemListTable {
 
 export class ItemContentConfiguration {
     autoProperties: boolean;
-    columns: Array<DMI.ClientResponse.IDataTableColumn>;
+    columns: Array<DMI.ClientResponse.IDataField>;
 
     // Gets or sets a flag, whether we should start with full edit mode
     // if we start with edit mode, all property values will be shown as an edit field
@@ -350,10 +350,10 @@ export class ItemContentConfiguration {
         this.isReadOnly = false;
         this.autoProperties = false;
         this.supportNewProperties = true;
-        this.columns = new Array<DMI.ClientResponse.IDataTableColumn>();
+        this.columns = new Array<DMI.ClientResponse.IDataField>();
     }
 
-    addColumn(column: DMI.ClientResponse.IDataTableColumn) {
+    addColumn(column: DMI.ClientResponse.IDataField) {
         this.columns[this.columns.length] = column;
     }
 }
@@ -382,7 +382,7 @@ export class ItemContentTable {
         domTable.append(domRow);
 
         var propertyValue = this.item.v;
-        var column: DMI.ClientResponse.IDataTableColumn;
+        var column: DMI.ClientResponse.IDataField;
 
         if (this.configuration.autoProperties) {
             this.configuration.columns.length = 0;
@@ -523,7 +523,7 @@ export class ItemContentTable {
 
 function createDomForContent(
     item: DMI.ClientResponse.IDataTableItem,
-    column: DMI.ClientResponse.IDataTableColumn,
+    column: DMI.ClientResponse.IDataField,
     inEditMode?: boolean,
     configuration?: ItemTableConfiguration | ItemContentConfiguration) {
     if (inEditMode === undefined) {
@@ -565,7 +565,7 @@ function createDomForContent(
         if (inEditMode) {
             if (column.type === DMI.Table.ColumnTypes.dropdown) {
                 let domDD = $("<select></select>");
-                let asDD = <DMI.ClientResponse.IDataTableDropDown> column;
+                let asDD = <DMI.ClientResponse.IDropDownDataField> column;
                 for (var name in asDD.values) {
                     var displayText = asDD.values[name];
                     let domOption = $("<option></option>").attr("value", name).text(displayText);
@@ -575,10 +575,17 @@ function createDomForContent(
                 domDD.val(contentValue);
                 return domDD;
             } else {
-                let domTextBox = $("<input type='textbox' class='form-control' />");
-                domTextBox.val(contentValue);
-                return domTextBox;
-                
+                let asTextBox = <DMI.ClientResponse.ITextDataField>column;
+                // We have a textbox, so check if we have multiple line
+                if (asTextBox.lineHeight !== undefined && asTextBox.lineHeight > 1) {
+                    let domTextBoxMultiple = $("<textarea class='form-control'></textarea>").attr('rows', asTextBox.lineHeight)
+                    domTextBoxMultiple.val(contentValue);
+                    return domTextBoxMultiple;
+                } else {
+                    let domTextBox = $("<input type='textbox' class='form-control' />");
+                    domTextBox.val(contentValue);
+                    return domTextBox;   
+                }
             }
         } else {
             let domResult = $("<span class='dm-itemtable-data'></span>");

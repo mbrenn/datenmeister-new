@@ -1,4 +1,4 @@
-define(["require", "exports", "datenmeister"], function (require, exports, DatenMeister) {
+define(["require", "exports", "./datenmeister"], function (require, exports, DatenMeister) {
     "use strict";
     $(document).ready(function () {
         DatenMeister.start();

@@ -1,7 +1,7 @@
 ﻿
-import DMI = require("datenmeister-interfaces");
-import DMView = require("datenmeister-view");
-import DMTables = require("datenmeister-tables");
+import DMI = require("./datenmeister-interfaces");
+import DMView = require("./datenmeister-view");
+import DMTables = require("./datenmeister-tables");
 
 
 export enum PageType {
@@ -265,5 +265,9 @@ export class Layout implements DMI.Api.ILayout {
         if (this.onLayoutChanged !== undefined) {
             this.onLayoutChanged(data);
         }
+    }
+
+    gotoHome() {
+        this.navigateToWorkspaces();
     }
 }

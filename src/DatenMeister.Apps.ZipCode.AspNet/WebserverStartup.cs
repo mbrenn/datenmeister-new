@@ -2,16 +2,14 @@
 using System.Web;
 using System.Web.Http;
 using BurnSystems.Owin.StaticFiles;
-using DatenMeister.App.Web.Zip;
-using DatenMeister.Apps.ZipCode;
-using DatenMeister.Web;
+using DatenMeister.Apps.ZipCode.AspNet;
 using Microsoft.Owin;
 using Microsoft.Owin.Extensions;
 using Owin;
 using ZipCodeFinderWeb.Controllers;
 
 [assembly: OwinStartup(typeof(WebserverStartup))]
-namespace DatenMeister.App.Web.Zip
+namespace DatenMeister.Apps.ZipCode.AspNet
 {
     public class WebserverStartup
     {
@@ -24,7 +22,7 @@ namespace DatenMeister.App.Web.Zip
             app.UseStaticFiles(configuration);
 
             // Initializes the DatenMeister
-            Core.TheOne.Init();
+            //DataProvider.TheOne.Init();
             var dataPath = Path.Combine(HttpRuntime.AppDomainAppPath, "App_Data/plz.csv");
             using (var stream = new FileStream(dataPath, FileMode.Open))
             {
@@ -34,11 +32,10 @@ namespace DatenMeister.App.Web.Zip
             // ReSharper disable once ObjectCreationAsStatement
             new ZipController();
 
-            // We have a stage marker here, so the static files are handle
+            // We have a stage marker here, so the static files are handled
             app.UseStageMarker(PipelineStage.MapHandler);
 
             // Initializing of the WebAPI, needs to be called after the DatenMeister is initialized
-            
             var httpConfiguration = new HttpConfiguration();
             httpConfiguration.Routes.MapHttpRoute(
                 name: "DefaultApi",

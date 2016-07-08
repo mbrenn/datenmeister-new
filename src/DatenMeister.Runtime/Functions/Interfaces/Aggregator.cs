@@ -1,37 +1,32 @@
-﻿using DatenMeister.EMOF.Interface.Common;
-using DatenMeister.EMOF.Interface.Reflection;
-
-namespace DatenMeister.Runtime.Functions.Interfaces
+﻿namespace DatenMeister.Runtime.Functions.Interfaces
 {
     public abstract class Aggregator<T> : IAggregator<T>
     {
-        private object _property;
+        private bool _isStarted;
 
-        internal Aggregator(object property)
+        internal Aggregator()
         {
-            _property = property;
         }
 
         /// <summary>
         /// Aggregates the values of a property into a single value
         /// </summary>
-        /// <param name="sequence">Sequence to be evaluated</param>
+        /// <param name="value">Value to be added</param>
         /// <returns>The aggregated value</returns>
-        public T Aggregate(IReflectiveSequence sequence)
+        public void Add(T value)
         {
-            StartAggregation();
-
-            foreach (var value in sequence)
+            if (!_isStarted)
             {
-                var valueAsIObject = value as IObject;
-                if (valueAsIObject != null && valueAsIObject.isSet(_property))
-                {
-                    var propertyValue = valueAsIObject.get(_property);
-                    AggregateValue(propertyValue);
-                }
+                StartAggregation();
+                _isStarted = true;
             }
 
-            return FinalizeAggregation();
+            AggregateValue(value);
+        }
+
+        public T Result
+        {
+            get { return FinalizeAggregation(); }
         }
 
         protected abstract void StartAggregation();

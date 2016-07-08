@@ -6,8 +6,10 @@ using System.Linq;
 using System.Text;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
+using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Reflection;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.CSV
@@ -68,16 +70,13 @@ namespace DatenMeister.CSV
                 settings = new CSVSettings();
             }
 
-            var metaClass = GetMetaClassOfItems(settings);
-            var columns = ConvertColumnsToPropertyValues(metaClass, settings);
+            var columns = settings.Columns;
             var createColumns = false;
 
             using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(settings.Encoding)))
             {
-
                 if (columns == null)
                 {
-                    columns = new List<object>();
                     createColumns = true;
                 }
 
@@ -100,13 +99,13 @@ namespace DatenMeister.CSV
                 {
                     var values = SplitLine(line, settings);
 
-                    var csvObject = factory.create(metaClass);
-
+                    var csvObject = factory.create(null);
+                    
                     // we now have the created object, let's fill it
                     var valueCount = values.Count;
                     for (var n = 0; n < valueCount; n++)
                     {
-                        object foundColumn;
+                        string foundColumn;
 
                         // Check, if we have enough columns, if we don't have enough columns, create one
                         if (columns.Count <= n && (createColumns || !settings.HasHeader))
@@ -127,72 +126,6 @@ namespace DatenMeister.CSV
                     extent.elements().add(csvObject);
                 }
             }
-
-            if (createColumns)
-            {
-                settings.Columns = columns;
-            }
-        }
-
-        private List<object> ConvertColumnsToPropertyValues(IElement metaClass, CSVSettings settings)
-        {
-            if (metaClass == null)
-            {
-                return settings.Columns;
-            }
-
-            //////////////////////
-            // Loads the workspace
-            if (_dataLayerLogic == null)
-            {
-                throw new InvalidOperationException("No DataLayerLogic was given, even though we need to do Uml navigation");
-            }
-
-            var metaLayer = _dataLayerLogic.GetMetaLayerOfObject(metaClass);
-            var uml = _dataLayerLogic.Get<_UML>(metaLayer);
-
-            var result = new List<object>();
-            foreach (var column in settings.Columns)
-            {
-                var found = metaClass.GetByPropertyFromCollection(
-                    uml.Classification.Classifier.attribute,
-                    uml.CommonStructure.NamedElement.name,
-                    column.ToString()).FirstOrDefault();
-                if (found == null)
-                {
-                    throw new InvalidOperationException($"Column {column} not found as property in metaclass");
-                }
-
-                result.Add(found);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the metaclass as given in the settings
-        /// Returns null, if the metaclass is not defined
-        /// </summary>
-        /// <param name="settings">Settings being used</param>
-        /// <returns>The metaclass of the object</returns>
-        private IElement GetMetaClassOfItems(CSVSettings settings)
-        {
-            IElement metaClass = null;
-            if (!string.IsNullOrEmpty(settings.MetaclassUri))
-            {
-                if (_workspaceCollection == null)
-                {
-                    throw new InvalidOperationException("Uri by metaclass is given, but we do not have a workspace collection");
-                }
-
-                metaClass = _workspaceCollection.FindItem(settings.MetaclassUri);
-                if (metaClass == null)
-                {
-                    throw new InvalidOperationException($"Type with ID: {settings.MetaclassUri} was not found");
-                }
-            }
-
-            return metaClass;
         }
 
         /// <summary>
@@ -212,10 +145,10 @@ namespace DatenMeister.CSV
         /// <param name="settings">Settings being used</param>
         public void Save(IUriExtent extent, string path, CSVSettings settings)
         {
-            var columns = new List<object>();
+            var columns = new List<string>();
 
             // Retrieve the column headers
-            if (settings.HasHeader && settings.Columns.Count > 0)
+            if (settings.HasHeader && settings.Columns.Any())
             {
                 // Column headers given by old extent
                 columns.AddRange(settings.Columns);
@@ -255,8 +188,8 @@ namespace DatenMeister.CSV
         /// <param name="settings">Settings to be used</param>
         /// <param name="values"></param>
         /// <param name="conversion">Converter to be used, to show the content</param>
-        private void WriteRow<T>(StreamWriter streamWriter, CSVSettings settings, IEnumerable<T> values,
-            Func<T, object> conversion)
+        private void WriteRow(StreamWriter streamWriter, CSVSettings settings, IEnumerable<string> values,
+            Func<string, object> conversion)
         {
             var builder = new StringBuilder();
             var first = true;

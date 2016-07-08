@@ -5,8 +5,6 @@ using System.Linq;
 using System.Web.Http;
 using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.DataLayer;
-using DatenMeister.EMOF.Helper;
-using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Web.Models.PostModels;
@@ -37,10 +35,10 @@ namespace DatenMeister.Web.Api
             string filename;
             var tries = 0;
             int randomNumber;
-            do
+            do // while File.Exists
             {
-                randomNumber = Random.Next(1000000);
-                filename = Path.Combine(appBase, "Data", $"plz_{randomNumber}.csv");
+                randomNumber = Random.Next(int.MaxValue);
+                filename = Path.Combine(appBase, "App_Data/Database", $"plz_{randomNumber}.csv");
                 tries++;
                 if (tries == 10000)
                 {
@@ -51,7 +49,7 @@ namespace DatenMeister.Web.Api
 
             var originalFilename = Path.Combine(
                 appBase,
-                "App_Data",
+                "App_Data/Example",
                 "plz.csv");
 
             File.Copy(originalFilename, filename);
@@ -66,7 +64,7 @@ namespace DatenMeister.Web.Api
                     HasHeader = false,
                     Separator = '\t',
                     Encoding = "UTF-8",
-                    Columns = new object[] { "Id", "Zip", "PositionLong", "PositionLat", "CityName" }.ToList(),
+                    Columns = new [] { "Id", "Zip", "PositionLong", "PositionLat", "CityName" }.ToList(),
                     // Columns = new object[] { idProperty, zipProperty, positionLongProperty, positionLatProperty, citynameProperty }.ToList(),
                     MetaclassUri = "dm:///types#DatenMeister.Apps.ZipCode.Model.ZipCode"
                 }

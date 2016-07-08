@@ -25,22 +25,22 @@ namespace DatenMeister.Provider.DotNet
             throw new System.NotImplementedException();
         }
 
-        public object get(object property)
+        public object get(string property)
         {
             throw new System.NotImplementedException();
         }
 
-        public void set(object property, object value)
+        public void set(string property, object value)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool isSet(object property)
+        public bool isSet(string property)
         {
             throw new System.NotImplementedException();
         }
 
-        public void unset(object property)
+        public void unset(string property)
         {
             throw new System.NotImplementedException();
         }

@@ -109,6 +109,8 @@ namespace DatenMeister.DataLayer
 
         public IDataLayer GetMetaLayerFor(IDataLayer data)
         {
+            if (data == null) throw new ArgumentNullException(nameof(data));
+
             lock (_data)
             {
                 IDataLayer result;
@@ -123,6 +125,8 @@ namespace DatenMeister.DataLayer
 
         public IEnumerable<IUriExtent> GetExtentsForDatalayer(IDataLayer dataLayer)
         {
+            if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
+
             lock (_data)
             {
                 return
@@ -137,6 +141,8 @@ namespace DatenMeister.DataLayer
             where TFiller : IFiller<TFilledType>, new()
             where TFilledType : class, new()
         {
+            if (layer == null) throw new ArgumentNullException(nameof(layer));
+
             lock (_data)
             {
                 var layerAsObject = layer as DataLayer;
@@ -166,6 +172,8 @@ namespace DatenMeister.DataLayer
         public TFilledType Get<TFilledType>(IDataLayer layer)
             where TFilledType : class, new()
         {
+            if (layer == null) throw new ArgumentNullException(nameof(layer));
+
             lock (_data)
             {
                 var layerAsObject = layer as DataLayer;

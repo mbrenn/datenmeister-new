@@ -5,6 +5,7 @@ using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.XMI;
 using DatenMeister.XMI.UmlBootstrap;
 using System.Collections.Generic;
+using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator
 {
@@ -15,8 +16,15 @@ namespace DatenMeister.SourcecodeGenerator
     {
         public Version FactoryVersion = new Version(1, 0, 1, 0);
 
-        public WalkPackageClass()
+        /// <summary>
+        /// Stores the source parser to find out the elements and attributes
+        /// </summary>
+        private readonly ISourceParser _parser;
+
+
+        public WalkPackageClass(ISourceParser parser)
         {
+            _parser = parser ?? new XmiSourceParser();
             Result = new StringBuilder();
         }
 
@@ -34,21 +42,18 @@ namespace DatenMeister.SourcecodeGenerator
         ///     Creates a C# class instance for all the packages and classes within the extent
         /// </summary>
         /// <param name="extent">Extent to be used</param>
-        public void Walk(IUriExtent extent)
+        public virtual void Walk(IUriExtent extent)
         {
+            var stack = new CallStack(null);
+
+            StartNamespace(ref stack);
             foreach (var element in extent.elements())
             {
                 var elementAsObject = element as IObject;
-                var attributeXmi = "{" + Namespaces.Xmi + "}type";
-
-                // Work only on the UML:Packages as the entry node
-                if (elementAsObject.isSet(attributeXmi) &&
-                    elementAsObject.get(attributeXmi).ToString() == "uml:Package")
-                {
-                    var stack = new CallStack(null);
-                    Walk(elementAsObject, stack);
-                }
+                Walk(elementAsObject, stack);
             }
+
+            EndNamespace(ref stack);
         }
 
         /// <summary>
@@ -59,9 +64,17 @@ namespace DatenMeister.SourcecodeGenerator
         ///     Regards the given element as a package
         ///     and returns a full namespace for the package.
         /// </param>
-        protected virtual void Walk(IObject element, CallStack stack)
+        private void Walk(IObject element, CallStack stack)
         {
-            WalkPackage(element, stack);
+            if (_parser.IsPackage(element))
+            {
+                WalkPackage(element, stack);
+            }
+
+            if (_parser.IsClass(element))
+            {
+                WalkClass(element, stack);
+            }
         }
 
         /// <summary>
@@ -91,31 +104,44 @@ namespace DatenMeister.SourcecodeGenerator
         ///     Regards the given element as a package
         ///     and returns a full namespace for the package.
         /// </param>
-        protected void WalkAndWriteNamespace(IObject element, CallStack stack)
+        private void StartNamespace(ref CallStack stack)
         {
             Result.AppendLine($"{stack.Indentation}// Created by {GetType().FullName} Version {FactoryVersion}");
 
+            // Check, if we have namespaces
+            if (!string.IsNullOrEmpty(Namespace))
+            {
+                var indentation = stack.Indentation;
+                    Result.AppendLine($"{indentation}namespace {Namespace}");
+                    Result.AppendLine($"{indentation}{{");
+
+                stack = new CallStack(stack);
+                stack.Level--;
+            }
+        }
+
+        /// <summary>
+        ///     Creates a C# source code. Not to be used for recursive
+        ///     call since the namespace is just once created
+        /// </summary>
+        /// <param name="element">
+        ///     Regards the given element as a package
+        ///     and returns a full namespace for the package.
+        /// </param>
+        private void EndNamespace(ref CallStack stack)
+        {
             // Check, if we have namespaces
             Action preAction = () => { };
             Action postAction = () => { };
             if (!string.IsNullOrEmpty(Namespace))
             {
+                stack = stack.Owner;
                 var indentation = stack.Indentation;
-                preAction = () =>
-                {
-                    Result.AppendLine($"{indentation}namespace {Namespace}");
-                    Result.AppendLine($"{indentation}{{");
-                };
-                postAction = () => { Result.AppendLine($"{indentation}}}"); };
+                Result.AppendLine($"{indentation}}}");
 
                 stack = new CallStack(stack);
                 stack.Level--;
             }
-
-            // Actually executes the class tree creation
-            preAction();
-            WalkPackage(element, stack);
-            postAction();
         }
 
         /// <summary>
@@ -128,20 +154,28 @@ namespace DatenMeister.SourcecodeGenerator
         {
             var innerStack = new CallStack(stack);
             var name = GetNameOfElement(element);
-            innerStack.Fullname =
-                string.IsNullOrEmpty(innerStack.Fullname) ? name : $"{innerStack.Fullname}.{name}";
-
-            // Finds the subpackages
-            foreach (var package in Helper.XmiGetPackages(element))
+            if (stack.Level == 0)
             {
-                WalkPackage(package, innerStack);
+                innerStack.Fullname = string.Empty;
+            }
+            else
+            {
+                innerStack.Fullname =
+                    string.IsNullOrEmpty(innerStack.Fullname) ? $".{name}" : $"{innerStack.Fullname}.{name}";
             }
 
-            // Finds the classes in the package
-
-            foreach (var classInstance in Helper.XmiGetClassOrDerived(element))
+            // Finds the subpackages and classes
+            foreach (var subElement in Helper.GetSubProperties(element))
             {
-                WalkClass(classInstance, innerStack);
+                if (_parser.IsPackage(subElement))
+                {
+                    WalkPackage(subElement, innerStack);
+                }
+
+                if (_parser.IsClass(subElement) || _parser.IsPrimitiveType(subElement))
+                {
+                    WalkClass(subElement, innerStack);
+                }
             }
         }
 
@@ -157,9 +191,13 @@ namespace DatenMeister.SourcecodeGenerator
             var name = GetNameOfElement(classInstance);
             innerStack.Fullname += $".{name}";
 
-            foreach (var propertyObject in Helper.XmiGetProperty(classInstance))
+            // Needs to be updated
+            foreach (var propertyObject in Helper.GetSubProperties(classInstance))
             {
-                WalkProperty(propertyObject, innerStack);
+                if (_parser.IsProperty(propertyObject))
+                {
+                    WalkProperty(propertyObject, innerStack);
+                }
             }
         }
 
@@ -187,7 +225,7 @@ namespace DatenMeister.SourcecodeGenerator
             public CallStack(CallStack ownerStack)
             {
                 _ownerStack = ownerStack;
-                Indentation = ownerStack == null ? string.Empty : $"{ownerStack.Indentation}    ";
+                Indentation = ownerStack == null ? string.Empty : $"{ownerStack.NextIndentation}";
                 Level = ownerStack?.Level + 1 ?? 0;
                 Fullname = ownerStack?.Fullname;
             }
@@ -219,6 +257,15 @@ namespace DatenMeister.SourcecodeGenerator
                     result.Level--;
                     return result;
                 }
+            }
+
+            /// <summary>
+            ///     Stores the owner stack
+            /// </summary>
+            public CallStack Owner
+            {
+                get { return _ownerStack; }
+                set { _ownerStack = value; }
             }
 
             public override string ToString()

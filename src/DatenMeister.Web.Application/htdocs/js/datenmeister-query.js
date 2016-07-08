@@ -1,4 +1,4 @@
-define(["require", "exports", "datenmeister-client"], function (require, exports, DMClient) {
+define(["require", "exports", "./datenmeister-client"], function (require, exports, DMClient) {
     "use strict";
     var ItemsFromExtentProvider = (function () {
         function ItemsFromExtentProvider(ws, extent) {

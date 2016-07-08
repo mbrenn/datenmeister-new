@@ -1,10 +1,10 @@
 ﻿{
   "supports": {
     "net46.app": {},
-    "uwp.10.0.app": {},
-    "dnxcore50.app": {}
+    "uwp.10.0.app": {}
   },
   "dependencies": {
+    "Autofac": "3.5.2",
     "Microsoft.NETCore": "5.0.0",
     "Microsoft.NETCore.Portable.Compatibility": "1.0.0",
     "System.Xml.XmlSerializer": "4.0.10"

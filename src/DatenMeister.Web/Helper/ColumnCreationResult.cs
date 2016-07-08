@@ -6,18 +6,18 @@ namespace DatenMeister.Web.Helper
 {
     public class ColumnCreationResult
     {
-        internal Dictionary<object, DataField> ColumnsOnProperty { get; }
+        internal Dictionary<string, FieldData> ColumnsOnProperty { get; }
 
         public ColumnCreationResult()
         {
-            ColumnsOnProperty = new Dictionary<object, DataField>();
+            ColumnsOnProperty = new Dictionary<string, FieldData>();
         }
 
-        public IList<DataField> Columns
+        public IList<FieldData> Columns
         {
             get { return ColumnsOnProperty.Select(x => x.Value).ToList(); }
         }
-        public IList<object> Properties
+        public IList<string> Properties
         {
             get { return ColumnsOnProperty.Select(x => x.Key).ToList(); }
         }

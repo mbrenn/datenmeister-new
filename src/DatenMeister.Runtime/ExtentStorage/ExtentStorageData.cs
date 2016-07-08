@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
@@ -14,6 +14,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// Stores the loaded extents 
         /// </summary>
         internal List<LoadedExtentInformation> LoadedExtents { get; } = new List<LoadedExtentInformation>();
+
+        public List<Type> AdditionalTypes { get; } = new List<Type>();
 
         /// <summary>
         /// Defines the class which stores the mapping between the extent and the configuration

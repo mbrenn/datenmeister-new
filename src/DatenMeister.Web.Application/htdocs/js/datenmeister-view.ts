@@ -1,7 +1,7 @@
-﻿import * as DMI from "datenmeister-interfaces";
-import * as DMTables from "datenmeister-tables";
-import * as DMClient from "datenmeister-client";
-import * as DMQuery from "datenmeister-query";
+﻿import * as DMI from "./datenmeister-interfaces";
+import * as DMTables from "./datenmeister-tables";
+import * as DMClient from "./datenmeister-client";
+import * as DMQuery from "./datenmeister-query";
 
 export class WorkspaceView {
     onWorkspaceSelected: (id: string) => void;

@@ -105,25 +105,25 @@ namespace DatenMeister.XMI.EMOF
             return true;
         }
 
-        public object get(object property)
+        public object get(string property)
         {
             var propertyAsString = ReturnObjectAsString(property);
             return _node.Attribute(propertyAsString)?.Value;
         }
 
-        public bool isSet(object property)
+        public bool isSet(string property)
         {
             var propertyAsString = ReturnObjectAsString(property);
             return _node.Attribute(propertyAsString) != null;
         }
 
-        public void set(object property, object value)
+        public void set(string property, object value)
         {
             var propertyAsString = ReturnObjectAsString(property);
             _node.SetAttributeValue(propertyAsString, ReturnObjectAsString(value));
         }
 
-        public void unset(object property)
+        public void unset(string property)
         {
             var propertyAsString = ReturnObjectAsString(property);
             _node.SetAttributeValue(propertyAsString, null);

@@ -2,18 +2,18 @@
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Autofac;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.Full.Integration;
+using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.XMI.EMOF;
 using DatenMeister.XMI.ExtentStorage;
-using Ninject;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace DatenMeister.Tests.Xmi.EMOF
 {
@@ -180,83 +180,88 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public void TestXmlExtentStorage()
         {
-            var kernel = new StandardKernel();
-            kernel.UseDatenMeister("Xmi");
+            var kernel = new ContainerBuilder();
 
-            var path = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
-                $"testing{new Random().Next(0, 100000)}.xml");
-            if (File.Exists(path))
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings { PathToXmiFiles = "Xmi" });
+            using (var scope = builder.BeginLifetimeScope())
             {
-                File.Delete(path);
+                var path = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    $"testing{new Random().Next(0, 100000)}.xml");
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+
+                var storageConfiguration = new XmiStorageConfiguration
+                {
+                    ExtentUri = "dm:///test",
+                    Path = path,
+                    Workspace = "Data"
+                };
+
+                // Creates the extent
+                var loader = scope.Resolve<IExtentStorageLoader>();
+                var loadedExtent = loader.LoadExtent(storageConfiguration, true);
+                Assert.That(loadedExtent, Is.TypeOf<XmlUriExtent>());
+
+                // Includes some data
+                var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(scope, loadedExtent);
+                var createdElement = factory.create(null);
+                Assert.That(createdElement, Is.TypeOf<XmlElement>());
+                loadedExtent.elements().add(createdElement);
+
+                createdElement.set("test", "Test");
+                Assert.That(createdElement.get("test"), Is.EqualTo("Test"));
+
+                // Stores the extent
+                loader.StoreExtent(loadedExtent);
+
+                // Detaches it
+                loader.DetachExtent(loadedExtent);
+
+                // Reloads it
+                storageConfiguration.ExtentUri = "dm:///test_new";
+
+                var newExtent = loader.LoadExtent(storageConfiguration, false);
+                Assert.That(newExtent.elements().size(), Is.EqualTo(1));
+                Assert.That((newExtent.elements().ElementAt(0) as IElement).get("test"), Is.EqualTo("Test"));
             }
-            
-            var storageConfiguration = new XmiStorageConfiguration
-            {
-                ExtentUri = "dm:///test",
-                Path = path,
-                Workspace = "Data"
-            };
-
-            // Creates the extent
-            var loader = kernel.Get<IExtentStorageLoader>();
-            var loadedExtent = loader.LoadExtent(storageConfiguration, true);
-            Assert.That(loadedExtent, Is.TypeOf<XmlUriExtent>());
-
-            // Includes some data
-            var factory = kernel.Get<IFactoryMapper>().FindFactoryFor(loadedExtent);
-            var createdElement = factory.create(null);
-            Assert.That(createdElement, Is.TypeOf<XmlElement>());
-            loadedExtent.elements().add(createdElement);
-
-            createdElement.set("test", "Test");
-            Assert.That(createdElement.get("test"), Is.EqualTo("Test"));
-
-            // Stores the extent
-            loader.StoreExtent(loadedExtent);
-
-            // Detaches it
-            loader.DetachExtent(loadedExtent);
-
-            // Reloads it
-            storageConfiguration.ExtentUri = "dm:///test_new";
-
-            var newExtent = loader.LoadExtent(storageConfiguration, false);
-            Assert.That(newExtent.elements().size(), Is.EqualTo(1));
-            Assert.That((newExtent.elements().ElementAt(0) as IElement).get("test"), Is.EqualTo("Test"));
         }
 
         [Test]
         public void TestWithMetaClass()
         {
-            var kernel = new StandardKernel();
-            kernel.UseDatenMeister("Xmi");
+            var kernel = new ContainerBuilder();
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings { PathToXmiFiles = "Xmi" });
+            using (var scope = builder.BeginLifetimeScope())
+            {
+                var dataLayerLogic = scope.Resolve<IDataLayerLogic>();
+                var dataLayers = scope.Resolve<DataLayers>();
+                var umlDataLayer = dataLayers.Uml;
+                var uml = dataLayerLogic.Get<_UML>(umlDataLayer);
+                Assert.That(uml, Is.Not.Null);
 
-            var dataLayerLogic = kernel.Get<IDataLayerLogic>();
-            var dataLayers = kernel.Get<DataLayers>();
-            var umlDataLayer = dataLayers.Uml;
-            var uml = dataLayerLogic.Get<_UML>(umlDataLayer);
-            Assert.That(uml, Is.Not.Null);
+                var extent = new XmlUriExtent("dm:///test");
+                extent.Workspaces = scope.Resolve<IWorkspaceCollection>();
+                dataLayerLogic.AssignToDataLayer(extent, dataLayers.Types);
 
-            var extent = new XmlUriExtent("dm:///test");
-            extent.Workspaces = kernel.Get<IWorkspaceCollection>();
-            dataLayerLogic.AssignToDataLayer(extent, dataLayers.Types);
+                var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(scope, extent);
 
-            var factory = kernel.Get<IFactoryMapper>().FindFactoryFor(extent);
+                var interfaceClass = uml.SimpleClassifiers.__Interface;
+                var element = factory.create(interfaceClass);
+                Assert.That(element, Is.Not.Null);
 
-            var interfaceClass = uml.SimpleClassifiers.__Interface;
-            var element = factory.create(interfaceClass);
-            Assert.That(element, Is.Not.Null);
+                extent.elements().add(element);
+                Assert.That(extent.elements().size(), Is.EqualTo(1));
 
-            extent.elements().add(element);
-            Assert.That(extent.elements().size(), Is.EqualTo(1));
-
-            var retrievedElement = extent.elements().ElementAt(0) as IElement;
-            Assert.That(retrievedElement, Is.Not.Null);
-            Assert.That(retrievedElement.getMetaClass(), Is.Not.Null);
-            Assert.That(retrievedElement.metaclass, Is.Not.Null);
-            var foundMetaClass = retrievedElement.metaclass;
-            Assert.That(foundMetaClass.Equals(interfaceClass), Is.True);
+                var retrievedElement = extent.elements().ElementAt(0) as IElement;
+                Assert.That(retrievedElement, Is.Not.Null);
+                Assert.That(retrievedElement.getMetaClass(), Is.Not.Null);
+                Assert.That(retrievedElement.metaclass, Is.Not.Null);
+                var foundMetaClass = retrievedElement.metaclass;
+                Assert.That(foundMetaClass.Equals(interfaceClass), Is.True);
+            }
         }
     }
 }

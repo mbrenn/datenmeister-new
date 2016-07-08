@@ -95,7 +95,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "tagOwner") // Looking for property
                                         {
-                                            tree.CMOFExtension.Tag.@tagOwner = value;
+                                            tree.CMOFExtension.Tag._tagOwner = value;
                                         }
                                     }
                                 }
@@ -120,15 +120,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "name") // Looking for property
                                         {
-                                            tree.Extension.Tag.@name = value;
+                                            tree.Extension.Tag._name = value;
                                         }
                                         if(name == "value") // Looking for property
                                         {
-                                            tree.Extension.Tag.@value = value;
+                                            tree.Extension.Tag._value = value;
                                         }
                                         if(name == "element") // Looking for property
                                         {
-                                            tree.Extension.Tag.@element = value;
+                                            tree.Extension.Tag._element = value;
                                         }
                                     }
                                 }
@@ -217,11 +217,11 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "name") // Looking for property
                                         {
-                                            tree.CMOFReflection.Argument.@name = value;
+                                            tree.CMOFReflection.Argument._name = value;
                                         }
                                         if(name == "value") // Looking for property
                                         {
-                                            tree.CMOFReflection.Argument.@value = value;
+                                            tree.CMOFReflection.Argument._value = value;
                                         }
                                     }
                                 }
@@ -247,15 +247,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "firstElement") // Looking for property
                                         {
-                                            tree.CMOFReflection.Link.@firstElement = value;
+                                            tree.CMOFReflection.Link._firstElement = value;
                                         }
                                         if(name == "secondElement") // Looking for property
                                         {
-                                            tree.CMOFReflection.Link.@secondElement = value;
+                                            tree.CMOFReflection.Link._secondElement = value;
                                         }
                                         if(name == "association") // Looking for property
                                         {
-                                            tree.CMOFReflection.Link.@association = value;
+                                            tree.CMOFReflection.Link._association = value;
                                         }
                                     }
                                 }
@@ -270,15 +270,15 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "objectInError") // Looking for property
                                         {
-                                            tree.CMOFReflection.Exception.@objectInError = value;
+                                            tree.CMOFReflection.Exception._objectInError = value;
                                         }
                                         if(name == "elementInError") // Looking for property
                                         {
-                                            tree.CMOFReflection.Exception.@elementInError = value;
+                                            tree.CMOFReflection.Exception._elementInError = value;
                                         }
                                         if(name == "description") // Looking for property
                                         {
-                                            tree.CMOFReflection.Exception.@description = value;
+                                            tree.CMOFReflection.Exception._description = value;
                                         }
                                     }
                                 }
@@ -303,7 +303,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "package") // Looking for property
                                         {
-                                            tree.Reflection.Factory.@package = value;
+                                            tree.Reflection.Factory._package = value;
                                         }
                                     }
                                 }
@@ -340,7 +340,7 @@ namespace DatenMeister.Filler
                                         name = GetNameOfElement(value);
                                         if(name == "metaclass") // Looking for property
                                         {
-                                            tree.Reflection.Element.@metaclass = value;
+                                            tree.Reflection.Element._metaclass = value;
                                         }
                                     }
                                 }

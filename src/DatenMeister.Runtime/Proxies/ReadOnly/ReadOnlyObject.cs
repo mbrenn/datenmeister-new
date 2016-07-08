@@ -1,5 +1,4 @@
 ﻿using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Proxy;
 
 namespace DatenMeister.Runtime.Proxies.ReadOnly
 {
@@ -9,12 +8,12 @@ namespace DatenMeister.Runtime.Proxies.ReadOnly
         {
         }
 
-        public override void set(object property, object value)
+        public override void set(string property, object value)
         {
             throw new ReadOnlyAccessException($"Element is readonly");
         }
 
-        public override void unset(object property)
+        public override void unset(string property)
         {
             throw new ReadOnlyAccessException($"Element is readonly");
         }

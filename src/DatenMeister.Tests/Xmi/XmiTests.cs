@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.XMI;
 using NUnit.Framework;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.XMI.UmlBootstrap;
-using DatenMeister.EMOF.Queries;
-using DatenMeister.Filler;
 using DatenMeister.Uml;
 using DatenMeister.XMI.Standards;
 
@@ -95,16 +93,17 @@ namespace DatenMeister.Tests.Xmi
             var uml = GetFilledUml();
 
             Assert.That(uml.CommonStructure.__Comment, Is.InstanceOf<IElement>());
-            Assert.That(uml.CommonStructure.Comment.body, Is.InstanceOf<IElement>());
+            Assert.That(_UML._CommonStructure._Comment.body, Is.InstanceOf<string>());
+            Assert.That(uml.CommonStructure.Comment._body, Is.InstanceOf<IElement>());
 
             Assert.That(
-                (uml.CommonStructure.Comment.body as IElement)
-                    .isSet(uml.CommonStructure.NamedElement.name),
+                uml.CommonStructure.Comment._body
+                    .isSet(_UML._CommonStructure._NamedElement.name),
                 Is.True);
 
             Assert.That(
-                (uml.CommonStructure.Comment.body as IElement)
-                    .get(uml.CommonStructure.NamedElement.name),
+                uml.CommonStructure.Comment._body
+                    .get(_UML._CommonStructure._NamedElement.name),
                 Is.Not.Null);
         }
 
@@ -116,7 +115,7 @@ namespace DatenMeister.Tests.Xmi
 
             // Old behavior
             IEnumerable<object> generalizedElements;
-            object generalProperty;
+            string generalProperty;
             if (package.isSet("generalization"))
             {
                 generalizedElements = package.get("generalization") as IEnumerable<object>;
@@ -125,8 +124,8 @@ namespace DatenMeister.Tests.Xmi
             else
             {
                 generalizedElements = package.get(
-                    uml.Classification.Classifier.generalization) as IEnumerable<object>;
-                generalProperty = uml.Classification.Generalization.general;
+                    _UML._Classification._Classifier.generalization) as IEnumerable<object>;
+                generalProperty = _UML._Classification._Generalization.general;
                 throw new InvalidOperationException("Not supported at the moment");
             }
 

@@ -6,7 +6,8 @@ using System.Linq;
 using DatenMeister.CSV;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Queries;
+using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Reflection;
 
 namespace DatenMeister.Apps.ZipCode
 {
@@ -71,13 +72,13 @@ namespace DatenMeister.Apps.ZipCode
 
         public static class Columns
         {
-            public static object ZipCode
+            public static string ZipCode
             {
                 get;
                 set;
             }
 
-            public static object Name
+            public static string Name
             {
                 get;
                 set;

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using DatenMeister.EMOF.Exceptions;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Proxy;
 
 namespace DatenMeister.EMOF.InMemory
 {
@@ -22,7 +20,7 @@ namespace DatenMeister.EMOF.InMemory
         /// <summary>
         ///     Stores the values direct within the memory
         /// </summary>
-        private readonly Dictionary<object, object> _values = new Dictionary<object, object>();
+        private readonly Dictionary<string, object> _values = new Dictionary<string, object>();
        
         public MofObject()
         {
@@ -56,7 +54,7 @@ namespace DatenMeister.EMOF.InMemory
             return false;
         }
 
-        public virtual object get(object property)
+        public virtual object get(string property)
         {
             object result;
             if (_values.TryGetValue(property, out result))
@@ -67,17 +65,17 @@ namespace DatenMeister.EMOF.InMemory
             throw new MofException("Property not found: " + property);
         }
 
-        public virtual bool isSet(object property)
+        public virtual bool isSet(string property)
         {
             return _values.ContainsKey(property);
         }
 
-        public virtual void set(object property, object value)
+        public virtual void set(string property, object value)
         {
             _values[property] = value;
         }
 
-        public virtual void unset(object property)
+        public virtual void unset(string property)
         {
             _values.Remove(property);
         }
@@ -86,13 +84,18 @@ namespace DatenMeister.EMOF.InMemory
         ///     Returns an enumeration with all properties which are currently set
         /// </summary>
         /// <returns>Enumeration of all objects</returns>
-        public virtual IEnumerable<object> getPropertiesBeingSet()
+        public virtual IEnumerable<string> getPropertiesBeingSet()
         {
             return _values.Keys;
         }
 
         public override string ToString()
         {
+            if (isSet("name"))
+            {
+                return get("name").ToString();
+            }
+
             var builder = new StringBuilder();
             builder.Append($"#{Id} - ");
 
@@ -100,7 +103,7 @@ namespace DatenMeister.EMOF.InMemory
             foreach (var pair in _values)
             {
                 var key = pair.Key;
-                if (key is string)
+                if (key != null)
                 {
                     builder.Append($"{komma}{key} = {pair.Value}");
                 }
@@ -108,6 +111,7 @@ namespace DatenMeister.EMOF.InMemory
                 {
                     builder.Append($"{komma}Prop = {pair.Value}");
                 }
+
                 komma = ", ";
             }
 

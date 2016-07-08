@@ -61,7 +61,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         public static void RetrieveWorkspaceAndExtent(
             this IWorkspaceCollection workspaceCollection,
-            WorkspaceExtentAndItem model,
+            WorkspaceExtentAndItemReference model,
             out Workspace<IExtent> foundWorkspace,
             out IUriExtent foundExtent)
         {
@@ -144,7 +144,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         public static void FindItem(
             this IWorkspaceCollection collection,
-            WorkspaceExtentAndItem model,
+            WorkspaceExtentAndItemReference model,
             out Workspace<IExtent> foundWorkspace,
             out IUriExtent foundExtent,
             out IElement foundItem)

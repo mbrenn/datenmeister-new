@@ -1,9 +1,7 @@
 ﻿using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
-using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Filler;
 using DatenMeister.Uml;
-using DatenMeister.XMI.UmlBootstrap;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Core
@@ -79,7 +77,7 @@ namespace DatenMeister.Tests.Core
             Assert.That(primitiveTypes, Is.Not.Null );
             Assert.That(primitiveTypes.__Real, Is.Not.Null);
             Assert.That(primitiveTypes.__Real, Is.Not.TypeOf<object>());
-
+            
             var primitiveTypes2 = dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(dataLayers.Uml);
             Assert.That(primitiveTypes2, Is.SameAs(primitiveTypes));
         }

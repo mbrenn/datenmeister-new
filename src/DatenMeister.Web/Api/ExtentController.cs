@@ -10,18 +10,18 @@ using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Queries;
 using DatenMeister.Runtime.Extents;
-using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
+using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Web.Helper;
 using DatenMeister.Web.Models;
 using DatenMeister.Web.Models.PostModels;
 using DatenMeister.XMI.ExtentStorage;
+using Autofac;
 
 namespace DatenMeister.Web.Api
 {
@@ -40,6 +40,7 @@ namespace DatenMeister.Web.Api
         private readonly IDataLayerLogic _dataLayerLogic;
         private readonly ColumnCreator _columnCreator;
         private readonly ExtentFunctions _extentFunctions;
+        private readonly ILifetimeScope _diScope;
 
 
         public ExtentController(
@@ -49,7 +50,8 @@ namespace DatenMeister.Web.Api
             IExtentStorageLoader extentStorageLoader, 
             IDataLayerLogic dataLayerLogic,
             ColumnCreator columnCreator, 
-            ExtentFunctions extentFunctions)
+            ExtentFunctions extentFunctions,
+            ILifetimeScope diScope)
         {
             _mapper = mapper;
             _workspaceCollection = workspaceCollection;
@@ -58,6 +60,7 @@ namespace DatenMeister.Web.Api
             _dataLayerLogic = dataLayerLogic;
             _columnCreator = columnCreator;
             _extentFunctions = extentFunctions;
+            _diScope = diScope;
         }
 
         [Route("all")]
@@ -141,11 +144,16 @@ namespace DatenMeister.Web.Api
 
         private static string MakePathAbsolute(string filename)
         {
+            if (string.IsNullOrEmpty(filename))
+            {
+                throw new ArgumentException("Value cannot be null or empty.", nameof(filename));
+            }
+
             if (!Path.IsPathRooted(filename))
             {
                 filename = Path.GetFileName(filename);
                 var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-                filename = Path.Combine(appBase, "data", filename);
+                filename = Path.Combine(appBase, "App_Data/Database", filename);
             }
             return filename;
         }
@@ -422,7 +430,7 @@ namespace DatenMeister.Web.Api
             }
 
             // Creates the type
-            var factory = _mapper.FindFactoryFor(foundExtent);
+            var factory = _mapper.FindFactoryFor(_diScope, foundExtent);
             var element = factory.create(metaclass);
 
             foundExtent.elements().add(element);
@@ -478,8 +486,7 @@ namespace DatenMeister.Web.Api
                     out foundExtent, 
                     out foundItem);
 
-                var property = _columnCreator.ConvertColumnNameToProperty(model.property);
-                foundItem.unset(property);
+                foundItem.unset(model.property);
 
                 return new {success = true};
             }
@@ -504,8 +511,7 @@ namespace DatenMeister.Web.Api
                     out foundExtent, 
                     out foundItem);
 
-                var property = _columnCreator.ConvertColumnNameToProperty(model.property);
-                foundItem.set(property, model.newValue);
+                foundItem.set(model.property, model.newValue);
 
                 return new {success = true};
             }
@@ -534,8 +540,7 @@ namespace DatenMeister.Web.Api
                 {
                     foreach (var pair in model.v)
                     {
-                        var property = _columnCreator.ConvertColumnNameToProperty(pair.Key);
-                        foundItem.set(property, pair.Value);
+                        foundItem.set(pair.Key, pair.Value);
                     }
                 }
 

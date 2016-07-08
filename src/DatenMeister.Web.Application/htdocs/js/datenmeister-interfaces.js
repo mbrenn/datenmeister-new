@@ -86,33 +86,55 @@ define(["require", "exports"], function (require, exports) {
     })(View = exports.View || (exports.View = {}));
     var Table;
     (function (Table) {
-        var DataTableColumn = (function () {
-            function DataTableColumn(title, name) {
+        var DataField = (function () {
+            function DataField(title, name) {
                 this.type = ColumnTypes.textbox;
                 this.title = title;
                 this.name = name;
             }
-            DataTableColumn.prototype.withDefaultValue = function (value) {
+            DataField.prototype.withDefaultValue = function (value) {
                 this.defaultValue = value;
                 return this;
             };
-            return DataTableColumn;
+            return DataField;
         }());
-        Table.DataTableColumn = DataTableColumn;
-        var DataTableDropDown = (function (_super) {
-            __extends(DataTableDropDown, _super);
-            function DataTableDropDown(title, name) {
+        Table.DataField = DataField;
+        var TextDataField = (function (_super) {
+            __extends(TextDataField, _super);
+            function TextDataField(title, name) {
+                _super.call(this, title, name);
+                this.type = ColumnTypes.textbox;
+                this.lineHeight = 1;
+            }
+            return TextDataField;
+        }(DataField));
+        Table.TextDataField = TextDataField;
+        var DateTimeDataField = (function (_super) {
+            __extends(DateTimeDataField, _super);
+            function DateTimeDataField(title, name) {
+                _super.call(this, title, name);
+                this.type = ColumnTypes.dropdown;
+                this.showDate = true;
+                this.showTime = true;
+            }
+            return DateTimeDataField;
+        }(DataField));
+        Table.DateTimeDataField = DateTimeDataField;
+        var DropDownDataField = (function (_super) {
+            __extends(DropDownDataField, _super);
+            function DropDownDataField(title, name) {
                 _super.call(this, title, name);
                 this.type = ColumnTypes.dropdown;
             }
-            return DataTableDropDown;
-        }(DataTableColumn));
-        Table.DataTableDropDown = DataTableDropDown;
+            return DropDownDataField;
+        }(DataField));
+        Table.DropDownDataField = DropDownDataField;
         var ColumnTypes = (function () {
             function ColumnTypes() {
             }
             ColumnTypes.textbox = "textbox";
             ColumnTypes.dropdown = "dropdown";
+            ColumnTypes.dateTime = "datetime";
             return ColumnTypes;
         }());
         Table.ColumnTypes = ColumnTypes;

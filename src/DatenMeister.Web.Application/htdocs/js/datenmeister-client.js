@@ -1,4 +1,4 @@
-define(["require", "exports", "datenmeister-interfaces"], function (require, exports, DMI) {
+define(["require", "exports", "./datenmeister-interfaces"], function (require, exports, DMI) {
     "use strict";
     var WorkspaceApi;
     (function (WorkspaceApi) {

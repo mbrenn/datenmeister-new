@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Queries;
-using DatenMeister.Filler;
+using DatenMeister.EMOF.Interface.Reflection;using DatenMeister.Filler;
+using DatenMeister.Runtime.Reflection;
 using DatenMeister.Uml.Helper;
 using DatenMeister.XMI;
 
@@ -216,10 +216,25 @@ namespace DatenMeister.Uml
                     }
                 }
             }
+          
+            // ConvertPropertiesToRealProperties(allElements);
+        }
 
+        /// <summary>
+        /// Converts all properties of all objects to the real property function. 
+        /// This method is not needed anymore, since we are using now strings as the property reference
+        /// and not the real properties anymore
+        /// </summary>
+        /// <param name="allElements"></param>
+        private void ConvertPropertiesToRealProperties(List<IObject> allElements)
+        {
             // Now we replace the property information from string form to real properties
             List<Action> actions = new List<Action>();
-            var classifierMethod = new ClassifierMethods(_dataLayerLogic, true);
+            var classifierMethod = new ClassifierMethods(_dataLayerLogic)
+            {
+                Legacy = true
+            };
+
             foreach (var element in allElements.OfType<IObjectAllProperties>())
             {
                 var asElement = element as IElement;
@@ -236,12 +251,12 @@ namespace DatenMeister.Uml
                 }
 
                 var propertiesOfMetaClass = classifierMethod.GetPropertiesOfClassifier(metaClass).ToList();
-                var mapping = new Dictionary<string, IElement>();
+                var mapping = new Dictionary<string, string>();
                 foreach (var property in propertiesOfMetaClass)
                 {
-                    mapping[property.get("name").ToString()] = property;
+                    mapping[property] = property;
                 }
-                
+
                 foreach (var property in element.getPropertiesBeingSet())
                 {
                     var textProperty = property.ToString();
@@ -307,6 +322,10 @@ namespace DatenMeister.Uml
                 dataLayerLogic.Create<FillTheMOF, _MOF>(dataLayer);
                 dataLayerLogic.Create<FillTheUML, _UML>(dataLayer);
                 dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(dataLayer);
+
+                var dmml = new DmML();
+                UmlToDmMLConverter.Convert(dataLayerLogic.Get<_UML>(dataLayer), dmml);
+                dataLayerLogic.Set(dataLayer, dmml);
             }
             else
             {

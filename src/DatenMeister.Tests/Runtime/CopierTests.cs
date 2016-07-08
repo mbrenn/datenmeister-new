@@ -7,13 +7,13 @@ namespace DatenMeister.Tests.Runtime
     [TestFixture]
     public class CopierTests
     {
+        private static string property1 = "Prop1";
+        private static string property2 = "Prop2";
+
         [Test]
         public void TestCopyOfObject()
         {
             var factory = new MofFactory();
-
-            var property1 = new object();
-            var property2 = new object();
 
             var mofObject = new MofElement();
             mofObject.set(property1, "55130");

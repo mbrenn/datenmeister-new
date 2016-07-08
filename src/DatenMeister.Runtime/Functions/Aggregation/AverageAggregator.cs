@@ -8,10 +8,6 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         private int _itemCount;
         private double _totalSum;
 
-        public AverageAggregator(object property) : base(property)
-        {
-        }
-
         protected override void StartAggregation()
         {
             _itemCount = 0;

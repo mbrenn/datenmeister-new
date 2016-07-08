@@ -15,9 +15,9 @@ namespace DatenMeister.UWP.Forms
 
             var textBox = new TextBox
             {
+                TextWrapping = TextWrapping.Wrap,
                 Text = DetailFormHelper.GetValueAsString(helper.DataElement, text.name, fieldData.defaultValue),
                 Margin = new Thickness(5),
-                TextWrapping = TextWrapping.Wrap
             };
 
             var lineHeight = Math.Max(1, text.lineHeight);

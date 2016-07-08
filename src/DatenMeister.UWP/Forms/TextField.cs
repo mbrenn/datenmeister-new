@@ -15,7 +15,7 @@ namespace DatenMeister.UWP.Forms
 
             var textBox = new TextBox
             {
-                Text = DetailFormHelper.GetValue(helper.DataElement, text.name),
+                Text = DetailFormHelper.GetValueAsString(helper.DataElement, text.name, fieldData.defaultValue),
                 Margin = new Thickness(5),
                 TextWrapping = TextWrapping.Wrap
             };

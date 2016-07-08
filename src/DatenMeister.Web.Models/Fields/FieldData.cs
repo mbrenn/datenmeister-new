@@ -20,5 +20,7 @@
         public string title { get; set; }
 
         public bool isEnumeration { get; set; }
+
+        public object defaultValue { get; set; }
     }
 }

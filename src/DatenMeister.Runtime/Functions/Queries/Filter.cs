@@ -37,12 +37,24 @@ namespace DatenMeister.Runtime.Functions.Queries
         public static IReflectiveCollection WhenPropertyIs(
             this IReflectiveCollection collection,
             string property,
-            string value)
+            object value)
         {
             return new FilterOnPropertyByPredicateCollection(
                 collection,
                 property,
-                x => (string) x == value);
+                x => x == value);
+        }
+
+        public static IReflectiveCollection WhenPropertyIsOneOf(
+            this IReflectiveCollection collection,
+            string property,
+            IEnumerable<object> values)
+        {
+            var valuesAsList = values.ToList();
+            return new FilterOnPropertyByPredicateCollection(
+                collection,
+                property,
+                x => valuesAsList.Any(y => x == y));
         }
 
         public static IReflectiveCollection WhenOneOfThePropertyContains(

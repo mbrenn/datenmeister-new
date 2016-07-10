@@ -293,6 +293,9 @@
     <Content Include="App_Data\Example\plz.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="plugins\info.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="App_Data\Xmi\MOF.xmi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

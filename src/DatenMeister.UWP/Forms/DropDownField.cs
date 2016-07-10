@@ -30,7 +30,7 @@ namespace DatenMeister.UWP.Forms
 
             // Tries to find the selected element
             var value = DetailFormHelper.GetValue(helper.DataElement, fieldData.name, fieldData.defaultValue);
-            var found = itemsSource.FirstOrDefault(x => x.value == value);
+            var found = itemsSource.FirstOrDefault(x => x.value?.Equals(value) == true);
             dropDown.SelectedItem = found;
 
             Grid.SetColumn(dropDown, 1);

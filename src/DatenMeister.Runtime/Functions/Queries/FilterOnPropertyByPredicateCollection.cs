@@ -33,7 +33,8 @@ namespace DatenMeister.Runtime.Functions.Queries
             foreach (var value in Collection)
             {
                 var valueAsObject = value as IObject;
-                if (_filter(valueAsObject?.get(_property)))
+                var property = valueAsObject?.get(_property);
+                if (_filter(property))
                 {
                     yield return valueAsObject;
                 }

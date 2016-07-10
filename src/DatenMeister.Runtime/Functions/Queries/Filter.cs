@@ -42,7 +42,7 @@ namespace DatenMeister.Runtime.Functions.Queries
             return new FilterOnPropertyByPredicateCollection(
                 collection,
                 property,
-                x => x == value);
+                x => x?.Equals(value) == true);
         }
 
         public static IReflectiveCollection WhenPropertyIsOneOf(
@@ -54,7 +54,7 @@ namespace DatenMeister.Runtime.Functions.Queries
             return new FilterOnPropertyByPredicateCollection(
                 collection,
                 property,
-                x => valuesAsList.Any(y => x == y));
+                x => valuesAsList.Any(y => x?.Equals(y) == true));
         }
 
         public static IReflectiveCollection WhenOneOfThePropertyContains(

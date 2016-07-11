@@ -105,7 +105,7 @@ namespace DatenMeister.Integration
                 }
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
-                var extentTypes = new MofUriExtent("dm:///types");
+                var extentTypes = new MofUriExtent(Locations.UriTypes);
                 var typeWorkspace = workspaceCollection.GetWorkspace("Types");
                 typeWorkspace.AddExtent(extentTypes);
                 dataLayerLogic.AssignToDataLayer(extentTypes, dataLayers.Types);

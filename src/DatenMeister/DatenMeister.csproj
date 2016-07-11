@@ -102,6 +102,7 @@
     <Compile Include="DataLayer\DataLayer.cs" />
     <Compile Include="EMOF\Attributes\DataLayerData.cs" />
     <Compile Include="DataLayer\DataLayerLogic.cs" />
+    <Compile Include="Locations.cs" />
     <Compile Include="Plugins\IDatenMeisterPlugin.cs" />
     <Compile Include="Workspace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

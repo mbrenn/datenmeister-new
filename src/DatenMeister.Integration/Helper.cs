@@ -1,5 +1,7 @@
 ﻿using Autofac;
+using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 
 namespace DatenMeister.Integration
@@ -21,6 +23,16 @@ namespace DatenMeister.Integration
         {
             scope.Resolve<WorkspaceLoader>().Store();
             scope.Resolve<ExtentStorageConfigurationLoader>().StoreAllExtents();
+        }
+
+        /// <summary>
+        /// Returns the extent that is used to store all types
+        /// </summary>
+        /// <param name="collection">Workspace collection to be queried</param>
+        /// <returns>The found uri extent or null</returns>
+        public static IUriExtent FindTypeExtent(this IWorkspaceCollection collection)
+        {
+            return collection.FindExtent(Locations.UriTypes) as IUriExtent;
         }
     }
 }

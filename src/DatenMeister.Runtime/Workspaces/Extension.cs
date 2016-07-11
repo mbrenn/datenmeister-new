@@ -59,6 +59,13 @@ namespace DatenMeister.Runtime.Workspaces
             return false;
         }
 
+        /// <summary>
+        /// Returns the given workspace and extents out of the urls
+        /// </summary>
+        /// <param name="workspaceCollection">Workspace collection to be used</param>
+        /// <param name="model">Model to be queried</param>
+        /// <param name="foundWorkspace">The found workspace</param>
+        /// <param name="foundExtent">The found extent</param>
         public static void RetrieveWorkspaceAndExtent(
             this IWorkspaceCollection workspaceCollection,
             WorkspaceExtentAndItemReference model,

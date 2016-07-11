@@ -93,8 +93,8 @@ namespace DatenMeister.Tests.Console
             var watch = new Stopwatch();
             watch.Start();
             var factory = new MofFactory();
-            var mofExtent = new MofUriExtent("datenmeister:///mof");
-            var umlExtent = new MofUriExtent("datenmeister:///uml");
+            var mofExtent = new MofUriExtent(Locations.UriMof);
+            var umlExtent = new MofUriExtent(Locations.UriUml);
             var loader = new SimpleLoader(factory);
             loader.Load(mofExtent, "data/MOF.xmi");
             loader.Load(mofExtent, "data/UML.xmi");

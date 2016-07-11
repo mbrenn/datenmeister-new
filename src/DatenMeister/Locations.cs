@@ -6,7 +6,7 @@
 
         public static string UriMof = "datenmeister:///mof";
 
-        public static string UriPrototypes = "datenmeister:///prototypes";
+        public static string UriPrimitiveTypes = "datenmeister:///prototypes";
 
         public static string UriTypes = "datenmeister:///types";
     }

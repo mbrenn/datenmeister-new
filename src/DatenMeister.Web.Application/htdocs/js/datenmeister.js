@@ -1,6 +1,6 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/jquery/underscore.d.ts" />
-define(["require", "exports", "./datenmeister-helper", "./datenmeister-interfaces", "./datenmeister-view", "./datenmeister-client", "./datenmeister-ribbon", "./datenmeister-layout", "./datenmeister-logging"], function (require, exports, DMHelper, DMI, DMView, DMClient, DMRibbon, DMLayout, DMLog) {
+define(["require", "exports", "./datenmeister-helper", "./datenmeister-client", "./datenmeister-ribbon", "./datenmeister-layout", "./datenmeister-logging"], function (require, exports, DMHelper, DMClient, DMRibbon, DMLayout, DMLog) {
     "use strict";
     function start() {
         // Information, when an ajax request failed
@@ -69,7 +69,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         tabFile.addIcon("Home", "img/icons/home", function () { layout.gotoHome(); });
         tabFile.addIcon("Refresh", "img/icons/refresh_update", function () { layout.refreshView(); });
         tabFile.addIcon("Workspaces", "img/icons/database", function () { layout.showWorkspaces(); });
-        tabFile.addIcon("Add Workspace", "img/icons/database-add", function () { showDialogNewWorkspace(layout); });
+        tabFile.addIcon("Add Workspace", "img/icons/database-add", function () { layout.showDialogNewWorkspace(); });
         if (changeEvent.workspace !== undefined) {
             // Ok, we have a workspace
             tabFile.addIcon("Delete Extent", "img/icons/database-delete", function () {
@@ -77,10 +77,10 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
                     .done(function () { return layout.navigateToWorkspaces(); });
             });
             tabFile.addIcon("Create Extent", "img/icons/folder_open-new", function () {
-                showNavigationForNewExtents(layout, changeEvent.workspace);
+                layout.showNavigationForNewExtents(changeEvent.workspace);
             });
             tabFile.addIcon("Add Extent", "img/icons/folder_open-add", function () {
-                showDialogAddCsvExtent(layout, changeEvent.workspace);
+                layout.showDialogAddCsvExtent(changeEvent.workspace);
             });
             if (changeEvent.extent !== undefined) {
                 tabFile.addIcon("Delete Extent", "img/icons/folder_open-delete", function () {
@@ -93,86 +93,6 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
             });
         }
         tabFile.addIcon("Close", "img/icons/close_window", function () { window.close(); });
-    }
-    function showDialogNewWorkspace(layout) {
-        var configuration = new DMI.Api.DialogConfiguration();
-        configuration.onOkForm = function (data) {
-            DMClient.WorkspaceApi.createWorkspace({
-                name: data.v["name"],
-                annotation: data.v["annotation"]
-            })
-                .done(function () { return layout.navigateToWorkspaces(); });
-        };
-        configuration.addColumn(new DMI.Table.DataField("Title", "name"));
-        var annotationColumn = new DMI.Table.TextDataField("Annotation", "annotation");
-        annotationColumn.lineHeight = 4;
-        configuration.addColumn(annotationColumn);
-        layout.navigateToDialog(configuration);
-    }
-    function showNavigationForNewExtents(layout, workspace) {
-        var view = new DMView.NavigationView(layout);
-        view.addLink("New CSV Extent", function () {
-            showDialogNewCsvExtent(layout, workspace);
-        });
-        view.addLink("New CSV Extent for UML class", function () {
-            // showDialogNewExtent(layout, workspace);
-        });
-        view.addLink("New XmlExtent", function () {
-            showDialogNewXmiExtent(layout, workspace);
-        });
-        layout.setView(view);
-    }
-    function showDialogNewCsvExtent(layout, workspace) {
-        var configuration = new DMI.Api.DialogConfiguration();
-        configuration.onOkForm = function (data) {
-            DMClient.ExtentApi.createExtent({
-                type: "csv",
-                workspace: data.v["workspace"],
-                contextUri: data.v["contextUri"],
-                filename: data.v["filename"],
-                columns: data.v["columns"]
-            })
-                .done(function () { return layout.navigateToExtents(data.v["workspace"]); });
-        };
-        configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace));
-        configuration.addColumn(new DMI.Table.DataField("URI", "contextUri").withDefaultValue("dm:///"));
-        configuration.addColumn(new DMI.Table.DataField("Filename", "filename"));
-        configuration.addColumn(new DMI.Table.DataField("Columns", "columns").withDefaultValue("Column1,Column2"));
-        configuration.ws = workspace;
-        layout.navigateToDialog(configuration);
-    }
-    function showDialogAddCsvExtent(layout, workspace) {
-        var configuration = new DMI.Api.DialogConfiguration();
-        configuration.onOkForm = function (data) {
-            DMClient.ExtentApi.addExtent({
-                type: "csv",
-                workspace: data.v["workspace"],
-                contextUri: data.v["contextUri"],
-                filename: data.v["filename"]
-            })
-                .done(function () { return layout.navigateToExtents(data.v["workspace"]); });
-        };
-        configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace));
-        configuration.addColumn(new DMI.Table.DataField("URI", "contextUri").withDefaultValue("dm:///"));
-        configuration.addColumn(new DMI.Table.DataField("Filename", "filename"));
-        configuration.ws = workspace;
-        layout.navigateToDialog(configuration);
-    }
-    function showDialogNewXmiExtent(layout, workspace) {
-        var configuration = new DMI.Api.DialogConfiguration();
-        configuration.onOkForm = function (data) {
-            DMClient.ExtentApi.createExtent({
-                type: "xmi",
-                workspace: data.v["workspace"],
-                contextUri: data.v["contextUri"],
-                filename: data.v["filename"]
-            })
-                .done(function () { return layout.navigateToExtents(data.v["workspace"]); });
-        };
-        configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace));
-        configuration.addColumn(new DMI.Table.DataField("URI", "contextUri").withDefaultValue("dm:///"));
-        configuration.addColumn(new DMI.Table.DataField("Filename", "filename").withDefaultValue("d:\\file.xml"));
-        layout.navigateToDialog(configuration);
     }
 });
 //# sourceMappingURL=datenmeister.js.map

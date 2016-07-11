@@ -11,9 +11,9 @@ namespace DatenMeister.SourceGeneration
         public static void Main(string[] args)
         {
             var factory = new MofFactory();
-            var umlExtent = new MofUriExtent("datenmeister:///uml");
-            var mofExtent = new MofUriExtent("datenmeister:///mof");
-            var primitiveTypeExtent = new MofUriExtent("datenmeister:///primitivetypes");
+            var umlExtent = new MofUriExtent(Locations.UriUml);
+            var mofExtent = new MofUriExtent(Locations.UriMof);
+            var primitiveTypeExtent = new MofUriExtent(Locations.UriPrimitiveTypes);
             var loader = new SimpleLoader(factory);
             loader.Load(umlExtent, "data/UML.xmi");
             loader.Load(mofExtent, "data/MOF.xmi");

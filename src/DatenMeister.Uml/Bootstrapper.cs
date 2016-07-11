@@ -305,9 +305,9 @@ namespace DatenMeister.Uml
             IDataLayer dataLayer)
         {
             var factory = new MofFactory();
-            var umlExtent = new MofUriExtent("datenmeister:///uml");
-            var mofExtent = new MofUriExtent("datenmeister:///mof");
-            var primitiveExtent = new MofUriExtent("datenmeister:///prototypes");
+            var umlExtent = new MofUriExtent(Locations.UriUml);
+            var mofExtent = new MofUriExtent(Locations.UriMof);
+            var primitiveExtent = new MofUriExtent(Locations.UriPrimitiveTypes);
             var loader = new SimpleLoader(factory);
             loader.Load(primitiveExtent, paths.PathPrimitive);
             loader.Load(umlExtent, paths.PathUml);

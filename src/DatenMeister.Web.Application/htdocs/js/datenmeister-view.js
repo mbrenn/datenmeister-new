@@ -83,6 +83,9 @@ define(["require", "exports", "./datenmeister-tables", "./datenmeister-client", 
                 }
                 container.append(compiledTable);
             }
+            var newExtentButton = $("<input type= 'button' value='Add new Extent' class='btn'></input>");
+            newExtentButton.click(function () { return tthis.layout.showNavigationForNewExtents(ws); });
+            container.append(newExtentButton);
         };
         ExtentView.prototype.loadAndCreateHtmlForExtent = function (container, ws, extentUrl, query) {
             var _this = this;

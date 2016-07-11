@@ -51,7 +51,7 @@ export class WorkspaceView {
 export class ExtentView {
     layout: DMI.Api.ILayout;
 
-    constructor(layout?: DMI.Api.ILayout) {
+    constructor(layout: DMI.Api.ILayout) {
         this.layout = layout;
     }
 
@@ -110,6 +110,10 @@ export class ExtentView {
 
             container.append(compiledTable);
         }
+
+        var newExtentButton = $("<input type= 'button' value='Add new Extent' class='btn'></input>");
+        newExtentButton.click(() => tthis.layout.showNavigationForNewExtents(ws));
+        container.append(newExtentButton);
     }
 
     loadAndCreateHtmlForExtent(container: JQuery, ws: string, extentUrl: string, query?: DMI.PostModels.IItemTableQuery): JQueryPromise<Object> {

@@ -1,5 +1,6 @@
 ﻿
 import DMI = require("./datenmeister-interfaces");
+import DMClient = require("./datenmeister-client");
 import DMView = require("./datenmeister-view");
 import DMTables = require("./datenmeister-tables");
 
@@ -46,16 +47,18 @@ export class Layout implements DMI.Api.ILayout {
     }
 
     navigateToItems(ws: string, extentUrl: string) {
-        history.pushState({}, "", "#ws=" + encodeURIComponent(ws)
-            + "&ext=" + encodeURIComponent(extentUrl));
+        history.pushState({}, "", "#ws=" + encodeURIComponent(ws) + "&ext=" + encodeURIComponent(extentUrl));
         this.showItems(ws, extentUrl);
     }
 
     navigateToItem(ws: string, extentUrl: string, itemUrl: string, settings?: DMI.View.IItemViewSettings) {
-        var url = "#ws=" + encodeURIComponent(ws)
-            + "&ext=" + encodeURIComponent(extentUrl)
-            + "&item=" + encodeURIComponent(itemUrl);
-        
+        var url = "#ws=" +
+            encodeURIComponent(ws) +
+            "&ext=" +
+            encodeURIComponent(extentUrl) +
+            "&item=" +
+            encodeURIComponent(itemUrl);
+
         if (settings !== undefined && settings !== null) {
             if (settings.isReadonly) {
                 url += "&mode=readonly";
@@ -122,7 +125,7 @@ export class Layout implements DMI.Api.ILayout {
             workspace: workspaceId
         });
         tthis.createTitle(workspaceId);
-        var extentLogic = new DMView.ExtentView();
+        var extentLogic = new DMView.ExtentView(this);
         extentLogic.onExtentSelected = (ws: string, extentUrl: string) => {
             tthis.navigateToItems(ws, extentUrl);
             return false;
@@ -138,7 +141,7 @@ export class Layout implements DMI.Api.ILayout {
             type: PageType.Items,
             workspace: workspaceId,
             extent: extentUrl
-            });
+        });
 
         this.createTitle(workspaceId, extentUrl);
         var extentLogic = new DMView.ExtentView(this);
@@ -173,7 +176,11 @@ export class Layout implements DMI.Api.ILayout {
         };
 
         this.createTitle(workspaceId, extentUrl, itemUrl);
-        extentLogic.loadAndCreateHtmlForItem($(".data-itemdetail", this.parent), workspaceId, extentUrl, itemUrl, settings);
+        extentLogic.loadAndCreateHtmlForItem($(".data-itemdetail", this.parent),
+            workspaceId,
+            extentUrl,
+            itemUrl,
+            settings);
     }
 
     createTitle(ws?: string, extentUrl?: string, itemUrl?: string) {
@@ -193,31 +200,150 @@ export class Layout implements DMI.Api.ILayout {
                 return false;
             };
         } else if (itemUrl == undefined) {
-            containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - Items");
+            containerTitle
+                .html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - Items");
             this.onRefresh = () => {
                 tthis.showItems(ws, extentUrl);
                 return false;
             };
         } else {
-            containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - <a href='#' class='link_items'>Items</a>");
+            containerTitle
+                .html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - <a href='#' class='link_items'>Items</a>");
             this.onRefresh = () => {
                 tthis.showItem(ws, extentUrl, itemUrl);
                 return false;
             };
         }
 
-        $(".link_workspaces", containerTitle).click(() => {
-            tthis.navigateToWorkspaces();
-            return false;
+        $(".link_workspaces", containerTitle)
+            .click(() => {
+                tthis.navigateToWorkspaces();
+                return false;
+            });
+        $(".link_extents", containerTitle)
+            .click(() => {
+                tthis.navigateToExtents(ws);
+                return false;
+            });
+        $(".link_items", containerTitle)
+            .click(() => {
+                tthis.showItems(ws, extentUrl);
+                return false;
+            });
+    }
+
+    showDialogNewWorkspace() {
+        var tthis = this;
+        var configuration = new DMI.Api.DialogConfiguration();
+
+        configuration.onOkForm = data => {
+            DMClient.WorkspaceApi.createWorkspace(
+                {
+                    name: data.v["name"],
+                    annotation: data.v["annotation"]
+                })
+                .done(() => tthis.navigateToWorkspaces());
+        };
+
+        configuration.addColumn(new DMI.Table.DataField("Title", "name"));
+        var annotationColumn = new DMI.Table.TextDataField("Annotation", "annotation");
+        annotationColumn.lineHeight = 4;
+        configuration.addColumn(annotationColumn);
+
+        tthis.navigateToDialog(configuration);
+    }
+
+
+    showNavigationForNewExtents(workspace: string) {
+        var tthis = this;
+        var view = new DMView.NavigationView();
+
+        view.addLink("New CSV Extent",
+        () => {
+            tthis.showDialogNewCsvExtent(workspace);
         });
-        $(".link_extents", containerTitle).click(() => {
-            tthis.navigateToExtents(ws);
-            return false;
+
+        view.addLink("New CSV Extent for UML class",
+        () => {
+            // showDialogNewExtent(layout, workspace);
         });
-        $(".link_items", containerTitle).click(() => {
-            tthis.showItems(ws, extentUrl);
-            return false;
+
+        view.addLink("New XmlExtent",
+        () => {
+            tthis.showDialogNewXmiExtent(workspace);
         });
+
+        tthis.setView(view);
+    }
+
+
+    showDialogNewCsvExtent(workspace: string) {
+        var tthis = this;
+        var configuration = new DMI.Api.DialogConfiguration();
+
+        configuration.onOkForm = data => {
+            DMClient.ExtentApi.createExtent(
+                {
+                    type: "csv",
+                    workspace: data.v["workspace"],
+                    contextUri: data.v["contextUri"],
+                    filename: data.v["filename"],
+                    columns: data.v["columns"]
+                })
+                .done(() => tthis.navigateToExtents(data.v["workspace"]));
+        };
+
+        configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace));
+        configuration.addColumn(new DMI.Table.DataField("URI", "contextUri").withDefaultValue("dm:///"));
+        configuration.addColumn(new DMI.Table.DataField("Filename", "filename"));
+        configuration.addColumn(new DMI.Table.DataField("Columns", "columns").withDefaultValue("Column1,Column2"));
+        configuration.ws = workspace;
+
+        tthis.navigateToDialog(configuration);
+    }
+
+    showDialogAddCsvExtent(workspace: string) {
+        var tthis = this;
+        var configuration = new DMI.Api.DialogConfiguration();
+
+        configuration.onOkForm = data => {
+            DMClient.ExtentApi.addExtent(
+                {
+                    type: "csv",
+                    workspace: data.v["workspace"],
+                    contextUri: data.v["contextUri"],
+                    filename: data.v["filename"]
+                })
+                .done(() => tthis.navigateToExtents(data.v["workspace"]));
+        };
+
+        configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace));
+        configuration.addColumn(new DMI.Table.DataField("URI", "contextUri").withDefaultValue("dm:///"));
+        configuration.addColumn(new DMI.Table.DataField("Filename", "filename"));
+        configuration.ws = workspace;
+
+        tthis.navigateToDialog(configuration);
+    }
+
+    showDialogNewXmiExtent(workspace: string) {
+        var tthis = this;
+        var configuration = new DMI.Api.DialogConfiguration();
+        configuration.onOkForm = data => {
+            DMClient.ExtentApi.createExtent(
+                {
+                    type: "xmi",
+                    workspace: data.v["workspace"],
+                    contextUri: data.v["contextUri"],
+                    filename: data.v["filename"]
+                })
+                .done(() => tthis.navigateToExtents(data.v["workspace"]));
+        };
+
+        configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace));
+        configuration.addColumn(new DMI.Table.DataField("URI", "contextUri").withDefaultValue("dm:///"));
+        configuration.addColumn(new DMI.Table.DataField("Filename", "filename").withDefaultValue("d:\\file.xml"));
+
+        tthis.navigateToDialog(configuration);
     }
 
     switchLayout(layoutInformation: ILayoutChangedEvent) {

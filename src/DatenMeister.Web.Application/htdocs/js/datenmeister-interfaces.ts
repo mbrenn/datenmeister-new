@@ -232,6 +232,8 @@ export namespace Api {
         navigateToItems(ws: string, extentUrl: string): void;
         navigateToItem(ws: string, extentUrl: string, itemUrl: string): void;
         setStatus(statusDom: JQuery): void;
+
+        showNavigationForNewExtents(workspace: string);
     }
 
     export interface IItemsProvider {

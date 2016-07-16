@@ -107,6 +107,10 @@ function buildRibbons(layout: DMLayout.Layout, changeEvent: DMLayout.ILayoutChan
                 DMClient.ExtentApi.deleteExtent(changeEvent.workspace, changeEvent.extent)
                     .done(() => layout.navigateToExtents(changeEvent.workspace));
             });
+
+            tabFile.addIcon("Export Extent", "img/icons/folder_open-download", () => {
+                layout.exportExtent(changeEvent.workspace, changeEvent.extent);
+            });
         }
 
         tabFile.addIcon("Add ZipCodes", "img/icons/folder_open-mail", () => {

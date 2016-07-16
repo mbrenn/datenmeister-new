@@ -87,6 +87,9 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
                     DMClient.ExtentApi.deleteExtent(changeEvent.workspace, changeEvent.extent)
                         .done(function () { return layout.navigateToExtents(changeEvent.workspace); });
                 });
+                tabFile.addIcon("Export Extent", "img/icons/folder_open-download", function () {
+                    layout.exportExtent(changeEvent.workspace, changeEvent.extent);
+                });
             }
             tabFile.addIcon("Add ZipCodes", "img/icons/folder_open-mail", function () {
                 DMClient.ExampleApi.addZipCodes(changeEvent.workspace).done(function () { return layout.refreshView(); });

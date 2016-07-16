@@ -213,8 +213,13 @@ namespace DatenMeister.CSV
                     builder.Append(settings.Separator);
                 }
 
-                builder.Append(conversion(value).ToString());
+                var cellValue = conversion(value).ToString();
+                if (cellValue.Contains(settings.Separator))
+                {
+                    cellValue = $"\"{cellValue.Replace("\"", "\"\"")}\"";
+                }
 
+                builder.Append(cellValue);
                 first = false;
             }
 

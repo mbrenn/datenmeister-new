@@ -255,13 +255,12 @@ namespace DatenMeister.Web.Api
 
         [Route("extent_export")]
         [HttpGet]
-        public object ExportExtent(string ws, string extent)
+        public object ExportExtentAsCSV(string ws, string extent)
         {
             Workspace<IExtent> foundWorkspace;
             IUriExtent foundExtent;
             _workspaceCollection.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
 
-            var factory = new CSV.EMOF.CSVFactory();
             var provider = new CSVDataProvider(_workspaceCollection, _dataLayerLogic);
             
             using (var stream = new StringWriter())
@@ -272,8 +271,17 @@ namespace DatenMeister.Web.Api
                     Content = new StringContent(stream.GetStringBuilder().ToString())
                 };
 
+                var extentName = foundExtent.contextURI();
+                foreach (var c in Path.GetInvalidFileNameChars())
+                {
+                    extentName = extentName.Replace(c, '-');
+                }
+
+                extentName = $"{extentName.Replace('=', '-')}.csv";
+                
+
                 httpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
-                httpResponse.Content.Headers.Add("Content-Disposition", "attachment;filename=extent.csv");
+                httpResponse.Content.Headers.Add("Content-Disposition", $"attachment;filename={extentName}");
 
                 return httpResponse;
             }

@@ -108,7 +108,7 @@ function buildRibbons(layout: DMLayout.Layout, changeEvent: DMLayout.ILayoutChan
                     .done(() => layout.navigateToExtents(changeEvent.workspace));
             });
 
-            tabFile.addIcon("Export Extent", "img/icons/folder_open-export", () => {
+            tabFile.addIcon("Export Extent", "img/icons/folder_open-download", () => {
                 layout.exportExtent(changeEvent.workspace, changeEvent.extent);
             });
         }

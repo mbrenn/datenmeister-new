@@ -29,7 +29,7 @@ export class Layout implements DMI.Api.ILayout {
         this.parent = parent;
     }
 
-    refreshView() {
+    refreshView() : void {
         if (this.onRefresh !== undefined && this.onRefresh !== null) {
             this.onRefresh();
         }

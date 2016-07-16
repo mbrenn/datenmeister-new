@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Web.Http;
 using DatenMeister.CSV;
 using DatenMeister.CSV.Runtime.Storage;
@@ -248,6 +251,32 @@ namespace DatenMeister.Web.Api
             {
                 success = removed
             };
+        }
+
+        [Route("extent_export")]
+        [HttpGet]
+        public object ExportExtent(string ws, string extent)
+        {
+            Workspace<IExtent> foundWorkspace;
+            IUriExtent foundExtent;
+            _workspaceCollection.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
+
+            var factory = new CSV.EMOF.CSVFactory();
+            var provider = new CSVDataProvider(_workspaceCollection, _dataLayerLogic);
+            
+            using (var stream = new StringWriter())
+            {
+                provider.SaveToStream(stream, foundExtent, new CSVSettings());
+                var httpResponse = new HttpResponseMessage()
+                {
+                    Content = new StringContent(stream.GetStringBuilder().ToString())
+                };
+
+                httpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
+                httpResponse.Content.Headers.Add("Content-Disposition", "attachment;filename=extent.csv");
+
+                return httpResponse;
+            }
         }
 
         /// <summary>

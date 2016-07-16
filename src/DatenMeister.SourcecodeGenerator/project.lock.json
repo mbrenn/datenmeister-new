@@ -3,6 +3,14 @@
   "version": 1,
   "targets": {
     ".NETFramework,Version=v4.6": {
+      "Autofac/3.5.2": {
+        "compile": {
+          "lib/net40/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Autofac.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.0.0": {
         "frameworkAssemblies": [
           "Microsoft.CSharp"
@@ -666,9 +674,25 @@
         "runtime": {
           "lib/net46/_._": {}
         }
+      },
+      "System.Xml.XmlSerializer/4.0.10": {
+        "compile": {
+          "ref/net46/_._": {}
+        },
+        "runtime": {
+          "lib/net46/_._": {}
+        }
       }
     },
     ".NETFramework,Version=v4.6/win-x64": {
+      "Autofac/3.5.2": {
+        "compile": {
+          "lib/net40/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Autofac.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.0.0": {
         "frameworkAssemblies": [
           "Microsoft.CSharp"
@@ -1360,6 +1384,18 @@
         }
       },
       "System.Xml.XDocument/4.0.10": {
+        "compile": {
+          "ref/net46/_._": {}
+        },
+        "runtime": {
+          "lib/net46/_._": {}
+        }
+      },
+      "System.Xml.XmlSerializer/4.0.10": {
+        "dependencies": {
+          "System.Reflection.Emit": "4.0.0",
+          "System.Reflection.Emit.ILGeneration": "4.0.0"
+        },
         "compile": {
           "ref/net46/_._": {}
         },
@@ -1369,6 +1405,14 @@
       }
     },
     ".NETFramework,Version=v4.6/win-x86": {
+      "Autofac/3.5.2": {
+        "compile": {
+          "lib/net40/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Autofac.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.0.0": {
         "frameworkAssemblies": [
           "Microsoft.CSharp"
@@ -2066,9 +2110,29 @@
         "runtime": {
           "lib/net46/_._": {}
         }
+      },
+      "System.Xml.XmlSerializer/4.0.10": {
+        "dependencies": {
+          "System.Reflection.Emit": "4.0.0",
+          "System.Reflection.Emit.ILGeneration": "4.0.0"
+        },
+        "compile": {
+          "ref/net46/_._": {}
+        },
+        "runtime": {
+          "lib/net46/_._": {}
+        }
       }
     },
     ".NETPlatform,Version=v5.0": {
+      "Autofac/3.5.2": {
+        "compile": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.0.0": {
         "dependencies": {
           "System.Collections": "4.0.10",
@@ -2857,9 +2921,27 @@
         "runtime": {
           "lib/dotnet/System.Xml.XDocument.dll": {}
         }
+      },
+      "System.Xml.XmlSerializer/4.0.10": {
+        "dependencies": {
+          "System.IO": "4.0.0",
+          "System.Runtime": "4.0.0",
+          "System.Xml.ReaderWriter": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlSerializer.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0": {
+      "Autofac/3.5.2": {
+        "compile": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.0.0": {
         "dependencies": {
           "System.Collections": "4.0.10",
@@ -4165,9 +4247,69 @@
         "runtime": {
           "lib/dotnet/System.Xml.XDocument.dll": {}
         }
+      },
+      "System.Xml.XmlDocument/4.0.0": {
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.Encoding": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlDocument.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/System.Xml.XmlDocument.dll": {}
+        }
+      },
+      "System.Xml.XmlSerializer/4.0.10": {
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Linq": "4.0.0",
+          "System.Reflection": "4.0.10",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Reflection.TypeExtensions": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.RegularExpressions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10",
+          "System.Xml.XmlDocument": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlSerializer.dll": {}
+        },
+        "runtime": {
+          "lib/netcore50/System.Xml.XmlSerializer.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win8-aot/lib/netcore50/System.Xml.XmlSerializer.dll": {
+            "assetType": "runtime",
+            "rid": "win8-aot"
+          }
+        }
       }
     },
     "UAP,Version=v10.0/win10-arm": {
+      "Autofac/3.5.2": {
+        "compile": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.0.0": {
         "dependencies": {
           "System.Collections": "4.0.10",
@@ -5363,9 +5505,65 @@
         "runtime": {
           "lib/dotnet/System.Xml.XDocument.dll": {}
         }
+      },
+      "System.Xml.XmlDocument/4.0.0": {
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.Encoding": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlDocument.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/System.Xml.XmlDocument.dll": {}
+        }
+      },
+      "System.Xml.XmlSerializer/4.0.10": {
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Linq": "4.0.0",
+          "System.Reflection": "4.0.10",
+          "System.Reflection.Emit": "4.0.0",
+          "System.Reflection.Emit.ILGeneration": "4.0.0",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Reflection.TypeExtensions": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.RegularExpressions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10",
+          "System.Xml.XmlDocument": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlSerializer.dll": {}
+        },
+        "runtime": {
+          "lib/netcore50/System.Xml.XmlSerializer.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0/win10-arm-aot": {
+      "Autofac/3.5.2": {
+        "compile": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.0.0": {
         "dependencies": {
           "System.Collections": "4.0.10",
@@ -6128,6 +6326,34 @@
           "runtimes/win8-aot/lib/netcore50/System.Reflection.DispatchProxy.dll": {}
         }
       },
+      "System.Reflection.Emit/4.0.0": {
+        "dependencies": {
+          "System.IO": "4.0.0",
+          "System.Reflection": "4.0.0",
+          "System.Reflection.Emit.ILGeneration": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Runtime": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Reflection.Emit.dll": {}
+        },
+        "runtime": {
+          "lib/netcore50/System.Reflection.Emit.dll": {}
+        }
+      },
+      "System.Reflection.Emit.ILGeneration/4.0.0": {
+        "dependencies": {
+          "System.Reflection": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Runtime": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Reflection.Emit.ILGeneration.dll": {}
+        },
+        "runtime": {
+          "lib/netcore50/System.Reflection.Emit.ILGeneration.dll": {}
+        }
+      },
       "System.Reflection.Extensions/4.0.0": {
         "dependencies": {
           "System.Diagnostics.Debug": "4.0.10",
@@ -6499,9 +6725,65 @@
         "runtime": {
           "lib/dotnet/System.Xml.XDocument.dll": {}
         }
+      },
+      "System.Xml.XmlDocument/4.0.0": {
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.Encoding": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlDocument.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/System.Xml.XmlDocument.dll": {}
+        }
+      },
+      "System.Xml.XmlSerializer/4.0.10": {
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Linq": "4.0.0",
+          "System.Reflection": "4.0.10",
+          "System.Reflection.Emit": "4.0.0",
+          "System.Reflection.Emit.ILGeneration": "4.0.0",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Reflection.TypeExtensions": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.RegularExpressions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10",
+          "System.Xml.XmlDocument": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlSerializer.dll": {}
+        },
+        "runtime": {
+          "runtimes/win8-aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0/win10-x64": {
+      "Autofac/3.5.2": {
+        "compile": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.0.0": {
         "dependencies": {
           "System.Collections": "4.0.10",
@@ -7703,9 +7985,65 @@
         "runtime": {
           "lib/dotnet/System.Xml.XDocument.dll": {}
         }
+      },
+      "System.Xml.XmlDocument/4.0.0": {
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.Encoding": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlDocument.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/System.Xml.XmlDocument.dll": {}
+        }
+      },
+      "System.Xml.XmlSerializer/4.0.10": {
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Linq": "4.0.0",
+          "System.Reflection": "4.0.10",
+          "System.Reflection.Emit": "4.0.0",
+          "System.Reflection.Emit.ILGeneration": "4.0.0",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Reflection.TypeExtensions": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.RegularExpressions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10",
+          "System.Xml.XmlDocument": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlSerializer.dll": {}
+        },
+        "runtime": {
+          "lib/netcore50/System.Xml.XmlSerializer.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0/win10-x64-aot": {
+      "Autofac/3.5.2": {
+        "compile": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.0.0": {
         "dependencies": {
           "System.Collections": "4.0.10",
@@ -8468,6 +8806,34 @@
           "runtimes/win8-aot/lib/netcore50/System.Reflection.DispatchProxy.dll": {}
         }
       },
+      "System.Reflection.Emit/4.0.0": {
+        "dependencies": {
+          "System.IO": "4.0.0",
+          "System.Reflection": "4.0.0",
+          "System.Reflection.Emit.ILGeneration": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Runtime": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Reflection.Emit.dll": {}
+        },
+        "runtime": {
+          "lib/netcore50/System.Reflection.Emit.dll": {}
+        }
+      },
+      "System.Reflection.Emit.ILGeneration/4.0.0": {
+        "dependencies": {
+          "System.Reflection": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Runtime": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Reflection.Emit.ILGeneration.dll": {}
+        },
+        "runtime": {
+          "lib/netcore50/System.Reflection.Emit.ILGeneration.dll": {}
+        }
+      },
       "System.Reflection.Extensions/4.0.0": {
         "dependencies": {
           "System.Diagnostics.Debug": "4.0.10",
@@ -8839,9 +9205,65 @@
         "runtime": {
           "lib/dotnet/System.Xml.XDocument.dll": {}
         }
+      },
+      "System.Xml.XmlDocument/4.0.0": {
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.Encoding": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlDocument.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/System.Xml.XmlDocument.dll": {}
+        }
+      },
+      "System.Xml.XmlSerializer/4.0.10": {
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Linq": "4.0.0",
+          "System.Reflection": "4.0.10",
+          "System.Reflection.Emit": "4.0.0",
+          "System.Reflection.Emit.ILGeneration": "4.0.0",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Reflection.TypeExtensions": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.RegularExpressions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10",
+          "System.Xml.XmlDocument": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlSerializer.dll": {}
+        },
+        "runtime": {
+          "runtimes/win8-aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0/win10-x86": {
+      "Autofac/3.5.2": {
+        "compile": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.0.0": {
         "dependencies": {
           "System.Collections": "4.0.10",
@@ -10043,9 +10465,65 @@
         "runtime": {
           "lib/dotnet/System.Xml.XDocument.dll": {}
         }
+      },
+      "System.Xml.XmlDocument/4.0.0": {
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.Encoding": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlDocument.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/System.Xml.XmlDocument.dll": {}
+        }
+      },
+      "System.Xml.XmlSerializer/4.0.10": {
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Linq": "4.0.0",
+          "System.Reflection": "4.0.10",
+          "System.Reflection.Emit": "4.0.0",
+          "System.Reflection.Emit.ILGeneration": "4.0.0",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Reflection.TypeExtensions": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.RegularExpressions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10",
+          "System.Xml.XmlDocument": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlSerializer.dll": {}
+        },
+        "runtime": {
+          "lib/netcore50/System.Xml.XmlSerializer.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0/win10-x86-aot": {
+      "Autofac/3.5.2": {
+        "compile": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.0.0": {
         "dependencies": {
           "System.Collections": "4.0.10",
@@ -10808,6 +11286,34 @@
           "runtimes/win8-aot/lib/netcore50/System.Reflection.DispatchProxy.dll": {}
         }
       },
+      "System.Reflection.Emit/4.0.0": {
+        "dependencies": {
+          "System.IO": "4.0.0",
+          "System.Reflection": "4.0.0",
+          "System.Reflection.Emit.ILGeneration": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Runtime": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Reflection.Emit.dll": {}
+        },
+        "runtime": {
+          "lib/netcore50/System.Reflection.Emit.dll": {}
+        }
+      },
+      "System.Reflection.Emit.ILGeneration/4.0.0": {
+        "dependencies": {
+          "System.Reflection": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Runtime": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Reflection.Emit.ILGeneration.dll": {}
+        },
+        "runtime": {
+          "lib/netcore50/System.Reflection.Emit.ILGeneration.dll": {}
+        }
+      },
       "System.Reflection.Extensions/4.0.0": {
         "dependencies": {
           "System.Diagnostics.Debug": "4.0.10",
@@ -11179,10 +11685,71 @@
         "runtime": {
           "lib/dotnet/System.Xml.XDocument.dll": {}
         }
+      },
+      "System.Xml.XmlDocument/4.0.0": {
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.Encoding": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlDocument.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet/System.Xml.XmlDocument.dll": {}
+        }
+      },
+      "System.Xml.XmlSerializer/4.0.10": {
+        "dependencies": {
+          "System.Collections": "4.0.10",
+          "System.Diagnostics.Debug": "4.0.10",
+          "System.Globalization": "4.0.10",
+          "System.IO": "4.0.10",
+          "System.Linq": "4.0.0",
+          "System.Reflection": "4.0.10",
+          "System.Reflection.Emit": "4.0.0",
+          "System.Reflection.Emit.ILGeneration": "4.0.0",
+          "System.Reflection.Extensions": "4.0.0",
+          "System.Reflection.Primitives": "4.0.0",
+          "System.Reflection.TypeExtensions": "4.0.0",
+          "System.Resources.ResourceManager": "4.0.0",
+          "System.Runtime": "4.0.20",
+          "System.Runtime.Extensions": "4.0.10",
+          "System.Text.RegularExpressions": "4.0.10",
+          "System.Threading": "4.0.10",
+          "System.Xml.ReaderWriter": "4.0.10",
+          "System.Xml.XmlDocument": "4.0.0"
+        },
+        "compile": {
+          "ref/dotnet/System.Xml.XmlSerializer.dll": {}
+        },
+        "runtime": {
+          "runtimes/win8-aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
+        }
       }
     }
   },
   "libraries": {
+    "Autofac/3.5.2": {
+      "sha512": "pGR5LjY8T/16x6SkJNd7u6EjQnE4C7JS0BZJ7Yl7pt313gIUZ/2ZnPSOIM5eaIA7ArxaudlyyLvAT4ayX5UJ/A==",
+      "type": "package",
+      "path": "Autofac/3.5.2",
+      "files": [
+        "Autofac.3.5.2.nupkg.sha512",
+        "Autofac.nuspec",
+        "lib/net40/Autofac.dll",
+        "lib/net40/Autofac.xml",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.dll",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Autofac.xml"
+      ]
+    },
     "Microsoft.CSharp/4.0.0": {
       "sha512": "oWqeKUxHXdK6dL2CFjgMcaBISbkk+AqEg+yvJHE4DElNzS4QaTsCflgkkqZwVlWby1Dg9zo9n+iCAMFefFdJ/A==",
       "type": "package",
@@ -13787,6 +14354,71 @@
         "ref/net46/_._",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._"
+      ]
+    },
+    "System.Xml.XmlDocument/4.0.0": {
+      "sha512": "H5qTx2+AXgaKE5wehU1ZYeYPFpp/rfFh69/937NvwCrDqbIkvJRmIFyKKpkoMI6gl9hGfuVizfIudVTMyowCXw==",
+      "type": "package",
+      "path": "System.Xml.XmlDocument/4.0.0",
+      "files": [
+        "System.Xml.XmlDocument.4.0.0.nupkg.sha512",
+        "System.Xml.XmlDocument.nuspec",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/dotnet/System.Xml.XmlDocument.dll",
+        "lib/net46/System.Xml.XmlDocument.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/dotnet/System.Xml.XmlDocument.dll",
+        "ref/dotnet/System.Xml.XmlDocument.xml",
+        "ref/dotnet/de/System.Xml.XmlDocument.xml",
+        "ref/dotnet/es/System.Xml.XmlDocument.xml",
+        "ref/dotnet/fr/System.Xml.XmlDocument.xml",
+        "ref/dotnet/it/System.Xml.XmlDocument.xml",
+        "ref/dotnet/ja/System.Xml.XmlDocument.xml",
+        "ref/dotnet/ko/System.Xml.XmlDocument.xml",
+        "ref/dotnet/ru/System.Xml.XmlDocument.xml",
+        "ref/dotnet/zh-hans/System.Xml.XmlDocument.xml",
+        "ref/dotnet/zh-hant/System.Xml.XmlDocument.xml",
+        "ref/net46/System.Xml.XmlDocument.dll",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._"
+      ]
+    },
+    "System.Xml.XmlSerializer/4.0.10": {
+      "sha512": "OKhE6vruk88z/hl0lmfrMvXteTASgJUagu6PT6S10i9uLbvDR3pTwB6jVgiwa2D2qtTB+eneZbS9jljhPXhTtg==",
+      "type": "package",
+      "path": "System.Xml.XmlSerializer/4.0.10",
+      "files": [
+        "System.Xml.XmlSerializer.4.0.10.nupkg.sha512",
+        "System.Xml.XmlSerializer.nuspec",
+        "lib/DNXCore50/System.Xml.XmlSerializer.dll",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/_._",
+        "lib/netcore50/System.Xml.XmlSerializer.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/dotnet/System.Xml.XmlSerializer.dll",
+        "ref/dotnet/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/de/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/es/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/fr/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/it/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/ja/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/ko/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/ru/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/zh-hans/System.Xml.XmlSerializer.xml",
+        "ref/dotnet/zh-hant/System.Xml.XmlSerializer.xml",
+        "ref/net46/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "runtime.json",
+        "runtimes/win8-aot/lib/netcore50/System.Xml.XmlSerializer.dll"
       ]
     }
   },

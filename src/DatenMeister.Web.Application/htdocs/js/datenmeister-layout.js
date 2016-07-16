@@ -44,6 +44,11 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             history.pushState({}, "", url);
             this.showItem(ws, extentUrl, itemUrl, settings);
         };
+        Layout.prototype.exportExtent = function (ws, extentUrl) {
+            window.open("/api/datenmeister/extent/extent_export?ws="
+                + encodeURIComponent(ws) + "&extent="
+                + encodeURIComponent(extentUrl));
+        };
         Layout.prototype.navigateToDialog = function (configuration) {
             var _this = this;
             var oldPageType = this.currentLayoutInformation;

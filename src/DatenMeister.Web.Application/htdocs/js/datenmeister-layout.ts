@@ -30,7 +30,7 @@ export class Layout implements DMI.Api.ILayout {
         this.parent = parent;
     }
 
-    refreshView() {
+    refreshView() : void {
         if (this.onRefresh !== undefined && this.onRefresh !== null) {
             this.onRefresh();
         }
@@ -67,6 +67,13 @@ export class Layout implements DMI.Api.ILayout {
 
         history.pushState({}, "", url);
         this.showItem(ws, extentUrl, itemUrl, settings);
+    }
+
+    exportExtent(ws: string, extentUrl: string) {
+        window.open(
+            "/api/datenmeister/extent/extent_export?ws="
+            + encodeURIComponent(ws) + "&extent="
+            + encodeURIComponent(extentUrl));
     }
 
     navigateToDialog(configuration: DMI.Api.DialogConfiguration) {

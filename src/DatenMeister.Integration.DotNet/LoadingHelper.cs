@@ -88,8 +88,15 @@ namespace DatenMeister.Integration.DotNet
                     // Checks, if one of the class implements the IDatenMeisterPlugin 
                     if (type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
                     {
-                        Debug.WriteLine($"Starting plugin: {type}");
-                        ((IDatenMeisterPlugin)kernel.Resolve(type)).Start();
+                        try
+                        {
+                            Debug.WriteLine($"Starting plugin: {type}");
+                            ((IDatenMeisterPlugin) kernel.Resolve(type)).Start();
+                        }
+                        catch (Exception exc)
+                        {
+                            Debug.WriteLine($"Failed plugin: {exc}");
+                        }
                     }
                 }
             }

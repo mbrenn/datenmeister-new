@@ -254,6 +254,24 @@
     <Content Include="htdocs\img\icons\folder_open-mail_hot.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="htdocs\img\icons\folder_open-new.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="htdocs\img\icons\folder_open-new_disabled.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="htdocs\img\icons\folder_open-new_hot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="htdocs\img\icons\home.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="htdocs\img\icons\home_disabled.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="htdocs\img\icons\home_hot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="htdocs\img\icons\refresh_update.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

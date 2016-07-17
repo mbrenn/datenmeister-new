@@ -168,4 +168,4 @@ icons
 /src/scripts/assembly/*.pdb
 /src/scripts/assembly/*.dll
 
-project.json.lock
+project.lock.json

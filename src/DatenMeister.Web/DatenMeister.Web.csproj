@@ -107,6 +107,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\ClientController.cs" />
     <Compile Include="Api\ExampleController.cs" />
     <Compile Include="Api\ExtentController.cs" />
     <Compile Include="Api\OperationFailedException.cs" />

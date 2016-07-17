@@ -1,5 +1,24 @@
 ﻿import * as DMI from "./datenmeister-interfaces";
 
+export module ClientApi {
+    export function getPlugins(): JQueryPromise<Array<string>> {
+        var callback = $.Deferred();
+        $.ajax(
+        {
+            url: "/api/datenmeister/client/plugins",
+            cache: false,
+            success: data => {
+                callback.resolve(data);
+            },
+            error: data => {
+                callback.reject(data);
+            }
+        });
+
+        return callback;
+    }
+}
+
 export module WorkspaceApi {
     export function getAllWorkspaces(): JQueryPromise<Array<DMI.ClientResponse.IWorkspace>>
     {

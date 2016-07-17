@@ -1,5 +1,23 @@
 define(["require", "exports", "./datenmeister-interfaces"], function (require, exports, DMI) {
     "use strict";
+    var ClientApi;
+    (function (ClientApi) {
+        function getPlugins() {
+            var callback = $.Deferred();
+            $.ajax({
+                url: "/api/datenmeister/client/plugins",
+                cache: false,
+                success: function (data) {
+                    callback.resolve(data);
+                },
+                error: function (data) {
+                    callback.reject(data);
+                }
+            });
+            return callback;
+        }
+        ClientApi.getPlugins = getPlugins;
+    })(ClientApi = exports.ClientApi || (exports.ClientApi = {}));
     var WorkspaceApi;
     (function (WorkspaceApi) {
         function getAllWorkspaces() {

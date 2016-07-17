@@ -14,7 +14,7 @@ namespace DatenMeister.EMOF.Helper
     {
         public static Dictionary<object, object> AsDictionary(
             this IObject value,
-            IEnumerable<object> properties)
+            IEnumerable<string> properties)
         {
             var result = new Dictionary<object, object>();
 
@@ -29,7 +29,7 @@ namespace DatenMeister.EMOF.Helper
 
         public static Dictionary<string, string> AsStringDictionary(
             this IObject value,
-            IEnumerable<object> properties)
+            IEnumerable<string> properties)
         {
             var result = new Dictionary<string, string>();
 
@@ -111,9 +111,9 @@ namespace DatenMeister.EMOF.Helper
         /// <param name="requestValue">The value that is looked for</param>
         /// <returns>The list of found elements</returns>
         public static IEnumerable<IObject> GetByPropertyFromCollection(
-            this IElement value, 
-            object property,
-            object propertyOfChild,
+            this IElement value,
+            string property,
+            string propertyOfChild,
             object requestValue)
         {
             var valueOfProperty = value.get(property);

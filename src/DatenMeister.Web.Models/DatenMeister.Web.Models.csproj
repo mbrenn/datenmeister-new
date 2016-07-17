@@ -59,12 +59,13 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fields\DataField.cs" />
+    <Compile Include="Fields\DropDownFieldData.cs" />
+    <Compile Include="Fields\FieldData.cs" />
     <Compile Include="DataTableItem.cs" />
     <Compile Include="ExtentContentModel.cs" />
     <Compile Include="ExtentModel.cs" />
-    <Compile Include="Fields\DateTimeDataField.cs" />
-    <Compile Include="Fields\TextDataField.cs" />
+    <Compile Include="Fields\DateTimeFieldData.cs" />
+    <Compile Include="Fields\TextFieldData.cs" />
     <Compile Include="FormViewSettings.cs" />
     <Compile Include="ItemContentModel.cs" />
     <Compile Include="ItemModel.cs" />

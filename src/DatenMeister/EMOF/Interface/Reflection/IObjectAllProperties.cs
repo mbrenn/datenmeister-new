@@ -14,6 +14,6 @@ namespace DatenMeister.EMOF.Interface.Reflection
         ///     Returns an enumeration of all Properties which are currently set in the object
         /// </summary>
         /// <returns>Enumeration of all properties being set</returns>
-        IEnumerable<object> getPropertiesBeingSet();
+        IEnumerable<string> getPropertiesBeingSet();
     }
 }

@@ -60,11 +60,11 @@
     </Reference>
     <Reference Include="nunit.core, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnitTestAdapter.2.0.0\lib\nunit.core.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="nunit.core.interfaces, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnitTestAdapter.2.0.0\lib\nunit.core.interfaces.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
@@ -72,11 +72,11 @@
     </Reference>
     <Reference Include="nunit.util, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnitTestAdapter.2.0.0\lib\nunit.util.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="NUnit.VisualStudio.TestAdapter, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4cb40d35494691ac, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnitTestAdapter.2.0.0\lib\NUnit.VisualStudio.TestAdapter.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.IO.FileSystem, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -117,7 +117,6 @@
     <Compile Include="Runtime\Functions\AggregationTests.cs" />
     <Compile Include="Runtime\ReadOnlyProxyTests.cs" />
     <Compile Include="Runtime\WorkspaceTests.cs" />
-    <Compile Include="Uml\TestClassFactories.cs" />
     <Compile Include="Uml\TestUmlMethods.cs" />
     <Compile Include="Web\TestAutoColumnCreator.cs" />
     <Compile Include="WorkspaceTests.cs" />
@@ -135,7 +134,11 @@
       <Project>{39845115-f057-4641-9237-6960bb676684}</Project>
       <Name>DatenMeister.CSV</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Full.Integration\DatenMeister.Integration.csproj">
+    <ProjectReference Include="..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj">
+      <Project>{DDE7E649-F341-4D2D-8F54-21F0CCDF3FB2}</Project>
+      <Name>DatenMeister.Integration.DotNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Integration\DatenMeister.Integration.csproj">
       <Project>{dd8ea307-d685-4a7b-b726-a1c87192600d}</Project>
       <Name>DatenMeister.Integration</Name>
     </ProjectReference>
@@ -150,10 +153,6 @@
     <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
       <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>
       <Name>DatenMeister.Runtime</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj">
-      <Project>{2aae5839-db41-429b-b7c4-b872506736c7}</Project>
-      <Name>DatenMeister.SourcecodeGenerator</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Uml\DatenMeister.Uml.csproj">
       <Project>{335399d1-b533-42d2-aea5-f398f35d8e66}</Project>
@@ -177,9 +176,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
     <None Include="Xmi\MOF.xmi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

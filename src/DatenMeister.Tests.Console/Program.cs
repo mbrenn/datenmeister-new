@@ -1,9 +1,9 @@
 ﻿using DatenMeister.CSV;
 using DatenMeister.EMOF.InMemory;
-using DatenMeister.EMOF.Queries;
 using System.Diagnostics;
 using System.Linq;
 using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.XMI;
 using DatenMeister.Filler;
 using DatenMeister.Uml;
@@ -14,7 +14,7 @@ namespace DatenMeister.Tests.Console
     {
         static void Main(string[] args)
         {
-            var property = new object();
+            var property = "Prop";
             System.Console.WriteLine("DatenMeister Testing");
 
             var element = new MofElement();

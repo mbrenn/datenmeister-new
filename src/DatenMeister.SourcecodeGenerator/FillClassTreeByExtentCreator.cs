@@ -1,11 +1,13 @@
 ﻿using System;
+using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator
 {
     public class FillClassTreeByExtentCreator : WalkPackageClass
     {
-        public FillClassTreeByExtentCreator(string classNameOfTree)
+        public FillClassTreeByExtentCreator(string classNameOfTree, ISourceParser parser = null) : base(parser)
         {
             ClassNameOfTree = classNameOfTree;
             FactoryVersion = new Version(1, 1, 0, 0);
@@ -22,11 +24,11 @@ namespace DatenMeister.SourcecodeGenerator
         ///     and returns a full namespace for the package.
         /// </param>
         /// <param name="stack">Used as the callstack</param>
-        protected override void Walk(IObject element, CallStack stack)
+        public override void Walk(IUriExtent extent)
         {
             Result.AppendLine("using System.Collections.Generic;");
             Result.AppendLine("using DatenMeister.EMOF.Interface.Reflection;");
-            WalkAndWriteNamespace(element, stack);
+            base.Walk(extent);
         }
 
         protected override void WalkPackage(IObject element, CallStack stack)
@@ -121,7 +123,7 @@ namespace DatenMeister.SourcecodeGenerator
             {
                 // Removes the name of the package of the first hierarchy level
                 // since it is already included into the class name
-                fullName = $"__{name}";
+                fullName = $".__{name}";
             }
             else
             {
@@ -131,7 +133,7 @@ namespace DatenMeister.SourcecodeGenerator
 
             var ifStack = stack.NextWithoutLevelIncrease;
             var ifForeachStack = ifStack.NextWithoutLevelIncrease;
-            Result.AppendLine($"{ifStack.Indentation}tree.{fullName} = value;");
+            Result.AppendLine($"{ifStack.Indentation}tree{fullName} = value;");
             Result.AppendLine($"{ifStack.Indentation}isSet = value.isSet(\"ownedAttribute\");");
             Result.AppendLine(
                 $"{ifStack.Indentation}collection = isSet ? (value.get(\"ownedAttribute\") as IEnumerable<object>) : EmptyList;");
@@ -151,7 +153,8 @@ namespace DatenMeister.SourcecodeGenerator
             var name = GetNameOfElement(propertyInstance);
             Result.AppendLine($"{stack.Indentation}if(name == \"{name}\") // Looking for property");
             Result.AppendLine($"{stack.Indentation}{{");
-            Result.AppendLine($"{stack.NextIndentation}tree.{stack.Fullname}.@{name} = value;");
+            Result.AppendLine($"{stack.NextIndentation}tree{stack.Fullname}._{name} = value;");
+            
 
             base.WalkProperty(propertyInstance, stack);
 

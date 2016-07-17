@@ -3,7 +3,6 @@ using System.Linq;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.EMOF.Queries;
 
 namespace DatenMeister.EMOF.Helper
 {
@@ -14,14 +13,14 @@ namespace DatenMeister.EMOF.Helper
         /// </summary>
         /// <param name="extent">Extent to be checked</param>
         /// <returns>Enumeration of all columns</returns>
-        public static IEnumerable<object> GetProperties(this IUriExtent extent)
+        public static IEnumerable<string> GetProperties(this IUriExtent extent)
         {
             var elements = extent.elements();
 
             return GetProperties(elements);
         }
 
-        private static IEnumerable<object> GetProperties(this IReflectiveSequence elements)
+        private static IEnumerable<string> GetProperties(this IReflectiveSequence elements)
         {
             var result = new List<object>();
             foreach (var item in elements)
@@ -86,7 +85,8 @@ namespace DatenMeister.EMOF.Helper
             // If not successful, try to find it by traditional, but old approach
             foreach (var extent in uriExtents)
             {
-                if (extent.elements().GetAllDecendants().Any(x => x.Equals(value)))
+                if (AllDescendentsQuery.getDescendents(extent.elements())
+                    .Any(x => x.Equals(value)))
                 {
                     return extent;
                 }

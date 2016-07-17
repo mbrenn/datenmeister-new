@@ -165,3 +165,7 @@ icons
 /src/DatenMeister.SourceGeneration.Console/FillThePrimitiveTypes.cs
 /src/DatenMeister.SourceGeneration.Console/FillTheMOF.cs
 /nuget-packages/All
+/src/scripts/assembly/*.pdb
+/src/scripts/assembly/*.dll
+
+project.lock.json

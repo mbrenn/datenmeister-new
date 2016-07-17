@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Autofac;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
@@ -34,6 +35,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         private readonly IWorkspaceCollection _workspaceCollection;
 
+        private readonly ILifetimeScope _diScope;
+
         public ExtentStorageLoader(ExtentStorageData data, IConfigurationToExtentStorageMapper map, IDataLayerLogic dataLayerLogic)
         {
             Debug.Assert(map != null, "map != null");
@@ -49,11 +52,13 @@ namespace DatenMeister.Runtime.ExtentStorage
             ExtentStorageData data, 
             IConfigurationToExtentStorageMapper map,
             IDataLayerLogic dataLayerLogic,
-            IWorkspaceCollection workspaceCollection
+            IWorkspaceCollection workspaceCollection,
+            ILifetimeScope diScope
             ) : this(data, map, dataLayerLogic)
         {
             Debug.Assert(workspaceCollection != null, "collection != null");
             _workspaceCollection = workspaceCollection;
+            _diScope = diScope;
         }
 
         /// <summary>
@@ -72,7 +77,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
 
             // Creates the extent storage, being capable to load or store an extent
-            var extentStorage = _map.CreateFor(configuration);
+            var extentStorage = _map.CreateFor(_diScope, configuration);
         
             // Loads the extent
             var loadedExtent = extentStorage.LoadExtent(configuration, createAlsoEmpty);
@@ -134,7 +139,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             Debug.WriteLine($"- Writing: {information.Configuration}");
 
-            var extentStorage = _map.CreateFor(information.Configuration);
+            var extentStorage = _map.CreateFor(_diScope, information.Configuration);
             extentStorage.StoreExtent(information.Extent, information.Configuration);
         }
 

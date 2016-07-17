@@ -3,11 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Autofac;
-using Autofac.Features.ResolveAnything;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
@@ -182,7 +182,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         {
             var kernel = new ContainerBuilder();
 
-            var builder = kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings { PathToXmiFiles = "Xmi" });
             using (var scope = builder.BeginLifetimeScope())
             {
                 var path = Path.Combine(
@@ -206,7 +206,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 Assert.That(loadedExtent, Is.TypeOf<XmlUriExtent>());
 
                 // Includes some data
-                var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(loadedExtent);
+                var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(scope, loadedExtent);
                 var createdElement = factory.create(null);
                 Assert.That(createdElement, Is.TypeOf<XmlElement>());
                 loadedExtent.elements().add(createdElement);
@@ -233,7 +233,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestWithMetaClass()
         {
             var kernel = new ContainerBuilder();
-            var builder = kernel.UseDatenMeister(new IntegrationSettings { PathToXmiFiles = "Xmi" });
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings { PathToXmiFiles = "Xmi" });
             using (var scope = builder.BeginLifetimeScope())
             {
                 var dataLayerLogic = scope.Resolve<IDataLayerLogic>();
@@ -246,7 +246,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 extent.Workspaces = scope.Resolve<IWorkspaceCollection>();
                 dataLayerLogic.AssignToDataLayer(extent, dataLayers.Types);
 
-                var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(extent);
+                var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(scope, extent);
 
                 var interfaceClass = uml.SimpleClassifiers.__Interface;
                 var element = factory.create(interfaceClass);

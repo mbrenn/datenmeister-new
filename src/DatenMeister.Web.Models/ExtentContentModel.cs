@@ -18,7 +18,7 @@ namespace DatenMeister.Web.Models
         /// </summary>
         public int filteredItemCount { get; set; }
 
-        public IEnumerable<DataField> columns { get; set; }
+        public IEnumerable<FieldData> columns { get; set; }
 
         public IEnumerable<DataTableItem> items { get; set; }
 

@@ -66,6 +66,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         var domRibbon = $(".datenmeister-ribbon");
         var ribbon = new DMRibbon.Ribbon(domRibbon);
         var tabFile = ribbon.addTab("File");
+        tabFile.addIcon("Home", "img/icons/home", function () { layout.gotoHome(); });
         tabFile.addIcon("Refresh", "img/icons/refresh_update", function () { layout.refreshView(); });
         tabFile.addIcon("Workspaces", "img/icons/database", function () { layout.showWorkspaces(); });
         tabFile.addIcon("Add Workspace", "img/icons/database-add", function () { showDialogNewWorkspace(layout); });
@@ -86,6 +87,9 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
                     DMClient.ExtentApi.deleteExtent(changeEvent.workspace, changeEvent.extent)
                         .done(function () { return layout.navigateToExtents(changeEvent.workspace); });
                 });
+                tabFile.addIcon("Export Extent", "img/icons/folder_open-export", function () {
+                    layout.exportExtent(changeEvent.workspace, changeEvent.extent);
+                });
             }
             tabFile.addIcon("Add ZipCodes", "img/icons/folder_open-mail", function () {
                 DMClient.ExampleApi.addZipCodes(changeEvent.workspace).done(function () { return layout.refreshView(); });
@@ -102,8 +106,10 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
             })
                 .done(function () { return layout.navigateToWorkspaces(); });
         };
-        configuration.addColumn(new DMI.Table.DataTableColumn("Title", "name"));
-        configuration.addColumn(new DMI.Table.DataTableColumn("Annotation", "annotation"));
+        configuration.addColumn(new DMI.Table.DataField("Title", "name"));
+        var annotationColumn = new DMI.Table.TextDataField("Annotation", "annotation");
+        annotationColumn.lineHeight = 4;
+        configuration.addColumn(annotationColumn);
         layout.navigateToDialog(configuration);
     }
     function showNavigationForNewExtents(layout, workspace) {
@@ -131,10 +137,10 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
             })
                 .done(function () { return layout.navigateToExtents(data.v["workspace"]); });
         };
-        configuration.addColumn(new DMI.Table.DataTableColumn("Workspace", "workspace").withDefaultValue(workspace));
-        configuration.addColumn(new DMI.Table.DataTableColumn("URI", "contextUri").withDefaultValue("dm:///"));
-        configuration.addColumn(new DMI.Table.DataTableColumn("Filename", "filename"));
-        configuration.addColumn(new DMI.Table.DataTableColumn("Columns", "columns").withDefaultValue("Column1,Column2"));
+        configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace));
+        configuration.addColumn(new DMI.Table.DataField("URI", "contextUri").withDefaultValue("dm:///"));
+        configuration.addColumn(new DMI.Table.DataField("Filename", "filename"));
+        configuration.addColumn(new DMI.Table.DataField("Columns", "columns").withDefaultValue("Column1,Column2"));
         configuration.ws = workspace;
         layout.navigateToDialog(configuration);
     }
@@ -149,9 +155,9 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
             })
                 .done(function () { return layout.navigateToExtents(data.v["workspace"]); });
         };
-        configuration.addColumn(new DMI.Table.DataTableColumn("Workspace", "workspace").withDefaultValue(workspace));
-        configuration.addColumn(new DMI.Table.DataTableColumn("URI", "contextUri").withDefaultValue("dm:///"));
-        configuration.addColumn(new DMI.Table.DataTableColumn("Filename", "filename"));
+        configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace));
+        configuration.addColumn(new DMI.Table.DataField("URI", "contextUri").withDefaultValue("dm:///"));
+        configuration.addColumn(new DMI.Table.DataField("Filename", "filename"));
         configuration.ws = workspace;
         layout.navigateToDialog(configuration);
     }
@@ -166,9 +172,9 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
             })
                 .done(function () { return layout.navigateToExtents(data.v["workspace"]); });
         };
-        configuration.addColumn(new DMI.Table.DataTableColumn("Workspace", "workspace").withDefaultValue(workspace));
-        configuration.addColumn(new DMI.Table.DataTableColumn("URI", "contextUri").withDefaultValue("dm:///"));
-        configuration.addColumn(new DMI.Table.DataTableColumn("Filename", "filename").withDefaultValue("d:\\file.xml"));
+        configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace));
+        configuration.addColumn(new DMI.Table.DataField("URI", "contextUri").withDefaultValue("dm:///"));
+        configuration.addColumn(new DMI.Table.DataField("Filename", "filename").withDefaultValue("d:\\file.xml"));
         layout.navigateToDialog(configuration);
     }
 });

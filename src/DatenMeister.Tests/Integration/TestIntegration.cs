@@ -4,6 +4,7 @@ using DatenMeister.CSV;
 using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.FactoryMapper;
 
@@ -24,15 +25,15 @@ namespace DatenMeister.Tests.Integration
             using (var scope = builder.BeginLifetimeScope())
             {
                 var mapper = new DefaultFactoryMapper();
-                mapper.PerformAutomaticMappingByAttribute(scope);
+                mapper.PerformAutomaticMappingByAttribute();
 
                 Assert.That(mapper.HasMappingForExtentType(typeof(MofUriExtent)), Is.True);
                 Assert.That(mapper.HasMappingForExtentType(typeof(MofElement)), Is.False);
 
-                Assert.That(mapper.FindFactoryFor(typeof(MofUriExtent)), Is.TypeOf<MofFactory>());
+                Assert.That(mapper.FindFactoryFor(scope, typeof(MofUriExtent)), Is.TypeOf<MofFactory>());
 
                 var uriExtent = new MofUriExtent("dm:///localhost");
-                Assert.That(mapper.FindFactoryFor(uriExtent), Is.TypeOf<MofFactory>());
+                Assert.That(mapper.FindFactoryFor(scope, uriExtent), Is.TypeOf<MofFactory>());
             }
         }
 
@@ -40,12 +41,12 @@ namespace DatenMeister.Tests.Integration
         public void TestFactoryMappingByAttributeForExtentLoaders()
         {
             var kernel = new ContainerBuilder();
-            var builder = kernel.UseDatenMeister(new IntegrationSettings {PathToXmiFiles = "Xmi"});
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings {PathToXmiFiles = "Xmi"});
             using (var scope = builder.BeginLifetimeScope())
             {
 
                 var mapper = new ManualConfigurationToExtentStorageMapper();
-                mapper.PerformMappingForConfigurationOfExtentLoaders(scope);
+                mapper.PerformMappingForConfigurationOfExtentLoaders();
 
                 Assert.That(mapper.HasMappingFor(typeof(CSVStorageConfiguration)), Is.True);
                 Assert.That(mapper.HasMappingFor(typeof(CSVDataProvider)), Is.False);

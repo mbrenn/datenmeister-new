@@ -6,11 +6,11 @@ using System.Web.Http;
 using Autofac;
 using Autofac.Integration.WebApi;
 using BurnSystems.Owin.StaticFiles;
-using DatenMeister.Apps.ZipCode;
 using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.Integration;
-using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Web.Modules;
@@ -47,9 +47,9 @@ namespace DatenMeister.Web.Application
 #endif
             
             // Do the full load of all assemblies
-            Integration.Helper.LoadAllAssembliesFromCurrentDirectory();
-            Integration.Helper.LoadAllReferencedAssemblies();
-            Integration.Helper.LoadAssembliesFromFolder("plugins");
+            Integration.DotNet.LoadingHelper.LoadAllAssembliesFromCurrentDirectory();
+            Integration.DotNet.LoadingHelper.LoadAllReferencedAssemblies();
+            Integration.DotNet.LoadingHelper.LoadAssembliesFromFolder("plugins");
             
             // Initializing of the WebAPI, needs to be called after the DatenMeister is initialized
             var httpConfiguration = new HttpConfiguration();
@@ -64,7 +64,7 @@ namespace DatenMeister.Web.Application
 
             httpConfiguration.DependencyResolver = new AutofacWebApiDependencyResolver(_serverInjection);
 
-            _lifetimeScope = _serverInjection.BeginLifetimeScope();
+            _lifetimeScope = _serverInjection.BeginLifetimeScope("DatenMeister Webapplication");
 
             app.UseAutofacMiddleware(_lifetimeScope);
 
@@ -83,7 +83,7 @@ namespace DatenMeister.Web.Application
             };
 
             var kernel = new ContainerBuilder();
-            var container = kernel.UseDatenMeister(settings);
+            var container = kernel.UseDatenMeisterDotNet(settings);
 
             // Defines the shutdown
             var properties = new AppProperties(app.Properties);

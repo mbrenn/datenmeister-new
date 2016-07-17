@@ -1,4 +1,5 @@
-﻿using DatenMeister.Runtime.ExtentStorage.Configuration;
+﻿using Autofac;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
 
 namespace DatenMeister.Runtime.ExtentStorage.Interfaces
 {
@@ -8,6 +9,6 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
     /// </summary>
     public interface IConfigurationToExtentStorageMapper
     {
-        IExtentStorage CreateFor(ExtentStorageConfiguration configuration);
+        IExtentStorage CreateFor(ILifetimeScope scope, ExtentStorageConfiguration configuration);
     }
 }

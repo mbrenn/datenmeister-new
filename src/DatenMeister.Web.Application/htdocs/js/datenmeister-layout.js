@@ -42,6 +42,11 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-view"
             history.pushState({}, "", url);
             this.showItem(ws, extentUrl, itemUrl, settings);
         };
+        Layout.prototype.exportExtent = function (ws, extentUrl) {
+            window.open("/api/datenmeister/extent/extent_export?ws="
+                + encodeURIComponent(ws) + "&extent="
+                + encodeURIComponent(extentUrl));
+        };
         Layout.prototype.navigateToDialog = function (configuration) {
             var _this = this;
             var oldPageType = this.currentLayoutInformation;
@@ -216,6 +221,9 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-view"
             if (this.onLayoutChanged !== undefined) {
                 this.onLayoutChanged(data);
             }
+        };
+        Layout.prototype.gotoHome = function () {
+            this.navigateToWorkspaces();
         };
         return Layout;
     }());

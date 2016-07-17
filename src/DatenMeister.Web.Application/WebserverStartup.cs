@@ -10,6 +10,11 @@ using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+
+using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Runtime.Workspaces.Data;
+using DatenMeister.Web.Modules;
+using DatenMeister.XMI.ExtentStorage;
 using Microsoft.Owin;
 using Microsoft.Owin.BuilderProperties;
 using Owin;
@@ -54,6 +59,7 @@ namespace DatenMeister.Web.Application
 
             var builder = new ContainerBuilder();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+            builder.RegisterWebModules();
             builder.Update(_serverInjection);
 
             httpConfiguration.DependencyResolver = new AutofacWebApiDependencyResolver(_serverInjection);

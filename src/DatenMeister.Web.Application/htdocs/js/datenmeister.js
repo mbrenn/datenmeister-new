@@ -34,6 +34,14 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-client", 
                 $("#dm-ajaxloading").hide();
             }
         });
+        // Loads the clientplugins
+        DMClient.ClientApi.getPlugins()
+            .done(function (data) {
+            for (var n in data.scriptPaths) {
+                var path = data.scriptPaths[n];
+                alert(path);
+            }
+        });
     }
     exports.start = start;
     function parseAndNavigateToWindowLocation() {

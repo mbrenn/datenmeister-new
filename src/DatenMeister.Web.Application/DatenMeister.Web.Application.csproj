@@ -369,6 +369,10 @@
       <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>
       <Name>DatenMeister.Runtime</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Web.Models.csproj">
+      <Project>{5E01C76D-A969-4238-8D8C-1CB22C92DA7A}</Project>
+      <Name>DatenMeister.Web.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Web\DatenMeister.Web.csproj">
       <Project>{200fe333-4d98-4f76-a8d6-e7c94a272ff2}</Project>
       <Name>DatenMeister.Web</Name>

@@ -5,7 +5,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         function getPlugins() {
             var callback = $.Deferred();
             $.ajax({
-                url: "/api/datenmeister/client/plugins",
+                url: "/api/datenmeister/client/get_plugins",
                 cache: false,
                 success: function (data) {
                     callback.resolve(data);

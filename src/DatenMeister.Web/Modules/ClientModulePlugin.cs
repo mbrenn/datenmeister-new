@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.Web.Models.Modules;
 
 namespace DatenMeister.Web.Modules
 {

@@ -1,11 +1,11 @@
 ﻿import * as DMI from "./datenmeister-interfaces";
 
 export module ClientApi {
-    export function getPlugins(): JQueryPromise<Array<string>> {
+    export function getPlugins(): JQueryPromise<IGetPluginsResponse> {
         var callback = $.Deferred();
         $.ajax(
         {
-            url: "/api/datenmeister/client/plugins",
+            url: "/api/datenmeister/client/get_plugins",
             cache: false,
             success: data => {
                 callback.resolve(data);
@@ -16,6 +16,10 @@ export module ClientApi {
         });
 
         return callback;
+    }
+    
+    export interface IGetPluginsResponse {
+        scriptPaths: Array<string>;
     }
 }
 

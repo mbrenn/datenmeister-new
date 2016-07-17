@@ -115,7 +115,6 @@
     <Compile Include="Helper\ColumnCreationResult.cs" />
     <Compile Include="Helper\ColumnCreator.cs" />
     <Compile Include="Modules\ClientModulePlugin.cs" />
-    <Compile Include="Modules\IClientModulePlugin.cs" />
     <Compile Include="Modules\Integrate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

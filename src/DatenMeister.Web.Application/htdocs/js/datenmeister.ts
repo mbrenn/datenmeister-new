@@ -47,6 +47,15 @@ export function start() {
             $("#dm-ajaxloading").hide();
         }
     });
+
+    // Loads the clientplugins
+    DMClient.ClientApi.getPlugins()
+        .done((data: DMClient.ClientApi.IGetPluginsResponse) => {
+            for (var n in data.scriptPaths) {
+                var path = data.scriptPaths[n];
+                alert(path);
+            }
+        });
 }
 
 export function parseAndNavigateToWindowLocation() {

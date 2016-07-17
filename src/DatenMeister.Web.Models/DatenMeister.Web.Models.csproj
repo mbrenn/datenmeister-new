@@ -69,6 +69,10 @@
     <Compile Include="FormViewSettings.cs" />
     <Compile Include="ItemContentModel.cs" />
     <Compile Include="ItemModel.cs" />
+    <Compile Include="Modules\IClientModulePlugin.cs" />
+    <Compile Include="Modules\IWebserverStartupPhases.cs" />
+    <Compile Include="Modules\LifeTimeScopeEventArgs.cs" />
+    <Compile Include="Modules\WebserverStartupPhases.cs" />
     <Compile Include="PostModels\ExtentAddModel.cs" />
     <Compile Include="PostModels\ExtentCreateModel.cs" />
     <Compile Include="PostModels\ExtentReferenceModel.cs" />

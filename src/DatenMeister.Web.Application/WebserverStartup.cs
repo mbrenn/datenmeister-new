@@ -13,6 +13,7 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
+using DatenMeister.Web.Models.Modules;
 using DatenMeister.Web.Modules;
 using DatenMeister.XMI.ExtentStorage;
 using Microsoft.Owin;
@@ -47,9 +48,9 @@ namespace DatenMeister.Web.Application
 #endif
             
             // Do the full load of all assemblies
-            Integration.DotNet.LoadingHelper.LoadAllAssembliesFromCurrentDirectory();
-            Integration.DotNet.LoadingHelper.LoadAllReferencedAssemblies();
-            Integration.DotNet.LoadingHelper.LoadAssembliesFromFolder("plugins");
+            LoadingHelper.LoadAllAssembliesFromCurrentDirectory();
+            LoadingHelper.LoadAllReferencedAssemblies();
+            LoadingHelper.LoadAssembliesFromFolder("plugins");
             
             // Initializing of the WebAPI, needs to be called after the DatenMeister is initialized
             var httpConfiguration = new HttpConfiguration();
@@ -72,6 +73,10 @@ namespace DatenMeister.Web.Application
             app.UseStaticFiles(configuration);
             app.UseAutofacWebApi(httpConfiguration);
             app.UseWebApi(httpConfiguration);
+
+            _lifetimeScope
+                .Resolve<IWebserverStartupPhases>()
+                .OnAfterInitialization(_lifetimeScope);
         }
 
         private IContainer CreateKernel(IAppBuilder app)
@@ -81,8 +86,9 @@ namespace DatenMeister.Web.Application
                 PathToXmiFiles = "App_Data/Xmi",
                 EstablishDataEnvironment = true
             };
-
+            
             var kernel = new ContainerBuilder();
+            kernel.RegisterInstance(new WebserverStartupPhases()).As<IWebserverStartupPhases>();
             var container = kernel.UseDatenMeisterDotNet(settings);
 
             // Defines the shutdown

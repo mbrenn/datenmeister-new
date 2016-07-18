@@ -259,4 +259,8 @@ export namespace Api {
         ws: string;
         extent: string;
     }
+
+    export class PluginParameter {
+        version: string;
+    }
 }

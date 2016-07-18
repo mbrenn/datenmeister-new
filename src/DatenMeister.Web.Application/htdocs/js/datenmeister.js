@@ -1,6 +1,6 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/jquery/underscore.d.ts" />
-define(["require", "exports", "./datenmeister-helper", "./datenmeister-client", "./datenmeister-ribbon", "./datenmeister-layout", "./datenmeister-logging"], function (require, exports, DMHelper, DMClient, DMRibbon, DMLayout, DMLog) {
+define(["require", "exports", "./datenmeister-helper", "./datenmeister-interfaces", "./datenmeister-client", "./datenmeister-ribbon", "./datenmeister-layout", "./datenmeister-logging"], function (require, exports, DMHelper, DMI, DMClient, DMRibbon, DMLayout, DMLog) {
     "use strict";
     function start() {
         // Information, when an ajax request failed
@@ -37,9 +37,15 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-client", 
         // Loads the clientplugins
         DMClient.ClientApi.getPlugins()
             .done(function (data) {
+            var parameter = new DMI.Api.PluginParameter();
+            parameter.version = "1.0";
             for (var n in data.scriptPaths) {
                 var path = data.scriptPaths[n];
-                alert(path);
+                alert("Loading: " + path);
+                require([path], function (plugin) {
+                    plugin.Load(parameter);
+                });
+                alert('Finished: ' + path);
             }
         });
     }

@@ -167,6 +167,12 @@ define(["require", "exports"], function (require, exports) {
             return DialogConfiguration;
         }(FormForItemConfiguration));
         Api.DialogConfiguration = DialogConfiguration;
+        var PluginParameter = (function () {
+            function PluginParameter() {
+            }
+            return PluginParameter;
+        }());
+        Api.PluginParameter = PluginParameter;
     })(Api = exports.Api || (exports.Api = {}));
 });
 //# sourceMappingURL=datenmeister-interfaces.js.map

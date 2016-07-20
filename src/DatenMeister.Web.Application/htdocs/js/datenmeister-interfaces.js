@@ -5,7 +5,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 define(["require", "exports"], function (require, exports) {
     "use strict";
-    /* Stores all the models that can be returned via one of the */
     var ClientResponse;
     (function (ClientResponse) {
         ;

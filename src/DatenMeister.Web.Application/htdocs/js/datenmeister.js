@@ -1,8 +1,9 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/jquery/underscore.d.ts" />
-define(["require", "exports", "./datenmeister-helper", "./datenmeister-interfaces", "./datenmeister-client", "./datenmeister-ribbon", "./datenmeister-layout", "./datenmeister-logging"], function (require, exports, DMHelper, DMI, DMClient, DMRibbon, DMLayout, DMLog) {
+define(["require", "exports", "./datenmeister-helper", "./datenmeister-interfaces", "./datenmeister-client", "./datenmeister-layout", "./datenmeister-logging"], function (require, exports, DMHelper, DMI, DMClient, DMLayout, DMLog) {
     "use strict";
     function start() {
+        var layout = new DMLayout.Layout($("body"));
         // Information, when an ajax request failed
         $(document).ajaxError(function (ev, xhr, settings, error) {
             if (xhr.responseJSON !== undefined &&
@@ -17,9 +18,9 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         });
         $(document).ready(function () {
             window.onpopstate = function (ev) {
-                parseAndNavigateToWindowLocation();
+                parseAndNavigateToWindowLocation(layout);
             };
-            parseAndNavigateToWindowLocation();
+            parseAndNavigateToWindowLocation(layout);
         });
         // Ajax loading information
         var ajaxRequests = 0;
@@ -39,24 +40,31 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
             .done(function (data) {
             var parameter = new DMI.Api.PluginParameter();
             parameter.version = "1.0";
+            parameter.layout = layout;
             for (var n in data.scriptPaths) {
                 var path = data.scriptPaths[n];
-                alert("Loading: " + path);
+                // Now loading the plugin
                 require([path], function (plugin) {
-                    plugin.Load(parameter);
+                    var result = plugin.load(parameter);
+                    if (result !== undefined && result !== null) {
+                        layout.pluginResults[layout.pluginResults.length] = result;
+                        if (result.onLayoutChanged !== undefined) {
+                            layout.renavigate();
+                        }
+                    }
                 });
-                alert('Finished: ' + path);
             }
         });
     }
     exports.start = start;
-    function parseAndNavigateToWindowLocation() {
+    function parseAndNavigateToWindowLocation(layout) {
         var ws = DMHelper.getParameterByNameFromHash("ws");
         var extentUrl = DMHelper.getParameterByNameFromHash("ext");
         var itemUrl = DMHelper.getParameterByNameFromHash("item");
         var mode = DMHelper.getParameterByNameFromHash("mode");
-        var layout = new DMLayout.Layout($("body"));
-        layout.onLayoutChanged = function (data) { return buildRibbons(layout, data); };
+        layout.onLayoutChanged = function (data) {
+            buildRibbons(layout, data);
+        };
         if (ws === "") {
             layout.showWorkspaces();
         }
@@ -77,14 +85,14 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
     }
     exports.parseAndNavigateToWindowLocation = parseAndNavigateToWindowLocation;
     function buildRibbons(layout, changeEvent) {
-        var domRibbon = $(".datenmeister-ribbon");
-        var ribbon = new DMRibbon.Ribbon(domRibbon);
-        var tabFile = ribbon.addTab("File");
+        var ribbon = layout.getRibbon();
+        ribbon.clear();
+        var tabFile = ribbon.getOrAddTab("File");
         tabFile.addIcon("Home", "img/icons/home", function () { layout.gotoHome(); });
         tabFile.addIcon("Refresh", "img/icons/refresh_update", function () { layout.refreshView(); });
         tabFile.addIcon("Workspaces", "img/icons/database", function () { layout.showWorkspaces(); });
         tabFile.addIcon("Add Workspace", "img/icons/database-add", function () { layout.showDialogNewWorkspace(); });
-        if (changeEvent.workspace !== undefined) {
+        if (changeEvent !== null && changeEvent !== undefined && changeEvent.workspace !== undefined) {
             // Ok, we have a workspace
             tabFile.addIcon("Delete Extent", "img/icons/database-delete", function () {
                 DMClient.WorkspaceApi.deleteWorkspace(changeEvent.workspace)

@@ -1,6 +1,8 @@
-﻿
+﻿/* Stores all the models that can be returned via one of the */
+import Datenmeisterlayout = require("datenmeister-layout");
+import * as DMRibbon from  "./datenmeister-ribbon";
 
-/* Stores all the models that can be returned via one of the */
+
 export module ClientResponse {
     export interface ICreateItemResult {
         success: boolean;
@@ -227,6 +229,7 @@ export namespace Table {
 
 export namespace Api {
     export interface ILayout {
+        renavigate(): void;
         navigateToWorkspaces(): void;
         navigateToExtents(workspaceId: string): void;
         navigateToItems(ws: string, extentUrl: string): void;
@@ -234,6 +237,8 @@ export namespace Api {
         setStatus(statusDom: JQuery): void;
 
         showNavigationForNewExtents(workspace: string);
+
+        getRibbon(): DMRibbon.Ribbon;
     }
 
     export interface IItemsProvider {
@@ -259,8 +264,20 @@ export namespace Api {
         ws: string;
         extent: string;
     }
+    export interface ILayoutChangedEvent {
+        layout?: ILayout;   // Will be set at the thrower
+        type: Datenmeisterlayout.PageType;
+        workspace?: string;
+        extent?: string;
+        item?: string;
+    }
 
     export class PluginParameter {
         version: string;
+        layout: ILayout;
+    }
+
+    export interface IPluginResult {
+        onLayoutChanged?: (ev: ILayoutChangedEvent) => void;
     }
 }

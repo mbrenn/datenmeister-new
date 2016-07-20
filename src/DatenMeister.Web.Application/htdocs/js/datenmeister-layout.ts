@@ -3,6 +3,7 @@ import DMI = require("./datenmeister-interfaces");
 import DMClient = require("./datenmeister-client");
 import DMView = require("./datenmeister-view");
 import DMTables = require("./datenmeister-tables");
+import * as DMRibbon from "./datenmeister-ribbon";
 
 
 export enum PageType {
@@ -13,21 +14,17 @@ export enum PageType {
     Dialog
 }
 
-export interface ILayoutChangedEvent {
-    type: PageType;
-    workspace?: string;
-    extent?: string;
-    item?: string;
-}
-
 export class Layout implements DMI.Api.ILayout {
+    pluginResults: Array<DMI.Api.IPluginResult>;
     parent: JQuery;
     onRefresh: () => void;
-    onLayoutChanged: (data: ILayoutChangedEvent) => void;
-    currentLayoutInformation: ILayoutChangedEvent;
+    onLayoutChanged: (data: DMI.Api.ILayoutChangedEvent) => void;
+    currentLayoutInformation: DMI.Api.ILayoutChangedEvent;
+    ribbon: DMRibbon.Ribbon;
 
     constructor(parent: JQuery) {
         this.parent = parent;
+        this.pluginResults = new Array<DMI.Api.IPluginResult>();
     }
 
     refreshView() : void {
@@ -353,7 +350,7 @@ export class Layout implements DMI.Api.ILayout {
         tthis.navigateToDialog(configuration);
     }
 
-    switchLayout(layoutInformation: ILayoutChangedEvent) {
+    switchLayout(layoutInformation: DMI.Api.ILayoutChangedEvent) {
         $(".only-workspaces").hide();
         $(".only-extents").hide();
         $(".only-items").hide();
@@ -386,6 +383,7 @@ export class Layout implements DMI.Api.ILayout {
     setView(view: DMView.IView) {
         this.switchLayout(
         {
+            layout: this,
             type: PageType.Dialog
         });
 
@@ -394,13 +392,41 @@ export class Layout implements DMI.Api.ILayout {
         view.show(container);
     }
 
-    throwLayoutChangedEvent(data: ILayoutChangedEvent) {
+    lastLayoutConfiguration: DMI.Api.ILayoutChangedEvent;
+
+    throwLayoutChangedEvent(data: DMI.Api.ILayoutChangedEvent): void {
+        if (data !== undefined && data != null) {
+            data.layout = this;
+        }
+
+        this.lastLayoutConfiguration = data;
+
         if (this.onLayoutChanged !== undefined) {
             this.onLayoutChanged(data);
         }
+
+        if (this.pluginResults !== undefined) {
+            for (var n in this.pluginResults) {
+                var pluginResult = this.pluginResults[n];
+                pluginResult.onLayoutChanged(data);
+            }
+        }
     }
 
-    gotoHome() {
+    renavigate(): void {
+        this.throwLayoutChangedEvent(this.lastLayoutConfiguration);
+    }
+
+    gotoHome(): void {
         this.navigateToWorkspaces();
+    }
+    
+    getRibbon(): DMRibbon.Ribbon {
+        if (this.ribbon === null || this.ribbon === undefined) {
+            var domRibbon = $(".datenmeister-ribbon");
+            this.ribbon = new DMRibbon.Ribbon(domRibbon);
+        }
+        
+        return this.ribbon;
     }
 }

@@ -13,6 +13,8 @@ import * as DMLog from "./datenmeister-logging";
 
 export function start() {
 
+    var layout = new DMLayout.Layout($("body"));
+
     // Information, when an ajax request failed
     $(document).ajaxError((ev, xhr, settings, error) => {
         if (xhr.responseJSON !== undefined &&
@@ -27,10 +29,10 @@ export function start() {
 
     $(document).ready(() => {
         window.onpopstate = (ev) => {
-            parseAndNavigateToWindowLocation();
+            parseAndNavigateToWindowLocation(layout);
         };
 
-        parseAndNavigateToWindowLocation();
+        parseAndNavigateToWindowLocation(layout);
     });
 
     // Ajax loading information
@@ -54,28 +56,34 @@ export function start() {
 
             var parameter = new DMI.Api.PluginParameter();
             parameter.version = "1.0";
+            parameter.layout = layout;
 
             for (var n in data.scriptPaths) {
                 var path = data.scriptPaths[n];
-                alert("Loading: " + path);
 
-                require([path], function(plugin) {
-                    plugin.Load(parameter);
+                // Now loading the plugin
+                require([path], plugin => {
+                    var result : DMI.Api.IPluginResult = plugin.load(parameter);
+                    if (result !== undefined && result !== null) {
+                        layout.pluginResults[layout.pluginResults.length] = result;
+
+                        if (result.onLayoutChanged !== undefined) {
+                            layout.renavigate();
+                        }
+                    }
                 });
-
-                alert('Finished: ' + path);
             }
         });
 }
 
-export function parseAndNavigateToWindowLocation() {
+export function parseAndNavigateToWindowLocation(layout: DMLayout.Layout) {
     var ws = DMHelper.getParameterByNameFromHash("ws");
     var extentUrl = DMHelper.getParameterByNameFromHash("ext");
     var itemUrl = DMHelper.getParameterByNameFromHash("item");
     var mode = DMHelper.getParameterByNameFromHash("mode");
-
-    var layout = new DMLayout.Layout($("body"));
-    layout.onLayoutChanged = (data) => buildRibbons(layout, data);
+    layout.onLayoutChanged = (data) => {
+         buildRibbons(layout, data);
+    };
 
     if (ws === "") {
         layout.showWorkspaces();
@@ -95,10 +103,10 @@ export function parseAndNavigateToWindowLocation() {
     $(".body-content").show();
 }
 
-function buildRibbons(layout: DMLayout.Layout, changeEvent: DMLayout.ILayoutChangedEvent) {
-    var domRibbon = $(".datenmeister-ribbon");
-    var ribbon = new DMRibbon.Ribbon(domRibbon);
-    var tabFile = ribbon.addTab("File");
+function buildRibbons(layout: DMLayout.Layout, changeEvent: DMI.Api.ILayoutChangedEvent) {
+    var ribbon = layout.getRibbon();
+    ribbon.clear();
+    var tabFile = ribbon.getOrAddTab("File");
 
     tabFile.addIcon("Home", "img/icons/home", () => { layout.gotoHome(); });
     tabFile.addIcon("Refresh", "img/icons/refresh_update", () => { layout.refreshView(); });
@@ -106,7 +114,7 @@ function buildRibbons(layout: DMLayout.Layout, changeEvent: DMLayout.ILayoutChan
     tabFile.addIcon("Workspaces", "img/icons/database", () => { layout.showWorkspaces(); });
     tabFile.addIcon("Add Workspace", "img/icons/database-add", () => { layout.showDialogNewWorkspace(); });
 
-    if (changeEvent.workspace !== undefined) {
+    if (changeEvent !== null && changeEvent !== undefined && changeEvent.workspace !== undefined) {
         // Ok, we have a workspace
         tabFile.addIcon("Delete Extent", "img/icons/database-delete", () => {
             DMClient.WorkspaceApi.deleteWorkspace(changeEvent.workspace)

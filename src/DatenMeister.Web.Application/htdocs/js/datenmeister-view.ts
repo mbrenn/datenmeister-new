@@ -89,9 +89,9 @@ export class ExtentView {
             var compiled = _.template($("#template_extent").html());
             for (var n in data) {
                 if (data.hasOwnProperty(n)) {
-                    var entry = data[n];
-                    var line = compiled(entry);
-                    var dom = $(line);
+                    var entry: DMI.ClientResponse.IExtent = data[n];
+                    var line: string = compiled(entry);
+                    var dom: JQuery = $(line);
                     $(".data", dom).click(
                         ((localEntry: DMI.ClientResponse.IExtent) => (
                             () => {
@@ -116,11 +116,15 @@ export class ExtentView {
         container.append(newExtentButton);
     }
 
-    loadAndCreateHtmlForExtent(container: JQuery, ws: string, extentUrl: string, query?: DMI.PostModels.IItemTableQuery): JQueryPromise<Object> {
-        var tthis = this;
+    loadAndCreateHtmlForExtent(
+        container: JQuery,
+        ws: string,
+        extentUrl: string,
+        query?: DMI.PostModels.IItemTableQuery): JQueryPromise<Object> {
+        var tthis: ExtentView = this;
 
         // Creates the layout configuration and the handling on requests of the user
-        var configuration = new DMTables.ItemTableConfiguration();
+        var configuration: DMTables.ItemTableConfiguration = new DMTables.ItemTableConfiguration();
         configuration.onItemEdit = (url: string) => {
             if (tthis.onItemEdit !== undefined) {
                 tthis.onItemEdit(ws, extentUrl, url);
@@ -149,7 +153,7 @@ export class ExtentView {
         configuration.layout = this.layout;
 
         // Creates the layout
-        var provider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
+        var provider: DMQuery.ItemsFromExtentProvider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
         var table = new DMTables.ItemListTable(container, provider, configuration);
         
         if (query !== undefined && query !== null) {

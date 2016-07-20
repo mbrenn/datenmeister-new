@@ -1,4 +1,4 @@
-define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-client", "./datenmeister-view", "./datenmeister-tables"], function (require, exports, DMI, DMClient, DMView, DMTables) {
+define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-client", "./datenmeister-view", "./datenmeister-tables", "./datenmeister-ribbon"], function (require, exports, DMI, DMClient, DMView, DMTables, DMRibbon) {
     "use strict";
     (function (PageType) {
         PageType[PageType["Workspaces"] = 0] = "Workspaces";
@@ -11,6 +11,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
     var Layout = (function () {
         function Layout(parent) {
             this.parent = parent;
+            this.pluginResults = new Array();
         }
         Layout.prototype.refreshView = function () {
             if (this.onRefresh !== undefined && this.onRefresh !== null) {
@@ -303,6 +304,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
         };
         Layout.prototype.setView = function (view) {
             this.switchLayout({
+                layout: this,
                 type: PageType.Dialog
             });
             var container = $(".data-dialog", this.parent);
@@ -310,12 +312,32 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             view.show(container);
         };
         Layout.prototype.throwLayoutChangedEvent = function (data) {
+            if (data !== undefined && data != null) {
+                data.layout = this;
+            }
+            this.lastLayoutConfiguration = data;
             if (this.onLayoutChanged !== undefined) {
                 this.onLayoutChanged(data);
             }
+            if (this.pluginResults !== undefined) {
+                for (var n in this.pluginResults) {
+                    var pluginResult = this.pluginResults[n];
+                    pluginResult.onLayoutChanged(data);
+                }
+            }
+        };
+        Layout.prototype.renavigate = function () {
+            this.throwLayoutChangedEvent(this.lastLayoutConfiguration);
         };
         Layout.prototype.gotoHome = function () {
             this.navigateToWorkspaces();
+        };
+        Layout.prototype.getRibbon = function () {
+            if (this.ribbon === null || this.ribbon === undefined) {
+                var domRibbon = $(".datenmeister-ribbon");
+                this.ribbon = new DMRibbon.Ribbon(domRibbon);
+            }
+            return this.ribbon;
         };
         return Layout;
     }());

@@ -2,14 +2,22 @@ define(["require", "exports"], function (require, exports) {
     "use strict";
     var Ribbon = (function () {
         function Ribbon(domContainer) {
+            this.domContainer = domContainer;
             this.tabs = new Array();
-            this.injectDom(domContainer);
+            this.injectDom();
         }
-        Ribbon.prototype.injectDom = function (domContainer) {
+        Ribbon.prototype.clear = function () {
+            this.domRibbon.empty();
+            this.domTabHeadlines.empty();
+            this.tabs.length = 0;
+            this.injectDom();
+        };
+        Ribbon.prototype.injectDom = function () {
+            this.domContainer.empty();
             this.domRibbon = $("<div class='dm-ribbon'></div>");
             this.domTabHeadlines = $("<div class='dm-tab-titles'></div>");
             this.domRibbon.append(this.domTabHeadlines);
-            domContainer.append(this.domRibbon);
+            this.domContainer.append(this.domRibbon);
         };
         Ribbon.prototype.addTab = function (name) {
             var tthis = this;
@@ -18,24 +26,47 @@ define(["require", "exports"], function (require, exports) {
             this.domTabHeadlines.append(domTitle);
             var domTabIcons = $("<div class='dm-tab-content'></div>");
             var result = new RibbonTabContent(domTabIcons, name);
+            result.hideIcons();
             result.domTitle = domTitle;
             this.tabs[this.tabs.length] = result;
             this.domRibbon.append(domTabIcons);
-            this.selectTab(0);
             var nr = this.tabs.length - 1;
             domTitle.click(function () {
                 tthis.selectTab(nr);
             });
+            // Tries to select the tabl
+            if (name === this.currentySelectedTab) {
+                this.selectTab(nr);
+            }
+            else if (this.currentySelectedTab === undefined || this.currentySelectedTab === null) {
+                this.selectTab(0);
+            }
             return result;
         };
-        Ribbon.prototype.selectTab = function (index) {
-            for (var n in this.tabs) {
+        Ribbon.prototype.getOrAddTab = function (name) {
+            for (var n = 0; n < this.tabs.length; n++) {
                 var tab = this.tabs[n];
-                tab.hideIcons();
-                tab.domTitle.removeClass("selected");
+                if (tab.name === name) {
+                    return tab;
+                }
             }
-            this.tabs[index].showIcons();
-            this.tabs[index].domTitle.addClass("selected");
+            return this.addTab(name);
+        };
+        Ribbon.prototype.selectTab = function (index) {
+            var tabs = this.tabs;
+            for (var n in tabs) {
+                if (tabs.hasOwnProperty(n)) {
+                    var tab = tabs[n];
+                    tab.hideIcons();
+                    tab.domTitle.removeClass("selected");
+                }
+            }
+            var selectedTab = tabs[index];
+            if (selectedTab !== undefined && selectedTab !== null) {
+                selectedTab.showIcons();
+                selectedTab.domTitle.addClass("selected");
+                this.currentySelectedTab = selectedTab.name;
+            }
         };
         return Ribbon;
     }());
@@ -52,8 +83,7 @@ define(["require", "exports"], function (require, exports) {
             this.domContainer.append(this.domTab);
         };
         RibbonTabContent.prototype.addIcon = function (name, urlIcon, onClick) {
-            var result = new RibbonIcon(this.domTab, name, urlIcon, onClick);
-            return result;
+            return new RibbonIcon(this.domTab, name, urlIcon, onClick);
         };
         RibbonTabContent.prototype.showIcons = function () {
             this.domTab.show();

@@ -1,4 +1,6 @@
 ﻿import * as DMI from "./datenmeister-interfaces";
+import * as DMClient from "./datenmeister-client";
+
 
 export function load(plugin: DMI.Api.PluginParameter): DMI.Api.IPluginResult {
     return {
@@ -6,10 +8,13 @@ export function load(plugin: DMI.Api.PluginParameter): DMI.Api.IPluginResult {
             var tab = ev.layout.getRibbon().getOrAddTab("Tasks");
             if (ev.extent !== undefined && ev.extent !== null) {
                 tab.addIcon(
-                    "Test",
+                    "Add Task",
                     "...",
                     () => {
-                        alert('JO');
+                        DMClient.ExtentApi.createItem(ev.workspace, ev.extent, undefined, "datenmeister:///types#TaskMeisterLib.Model.IActivity")
+                            .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
+                                ev.layout.navigateToItem(ev.workspace, ev.extent, innerData.newuri);
+                            });
                     });
             }
         }

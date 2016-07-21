@@ -145,6 +145,21 @@ namespace DatenMeister.CSV
         /// <param name="settings">Settings being used</param>
         public void Save(IUriExtent extent, string path, CSVSettings settings)
         {
+            // Open File
+            using (var streamWriter = new StreamWriter(File.OpenWrite(path), Encoding.GetEncoding(settings.Encoding)))
+            {
+                SaveToStream(streamWriter, extent, settings);
+            }
+        }
+
+        /// <summary>
+        /// Saves the csv to a datastream
+        /// </summary>
+        /// <param name="streamWriter">Stream, where data will be stored</param>
+        /// <param name="extent">Extent being stored</param>
+        /// <param name="settings">Settings of the csv</param>
+        public void SaveToStream(TextWriter streamWriter, IUriExtent extent, CSVSettings settings)
+        {
             var columns = new List<string>();
 
             // Retrieve the column headers
@@ -159,25 +174,20 @@ namespace DatenMeister.CSV
                 // then use the maximum value of the elements. This assumes that every element has the same type
                 columns = extent.GetProperties().ToList();
             }
-
-            // Open File
-            using (var streamWriter = new StreamWriter(File.OpenWrite(path), Encoding.GetEncoding(settings.Encoding)))
+            // Writes the header
+            if (settings.HasHeader)
             {
-                // Writes the header
-                if (settings.HasHeader)
-                {
-                    WriteRow(streamWriter, settings, columns, x => x.ToString());
-                }
+                WriteRow(streamWriter, settings, columns, x => x.ToString());
+            }
 
-                // Writes the elements
-                foreach (var element in extent.elements().Select(x => x as IObject))
-                {
-                    WriteRow(
-                        streamWriter,
-                        settings,
-                        columns,
-                        x => element.isSet(x) ? element.get(x) : string.Empty);
-                }
+            // Writes the elements
+            foreach (var element in extent.elements().Select(x => x as IObject))
+            {
+                WriteRow(
+                    streamWriter,
+                    settings,
+                    columns,
+                    x => element.isSet(x) ? element.get(x) : string.Empty);
             }
         }
 
@@ -188,7 +198,10 @@ namespace DatenMeister.CSV
         /// <param name="settings">Settings to be used</param>
         /// <param name="values"></param>
         /// <param name="conversion">Converter to be used, to show the content</param>
-        private void WriteRow(StreamWriter streamWriter, CSVSettings settings, IEnumerable<string> values,
+        private void WriteRow(
+            TextWriter streamWriter, 
+            CSVSettings settings, 
+            IEnumerable<string> values,
             Func<string, object> conversion)
         {
             var builder = new StringBuilder();

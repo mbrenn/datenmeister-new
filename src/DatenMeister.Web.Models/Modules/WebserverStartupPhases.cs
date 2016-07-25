@@ -7,7 +7,11 @@ namespace DatenMeister.Web.Models.Modules
     {
         public void OnAfterInitialization(ILifetimeScope scope)
         {
-            AfterInitialization(this, new LifeTimeScopeEventArgs(scope));
+            var e = AfterInitialization;
+            if (e != null)
+            {
+                AfterInitialization(this, new LifeTimeScopeEventArgs(scope));
+            }
         }
 
         public event EventHandler<LifeTimeScopeEventArgs> AfterInitialization;

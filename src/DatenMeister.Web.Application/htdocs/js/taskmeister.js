@@ -10,7 +10,6 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
                             .done(function (innerData) {
                             ev.layout.navigateToItem(ev.workspace, ev.extent, innerData.newuri);
                         });
-                        alert("JO");
                     });
                 }
             }

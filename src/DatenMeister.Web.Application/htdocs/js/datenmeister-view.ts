@@ -96,6 +96,10 @@ export class WorkspaceView extends ViewBase implements IView {
         }
 
         this.content.append(compiledTable);
+
+        this.insertLink(this.content,
+            "Add new Workspace",
+            () => this.layout.showDialogNewWorkspace());
     }
 }
 
@@ -165,8 +169,7 @@ export class ExtentView extends ViewBase implements IView{
 
             this.content.append(compiledTable);
         }
-
-        // TODO: Replace with add link
+        
         this.insertLink(this.content,
             "Add new Extent",
             () => tthis.layout.showNavigationForNewExtents(ws));

@@ -237,7 +237,8 @@ export namespace Api {
         setStatus(statusDom: JQuery): void;
         throwLayoutChangedEvent(data: ILayoutChangedEvent): void;
 
-        showNavigationForNewExtents(workspace: string);
+        showDialogNewWorkspace(): void;
+        showNavigationForNewExtents(workspace: string): void;
 
         getRibbon(): DMRibbon.Ribbon;
     }

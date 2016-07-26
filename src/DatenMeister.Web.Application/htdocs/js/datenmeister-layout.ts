@@ -187,7 +187,7 @@ export class Layout implements DMI.Api.ILayout {
             });
     }
 
-    showDialogNewWorkspace() {
+    showDialogNewWorkspace(): void {
         var tthis = this;
         var configuration = new DMI.Api.DialogConfiguration();
 

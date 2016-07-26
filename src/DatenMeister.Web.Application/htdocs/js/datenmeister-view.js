@@ -70,6 +70,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                 }
             }
             this.content.append(compiledTable);
+            this.insertLink(this.content, "Add new Workspace", function () { return _this.layout.showDialogNewWorkspace(); });
         };
         return WorkspaceView;
     }(ViewBase));
@@ -125,7 +126,6 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                 }
                 this.content.append(compiledTable);
             }
-            // TODO: Replace with add link
             this.insertLink(this.content, "Add new Extent", function () { return tthis.layout.showNavigationForNewExtents(ws); });
         };
         ExtentView.prototype.loadAndCreateHtmlForExtent = function (ws, extentUrl, query) {

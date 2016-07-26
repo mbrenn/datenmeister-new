@@ -2,7 +2,7 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
     "use strict";
     function load(plugin) {
         return {
-            onLayoutChanged: function (ev) {
+            onViewPortChanged: function (ev) {
                 var tab = ev.layout.getRibbon().getOrAddTab("Tasks");
                 if (ev.extent !== undefined && ev.extent !== null) {
                     tab.addIcon("Add Task", "...", function () {

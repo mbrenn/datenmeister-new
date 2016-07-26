@@ -4,7 +4,7 @@ import * as DMClient from "./datenmeister-client";
 
 export function load(plugin: DMI.Api.PluginParameter): DMI.Api.IPluginResult {
     return {
-        onLayoutChanged: (ev) => {
+        onViewPortChanged: (ev) => {
             var tab = ev.layout.getRibbon().getOrAddTab("Tasks");
             if (ev.extent !== undefined && ev.extent !== null) {
                 tab.addIcon(

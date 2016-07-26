@@ -10,10 +10,10 @@ import * as DMRibbon from "./datenmeister-ribbon";
 import * as DMLayout from "./datenmeister-layout";
 import * as DMLog from "./datenmeister-logging";
 
-
 export function start() {
 
-    var layout = new DMLayout.Layout($("body"));
+    var layout =
+        new DMLayout.Layout($("body"));
 
     // Information, when an ajax request failed
     $(document).ajaxError((ev, xhr, settings, error) => {
@@ -67,7 +67,7 @@ export function start() {
                     if (result !== undefined && result !== null) {
                         layout.pluginResults[layout.pluginResults.length] = result;
 
-                        if (result.onLayoutChanged !== undefined) {
+                        if (result.onViewPortChanged !== undefined) {
                             layout.renavigate();
                         }
                     }
@@ -81,7 +81,7 @@ export function parseAndNavigateToWindowLocation(layout: DMLayout.Layout) {
     var extentUrl = DMHelper.getParameterByNameFromHash("ext");
     var itemUrl = DMHelper.getParameterByNameFromHash("item");
     var mode = DMHelper.getParameterByNameFromHash("mode");
-    layout.onLayoutChanged = (data) => {
+    layout.onViewPortChanged = (data) => {
          buildRibbons(layout, data);
     };
 

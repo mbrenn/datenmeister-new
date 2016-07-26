@@ -235,6 +235,7 @@ export namespace Api {
         navigateToItems(ws: string, extentUrl: string): void;
         navigateToItem(ws: string, extentUrl: string, itemUrl: string): void;
         setStatus(statusDom: JQuery): void;
+        throwLayoutChangedEvent(data: ILayoutChangedEvent): void;
 
         showNavigationForNewExtents(workspace: string);
 
@@ -264,9 +265,18 @@ export namespace Api {
         ws: string;
         extent: string;
     }
+
+    export enum PageType {
+        Workspaces,
+        Extents,
+        Items,
+        ItemDetail,
+        Dialog
+    }
+
     export interface ILayoutChangedEvent {
         layout?: ILayout;   // Will be set at the thrower
-        type: Datenmeisterlayout.PageType;
+        type: PageType;
         workspace?: string;
         extent?: string;
         item?: string;
@@ -278,6 +288,6 @@ export namespace Api {
     }
 
     export interface IPluginResult {
-        onLayoutChanged?: (ev: ILayoutChangedEvent) => void;
+        onViewPortChanged?: (ev: ILayoutChangedEvent) => void;
     }
 }

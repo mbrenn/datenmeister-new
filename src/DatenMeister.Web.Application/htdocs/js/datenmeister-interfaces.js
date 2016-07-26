@@ -166,6 +166,14 @@ define(["require", "exports"], function (require, exports) {
             return DialogConfiguration;
         }(FormForItemConfiguration));
         Api.DialogConfiguration = DialogConfiguration;
+        (function (PageType) {
+            PageType[PageType["Workspaces"] = 0] = "Workspaces";
+            PageType[PageType["Extents"] = 1] = "Extents";
+            PageType[PageType["Items"] = 2] = "Items";
+            PageType[PageType["ItemDetail"] = 3] = "ItemDetail";
+            PageType[PageType["Dialog"] = 4] = "Dialog";
+        })(Api.PageType || (Api.PageType = {}));
+        var PageType = Api.PageType;
         var PluginParameter = (function () {
             function PluginParameter() {
             }

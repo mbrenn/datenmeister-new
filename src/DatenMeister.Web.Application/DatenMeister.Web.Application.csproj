@@ -426,6 +426,7 @@
     <TypeScriptCompile Include="htdocs\js\datenmeister-tables.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="htdocs\js\datenmeister-viewport.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </TypeScriptCompile>

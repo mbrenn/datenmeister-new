@@ -1,30 +1,24 @@
 ﻿
 import DMI = require("./datenmeister-interfaces");
 import DMClient = require("./datenmeister-client");
+import DMViewPort = require("./datenmeister-viewport");
 import DMView = require("./datenmeister-view");
-import DMTables = require("./datenmeister-tables");
 import * as DMRibbon from "./datenmeister-ribbon";
 
 
-export enum PageType {
-    Workspaces,
-    Extents,
-    Items,
-    ItemDetail,
-    Dialog
-}
-
 export class Layout implements DMI.Api.ILayout {
     pluginResults: Array<DMI.Api.IPluginResult>;
+    mainViewPort : DMViewPort.ViewPort;
     parent: JQuery;
     onRefresh: () => void;
-    onLayoutChanged: (data: DMI.Api.ILayoutChangedEvent) => void;
+    onViewPortChanged: (data: DMI.Api.ILayoutChangedEvent) => void;
     currentLayoutInformation: DMI.Api.ILayoutChangedEvent;
     ribbon: DMRibbon.Ribbon;
 
     constructor(parent: JQuery) {
         this.parent = parent;
         this.pluginResults = new Array<DMI.Api.IPluginResult>();
+        this.mainViewPort = new DMViewPort.ViewPort($("#dm-viewport", this.parent), this);
     }
 
     refreshView() : void {
@@ -67,123 +61,81 @@ export class Layout implements DMI.Api.ILayout {
     }
 
     navigateToDialog(configuration: DMI.Api.DialogConfiguration) {
-        var oldPageType = this.currentLayoutInformation;
-
-        var domTable = $(".data-dialog", this.parent);
-        var value = new DMI.Table.DataTableItem();
-        var tableConfiguration = new DMTables.ItemContentConfiguration();
-        tableConfiguration.autoProperties = false;
-        tableConfiguration.columns = configuration.columns;
-        tableConfiguration.isReadOnly = false;
-        tableConfiguration.supportNewProperties = false;
-        tableConfiguration.onCancelForm = () => {
-            this.switchLayout(oldPageType);
-
-            if (configuration.onCancelForm !== undefined) {
-                configuration.onCancelForm();
-            }
-        };
-
-        tableConfiguration.onOkForm = () => {
-            if (configuration.onOkForm !== undefined) {
-                configuration.onOkForm(value);
-            }
-        }
-
-        var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
-        itemTable.show(domTable);
-
-        this.switchLayout(
-        {
-            type: PageType.Dialog,
-            workspace: configuration.ws,
-            extent: configuration.extent
-        });
+        var dialog = new DMView.DialogView(this);
+        dialog.createDialog(configuration);
+        this.mainViewPort.setView(dialog);
     }
 
     showWorkspaces() {
         var tthis = this;
-        tthis.switchLayout({ type: PageType.Workspaces });
         tthis.createTitle();
 
-        var workbenchLogic = new DMView.WorkspaceView();
+        var workbenchLogic = new DMView.WorkspaceView(this);
         workbenchLogic.onWorkspaceSelected = (id: string) => {
             // Loads the extent of the workspace, if the user has clicked on one of the workbenches
             tthis.navigateToExtents(id);
         };
 
-        workbenchLogic.loadAndCreateHtmlForWorkbenchs($(".data-workspaces", this.parent));
+        workbenchLogic.loadAndCreateHtmlForWorkbenchs();
+        this.mainViewPort.setView(workbenchLogic);
     }
 
     showExtents(workspaceId: string) {
         var tthis = this;
-        tthis.switchLayout({
-            type: PageType.Extents,
-            workspace: workspaceId
-        });
         tthis.createTitle(workspaceId);
-        var extentLogic = new DMView.ExtentView(this);
-        extentLogic.onExtentSelected = (ws: string, extentUrl: string) => {
+        var extentView = new DMView.ExtentView(this);
+        extentView.onExtentSelected = (ws: string, extentUrl: string) => {
             tthis.navigateToItems(ws, extentUrl);
             return false;
         };
 
-        extentLogic.loadAndCreateHtmlForWorkspace($(".data-extents", this.parent), workspaceId);
+        extentView.loadAndCreateHtmlForWorkspace(workspaceId);
+        this.mainViewPort.setView(extentView);
     }
 
     showItems(workspaceId: string, extentUrl: string) {
         var tthis = this;
-        this.switchLayout(
-        {
-            type: PageType.Items,
-            workspace: workspaceId,
-            extent: extentUrl
-        });
 
         this.createTitle(workspaceId, extentUrl);
-        var extentLogic = new DMView.ExtentView(this);
-        extentLogic.onItemEdit = (ws: string, extentUrl: string, itemUrl: string) => {
+        var extentView = new DMView.ExtentView(this);
+        extentView.onItemEdit = (ws: string, extentUrl: string, itemUrl: string) => {
             tthis.navigateToItem(ws, extentUrl, itemUrl);
         };
 
-        extentLogic.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
+        extentView.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
             tthis.navigateToItem(ws, extentUrl, itemUrl, { isReadonly: true });
         };
 
-        extentLogic.onItemCreated = (ws: string, extentUrl: string, itemUrl: string) => {
+        extentView.onItemCreated = (ws: string, extentUrl: string, itemUrl: string) => {
             tthis.navigateToItem(ws, extentUrl, itemUrl);
         };
 
-        extentLogic.loadAndCreateHtmlForExtent($(".data-items", this.parent), workspaceId, extentUrl);
+        extentView.loadAndCreateHtmlForExtent(workspaceId, extentUrl);
+        this.mainViewPort.setView(extentView);
     }
 
     showItem(workspaceId: string, extentUrl: string, itemUrl: string, settings?: DMI.View.IItemViewSettings) {
         var tthis = this;
-        this.switchLayout({
-            type: PageType.ItemDetail,
-            workspace: workspaceId,
-            extent: extentUrl,
-            item: itemUrl
-        });
 
-        var extentLogic = new DMView.ItemView(this);
+        var itemView = new DMView.ItemView(this);
 
-        extentLogic.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
+        itemView.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
             tthis.navigateToItem(ws, extentUrl, itemUrl, { isReadonly: true });
         };
 
         this.createTitle(workspaceId, extentUrl, itemUrl);
-        extentLogic.loadAndCreateHtmlForItem($(".data-itemdetail", this.parent),
+        itemView.loadAndCreateHtmlForItem(
             workspaceId,
             extentUrl,
             itemUrl,
             settings);
+        this.mainViewPort.setView(itemView);
     }
 
     createTitle(ws?: string, extentUrl?: string, itemUrl?: string) {
         var tthis = this;
         var containerTitle = $(".container-title", this.parent);
-        var ba = "&lt;&lt";
+        var ba = "&gt;&gt";
         if (ws === undefined) {
             containerTitle.text("Workspaces");
             this.onRefresh = () => {
@@ -255,11 +207,10 @@ export class Layout implements DMI.Api.ILayout {
 
         tthis.navigateToDialog(configuration);
     }
-
-
+    
     showNavigationForNewExtents(workspace: string) {
         var tthis = this;
-        var view = new DMView.NavigationView();
+        var view = new DMView.NavigationView(this);
 
         view.addLink("New CSV Extent",
         () => {
@@ -276,7 +227,7 @@ export class Layout implements DMI.Api.ILayout {
             tthis.showDialogNewXmiExtent(workspace);
         });
 
-        tthis.setView(view);
+        this.mainViewPort.setView(view);
     }
 
 
@@ -349,46 +300,10 @@ export class Layout implements DMI.Api.ILayout {
         tthis.navigateToDialog(configuration);
     }
 
-    switchLayout(layoutInformation: DMI.Api.ILayoutChangedEvent) {
-        $(".only-workspaces").hide();
-        $(".only-extents").hide();
-        $(".only-items").hide();
-        $(".only-itemdetail").hide();
-        $(".only-dialog").hide();
-
-        if (layoutInformation.type === PageType.Workspaces) {
-            $(".only-workspaces").show();
-        } else if (layoutInformation.type === PageType.Extents) {
-            $(".only-extents").show();
-        } else if (layoutInformation.type === PageType.Items) {
-            $(".only-items").show();
-        } else if (layoutInformation.type === PageType.ItemDetail) {
-            $(".only-itemdetail").show();
-        } else if (layoutInformation.type === PageType.Dialog) {
-            $(".only-dialog").show();
-        }
-
-        this.currentLayoutInformation = layoutInformation;
-
-        this.throwLayoutChangedEvent(layoutInformation);
-    }
-
     setStatus(statusDom: JQuery): void {
         var dom = $(".dm-statusline");
         dom.empty();
         dom.append(statusDom);
-    }
-
-    setView(view: DMView.IView) {
-        this.switchLayout(
-        {
-            layout: this,
-            type: PageType.Dialog
-        });
-
-        var container = $(".data-dialog", this.parent);
-        container.empty();
-        view.show(container);
     }
 
     lastLayoutConfiguration: DMI.Api.ILayoutChangedEvent;
@@ -400,14 +315,14 @@ export class Layout implements DMI.Api.ILayout {
 
         this.lastLayoutConfiguration = data;
 
-        if (this.onLayoutChanged !== undefined) {
-            this.onLayoutChanged(data);
+        if (this.onViewPortChanged !== undefined) {
+            this.onViewPortChanged(data);
         }
 
         if (this.pluginResults !== undefined) {
             for (var n in this.pluginResults) {
                 var pluginResult = this.pluginResults[n];
-                pluginResult.onLayoutChanged(data);
+                pluginResult.onViewPortChanged(data);
             }
         }
     }

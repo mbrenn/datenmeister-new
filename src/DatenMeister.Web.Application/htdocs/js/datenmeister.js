@@ -48,7 +48,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
                     var result = plugin.load(parameter);
                     if (result !== undefined && result !== null) {
                         layout.pluginResults[layout.pluginResults.length] = result;
-                        if (result.onLayoutChanged !== undefined) {
+                        if (result.onViewPortChanged !== undefined) {
                             layout.renavigate();
                         }
                     }
@@ -62,7 +62,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         var extentUrl = DMHelper.getParameterByNameFromHash("ext");
         var itemUrl = DMHelper.getParameterByNameFromHash("item");
         var mode = DMHelper.getParameterByNameFromHash("mode");
-        layout.onLayoutChanged = function (data) {
+        layout.onViewPortChanged = function (data) {
             buildRibbons(layout, data);
         };
         if (ws === "") {

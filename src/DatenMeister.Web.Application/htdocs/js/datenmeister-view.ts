@@ -34,6 +34,15 @@ export class ViewBase implements IView{
     setLayoutInformation(layoutInformation: DMI.Api.ILayoutChangedEvent): void {
         this.layoutInformation = layoutInformation;
     }
+
+    insertLink(container: JQuery, displayText: string, onClick: () => void): void {
+        var domItem =
+            $(`<input type='button' class='btn'></input>`);
+        
+        domItem.val(displayText);
+        domItem.click(onClick);
+        container.append(domItem);
+    }
 }
 
 export class WorkspaceView extends ViewBase implements IView {
@@ -137,17 +146,18 @@ export class ExtentView extends ViewBase implements IView{
                     var entry: DMI.ClientResponse.IExtent = data[n];
                     var line: string = compiled(entry);
                     var dom: JQuery = $(line);
-                    $(".data", dom).click(
-                        ((localEntry: DMI.ClientResponse.IExtent) => (
-                            () => {
-                                if (tthis.onExtentSelected !== undefined) {
-                                    tthis.onExtentSelected(ws, localEntry.uri);
-                                }
+                    $(".data", dom)
+                        .click(
+                            ((localEntry: DMI.ClientResponse.IExtent) => (
+                                () => {
+                                    if (tthis.onExtentSelected !== undefined) {
+                                        tthis.onExtentSelected(ws, localEntry.uri);
+                                    }
 
-                                return false;
-                            })
-                        )(entry)
-                    );
+                                    return false;
+                                })
+                            )(entry)
+                        );
 
                     compiledTable.append(dom);
                 }
@@ -155,11 +165,11 @@ export class ExtentView extends ViewBase implements IView{
 
             this.content.append(compiledTable);
         }
-        
+
         // TODO: Replace with add link
-        var newExtentButton = $("<input type= 'button' value='Add new Extent' class='btn'></input>");
-        newExtentButton.click(() => tthis.layout.showNavigationForNewExtents(ws));
-        this.content.append(newExtentButton);
+        this.insertLink(this.content,
+            "Add new Extent",
+            () => tthis.layout.showNavigationForNewExtents(ws));
     }
 
     loadAndCreateHtmlForExtent(
@@ -361,14 +371,6 @@ export class NavigationView extends ViewBase implements IView {
 
     addLink(displayText: string, onClick: () => void): void {
         this.insertLink(this.domList, displayText, onClick);
-    }
-
-    insertLink(container: JQuery, displayText: string, onClick: () => void): void
-    {
-        let domItem = $("<li></li>");
-        domItem.text(displayText);
-        domItem.click(onClick);
-        container.append(domItem);
     }
 }
 

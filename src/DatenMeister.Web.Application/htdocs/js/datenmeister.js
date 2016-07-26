@@ -98,7 +98,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         tabFile.addIcon("Add Workspace", "img/icons/database-add", function () { layout.showDialogNewWorkspace(); });
         if (changeEvent !== null && changeEvent !== undefined && changeEvent.workspace !== undefined) {
             // Ok, we have a workspace
-            tabFile.addIcon("Delete Extent", "img/icons/database-delete", function () {
+            tabFile.addIcon("Delete Workspace", "img/icons/database-delete", function () {
                 DMClient.WorkspaceApi.deleteWorkspace(changeEvent.workspace)
                     .done(function () { return layout.navigateToWorkspaces(); });
             });

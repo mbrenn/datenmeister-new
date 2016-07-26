@@ -119,7 +119,7 @@ function buildRibbons(layout: DMLayout.Layout, changeEvent: DMI.Api.ILayoutChang
 
     if (changeEvent !== null && changeEvent !== undefined && changeEvent.workspace !== undefined) {
         // Ok, we have a workspace
-        tabFile.addIcon("Delete Extent", "img/icons/database-delete", () => {
+        tabFile.addIcon("Delete Workspace", "img/icons/database-delete", () => {
             DMClient.WorkspaceApi.deleteWorkspace(changeEvent.workspace)
                 .done(() => layout.navigateToWorkspaces());
         });

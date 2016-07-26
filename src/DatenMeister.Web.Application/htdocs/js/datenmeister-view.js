@@ -22,6 +22,12 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
         ViewBase.prototype.setLayoutInformation = function (layoutInformation) {
             this.layoutInformation = layoutInformation;
         };
+        ViewBase.prototype.insertLink = function (container, displayText, onClick) {
+            var domItem = $("<input type='button' class='btn'></input>");
+            domItem.val(displayText);
+            domItem.click(onClick);
+            container.append(domItem);
+        };
         return ViewBase;
     }());
     exports.ViewBase = ViewBase;
@@ -107,7 +113,8 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                         var entry = data[n];
                         var line = compiled(entry);
                         var dom = $(line);
-                        $(".data", dom).click((function (localEntry) { return (function () {
+                        $(".data", dom)
+                            .click((function (localEntry) { return (function () {
                             if (tthis.onExtentSelected !== undefined) {
                                 tthis.onExtentSelected(ws, localEntry.uri);
                             }
@@ -119,9 +126,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                 this.content.append(compiledTable);
             }
             // TODO: Replace with add link
-            var newExtentButton = $("<input type= 'button' value='Add new Extent' class='btn'></input>");
-            newExtentButton.click(function () { return tthis.layout.showNavigationForNewExtents(ws); });
-            this.content.append(newExtentButton);
+            this.insertLink(this.content, "Add new Extent", function () { return tthis.layout.showNavigationForNewExtents(ws); });
         };
         ExtentView.prototype.loadAndCreateHtmlForExtent = function (ws, extentUrl, query) {
             var _this = this;
@@ -283,12 +288,6 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
         }
         NavigationView.prototype.addLink = function (displayText, onClick) {
             this.insertLink(this.domList, displayText, onClick);
-        };
-        NavigationView.prototype.insertLink = function (container, displayText, onClick) {
-            var domItem = $("<li></li>");
-            domItem.text(displayText);
-            domItem.click(onClick);
-            container.append(domItem);
         };
         return NavigationView;
     }(ViewBase));

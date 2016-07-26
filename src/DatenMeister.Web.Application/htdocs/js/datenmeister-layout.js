@@ -19,7 +19,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             }
         };
         Layout.prototype.navigateToWorkspaces = function () {
-            history.pushState({}, "", "#");
+            history.pushState({}, "", "#ws={all}");
             this.showWorkspaces();
         };
         Layout.prototype.navigateToExtents = function (workspaceId) {
@@ -31,12 +31,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             this.showItems(ws, extentUrl);
         };
         Layout.prototype.navigateToItem = function (ws, extentUrl, itemUrl, settings) {
-            var url = "#ws=" +
-                encodeURIComponent(ws) +
-                "&ext=" +
-                encodeURIComponent(extentUrl) +
-                "&item=" +
-                encodeURIComponent(itemUrl);
+            var url = "#ws=" + encodeURIComponent(ws) + "&ext=" + encodeURIComponent(extentUrl) + "&item=" + encodeURIComponent(itemUrl);
             if (settings !== undefined && settings !== null) {
                 if (settings.isReadonly) {
                     url += "&mode=readonly";
@@ -46,9 +41,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             this.showItem(ws, extentUrl, itemUrl, settings);
         };
         Layout.prototype.exportExtent = function (ws, extentUrl) {
-            window.open("/api/datenmeister/extent/extent_export?ws="
-                + encodeURIComponent(ws) + "&extent="
-                + encodeURIComponent(extentUrl));
+            window.open("/api/datenmeister/extent/extent_export?ws=" + encodeURIComponent(ws) + "&extent=" + encodeURIComponent(extentUrl));
         };
         Layout.prototype.navigateToDialog = function (configuration) {
             var _this = this;
@@ -142,6 +135,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
         Layout.prototype.createTitle = function (ws, extentUrl, itemUrl) {
             var tthis = this;
             var containerTitle = $(".container-title", this.parent);
+            var ba = "&lt;&lt";
             if (ws === undefined) {
                 containerTitle.text("Workspaces");
                 this.onRefresh = function () {
@@ -150,7 +144,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 };
             }
             else if (extentUrl === undefined) {
-                containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - Extents");
+                containerTitle.html("<a href='#' class='link_workspaces'>Workspace '<b>" + ws + "</b>'</a> " + ba + " Extents");
                 this.onRefresh = function () {
                     tthis.showExtents(ws);
                     return false;
@@ -158,7 +152,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             }
             else if (itemUrl == undefined) {
                 containerTitle
-                    .html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - Items");
+                    .html("<a href='#' class='link_workspaces'> Workspace '<b>" + ws + "</b>'</a> " + ba + " <a href='#' class='link_extents'>Extent '<b>" + extentUrl + "</b>'</a> " + ba + " Items");
                 this.onRefresh = function () {
                     tthis.showItems(ws, extentUrl);
                     return false;
@@ -166,7 +160,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             }
             else {
                 containerTitle
-                    .html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - <a href='#' class='link_items'>Items</a>");
+                    .html("<a href='#' class='link_workspaces'>Workspace '<b>" + ws + "</b>'</a> " + ba + " <a href='#' class='link_extents'>Extent '<b>" + extentUrl + "</b>'</a> " + ba + " <a href='#' class='link_items'>Items</a>");
                 this.onRefresh = function () {
                     tthis.showItem(ws, extentUrl, itemUrl);
                     return false;
@@ -330,7 +324,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             this.throwLayoutChangedEvent(this.lastLayoutConfiguration);
         };
         Layout.prototype.gotoHome = function () {
-            this.navigateToWorkspaces();
+            this.navigateToExtents("Data");
         };
         Layout.prototype.getRibbon = function () {
             if (this.ribbon === null || this.ribbon === undefined) {

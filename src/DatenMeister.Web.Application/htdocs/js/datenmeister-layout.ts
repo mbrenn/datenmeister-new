@@ -34,27 +34,22 @@ export class Layout implements DMI.Api.ILayout {
     }
 
     navigateToWorkspaces() {
-        history.pushState({}, "", "#");
+        history.pushState({}, "", "#ws={all}");
         this.showWorkspaces();
     }
 
     navigateToExtents(workspaceId: string) {
-        history.pushState({}, "", "#ws=" + encodeURIComponent(workspaceId));
+        history.pushState({}, "", `#ws=${encodeURIComponent(workspaceId)}`);
         this.showExtents(workspaceId);
     }
 
     navigateToItems(ws: string, extentUrl: string) {
-        history.pushState({}, "", "#ws=" + encodeURIComponent(ws) + "&ext=" + encodeURIComponent(extentUrl));
+        history.pushState({}, "", `#ws=${encodeURIComponent(ws)}&ext=${encodeURIComponent(extentUrl)}`);
         this.showItems(ws, extentUrl);
     }
 
     navigateToItem(ws: string, extentUrl: string, itemUrl: string, settings?: DMI.View.IItemViewSettings) {
-        var url = "#ws=" +
-            encodeURIComponent(ws) +
-            "&ext=" +
-            encodeURIComponent(extentUrl) +
-            "&item=" +
-            encodeURIComponent(itemUrl);
+        var url = `#ws=${encodeURIComponent(ws)}&ext=${encodeURIComponent(extentUrl)}&item=${encodeURIComponent(itemUrl)}`;
 
         if (settings !== undefined && settings !== null) {
             if (settings.isReadonly) {
@@ -68,9 +63,7 @@ export class Layout implements DMI.Api.ILayout {
 
     exportExtent(ws: string, extentUrl: string) {
         window.open(
-            "/api/datenmeister/extent/extent_export?ws="
-            + encodeURIComponent(ws) + "&extent="
-            + encodeURIComponent(extentUrl));
+            `/api/datenmeister/extent/extent_export?ws=${encodeURIComponent(ws)}&extent=${encodeURIComponent(extentUrl)}`);
     }
 
     navigateToDialog(configuration: DMI.Api.DialogConfiguration) {
@@ -190,7 +183,7 @@ export class Layout implements DMI.Api.ILayout {
     createTitle(ws?: string, extentUrl?: string, itemUrl?: string) {
         var tthis = this;
         var containerTitle = $(".container-title", this.parent);
-
+        var ba = "&lt;&lt";
         if (ws === undefined) {
             containerTitle.text("Workspaces");
             this.onRefresh = () => {
@@ -198,21 +191,27 @@ export class Layout implements DMI.Api.ILayout {
                 return false;
             };
         } else if (extentUrl === undefined) {
-            containerTitle.html("<a href='#' class='link_workspaces'>Workspaces</a> - Extents");
+            containerTitle.html(
+                `<a href='#' class='link_workspaces'>Workspace '<b>${ws}</b>'</a> ${ba} Extents`);
             this.onRefresh = () => {
                 tthis.showExtents(ws);
                 return false;
             };
         } else if (itemUrl == undefined) {
             containerTitle
-                .html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - Items");
+                .html(
+                    `<a href='#' class='link_workspaces'> Workspace '<b>${ws}</b>'</a> ${ba
+                    } <a href='#' class='link_extents'>Extent '<b>${extentUrl}</b>'</a> ${ba
+                    } Items`);
             this.onRefresh = () => {
                 tthis.showItems(ws, extentUrl);
                 return false;
             };
         } else {
             containerTitle
-                .html("<a href='#' class='link_workspaces'>Workspaces</a> - <a href='#' class='link_extents'>Extents</a> - <a href='#' class='link_items'>Items</a>");
+                .html(`<a href='#' class='link_workspaces'>Workspace '<b>${ws}</b>'</a> ${ba
+                    } <a href='#' class='link_extents'>Extent '<b>${extentUrl}</b>'</a> ${ba
+                    } <a href='#' class='link_items'>Items</a>`);
             this.onRefresh = () => {
                 tthis.showItem(ws, extentUrl, itemUrl);
                 return false;
@@ -418,9 +417,9 @@ export class Layout implements DMI.Api.ILayout {
     }
 
     gotoHome(): void {
-        this.navigateToWorkspaces();
+        this.navigateToExtents("Data");
     }
-    
+
     getRibbon(): DMRibbon.Ribbon {
         if (this.ribbon === null || this.ribbon === undefined) {
             var domRibbon = $(".datenmeister-ribbon");

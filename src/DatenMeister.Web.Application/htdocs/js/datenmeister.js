@@ -66,6 +66,10 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
             buildRibbons(layout, data);
         };
         if (ws === "") {
+            // per default, show the data extent
+            layout.showExtents("Data");
+        }
+        else if (ws === "{all}") {
             layout.showWorkspaces();
         }
         else if (extentUrl === "") {
@@ -90,7 +94,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         var tabFile = ribbon.getOrAddTab("File");
         tabFile.addIcon("Home", "img/icons/home", function () { layout.gotoHome(); });
         tabFile.addIcon("Refresh", "img/icons/refresh_update", function () { layout.refreshView(); });
-        tabFile.addIcon("Workspaces", "img/icons/database", function () { layout.showWorkspaces(); });
+        tabFile.addIcon("Workspaces", "img/icons/database", function () { layout.navigateToWorkspaces(); });
         tabFile.addIcon("Add Workspace", "img/icons/database-add", function () { layout.showDialogNewWorkspace(); });
         if (changeEvent !== null && changeEvent !== undefined && changeEvent.workspace !== undefined) {
             // Ok, we have a workspace

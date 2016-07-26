@@ -86,6 +86,9 @@ export function parseAndNavigateToWindowLocation(layout: DMLayout.Layout) {
     };
 
     if (ws === "") {
+        // per default, show the data extent
+        layout.showExtents("Data");
+    } else if (ws === "{all}") {
         layout.showWorkspaces();
     } else if (extentUrl === "") {
         layout.showExtents(ws);
@@ -111,7 +114,7 @@ function buildRibbons(layout: DMLayout.Layout, changeEvent: DMI.Api.ILayoutChang
     tabFile.addIcon("Home", "img/icons/home", () => { layout.gotoHome(); });
     tabFile.addIcon("Refresh", "img/icons/refresh_update", () => { layout.refreshView(); });
 
-    tabFile.addIcon("Workspaces", "img/icons/database", () => { layout.showWorkspaces(); });
+    tabFile.addIcon("Workspaces", "img/icons/database", () => { layout.navigateToWorkspaces(); });
     tabFile.addIcon("Add Workspace", "img/icons/database-add", () => { layout.showDialogNewWorkspace(); });
 
     if (changeEvent !== null && changeEvent !== undefined && changeEvent.workspace !== undefined) {

@@ -95,6 +95,10 @@ define(["require", "exports"], function (require, exports) {
                 this.defaultValue = value;
                 return this;
             };
+            DataField.prototype.asReadOnly = function () {
+                this.isReadOnly = true;
+                return this;
+            };
             return DataField;
         }());
         Table.DataField = DataField;

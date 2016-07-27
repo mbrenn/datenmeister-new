@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Web.Http;
 using DatenMeister.CSV;
 using DatenMeister.CSV.Runtime.Storage;
@@ -176,7 +175,16 @@ namespace DatenMeister.Web.Api
                 throw new InvalidOperationException("Workspace not found");
             }
 
-            var filename = MakePathAbsolute(model.filename);
+            string filename;
+            if (!string.IsNullOrEmpty(model.filename))
+            {
+                filename = MakePathAbsolute(model.filename);
+            }
+            else
+            {
+                filename = MakePathAbsolute(
+                    Path.ChangeExtension(model.name, model.type));
+            }
 
             // Creates the new workspace
             var configuration = GetStorageConfiguration(model, filename);

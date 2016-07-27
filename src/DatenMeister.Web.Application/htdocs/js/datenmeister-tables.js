@@ -443,11 +443,17 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
                     if (asTextBox.lineHeight !== undefined && asTextBox.lineHeight > 1) {
                         var domTextBoxMultiple = $("<textarea class='form-control'></textarea>").attr('rows', asTextBox.lineHeight);
                         domTextBoxMultiple.val(contentValue);
+                        if (asTextBox.isReadOnly) {
+                            domTextBoxMultiple.attr("readonly", "readonly");
+                        }
                         return domTextBoxMultiple;
                     }
                     else {
                         var domTextBox = $("<input type='textbox' class='form-control' />");
                         domTextBox.val(contentValue);
+                        if (asTextBox.isReadOnly) {
+                            domTextBox.attr("readonly", "readonly");
+                        }
                         return domTextBox;
                     }
                 }

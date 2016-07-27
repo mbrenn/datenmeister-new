@@ -52,6 +52,7 @@ export module ClientResponse {
         name?: string;
         defaultValue?: any;
         isEnumeration?: boolean;
+        isReadOnly?: boolean;
     }
 
     export interface IDropDownDataField extends IDataField {
@@ -103,7 +104,8 @@ export module PostModels {
         type: string;
         workspace: string;
         contextUri: string;
-        filename: string;
+        filename?: string;
+        name?: string;
         columns?: string;
     }
 
@@ -163,6 +165,7 @@ export namespace Table {
         name: string;
         defaultValue: any;
         isEnumeration: boolean;
+        isReadOnly: boolean;
 
         constructor(title?: string, name?: string) {
             this.type = ColumnTypes.textbox;
@@ -172,6 +175,11 @@ export namespace Table {
 
         withDefaultValue(value: any): DataField {
             this.defaultValue = value;
+            return this;
+        }
+
+        asReadOnly(): DataField {
+            this.isReadOnly = true;
             return this;
         }
     }

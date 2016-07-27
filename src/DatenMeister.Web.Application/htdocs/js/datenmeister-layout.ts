@@ -216,12 +216,7 @@ export class Layout implements DMI.Api.ILayout {
         () => {
             tthis.showDialogNewCsvExtent(workspace);
         });
-
-        view.addLink("New CSV Extent for UML class",
-        () => {
-            // showDialogNewExtent(layout, workspace);
-        });
-
+        
         view.addLink("New XmlExtent",
         () => {
             tthis.showDialogNewXmiExtent(workspace);
@@ -286,16 +281,16 @@ export class Layout implements DMI.Api.ILayout {
             DMClient.ExtentApi.createExtent(
                 {
                     type: "xmi",
-                    workspace: data.v["workspace"],
+                    workspace: workspace,
                     contextUri: data.v["contextUri"],
-                    filename: data.v["filename"]
+                    name: data.v["name"]
                 })
                 .done(() => tthis.navigateToExtents(data.v["workspace"]));
         };
 
-        configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace));
+        configuration.addColumn(new DMI.Table.DataField("Name", "name").withDefaultValue("name"));
+        configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace).asReadOnly());
         configuration.addColumn(new DMI.Table.DataField("URI", "contextUri").withDefaultValue("dm:///"));
-        configuration.addColumn(new DMI.Table.DataField("Filename", "filename").withDefaultValue("d:\\file.xml"));
 
         tthis.navigateToDialog(configuration);
     }

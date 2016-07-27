@@ -161,6 +161,22 @@ namespace DatenMeister.Web.Api
         }
 
         /// <summary>
+        /// Removes all invalid characters within a filename to ensure safety
+        /// by disallowing navigation within the filesystem of the server
+        /// </summary>
+        /// <param name="filename">Filename to be strapped out</param>
+        /// <returns>The cleaned filename</returns>
+        private static string CleanFilenameFromInvalidCharacters(string filename)
+        {
+            foreach (var letter in Path.GetInvalidFileNameChars()       )
+            {
+                filename = filename.Replace(letter, '_');
+            }
+
+            return filename;
+        }
+
+        /// <summary>
         /// Deletes a complete extent
         /// </summary>
         /// <param name="model">Model to be deleted</param>
@@ -182,8 +198,11 @@ namespace DatenMeister.Web.Api
             }
             else
             {
+
                 filename = MakePathAbsolute(
-                    Path.ChangeExtension(model.name, model.type));
+                    Path.ChangeExtension(
+                        CleanFilenameFromInvalidCharacters(model.name),
+                        CleanFilenameFromInvalidCharacters(model.type)));
             }
 
             // Creates the new workspace

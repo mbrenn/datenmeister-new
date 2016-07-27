@@ -468,7 +468,7 @@ export class ItemContentTable {
 
     offerNewProperty(domTable: JQuery) {
         var tthis = this;
-        var domNewProperty = $("<tr><td colspan='4'><button class='btn btn-default'>NEW PROPERTY</button></td></tr>");
+        var domNewProperty = $("<tr><td colspan='4'><button class='btn btn-default'>Add Property</button></td></tr>");
         $("button", domNewProperty).click(() => {
             domNewProperty.empty();
             var domNewPropertyName = $("<td class='table_column_name'><input type='textbox' class='form-control' /></td>");

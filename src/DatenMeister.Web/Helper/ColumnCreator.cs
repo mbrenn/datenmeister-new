@@ -14,17 +14,6 @@ namespace DatenMeister.Web.Helper
 {
     public class ColumnCreator
     {
-        private readonly IUmlNameResolution _nameResolution;
-        private readonly IDataLayerLogic _dataLayerLogic;
-        private readonly IWorkspaceCollection _workspaceCollection;
-
-        public ColumnCreator(IUmlNameResolution nameResolution, IDataLayerLogic dataLayerLogic, IWorkspaceCollection workspaceCollection)
-        {
-            _nameResolution = nameResolution;
-            _dataLayerLogic = dataLayerLogic;
-            _workspaceCollection = workspaceCollection;
-        }
-
         public ColumnCreationResult FindColumnsForTable(IUriExtent extent)
         {
             return FindColumnsForTable(extent.elements());
@@ -48,48 +37,6 @@ namespace DatenMeister.Web.Helper
             return result;
         }
 
-        public static string ConvertPropertyToColumnName(object property)
-        {
-            if (property == null)
-            {
-                throw new ArgumentNullException(nameof(property));
-            }
-            var asElement = property as IElement;
-            if (asElement != null)
-            {
-                // Property is an IElement, so retrieve the information by url
-                return string.Format($"#uml#{asElement.GetUri()}");
-            }
-            else
-            {
-                // Property is a string, so return it by ToString()
-                var propertyAsString = property.ToString();
-
-                if (propertyAsString.StartsWith("#"))
-                {
-                    throw new InvalidOperationException("Property may not start with a '#': " + propertyAsString);
-                }
-
-                return propertyAsString;
-            }
-        }
-
-        public object ConvertColumnNameToProperty(string property)
-        {
-            if (property.StartsWith("#"))
-            {
-                if (property.StartsWith("#uml#"))
-                {
-                    property = property.Substring("#uml#".Length);
-                    return _workspaceCollection.FindItem(property);
-                }
-
-                throw new InvalidOperationException($"Property with name '{property}' starts with '#' but format is not known. ");
-            }
-
-            return property;
-        }
-
         private void EvaluateColumnsForItem(ColumnCreationResult result, object item)
         {
             // First phase: Get the properties by using the metaclass
@@ -98,11 +45,7 @@ namespace DatenMeister.Web.Helper
 
             if (metaClass != null)
             {
-                var dataLayer = _dataLayerLogic?.GetDataLayerOfObject(metaClass);
-                var metaLayer = _dataLayerLogic?.GetMetaLayerFor(dataLayer);
-                var uml = _dataLayerLogic?.Get<_UML>(metaLayer);
-
-                if (uml != null && metaClass.isSet(_UML._Classification._Classifier.attribute))
+                if (metaClass.isSet(_UML._Classification._Classifier.attribute))
                 {
                     var properties = metaClass.get(_UML._Classification._Classifier.attribute) as IEnumerable;
                     if (properties != null)
@@ -115,8 +58,8 @@ namespace DatenMeister.Web.Helper
                             {
                                 column = new TextFieldData
                                 {
-                                    name = ConvertPropertyToColumnName(property),
-                                    title = property.get(_UML._CommonStructure._NamedElement.name).ToString()
+                                    name = propertyName,
+                                    title = propertyName
                                 };
 
                                 result.ColumnsOnProperty[propertyName] = column;
@@ -140,9 +83,8 @@ namespace DatenMeister.Web.Helper
                     {
                         column = new TextFieldData
                         {
-                            name = ConvertPropertyToColumnName(property),
-                            title =
-                                _nameResolution == null ? property.ToString() : _nameResolution.GetName(property)
+                            name = property,
+                            title = property
                         };
 
                         result.ColumnsOnProperty[property] = column;

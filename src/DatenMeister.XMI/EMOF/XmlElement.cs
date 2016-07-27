@@ -13,10 +13,10 @@ namespace DatenMeister.XMI.EMOF
     /// <summary>
     /// Abstracts the IObject from EMOF
     /// </summary>
-    public class XmlElement : IElement, IHasId, IObjectKnowsExtent
+    public class XmlElement : IElement, IHasId, IObjectKnowsExtent, IObjectAllProperties
     {
-        public static readonly XName typeAttribute = Namespaces.Xmi + "type";
-        private static readonly XName _attributeNameForId = "id";
+        public static readonly XName TypeAttribute = Namespaces.Xmi + "type";
+        private static readonly XName AttributeNameForId = "id";
 
         private readonly XElement _node;
 
@@ -25,18 +25,18 @@ namespace DatenMeister.XMI.EMOF
         /// <summary>
         /// Stores the owning element of the element. 
         /// </summary>
-        private XmlElement _container;
+        private readonly XmlElement _container;
 
         /// <summary>
         /// Stores the owning extent of the object.
         /// This object or the container should be set
         /// </summary>
-        private XmlUriExtent _owningExtent;
+        private readonly XmlUriExtent _owningExtent;
 
         /// <summary>
         /// Gets the id of the XmlElement
         /// </summary>
-        public string Id => _node.Attribute(_attributeNameForId).Value;
+        public string Id => _node.Attribute(AttributeNameForId).Value;
 
         public XmlElement(XElement node, XmlElement container = null)
         {
@@ -45,9 +45,9 @@ namespace DatenMeister.XMI.EMOF
             _container = container;
 
             // Checks, if an id is given. if not. set it. 
-            if (node.Attribute(_attributeNameForId) == null)
+            if (node.Attribute(AttributeNameForId) == null)
             {
-                node.SetAttributeValue(_attributeNameForId, Guid.NewGuid().ToString());
+                node.SetAttributeValue(AttributeNameForId, Guid.NewGuid().ToString());
             }
         }
 
@@ -64,7 +64,7 @@ namespace DatenMeister.XMI.EMOF
 
         public override bool Equals(object obj)
         {
-            return @equals(obj);
+            return equals(obj);
         }
 
         public override int GetHashCode()
@@ -72,17 +72,25 @@ namespace DatenMeister.XMI.EMOF
             return _node.GetHashCode();
         }
 
+        /// <summary>
+        /// Gets all the properties that are set within the xml node
+        /// </summary>
+        /// <returns>Enumeration of objects</returns>
+        public IEnumerable<string> getPropertiesBeingSet()
+        {
+            foreach (var attribute in _node.Attributes())
+            {
+                yield return attribute.Name.ToString();
+            }
+        }
+
         public bool equals(object other)
         {
             Debug.Write($"this:{GetHashCode()} other:{other.GetHashCode()}");
             var otherAsXmlObject = other as XmlElement;
-            if (otherAsXmlObject == null)
-            {
-                return false;
-            }
 
             // Simple implementation will look, if all the attributes are same
-            if (_node.Attributes().Count() != otherAsXmlObject._node.Attributes().Count())
+            if (_node.Attributes().Count() != otherAsXmlObject?._node.Attributes().Count())
             {
                 return false;
             }
@@ -154,7 +162,7 @@ namespace DatenMeister.XMI.EMOF
         public IElement getMetaClass()
         {
             // Find the metaclass uri.
-            var attribute = XmlNode.Attribute(typeAttribute);
+            var attribute = XmlNode.Attribute(TypeAttribute);
             if (attribute == null)
             {
                 return null;
@@ -171,7 +179,7 @@ namespace DatenMeister.XMI.EMOF
             return extent.Workspaces?.FindItem(attribute.Value);
         }
 
-        public XmlUriExtent GetExtent()
+        private XmlUriExtent GetExtent()
         {
             return _owningExtent ?? _container?.GetExtent();
         }

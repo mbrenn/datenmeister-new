@@ -6,7 +6,6 @@ using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;using DatenMeister.Filler;
-using DatenMeister.Runtime.Reflection;
 using DatenMeister.Uml.Helper;
 using DatenMeister.XMI;
 
@@ -322,10 +321,6 @@ namespace DatenMeister.Uml
                 dataLayerLogic.Create<FillTheMOF, _MOF>(dataLayer);
                 dataLayerLogic.Create<FillTheUML, _UML>(dataLayer);
                 dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(dataLayer);
-
-                var dmml = new DmML();
-                UmlToDmMLConverter.Convert(dataLayerLogic.Get<_UML>(dataLayer), dmml);
-                dataLayerLogic.Set(dataLayer, dmml);
             }
             else
             {

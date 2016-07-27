@@ -64,7 +64,6 @@
     <Compile Include="Helper\IUmlNameResolution.cs" />
     <Compile Include="Helper\UmlNameResolution.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UmlToDmMLConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">

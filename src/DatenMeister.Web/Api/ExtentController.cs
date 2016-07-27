@@ -44,7 +44,6 @@ namespace DatenMeister.Web.Api
         private readonly ExtentFunctions _extentFunctions;
         private readonly ILifetimeScope _diScope;
 
-
         public ExtentController(
             IFactoryMapper mapper, 
             IWorkspaceCollection workspaceCollection, 
@@ -198,7 +197,6 @@ namespace DatenMeister.Web.Api
             }
             else
             {
-
                 filename = MakePathAbsolute(
                     Path.ChangeExtension(
                         CleanFilenameFromInvalidCharacters(model.name),
@@ -373,7 +371,6 @@ namespace DatenMeister.Web.Api
             var totalItems = foundExtent.elements();
             var foundItems = totalItems;
 
-
             var result = _columnCreator.FindColumnsForTable(foundExtent);
             var properties = result.Properties;
 
@@ -386,7 +383,6 @@ namespace DatenMeister.Web.Api
             }
 
             // After having the filtered item, we reset the offset
-
             var filteredAmount = filteredItems.Count();
             if (o < 0)
             {
@@ -587,7 +583,7 @@ namespace DatenMeister.Web.Api
 
         [Route("item_set_properties")]
         [HttpPost]
-        public object SetPropertiesValue([FromBody] ItemSetPropertiesModel model)
+        public object SetPropertyValues([FromBody] ItemSetPropertiesModel model)
         {
             try
             {
@@ -630,8 +626,7 @@ namespace DatenMeister.Web.Api
             foreach (var property in creatorResult.Properties
                 .Where(property => element.isSet(property)))
             {
-                var propertyAsString = ColumnCreator.ConvertPropertyToColumnName(property);
-
+                var propertyAsString = property;
                 var propertyValue = element.get(property);
 
                 if (creatorResult.ColumnsOnProperty[property].isEnumeration)
@@ -642,19 +637,10 @@ namespace DatenMeister.Web.Api
                         foreach (var listValue in (propertyValue as IEnumerable))
                         {
                             var asElement = listValue as IElement;
-                            string url;
-                            if (asElement != null)
-                            {
-                                url = asElement.GetUri();
-                            }
-                            else
-                            {
-                                url = null;
-                            }
 
                             list.Add(new
                             {
-                                u = url,
+                                u = asElement?.GetUri(),
                                 v = listValue == null ? "null" : _resolution.GetName(listValue)
                             });
                         }

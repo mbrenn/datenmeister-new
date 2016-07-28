@@ -63,6 +63,9 @@
       <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Reflection.TypeExtensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.TypeExtensions.4.0.0\lib\net46\System.Reflection.TypeExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -91,6 +94,10 @@
     <ProjectReference Include="..\DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj">
       <Project>{2aae5839-db41-429b-b7c4-b872506736c7}</Project>
       <Name>DatenMeister.SourcecodeGenerator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Web.Models.csproj">
+      <Project>{5e01c76d-a969-4238-8d8c-1cb22c92da7a}</Project>
+      <Name>DatenMeister.Web.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">
       <Project>{e44275c2-9e62-42be-b984-127f82c1766f}</Project>

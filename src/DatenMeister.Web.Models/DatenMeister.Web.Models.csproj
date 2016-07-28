@@ -65,6 +65,10 @@
     <Compile Include="ExtentContentModel.cs" />
     <Compile Include="ExtentModel.cs" />
     <Compile Include="Fields\DateTimeFieldData.cs" />
+    <Compile Include="Fields\FieldTypes.cs" />
+    <Compile Include="Fields\Form.cs" />
+    <Compile Include="Fields\FormAndFields.class.cs" />
+    <Compile Include="Fields\FormAndFields.filler.cs" />
     <Compile Include="Fields\TextFieldData.cs" />
     <Compile Include="FormViewSettings.cs" />
     <Compile Include="ItemContentModel.cs" />

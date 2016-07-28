@@ -1,14 +1,43 @@
-﻿using DatenMeister.EMOF.InMemory;
+﻿using System.IO;
+using DatenMeister.EMOF.InMemory;
 using DatenMeister.SourcecodeGenerator;
+using DatenMeister.Web.Models.Fields;
 using DatenMeister.XMI;
-using System;
-using System.IO;
 
-namespace DatenMeister.SourceGeneration
+namespace DatenMeister.SourceGeneration.Console
 {
     class Program
     {
         public static void Main(string[] args)
+        {
+            // First, creates 
+            CreateSourceForUmlAndMof();
+
+            System.Console.Write("Create Sourcecode for Web-Fields...");
+            SourceGenerator.GenerateSourceFor(
+                new SourceGeneratorOptions
+                { 
+                    Name = "FormAndFields",
+                    Path = "./",
+                    Namespace = "DatenMeister.Web.Models",
+                    Types = FieldTypes.GetAll()
+                });
+            System.Console.WriteLine(" Done");
+#if !DEBUG
+            File.Copy("../../primitivetypes.cs", "../../../DatenMeister/Filler/primitivetypes.cs", true);
+            File.Copy("../../FillThePrimitiveTypes.cs", "../../../DatenMeister/Filler/FillThePrimitiveTypes.cs", true);
+            File.Copy("../../mof.cs", "../../../DatenMeister/Filler/mof.cs", true);
+            File.Copy("../../FillTheMOF.cs", "../../../DatenMeister/Filler/FillTheMOF.cs", true);
+            File.Copy("../../uml.cs", "../../../DatenMeister/Filler/uml.cs", true);
+            File.Copy("../../FillTheUML.cs", "../../../DatenMeister/Filler/FillTheUML.cs", true);
+            
+            File.Copy("./FormAndFields.filler.cs", "../../../DatenMeister.Web.Models/Fields/FormAndFields.filler.cs", true);
+            File.Copy("./FormAndFields.class.cs", "../../../DatenMeister.Web.Models/Fields/FormAndFields.class.cs", true);
+
+#endif
+        }
+
+        private static void CreateSourceForUmlAndMof()
         {
             var factory = new MofFactory();
             var umlExtent = new MofUriExtent(Locations.UriUml);
@@ -35,7 +64,7 @@ namespace DatenMeister.SourceGeneration
 
             File.WriteAllText("../../uml.cs", generator.Result.ToString());
             File.WriteAllText("../../FillTheUML.cs", extentCreator.Result.ToString());
-            Console.WriteLine("C# Code for UML written");
+            System.Console.WriteLine("C# Code for UML written");
 
             // Generates tree for MOF
             generator = new ClassTreeGenerator
@@ -53,7 +82,7 @@ namespace DatenMeister.SourceGeneration
 
             File.WriteAllText("../../mof.cs", generator.Result.ToString());
             File.WriteAllText("../../FillTheMOF.cs", extentCreator.Result.ToString());
-            Console.WriteLine("C# Code for MOF written");
+            System.Console.WriteLine("C# Code for MOF written");
 
             // Generates tree for PrimitiveTypes
             generator = new ClassTreeGenerator
@@ -71,16 +100,7 @@ namespace DatenMeister.SourceGeneration
 
             File.WriteAllText("../../primitivetypes.cs", generator.Result.ToString());
             File.WriteAllText("../../FillThePrimitiveTypes.cs", extentCreator.Result.ToString());
-            Console.WriteLine("C# Code for PrimitiveTypes written");
-
-#if !DEBUG
-            File.Copy("../../primitivetypes.cs", "../../../DatenMeister/Filler/primitivetypes.cs", true);
-            File.Copy("../../FillThePrimitiveTypes.cs", "../../../DatenMeister/Filler/FillThePrimitiveTypes.cs", true);
-            File.Copy("../../mof.cs", "../../../DatenMeister/Filler/mof.cs", true);
-            File.Copy("../../FillTheMOF.cs", "../../../DatenMeister/Filler/FillTheMOF.cs", true);
-            File.Copy("../../uml.cs", "../../../DatenMeister/Filler/uml.cs", true);
-            File.Copy("../../FillTheUML.cs", "../../../DatenMeister/Filler/FillTheUML.cs", true);
-#endif
+            System.Console.WriteLine("C# Code for PrimitiveTypes written");
         }
     }
 }

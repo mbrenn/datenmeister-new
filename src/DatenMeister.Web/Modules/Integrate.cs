@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using DatenMeister.Web.Models.Modules;
+using DatenMeister.Web.Modules.ViewFinder;
 
 namespace DatenMeister.Web.Modules
 {
@@ -12,6 +13,9 @@ namespace DatenMeister.Web.Modules
         public static void RegisterWebModules(this ContainerBuilder kernel)
         {
             kernel.RegisterInstance(new ClientModulePlugin()).As<IClientModulePlugin>();
+            
+            // Adds the view finder
+            kernel.RegisterType<IViewFinder>().As<ViewFinderImpl>();
         }
     }
 }

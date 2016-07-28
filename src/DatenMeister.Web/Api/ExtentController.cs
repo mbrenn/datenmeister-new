@@ -349,12 +349,13 @@ namespace DatenMeister.Web.Api
         /// </summary>
         /// <param name="ws">Workspace to be queried</param>
         /// <param name="extent">Extent to be queried</param>
+        /// <param name="viewname">Defines the name of the view to be used</param>
         /// <param name="search">The searchtext being used for query</param>
         /// <param name="o">Offset, defining the index of the first element within the response queue</param>
         /// <param name="a">Number of items being shown</param>
         /// <returns>Enumeration of items</returns>
         [Route("items")]
-        public object GetItems(string ws, string extent, string search = null, int o = 0, int a = MaxItemAmount)
+        public object GetItems(string ws, string extent, string view = null, string search = null, int o = 0, int a = MaxItemAmount)
         {
             var amount = Math.Max(0, Math.Min(100, a)); // Return only the first 100 elements if no index is given
             var workspace = GetWorkspace(ws);

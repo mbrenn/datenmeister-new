@@ -6,22 +6,22 @@ namespace DatenMeister.Web.Modules.ViewFinder
 {
     public class ViewFinderImpl : IViewFinder
     {
-        private readonly ColumnCreator _columnCreator;
+        private readonly FormCreator _formCreator;
 
-        public ViewFinderImpl(ColumnCreator columnCreator)
+        public ViewFinderImpl(FormCreator formCreator)
         {
-            _columnCreator = columnCreator;
+            _formCreator = formCreator;
         }
 
         public IObject FindView(IUriExtent extent, string viewname)
         {
-            var table = _columnCreator.FindColumnsForTable(extent);
+            var table = _formCreator.CreateFields(extent);
             throw new System.NotImplementedException();
         }
 
         public IObject FindView(IObject value, string viewname)
         {
-            var view = _columnCreator.FindColumnsForItem(value);
+            var view = _formCreator.CreateFields(value);
             throw new System.NotImplementedException();
         }
     }

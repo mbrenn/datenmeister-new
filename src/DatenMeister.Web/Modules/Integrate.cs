@@ -15,7 +15,7 @@ namespace DatenMeister.Web.Modules
             kernel.RegisterInstance(new ClientModulePlugin()).As<IClientModulePlugin>();
             
             // Adds the view finder
-            kernel.RegisterType<IViewFinder>().As<ViewFinderImpl>();
+            kernel.RegisterType<ViewFinderImpl>().As<IViewFinder>();
         }
     }
 }

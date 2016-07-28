@@ -24,6 +24,7 @@ using DatenMeister.Web.Models;
 using DatenMeister.Web.Models.PostModels;
 using DatenMeister.XMI.ExtentStorage;
 using Autofac;
+using DatenMeister.Web.Models.Fields;
 
 namespace DatenMeister.Web.Api
 {
@@ -40,7 +41,7 @@ namespace DatenMeister.Web.Api
         private readonly IUmlNameResolution _resolution;
         private readonly IExtentStorageLoader _extentStorageLoader;
         private readonly IDataLayerLogic _dataLayerLogic;
-        private readonly ColumnCreator _columnCreator;
+        private readonly FormCreator _formCreator;
         private readonly ExtentFunctions _extentFunctions;
         private readonly ILifetimeScope _diScope;
 
@@ -50,7 +51,7 @@ namespace DatenMeister.Web.Api
             IUmlNameResolution resolution, 
             IExtentStorageLoader extentStorageLoader, 
             IDataLayerLogic dataLayerLogic,
-            ColumnCreator columnCreator, 
+            FormCreator formCreator, 
             ExtentFunctions extentFunctions,
             ILifetimeScope diScope)
         {
@@ -59,7 +60,7 @@ namespace DatenMeister.Web.Api
             _resolution = resolution;
             _extentStorageLoader = extentStorageLoader;
             _dataLayerLogic = dataLayerLogic;
-            _columnCreator = columnCreator;
+            _formCreator = formCreator;
             _extentFunctions = extentFunctions;
             _diScope = diScope;
         }
@@ -372,8 +373,8 @@ namespace DatenMeister.Web.Api
             var totalItems = foundExtent.elements();
             var foundItems = totalItems;
 
-            var result = _columnCreator.FindColumnsForTable(foundExtent);
-            var properties = result.Properties;
+            var result = _formCreator.CreateFields(foundExtent);
+            var properties = result.fields.Select(x=>x.name).ToList();
 
             // Perform the filtering
             IEnumerable<object> filteredItems = foundItems;
@@ -406,7 +407,7 @@ namespace DatenMeister.Web.Api
             var resultModel = new ExtentContentModel
             {
                 url = extent,
-                columns = result.Columns,
+                columns = result.fields,
                 totalItemCount = totalItems.Count(),
                 search = search,
                 filteredItemCount = filteredAmount,
@@ -442,8 +443,8 @@ namespace DatenMeister.Web.Api
                 return NotFound();
             }
 
-            var result = _columnCreator.FindColumnsForItem(foundElement);
-            itemModel.c = result.Columns.ToList();
+            var result = _formCreator.CreateFields(foundElement);
+            itemModel.c = result.fields.ToList();
             itemModel.v = ConvertToJson(foundElement, result);
             itemModel.layer = _dataLayerLogic?.GetDataLayerOfObject(foundElement)?.Name;
 
@@ -620,17 +621,17 @@ namespace DatenMeister.Web.Api
         /// <param name="element"></param>
         /// <param name="creatorResult"></param>
         /// <returns></returns>
-        private Dictionary<string, object> ConvertToJson(IObject element, ColumnCreationResult creatorResult)
+        private Dictionary<string, object> ConvertToJson(IObject element, Form creatorResult)
         {
             var result = new Dictionary<string, object>();
 
-            foreach (var property in creatorResult.Properties
-                .Where(property => element.isSet(property)))
+            foreach (var field in creatorResult.fields
+                .Where(field => element.isSet(field.name)))
             {
-                var propertyAsString = property;
+                var property = field.name;
                 var propertyValue = element.get(property);
 
-                if (creatorResult.ColumnsOnProperty[property].isEnumeration)
+                if (field.isEnumeration)
                 {
                     if (propertyValue is IEnumerable && !(propertyValue is string))
                     {
@@ -646,21 +647,20 @@ namespace DatenMeister.Web.Api
                             });
                         }
 
-                        result[propertyAsString] = list;
+                        result[property] = list;
                     }
                     else
                     {
-                        result[propertyAsString] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
+                        result[property] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
                     }
                 }
                 else
                 {
-                    result[propertyAsString] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
+                    result[property] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
                 }
             }
 
             return result;
         }
-
     }
 }

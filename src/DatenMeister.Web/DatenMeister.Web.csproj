@@ -112,8 +112,7 @@
     <Compile Include="Api\ExtentController.cs" />
     <Compile Include="Api\OperationFailedException.cs" />
     <Compile Include="Api\WorkspaceController.cs" />
-    <Compile Include="Helper\ColumnCreationResult.cs" />
-    <Compile Include="Helper\ColumnCreator.cs" />
+    <Compile Include="Helper\FormCreator.cs" />
     <Compile Include="Modules\ClientModulePlugin.cs" />
     <Compile Include="Modules\Integrate.cs" />
     <Compile Include="Modules\ViewFinder\IViewFinder.cs" />

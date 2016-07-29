@@ -33,7 +33,7 @@ namespace DatenMeister.SourceGeneration.Console
             
             File.Copy("./FormAndFields.filler.cs", "../../../DatenMeister.Web.Models/Fields/FormAndFields.filler.cs", true);
             File.Copy("./FormAndFields.class.cs", "../../../DatenMeister.Web.Models/Fields/FormAndFields.class.cs", true);
-
+            File.Copy("./FormAndFields.dotnet.cs", "../../../DatenMeister.Integration/Modules/FormAndFields.dotnet.cs", true);
 #endif
         }
 

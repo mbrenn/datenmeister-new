@@ -7,17 +7,12 @@ namespace DatenMeister.Provider.DotNet
     {
         private object _value;
 
-        /// <summary>
-        /// Defines the type of the element as being stored in Uml
-        /// </summary>
-        private IElement _type;
-
         public DotNetElement(object value, IElement type)
         {
             Debug.Assert(type != null, "type != null");
             Debug.Assert(value != null, "value != null");
             _value = value;
-            _type = type;
+            metaclass = type;
         }
 
         public bool @equals(object other)
@@ -46,6 +41,7 @@ namespace DatenMeister.Provider.DotNet
         }
 
         public IElement metaclass { get; }
+
         public IElement getMetaClass()
         {
             throw new System.NotImplementedException();

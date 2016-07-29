@@ -56,9 +56,17 @@
       <Project>{dd8ea307-d685-4a7b-b726-a1c87192600d}</Project>
       <Name>DatenMeister.Integration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Provider.DotNet\DatenMeister.Provider.DotNet.csproj">
+      <Project>{DE772364-F233-40E8-BA39-519D42C20686}</Project>
+      <Name>DatenMeister.Provider.DotNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
       <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>
       <Name>DatenMeister.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Web.Models.csproj">
+      <Project>{5E01C76D-A969-4238-8D8C-1CB22C92DA7A}</Project>
+      <Name>DatenMeister.Web.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>

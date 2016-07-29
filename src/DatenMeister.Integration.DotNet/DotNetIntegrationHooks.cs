@@ -2,6 +2,7 @@
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
+using DatenMeister.Web.Models;
 
 namespace DatenMeister.Integration.DotNet
 {

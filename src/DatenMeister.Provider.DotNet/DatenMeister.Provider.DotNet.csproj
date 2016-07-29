@@ -63,6 +63,7 @@
     <Compile Include="DotNetExtent.cs" />
     <Compile Include="DotNetTypeGenerator.cs" />
     <Compile Include="DotNetTypeLookup.cs" />
+    <Compile Include="IDotNetTypeLookup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

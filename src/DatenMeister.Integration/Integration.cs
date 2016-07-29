@@ -5,6 +5,7 @@ using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.InMemory;
+using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
@@ -12,6 +13,7 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
+using DatenMeister.Web.Models;
 
 namespace DatenMeister.Integration
 {
@@ -66,6 +68,10 @@ namespace DatenMeister.Integration
             // Adds the name resolution  
             kernel.RegisterType<UmlNameResolution>().As<IUmlNameResolution>();
 
+            // Adds the complete .Net-Type handling
+            var dotNetTypeLookup = new DotNetTypeLookup();
+            kernel.RegisterInstance(dotNetTypeLookup).As<DotNetTypeLookup>();
+            
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
@@ -105,10 +111,20 @@ namespace DatenMeister.Integration
                 }
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
+                var mofFactory = new MofFactory();
                 var extentTypes = new MofUriExtent(Locations.UriTypes);
                 var typeWorkspace = workspaceCollection.GetWorkspace("Types");
                 typeWorkspace.AddExtent(extentTypes);
                 dataLayerLogic.AssignToDataLayer(extentTypes, dataLayers.Types);
+
+                // Adds the module for form and fields
+                var fields = new _FormAndFields();
+                IntegrateFormAndFields.Assign(
+                    dataLayerLogic.Get<_UML>(dataLayers.Uml),
+                    mofFactory,
+                    extentTypes.elements(),
+                    fields,
+                    dotNetTypeLookup);
 
                 // Boots up the typical DatenMeister Environment  
                 if (_settings.EstablishDataEnvironment)

@@ -182,7 +182,6 @@ namespace DatenMeister.SourcecodeGenerator
         /// <summary>
         ///     Parses the packages
         /// </summary>
-        /// <param name="element">Element classInstance parsed</param>
         /// <param name="classInstance">The classes that need to be parsed</param>
         /// <param name="stack">Stack to be used</param>
         protected virtual void WalkClass(IObject classInstance, CallStack stack)
@@ -222,6 +221,11 @@ namespace DatenMeister.SourcecodeGenerator
             /// </summary>
             private CallStack _ownerStack;
 
+            /// <summary>
+            /// Initializes a new instance of the callback
+            /// </summary>
+            /// <param name="ownerStack">The owning callstack. It may be null, if this is the root
+            /// call stack</param>
             public CallStack(CallStack ownerStack)
             {
                 _ownerStack = ownerStack;

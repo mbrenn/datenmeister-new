@@ -132,13 +132,10 @@ namespace DatenMeister.EMOF.Helper
             foreach (var x in asEnumeration)
             {
                 var asElement = x as IObject;
-                if (asElement != null)
+                var valueOfChild = asElement?.get(propertyOfChild);
+                if (valueOfChild?.Equals(requestValue) == true)
                 {
-                    var valueOfChild = asElement.get(propertyOfChild);
-                    if (valueOfChild?.Equals(requestValue) == true)
-                    {
-                        yield return asElement;
-                    }
+                    yield return asElement;
                 }
             }
         }

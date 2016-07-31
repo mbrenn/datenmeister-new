@@ -105,6 +105,7 @@
   <ItemGroup>
     <Compile Include="Core\DataLayerTests.cs" />
     <Compile Include="CSV\CSVExtentTests.cs" />
+    <Compile Include="DotNet\DotNetExtentTests.cs" />
     <Compile Include="DotNet\DotNetTests.cs" />
     <Compile Include="Integration\TestIntegration.cs" />
     <Compile Include="ManualMapping\ManualMappingTests.cs" />

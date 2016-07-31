@@ -61,12 +61,18 @@
   <ItemGroup>
     <Compile Include="DotNetElement.cs" />
     <Compile Include="DotNetExtent.cs" />
+    <Compile Include="DotNetReflectiveSequence.cs" />
     <Compile Include="DotNetTypeGenerator.cs" />
     <Compile Include="DotNetTypeLookup.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="IDotNetTypeLookup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
+      <Project>{4350A383-14F7-4A84-8CDF-96CA6828F8E9}</Project>
+      <Name>DatenMeister.Runtime</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>
       <Name>DatenMeister</Name>

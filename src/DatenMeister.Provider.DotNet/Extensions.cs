@@ -1,0 +1,116 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+using DatenMeister.EMOF.Interface.Common;
+using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
+
+namespace DatenMeister.Provider.DotNet
+{
+    public static class Extensions
+    {
+        /// <summary>
+        /// Creates a dot net element out of the given type lookup and the value
+        /// </summary>
+        /// <param name="typeLookup">Type lookup being used</param>
+        /// <param name="value">Value to be converted</param>
+        public static DotNetElement CreateDotNetElement(this IDotNetTypeLookup typeLookup, object value)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            var metaclass = typeLookup.ToElement(value.GetType());
+            if (metaclass == null)
+            {
+                throw new InvalidOperationException($"The type '{value.GetType().FullName}' is not known to the DotNetTypeLookup");
+            }
+
+            return new DotNetElement(typeLookup, value, metaclass);
+        }
+
+        /// <summary>
+        /// Creates a .net reflective sequence
+        /// </summary>
+        /// <param name="lookup">The dotnet lookup to be used</param>
+        /// <param name="list">The list to be parsed</param>
+        /// <returns>The created reflective sequence working on the given list</returns>
+        public static IReflectiveSequence CreateDotNetReflectiveSequence(this IDotNetTypeLookup lookup, object list)
+        {
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+
+            var type = list.GetType();
+            var genericType = type.GetGenericTypeDefinition();
+            if (!type.IsConstructedGenericType && genericType != typeof(IList<>))
+            {
+                throw new InvalidOperationException($"list is not of Type IList<T>. It is of type: {list.GetType()}");
+            }
+
+            var genericParameter = type.GenericTypeArguments[0];
+
+            var dotNetReflectiveSequenceType = typeof(DotNetReflectiveSequence<>).MakeGenericType(genericParameter);
+            var created = dotNetReflectiveSequenceType.GetConstructor(new[] {type, typeof(IDotNetTypeLookup)})
+                .Invoke(new[] {list, lookup}) as IReflectiveSequence;
+            return created;
+        }
+
+        /// <summary>
+        /// Creates a new dot net element ot of the given type lookup and the value. 
+        /// In addition, the method also creates the extents from the owner to the given value
+        /// </summary>
+        /// <param name="typeLookup"></param>
+        /// <param name="value"></param>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        public static DotNetElement CreateDotNetElement(this IDotNetTypeLookup typeLookup, object value, DotNetElement owner)
+        {
+            var result = CreateDotNetElement(typeLookup, value);
+            result.SetContainer(owner);
+            result.TransferExtents(owner);
+            return result;
+        }
+
+        /// <summary>
+        /// Verifies the type of the given element and creates a DotNetElement if the given 
+        /// value is not null and is not a primitive type
+        /// </summary>
+        /// <param name="dotNetTypeLookup">The .NetType Lookup being used</param>
+        /// <param name="result">Value to be converted</param>
+        /// <returns>The converted or non-converted type</returns>
+        public static object CreateDotNetElementIfNecessary(this IDotNetTypeLookup dotNetTypeLookup, object result)
+        {
+            if (result == null)
+            {
+                return null;
+            }
+
+            if (DotNetHelper.IsPrimitiveType(result.GetType()))
+            {
+                return result;
+            }
+
+            return dotNetTypeLookup.CreateDotNetElement(result);
+        }
+
+        /// <summary>
+        /// Generates the mof element out of the given type and adds it to the .Net Type Lookup
+        /// </summary>
+        /// <param name="typeLookup">Type Lookup to be used</param>
+        /// <param name="uml">Uml instance being used to create all necessary instances</param>
+        /// <param name="factory">The factory to create the type</param>
+        /// <param name="dotNetType">And finally the .Net type that is converted and adde</param>
+        /// <returns></returns>
+        public static IElement GenerateAndAdd(this IDotNetTypeLookup typeLookup, _UML uml, IFactory factory, Type dotNetType)
+        {
+            var dotNetTypeCreator = new DotNetTypeGenerator(factory, uml);
+            var element = dotNetTypeCreator.CreateTypeFor(dotNetType);
+            typeLookup.Add(element, dotNetType);
+            return element;
+        }
+    }
+}

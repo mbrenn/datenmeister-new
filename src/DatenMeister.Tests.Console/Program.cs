@@ -72,7 +72,7 @@ namespace DatenMeister.Tests.Console
                 null);
             watch.Stop();
 
-            var descendents = AllDescendentsQuery.getDescendents(fullStrap.UmlInfrastructure);
+            var descendents = AllDescendentsQuery.GetDescendents(fullStrap.UmlInfrastructure);
             System.Console.WriteLine($"Having {descendents.Count()} elements");
             var n = 0;
             foreach (var child in descendents)

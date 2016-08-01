@@ -66,9 +66,9 @@
     <Compile Include="EMOF\Helper\AllDescendentsQuery.cs" />
     <Compile Include="EMOF\Helper\ExtentHelper.cs" />
     <Compile Include="EMOF\Helper\ObjectHelper.cs" />
+    <Compile Include="EMOF\Helper\ReflectiveSequenceForExtent.cs" />
     <Compile Include="EMOF\InMemory\ExtentUrlNavigator.cs" />
     <Compile Include="EMOF\InMemory\MofElement.cs" />
-    <Compile Include="EMOF\InMemory\MofExtentReflectiveSequence.cs" />
     <Compile Include="EMOF\InMemory\MofFactory.cs" />
     <Compile Include="EMOF\InMemory\MofObject.cs" />
     <Compile Include="EMOF\InMemory\MofReflectiveSequence.cs" />

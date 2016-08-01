@@ -101,9 +101,9 @@ namespace DatenMeister.Uml
 
             _wasRun = true;
             
-            var umlDescendents = AllDescendentsQuery.getDescendents(UmlInfrastructure).ToList();
-            var mofDescendents = AllDescendentsQuery.getDescendents(MofInfrastructure).ToList();
-            var primitiveDescendents = AllDescendentsQuery.getDescendents(PrimitiveInfrastructure).ToList();
+            var umlDescendents = AllDescendentsQuery.GetDescendents(UmlInfrastructure).ToList();
+            var mofDescendents = AllDescendentsQuery.GetDescendents(MofInfrastructure).ToList();
+            var primitiveDescendents = AllDescendentsQuery.GetDescendents(PrimitiveInfrastructure).ToList();
             var allElements =
                 mofDescendents
                     .Union(umlDescendents)

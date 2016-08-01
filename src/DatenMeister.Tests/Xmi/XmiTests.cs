@@ -80,7 +80,7 @@ namespace DatenMeister.Tests.Xmi
             Assert.That(foundElement, Is.EqualTo(element));
 
             // Retrieve another element
-            element = AllDescendentsQuery.getDescendents(umlExtent).ElementAt(300) as IElement;
+            element = AllDescendentsQuery.GetDescendents(umlExtent).ElementAt(300) as IElement;
             elementUri = umlExtent.uri(element);
             foundElement = umlExtent.element(elementUri);
             Assert.That(foundElement, Is.Not.Null);
@@ -163,7 +163,7 @@ namespace DatenMeister.Tests.Xmi
             Assert.That(strapper.UmlInfrastructure, Is.Not.Null);
 
             Assert.That(
-                AllDescendentsQuery.getDescendents(strapper.UmlInfrastructure).Count(),
+                AllDescendentsQuery.GetDescendents(strapper.UmlInfrastructure).Count(),
                 Is.GreaterThan(500));
 
             // Check, if the filled classes are working

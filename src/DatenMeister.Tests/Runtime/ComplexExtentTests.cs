@@ -30,7 +30,7 @@ namespace DatenMeister.Tests.Runtime
                 var creatableTypes = extentFunctions.GetCreatableTypes(dataExtent);
                 Assert.That(creatableTypes, Is.Not.Null);
                 Assert.That(creatableTypes.MetaLayer, Is.EqualTo(dataLayers.Types));
-                Assert.That(creatableTypes.CreatableTypes.Count, Is.EqualTo(1));
+                Assert.That(creatableTypes.CreatableTypes.Count, Is.GreaterThan(1));
             }
         }
     }

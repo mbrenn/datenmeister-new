@@ -3,6 +3,7 @@ using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 using NUnit.Framework;
+using IReflectiveSequence = DatenMeister.EMOF.Interface.Common.IReflectiveSequence;
 
 namespace DatenMeister.Tests.DotNet
 {
@@ -91,6 +92,18 @@ namespace DatenMeister.Tests.DotNet
             Assert.That(person1.Prename, Is.EqualTo("Herr"));
         }
 
+        [Test]
+        public void TestExtent()
+        {
+            var lookup = Initialize();
+            var extent = new DotNetExtent("dm:///test", lookup);
+            Assert.That(extent.elements(), Is.Not.Null);
+            extent.elements().add("Test");
+            extent.elements().add(new DotNetTests.Person());
+
+            Assert.That(extent.elements().size(), Is.EqualTo(2));
+        }
+
         private static DotNetTypeLookup Initialize()
         {
             var uml = new _UML();
@@ -101,5 +114,7 @@ namespace DatenMeister.Tests.DotNet
             dotNetTypeLookup.GenerateAndAdd(uml, mofFactory, typeof(DotNetTests.TestClassWithList));
             return dotNetTypeLookup;
         }
+
+
     }
 }

@@ -85,7 +85,7 @@ namespace DatenMeister.EMOF.Helper
             // If not successful, try to find it by traditional, but old approach
             foreach (var extent in uriExtents)
             {
-                if (AllDescendentsQuery.getDescendents(extent.elements())
+                if (AllDescendentsQuery.GetDescendents(extent.elements())
                     .Any(x => x.Equals(value)))
                 {
                     return extent;

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using IReflectiveSequence = DatenMeister.EMOF.Interface.Common.IReflectiveSequence;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -11,13 +14,24 @@ namespace DatenMeister.Provider.DotNet
         private readonly object _syncObject = new object();
 
         private readonly string _contextUri;
+        private readonly IDotNetTypeLookup _typeLookup;
 
         private readonly ExtentUrlNavigator<DotNetElement> _navigator;
 
-        public DotNetExtent(string contextUri)
+        private readonly IReflectiveSequence _elements;
+
+        public DotNetExtent(string contextUri, IDotNetTypeLookup typeLookup)
         {
+            if (typeLookup == null) throw new ArgumentNullException(nameof(typeLookup));
+            if (string.IsNullOrEmpty(contextUri))
+                throw new ArgumentException("Value cannot be null or empty.", nameof(contextUri));
+
             _contextUri = contextUri;
+            _typeLookup = typeLookup;
             _navigator = new ExtentUrlNavigator<DotNetElement>(this);
+            _elements = new ReflectiveSequenceForExtent(
+                this, 
+                _typeLookup.CreateDotNetReflectiveSequence(new List<object>()));
         }
 
         public bool useContainment()
@@ -27,6 +41,7 @@ namespace DatenMeister.Provider.DotNet
 
         public IReflectiveSequence elements()
         {
+            return _elements;
             throw new System.NotImplementedException();
         }
 

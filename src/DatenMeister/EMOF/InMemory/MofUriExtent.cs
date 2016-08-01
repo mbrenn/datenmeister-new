@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.EMOF.Attributes;
+using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
@@ -13,7 +14,7 @@ namespace DatenMeister.EMOF.InMemory
 
         private readonly string _contextUri;
 
-        private readonly MofExtentReflectiveSequence _reflectiveSequence;
+        private readonly ReflectiveSequenceForExtent _reflectiveSequence;
 
         /// <summary>
         ///     Stores all the elements
@@ -25,7 +26,7 @@ namespace DatenMeister.EMOF.InMemory
         public MofUriExtent(string uri)
         {
             _contextUri = uri;
-            _reflectiveSequence = new MofExtentReflectiveSequence(this, _elements);
+            _reflectiveSequence = new ReflectiveSequenceForExtent(this, new MofReflectiveSequence(_elements));
             _extentUrlNavigator = new ExtentUrlNavigator<MofElement>(this);
         }
 
@@ -55,7 +56,7 @@ namespace DatenMeister.EMOF.InMemory
             return false;
         }
 
-        public virtual IReflectiveSequence elements()
+        public virtual Interface.Common.IReflectiveSequence elements()
         {
             lock (_syncObject)
             {

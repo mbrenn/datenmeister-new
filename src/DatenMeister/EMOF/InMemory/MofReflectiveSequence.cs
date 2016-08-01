@@ -6,7 +6,7 @@ using DatenMeister.EMOF.Interface.Common;
 
 namespace DatenMeister.EMOF.InMemory
 {
-    public class MofReflectiveSequence : IReflectiveSequence
+    public class MofReflectiveSequence : Interface.Common.IReflectiveSequence
     {
         private readonly List<object> _values;
 
@@ -36,7 +36,7 @@ namespace DatenMeister.EMOF.InMemory
             _values.Insert(index, value);
         }
 
-        public virtual bool addAll(IReflectiveSequence values)
+        public virtual bool addAll(Interface.Common.IReflectiveSequence values)
         {
             var result = false;
             foreach (var value in values)

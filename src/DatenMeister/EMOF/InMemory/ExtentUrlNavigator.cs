@@ -46,7 +46,7 @@ namespace DatenMeister.EMOF.InMemory
             var queryObjectId = fragment.Substring(1);
 
             // Now go through the list
-            foreach (var element in AllDescendentsQuery.getDescendents(_extent))
+            foreach (var element in AllDescendentsQuery.GetDescendents(_extent))
             {
                 var elementAsMofObject = element as IHasId;
                 Debug.Assert(elementAsMofObject != null, "elementAsMofObject != null");

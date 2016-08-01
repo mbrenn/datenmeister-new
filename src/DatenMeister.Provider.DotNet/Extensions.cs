@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
@@ -45,17 +46,24 @@ namespace DatenMeister.Provider.DotNet
             }
 
             var type = list.GetType();
-            var genericType = type.GetGenericTypeDefinition();
-            if (!type.IsConstructedGenericType && genericType != typeof(IList<>))
+
+            // Finds the interface type
+            var interfaceType =
+                type
+                    .GetInterfaces()
+                    .FirstOrDefault(x => x.IsConstructedGenericType && x.GetGenericTypeDefinition() == typeof(IList<>));
+
+            if (interfaceType == null)
             {
                 throw new InvalidOperationException($"list is not of Type IList<T>. It is of type: {list.GetType()}");
             }
-
-            var genericParameter = type.GenericTypeArguments[0];
-
+            
+            var genericParameter = interfaceType.GenericTypeArguments[0];
             var dotNetReflectiveSequenceType = typeof(DotNetReflectiveSequence<>).MakeGenericType(genericParameter);
-            var created = dotNetReflectiveSequenceType.GetConstructor(new[] {type, typeof(IDotNetTypeLookup)})
-                .Invoke(new[] {list, lookup}) as IReflectiveSequence;
+
+            var constructorInfo = dotNetReflectiveSequenceType.GetConstructor(new[] {type, typeof(IDotNetTypeLookup)});
+            var created = constructorInfo.Invoke(new[] {list, lookup}) as IReflectiveSequence;
+
             return created;
         }
 
@@ -76,6 +84,28 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <summary>
+        /// Converts the given element to a .Net native object, which means that it
+        /// unwraps an DotNetElement element to its abstracted value
+        /// </summary>
+        /// <param name="element">Element to be converted</param>
+        /// <returns>The converted object</returns>
+        public static object ConvertToNative(object element)
+        {
+            if (element is IElement)
+            {
+                if (element is DotNetElement)
+                {
+                    var elementAsDotNet = element as DotNetElement;
+                    return elementAsDotNet.GetNativeValue();
+                }
+
+                throw new InvalidOperationException("Converting from another IElement instance, except DotNetElement, is not supported (yet).");
+            }
+
+            return element;
+        }
+
+        /// <summary>
         /// Verifies the type of the given element and creates a DotNetElement if the given 
         /// value is not null and is not a primitive type
         /// </summary>
@@ -89,9 +119,15 @@ namespace DatenMeister.Provider.DotNet
                 return null;
             }
 
-            if (DotNetHelper.IsPrimitiveType(result.GetType()))
+            var resultType = result.GetType();
+            if (DotNetHelper.IsPrimitiveType(resultType))
             {
                 return result;
+            }
+
+            if (DotNetHelper.IsEnumeration(resultType))
+            {
+                return dotNetTypeLookup.CreateDotNetReflectiveSequence(result);
             }
 
             return dotNetTypeLookup.CreateDotNetElement(result);

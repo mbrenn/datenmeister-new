@@ -21,6 +21,12 @@ namespace DatenMeister.Provider.DotNet
         private readonly object _value;
 
         /// <summary>
+        /// Gets the native value of the given element
+        /// </summary>
+        /// <returns></returns>
+        public object GetNativeValue() => _value;
+
+        /// <summary>
         /// Stores the type of the value
         /// </summary>
         private readonly Type _type;
@@ -72,7 +78,7 @@ namespace DatenMeister.Provider.DotNet
                 throw new InvalidOperationException($"Property not known '{property}'.");
             }
 
-            member.SetValue(_value, value);
+            member.SetValue(_value, Extensions.ConvertToNative(value));
         }
 
         public bool isSet(string property)

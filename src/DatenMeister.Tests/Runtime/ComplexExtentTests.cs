@@ -21,7 +21,7 @@ namespace DatenMeister.Tests.Runtime
             {
                 // Apply for zipcodes
                 var integrateZipCodes = scope.Resolve<Integrate>();
-                integrateZipCodes.Into(scope.Resolve<IWorkspaceCollection>().FindExtent("dm:///types"));
+                integrateZipCodes.Into(scope.Resolve<IWorkspaceCollection>().FindExtent(Locations.UriTypes));
 
                 var extentFunctions = scope.Resolve<ExtentFunctions>();
                 var dataLayers = scope.Resolve<DataLayers>();

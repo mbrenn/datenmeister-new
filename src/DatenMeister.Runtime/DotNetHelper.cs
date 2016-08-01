@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Reflection;
 
 namespace DatenMeister.Runtime
 {
@@ -26,6 +28,16 @@ namespace DatenMeister.Runtime
                    || type == typeof(string)
                    || type == typeof(TimeSpan)
                    || type == typeof(DateTime);
+        }
+
+        /// <summary>
+        /// Evaluates whether the given type is an enumeration but is not a string
+        /// </summary>
+        /// <param name="type">Type to be evaluated</param>
+        /// <returns>true, if an enumeration and not a string</returns>
+        public static bool IsEnumeration(Type type)
+        {
+            return type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type);
         }
     }
 }

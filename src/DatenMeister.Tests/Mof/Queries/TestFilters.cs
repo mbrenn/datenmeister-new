@@ -1,7 +1,7 @@
-﻿using DatenMeister.EMOF.InMemory;
-using NUnit.Framework;
-using System.Linq;
+﻿using System.Linq;
+using DatenMeister.EMOF.InMemory;
 using DatenMeister.Runtime.Functions.Queries;
+using NUnit.Framework;
 
 namespace DatenMeister.Tests.Mof.Queries
 {
@@ -31,40 +31,30 @@ namespace DatenMeister.Tests.Mof.Queries
             Assert.That(mofExtent.elements().add(mofObject2), Is.True);
             Assert.That(mofExtent.elements().add(mofObject3), Is.True);
 
-            var result = Filter.WhenOneOfThePropertyContains(
-                mofExtent.elements(),
-                properties,
+            var result = mofExtent.elements().WhenOneOfThePropertyContains(properties,
                 "Mai");
 
             Assert.That(result.size(), Is.EqualTo(1));
             Assert.That(result.ElementAt(0), Is.EqualTo(mofObject));
 
-            result = Filter.WhenOneOfThePropertyContains(
-                mofExtent.elements(),
-                properties,
+            result = mofExtent.elements().WhenOneOfThePropertyContains(properties,
                 "55130");
 
             Assert.That(result.size(), Is.EqualTo(1));
             Assert.That(result.ElementAt(0), Is.EqualTo(mofObject));
 
-            result = Filter.WhenOneOfThePropertyContains(
-                mofExtent.elements(),
-                properties,
+            result = mofExtent.elements().WhenOneOfThePropertyContains(properties,
                 "Bisch");
 
             Assert.That(result.size(), Is.EqualTo(1));
             Assert.That(result.ElementAt(0), Is.EqualTo(mofObject2));
 
-            result = Filter.WhenOneOfThePropertyContains(
-                mofExtent.elements(),
-                properties,
+            result = mofExtent.elements().WhenOneOfThePropertyContains(properties,
                 "xyz");
 
             Assert.That(result.size(), Is.EqualTo(0));
 
-            result = Filter.WhenOneOfThePropertyContains(
-                mofExtent.elements(),
-                properties,
+            result = mofExtent.elements().WhenOneOfThePropertyContains(properties,
                 "i");
 
             Assert.That(result.size(), Is.EqualTo(2));

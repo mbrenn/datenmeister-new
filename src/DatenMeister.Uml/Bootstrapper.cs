@@ -5,7 +5,8 @@ using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.EMOF.Interface.Reflection;using DatenMeister.Filler;
+using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Filler;
 using DatenMeister.Uml.Helper;
 using DatenMeister.XMI;
 
@@ -258,7 +259,7 @@ namespace DatenMeister.Uml
 
                 foreach (var property in element.getPropertiesBeingSet())
                 {
-                    var textProperty = property.ToString();
+                    var textProperty = property;
                     if (textProperty.Contains(Namespaces.Xmi.ToString())
                         || textProperty == "href")
                     {

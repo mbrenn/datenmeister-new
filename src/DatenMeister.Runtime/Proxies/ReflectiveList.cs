@@ -2,9 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Common;
-using IReflectiveSequence = DatenMeister.EMOF.Interface.Common.IReflectiveSequence;
 
 namespace DatenMeister.Runtime.Proxies
 {

@@ -3,7 +3,6 @@ using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 using NUnit.Framework;
-using IReflectiveSequence = DatenMeister.EMOF.Interface.Common.IReflectiveSequence;
 
 namespace DatenMeister.Tests.DotNet
 {

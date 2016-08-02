@@ -1,12 +1,12 @@
-﻿using DatenMeister.CSV;
-using DatenMeister.EMOF.InMemory;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
+using DatenMeister.CSV;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
-using DatenMeister.XMI;
+using DatenMeister.EMOF.InMemory;
 using DatenMeister.Filler;
 using DatenMeister.Uml;
+using DatenMeister.XMI;
 
 namespace DatenMeister.Tests.Console
 {
@@ -48,7 +48,7 @@ namespace DatenMeister.Tests.Console
             var provider = new CSVDataProvider(null, null);
             provider.Load(extent, factory, "data/plz.csv", csvSettings);
 
-            System.Console.WriteLine($"Loaded: {extent.elements().Count().ToString()} Zipcodes");
+            System.Console.WriteLine($"Loaded: {extent.elements().Count()} Zipcodes");
 
             System.Console.WriteLine();
         }
@@ -62,7 +62,7 @@ namespace DatenMeister.Tests.Console
 
             var dataLayerLogic = new DataLayerLogic(new DataLayerData());
             var fullStrap = Bootstrapper.PerformFullBootstrap(
-                new Bootstrapper.FilePaths()
+                new Bootstrapper.FilePaths
                 {
                     PathPrimitive = "data/PrimitiveTypes.xmi",
                     PathUml = "data/UML.xmi",

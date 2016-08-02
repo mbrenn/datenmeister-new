@@ -7,7 +7,6 @@ using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.FactoryMapper;
-
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Integration

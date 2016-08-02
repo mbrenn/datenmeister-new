@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Reflection;
 
@@ -26,12 +27,12 @@ namespace DatenMeister.XMI.EMOF
 
         public IObject createFromString(IElement dataType, string value)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public string convertToString(IElement dataType, IObject value)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -126,8 +126,8 @@ namespace DatenMeister.Tests.Xmi.EMOF
 
             var uri1 = extent.uri(mofObject1);
             var uri2 = extent.uri(mofObject2);
-            var id1 = ((IHasId) mofObject1).Id.ToString();
-            var id2 = ((IHasId) mofObject2).Id.ToString();
+            var id1 = ((IHasId) mofObject1).Id;
+            var id2 = ((IHasId) mofObject2).Id;
 
             Assert.That(id1, Is.Not.Null.Or.Empty);
             Assert.That(id2, Is.Not.Null.Or.Empty);

@@ -54,7 +54,7 @@ namespace DatenMeister.Runtime.Workspaces
                 }
 
                 _workspaces.Add(
-                    new Item()
+                    new Item
                     {
                         Workspace = workspace
                     });

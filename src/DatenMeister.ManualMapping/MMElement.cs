@@ -22,7 +22,7 @@ namespace DatenMeister.ManualMapping
             _container = container;
         }
 
-        public bool @equals(object other)
+        public bool equals(object other)
         {
             var otherAsMMElement = other as MMElement;
             if (otherAsMMElement != null)

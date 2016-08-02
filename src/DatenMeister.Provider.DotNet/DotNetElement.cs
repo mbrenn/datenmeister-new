@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -46,7 +45,7 @@ namespace DatenMeister.Provider.DotNet
             _container = container;
         }
 
-        public bool @equals(object other)
+        public bool equals(object other)
         {
             var element = other as DotNetElement;
             if (element != null)

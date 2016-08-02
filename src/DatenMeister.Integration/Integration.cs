@@ -85,7 +85,7 @@ namespace DatenMeister.Integration
 
                 // Performs the bootstrap  
                 var paths =
-                    new Bootstrapper.FilePaths()
+                    new Bootstrapper.FilePaths
                     {
                         PathPrimitive = Path.Combine(_settings.PathToXmiFiles, "PrimitiveTypes.xmi"),
                         PathUml = Path.Combine(_settings.PathToXmiFiles, "UML.xmi"),
@@ -96,19 +96,16 @@ namespace DatenMeister.Integration
                 {
                     throw new InvalidOperationException("Slim integration is currently not supported");
                 }
-                else
-                {
-                    Bootstrapper.PerformFullBootstrap(
-                        paths,
-                        workspaceCollection.GetWorkspace("UML"),
-                        dataLayerLogic,
-                        dataLayers.Uml);
-                    Bootstrapper.PerformFullBootstrap(
-                        paths,
-                        workspaceCollection.GetWorkspace("MOF"),
-                        dataLayerLogic,
-                        dataLayers.Mof);
-                }
+                Bootstrapper.PerformFullBootstrap(
+                    paths,
+                    workspaceCollection.GetWorkspace("UML"),
+                    dataLayerLogic,
+                    dataLayers.Uml);
+                Bootstrapper.PerformFullBootstrap(
+                    paths,
+                    workspaceCollection.GetWorkspace("MOF"),
+                    dataLayerLogic,
+                    dataLayers.Mof);
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var mofFactory = new MofFactory();

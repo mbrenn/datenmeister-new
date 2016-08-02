@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using Autofac;
 using DatenMeister.CSV;
 using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.DataLayer;
@@ -21,10 +22,9 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Web.Helper;
 using DatenMeister.Web.Models;
+using DatenMeister.Web.Models.Fields;
 using DatenMeister.Web.Models.PostModels;
 using DatenMeister.XMI.ExtentStorage;
-using Autofac;
-using DatenMeister.Web.Models.Fields;
 
 namespace DatenMeister.Web.Api
 {
@@ -292,7 +292,7 @@ namespace DatenMeister.Web.Api
             using (var stream = new StringWriter())
             {
                 provider.SaveToStream(stream, foundExtent, new CSVSettings());
-                var httpResponse = new HttpResponseMessage()
+                var httpResponse = new HttpResponseMessage
                 {
                     Content = new StringContent(stream.GetStringBuilder().ToString())
                 };
@@ -380,8 +380,7 @@ namespace DatenMeister.Web.Api
             IEnumerable<object> filteredItems = foundItems;
             if (!string.IsNullOrEmpty(search))
             {
-                filteredItems = Filter.WhenOneOfThePropertyContains(
-                    foundItems, properties, search, StringComparison.CurrentCultureIgnoreCase);
+                filteredItems = foundItems.WhenOneOfThePropertyContains(properties, search, StringComparison.CurrentCultureIgnoreCase);
             }
 
             // After having the filtered item, we reset the offset

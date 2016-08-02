@@ -10,17 +10,14 @@ using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
-
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Runtime.Workspaces.Data;
+using DatenMeister.Web.Application;
 using DatenMeister.Web.Models.Modules;
 using DatenMeister.Web.Modules;
-using DatenMeister.XMI.ExtentStorage;
 using Microsoft.Owin;
 using Microsoft.Owin.BuilderProperties;
 using Owin;
 
-[assembly: OwinStartup(typeof(DatenMeister.Web.Application.WebserverStartup))]
+[assembly: OwinStartup(typeof(WebserverStartup))]
 namespace DatenMeister.Web.Application
 {
     public class WebserverStartup

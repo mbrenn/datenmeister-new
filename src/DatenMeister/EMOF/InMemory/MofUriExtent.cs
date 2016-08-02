@@ -56,7 +56,7 @@ namespace DatenMeister.EMOF.InMemory
             return false;
         }
 
-        public virtual Interface.Common.IReflectiveSequence elements()
+        public virtual IReflectiveSequence elements()
         {
             lock (_syncObject)
             {

@@ -21,7 +21,7 @@ namespace DatenMeister.UWP
 
         public int CurrentRow { get; set; }
 
-        private bool _deleteClickedOnce = false;
+        private bool _deleteClickedOnce;
 
         /// <summary>
         /// Stores the element containing data
@@ -81,12 +81,12 @@ namespace DatenMeister.UWP
             row = CurrentRow;
 
             CurrentRow++;
-            GridFields.RowDefinitions.Insert(row, new RowDefinition()
+            GridFields.RowDefinitions.Insert(row, new RowDefinition
             {
                 Height = GridLength.Auto
             });
 
-            var textBlock = new TextBlock()
+            var textBlock = new TextBlock
             {
                 Text = $"{fieldData.title}: ",
                 Margin = new Thickness(5),
@@ -107,20 +107,20 @@ namespace DatenMeister.UWP
 
         public void AddButtons(Action<DialogResult> onClose)
         {
-            var stackPanel = new StackPanel()
+            var stackPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom
             };
 
-            var btnOk = new Button()
+            var btnOk = new Button
             {
                 Margin = new Thickness(5),
                 Content = "OK"
             };
 
-            var btnCancel = new Button()
+            var btnCancel = new Button
             {
                 Margin = new Thickness(5),
                 Content = "Cancel"
@@ -143,7 +143,7 @@ namespace DatenMeister.UWP
 
             if (Settings.AllowDelete)
             {
-                var btnDelete = new Button()
+                var btnDelete = new Button
                 {
                     Margin = new Thickness(5),
                     Content = "Delete"

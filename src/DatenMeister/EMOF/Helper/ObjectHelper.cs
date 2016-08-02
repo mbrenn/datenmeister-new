@@ -37,7 +37,7 @@ namespace DatenMeister.EMOF.Helper
                 .Where(property => value.isSet(property)))
             {
                 var propertyValue = value.get(property);
-                result[property.ToString()] = propertyValue == null ? "null" : propertyValue.ToString();
+                result[property] = propertyValue == null ? "null" : propertyValue.ToString();
             }
 
             return result;
@@ -66,10 +66,7 @@ namespace DatenMeister.EMOF.Helper
             {
                 return objectKnowsExtent.Extents.FirstOrDefault() as IUriExtent;
             }
-            else
-            {
-                throw new ArgumentException($"The following element does not implement the IObjectKnowsExtent interface: {value}");
-            }
+            throw new ArgumentException($"The following element does not implement the IObjectKnowsExtent interface: {value}");
         }
 
         public static IUriExtent GetUriExtentOf(this IObject value)

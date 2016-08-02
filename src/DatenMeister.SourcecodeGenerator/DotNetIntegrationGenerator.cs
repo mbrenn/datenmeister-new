@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using DatenMeister.EMOF.Interface.Common;
-using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.Provider.DotNet;
 
 namespace DatenMeister.SourcecodeGenerator
 {

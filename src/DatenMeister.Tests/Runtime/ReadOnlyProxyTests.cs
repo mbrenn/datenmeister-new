@@ -51,7 +51,7 @@ namespace DatenMeister.Tests.Runtime
 
             var data = new ExtentStorageData();
             var logic = new ExtentStorageLoader(data, mapper, dataLayerLogic);
-            var configuration = new CSVStorageConfiguration()
+            var configuration = new CSVStorageConfiguration
             {
                 Path = "data.txt",
                 ExtentUri = "dm:///local/",

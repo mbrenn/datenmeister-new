@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.XMI;
-using DatenMeister.XMI.UmlBootstrap;
-using System.Collections.Generic;
 using DatenMeister.SourcecodeGenerator.SourceParser;
+using DatenMeister.XMI.UmlBootstrap;
 
 namespace DatenMeister.SourcecodeGenerator
 {

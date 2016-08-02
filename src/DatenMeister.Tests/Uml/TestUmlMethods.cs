@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace DatenMeister.Tests.Uml
 {
-    [TestFixture()]
+    [TestFixture]
     public class TestUmlMethods
     {
         [Test]

@@ -5,7 +5,6 @@ using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using IReflectiveSequence = DatenMeister.EMOF.Interface.Common.IReflectiveSequence;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -42,7 +41,7 @@ namespace DatenMeister.Provider.DotNet
         public IReflectiveSequence elements()
         {
             return _elements;
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public string contextURI()

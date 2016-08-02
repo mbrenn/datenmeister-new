@@ -22,7 +22,7 @@ namespace DatenMeister.ManualMapping
         {
             var propertyMapping = new PropertyMapping
             {
-                GetValueFunc = (value) => getFunc(value),
+                GetValueFunc = value => getFunc(value),
                 SetValueFunc = (value, propertyValue) => setFunc(value, (T) propertyValue),
                 DefaultValue = default(T)
             };

@@ -5,11 +5,11 @@ using System.Xml.Linq;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.InMemory;
-using DatenMeister.XMI;
-using NUnit.Framework;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Uml;
+using DatenMeister.XMI;
 using DatenMeister.XMI.Standards;
+using NUnit.Framework;
 
 namespace DatenMeister.Tests.Xmi
 {
@@ -63,7 +63,7 @@ namespace DatenMeister.Tests.Xmi
             var dataLayers = new DataLayers();
             dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
             var strapper = Bootstrapper.PerformFullBootstrap(
-                new Bootstrapper.FilePaths()
+                new Bootstrapper.FilePaths
                 {
                     PathPrimitive = "Xmi/PrimitiveTypes.xmi",
                     PathUml = "Xmi/UML.xmi",
@@ -179,7 +179,7 @@ namespace DatenMeister.Tests.Xmi
             var dataLayers = new DataLayers();
             dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
             Bootstrapper.PerformFullBootstrap(
-                new Bootstrapper.FilePaths()
+                new Bootstrapper.FilePaths
                 {
                     PathPrimitive = "Xmi/PrimitiveTypes.xmi",
                     PathUml = "Xmi/UML.xmi",

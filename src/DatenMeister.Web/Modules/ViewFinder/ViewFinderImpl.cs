@@ -1,4 +1,5 @@
-﻿using DatenMeister.EMOF.Interface.Identifiers;
+﻿using System;
+using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Web.Helper;
 
@@ -16,13 +17,13 @@ namespace DatenMeister.Web.Modules.ViewFinder
         public IObject FindView(IUriExtent extent, string viewname)
         {
             var table = _formCreator.CreateFields(extent);
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IObject FindView(IObject value, string viewname)
         {
             var view = _formCreator.CreateFields(value);
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

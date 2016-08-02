@@ -1,5 +1,5 @@
-﻿using DatenMeister.EMOF.Interface.Identifiers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using DatenMeister.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.EMOF.Interface.Reflection
 {

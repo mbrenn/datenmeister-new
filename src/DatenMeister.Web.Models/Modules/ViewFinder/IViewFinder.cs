@@ -1,7 +1,7 @@
 ﻿using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Web.Modules.ViewFinder
+namespace DatenMeister.Web.Models.Modules.ViewFinder
 {
     /// <summary>
     /// The viewfinder is responsible to find the correct view for a certain

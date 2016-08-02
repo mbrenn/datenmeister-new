@@ -34,7 +34,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             this.showItem(ws, extentUrl, itemUrl, settings);
         };
         Layout.prototype.exportExtent = function (ws, extentUrl) {
-            window.open("/api/datenmeister/extent/extent_export?ws=" + encodeURIComponent(ws) + "&extent=" + encodeURIComponent(extentUrl));
+            window.open("/api/datenmeister/extent/extent_export_csv?ws=" + encodeURIComponent(ws) + "&extent=" + encodeURIComponent(extentUrl));
         };
         Layout.prototype.navigateToDialog = function (configuration) {
             var dialog = new DMView.DialogView(this);

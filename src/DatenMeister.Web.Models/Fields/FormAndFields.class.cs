@@ -19,6 +19,31 @@ namespace DatenMeister.Web.Models
         public _Form @Form = new _Form();
         public IElement @__Form = new MofElement();
 
+        public class _FieldData
+        {
+            public static string @fieldType = "fieldType";
+            public IElement _fieldType = null;
+
+            public static string @name = "name";
+            public IElement _name = null;
+
+            public static string @title = "title";
+            public IElement _title = null;
+
+            public static string @isEnumeration = "isEnumeration";
+            public IElement _isEnumeration = null;
+
+            public static string @defaultValue = "defaultValue";
+            public IElement _defaultValue = null;
+
+            public static string @isReadOnly = "isReadOnly";
+            public IElement _isReadOnly = null;
+
+        }
+
+        public _FieldData @FieldData = new _FieldData();
+        public IElement @__FieldData = new MofElement();
+
         public class _TextFieldData
         {
             public static string @lineHeight = "lineHeight";

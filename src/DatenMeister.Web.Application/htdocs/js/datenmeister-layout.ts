@@ -57,7 +57,7 @@ export class Layout implements DMI.Api.ILayout {
 
     exportExtent(ws: string, extentUrl: string) {
         window.open(
-            `/api/datenmeister/extent/extent_export?ws=${encodeURIComponent(ws)}&extent=${encodeURIComponent(extentUrl)}`);
+            `/api/datenmeister/extent/extent_export_csv?ws=${encodeURIComponent(ws)}&extent=${encodeURIComponent(extentUrl)}`);
     }
 
     navigateToDialog(configuration: DMI.Api.DialogConfiguration) {

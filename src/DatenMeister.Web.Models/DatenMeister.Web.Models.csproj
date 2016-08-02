@@ -76,6 +76,9 @@
     <Compile Include="Modules\IClientModulePlugin.cs" />
     <Compile Include="Modules\IWebserverStartupPhases.cs" />
     <Compile Include="Modules\LifeTimeScopeEventArgs.cs" />
+    <Compile Include="Modules\ViewFinder\Helper\FormCreator.cs" />
+    <Compile Include="Modules\ViewFinder\IViewFinder.cs" />
+    <Compile Include="Modules\ViewFinder\ViewFinderImpl.cs" />
     <Compile Include="Modules\WebserverStartupPhases.cs" />
     <Compile Include="PostModels\ExtentAddModel.cs" />
     <Compile Include="PostModels\ExtentCreateModel.cs" />
@@ -93,6 +96,10 @@
     <Compile Include="WorkspaceModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DatenMeister.Provider.DotNet\DatenMeister.Provider.DotNet.csproj">
+      <Project>{DE772364-F233-40E8-BA39-519D42C20686}</Project>
+      <Name>DatenMeister.Provider.DotNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
       <Project>{4350A383-14F7-4A84-8CDF-96CA6828F8E9}</Project>
       <Name>DatenMeister.Runtime</Name>

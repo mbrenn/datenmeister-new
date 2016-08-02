@@ -18,7 +18,7 @@ export module ClientResponse {
     }
 
     export interface IItemsContent {
-        columns: Array<IDataField>;
+        columns: IDataForm;
         items: Array<IDataTableItem>;
         search: string;
         totalItemCount: number;
@@ -41,9 +41,15 @@ export module ClientResponse {
         id: string;
         uri: string;
         v: Array<string>;
-        c: Array<IDataField>;
+        c: IDataForm;
         metaclass?: IItemModel;
         layer: string;
+    }
+
+    export interface IDataForm {
+        fields: Array<IDataField>;
+        name: string;
+
     }
 
     export interface IDataField {

@@ -202,7 +202,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             var tthis = this;
             this.content.empty();
             var configuration = new DMTables.ItemContentConfiguration();
-            configuration.columns = data.c;
+            configuration.columns = data.c.fields;
             var isReadonly = false;
             if (settings !== undefined && settings !== null) {
                 if (settings.isReadonly !== undefined && settings.isReadonly !== null) {

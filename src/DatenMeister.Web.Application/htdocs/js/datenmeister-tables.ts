@@ -186,7 +186,7 @@ export class ItemListTable {
             domRow.append(domColumn);
         }
 
-        var columns = data.columns;
+        var columns = data.columns.fields;
         for (var c in columns) {
             if (columns.hasOwnProperty(c)) {
                 var column = columns[c];
@@ -282,7 +282,7 @@ export class ItemListTable {
                     domRow.append(domColumn);
                 }
 
-                var columns = data.columns;
+                var columns = data.columns.fields;
                 for (var c in columns) {
                     if (columns.hasOwnProperty(c)) {
                         domColumn = $("<td></td>");

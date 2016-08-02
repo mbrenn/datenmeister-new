@@ -5,7 +5,7 @@ using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Web.Models.Fields;
 
-namespace DatenMeister.Web.Helper
+namespace DatenMeister.Web.Models.Modules.ViewFinder.Helper
 {
     public class FormCreator
     {

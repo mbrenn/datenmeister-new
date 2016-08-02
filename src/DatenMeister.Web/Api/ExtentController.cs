@@ -13,6 +13,8 @@ using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Json;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -20,9 +22,9 @@ using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
-using DatenMeister.Web.Helper;
 using DatenMeister.Web.Models;
 using DatenMeister.Web.Models.Fields;
+using DatenMeister.Web.Models.Modules.ViewFinder;
 using DatenMeister.Web.Models.PostModels;
 using DatenMeister.XMI.ExtentStorage;
 
@@ -41,28 +43,28 @@ namespace DatenMeister.Web.Api
         private readonly IUmlNameResolution _resolution;
         private readonly IExtentStorageLoader _extentStorageLoader;
         private readonly IDataLayerLogic _dataLayerLogic;
-        private readonly FormCreator _formCreator;
         private readonly ExtentFunctions _extentFunctions;
         private readonly ILifetimeScope _diScope;
+        private readonly IViewFinder _viewFinder;
 
         public ExtentController(
             IFactoryMapper mapper, 
             IWorkspaceCollection workspaceCollection, 
             IUmlNameResolution resolution, 
             IExtentStorageLoader extentStorageLoader, 
-            IDataLayerLogic dataLayerLogic,
-            FormCreator formCreator, 
+            IDataLayerLogic dataLayerLogic, 
             ExtentFunctions extentFunctions,
-            ILifetimeScope diScope)
+            ILifetimeScope diScope,
+            IViewFinder viewFinder)
         {
             _mapper = mapper;
             _workspaceCollection = workspaceCollection;
             _resolution = resolution;
             _extentStorageLoader = extentStorageLoader;
             _dataLayerLogic = dataLayerLogic;
-            _formCreator = formCreator;
             _extentFunctions = extentFunctions;
             _diScope = diScope;
+            _viewFinder = viewFinder;
         }
 
         [Route("all")]
@@ -168,7 +170,7 @@ namespace DatenMeister.Web.Api
         /// <returns>The cleaned filename</returns>
         private static string CleanFilenameFromInvalidCharacters(string filename)
         {
-            foreach (var letter in Path.GetInvalidFileNameChars()       )
+            foreach (var letter in Path.GetInvalidFileNameChars())
             {
                 filename = filename.Replace(letter, '_');
             }
@@ -279,9 +281,9 @@ namespace DatenMeister.Web.Api
             };
         }
 
-        [Route("extent_export")]
+        [Route("extent_export_csv")]
         [HttpGet]
-        public object ExportExtentAsCSV(string ws, string extent)
+        public object ExportExtentAsCsv(string ws, string extent)
         {
             Workspace<IExtent> foundWorkspace;
             IUriExtent foundExtent;
@@ -373,8 +375,14 @@ namespace DatenMeister.Web.Api
             var totalItems = foundExtent.elements();
             var foundItems = totalItems;
 
-            var result = _formCreator.CreateFields(foundExtent);
-            var properties = result.fields.Select(x=>x.name).ToList();
+            var result = _viewFinder.FindView(foundExtent, view);
+            var properties = 
+                result.GetAsReflectiveCollection(
+                    _FormAndFields._Form.fields)
+                .Select(x => x.AsIObject().get("name").ToString())
+                .ToList();
+            /*var result = _formCreator.CreateFields(foundExtent);
+            var properties = result.fields.Select(x=>x.name).ToList();*/
 
             // Perform the filtering
             IEnumerable<object> filteredItems = foundItems;
@@ -402,11 +410,13 @@ namespace DatenMeister.Web.Api
                 .Skip(o)
                 .Take(amount);
 
+            var jsonConverter = new DirectJsonConverter();
+
             // Now return our stuff
             var resultModel = new ExtentContentModel
             {
                 url = extent,
-                columns = result.fields,
+                columns = DynamicConverter.ToDynamic(result),
                 totalItemCount = totalItems.Count(),
                 search = search,
                 filteredItemCount = filteredAmount,
@@ -423,7 +433,7 @@ namespace DatenMeister.Web.Api
         }
 
         [Route("item")]
-        public object GetItem(string ws, string extent, string item)
+        public object GetItem(string ws, string extent, string item, string view = null)
         {
             Workspace<IExtent> foundWorkspace;
             IUriExtent foundExtent;
@@ -442,8 +452,8 @@ namespace DatenMeister.Web.Api
                 return NotFound();
             }
 
-            var result = _formCreator.CreateFields(foundElement);
-            itemModel.c = result.fields.ToList();
+            var result = _viewFinder.FindView(foundElement, view);
+            itemModel.c = DynamicConverter.ToDynamic(result);
             itemModel.v = ConvertToJson(foundElement, result);
             itemModel.layer = _dataLayerLogic?.GetDataLayerOfObject(foundElement)?.Name;
 
@@ -617,20 +627,20 @@ namespace DatenMeister.Web.Api
         /// Converts a given element to a json string, dependent on the column definition as given by the 
         /// ColumnCreationResult
         /// </summary>
-        /// <param name="element"></param>
-        /// <param name="creatorResult"></param>
+        /// <param name="element">The element that shall be converted to a json object</param>
+        /// <param name="form">The form being used for conversion</param>
         /// <returns></returns>
-        private Dictionary<string, object> ConvertToJson(IObject element, Form creatorResult)
+        private Dictionary<string, object> ConvertToJson(IObject element, IObject form)
         {
             var result = new Dictionary<string, object>();
 
-            foreach (var field in creatorResult.fields
-                .Where(field => element.isSet(field.name)))
+            foreach (var field in form.GetAsReflectiveCollection(_FormAndFields._Form.fields).Select(x=>x.AsIElement())
+                .Where(field => element.isSet(field.get("name").ToString())))
             {
-                var property = field.name;
+                var property = field.get("name").ToString();
                 var propertyValue = element.get(property);
 
-                if (field.isEnumeration)
+                if (ObjectHelper.IsTrue(field.get(_FormAndFields._FieldData.isEnumeration)))
                 {
                     if (propertyValue is IEnumerable && !(propertyValue is string))
                     {

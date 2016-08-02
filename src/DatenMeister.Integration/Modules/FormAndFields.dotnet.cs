@@ -29,6 +29,13 @@ namespace DatenMeister.Web.Models
                 lookup.Add(typeAsElement, type);
             }
             {
+                var type = typeof(DatenMeister.Web.Models.Fields.FieldData);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__FieldData = typeAsElement;
+                lookup.Add(typeAsElement, type);
+            }
+            {
                 var type = typeof(DatenMeister.Web.Models.Fields.TextFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);

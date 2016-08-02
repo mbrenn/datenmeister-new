@@ -53,6 +53,41 @@ namespace DatenMeister.Web.Models
                                 }
                             }
                         }
+                        if(name == "FieldData") // Looking for class
+                        {
+                            tree.__FieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "fieldType") // Looking for property
+                                {
+                                    tree.FieldData._fieldType = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.FieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.FieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.FieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.FieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.FieldData._isReadOnly = value;
+                                }
+                            }
+                        }
                         if(name == "TextFieldData") // Looking for class
                         {
                             tree.__TextFieldData = value;

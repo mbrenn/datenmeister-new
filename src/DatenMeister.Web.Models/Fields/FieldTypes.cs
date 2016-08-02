@@ -8,7 +8,8 @@ namespace DatenMeister.Web.Models.Fields
         {
             return new[]
             {
-                typeof(Form), 
+                typeof(Form),
+                typeof(FieldData), 
                 typeof(TextFieldData),
                 typeof(DateTimeFieldData),
                 typeof(DropDownFieldData)

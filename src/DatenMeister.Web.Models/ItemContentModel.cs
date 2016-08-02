@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using DatenMeister.Web.Models.Fields;
 
 namespace DatenMeister.Web.Models
 {
@@ -11,7 +10,7 @@ namespace DatenMeister.Web.Models
 
         public Dictionary<string, object> v { get; set; }
 
-        public List<FieldData> c { get; set; }
+        public object c { get; set; }
 
         public ItemModel metaclass { get; set; }
     }

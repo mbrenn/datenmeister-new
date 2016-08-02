@@ -56,8 +56,8 @@ namespace DatenMeister.Web.Application
             _serverInjection = CreateKernel(app);
 
             var builder = new ContainerBuilder();
-            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterWebModules();
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.Update(_serverInjection);
 
             httpConfiguration.DependencyResolver = new AutofacWebApiDependencyResolver(_serverInjection);

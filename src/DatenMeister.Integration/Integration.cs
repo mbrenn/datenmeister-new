@@ -15,6 +15,7 @@ using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Web.Models;
+using DatenMeister.Web.Models.Modules.ViewFinder;
 
 namespace DatenMeister.Integration
 {
@@ -71,8 +72,8 @@ namespace DatenMeister.Integration
 
             // Adds the complete .Net-Type handling
             var dotNetTypeLookup = new DotNetTypeLookup();
-            kernel.RegisterInstance(dotNetTypeLookup).As<DotNetTypeLookup>();
-            
+            kernel.RegisterInstance(dotNetTypeLookup).As<IDotNetTypeLookup>();
+
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {

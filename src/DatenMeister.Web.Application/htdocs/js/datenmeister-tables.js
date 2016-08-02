@@ -128,7 +128,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
                 domColumn = $("<th>ID</th>");
                 domRow.append(domColumn);
             }
-            var columns = data.columns;
+            var columns = data.columns.fields;
             for (var c in columns) {
                 if (columns.hasOwnProperty(c)) {
                     var column = columns[c];
@@ -208,7 +208,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
                         domColumn.text(id);
                         domRow.append(domColumn);
                     }
-                    var columns = data.columns;
+                    var columns = data.columns.fields;
                     for (var c in columns) {
                         if (columns.hasOwnProperty(c)) {
                             domColumn = $("<td></td>");

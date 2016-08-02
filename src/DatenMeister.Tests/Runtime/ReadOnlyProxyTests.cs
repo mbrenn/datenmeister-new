@@ -24,15 +24,15 @@ namespace DatenMeister.Tests.Runtime
             var element = readOnly.elements().ElementAt(0) as IElement;
             Assert.That(element, Is.Not.Null);
             Assert.Throws<ReadOnlyAccessException>(() =>
-                element.unset("Test"));
+                element?.unset("Test"));
 
             Assert.That(readOnly.elements().size(), Is.GreaterThan(0));
             Assert.That(readOnly.elements().size(), Is.EqualTo(csvExtent.elements().size()));
 
             var property1  = ((IObjectAllProperties) element).getPropertiesBeingSet().ElementAt(0);
-            Assert.That(element.get(property1), Is.Not.Null);
+            Assert.That(element?.get(property1), Is.Not.Null);
 
-            Assert.Throws<ReadOnlyAccessException>(() => ((IElementSetMetaClass) element).setMetaClass(null));
+            Assert.Throws<ReadOnlyAccessException>(() => ((IElementSetMetaClass) element)?.setMetaClass(null));
         }   
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace DatenMeister.Tests.Runtime
             var dataLayerLogic = DataLayerLogic.InitDefault(out dataLayers);
 
             var data = new ExtentStorageData();
-            var logic = new ExtentStorageLoader(data, mapper, dataLayerLogic);
+            var logic = new ExtentStorageLoader(data, mapper);
             var configuration = new CSVStorageConfiguration
             {
                 Path = "data.txt",

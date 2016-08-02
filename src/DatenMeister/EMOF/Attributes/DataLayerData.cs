@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Interface.Identifiers;
 
-namespace DatenMeister.DataLayer
+namespace DatenMeister.EMOF.Attributes
 {
     /// <summary>
     /// Stores the data which is persistent within the process
@@ -10,7 +11,7 @@ namespace DatenMeister.DataLayer
     {
         public DataLayerData()
         {
-            Default = new DataLayer("Default");
+            Default = new DataLayer.DataLayer("Default");
         }
 
         public DataLayerData(DataLayers dataLayers)

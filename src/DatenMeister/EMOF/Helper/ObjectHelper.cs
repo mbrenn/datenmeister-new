@@ -19,7 +19,7 @@ namespace DatenMeister.EMOF.Helper
             var result = new Dictionary<object, object>();
 
             foreach (var property in properties
-                .Where(property => value.isSet(property)))
+                .Where(value.isSet))
             {
                 result[property] = value.get(property);
             }
@@ -34,7 +34,7 @@ namespace DatenMeister.EMOF.Helper
             var result = new Dictionary<string, string>();
 
             foreach (var property in properties
-                .Where(property => value.isSet(property)))
+                .Where(value.isSet))
             {
                 var propertyValue = value.get(property);
                 result[property] = propertyValue == null ? "null" : propertyValue.ToString();

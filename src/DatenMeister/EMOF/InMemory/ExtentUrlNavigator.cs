@@ -11,7 +11,7 @@ namespace DatenMeister.EMOF.InMemory
     {
         private readonly Dictionary<string, IHasId> _cacheIds = new Dictionary<string, IHasId>();
 
-        private IUriExtent _extent;
+        private readonly IUriExtent _extent;
 
         public ExtentUrlNavigator(IUriExtent extent)
         {

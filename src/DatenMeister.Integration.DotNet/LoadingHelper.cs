@@ -63,7 +63,7 @@ namespace DatenMeister.Integration.DotNet
                         try
                         {
                             var assembly = Assembly.LoadFile(Path.Combine(path, file));
-                            Debug.WriteLine($"Loaded : {assembly.FullName}");
+                            Debug.WriteLine($"Loaded : {assembly.GetName().Name}, {assembly.GetName().Version}");
                         }
                         catch (Exception e)
                         {
@@ -90,7 +90,7 @@ namespace DatenMeister.Integration.DotNet
                     {
                         try
                         {
-                            Debug.WriteLine($"Starting plugin: {type}");
+                            Debug.WriteLine($"Starting plugin: {type.FullName}");
                             ((IDatenMeisterPlugin) kernel.Resolve(type)).Start();
                         }
                         catch (Exception exc)

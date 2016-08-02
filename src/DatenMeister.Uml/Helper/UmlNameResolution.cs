@@ -1,18 +1,10 @@
 ﻿using System;
-using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Uml.Helper
 {
     public class UmlNameResolution : IUmlNameResolution
     {
-        private IDataLayerLogic _dataLayerLogic;
-
-        public UmlNameResolution(IDataLayerLogic dataLayerLogic)
-        {
-            _dataLayerLogic = dataLayerLogic;
-        }
-
         public string GetName(IObject element)
         {
             // If the element is not uml induced or the property is empty, check by

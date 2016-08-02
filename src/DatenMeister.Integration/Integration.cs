@@ -4,6 +4,7 @@ using System.IO;
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Attributes;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.ExtentStorage;
@@ -96,6 +97,8 @@ namespace DatenMeister.Integration
                 {
                     throw new InvalidOperationException("Slim integration is currently not supported");
                 }
+
+                Debug.Write("Bootstrapping MOF and UML...");
                 Bootstrapper.PerformFullBootstrap(
                     paths,
                     workspaceCollection.GetWorkspace("UML"),
@@ -106,6 +109,7 @@ namespace DatenMeister.Integration
                     workspaceCollection.GetWorkspace("MOF"),
                     dataLayerLogic,
                     dataLayers.Mof);
+                Debug.WriteLine(" Done");
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var mofFactory = new MofFactory();

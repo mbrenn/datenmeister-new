@@ -103,6 +103,22 @@ namespace DatenMeister.Tests.DotNet
             Assert.That(extent.elements().size(), Is.EqualTo(2));
         }
 
+        [Test]
+        public void TestFactory()
+        {
+            var lookup = Initialize();
+            var metaClass = lookup.ToElement(typeof(DotNetTests.TestClass));
+            var factory = new DotNetFactory(lookup);
+            var created = factory.create(metaClass);
+            Assert.That(created, Is.TypeOf<DotNetElement>());
+            created.set("Title", "Test");
+            Assert.That(created.getMetaClass(), Is.EqualTo(metaClass));
+            Assert.That(created.get("Title"), Is.EqualTo("Test"));
+
+            var found = (DotNetElement) created;
+            Assert.That(((DotNetTests.TestClass) found.GetNativeValue()).Title, Is.EqualTo("Test"));
+        }
+
         private static DotNetTypeLookup Initialize()
         {
             var uml = new _UML();

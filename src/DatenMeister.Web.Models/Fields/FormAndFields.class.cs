@@ -14,6 +14,9 @@ namespace DatenMeister.Web.Models
             public static string @fields = "fields";
             public IElement _fields = null;
 
+            public static string @detailForm = "detailForm";
+            public IElement _detailForm = null;
+
         }
 
         public _Form @Form = new _Form();

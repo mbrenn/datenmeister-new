@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Dynamic;
-using System.Text;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime

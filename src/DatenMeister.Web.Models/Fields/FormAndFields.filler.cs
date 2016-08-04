@@ -51,6 +51,10 @@ namespace DatenMeister.Web.Models
                                 {
                                     tree.Form._fields = value;
                                 }
+                                if(name == "detailForm") // Looking for property
+                                {
+                                    tree.Form._detailForm = value;
+                                }
                             }
                         }
                         if(name == "FieldData") // Looking for class

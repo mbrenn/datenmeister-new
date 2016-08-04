@@ -23,7 +23,6 @@ using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Web.Models;
-using DatenMeister.Web.Models.Fields;
 using DatenMeister.Web.Models.Modules.ViewFinder;
 using DatenMeister.Web.Models.PostModels;
 using DatenMeister.XMI.ExtentStorage;
@@ -636,9 +635,9 @@ namespace DatenMeister.Web.Api
 
             foreach (var field in form.GetAsReflectiveCollection(_FormAndFields._Form.fields)
                 .Select(x=>x.AsIElement())
-                .Where(field => element.isSet(field.get("name").ToString())))
+                .Where(field => element.isSet(field.get(_FormAndFields._Form.name).ToString())))
             {
-                var property = field.get("name").ToString();
+                var property = field.get(_FormAndFields._Form.name).ToString();
                 var propertyValue = element.get(property);
 
                 if (ObjectHelper.IsTrue(field.get(_FormAndFields._FieldData.isEnumeration)))

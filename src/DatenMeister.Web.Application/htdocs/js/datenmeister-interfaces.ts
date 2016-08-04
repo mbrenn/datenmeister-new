@@ -88,6 +88,7 @@ export module ClientResponse {
 export module PostModels {
 
     export interface IItemTableQuery {
+        view: string;
         searchString?: string;
         offset?: number;
         amount?: number;
@@ -119,6 +120,7 @@ export module PostModels {
         searchString: string;
         offset: number;
         amount: number;
+        view: string;
     }
 
     /** This class is used to reference a single object within the database */
@@ -230,7 +232,7 @@ export namespace Table {
     }
 
     export class DataTableItem {
-        // Stores the url of the object which can be used for reference
+        // stores the url of the object which can be used for reference
         uri: string;
         v: Array<string>;
 
@@ -246,8 +248,13 @@ export namespace Api {
         renavigate(): void;
         navigateToWorkspaces(): void;
         navigateToExtents(workspaceId: string): void;
-        navigateToItems(ws: string, extentUrl: string): void;
-        navigateToItem(ws: string, extentUrl: string, itemUrl: string): void;
+        navigateToItems(ws: string, extentUrl: string, viewname?: string): void;
+        navigateToItem(ws: string,
+            extentUrl: string,
+            itemUrl: string,
+            viewname?: string,
+            settings?: View.IItemViewSettings): void;
+
         setStatus(statusDom: JQuery): void;
         throwLayoutChangedEvent(data: ILayoutChangedEvent): void;
 

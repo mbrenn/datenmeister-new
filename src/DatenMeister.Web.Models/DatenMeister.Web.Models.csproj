@@ -79,6 +79,7 @@
     <Compile Include="Modules\ViewFinder\Helper\FormCreator.cs" />
     <Compile Include="Modules\ViewFinder\IViewFinder.cs" />
     <Compile Include="Modules\ViewFinder\ViewFinderImpl.cs" />
+    <Compile Include="Modules\ViewFinder\ViewLogic.cs" />
     <Compile Include="Modules\WebserverStartupPhases.cs" />
     <Compile Include="PostModels\ExtentAddModel.cs" />
     <Compile Include="PostModels\ExtentCreateModel.cs" />

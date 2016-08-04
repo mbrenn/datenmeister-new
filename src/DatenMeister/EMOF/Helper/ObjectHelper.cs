@@ -146,6 +146,7 @@ namespace DatenMeister.EMOF.Helper
             {
                 return objectKnowsExtent.Extents.FirstOrDefault() as IUriExtent;
             }
+
             throw new ArgumentException($"The following element does not implement the IObjectKnowsExtent interface: {value}");
         }
 

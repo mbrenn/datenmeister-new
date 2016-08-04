@@ -12,6 +12,11 @@ namespace DatenMeister.Provider.DotNet
     /// </summary>
     public class DotNetTypeLookup : IDotNetTypeLookup
     {
+        /// <summary>
+        /// Defines a cache between all objects and their id 
+        /// </summary>
+        private readonly Dictionary<object, string> _idCacheDictionary = new Dictionary<object, string>();
+
         private readonly Dictionary<IElement, Type> _elementsToTypes =
             new Dictionary<IElement, Type>();
 
@@ -46,6 +51,26 @@ namespace DatenMeister.Provider.DotNet
             Type result;
             _elementsToTypes.TryGetValue(element, out result);
             return result;
+        }
+
+        /// <summary>
+        /// Gets the id of a certain element
+        /// </summary>
+        /// <param name="value">Value to be queried</param>
+        /// <returns>The returned id</returns>
+        public string GetId(object value)
+        {
+            lock (_idCacheDictionary)
+            {
+                string id;
+                if (!_idCacheDictionary.TryGetValue(value, out id))
+                {
+                    id = Guid.NewGuid().ToString();
+                    _idCacheDictionary[value] = id;
+                }
+
+                return id;
+            }
         }
     }
 }

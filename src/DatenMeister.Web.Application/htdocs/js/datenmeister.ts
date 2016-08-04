@@ -81,6 +81,7 @@ export function parseAndNavigateToWindowLocation(layout: DMLayout.Layout) {
     var extentUrl = DMHelper.getParameterByNameFromHash("ext");
     var itemUrl = DMHelper.getParameterByNameFromHash("item");
     var mode = DMHelper.getParameterByNameFromHash("mode");
+    var view = DMHelper.getParameterByNameFromHash("view");
     layout.onViewPortChanged = (data) => {
          buildRibbons(layout, data);
     };
@@ -93,14 +94,14 @@ export function parseAndNavigateToWindowLocation(layout: DMLayout.Layout) {
     } else if (extentUrl === "") {
         layout.showExtents(ws);
     } else if (itemUrl === "") {
-        layout.showItems(ws, extentUrl);
+        layout.showItems(ws, extentUrl, view);
     } else {
         var settings: DMI.View.IItemViewSettings = {};
         if (mode === "readonly") {
             settings.isReadonly = true;
         }
 
-        layout.showItem(ws, extentUrl, itemUrl, settings);
+        layout.showItem(ws, extentUrl, itemUrl, view, settings);
     }
 
     $(".body-content").show();

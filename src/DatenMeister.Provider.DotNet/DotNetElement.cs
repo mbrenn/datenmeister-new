@@ -13,7 +13,7 @@ namespace DatenMeister.Provider.DotNet
         /// <summary>
         /// Stores the list of extents to which this element is stored
         /// </summary>
-        private readonly HashSet<IExtent> _extents = new HashSet<IExtent>();
+        private IExtent _extent;
 
         private readonly IDotNetTypeLookup _typeLookup;
 
@@ -41,7 +41,7 @@ namespace DatenMeister.Provider.DotNet
             metaclass = mofType;
             _type = value.GetType();
 
-            Id = Guid.NewGuid().ToString();
+            Id = typeLookup.GetId(value);
             _container = container;
         }
 
@@ -66,7 +66,7 @@ namespace DatenMeister.Provider.DotNet
             }
 
             var result = member.GetValue(_value);
-            return _typeLookup.CreateDotNetElementIfNecessary(result);
+            return _typeLookup.CreateDotNetElementIfNecessary(result, this, null);
         }
 
         public void set(string property, object value)
@@ -99,34 +99,18 @@ namespace DatenMeister.Provider.DotNet
 
         public string Id { get; set; }
 
-        public IEnumerable<IExtent> Extents => _extents;
+        public IEnumerable<IExtent> Extents
+        {
+            get { yield return _extent; }
+        }
         
-        public void AddToExtent(IExtent extent)
-        {
-            lock (_extents)
-            {
-                _extents.Add(extent);
-            }
-        }
-
-        public void RemoveFromExtent(IExtent extent)
-        {
-            lock (_extents)
-            {
-                _extents.Remove(extent);
-            }
-        }
-
         /// <summary>
         /// Transfers the information about extent ownership from one element to another
         /// </summary>
         /// <param name="other">The other element from which the extents shall be transfered</param>
         public void TransferExtents(DotNetElement other)
         {
-            foreach (var extent in other._extents)
-            {
-                AddToExtent(extent);
-            }
+            _extent = other._extent;
         }
 
         /// <summary>
@@ -146,6 +130,17 @@ namespace DatenMeister.Provider.DotNet
         internal void SetContainer(DotNetElement owner)
         {
             _container = owner;
+        }
+
+        /// <summary>
+        /// Sets the extent of the given DotNetElement. 
+        /// This is used to 'root-reference' the elements to their extents
+        /// if returned by elements();
+        /// </summary>
+        /// <param name="extent">The extent that shall be set</param>
+        internal void SetExtent(DotNetExtent extent)
+        {
+            _extent = extent;
         }
     }
 }

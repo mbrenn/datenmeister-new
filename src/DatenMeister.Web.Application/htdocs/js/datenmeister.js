@@ -62,6 +62,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         var extentUrl = DMHelper.getParameterByNameFromHash("ext");
         var itemUrl = DMHelper.getParameterByNameFromHash("item");
         var mode = DMHelper.getParameterByNameFromHash("mode");
+        var view = DMHelper.getParameterByNameFromHash("view");
         layout.onViewPortChanged = function (data) {
             buildRibbons(layout, data);
         };
@@ -76,14 +77,14 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
             layout.showExtents(ws);
         }
         else if (itemUrl === "") {
-            layout.showItems(ws, extentUrl);
+            layout.showItems(ws, extentUrl, view);
         }
         else {
             var settings = {};
             if (mode === "readonly") {
                 settings.isReadonly = true;
             }
-            layout.showItem(ws, extentUrl, itemUrl, settings);
+            layout.showItem(ws, extentUrl, itemUrl, view, settings);
         }
         $(".body-content").show();
     }

@@ -32,7 +32,8 @@ namespace DatenMeister.EMOF.Helper
                     _cachedObjects.Add(value);
                 }
 
-                (value as MofObject)?.AddToExtent(_extent);
+
+                (value as ISetKnownExtents)?.AddToExtent(_extent);
 
                 return result;
             }

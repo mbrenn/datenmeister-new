@@ -11,6 +11,9 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
                             ev.layout.navigateToItem(ev.workspace, ev.extent, innerData.newuri);
                         });
                     });
+                    tab.addIcon("Show Tasks", "...,", function () {
+                        ev.layout.navigateToItems(ev.workspace, ev.extent, "Views.Tasks.Default");
+                    });
                 }
             }
         };

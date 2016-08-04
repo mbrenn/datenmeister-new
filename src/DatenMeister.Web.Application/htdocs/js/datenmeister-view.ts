@@ -6,7 +6,7 @@ import * as DMQuery from "./datenmeister-query";
 // This interface should be implemented by all views that can be added via 'setView' to a layout
 export interface IView {
     getContent(): JQuery;
-    getLayoutInformation() : DMI.Api.ILayoutChangedEvent;
+    getLayoutInformation(): DMI.Api.ILayoutChangedEvent;
 }
 
 export class ViewBase implements IView{

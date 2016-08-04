@@ -16,6 +16,13 @@ export function load(plugin: DMI.Api.PluginParameter): DMI.Api.IPluginResult {
                                 ev.layout.navigateToItem(ev.workspace, ev.extent, innerData.newuri);
                             });
                     });
+
+                tab.addIcon(
+                    "Show Tasks",
+                    "...,",
+                    () => {
+                        ev.layout.navigateToItems(ev.workspace, ev.extent, "Views.Tasks.Default");
+                    });
             }
         }
     };

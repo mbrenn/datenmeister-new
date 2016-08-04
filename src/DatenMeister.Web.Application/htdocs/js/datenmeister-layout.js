@@ -19,19 +19,26 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             history.pushState({}, "", "#ws=" + encodeURIComponent(workspaceId));
             this.showExtents(workspaceId);
         };
-        Layout.prototype.navigateToItems = function (ws, extentUrl) {
-            history.pushState({}, "", "#ws=" + encodeURIComponent(ws) + "&ext=" + encodeURIComponent(extentUrl));
-            this.showItems(ws, extentUrl);
+        Layout.prototype.navigateToItems = function (ws, extentUrl, viewname) {
+            var url = "#ws=" + encodeURIComponent(ws) + "&ext=" + encodeURIComponent(extentUrl);
+            if (viewname !== undefined && viewname !== null) {
+                url += "&view=" + encodeURIComponent(viewname);
+            }
+            history.pushState({}, "", url);
+            this.showItems(ws, extentUrl, viewname);
         };
-        Layout.prototype.navigateToItem = function (ws, extentUrl, itemUrl, settings) {
+        Layout.prototype.navigateToItem = function (ws, extentUrl, itemUrl, viewname, settings) {
             var url = "#ws=" + encodeURIComponent(ws) + "&ext=" + encodeURIComponent(extentUrl) + "&item=" + encodeURIComponent(itemUrl);
             if (settings !== undefined && settings !== null) {
                 if (settings.isReadonly) {
                     url += "&mode=readonly";
                 }
             }
+            if (viewname !== undefined && viewname !== null) {
+                url += "&view=" + encodeURIComponent(viewname);
+            }
             history.pushState({}, "", url);
-            this.showItem(ws, extentUrl, itemUrl, settings);
+            this.showItem(ws, extentUrl, itemUrl, viewname, settings);
         };
         Layout.prototype.exportExtent = function (ws, extentUrl) {
             window.open("/api/datenmeister/extent/extent_export_csv?ws=" + encodeURIComponent(ws) + "&extent=" + encodeURIComponent(extentUrl));
@@ -63,7 +70,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             extentView.loadAndCreateHtmlForWorkspace(workspaceId);
             this.mainViewPort.setView(extentView);
         };
-        Layout.prototype.showItems = function (workspaceId, extentUrl) {
+        Layout.prototype.showItems = function (workspaceId, extentUrl, viewname) {
             var tthis = this;
             this.createTitle(workspaceId, extentUrl);
             var extentView = new DMView.ExtentView(this);
@@ -71,19 +78,21 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 tthis.navigateToItem(ws, extentUrl, itemUrl);
             };
             extentView.onItemView = function (ws, extentUrl, itemUrl) {
-                tthis.navigateToItem(ws, extentUrl, itemUrl, { isReadonly: true });
+                tthis.navigateToItem(ws, extentUrl, itemUrl, undefined, { isReadonly: true });
             };
             extentView.onItemCreated = function (ws, extentUrl, itemUrl) {
                 tthis.navigateToItem(ws, extentUrl, itemUrl);
             };
-            extentView.loadAndCreateHtmlForExtent(workspaceId, extentUrl);
+            var query = new DMI.PostModels.ItemInExtentQuery();
+            query.view = viewname;
+            extentView.loadAndCreateHtmlForExtent(workspaceId, extentUrl, query);
             this.mainViewPort.setView(extentView);
         };
-        Layout.prototype.showItem = function (workspaceId, extentUrl, itemUrl, settings) {
+        Layout.prototype.showItem = function (workspaceId, extentUrl, itemUrl, viewname, settings) {
             var tthis = this;
             var itemView = new DMView.ItemView(this);
             itemView.onItemView = function (ws, extentUrl, itemUrl) {
-                tthis.navigateToItem(ws, extentUrl, itemUrl, { isReadonly: true });
+                tthis.navigateToItem(ws, extentUrl, itemUrl, undefined, { isReadonly: true });
             };
             this.createTitle(workspaceId, extentUrl, itemUrl);
             itemView.loadAndCreateHtmlForItem(workspaceId, extentUrl, itemUrl, settings);

@@ -20,7 +20,6 @@ namespace DatenMeister.EMOF.InMemory
 
         public virtual T element(string uri)
         {
-
             // Check, if the element is in the cache and if yes, return it
             IHasId result;
             if (_cacheIds.TryGetValue(uri, out result))

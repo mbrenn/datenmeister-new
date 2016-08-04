@@ -89,6 +89,7 @@
     <Compile Include="EMOF\Interface\Common\IReflectiveSequence.cs" />
     <Compile Include="EMOF\Interface\Reflection\IObjectAllProperties.cs" />
     <Compile Include="EMOF\Interface\Reflection\IObjectKnowsExtent.cs" />
+    <Compile Include="EMOF\Interface\Reflection\ISetKnownExtents.cs" />
     <Compile Include="Filler\DummyFiller.cs" />
     <Compile Include="Filler\FillTheMOF.cs" />
     <Compile Include="Filler\FillThePrimitiveTypes.cs" />

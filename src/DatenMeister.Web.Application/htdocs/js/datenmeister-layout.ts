@@ -37,12 +37,18 @@ export class Layout implements DMI.Api.ILayout {
         this.showExtents(workspaceId);
     }
 
-    navigateToItems(ws: string, extentUrl: string) {
-        history.pushState({}, "", `#ws=${encodeURIComponent(ws)}&ext=${encodeURIComponent(extentUrl)}`);
-        this.showItems(ws, extentUrl);
+    navigateToItems(ws: string, extentUrl: string, viewname?: string) {
+        var url = `#ws=${encodeURIComponent(ws)}&ext=${encodeURIComponent(extentUrl)}`;
+        if (viewname !== undefined && viewname !== null) {
+            url += `&view=${encodeURIComponent(viewname)}`;
+        }
+
+        history.pushState({}, "", url);
+
+        this.showItems(ws, extentUrl, viewname);
     }
 
-    navigateToItem(ws: string, extentUrl: string, itemUrl: string, settings?: DMI.View.IItemViewSettings) {
+    navigateToItem(ws: string, extentUrl: string, itemUrl: string, viewname?: string, settings?: DMI.View.IItemViewSettings) {
         var url = `#ws=${encodeURIComponent(ws)}&ext=${encodeURIComponent(extentUrl)}&item=${encodeURIComponent(itemUrl)}`;
 
         if (settings !== undefined && settings !== null) {
@@ -51,8 +57,12 @@ export class Layout implements DMI.Api.ILayout {
             }
         }
 
+        if (viewname !== undefined && viewname !== null) {
+            url += `&view=${encodeURIComponent(viewname)}`;
+        }
+
         history.pushState({}, "", url);
-        this.showItem(ws, extentUrl, itemUrl, settings);
+        this.showItem(ws, extentUrl, itemUrl, viewname, settings);
     }
 
     exportExtent(ws: string, extentUrl: string) {
@@ -93,7 +103,7 @@ export class Layout implements DMI.Api.ILayout {
         this.mainViewPort.setView(extentView);
     }
 
-    showItems(workspaceId: string, extentUrl: string) {
+    showItems(workspaceId: string, extentUrl: string, viewname?: string) {
         var tthis = this;
 
         this.createTitle(workspaceId, extentUrl);
@@ -103,24 +113,31 @@ export class Layout implements DMI.Api.ILayout {
         };
 
         extentView.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
-            tthis.navigateToItem(ws, extentUrl, itemUrl, { isReadonly: true });
+            tthis.navigateToItem(ws, extentUrl, itemUrl, undefined, { isReadonly: true });
         };
 
         extentView.onItemCreated = (ws: string, extentUrl: string, itemUrl: string) => {
             tthis.navigateToItem(ws, extentUrl, itemUrl);
         };
 
-        extentView.loadAndCreateHtmlForExtent(workspaceId, extentUrl);
+        var query = new DMI.PostModels.ItemInExtentQuery();
+        query.view = viewname;
+
+        extentView.loadAndCreateHtmlForExtent(workspaceId, extentUrl, query);
         this.mainViewPort.setView(extentView);
     }
 
-    showItem(workspaceId: string, extentUrl: string, itemUrl: string, settings?: DMI.View.IItemViewSettings) {
+    showItem(workspaceId: string,
+        extentUrl: string,
+        itemUrl: string,
+        viewname?: string,
+        settings?: DMI.View.IItemViewSettings) {
         var tthis = this;
 
         var itemView = new DMView.ItemView(this);
 
         itemView.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
-            tthis.navigateToItem(ws, extentUrl, itemUrl, { isReadonly: true });
+            tthis.navigateToItem(ws, extentUrl, itemUrl, undefined, { isReadonly: true });
         };
 
         this.createTitle(workspaceId, extentUrl, itemUrl);

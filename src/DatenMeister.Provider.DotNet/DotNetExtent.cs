@@ -13,7 +13,6 @@ namespace DatenMeister.Provider.DotNet
         private readonly object _syncObject = new object();
 
         private readonly string _contextUri;
-        private readonly IDotNetTypeLookup _typeLookup;
 
         private readonly ExtentUrlNavigator<DotNetElement> _navigator;
 
@@ -26,11 +25,15 @@ namespace DatenMeister.Provider.DotNet
                 throw new ArgumentException("Value cannot be null or empty.", nameof(contextUri));
 
             _contextUri = contextUri;
-            _typeLookup = typeLookup;
             _navigator = new ExtentUrlNavigator<DotNetElement>(this);
+
+            var reflectiveSequence =
+                typeLookup.CreateDotNetReflectiveSequence(new List<object>(), null);
             _elements = new ReflectiveSequenceForExtent(
                 this, 
-                _typeLookup.CreateDotNetReflectiveSequence(new List<object>()));
+                reflectiveSequence);
+
+            ((IDotNetReflectiveSequence)reflectiveSequence).SetExtent(this);
         }
 
         public bool useContainment()
@@ -41,7 +44,6 @@ namespace DatenMeister.Provider.DotNet
         public IReflectiveSequence elements()
         {
             return _elements;
-            throw new NotImplementedException();
         }
 
         public string contextURI()

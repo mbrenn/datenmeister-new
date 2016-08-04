@@ -8,6 +8,18 @@ namespace DatenMeister.Runtime.Workspaces
     public static class Extension
     {
         /// <summary>
+        /// Finds an extent by the given uri
+        /// </summary>
+        /// <typeparam name="T">Type of the workspace</typeparam>
+        /// <param name="workspace">The workspace being queried</param>
+        /// <param name="uri">The uri of the extent that is looked for</param>
+        /// <returns>The found extent or null, if not found</returns>
+        public static IUriExtent FindExtent<T>(this Workspace<T> workspace, string uri) where T : IExtent
+        {
+            return (IUriExtent) workspace.extent.FirstOrDefault(x => (x as IUriExtent)?.contextURI() == uri);
+        }
+
+        /// <summary>
         /// Adds an extent to the workspace, but checks, if the given uri is already existing
         /// </summary>
         /// <typeparam name="T">Type of the extents in the workspace</typeparam>
@@ -32,6 +44,8 @@ namespace DatenMeister.Runtime.Workspaces
 
             throw new InvalidOperationException($"Extent with uri {contextUri} is already existing");
         }
+
+
 
         /// <summary>
         /// Removes the extent with the given uri out of the database

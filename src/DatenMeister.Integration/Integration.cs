@@ -102,12 +102,12 @@ namespace DatenMeister.Integration
                 Debug.Write("Bootstrapping MOF and UML...");
                 Bootstrapper.PerformFullBootstrap(
                     paths,
-                    workspaceCollection.GetWorkspace("UML"),
+                    workspaceCollection.GetWorkspace(WorkspaceNames.Uml),
                     dataLayerLogic,
                     dataLayers.Uml);
                 Bootstrapper.PerformFullBootstrap(
                     paths,
-                    workspaceCollection.GetWorkspace("MOF"),
+                    workspaceCollection.GetWorkspace(WorkspaceNames.Mof),
                     dataLayerLogic,
                     dataLayers.Mof);
                 Debug.WriteLine(" Done");
@@ -115,7 +115,7 @@ namespace DatenMeister.Integration
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var mofFactory = new MofFactory();
                 var extentTypes = new MofUriExtent(Locations.UriTypes);
-                var typeWorkspace = workspaceCollection.GetWorkspace("Types");
+                var typeWorkspace = workspaceCollection.GetWorkspace(WorkspaceNames.Types);
                 typeWorkspace.AddExtent(extentTypes);
                 dataLayerLogic.AssignToDataLayer(extentTypes, dataLayers.Types);
 
@@ -127,6 +127,9 @@ namespace DatenMeister.Integration
                     extentTypes.elements(),
                     fields,
                     dotNetTypeLookup);
+
+                var viewLogic = new ViewLogic(workspaceCollection, dotNetTypeLookup);
+                viewLogic.Integrate();
 
                 // Boots up the typical DatenMeister Environment  
                 if (_settings.EstablishDataEnvironment)

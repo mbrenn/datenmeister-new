@@ -164,7 +164,6 @@ export class ItemListTable {
 
         this.domContainer.append(domToolbar);
 
-
         var domAmount = $("<div>Total: <span class='totalnumber'>##</span>, Filtered: <span class='filterednumber'>##</span>");
         this.domTotalNumber = $(".totalnumber", domAmount);
         this.domFilteredNumber = $(".filterednumber", domAmount);

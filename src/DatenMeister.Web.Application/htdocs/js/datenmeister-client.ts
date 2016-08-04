@@ -140,13 +140,16 @@ export module ExtentApi {
 
         if (query !== undefined && query !== null) {
             if (query.searchString !== undefined) {
-                url += "&search=" + encodeURIComponent(query.searchString);
+                url += `&search=${encodeURIComponent(query.searchString)}`;
             }
             if (query.offset !== undefined && query.offset !== null) {
-                url += "&o=" + encodeURIComponent(query.offset.toString());
+                url += `&o=${encodeURIComponent(query.offset.toString())}`;
             }
             if (query.amount !== undefined && query.amount !== null) {
-                url += "&a=" + encodeURIComponent(query.amount.toString());
+                url += `&a=${encodeURIComponent(query.amount.toString())}`;
+            }
+            if (query.view !== undefined && query.view !== null) {
+                url += `&view=${encodeURIComponent(query.view.toString())}`;
             }
         }
 

@@ -21,5 +21,12 @@ namespace DatenMeister.Provider.DotNet
         IElement ToElement(Type type);
 
         Type ToType(IElement element);
+
+        /// <summary>
+        /// Gets the id of a certain element
+        /// </summary>
+        /// <param name="value">Value to be queried</param>
+        /// <returns>The returned id</returns>
+        string GetId(object value);
     }
 }

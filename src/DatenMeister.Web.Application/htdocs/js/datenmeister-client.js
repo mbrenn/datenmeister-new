@@ -131,6 +131,9 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
                 if (query.amount !== undefined && query.amount !== null) {
                     url += "&a=" + encodeURIComponent(query.amount.toString());
                 }
+                if (query.view !== undefined && query.view !== null) {
+                    url += "&view=" + encodeURIComponent(query.view.toString());
+                }
             }
             return $.ajax({
                 url: url,

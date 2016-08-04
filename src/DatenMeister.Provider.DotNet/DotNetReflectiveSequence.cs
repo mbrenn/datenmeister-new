@@ -4,15 +4,27 @@ using DatenMeister.EMOF.Interface.Common;
 
 namespace DatenMeister.Provider.DotNet
 {
-    public class DotNetReflectiveSequence<T> : IReflectiveSequence
+    public class DotNetReflectiveSequence<T> : IReflectiveSequence, IDotNetReflectiveSequence
     {
         private readonly IList<T> _list;
         private readonly IDotNetTypeLookup _typeLookup;
+        private readonly DotNetElement _container;
 
-        public DotNetReflectiveSequence(IList<T> list, IDotNetTypeLookup typeLookup)
+        /// <summary>
+        /// Stores the extent if it is directly owned by the extent itself (extent.elements())
+        /// </summary>
+        private DotNetExtent _extent;
+
+        public DotNetReflectiveSequence(IList<T> list, IDotNetTypeLookup typeLookup, DotNetElement container)
         {
             _list = list;
             _typeLookup = typeLookup;
+            _container = container;
+        }
+
+        public void SetExtent(DotNetExtent extent)
+        {
+            _extent = extent;
         }
 
         /// <summary>Gibt einen Enumerator zurück, der die Auflistung durchläuft.</summary>
@@ -23,7 +35,7 @@ namespace DatenMeister.Provider.DotNet
             {
                 foreach (var value in _list)
                 {
-                    yield return _typeLookup.CreateDotNetElementIfNecessary(value);
+                    yield return _typeLookup.CreateDotNetElementIfNecessary(value, _container, _extent);
                 }
             }
         }
@@ -88,7 +100,7 @@ namespace DatenMeister.Provider.DotNet
         {
             lock (_list)
             {
-                return _typeLookup.CreateDotNetElementIfNecessary(_list[index]);
+                return _typeLookup.CreateDotNetElementIfNecessary(_list[index], _container, _extent);
             }
         }
 
@@ -104,7 +116,7 @@ namespace DatenMeister.Provider.DotNet
         {
             lock (_list)
             {
-                var oldValue = _typeLookup.CreateDotNetElementIfNecessary(_list[index]);
+                var oldValue = _typeLookup.CreateDotNetElementIfNecessary(_list[index], _container, _extent);
                 _list[index] = (T) Extensions.ConvertToNative(value);
                 return oldValue;
             }

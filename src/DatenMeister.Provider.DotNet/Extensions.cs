@@ -25,7 +25,8 @@ namespace DatenMeister.Provider.DotNet
             var metaclass = typeLookup.ToElement(value.GetType());
             if (metaclass == null)
             {
-                throw new InvalidOperationException($"The type '{value.GetType().FullName}' is not known to the DotNetTypeLookup");
+                throw new InvalidOperationException(
+                    $"The type '{value.GetType().FullName}' is not known to the DotNetTypeLookup");
             }
 
             return new DotNetElement(typeLookup, value, metaclass);
@@ -36,8 +37,12 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="lookup">The dotnet lookup to be used</param>
         /// <param name="list">The list to be parsed</param>
+        /// <param name="container">Stores the container for the given element</param>
         /// <returns>The created reflective sequence working on the given list</returns>
-        public static IReflectiveSequence CreateDotNetReflectiveSequence(this IDotNetTypeLookup lookup, object list)
+        public static IReflectiveSequence CreateDotNetReflectiveSequence(
+            this IDotNetTypeLookup lookup, 
+            object list,
+            DotNetElement container)
         {
             if (list == null)
             {
@@ -56,14 +61,12 @@ namespace DatenMeister.Provider.DotNet
             {
                 throw new InvalidOperationException($"list is not of Type IList<T>. It is of type: {list.GetType()}");
             }
-            
+
             var genericParameter = interfaceType.GenericTypeArguments[0];
             var dotNetReflectiveSequenceType = typeof(DotNetReflectiveSequence<>).MakeGenericType(genericParameter);
 
-            var constructorInfo = dotNetReflectiveSequenceType.GetConstructor(new[] {type, typeof(IDotNetTypeLookup)});
-            var created = constructorInfo.Invoke(new[] {list, lookup}) as IReflectiveSequence;
-
-            return created;
+            var constructorInfo = dotNetReflectiveSequenceType.GetConstructor(new[] {type, typeof(IDotNetTypeLookup), typeof(DotNetElement)});
+            return constructorInfo.Invoke(new[] {list, lookup, container}) as IReflectiveSequence;
         }
 
         /// <summary>
@@ -77,8 +80,12 @@ namespace DatenMeister.Provider.DotNet
         public static DotNetElement CreateDotNetElement(this IDotNetTypeLookup typeLookup, object value, DotNetElement owner)
         {
             var result = CreateDotNetElement(typeLookup, value);
-            result.SetContainer(owner);
-            result.TransferExtents(owner);
+            if (owner != null)
+            {
+                result.SetContainer(owner);
+                result.TransferExtents(owner);
+            }
+
             return result;
         }
 
@@ -110,8 +117,15 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="dotNetTypeLookup">The .NetType Lookup being used</param>
         /// <param name="result">Value to be converted</param>
+        /// <param name="container">Defines the container for the .Net element</param>
+        /// <param name="extent">The extent that is directly owning the elements. 
+        /// See also IDotNetReflectiveSequence</param>
         /// <returns>The converted or non-converted type</returns>
-        public static object CreateDotNetElementIfNecessary(this IDotNetTypeLookup dotNetTypeLookup, object result)
+        public static object CreateDotNetElementIfNecessary(
+            this IDotNetTypeLookup dotNetTypeLookup, 
+            object result,
+            DotNetElement container, 
+            DotNetExtent extent)
         {
             if (result == null)
             {
@@ -126,10 +140,15 @@ namespace DatenMeister.Provider.DotNet
 
             if (DotNetHelper.IsEnumeration(resultType))
             {
-                return dotNetTypeLookup.CreateDotNetReflectiveSequence(result);
+                return dotNetTypeLookup.CreateDotNetReflectiveSequence(result, container);
             }
 
-            return dotNetTypeLookup.CreateDotNetElement(result);
+            var dotNetResult = dotNetTypeLookup.CreateDotNetElement(result, container);
+            if (extent != null)
+            {
+                dotNetResult.SetExtent(extent);
+            }
+            return dotNetResult;
         }
 
         /// <summary>

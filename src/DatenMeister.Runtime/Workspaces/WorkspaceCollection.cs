@@ -40,7 +40,6 @@ namespace DatenMeister.Runtime.Workspaces
         /// The meta workspace can also be the same as the added workspace
         /// </summary>
         /// <param name="workspace">Workspace to be added</param>
-        /// <param name="metaWorkspace">The meta workspace</param>
         public void AddWorkspace(Workspace<IExtent> workspace)
         {
             if (workspace == null)  throw new ArgumentNullException(nameof(workspace));
@@ -69,6 +68,11 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        /// <summary>
+        /// Gets a workspace by the given id
+        /// </summary>
+        /// <param name="id">Id of the workspace</param>
+        /// <returns>The found workspace or null, if not found</returns>
         public Workspace<IExtent> GetWorkspace(string id) => GetWorkspaceItem(id)?.Workspace;
 
         /// <summary>
@@ -94,11 +98,11 @@ namespace DatenMeister.Runtime.Workspaces
         public void Init()
         {
             _workspaces = new List<Item>();
-            AddWorkspace(new Workspace<IExtent>("Data", "All the data workspaces"));
-            AddWorkspace(new Workspace<IExtent>("Management", "Management data for DatenMeister"));
-            AddWorkspace(new Workspace<IExtent>("Types", "All the types belonging to us. "));
-            AddWorkspace(new Workspace<IExtent>("UML", "The extents belonging to UML are stored here."));
-            AddWorkspace(new Workspace<IExtent>("MOF", "The extents belonging to MOF are stored here."));
+            AddWorkspace(new Workspace<IExtent>(WorkspaceNames.Data, "All the data workspaces"));
+            AddWorkspace(new Workspace<IExtent>(WorkspaceNames.Management, "Management data for DatenMeister"));
+            AddWorkspace(new Workspace<IExtent>(WorkspaceNames.Types, "All the types belonging to us. "));
+            AddWorkspace(new Workspace<IExtent>(WorkspaceNames.Uml, "The extents belonging to UML are stored here."));
+            AddWorkspace(new Workspace<IExtent>(WorkspaceNames.Mof, "The extents belonging to MOF are stored here."));
             Debug.WriteLine("DatenMeister Webcore initialized");
         }
     }

@@ -95,6 +95,7 @@
     <Compile Include="Proxies\ProxyUriExtent.cs" />
     <Compile Include="Proxies\ReadOnly\ReadOnlyReflectiveCollection.cs" />
     <Compile Include="Proxies\ReflectiveList.cs" />
+    <Compile Include="Workspaces\WorkspaceNames.cs" />
     <Compile Include="Workspaces\Data\WorkspaceData.cs" />
     <Compile Include="Workspaces\Data\WorkspaceInfo.cs" />
     <Compile Include="Workspaces\Data\WorkspaceLoader.cs" />

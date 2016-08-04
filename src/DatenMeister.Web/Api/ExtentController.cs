@@ -634,7 +634,8 @@ namespace DatenMeister.Web.Api
         {
             var result = new Dictionary<string, object>();
 
-            foreach (var field in form.GetAsReflectiveCollection(_FormAndFields._Form.fields).Select(x=>x.AsIElement())
+            foreach (var field in form.GetAsReflectiveCollection(_FormAndFields._Form.fields)
+                .Select(x=>x.AsIElement())
                 .Where(field => element.isSet(field.get("name").ToString())))
             {
                 var property = field.get("name").ToString();
@@ -642,10 +643,10 @@ namespace DatenMeister.Web.Api
 
                 if (ObjectHelper.IsTrue(field.get(_FormAndFields._FieldData.isEnumeration)))
                 {
-                    if (propertyValue is IEnumerable && !(propertyValue is string))
+                    if (DotNetHelper.IsOfEnumeration(propertyValue))
                     {
                         var list = new List<object>();
-                        foreach (var listValue in (propertyValue as IEnumerable))
+                        foreach (var listValue in (IEnumerable) propertyValue)
                         {
                             var asElement = listValue as IElement;
 

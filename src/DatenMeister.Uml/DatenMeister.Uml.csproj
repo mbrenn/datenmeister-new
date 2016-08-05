@@ -62,6 +62,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Helper\ClassifierMethods.cs" />
     <Compile Include="Helper\IUmlNameResolution.cs" />
+    <Compile Include="Helper\NamedElementMethods.cs" />
     <Compile Include="Helper\UmlNameResolution.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

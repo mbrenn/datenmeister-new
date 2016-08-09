@@ -1,6 +1,8 @@
-﻿
+﻿/* Stores all the models that can be returned via one of the */
+import Datenmeisterlayout = require("datenmeister-layout");
+import * as DMRibbon from  "./datenmeister-ribbon";
 
-/* Stores all the models that can be returned via one of the */
+
 export module ClientResponse {
     export interface ICreateItemResult {
         success: boolean;
@@ -16,7 +18,7 @@ export module ClientResponse {
     }
 
     export interface IItemsContent {
-        columns: Array<IDataField>;
+        columns: IDataForm;
         items: Array<IDataTableItem>;
         search: string;
         totalItemCount: number;
@@ -39,9 +41,15 @@ export module ClientResponse {
         id: string;
         uri: string;
         v: Array<string>;
-        c: Array<IDataField>;
+        c: IDataForm;
         metaclass?: IItemModel;
         layer: string;
+    }
+
+    export interface IDataForm {
+        fields: Array<IDataField>;
+        name: string;
+
     }
 
     export interface IDataField {
@@ -50,6 +58,7 @@ export module ClientResponse {
         name?: string;
         defaultValue?: any;
         isEnumeration?: boolean;
+        isReadOnly?: boolean;
     }
 
     export interface IDropDownDataField extends IDataField {
@@ -79,6 +88,7 @@ export module ClientResponse {
 export module PostModels {
 
     export interface IItemTableQuery {
+        view: string;
         searchString?: string;
         offset?: number;
         amount?: number;
@@ -101,7 +111,8 @@ export module PostModels {
         type: string;
         workspace: string;
         contextUri: string;
-        filename: string;
+        filename?: string;
+        name?: string;
         columns?: string;
     }
 
@@ -109,6 +120,7 @@ export module PostModels {
         searchString: string;
         offset: number;
         amount: number;
+        view: string;
     }
 
     /** This class is used to reference a single object within the database */
@@ -161,6 +173,7 @@ export namespace Table {
         name: string;
         defaultValue: any;
         isEnumeration: boolean;
+        isReadOnly: boolean;
 
         constructor(title?: string, name?: string) {
             this.type = ColumnTypes.textbox;
@@ -170,6 +183,11 @@ export namespace Table {
 
         withDefaultValue(value: any): DataField {
             this.defaultValue = value;
+            return this;
+        }
+
+        asReadOnly(): DataField {
+            this.isReadOnly = true;
             return this;
         }
     }
@@ -214,7 +232,7 @@ export namespace Table {
     }
 
     export class DataTableItem {
-        // Stores the url of the object which can be used for reference
+        // stores the url of the object which can be used for reference
         uri: string;
         v: Array<string>;
 
@@ -227,11 +245,23 @@ export namespace Table {
 
 export namespace Api {
     export interface ILayout {
+        renavigate(): void;
         navigateToWorkspaces(): void;
         navigateToExtents(workspaceId: string): void;
-        navigateToItems(ws: string, extentUrl: string): void;
-        navigateToItem(ws: string, extentUrl: string, itemUrl: string): void;
+        navigateToItems(ws: string, extentUrl: string, viewname?: string): void;
+        navigateToItem(ws: string,
+            extentUrl: string,
+            itemUrl: string,
+            viewname?: string,
+            settings?: View.IItemViewSettings): void;
+
         setStatus(statusDom: JQuery): void;
+        throwLayoutChangedEvent(data: ILayoutChangedEvent): void;
+
+        showDialogNewWorkspace(): void;
+        showNavigationForNewExtents(workspace: string): void;
+
+        getRibbon(): DMRibbon.Ribbon;
     }
 
     export interface IItemsProvider {
@@ -256,5 +286,30 @@ export namespace Api {
     export class DialogConfiguration extends FormForItemConfiguration {
         ws: string;
         extent: string;
+    }
+
+    export enum PageType {
+        Workspaces,
+        Extents,
+        Items,
+        ItemDetail,
+        Dialog
+    }
+
+    export interface ILayoutChangedEvent {
+        layout?: ILayout;   // Will be set at the thrower
+        type: PageType;
+        workspace?: string;
+        extent?: string;
+        item?: string;
+    }
+
+    export class PluginParameter {
+        version: string;
+        layout: ILayout;
+    }
+
+    export interface IPluginResult {
+        onViewPortChanged?: (ev: ILayoutChangedEvent) => void;
     }
 }

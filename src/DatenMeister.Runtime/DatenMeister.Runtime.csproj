@@ -62,6 +62,8 @@
     <Compile Include="CollectionHelper.cs" />
     <Compile Include="Copier\ExtentCopier.cs" />
     <Compile Include="Copier\ObjectCopier.cs" />
+    <Compile Include="DotNetHelper.cs" />
+    <Compile Include="DynamicConverter.cs" />
     <Compile Include="ExtentStorage\Configuration\ExtentFileStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\Configuration\ExtentStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\ExtentStorageData.cs" />
@@ -93,9 +95,7 @@
     <Compile Include="Proxies\ProxyUriExtent.cs" />
     <Compile Include="Proxies\ReadOnly\ReadOnlyReflectiveCollection.cs" />
     <Compile Include="Proxies\ReflectiveList.cs" />
-    <Compile Include="Reflection\AttributeWrapper.cs" />
-    <Compile Include="Reflection\DmML.cs" />
-    <Compile Include="Reflection\ClassWrapper.cs" />
+    <Compile Include="Workspaces\WorkspaceNames.cs" />
     <Compile Include="Workspaces\Data\WorkspaceData.cs" />
     <Compile Include="Workspaces\Data\WorkspaceInfo.cs" />
     <Compile Include="Workspaces\Data\WorkspaceLoader.cs" />

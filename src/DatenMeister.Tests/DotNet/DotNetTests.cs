@@ -1,4 +1,5 @@
-﻿using DatenMeister.EMOF.InMemory;
+﻿using System.Collections.Generic;
+using DatenMeister.EMOF.InMemory;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Tests.Xmi;
 using NUnit.Framework;
@@ -28,5 +29,18 @@ namespace DatenMeister.Tests.DotNet
             public int Number { get; set; }
         }
 
+        public class Person
+        {
+            public string Name { get; set; }
+            public string Prename { get; set; }
+        }
+
+        public class TestClassWithList
+        {
+            public string Title { get; set; }
+            public int Number { get; set; }
+            public List<string> Authors {get;set; } = new List<string>();
+            public List<Person> Persons { get; set; } = new List<Person>();
+        }
     }
 }

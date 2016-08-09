@@ -5,8 +5,8 @@ using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.EMOF.Interface.Reflection;using DatenMeister.Filler;
-using DatenMeister.Runtime.Reflection;
+using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Filler;
 using DatenMeister.Uml.Helper;
 using DatenMeister.XMI;
 
@@ -102,9 +102,9 @@ namespace DatenMeister.Uml
 
             _wasRun = true;
             
-            var umlDescendents = AllDescendentsQuery.getDescendents(UmlInfrastructure).ToList();
-            var mofDescendents = AllDescendentsQuery.getDescendents(MofInfrastructure).ToList();
-            var primitiveDescendents = AllDescendentsQuery.getDescendents(PrimitiveInfrastructure).ToList();
+            var umlDescendents = AllDescendentsQuery.GetDescendents(UmlInfrastructure).ToList();
+            var mofDescendents = AllDescendentsQuery.GetDescendents(MofInfrastructure).ToList();
+            var primitiveDescendents = AllDescendentsQuery.GetDescendents(PrimitiveInfrastructure).ToList();
             var allElements =
                 mofDescendents
                     .Union(umlDescendents)
@@ -259,7 +259,7 @@ namespace DatenMeister.Uml
 
                 foreach (var property in element.getPropertiesBeingSet())
                 {
-                    var textProperty = property.ToString();
+                    var textProperty = property;
                     if (textProperty.Contains(Namespaces.Xmi.ToString())
                         || textProperty == "href")
                     {
@@ -305,9 +305,9 @@ namespace DatenMeister.Uml
             IDataLayer dataLayer)
         {
             var factory = new MofFactory();
-            var umlExtent = new MofUriExtent("datenmeister:///uml");
-            var mofExtent = new MofUriExtent("datenmeister:///mof");
-            var primitiveExtent = new MofUriExtent("datenmeister:///prototypes");
+            var umlExtent = new MofUriExtent(Locations.UriUml);
+            var mofExtent = new MofUriExtent(Locations.UriMof);
+            var primitiveExtent = new MofUriExtent(Locations.UriPrimitiveTypes);
             var loader = new SimpleLoader(factory);
             loader.Load(primitiveExtent, paths.PathPrimitive);
             loader.Load(umlExtent, paths.PathUml);
@@ -322,10 +322,6 @@ namespace DatenMeister.Uml
                 dataLayerLogic.Create<FillTheMOF, _MOF>(dataLayer);
                 dataLayerLogic.Create<FillTheUML, _UML>(dataLayer);
                 dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(dataLayer);
-
-                var dmml = new DmML();
-                UmlToDmMLConverter.Convert(dataLayerLogic.Get<_UML>(dataLayer), dmml);
-                dataLayerLogic.Set(dataLayer, dmml);
             }
             else
             {

@@ -4,19 +4,29 @@ export class Ribbon {
     tabs: Array<RibbonTabContent>;
     domRibbon: JQuery;
     domTabHeadlines: JQuery;
+    domContainer: JQuery;
 
     constructor(domContainer: JQuery) {
+        this.domContainer = domContainer;
         this.tabs = new Array<RibbonTabContent>();
 
-        this.injectDom(domContainer);
+        this.injectDom();
     }
 
-    injectDom(domContainer : JQuery): void {
+    clear() {
+        this.domRibbon.empty();
+        this.domTabHeadlines.empty();
+        this.tabs.length = 0;
+        this.injectDom();
+    }
+
+    injectDom(): void {
+        this.domContainer.empty();
         this.domRibbon = $("<div class='dm-ribbon'></div>");
         this.domTabHeadlines = $("<div class='dm-tab-titles'></div>");
         this.domRibbon.append(this.domTabHeadlines);
 
-        domContainer.append(this.domRibbon);
+        this.domContainer.append(this.domRibbon);
     }
 
     addTab(name: string): RibbonTabContent {
@@ -27,39 +37,70 @@ export class Ribbon {
 
         var domTabIcons = $("<div class='dm-tab-content'></div>");
         const result = new RibbonTabContent(domTabIcons, name);
+        result.hideIcons();
         result.domTitle = domTitle;
 
         this.tabs[this.tabs.length] = result;
 
         this.domRibbon.append(domTabIcons);
-
-        this.selectTab(0);
         
         var nr = this.tabs.length - 1;
-
         domTitle.click(() => {
             tthis.selectTab(nr);
         });
 
+        // Tries to select the tabl
+        if (name === this.currentySelectedTab) {
+            this.selectTab(nr);
+        }
+        else if (this.currentySelectedTab === undefined || this.currentySelectedTab === null) {
+            this.selectTab(0);
+        }
+
         return result;
     }
 
-    selectTab(index: number) {
-        for (var n in this.tabs) {
+    getOrAddTab(name: string): RibbonTabContent {
+        for (var n = 0; n < this.tabs.length; n++) {
             var tab = this.tabs[n];
-            tab.hideIcons();
-            tab.domTitle.removeClass("selected");
+            if (tab.name === name) {
+                return tab;
+            }
         }
 
-        this.tabs[index].showIcons();
-        this.tabs[index].domTitle.addClass("selected");
+        return this.addTab(name);
     }
+
+    // stores the name of the currently selected tab
+    currentySelectedTab: string;
+
+    selectTab(index: number) {
+        var tabs = this.tabs;
+
+        for (var n in tabs) {
+            if (tabs.hasOwnProperty(n)) {
+                var tab = tabs[n];
+
+                tab.hideIcons();
+                tab.domTitle.removeClass("selected");
+            }
+        }
+
+        var selectedTab = tabs[index];
+        if (selectedTab !== undefined && selectedTab !== null) {
+            selectedTab.showIcons();
+            selectedTab.domTitle.addClass("selected");
+
+            this.currentySelectedTab = selectedTab.name;
+        }
+    }
+
 
 }
 
 export class RibbonTabContent {
     // Stores the title for the complete ribbon
-    domTitle: JQuery; 
+    domTitle: JQuery;
     domContainer: JQuery;
     domTab: JQuery;
     name: string;
@@ -82,17 +123,14 @@ export class RibbonTabContent {
     }
 
     addIcon(name: string, urlIcon: string, onClick: () => void): RibbonIcon {
-        
-        var result = new RibbonIcon(this.domTab, name, urlIcon, onClick);
-
-        return result;
+        return new RibbonIcon(this.domTab, name, urlIcon, onClick);
     }
 
-    showIcons() {
+    showIcons(): void {
         this.domTab.show();
     }
 
-    hideIcons() {
+    hideIcons(): void {
         this.domTab.hide();
     }
 }
@@ -104,8 +142,6 @@ enum RibbonIconType {
 }
 
 export class RibbonIcon {
-
-
     name: string;
 
     urlIcon: string;

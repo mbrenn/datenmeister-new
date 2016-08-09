@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Reflection;
 
@@ -18,7 +19,7 @@ namespace DatenMeister.XMI.EMOF
             var node = new XElement("item");
             if (metaClass != null)
             {
-                node.Add(new XAttribute(XmlElement.typeAttribute, metaClass.GetUri()));
+                node.Add(new XAttribute(XmlElement.TypeAttribute, metaClass.GetUri()));
             }
 
             return new XmlElement(node);
@@ -26,12 +27,12 @@ namespace DatenMeister.XMI.EMOF
 
         public IObject createFromString(IElement dataType, string value)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public string convertToString(IElement dataType, IObject value)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

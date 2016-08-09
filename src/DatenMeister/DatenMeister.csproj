@@ -66,9 +66,9 @@
     <Compile Include="EMOF\Helper\AllDescendentsQuery.cs" />
     <Compile Include="EMOF\Helper\ExtentHelper.cs" />
     <Compile Include="EMOF\Helper\ObjectHelper.cs" />
-    <Compile Include="EMOF\Helper\UmlHelper.cs" />
+    <Compile Include="EMOF\Helper\ReflectiveSequenceForExtent.cs" />
+    <Compile Include="EMOF\InMemory\ExtentUrlNavigator.cs" />
     <Compile Include="EMOF\InMemory\MofElement.cs" />
-    <Compile Include="EMOF\InMemory\MofExtentReflectiveSequence.cs" />
     <Compile Include="EMOF\InMemory\MofFactory.cs" />
     <Compile Include="EMOF\InMemory\MofObject.cs" />
     <Compile Include="EMOF\InMemory\MofReflectiveSequence.cs" />
@@ -89,6 +89,7 @@
     <Compile Include="EMOF\Interface\Common\IReflectiveSequence.cs" />
     <Compile Include="EMOF\Interface\Reflection\IObjectAllProperties.cs" />
     <Compile Include="EMOF\Interface\Reflection\IObjectKnowsExtent.cs" />
+    <Compile Include="EMOF\Interface\Reflection\ISetKnownExtents.cs" />
     <Compile Include="Filler\DummyFiller.cs" />
     <Compile Include="Filler\FillTheMOF.cs" />
     <Compile Include="Filler\FillThePrimitiveTypes.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="DataLayer\DataLayer.cs" />
     <Compile Include="EMOF\Attributes\DataLayerData.cs" />
     <Compile Include="DataLayer\DataLayerLogic.cs" />
+    <Compile Include="Locations.cs" />
     <Compile Include="Plugins\IDatenMeisterPlugin.cs" />
     <Compile Include="Workspace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

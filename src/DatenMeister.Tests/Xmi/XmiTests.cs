@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Attributes;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.InMemory;
-using DatenMeister.XMI;
-using NUnit.Framework;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Uml;
+using DatenMeister.XMI;
 using DatenMeister.XMI.Standards;
+using NUnit.Framework;
 
 namespace DatenMeister.Tests.Xmi
 {
@@ -63,7 +64,7 @@ namespace DatenMeister.Tests.Xmi
             var dataLayers = new DataLayers();
             dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
             var strapper = Bootstrapper.PerformFullBootstrap(
-                new Bootstrapper.FilePaths()
+                new Bootstrapper.FilePaths
                 {
                     PathPrimitive = "Xmi/PrimitiveTypes.xmi",
                     PathUml = "Xmi/UML.xmi",
@@ -80,7 +81,7 @@ namespace DatenMeister.Tests.Xmi
             Assert.That(foundElement, Is.EqualTo(element));
 
             // Retrieve another element
-            element = AllDescendentsQuery.getDescendents(umlExtent).ElementAt(300) as IElement;
+            element = AllDescendentsQuery.GetDescendents(umlExtent).ElementAt(300) as IElement;
             elementUri = umlExtent.uri(element);
             foundElement = umlExtent.element(elementUri);
             Assert.That(foundElement, Is.Not.Null);
@@ -151,7 +152,7 @@ namespace DatenMeister.Tests.Xmi
             var dataLayers = new DataLayers();
             dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
             var strapper = Bootstrapper.PerformFullBootstrap(
-                new Bootstrapper.FilePaths()
+                new Bootstrapper.FilePaths
                 {
                     PathPrimitive = "Xmi/PrimitiveTypes.xmi",
                     PathUml = "Xmi/UML.xmi",
@@ -163,7 +164,7 @@ namespace DatenMeister.Tests.Xmi
             Assert.That(strapper.UmlInfrastructure, Is.Not.Null);
 
             Assert.That(
-                AllDescendentsQuery.getDescendents(strapper.UmlInfrastructure).Count(),
+                AllDescendentsQuery.GetDescendents(strapper.UmlInfrastructure).Count(),
                 Is.GreaterThan(500));
 
             // Check, if the filled classes are working
@@ -178,8 +179,8 @@ namespace DatenMeister.Tests.Xmi
             var dataLayerLogic = new DataLayerLogic(new DataLayerData());
             var dataLayers = new DataLayers();
             dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
-            var strapper = Bootstrapper.PerformFullBootstrap(
-                new Bootstrapper.FilePaths()
+            Bootstrapper.PerformFullBootstrap(
+                new Bootstrapper.FilePaths
                 {
                     PathPrimitive = "Xmi/PrimitiveTypes.xmi",
                     PathUml = "Xmi/UML.xmi",

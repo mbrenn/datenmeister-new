@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 
@@ -19,7 +20,7 @@ namespace DatenMeister.EMOF.Helper
             var result = new Dictionary<object, object>();
 
             foreach (var property in properties
-                .Where(property => value.isSet(property)))
+                .Where(value.isSet))
             {
                 result[property] = value.get(property);
             }
@@ -34,14 +35,93 @@ namespace DatenMeister.EMOF.Helper
             var result = new Dictionary<string, string>();
 
             foreach (var property in properties
-                .Where(property => value.isSet(property)))
+                .Where(value.isSet))
             {
                 var propertyValue = value.get(property);
-                result[property.ToString()] = propertyValue == null ? "null" : propertyValue.ToString();
+                result[property] = propertyValue == null ? "null" : propertyValue.ToString();
             }
 
             return result;
         }
+
+        /// <summary>
+        /// Gets a certain property value as a reflective collection. 
+        /// If the value is not a reflective collection, an exception is thrown
+        /// </summary>
+        /// <param name="value">Value to be queried</param>
+        /// <param name="property">Property that is access</param>
+        /// <returns>The reflective collection or an exception if the property is not
+        /// a reflective collection</returns>
+        public static IReflectiveCollection GetAsReflectiveCollection(
+            this IObject value,
+            string property)
+        {
+            var result = value.get(property) as IReflectiveCollection;
+            if (result == null)
+            {
+                throw new InvalidOperationException("The given result is not a ReflectiveCollection");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets a certain property value as a reflective sequence. 
+        /// If the value is not a reflective sequence, an exception is thrown
+        /// </summary>
+        /// <param name="value">Value to be queried</param>
+        /// <param name="property">Property that is access</param>
+        /// <returns>The reflective sequence or an exception if the property is not
+        /// a reflective collection</returns>
+        public static IReflectiveSequence GetAsReflectiveSequence(
+            this IObject value,
+            string property)
+        {
+            var result = value.get(property) as IReflectiveSequence;
+            if (result == null)
+            {
+                throw new InvalidOperationException("The given result is not a ReflectiveSequence");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns the value as an IObject. 
+        /// If the object is not an IObject, an exception is thrown
+        /// </summary>
+        /// <param name="value">Value to be queried</param>
+        /// <returns>The converted object</returns>
+        public static IObject AsIObject(
+            this object value)
+        {
+            var result = value as IObject;
+            if (result == null)
+            {
+                throw new InvalidOperationException("The given value is not an IObject");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns the value as an IObject. 
+        /// If the object is not an IObject, an exception is thrown
+        /// </summary>
+        /// <param name="value">Value to be queried</param>
+        /// <returns>The converted object</returns>
+        public static IElement AsIElement(
+            this object value)
+        {
+            var result = value as IElement;
+            if (result == null)
+            {
+                throw new InvalidOperationException("The given value is not an IElement");
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Tries to retrieve the extent as given by the implemented interface
         /// IObjectKnowsExtent. If the interface is not implemented by the root element
@@ -66,10 +146,8 @@ namespace DatenMeister.EMOF.Helper
             {
                 return objectKnowsExtent.Extents.FirstOrDefault() as IUriExtent;
             }
-            else
-            {
-                throw new ArgumentException($"The following element does not implement the IObjectKnowsExtent interface: {value}");
-            }
+
+            throw new ArgumentException($"The following element does not implement the IObjectKnowsExtent interface: {value}");
         }
 
         public static IUriExtent GetUriExtentOf(this IObject value)
@@ -132,15 +210,25 @@ namespace DatenMeister.EMOF.Helper
             foreach (var x in asEnumeration)
             {
                 var asElement = x as IObject;
-                if (asElement != null)
+                var valueOfChild = asElement?.get(propertyOfChild);
+                if (valueOfChild?.Equals(requestValue) == true)
                 {
-                    var valueOfChild = asElement.get(propertyOfChild);
-                    if (valueOfChild?.Equals(requestValue) == true)
-                    {
-                        yield return asElement;
-                    }
+                    yield return asElement;
                 }
             }
+        }
+
+        /// <summary>
+        /// Is true
+        /// </summary>
+        /// <param name="value">Value to be checked</param>
+        /// <returns>True, if value indicates a true statement</returns>
+        public static bool IsTrue(object value)
+        {
+            return value.Equals(true) ||
+                   value.Equals(1) ||
+                   value.Equals("true") ||
+                   value.Equals("TRUE");
         }
     }
 }

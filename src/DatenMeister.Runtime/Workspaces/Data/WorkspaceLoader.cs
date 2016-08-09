@@ -58,7 +58,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
             var workSpaceData = new WorkspaceData();
             foreach (var workSpace in  WorkspaceCollection.Workspaces)
             {
-                workSpaceData.Workspaces.Add(new WorkspaceInfo()
+                workSpaceData.Workspaces.Add(new WorkspaceInfo
                 {
                     Id = workSpace.id,
                     Annotation = workSpace.annotation

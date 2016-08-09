@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using DatenMeister.EMOF.Attributes;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Common;
@@ -16,19 +14,20 @@ namespace DatenMeister.EMOF.InMemory
 
         private readonly string _contextUri;
 
-        private readonly MofExtentReflectiveSequence _reflectiveSequence;
+        private readonly ReflectiveSequenceForExtent _reflectiveSequence;
 
         /// <summary>
         ///     Stores all the elements
         /// </summary>
         private readonly List<object> _elements = new List<object>();
 
-        private readonly Dictionary<string, IElement> _cacheIds = new Dictionary<string, IElement>();
+        private readonly ExtentUrlNavigator<MofElement> _extentUrlNavigator;
 
         public MofUriExtent(string uri)
         {
             _contextUri = uri;
-            _reflectiveSequence = new MofExtentReflectiveSequence(this, _elements);
+            _reflectiveSequence = new ReflectiveSequenceForExtent(this, new MofReflectiveSequence(_elements));
+            _extentUrlNavigator = new ExtentUrlNavigator<MofElement>(this);
         }
 
         public virtual string contextURI()
@@ -40,60 +39,16 @@ namespace DatenMeister.EMOF.InMemory
         {
             lock (_syncObject)
             {
-                // Check, if the element is in the cache and if yes, return it
-                IElement result;
-                if (_cacheIds.TryGetValue(uri, out result))
-                {
-                    if (this.uri(result) == uri)
-                    {
-                        return result;
-                    }
-                }
-
-                // Ok, not found, try to find it
-                var uriAsUri = new Uri(uri);
-                if (string.IsNullOrEmpty(uriAsUri.Fragment))
-                {
-                    throw new ArgumentException(
-                        "Uri does not contain a URI-Fragment defining the object being looked for.",
-                        nameof(uri));
-                }
-
-                // Queries the object
-                var queryObjectId = uriAsUri.Fragment.Substring(1);
-
-                // Now go through the list
-                foreach (var element in AllDescendentsQuery.getDescendents(this))
-                {
-                    var elementAsMofObject = element as MofElement;
-                    Debug.Assert(elementAsMofObject != null, "elementAsMofObject != null");
-
-                    if (elementAsMofObject.Id == queryObjectId)
-                    {
-                        _cacheIds[uri] = elementAsMofObject;
-                        return elementAsMofObject;
-                    }
-                }
-
-                // According to MOF Specification, return null, if not found
-                return null;
+                return _extentUrlNavigator.element(uri);
             }
         }
 
         public virtual string uri(IElement element)
         {
-            if (element == null)
+            lock (_syncObject)
             {
-                throw new ArgumentNullException(nameof(element));
+                return _extentUrlNavigator.uri(element);
             }
-
-            var elementAsObject = element as MofObject;
-            if (elementAsObject == null)
-            {
-                throw new InvalidOperationException("element is not of type MofObject. Element is: " + element);
-            }
-
-            return _contextUri + "#" + elementAsObject.Id;
         }
 
         public virtual bool useContainment()
@@ -103,7 +58,10 @@ namespace DatenMeister.EMOF.InMemory
 
         public virtual IReflectiveSequence elements()
         {
-            return _reflectiveSequence;
+            lock (_syncObject)
+            {
+                return _reflectiveSequence;
+            }
         }
 
         public virtual bool HasObject(IObject value)

@@ -1,11 +1,11 @@
-﻿using DatenMeister.Apps.ZipCode.Model;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DatenMeister.Apps.ZipCode.Model;
 using DatenMeister.EMOF.InMemory;
+using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Tests.Xmi;
 using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
-using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Tests.ZipCodes
 {

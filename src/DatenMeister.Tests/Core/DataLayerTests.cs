@@ -1,4 +1,5 @@
 ﻿using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Attributes;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.Filler;
 using DatenMeister.Uml;
@@ -64,7 +65,7 @@ namespace DatenMeister.Tests.Core
             dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
 
             var strapper = Bootstrapper.PerformFullBootstrap(
-                new Bootstrapper.FilePaths()
+                new Bootstrapper.FilePaths
                 {
                     PathPrimitive = "Xmi/PrimitiveTypes.xmi",
                     PathUml = "Xmi/UML.xmi",

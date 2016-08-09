@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using DatenMeister.EMOF.InMemory;
-using DatenMeister.Web.Helper;
+using DatenMeister.Web.Models.Modules.ViewFinder.Helper;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Web
@@ -25,21 +25,21 @@ namespace DatenMeister.Tests.Web
             var extent = new MofUriExtent("datenmeister:///test");
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
-            var creator = new ColumnCreator(null, null, null);
-            var result = creator.FindColumnsForTable(extent);
+            var creator = new FormCreator();
+            var result = creator.CreateFields(extent);
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Columns.Count(), Is.EqualTo(2));
-            var firstColumn = result.Columns.FirstOrDefault(x => x.name == "zip");
-            var secondColumn = result.Columns.FirstOrDefault(x => x.name == "location");
+            Assert.That(result.fields.Count(), Is.EqualTo(2));
+            var firstColumn = result.fields.FirstOrDefault(x => x.name == "zip");
+            var secondColumn = result.fields.FirstOrDefault(x => x.name == "location");
 
             Assert.That(firstColumn, Is.Not.Null);
             Assert.That(secondColumn, Is.Not.Null);
 
             Assert.That(firstColumn.isEnumeration, Is.False);
 
-            Assert.That(result.Properties.Count, Is.EqualTo(2));
-            Assert.That(result.Properties[0], Is.EqualTo("zip"));
-            Assert.That(result.Properties[1], Is.EqualTo("location"));
+            Assert.That(result.fields.Count, Is.EqualTo(2));
+            Assert.That(result.fields[0].name, Is.EqualTo("zip"));
+            Assert.That(result.fields[1].name, Is.EqualTo("location"));
         }
 
         [Test]
@@ -66,13 +66,13 @@ namespace DatenMeister.Tests.Web
             extent.elements().add(mofObject2);
 
             // Execute the stuff
-            var creator = new ColumnCreator(null, null, null);
-            var result = creator.FindColumnsForTable(extent);
+            var creator = new FormCreator();
+            var result = creator.CreateFields(extent);
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Columns.Count(), Is.EqualTo(3));
-            var firstColumn = result.Columns.FirstOrDefault(x => x.name == "zip");
-            var secondColumn = result.Columns.FirstOrDefault(x => x.name == "location");
-            var thirdColumn = result.Columns.FirstOrDefault(x => x.name == "other");
+            Assert.That(result.fields.Count(), Is.EqualTo(3));
+            var firstColumn = result.fields.FirstOrDefault(x => x.name == "zip");
+            var secondColumn = result.fields.FirstOrDefault(x => x.name == "location");
+            var thirdColumn = result.fields.FirstOrDefault(x => x.name == "other");
 
             Assert.That(firstColumn, Is.Not.Null);
             Assert.That(secondColumn, Is.Not.Null);

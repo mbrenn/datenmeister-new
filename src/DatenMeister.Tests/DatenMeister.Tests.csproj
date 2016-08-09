@@ -105,6 +105,7 @@
   <ItemGroup>
     <Compile Include="Core\DataLayerTests.cs" />
     <Compile Include="CSV\CSVExtentTests.cs" />
+    <Compile Include="DotNet\DotNetExtentTests.cs" />
     <Compile Include="DotNet\DotNetTests.cs" />
     <Compile Include="Integration\TestIntegration.cs" />
     <Compile Include="ManualMapping\ManualMappingTests.cs" />
@@ -141,6 +142,10 @@
     <ProjectReference Include="..\DatenMeister.Integration\DatenMeister.Integration.csproj">
       <Project>{dd8ea307-d685-4a7b-b726-a1c87192600d}</Project>
       <Name>DatenMeister.Integration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Json\DatenMeister.Json.csproj">
+      <Project>{b6e6f720-b430-4a08-b80d-2bed4af62628}</Project>
+      <Name>DatenMeister.Json</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.ManualMapping\DatenMeister.ManualMapping.csproj">
       <Project>{F2A1929F-7253-4EA0-8368-88EA22BB4915}</Project>

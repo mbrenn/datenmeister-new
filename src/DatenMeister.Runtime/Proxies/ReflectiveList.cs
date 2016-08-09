@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Common;
 
 namespace DatenMeister.Runtime.Proxies

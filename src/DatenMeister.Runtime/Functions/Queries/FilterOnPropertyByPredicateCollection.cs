@@ -33,10 +33,13 @@ namespace DatenMeister.Runtime.Functions.Queries
             foreach (var value in Collection)
             {
                 var valueAsObject = value as IObject;
-                var property = valueAsObject?.get(_property);
-                if (_filter(property))
+                if (valueAsObject != null && valueAsObject.isSet(_property))
                 {
-                    yield return valueAsObject;
+                    var property = valueAsObject.get(_property);
+                    if (_filter(property))
+                    {
+                        yield return valueAsObject;
+                    }
                 }
             }
         }
@@ -47,9 +50,13 @@ namespace DatenMeister.Runtime.Functions.Queries
             foreach (var value in Collection)
             {
                 var valueAsObject = value as IObject;
-                if (_filter(valueAsObject?.get(_property)))
+                if (valueAsObject != null && valueAsObject.isSet(_property))
                 {
-                    result++;
+                    var property = valueAsObject.get(_property);
+                    if (_filter(property))
+                    {
+                        result++;
+                    }
                 }
             }
 

@@ -5,7 +5,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 define(["require", "exports"], function (require, exports) {
     "use strict";
-    /* Stores all the models that can be returned via one of the */
     var ClientResponse;
     (function (ClientResponse) {
         ;
@@ -96,6 +95,10 @@ define(["require", "exports"], function (require, exports) {
                 this.defaultValue = value;
                 return this;
             };
+            DataField.prototype.asReadOnly = function () {
+                this.isReadOnly = true;
+                return this;
+            };
             return DataField;
         }());
         Table.DataField = DataField;
@@ -167,6 +170,20 @@ define(["require", "exports"], function (require, exports) {
             return DialogConfiguration;
         }(FormForItemConfiguration));
         Api.DialogConfiguration = DialogConfiguration;
+        (function (PageType) {
+            PageType[PageType["Workspaces"] = 0] = "Workspaces";
+            PageType[PageType["Extents"] = 1] = "Extents";
+            PageType[PageType["Items"] = 2] = "Items";
+            PageType[PageType["ItemDetail"] = 3] = "ItemDetail";
+            PageType[PageType["Dialog"] = 4] = "Dialog";
+        })(Api.PageType || (Api.PageType = {}));
+        var PageType = Api.PageType;
+        var PluginParameter = (function () {
+            function PluginParameter() {
+            }
+            return PluginParameter;
+        }());
+        Api.PluginParameter = PluginParameter;
     })(Api = exports.Api || (exports.Api = {}));
 });
 //# sourceMappingURL=datenmeister-interfaces.js.map

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DatenMeister.EMOF.InMemory;
 
 namespace DatenMeister.CSV.EMOF
 {
-    public class CSVFactory : DatenMeister.EMOF.InMemory.MofFactory
+    public class CSVFactory : MofFactory
     {
     }
 }

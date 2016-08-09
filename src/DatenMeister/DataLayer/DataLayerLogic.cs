@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.EMOF.Attributes;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
@@ -146,6 +147,7 @@ namespace DatenMeister.DataLayer
             lock (_data)
             {
                 var layerAsObject = layer as DataLayer;
+                VerifyThatNotNull(layerAsObject);
 
                 var filledType = Get<TFilledType>(layerAsObject);
                 if (filledType != null)
@@ -177,11 +179,7 @@ namespace DatenMeister.DataLayer
             lock (_data)
             {
                 var layerAsObject = layer as DataLayer;
-
-                if (layerAsObject == null)
-                {
-                    throw new ArgumentException($"{nameof(layer)} is not of type DataLayer", nameof(layer));
-                }
+                VerifyThatNotNull(layerAsObject);
 
                 // Looks into the cache for the filledtypes
                 foreach (var value in layerAsObject.FilledTypeCache)
@@ -201,13 +199,17 @@ namespace DatenMeister.DataLayer
             lock (_data)
             {
                 var layerAsObject = layer as DataLayer;
-
-                if (layerAsObject == null)
-                {
-                    throw new ArgumentException($"{nameof(layer)} is not of type DataLayer", nameof(layer));
-                }
+                VerifyThatNotNull(layerAsObject);
 
                 layerAsObject.FilledTypeCache.Add(value);
+            }
+        }
+
+        private static void VerifyThatNotNull(DataLayer layerAsObject)
+        {
+            if (layerAsObject == null)
+            {
+                throw new ArgumentException($"{nameof(layerAsObject)} is not of type DataLayer", nameof(layerAsObject));
             }
         }
 

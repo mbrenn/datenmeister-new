@@ -37,7 +37,7 @@ namespace DatenMeister.Uml.Helper
 
             if (classifier.isSet(propertyOwnedAttribute))
             {
-                var result = classifier.get(propertyOwnedAttribute) as IEnumerable;
+                var result = (IEnumerable) classifier.get(propertyOwnedAttribute);
                 foreach (var item in result)
                 {
                     yield return item.ToString();

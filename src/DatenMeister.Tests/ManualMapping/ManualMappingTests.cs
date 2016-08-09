@@ -11,14 +11,14 @@ namespace DatenMeister.Tests.ManualMapping
         {
             var typeMapper = new TypeMapping();
             typeMapper.CreateNewObject = () => new MapTestClass();
-            typeMapper.GetId = (x) => (x as MapTestClass).Id.ToString();
+            typeMapper.GetId = x => (x as MapTestClass).Id.ToString();
             typeMapper.AddProperty(
                 MapTestClass.IdProperty,
-                (x) => (x as MapTestClass).Id,
+                x => (x as MapTestClass).Id,
                 (x, v) => (x as MapTestClass).Id = v);
             typeMapper.AddProperty(
                 MapTestClass.NameProperty,
-                (x) => (x as MapTestClass).Name,
+                x => (x as MapTestClass).Name,
                 (x, v) => (x as MapTestClass).Name = v);
 
         }

@@ -89,7 +89,7 @@ namespace DatenMeister.XMI.UmlBootstrap
         /// <returns>Enumeration of objects of the given type</returns>
         private static IEnumerable<IObject> XmlGetElementsOfType(IObject element, string typeName)
         {
-            return XmlGetElementsOfTypes(element, new string[] { typeName});
+            return XmlGetElementsOfTypes(element, new[] { typeName});
         }
 
         /// <summary>

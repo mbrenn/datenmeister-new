@@ -46,7 +46,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         public IEnumerator<object> GetEnumerator()
         {
             foreach (var item in _parent
-                .OrderBy(x => (x as IObject).get(_orderByProperty).ToString()))
+                .OrderBy(x => (x as IObject)?.get(_orderByProperty).ToString()))
             {
                 yield return item;
             }

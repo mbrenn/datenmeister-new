@@ -1,12 +1,13 @@
-﻿using DatenMeister.CSV;
-using DatenMeister.EMOF.InMemory;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
+using DatenMeister.CSV;
 using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Attributes;
 using DatenMeister.EMOF.Helper;
-using DatenMeister.XMI;
+using DatenMeister.EMOF.InMemory;
 using DatenMeister.Filler;
 using DatenMeister.Uml;
+using DatenMeister.XMI;
 
 namespace DatenMeister.Tests.Console
 {
@@ -48,7 +49,7 @@ namespace DatenMeister.Tests.Console
             var provider = new CSVDataProvider(null, null);
             provider.Load(extent, factory, "data/plz.csv", csvSettings);
 
-            System.Console.WriteLine($"Loaded: {extent.elements().Count().ToString()} Zipcodes");
+            System.Console.WriteLine($"Loaded: {extent.elements().Count()} Zipcodes");
 
             System.Console.WriteLine();
         }
@@ -62,7 +63,7 @@ namespace DatenMeister.Tests.Console
 
             var dataLayerLogic = new DataLayerLogic(new DataLayerData());
             var fullStrap = Bootstrapper.PerformFullBootstrap(
-                new Bootstrapper.FilePaths()
+                new Bootstrapper.FilePaths
                 {
                     PathPrimitive = "data/PrimitiveTypes.xmi",
                     PathUml = "data/UML.xmi",
@@ -72,7 +73,7 @@ namespace DatenMeister.Tests.Console
                 null);
             watch.Stop();
 
-            var descendents = AllDescendentsQuery.getDescendents(fullStrap.UmlInfrastructure);
+            var descendents = AllDescendentsQuery.GetDescendents(fullStrap.UmlInfrastructure);
             System.Console.WriteLine($"Having {descendents.Count()} elements");
             var n = 0;
             foreach (var child in descendents)
@@ -93,8 +94,8 @@ namespace DatenMeister.Tests.Console
             var watch = new Stopwatch();
             watch.Start();
             var factory = new MofFactory();
-            var mofExtent = new MofUriExtent("datenmeister:///mof");
-            var umlExtent = new MofUriExtent("datenmeister:///uml");
+            var mofExtent = new MofUriExtent(Locations.UriMof);
+            var umlExtent = new MofUriExtent(Locations.UriUml);
             var loader = new SimpleLoader(factory);
             loader.Load(mofExtent, "data/MOF.xmi");
             loader.Load(mofExtent, "data/UML.xmi");

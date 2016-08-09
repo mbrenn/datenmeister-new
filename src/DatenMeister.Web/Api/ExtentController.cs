@@ -5,14 +5,16 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Web.Http;
+using Autofac;
 using DatenMeister.CSV;
 using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Json;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -20,11 +22,10 @@ using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
-using DatenMeister.Web.Helper;
 using DatenMeister.Web.Models;
+using DatenMeister.Web.Models.Modules.ViewFinder;
 using DatenMeister.Web.Models.PostModels;
 using DatenMeister.XMI.ExtentStorage;
-using Autofac;
 
 namespace DatenMeister.Web.Api
 {
@@ -41,29 +42,28 @@ namespace DatenMeister.Web.Api
         private readonly IUmlNameResolution _resolution;
         private readonly IExtentStorageLoader _extentStorageLoader;
         private readonly IDataLayerLogic _dataLayerLogic;
-        private readonly ColumnCreator _columnCreator;
         private readonly ExtentFunctions _extentFunctions;
         private readonly ILifetimeScope _diScope;
-
+        private readonly IViewFinder _viewFinder;
 
         public ExtentController(
             IFactoryMapper mapper, 
             IWorkspaceCollection workspaceCollection, 
             IUmlNameResolution resolution, 
             IExtentStorageLoader extentStorageLoader, 
-            IDataLayerLogic dataLayerLogic,
-            ColumnCreator columnCreator, 
+            IDataLayerLogic dataLayerLogic, 
             ExtentFunctions extentFunctions,
-            ILifetimeScope diScope)
+            ILifetimeScope diScope,
+            IViewFinder viewFinder)
         {
             _mapper = mapper;
             _workspaceCollection = workspaceCollection;
             _resolution = resolution;
             _extentStorageLoader = extentStorageLoader;
             _dataLayerLogic = dataLayerLogic;
-            _columnCreator = columnCreator;
             _extentFunctions = extentFunctions;
             _diScope = diScope;
+            _viewFinder = viewFinder;
         }
 
         [Route("all")]
@@ -162,6 +162,22 @@ namespace DatenMeister.Web.Api
         }
 
         /// <summary>
+        /// Removes all invalid characters within a filename to ensure safety
+        /// by disallowing navigation within the filesystem of the server
+        /// </summary>
+        /// <param name="filename">Filename to be strapped out</param>
+        /// <returns>The cleaned filename</returns>
+        private static string CleanFilenameFromInvalidCharacters(string filename)
+        {
+            foreach (var letter in Path.GetInvalidFileNameChars())
+            {
+                filename = filename.Replace(letter, '_');
+            }
+
+            return filename;
+        }
+
+        /// <summary>
         /// Deletes a complete extent
         /// </summary>
         /// <param name="model">Model to be deleted</param>
@@ -176,7 +192,18 @@ namespace DatenMeister.Web.Api
                 throw new InvalidOperationException("Workspace not found");
             }
 
-            var filename = MakePathAbsolute(model.filename);
+            string filename;
+            if (!string.IsNullOrEmpty(model.filename))
+            {
+                filename = MakePathAbsolute(model.filename);
+            }
+            else
+            {
+                filename = MakePathAbsolute(
+                    Path.ChangeExtension(
+                        CleanFilenameFromInvalidCharacters(model.name),
+                        CleanFilenameFromInvalidCharacters(model.type)));
+            }
 
             // Creates the new workspace
             var configuration = GetStorageConfiguration(model, filename);
@@ -253,27 +280,35 @@ namespace DatenMeister.Web.Api
             };
         }
 
-        [Route("extent_export")]
+        [Route("extent_export_csv")]
         [HttpGet]
-        public object ExportExtent(string ws, string extent)
+        public object ExportExtentAsCsv(string ws, string extent)
         {
             Workspace<IExtent> foundWorkspace;
             IUriExtent foundExtent;
             _workspaceCollection.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
 
-            var factory = new CSV.EMOF.CSVFactory();
             var provider = new CSVDataProvider(_workspaceCollection, _dataLayerLogic);
             
             using (var stream = new StringWriter())
             {
                 provider.SaveToStream(stream, foundExtent, new CSVSettings());
-                var httpResponse = new HttpResponseMessage()
+                var httpResponse = new HttpResponseMessage
                 {
                     Content = new StringContent(stream.GetStringBuilder().ToString())
                 };
 
+                var extentName = foundExtent.contextURI();
+                foreach (var c in Path.GetInvalidFileNameChars())
+                {
+                    extentName = extentName.Replace(c, '-');
+                }
+
+                extentName = $"{extentName.Replace('=', '-')}.csv";
+                
+
                 httpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
-                httpResponse.Content.Headers.Add("Content-Disposition", "attachment;filename=extent.csv");
+                httpResponse.Content.Headers.Add("Content-Disposition", $"attachment;filename={extentName}");
 
                 return httpResponse;
             }
@@ -316,12 +351,13 @@ namespace DatenMeister.Web.Api
         /// </summary>
         /// <param name="ws">Workspace to be queried</param>
         /// <param name="extent">Extent to be queried</param>
+        /// <param name="viewname">Defines the name of the view to be used</param>
         /// <param name="search">The searchtext being used for query</param>
         /// <param name="o">Offset, defining the index of the first element within the response queue</param>
         /// <param name="a">Number of items being shown</param>
         /// <returns>Enumeration of items</returns>
         [Route("items")]
-        public object GetItems(string ws, string extent, string search = null, int o = 0, int a = MaxItemAmount)
+        public object GetItems(string ws, string extent, string view = null, string search = null, int o = 0, int a = MaxItemAmount)
         {
             var amount = Math.Max(0, Math.Min(100, a)); // Return only the first 100 elements if no index is given
             var workspace = GetWorkspace(ws);
@@ -338,20 +374,23 @@ namespace DatenMeister.Web.Api
             var totalItems = foundExtent.elements();
             var foundItems = totalItems;
 
-
-            var result = _columnCreator.FindColumnsForTable(foundExtent);
-            var properties = result.Properties;
+            var result = _viewFinder.FindView(foundExtent, view);
+            var properties = 
+                result.GetAsReflectiveCollection(
+                    _FormAndFields._Form.fields)
+                .Select(x => x.AsIObject().get("name").ToString())
+                .ToList();
+            /*var result = _formCreator.CreateFields(foundExtent);
+            var properties = result.fields.Select(x=>x.name).ToList();*/
 
             // Perform the filtering
             IEnumerable<object> filteredItems = foundItems;
             if (!string.IsNullOrEmpty(search))
             {
-                filteredItems = Filter.WhenOneOfThePropertyContains(
-                    foundItems, properties, search, StringComparison.CurrentCultureIgnoreCase);
+                filteredItems = foundItems.WhenOneOfThePropertyContains(properties, search, StringComparison.CurrentCultureIgnoreCase);
             }
 
             // After having the filtered item, we reset the offset
-
             var filteredAmount = filteredItems.Count();
             if (o < 0)
             {
@@ -370,11 +409,13 @@ namespace DatenMeister.Web.Api
                 .Skip(o)
                 .Take(amount);
 
+            var jsonConverter = new DirectJsonConverter();
+
             // Now return our stuff
             var resultModel = new ExtentContentModel
             {
                 url = extent,
-                columns = result.Columns,
+                columns = DynamicConverter.ToDynamic(result),
                 totalItemCount = totalItems.Count(),
                 search = search,
                 filteredItemCount = filteredAmount,
@@ -391,7 +432,7 @@ namespace DatenMeister.Web.Api
         }
 
         [Route("item")]
-        public object GetItem(string ws, string extent, string item)
+        public object GetItem(string ws, string extent, string item, string view = null)
         {
             Workspace<IExtent> foundWorkspace;
             IUriExtent foundExtent;
@@ -410,8 +451,8 @@ namespace DatenMeister.Web.Api
                 return NotFound();
             }
 
-            var result = _columnCreator.FindColumnsForItem(foundElement);
-            itemModel.c = result.Columns.ToList();
+            var result = _viewFinder.FindView(foundElement, view);
+            itemModel.c = DynamicConverter.ToDynamic(result);
             itemModel.v = ConvertToJson(foundElement, result);
             itemModel.layer = _dataLayerLogic?.GetDataLayerOfObject(foundElement)?.Name;
 
@@ -552,7 +593,7 @@ namespace DatenMeister.Web.Api
 
         [Route("item_set_properties")]
         [HttpPost]
-        public object SetPropertiesValue([FromBody] ItemSetPropertiesModel model)
+        public object SetPropertyValues([FromBody] ItemSetPropertiesModel model)
         {
             try
             {
@@ -585,60 +626,50 @@ namespace DatenMeister.Web.Api
         /// Converts a given element to a json string, dependent on the column definition as given by the 
         /// ColumnCreationResult
         /// </summary>
-        /// <param name="element"></param>
-        /// <param name="creatorResult"></param>
+        /// <param name="element">The element that shall be converted to a json object</param>
+        /// <param name="form">The form being used for conversion</param>
         /// <returns></returns>
-        private Dictionary<string, object> ConvertToJson(IObject element, ColumnCreationResult creatorResult)
+        private Dictionary<string, object> ConvertToJson(IObject element, IObject form)
         {
             var result = new Dictionary<string, object>();
 
-            foreach (var property in creatorResult.Properties
-                .Where(property => element.isSet(property)))
+            foreach (var field in form.GetAsReflectiveCollection(_FormAndFields._Form.fields)
+                .Select(x=>x.AsIElement())
+                .Where(field => element.isSet(field.get(_FormAndFields._Form.name).ToString())))
             {
-                var propertyAsString = ColumnCreator.ConvertPropertyToColumnName(property);
-
+                var property = field.get(_FormAndFields._Form.name).ToString();
                 var propertyValue = element.get(property);
 
-                if (creatorResult.ColumnsOnProperty[property].isEnumeration)
+                if (ObjectHelper.IsTrue(field.get(_FormAndFields._FieldData.isEnumeration)))
                 {
-                    if (propertyValue is IEnumerable && !(propertyValue is string))
+                    if (DotNetHelper.IsOfEnumeration(propertyValue))
                     {
                         var list = new List<object>();
-                        foreach (var listValue in (propertyValue as IEnumerable))
+                        foreach (var listValue in (IEnumerable) propertyValue)
                         {
                             var asElement = listValue as IElement;
-                            string url;
-                            if (asElement != null)
-                            {
-                                url = asElement.GetUri();
-                            }
-                            else
-                            {
-                                url = null;
-                            }
 
                             list.Add(new
                             {
-                                u = url,
+                                u = asElement?.GetUri(),
                                 v = listValue == null ? "null" : _resolution.GetName(listValue)
                             });
                         }
 
-                        result[propertyAsString] = list;
+                        result[property] = list;
                     }
                     else
                     {
-                        result[propertyAsString] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
+                        result[property] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
                     }
                 }
                 else
                 {
-                    result[propertyAsString] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
+                    result[property] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
                 }
             }
 
             return result;
         }
-
     }
 }

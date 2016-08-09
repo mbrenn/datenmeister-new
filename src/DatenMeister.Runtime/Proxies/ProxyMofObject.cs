@@ -23,9 +23,9 @@ namespace DatenMeister.Runtime.Proxies
             return Object;
         }
 
-        public virtual bool @equals(object other)
+        public virtual bool equals(object other)
         {
-            return Object.@equals(other);
+            return Object.equals(other);
         }
 
         public virtual object get(string property)

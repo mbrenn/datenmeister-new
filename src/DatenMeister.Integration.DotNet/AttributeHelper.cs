@@ -28,7 +28,7 @@ namespace DatenMeister.Integration.DotNet
                             type,
                             scope => (IFactory)scope.Resolve(factoryAssignmentAttribute.FactoryType));
 
-                        Debug.WriteLine($"Assigned extent type '{type.FullName}' to '{factoryAssignmentAttribute.FactoryType}'");
+                        Debug.WriteLine($"Assigned extent type '{type.Name}' to '{factoryAssignmentAttribute.FactoryType.Name}'");
                     }
                 }
             }
@@ -51,7 +51,7 @@ namespace DatenMeister.Integration.DotNet
                             scope => (IExtentStorage)scope.Resolve(type));
 
                         Debug.WriteLine(
-                            $"Extent loader '{configuredByAttribute.ConfigurationType}' is configured by '{type.FullName}'");
+                            $"Extent loader '{configuredByAttribute.ConfigurationType.Name}' configures '{type.Name}'");
                     }
                 }
             }

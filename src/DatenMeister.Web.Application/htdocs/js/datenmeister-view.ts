@@ -3,23 +3,74 @@ import * as DMTables from "./datenmeister-tables";
 import * as DMClient from "./datenmeister-client";
 import * as DMQuery from "./datenmeister-query";
 
-export class WorkspaceView {
+// This interface should be implemented by all views that can be added via 'setView' to a layout
+export interface IView {
+    getContent(): JQuery;
+    getLayoutInformation(): DMI.Api.ILayoutChangedEvent;
+}
+
+export class ViewBase implements IView{
+    protected layout: DMI.Api.ILayout;
+    protected content: JQuery;
+    protected layoutInformation: DMI.Api.ILayoutChangedEvent;
+
+    constructor(layout: DMI.Api.ILayout) {
+        this.layout = layout;
+        this.content = $("<div></div>");
+    }
+
+    getContent(): JQuery {
+        return this.content;
+    }
+
+    getLayoutInformation(): DMI.Api.ILayoutChangedEvent {
+        if (this.layoutInformation == null || this.layoutInformation == undefined) {
+            throw "Layoutinformation is not set";
+        }
+
+        return this.layoutInformation;
+    }
+
+    setLayoutInformation(layoutInformation: DMI.Api.ILayoutChangedEvent): void {
+        this.layoutInformation = layoutInformation;
+    }
+
+    insertLink(container: JQuery, displayText: string, onClick: () => void): void {
+        var domItem =
+            $(`<input type='button' class='btn'></input>`);
+        
+        domItem.val(displayText);
+        domItem.click(onClick);
+        container.append(domItem);
+    }
+}
+
+export class WorkspaceView extends ViewBase implements IView {
+    constructor(layout: DMI.Api.ILayout) {
+        super(layout);
+    }
+
     onWorkspaceSelected: (id: string) => void;
 
-    loadAndCreateHtmlForWorkbenchs(container: JQuery): JQueryPromise<boolean> {
+    loadAndCreateHtmlForWorkbenchs(): JQueryPromise<boolean> {
         var result = $.Deferred();
         var tthis = this;
         DMClient.WorkspaceApi.getAllWorkspaces()
             .done((data) => {
-                tthis.createHtmlForWorkbenchs(container, data);
+                tthis.createHtmlForWorkbenchs(data);
                 result.resolve(true);
             });
+
+        this.setLayoutInformation(
+        {
+            type: DMI.Api.PageType.Workspaces
+        });
 
         return result;
     }
 
-    createHtmlForWorkbenchs(container: JQuery, data: Array<DMI.ClientResponse.IWorkspace>) {
-        container.empty();
+    createHtmlForWorkbenchs(data: Array<DMI.ClientResponse.IWorkspace>) {
+        this.content.empty();
         var compiledTable = $($("#template_workspace_table").html());
         var compiled = _.template($("#template_workspace").html());
         for (var n in data) {
@@ -44,15 +95,17 @@ export class WorkspaceView {
             }
         }
 
-        container.append(compiledTable);
+        this.content.append(compiledTable);
+
+        this.insertLink(this.content,
+            "Add new Workspace",
+            () => this.layout.showDialogNewWorkspace());
     }
 }
 
-export class ExtentView {
-    layout: DMI.Api.ILayout;
-
-    constructor(layout?: DMI.Api.ILayout) {
-        this.layout = layout;
+export class ExtentView extends ViewBase implements IView{
+    constructor(layout: DMI.Api.ILayout) {
+        super(layout);
     }
 
     onExtentSelected: (ws: string, extent: string) => void;
@@ -60,14 +113,14 @@ export class ExtentView {
     onItemView: (ws: string, extentUrl: string, itemUrl: string) => void;
     onItemCreated: (ws: string, extentUrl: string, itemUrl: string) => void;
 
-    loadAndCreateHtmlForWorkspace(container: JQuery, ws: string): JQueryPromise<boolean> {
+    loadAndCreateHtmlForWorkspace(ws: string): JQueryPromise<boolean> {
         var callback = $.Deferred();
         $.ajax(
         {
             url: "/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws),
             cache: false,
             success: (data: Array<DMI.ClientResponse.IExtent>) => {
-                this.createHtmlForWorkspace(container, ws, data);
+                this.createHtmlForWorkspace(ws, data);
                 callback.resolve(true);
             },
             error: data => {
@@ -75,48 +128,61 @@ export class ExtentView {
             }
         });
 
+        this.setLayoutInformation({
+            type: DMI.Api.PageType.Extents,
+            workspace: ws
+        });
+
         return callback;
     }
 
-    createHtmlForWorkspace(container: JQuery, ws: string, data: Array<DMI.ClientResponse.IExtent>) {
+    createHtmlForWorkspace(ws: string, data: Array<DMI.ClientResponse.IExtent>) {
         var tthis = this;
-        container.empty();
+        this.content.empty();
 
         if (data.length === 0) {
-            container.html("<p>No extents were found</p>");
+            this.content.html("<p>No extents were found</p>");
         } else {
             var compiledTable = $($("#template_extent_table").html());
             var compiled = _.template($("#template_extent").html());
             for (var n in data) {
                 if (data.hasOwnProperty(n)) {
-                    var entry = data[n];
-                    var line = compiled(entry);
-                    var dom = $(line);
-                    $(".data", dom).click(
-                        ((localEntry: DMI.ClientResponse.IExtent) => (
-                            () => {
-                                if (tthis.onExtentSelected !== undefined) {
-                                    tthis.onExtentSelected(ws, localEntry.uri);
-                                }
+                    var entry: DMI.ClientResponse.IExtent = data[n];
+                    var line: string = compiled(entry);
+                    var dom: JQuery = $(line);
+                    $(".data", dom)
+                        .click(
+                            ((localEntry: DMI.ClientResponse.IExtent) => (
+                                () => {
+                                    if (tthis.onExtentSelected !== undefined) {
+                                        tthis.onExtentSelected(ws, localEntry.uri);
+                                    }
 
-                                return false;
-                            })
-                        )(entry)
-                    );
+                                    return false;
+                                })
+                            )(entry)
+                        );
 
                     compiledTable.append(dom);
                 }
             }
 
-            container.append(compiledTable);
+            this.content.append(compiledTable);
         }
+        
+        this.insertLink(this.content,
+            "Add new Extent",
+            () => tthis.layout.showNavigationForNewExtents(ws));
     }
 
-    loadAndCreateHtmlForExtent(container: JQuery, ws: string, extentUrl: string, query?: DMI.PostModels.IItemTableQuery): JQueryPromise<Object> {
-        var tthis = this;
+    loadAndCreateHtmlForExtent(
+        ws: string,
+        extentUrl: string,
+        query?: DMI.PostModels.IItemTableQuery): JQueryPromise<Object> {
+        var tthis: ExtentView = this;
 
         // Creates the layout configuration and the handling on requests of the user
-        var configuration = new DMTables.ItemTableConfiguration();
+        var configuration: DMTables.ItemTableConfiguration = new DMTables.ItemTableConfiguration();
         configuration.onItemEdit = (url: string) => {
             if (tthis.onItemEdit !== undefined) {
                 tthis.onItemEdit(ws, extentUrl, url);
@@ -145,8 +211,8 @@ export class ExtentView {
         configuration.layout = this.layout;
 
         // Creates the layout
-        var provider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
-        var table = new DMTables.ItemListTable(container, provider, configuration);
+        var provider: DMQuery.ItemsFromExtentProvider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
+        var table = new DMTables.ItemListTable(this.content, provider, configuration);
         
         if (query !== undefined && query !== null) {
             table.currentQuery = query;
@@ -164,33 +230,46 @@ export class ExtentView {
                 table.setCreatableTypes(data.types);
             });
 
+        this.setLayoutInformation(
+            {
+                type: DMI.Api.PageType.Items,
+                workspace: ws,
+                extent: extentUrl
+            });
 
         return table.loadAndShow();
     }
 }
 
-export class ItemView
+export class ItemView extends ViewBase implements IView
 {
-    layout: DMI.Api.ILayout;
     onItemView: (ws: string, extentUrl: string, itemUrl: string) => void;
 
-    constructor(layout?: DMI.Api.ILayout) {
-        this.layout = layout;
+    constructor(layout: DMI.Api.ILayout) {
+        super(layout);
     }
 
-    loadAndCreateHtmlForItem(container: JQuery, ws: string, extentUrl: string, itemUrl: string, settings?: DMI.View.IItemViewSettings): JQueryDeferred<Object> {
+    loadAndCreateHtmlForItem(ws: string, extentUrl: string, itemUrl: string, settings?: DMI.View.IItemViewSettings): JQueryDeferred<Object> {
         var tthis = this;
+
+        this.setLayoutInformation({
+            type: DMI.Api.PageType.ItemDetail,
+            workspace: ws,
+            extent: extentUrl,
+            item: itemUrl
+        });
+
         return DMClient.ItemApi.getItem(ws, extentUrl, itemUrl)
             .done((data) => {
-                tthis.createHtmlForItem(container, ws, extentUrl, itemUrl, data, settings);
+                tthis.createHtmlForItem(ws, extentUrl, itemUrl, data, settings);
             });
     }
 
-    createHtmlForItem(jQuery: JQuery, ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMI.View.IItemViewSettings) {
+    createHtmlForItem(ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMI.View.IItemViewSettings) {
         var tthis = this;
-        jQuery.empty();
+        this.content.empty();
         var configuration = new DMTables.ItemContentConfiguration();
-        configuration.columns = data.c;
+        configuration.columns = data.c.fields;
         var isReadonly = false;
 
         if (settings !== undefined && settings !== null) {
@@ -275,35 +354,60 @@ export class ItemView
             $(".dm-tablecell-uri", domTableInfo).text(data.uri);
         }
 
-        jQuery.append(domTableOwner);
-        jQuery.append(domTableInfo);
+        this.content.append(domTableOwner);
+        this.content.append(domTableInfo);
+        this.content.append(domTableInfo);
     }
-}
-
-// This interface should be implemented by all views that can be added via 'setView' to a layout
-export interface IView {
-    show(container: JQuery): void;
 }
 
 // This class gives a navigation view with some links which can be clicked by the user and
 // a user-defined action is being performed
-export class NavigationView implements IView {
-    private layout: DMI.Api.ILayout;
-    private domList: JQuery;
+export class NavigationView extends ViewBase implements IView {
 
-    constructor(layout?: DMI.Api.ILayout) {
-        this.layout = layout;
-        this.domList = $("<ul class='dm-navigation-list'></ul>");
+    private domList : JQuery;
+    constructor(layout: DMI.Api.ILayout) {
+        super(layout);
+        var domList = $("<ul class='dm-navigation-list'></ul>");
+        this.domList = domList;
+        this.content.append(this.domList);
     }
 
     addLink(displayText: string, onClick: () => void): void {
-        let domItem = $("<li></li>");
-        domItem.text(displayText);
-        domItem.click(onClick);
-        this.domList.append(domItem);
+        this.insertLink(this.domList, displayText, onClick);
+    }
+}
+
+export class DialogView extends ViewBase implements IView {
+    constructor(layout: DMI.Api.ILayout) {
+        super(layout);
     }
 
-    show(container: JQuery) {
-        container.append(this.domList);
+    createDialog(configuration: DMI.Api.DialogConfiguration) {
+        var value = new DMI.Table.DataTableItem();
+        var tableConfiguration = new DMTables.ItemContentConfiguration();
+        tableConfiguration.autoProperties = false;
+        tableConfiguration.columns = configuration.columns;
+        tableConfiguration.isReadOnly = false;
+        tableConfiguration.supportNewProperties = false;
+        tableConfiguration.onCancelForm = () => {
+            if (configuration.onCancelForm !== undefined) {
+                configuration.onCancelForm();
+            }
+        };
+
+        tableConfiguration.onOkForm = () => {
+            if (configuration.onOkForm !== undefined) {
+                configuration.onOkForm(value);
+            }
+        }
+
+        var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
+        itemTable.show(this.content);
+
+        this.setLayoutInformation({
+                type: DMI.Api.PageType.Dialog,
+                workspace: configuration.ws,
+                extent: configuration.extent
+            });
     }
 }

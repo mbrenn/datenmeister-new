@@ -107,18 +107,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\ClientController.cs" />
     <Compile Include="Api\ExampleController.cs" />
     <Compile Include="Api\ExtentController.cs" />
     <Compile Include="Api\OperationFailedException.cs" />
     <Compile Include="Api\WorkspaceController.cs" />
-    <Compile Include="Helper\ColumnCreationResult.cs" />
-    <Compile Include="Helper\ColumnCreator.cs" />
+    <Compile Include="Modules\ClientModulePlugin.cs" />
+    <Compile Include="Modules\Integrate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatenMeister.CSV\DatenMeister.CSV.csproj">
       <Project>{39845115-f057-4641-9237-6960bb676684}</Project>
       <Name>DatenMeister.CSV</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Json\DatenMeister.Json.csproj">
+      <Project>{B6E6F720-B430-4A08-B80D-2BED4AF62628}</Project>
+      <Name>DatenMeister.Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Provider.DotNet\DatenMeister.Provider.DotNet.csproj">
+      <Project>{DE772364-F233-40E8-BA39-519D42C20686}</Project>
+      <Name>DatenMeister.Provider.DotNet</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
       <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>

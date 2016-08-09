@@ -65,10 +65,22 @@
     <Compile Include="ExtentContentModel.cs" />
     <Compile Include="ExtentModel.cs" />
     <Compile Include="Fields\DateTimeFieldData.cs" />
+    <Compile Include="Fields\FieldTypes.cs" />
+    <Compile Include="Fields\Form.cs" />
+    <Compile Include="Fields\FormAndFields.class.cs" />
+    <Compile Include="Fields\FormAndFields.filler.cs" />
     <Compile Include="Fields\TextFieldData.cs" />
     <Compile Include="FormViewSettings.cs" />
     <Compile Include="ItemContentModel.cs" />
     <Compile Include="ItemModel.cs" />
+    <Compile Include="Modules\IClientModulePlugin.cs" />
+    <Compile Include="Modules\IWebserverStartupPhases.cs" />
+    <Compile Include="Modules\LifeTimeScopeEventArgs.cs" />
+    <Compile Include="Modules\ViewFinder\Helper\FormCreator.cs" />
+    <Compile Include="Modules\ViewFinder\IViewFinder.cs" />
+    <Compile Include="Modules\ViewFinder\ViewFinderImpl.cs" />
+    <Compile Include="Modules\ViewFinder\ViewLogic.cs" />
+    <Compile Include="Modules\WebserverStartupPhases.cs" />
     <Compile Include="PostModels\ExtentAddModel.cs" />
     <Compile Include="PostModels\ExtentCreateModel.cs" />
     <Compile Include="PostModels\ExtentReferenceModel.cs" />
@@ -85,6 +97,10 @@
     <Compile Include="WorkspaceModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DatenMeister.Provider.DotNet\DatenMeister.Provider.DotNet.csproj">
+      <Project>{DE772364-F233-40E8-BA39-519D42C20686}</Project>
+      <Name>DatenMeister.Provider.DotNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
       <Project>{4350A383-14F7-4A84-8CDF-96CA6828F8E9}</Project>
       <Name>DatenMeister.Runtime</Name>

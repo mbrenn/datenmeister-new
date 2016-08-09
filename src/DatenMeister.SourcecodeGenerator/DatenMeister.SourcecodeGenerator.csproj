@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassTreeGenerator.cs" />
+    <Compile Include="DotNetIntegrationGenerator.cs" />
     <Compile Include="FillClassTreeByExtentCreator.cs" />
     <Compile Include="SourceParser\ElementSourceParser.cs" />
     <Compile Include="SourceParser\ISourceParser.cs" />

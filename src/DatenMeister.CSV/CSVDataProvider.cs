@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Helper;
-using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.Runtime.Reflection;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.CSV
@@ -213,8 +210,13 @@ namespace DatenMeister.CSV
                     builder.Append(settings.Separator);
                 }
 
-                builder.Append(conversion(value).ToString());
+                var cellValue = conversion(value).ToString();
+                if (cellValue.Contains(settings.Separator))
+                {
+                    cellValue = $"\"{cellValue.Replace("\"", "\"\"")}\"";
+                }
 
+                builder.Append(cellValue);
                 first = false;
             }
 

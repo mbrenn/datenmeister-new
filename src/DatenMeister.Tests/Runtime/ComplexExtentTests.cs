@@ -21,7 +21,7 @@ namespace DatenMeister.Tests.Runtime
             {
                 // Apply for zipcodes
                 var integrateZipCodes = scope.Resolve<Integrate>();
-                integrateZipCodes.Into(scope.Resolve<IWorkspaceCollection>().FindExtent("dm:///types"));
+                integrateZipCodes.Into(scope.Resolve<IWorkspaceCollection>().FindExtent(Locations.UriTypes));
 
                 var extentFunctions = scope.Resolve<ExtentFunctions>();
                 var dataLayers = scope.Resolve<DataLayers>();
@@ -30,7 +30,7 @@ namespace DatenMeister.Tests.Runtime
                 var creatableTypes = extentFunctions.GetCreatableTypes(dataExtent);
                 Assert.That(creatableTypes, Is.Not.Null);
                 Assert.That(creatableTypes.MetaLayer, Is.EqualTo(dataLayers.Types));
-                Assert.That(creatableTypes.CreatableTypes.Count, Is.EqualTo(1));
+                Assert.That(creatableTypes.CreatableTypes.Count, Is.GreaterThan(1));
             }
         }
     }

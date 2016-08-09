@@ -1,6 +1,6 @@
 ﻿ using System;
-using System.Collections.Generic;
-using System.Linq;
+ using System.Collections.Generic;
+ using System.Linq;
  using DatenMeister.EMOF.InMemory;
  using DatenMeister.EMOF.Interface.Common;
  using DatenMeister.EMOF.Interface.Reflection;

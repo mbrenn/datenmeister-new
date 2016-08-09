@@ -1,0 +1,144 @@
+using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.EMOF.InMemory;
+
+// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.1.0.0
+namespace DatenMeister.Web.Models
+{
+    public class _FormAndFields
+    {
+        public class _Form
+        {
+            public static string @name = "name";
+            public IElement _name = null;
+
+            public static string @fields = "fields";
+            public IElement _fields = null;
+
+            public static string @detailForm = "detailForm";
+            public IElement _detailForm = null;
+
+        }
+
+        public _Form @Form = new _Form();
+        public IElement @__Form = new MofElement();
+
+        public class _FieldData
+        {
+            public static string @fieldType = "fieldType";
+            public IElement _fieldType = null;
+
+            public static string @name = "name";
+            public IElement _name = null;
+
+            public static string @title = "title";
+            public IElement _title = null;
+
+            public static string @isEnumeration = "isEnumeration";
+            public IElement _isEnumeration = null;
+
+            public static string @defaultValue = "defaultValue";
+            public IElement _defaultValue = null;
+
+            public static string @isReadOnly = "isReadOnly";
+            public IElement _isReadOnly = null;
+
+        }
+
+        public _FieldData @FieldData = new _FieldData();
+        public IElement @__FieldData = new MofElement();
+
+        public class _TextFieldData
+        {
+            public static string @lineHeight = "lineHeight";
+            public IElement _lineHeight = null;
+
+            public static string @fieldType = "fieldType";
+            public IElement _fieldType = null;
+
+            public static string @name = "name";
+            public IElement _name = null;
+
+            public static string @title = "title";
+            public IElement _title = null;
+
+            public static string @isEnumeration = "isEnumeration";
+            public IElement _isEnumeration = null;
+
+            public static string @defaultValue = "defaultValue";
+            public IElement _defaultValue = null;
+
+            public static string @isReadOnly = "isReadOnly";
+            public IElement _isReadOnly = null;
+
+        }
+
+        public _TextFieldData @TextFieldData = new _TextFieldData();
+        public IElement @__TextFieldData = new MofElement();
+
+        public class _DateTimeFieldData
+        {
+            public static string @showDate = "showDate";
+            public IElement _showDate = null;
+
+            public static string @showTime = "showTime";
+            public IElement _showTime = null;
+
+            public static string @showOffsetButtons = "showOffsetButtons";
+            public IElement _showOffsetButtons = null;
+
+            public static string @fieldType = "fieldType";
+            public IElement _fieldType = null;
+
+            public static string @name = "name";
+            public IElement _name = null;
+
+            public static string @title = "title";
+            public IElement _title = null;
+
+            public static string @isEnumeration = "isEnumeration";
+            public IElement _isEnumeration = null;
+
+            public static string @defaultValue = "defaultValue";
+            public IElement _defaultValue = null;
+
+            public static string @isReadOnly = "isReadOnly";
+            public IElement _isReadOnly = null;
+
+        }
+
+        public _DateTimeFieldData @DateTimeFieldData = new _DateTimeFieldData();
+        public IElement @__DateTimeFieldData = new MofElement();
+
+        public class _DropDownFieldData
+        {
+            public static string @values = "values";
+            public IElement _values = null;
+
+            public static string @fieldType = "fieldType";
+            public IElement _fieldType = null;
+
+            public static string @name = "name";
+            public IElement _name = null;
+
+            public static string @title = "title";
+            public IElement _title = null;
+
+            public static string @isEnumeration = "isEnumeration";
+            public IElement _isEnumeration = null;
+
+            public static string @defaultValue = "defaultValue";
+            public IElement _defaultValue = null;
+
+            public static string @isReadOnly = "isReadOnly";
+            public IElement _isReadOnly = null;
+
+        }
+
+        public _DropDownFieldData @DropDownFieldData = new _DropDownFieldData();
+        public IElement @__DropDownFieldData = new MofElement();
+
+        public static _FormAndFields TheOne = new _FormAndFields();
+
+    }
+
+}

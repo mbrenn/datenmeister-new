@@ -18,7 +18,7 @@ namespace DatenMeister.EMOF.Helper
         /// </summary>
         /// <param name="element">Element being queried</param>
         /// <returns>An enumeration of all object and its descendents</returns>
-        public static IEnumerable<IObject> getDescendents(IObject element)
+        public static IEnumerable<IObject> GetDescendents(IObject element)
         {
             var elementAsIObjectExt = element as IObjectAllProperties;
             if (elementAsIObjectExt == null)
@@ -41,7 +41,7 @@ namespace DatenMeister.EMOF.Helper
                     // enumeration, but we would like to skip them. Their content
                     // would be skipped either.
                     var valueAsEnumerable = value as IEnumerable;
-                    foreach (var innerValue in getDescendents(valueAsEnumerable))
+                    foreach (var innerValue in GetDescendents(valueAsEnumerable))
                     {
                         yield return innerValue;
                     }
@@ -49,7 +49,7 @@ namespace DatenMeister.EMOF.Helper
             }
         }
 
-        public static IEnumerable<IObject> getDescendents(IEnumerable valueAsEnumerable)
+        public static IEnumerable<IObject> GetDescendents(IEnumerable valueAsEnumerable)
         {
             foreach (var element in valueAsEnumerable)
             {
@@ -58,7 +58,7 @@ namespace DatenMeister.EMOF.Helper
                     var elementAsIObject = element as IObject;
                     yield return elementAsIObject;
 
-                    foreach (var value in getDescendents(elementAsIObject))
+                    foreach (var value in GetDescendents(elementAsIObject))
                     {
                         yield return value;
                     }
@@ -66,9 +66,9 @@ namespace DatenMeister.EMOF.Helper
             }
         }
 
-        public static IEnumerable<IObject> getDescendents(IExtent extent)
+        public static IEnumerable<IObject> GetDescendents(IExtent extent)
         {
-            return getDescendents(extent.elements());
+            return GetDescendents(extent.elements());
         }
     }
 }

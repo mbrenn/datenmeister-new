@@ -73,7 +73,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         public static IReflectiveCollection GetAllDecendants(
             this IReflectiveCollection collection)
         {
-            return new MofReflectiveSequence(AllDescendentsQuery.getDescendents(collection).Cast<object>().ToList());
+            return new MofReflectiveSequence(AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
         }
 
         public static IReflectiveCollection GroupBy<T>(

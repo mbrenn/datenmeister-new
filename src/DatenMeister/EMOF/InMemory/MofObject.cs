@@ -10,7 +10,7 @@ namespace DatenMeister.EMOF.InMemory
     /// <summary>
     ///     Describes the InMemory object, representing the Mof Object
     /// </summary>
-    public class MofObject : IObject, IObjectAllProperties, IHasId, IObjectKnowsExtent, ICanSetId
+    public class MofObject : IObject, IObjectAllProperties, IHasId, IObjectKnowsExtent, ICanSetId, ISetKnownExtents
     {
         /// <summary>
         /// Stores the list of extents to which this element is stored

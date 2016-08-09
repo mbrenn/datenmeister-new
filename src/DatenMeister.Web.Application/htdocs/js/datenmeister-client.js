@@ -1,5 +1,23 @@
 define(["require", "exports", "./datenmeister-interfaces"], function (require, exports, DMI) {
     "use strict";
+    var ClientApi;
+    (function (ClientApi) {
+        function getPlugins() {
+            var callback = $.Deferred();
+            $.ajax({
+                url: "/api/datenmeister/client/get_plugins",
+                cache: false,
+                success: function (data) {
+                    callback.resolve(data);
+                },
+                error: function (data) {
+                    callback.reject(data);
+                }
+            });
+            return callback;
+        }
+        ClientApi.getPlugins = getPlugins;
+    })(ClientApi = exports.ClientApi || (exports.ClientApi = {}));
     var WorkspaceApi;
     (function (WorkspaceApi) {
         function getAllWorkspaces() {
@@ -112,6 +130,9 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
                 }
                 if (query.amount !== undefined && query.amount !== null) {
                     url += "&a=" + encodeURIComponent(query.amount.toString());
+                }
+                if (query.view !== undefined && query.view !== null) {
+                    url += "&view=" + encodeURIComponent(query.view.toString());
                 }
             }
             return $.ajax({

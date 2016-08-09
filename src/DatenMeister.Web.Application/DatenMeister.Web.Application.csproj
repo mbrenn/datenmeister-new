@@ -254,6 +254,24 @@
     <Content Include="htdocs\img\icons\folder_open-mail_hot.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="htdocs\img\icons\folder_open-new.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="htdocs\img\icons\folder_open-new_disabled.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="htdocs\img\icons\folder_open-new_hot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="htdocs\img\icons\home.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="htdocs\img\icons\home_disabled.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="htdocs\img\icons\home_hot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="htdocs\img\icons\refresh_update.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -291,6 +309,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Data\Example\plz.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="plugins\info.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="App_Data\Xmi\MOF.xmi">
@@ -348,6 +369,10 @@
       <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>
       <Name>DatenMeister.Runtime</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Web.Models.csproj">
+      <Project>{5E01C76D-A969-4238-8D8C-1CB22C92DA7A}</Project>
+      <Name>DatenMeister.Web.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Web\DatenMeister.Web.csproj">
       <Project>{200fe333-4d98-4f76-a8d6-e7c94a272ff2}</Project>
       <Name>DatenMeister.Web</Name>
@@ -401,9 +426,11 @@
     <TypeScriptCompile Include="htdocs\js\datenmeister-tables.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="htdocs\js\datenmeister-viewport.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="htdocs\js\taskmeister.ts" />
     <TypeScriptCompile Include="htdocs\js\typings\jquery\jquery.d.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </TypeScriptCompile>

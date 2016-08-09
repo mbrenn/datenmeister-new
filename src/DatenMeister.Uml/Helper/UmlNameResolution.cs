@@ -1,42 +1,17 @@
 ﻿using System;
-using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Uml.Helper
 {
     public class UmlNameResolution : IUmlNameResolution
     {
-        private IDataLayerLogic _dataLayerLogic;
-
-        public UmlNameResolution(IDataLayerLogic dataLayerLogic)
-        {
-            _dataLayerLogic = dataLayerLogic;
-        }
-
         public string GetName(IObject element)
         {
-            // Returns the name by the uml logic. 
-            var dataLayer = _dataLayerLogic?.GetDataLayerOfObject(element);
-            var metaLayer = _dataLayerLogic?.GetMetaLayerFor(dataLayer);
-            var uml = _dataLayerLogic?.Get<_UML>(metaLayer);
-            if (uml != null && element.isSet(_UML._CommonStructure._NamedElement.name))
-            {
-                var result = element.get(_UML._CommonStructure._NamedElement.name);
-                if (result != null)
-                {
-                    return result.ToString();
-                }
-            }
-
             // If the element is not uml induced or the property is empty, check by
             // the default "name" property
-            if (element.isSet("name"))
-            {
-                return element.get("name").ToString();
-            }
-
-            // Ok, finally, we don't know what to do, so request retrieve the name just via ToString
-            return element.ToString();
+            return element.isSet(_UML._CommonStructure._NamedElement.name)
+                ? element.get(_UML._CommonStructure._NamedElement.name).ToString()
+                : element.ToString();
         }
 
         public string GetName(object element)

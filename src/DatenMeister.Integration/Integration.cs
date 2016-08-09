@@ -4,7 +4,9 @@ using System.IO;
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Attributes;
 using DatenMeister.EMOF.InMemory;
+using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
@@ -12,6 +14,8 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
+using DatenMeister.Web.Models;
+using DatenMeister.Web.Models.Modules.ViewFinder;
 
 namespace DatenMeister.Integration
 {
@@ -66,6 +70,10 @@ namespace DatenMeister.Integration
             // Adds the name resolution  
             kernel.RegisterType<UmlNameResolution>().As<IUmlNameResolution>();
 
+            // Adds the complete .Net-Type handling
+            var dotNetTypeLookup = new DotNetTypeLookup();
+            kernel.RegisterInstance(dotNetTypeLookup).As<IDotNetTypeLookup>();
+
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
@@ -79,7 +87,7 @@ namespace DatenMeister.Integration
 
                 // Performs the bootstrap  
                 var paths =
-                    new Bootstrapper.FilePaths()
+                    new Bootstrapper.FilePaths
                     {
                         PathPrimitive = Path.Combine(_settings.PathToXmiFiles, "PrimitiveTypes.xmi"),
                         PathUml = Path.Combine(_settings.PathToXmiFiles, "UML.xmi"),
@@ -90,25 +98,38 @@ namespace DatenMeister.Integration
                 {
                     throw new InvalidOperationException("Slim integration is currently not supported");
                 }
-                else
-                {
-                    Bootstrapper.PerformFullBootstrap(
-                        paths,
-                        workspaceCollection.GetWorkspace("UML"),
-                        dataLayerLogic,
-                        dataLayers.Uml);
-                    Bootstrapper.PerformFullBootstrap(
-                        paths,
-                        workspaceCollection.GetWorkspace("MOF"),
-                        dataLayerLogic,
-                        dataLayers.Mof);
-                }
+
+                Debug.Write("Bootstrapping MOF and UML...");
+                Bootstrapper.PerformFullBootstrap(
+                    paths,
+                    workspaceCollection.GetWorkspace(WorkspaceNames.Uml),
+                    dataLayerLogic,
+                    dataLayers.Uml);
+                Bootstrapper.PerformFullBootstrap(
+                    paths,
+                    workspaceCollection.GetWorkspace(WorkspaceNames.Mof),
+                    dataLayerLogic,
+                    dataLayers.Mof);
+                Debug.WriteLine(" Done");
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
-                var extentTypes = new MofUriExtent("dm:///types");
-                var typeWorkspace = workspaceCollection.GetWorkspace("Types");
+                var mofFactory = new MofFactory();
+                var extentTypes = new MofUriExtent(Locations.UriTypes);
+                var typeWorkspace = workspaceCollection.GetWorkspace(WorkspaceNames.Types);
                 typeWorkspace.AddExtent(extentTypes);
                 dataLayerLogic.AssignToDataLayer(extentTypes, dataLayers.Types);
+
+                // Adds the module for form and fields
+                var fields = new _FormAndFields();
+                IntegrateFormAndFields.Assign(
+                    dataLayerLogic.Get<_UML>(dataLayers.Uml),
+                    mofFactory,
+                    extentTypes.elements(),
+                    fields,
+                    dotNetTypeLookup);
+
+                var viewLogic = new ViewLogic(workspaceCollection, dotNetTypeLookup);
+                viewLogic.Integrate();
 
                 // Boots up the typical DatenMeister Environment  
                 if (_settings.EstablishDataEnvironment)

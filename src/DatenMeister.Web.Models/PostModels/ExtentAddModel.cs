@@ -26,5 +26,10 @@
         /// Gets or sets the filename
         /// </summary>
         public string filename { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the extent that shall be created
+        /// </summary>
+        public string name { get; set; }
     }
 }

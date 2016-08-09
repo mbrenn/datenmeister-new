@@ -22,5 +22,11 @@
         public bool isEnumeration { get; set; }
 
         public object defaultValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the infgormation whether the regarded field shall be
+        /// considered as readonyl
+        /// </summary>
+        public bool isReadOnly { get; set; }
     }
 }

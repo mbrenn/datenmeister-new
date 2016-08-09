@@ -33,7 +33,7 @@ namespace DatenMeister.Runtime.Extents
             if (classType == null)
             {
                 // We did not find the corresponding class type
-                return new CreateableTypeResult()
+                return new CreateableTypeResult
                 {
 
                     MetaLayer = typeLayer,

@@ -128,7 +128,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
                 domColumn = $("<th>ID</th>");
                 domRow.append(domColumn);
             }
-            var columns = data.columns;
+            var columns = data.columns.fields;
             for (var c in columns) {
                 if (columns.hasOwnProperty(c)) {
                     var column = columns[c];
@@ -208,7 +208,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
                         domColumn.text(id);
                         domRow.append(domColumn);
                     }
-                    var columns = data.columns;
+                    var columns = data.columns.fields;
                     for (var c in columns) {
                         if (columns.hasOwnProperty(c)) {
                             domColumn = $("<td></td>");
@@ -347,7 +347,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         ItemContentTable.prototype.offerNewProperty = function (domTable) {
             var _this = this;
             var tthis = this;
-            var domNewProperty = $("<tr><td colspan='4'><button class='btn btn-default'>NEW PROPERTY</button></td></tr>");
+            var domNewProperty = $("<tr><td colspan='4'><button class='btn btn-default'>Add Property</button></td></tr>");
             $("button", domNewProperty).click(function () {
                 domNewProperty.empty();
                 var domNewPropertyName = $("<td class='table_column_name'><input type='textbox' class='form-control' /></td>");
@@ -443,11 +443,17 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
                     if (asTextBox.lineHeight !== undefined && asTextBox.lineHeight > 1) {
                         var domTextBoxMultiple = $("<textarea class='form-control'></textarea>").attr('rows', asTextBox.lineHeight);
                         domTextBoxMultiple.val(contentValue);
+                        if (asTextBox.isReadOnly) {
+                            domTextBoxMultiple.attr("readonly", "readonly");
+                        }
                         return domTextBoxMultiple;
                     }
                     else {
                         var domTextBox = $("<input type='textbox' class='form-control' />");
                         domTextBox.val(contentValue);
+                        if (asTextBox.isReadOnly) {
+                            domTextBox.attr("readonly", "readonly");
+                        }
                         return domTextBox;
                     }
                 }

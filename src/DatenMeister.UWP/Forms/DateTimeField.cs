@@ -43,7 +43,7 @@ namespace DatenMeister.UWP.Forms
             var asLocal = valueDateTime.ToLocalTime();
             
 
-            var stackPanel = new StackPanel()
+            var stackPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal
             };

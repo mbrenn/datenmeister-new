@@ -63,7 +63,7 @@ namespace DatenMeister.Integration.DotNet
                         try
                         {
                             var assembly = Assembly.LoadFile(Path.Combine(path, file));
-                            Debug.WriteLine($"Loaded : {assembly.FullName}");
+                            Debug.WriteLine($"Loaded : {assembly.GetName().Name}, {assembly.GetName().Version}");
                         }
                         catch (Exception e)
                         {
@@ -88,8 +88,15 @@ namespace DatenMeister.Integration.DotNet
                     // Checks, if one of the class implements the IDatenMeisterPlugin 
                     if (type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
                     {
-                        Debug.WriteLine($"Starting plugin: {type}");
-                        ((IDatenMeisterPlugin)kernel.Resolve(type)).Start();
+                        try
+                        {
+                            Debug.WriteLine($"Starting plugin: {type.FullName}");
+                            ((IDatenMeisterPlugin) kernel.Resolve(type)).Start();
+                        }
+                        catch (Exception exc)
+                        {
+                            Debug.WriteLine($"Failed plugin: {exc}");
+                        }
                     }
                 }
             }

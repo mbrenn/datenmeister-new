@@ -352,7 +352,7 @@ namespace DatenMeister.Web.Api
         /// </summary>
         /// <param name="ws">Workspace to be queried</param>
         /// <param name="extent">Extent to be queried</param>
-        /// <param name="viewname">Defines the name of the view to be used</param>
+        /// <param name="view">Defines the name of the view to be ued</param>
         /// <param name="search">The searchtext being used for query</param>
         /// <param name="o">Offset, defining the index of the first element within the response queue</param>
         /// <param name="a">Number of items being shown</param>
@@ -360,7 +360,7 @@ namespace DatenMeister.Web.Api
         [Route("items")]
         public object GetItems(string ws, string extent, string view = null, string search = null, int o = 0, int a = MaxItemAmount)
         {
-            var amount = Math.Max(0, Math.Min(100, a)); // Return only the first 100 elements if no index is given
+            var amount = Math.Max(0, Math.Min(MaxItemAmount, a)); // Return only the first 100 elements if no index is given
             var workspace = GetWorkspace(ws);
             var foundExtent =
                 workspace.extent
@@ -410,13 +410,11 @@ namespace DatenMeister.Web.Api
                 .Skip(o)
                 .Take(amount);
 
-            var jsonConverter = new DirectJsonConverter();
-
             // Now return our stuff
             var resultModel = new ExtentContentModel
             {
                 url = extent,
-                columns = DynamicConverter.ToDynamic(result),
+                columns = DynamicConverter.ToDynamic(result, false),
                 totalItemCount = totalItems.Count(),
                 search = search,
                 filteredItemCount = filteredAmount,
@@ -453,7 +451,7 @@ namespace DatenMeister.Web.Api
             }
 
             var result = _viewFinder.FindView(foundElement, view);
-            itemModel.c = DynamicConverter.ToDynamic(result);
+            itemModel.c = DynamicConverter.ToDynamic(result, false);
             itemModel.v = ConvertToJson(foundElement, result);
             itemModel.layer = _dataLayerLogic?.GetDataLayerOfObject(foundElement)?.Name;
 

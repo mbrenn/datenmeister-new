@@ -54,7 +54,13 @@ namespace DatenMeister.Runtime.Dynamic
             return value.__wrappedObject__ as IObject;
         }
 
-        public static dynamic ToDynamic(IObject value)
+        /// <summary>
+        /// Converts the given value to a dynamic object 
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <param name="wrapInObject">Flag, indicating whether the value itself shall be wrapped in</param>
+        /// <returns>Created object</returns>
+        public static dynamic ToDynamic(IObject value, bool wrapInObject)
         {
             var result = new ExpandoObject();
             var allProperties = value as IObjectAllProperties;
@@ -62,19 +68,22 @@ namespace DatenMeister.Runtime.Dynamic
             {
                 throw new ArgumentException("value is not of type IObjectAllProperties.");
             }
-            
+
             foreach (var property in allProperties.getPropertiesBeingSet())
             {
                 var propertyValue = value.get(property);
-                ((IDictionary<string, object>) result)[property] = ConvertValue(propertyValue);
+                ((IDictionary<string, object>)result)[property] = ConvertValue(propertyValue, wrapInObject);
             }
 
-            SetWrappedObject(result, value);
+            if (wrapInObject)
+            {
+                SetWrappedObject(result, value);
+            }
 
             return result;
         }
 
-        private static object ConvertValue(object propertyValue)
+        private static object ConvertValue(object propertyValue, bool wrapInObject)
         {
             if (DotNetHelper.IsNull(propertyValue))
             {
@@ -86,7 +95,7 @@ namespace DatenMeister.Runtime.Dynamic
             }
             if (DotNetHelper.IsOfMofObject(propertyValue))
             {
-                return ToDynamic(propertyValue as IObject);
+                return ToDynamic(propertyValue as IObject, wrapInObject);
             }
             if (DotNetHelper.IsOfEnumeration(propertyValue))
             {
@@ -96,7 +105,7 @@ namespace DatenMeister.Runtime.Dynamic
                 var result = new List<object>();
                 foreach (var innerValue in enumeration)
                 {
-                    result.Add(ConvertValue(innerValue));
+                    result.Add(ConvertValue(innerValue, wrapInObject));
                 }
 
                 return result;

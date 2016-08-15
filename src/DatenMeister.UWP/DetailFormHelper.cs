@@ -26,7 +26,7 @@ namespace DatenMeister.UWP
         /// <summary>
         /// Stores the element containing data
         /// </summary>
-        public IElement DataElement { get; }
+        public IObject DataElement { get; }
 
         /// <summary>
         /// Stores the list of binding actions being used to close the dialog
@@ -38,7 +38,7 @@ namespace DatenMeister.UWP
         /// </summary>
         public Grid GridFields { get; }
 
-        public DetailFormHelper(FormViewSettings settings, IElement element, Grid gridFields, Grid gridButtons)
+        public DetailFormHelper(FormViewSettings settings, IObject element, Grid gridFields, Grid gridButtons)
         {
             Settings = settings;
             DataElement = element;
@@ -182,14 +182,14 @@ namespace DatenMeister.UWP
             Delete
         }
 
-        public static object GetValue(IElement element, string property, object defaultValue = null)
+        public static object GetValue(IObject element, string property, object defaultValue = null)
         {
             return element.isSet(property) ? 
                 element.get(property) : 
                 defaultValue;
         }
 
-        public static string GetValueAsString(IElement element, string property, object defaultValue = null)
+        public static string GetValueAsString(IObject element, string property, object defaultValue = null)
         {
             return (GetValue(element, property, defaultValue)?.ToString()) ?? string.Empty;
         }

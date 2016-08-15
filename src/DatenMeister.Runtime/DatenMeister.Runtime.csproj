@@ -63,7 +63,7 @@
     <Compile Include="Copier\ExtentCopier.cs" />
     <Compile Include="Copier\ObjectCopier.cs" />
     <Compile Include="DotNetHelper.cs" />
-    <Compile Include="DynamicConverter.cs" />
+    <Compile Include="Dynamic\DynamicConverter.cs" />
     <Compile Include="ExtentStorage\Configuration\ExtentFileStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\Configuration\ExtentStorageConfiguration.cs" />
     <Compile Include="ExtentStorage\ExtentStorageData.cs" />

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DatenMeister.Web.Models
+namespace DatenMeister.Web.Models.ItemsAndExtents
 {
     public class DataTableItem
     {

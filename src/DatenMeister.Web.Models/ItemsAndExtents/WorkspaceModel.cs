@@ -1,7 +1,7 @@
 ﻿using System;
 using DatenMeister.EMOF.Interface.Identifiers;
 
-namespace DatenMeister.Web.Models
+namespace DatenMeister.Web.Models.ItemsAndExtents
 {
     public class WorkspaceModel
     {

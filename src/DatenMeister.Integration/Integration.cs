@@ -15,6 +15,7 @@ using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Web.Models;
+using DatenMeister.Web.Models.Forms;
 using DatenMeister.Web.Models.Modules.ViewFinder;
 
 namespace DatenMeister.Integration
@@ -144,12 +145,16 @@ namespace DatenMeister.Integration
             return builder;
         }
 
+        private const string PathWorkspaces = "App_Data/Database/workspaces.xml";
+
+        private const string PathExtents = "App_Data/Database/extents.xml";
+
         private void EstablishDataEnvironment(IContainer builder, ILifetimeScope scope)
         {
             var innerContainer = new ContainerBuilder();
             // Loading and storing the workspaces  
             var workspaceLoader = new WorkspaceLoader(scope.Resolve<IWorkspaceCollection>(),
-                "App_Data/Database/workspaces.xml");
+                PathWorkspaces);
             workspaceLoader.Load();
             innerContainer.RegisterInstance(workspaceLoader).As<WorkspaceLoader>();
 
@@ -157,11 +162,11 @@ namespace DatenMeister.Integration
             var extentLoader = new ExtentStorageConfigurationLoader(
                 scope.Resolve<ExtentStorageData>(),
                 scope.Resolve<IExtentStorageLoader>(),
-                "App_Data/Database/extents.xml");
+                PathExtents);
             innerContainer.Register(c => new ExtentStorageConfigurationLoader(
                     c.Resolve<ExtentStorageData>(),
                     c.Resolve<IExtentStorageLoader>(),
-                    "App_Data/Database/extents.xml"))
+                    PathExtents))
                 .As<ExtentStorageConfigurationLoader>();
 
             innerContainer.Update(builder);

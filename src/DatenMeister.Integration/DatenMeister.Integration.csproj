@@ -59,9 +59,9 @@
       <Project>{335399d1-b533-42d2-aea5-f398f35d8e66}</Project>
       <Name>DatenMeister.Uml</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Web.Models.csproj">
+    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Models.csproj">
       <Project>{5E01C76D-A969-4238-8D8C-1CB22C92DA7A}</Project>
-      <Name>DatenMeister.Web.Models</Name>
+      <Name>DatenMeister.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">
       <Project>{e44275c2-9e62-42be-b984-127f82c1766f}</Project>

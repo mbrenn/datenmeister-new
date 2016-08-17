@@ -24,6 +24,9 @@ namespace DatenMeister.Web.Models.Modules.ViewFinder
             _dotNetTypeLookup = dotNetTypeLookup;
         }
 
+        /// <summary>
+        /// Integrates the the view logic into the workspace. 
+        /// </summary>
         public void Integrate()
         {
             var mgmtWorkspace = _workspaceCollection.GetWorkspace(WorkspaceNames.Management);

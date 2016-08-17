@@ -95,9 +95,9 @@
       <Project>{2aae5839-db41-429b-b7c4-b872506736c7}</Project>
       <Name>DatenMeister.SourcecodeGenerator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Web.Models.csproj">
+    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Models.csproj">
       <Project>{5e01c76d-a969-4238-8d8c-1cb22c92da7a}</Project>
-      <Name>DatenMeister.Web.Models</Name>
+      <Name>DatenMeister.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">
       <Project>{e44275c2-9e62-42be-b984-127f82c1766f}</Project>

@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Web.Models
+﻿namespace DatenMeister.Web.Models.ItemsAndExtents
 {
     public class ItemModel
     {

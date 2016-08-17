@@ -1,8 +1,8 @@
-using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.EMOF.InMemory;
+using DatenMeister.EMOF.Interface.Reflection;
 
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.1.0.0
-namespace DatenMeister.Web.Models
+namespace DatenMeister.Web.Models.Forms
 {
     public class _FormAndFields
     {

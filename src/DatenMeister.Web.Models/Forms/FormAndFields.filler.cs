@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using DatenMeister.EMOF.Interface.Reflection;
+
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
-namespace DatenMeister.Web.Models
+namespace DatenMeister.Web.Models.Forms
 {
     public class FillTheFormAndFields : DatenMeister.Filler.IFiller<_FormAndFields>
     {

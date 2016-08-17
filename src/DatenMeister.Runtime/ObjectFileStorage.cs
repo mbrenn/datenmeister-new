@@ -4,8 +4,18 @@ using System.Xml.Serialization;
 
 namespace DatenMeister.Runtime
 {
+    /// <summary>
+    /// Is capable to load a instance of the given type T and stores it into a file as a serialized Xml. 
+    /// </summary>
+    /// <typeparam name="T">Typeof the instance to be serialized</typeparam>
     public class ObjectFileStorage<T> where T : class
     {
+        /// <summary>
+        /// Defines a list of types that might get to be serialized. 
+        /// Since the serializer needs to know which types might be loaded during the serialization, 
+        /// all possibly inherited types need to be returned within this overloadable method
+        /// </summary>
+        /// <returns>The types that might be serialized/deserialized</returns>
         public virtual Type[] GetAdditionalTypes()
         {
             return null;

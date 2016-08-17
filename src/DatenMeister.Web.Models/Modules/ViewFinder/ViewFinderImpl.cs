@@ -38,18 +38,25 @@ namespace DatenMeister.Web.Models.Modules.ViewFinder
         {
             if (string.IsNullOrEmpty(viewname))
             {
-                var view = _formCreator.CreateFields(extent);
+                var view = _formCreator.CreateForm(extent);
                 return _dotNetTypeLookup.CreateDotNetElement(view);
             }
 
             return _viewLogic.GetView(viewname);
         }
 
+        /// <summary>
+        /// Finds a specific view by the given value and the given viewname. 
+        /// If the given viewname is empty or null, the default view will be returned
+        /// </summary>
+        /// <param name="value">Value whose view need to be created</param>
+        /// <param name="viewname">The view, that shall be done</param>
+        /// <returns>The view itself</returns>
         public IObject FindView(IObject value, string viewname)
         {
             if (string.IsNullOrEmpty(viewname))
             {
-                var view = _formCreator.CreateFields(value);
+                var view = _formCreator.CreateForm(value);
                 return _dotNetTypeLookup.CreateDotNetElement(view);
             }
             

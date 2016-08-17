@@ -59,20 +59,20 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fields\DropDownFieldData.cs" />
-    <Compile Include="Fields\FieldData.cs" />
-    <Compile Include="DataTableItem.cs" />
-    <Compile Include="ExtentContentModel.cs" />
-    <Compile Include="ExtentModel.cs" />
-    <Compile Include="Fields\DateTimeFieldData.cs" />
-    <Compile Include="Fields\FieldTypes.cs" />
-    <Compile Include="Fields\Form.cs" />
-    <Compile Include="Fields\FormAndFields.class.cs" />
-    <Compile Include="Fields\FormAndFields.filler.cs" />
-    <Compile Include="Fields\TextFieldData.cs" />
-    <Compile Include="FormViewSettings.cs" />
-    <Compile Include="ItemContentModel.cs" />
-    <Compile Include="ItemModel.cs" />
+    <Compile Include="Forms\DropDownFieldData.cs" />
+    <Compile Include="Forms\FieldData.cs" />
+    <Compile Include="ItemsAndExtents\DataTableItem.cs" />
+    <Compile Include="ItemsAndExtents\ExtentContentModel.cs" />
+    <Compile Include="ItemsAndExtents\ExtentModel.cs" />
+    <Compile Include="Forms\DateTimeFieldData.cs" />
+    <Compile Include="Forms\FieldTypes.cs" />
+    <Compile Include="Forms\Form.cs" />
+    <Compile Include="Forms\FormAndFields.class.cs" />
+    <Compile Include="Forms\FormAndFields.filler.cs" />
+    <Compile Include="Forms\TextFieldData.cs" />
+    <Compile Include="ItemsAndExtents\FormViewSettings.cs" />
+    <Compile Include="ItemsAndExtents\ItemContentModel.cs" />
+    <Compile Include="ItemsAndExtents\ItemModel.cs" />
     <Compile Include="Modules\IClientModulePlugin.cs" />
     <Compile Include="Modules\IWebserverStartupPhases.cs" />
     <Compile Include="Modules\LifeTimeScopeEventArgs.cs" />
@@ -94,7 +94,7 @@
     <Compile Include="PostModels\WorkspaceDeleteModel.cs" />
     <Compile Include="PostModels\WorkspaceReferenceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WorkspaceModel.cs" />
+    <Compile Include="ItemsAndExtents\WorkspaceModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatenMeister.Provider.DotNet\DatenMeister.Provider.DotNet.csproj">

@@ -18,7 +18,6 @@ define(["require", "exports"], function (require, exports) {
             return ItemInExtentQuery;
         }());
         PostModels.ItemInExtentQuery = ItemInExtentQuery;
-        /** This class is used to reference a single object within the database */
         var ExtentReferenceModel = (function () {
             function ExtentReferenceModel() {
             }

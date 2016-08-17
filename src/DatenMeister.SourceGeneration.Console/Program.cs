@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using DatenMeister.EMOF.InMemory;
 using DatenMeister.SourcecodeGenerator;
-using DatenMeister.Web.Models.Fields;
+using DatenMeister.Web.Models.Forms;
 using DatenMeister.XMI;
 
 namespace DatenMeister.SourceGeneration.Console

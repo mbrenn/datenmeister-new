@@ -48,7 +48,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.ManualMapping"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Provider.DotNet", "DatenMeister.Provider.DotNet\DatenMeister.Provider.DotNet.csproj", "{DE772364-F233-40E8-BA39-519D42C20686}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Web.Models", "DatenMeister.Web.Models\DatenMeister.Web.Models.csproj", "{5E01C76D-A969-4238-8D8C-1CB22C92DA7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Models", "DatenMeister.Web.Models\DatenMeister.Models.csproj", "{5E01C76D-A969-4238-8D8C-1CB22C92DA7A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZipCode", "ZipCode", "{D6DAE328-9BCE-4272-80AE-083A3A3A0FFB}"
 EndProject

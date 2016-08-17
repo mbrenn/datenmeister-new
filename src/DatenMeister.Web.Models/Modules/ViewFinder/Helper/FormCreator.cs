@@ -3,36 +3,40 @@ using System.Linq;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.Web.Models.Fields;
+using DatenMeister.Web.Models.Forms;
 
 namespace DatenMeister.Web.Models.Modules.ViewFinder.Helper
 {
+    /// <summary>
+    /// Creates a view out of the given extent, elements (collection) or element). 
+    /// 
+    /// </summary>
     public class FormCreator
     {
-        public Form CreateFields(IUriExtent extent)
+        public Form CreateForm(IUriExtent extent)
         {
-            return CreateFields(extent.elements());
+            return CreateForm(extent.elements());
         }
 
-        public Form CreateFields(IReflectiveSequence elements)
+        public Form CreateForm(IReflectiveSequence elements)
         {
             var result = new Form();
             foreach (var item in elements)
             {
-                CreateFields(result, item);
+                CreateForm(result, item);
             }
 
             return result;
         }
 
-        public Form CreateFields(object item)
+        public Form CreateForm(object item)
         {
             var result = new Form();
-            CreateFields(result, item);
+            CreateForm(result, item);
             return result;
         }
 
-        private void CreateFields(Form result, object item)
+        private void CreateForm(Form result, object item)
         {
             // First phase: Get the properties by using the metaclass
             var asElement = item as IElement;
@@ -75,7 +79,7 @@ namespace DatenMeister.Web.Models.Modules.ViewFinder.Helper
 
                 foreach (var property in properties)
                 {
-                    FieldData column = result.fields.FirstOrDefault(x => x.name == property);
+                    var column = result.fields.FirstOrDefault(x => x.name == property);
                     if (column == null)
                     {
                         column = new TextFieldData

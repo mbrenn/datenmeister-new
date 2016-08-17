@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DatenMeister.Web.Models.Fields
+namespace DatenMeister.Web.Models.Forms
 {
     public class DropDownFieldData : FieldData
     {

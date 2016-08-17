@@ -64,9 +64,9 @@
       <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>
       <Name>DatenMeister.Runtime</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Web.Models.csproj">
+    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Models.csproj">
       <Project>{5E01C76D-A969-4238-8D8C-1CB22C92DA7A}</Project>
-      <Name>DatenMeister.Web.Models</Name>
+      <Name>DatenMeister.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>

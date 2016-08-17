@@ -2,7 +2,7 @@ using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Web.Models;
-using DatenMeister.Web.Models.Fields;
+using DatenMeister.Web.Models.Forms;
 
 namespace DatenMeister.Web.Models
 {
@@ -22,35 +22,35 @@ namespace DatenMeister.Web.Models
         {
             var generator = new DotNetTypeGenerator(factory, uml);
             {
-                var type = typeof(DatenMeister.Web.Models.Fields.Form);
+                var type = typeof(Form);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__Form = typeAsElement;
                 lookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Web.Models.Fields.FieldData);
+                var type = typeof(FieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__FieldData = typeAsElement;
                 lookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Web.Models.Fields.TextFieldData);
+                var type = typeof(TextFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__TextFieldData = typeAsElement;
                 lookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Web.Models.Fields.DateTimeFieldData);
+                var type = typeof(DateTimeFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__DateTimeFieldData = typeAsElement;
                 lookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Web.Models.Fields.DropDownFieldData);
+                var type = typeof(DropDownFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__DropDownFieldData = typeAsElement;

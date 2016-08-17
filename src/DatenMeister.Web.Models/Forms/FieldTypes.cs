@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DatenMeister.Web.Models.Fields
+namespace DatenMeister.Web.Models.Forms
 {
     public static class FieldTypes
     {

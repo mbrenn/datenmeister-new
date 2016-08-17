@@ -117,9 +117,9 @@
     <EmbeddedResource Include="Properties\DatenMeister.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\datenmeister-new\src\DatenMeister.Web.Models\DatenMeister.Web.Models.csproj">
+    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Models.csproj">
       <Project>{5e01c76d-a969-4238-8d8c-1cb22c92da7a}</Project>
-      <Name>DatenMeister.Web.Models</Name>
+      <Name>DatenMeister.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\datenmeister-new\src\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>

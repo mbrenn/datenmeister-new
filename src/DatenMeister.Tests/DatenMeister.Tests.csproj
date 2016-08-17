@@ -163,9 +163,9 @@
       <Project>{335399d1-b533-42d2-aea5-f398f35d8e66}</Project>
       <Name>DatenMeister.Uml</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Web.Models.csproj">
+    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Models.csproj">
       <Project>{5e01c76d-a969-4238-8d8c-1cb22c92da7a}</Project>
-      <Name>DatenMeister.Web.Models</Name>
+      <Name>DatenMeister.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Web\DatenMeister.Web.csproj">
       <Project>{200FE333-4D98-4F76-A8D6-E7C94A272FF2}</Project>

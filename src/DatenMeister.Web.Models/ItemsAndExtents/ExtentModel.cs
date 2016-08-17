@@ -1,6 +1,6 @@
 ﻿using DatenMeister.EMOF.Interface.Identifiers;
 
-namespace DatenMeister.Web.Models
+namespace DatenMeister.Web.Models.ItemsAndExtents
 {
     /// <summary>
     ///     Stores the data for an extent

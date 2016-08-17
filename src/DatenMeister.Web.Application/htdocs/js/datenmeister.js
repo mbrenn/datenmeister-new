@@ -1,10 +1,7 @@
-/// <reference path="typings/jquery/jquery.d.ts" />
-/// <reference path="typings/jquery/underscore.d.ts" />
 define(["require", "exports", "./datenmeister-helper", "./datenmeister-interfaces", "./datenmeister-client", "./datenmeister-layout", "./datenmeister-logging"], function (require, exports, DMHelper, DMI, DMClient, DMLayout, DMLog) {
     "use strict";
     function start() {
         var layout = new DMLayout.Layout($("body"));
-        // Information, when an ajax request failed
         $(document).ajaxError(function (ev, xhr, settings, error) {
             if (xhr.responseJSON !== undefined &&
                 xhr.responseJSON !== null &&
@@ -22,7 +19,6 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
             };
             parseAndNavigateToWindowLocation(layout);
         });
-        // Ajax loading information
         var ajaxRequests = 0;
         $("#dm-ajaxloading").hide();
         $(document).ajaxStart(function () {
@@ -35,7 +31,6 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
                 $("#dm-ajaxloading").hide();
             }
         });
-        // Loads the clientplugins
         DMClient.ClientApi.getPlugins()
             .done(function (data) {
             var parameter = new DMI.Api.PluginParameter();
@@ -43,7 +38,6 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
             parameter.layout = layout;
             for (var n in data.scriptPaths) {
                 var path = data.scriptPaths[n];
-                // Now loading the plugin
                 require([path], function (plugin) {
                     var result = plugin.load(parameter);
                     if (result !== undefined && result !== null) {
@@ -67,7 +61,6 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
             buildRibbons(layout, data);
         };
         if (ws === "") {
-            // per default, show the data extent
             layout.showExtents("Data");
         }
         else if (ws === "{all}") {
@@ -98,7 +91,6 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         tabFile.addIcon("Workspaces", "img/icons/database", function () { layout.navigateToWorkspaces(); });
         tabFile.addIcon("Add Workspace", "img/icons/database-add", function () { layout.showDialogNewWorkspace(); });
         if (changeEvent !== null && changeEvent !== undefined && changeEvent.workspace !== undefined) {
-            // Ok, we have a workspace
             tabFile.addIcon("Delete Workspace", "img/icons/database-delete", function () {
                 DMClient.WorkspaceApi.deleteWorkspace(changeEvent.workspace)
                     .done(function () { return layout.navigateToWorkspaces(); });

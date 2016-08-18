@@ -1,10 +1,10 @@
 ﻿using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Models.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Web.Models.Modules.ViewFinder.Helper;
 
-namespace DatenMeister.Web.Models.Modules.ViewFinder
+namespace DatenMeister.Models.Modules.ViewFinder
 {
     /// <summary>
     /// Includes the implementation of the IViewFinder

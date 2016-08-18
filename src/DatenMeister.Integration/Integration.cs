@@ -6,6 +6,8 @@ using Autofac.Features.ResolveAnything;
 using DatenMeister.DataLayer;
 using DatenMeister.EMOF.Attributes;
 using DatenMeister.EMOF.InMemory;
+using DatenMeister.Models.Forms;
+using DatenMeister.Models.Modules.ViewFinder;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -14,9 +16,6 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
-using DatenMeister.Web.Models;
-using DatenMeister.Web.Models.Forms;
-using DatenMeister.Web.Models.Modules.ViewFinder;
 
 namespace DatenMeister.Integration
 {

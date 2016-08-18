@@ -1,8 +1,8 @@
-using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.EMOF.InMemory;
 
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.1.0.0
-namespace DatenMeister.Web.Models.Forms
+namespace DatenMeister.Models.Forms
 {
     public class _FormAndFields
     {
@@ -136,6 +136,22 @@ namespace DatenMeister.Web.Models.Forms
 
         public _DropDownFieldData @DropDownFieldData = new _DropDownFieldData();
         public IElement @__DropDownFieldData = new MofElement();
+
+        public class _DefaultViewForMetaclass
+        {
+            public static string @viewType = "viewType";
+            public IElement _viewType = null;
+
+            public static string @metaclass = "metaclass";
+            public IElement _metaclass = null;
+
+            public static string @view = "view";
+            public IElement _view = null;
+
+        }
+
+        public _DefaultViewForMetaclass @DefaultViewForMetaclass = new _DefaultViewForMetaclass();
+        public IElement @__DefaultViewForMetaclass = new MofElement();
 
         public static _FormAndFields TheOne = new _FormAndFields();
 

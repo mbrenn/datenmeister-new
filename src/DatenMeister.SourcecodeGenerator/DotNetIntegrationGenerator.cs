@@ -20,11 +20,10 @@ namespace DatenMeister.SourcecodeGenerator
 
             WalkPackageClass.CallStack stack = new WalkPackageClass.CallStack(null);
 
+            Result.AppendLine($"{stack.Indentation}using DatenMeister;");
             Result.AppendLine($"{stack.Indentation}using DatenMeister.EMOF.Interface.Common;");
             Result.AppendLine($"{stack.Indentation}using DatenMeister.EMOF.Interface.Reflection;");
             Result.AppendLine($"{stack.Indentation}using DatenMeister.Provider.DotNet;");
-            Result.AppendLine($"{stack.Indentation}using DatenMeister.Web.Models;");
-            Result.AppendLine($"{stack.Indentation}using DatenMeister.Web.Models.Fields;");
             Result.AppendLine();
             Result.AppendLine($"{stack.Indentation}namespace {nameSpace}");
             Result.AppendLine($"{stack.Indentation}{{");
@@ -48,7 +47,7 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine(
                 $"{stack.Indentation}public static void Assign(" + 
                 "_UML uml,IFactory factory, IReflectiveCollection collection, " + 
-                $"_{packageName} filledStructure, DotNetTypeLookup lookup)");
+                $"_{packageName} filledStructure, IDotNetTypeLookup lookup)");
             Result.AppendLine($"{stack.Indentation}{{");
 
             stack = stack.Next;

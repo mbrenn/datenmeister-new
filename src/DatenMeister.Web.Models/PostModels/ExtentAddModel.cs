@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Web.Models.PostModels
+﻿namespace DatenMeister.Models.PostModels
 {
     /// <summary>
     /// Used to create a new extent

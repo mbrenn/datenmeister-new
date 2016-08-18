@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DatenMeister.Web.Models.Forms
+namespace DatenMeister.Models.Forms
 {
     public static class FieldTypes
     {
@@ -12,7 +12,8 @@ namespace DatenMeister.Web.Models.Forms
                 typeof(FieldData), 
                 typeof(TextFieldData),
                 typeof(DateTimeFieldData),
-                typeof(DropDownFieldData)
+                typeof(DropDownFieldData),
+                typeof(DefaultViewForMetaclass)
             };
         }
     }

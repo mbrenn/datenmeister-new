@@ -50,8 +50,14 @@ namespace DatenMeister.Integration.DotNet
 
         public static void LoadAssembliesFromFolder(string path)
         {
+            if (!Path.IsPathRooted(path))
+            {
+                path = Path.Combine(Environment.CurrentDirectory, path);
+            }
+
             if (Directory.Exists(path))
             {
+
                 var files = Directory.GetFiles(path)
                     .Where(x => Path.GetExtension(x).ToLower() == ".dll");
                 foreach (var file in files)

@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Web.Models.Forms
+﻿namespace DatenMeister.Models.Forms
 {
     public class TextFieldData : FieldData
     {

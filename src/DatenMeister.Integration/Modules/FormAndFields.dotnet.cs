@@ -1,10 +1,8 @@
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
-using DatenMeister.Web.Models;
-using DatenMeister.Web.Models.Forms;
 
-namespace DatenMeister.Web.Models
+namespace DatenMeister.Models.Forms
 {
     public static class IntegrateFormAndFields
     {
@@ -54,6 +52,13 @@ namespace DatenMeister.Web.Models
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__DropDownFieldData = typeAsElement;
+                lookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DefaultViewForMetaclass);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__DefaultViewForMetaclass = typeAsElement;
                 lookup.Add(typeAsElement, type);
             }
         }

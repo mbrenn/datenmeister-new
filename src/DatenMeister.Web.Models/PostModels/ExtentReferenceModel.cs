@@ -1,4 +1,4 @@
-namespace DatenMeister.Web.Models.PostModels
+namespace DatenMeister.Models.PostModels
 {
     public class ExtentReferenceModel : WorkspaceReferenceModel
     {

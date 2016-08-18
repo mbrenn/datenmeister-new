@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DatenMeister.Web.Models.Modules
+namespace DatenMeister.Models.Modules
 {
     public interface IClientModulePlugin
     {

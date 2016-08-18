@@ -1,4 +1,4 @@
-﻿using DatenMeister.Web.Models.Forms;
+﻿using DatenMeister.Models.Forms;
 
 namespace DatenMeister.UWP.Forms
 {

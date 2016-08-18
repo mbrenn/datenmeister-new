@@ -8,8 +8,8 @@
     <ProjectGuid>{5E01C76D-A969-4238-8D8C-1CB22C92DA7A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DatenMeister.Web.Models</RootNamespace>
-    <AssemblyName>DatenMeister.Web.Models</AssemblyName>
+    <RootNamespace>DatenMeister.Models</RootNamespace>
+    <AssemblyName>DatenMeister.Models</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -59,8 +59,10 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\DefaultViewForMetaclass.cs" />
     <Compile Include="Forms\DropDownFieldData.cs" />
     <Compile Include="Forms\FieldData.cs" />
+    <Compile Include="Forms\ViewType.cs" />
     <Compile Include="ItemsAndExtents\DataTableItem.cs" />
     <Compile Include="ItemsAndExtents\ExtentContentModel.cs" />
     <Compile Include="ItemsAndExtents\ExtentModel.cs" />

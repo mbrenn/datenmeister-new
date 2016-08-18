@@ -3,9 +3,9 @@ using System.Linq;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.Web.Models.Forms;
+using DatenMeister.Models.Forms;
 
-namespace DatenMeister.Web.Models.Modules.ViewFinder.Helper
+namespace DatenMeister.Models.Modules.ViewFinder.Helper
 {
     /// <summary>
     /// Creates a view out of the given extent, elements (collection) or element). 

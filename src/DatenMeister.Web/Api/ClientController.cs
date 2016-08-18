@@ -1,12 +1,12 @@
 ﻿using System.Web.Http;
-using DatenMeister.Web.Models.Modules;
+using DatenMeister.Models.Modules;
 
 namespace DatenMeister.Web.Api
 {
     [RoutePrefix("api/datenmeister/client")]
     public class ClientController : ApiController
     {
-        private IClientModulePlugin _clientModulePlugin;
+        private readonly IClientModulePlugin _clientModulePlugin;
 
         public ClientController(IClientModulePlugin clientModulePlugin)
         {

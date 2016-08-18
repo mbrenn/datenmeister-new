@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using DatenMeister.EMOF.Interface.Reflection;
-
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
-namespace DatenMeister.Web.Models.Forms
+namespace DatenMeister.Models.Forms
 {
     public class FillTheFormAndFields : DatenMeister.Filler.IFiller<_FormAndFields>
     {
@@ -215,6 +214,29 @@ namespace DatenMeister.Web.Models.Forms
                                 if(name == "isReadOnly") // Looking for property
                                 {
                                     tree.DropDownFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
+                        if(name == "DefaultViewForMetaclass") // Looking for class
+                        {
+                            tree.__DefaultViewForMetaclass = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "viewType") // Looking for property
+                                {
+                                    tree.DefaultViewForMetaclass._viewType = value;
+                                }
+                                if(name == "metaclass") // Looking for property
+                                {
+                                    tree.DefaultViewForMetaclass._metaclass = value;
+                                }
+                                if(name == "view") // Looking for property
+                                {
+                                    tree.DefaultViewForMetaclass._view = value;
                                 }
                             }
                         }

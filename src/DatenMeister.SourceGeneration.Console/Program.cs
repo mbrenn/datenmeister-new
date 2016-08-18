@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using DatenMeister.EMOF.InMemory;
+using DatenMeister.Models.Forms;
 using DatenMeister.SourcecodeGenerator;
-using DatenMeister.Web.Models.Forms;
 using DatenMeister.XMI;
 
 namespace DatenMeister.SourceGeneration.Console
@@ -19,7 +19,7 @@ namespace DatenMeister.SourceGeneration.Console
                 { 
                     Name = "FormAndFields",
                     Path = "./",
-                    Namespace = "DatenMeister.Web.Models",
+                    Namespace = "DatenMeister.Models.Forms",
                     Types = FieldTypes.GetAll()
                 });
             System.Console.WriteLine(" Done");
@@ -31,8 +31,8 @@ namespace DatenMeister.SourceGeneration.Console
             File.Copy("../../uml.cs", "../../../DatenMeister/Filler/uml.cs", true);
             File.Copy("../../FillTheUML.cs", "../../../DatenMeister/Filler/FillTheUML.cs", true);
             
-            File.Copy("./FormAndFields.filler.cs", "../../../DatenMeister.Web.Models/Fields/FormAndFields.filler.cs", true);
-            File.Copy("./FormAndFields.class.cs", "../../../DatenMeister.Web.Models/Fields/FormAndFields.class.cs", true);
+            File.Copy("./FormAndFields.filler.cs", "../../../DatenMeister.Web.Models/Forms/FormAndFields.filler.cs", true);
+            File.Copy("./FormAndFields.class.cs", "../../../DatenMeister.Web.Models/Forms/FormAndFields.class.cs", true);
             File.Copy("./FormAndFields.dotnet.cs", "../../../DatenMeister.Integration/Modules/FormAndFields.dotnet.cs", true);
 #endif
         }

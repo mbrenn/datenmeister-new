@@ -6,7 +6,7 @@ using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Web.Models.Modules.ViewFinder
+namespace DatenMeister.Models.Modules.ViewFinder
 {
     public class ViewLogic
     {
@@ -40,7 +40,7 @@ namespace DatenMeister.Web.Models.Modules.ViewFinder
         /// Adds a view to the system
         /// </summary>
         /// <param name="view">View to be added</param>
-        public void AddView(IObject view)
+        public void Add(IObject view)
         {
             var foundExtent = GetViewExtent();
 

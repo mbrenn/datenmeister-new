@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using DatenMeister.Web.Models.Modules;
+using DatenMeister.Models.Modules;
 
 namespace DatenMeister.Web.Modules
 {

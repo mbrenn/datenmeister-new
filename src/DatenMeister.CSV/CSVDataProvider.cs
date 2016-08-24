@@ -57,9 +57,10 @@ namespace DatenMeister.CSV
         /// <summary>
         ///     Reads the file from the stream
         /// </summary>
-        /// <param name="path">Path being used to load the file</param>
         /// <param name="extent">Extet being stored</param>
+        /// <param name="stream">Stream being used to read in</param>
         /// <param name="settings">Settings being used to store it.</param>
+        /// <param name="factory">Factory to be used to create the items</param>
         private void ReadFromStream(IExtent extent, IFactory factory, Stream stream, CSVSettings settings)
         {
             if (settings == null)
@@ -70,17 +71,25 @@ namespace DatenMeister.CSV
             var columns = settings.Columns;
             var createColumns = false;
 
+            IElement metaClass = null;
+            if (!string.IsNullOrEmpty(settings.MetaclassUri))
+            {
+                metaClass = _workspaceCollection.FindItem(settings.MetaclassUri);
+            }
+
             using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(settings.Encoding)))
             {
                 if (columns == null)
                 {
                     createColumns = true;
+                    columns = new List<string>();
                 }
 
                 // Reads header, if necessary
                 if (settings.HasHeader)
                 {
                     columns.Clear();
+
                     // Creates the column names for the headline
                     var ignoredLine = streamReader.ReadLine();
                     var columnNames = SplitLine(ignoredLine, settings);
@@ -96,7 +105,7 @@ namespace DatenMeister.CSV
                 {
                     var values = SplitLine(line, settings);
 
-                    var csvObject = factory.create(null);
+                    var csvObject = factory.create(metaClass);
                     
                     // we now have the created object, let's fill it
                     var valueCount = values.Count;

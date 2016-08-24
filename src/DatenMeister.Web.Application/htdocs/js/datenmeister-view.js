@@ -257,8 +257,10 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                 var domMetaClassLink = $("<a href='#'>3</a>").text(data.metaclass.name);
                 domMetaClassLink.click(function () {
                     tthis.layout.navigateToItem(data.metaclass.ws, data.metaclass.ext, data.metaclass.uri);
+                    return false;
                 });
                 $(".dm-tablecell-metaclass", domTableInfo).append(domMetaClassLink);
+                $(".dm-tablecell-metaclass", domTableInfo).attr("title", data.metaclass.uri);
             }
             if (data.id !== undefined && data.id !== null) {
                 $(".dm-tablecell-id", domTableInfo).text(data.id);

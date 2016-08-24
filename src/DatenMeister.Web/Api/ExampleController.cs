@@ -46,7 +46,6 @@ namespace DatenMeister.Web.Api
                 }
             } while (File.Exists(filename));
 
-
             var originalFilename = Path.Combine(
                 appBase,
                 "App_Data/Example",

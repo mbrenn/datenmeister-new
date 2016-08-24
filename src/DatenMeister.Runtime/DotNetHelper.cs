@@ -52,8 +52,7 @@ namespace DatenMeister.Runtime
         {
             return type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type);
         }
-
-
+        
         /// <summary>
         /// Evaluates whether the given type is an enumeration but is not a string
         /// </summary>
@@ -74,6 +73,31 @@ namespace DatenMeister.Runtime
             return value == null;
         }
 
+        /// <summary>
+        /// Verifies whether the given type is a enum (not a class, not a struct).
+        /// </summary>
+        /// <param name="type">Type to be verified</param>
+        /// <returns>true, if the given type is an enum</returns>
+        public static bool IsEnum(Type type)
+        {
+            return type.GetTypeInfo().IsEnum;
+        }
+
+        /// <summary>
+        /// Verifies whether the given element is an enum
+        /// </summary>
+        /// <param name="value">Value to be verified</param>
+        /// <returns>true, if enum</returns>
+        public static bool IsOfEnum(object value)
+        {
+            return value != null && IsEnum(value.GetType());
+        }
+
+        /// <summary>
+        /// Evaluates whether the given argument is a mof object
+        /// </summary>
+        /// <param name="propertyValue">Value to be checked</param>
+        /// <returns>true, if the given element is of the type</returns>
         public static bool IsOfMofObject(object propertyValue)
         {
             return propertyValue is IObject;

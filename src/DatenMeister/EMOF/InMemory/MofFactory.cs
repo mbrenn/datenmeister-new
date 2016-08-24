@@ -13,17 +13,17 @@ namespace DatenMeister.EMOF.InMemory
             get { throw new NotImplementedException(); }
         }
 
-        public IElement create(IElement metaClass)
+        public virtual IElement create(IElement metaClass)
         {
             return new MofElement(null, metaClass);
         }
 
-        public string convertToString(IElement dataType, IObject value)
+        public virtual string convertToString(IElement dataType, IObject value)
         {
             throw new NotImplementedException();
         }
 
-        public IObject createFromString(IElement dataType, string value)
+        public virtual IObject createFromString(IElement dataType, string value)
         {
             throw new NotImplementedException();
         }

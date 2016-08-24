@@ -20,8 +20,8 @@ namespace DatenMeister.Tests.Runtime
             using (var scope = builder.BeginLifetimeScope())
             {
                 // Apply for zipcodes
-                var integrateZipCodes = scope.Resolve<Integrate>();
-                integrateZipCodes.Into(scope.Resolve<IWorkspaceCollection>().FindExtent(Locations.UriTypes));
+                var integrateZipCodes = scope.Resolve<ZipCodePlugin>();
+                integrateZipCodes.Start();
 
                 var extentFunctions = scope.Resolve<ExtentFunctions>();
                 var dataLayers = scope.Resolve<DataLayers>();

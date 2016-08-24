@@ -336,9 +336,12 @@ export class ItemView extends ViewBase implements IView
                     data.metaclass.ext,
                     data.metaclass.uri
                 );
+
+                return false;
             });
 
             $(".dm-tablecell-metaclass", domTableInfo).append(domMetaClassLink);
+            $(".dm-tablecell-metaclass", domTableInfo).attr("title", data.metaclass.uri);
         }
 
         if (data.id !== undefined && data.id !== null) {

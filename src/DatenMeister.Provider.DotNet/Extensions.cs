@@ -97,18 +97,18 @@ namespace DatenMeister.Provider.DotNet
         /// <returns>The converted object</returns>
         public static object ConvertToNative(object element)
         {
-            if (element is IElement)
+            if (!DotNetHelper.IsOfMofElement(element))
             {
-                if (element is DotNetElement)
-                {
-                    var elementAsDotNet = element as DotNetElement;
-                    return elementAsDotNet.GetNativeValue();
-                }
-
-                throw new InvalidOperationException("Converting from another IElement instance, except DotNetElement, is not supported (yet).");
+                return element;
             }
 
-            return element;
+            var elementAsDotNetElement = element as DotNetElement;
+            if (elementAsDotNetElement != null)
+            {
+                return elementAsDotNetElement.GetNativeValue();
+            }
+
+            throw new InvalidOperationException("Converting from another IElement instance, except DotNetElement, is not supported (yet).");
         }
 
         /// <summary>
@@ -133,7 +133,8 @@ namespace DatenMeister.Provider.DotNet
             }
 
             var resultType = result.GetType();
-            if (DotNetHelper.IsPrimitiveType(resultType))
+            if (DotNetHelper.IsPrimitiveType(resultType)
+                || DotNetHelper.IsEnum(resultType))
             {
                 return result;
             }
@@ -141,6 +142,12 @@ namespace DatenMeister.Provider.DotNet
             if (DotNetHelper.IsEnumeration(resultType))
             {
                 return dotNetTypeLookup.CreateDotNetReflectiveSequence(result, container);
+            }
+
+            if (DotNetHelper.IsOfMofObject(result))
+            {
+                // Returns the given element itself, if it is an MofElement or MofObject
+                return result;
             }
 
             var dotNetResult = dotNetTypeLookup.CreateDotNetElement(result, container);

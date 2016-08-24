@@ -21,6 +21,11 @@ namespace DatenMeister.Integration
 {
     public class Integration
     {
+
+        private const string PathWorkspaces = "App_Data/Database/workspaces.xml";
+
+        private const string PathExtents = "App_Data/Database/extents.xml";
+
         private IntegrationSettings _settings;
 
         public Integration(IntegrationSettings settings)
@@ -121,6 +126,7 @@ namespace DatenMeister.Integration
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();
+                dataLayerLogic.Set(dataLayers.Data, fields);
                 IntegrateFormAndFields.Assign(
                     dataLayerLogic.Get<_UML>(dataLayers.Uml),
                     mofFactory,
@@ -128,7 +134,7 @@ namespace DatenMeister.Integration
                     fields,
                     dotNetTypeLookup);
 
-                var viewLogic = new ViewLogic(workspaceCollection, dotNetTypeLookup);
+                var viewLogic = new ViewLogic(workspaceCollection, dotNetTypeLookup, dataLayerLogic);
                 viewLogic.Integrate();
 
                 // Boots up the typical DatenMeister Environment  
@@ -143,10 +149,6 @@ namespace DatenMeister.Integration
 
             return builder;
         }
-
-        private const string PathWorkspaces = "App_Data/Database/workspaces.xml";
-
-        private const string PathExtents = "App_Data/Database/extents.xml";
 
         private void EstablishDataEnvironment(IContainer builder, ILifetimeScope scope)
         {

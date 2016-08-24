@@ -1,5 +1,6 @@
 ﻿using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Models.Forms;
 using DatenMeister.Models.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.Workspaces;
@@ -54,6 +55,18 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// <returns>The view itself</returns>
         public IObject FindView(IObject value, string viewname)
         {
+
+            var valueAsElement = value as IElement;
+            if (valueAsElement != null)
+            {
+                var metaClass = valueAsElement.metaclass;
+                var viewResult = _viewLogic.FindViewFor(metaClass, ViewType.Detail);
+                if (viewResult != null)
+                {
+                    return viewResult;
+                }
+            }
+
             if (string.IsNullOrEmpty(viewname))
             {
                 var view = _formCreator.CreateForm(value);

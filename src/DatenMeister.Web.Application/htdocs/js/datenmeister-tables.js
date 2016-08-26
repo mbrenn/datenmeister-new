@@ -1,7 +1,7 @@
 define(["require", "exports", "./datenmeister-interfaces"], function (require, exports, DMI) {
     "use strict";
-    var ItemTableConfiguration = (function () {
-        function ItemTableConfiguration() {
+    var ItemListTableConfiguration = (function () {
+        function ItemListTableConfiguration() {
             this.onItemEdit = function (url) { return false; };
             this.onItemDelete = function (url, domRow) { return false; };
             this.supportSearchbox = true;
@@ -9,10 +9,11 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             this.showColumnForId = false;
             this.supportPaging = true;
             this.itemsPerPage = 20;
+            this.supportViews = true;
         }
-        return ItemTableConfiguration;
+        return ItemListTableConfiguration;
     }());
-    exports.ItemTableConfiguration = ItemTableConfiguration;
+    exports.ItemListTableConfiguration = ItemListTableConfiguration;
     /*
         * Used to show a lot of items in a database. The table will use an array of MofObjects
         * as the datasource
@@ -52,7 +53,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             this.domContainer.empty();
             var domToolbar = $("<div class='dm-toolbar row'></div>");
             if (this.configuration.supportNewItem) {
-                this.domNewItem = $("<div class='col-md-3'><a href='#' class='btn btn-default'>Create new item</a></div>");
+                this.domNewItem = $("<div class='col-md-2'><a href='#' class='btn btn-default'>Create new item</a></div>");
                 $("a", this.domNewItem).click(function () {
                     if (tthis.configuration.onNewItemClicked !== undefined) {
                         tthis.configuration.onNewItemClicked();
@@ -60,9 +61,16 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
                     return false;
                 });
                 domToolbar.append(this.domNewItem);
+                // Updates the layout for the creatable types
+                this.updateLayoutForCreatableTypes();
+            }
+            if (this.configuration.supportViews) {
+                this.domViews = $("<div class='col-md-2'>Loading Views</div>");
+                domToolbar.append(this.domViews);
+                this.updateLayoutForViews();
             }
             if (this.configuration.supportPaging) {
-                var domPaging = $("<div class='col-md-6 text-center form-inline'>"
+                var domPaging = $("<div class='col-md-5 text-center form-inline'>"
                     + "<a href='#' class='dm-prevpage btn btn-default'>&lt;&lt;</a> Page "
                     + "<input class='form-control dm-page-selected' type='textbox' value='1'/> of "
                     + "<span class='dm_totalpages'> </span> "
@@ -144,12 +152,14 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             // Now, the items
             tthis.createRowsForItems(data);
             this.domContainer.append(this.domTable);
-            // Updates the layout for the creatable types
-            this.updateLayoutForCreatableTypes();
         };
         ItemListTable.prototype.setCreatableTypes = function (data) {
             this.createableTypes = data;
             this.updateLayoutForCreatableTypes();
+        };
+        ItemListTable.prototype.setViews = function (views) {
+            this.views = views;
+            this.updateLayoutForViews();
         };
         ItemListTable.prototype.updateLayoutForCreatableTypes = function () {
             if (this.domNewItem === undefined || this.domNewItem === null) {
@@ -160,18 +170,34 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             if (this.createableTypes !== null && this.createableTypes !== undefined) {
                 var data = this.createableTypes;
                 this.domNewItem.empty();
-                var domDropDown = $("<select><option>Create Type...</option><option value=''>Unspecified</option></select>");
+                var domDropDown = $("<select class='form-control'><option>Create Type...</option><option value=''>Unspecified</option></select>");
                 for (var n in data) {
                     var type = data[n];
                     var domOption = $("<option value='" + type.uri + "'></option>");
                     domOption.text(type.name);
-                    /*domOption.click(((innerType: DMI.ClientResponse.IItemModel) => {
-                        return () => alert(innerType.uri);
-                    })(type));*/
                     domDropDown.append(domOption);
                 }
                 domDropDown.change(function () {
                     tthis.configuration.onNewItemClicked(domDropDown.val());
+                });
+                this.domNewItem.append(domDropDown);
+            }
+        };
+        ItemListTable.prototype.updateLayoutForViews = function () {
+            var tthis = this;
+            if (this.domViews !== null && this.domViews !== undefined) {
+                var data = this.views;
+                this.domViews.empty();
+                var domDropDown = $("<select class='form-control'><option>Switch to view...</option><option value='{All}'>All properties</option></select>");
+                for (var n in data) {
+                    var type = data[n];
+                    var domOption = $("<option value='" + type.uri + "'></option>");
+                    domOption.text(type.name);
+                    domDropDown.append(domOption);
+                }
+                domDropDown.change(function () {
+                    alert(domDropDown.val());
+                    // tthis.configuration.onNewItemClicked(domDropDown.val());
                 });
                 this.domNewItem.append(domDropDown);
             }

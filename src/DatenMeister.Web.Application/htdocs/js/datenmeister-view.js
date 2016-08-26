@@ -132,7 +132,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             var _this = this;
             var tthis = this;
             // Creates the layout configuration and the handling on requests of the user
-            var configuration = new DMTables.ItemTableConfiguration();
+            var configuration = new DMTables.ItemListTableConfiguration();
             configuration.onItemEdit = function (url) {
                 if (tthis.onItemEdit !== undefined) {
                     tthis.onItemEdit(ws, extentUrl, url);
@@ -169,6 +169,10 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             };
             DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done(function (data) {
                 table.setCreatableTypes(data.types);
+            });
+            DMClient.ExtentApi.getViews(ws, extentUrl)
+                .done(function (data) {
+                table.setViews(data.views);
             });
             this.setLayoutInformation({
                 type: DMI.Api.PageType.Items,

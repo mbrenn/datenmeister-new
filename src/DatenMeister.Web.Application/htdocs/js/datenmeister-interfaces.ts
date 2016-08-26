@@ -81,7 +81,11 @@ export module ClientResponse {
     }
 
     export interface IExtentCreateableTypeResult {
-        types: Array<IItemModel>
+        types: Array<IItemModel>;
+    }
+
+    export interface IExtentViews {
+        views: Array<IItemModel>;
     }
 }
 

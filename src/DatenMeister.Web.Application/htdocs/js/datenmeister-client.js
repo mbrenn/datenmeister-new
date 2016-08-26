@@ -195,6 +195,22 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             return callback;
         }
         ExtentApi.getCreatableTypes = getCreatableTypes;
+        function getViews(ws, extent) {
+            var callback = $.Deferred();
+            $.ajax({
+                url: "/api/datenmeister/extent/get_views?ws=" + encodeURIComponent(ws)
+                    + "&extent=" + encodeURIComponent(extent),
+                cache: false,
+                success: function (data) {
+                    callback.resolve(data);
+                },
+                error: function (data) {
+                    callback.reject(null);
+                }
+            });
+            return callback;
+        }
+        ExtentApi.getViews = getViews;
     })(ExtentApi = exports.ExtentApi || (exports.ExtentApi = {}));
     var ItemApi;
     (function (ItemApi) {

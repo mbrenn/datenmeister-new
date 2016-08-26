@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
@@ -13,36 +14,46 @@ namespace DatenMeister.Models.Modules.ViewFinder.Helper
     /// </summary>
     public class FormCreator
     {
-        public Form CreateForm(IUriExtent extent)
+        [Flags]
+        public enum CreationMode
         {
-            return CreateForm(extent.elements());
+            ByMetaClass = 1,
+            ByProperties = 2,
+            OnlyPropertiesIfNoMetaClass = 5,
+            All = ByMetaClass | ByProperties
         }
 
-        public Form CreateForm(IReflectiveSequence elements)
+        public Form CreateForm(IUriExtent extent, CreationMode creationMode)
+        {
+            return CreateForm(extent.elements(), creationMode);
+        }
+
+        public Form CreateForm(IReflectiveSequence elements, CreationMode creationMode)
         {
             var result = new Form();
             foreach (var item in elements)
             {
-                CreateForm(result, item);
+                CreateForm(result, item, creationMode);
             }
 
             return result;
         }
 
-        public Form CreateForm(object item)
+        public Form CreateForm(object item, CreationMode creationMode)
         {
             var result = new Form();
-            CreateForm(result, item);
+            CreateForm(result, item, creationMode);
             return result;
         }
 
-        private void CreateForm(Form result, object item)
+        private void CreateForm(Form result, object item, CreationMode creationMode)
         {
             // First phase: Get the properties by using the metaclass
             var asElement = item as IElement;
             var metaClass = asElement?.metaclass;
 
-            if (metaClass != null)
+            if (creationMode.HasFlag(CreationMode.ByMetaClass)
+                && metaClass != null)
             {
                 if (metaClass.isSet(_UML._Classification._Classifier.attribute))
                 {
@@ -73,7 +84,15 @@ namespace DatenMeister.Models.Modules.ViewFinder.Helper
             // Second phase: Get properties by the object iself
             // This item does not have a metaclass and also no properties, so we try to find them by using the item
             var itemAsAllProperties = item as IObjectAllProperties;
-            if (itemAsAllProperties != null)
+
+            var isByProperties = 
+                creationMode.HasFlag(CreationMode.ByProperties);
+            var isOnlyPropertiesIfNoMetaClass = 
+                creationMode.HasFlag(CreationMode.OnlyPropertiesIfNoMetaClass);
+
+            if ((isByProperties 
+                    || (isOnlyPropertiesIfNoMetaClass && metaClass == null))
+                && itemAsAllProperties != null)
             {
                 var properties = itemAsAllProperties.getPropertiesBeingSet();
 

@@ -117,7 +117,7 @@ export class ExtentView extends ViewBase implements IView{
         var callback = $.Deferred();
         $.ajax(
         {
-            url: "/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws),
+            url: `/api/datenmeister/extent/all?ws=${encodeURIComponent(ws)}`,
             cache: false,
             success: (data: Array<DMI.ClientResponse.IExtent>) => {
                 this.createHtmlForWorkspace(ws, data);
@@ -182,7 +182,7 @@ export class ExtentView extends ViewBase implements IView{
         var tthis: ExtentView = this;
 
         // Creates the layout configuration and the handling on requests of the user
-        var configuration: DMTables.ItemTableConfiguration = new DMTables.ItemTableConfiguration();
+        var configuration: DMTables.ItemListTableConfiguration = new DMTables.ItemListTableConfiguration();
         configuration.onItemEdit = (url: string) => {
             if (tthis.onItemEdit !== undefined) {
                 tthis.onItemEdit(ws, extentUrl, url);
@@ -229,6 +229,12 @@ export class ExtentView extends ViewBase implements IView{
             (data) => {
                 table.setCreatableTypes(data.types);
             });
+
+        DMClient.ExtentApi.getViews(ws, extentUrl)
+            .done(
+                (data) => {
+                    table.setViews(data.views);
+                });
 
         this.setLayoutInformation(
             {

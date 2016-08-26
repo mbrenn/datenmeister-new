@@ -347,6 +347,49 @@ namespace DatenMeister.Web.Api
         }
 
         /// <summary>
+        /// Gets all allowed views for the given extent or item. 
+        /// If the item is null, then the views for the given extent will be returned
+        /// </summary>
+        /// <param name="ws">Workspace to be used</param>
+        /// <param name="extent">Extent to be used</param>
+        /// <param name="itemUrl"></param>
+        [Route("get_views")]
+        [HttpGet]
+        public object GetViews(string ws, string extent, string itemUrl = null)
+        {
+            Workspace<IExtent> foundWorkspace;
+            IUriExtent foundExtent;
+            IElement foundItem = null;
+            if (itemUrl != null)
+            {
+                _workspaceCollection.FindItem(
+                    new WorkspaceExtentAndItemReference(ws, extent, itemUrl),
+                    out foundWorkspace,
+                    out foundExtent,
+                    out foundItem);
+            }
+            else
+            {
+                _workspaceCollection.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
+            }
+
+            var foundViews = _viewFinder.FindViews(foundExtent, foundItem);
+
+            return new
+            {
+                views = from type in foundViews
+                    let typeExtent = type.GetUriExtentOf()
+                    select new
+                    {
+                        name = _resolution.GetName(type),
+                        uri = typeExtent.uri(type),
+                        ext = typeExtent.contextURI(),
+                        ws = _workspaceCollection.FindWorkspace(typeExtent)
+                    }
+            };
+        }
+
+        /// <summary>
         /// Returns a list of items being in the query. 
         /// The query contains a filter and a subset of elements
         /// </summary>
@@ -450,7 +493,7 @@ namespace DatenMeister.Web.Api
                 return NotFound();
             }
 
-            var result = _viewFinder.FindView(foundElement, view);
+            var result = _viewFinder.FindView(foundExtent, foundElement, view);
             itemModel.c = DynamicConverter.ToDynamic(result, false);
             itemModel.v = ConvertToJson(foundElement, result);
             itemModel.layer = _dataLayerLogic?.GetDataLayerOfObject(foundElement)?.Name;

@@ -225,6 +225,23 @@ export module ExtentApi {
 
         return callback;
     }
+
+    export function getViews(ws: string, extent: string): JQueryDeferred<DMI.ClientResponse.IExtentViews> {
+        var callback = $.Deferred();
+        $.ajax({
+            url: "/api/datenmeister/extent/get_views?ws=" + encodeURIComponent(ws)
+            + "&extent=" + encodeURIComponent(extent),
+            cache: false,
+            success: data => {
+                callback.resolve(data);
+            },
+            error: data => {
+                callback.reject(null);
+            }
+        });
+
+        return callback;
+    }
 }
 
 export module ItemApi {

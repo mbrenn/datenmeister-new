@@ -1,6 +1,6 @@
 ﻿import * as DMI from "./datenmeister-interfaces"
 
-export class ItemTableConfiguration {
+export class ItemListTableConfiguration {
     onNewItemClicked: (typeUrl?: string) => void;
     onItemEdit: (url: string) => boolean;
     onItemDelete: (url: string, domRow: JQuery) => boolean;
@@ -10,6 +10,7 @@ export class ItemTableConfiguration {
 
     /* true, if new properties shall be supported */
     supportNewItem: boolean;
+    supportViews: boolean;
 
     showColumnForId: boolean;
 
@@ -30,6 +31,7 @@ export class ItemTableConfiguration {
 
         this.supportPaging = true;
         this.itemsPerPage = 20;
+        this.supportViews = true;
     }
 }
 
@@ -38,7 +40,7 @@ export class ItemTableConfiguration {
     * as the datasource
     */
 export class ItemListTable {
-    configuration: ItemTableConfiguration;
+    configuration: ItemListTableConfiguration;
     domContainer: JQuery;
     domTable: JQuery;
     lastProcessedSearchString: string;
@@ -47,13 +49,15 @@ export class ItemListTable {
     currentPage: number;
     totalPages: number;
     domNewItem: JQuery;
-    createableTypes : Array<DMI.ClientResponse.IItemModel>;
+    domViews: JQuery;
+    createableTypes: Array<DMI.ClientResponse.IItemModel>;
+    views: Array<DMI.ClientResponse.IItemModel>;
 
     provider: DMI.Api.IItemsProvider;
 
     currentQuery: DMI.PostModels.IItemTableQuery;
 
-    constructor(dom: JQuery, provider: DMI.Api.IItemsProvider, configuration: ItemTableConfiguration) {
+    constructor(dom: JQuery, provider: DMI.Api.IItemsProvider, configuration: ItemListTableConfiguration) {
         this.domContainer = dom;
         this.provider = provider;
         this.configuration = configuration;
@@ -93,7 +97,7 @@ export class ItemListTable {
         var domToolbar = $("<div class='dm-toolbar row'></div>");
 
         if (this.configuration.supportNewItem) {
-            this.domNewItem = $("<div class='col-md-3'><a href='#' class='btn btn-default'>Create new item</a></div>");
+            this.domNewItem = $("<div class='col-md-2'><a href='#' class='btn btn-default'>Create new item</a></div>");
             $("a", this.domNewItem).click(() => {
                 if (tthis.configuration.onNewItemClicked !== undefined) {
                     tthis.configuration.onNewItemClicked();
@@ -103,10 +107,20 @@ export class ItemListTable {
             });
 
             domToolbar.append(this.domNewItem);
+
+            // Updates the layout for the creatable types
+            this.updateLayoutForCreatableTypes();
+        }
+
+        if (this.configuration.supportViews) {
+            this.domViews = $("<div class='col-md-2'>Loading Views</div>");
+            domToolbar.append(this.domViews);
+
+            this.updateLayoutForViews();
         }
 
         if (this.configuration.supportPaging) {
-            var domPaging = $("<div class='col-md-6 text-center form-inline'>"
+            var domPaging = $("<div class='col-md-5 text-center form-inline'>"
                 + "<a href='#' class='dm-prevpage btn btn-default'>&lt;&lt;</a> Page "
                 + "<input class='form-control dm-page-selected' type='textbox' value='1'/> of "
                 + "<span class='dm_totalpages'> </span> "
@@ -204,14 +218,16 @@ export class ItemListTable {
         // Now, the items
         tthis.createRowsForItems(data);
         this.domContainer.append(this.domTable);
-
-        // Updates the layout for the creatable types
-        this.updateLayoutForCreatableTypes();
     }
 
     setCreatableTypes(data: Array<DMI.ClientResponse.IItemModel>) {
         this.createableTypes = data;
         this.updateLayoutForCreatableTypes();
+    }
+
+    setViews(views: DMI.ClientResponse.IItemModel[]): void {
+        this.views = views;
+        this.updateLayoutForViews();
     }
 
     updateLayoutForCreatableTypes() {
@@ -224,14 +240,11 @@ export class ItemListTable {
         if (this.createableTypes !== null && this.createableTypes !== undefined) {
             var data = this.createableTypes;
             this.domNewItem.empty();
-            var domDropDown = $("<select><option>Create Type...</option><option value=''>Unspecified</option></select>");
+            var domDropDown = $("<select class='form-control'><option>Create Type...</option><option value=''>Unspecified</option></select>");
             for (var n in data) {
                 var type = data[n];
                 var domOption = $("<option value='" + type.uri + "'></option>");
                 domOption.text(type.name);
-                /*domOption.click(((innerType: DMI.ClientResponse.IItemModel) => {
-                    return () => alert(innerType.uri);
-                })(type));*/
 
                 domDropDown.append(domOption);
             }
@@ -244,7 +257,32 @@ export class ItemListTable {
         }
     }
 
-    updateDomForItems(data: DMI.ClientResponse.IItemsContent) {
+    updateLayoutForViews() {
+
+        var tthis = this;
+
+        if (this.domViews !== null && this.domViews !== undefined) {
+            var data = this.views;
+            this.domViews.empty();
+            var domDropDown = $("<select class='form-control'><option>Switch to view...</option><option value='{All}'>All properties</option></select>");
+            for (var n in data) {
+                var type = data[n];
+                var domOption = $("<option value='" + type.uri + "'></option>");
+                domOption.text(type.name);
+
+                domDropDown.append(domOption);
+            }
+
+            domDropDown.change(() => {
+                alert(domDropDown.val());
+                // tthis.configuration.onNewItemClicked(domDropDown.val());
+            });
+
+            this.domNewItem.append(domDropDown);
+        }
+    }
+
+    updateDomForItems(data: DMI.ClientResponse.IItemsContent): void {
         $("tr", this.domTable).has("td")
             .remove();
         this.createRowsForItems(data);
@@ -524,7 +562,7 @@ function createDomForContent(
     item: DMI.ClientResponse.IDataTableItem,
     column: DMI.ClientResponse.IDataField,
     inEditMode?: boolean,
-    configuration?: ItemTableConfiguration | ItemContentConfiguration) {
+    configuration?: ItemListTableConfiguration | ItemContentConfiguration) {
     if (inEditMode === undefined) {
         inEditMode = false;
     }

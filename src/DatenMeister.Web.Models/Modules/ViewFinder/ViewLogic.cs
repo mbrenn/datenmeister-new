@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using DatenMeister.DataLayer;
+using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
@@ -76,21 +77,34 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// <returns>The found view or null if not found</returns>
         public IObject GetView(string viewname)
         {
+            var views = GetAllViews();
+            return views.WhenPropertyIs("name", viewname).FirstOrDefault() as IObject;
+        }
+
+        /// <summary>
+        /// Gets all forms and returns them as an enumeration
+        /// </summary>
+        /// <returns>Enumeration of forms</returns>
+        public IReflectiveCollection GetAllViews()
+        {
             var viewExtent = GetViewExtent();
-            return viewExtent.elements().WhenPropertyIs("name", viewname).FirstOrDefault() as IObject;
+            var formAndFields = GetFormAndFieldInstance(viewExtent);
+
+            return viewExtent.elements()
+                .WhenMetaClassIs(formAndFields.__Form);
         }
 
         /// <summary>
         /// Finds the association view for the given element in the detail view
         /// </summary>
+        /// <param name="extent">Extent where the given type is located</param>
         /// <param name="metaClass">Metaclass to be queried</param>
-        /// <param name="detail">View type</param>
+        /// <param name="type">View type</param>
         /// <returns>The found element</returns>
-        public IElement FindViewFor(IElement metaClass, ViewType type)
+        public IElement FindViewFor(IUriExtent extent, IElement metaClass, ViewType type)
         {
             var viewExtent = GetViewExtent();
-            var formAndFields = _dataLayerLogic.Get<_FormAndFields>(
-                _dataLayerLogic.GetDataLayerOfExtent(viewExtent));
+            var formAndFields = GetFormAndFieldInstance(viewExtent);
 
             foreach (
                 var element in viewExtent.elements().
@@ -107,6 +121,18 @@ namespace DatenMeister.Models.Modules.ViewFinder
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets the form and field instance which contains the references to 
+        /// the metaclasses
+        /// </summary>
+        /// <param name="viewExtent">Extent of the view</param>
+        /// <returns></returns>
+        private _FormAndFields GetFormAndFieldInstance(IUriExtent viewExtent)
+        {
+            return  _dataLayerLogic.Get<_FormAndFields>(
+                _dataLayerLogic.GetDataLayerOfExtent(viewExtent));
         }
     }
 }

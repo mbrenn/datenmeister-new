@@ -150,6 +150,13 @@ namespace DatenMeister.EMOF.Helper
             throw new ArgumentException($"The following element does not implement the IObjectKnowsExtent interface: {value}");
         }
 
+        /// <summary>
+        /// Gets the extent of the given object as IUriExtent interface object. 
+        /// If the uriextent cannot be retrieved due to object incompatibilities, 
+        /// an exception will be thrown
+        /// </summary>
+        /// <param name="value">Value to be queried</param>
+        /// <returns>null or the given extent</returns>
         public static IUriExtent GetUriExtentOf(this IObject value)
         {
             var result = GetExtentOf(value);

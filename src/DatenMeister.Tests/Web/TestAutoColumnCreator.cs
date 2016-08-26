@@ -26,7 +26,7 @@ namespace DatenMeister.Tests.Web
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
             var creator = new FormCreator();
-            var result = creator.CreateForm(extent);
+            var result = creator.CreateForm(extent, FormCreator.CreationMode.All);
             Assert.That(result, Is.Not.Null);
             Assert.That(result.fields.Count(), Is.EqualTo(2));
             var firstColumn = result.fields.FirstOrDefault(x => x.name == "zip");
@@ -67,7 +67,7 @@ namespace DatenMeister.Tests.Web
 
             // Execute the stuff
             var creator = new FormCreator();
-            var result = creator.CreateForm(extent);
+            var result = creator.CreateForm(extent, FormCreator.CreationMode.All);
             Assert.That(result, Is.Not.Null);
             Assert.That(result.fields.Count(), Is.EqualTo(3));
             var firstColumn = result.fields.FirstOrDefault(x => x.name == "zip");

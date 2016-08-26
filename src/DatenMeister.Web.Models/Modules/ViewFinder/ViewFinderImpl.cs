@@ -1,9 +1,11 @@
-﻿using DatenMeister.EMOF.Interface.Identifiers;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
+using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.DotNet;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Models.Modules.ViewFinder
 {
@@ -15,17 +17,14 @@ namespace DatenMeister.Models.Modules.ViewFinder
     {
         private readonly FormCreator _formCreator;
         private readonly IDotNetTypeLookup _dotNetTypeLookup;
-        private readonly IWorkspaceCollection _workspaceCollection;
         private readonly ViewLogic _viewLogic;
 
         public ViewFinderImpl(
-            IDotNetTypeLookup dotNetTypeLookup, 
-            IWorkspaceCollection workspaceCollection,
+            IDotNetTypeLookup dotNetTypeLookup,
             ViewLogic viewLogic)
         {
             _formCreator = new FormCreator();
             _dotNetTypeLookup = dotNetTypeLookup;
-            _workspaceCollection = workspaceCollection;
             _viewLogic = viewLogic;
         }
 
@@ -39,7 +38,7 @@ namespace DatenMeister.Models.Modules.ViewFinder
         {
             if (string.IsNullOrEmpty(viewname))
             {
-                var view = _formCreator.CreateForm(extent);
+                var view = _formCreator.CreateForm(extent, FormCreator.CreationMode.All);
                 return _dotNetTypeLookup.CreateDotNetElement(view);
             }
 
@@ -50,30 +49,58 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// Finds a specific view by the given value and the given viewname. 
         /// If the given viewname is empty or null, the default view will be returned
         /// </summary>
+        /// <param name="extent">Owning extent to be used to find perfect view</param
         /// <param name="value">Value whose view need to be created</param>
         /// <param name="viewname">The view, that shall be done</param>
         /// <returns>The view itself</returns>
-        public IObject FindView(IObject value, string viewname)
+        public IObject FindView(IUriExtent extent, IObject value, string viewname)
         {
+            Form form;
+            if (viewname == "{All}")
+            {
+                form = _formCreator.CreateForm(
+                    value,
+                    FormCreator.CreationMode.All);
+                return _dotNetTypeLookup.CreateDotNetElement(form);
+            }
+
+            if (!string.IsNullOrEmpty(viewname))
+            {
+                var result =  _viewLogic.GetView(viewname);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
 
             var valueAsElement = value as IElement;
+            var metaClass = valueAsElement?.metaclass;
+
             if (valueAsElement != null)
             {
-                var metaClass = valueAsElement.metaclass;
-                var viewResult = _viewLogic.FindViewFor(metaClass, ViewType.Detail);
+                // Check, if we have a specific form
+                var viewResult = _viewLogic.FindViewFor(extent, metaClass, ViewType.Detail);
                 if (viewResult != null)
                 {
                     return viewResult;
                 }
             }
 
-            if (string.IsNullOrEmpty(viewname))
-            {
-                var view = _formCreator.CreateForm(value);
-                return _dotNetTypeLookup.CreateDotNetElement(view);
-            }
-            
-            return _viewLogic.GetView(viewname);
+            form = _formCreator.CreateForm(
+                value,
+                FormCreator.CreationMode.OnlyPropertiesIfNoMetaClass);
+            return _dotNetTypeLookup.CreateDotNetElement(form);
+        }
+
+        /// <summary>
+        /// Finds all views that are allowed for the given extent and value
+        /// </summary>
+        /// <param name="extent">Extent being queried</param>
+        /// <param name="value">Value being queried</param>
+        /// <returns>Enumeration of objects</returns>
+        public IEnumerable<IElement> FindViews(IUriExtent extent, IObject value)
+        {
+            return _viewLogic.GetAllViews().Select(x => x as IElement);
         }
     }
 }

@@ -15,7 +15,9 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="typeLookup">Type lookup being used</param>
         /// <param name="value">Value to be converted</param>
-        public static DotNetElement CreateDotNetElement(this IDotNetTypeLookup typeLookup, object value)
+        /// <param name="id">If set, the id will be set to the given element</param>
+        public static DotNetElement CreateDotNetElement(this IDotNetTypeLookup typeLookup, object value,
+            string id = null)
         {
             if (value == null)
             {
@@ -29,7 +31,13 @@ namespace DatenMeister.Provider.DotNet
                     $"The type '{value.GetType().FullName}' is not known to the DotNetTypeLookup");
             }
 
-            return new DotNetElement(typeLookup, value, metaclass);
+            var result= new DotNetElement(typeLookup, value, metaclass);
+            if (!string.IsNullOrEmpty(id))
+            {
+                result.Id = id;
+            }
+
+            return result;
         }
 
         /// <summary>

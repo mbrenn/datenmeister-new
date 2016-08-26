@@ -14,9 +14,9 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// Finds the view for a specific extent in the list view
         /// </summary>
         /// <param name="extent">Value for whom the extent shall be created</param>
-        /// <param name="viewname">Name of the view</param>
+        /// <param name="viewUrl">Name of the view</param>
         /// <returns>Found view or null</returns>
-        IObject FindView(IUriExtent extent, string viewname);
+        IObject FindView(IUriExtent extent, string viewUrl);
 
         /// <summary>
         /// Finds the view for a specific object in a detail view

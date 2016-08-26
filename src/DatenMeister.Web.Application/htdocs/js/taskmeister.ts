@@ -21,7 +21,7 @@ export function load(plugin: DMI.Api.PluginParameter): DMI.Api.IPluginResult {
                     "Show Tasks",
                     "...,",
                     () => {
-                        ev.layout.navigateToItems(ev.workspace, ev.extent, "Views.Tasks.Default");
+                        ev.layout.navigateToItems(ev.workspace, ev.extent, "dm:///management/views#Views.Activity.Detail");
                     });
             }
         }

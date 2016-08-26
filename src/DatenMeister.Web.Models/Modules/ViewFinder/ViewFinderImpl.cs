@@ -32,17 +32,17 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// Finds the specific view by name
         /// </summary>
         /// <param name="extent">Extent to be shown</param>
-        /// <param name="viewname">Name of the view</param>
+        /// <param name="viewUrl">Name of the view</param>
         /// <returns>The found view</returns>
-        public IObject FindView(IUriExtent extent, string viewname)
+        public IObject FindView(IUriExtent extent, string viewUrl)
         {
-            if (string.IsNullOrEmpty(viewname))
+            if (string.IsNullOrEmpty(viewUrl))
             {
                 var view = _formCreator.CreateForm(extent, FormCreator.CreationMode.All);
                 return _dotNetTypeLookup.CreateDotNetElement(view);
             }
 
-            return _viewLogic.GetView(viewname);
+            return _viewLogic.GetViewByUrl(viewUrl);
         }
 
         /// <summary>
@@ -51,12 +51,12 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// </summary>
         /// <param name="extent">Owning extent to be used to find perfect view</param
         /// <param name="value">Value whose view need to be created</param>
-        /// <param name="viewname">The view, that shall be done</param>
+        /// <param name="viewUrl">The view, that shall be done</param>
         /// <returns>The view itself</returns>
-        public IObject FindView(IUriExtent extent, IObject value, string viewname)
+        public IObject FindView(IUriExtent extent, IObject value, string viewUrl)
         {
             Form form;
-            if (viewname == "{All}")
+            if (viewUrl == "{All}")
             {
                 form = _formCreator.CreateForm(
                     value,
@@ -64,9 +64,9 @@ namespace DatenMeister.Models.Modules.ViewFinder
                 return _dotNetTypeLookup.CreateDotNetElement(form);
             }
 
-            if (!string.IsNullOrEmpty(viewname))
+            if (!string.IsNullOrEmpty(viewUrl))
             {
-                var result =  _viewLogic.GetView(viewname);
+                var result =  _viewLogic.GetViewByUrl(viewUrl);
                 if (result != null)
                 {
                     return result;

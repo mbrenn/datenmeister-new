@@ -417,7 +417,7 @@ namespace DatenMeister.Web.Api
 
             var totalItems = foundExtent.elements();
             var foundItems = totalItems;
-
+            
             var result = _viewFinder.FindView(foundExtent, view);
             var properties = 
                 result.GetAsReflectiveCollection(

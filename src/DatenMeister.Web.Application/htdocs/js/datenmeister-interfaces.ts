@@ -252,11 +252,11 @@ export namespace Api {
         renavigate(): void;
         navigateToWorkspaces(): void;
         navigateToExtents(workspaceId: string): void;
-        navigateToItems(ws: string, extentUrl: string, viewname?: string): void;
+        navigateToItems(ws: string, extentUrl: string, viewUrl?: string): void;
         navigateToItem(ws: string,
             extentUrl: string,
             itemUrl: string,
-            viewname?: string,
+            viewUrl?: string,
             settings?: View.IItemViewSettings): void;
 
         setStatus(statusDom: JQuery): void;

@@ -12,7 +12,7 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
                         });
                     });
                     tab.addIcon("Show Tasks", "...,", function () {
-                        ev.layout.navigateToItems(ev.workspace, ev.extent, "Views.Tasks.Default");
+                        ev.layout.navigateToItems(ev.workspace, ev.extent, "dm:///management/views#Views.Activity.Detail");
                     });
                 }
             }

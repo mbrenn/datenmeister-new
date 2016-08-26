@@ -73,12 +73,11 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// <summary>
         /// Gets the view as given by the name of the view
         /// </summary>
-        /// <param name="viewname">Name of the view to be queried</param>
+        /// <param name="url">The Url to be queried</param>
         /// <returns>The found view or null if not found</returns>
-        public IObject GetView(string viewname)
+        public IObject GetViewByUrl(string url)
         {
-            var views = GetAllViews();
-            return views.WhenPropertyIs("name", viewname).FirstOrDefault() as IObject;
+            return GetViewExtent().element(url);
         }
 
         /// <summary>

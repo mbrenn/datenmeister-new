@@ -107,5 +107,37 @@ namespace DatenMeister.Runtime
         {
             return propertyValue is IElement;
         }
+
+        public static bool IsOfNumber(object property)
+        {
+            var type = property.GetType();
+            return IsNumber(type);
+        }
+
+        private static bool IsNumber(Type type)
+        {
+            return type == typeof(short)
+                   || type == typeof(int)
+                   || type == typeof(long)
+                   || type == typeof(float)
+                   || type == typeof(double)
+                   || type == typeof(decimal);
+        }
+
+        /// <summary>
+        /// True, if the given element is a boolean
+        /// </summary>
+        /// <param name="property">Property to be evaluated</param>
+        /// <returns>true, if this is a boolean</returns>
+        public static bool IsOfBoolean(object property)
+        {
+            var type = typeof(bool);
+            return IsBoolean(type);
+        }
+
+        private static bool IsBoolean(Type type)
+        {
+            return type == typeof(bool);
+        }
     }
 }

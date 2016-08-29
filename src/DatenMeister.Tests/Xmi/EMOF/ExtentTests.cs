@@ -102,7 +102,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var mofObject2 = new XmlElement(new XElement("item"));
             var mofObject3 = new XmlElement(new XElement("item"));
 
-            var extent = new XmlUriExtent("dm:///test/");
+            var extent = new XmlUriExtent(new WorkspaceCollection(),  "dm:///test/");
             Assert.That(extent.contextURI(), Is.EqualTo("dm:///test/"));
 
             // At the moment, it is not defined whether to contain or not contain. Just to increase coverage
@@ -242,8 +242,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 var uml = dataLayerLogic.Get<_UML>(umlDataLayer);
                 Assert.That(uml, Is.Not.Null);
 
-                var extent = new XmlUriExtent("dm:///test");
-                extent.Workspaces = scope.Resolve<IWorkspaceCollection>();
+                var extent = new XmlUriExtent(scope.Resolve<IWorkspaceCollection>(), "dm:///test");
                 dataLayerLogic.AssignToDataLayer(extent, dataLayers.Types);
 
                 var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(scope, extent);

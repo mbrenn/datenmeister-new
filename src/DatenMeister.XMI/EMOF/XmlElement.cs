@@ -6,6 +6,7 @@ using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.XMI.EMOF
@@ -127,6 +128,12 @@ namespace DatenMeister.XMI.EMOF
 
         public void set(string property, object value)
         {
+            if (value == null)
+            {
+                unset(property);
+                return;
+            }
+
             var propertyAsString = ReturnObjectAsString(property);
             _node.SetAttributeValue(propertyAsString, ReturnObjectAsString(value));
         }
@@ -140,6 +147,16 @@ namespace DatenMeister.XMI.EMOF
         private string ReturnObjectAsString(object property)
         {
             if (property is string)
+            {
+                return property.ToString();
+            }
+
+            if (DotNetHelper.IsOfBoolean(property))
+            {
+                return property.ToString();
+            }
+
+            if (DotNetHelper.IsOfNumber(property))
             {
                 return property.ToString();
             }
@@ -169,14 +186,14 @@ namespace DatenMeister.XMI.EMOF
             }
 
             var extent = GetExtent();
-            if (extent == null)
+            if (extent?.Workspaces == null)
             {
                 // We have it, now try to find it. 
                 // First of all, we need to get a list of all extents in the meta layer
                 throw new InvalidOperationException("We have a metaclass but cannot find it due to missing extent");
             }
 
-            return extent.Workspaces?.FindItem(attribute.Value);
+            return extent.Workspaces.FindItem(attribute.Value);
         }
 
         private XmlUriExtent GetExtent()

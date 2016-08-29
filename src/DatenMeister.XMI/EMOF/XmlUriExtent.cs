@@ -22,16 +22,20 @@ namespace DatenMeister.XMI.EMOF
 
         public IWorkspaceCollection Workspaces { get; set; }
 
-        public XmlUriExtent(string uri, string rootNodeName = DefaultRootNodeName)
+        public XmlUriExtent(IWorkspaceCollection workspaces, string uri, string rootNodeName = DefaultRootNodeName)
         {
+            if (workspaces == null) throw new ArgumentNullException(nameof(workspaces));
+            Workspaces = workspaces;
             _document = new XDocument();
             _rootNode = new XElement(rootNodeName);
             _document.Add(_rootNode);
             _rootNode.SetAttributeValue(_urlPropertyName, uri);
         }
 
-        public XmlUriExtent(XDocument document, string uri, string rootNodeName = DefaultRootNodeName)
+        public XmlUriExtent(IWorkspaceCollection workspaces, XDocument document, string uri, string rootNodeName = DefaultRootNodeName)
         {
+            if (workspaces == null) throw new ArgumentNullException(nameof(workspaces));
+            Workspaces = workspaces;
             _document = document;
             _rootNode = _document.Element(rootNodeName);
 

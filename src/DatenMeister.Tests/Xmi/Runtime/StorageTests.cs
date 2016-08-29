@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.XMI.EMOF;
 using DatenMeister.XMI.ExtentStorage;
 using NUnit.Framework;
@@ -21,7 +22,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
             mofObject2.set("name", "Martina");
             mofObject3.set("name", "Martini");
 
-            var extent = new XmlUriExtent("dm:///test/");
+            var extent = new XmlUriExtent(new WorkspaceCollection(),  "dm:///test/");
             Assert.That(extent.contextURI(), Is.EqualTo("dm:///test/"));
 
             extent.elements().add(mofObject1);

@@ -341,7 +341,7 @@ namespace DatenMeister.Web.Api
                         name = _resolution.GetName(type),
                         uri = typeExtent.uri(type),
                         ext = typeExtent.contextURI(),
-                        ws = _workspaceCollection.FindWorkspace(typeExtent)
+                        ws = _workspaceCollection.FindWorkspace(typeExtent)?.id
                     }
             };
         }
@@ -384,7 +384,7 @@ namespace DatenMeister.Web.Api
                         name = _resolution.GetName(type),
                         uri = typeExtent.uri(type),
                         ext = typeExtent.contextURI(),
-                        ws = _workspaceCollection.FindWorkspace(typeExtent)
+                        ws = _workspaceCollection.FindWorkspace(typeExtent)?.id
                     }
             };
         }

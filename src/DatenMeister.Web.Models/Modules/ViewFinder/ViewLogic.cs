@@ -8,6 +8,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.XMI.EMOF;
 
 namespace DatenMeister.Models.Modules.ViewFinder
 {
@@ -35,8 +36,8 @@ namespace DatenMeister.Models.Modules.ViewFinder
         public void Integrate()
         {
             var mgmtWorkspace = _workspaceCollection.GetWorkspace(WorkspaceNames.Management);
-            var dotNetUriExtent = new DotNetExtent(UriViewExtent, _dotNetTypeLookup);
 
+            var dotNetUriExtent = new XmlUriExtent(_workspaceCollection, UriViewExtent);
             mgmtWorkspace.AddExtent(dotNetUriExtent);
         }
 

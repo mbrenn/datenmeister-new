@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.EMOF.Interface.Common;
+using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Copier;
 
 namespace DatenMeister.XMI.EMOF
 {
@@ -113,12 +115,19 @@ namespace DatenMeister.XMI.EMOF
         private XmlElement ConvertValueAsXmlObject(object value)
         {
             var valueAsXmlObject = value as XmlElement;
-            if (valueAsXmlObject == null)
+            if (valueAsXmlObject != null)
             {
-                throw new InvalidOperationException("Value is not an XmlObject: " + value);
+                return valueAsXmlObject;
             }
 
-            return valueAsXmlObject;
+            var valueAsElement = value as IElement;
+            if (valueAsElement != null)
+            {
+                var copier = new ObjectCopier(new XmlFactory());
+                return copier.Copy(valueAsElement) as XmlElement;
+            }
+
+            throw new InvalidOperationException("Value is not an XmlObject or an IElement: " + value);
         }
     }
 }

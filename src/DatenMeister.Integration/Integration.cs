@@ -134,7 +134,7 @@ namespace DatenMeister.Integration
                     fields,
                     dotNetTypeLookup);
 
-                var viewLogic = new ViewLogic(workspaceCollection, dotNetTypeLookup, dataLayerLogic);
+                var viewLogic = new ViewLogic(workspaceCollection, dataLayerLogic);
                 viewLogic.Integrate();
 
                 // Boots up the typical DatenMeister Environment  

@@ -167,6 +167,10 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                     _this.onItemCreated(ws, extentUrl, innerData.newuri);
                 });
             };
+            configuration.onViewChanged = function (viewUrl) {
+                query.view = viewUrl;
+                tthis.loadAndCreateHtmlForExtent(ws, extentUrl, query);
+            };
             DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done(function (data) {
                 table.setCreatableTypes(data.types);
             });

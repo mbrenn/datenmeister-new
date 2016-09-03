@@ -419,9 +419,10 @@ namespace DatenMeister.Web.Api
             var foundItems = totalItems;
             
             var result = _viewFinder.FindView(foundExtent, view);
-            var properties = 
+            var fields =
                 result.GetAsReflectiveCollection(
-                    _FormAndFields._Form.fields)
+                    _FormAndFields._Form.fields);
+            var properties = fields
                 .Select(x => x.AsIObject().get("name").ToString())
                 .ToList();
             /*var result = _formCreator.CreateFields(foundExtent);

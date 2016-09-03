@@ -13,16 +13,21 @@ namespace DatenMeister.XMI.EMOF
     {
         private readonly XmlUriExtent _extent;
         private readonly XElement _node;
+        /// <summary>
+        /// Defines the name of the property that is covered by the reflective sequence
+        /// </summary>
+        private string _propertyName;
 
-        public XmlReflectiveSequence(XmlUriExtent extent, XElement node)
+        public XmlReflectiveSequence(XmlUriExtent extent, XElement node, string propertyName)
         {
             _extent = extent;
             _node = node;
+            _propertyName = propertyName;
         }
 
         public IEnumerator<object> GetEnumerator()
         {
-            foreach (var subNode in _node.Elements())
+            foreach (var subNode in _node.Elements(_propertyName))
             {
                 yield return new XmlElement(subNode, _extent);
             }
@@ -55,7 +60,7 @@ namespace DatenMeister.XMI.EMOF
         public bool remove(object value)
         {
             var valueAsXmlObject = ConvertValueAsXmlObject(value);
-            foreach (var subElement in _node.Elements())
+            foreach (var subElement in _node.Elements(_propertyName))
             {
                 if (subElement.Equals(valueAsXmlObject.XmlNode))
                 {
@@ -69,7 +74,7 @@ namespace DatenMeister.XMI.EMOF
 
         public int size()
         {
-            return _node.Elements().Count();
+            return _node.Elements(_propertyName).Count();
         }
 
         public void add(int index, object value)
@@ -81,14 +86,14 @@ namespace DatenMeister.XMI.EMOF
             else
             {
                 var valueAsXmlObject = ConvertValueAsXmlObject(value);
-                var addedBefore = _node.Elements().ElementAt(index);
+                var addedBefore = _node.Elements(_propertyName).ElementAt(index);
                 addedBefore.AddBeforeSelf(valueAsXmlObject.XmlNode);
             }
         }
 
         public object get(int index)
         {
-            return new XmlElement(_node.Elements().ElementAt(index), _extent);
+            return new XmlElement(_node.Elements(_propertyName).ElementAt(index), _extent);
         }
 
         public void remove(int index)
@@ -100,7 +105,7 @@ namespace DatenMeister.XMI.EMOF
         public object set(int index, object value)
         {
             var valueAsXmlObject = ConvertValueAsXmlObject(value);
-            var toBeReplaced = _node.Elements().ElementAt(index);
+            var toBeReplaced = _node.Elements(_propertyName).ElementAt(index);
             toBeReplaced.AddBeforeSelf(valueAsXmlObject.XmlNode);
             toBeReplaced.Remove();
 
@@ -123,7 +128,7 @@ namespace DatenMeister.XMI.EMOF
             var valueAsElement = value as IElement;
             if (valueAsElement != null)
             {
-                var copier = new ObjectCopier(new XmlFactory());
+                var copier = new ObjectCopier(new XmlFactory { Owner = _extent, ElementName = _propertyName });
                 return copier.Copy(valueAsElement) as XmlElement;
             }
 

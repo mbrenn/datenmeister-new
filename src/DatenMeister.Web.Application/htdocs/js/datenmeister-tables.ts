@@ -2,6 +2,7 @@
 
 export class ItemListTableConfiguration {
     onNewItemClicked: (typeUrl?: string) => void;
+    onViewChanged: (typeUrl?: string) => void;
     onItemEdit: (url: string) => boolean;
     onItemDelete: (url: string, domRow: JQuery) => boolean;
     onItemView: (url: string) => boolean;
@@ -258,9 +259,7 @@ export class ItemListTable {
     }
 
     updateLayoutForViews() {
-
         var tthis = this;
-
         if (this.domViews !== null && this.domViews !== undefined) {
             var data = this.views;
             this.domViews.empty();
@@ -274,11 +273,11 @@ export class ItemListTable {
             }
 
             domDropDown.change(() => {
-                alert(domDropDown.val());
-                // tthis.configuration.onNewItemClicked(domDropDown.val());
+                // User clicked on a new view
+                tthis.configuration.onViewChanged(domDropDown.val());
             });
 
-            this.domNewItem.append(domDropDown);
+            this.domViews.append(domDropDown);
         }
     }
 

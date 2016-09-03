@@ -10,8 +10,15 @@ namespace DatenMeister.EMOF.Helper
     ///     This query returns all objects which are descendents (and sub-descendents)
     ///     of an extent, an object or a reflecive collection
     /// </summary>
-    public static class AllDescendentsQuery
+    public class AllDescendentsQuery
     {
+        private HashSet<IObject> _alreadyVisited = new HashSet<IObject>();
+
+        private AllDescendentsQuery()
+        {
+                
+        }
+
         /// <summary>
         ///     Gets all descendents of an object, but does not
         ///     return this object itself
@@ -20,6 +27,27 @@ namespace DatenMeister.EMOF.Helper
         /// <returns>An enumeration of all object and its descendents</returns>
         public static IEnumerable<IObject> GetDescendents(IObject element)
         {
+            var inner = new AllDescendentsQuery();
+            return inner.GetDescendentsInternal(element);
+        }
+
+        public static IEnumerable<IObject> GetDescendents(IExtent extent)
+        {
+            var inner = new AllDescendentsQuery();
+            return inner.GetDescendentsInternal(extent.elements());
+        }
+
+        public IEnumerable<IObject> GetDescendentsInternal(IObject element)
+        {
+            if (_alreadyVisited.Contains(element))
+            {
+                yield break;
+            }
+
+            _alreadyVisited.Add(element);
+
+
+            // Now go through the list
             var elementAsIObjectExt = element as IObjectAllProperties;
             if (elementAsIObjectExt == null)
             {
@@ -41,7 +69,7 @@ namespace DatenMeister.EMOF.Helper
                     // enumeration, but we would like to skip them. Their content
                     // would be skipped either.
                     var valueAsEnumerable = value as IEnumerable;
-                    foreach (var innerValue in GetDescendents(valueAsEnumerable))
+                    foreach (var innerValue in GetDescendentsInternal(valueAsEnumerable))
                     {
                         yield return innerValue;
                     }
@@ -49,7 +77,13 @@ namespace DatenMeister.EMOF.Helper
             }
         }
 
-        public static IEnumerable<IObject> GetDescendents(IEnumerable valueAsEnumerable)
+        public static IEnumerable<IObject> GetDescendents(IEnumerable enumeration)
+        {
+            var inner = new AllDescendentsQuery();
+            return inner.GetDescendentsInternal(enumeration);
+        } 
+
+        public IEnumerable<IObject> GetDescendentsInternal(IEnumerable valueAsEnumerable)
         {
             foreach (var element in valueAsEnumerable)
             {
@@ -58,17 +92,12 @@ namespace DatenMeister.EMOF.Helper
                     var elementAsIObject = element as IObject;
                     yield return elementAsIObject;
 
-                    foreach (var value in GetDescendents(elementAsIObject))
+                    foreach (var value in GetDescendentsInternal(elementAsIObject))
                     {
                         yield return value;
                     }
                 }
             }
-        }
-
-        public static IEnumerable<IObject> GetDescendents(IExtent extent)
-        {
-            return GetDescendents(extent.elements());
         }
     }
 }

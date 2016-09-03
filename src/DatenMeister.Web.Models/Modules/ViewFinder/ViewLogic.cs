@@ -20,13 +20,11 @@ namespace DatenMeister.Models.Modules.ViewFinder
         public const string UriViewExtent = "dm:///management/views";
 
         private readonly IWorkspaceCollection _workspaceCollection;
-        private readonly IDotNetTypeLookup _dotNetTypeLookup;
         private readonly IDataLayerLogic _dataLayerLogic;
 
-        public ViewLogic(IWorkspaceCollection workspaceCollection, IDotNetTypeLookup dotNetTypeLookup, IDataLayerLogic dataLayerLogic)
+        public ViewLogic(IWorkspaceCollection workspaceCollection, IDataLayerLogic dataLayerLogic)
         {
             _workspaceCollection = workspaceCollection;
-            _dotNetTypeLookup = dotNetTypeLookup;
             _dataLayerLogic = dataLayerLogic;
         }
 
@@ -49,11 +47,6 @@ namespace DatenMeister.Models.Modules.ViewFinder
         public void Add(IObject view)
         {
             var foundExtent = GetViewExtent();
-
-            if (!(view is DotNetElement))
-            {
-                throw new ArgumentException("Currently only views as DotNetElements are supported");
-            }
 
             foundExtent.elements().add(view);
         }

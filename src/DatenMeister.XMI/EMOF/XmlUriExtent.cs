@@ -13,6 +13,7 @@ namespace DatenMeister.XMI.EMOF
     public class XmlUriExtent : IUriExtent
     {
         public const string DefaultRootNodeName = "xmi";
+        public const string DefaultElementNodeName = "item";
         private readonly string _urlPropertyName = "uri";
 
         private readonly XDocument _document;
@@ -54,7 +55,7 @@ namespace DatenMeister.XMI.EMOF
 
         public IReflectiveSequence elements()
         {
-            return new XmlReflectiveSequence(this, _rootNode);
+            return new XmlReflectiveSequence(this, _rootNode, DefaultElementNodeName);
         }
 
         public string contextURI()

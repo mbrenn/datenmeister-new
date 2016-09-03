@@ -14,14 +14,10 @@ namespace DatenMeister.XMI.ExtentStorage
     public class XmiStorage : IExtentStorage
     {
         private readonly IWorkspaceCollection _workspaceCollection;
-
-        public XmiStorage()
-        {
-            
-        }
-
+        
         public XmiStorage(IWorkspaceCollection workspaceCollection)
         {
+            if (workspaceCollection == null) throw new ArgumentNullException(nameof(workspaceCollection));
             _workspaceCollection = workspaceCollection;
         }
 

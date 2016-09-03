@@ -196,10 +196,10 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
                     domDropDown.append(domOption);
                 }
                 domDropDown.change(function () {
-                    alert(domDropDown.val());
-                    // tthis.configuration.onNewItemClicked(domDropDown.val());
+                    // User clicked on a new view
+                    tthis.configuration.onViewChanged(domDropDown.val());
                 });
-                this.domNewItem.append(domDropDown);
+                this.domViews.append(domDropDown);
             }
         };
         ItemListTable.prototype.updateDomForItems = function (data) {

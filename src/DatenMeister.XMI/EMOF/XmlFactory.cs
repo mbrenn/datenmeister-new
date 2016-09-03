@@ -1,28 +1,38 @@
 ﻿using System;
 using System.Xml.Linq;
 using DatenMeister.EMOF.Helper;
+using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 
 namespace DatenMeister.XMI.EMOF
 {
     public class XmlFactory : IFactory
     {
-        public XmlFactory()
-        {
-            package = null;
-        }
+        public XmlUriExtent Owner { get; set; }
+
+        public string ElementName { get; set; } = "item";
 
         public IElement package { get; }
+        
+        public XmlFactory()
+        {
+        }
+
+        /*public XmlFactory(XmlUriExtent owner)
+        {
+            _owner = owner;
+            package = null;
+        }*/
 
         public IElement create(IElement metaClass)
         {
-            var node = new XElement("item");
+            var node = new XElement(ElementName);
             if (metaClass != null)
             {
                 node.Add(new XAttribute(XmlElement.TypeAttribute, metaClass.GetUri()));
             }
 
-            return new XmlElement(node);
+            return new XmlElement(node, Owner);
         }
 
         public IObject createFromString(IElement dataType, string value)

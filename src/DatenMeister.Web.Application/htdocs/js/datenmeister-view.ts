@@ -224,6 +224,11 @@ export class ExtentView extends ViewBase implements IView{
                     this.onItemCreated(ws, extentUrl, innerData.newuri);
                 });
         };
+
+        configuration.onViewChanged = (viewUrl) => {
+            query.view = viewUrl;
+            tthis.loadAndCreateHtmlForExtent(ws, extentUrl, query);
+        };
         
         DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done(
             (data) => {

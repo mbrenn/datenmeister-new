@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -7,6 +8,7 @@ using System.Xml.Linq;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.XMI.EMOF
@@ -117,6 +119,14 @@ namespace DatenMeister.XMI.EMOF
         public object get(string property)
         {
             var propertyAsString = ReturnObjectAsString(property);
+            // Check, if there are subelements as the given property
+            if (_node.Elements(propertyAsString).Any())
+            {
+                var xmiReflection = new XmlReflectiveSequence(_owningExtent, _node, property);
+                return xmiReflection;
+            }
+
+            // Check, if there is the attribute, otherwise null
             return _node.Attribute(propertyAsString)?.Value;
         }
 
@@ -135,13 +145,54 @@ namespace DatenMeister.XMI.EMOF
             }
 
             var propertyAsString = ReturnObjectAsString(property);
-            _node.SetAttributeValue(propertyAsString, ReturnObjectAsString(value));
+
+            if (DotNetHelper.IsOfEnumeration(value))
+            {
+                // Remove attribute and remove element
+                UnsetProperty(propertyAsString);
+
+                // Now create the elements
+                var valueAsEnumeration = (IEnumerable) value;
+                foreach (var innerValue in valueAsEnumeration)
+                {
+                    var innerValueAsIElement = innerValue as IElement;
+                    if (innerValueAsIElement != null)
+                    {
+                        var objectCopier =
+                            new ObjectCopier(new XmlFactory {Owner = _owningExtent, ElementName = propertyAsString});
+                        var copiedElement = (XmlElement) objectCopier.Copy(innerValueAsIElement);
+                        _node.Add(copiedElement._node);
+                    }
+                    else
+                    {
+                        // We add them as real elements. Real elements for real men! 
+                        var element = new XElement(propertyAsString)
+                        {
+                            Value = ReturnObjectAsString(innerValue)
+                        };
+
+                        _node.Add(element);
+                    }
+                }
+            }
+            else
+            {
+                _node.SetAttributeValue(propertyAsString, ReturnObjectAsString(value));
+            }
+        }
+
+        private void UnsetProperty(string propertyAsString)
+        {
+            _node.Attributes(propertyAsString).FirstOrDefault()?.Remove();
+            foreach (var x in _node.Elements(propertyAsString).ToList())
+            {
+                x.Remove();
+            }
         }
 
         public void unset(string property)
         {
-            var propertyAsString = ReturnObjectAsString(property);
-            _node.SetAttributeValue(propertyAsString, null);
+            UnsetProperty(property);
         }
 
         private string ReturnObjectAsString(object property)

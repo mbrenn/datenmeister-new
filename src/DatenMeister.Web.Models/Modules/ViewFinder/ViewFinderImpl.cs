@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using DatenMeister.EMOF.Interface.Identifiers;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
@@ -36,7 +35,7 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// <returns>The found view</returns>
         public IObject FindView(IUriExtent extent, string viewUrl)
         {
-            if (string.IsNullOrEmpty(viewUrl))
+            if (string.IsNullOrEmpty(viewUrl) || viewUrl == "{All}")
             {
                 var view = _formCreator.CreateForm(extent, FormCreator.CreationMode.All);
                 return _dotNetTypeLookup.CreateDotNetElement(view);

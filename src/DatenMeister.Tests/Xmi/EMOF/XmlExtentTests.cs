@@ -8,6 +8,7 @@ using DatenMeister.EMOF.InMemory;
 using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
@@ -18,7 +19,7 @@ using NUnit.Framework;
 namespace DatenMeister.Tests.Xmi.EMOF
 {
     [TestFixture]
-    public class ExtentTests
+    public class XmlExtentTests
     {
         [Test]
         public void TestXmlMofObject()
@@ -34,6 +35,32 @@ namespace DatenMeister.Tests.Xmi.EMOF
             Assert.That(mofObject.get("test"), Is.EqualTo("testvalue"));
             mofObject.unset("test");
             Assert.That(mofObject.isSet("test"), Is.False);
+        }
+
+        [Test]
+        public void TestXmlMofObjectWithElementSet()
+        {
+            var mofElement = new MofObject();
+            mofElement.set("Name", "Brenn");
+            mofElement.set("Vorname", "Martin");
+
+            var xmlNode = new XElement("item");
+            var xmlElement = new XmlElement(xmlNode);
+            xmlElement.set("X", "y");
+            xmlElement.set("Person", mofElement);
+
+            Assert.That(xmlNode.Attribute("X")?.Value, Is.EqualTo("y"));
+            Assert.That(xmlNode.Elements("Person").Count(), Is.EqualTo(1));
+            Assert.That(xmlNode.Element("Person")?.Attribute("Name")?.Value, Is.EqualTo("Brenn"));
+            Assert.That(xmlNode.Element("Person")?.Attribute("Vorname")?.Value, Is.EqualTo("Martin"));
+
+            Assert.That(xmlElement.get("X"), Is.EqualTo("y"));
+            var person = CollectionHelper.MakeSingle(xmlElement.get("Person"));
+            Assert.That(person, Is.TypeOf<XmlElement>());
+
+            var personAsElement = (IElement) person;
+            Assert.That(personAsElement.get("Name"), Is.EqualTo("Brenn"));
+            Assert.That(personAsElement.get("Vorname"), Is.EqualTo("Martin"));
         }
 
         [Test]

@@ -1,4 +1,4 @@
-//     Underscore.js 1.8.2
+﻿//     Underscore.js 1.8.2
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //     Underscore may be freely distributed under the MIT license.
@@ -122,7 +122,7 @@
     return result;
   };
 
-  // Helper for collection methods to determine whether a collection
+  // Helper for collection methods to determine whether a value
   // should be iterated as an array or as an object
   // Related: http://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
   var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;

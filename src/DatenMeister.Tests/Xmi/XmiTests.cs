@@ -45,8 +45,6 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void TestIdValidity()
         {
-            var factory = new MofFactory();
-
             var document = XDocument.Load("Xmi/MOF.xmi");
             Assert.That(XmiId.IsValid(document), Is.True);
 

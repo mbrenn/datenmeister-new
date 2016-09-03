@@ -146,26 +146,40 @@ namespace DatenMeister.XMI.EMOF
 
             var propertyAsString = ReturnObjectAsString(property);
 
-            if (DotNetHelper.IsOfEnumeration(value))
+            if (DotNetHelper.IsOfMofObject(value))
+            {
+                // Remove attribute and remove element
+                UnsetProperty(propertyAsString);
+                var valueAsObject = value as IObject;
+
+                var factory = new XmlFactory {Owner = _owningExtent, ElementName = propertyAsString};
+                var objectCopier =
+                    new ObjectCopier(factory);
+                var targetElement = (XmlElement) objectCopier.Copy(valueAsObject);
+
+                _node.Add(targetElement._node);
+            }
+            else if (DotNetHelper.IsOfEnumeration(value))
             {
                 // Remove attribute and remove element
                 UnsetProperty(propertyAsString);
 
                 // Now create the elements
+                var objectCopier =
+                    new ObjectCopier(new XmlFactory { Owner = _owningExtent, ElementName = propertyAsString });
+
                 var valueAsEnumeration = (IEnumerable) value;
                 foreach (var innerValue in valueAsEnumeration)
                 {
-                    var innerValueAsIElement = innerValue as IElement;
+                    var innerValueAsIElement = innerValue as IObject;
                     if (innerValueAsIElement != null)
                     {
-                        var objectCopier =
-                            new ObjectCopier(new XmlFactory {Owner = _owningExtent, ElementName = propertyAsString});
                         var copiedElement = (XmlElement) objectCopier.Copy(innerValueAsIElement);
                         _node.Add(copiedElement._node);
                     }
                     else
                     {
-                        // We add them as real elements. Real elements for real men! 
+                        // We add them as real elements.
                         var element = new XElement(propertyAsString)
                         {
                             Value = ReturnObjectAsString(innerValue)

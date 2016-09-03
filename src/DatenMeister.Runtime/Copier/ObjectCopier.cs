@@ -14,19 +14,32 @@ namespace DatenMeister.Runtime.Copier
             _factory = factory;
         }
 
-        public IElement Copy(IElement element)
+        public IElement Copy(IObject element)
         {
-            var targetElement = _factory.create(element.getMetaClass());
+            var targetElement = _factory.create((element as IElement)?.getMetaClass());
+            CopyProperties(element, targetElement);
 
-            var elementAsExt = element as IObjectAllProperties;
+            return targetElement;
+        }
+
+        /// <summary>
+        /// Copies all properties from source element to target sourceElement
+        /// </summary>
+        /// <param name="sourceElement">Source element which is verified</param>
+        /// <param name="targetElement">Target element which is verified</param>
+        public void CopyProperties(IObject sourceElement, IObject targetElement)
+        {
+            if (sourceElement == null) throw new ArgumentNullException(nameof(sourceElement));
+            if (targetElement == null) throw new ArgumentNullException(nameof(targetElement));
+            var elementAsExt = sourceElement as IObjectAllProperties;
             if (elementAsExt == null)
             {
-                throw new ArgumentException("element is not of type IObjectAllProperties");
+                throw new ArgumentException($"{nameof(sourceElement)} is not of type IObjectAllProperties");
             }
 
             foreach (var property in elementAsExt.getPropertiesBeingSet())
             {
-                var value = element.get(property);
+                var value = sourceElement.get(property);
                 if (value is IElement)
                 {
                     targetElement.set(property, Copy(value as IElement));
@@ -46,8 +59,6 @@ namespace DatenMeister.Runtime.Copier
                     targetElement.set(property, value);
                 }
             }
-
-            return targetElement;
         }
     }
 }

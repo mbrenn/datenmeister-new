@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.EMOF.Interface.Common;
 using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 
 namespace DatenMeister.XMI.EMOF
@@ -16,7 +17,7 @@ namespace DatenMeister.XMI.EMOF
         /// <summary>
         /// Defines the name of the property that is covered by the reflective sequence
         /// </summary>
-        private string _propertyName;
+        private readonly string _propertyName;
 
         public XmlReflectiveSequence(XmlUriExtent extent, XElement node, string propertyName)
         {
@@ -36,7 +37,7 @@ namespace DatenMeister.XMI.EMOF
         public bool add(object value)
         {
             var valueAsXmlObject = ConvertValueAsXmlObject(value);
-            _node.Add(valueAsXmlObject.XmlNode);
+            _node.Add(valueAsXmlObject);
 
             return true;
         }
@@ -49,7 +50,7 @@ namespace DatenMeister.XMI.EMOF
                 result |= add(singleValue);
             }
 
-            return true;
+            return result;
         }
 
         public void clear()
@@ -62,7 +63,7 @@ namespace DatenMeister.XMI.EMOF
             var valueAsXmlObject = ConvertValueAsXmlObject(value);
             foreach (var subElement in _node.Elements(_propertyName))
             {
-                if (subElement.Equals(valueAsXmlObject.XmlNode))
+                if (subElement.Equals(valueAsXmlObject))
                 {
                     subElement.Remove();
                     return true;
@@ -87,7 +88,7 @@ namespace DatenMeister.XMI.EMOF
             {
                 var valueAsXmlObject = ConvertValueAsXmlObject(value);
                 var addedBefore = _node.Elements(_propertyName).ElementAt(index);
-                addedBefore.AddBeforeSelf(valueAsXmlObject.XmlNode);
+                addedBefore.AddBeforeSelf(valueAsXmlObject);
             }
         }
 
@@ -106,7 +107,7 @@ namespace DatenMeister.XMI.EMOF
         {
             var valueAsXmlObject = ConvertValueAsXmlObject(value);
             var toBeReplaced = _node.Elements(_propertyName).ElementAt(index);
-            toBeReplaced.AddBeforeSelf(valueAsXmlObject.XmlNode);
+            toBeReplaced.AddBeforeSelf(valueAsXmlObject);
             toBeReplaced.Remove();
 
             return new XmlElement(toBeReplaced, _extent);
@@ -117,19 +118,24 @@ namespace DatenMeister.XMI.EMOF
             return GetEnumerator();
         }
 
-        private XmlElement ConvertValueAsXmlObject(object value)
+        private XElement ConvertValueAsXmlObject(object value)
         {
             var valueAsXmlObject = value as XmlElement;
             if (valueAsXmlObject != null)
             {
-                return valueAsXmlObject;
+                return valueAsXmlObject.XmlNode;
             }
 
             var valueAsElement = value as IElement;
             if (valueAsElement != null)
             {
                 var copier = new ObjectCopier(new XmlFactory { Owner = _extent, ElementName = _propertyName });
-                return copier.Copy(valueAsElement) as XmlElement;
+                return ((XmlElement) copier.Copy(valueAsElement)).XmlNode;
+            }
+
+            if (DotNetHelper.IsOfPrimitiveType(value))
+            {
+                return new XElement(_propertyName, value.ToString());
             }
 
             throw new InvalidOperationException("Value is not an XmlObject or an IElement: " + value);

@@ -121,7 +121,7 @@
     <Compile Include="Uml\TestUmlMethods.cs" />
     <Compile Include="Web\TestAutoColumnCreator.cs" />
     <Compile Include="WorkspaceTests.cs" />
-    <Compile Include="Xmi\EMOF\ExtentTests.cs" />
+    <Compile Include="Xmi\EMOF\XmlExtentTests.cs" />
     <Compile Include="Xmi\Runtime\StorageTests.cs" />
     <Compile Include="Xmi\XmiTests.cs" />
     <Compile Include="ZipCodes\ZipCodeTests.cs" />

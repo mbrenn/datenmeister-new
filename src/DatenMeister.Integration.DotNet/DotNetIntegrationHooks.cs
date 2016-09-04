@@ -5,6 +5,10 @@ using DatenMeister.Runtime.FactoryMapper;
 
 namespace DatenMeister.Integration.DotNet
 {
+    /// <summary>
+    /// These integration hooks are called by the integration
+    /// when the DotNetIntegration shall be performed.
+    /// </summary>
     public class DotNetIntegrationHooks : IIntegrationHooks
     {
         public void OnStartScope(ILifetimeScope scope)

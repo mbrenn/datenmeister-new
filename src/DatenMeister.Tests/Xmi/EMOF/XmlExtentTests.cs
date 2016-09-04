@@ -48,7 +48,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var xmlElement = new XmlElement(xmlNode);
             xmlElement.set("X", "y");
             xmlElement.set("Person", mofElement);
-
+            
             Assert.That(xmlNode.Attribute("X")?.Value, Is.EqualTo("y"));
             Assert.That(xmlNode.Elements("Person").Count(), Is.EqualTo(1));
             Assert.That(xmlNode.Element("Person")?.Attribute("Name")?.Value, Is.EqualTo("Brenn"));

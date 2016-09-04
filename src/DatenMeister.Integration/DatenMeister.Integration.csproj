@@ -39,7 +39,10 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatenMeisterContainer.cs" />
+    <Compile Include="GiveMe.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="IDatenMeisterContainer.cs" />
     <Compile Include="IIntegrationHooks.cs" />
     <Compile Include="Integration.cs" />
     <Compile Include="IntegrationSettings.cs" />

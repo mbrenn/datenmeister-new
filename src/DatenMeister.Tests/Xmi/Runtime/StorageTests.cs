@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
-using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.XMI.EMOF;
 using DatenMeister.XMI.ExtentStorage;

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.DataLayer;
-using DatenMeister.EMOF.Helper;
-using DatenMeister.EMOF.InMemory;
-using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.EMOF.Interface.Reflection;
-using DatenMeister.Filler;
+using DatenMeister.Core;
+using DatenMeister.Core.DataLayer;
+using DatenMeister.Core.EMOF.Helper;
+using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Filler;
 using DatenMeister.Uml.Helper;
 using DatenMeister.XMI;
 

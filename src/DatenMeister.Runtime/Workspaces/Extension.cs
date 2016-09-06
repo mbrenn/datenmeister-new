@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
-using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Workspaces
 {

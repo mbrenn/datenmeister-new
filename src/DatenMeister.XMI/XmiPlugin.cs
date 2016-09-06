@@ -1,4 +1,4 @@
-﻿using DatenMeister.Plugins;
+﻿using DatenMeister.Core.Plugins;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.XMI.ExtentStorage;
 

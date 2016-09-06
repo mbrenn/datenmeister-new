@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using DatenMeister.EMOF.Helper;
-using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Helper;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ItemsAndExtents;
 using DatenMeister.UWP.Forms;

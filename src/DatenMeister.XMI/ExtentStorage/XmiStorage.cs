@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Linq;
-using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;

@@ -1,5 +1,5 @@
-﻿using DatenMeister.CSV.Runtime.Storage;
-using DatenMeister.Plugins;
+﻿using DatenMeister.Core.Plugins;
+using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.Runtime.ExtentStorage;
 
 namespace DatenMeister.CSV

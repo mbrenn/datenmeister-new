@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
-using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Models.PostModels;
 using DatenMeister.Runtime.Workspaces;
 

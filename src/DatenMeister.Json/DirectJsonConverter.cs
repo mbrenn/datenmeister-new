@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Diagnostics;
 using System.Text;
-using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 
 namespace DatenMeister.Json

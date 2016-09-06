@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using DatenMeister.EMOF.InMemory;
+using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Core.Filler;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Tests.Xmi;
 using NUnit.Framework;

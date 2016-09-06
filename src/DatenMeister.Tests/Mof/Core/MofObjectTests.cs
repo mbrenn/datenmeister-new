@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using DatenMeister.EMOF.InMemory;
-using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Proxies;
 using NUnit.Framework;
 

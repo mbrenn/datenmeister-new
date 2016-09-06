@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.DataLayer;
-using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Core.DataLayer;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Filler;
 
 namespace DatenMeister.Uml.Helper
 {

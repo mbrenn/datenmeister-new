@@ -1,4 +1,4 @@
-﻿using DatenMeister.EMOF.Interface.Common;
+﻿using DatenMeister.Core.EMOF.Interface.Common;
 
 namespace DatenMeister.Runtime.Proxies.ReadOnly
 {

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using NUnit.Framework;

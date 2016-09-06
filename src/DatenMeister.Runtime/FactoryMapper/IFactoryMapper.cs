@@ -1,6 +1,6 @@
 ﻿using System;
 using Autofac;
-using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.FactoryMapper
 {

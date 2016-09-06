@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using DatenMeister.EMOF.InMemory;
+using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Models.Modules.ViewFinder.Helper;
 using NUnit.Framework;
 

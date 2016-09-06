@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
-using DatenMeister.DataLayer;
-using DatenMeister.EMOF.Interface.Common;
-using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Core.DataLayer;
+using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
-using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.XMI.EMOF;

@@ -1,5 +1,6 @@
-﻿using DatenMeister.EMOF.InMemory;
-using DatenMeister.EMOF.Interface.Identifiers;
+﻿using DatenMeister.Core;
+using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Runtime.Proxies;
 
 namespace DatenMeister.Runtime

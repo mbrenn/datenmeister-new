@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using DatenMeister.DataLayer;
-using DatenMeister.EMOF.InMemory;
-using DatenMeister.EMOF.Interface.Identifiers;
+using DatenMeister.Core.DataLayer;
+using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;

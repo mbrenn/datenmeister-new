@@ -1,9 +1,9 @@
 ﻿ using System;
  using System.Collections.Generic;
  using System.Linq;
- using DatenMeister.EMOF.InMemory;
- using DatenMeister.EMOF.Interface.Common;
- using DatenMeister.EMOF.Interface.Reflection;
+ using DatenMeister.Core.EMOF.InMemory;
+ using DatenMeister.Core.EMOF.Interface.Common;
+ using DatenMeister.Core.EMOF.Interface.Reflection;
  using DatenMeister.Runtime.Functions.Interfaces;
  using DatenMeister.Runtime.Proxies;
 

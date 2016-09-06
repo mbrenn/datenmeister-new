@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
-using DatenMeister.EMOF.Helper;
-using DatenMeister.EMOF.Interface.Identifiers;
-using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Helper;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.XMI.EMOF
 {

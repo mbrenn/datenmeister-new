@@ -1,4 +1,4 @@
-﻿using DatenMeister.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.XMI;
 
 namespace DatenMeister.SourcecodeGenerator.SourceParser

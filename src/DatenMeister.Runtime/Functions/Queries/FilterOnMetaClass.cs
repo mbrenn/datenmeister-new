@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using DatenMeister.EMOF.Interface.Common;
-using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Proxies;
 
 namespace DatenMeister.Runtime.Functions.Queries

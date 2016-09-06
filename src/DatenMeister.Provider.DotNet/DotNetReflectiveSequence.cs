@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using DatenMeister.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Common;
 
 namespace DatenMeister.Provider.DotNet
 {

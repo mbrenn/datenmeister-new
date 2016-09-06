@@ -1,6 +1,8 @@
-﻿using DatenMeister.DataLayer;
-using DatenMeister.EMOF.InMemory;
-using DatenMeister.Plugins;
+﻿using DatenMeister.Core;
+using DatenMeister.Core.DataLayer;
+using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Core.Filler;
+using DatenMeister.Core.Plugins;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.Workspaces;
 

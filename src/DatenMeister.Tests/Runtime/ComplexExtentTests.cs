@@ -1,11 +1,10 @@
 ﻿using Autofac;
 using DatenMeister.Apps.ZipCode;
-using DatenMeister.DataLayer;
-using DatenMeister.EMOF.InMemory;
+using DatenMeister.Core.DataLayer;
+using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.Extents;
-using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime

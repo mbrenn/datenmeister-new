@@ -1,4 +1,4 @@
-﻿using DatenMeister.EMOF.Interface.Identifiers;
+﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Models.ItemsAndExtents
 {

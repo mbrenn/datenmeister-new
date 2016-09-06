@@ -1,5 +1,6 @@
 ﻿using System.IO;
-using DatenMeister.EMOF.InMemory;
+using DatenMeister.Core;
+using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Models.Forms;
 using DatenMeister.SourcecodeGenerator;
 using DatenMeister.XMI;

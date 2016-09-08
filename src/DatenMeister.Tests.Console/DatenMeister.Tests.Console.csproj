@@ -55,13 +55,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="System.IO.FileSystem, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.FileSystem.4.0.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+    <Reference Include="System.IO.FileSystem, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.4.0.1\lib\net46\System.IO.FileSystem.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
@@ -89,22 +90,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DatenMeister.CSV\DatenMeister.CSV.csproj">
-      <Project>{39845115-f057-4641-9237-6960bb676684}</Project>
-      <Name>DatenMeister.CSV</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
-      <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>
-      <Name>DatenMeister.Runtime</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Uml\DatenMeister.Uml.csproj">
-      <Project>{335399d1-b533-42d2-aea5-f398f35d8e66}</Project>
-      <Name>DatenMeister.Uml</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">
-      <Project>{e44275c2-9e62-42be-b984-127f82c1766f}</Project>
-      <Name>DatenMeister.XMI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>
       <Name>DatenMeister</Name>

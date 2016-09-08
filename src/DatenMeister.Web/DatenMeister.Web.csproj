@@ -49,16 +49,16 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=4.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.1.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -117,41 +117,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DatenMeister.CSV\DatenMeister.CSV.csproj">
-      <Project>{39845115-f057-4641-9237-6960bb676684}</Project>
-      <Name>DatenMeister.CSV</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Json\DatenMeister.Json.csproj">
-      <Project>{B6E6F720-B430-4A08-B80D-2BED4AF62628}</Project>
-      <Name>DatenMeister.Json</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Provider.DotNet\DatenMeister.Provider.DotNet.csproj">
-      <Project>{DE772364-F233-40E8-BA39-519D42C20686}</Project>
-      <Name>DatenMeister.Provider.DotNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
-      <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>
-      <Name>DatenMeister.Runtime</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Uml\DatenMeister.Uml.csproj">
-      <Project>{335399d1-b533-42d2-aea5-f398f35d8e66}</Project>
-      <Name>DatenMeister.Uml</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Models.csproj">
-      <Project>{5E01C76D-A969-4238-8D8C-1CB22C92DA7A}</Project>
-      <Name>DatenMeister.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">
-      <Project>{E44275C2-9E62-42BE-B984-127F82C1766F}</Project>
-      <Name>DatenMeister.XMI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>
       <Name>DatenMeister</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="app.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

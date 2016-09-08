@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.CSV;
-using DatenMeister.EMOF.InMemory;
-using DatenMeister.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Functions.Queries;
 
 namespace DatenMeister.Apps.ZipCode

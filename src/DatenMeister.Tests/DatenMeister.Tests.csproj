@@ -54,8 +54,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=4.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.1.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.core, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -66,8 +66,8 @@
       <HintPath>..\packages\NUnitTestAdapter.2.0.0\lib\nunit.core.interfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.util, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -79,16 +79,17 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.IO.FileSystem, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.FileSystem.4.0.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.IO.FileSystem, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.4.0.1\lib\net46\System.IO.FileSystem.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Reflection.TypeExtensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reflection.TypeExtensions.4.0.0\lib\net46\System.Reflection.TypeExtensions.dll</HintPath>
+      <HintPath>..\packages\System.Reflection.TypeExtensions.4.1.0\lib\net46\System.Reflection.TypeExtensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
@@ -131,49 +132,13 @@
       <Project>{3EC1DBF5-B87F-4807-96CF-5E68801C3629}</Project>
       <Name>DatenMeister.Apps.ZipCode</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.CSV\DatenMeister.CSV.csproj">
-      <Project>{39845115-f057-4641-9237-6960bb676684}</Project>
-      <Name>DatenMeister.CSV</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj">
       <Project>{DDE7E649-F341-4D2D-8F54-21F0CCDF3FB2}</Project>
       <Name>DatenMeister.Integration.DotNet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Integration\DatenMeister.Integration.csproj">
-      <Project>{dd8ea307-d685-4a7b-b726-a1c87192600d}</Project>
-      <Name>DatenMeister.Integration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Json\DatenMeister.Json.csproj">
-      <Project>{b6e6f720-b430-4a08-b80d-2bed4af62628}</Project>
-      <Name>DatenMeister.Json</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.ManualMapping\DatenMeister.ManualMapping.csproj">
-      <Project>{F2A1929F-7253-4EA0-8368-88EA22BB4915}</Project>
-      <Name>DatenMeister.ManualMapping</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Provider.DotNet\DatenMeister.Provider.DotNet.csproj">
-      <Project>{DE772364-F233-40E8-BA39-519D42C20686}</Project>
-      <Name>DatenMeister.Provider.DotNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Runtime\DatenMeister.Runtime.csproj">
-      <Project>{4350a383-14f7-4a84-8cdf-96ca6828f8e9}</Project>
-      <Name>DatenMeister.Runtime</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Uml\DatenMeister.Uml.csproj">
-      <Project>{335399d1-b533-42d2-aea5-f398f35d8e66}</Project>
-      <Name>DatenMeister.Uml</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Web.Models\DatenMeister.Models.csproj">
-      <Project>{5e01c76d-a969-4238-8d8c-1cb22c92da7a}</Project>
-      <Name>DatenMeister.Models</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Web\DatenMeister.Web.csproj">
       <Project>{200FE333-4D98-4F76-A8D6-E7C94A272FF2}</Project>
       <Name>DatenMeister.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.XMI\DatenMeister.XMI.csproj">
-      <Project>{e44275c2-9e62-42be-b984-127f82c1766f}</Project>
-      <Name>DatenMeister.XMI</Name>
     </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>
@@ -181,6 +146,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Xmi\MOF.xmi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

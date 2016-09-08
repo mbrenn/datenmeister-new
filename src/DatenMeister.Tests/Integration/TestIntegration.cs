@@ -1,8 +1,8 @@
 ﻿using Autofac;
 using Autofac.Features.ResolveAnything;
+using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.CSV;
 using DatenMeister.CSV.Runtime.Storage;
-using DatenMeister.EMOF.InMemory;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.ExtentStorage;

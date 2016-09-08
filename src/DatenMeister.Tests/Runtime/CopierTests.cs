@@ -1,4 +1,4 @@
-﻿using DatenMeister.EMOF.InMemory;
+﻿using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Runtime.Copier;
 using NUnit.Framework;
 

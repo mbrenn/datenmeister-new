@@ -1,7 +1,7 @@
-﻿using DatenMeister.DataLayer;
-using DatenMeister.EMOF.Attributes;
-using DatenMeister.EMOF.InMemory;
-using DatenMeister.Filler;
+﻿using DatenMeister.Core.DataLayer;
+using DatenMeister.Core.EMOF.Attributes;
+using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Core.Filler;
 using DatenMeister.Uml;
 using NUnit.Framework;
 

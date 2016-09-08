@@ -1,6 +1,7 @@
-﻿using DatenMeister.EMOF.InMemory;
-using DatenMeister.EMOF.Interface.Common;
-using DatenMeister.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Filler;
 using DatenMeister.Provider.DotNet;
 using NUnit.Framework;
 

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Autofac;
-using DatenMeister.EMOF.Attributes;
-using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Attributes;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;

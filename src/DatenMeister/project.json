@@ -4,12 +4,14 @@
     "uwp.10.0.app": {}
   },
   "dependencies": {
-    "Microsoft.NETCore": "5.0.0",
-    "Microsoft.NETCore.Portable.Compatibility": "1.0.0"
+    "Autofac": "4.1.0",
+    "Microsoft.CSharp": "4.0.1",
+    "System.IO.FileSystem": "4.0.1",
+    "System.Reflection": "4.1.0",
+    "System.Reflection.TypeExtensions": "4.1.0",
+    "System.Xml.XmlSerializer": "4.0.11"
   },
   "frameworks": {
-    "dotnet": {
-      "imports": "portable-net452+win81"
-    }
+    ".NETStandard1.3": {}
   }
 }

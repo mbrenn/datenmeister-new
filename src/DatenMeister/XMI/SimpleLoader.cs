@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -26,11 +27,23 @@ namespace DatenMeister.XMI
             _factory = factory;
         }
 
-        public void Load(IUriExtent extent, string filePath)
+        /// <summary>
+        /// Loads the xmi from the embedded resources
+        /// </summary>
+        /// <param name="resourceName">Path to the resources</param>
+        public void LoadFromEmbeddedResource(IUriExtent extent, string resourceName)
+        {
+            using (var stream = typeof(Core.Locations).GetTypeInfo().Assembly.GetManifestResourceStream(resourceName))
+            {
+                LoadFromStream(extent, stream);
+            }
+        }
+
+        public void LoadFromFile(IUriExtent extent, string filePath)
         {
             using (var stream = new FileStream(filePath, FileMode.Open))
             {
-                Load(extent, stream);
+                LoadFromStream(extent, stream);
             }
         }
 
@@ -39,10 +52,10 @@ namespace DatenMeister.XMI
         /// </summary>
         /// <param name="extent">Extent to which the data is loaded</param>
         /// <param name="stream">Stream to be used for loading</param>
-        public void Load(IUriExtent extent, Stream stream)
+        public void LoadFromStream(IUriExtent extent, Stream stream)
         {
             var document = XDocument.Load(stream);
-            Load(extent, document);
+            LoadFromDocument(extent, document);
         }
 
         /// <summary>
@@ -50,7 +63,7 @@ namespace DatenMeister.XMI
         /// </summary>
         /// <param name="extent">Extent to which the data is loaded</param>
         /// <param name="document">Document to be loaded</param>
-        public void Load(IUriExtent extent, XDocument document)
+        public void LoadFromDocument(IUriExtent extent, XDocument document)
         {
             _idToElement.Clear();
 

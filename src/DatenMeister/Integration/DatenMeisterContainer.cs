@@ -7,7 +7,7 @@ using Autofac.Core.Resolving;
 
 namespace DatenMeister.Integration
 {
-    public class DatenMeisterContainer : IContainer
+    public class DatenMeisterContainer : IDatenMeisterContainer
     {
         private readonly IContainer _containerImplementation;
 

@@ -7,13 +7,12 @@ namespace DatenMeister.Integration
     /// </summary>
     public static class GiveMe
     {
-        public static IContainer DatenMeister(IntegrationSettings settings = null)
+        public static IDatenMeisterContainer DatenMeister(IntegrationSettings settings = null)
         {
             if (settings == null)
             {
                 settings = new IntegrationSettings()
                 {
-                    PathToXmiFiles = "App_Data/Xmi",
                     EstablishDataEnvironment = true
                 };
             }

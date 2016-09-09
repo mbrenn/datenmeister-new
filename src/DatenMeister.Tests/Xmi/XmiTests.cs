@@ -28,7 +28,7 @@ namespace DatenMeister.Tests.Xmi
             var extent = new MofUriExtent("datenmeister:///target");
             Assert.That(extent.elements().Count(), Is.EqualTo(0));
             var loader = new SimpleLoader(factory);
-            loader.Load(extent, "Xmi/UML.xmi");
+            loader.LoadFromFile(extent, "Xmi/UML.xmi");
 
             var firstElement = (extent.elements().ElementAt(0) as IObject);
             Assert.That(firstElement, Is.Not.Null);

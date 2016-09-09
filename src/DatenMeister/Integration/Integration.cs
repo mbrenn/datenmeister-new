@@ -96,9 +96,10 @@ namespace DatenMeister.Integration
                 var paths =
                     new Bootstrapper.FilePaths
                     {
-                        PathPrimitive = Path.Combine(_settings.PathToXmiFiles, "PrimitiveTypes.xmi"),
-                        PathUml = Path.Combine(_settings.PathToXmiFiles, "UML.xmi"),
-                        PathMof = Path.Combine(_settings.PathToXmiFiles, "MOF.xmi")
+                        LoadFromEmbeddedResources = string.IsNullOrEmpty(_settings.PathToXmiFiles),
+                        PathPrimitive = _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "PrimitiveTypes.xmi"),
+                        PathUml = _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "UML.xmi"),
+                        PathMof = _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "MOF.xmi")
                     };
 
                 if (_settings.PerformSlimIntegration)

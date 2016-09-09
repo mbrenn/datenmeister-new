@@ -45,9 +45,9 @@ namespace DatenMeister.SourceGeneration.Console
             var mofExtent = new MofUriExtent(Locations.UriMof);
             var primitiveTypeExtent = new MofUriExtent(Locations.UriPrimitiveTypes);
             var loader = new SimpleLoader(factory);
-            loader.Load(umlExtent, "data/UML.xmi");
-            loader.Load(mofExtent, "data/MOF.xmi");
-            loader.Load(primitiveTypeExtent, "data/PrimitiveTypes.xmi");
+            loader.LoadFromFile(umlExtent, "data/UML.xmi");
+            loader.LoadFromFile(mofExtent, "data/MOF.xmi");
+            loader.LoadFromFile(primitiveTypeExtent, "data/PrimitiveTypes.xmi");
 
             // Generates tree for UML
             var generator = new ClassTreeGenerator

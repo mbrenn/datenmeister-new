@@ -310,9 +310,18 @@ namespace DatenMeister.Uml
             var mofExtent = new MofUriExtent(Locations.UriMof);
             var primitiveExtent = new MofUriExtent(Locations.UriPrimitiveTypes);
             var loader = new SimpleLoader(factory);
-            loader.Load(primitiveExtent, paths.PathPrimitive);
-            loader.Load(umlExtent, paths.PathUml);
-            loader.Load(mofExtent, paths.PathMof);
+            if (paths.LoadFromEmbeddedResources)
+            {
+                loader.LoadFromEmbeddedResource(primitiveExtent, "DatenMeister.XmiFiles.PrimitiveTypes.xmi");
+                loader.LoadFromEmbeddedResource(umlExtent, "DatenMeister.XmiFiles.UML.xmi");
+                loader.LoadFromEmbeddedResource(mofExtent, "DatenMeister.XmiFiles.MOF.xmi");
+            }
+            else
+            {
+                loader.LoadFromFile(primitiveExtent, paths.PathPrimitive);
+                loader.LoadFromFile(umlExtent, paths.PathUml);
+                loader.LoadFromFile(mofExtent, paths.PathMof);
+            }
 
             // Assigns the extents to the datalayer
             if (dataLayer != null && dataLayerLogic != null)
@@ -344,8 +353,11 @@ namespace DatenMeister.Uml
         /// <param name="dataLayerLogic">The datalayerlogic being used to add the </param>
         /// <param name="dataLayer">The datalayer to which the new extents will be added</param>
         /// <returns></returns>
-        public static Bootstrapper PerformFullBootstrap(FilePaths filePaths, Workspace<IExtent> workspace,
-            IDataLayerLogic dataLayerLogic, IDataLayer dataLayer)
+        public static Bootstrapper PerformFullBootstrap(
+            FilePaths filePaths,
+            Workspace<IExtent> workspace,
+            IDataLayerLogic dataLayerLogic,
+            IDataLayer dataLayer)
         {
             if (workspace == null) throw new ArgumentNullException(nameof(workspace));
             if (dataLayerLogic == null) throw new ArgumentNullException(nameof(dataLayerLogic));
@@ -365,6 +377,11 @@ namespace DatenMeister.Uml
         /// </summary>
         public class FilePaths
         {
+            /// <summary>
+            /// Gets or sets a value indicating whether the resources shall be loaded from embedded resources
+            /// </summary>
+            public bool LoadFromEmbeddedResources { get; set; }
+
             public string PathPrimitive { get; set; }
             public string PathUml { get; set; }
             public string PathMof { get; set; }

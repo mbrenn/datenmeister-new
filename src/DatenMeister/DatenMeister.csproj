@@ -123,6 +123,7 @@
     <Compile Include="Integration\IIntegrationHooks.cs" />
     <Compile Include="Integration\Integration.cs" />
     <Compile Include="Integration\IntegrationSettings.cs" />
+    <Compile Include="Integration\Modules\CsvExtensions.cs" />
     <Compile Include="Integration\Modules\FormAndFields.dotnet.cs" />
     <Compile Include="Json\DirectJsonConverter.cs" />
     <Compile Include="ManualMapping\MMElement.cs" />

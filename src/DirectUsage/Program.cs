@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using DatenMeister.Integration;
+using DatenMeister.Models.Forms;
 
 namespace DirectUsage
 {
@@ -13,6 +14,9 @@ namespace DirectUsage
 
             var dm = GiveMe.DatenMeister();
             Console.WriteLine(dm.ToString());
+
+            var extent = dm.LoadCsv("files/test.csv", "dm:///csv");
+            Console.WriteLine(extent.ToString());
 
             watch.Stop();
 

@@ -19,8 +19,8 @@ namespace DatenMeister.Integration
 
             var kernel = new ContainerBuilder();
             var container = kernel.UseDatenMeister(settings);
-            
-            return new DatenMeisterContainer(container);
+
+            return new DatenMeisterContainer(container.BeginLifetimeScope());
         }
     }
 }

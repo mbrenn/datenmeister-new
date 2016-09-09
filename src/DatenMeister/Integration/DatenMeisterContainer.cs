@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Autofac;
 using Autofac.Core;
@@ -9,65 +10,74 @@ namespace DatenMeister.Integration
 {
     public class DatenMeisterContainer : IDatenMeisterContainer
     {
-        private readonly IContainer _containerImplementation;
+        private ILifetimeScope _lifetimeScopeImplementation;
 
-        public DatenMeisterContainer(IContainer containerImplementation)
+        public DatenMeisterContainer(ILifetimeScope lifetimeScopeImplementation)
         {
-            _containerImplementation = containerImplementation;
+            _lifetimeScopeImplementation = lifetimeScopeImplementation;
         }
 
         public object ResolveComponent(IComponentRegistration registration, IEnumerable<Parameter> parameters)
         {
-            return _containerImplementation.ResolveComponent(registration, parameters);
+            return _lifetimeScopeImplementation.ResolveComponent(registration, parameters);
         }
 
-        public IComponentRegistry ComponentRegistry => _containerImplementation.ComponentRegistry;
+        public IComponentRegistry ComponentRegistry
+        {
+            get { return _lifetimeScopeImplementation.ComponentRegistry; }
+        }
 
         public void Dispose()
         {
-            _containerImplementation.Dispose();
+            _lifetimeScopeImplementation.Dispose();
         }
 
         public ILifetimeScope BeginLifetimeScope()
         {
-            return _containerImplementation.BeginLifetimeScope();
+            return _lifetimeScopeImplementation.BeginLifetimeScope();
         }
 
-        public ILifetimeScope BeginLifetimeScope(object tag)
+        public IDisposer Disposer
         {
-            return _containerImplementation.BeginLifetimeScope(tag);
+            get { return _lifetimeScopeImplementation.Disposer; }
         }
 
-        public ILifetimeScope BeginLifetimeScope(Action<ContainerBuilder> configurationAction)
+        public object Tag
         {
-            return _containerImplementation.BeginLifetimeScope(configurationAction);
+            get { return _lifetimeScopeImplementation.Tag; }
         }
-
-        public ILifetimeScope BeginLifetimeScope(object tag, Action<ContainerBuilder> configurationAction)
-        {
-            return _containerImplementation.BeginLifetimeScope(tag, configurationAction);
-        }
-
-        public IDisposer Disposer => _containerImplementation.Disposer;
-
-        public object Tag => _containerImplementation.Tag;
 
         public event EventHandler<LifetimeScopeBeginningEventArgs> ChildLifetimeScopeBeginning
         {
-            add { _containerImplementation.ChildLifetimeScopeBeginning += value; }
-            remove { _containerImplementation.ChildLifetimeScopeBeginning -= value; }
+            add { _lifetimeScopeImplementation.ChildLifetimeScopeBeginning += value; }
+            remove { _lifetimeScopeImplementation.ChildLifetimeScopeBeginning -= value; }
         }
 
         public event EventHandler<LifetimeScopeEndingEventArgs> CurrentScopeEnding
         {
-            add { _containerImplementation.CurrentScopeEnding += value; }
-            remove { _containerImplementation.CurrentScopeEnding -= value; }
+            add { _lifetimeScopeImplementation.CurrentScopeEnding += value; }
+            remove { _lifetimeScopeImplementation.CurrentScopeEnding -= value; }
         }
 
         public event EventHandler<ResolveOperationBeginningEventArgs> ResolveOperationBeginning
         {
-            add { _containerImplementation.ResolveOperationBeginning += value; }
-            remove { _containerImplementation.ResolveOperationBeginning -= value; }
+            add { _lifetimeScopeImplementation.ResolveOperationBeginning += value; }
+            remove { _lifetimeScopeImplementation.ResolveOperationBeginning -= value; }
+        }
+
+        public ILifetimeScope BeginLifetimeScope(object tag, Action<ContainerBuilder> configurationAction)
+        {
+            return _lifetimeScopeImplementation.BeginLifetimeScope(tag, configurationAction);
+        }
+
+        public ILifetimeScope BeginLifetimeScope(Action<ContainerBuilder> configurationAction)
+        {
+            return _lifetimeScopeImplementation.BeginLifetimeScope(configurationAction);
+        }
+
+        public ILifetimeScope BeginLifetimeScope(object tag)
+        {
+            return _lifetimeScopeImplementation.BeginLifetimeScope(tag);
         }
     }
 }

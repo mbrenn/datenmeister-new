@@ -71,5 +71,10 @@ namespace DatenMeister.Core.EMOF.InMemory
                 return _reflectiveSequence.HasObject(value);
             }
         }
+
+        public override string ToString()
+        {
+            return $"{GetType().FullName}: {_elements.Count} items";
+        }
     }
 }

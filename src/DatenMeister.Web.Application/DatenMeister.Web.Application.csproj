@@ -315,15 +315,6 @@
     <Content Include="plugins\info.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="App_Data\Xmi\MOF.xmi">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="App_Data\Xmi\PrimitiveTypes.xmi">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="App_Data\Xmi\UML.xmi">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="htdocs\js\jquery-1.10.2.intellisense.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 using Autofac;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -52,6 +54,23 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
             
             return foundType(scope);
+        }
+
+        public static void MapExtentLoaderType(ManualConfigurationToExtentStorageMapper map, Type type)
+        {
+            foreach (
+                var customAttribute in type.GetTypeInfo().GetCustomAttributes(typeof(ConfiguredByAttribute), false))
+            {
+                var configuredByAttribute = customAttribute as ConfiguredByAttribute;
+                if (configuredByAttribute != null)
+                {
+                    map.AddMapping(configuredByAttribute.ConfigurationType,
+                        scope => (IExtentStorage) scope.Resolve(type));
+
+                    Debug.WriteLine(
+                        $"Extent loader '{configuredByAttribute.ConfigurationType.Name}' configures '{type.Name}'");
+                }
+            }
         }
     }
 }

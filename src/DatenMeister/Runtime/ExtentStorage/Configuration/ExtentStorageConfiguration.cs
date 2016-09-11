@@ -15,5 +15,11 @@
         /// Gets ors sets the workspace in which the data will be loaded
         /// </summary>
         public string Workspace { get; set; }
+
+        /// <summary>
+        /// Gets or sets the datalayer being used for the allocation of the 
+        /// extent
+        /// </summary>
+        public string DataLayer { get; set; }
     }
 }

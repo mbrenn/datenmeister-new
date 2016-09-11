@@ -18,6 +18,9 @@ namespace DirectUsage
             var extent = dm.LoadCsv("files/test.csv", "dm:///csv");
             Console.WriteLine(extent.ToString());
 
+            var xmiExtent = dm.CreateXmiExtent("dm:///extent");
+            Console.WriteLine();
+
             watch.Stop();
 
             Console.WriteLine(watch.Elapsed.ToString());

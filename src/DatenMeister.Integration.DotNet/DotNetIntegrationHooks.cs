@@ -13,11 +13,11 @@ namespace DatenMeister.Integration.DotNet
     {
         public void OnStartScope(ILifetimeScope scope)
         {
-            var defaultFactoryMapper = scope.Resolve<IFactoryMapper>() as DefaultFactoryMapper;
+            /*var defaultFactoryMapper = scope.Resolve<IFactoryMapper>() as DefaultFactoryMapper;
             defaultFactoryMapper?.PerformAutomaticMappingByAttribute();
 
             var storageMap = scope.Resolve<IConfigurationToExtentStorageMapper>() as ManualConfigurationToExtentStorageMapper;
-            storageMap?.PerformMappingForConfigurationOfExtentLoaders();
+            storageMap?.PerformMappingForConfigurationOfExtentLoaders();*/
         }
 
         public void BeforeLoadExtents(ILifetimeScope scope)

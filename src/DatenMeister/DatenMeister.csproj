@@ -55,6 +55,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Integration\Extensions.Xmi.cs" />
     <None Include="project.json" />
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
@@ -116,14 +117,14 @@
     <Compile Include="CSV\EMOF\CSVFactory.cs" />
     <Compile Include="CSV\Runtime\Storage\CSVStorage.cs" />
     <Compile Include="CSV\Runtime\Storage\CSVStorageConfiguration.cs" />
-    <Compile Include="Integration\DatenMeisterContainer.cs" />
+    <Compile Include="Integration\DatenMeisterScope.cs" />
     <Compile Include="Integration\GiveMe.cs" />
     <Compile Include="Integration\Helper.cs" />
-    <Compile Include="Integration\IDatenMeisterContainer.cs" />
+    <Compile Include="Integration\IDatenMeisterScope.cs" />
     <Compile Include="Integration\IIntegrationHooks.cs" />
     <Compile Include="Integration\Integration.cs" />
     <Compile Include="Integration\IntegrationSettings.cs" />
-    <Compile Include="Integration\Modules\CsvExtensions.cs" />
+    <Compile Include="Integration\Extensions.Csv.cs" />
     <Compile Include="Integration\Modules\FormAndFields.dotnet.cs" />
     <Compile Include="Json\DirectJsonConverter.cs" />
     <Compile Include="ManualMapping\MMElement.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Runtime\Copier\ObjectCopier.cs" />
     <Compile Include="Runtime\DotNetHelper.cs" />
     <Compile Include="Runtime\Dynamic\DynamicConverter.cs" />
+    <Compile Include="Runtime\ExtentHelper.cs" />
     <Compile Include="Runtime\ExtentStorage\AssignConfigurationTypeToLoaderAttribute.cs" />
     <Compile Include="Runtime\ExtentStorage\Configuration\ExtentFileStorageConfiguration.cs" />
     <Compile Include="Runtime\ExtentStorage\Configuration\ExtentStorageConfiguration.cs" />

@@ -85,5 +85,12 @@ namespace DatenMeister.Core.DataLayer
         /// <param name="value">Value to be set for the datalayer</param>
         void Set<TFilledType>(IDataLayer layer, TFilledType value)
             where TFilledType : class, new();
+
+        /// <summary>
+        /// Gets the datalayer by name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        IDataLayer GetByName(string name);
     }
 }

@@ -7,7 +7,7 @@ namespace DatenMeister.Integration
     /// </summary>
     public static class GiveMe
     {
-        public static IDatenMeisterContainer DatenMeister(IntegrationSettings settings = null)
+        public static IDatenMeisterScope DatenMeister(IntegrationSettings settings = null)
         {
             if (settings == null)
             {
@@ -20,7 +20,7 @@ namespace DatenMeister.Integration
             var kernel = new ContainerBuilder();
             var container = kernel.UseDatenMeister(settings);
 
-            return new DatenMeisterContainer(container.BeginLifetimeScope());
+            return new DatenMeisterScope(container.BeginLifetimeScope());
         }
     }
 }

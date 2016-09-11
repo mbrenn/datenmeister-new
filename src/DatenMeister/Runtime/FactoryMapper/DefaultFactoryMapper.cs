@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using Autofac;
+using DatenMeister.Core.EMOF.Attributes;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.FactoryMapper
@@ -51,6 +55,41 @@ namespace DatenMeister.Runtime.FactoryMapper
             }
 
             return result(scope);
+        }
+
+        public static void MapFactoryType(DefaultFactoryMapper mapper, Type type)
+        {
+            foreach (
+                var customAttribute in type.GetTypeInfo().GetCustomAttributes(typeof(AssignFactoryForExtentTypeAttribute), false))
+            {
+                var factoryAssignmentAttribute = customAttribute as AssignFactoryForExtentTypeAttribute;
+                if (factoryAssignmentAttribute != null)
+                {
+                    var factoryType = factoryAssignmentAttribute.FactoryType;
+                    if (factoryType == null)
+                    {
+                        throw new InvalidOperationException(
+                            $"FactoryType is null. Is the attribute at type {type.FullName} correctly set?");
+                    }
+                    mapper.AddMapping(
+                        type,
+                        scope =>
+                        {
+                            try
+                            {
+                                return (IFactory) scope.Resolve(factoryType);
+                            }
+                            catch (Exception exc)
+                            {
+                                throw new IOException(
+                                    $"Exception thrown during creation of {factoryType.Name}",
+                                    exc);
+                            }
+                        });
+
+                    Debug.WriteLine($"Assigned extent type '{type.Name}' to '{factoryType.Name}'");
+                }
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Autofac;
+using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -31,21 +32,26 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         private readonly ILifetimeScope _diScope;
 
-        public ExtentStorageLoader(ExtentStorageData data, IConfigurationToExtentStorageMapper map)
-        {
-            Debug.Assert(map != null, "map != null");
-            Debug.Assert(data != null, "data != null");
+        private readonly IDataLayerLogic _dataLayerLogic;
 
+        public ExtentStorageLoader(ExtentStorageData data,
+            IConfigurationToExtentStorageMapper map,
+            IDataLayerLogic dataLayerLogic)
+        {
+            if (data == null) throw new ArgumentNullException(nameof(data));
+            if (map == null) throw new ArgumentNullException(nameof(map));
+            if (dataLayerLogic == null) throw new ArgumentNullException(nameof(dataLayerLogic));
+            
             _data = data;
             _map = map;
+            _dataLayerLogic = dataLayerLogic;
         }
 
         public ExtentStorageLoader(
             ExtentStorageData data, 
             IConfigurationToExtentStorageMapper map,
             IWorkspaceCollection workspaceCollection,
-            ILifetimeScope diScope
-            ) : this(data, map)
+            ILifetimeScope diScope, IDataLayerLogic dataLayerLogic) : this(data, map, dataLayerLogic)
         {
             Debug.Assert(workspaceCollection != null, "collection != null");
             _workspaceCollection = workspaceCollection;
@@ -80,6 +86,14 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
 
             AddToWorkspaceIfPossible(configuration, loadedExtent);
+
+            if (!string.IsNullOrEmpty(configuration.DataLayer))
+            {
+                _dataLayerLogic.AssignToDataLayer(
+                    loadedExtent, 
+                    _dataLayerLogic.GetByName(configuration.DataLayer));
+            }
+
 
             // Stores the information into the data container
             var info = new ExtentStorageData.LoadedExtentInformation

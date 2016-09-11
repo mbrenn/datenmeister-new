@@ -33,7 +33,7 @@ namespace DatenMeister.Integration
         /// <returns>The found uri extent or null</returns>
         public static IUriExtent FindTypeExtent(this IWorkspaceCollection collection)
         {
-            return collection.FindExtent(Locations.UriTypes) as IUriExtent;
+            return collection.FindExtent(Locations.UriInternalTypes) as IUriExtent;
         }
     }
 }

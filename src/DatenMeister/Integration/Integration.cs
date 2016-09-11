@@ -18,6 +18,7 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
+using DatenMeister.XMI.ExtentStorage;
 
 namespace DatenMeister.Integration
 {
@@ -27,6 +28,8 @@ namespace DatenMeister.Integration
         private const string PathWorkspaces = "App_Data/Database/workspaces.xml";
 
         private const string PathExtents = "App_Data/Database/extents.xml";
+
+        private const string PathUserTypes = "App_Data/Database/usertypes.xml";
 
         private IntegrationSettings _settings;
 
@@ -122,10 +125,20 @@ namespace DatenMeister.Integration
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var mofFactory = new MofFactory();
-                var extentTypes = new MofUriExtent(Locations.UriTypes);
+                var extentTypes = new MofUriExtent(Locations.UriInternalTypes);
                 var typeWorkspace = workspaceCollection.GetWorkspace(WorkspaceNames.Types);
                 typeWorkspace.AddExtent(extentTypes);
                 dataLayerLogic.AssignToDataLayer(extentTypes, dataLayers.Types);
+
+                // Creates the extent for user types
+                var loader = scope.Resolve<ExtentStorageLoader>();
+                var storageConfiguration = new XmiStorageConfiguration
+                {
+                    ExtentUri = Locations.UriUserTypes,
+                    Path = PathUserTypes,
+                    Workspace = WorkspaceNames.Types
+                };
+                loader.LoadExtent(storageConfiguration, true);
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();

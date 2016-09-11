@@ -39,10 +39,10 @@ namespace DatenMeister.Integration.DotNet
             foreach (var name in assembly.GetReferencedAssemblies()
                 .Where(x => !IsDotNetLibrary(x)))
             {
-                if (AppDomain.CurrentDomain.GetAssemblies().All(a => a.FullName != name.FullName))
+                if (AppDomain.CurrentDomain.GetAssemblies().All(a => !string.Equals(a.GetName().Name, name.Name, StringComparison.CurrentCultureIgnoreCase)))
                 {
                     var innerAssembly = Assembly.Load(name);
-                    Debug.WriteLine($"Loaded: {innerAssembly}");
+                    Debug.WriteLine($"Loaded (2): {innerAssembly}");
                     LoadReferencedAssembly(innerAssembly);
                 }
             }
@@ -69,7 +69,7 @@ namespace DatenMeister.Integration.DotNet
                         try
                         {
                             var assembly = Assembly.LoadFile(Path.Combine(path, file));
-                            Debug.WriteLine($"Loaded : {assembly.GetName().Name}, {assembly.GetName().Version}");
+                            Debug.WriteLine($"Loaded (1): {assembly.GetName().Name}, {assembly.GetName().Version}");
                         }
                         catch (Exception e)
                         {

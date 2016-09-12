@@ -27,7 +27,7 @@ namespace DatenMeister.SourcecodeGenerator
         public override void Walk(IUriExtent extent)
         {
             Result.AppendLine("using System.Collections.Generic;");
-            Result.AppendLine("using DatenMeister.EMOF.Interface.Reflection;");
+            Result.AppendLine("using DatenMeister.Core.EMOF.Interface.Reflection;");
             base.Walk(extent);
         }
 
@@ -52,7 +52,7 @@ namespace DatenMeister.SourcecodeGenerator
                 foreachStack = methodStack.NextWithoutLevelIncrease;
                 innerStack = foreachStack.NextWithoutLevelIncrease;
 
-                Result.AppendLine($"{stack.Indentation}public class FillThe{name} : DatenMeister.Filler.IFiller<{ClassNameOfTree}>");
+                Result.AppendLine($"{stack.Indentation}public class FillThe{name} : DatenMeister.Core.Filler.IFiller<{ClassNameOfTree}>");
                 Result.AppendLine($"{stack.Indentation}{{");
 
                 // Creates the GetNameOfElement helper method

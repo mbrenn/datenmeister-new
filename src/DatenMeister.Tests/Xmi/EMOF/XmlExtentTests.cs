@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Reflection;

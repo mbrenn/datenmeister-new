@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Excel.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.SourcecodeGenerator;
 using DatenMeister.XMI;
@@ -24,17 +25,33 @@ namespace DatenMeister.SourceGeneration.Console
                     Types = FieldTypes.GetAll()
                 });
             System.Console.WriteLine(" Done");
+
+            System.Console.Write("Create Sourcecode for Excel...");
+            SourceGenerator.GenerateSourceFor(
+                new SourceGeneratorOptions
+                {
+                    Name = "ExcelModels",
+                    Path = "./",
+                    Namespace = "DatenMeister.Excel",
+                    Types = ExcelModels.AllTypes
+                });
+            System.Console.WriteLine(" Done");
+
 #if !DEBUG
-            File.Copy("../../primitivetypes.cs", "../../../DatenMeister/Filler/primitivetypes.cs", true);
-            File.Copy("../../FillThePrimitiveTypes.cs", "../../../DatenMeister/Filler/FillThePrimitiveTypes.cs", true);
-            File.Copy("../../mof.cs", "../../../DatenMeister/Filler/mof.cs", true);
-            File.Copy("../../FillTheMOF.cs", "../../../DatenMeister/Filler/FillTheMOF.cs", true);
-            File.Copy("../../uml.cs", "../../../DatenMeister/Filler/uml.cs", true);
-            File.Copy("../../FillTheUML.cs", "../../../DatenMeister/Filler/FillTheUML.cs", true);
+            File.Copy("../../primitivetypes.cs", "../../../DatenMeister/Core/Filler/primitivetypes.cs", true);
+            File.Copy("../../FillThePrimitiveTypes.cs", "../../../DatenMeister/Core/Filler/FillThePrimitiveTypes.cs", true);
+            File.Copy("../../mof.cs", "../../../DatenMeister/Core/Filler/mof.cs", true);
+            File.Copy("../../FillTheMOF.cs", "../../../DatenMeister/Core/Filler/FillTheMOF.cs", true);
+            File.Copy("../../uml.cs", "../../../DatenMeister/Core/Filler/uml.cs", true);
+            File.Copy("../../FillTheUML.cs", "../../../DatenMeister/Core/Filler/FillTheUML.cs", true);
             
-            File.Copy("./FormAndFields.filler.cs", "../../../DatenMeister.Web.Models/Forms/FormAndFields.filler.cs", true);
-            File.Copy("./FormAndFields.class.cs", "../../../DatenMeister.Web.Models/Forms/FormAndFields.class.cs", true);
-            File.Copy("./FormAndFields.dotnet.cs", "../../../DatenMeister.Integration/Modules/FormAndFields.dotnet.cs", true);
+            File.Copy("./FormAndFields.filler.cs", "../../../DatenMeister/Models/Forms/FormAndFields.filler.cs", true);
+            File.Copy("./FormAndFields.class.cs", "../../../DatenMeister/Models/Forms/FormAndFields.class.cs", true);
+            File.Copy("./FormAndFields.dotnet.cs", "../../../DatenMeister/Integration/Modules/FormAndFields.dotnet.cs", true);
+            
+            File.Copy("./ExcelModels.filler.cs", "../../../DatenMeister.Excel/Models/ExcelModels.filler.cs", true);
+            File.Copy("./ExcelModels.class.cs", "../../../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
+            File.Copy("./ExcelModels.dotnet.cs", "../../../DatenMeister.Excel/Models/ExcelModels.dotnet.cs", true);
 #endif
         }
 
@@ -52,14 +69,14 @@ namespace DatenMeister.SourceGeneration.Console
             // Generates tree for UML
             var generator = new ClassTreeGenerator
             {
-                Namespace = "DatenMeister"
+                Namespace = "DatenMeister.Core"
             };
 
             generator.Walk(umlExtent);
 
-            var extentCreator = new FillClassTreeByExtentCreator("DatenMeister._UML")
+            var extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Core._UML")
             {
-                Namespace = "DatenMeister.Filler"
+                Namespace = "DatenMeister.Core.Filler"
             };
             extentCreator.Walk(umlExtent);
 
@@ -70,13 +87,13 @@ namespace DatenMeister.SourceGeneration.Console
             // Generates tree for MOF
             generator = new ClassTreeGenerator
             {
-                Namespace = "DatenMeister"
+                Namespace = "DatenMeister.Core"
             };
             generator.Walk(mofExtent);
 
-            extentCreator = new FillClassTreeByExtentCreator("DatenMeister._MOF")
+            extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Core._MOF")
             {
-                Namespace = "DatenMeister.Filler"
+                Namespace = "DatenMeister.Core.Filler"
             };
 
             extentCreator.Walk(mofExtent);
@@ -88,13 +105,13 @@ namespace DatenMeister.SourceGeneration.Console
             // Generates tree for PrimitiveTypes
             generator = new ClassTreeGenerator
             {
-                Namespace = "DatenMeister"
+                Namespace = "DatenMeister.Core"
             };
             generator.Walk(primitiveTypeExtent);
 
-            extentCreator = new FillClassTreeByExtentCreator("DatenMeister._PrimitiveTypes")
+            extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Core._PrimitiveTypes")
             {
-                Namespace = "DatenMeister.Filler"
+                Namespace = "DatenMeister.Core.Filler"
             };
 
             extentCreator.Walk(primitiveTypeExtent);

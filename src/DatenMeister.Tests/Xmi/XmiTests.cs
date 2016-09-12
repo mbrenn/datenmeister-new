@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Attributes;
 using DatenMeister.Core.EMOF.Helper;

@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
-
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
 namespace DatenMeister.Models.Forms
 {
-    public class FillTheFormAndFields : IFiller<_FormAndFields>
+    public class FillTheFormAndFields : DatenMeister.Core.Filler.IFiller<_FormAndFields>
     {
         private static readonly object[] EmptyList = new object[] { };
         private static string GetNameOfElement(IObject element)

@@ -21,6 +21,7 @@ namespace DatenMeister.SourcecodeGenerator
             WalkPackageClass.CallStack stack = new WalkPackageClass.CallStack(null);
 
             Result.AppendLine($"{stack.Indentation}using DatenMeister;");
+            Result.AppendLine($"{stack.Indentation}using DatenMeister.Core;");
             Result.AppendLine($"{stack.Indentation}using DatenMeister.Core.EMOF.Interface.Common;");
             Result.AppendLine($"{stack.Indentation}using DatenMeister.Core.EMOF.Interface.Reflection;");
             Result.AppendLine($"{stack.Indentation}using DatenMeister.Provider.DotNet;");

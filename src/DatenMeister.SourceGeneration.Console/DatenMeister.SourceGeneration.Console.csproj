@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DatenMeister.SourceGeneration.Console</RootNamespace>
     <AssemblyName>DatenMeister.SourceGeneration.Console</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -93,6 +94,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj">
+      <Project>{0661bbb5-9525-4871-9169-22dc13d068dc}</Project>
+      <Name>DatenMeister.Excel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>
       <Name>DatenMeister</Name>

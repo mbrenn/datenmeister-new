@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using DatenMeister.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
-namespace DatenMeister.Filler
+namespace DatenMeister.Core.Filler
 {
-    public class FillTheMOF : DatenMeister.Filler.IFiller<DatenMeister._MOF>
+    public class FillTheMOF : DatenMeister.Core.Filler.IFiller<DatenMeister.Core._MOF>
     {
         private static readonly object[] EmptyList = new object[] { };
         private static string GetNameOfElement(IObject element)
@@ -12,12 +12,12 @@ namespace DatenMeister.Filler
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, DatenMeister._MOF tree)
+        public void Fill(IEnumerable<object> collection, DatenMeister.Core._MOF tree)
         {
             FillTheMOF.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, DatenMeister._MOF tree)
+        public static void DoFill(IEnumerable<object> collection, DatenMeister.Core._MOF tree)
         {
             string name;
             IElement value;

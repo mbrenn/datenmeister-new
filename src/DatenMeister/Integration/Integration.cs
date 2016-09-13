@@ -8,6 +8,7 @@ using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Attributes;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.Filler;
+using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Modules.ViewFinder;
 using DatenMeister.Provider.DotNet;
@@ -18,6 +19,7 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
+using DatenMeister.XMI.EMOF;
 using DatenMeister.XMI.ExtentStorage;
 
 namespace DatenMeister.Integration
@@ -54,10 +56,14 @@ namespace DatenMeister.Integration
             // Defines the factory method for a certain extent type  
             var factoryMapper = new DefaultFactoryMapper();
             kernel.RegisterInstance(factoryMapper).As<IFactoryMapper>();
+            DefaultFactoryMapper.MapFactoryType(factoryMapper, typeof(MofUriExtent));
+            DefaultFactoryMapper.MapFactoryType(factoryMapper, typeof(XmlUriExtent));
 
             // Finds the loader for a certain extent type  
             var storageMap = new ManualConfigurationToExtentStorageMapper();
             kernel.RegisterInstance(storageMap).As<IConfigurationToExtentStorageMapper>();
+            ManualConfigurationToExtentStorageMapper.MapExtentLoaderType(storageMap, typeof(CSVStorage));
+            ManualConfigurationToExtentStorageMapper.MapExtentLoaderType(storageMap, typeof(XmiStorage));
 
             // Workspace collection  
             var workspaceCollection = new WorkspaceCollection();
@@ -85,6 +91,7 @@ namespace DatenMeister.Integration
             kernel.RegisterInstance(dotNetTypeLookup).As<IDotNetTypeLookup>();
 
             var builder = kernel.Build();
+
             using (var scope = builder.BeginLifetimeScope())
             {
                 // Is used by .Net Provider to include the mappings for extent storages and factory types
@@ -136,7 +143,8 @@ namespace DatenMeister.Integration
                 {
                     ExtentUri = Locations.UriUserTypes,
                     Path = PathUserTypes,
-                    Workspace = WorkspaceNames.Types
+                    Workspace = WorkspaceNames.Types,
+                    DataLayer = "Types"
                 };
                 loader.LoadExtent(storageConfiguration, true);
 

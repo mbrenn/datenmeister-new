@@ -3,24 +3,24 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.CSV;
 using DatenMeister.CSV.EMOF;
-using DatenMeister.Integration;
-using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Models.Forms
+namespace DatenMeister.Integration
 {
-    public static class CsvExtensions
+    public static partial class Extensions
     {
         /// <summary>
         /// Loads a csv extent by settings
         /// </summary>
+        /// <param name="scope">Container being initialized</param>
         /// <param name="path">Path to be loaded</param>
+        /// <param name="uri">Uri for the loaded extent</param>
         /// <param name="settings">Settings being loaded</param>
         /// <returns>Extent to be used</returns>
-        public static IUriExtent LoadCsv(this IDatenMeisterContainer container, string path, string uri, CSV.CSVSettings settings = null)
+        public static IUriExtent LoadCsv(this IDatenMeisterScope scope, string path, string uri, CSV.CSVSettings settings = null)
         {
             settings = settings ?? new CSVSettings();
 
-            var provider = container.Resolve<CSVDataProvider>();
+            var provider = scope.Resolve<CSVDataProvider>();
             var extent = new CSVExtent(uri);
             var factory = new CSVFactory(extent);
 
@@ -30,9 +30,6 @@ namespace DatenMeister.Models.Forms
             }
 
             return extent;
-
-            // var workspaceCollection = settings.Resolve<IWorkspaceCollection>();
-            //workspaceCollection.
         }
 
     }

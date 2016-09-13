@@ -22,7 +22,12 @@ namespace DirectUsage
             Console.WriteLine(extent.ToString());
 
             // Testing Excel
+            var xmiExtent = dm.CreateXmiExtent("dm:///extent");
+            Console.WriteLine(xmiExtent.ToString());
+
+
             var excelExtent = dm.LoadExcel("files/Quadrat.xlsx", "d:///excel");
+
             Console.WriteLine(excelExtent.ToString());
             foreach (var sheet in excelExtent.elements())
             {

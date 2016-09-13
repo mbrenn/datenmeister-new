@@ -2,7 +2,7 @@
 
 namespace DatenMeister.Integration
 {
-    public interface IDatenMeisterContainer : ILifetimeScope
+    public interface IDatenMeisterScope : ILifetimeScope
     {
         
     }

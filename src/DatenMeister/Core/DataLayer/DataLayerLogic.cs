@@ -205,6 +205,23 @@ namespace DatenMeister.Core.DataLayer
             }
         }
 
+        /// <summary>
+        /// Gets the datalayer by name.
+        /// The datalayer will only be returned, if there is a relationship
+        /// </summary>
+        /// <param name="name">Name of the datalayer</param>
+        /// <returns>Found datalayer or null</returns>
+        public IDataLayer GetByName(string name)
+        {
+            lock (_data)
+            {
+                var result = _data.Relations.Keys.FirstOrDefault(x => x.Name == name);
+                result = result ?? _data.Relations.Values.FirstOrDefault(x => x.Name == name);
+                result = result ?? (_data.Default?.Name == name ? _data.Default : null);
+                return result;
+            }
+        }
+
         private static void VerifyThatNotNull(DataLayer layerAsObject)
         {
             if (layerAsObject == null)

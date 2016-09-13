@@ -8,11 +8,11 @@ using Autofac.Core.Resolving;
 
 namespace DatenMeister.Integration
 {
-    public class DatenMeisterContainer : IDatenMeisterContainer
+    public class DatenMeisterScope : IDatenMeisterScope
     {
         private ILifetimeScope _lifetimeScopeImplementation;
 
-        public DatenMeisterContainer(ILifetimeScope lifetimeScopeImplementation)
+        public DatenMeisterScope(ILifetimeScope lifetimeScopeImplementation)
         {
             _lifetimeScopeImplementation = lifetimeScopeImplementation;
         }

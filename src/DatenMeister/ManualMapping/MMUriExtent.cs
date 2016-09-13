@@ -23,10 +23,11 @@ namespace DatenMeister.ManualMapping
         /// The properties of the type are not explicitly addedl 
         /// </summary>
         /// <typeparam name="T">Type being added</typeparam>
+        /// <typeparam name="TValue">Type of the value being added</typeparam>
         /// <param name="metaClass">Metaclass which is used to 
         /// talk about the class</param>
         /// <returns>The created type mapping</returns>
-        public TypeMapping AddMappingForType<T>(IElement metaClass)
+        public TypeMapping AddMappingForType<T, TValue>(IElement metaClass) where T: MMElement<TValue>, new()
         {
             if (metaClass == null)
             {
@@ -40,8 +41,13 @@ namespace DatenMeister.ManualMapping
 
             var typeMapping = new TypeMapping
             {
-                metaClass = metaClass,
-                CreateNewObject = () => Activator.CreateInstance<T>()
+                metaClass = metaClass
+            };
+            typeMapping.CreateNewObject = (value) => new T
+            {
+                Extent = this,
+                TypeMapping = typeMapping,
+                Value = (TValue) value
             };
 
             TypeMappings[metaClass] = typeMapping;
@@ -53,7 +59,7 @@ namespace DatenMeister.ManualMapping
             return false;
         }
 
-        public IReflectiveSequence elements()
+        public virtual IReflectiveSequence elements()
         {
             throw new NotImplementedException();
         }
@@ -71,6 +77,19 @@ namespace DatenMeister.ManualMapping
         public IElement element(string uri)
         {
             throw new NotImplementedException();
+        }
+
+        private TypeMapping GetMapping(IElement metaClass)
+        {
+            TypeMapping result;
+            TypeMappings.TryGetValue(metaClass, out result);
+
+            return result;
+        }
+
+        public object ConvertToElement(IElement metaClass, object value)
+        {
+            return GetMapping(metaClass)?.CreateNewObject(value);
         }
     }
 }

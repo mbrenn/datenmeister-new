@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Excel.Integration;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 
@@ -15,8 +17,18 @@ namespace DirectUsage
             var dm = GiveMe.DatenMeister();
             Console.WriteLine(dm.ToString());
 
+            // Testing CSV
             var extent = dm.LoadCsv("files/test.csv", "dm:///csv");
             Console.WriteLine(extent.ToString());
+
+            // Testing Excel
+            var excelExtent = dm.LoadExcel("files/Quadrat.xlsx", "d:///excel");
+            Console.WriteLine(excelExtent.ToString());
+            foreach (var sheet in excelExtent.elements())
+            {
+                var sheetAsElement = (IElement) sheet;
+                Console.WriteLine(sheetAsElement.get("name").ToString());
+            }
 
             watch.Stop();
 

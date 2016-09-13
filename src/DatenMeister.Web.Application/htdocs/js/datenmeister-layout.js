@@ -53,6 +53,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             tthis.createTitle();
             var workbenchLogic = new DMView.WorkspaceView(this);
             workbenchLogic.onWorkspaceSelected = function (id) {
+                // Loads the extent of the workspace, if the user has clicked on one of the workbenches
                 tthis.navigateToExtents(id);
             };
             workbenchLogic.loadAndCreateHtmlForWorkbenchs();

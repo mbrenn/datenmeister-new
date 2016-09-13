@@ -3,34 +3,50 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.ManualMapping
 {
-    public class MMElement : IElement
+    public class MMElement<T> : IElement, IHasValue
     {
+
+        /// <summary>
+        /// Gets or sets the extent being used to find subtypes
+        /// </summary>
+        public MMUriExtent Extent { get; internal set; }
+
         /// <summary>
         /// Stores the mapping
         /// </summary>
-        private TypeMapping _typeMapping;
+        public TypeMapping TypeMapping { get; internal set; }
 
-        private readonly object _instance;
+        public T Value { get; internal set; }
 
-        private readonly IElement _container;
 
-        public MMElement(TypeMapping typeMapping, object value, IElement container = null)
+        public IElement Container { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the MMElement class. 
+        /// This method shall only be used by internal classes. 
+        /// </summary>
+        public MMElement()
+        {
+            
+        }
+
+        public MMElement(TypeMapping typeMapping, T value, IElement container = null)
         {
             if (typeMapping == null) throw new ArgumentNullException(nameof(typeMapping));
-            _typeMapping = typeMapping;
-            _instance = value;
-            _container = container;
+            TypeMapping = typeMapping;
+            Value = value;
+            Container = container;
         }
 
         public bool equals(object other)
         {
-            var otherAsMMElement = other as MMElement;
+            var otherAsMMElement = other as IHasValue;
             if (otherAsMMElement != null)
             {
-                return _instance.Equals(otherAsMMElement._instance);
+                return Value.Equals(otherAsMMElement.ValueAsObject);
             }
 
-            return _instance.Equals(other);
+            return Value.Equals(other);
         }
 
         public object get(string property)
@@ -38,7 +54,7 @@ namespace DatenMeister.ManualMapping
             if (property == null) throw new ArgumentNullException(nameof(property));
 
             var mapping =  FindProperty(property);
-            return mapping.GetValueFunc(_instance);
+            return mapping.GetValueFunc(Value);
         }
 
         public void set(string property, object value)
@@ -46,13 +62,13 @@ namespace DatenMeister.ManualMapping
             if (property == null) throw new ArgumentNullException(nameof(property));
 
             var mapping = FindProperty(property);
-            mapping.SetValueFunc(_instance, value);
+            mapping.SetValueFunc(Value, value);
         }
 
         public bool isSet(string property)
         {
             if (property == null) throw new ArgumentNullException(nameof(property));
-            var mapping = _typeMapping.FindProperty(property);
+            var mapping = TypeMapping.FindProperty(property);
 
             return mapping != null;
         }
@@ -63,21 +79,23 @@ namespace DatenMeister.ManualMapping
             throw new NotImplementedException();
         }
 
-        public IElement metaclass => _typeMapping.metaClass;
+        public IElement metaclass => TypeMapping.metaClass;
+
+        object IHasValue.ValueAsObject => Value;
 
         public IElement getMetaClass()
         {
-            return _typeMapping.metaClass;
+            return TypeMapping.metaClass;
         }
 
         public IElement container()
         {
-            return _container;
+            return Container;
         }
 
         private PropertyMapping FindProperty(string property)
         {
-            var mapping = _typeMapping.FindProperty(property);
+            var mapping = TypeMapping.FindProperty(property);
             if (mapping == null)
             {
                 throw new InvalidOperationException($"Mapping for '{property}' unknown.");

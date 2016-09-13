@@ -8,30 +8,30 @@ namespace DatenMeister.ManualMapping
     {
         public IElement metaClass { get; set; }
 
-        public Func<object> CreateNewObject { get; set; }
+        public Func<object, IElement> CreateNewObject { get; set; }
 
         public Func<object, string> GetId { get; set; }
 
-        public Dictionary<object, PropertyMapping> Properties { get; } 
-            = new Dictionary<object, PropertyMapping>();
+        public Dictionary<string, PropertyMapping> Properties { get; } 
+            = new Dictionary<string, PropertyMapping>();
 
-        public PropertyMapping AddProperty<T>(
-            object property,
-            Func<object, T> getFunc,
-            Action<object, T> setFunc)
+        public PropertyMapping AddProperty<TInstanceValue, TReturnValue>(
+            string property,
+            Func<TInstanceValue, TReturnValue> getFunc,
+            Action<TInstanceValue, TReturnValue> setFunc)
         {
             var propertyMapping = new PropertyMapping
             {
-                GetValueFunc = value => getFunc(value),
-                SetValueFunc = (value, propertyValue) => setFunc(value, (T) propertyValue),
-                DefaultValue = default(T)
+                GetValueFunc = value => getFunc((TInstanceValue) value),
+                SetValueFunc = (value, propertyValue) => setFunc((TInstanceValue) value, (TReturnValue) propertyValue),
+                DefaultValue = default(TInstanceValue)
             };
 
             Properties[property] = propertyMapping;
             return propertyMapping;
         }
 
-        public PropertyMapping FindProperty(object property)
+        public PropertyMapping FindProperty(string property)
         {
             PropertyMapping mapping;
             if (Properties.TryGetValue(property, out mapping))

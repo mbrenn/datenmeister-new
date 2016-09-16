@@ -56,7 +56,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             return foundType(scope);
         }
 
-        public static void MapExtentLoaderType(ManualConfigurationToExtentStorageMapper map, Type type)
+        public static void MapExtentLoaderType(IConfigurationToExtentStorageMapper map, Type type)
         {
             foreach (
                 var customAttribute in type.GetTypeInfo().GetCustomAttributes(typeof(ConfiguredByAttribute), false))

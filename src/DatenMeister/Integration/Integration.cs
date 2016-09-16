@@ -56,14 +56,10 @@ namespace DatenMeister.Integration
             // Defines the factory method for a certain extent type  
             var factoryMapper = new DefaultFactoryMapper();
             kernel.RegisterInstance(factoryMapper).As<IFactoryMapper>();
-            DefaultFactoryMapper.MapFactoryType(factoryMapper, typeof(MofUriExtent));
-            DefaultFactoryMapper.MapFactoryType(factoryMapper, typeof(XmlUriExtent));
 
             // Finds the loader for a certain extent type  
             var storageMap = new ManualConfigurationToExtentStorageMapper();
             kernel.RegisterInstance(storageMap).As<IConfigurationToExtentStorageMapper>();
-            ManualConfigurationToExtentStorageMapper.MapExtentLoaderType(storageMap, typeof(CSVStorage));
-            ManualConfigurationToExtentStorageMapper.MapExtentLoaderType(storageMap, typeof(XmiStorage));
 
             // Workspace collection  
             var workspaceCollection = new WorkspaceCollection();
@@ -94,6 +90,10 @@ namespace DatenMeister.Integration
 
             using (var scope = builder.BeginLifetimeScope())
             {
+                Core.EMOF.Integrate.Into(scope);
+                CSV.Integrate.Into(scope);
+                XMI.Integrate.Into(scope);
+
                 // Is used by .Net Provider to include the mappings for extent storages and factory types
                 _settings?.Hooks?.OnStartScope(scope);
 

@@ -55,6 +55,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Core\EMOF\Integrate.cs" />
+    <Compile Include="CSV\Integrate.cs" />
     <Compile Include="Integration\Extensions.Xmi.cs" />
     <None Include="project.json" />
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
@@ -261,6 +263,7 @@
     <Compile Include="XMI\EMOF\XmlUriExtent.cs" />
     <Compile Include="XMI\ExtentStorage\XmiStorage.cs" />
     <Compile Include="XMI\ExtentStorage\XmiStorageConfiguration.cs" />
+    <Compile Include="XMI\Integrate.cs" />
     <Compile Include="XMI\Namespaces.cs" />
     <Compile Include="XMI\SimpleLoader.cs" />
     <Compile Include="XMI\Standards\XmiId.cs" />

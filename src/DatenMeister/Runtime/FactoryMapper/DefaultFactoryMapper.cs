@@ -57,7 +57,7 @@ namespace DatenMeister.Runtime.FactoryMapper
             return result(scope);
         }
 
-        public static void MapFactoryType(DefaultFactoryMapper mapper, Type type)
+        public static void MapFactoryType(IFactoryMapper mapper, Type type)
         {
             foreach (
                 var customAttribute in type.GetTypeInfo().GetCustomAttributes(typeof(AssignFactoryForExtentTypeAttribute), false))

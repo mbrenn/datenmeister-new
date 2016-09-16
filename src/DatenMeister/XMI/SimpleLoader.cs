@@ -30,6 +30,7 @@ namespace DatenMeister.XMI
         /// <summary>
         /// Loads the xmi from the embedded resources
         /// </summary>
+        /// <param name="extent">Extent being loaded</param>
         /// <param name="resourceName">Path to the resources</param>
         public void LoadFromEmbeddedResource(IUriExtent extent, string resourceName)
         {

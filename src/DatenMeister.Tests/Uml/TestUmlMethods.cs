@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.Uml
         {
             var kernel = new ContainerBuilder();
             kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
-            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings {PathToXmiFiles = "Xmi"});
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
                 var classifierMethods = scope.Resolve<ClassifierMethods>();
@@ -47,7 +47,7 @@ namespace DatenMeister.Tests.Uml
         {
             var kernel = new ContainerBuilder();
             kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
-            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings {PathToXmiFiles = "Xmi"});
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
                 var workspaceCollection = scope.Resolve<IWorkspaceCollection>();

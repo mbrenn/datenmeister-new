@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Integration;
 using DatenMeister.Integration;
@@ -18,7 +21,7 @@ namespace DirectUsage
             Console.WriteLine(dm.ToString());
 
             // Testing CSV
-            var extent = dm.LoadCsv("files/test.csv", "dm:///csv");
+            var extent = dm.LoadCsv("dm:///csv", "files/test.csv");
             Console.WriteLine(extent.ToString());
 
             // Testing Excel
@@ -26,19 +29,30 @@ namespace DirectUsage
             Console.WriteLine(xmiExtent.ToString());
 
 
-            var excelExtent = dm.LoadExcel("files/Quadrat.xlsx", "d:///excel");
+            var excelExtent = dm.LoadExcel("d:///excel", "files/Quadratzahlen.xlsx");
 
             Console.WriteLine(excelExtent.ToString());
             foreach (var sheet in excelExtent.elements())
             {
                 var sheetAsElement = (IElement) sheet;
-                Console.WriteLine(sheetAsElement.get("name").ToString());
+                var allProperties = ((IEnumerable<object>) sheetAsElement.get("items")).First() as IObjectAllProperties;
+                Console.WriteLine("Table:" + sheetAsElement.get("name"));
+                foreach (var property in allProperties.getPropertiesBeingSet())
+                {
+                    Console.WriteLine("Property: " + property);
+                }
+                
+
+                foreach (var item in (IEnumerable) sheetAsElement.get("items"))
+                {
+                    var itemAsElement = (IElement) item;
+                    Console.WriteLine(itemAsElement.get("Wert") + ": " + itemAsElement.get("Quadratzahl"));
+                }
             }
 
             watch.Stop();
 
             Console.WriteLine(watch.Elapsed.ToString());
-
             Console.ReadKey();
         }
     }

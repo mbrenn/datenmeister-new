@@ -108,6 +108,9 @@
     <Compile Include="CSV\CSVExtentTests.cs" />
     <Compile Include="DotNet\DotNetExtentTests.cs" />
     <Compile Include="DotNet\DotNetTests.cs" />
+    <Compile Include="Excel\ExcelTests.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Integration\TestIntegration.cs" />
     <Compile Include="ManualMapping\ManualMappingTests.cs" />
     <Compile Include="Mof\Core\MofObjectTests.cs" />
@@ -132,6 +135,10 @@
       <Project>{3EC1DBF5-B87F-4807-96CF-5E68801C3629}</Project>
       <Name>DatenMeister.Apps.ZipCode</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj">
+      <Project>{0661bbb5-9525-4871-9169-22dc13d068dc}</Project>
+      <Name>DatenMeister.Excel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj">
       <Project>{DDE7E649-F341-4D2D-8F54-21F0CCDF3FB2}</Project>
       <Name>DatenMeister.Integration.DotNet</Name>
@@ -147,6 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Excel\Quadratzahlen.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Xmi\MOF.xmi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -6,7 +6,7 @@ namespace DatenMeister.Excel.Integration
     public static class Integration
     {
 
-        public static ExcelExtent LoadExcel(this IDatenMeisterContainer container, string url, string path)
+        public static ExcelExtent LoadExcel(this IDatenMeisterScope container, string url, string path)
         {
             var dataProvider = new ExcelDataProvider();
             return dataProvider.LoadExtent(url, path);

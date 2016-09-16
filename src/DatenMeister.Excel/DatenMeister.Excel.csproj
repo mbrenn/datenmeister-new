@@ -67,7 +67,9 @@
   <ItemGroup>
     <Compile Include="EMOF\ExcelDataProvider.cs" />
     <Compile Include="EMOF\ExcelExtent.cs" />
+    <Compile Include="EMOF\RowItem.cs" />
     <Compile Include="EMOF\SheetItem.cs" />
+    <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Integration\Integration.Excel.cs" />
     <Compile Include="Models\ExcelModels.class.cs" />
     <Compile Include="Models\ExcelModels.cs" />

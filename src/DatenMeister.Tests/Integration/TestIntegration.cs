@@ -40,7 +40,7 @@ namespace DatenMeister.Tests.Integration
         public void TestFactoryMappingByAttributeForExtentLoaders()
         {
             var kernel = new ContainerBuilder();
-            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings {PathToXmiFiles = "Xmi"});
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
 

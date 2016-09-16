@@ -63,15 +63,13 @@ namespace DatenMeister.Tests.Console
             watch.Start();
 
             var dataLayerLogic = new DataLayerLogic(new DataLayerData());
-            var fullStrap = Bootstrapper.PerformFullBootstrap(
-                new Bootstrapper.FilePaths
+            var fullStrap = Bootstrapper.PerformFullBootstrap(dataLayerLogic,
+                null, new Bootstrapper.FilePaths
                 {
                     PathPrimitive = "data/PrimitiveTypes.xmi",
                     PathUml = "data/UML.xmi",
                     PathMof = "data/MOF.xmi"
-                },
-                dataLayerLogic,
-                null);
+                });
             watch.Stop();
 
             var descendents = AllDescendentsQuery.GetDescendents(fullStrap.UmlInfrastructure);

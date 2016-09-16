@@ -211,7 +211,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         {
             var kernel = new ContainerBuilder();
 
-            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings { PathToXmiFiles = "Xmi" });
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
                 var path = Path.Combine(
@@ -262,7 +262,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestWithMetaClass()
         {
             var kernel = new ContainerBuilder();
-            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings { PathToXmiFiles = "Xmi" });
+            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
                 var dataLayerLogic = scope.Resolve<IDataLayerLogic>();

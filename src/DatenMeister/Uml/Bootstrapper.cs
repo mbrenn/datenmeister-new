@@ -296,21 +296,18 @@ namespace DatenMeister.Uml
         /// <summary>
         ///     Performs a full bootstrap by reading in the uml class
         /// </summary>
-        /// <param name="paths">Paths storing the uml information</param>
         /// <param name="dataLayerLogic">The datalayer logic to be used</param>
         /// <param name="dataLayer">The datalayer to be filled before the bootstrap itself</param>
+        /// <param name="paths">Paths storing the uml information</param>
         /// <returns>The instance of the bootstrapper</returns>
-        public static Bootstrapper PerformFullBootstrap(
-            FilePaths paths,
-            IDataLayerLogic dataLayerLogic,
-            IDataLayer dataLayer)
+        public static Bootstrapper PerformFullBootstrap(IDataLayerLogic dataLayerLogic, IDataLayer dataLayer, FilePaths paths = null)
         {
             var factory = new MofFactory();
             var umlExtent = new MofUriExtent(Locations.UriUml);
             var mofExtent = new MofUriExtent(Locations.UriMof);
             var primitiveExtent = new MofUriExtent(Locations.UriPrimitiveTypes);
             var loader = new SimpleLoader(factory);
-            if (paths.LoadFromEmbeddedResources)
+            if (paths == null || paths.LoadFromEmbeddedResources)
             {
                 loader.LoadFromEmbeddedResource(primitiveExtent, "DatenMeister.XmiFiles.PrimitiveTypes.xmi");
                 loader.LoadFromEmbeddedResource(umlExtent, "DatenMeister.XmiFiles.UML.xmi");
@@ -363,7 +360,7 @@ namespace DatenMeister.Uml
             if (dataLayerLogic == null) throw new ArgumentNullException(nameof(dataLayerLogic));
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-            var strapper = PerformFullBootstrap(filePaths, dataLayerLogic, dataLayer);
+            var strapper = PerformFullBootstrap(dataLayerLogic, dataLayer, filePaths);
 
             workspace.AddExtent(strapper.MofInfrastructure);
             workspace.AddExtent(strapper.UmlInfrastructure);

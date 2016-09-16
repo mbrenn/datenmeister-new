@@ -54,7 +54,7 @@ namespace DatenMeister.ManualMapping
             if (property == null) throw new ArgumentNullException(nameof(property));
 
             var mapping =  FindProperty(property);
-            return mapping.GetValueFunc(Value);
+            return mapping.GetValueFunc(this);
         }
 
         public void set(string property, object value)
@@ -62,7 +62,7 @@ namespace DatenMeister.ManualMapping
             if (property == null) throw new ArgumentNullException(nameof(property));
 
             var mapping = FindProperty(property);
-            mapping.SetValueFunc(Value, value);
+            mapping.SetValueFunc(this, value);
         }
 
         public bool isSet(string property)

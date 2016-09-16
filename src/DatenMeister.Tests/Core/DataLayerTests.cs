@@ -66,12 +66,6 @@ namespace DatenMeister.Tests.Core
             dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
 
             var strapper = Bootstrapper.PerformFullBootstrap(
-                new Bootstrapper.FilePaths
-                {
-                    PathPrimitive = "Xmi/PrimitiveTypes.xmi",
-                    PathUml = "Xmi/UML.xmi",
-                    PathMof = "Xmi/MOF.xmi"
-                },
                 dataLayerLogic, 
                 dataLayers.Uml);
 

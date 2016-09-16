@@ -137,16 +137,6 @@ namespace DatenMeister.Integration
                 typeWorkspace.AddExtent(extentTypes);
                 dataLayerLogic.AssignToDataLayer(extentTypes, dataLayers.Types);
 
-                // Creates the extent for user types
-                var loader = scope.Resolve<ExtentStorageLoader>();
-                var storageConfiguration = new XmiStorageConfiguration
-                {
-                    ExtentUri = Locations.UriUserTypes,
-                    Path = PathUserTypes,
-                    Workspace = WorkspaceNames.Types,
-                    DataLayer = "Types"
-                };
-                loader.LoadExtent(storageConfiguration, true);
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();
@@ -164,8 +154,10 @@ namespace DatenMeister.Integration
                 // Boots up the typical DatenMeister Environment  
                 if (_settings.EstablishDataEnvironment)
                 {
-                    EstablishDataEnvironment(builder, scope);
+                    LoadsWorkspacesAndExtents(builder, scope);
                 }
+
+                CreatesUserTypeExtent(scope);
             }
 
             watch.Stop();
@@ -174,7 +166,7 @@ namespace DatenMeister.Integration
             return builder;
         }
 
-        private void EstablishDataEnvironment(IContainer builder, ILifetimeScope scope)
+        private void LoadsWorkspacesAndExtents(IContainer builder, ILifetimeScope scope)
         {
             var innerContainer = new ContainerBuilder();
             // Loading and storing the workspaces  
@@ -201,6 +193,28 @@ namespace DatenMeister.Integration
 
             // Loads all extents after all plugins were started  
             extentLoader.LoadAllExtents();
+        }
+
+        private static void CreatesUserTypeExtent(ILifetimeScope scope)
+        {
+            var workspaceCollection = scope.Resolve<IWorkspaceCollection>();
+
+            // Creates the user types, if not existing
+            if (workspaceCollection.FindExtent(Locations.UriUserTypes) == null)
+            {
+                Debug.WriteLine("Creates the extent for the user types");
+                // Creates the extent for user types
+                var loader = scope.Resolve<ExtentStorageLoader>();
+                var storageConfiguration = new XmiStorageConfiguration
+                {
+                    ExtentUri = Locations.UriUserTypes,
+                    Path = PathUserTypes,
+                    Workspace = WorkspaceNames.Types,
+                    DataLayer = "Types"
+                };
+
+                loader.LoadExtent(storageConfiguration, true);
+            }
         }
     }
 }

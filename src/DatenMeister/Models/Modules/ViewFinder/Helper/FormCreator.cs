@@ -53,12 +53,14 @@ namespace DatenMeister.Models.Modules.ViewFinder.Helper
             // First phase: Get the properties by using the metaclass
             var asElement = item as IElement;
             var metaClass = asElement?.metaclass;
+            var wasInMetaClass = false;
 
             if (creationMode.HasFlag(CreationMode.ByMetaClass)
                 && metaClass != null)
             {
                 if (metaClass.isSet(_UML._Classification._Classifier.attribute))
                 {
+                    wasInMetaClass = true;
                     var properties = metaClass.get(_UML._Classification._Classifier.attribute) as IEnumerable;
                     if (properties != null)
                     {
@@ -93,7 +95,7 @@ namespace DatenMeister.Models.Modules.ViewFinder.Helper
                 creationMode.HasFlag(CreationMode.OnlyPropertiesIfNoMetaClass);
 
             if ((isByProperties 
-                    || (isOnlyPropertiesIfNoMetaClass && metaClass == null))
+                    || (isOnlyPropertiesIfNoMetaClass && !wasInMetaClass))
                 && itemAsAllProperties != null)
             {
                 var properties = itemAsAllProperties.getPropertiesBeingSet();

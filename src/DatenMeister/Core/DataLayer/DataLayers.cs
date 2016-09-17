@@ -14,7 +14,7 @@
         {
             logic.SetRelationShip(Data, Types);
             logic.SetRelationShip(Types, Uml);
-            logic.SetRelationShip(Uml, Uml);
+            logic.SetRelationShip(Uml, Mof);
             logic.SetRelationShip(Mof, Mof);
             logic.SetDefaultDatalayer(Data);
         }

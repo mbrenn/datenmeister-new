@@ -64,7 +64,9 @@ namespace DatenMeister.Tests.Console
 
             var dataLayerLogic = new DataLayerLogic(new DataLayerData());
             var fullStrap = Bootstrapper.PerformFullBootstrap(dataLayerLogic,
-                null, new Bootstrapper.FilePaths
+                null, 
+                BootstrapMode.Mof,
+                new Bootstrapper.FilePaths
                 {
                     PathPrimitive = "data/PrimitiveTypes.xmi",
                     PathUml = "data/UML.xmi",

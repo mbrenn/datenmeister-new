@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Core.EMOF.Helper
 {
@@ -44,8 +45,9 @@ namespace DatenMeister.Core.EMOF.Helper
                 yield break;
             }
 
-            _alreadyVisited.Add(element);
+            yield return element;
 
+            _alreadyVisited.Add(element);
 
             // Now go through the list
             var elementAsIObjectExt = element as IObjectAllProperties;
@@ -60,10 +62,13 @@ namespace DatenMeister.Core.EMOF.Helper
                 if (value is IObject)
                 {
                     // Value is an object... perfect!
-                    yield return value as IObject;
+                    foreach (var innerValue in GetDescendentsInternal(value as IObject))
+                    {
+                        yield return innerValue;
+                    }
                 }
 
-                if (value is IEnumerable && value.GetType() != typeof (string))
+                if (DotNetHelper.IsOfEnumeration(value))
                 {
                     // Value is a real enumeration. Unfortunately strings are also
                     // enumeration, but we would like to skip them. Their content
@@ -76,13 +81,6 @@ namespace DatenMeister.Core.EMOF.Helper
                 }
             }
         }
-
-        public static IEnumerable<IObject> GetDescendents(IEnumerable enumeration)
-        {
-            var inner = new AllDescendentsQuery();
-            return inner.GetDescendentsInternal(enumeration);
-        } 
-
         public IEnumerable<IObject> GetDescendentsInternal(IEnumerable valueAsEnumerable)
         {
             foreach (var element in valueAsEnumerable)
@@ -90,8 +88,6 @@ namespace DatenMeister.Core.EMOF.Helper
                 if (element is IObject)
                 {
                     var elementAsIObject = element as IObject;
-                    yield return elementAsIObject;
-
                     foreach (var value in GetDescendentsInternal(elementAsIObject))
                     {
                         yield return value;
@@ -99,5 +95,12 @@ namespace DatenMeister.Core.EMOF.Helper
                 }
             }
         }
+
+        public static IEnumerable<IObject> GetDescendents(IEnumerable enumeration)
+        {
+            var inner = new AllDescendentsQuery();
+            return inner.GetDescendentsInternal(enumeration);
+        } 
+
     }
 }

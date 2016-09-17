@@ -67,7 +67,8 @@ namespace DatenMeister.Tests.Core
 
             var strapper = Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic, 
-                dataLayers.Uml);
+                dataLayers.Uml,
+                BootstrapMode.Mof);
 
             var primitiveTypes = dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(dataLayers.Uml);
             Assert.That(primitiveTypes, Is.Not.Null );

@@ -252,6 +252,7 @@
     <Compile Include="SourcecodeGenerator\SourceParser\ISourceParser.cs" />
     <Compile Include="SourcecodeGenerator\SourceParser\XmiSourceParser.cs" />
     <Compile Include="SourcecodeGenerator\WalkPackageClass.cs" />
+    <Compile Include="Uml\BootstrapMode.cs" />
     <Compile Include="Uml\Bootstrapper.cs" />
     <Compile Include="Uml\Helper\ClassifierMethods.cs" />
     <Compile Include="Uml\Helper\IUmlNameResolution.cs" />

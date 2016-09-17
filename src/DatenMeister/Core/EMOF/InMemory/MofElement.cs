@@ -40,5 +40,12 @@ namespace DatenMeister.Core.EMOF.InMemory
         {
             _container = container;
         }
+
+        public override string ToString()
+        {
+            return metaclass == null || !metaclass.isSet("name")? 
+                base.ToString() :
+                $"[{metaclass.get("name")}] {base.ToString()}";
+        }
     }
 }

@@ -117,18 +117,23 @@ namespace DatenMeister.Integration
                     throw new InvalidOperationException("Slim integration is currently not supported");
                 }
 
+                var umlWatch = new Stopwatch();
+                umlWatch.Start();
                 Debug.Write("Bootstrapping MOF and UML...");
-                Bootstrapper.PerformFullBootstrap(
-                    paths,
-                    workspaceCollection.GetWorkspace(WorkspaceNames.Uml),
-                    dataLayerLogic,
-                    dataLayers.Uml);
                 Bootstrapper.PerformFullBootstrap(
                     paths,
                     workspaceCollection.GetWorkspace(WorkspaceNames.Mof),
                     dataLayerLogic,
-                    dataLayers.Mof);
-                Debug.WriteLine(" Done");
+                    dataLayers.Mof,
+                    BootstrapMode.Mof);
+                Bootstrapper.PerformFullBootstrap(
+                    paths,
+                    workspaceCollection.GetWorkspace(WorkspaceNames.Uml),
+                    dataLayerLogic,
+                    dataLayers.Uml,
+                    BootstrapMode.Uml);
+                umlWatch.Stop();
+                Debug.WriteLine($" Done: {umlWatch.Elapsed.Milliseconds} ms");
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var mofFactory = new MofFactory();

@@ -5,9 +5,11 @@ using DatenMeister.Core;
 using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Helper;
 using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
+using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Uml.Helper;
 using DatenMeister.XMI;
 
@@ -37,17 +39,17 @@ namespace DatenMeister.Uml
         /// <summary>
         ///     Stores the extent for the uml infrastructure
         /// </summary>
-        public IUriExtent MofInfrastructure { get; }
+        public IUriExtent MofInfrastructure { get; private set; }
 
         /// <summary>
         ///     Stores the extent for the uml infrastructure
         /// </summary>
-        public IUriExtent UmlInfrastructure { get; }
+        public IUriExtent UmlInfrastructure { get; private set; }
 
         /// <summary>
         ///     Stores the extent for the uml infrastructure
         /// </summary>
-        public IUriExtent PrimitiveInfrastructure { get; }
+        public IUriExtent PrimitiveInfrastructure { get; private set; }
 
         /// <summary>
         /// The static constructor
@@ -66,35 +68,58 @@ namespace DatenMeister.Uml
         /// <param name="mofInfrastructure">Extent reflecting the MOF infrastructure XMI definition</param>
         /// <param name="dataLayerLogic">Datalayerlogic  being used</param>
         public Bootstrapper(
-            IUriExtent primitiveInfrastructure,
-            IUriExtent umlInfrastructure,
-            IUriExtent mofInfrastructure,
             IDataLayerLogic dataLayerLogic)
         {
             if (dataLayerLogic == null) throw new ArgumentNullException(nameof(dataLayerLogic));
+
+            _dataLayerLogic = dataLayerLogic;
+        }
+
+        public void StrapUml(
+            IUriExtent primitiveInfrastructure,
+            IUriExtent umlInfrastructure,
+            IDataLayer mofDataLayer)
+        {
             if (umlInfrastructure == null)
             {
                 throw new ArgumentNullException(nameof(umlInfrastructure));
-            }
-            if (mofInfrastructure == null)
-            {
-                throw new ArgumentNullException(nameof(mofInfrastructure));
             }
             if (primitiveInfrastructure == null)
             {
                 throw new ArgumentNullException(nameof(primitiveInfrastructure));
             }
 
-            _dataLayerLogic = dataLayerLogic;
+            UmlInfrastructure = umlInfrastructure;
+            PrimitiveInfrastructure = primitiveInfrastructure;
+
+            StrapUml(mofDataLayer);
+        }
+        public void StrapMof(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure, IUriExtent mofInfrastructure)
+        {
+            if (umlInfrastructure == null)
+            {
+                throw new ArgumentNullException(nameof(umlInfrastructure));
+            }
+            if (primitiveInfrastructure == null)
+            {
+                throw new ArgumentNullException(nameof(primitiveInfrastructure));
+            }
+            if (mofInfrastructure == null)
+            {
+                throw new ArgumentNullException(nameof(mofInfrastructure));
+            }
+
             UmlInfrastructure = umlInfrastructure;
             MofInfrastructure = mofInfrastructure;
             PrimitiveInfrastructure = primitiveInfrastructure;
+
+            StrapMof();
         }
 
         /// <summary>
         ///     Performs the bootstrap
         /// </summary>
-        public void Strap()
+        private void StrapMof()
         {
             if (_wasRun)
             {
@@ -102,15 +127,16 @@ namespace DatenMeister.Uml
             }
 
             _wasRun = true;
-            
+
             var umlDescendents = AllDescendentsQuery.GetDescendents(UmlInfrastructure).ToList();
-            var mofDescendents = AllDescendentsQuery.GetDescendents(MofInfrastructure).ToList();
             var primitiveDescendents = AllDescendentsQuery.GetDescendents(PrimitiveInfrastructure).ToList();
+            var mofDescendents = AllDescendentsQuery.GetDescendents(MofInfrastructure).ToList();
             var allElements =
-                mofDescendents
-                    .Union(umlDescendents)
+                umlDescendents
                     .Union(primitiveDescendents)
                     .ToList();
+
+            allElements = allElements.Union(mofDescendents).ToList();
 
             // First, find the all classes of the uml namespace...
 
@@ -119,6 +145,7 @@ namespace DatenMeister.Uml
             // Go through all elements and set the id
             foreach (var element in allElements.OfType<IElement>())
             {
+                // Skip the package imports since we are not able to handle these
                 if (element.isSet(TypeProperty) && element.get(TypeProperty).ToString() == "uml:PackageImport")
                 {
                     continue;
@@ -130,7 +157,7 @@ namespace DatenMeister.Uml
                     if (id.StartsWith("_"))
                     {
                         // Due to a problem in the uml.xmi, duplicate IDs might be in the packageImport
-                        // We also skip this... uml.xmi and primitivetypes.xmi have this id. Not used
+                        // We also skip these... uml.xmi and primitivetypes.xmi have this id. Not used
                         // All duplicate items start with an underscore
                         continue;
                     }
@@ -151,8 +178,8 @@ namespace DatenMeister.Uml
             {
                 var name = classInstance.get("name").ToString();
                 var typeValue = classInstance.isSet(TypeProperty) ? classInstance.get(TypeProperty).ToString() : null;
-                if ( typeValue == "uml:Class")
-                { 
+                if (typeValue == "uml:Class")
+                {
                     UmlClasses[name] = classInstance;
                 }
                 if (typeValue == "uml:Association")
@@ -217,7 +244,166 @@ namespace DatenMeister.Uml
                     }
                 }
             }
-          
+
+            // ConvertPropertiesToRealProperties(allElements);
+        }
+
+        /// <summary>
+        ///     Performs the bootstrap
+        /// </summary>
+        private void StrapUml(IDataLayer metaLayer)
+        {
+            if (_wasRun)
+            {
+                throw new InvalidOperationException("Bootstrapper was already run. Create a new object for your run");
+            }
+
+            _wasRun = true;
+
+            var umlDescendents = AllDescendentsQuery.GetDescendents(UmlInfrastructure).ToList();
+            var primitiveDescendents = AllDescendentsQuery.GetDescendents(PrimitiveInfrastructure).ToList();
+            var allElements =
+                    umlDescendents
+                    .Union(primitiveDescendents)
+                    .ToList();
+
+            // First, find the all classes of the uml namespace...
+            var idToElementCache = new Dictionary<string, IElement>();
+
+            // Go through all elements and set the id
+            foreach (var element in allElements.OfType<IElement>())
+            {
+                // Skip the package imports since we are not able to handle these
+                if (element.isSet(TypeProperty) && element.get(TypeProperty).ToString() == "uml:PackageImport")
+                {
+                    continue;
+                }
+
+                if (element.isSet(IdProperty))
+                {
+                    var id = element.get(IdProperty).ToString();
+                    if (id.StartsWith("_"))
+                    {
+                        // Due to a problem in the uml.xmi, duplicate IDs might be in the packageImport
+                        // We also skip these... uml.xmi and primitivetypes.xmi have this id. Not used
+                        // All duplicate items start with an underscore
+                        continue;
+                    }
+
+                    if (idToElementCache.ContainsKey(id))
+                    {
+                        throw new InvalidOperationException($"ID '{id}' is duplicate");
+                    }
+
+                    idToElementCache[id] = element;
+                }
+
+                element.unset(IdProperty);
+            }
+
+            // Go through all found classes and store them into the dictionaries
+            foreach (var classInstance in umlDescendents.OfType<IElement>().Where(x => x.isSet("name")))
+            {
+                var name = classInstance.get("name").ToString();
+                var typeValue = classInstance.isSet(TypeProperty) ? classInstance.get(TypeProperty).ToString() : null;
+                if (typeValue == "uml:Class")
+                {
+                    UmlClasses[name] = classInstance;
+                }
+                if (typeValue == "uml:Association")
+                {
+                    UmlAssociations[name] = classInstance;
+                }
+            }
+
+            // After having the classes from MOF and UML, go through all classes and set
+            // the metaclass of these element depending on the attribute value of Xmi:Type
+            var extentsOfMetaLayer = _dataLayerLogic.GetExtentsForDatalayer(metaLayer).ToList();
+            var umlElements =
+                extentsOfMetaLayer.First(x => x.contextURI() == Locations.UriUml).elements().GetAllDecendants();
+            var mofElements =
+                extentsOfMetaLayer.First(x => x.contextURI() == Locations.UriMof).elements().GetAllDecendants();
+            var umlMetaClasses =
+                umlElements
+                    .Cast<IElement>()
+                    .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")
+                    .ToList();
+            var mofMetaClasses =
+                mofElements
+                    .Cast<IElement>()
+                    .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")
+                    .ToList();
+            // Hacky hack to get rid of one of the tags
+            mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Tag").ElementAt(0));
+            mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Factory").ElementAt(0));
+            mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Extent").ElementAt(0));
+            mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Element").ElementAt(0));
+            var umlNameCache =
+                umlElements
+                    .Cast<IElement>()
+                    .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")
+                    .ToDictionary(x => x.get("name").ToString(), x => x);
+            var mofNameCache =
+               mofMetaClasses
+                    .ToDictionary(x => x.get("name").ToString(), x => x);
+            foreach (var elementInstance in allElements.Where(x => x.isSet(TypeProperty)))
+            {
+                var name = elementInstance.get(TypeProperty).ToString();
+
+                // Find it in the higher instance mof
+                IElement metaClass;
+                // Translates the uri to the correct one
+                if (name.StartsWith("uml:"))
+                {
+                    name = name.Substring(4);
+                    metaClass = umlNameCache[name];
+
+                }
+                else if (name.StartsWith("mofext:"))
+                {
+                    name = name.Substring(7);
+                    metaClass = mofNameCache[name];
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Unknown name: {name}");
+                }
+
+                if (metaClass == null)
+                {
+                    throw new InvalidOperationException($"Metaclass for {name} is not found");
+                }
+
+                ((IElementSetMetaClass)elementInstance).setMetaClass(metaClass);
+
+                // We strip out the property and id information. 
+                // It is not really required 
+                elementInstance.unset(TypeProperty);
+            }
+
+            // Now we handle the generalization information. 
+            // For all classes and associations, whose type is class or associations, get the generalization property and convert it to a list of classes
+            foreach (var elementInstance in umlDescendents
+                .Where(x => (x as IElement)?.metaclass?.Equals(UmlClasses["Generalization"]) == true))
+            {
+                if (elementInstance.isSet("general"))
+                {
+                    var general = elementInstance.get("general").ToString();
+                    if (UmlClasses.ContainsKey(general))
+                    {
+                        elementInstance.set("general", UmlClasses[general]);
+                    }
+                    else if (UmlAssociations.ContainsKey(general))
+                    {
+                        elementInstance.set("general", UmlAssociations[general]);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"Found unknown generalization: {general}");
+                    }
+                }
+            }
+
             // ConvertPropertiesToRealProperties(allElements);
         }
 
@@ -300,8 +486,9 @@ namespace DatenMeister.Uml
         /// <param name="dataLayer">The datalayer to be filled before the bootstrap itself</param>
         /// <param name="paths">Paths storing the uml information</param>
         /// <returns>The instance of the bootstrapper</returns>
-        public static Bootstrapper PerformFullBootstrap(IDataLayerLogic dataLayerLogic, IDataLayer dataLayer, FilePaths paths = null)
+        public static Bootstrapper PerformFullBootstrap(IDataLayerLogic dataLayerLogic, IDataLayer dataLayer, BootstrapMode mode, FilePaths paths = null)
         {
+            var loadsMof = mode == BootstrapMode.Mof;
             var factory = new MofFactory();
             var umlExtent = new MofUriExtent(Locations.UriUml);
             var mofExtent = new MofUriExtent(Locations.UriMof);
@@ -311,24 +498,36 @@ namespace DatenMeister.Uml
             {
                 loader.LoadFromEmbeddedResource(primitiveExtent, "DatenMeister.XmiFiles.PrimitiveTypes.xmi");
                 loader.LoadFromEmbeddedResource(umlExtent, "DatenMeister.XmiFiles.UML.xmi");
-                loader.LoadFromEmbeddedResource(mofExtent, "DatenMeister.XmiFiles.MOF.xmi");
+
+                if (loadsMof)
+                {
+                    loader.LoadFromEmbeddedResource(mofExtent, "DatenMeister.XmiFiles.MOF.xmi");
+                }
             }
             else
             {
                 loader.LoadFromFile(primitiveExtent, paths.PathPrimitive);
                 loader.LoadFromFile(umlExtent, paths.PathUml);
-                loader.LoadFromFile(mofExtent, paths.PathMof);
+                if (loadsMof)
+                {
+                    loader.LoadFromFile(mofExtent, paths.PathMof);
+                }
             }
 
             // Assigns the extents to the datalayer
             if (dataLayer != null && dataLayerLogic != null)
             {
-                dataLayerLogic.AssignToDataLayer(mofExtent, dataLayer);
+                
                 dataLayerLogic.AssignToDataLayer(umlExtent, dataLayer);
                 dataLayerLogic.AssignToDataLayer(primitiveExtent, dataLayer);
-                dataLayerLogic.Create<FillTheMOF, _MOF>(dataLayer);
                 dataLayerLogic.Create<FillTheUML, _UML>(dataLayer);
                 dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(dataLayer);
+
+                if (loadsMof)
+                {
+                    dataLayerLogic.Create<FillTheMOF, _MOF>(dataLayer);
+                    dataLayerLogic.AssignToDataLayer(mofExtent, dataLayer);
+                }
             }
             else
             {
@@ -337,8 +536,20 @@ namespace DatenMeister.Uml
             }
 
             // Now do the bootstrap
-            var bootStrapper = new Bootstrapper(primitiveExtent, umlExtent, mofExtent, dataLayerLogic);
-            bootStrapper.Strap();
+            var bootStrapper = new Bootstrapper(dataLayerLogic);
+            if (mode == BootstrapMode.Mof)
+            {
+                bootStrapper.StrapMof(primitiveInfrastructure: primitiveExtent, 
+                    umlInfrastructure: umlExtent, mofInfrastructure: mofExtent);
+            }
+            else if (mode == BootstrapMode.Uml)
+            {
+                bootStrapper.StrapUml(
+                    primitiveInfrastructure: primitiveExtent, 
+                    umlInfrastructure: umlExtent,
+                    mofDataLayer: dataLayerLogic.GetMetaLayerFor(dataLayer));
+            }
+
             return bootStrapper;
         }
 
@@ -349,18 +560,20 @@ namespace DatenMeister.Uml
         /// <param name="workspace">The workspace to which the extents will be aded</param>
         /// <param name="dataLayerLogic">The datalayerlogic being used to add the </param>
         /// <param name="dataLayer">The datalayer to which the new extents will be added</param>
+        /// <param name="mode">Bootstrap mode. Is this for UML or MOF?</param>
         /// <returns></returns>
         public static Bootstrapper PerformFullBootstrap(
             FilePaths filePaths,
             Workspace<IExtent> workspace,
             IDataLayerLogic dataLayerLogic,
-            IDataLayer dataLayer)
+            IDataLayer dataLayer,
+            BootstrapMode mode)
         {
             if (workspace == null) throw new ArgumentNullException(nameof(workspace));
             if (dataLayerLogic == null) throw new ArgumentNullException(nameof(dataLayerLogic));
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-            var strapper = PerformFullBootstrap(dataLayerLogic, dataLayer, filePaths);
+            var strapper = PerformFullBootstrap(dataLayerLogic, dataLayer, mode, filePaths);
 
             workspace.AddExtent(strapper.MofInfrastructure);
             workspace.AddExtent(strapper.UmlInfrastructure);

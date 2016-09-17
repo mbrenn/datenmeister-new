@@ -414,7 +414,7 @@ namespace DatenMeister.Web.Api
 
             if (foundExtent == null)
             {
-                throw new InvalidOperationException("Not found");
+                return Content(HttpStatusCode.NotFound, "Extent Not Found");
             }
 
             var totalItems = foundExtent.elements();

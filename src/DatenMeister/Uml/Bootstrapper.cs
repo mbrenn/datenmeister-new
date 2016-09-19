@@ -224,26 +224,7 @@ namespace DatenMeister.Uml
 
             // Now we handle the generalization information. 
             // For all classes and associations, whose type is class or associations, get the generalization property and convert it to a list of classes
-            foreach (var elementInstance in umlDescendents
-                .Where(x => (x as IElement)?.metaclass?.Equals(UmlClasses["Generalization"]) == true))
-            {
-                if (elementInstance.isSet("general"))
-                {
-                    var general = elementInstance.get("general").ToString();
-                    if (UmlClasses.ContainsKey(general))
-                    {
-                        elementInstance.set("general", UmlClasses[general]);
-                    }
-                    else if (UmlAssociations.ContainsKey(general))
-                    {
-                        elementInstance.set("general", UmlAssociations[general]);
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException($"Found unknown generalization: {general}");
-                    }
-                }
-            }
+            EvaluateGeneralizations(umlDescendents, UmlClasses["Generalization"]);
 
             // ConvertPropertiesToRealProperties(allElements);
         }
@@ -323,11 +304,10 @@ namespace DatenMeister.Uml
                 extentsOfMetaLayer.First(x => x.contextURI() == Locations.UriUml).elements().GetAllDecendants();
             var mofElements =
                 extentsOfMetaLayer.First(x => x.contextURI() == Locations.UriMof).elements().GetAllDecendants();
-            var umlMetaClasses =
-                umlElements
-                    .Cast<IElement>()
-                    .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")
-                    .ToList();
+            umlElements
+                .Cast<IElement>()
+                .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")
+                .ToList();
             var mofMetaClasses =
                 mofElements
                     .Cast<IElement>()
@@ -381,10 +361,24 @@ namespace DatenMeister.Uml
                 elementInstance.unset(TypeProperty);
             }
 
+            var metaClassGeneralization =
+                extentsOfMetaLayer.First(x => x.contextURI() == Locations.UriUml)
+                    .element(Locations.UriUml + "#Generalization");
+            EvaluateGeneralizations(umlDescendents, metaClassGeneralization);
+
+            // ConvertPropertiesToRealProperties(allElements);
+        }
+
+        /// <summary>
+        /// Evaluates the 
+        /// </summary>
+        /// <param name="umlDescendents"></param>
+        private void EvaluateGeneralizations(IEnumerable<IObject> umlDescendents, IElement metaClassGeneralization)
+        {
             // Now we handle the generalization information. 
             // For all classes and associations, whose type is class or associations, get the generalization property and convert it to a list of classes
             foreach (var elementInstance in umlDescendents
-                .Where(x => (x as IElement)?.metaclass?.Equals(UmlClasses["Generalization"]) == true))
+                .Where(x => (x as IElement)?.metaclass?.Equals(metaClassGeneralization) == true))
             {
                 if (elementInstance.isSet("general"))
                 {
@@ -403,8 +397,6 @@ namespace DatenMeister.Uml
                     }
                 }
             }
-
-            // ConvertPropertiesToRealProperties(allElements);
         }
 
         /// <summary>
@@ -417,17 +409,14 @@ namespace DatenMeister.Uml
         {
             // Now we replace the property information from string form to real properties
             List<Action> actions = new List<Action>();
-            var classifierMethod = new ClassifierMethods(_dataLayerLogic)
-            {
-                Legacy = true
-            };
+            var classifierMethod = new ClassifierMethods(_dataLayerLogic);
 
             foreach (var element in allElements.OfType<IObjectAllProperties>())
             {
                 var asElement = element as IElement;
                 if (asElement == null)
                 {
-                    throw new InvalidOperationException($"Given Element is not an element: ");
+                    throw new InvalidOperationException($"Given Element is not an element: {element.ToString()}");
                 }
 
                 var metaClass = asElement.getMetaClass();
@@ -437,7 +426,7 @@ namespace DatenMeister.Uml
                     continue;
                 }
 
-                var propertiesOfMetaClass = classifierMethod.GetPropertiesOfClassifier(metaClass).ToList();
+                var propertiesOfMetaClass = classifierMethod.GetPropertyNamesOfClassifier(metaClass).ToList();
                 var mapping = new Dictionary<string, string>();
                 foreach (var property in propertiesOfMetaClass)
                 {
@@ -575,7 +564,11 @@ namespace DatenMeister.Uml
 
             var strapper = PerformFullBootstrap(dataLayerLogic, dataLayer, mode, filePaths);
 
-            workspace.AddExtent(strapper.MofInfrastructure);
+            if (mode == BootstrapMode.Mof)
+            {
+                workspace.AddExtent(strapper.MofInfrastructure);
+            }
+
             workspace.AddExtent(strapper.UmlInfrastructure);
             workspace.AddExtent(strapper.PrimitiveInfrastructure);
             return strapper;

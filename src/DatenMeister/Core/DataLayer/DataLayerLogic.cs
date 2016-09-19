@@ -180,7 +180,7 @@ namespace DatenMeister.Core.DataLayer
             {
                 var layerAsObject = layer as DataLayer;
                 VerifyThatNotNull(layerAsObject);
-
+                    
                 // Looks into the cache for the filledtypes
                 foreach (var value in layerAsObject.FilledTypeCache)
                 {

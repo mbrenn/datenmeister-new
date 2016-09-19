@@ -12,8 +12,6 @@ namespace DatenMeister.Uml.Helper
     public class ClassifierMethods
     {
         private readonly IDataLayerLogic _dataLayerLogic;
-        public bool Legacy { get; set; }
-
         public ClassifierMethods(IDataLayerLogic dataLayerLogic)
         {
             _dataLayerLogic = dataLayerLogic;
@@ -24,25 +22,20 @@ namespace DatenMeister.Uml.Helper
         /// Also properties from generalized classes need to be returned
         /// </summary>
         /// <param name="classifier"></param>
-        /// <param name="legacy">true, if legacy access to the attributes shall be used. 
-        /// This means that the methods are accessed via string definitions and not via the properties</param>
-        /// <returns></returns>
-        public IEnumerable<string> GetPropertiesOfClassifier(IElement classifier)
+        public IEnumerable<IElement> GetPropertiesOfClassifier(IElement classifier)
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
 
-            var metaLayer = Legacy ? null : _dataLayerLogic.GetMetaLayerFor(_dataLayerLogic.GetDataLayerOfObject(classifier));
-            var uml = Legacy ? null : _dataLayerLogic.Get<_UML>(metaLayer);
-            var propertyOwnedAttribute = Legacy ? "ownedAttribute" : _UML._StructuredClassifiers._StructuredClassifier.ownedAttribute;
-            var propertyGeneralization = Legacy ? "generalization" : _UML._Classification._Classifier.generalization;
-            var propertyGeneral = Legacy ? "general" : _UML._Classification._Generalization.general;
+            var propertyOwnedAttribute = _UML._StructuredClassifiers._StructuredClassifier.ownedAttribute;
+            var propertyGeneralization = _UML._Classification._Classifier.generalization;
+            var propertyGeneral = _UML._Classification._Generalization.general;
 
             if (classifier.isSet(propertyOwnedAttribute))
             {
                 var result = (IEnumerable) classifier.get(propertyOwnedAttribute);
                 foreach (var item in result)
                 {
-                    yield return item.ToString();
+                    yield return item as IElement;
                 }
             }
 
@@ -65,7 +58,17 @@ namespace DatenMeister.Uml.Helper
                     }
                 }
             }
+        }
 
+        /// <summary>
+        /// Returns an enumeration of property names which are returned
+        /// by the method GetPropertiesOfClassifier
+        /// </summary>
+        /// <param name="classifier">Classifier which is queried</param>
+        /// <returns>Enumeration of properties</returns>
+        public IEnumerable<string> GetPropertyNamesOfClassifier(IElement classifier)
+        {
+            return GetPropertiesOfClassifier(classifier).Select(x => x.get("name").ToString());
         }
     }
 }

@@ -24,14 +24,13 @@ namespace DatenMeister.Tests.Uml
             using (var scope = builder.BeginLifetimeScope())
             {
                 var classifierMethods = scope.Resolve<ClassifierMethods>();
-                classifierMethods.Legacy = false;
                 var dataLayers = scope.Resolve<DataLayers>();
                 var dataLayerLogic = scope.Resolve<DataLayerLogic>();
 
                 // Gets the logic
                 var uml = dataLayerLogic.Get<_UML>(dataLayers.Uml);
                 var feature = uml.Classification.__Feature;
-                var properties = classifierMethods.GetPropertiesOfClassifier(feature).ToList();
+                var properties = classifierMethods.GetPropertyNamesOfClassifier(feature).ToList();
 
                 Assert.That(properties.Contains(_UML._Classification._Feature.isStatic), Is.True,
                     "isStatic");

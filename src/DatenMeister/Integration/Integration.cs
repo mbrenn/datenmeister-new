@@ -21,6 +21,7 @@ using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
 using DatenMeister.XMI.EMOF;
 using DatenMeister.XMI.ExtentStorage;
+using WorkspaceData = DatenMeister.Core.DataLayer.WorkspaceData;
 
 namespace DatenMeister.Integration
 {
@@ -70,14 +71,12 @@ namespace DatenMeister.Integration
             var extentStorageData = new ExtentStorageData();
             kernel.RegisterInstance(extentStorageData).As<ExtentStorageData>();
             kernel.RegisterType<ExtentStorageLoader>().As<IExtentStorageLoader>();
-
-            // Defines the datalayers  
-            var dataLayers = new DataLayers();
-            kernel.RegisterInstance(dataLayers).As<DataLayers>();
-
-            var dataLayerData = new DataLayerData(dataLayers);
-            kernel.RegisterInstance(dataLayerData).As<DataLayerData>();
-            kernel.RegisterType<DataLayerLogic>().As<IDataLayerLogic>();
+            
+            WorkspaceData dataLayerData;
+            var workspaces = WorkspaceLogic.InitDefault(out dataLayerData);
+            kernel.RegisterInstance(dataLayerData).As<WorkspaceData>();
+            kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
+            kernel.RegisterInstance(workspaces).As<Workspaces>();
 
             // Adds the name resolution  
             kernel.RegisterType<UmlNameResolution>().As<IUmlNameResolution>();
@@ -97,8 +96,7 @@ namespace DatenMeister.Integration
                 // Is used by .Net Provider to include the mappings for extent storages and factory types
                 _settings?.Hooks?.OnStartScope(scope);
 
-                var dataLayerLogic = scope.Resolve<IDataLayerLogic>();
-                dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
+                var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
 
                 // Load the default extents  
 
@@ -124,13 +122,13 @@ namespace DatenMeister.Integration
                     paths,
                     workspaceCollection.GetWorkspace(WorkspaceNames.Mof),
                     dataLayerLogic,
-                    dataLayers.Mof,
+                    workspaces.Mof,
                     BootstrapMode.Mof);
                 Bootstrapper.PerformFullBootstrap(
                     paths,
                     workspaceCollection.GetWorkspace(WorkspaceNames.Uml),
                     dataLayerLogic,
-                    dataLayers.Uml,
+                    workspaces.Uml,
                     BootstrapMode.Uml);
                 umlWatch.Stop();
                 Debug.WriteLine($" Done: {umlWatch.Elapsed.Milliseconds} ms");
@@ -140,14 +138,14 @@ namespace DatenMeister.Integration
                 var extentTypes = new MofUriExtent(Locations.UriInternalTypes);
                 var typeWorkspace = workspaceCollection.GetWorkspace(WorkspaceNames.Types);
                 typeWorkspace.AddExtent(extentTypes);
-                dataLayerLogic.AssignToDataLayer(extentTypes, dataLayers.Types);
+                dataLayerLogic.AssignToDataLayer(extentTypes, workspaces.Types);
 
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();
-                dataLayerLogic.Set(dataLayers.Data, fields);
+                dataLayerLogic.Set(workspaces.Data, fields);
                 IntegrateFormAndFields.Assign(
-                    dataLayerLogic.Get<_UML>(dataLayers.Uml),
+                    dataLayerLogic.Get<_UML>(workspaces.Uml),
                     mofFactory,
                     extentTypes.elements(),
                     fields,

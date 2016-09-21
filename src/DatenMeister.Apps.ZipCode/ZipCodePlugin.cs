@@ -10,10 +10,10 @@ namespace DatenMeister.Apps.ZipCode
 {
     public class ZipCodePlugin : IDatenMeisterPlugin
     {
-        private readonly IDataLayerLogic _dataLayerLogic;
+        private readonly IWorkspaceLogic _dataLayerLogic;
         private readonly IWorkspaceCollection _workspaceCollection;
 
-        public ZipCodePlugin(IDataLayerLogic dataLayerLogic, IWorkspaceCollection workspaceCollection)
+        public ZipCodePlugin(IWorkspaceLogic dataLayerLogic, IWorkspaceCollection workspaceCollection)
         {
             _dataLayerLogic = dataLayerLogic;
             _workspaceCollection = workspaceCollection;

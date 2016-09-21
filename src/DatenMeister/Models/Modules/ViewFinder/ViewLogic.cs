@@ -19,12 +19,12 @@ namespace DatenMeister.Models.Modules.ViewFinder
         public const string UriViewExtent = "dm:///management/views";
 
         private readonly IWorkspaceCollection _workspaceCollection;
-        private readonly IDataLayerLogic _dataLayerLogic;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
-        public ViewLogic(IWorkspaceCollection workspaceCollection, IDataLayerLogic dataLayerLogic)
+        public ViewLogic(IWorkspaceCollection workspaceCollection, IWorkspaceLogic workspaceLogic)
         {
             _workspaceCollection = workspaceCollection;
-            _dataLayerLogic = dataLayerLogic;
+            _workspaceLogic = workspaceLogic;
         }
 
         /// <summary>
@@ -123,8 +123,8 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// <returns></returns>
         private _FormAndFields GetFormAndFieldInstance(IUriExtent viewExtent)
         {
-            return  _dataLayerLogic.Get<_FormAndFields>(
-                _dataLayerLogic.GetDataLayerOfExtent(viewExtent));
+            return  _workspaceLogic.Get<_FormAndFields>(
+                _workspaceLogic.GetDataLayerOfExtent(viewExtent));
         }
     }
 }

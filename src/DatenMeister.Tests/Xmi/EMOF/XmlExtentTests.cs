@@ -265,8 +265,8 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
-                var dataLayerLogic = scope.Resolve<IDataLayerLogic>();
-                var dataLayers = scope.Resolve<DataLayers>();
+                var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
+                var dataLayers = scope.Resolve<Workspaces>();
                 var umlDataLayer = dataLayers.Uml;
                 var uml = dataLayerLogic.Get<_UML>(umlDataLayer);
                 Assert.That(uml, Is.Not.Null);

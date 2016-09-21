@@ -62,7 +62,7 @@ namespace DatenMeister.Tests.Console
             var watch = new Stopwatch();
             watch.Start();
 
-            var dataLayerLogic = new DataLayerLogic(new DataLayerData());
+            var dataLayerLogic = new WorkspaceLogic(new WorkspaceData());
             var fullStrap = Bootstrapper.PerformFullBootstrap(dataLayerLogic,
                 null, 
                 BootstrapMode.Mof,

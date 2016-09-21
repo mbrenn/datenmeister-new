@@ -5,7 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Runtime.Workspaces.Data
 {
-    public class WorkspaceLoader : ObjectFileStorage<WorkspaceData>
+    public class WorkspaceLoader : ObjectFileStorage<WorkspaceFileData>
     {
         public string Filepath { get; set; }
 
@@ -20,7 +20,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
             Filepath = filepath;
         }
 
-        public WorkspaceData Load()
+        public WorkspaceFileData Load()
         {
             try
             {
@@ -41,7 +41,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
                         continue;
                     }
 
-                    var workspace = new Workspace<IExtent>(workspaceInfo.Id, workspaceInfo.Annotation);
+                    var workspace = new Workspace(workspaceInfo.Id, workspaceInfo.Annotation);
                     WorkspaceCollection.AddWorkspace(workspace);
                 }
 
@@ -56,7 +56,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
 
         public void Store()
         {
-            var workSpaceData = new WorkspaceData();
+            var workSpaceData = new WorkspaceFileData();
             foreach (var workSpace in  WorkspaceCollection.Workspaces)
             {
                 workSpaceData.Workspaces.Add(new WorkspaceInfo

@@ -14,10 +14,9 @@ namespace DatenMeister.Tests.Core
         [Test]
         public void TestDataLayers()
         {
-            var dataLayers = new DataLayers();
-            var data = new DataLayerData(dataLayers);
-            IDataLayerLogic logic = new DataLayerLogic(data);
-            dataLayers.SetRelationsForDefaultDataLayers(logic);
+            WorkspaceData data;
+            var dataLayers = WorkspaceLogic.InitDefault(out data);
+            var logic = new WorkspaceLogic(data);
 
             var dataExtent = new MofUriExtent("Data");
             var typeExtent = new MofUriExtent("Types");
@@ -38,10 +37,9 @@ namespace DatenMeister.Tests.Core
         [Test]
         public void TestDataLayersForItem()
         {
-            var dataLayers = new DataLayers();
-            var data = new DataLayerData(dataLayers);
-            IDataLayerLogic logic = new DataLayerLogic(data);
-            dataLayers.SetRelationsForDefaultDataLayers(logic);
+            WorkspaceData data;
+            var dataLayers = WorkspaceLogic.InitDefault(out data);
+            var logic = new WorkspaceLogic(data);
 
             var dataExtent = new MofUriExtent("Data");
             var umlExtent = new MofUriExtent("Uml");
@@ -61,9 +59,9 @@ namespace DatenMeister.Tests.Core
         [Test]
         public void TestClassTreeUsage()
         {
-            var dataLayerLogic = new DataLayerLogic(new DataLayerData());
-            var dataLayers = new DataLayers();
-            dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
+            WorkspaceData data;
+            var dataLayers = WorkspaceLogic.InitDefault(out data);
+            var dataLayerLogic = new WorkspaceLogic(data);
 
             var strapper = Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic, 

@@ -11,10 +11,10 @@ namespace DatenMeister.Runtime.Extents
 {
     public class ExtentFunctions
     {
-        private readonly IDataLayerLogic _dataLayerLogic;
-        public ExtentFunctions(IDataLayerLogic dataLayerLogic)
+        private readonly IWorkspaceLogic _workspaceLogic;
+        public ExtentFunctions(IWorkspaceLogic workspaceLogic)
         {
-            _dataLayerLogic = dataLayerLogic;
+            _workspaceLogic = workspaceLogic;
         }
 
         /// <summary>
@@ -25,11 +25,11 @@ namespace DatenMeister.Runtime.Extents
         /// <returns>Enumeration of types</returns>
         public CreateableTypeResult GetCreatableTypes(IUriExtent extent)
         {
-            var dataLayer = _dataLayerLogic.GetDataLayerOfExtent(extent);
-            var typeLayer = _dataLayerLogic.GetMetaLayerFor(dataLayer);
-            var umlLayer= _dataLayerLogic.GetMetaLayerFor(typeLayer);
+            var dataLayer = _workspaceLogic.GetDataLayerOfExtent(extent);
+            var typeLayer = _workspaceLogic.GetMetaLayerFor(dataLayer);
+            var umlLayer= _workspaceLogic.GetMetaLayerFor(typeLayer);
 
-            var uml = _dataLayerLogic.Get<_UML>(umlLayer);
+            var uml = _workspaceLogic.Get<_UML>(umlLayer);
             var classType = uml?.StructuredClassifiers.__Class;
 
             if (classType == null)
@@ -46,7 +46,7 @@ namespace DatenMeister.Runtime.Extents
             return new CreateableTypeResult
             {
                 MetaLayer = typeLayer,
-                CreatableTypes = _dataLayerLogic.GetExtentsForDatalayer(typeLayer)
+                CreatableTypes = _workspaceLogic.GetExtentsForDatalayer(typeLayer)
                     .SelectMany(x => x.elements().WhenMetaClassIs(classType))
                     .Cast<IElement>()
                     .ToList()
@@ -55,7 +55,7 @@ namespace DatenMeister.Runtime.Extents
 
         public class CreateableTypeResult
         {
-            public IDataLayer MetaLayer { get; set; }
+            public Workspace MetaLayer { get; set; }
             public IList<IElement> CreatableTypes { get; set; }
         }
     }

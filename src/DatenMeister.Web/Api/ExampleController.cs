@@ -14,15 +14,15 @@ namespace DatenMeister.Web.Api
     [RoutePrefix("api/datenmeister/example")]
     public class ExampleController : ApiController
     {
-        private readonly IDataLayerLogic _dataLayerLogic;
+        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IWorkspaceCollection _collection;
         private readonly IExtentStorageLoader _loader;
 
         private static readonly Random Random = new Random();
 
-        public ExampleController(IDataLayerLogic dataLayerLogic, IWorkspaceCollection collection, IExtentStorageLoader loader)
+        public ExampleController(IWorkspaceLogic workspaceLogic, IWorkspaceCollection collection, IExtentStorageLoader loader)
         {
-            _dataLayerLogic = dataLayerLogic;
+            _workspaceLogic = workspaceLogic;
             _collection = collection;
             _loader = loader;
         }

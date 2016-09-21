@@ -32,26 +32,26 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         private readonly ILifetimeScope _diScope;
 
-        private readonly IDataLayerLogic _dataLayerLogic;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         public ExtentStorageLoader(ExtentStorageData data,
             IConfigurationToExtentStorageMapper map,
-            IDataLayerLogic dataLayerLogic)
+            IWorkspaceLogic workspaceLogic)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
             if (map == null) throw new ArgumentNullException(nameof(map));
-            if (dataLayerLogic == null) throw new ArgumentNullException(nameof(dataLayerLogic));
+            if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
             
             _data = data;
             _map = map;
-            _dataLayerLogic = dataLayerLogic;
+            _workspaceLogic = workspaceLogic;
         }
 
         public ExtentStorageLoader(
             ExtentStorageData data, 
             IConfigurationToExtentStorageMapper map,
             IWorkspaceCollection workspaceCollection,
-            ILifetimeScope diScope, IDataLayerLogic dataLayerLogic) : this(data, map, dataLayerLogic)
+            ILifetimeScope diScope, IWorkspaceLogic workspaceLogic) : this(data, map, workspaceLogic)
         {
             Debug.Assert(workspaceCollection != null, "collection != null");
             _workspaceCollection = workspaceCollection;
@@ -89,9 +89,9 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             if (!string.IsNullOrEmpty(configuration.DataLayer))
             {
-                _dataLayerLogic.AssignToDataLayer(
+                _workspaceLogic.AssignToDataLayer(
                     loadedExtent, 
-                    _dataLayerLogic.GetByName(configuration.DataLayer));
+                    _workspaceLogic.GetById(configuration.DataLayer));
             }
 
 

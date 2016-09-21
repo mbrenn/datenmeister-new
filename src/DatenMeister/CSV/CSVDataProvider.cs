@@ -17,12 +17,12 @@ namespace DatenMeister.CSV
     public class CSVDataProvider
     {
         private readonly IWorkspaceCollection _workspaceCollection;
-        private readonly IDataLayerLogic _dataLayerLogic;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
-        public CSVDataProvider(IWorkspaceCollection workspaceCollection, IDataLayerLogic dataLayerLogic)
+        public CSVDataProvider(IWorkspaceCollection workspaceCollection, IWorkspaceLogic workspaceLogic)
         {
             _workspaceCollection = workspaceCollection;
-            _dataLayerLogic = dataLayerLogic;
+            _workspaceLogic = workspaceLogic;
         }
 
         /// <summary>

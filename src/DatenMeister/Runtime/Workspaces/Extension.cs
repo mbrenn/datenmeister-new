@@ -15,7 +15,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspace">The workspace being queried</param>
         /// <param name="uri">The uri of the extent that is looked for</param>
         /// <returns>The found extent or null, if not found</returns>
-        public static IUriExtent FindExtent<T>(this Workspace<T> workspace, string uri) where T : IExtent
+        public static IUriExtent FindExtent(this Workspace workspace, string uri)
         {
             return (IUriExtent) workspace.extent.FirstOrDefault(x => (x as IUriExtent)?.contextURI() == uri);
         }
@@ -28,7 +28,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspace">Workspace where extent will be added</param>
         /// <param name="extent">Extent being added</param>
         /// <returns>true, if addition was succesfsul</returns>
-        public static bool AddExtentNoDuplicate<T, Q>(this Workspace<T> workspace, Q extent) where T : IExtent where Q : T, IUriExtent
+        public static bool AddExtentNoDuplicate(this Workspace workspace, IUriExtent extent) 
         {
             var contextUri = extent.contextURI();
             var found = workspace.extent.FirstOrDefault(x =>
@@ -54,7 +54,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspace">The workspace to be modified</param>
         /// <param name="uri">Uri of the extent</param>
         /// <returns>true, if the object can be deleted</returns>
-        public static bool RemoveExtent<T>(this Workspace<T> workspace, string uri) where T : IExtent
+        public static bool RemoveExtent(this Workspace workspace, string uri)
         {
             lock (workspace.SyncObject)
             {
@@ -84,7 +84,7 @@ namespace DatenMeister.Runtime.Workspaces
         public static void RetrieveWorkspaceAndExtent(
             this IWorkspaceCollection workspaceCollection,
             WorkspaceExtentAndItemReference model,
-            out Workspace<IExtent> foundWorkspace,
+            out Workspace foundWorkspace,
             out IUriExtent foundExtent)
         {
             RetrieveWorkspaceAndExtent(
@@ -99,7 +99,7 @@ namespace DatenMeister.Runtime.Workspaces
             this IWorkspaceCollection workspaceCollection,
             string ws,
             string extent,
-            out Workspace<IExtent> foundWorkspace,
+            out Workspace foundWorkspace,
             out IUriExtent foundExtent)
         {
             foundWorkspace = workspaceCollection.Workspaces.FirstOrDefault(x => x.id == ws);
@@ -122,7 +122,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspaceCollection">The workspace collection to be queried</param>
         /// <param name="extent">The extent to which the workspace is required</param>
         /// <returns>Found workspace or null, if not found</returns>
-        public static Workspace<IExtent> FindWorkspace(
+        public static Workspace FindWorkspace(
             this IWorkspaceCollection workspaceCollection,
             IExtent extent)
         {
@@ -167,7 +167,7 @@ namespace DatenMeister.Runtime.Workspaces
         public static void FindItem(
             this IWorkspaceCollection collection,
             WorkspaceExtentAndItemReference model,
-            out Workspace<IExtent> foundWorkspace,
+            out Workspace foundWorkspace,
             out IUriExtent foundExtent,
             out IElement foundItem)
         {

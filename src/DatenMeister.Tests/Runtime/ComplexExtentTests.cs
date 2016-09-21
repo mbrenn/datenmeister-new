@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using DatenMeister.Apps.ZipCode;
+using DatenMeister.Core;
 using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Integration;
@@ -23,7 +24,7 @@ namespace DatenMeister.Tests.Runtime
                 integrateZipCodes.Start();
 
                 var extentFunctions = scope.Resolve<ExtentFunctions>();
-                var dataLayers = scope.Resolve<DataLayers>();
+                var dataLayers = scope.Resolve<Workspaces>();
 
                 var dataExtent = new MofUriExtent("dm:///test");
                 var creatableTypes = extentFunctions.GetCreatableTypes(dataExtent);

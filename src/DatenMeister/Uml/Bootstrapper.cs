@@ -20,7 +20,7 @@ namespace DatenMeister.Uml
     /// </summary>
     public class Bootstrapper
     {
-        private readonly IDataLayerLogic _dataLayerLogic;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
         ///     Stores a vlaue indicating whether the run was already performed.
@@ -66,19 +66,19 @@ namespace DatenMeister.Uml
         /// <param name="primitiveInfrastructure">Extent reflecting the primitive structure XMI definition</param>
         /// <param name="umlInfrastructure">Extent reflecting the Uml infrastructure XMI definition</param>
         /// <param name="mofInfrastructure">Extent reflecting the MOF infrastructure XMI definition</param>
-        /// <param name="dataLayerLogic">Datalayerlogic  being used</param>
+        /// <param name="workspaceLogic">Datalayerlogic  being used</param>
         public Bootstrapper(
-            IDataLayerLogic dataLayerLogic)
+            IWorkspaceLogic workspaceLogic)
         {
-            if (dataLayerLogic == null) throw new ArgumentNullException(nameof(dataLayerLogic));
+            if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
 
-            _dataLayerLogic = dataLayerLogic;
+            _workspaceLogic = workspaceLogic;
         }
 
         public void StrapUml(
             IUriExtent primitiveInfrastructure,
             IUriExtent umlInfrastructure,
-            IDataLayer mofDataLayer)
+            Workspace mofDataLayer)
         {
             if (umlInfrastructure == null)
             {
@@ -232,7 +232,7 @@ namespace DatenMeister.Uml
         /// <summary>
         ///     Performs the bootstrap
         /// </summary>
-        private void StrapUml(IDataLayer metaLayer)
+        private void StrapUml(Workspace metaLayer)
         {
             if (_wasRun)
             {
@@ -299,7 +299,7 @@ namespace DatenMeister.Uml
 
             // After having the classes from MOF and UML, go through all classes and set
             // the metaclass of these element depending on the attribute value of Xmi:Type
-            var extentsOfMetaLayer = _dataLayerLogic.GetExtentsForDatalayer(metaLayer).ToList();
+            var extentsOfMetaLayer = _workspaceLogic.GetExtentsForDatalayer(metaLayer).ToList();
             var umlElements =
                 extentsOfMetaLayer.First(x => x.contextURI() == Locations.UriUml).elements().GetAllDecendants();
             var mofElements =
@@ -409,7 +409,7 @@ namespace DatenMeister.Uml
         {
             // Now we replace the property information from string form to real properties
             List<Action> actions = new List<Action>();
-            var classifierMethod = new ClassifierMethods(_dataLayerLogic);
+            var classifierMethod = new ClassifierMethods(_workspaceLogic);
 
             foreach (var element in allElements.OfType<IObjectAllProperties>())
             {
@@ -471,12 +471,16 @@ namespace DatenMeister.Uml
         /// <summary>
         ///     Performs a full bootstrap by reading in the uml class
         /// </summary>
-        /// <param name="dataLayerLogic">The datalayer logic to be used</param>
+        /// <param name="workspaceLogic">The datalayer logic to be used</param>
         /// <param name="dataLayer">The datalayer to be filled before the bootstrap itself</param>
         /// <param name="paths">Paths storing the uml information</param>
         /// <returns>The instance of the bootstrapper</returns>
-        public static Bootstrapper PerformFullBootstrap(IDataLayerLogic dataLayerLogic, IDataLayer dataLayer, BootstrapMode mode, FilePaths paths = null)
+        public static Bootstrapper PerformFullBootstrap(IWorkspaceLogic workspaceLogic, Workspace dataLayer,
+            BootstrapMode mode, FilePaths paths = null)
         {
+            if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
+            if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
+
             var loadsMof = mode == BootstrapMode.Mof;
             var factory = new MofFactory();
             var umlExtent = new MofUriExtent(Locations.UriUml);
@@ -504,39 +508,32 @@ namespace DatenMeister.Uml
             }
 
             // Assigns the extents to the datalayer
-            if (dataLayer != null && dataLayerLogic != null)
-            {
-                
-                dataLayerLogic.AssignToDataLayer(umlExtent, dataLayer);
-                dataLayerLogic.AssignToDataLayer(primitiveExtent, dataLayer);
-                dataLayerLogic.Create<FillTheUML, _UML>(dataLayer);
-                dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(dataLayer);
 
-                if (loadsMof)
-                {
-                    dataLayerLogic.Create<FillTheMOF, _MOF>(dataLayer);
-                    dataLayerLogic.AssignToDataLayer(mofExtent, dataLayer);
-                }
-            }
-            else
+
+            workspaceLogic.AssignToDataLayer(umlExtent, dataLayer);
+            workspaceLogic.AssignToDataLayer(primitiveExtent, dataLayer);
+            workspaceLogic.Create<FillTheUML, _UML>(dataLayer);
+            workspaceLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(dataLayer);
+
+            if (loadsMof)
             {
-                // To support the creation of _MOF and _UML, we need to have datalayers and their logic
-                throw new InvalidOperationException("datalayers or dataLayerLogic is null");
+                workspaceLogic.Create<FillTheMOF, _MOF>(dataLayer);
+                workspaceLogic.AssignToDataLayer(mofExtent, dataLayer);
             }
 
             // Now do the bootstrap
-            var bootStrapper = new Bootstrapper(dataLayerLogic);
+            var bootStrapper = new Bootstrapper(workspaceLogic);
             if (mode == BootstrapMode.Mof)
             {
-                bootStrapper.StrapMof(primitiveInfrastructure: primitiveExtent, 
+                bootStrapper.StrapMof(primitiveInfrastructure: primitiveExtent,
                     umlInfrastructure: umlExtent, mofInfrastructure: mofExtent);
             }
             else if (mode == BootstrapMode.Uml)
             {
                 bootStrapper.StrapUml(
-                    primitiveInfrastructure: primitiveExtent, 
+                    primitiveInfrastructure: primitiveExtent,
                     umlInfrastructure: umlExtent,
-                    mofDataLayer: dataLayerLogic.GetMetaLayerFor(dataLayer));
+                    mofDataLayer: workspaceLogic.GetMetaLayerFor(dataLayer));
             }
 
             return bootStrapper;
@@ -547,22 +544,22 @@ namespace DatenMeister.Uml
         /// </summary>
         /// <param name="filePaths">Paths storing the uml</param>
         /// <param name="workspace">The workspace to which the extents will be aded</param>
-        /// <param name="dataLayerLogic">The datalayerlogic being used to add the </param>
+        /// <param name="workspaceLogic">The datalayerlogic being used to add the </param>
         /// <param name="dataLayer">The datalayer to which the new extents will be added</param>
         /// <param name="mode">Bootstrap mode. Is this for UML or MOF?</param>
         /// <returns></returns>
         public static Bootstrapper PerformFullBootstrap(
             FilePaths filePaths,
-            Workspace<IExtent> workspace,
-            IDataLayerLogic dataLayerLogic,
-            IDataLayer dataLayer,
+            Workspace workspace,
+            IWorkspaceLogic workspaceLogic,
+            Workspace dataLayer,
             BootstrapMode mode)
         {
             if (workspace == null) throw new ArgumentNullException(nameof(workspace));
-            if (dataLayerLogic == null) throw new ArgumentNullException(nameof(dataLayerLogic));
+            if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-            var strapper = PerformFullBootstrap(dataLayerLogic, dataLayer, mode, filePaths);
+            var strapper = PerformFullBootstrap(workspaceLogic, dataLayer, mode, filePaths);
 
             if (mode == BootstrapMode.Mof)
             {

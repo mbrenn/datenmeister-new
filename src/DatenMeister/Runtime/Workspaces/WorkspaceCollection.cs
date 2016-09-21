@@ -14,7 +14,7 @@ namespace DatenMeister.Runtime.Workspaces
     {
         public class Item
         {
-            public Workspace<IExtent> Workspace { get; set; }
+            public Workspace Workspace { get; set; }
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <summary>
         /// Gets all the workspaces
         /// </summary>
-        public IEnumerable<Workspace<IExtent>> Workspaces
+        public IEnumerable<Workspace> Workspaces
         {
             get
             {
@@ -41,7 +41,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// The meta workspace can also be the same as the added workspace
         /// </summary>
         /// <param name="workspace">Workspace to be added</param>
-        public void AddWorkspace(Workspace<IExtent> workspace)
+        public void AddWorkspace(Workspace workspace)
         {
             if (workspace == null)  throw new ArgumentNullException(nameof(workspace));
 
@@ -74,7 +74,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <param name="id">Id of the workspace</param>
         /// <returns>The found workspace or null, if not found</returns>
-        public Workspace<IExtent> GetWorkspace(string id) => GetWorkspaceItem(id)?.Workspace;
+        public Workspace GetWorkspace(string id) => GetWorkspaceItem(id)?.Workspace;
 
         /// <summary>
         /// Removes the workspace from the collection
@@ -99,11 +99,11 @@ namespace DatenMeister.Runtime.Workspaces
         public void Init()
         {
             _workspaces = new List<Item>();
-            AddWorkspace(new Workspace<IExtent>(WorkspaceNames.Data, "All the data workspaces"));
-            AddWorkspace(new Workspace<IExtent>(WorkspaceNames.Management, "Management data for DatenMeister"));
-            AddWorkspace(new Workspace<IExtent>(WorkspaceNames.Types, "All the types belonging to us. "));
-            AddWorkspace(new Workspace<IExtent>(WorkspaceNames.Uml, "The extents belonging to UML are stored here."));
-            AddWorkspace(new Workspace<IExtent>(WorkspaceNames.Mof, "The extents belonging to MOF are stored here."));
+            AddWorkspace(new Workspace(WorkspaceNames.Data, "All the data workspaces"));
+            AddWorkspace(new Workspace(WorkspaceNames.Management, "Management data for DatenMeister"));
+            AddWorkspace(new Workspace(WorkspaceNames.Types, "All the types belonging to us. "));
+            AddWorkspace(new Workspace(WorkspaceNames.Uml, "The extents belonging to UML are stored here."));
+            AddWorkspace(new Workspace(WorkspaceNames.Mof, "The extents belonging to MOF are stored here."));
             Debug.WriteLine("DatenMeister Webcore initialized");
         }
     }

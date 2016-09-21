@@ -24,8 +24,8 @@ namespace DatenMeister.Tests.Uml
             using (var scope = builder.BeginLifetimeScope())
             {
                 var classifierMethods = scope.Resolve<ClassifierMethods>();
-                var dataLayers = scope.Resolve<DataLayers>();
-                var dataLayerLogic = scope.Resolve<DataLayerLogic>();
+                var dataLayers = scope.Resolve<Workspaces>();
+                var dataLayerLogic = scope.Resolve<WorkspaceLogic>();
 
                 // Gets the logic
                 var uml = dataLayerLogic.Get<_UML>(dataLayers.Uml);
@@ -50,8 +50,8 @@ namespace DatenMeister.Tests.Uml
             using (var scope = builder.BeginLifetimeScope())
             {
                 var workspaceCollection = scope.Resolve<IWorkspaceCollection>();
-                var dataLayers = scope.Resolve<DataLayers>();
-                var dataLayerLogic = scope.Resolve<DataLayerLogic>();
+                var dataLayers = scope.Resolve<Workspaces>();
+                var dataLayerLogic = scope.Resolve<WorkspaceLogic>();
 
                 // Gets the logic
                 var uml = dataLayerLogic.Get<_UML>(dataLayers.Uml);

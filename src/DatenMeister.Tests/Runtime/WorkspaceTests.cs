@@ -30,8 +30,8 @@ namespace DatenMeister.Tests.Runtime
         {
             // Stores an empty workspace
             var workSpaceCollection = new WorkspaceCollection();
-            workSpaceCollection.AddWorkspace(new Workspace<IExtent>("test", "Continue"));
-            workSpaceCollection.AddWorkspace(new Workspace<IExtent>("another", "annotation"));
+            workSpaceCollection.AddWorkspace(new Workspace("test", "Continue"));
+            workSpaceCollection.AddWorkspace(new Workspace("another", "annotation"));
             var workspaceLoader = new WorkspaceLoader(workSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Store();
 
@@ -71,13 +71,13 @@ namespace DatenMeister.Tests.Runtime
         {
             // Stores an empty workspace
             var workSpaceCollection = new WorkspaceCollection();
-            workSpaceCollection.AddWorkspace(new Workspace<IExtent>("test", "Continue"));
-            workSpaceCollection.AddWorkspace(new Workspace<IExtent>("another", "annotation"));
+            workSpaceCollection.AddWorkspace(new Workspace("test", "Continue"));
+            workSpaceCollection.AddWorkspace(new Workspace("another", "annotation"));
             var workspaceLoader = new WorkspaceLoader(workSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Store();
 
             var newWorkSpaceCollection = new WorkspaceCollection();
-            newWorkSpaceCollection.AddWorkspace(new Workspace<IExtent>("test", "Continue"));
+            newWorkSpaceCollection.AddWorkspace(new Workspace("test", "Continue"));
             workspaceLoader = new WorkspaceLoader(newWorkSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Load();
 

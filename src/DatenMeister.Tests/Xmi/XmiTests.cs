@@ -63,12 +63,13 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void TestGetUriAndRetrieveElement()
         {
-
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            
-            var dataLayerLogic = new DataLayerLogic(new DataLayerData());
-            var dataLayers = new DataLayers();
-            dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
+
+            WorkspaceData data;
+            var dataLayers = WorkspaceLogic.InitDefault(out data);
+            var dataLayerLogic = new WorkspaceLogic(data);
+
+
             var strapper = Bootstrapper.PerformFullBootstrap(dataLayerLogic,
                 dataLayers.Uml, 
                 BootstrapMode.Mof,
@@ -154,10 +155,11 @@ namespace DatenMeister.Tests.Xmi
         /// <param name="uml">Uml instance to be returned</param>
         public static void CreateUmlAndMofInstance(out _MOF mof, out _UML uml)
         {
-            var dataLayerLogic = new DataLayerLogic(new DataLayerData());
-            var dataLayers = new DataLayers();
-            dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
-            var strapper = Bootstrapper.PerformFullBootstrap(dataLayerLogic,
+            WorkspaceData data;
+            var dataLayers = WorkspaceLogic.InitDefault(out data);
+            var dataLayerLogic = new WorkspaceLogic(data);
+            var strapper = Bootstrapper.PerformFullBootstrap(
+                dataLayerLogic,
                 dataLayers.Mof,
                 BootstrapMode.Mof);
             Assert.That(strapper, Is.Not.Null);
@@ -176,9 +178,9 @@ namespace DatenMeister.Tests.Xmi
 
         private static _UML GetFilledUml()
         {
-            var dataLayerLogic = new DataLayerLogic(new DataLayerData());
-            var dataLayers = new DataLayers();
-            dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
+            WorkspaceData data;
+            var dataLayers = WorkspaceLogic.InitDefault(out data);
+            var dataLayerLogic = new WorkspaceLogic(data);
             Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic,
                 dataLayers.Mof, 

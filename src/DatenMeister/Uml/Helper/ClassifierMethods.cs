@@ -11,10 +11,10 @@ namespace DatenMeister.Uml.Helper
 {
     public class ClassifierMethods
     {
-        private readonly IDataLayerLogic _dataLayerLogic;
-        public ClassifierMethods(IDataLayerLogic dataLayerLogic)
+        private readonly IWorkspaceLogic _workspaceLogic;
+        public ClassifierMethods(IWorkspaceLogic workspaceLogic)
         {
-            _dataLayerLogic = dataLayerLogic;
+            _workspaceLogic = workspaceLogic;
         }
 
         /// <summary>

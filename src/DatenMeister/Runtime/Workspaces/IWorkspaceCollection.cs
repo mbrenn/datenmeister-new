@@ -9,10 +9,11 @@ namespace DatenMeister.Runtime.Workspaces
     /// </summary>
     public interface IWorkspaceCollection
     {
-        void AddWorkspace(Workspace<IExtent> workspace);
+        void AddWorkspace(Workspace workspace);
+
         void RemoveWorkspace(string id);
 
-        Workspace<IExtent> GetWorkspace(string id);
-        IEnumerable<Workspace<IExtent>> Workspaces { get; }
+        Workspace GetWorkspace(string id);
+        IEnumerable<Workspace> Workspaces { get; }
     }
 }

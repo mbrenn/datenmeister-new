@@ -53,7 +53,8 @@ namespace DatenMeister.Core
         {
             lock (_fileData)
             {
-                return _fileData.Workspaces.Single(x => x.extent.Contains(extent));
+                var result = _fileData.Workspaces.FirstOrDefault(x => x.extent.Contains(extent));
+                return result ?? _fileData.Default;
             }
         }
 

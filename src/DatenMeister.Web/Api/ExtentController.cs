@@ -40,7 +40,6 @@ namespace DatenMeister.Web.Api
         private const int MaxItemAmount = 100;
 
         private readonly IFactoryMapper _mapper;
-        private readonly IWorkspaceCollection _workspaceCollection;
         private readonly IUmlNameResolution _resolution;
         private readonly IExtentStorageLoader _extentStorageLoader;
         private readonly IWorkspaceLogic _workspaceLogic;
@@ -50,7 +49,6 @@ namespace DatenMeister.Web.Api
 
         public ExtentController(
             IFactoryMapper mapper, 
-            IWorkspaceCollection workspaceCollection, 
             IUmlNameResolution resolution, 
             IExtentStorageLoader extentStorageLoader, 
             IWorkspaceLogic workspaceLogic, 
@@ -59,7 +57,6 @@ namespace DatenMeister.Web.Api
             IViewFinder viewFinder)
         {
             _mapper = mapper;
-            _workspaceCollection = workspaceCollection;
             _resolution = resolution;
             _extentStorageLoader = extentStorageLoader;
             _workspaceLogic = workspaceLogic;
@@ -98,7 +95,7 @@ namespace DatenMeister.Web.Api
         ///     exception is thrown</returns>
         private Workspace GetWorkspace(string ws)
         {
-            var workspace = _workspaceCollection.Workspaces.First(x => x.id == ws);
+            var workspace = _workspaceLogic.Workspaces.First(x => x.id == ws);
             if (workspace == null)
             {
                 throw new InvalidOperationException("Workspace not found");
@@ -127,7 +124,7 @@ namespace DatenMeister.Web.Api
         [HttpPost]
         public object AddExtent([FromBody] ExtentAddModel model)
         {
-            var workspace = _workspaceCollection.Workspaces.First(x => x.id == model.workspace);
+            var workspace = _workspaceLogic.Workspaces.First(x => x.id == model.workspace);
             if (workspace == null)
             {
                 throw new InvalidOperationException("Workspace not found");
@@ -188,7 +185,7 @@ namespace DatenMeister.Web.Api
         [HttpPost]
         public object CreateExtent([FromBody] ExtentCreateModel model)
         {
-            var workspace = _workspaceCollection.Workspaces.First(x => x.id == model.workspace);
+            var workspace = _workspaceLogic.Workspaces.First(x => x.id == model.workspace);
             if (workspace == null)
             {
                 throw new InvalidOperationException("Workspace not found");
@@ -288,9 +285,9 @@ namespace DatenMeister.Web.Api
         {
             Workspace foundWorkspace;
             IUriExtent foundExtent;
-            _workspaceCollection.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
+            _workspaceLogic.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
 
-            var provider = new CSVDataProvider(_workspaceCollection, _workspaceLogic);
+            var provider = new CSVDataProvider(_workspaceLogic);
             
             using (var stream = new StringWriter())
             {
@@ -329,7 +326,7 @@ namespace DatenMeister.Web.Api
         {
             Workspace foundWorkspace;
             IUriExtent foundExtent;
-            _workspaceCollection.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
+            _workspaceLogic.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
 
             var foundTypes = _extentFunctions.GetCreatableTypes(foundExtent);
 
@@ -342,7 +339,7 @@ namespace DatenMeister.Web.Api
                         name = _resolution.GetName(type),
                         uri = typeExtent.uri(type),
                         ext = typeExtent.contextURI(),
-                        ws = _workspaceCollection.FindWorkspace(typeExtent)?.id
+                        ws = _workspaceLogic.FindWorkspace(typeExtent)?.id
                     }
             };
         }
@@ -363,7 +360,7 @@ namespace DatenMeister.Web.Api
             IElement foundItem = null;
             if (itemUrl != null)
             {
-                _workspaceCollection.FindItem(
+                _workspaceLogic.FindItem(
                     new WorkspaceExtentAndItemReference(ws, extent, itemUrl),
                     out foundWorkspace,
                     out foundExtent,
@@ -371,7 +368,7 @@ namespace DatenMeister.Web.Api
             }
             else
             {
-                _workspaceCollection.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
+                _workspaceLogic.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
             }
 
             var foundViews = _viewFinder.FindViews(foundExtent, foundItem);
@@ -385,7 +382,7 @@ namespace DatenMeister.Web.Api
                         name = _resolution.GetName(type),
                         uri = typeExtent.uri(type),
                         ext = typeExtent.contextURI(),
-                        ws = _workspaceCollection.FindWorkspace(typeExtent)?.id
+                        ws = _workspaceLogic.FindWorkspace(typeExtent)?.id
                     }
             };
         }
@@ -483,7 +480,7 @@ namespace DatenMeister.Web.Api
         {
             Workspace foundWorkspace;
             IUriExtent foundExtent;
-            _workspaceCollection.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
+            _workspaceLogic.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
 
             var itemModel = new ItemContentModel
             {
@@ -516,7 +513,7 @@ namespace DatenMeister.Web.Api
                     name = _resolution.GetName(metaClass),
                     uri = extentWithMetaClass?.uri(metaClass),
                     ext = extentWithMetaClass?.contextURI(),
-                    ws = _workspaceCollection.Workspaces.FindWorkspace(extentWithMetaClass)?.id,
+                    ws = _workspaceLogic.Workspaces.FindWorkspace(extentWithMetaClass)?.id,
                     layer = dataLayer?.id
                 };
 
@@ -532,7 +529,7 @@ namespace DatenMeister.Web.Api
         {
             Workspace foundWorkspace;
             IUriExtent foundExtent;
-            _workspaceCollection.RetrieveWorkspaceAndExtent(model.ws, model.extent, out foundWorkspace, out foundExtent);
+            _workspaceLogic.RetrieveWorkspaceAndExtent(model.ws, model.extent, out foundWorkspace, out foundExtent);
 
             if (!string.IsNullOrEmpty(model.container))
             {
@@ -543,7 +540,7 @@ namespace DatenMeister.Web.Api
             IElement metaclass = null;
             if (!string.IsNullOrEmpty(model.metaclass))
             {
-                metaclass = _workspaceCollection.FindItem(model.metaclass);
+                metaclass = _workspaceLogic.FindItem(model.metaclass);
             }
 
             // Creates the type
@@ -569,7 +566,7 @@ namespace DatenMeister.Web.Api
                 Workspace foundWorkspace;
                 IUriExtent foundExtent;
                 IElement foundItem;
-                _workspaceCollection.FindItem(
+                _workspaceLogic.FindItem(
                     model.AsItem(),
                     out foundWorkspace, 
                     out foundExtent, 
@@ -597,7 +594,7 @@ namespace DatenMeister.Web.Api
                 Workspace foundWorkspace;
                 IUriExtent foundExtent;
                 IElement foundItem;
-                _workspaceCollection.FindItem(
+                _workspaceLogic.FindItem(
                     model.AsItem(), 
                     out foundWorkspace, 
                     out foundExtent, 
@@ -622,7 +619,7 @@ namespace DatenMeister.Web.Api
                 Workspace foundWorkspace;
                 IUriExtent foundExtent;
                 IElement foundItem;
-                _workspaceCollection.FindItem(
+                _workspaceLogic.FindItem(
                     model.AsItem(), 
                     out foundWorkspace, 
                     out foundExtent, 
@@ -647,7 +644,7 @@ namespace DatenMeister.Web.Api
                 Workspace foundWorkspace;
                 IUriExtent foundExtent;
                 IElement foundItem;
-                _workspaceCollection.FindItem(
+                _workspaceLogic.FindItem(
                     model.AsItem(), 
                     out foundWorkspace, 
                     out foundExtent, 

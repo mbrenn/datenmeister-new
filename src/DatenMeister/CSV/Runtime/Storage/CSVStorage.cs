@@ -16,19 +16,17 @@ namespace DatenMeister.CSV.Runtime.Storage
     // ReSharper disable once InconsistentNaming
     public class CSVStorage : IExtentStorage
     {
-        private readonly IWorkspaceCollection _workspaceCollection;
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        public CSVStorage(IWorkspaceCollection workspaceCollection, IWorkspaceLogic workspaceLogic)
+        public CSVStorage(IWorkspaceLogic workspaceLogic)
         {
-            _workspaceCollection = workspaceCollection;
             _workspaceLogic = workspaceLogic;
         }
 
         public IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty)
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
-            var provider = new CSVDataProvider(_workspaceCollection, _workspaceLogic); 
+            var provider = new CSVDataProvider(_workspaceLogic); 
             var mofExtent = new MofUriExtent(csvConfiguration.ExtentUri);
             var factory = new MofFactory();
 
@@ -50,7 +48,7 @@ namespace DatenMeister.CSV.Runtime.Storage
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
 
-            var provider = new CSVDataProvider(_workspaceCollection, _workspaceLogic);
+            var provider = new CSVDataProvider(_workspaceLogic);
             provider.Save(extent, csvConfiguration.Path, csvConfiguration.Settings);
         }
     }

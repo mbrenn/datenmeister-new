@@ -36,24 +36,6 @@ namespace DatenMeister.Runtime.Workspaces
         }
 
         /// <summary>
-        /// Gets the metalayer
-        /// </summary>
-        /// <param name="logic">Datalayer being queried</param>
-        /// <param name="value">Datalayer for the value</param>
-        /// <returns>The metalayer ot the object</returns>
-        [Obsolete]
-        public static Workspace GetMetaLayerOfObject(this IWorkspaceLogic logic, IObject value)
-        {
-            var dataLayer = logic.GetDataLayerOfObject(value);
-            if (dataLayer == null)
-            {
-                return null;
-            }
-
-            return logic.GetMetaLayerFor(dataLayer);
-        }
-
-        /// <summary>
         /// Gets the given class from the metalayer to the datalayer
         /// </summary>
         /// <typeparam name="TFilledType">Type that is queried</typeparam>
@@ -66,7 +48,7 @@ namespace DatenMeister.Runtime.Workspaces
             where TFilledType : class, new()
         {
             var metaLayer = dataLayer.MetaWorkspace;
-            return metaLayer != null ? metaLayer.Get<TFilledType>() : null;
+            return metaLayer?.Get<TFilledType>();
         }
 
         /// <summary>
@@ -164,7 +146,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="foundWorkspace">The found workspace</param>
         /// <param name="foundExtent">The found extent</param>
         public static void RetrieveWorkspaceAndExtent(
-            this IWorkspaceCollection workspaceCollection,
+            this IWorkspaceLogic workspaceCollection,
             WorkspaceExtentAndItemReference model,
             out Workspace foundWorkspace,
             out IUriExtent foundExtent)
@@ -178,7 +160,7 @@ namespace DatenMeister.Runtime.Workspaces
         }
 
         public static void RetrieveWorkspaceAndExtent(
-            this IWorkspaceCollection workspaceCollection,
+            this IWorkspaceLogic workspaceCollection,
             string ws,
             string extent,
             out Workspace foundWorkspace,
@@ -205,13 +187,11 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="extent">The extent to which the workspace is required</param>
         /// <returns>Found workspace or null, if not found</returns>
         public static Workspace FindWorkspace(
-            this IWorkspaceCollection workspaceCollection,
+            this IWorkspaceLogic workspaceCollection,
             IExtent extent)
         {
             return workspaceCollection.Workspaces.FirstOrDefault(x => x.extent.Contains(extent));
         }
-
-
 
         /// <summary>
         /// Finds the extent with the given uri in one of the workspaces in the database
@@ -220,7 +200,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="uri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
         public static IExtent FindExtent(
-            this IWorkspaceCollection collection,
+            this IWorkspaceLogic collection,
             string uri)
         {
             return collection.Workspaces
@@ -237,7 +217,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="uri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
         public static IElement FindItem(
-            this IWorkspaceCollection collection,
+            this IWorkspaceLogic collection,
             string uri)
         {
             return collection.Workspaces
@@ -247,7 +227,7 @@ namespace DatenMeister.Runtime.Workspaces
         }
 
         public static void FindItem(
-            this IWorkspaceCollection collection,
+            this IWorkspaceLogic collection,
             WorkspaceExtentAndItemReference model,
             out Workspace foundWorkspace,
             out IUriExtent foundExtent,

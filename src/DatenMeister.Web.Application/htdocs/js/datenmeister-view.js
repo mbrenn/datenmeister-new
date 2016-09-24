@@ -131,6 +131,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
         ExtentView.prototype.loadAndCreateHtmlForExtent = function (ws, extentUrl, query) {
             var _this = this;
             var tthis = this;
+            // Creates the layout configuration and the handling on requests of the user
             var configuration = new DMTables.ItemListTableConfiguration();
             configuration.onItemEdit = function (url) {
                 if (tthis.onItemEdit !== undefined) {
@@ -154,6 +155,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                 return false;
             };
             configuration.layout = this.layout;
+            // Creates the layout
             var provider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
             var table = new DMTables.ItemListTable(this.content, provider, configuration);
             if (query !== undefined && query !== null) {
@@ -284,6 +286,8 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
         return ItemView;
     }(ViewBase));
     exports.ItemView = ItemView;
+    // This class gives a navigation view with some links which can be clicked by the user and
+    // a user-defined action is being performed
     var NavigationView = (function (_super) {
         __extends(NavigationView, _super);
         function NavigationView(layout) {

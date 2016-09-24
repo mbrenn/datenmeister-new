@@ -24,11 +24,6 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         private readonly IConfigurationToExtentStorageMapper _map;
 
-        /// <summary>
-        /// Stores the access to the workspaces
-        /// </summary>
-        private readonly IWorkspaceCollection _workspaceCollection;
-
         private readonly ILifetimeScope _diScope;
 
         private readonly IWorkspaceLogic _workspaceLogic;
@@ -49,11 +44,9 @@ namespace DatenMeister.Runtime.ExtentStorage
         public ExtentStorageLoader(
             ExtentStorageData data, 
             IConfigurationToExtentStorageMapper map,
-            IWorkspaceCollection workspaceCollection,
-            ILifetimeScope diScope, IWorkspaceLogic workspaceLogic) : this(data, map, workspaceLogic)
+            ILifetimeScope diScope, 
+            IWorkspaceLogic workspaceLogic) : this(data, map, workspaceLogic)
         {
-            Debug.Assert(workspaceCollection != null, "collection != null");
-            _workspaceCollection = workspaceCollection;
             _diScope = diScope;
         }
 
@@ -111,9 +104,9 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         private void AddToWorkspaceIfPossible(ExtentStorageConfiguration configuration, IUriExtent loadedExtent)
         {
-            if (_workspaceCollection != null)
+            if (_workspaceLogic != null)
             {
-                var workspace = _workspaceCollection.GetWorkspace(configuration.Workspace);
+                var workspace = _workspaceLogic.GetWorkspace(configuration.Workspace);
                 if (workspace == null)
                 {
                     throw new InvalidOperationException($"Workspace {configuration.Workspace} not found");

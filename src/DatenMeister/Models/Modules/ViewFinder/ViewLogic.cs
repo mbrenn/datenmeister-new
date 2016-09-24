@@ -17,13 +17,11 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// Defines the uri of the view to the view extents
         /// </summary>
         public const string UriViewExtent = "dm:///management/views";
-
-        private readonly IWorkspaceCollection _workspaceCollection;
+        
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        public ViewLogic(IWorkspaceCollection workspaceCollection, IWorkspaceLogic workspaceLogic)
+        public ViewLogic(IWorkspaceLogic workspaceLogic)
         {
-            _workspaceCollection = workspaceCollection;
             _workspaceLogic = workspaceLogic;
         }
 
@@ -32,9 +30,9 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// </summary>
         public void Integrate()
         {
-            var mgmtWorkspace = _workspaceCollection.GetWorkspace(WorkspaceNames.Management);
+            var mgmtWorkspace = _workspaceLogic.GetWorkspace(Workspaces.NameManagement);
 
-            var dotNetUriExtent = new XmlUriExtent(_workspaceCollection, UriViewExtent);
+            var dotNetUriExtent = new XmlUriExtent(_workspaceLogic, UriViewExtent);
             mgmtWorkspace.AddExtent(dotNetUriExtent);
         }
 
@@ -52,7 +50,7 @@ namespace DatenMeister.Models.Modules.ViewFinder
 
         private IUriExtent GetViewExtent()
         {
-            var mgmtWorkspace = _workspaceCollection.GetWorkspace(WorkspaceNames.Management);
+            var mgmtWorkspace = _workspaceLogic.GetWorkspace(Workspaces.NameManagement);
 
             var foundExtent = mgmtWorkspace.FindExtent(UriViewExtent);
             if (foundExtent == null)

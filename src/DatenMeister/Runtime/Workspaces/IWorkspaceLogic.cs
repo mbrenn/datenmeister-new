@@ -8,7 +8,16 @@ namespace DatenMeister.Runtime.Workspaces
 {
     public interface IWorkspaceLogic
     {
+        Workspace AddWorkspace(Workspace workspace);
+
+        void RemoveWorkspace(string id);
+
+        Workspace GetWorkspace(string id);
+
+        IEnumerable<Workspace> Workspaces { get; }
+
         void SetDefaultDatalayer(Workspace layer);
+
         /// <summary>
         /// Sets the relationship between two layers
         /// </summary>
@@ -50,7 +59,6 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="dataLayer">Datalayer to be retrieved</param>
         /// <returns>enumeration of extents within the datalayer</returns>
         IEnumerable<IUriExtent> GetExtentsForDatalayer(Workspace dataLayer);
-
 
         /// <summary>
         /// Gets the datalayer by name

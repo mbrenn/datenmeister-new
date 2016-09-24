@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Runtime.Workspaces.Data
 {
@@ -9,9 +7,9 @@ namespace DatenMeister.Runtime.Workspaces.Data
     {
         public string Filepath { get; set; }
 
-        public IWorkspaceCollection WorkspaceCollection { get; set; }
+        public IWorkspaceLogic WorkspaceCollection { get; set; }
 
-        public WorkspaceLoader(IWorkspaceCollection workspaceCollection, string filepath)
+        public WorkspaceLoader(IWorkspaceLogic workspaceCollection, string filepath)
         {
             Debug.Assert(workspaceCollection != null, "workspaceCollection != null");
             Debug.Assert(filepath != null, "filepath != null");

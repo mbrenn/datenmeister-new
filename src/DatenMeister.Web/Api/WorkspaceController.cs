@@ -10,9 +10,9 @@ namespace DatenMeister.Web.Api
     [RoutePrefix("api/datenmeister/workspace")]
     public class WorkspaceController : ApiController
     {
-        private readonly IWorkspaceCollection _workspaceCollection;
+        private readonly IWorkspaceLogic _workspaceCollection;
 
-        public WorkspaceController(IWorkspaceCollection workspaceCollection)
+        public WorkspaceController(IWorkspaceLogic workspaceCollection)
         {
             _workspaceCollection = workspaceCollection;
         }

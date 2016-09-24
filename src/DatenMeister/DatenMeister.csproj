@@ -236,10 +236,7 @@
     <Compile Include="Runtime\Workspaces\Data\WorkspaceInfo.cs" />
     <Compile Include="Runtime\Workspaces\Data\WorkspaceLoader.cs" />
     <Compile Include="Runtime\Workspaces\Extension.cs" />
-    <Compile Include="Runtime\Workspaces\IWorkspaceCollection.cs" />
-    <Compile Include="Runtime\Workspaces\WorkspaceCollection.cs" />
     <Compile Include="Runtime\Workspaces\WorkspaceExtentAndItemReference.cs" />
-    <Compile Include="Runtime\Workspaces\WorkspaceNames.cs" />
     <Compile Include="SourcecodeGenerator\ClassTreeGenerator.cs" />
     <Compile Include="SourcecodeGenerator\DotNetIntegrationGenerator.cs" />
     <Compile Include="SourcecodeGenerator\FillClassTreeByExtentCreator.cs" />

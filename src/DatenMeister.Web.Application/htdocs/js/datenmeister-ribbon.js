@@ -34,6 +34,7 @@ define(["require", "exports"], function (require, exports) {
             domTitle.click(function () {
                 tthis.selectTab(nr);
             });
+            // Tries to select the tabl
             if (name === this.currentySelectedTab) {
                 this.selectTab(nr);
             }
@@ -117,6 +118,7 @@ define(["require", "exports"], function (require, exports) {
             domIcon.append(this.imgIcon);
             domIcon.append(this.imgIconHot);
             domIcon.append(this.imgIconDisabled);
+            // Now, include the click event
             domIcon.click(function () { return tthis.onClick(); });
             domIcon.hover(function () { tthis.showIcon(RibbonIconType.Hot); }, function () { tthis.showIcon(RibbonIconType.Regular); });
             domContainer.append(domIcon);

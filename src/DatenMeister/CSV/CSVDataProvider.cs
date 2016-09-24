@@ -15,12 +15,10 @@ namespace DatenMeister.CSV
     /// </summary>
     public class CSVDataProvider
     {
-        private readonly IWorkspaceCollection _workspaceCollection;
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        public CSVDataProvider(IWorkspaceCollection workspaceCollection, IWorkspaceLogic workspaceLogic)
+        public CSVDataProvider(IWorkspaceLogic workspaceLogic)
         {
-            _workspaceCollection = workspaceCollection;
             _workspaceLogic = workspaceLogic;
         }
 
@@ -73,7 +71,7 @@ namespace DatenMeister.CSV
             IElement metaClass = null;
             if (!string.IsNullOrEmpty(settings.MetaclassUri))
             {
-                metaClass = _workspaceCollection.FindItem(settings.MetaclassUri);
+                metaClass = _workspaceLogic.FindItem(settings.MetaclassUri);
             }
 
             using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(settings.Encoding)))

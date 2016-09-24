@@ -17,7 +17,7 @@ namespace DatenMeister.Integration
 			this IDatenMeisterScope scope,
             string uri)
 		{
-		    var workspaceCollection = scope.Resolve<IWorkspaceCollection>();
+		    var workspaceCollection = scope.Resolve<IWorkspaceLogic>();
             var result = new XmlUriExtent(workspaceCollection,uri);
 		    return result;
 		}

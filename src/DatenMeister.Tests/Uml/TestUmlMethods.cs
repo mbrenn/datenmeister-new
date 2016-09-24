@@ -48,7 +48,7 @@ namespace DatenMeister.Tests.Uml
             var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
-                var workspaceCollection = scope.Resolve<IWorkspaceCollection>();
+                var workspaceCollection = scope.Resolve<IWorkspaceLogic>();
                 var dataLayers = scope.Resolve<Workspaces>();
                 var dataLayerLogic = scope.Resolve<WorkspaceLogic>();
 
@@ -61,7 +61,7 @@ namespace DatenMeister.Tests.Uml
                 Assert.That(fullName, Is.Not.Null);
                 Assert.That(fullName, Is.EqualTo("UML::Classification::Feature"));
                 
-                var umlExtent = workspaceCollection.GetWorkspace(WorkspaceNames.Uml).FindExtent(Locations.UriUml);
+                var umlExtent = workspaceCollection.GetWorkspace(Workspaces.NameUml).FindExtent(Workspaces.UriUml);
                 // now the other way
                 var foundElement = namedElementMethods.GetByFullName(umlExtent.elements(), fullName);
                 Assert.That(foundElement, Is.EqualTo(feature));

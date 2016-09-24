@@ -7,20 +7,19 @@ using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Apps.ZipCode
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ZipCodePlugin : IDatenMeisterPlugin
     {
         private readonly IWorkspaceLogic _dataLayerLogic;
-        private readonly IWorkspaceCollection _workspaceCollection;
 
-        public ZipCodePlugin(IWorkspaceLogic dataLayerLogic, IWorkspaceCollection workspaceCollection)
+        public ZipCodePlugin(IWorkspaceLogic dataLayerLogic)
         {
             _dataLayerLogic = dataLayerLogic;
-            _workspaceCollection = workspaceCollection;
         }
 
         public void Start()
         {
-            var typeExtent = _workspaceCollection.FindExtent(Locations.UriInternalTypes);
+            var typeExtent = _dataLayerLogic.FindExtent(Workspaces.UriInternalTypes);
             var layerOfTypes = _dataLayerLogic.GetDataLayerOfExtent(typeExtent);
             var layerOfUml = _dataLayerLogic.GetMetaLayerFor(layerOfTypes);
             var uml = layerOfUml.Get<_UML>();

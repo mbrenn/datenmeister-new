@@ -13,9 +13,9 @@ namespace DatenMeister.XMI.ExtentStorage
     [ConfiguredBy(typeof(XmiStorageConfiguration))]
     public class XmiStorage : IExtentStorage
     {
-        private readonly IWorkspaceCollection _workspaceCollection;
+        private readonly IWorkspaceLogic _workspaceCollection;
         
-        public XmiStorage(IWorkspaceCollection workspaceCollection)
+        public XmiStorage(IWorkspaceLogic workspaceCollection)
         {
             if (workspaceCollection == null) throw new ArgumentNullException(nameof(workspaceCollection));
             _workspaceCollection = workspaceCollection;

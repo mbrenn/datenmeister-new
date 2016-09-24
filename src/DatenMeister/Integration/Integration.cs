@@ -56,16 +56,12 @@ namespace DatenMeister.Integration
             var storageMap = new ManualConfigurationToExtentStorageMapper();
             kernel.RegisterInstance(storageMap).As<IConfigurationToExtentStorageMapper>();
 
-            // Workspace collection  
-            var workspaceCollection = new WorkspaceCollection();
-            workspaceCollection.Init();
-            kernel.RegisterInstance(workspaceCollection).As<IWorkspaceCollection>();
-
             // Defines the extent storage data  
             var extentStorageData = new ExtentStorageData();
             kernel.RegisterInstance(extentStorageData).As<ExtentStorageData>();
             kernel.RegisterType<ExtentStorageLoader>().As<IExtentStorageLoader>();
 
+            // Workspaces
             WorkspaceData dataLayerData;
             var workspaces = WorkspaceLogic.InitDefault(out dataLayerData);
             kernel.RegisterInstance(dataLayerData).As<WorkspaceData>();
@@ -108,18 +104,19 @@ namespace DatenMeister.Integration
                             _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "MOF.xmi")
                     };
 
+                var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
                 var umlWatch = new Stopwatch();
                 umlWatch.Start();
                 Debug.Write("Bootstrapping MOF and UML...");
                 Bootstrapper.PerformFullBootstrap(
                     paths,
-                    workspaceCollection.GetWorkspace(WorkspaceNames.Mof),
+                    workspaceLogic.GetWorkspace(Workspaces.NameMof),
                     dataLayerLogic,
                     workspaces.Mof,
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimMof : BootstrapMode.Mof);
                 Bootstrapper.PerformFullBootstrap(
                     paths,
-                    workspaceCollection.GetWorkspace(WorkspaceNames.Uml),
+                    workspaceLogic.GetWorkspace(Workspaces.NameUml),
                     dataLayerLogic,
                     workspaces.Uml,
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml);
@@ -128,8 +125,8 @@ namespace DatenMeister.Integration
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var mofFactory = new MofFactory();
-                var extentTypes = new MofUriExtent(Locations.UriInternalTypes);
-                var typeWorkspace = workspaceCollection.GetWorkspace(WorkspaceNames.Types);
+                var extentTypes = new MofUriExtent(Workspaces.UriInternalTypes);
+                var typeWorkspace = workspaceLogic.GetWorkspace(Workspaces.NameTypes);
                 typeWorkspace.AddExtent(extentTypes);
                 dataLayerLogic.AssignToDataLayer(extentTypes, workspaces.Types);
 
@@ -143,7 +140,7 @@ namespace DatenMeister.Integration
                     fields,
                     dotNetTypeLookup);
 
-                var viewLogic = new ViewLogic(workspaceCollection, dataLayerLogic);
+                var viewLogic = new ViewLogic(workspaceLogic);
                 viewLogic.Integrate();
 
                 // Boots up the typical DatenMeister Environment  
@@ -165,7 +162,7 @@ namespace DatenMeister.Integration
         {
             var innerContainer = new ContainerBuilder();
             // Loading and storing the workspaces  
-            var workspaceLoader = new WorkspaceLoader(scope.Resolve<IWorkspaceCollection>(),
+            var workspaceLoader = new WorkspaceLoader(scope.Resolve<IWorkspaceLogic>(),
                 PathWorkspaces);
             workspaceLoader.Load();
             innerContainer.RegisterInstance(workspaceLoader).As<WorkspaceLoader>();
@@ -192,19 +189,19 @@ namespace DatenMeister.Integration
 
         private static void CreatesUserTypeExtent(ILifetimeScope scope)
         {
-            var workspaceCollection = scope.Resolve<IWorkspaceCollection>();
+            var workspaceCollection = scope.Resolve<IWorkspaceLogic>();
 
             // Creates the user types, if not existing
-            if (workspaceCollection.FindExtent(Locations.UriUserTypes) == null)
+            if (workspaceCollection.FindExtent(Workspaces.UriUserTypes) == null)
             {
                 Debug.WriteLine("Creates the extent for the user types");
                 // Creates the extent for user types
                 var loader = scope.Resolve<ExtentStorageLoader>();
                 var storageConfiguration = new XmiStorageConfiguration
                 {
-                    ExtentUri = Locations.UriUserTypes,
+                    ExtentUri = Workspaces.UriUserTypes,
                     Path = PathUserTypes,
-                    Workspace = WorkspaceNames.Types,
+                    Workspace = Workspaces.NameTypes,
                     DataLayer = "Types"
                 };
 

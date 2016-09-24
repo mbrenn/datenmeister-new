@@ -22,7 +22,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
             mofObject2.set("name", "Martina");
             mofObject3.set("name", "Martini");
 
-            var extent = new XmlUriExtent(new WorkspaceCollection(),  "dm:///test/");
+            var extent = new XmlUriExtent(WorkspaceLogic.GetDefaultLogic(),  "dm:///test/");
             Assert.That(extent.contextURI(), Is.EqualTo("dm:///test/"));
 
             extent.elements().add(mofObject1);
@@ -35,7 +35,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
                 Path = "data.xml"
             };
 
-            var xmiStorage = new XmiStorage(new WorkspaceCollection());
+            var xmiStorage = new XmiStorage(WorkspaceLogic.GetDefaultLogic());
             xmiStorage.StoreExtent(extent, xmiStorageConfiguration);
 
             var otherExtent = xmiStorage.LoadExtent(xmiStorageConfiguration);

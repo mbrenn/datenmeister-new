@@ -22,7 +22,6 @@ namespace DirectUsage
             
             Console.WriteLine(dm.ToString());
 
-
             // Testing CSV
             var extent = dm.LoadCsv("dm:///csv", "files/test.csv");
             Console.WriteLine(extent.ToString());

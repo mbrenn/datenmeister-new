@@ -1,0 +1,1099 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7c34ec0b-e67c-4823-b48d-a753fee70a86" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeisterLib/GlobalDatenMeister.cs" afterPath="$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeisterLib/GlobalDatenMeister.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeisterLib/TaskmeisterPlugin.cs" afterPath="$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeisterLib/TaskmeisterPlugin.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.SourceGeneration.Console/Program.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.SourceGeneration.Console/Program.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Tests.Console/Program.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Tests.Console/Program.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Tests/Core/DataLayerTests.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Tests/Core/DataLayerTests.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Tests/Runtime/ComplexExtentTests.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Tests/Runtime/ComplexExtentTests.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Tests/Runtime/ExtentStorageTests.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Tests/Runtime/ExtentStorageTests.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Tests/Runtime/ReadOnlyProxyTests.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Tests/Runtime/ReadOnlyProxyTests.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Tests/Uml/TestUmlMethods.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Tests/Uml/TestUmlMethods.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Tests/WorkspaceTests.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Tests/WorkspaceTests.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/XmlExtentTests.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/XmlExtentTests.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/XmiTests.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/XmiTests.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Web.Application/WebserverStartup.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Web.Application/WebserverStartup.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Web/Api/ExampleController.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Web/Api/ExampleController.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Web/Api/ExtentController.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Web/Api/ExtentController.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/CSV/CSVDataProvider.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/CSV/CSVDataProvider.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/CSV/Runtime/Storage/CSVStorage.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/CSV/Runtime/Storage/CSVStorage.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Integration/Integration.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Integration/Integration.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Models/ItemsAndExtents/WorkspaceModel.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Models/ItemsAndExtents/WorkspaceModel.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Models/Modules/ViewFinder/ViewLogic.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Models/Modules/ViewFinder/ViewLogic.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Runtime/ExtentStorage/ExtentStorageLoader.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Runtime/ExtentStorage/ExtentStorageLoader.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Runtime/Extents/ExtentFunctions.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Runtime/Extents/ExtentFunctions.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceLogic.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceLogic.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Locations.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Locations.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Workspace.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Workspace.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceData.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceData.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceExtension.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceExtension.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceLogic.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceLogic.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Workspaces.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Workspaces.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Uml/Bootstrapper.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Uml/Bootstrapper.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Uml/Helper/ClassifierMethods.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Uml/Helper/ClassifierMethods.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/XMI/SimpleLoader.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/XMI/SimpleLoader.cs" />
+    </list>
+    <ignored path="DatenMeister.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path=".idea/dataSources.local.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="DatenMeister" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="Program.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/Program.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <marker date="1461096991547" expanded="true" signature="6:43" ph="..." />
+                <marker date="1461096991547" expanded="true" signature="83:519" ph="{...}" />
+                <marker date="1461096991547" expanded="true" signature="170:517" ph="{...}" />
+                <marker date="1461096991547" expanded="true" signature="216:511" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Extension.cs" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Extension.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <marker date="1474490437585" expanded="true" signature="6:160" ph="..." />
+                <marker date="1474490437585" expanded="true" signature="203:7022" ph="{...}" />
+                <marker date="1474490437585" expanded="true" signature="239:7020" ph="{...}" />
+                <marker date="1474490437585" expanded="true" signature="254:622" ph="/// ..." />
+                <marker date="1474490437585" expanded="true" signature="704:834" ph="{...}" />
+                <marker date="1474490437585" expanded="true" signature="844:1367" ph="/// ..." />
+                <marker date="1474490437585" expanded="true" signature="1461:1990" ph="{...}" />
+                <marker date="1474490437585" expanded="true" signature="2002:2303" ph="/// ..." />
+                <marker date="1474490437585" expanded="true" signature="2381:2888" ph="{...}" />
+                <marker date="1474490437585" expanded="true" signature="2898:3280" ph="/// ..." />
+                <marker date="1474490437585" expanded="true" signature="3527:3750" ph="{...}" />
+                <marker date="1474490437585" expanded="true" signature="3997:4506" ph="{...}" />
+                <marker date="1474490437585" expanded="true" signature="4516:4895" ph="/// ..." />
+                <marker date="1474490437585" expanded="true" signature="5029:5147" ph="{...}" />
+                <marker date="1474490437585" expanded="true" signature="5159:5492" ph="/// ..." />
+                <marker date="1474490437585" expanded="true" signature="5608:5790" ph="{...}" />
+                <marker date="1474490437585" expanded="true" signature="5802:6135" ph="/// ..." />
+                <marker date="1474490437585" expanded="true" signature="6250:6465" ph="{...}" />
+                <marker date="1474490437585" expanded="true" signature="6722:7014" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WebserverStartup.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/WebserverStartup.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="8" column="34" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
+              <folding>
+                <marker date="1474719943658" expanded="true" signature="6:397" ph="..." />
+                <marker date="1474719943658" expanded="true" signature="487:3161" ph="{...}" />
+                <marker date="1474719943658" expanded="true" signature="523:3159" ph="{...}" />
+                <marker date="1474719943658" expanded="true" signature="673:2422" ph="{...}" />
+                <marker date="1474719943658" expanded="true" signature="2480:3153" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IWorkspaceLogic.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceLogic.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="84">
+              <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
+              <folding>
+                <marker date="1474719657744" expanded="true" signature="6:193" ph="..." />
+                <marker date="1474719657744" expanded="true" signature="236:3868" ph="{...}" />
+                <marker date="1474719657744" expanded="true" signature="275:3866" ph="{...}" />
+                <marker date="1474719657744" expanded="true" signature="341:583" ph="/// ..." />
+                <marker date="1474719657744" expanded="true" signature="669:820" ph="/// ..." />
+                <marker date="1474719657744" expanded="true" signature="899:1060" ph="/// ..." />
+                <marker date="1474719657744" expanded="true" signature="1126:1287" ph="/// ..." />
+                <marker date="1474719657744" expanded="true" signature="1352:1567" ph="/// ..." />
+                <marker date="1474719657744" expanded="true" signature="1628:1863" ph="/// ..." />
+                <marker date="1474719657744" expanded="true" signature="1950:2375" ph="/// ..." />
+                <marker date="1474719657744" expanded="true" signature="2553:2985" ph="/// ..." />
+                <marker date="1474719657744" expanded="true" signature="3095:3273" ph="/// ..." />
+                <marker date="1474719657744" expanded="true" signature="3325:3555" ph="/// ..." />
+                <marker date="1474719657744" expanded="true" signature="3677:3822" ph="/// ..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Locations.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Locations.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="32" selection-start-line="0" selection-start-column="32" selection-end-line="0" selection-end-column="32" />
+              <folding>
+                <marker date="1474719657802" expanded="true" signature="41:514" ph="{...}" />
+                <marker date="1474719657802" expanded="true" signature="77:512" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Workspace.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Workspace.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="147">
+              <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
+              <folding>
+                <marker date="1474719657788" expanded="true" signature="6:149" ph="..." />
+                <marker date="1474719657788" expanded="true" signature="192:1868" ph="{...}" />
+                <marker date="1474719657788" expanded="true" signature="199:415" ph="/// ..." />
+                <marker date="1474719657788" expanded="true" signature="442:1866" ph="{...}" />
+                <marker date="1474719657788" expanded="true" signature="658:758" ph="/// ..." />
+                <marker date="1474719657788" expanded="true" signature="845:939" ph="/// ..." />
+                <marker date="1474719657788" expanded="true" signature="1294:1500" ph="{...}" />
+                <marker date="1474719657788" expanded="true" signature="1553:1672" ph="{...}" />
+                <marker date="1474719657788" expanded="true" signature="1715:1860" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WorkspaceCollection.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceCollection.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <marker date="1474489782035" expanded="true" signature="6:169" ph="..." />
+                <marker date="1474489782035" expanded="true" signature="212:3680" ph="{...}" />
+                <marker date="1474489782035" expanded="true" signature="219:319" ph="/// ..." />
+                <marker date="1474489782035" expanded="true" signature="379:3678" ph="{...}" />
+                <marker date="1474489782035" expanded="true" signature="411:484" ph="{...}" />
+                <marker date="1474489782035" expanded="true" signature="494:583" ph="/// ..." />
+                <marker date="1474489782035" expanded="true" signature="660:732" ph="/// ..." />
+                <marker date="1474489782035" expanded="true" signature="998:1259" ph="/// ..." />
+                <marker date="1474489782035" expanded="true" signature="1313:1892" ph="{...}" />
+                <marker date="1474489782035" expanded="true" signature="1941:2098" ph="{...}" />
+                <marker date="1474489782035" expanded="true" signature="2108:2319" ph="/// ..." />
+                <marker date="1474489782035" expanded="true" signature="2414:2575" ph="/// ..." />
+                <marker date="1474489782035" expanded="true" signature="2622:2915" ph="{...}" />
+                <marker date="1474489782035" expanded="true" signature="2925:3005" ph="/// ..." />
+                <marker date="1474489782035" expanded="true" signature="3032:3672" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WorkspaceExtension.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceExtension.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="147">
+              <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
+              <folding>
+                <marker date="1474719657759" expanded="true" signature="6:155" ph="..." />
+                <marker date="1474719657759" expanded="true" signature="198:3616" ph="{...}" />
+                <marker date="1474719657759" expanded="true" signature="243:3614" ph="{...}" />
+                <marker date="1474719657759" expanded="true" signature="334:749" ph="{...}" />
+                <marker date="1474719657759" expanded="true" signature="847:1253" ph="{...}" />
+                <marker date="1474719657759" expanded="true" signature="1359:1457" ph="{...}" />
+                <marker date="1474719657759" expanded="true" signature="1467:1721" ph="/// ..." />
+                <marker date="1474719657759" expanded="true" signature="1818:2047" ph="{...}" />
+                <marker date="1474719657759" expanded="true" signature="2057:2446" ph="/// ..." />
+                <marker date="1474719657759" expanded="true" signature="2629:2792" ph="{...}" />
+                <marker date="1474719657759" expanded="true" signature="2802:3185" ph="/// ..." />
+                <marker date="1474719657759" expanded="true" signature="3363:3608" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WorkspaceExtentAndItemReference.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceExtentAndItemReference.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <marker date="1473367368889" expanded="true" signature="41:528" ph="{...}" />
+                <marker date="1473367368889" expanded="true" signature="48:160" ph="/// ..." />
+                <marker date="1473367368889" expanded="true" signature="209:526" ph="{...}" />
+                <marker date="1473367368889" expanded="true" signature="410:520" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Workspaces.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Workspaces.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <marker date="1474719657776" expanded="true" signature="41:590" ph="{...}" />
+                <marker date="1474719657776" expanded="true" signature="71:588" ph="{...}" />
+                <marker date="1474719657776" expanded="true" signature="332:582" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/../../DatenMeister.Web.Application/Program.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceLogic.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Locations.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Workspace.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceData.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceExtension.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceLogic.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Workspaces.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister.Web.Application/WebserverStartup.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="3858" />
+    <option name="height" value="2128" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="SolutionExplorer" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="SolutionExplorer">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Libraries" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Libraries" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Libraries" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Runtime" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Libraries" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Runtime" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Workspaces" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Libraries" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Core" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Libraries" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Core" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EMOF" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Applications" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Applications" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TaskMeister" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Applications" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister.Web.Application (with warnings)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Applications" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister.Web.Application (with warnings)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Properties" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Applications" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister.Web.Application (with warnings)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="plugins" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Applications" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister.Web.Application (with warnings)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="htdocs" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Applications" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister.Web.Application (with warnings)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="htdocs" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <option name="show-file-system" value="false" />
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="full.screen.before.presentation.mode" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.startup.tasks" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+  </component>
+  <component name="RunManager" selected=".NET Project.Applications\DatenMeister\DatenMeister.Web.Application">
+    <configuration default="false" name="Applications\DatenMeister\DatenMeister.Web.Application" type="DotNetProject" factoryName=".NET Project" temporary="true">
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/../../DatenMeister.Web.Application/DatenMeister.Web.Application.csproj" />
+      <option name="PROJECT_KIND" value="Console" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../DatenMeister.Web.Application/bin/Debug/DatenMeister.Web.Application.exe" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../DatenMeister.Web.Application/bin/Debug" />
+      <method />
+    </configuration>
+    <configuration default="true" type="DotNetProject" factoryName=".NET Project">
+      <option name="PROJECT_PATH" value="" />
+      <option name="PROJECT_KIND" value="None" />
+      <option name="EXE_PATH" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Default" type="DotNetProject" factoryName=".NET Project">
+      <option name="PROJECT_PATH" value="" />
+      <option name="PROJECT_KIND" value="None" />
+      <option name="EXE_PATH" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <method />
+    </configuration>
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue=".NET Project.Default" />
+      <item index="1" class="java.lang.String" itemvalue=".NET Project.Applications\DatenMeister\DatenMeister.Web.Application" />
+    </list>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue=".NET Project.Applications\DatenMeister\DatenMeister.Web.Application" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7c34ec0b-e67c-4823-b48d-a753fee70a86" name="Default" comment="" />
+      <created>1474716712383</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1474716712383</updated>
+      <workItem from="1474716714679" duration="999000" />
+      <workItem from="1474717865569" duration="1700000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="2699000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-9" y="-9" width="3858" height="2128" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Errors in solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32998493" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="UnitTesting" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Change Signature" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1546875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998493" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3997991" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Errors in solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="UnitTesting" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Change Signature" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1546875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998493" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3997991" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="4" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/Program.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+          <folding>
+            <marker date="1461096991547" expanded="true" signature="6:43" ph="..." />
+            <marker date="1461096991547" expanded="true" signature="83:519" ph="{...}" />
+            <marker date="1461096991547" expanded="true" signature="170:517" ph="{...}" />
+            <marker date="1461096991547" expanded="true" signature="216:511" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeister/Dialogs/ActivityPage.xaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeister/MainPage.xaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1155">
+          <caret line="55" column="35" selection-start-line="55" selection-start-column="35" selection-end-line="55" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Apps.ZipCode/Properties/AssemblyInfo.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1470773652997" expanded="true" signature="6:48" ph="..." />
+            <marker date="1470773652997" expanded="true" signature="50:245" ph="/* ... */" />
+            <marker date="1470773652997" expanded="true" signature="625:959" ph="/* ... */" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/DatenMeister.Web.Application.csproj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeister/Dialogs/ActivityPage.xaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeister/MainPage.xaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1155">
+          <caret line="55" column="35" selection-start-line="55" selection-start-column="35" selection-end-line="55" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Apps.ZipCode/Properties/AssemblyInfo.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="20" column="19" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
+          <folding>
+            <marker date="1470773652997" expanded="true" signature="6:48" ph="..." />
+            <marker date="1470773652997" expanded="true" signature="50:245" ph="/* ... */" />
+            <marker date="1470773652997" expanded="true" signature="625:959" ph="/* ... */" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeister/TaskMeister.csproj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="945">
+          <caret line="45" column="37" selection-start-line="45" selection-start-column="37" selection-end-line="45" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/htdocs/css/bootstrap.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3612">
+          <caret line="26" column="11" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceCollection.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="4" column="39" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
+          <folding>
+            <marker date="1474489810259" expanded="true" signature="6:110" ph="..." />
+            <marker date="1474489810259" expanded="true" signature="153:496" ph="{...}" />
+            <marker date="1474489810259" expanded="true" signature="160:255" ph="/// ..." />
+            <marker date="1474489810259" expanded="true" signature="297:494" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceData.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <marker date="1474719657846" expanded="true" signature="76:640" ph="{...}" />
+            <marker date="1474719657846" expanded="true" signature="83:178" ph="/// ..." />
+            <marker date="1474719657846" expanded="true" signature="209:638" ph="{...}" />
+            <marker date="1474719657846" expanded="true" signature="224:294" ph="/// ..." />
+            <marker date="1474719657846" expanded="true" signature="407:427" ph="{...}" />
+            <marker date="1474719657846" expanded="true" signature="437:585" ph="/// ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceLogic.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+          <folding>
+            <marker date="1474719657827" expanded="true" signature="6:238" ph="..." />
+            <marker date="1474719657827" expanded="true" signature="281:7653" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="288:403" ph="/// ..." />
+            <marker date="1474719657827" expanded="true" signature="453:7651" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="564:775" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="833:953" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="1036:1170" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="1246:1369" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="1432:1659" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="1735:1849" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="1911:2961" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="1934:2086" ph="/* ... */" />
+            <marker date="1474719657827" expanded="true" signature="3019:3217" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="3301:3630" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="3805:4793" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="4900:5502" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="5609:5851" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="5861:6127" ph="/// ..." />
+            <marker date="1474719657827" expanded="true" signature="6171:6325" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="6397:6605" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="6654:6842" ph="{...}" />
+            <marker date="1474719657827" expanded="true" signature="6917:7645" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceNames.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1473367368891" expanded="true" signature="41:454" ph="{...}" />
+            <marker date="1473367368891" expanded="true" signature="48:176" ph="/// ..." />
+            <marker date="1473367368891" expanded="true" signature="215:452" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceExtentAndItemReference.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1473367368889" expanded="true" signature="41:528" ph="{...}" />
+            <marker date="1473367368889" expanded="true" signature="48:160" ph="/// ..." />
+            <marker date="1473367368889" expanded="true" signature="209:526" ph="{...}" />
+            <marker date="1473367368889" expanded="true" signature="410:520" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceExtension.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
+          <folding>
+            <marker date="1474719657759" expanded="true" signature="6:155" ph="..." />
+            <marker date="1474719657759" expanded="true" signature="198:3616" ph="{...}" />
+            <marker date="1474719657759" expanded="true" signature="243:3614" ph="{...}" />
+            <marker date="1474719657759" expanded="true" signature="334:749" ph="{...}" />
+            <marker date="1474719657759" expanded="true" signature="847:1253" ph="{...}" />
+            <marker date="1474719657759" expanded="true" signature="1359:1457" ph="{...}" />
+            <marker date="1474719657759" expanded="true" signature="1467:1721" ph="/// ..." />
+            <marker date="1474719657759" expanded="true" signature="1818:2047" ph="{...}" />
+            <marker date="1474719657759" expanded="true" signature="2057:2446" ph="/// ..." />
+            <marker date="1474719657759" expanded="true" signature="2629:2792" ph="{...}" />
+            <marker date="1474719657759" expanded="true" signature="2802:3185" ph="/// ..." />
+            <marker date="1474719657759" expanded="true" signature="3363:3608" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceCollection.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1474489782035" expanded="true" signature="6:169" ph="..." />
+            <marker date="1474489782035" expanded="true" signature="212:3680" ph="{...}" />
+            <marker date="1474489782035" expanded="true" signature="219:319" ph="/// ..." />
+            <marker date="1474489782035" expanded="true" signature="379:3678" ph="{...}" />
+            <marker date="1474489782035" expanded="true" signature="411:484" ph="{...}" />
+            <marker date="1474489782035" expanded="true" signature="494:583" ph="/// ..." />
+            <marker date="1474489782035" expanded="true" signature="660:732" ph="/// ..." />
+            <marker date="1474489782035" expanded="true" signature="998:1259" ph="/// ..." />
+            <marker date="1474489782035" expanded="true" signature="1313:1892" ph="{...}" />
+            <marker date="1474489782035" expanded="true" signature="1941:2098" ph="{...}" />
+            <marker date="1474489782035" expanded="true" signature="2108:2319" ph="/// ..." />
+            <marker date="1474489782035" expanded="true" signature="2414:2575" ph="/// ..." />
+            <marker date="1474489782035" expanded="true" signature="2622:2915" ph="{...}" />
+            <marker date="1474489782035" expanded="true" signature="2925:3005" ph="/// ..." />
+            <marker date="1474489782035" expanded="true" signature="3032:3672" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Workspace.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
+          <folding>
+            <marker date="1474719657788" expanded="true" signature="6:149" ph="..." />
+            <marker date="1474719657788" expanded="true" signature="192:1868" ph="{...}" />
+            <marker date="1474719657788" expanded="true" signature="199:415" ph="/// ..." />
+            <marker date="1474719657788" expanded="true" signature="442:1866" ph="{...}" />
+            <marker date="1474719657788" expanded="true" signature="658:758" ph="/// ..." />
+            <marker date="1474719657788" expanded="true" signature="845:939" ph="/// ..." />
+            <marker date="1474719657788" expanded="true" signature="1294:1500" ph="{...}" />
+            <marker date="1474719657788" expanded="true" signature="1553:1672" ph="{...}" />
+            <marker date="1474719657788" expanded="true" signature="1715:1860" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Locations.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="32" selection-start-line="0" selection-start-column="32" selection-end-line="0" selection-end-column="32" />
+          <folding>
+            <marker date="1474719657802" expanded="true" signature="41:514" ph="{...}" />
+            <marker date="1474719657802" expanded="true" signature="77:512" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Workspaces.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1474719657776" expanded="true" signature="41:590" ph="{...}" />
+            <marker date="1474719657776" expanded="true" signature="71:588" ph="{...}" />
+            <marker date="1474719657776" expanded="true" signature="332:582" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceLogic.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
+          <folding>
+            <marker date="1474719657744" expanded="true" signature="6:193" ph="..." />
+            <marker date="1474719657744" expanded="true" signature="236:3868" ph="{...}" />
+            <marker date="1474719657744" expanded="true" signature="275:3866" ph="{...}" />
+            <marker date="1474719657744" expanded="true" signature="341:583" ph="/// ..." />
+            <marker date="1474719657744" expanded="true" signature="669:820" ph="/// ..." />
+            <marker date="1474719657744" expanded="true" signature="899:1060" ph="/// ..." />
+            <marker date="1474719657744" expanded="true" signature="1126:1287" ph="/// ..." />
+            <marker date="1474719657744" expanded="true" signature="1352:1567" ph="/// ..." />
+            <marker date="1474719657744" expanded="true" signature="1628:1863" ph="/// ..." />
+            <marker date="1474719657744" expanded="true" signature="1950:2375" ph="/// ..." />
+            <marker date="1474719657744" expanded="true" signature="2553:2985" ph="/// ..." />
+            <marker date="1474719657744" expanded="true" signature="3095:3273" ph="/// ..." />
+            <marker date="1474719657744" expanded="true" signature="3325:3555" ph="/// ..." />
+            <marker date="1474719657744" expanded="true" signature="3677:3822" ph="/// ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/WebserverStartup.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="8" column="34" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
+          <folding>
+            <marker date="1474719943658" expanded="true" signature="6:397" ph="..." />
+            <marker date="1474719943658" expanded="true" signature="487:3161" ph="{...}" />
+            <marker date="1474719943658" expanded="true" signature="523:3159" ph="{...}" />
+            <marker date="1474719943658" expanded="true" signature="673:2422" ph="{...}" />
+            <marker date="1474719943658" expanded="true" signature="2480:3153" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/Program.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1461096991547" expanded="true" signature="6:43" ph="..." />
+            <marker date="1461096991547" expanded="true" signature="83:519" ph="{...}" />
+            <marker date="1461096991547" expanded="true" signature="170:517" ph="{...}" />
+            <marker date="1461096991547" expanded="true" signature="216:511" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Extension.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1474490437585" expanded="true" signature="6:160" ph="..." />
+            <marker date="1474490437585" expanded="true" signature="203:7022" ph="{...}" />
+            <marker date="1474490437585" expanded="true" signature="239:7020" ph="{...}" />
+            <marker date="1474490437585" expanded="true" signature="254:622" ph="/// ..." />
+            <marker date="1474490437585" expanded="true" signature="704:834" ph="{...}" />
+            <marker date="1474490437585" expanded="true" signature="844:1367" ph="/// ..." />
+            <marker date="1474490437585" expanded="true" signature="1461:1990" ph="{...}" />
+            <marker date="1474490437585" expanded="true" signature="2002:2303" ph="/// ..." />
+            <marker date="1474490437585" expanded="true" signature="2381:2888" ph="{...}" />
+            <marker date="1474490437585" expanded="true" signature="2898:3280" ph="/// ..." />
+            <marker date="1474490437585" expanded="true" signature="3527:3750" ph="{...}" />
+            <marker date="1474490437585" expanded="true" signature="3997:4506" ph="{...}" />
+            <marker date="1474490437585" expanded="true" signature="4516:4895" ph="/// ..." />
+            <marker date="1474490437585" expanded="true" signature="5029:5147" ph="{...}" />
+            <marker date="1474490437585" expanded="true" signature="5159:5492" ph="/// ..." />
+            <marker date="1474490437585" expanded="true" signature="5608:5790" ph="{...}" />
+            <marker date="1474490437585" expanded="true" signature="5802:6135" ph="/// ..." />
+            <marker date="1474490437585" expanded="true" signature="6250:6465" ph="{...}" />
+            <marker date="1474490437585" expanded="true" signature="6722:7014" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

@@ -2,7 +2,6 @@
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;

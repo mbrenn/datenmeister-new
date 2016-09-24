@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Interface.Extension;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 
-namespace DatenMeister.Core
+namespace DatenMeister.Runtime.Workspaces
 {
     /// <summary>
     /// Defines a workspace according to the Mof specification

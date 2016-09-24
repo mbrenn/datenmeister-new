@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 
-namespace DatenMeister.Core.DataLayer
+namespace DatenMeister.Runtime.Workspaces
 {
     /// <summary>
     /// Stores the data which is persistent within the process

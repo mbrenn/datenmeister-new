@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 
-namespace DatenMeister.Core.DataLayer
+namespace DatenMeister.Runtime.Workspaces
 {
     public interface IWorkspaceLogic
     {

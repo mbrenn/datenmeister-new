@@ -4,7 +4,6 @@ using System.IO;
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Attributes;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.Filler;
@@ -21,7 +20,7 @@ using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
 using DatenMeister.XMI.EMOF;
 using DatenMeister.XMI.ExtentStorage;
-using WorkspaceData = DatenMeister.Core.DataLayer.WorkspaceData;
+using WorkspaceData = DatenMeister.Runtime.Workspaces.WorkspaceData;
 
 namespace DatenMeister.Integration
 {

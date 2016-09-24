@@ -9,7 +9,6 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using Autofac;
 using DatenMeister.Core;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Helper;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;

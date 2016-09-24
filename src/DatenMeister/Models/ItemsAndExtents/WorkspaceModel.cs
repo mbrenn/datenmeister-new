@@ -1,6 +1,7 @@
 ﻿using System;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Models.ItemsAndExtents
 {

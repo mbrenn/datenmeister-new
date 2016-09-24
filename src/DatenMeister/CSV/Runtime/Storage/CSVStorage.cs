@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage;

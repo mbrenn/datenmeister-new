@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.XMI.Standards;
 
 namespace DatenMeister.XMI
@@ -34,7 +35,7 @@ namespace DatenMeister.XMI
         /// <param name="resourceName">Path to the resources</param>
         public void LoadFromEmbeddedResource(IUriExtent extent, string resourceName)
         {
-            using (var stream = typeof(Core.Locations).GetTypeInfo().Assembly.GetManifestResourceStream(resourceName))
+            using (var stream = typeof(Locations).GetTypeInfo().Assembly.GetManifestResourceStream(resourceName))
             {
                 LoadFromStream(extent, stream);
             }

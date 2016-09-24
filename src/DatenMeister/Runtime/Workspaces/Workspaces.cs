@@ -1,8 +1,4 @@
-﻿using System;
-using DatenMeister.Core.DataLayer;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-
-namespace DatenMeister.Core
+﻿namespace DatenMeister.Runtime.Workspaces
 {
     public class Workspaces
     {

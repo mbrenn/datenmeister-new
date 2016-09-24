@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Helper;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 
-namespace DatenMeister.Core
+namespace DatenMeister.Runtime.Workspaces
 {
     /// <summary>
-    /// The logic defines the relationships between the layers and the metalayers. 
+    /// The logic defines the relationships between the layers and the metalayers.
     /// </summary>
     public class WorkspaceLogic : IWorkspaceLogic
     {
@@ -68,7 +67,7 @@ namespace DatenMeister.Core
 
         public Workspace GetDataLayerOfObject(IObject value)
         {
-            // If the object is contained by another object, query the contained objects 
+            // If the object is contained by another object, query the contained objects
             // because the extents will only be stored in the root elements
             var asElement = value as IElement;
             var parent = asElement?.container();
@@ -159,7 +158,7 @@ namespace DatenMeister.Core
             {
                 var layerAsObject = layer as Workspace;
                 VerifyThatNotNull(layerAsObject);
-                    
+
                 // Looks into the cache for the filledtypes
                 foreach (var value in layerAsObject.FilledTypeCache)
                 {

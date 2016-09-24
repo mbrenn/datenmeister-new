@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Extension;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.Filler;
 
 namespace DatenMeister.Runtime.Workspaces
 {
@@ -10,7 +11,7 @@ namespace DatenMeister.Runtime.Workspaces
     /// MOF Facility Object Lifecycle (MOFFOL)
     /// </summary>
     /// <typeparam name="T">Type of the extents being handled</typeparam>
-    public class Workspace
+    public class Workspace : IWorkspace
     {
         private readonly object _syncObject = new object();
 
@@ -54,6 +55,68 @@ namespace DatenMeister.Runtime.Workspaces
             lock (_syncObject)
             {
                 _extent.Add(newExtent);
+            }
+        }
+
+        public TFilledType Create<TFiller, TFilledType>()
+            where TFiller : IFiller<TFilledType>, new()
+            where TFilledType : class, new()
+        {
+            lock (FilledTypeCache)
+            {
+                var filledType = Get<TFilledType>();
+                if (filledType != null)
+                {
+                    return filledType;
+                }
+
+                // Not found, we need to fill it on our own... Congratulation
+                var filler = new TFiller();
+                filledType = new TFilledType();
+
+                // Go through all extents of this datalayer
+                foreach (var oneExtent in this.extent)
+                {
+                    filler.Fill(oneExtent.elements(), filledType);
+                }
+
+                // Adds it to the database
+                FilledTypeCache.Add(filledType);
+                return filledType;
+            }
+        }
+
+        public void ClearCache()
+        {
+            lock (FilledTypeCache)
+            {
+                FilledTypeCache.Clear();
+            }
+        }
+
+        public TFilledType Get<TFilledType>()
+            where TFilledType : class, new()
+        {
+            lock (FilledTypeCache)
+            {
+                // Looks into the cache for the filledtypes
+                foreach (var value in FilledTypeCache)
+                {
+                    if (value is TFilledType)
+                    {
+                        return value as TFilledType;
+                    }
+                }
+
+                return null;
+            }
+        }
+
+        public void Set<TFilledType>(TFilledType value) where TFilledType : class, new()
+        {
+            lock (FilledTypeCache)
+            {
+                FilledTypeCache.Add(value);
             }
         }
 

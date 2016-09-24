@@ -93,6 +93,7 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        [Obsolete]
         public Workspace GetMetaLayerFor(Workspace data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
@@ -116,73 +117,6 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public TFilledType Create<TFiller, TFilledType>(Workspace layer)
-            where TFiller : IFiller<TFilledType>, new()
-            where TFilledType : class, new()
-        {
-            if (layer == null) throw new ArgumentNullException(nameof(layer));
-
-            lock (_fileData)
-            {
-                var layerAsObject = layer as Workspace;
-                VerifyThatNotNull(layerAsObject);
-
-                var filledType = Get<TFilledType>(layerAsObject);
-                if (filledType != null)
-                {
-                    return filledType;
-                }
-
-                // Not found, we need to fill it on our own... Congratulation
-                var filler = new TFiller();
-                filledType = new TFilledType();
-
-                // Go through all extents of this datalayer
-                foreach (var extent in GetExtentsOfDatalayer(layer))
-                {
-                    filler.Fill(extent.elements(), filledType);
-                }
-
-                // Adds it to the database
-                layerAsObject.FilledTypeCache.Add(filledType);
-                return filledType;
-            }
-        }
-
-        public TFilledType Get<TFilledType>(Workspace layer)
-            where TFilledType : class, new()
-        {
-            if (layer == null) throw new ArgumentNullException(nameof(layer));
-
-            lock (_fileData)
-            {
-                var layerAsObject = layer as Workspace;
-                VerifyThatNotNull(layerAsObject);
-
-                // Looks into the cache for the filledtypes
-                foreach (var value in layerAsObject.FilledTypeCache)
-                {
-                    if (value is TFilledType)
-                    {
-                        return value as TFilledType;
-                    }
-                }
-
-                return null;
-            }
-        }
-
-        public void Set<TFilledType>(Workspace layer, TFilledType value) where TFilledType : class, new()
-        {
-            lock (_fileData)
-            {
-                var layerAsObject = layer as Workspace;
-                VerifyThatNotNull(layerAsObject);
-
-                layerAsObject.FilledTypeCache.Add(value);
-            }
-        }
-
         /// <summary>
         /// Gets the datalayer by name.
         /// The datalayer will only be returned, if there is a relationship
@@ -202,15 +136,6 @@ namespace DatenMeister.Runtime.Workspaces
             if (layerAsObject == null)
             {
                 throw new ArgumentException($"{nameof(layerAsObject)} is not of type DataLayer", nameof(layerAsObject));
-            }
-        }
-
-        public void ClearCache(Workspace layer)
-        {
-            lock (_fileData)
-            {
-                var layerAsObject = layer as Workspace;
-                layerAsObject.FilledTypeCache.Clear();
             }
         }
 

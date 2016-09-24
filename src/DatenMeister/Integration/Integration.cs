@@ -1,13 +1,9 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Attributes;
 using DatenMeister.Core.EMOF.InMemory;
-using DatenMeister.Core.Filler;
-using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Modules.ViewFinder;
 using DatenMeister.Provider.DotNet;
@@ -18,7 +14,6 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
-using DatenMeister.XMI.EMOF;
 using DatenMeister.XMI.ExtentStorage;
 using WorkspaceData = DatenMeister.Runtime.Workspaces.WorkspaceData;
 
@@ -41,7 +36,7 @@ namespace DatenMeister.Integration
         }
 
         public IContainer UseDatenMeister(ContainerBuilder kernel)
-        { 
+        {
             if (_settings == null)
             {
                 Debug.WriteLine("No integration settings were given. Loading the default values.");
@@ -70,7 +65,7 @@ namespace DatenMeister.Integration
             var extentStorageData = new ExtentStorageData();
             kernel.RegisterInstance(extentStorageData).As<ExtentStorageData>();
             kernel.RegisterType<ExtentStorageLoader>().As<IExtentStorageLoader>();
-            
+
             WorkspaceData dataLayerData;
             var workspaces = WorkspaceLogic.InitDefault(out dataLayerData);
             kernel.RegisterInstance(dataLayerData).As<WorkspaceData>();
@@ -97,22 +92,21 @@ namespace DatenMeister.Integration
 
                 var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
 
-                // Load the default extents  
-
-                // Performs the bootstrap  
+                // Load the default extents
+                // Performs the bootstrap
                 var paths =
                     new Bootstrapper.FilePaths
                     {
                         LoadFromEmbeddedResources = string.IsNullOrEmpty(_settings.PathToXmiFiles),
-                        PathPrimitive = _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "PrimitiveTypes.xmi"),
-                        PathUml = _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "UML.xmi"),
-                        PathMof = _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "MOF.xmi")
+                        PathPrimitive =
+                            _settings.PathToXmiFiles == null
+                                ? null
+                                : Path.Combine(_settings.PathToXmiFiles, "PrimitiveTypes.xmi"),
+                        PathUml =
+                            _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "UML.xmi"),
+                        PathMof =
+                            _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "MOF.xmi")
                     };
-
-                if (_settings.PerformSlimIntegration)
-                {
-                    throw new InvalidOperationException("Slim integration is currently not supported");
-                }
 
                 var umlWatch = new Stopwatch();
                 umlWatch.Start();
@@ -122,13 +116,13 @@ namespace DatenMeister.Integration
                     workspaceCollection.GetWorkspace(WorkspaceNames.Mof),
                     dataLayerLogic,
                     workspaces.Mof,
-                    BootstrapMode.Mof);
+                    _settings.PerformSlimIntegration ? BootstrapMode.SlimMof : BootstrapMode.Mof);
                 Bootstrapper.PerformFullBootstrap(
                     paths,
                     workspaceCollection.GetWorkspace(WorkspaceNames.Uml),
                     dataLayerLogic,
                     workspaces.Uml,
-                    BootstrapMode.Uml);
+                    _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml);
                 umlWatch.Stop();
                 Debug.WriteLine($" Done: {umlWatch.Elapsed.Milliseconds} ms");
 
@@ -139,12 +133,11 @@ namespace DatenMeister.Integration
                 typeWorkspace.AddExtent(extentTypes);
                 dataLayerLogic.AssignToDataLayer(extentTypes, workspaces.Types);
 
-
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();
-                dataLayerLogic.Set(workspaces.Data, fields);
+                workspaces.Data.Set(fields);
                 IntegrateFormAndFields.Assign(
-                    dataLayerLogic.Get<_UML>(workspaces.Uml),
+                    workspaces.Uml.Get<_UML>(),
                     mofFactory,
                     extentTypes.elements(),
                     fields,

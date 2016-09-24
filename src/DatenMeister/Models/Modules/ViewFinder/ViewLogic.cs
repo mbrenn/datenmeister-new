@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -102,6 +103,8 @@ namespace DatenMeister.Models.Modules.ViewFinder
                 WhenMetaClassIs(formAndFields.__DefaultViewForMetaclass).
                 Select(x=> x as IElement))
             {
+                Debug.Assert(element != null, "element != null");
+
                 var innerMetaClass = element.get(_FormAndFields._DefaultViewForMetaclass.metaclass);
                 var innerType = element.get(_FormAndFields._DefaultViewForMetaclass.viewType);
 
@@ -120,10 +123,9 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// </summary>
         /// <param name="viewExtent">Extent of the view</param>
         /// <returns></returns>
-        private _FormAndFields GetFormAndFieldInstance(IUriExtent viewExtent)
+        private _FormAndFields GetFormAndFieldInstance(IExtent viewExtent)
         {
-            return  _workspaceLogic.Get<_FormAndFields>(
-                _workspaceLogic.GetDataLayerOfExtent(viewExtent));
+            return  _workspaceLogic.GetDataLayerOfExtent(viewExtent).Get<_FormAndFields>();
         }
     }
 }

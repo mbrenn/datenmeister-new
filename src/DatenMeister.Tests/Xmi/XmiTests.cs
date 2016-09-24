@@ -19,7 +19,7 @@ using NUnit.Framework;
 namespace DatenMeister.Tests.Xmi
 {
     /// <summary>
-    /// Zusammenfassungsbeschreibung für MofObjectTests
+    /// Zusammenfassungsbeschreibung fï¿½r MofObjectTests
     /// </summary>
     [TestFixture]
     public class XmiTests
@@ -126,15 +126,12 @@ namespace DatenMeister.Tests.Xmi
             string generalProperty;
             if (package.isSet("generalization"))
             {
-                generalizedElements = package.get("generalization") as IEnumerable<object>;
+                generalizedElements = (package.get("generalization") as IEnumerable<object>).ToList();
                 generalProperty = "general";
             }
             else
             {
-                generalizedElements = package.get(
-                    _UML._Classification._Classifier.generalization) as IEnumerable<object>;
-                generalProperty = _UML._Classification._Generalization.general;
-                throw new InvalidOperationException("Not supported at the moment");
+                throw new InvalidOperationException("No generalizations currently found");
             }
 
             Assert.That(generalizedElements, Is.Not.Null);
@@ -170,8 +167,8 @@ namespace DatenMeister.Tests.Xmi
                 Is.GreaterThan(500));
 
             // Check, if the filled classes are working
-            mof = dataLayerLogic.Get<_MOF>(dataLayers.Mof);
-            uml = dataLayerLogic.Get<_UML>(dataLayers.Mof);
+            mof = dataLayers.Mof.Get<_MOF>();
+            uml = dataLayers.Mof.Get<_UML>();
             Assert.That(mof, Is.Not.Null);
             Assert.That(uml, Is.Not.Null);
         }
@@ -184,15 +181,9 @@ namespace DatenMeister.Tests.Xmi
             Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic,
                 dataLayers.Mof, 
-                BootstrapMode.Mof,
-                new Bootstrapper.FilePaths
-                {
-                    PathPrimitive = "Xmi/PrimitiveTypes.xmi",
-                    PathUml = "Xmi/UML.xmi",
-                    PathMof = "Xmi/MOF.xmi"
-                });
+                BootstrapMode.Mof);
 
-            return dataLayerLogic.Get<_UML>(dataLayers.Mof);
+            return dataLayers.Mof.Get<_UML>();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace DatenMeister.Runtime.Extents
             var typeLayer = _workspaceLogic.GetMetaLayerFor(dataLayer);
             var umlLayer= _workspaceLogic.GetMetaLayerFor(typeLayer);
 
-            var uml = _workspaceLogic.Get<_UML>(umlLayer);
+            var uml = umlLayer.Get<_UML>();
             var classType = uml?.StructuredClassifiers.__Class;
 
             if (classType == null)

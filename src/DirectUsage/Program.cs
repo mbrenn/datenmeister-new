@@ -15,10 +15,13 @@ namespace DirectUsage
         static void Main(string[] args)
         {
             var watch = new Stopwatch();
+            
             watch.Start();
-
-            var dm = GiveMe.DatenMeister();
+            var dm = GiveMe.DatenMeister(new IntegrationSettings { PerformSlimIntegration = true });
+            Console.WriteLine($"Slim: {watch.Elapsed}");
+            
             Console.WriteLine(dm.ToString());
+
 
             // Testing CSV
             var extent = dm.LoadCsv("dm:///csv", "files/test.csv");
@@ -41,7 +44,6 @@ namespace DirectUsage
                 {
                     Console.WriteLine("Property: " + property);
                 }
-                
 
                 foreach (var item in (IEnumerable) sheetAsElement.get("items"))
                 {
@@ -49,11 +51,10 @@ namespace DirectUsage
                     Console.WriteLine(itemAsElement.get("Wert") + ": " + itemAsElement.get("Quadratzahl"));
                 }
             }
-
             watch.Stop();
-
+            
             Console.WriteLine(watch.Elapsed.ToString());
-            Console.ReadKey();
+            //Console.ReadKey();
         }
     }
 }

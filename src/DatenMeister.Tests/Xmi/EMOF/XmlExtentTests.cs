@@ -267,7 +267,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
                 var dataLayers = scope.Resolve<Workspaces>();
                 var umlDataLayer = dataLayers.Uml;
-                var uml = dataLayerLogic.Get<_UML>(umlDataLayer);
+                var uml = umlDataLayer.Get<_UML>();
                 Assert.That(uml, Is.Not.Null);
 
                 var extent = new XmlUriExtent(scope.Resolve<IWorkspaceCollection>(), "dm:///test");

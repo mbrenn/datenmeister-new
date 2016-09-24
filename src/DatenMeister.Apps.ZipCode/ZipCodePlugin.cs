@@ -1,5 +1,4 @@
 ﻿using DatenMeister.Core;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.Filler;
 using DatenMeister.Core.Plugins;
@@ -24,7 +23,7 @@ namespace DatenMeister.Apps.ZipCode
             var typeExtent = _workspaceCollection.FindExtent(Locations.UriInternalTypes);
             var layerOfTypes = _dataLayerLogic.GetDataLayerOfExtent(typeExtent);
             var layerOfUml = _dataLayerLogic.GetMetaLayerFor(layerOfTypes);
-            var uml = _dataLayerLogic.Get<_UML>(layerOfUml);
+            var uml = layerOfUml.Get<_UML>();
             var factory = new MofFactory();
 
             var typeProvider = new DotNetTypeGenerator(factory, uml);

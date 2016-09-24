@@ -55,6 +55,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Runtime\Workspaces\IWorkspace.cs" />
     <Compile Include="Runtime\Workspaces\Workspaces.cs" />
     <Compile Include="Core\EMOF\Integrate.cs" />
     <Compile Include="CSV\Integrate.cs" />
@@ -170,7 +171,6 @@
     <Compile Include="Models\PostModels\WorkspaceDeleteModel.cs" />
     <Compile Include="Models\PostModels\WorkspaceReferenceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Runtime\Workspaces\WorkspaceExtension.cs" />
     <Compile Include="Provider\DotNet\DotNetElement.cs" />
     <Compile Include="Provider\DotNet\DotNetExtent.cs" />
     <Compile Include="Provider\DotNet\DotNetFactory.cs" />
@@ -268,7 +268,6 @@
     <Compile Include="XMI\UmlBootstrap\Helper.cs" />
     <Compile Include="XMI\XmiPlugin.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

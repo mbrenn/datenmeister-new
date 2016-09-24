@@ -31,7 +31,7 @@ namespace DatenMeister.Tests.Core
             Assert.That(logic.GetDataLayerOfExtent(typeExtent), Is.EqualTo(dataLayers.Types));
             Assert.That(logic.GetDataLayerOfExtent(umlExtent), Is.EqualTo(dataLayers.Uml));
             Assert.That(logic.GetDataLayerOfExtent(unAssignedExtent), Is.EqualTo(dataLayers.Data));
-            Assert.That(logic.GetMetaLayerFor(dataLayers.Data), Is.EqualTo(dataLayers.Types));
+            Assert.That(dataLayers.Data.MetaWorkspace, Is.EqualTo(dataLayers.Types));
         }
 
         [Test]
@@ -68,12 +68,12 @@ namespace DatenMeister.Tests.Core
                 dataLayers.Uml,
                 BootstrapMode.Mof);
 
-            var primitiveTypes = dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(dataLayers.Uml);
+            var primitiveTypes = dataLayers.Uml.Create<FillThePrimitiveTypes, _PrimitiveTypes>();
             Assert.That(primitiveTypes, Is.Not.Null );
             Assert.That(primitiveTypes.__Real, Is.Not.Null);
             Assert.That(primitiveTypes.__Real, Is.Not.TypeOf<object>());
             
-            var primitiveTypes2 = dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(dataLayers.Uml);
+            var primitiveTypes2 = dataLayers.Uml.Create<FillThePrimitiveTypes, _PrimitiveTypes>();
             Assert.That(primitiveTypes2, Is.SameAs(primitiveTypes));
         }
     }

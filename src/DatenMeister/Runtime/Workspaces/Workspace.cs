@@ -31,7 +31,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         public string id { get; }
 
-        public string annotation { get; }
+        public string annotation { get; set; }
 
         public IList<IExtent> extent => _extent;
 

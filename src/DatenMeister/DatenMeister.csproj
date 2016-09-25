@@ -108,7 +108,6 @@
     <Compile Include="Runtime\Workspaces\IWorkspaceLogic.cs" />
     <Compile Include="Runtime\Workspaces\WorkspaceData.cs" />
     <Compile Include="Runtime\Workspaces\WorkspaceLogic.cs" />
-    <Compile Include="Runtime\Workspaces\Locations.cs" />
     <Compile Include="Core\Plugins\IDatenMeisterPlugin.cs" />
     <Compile Include="Runtime\Workspaces\Workspace.cs" />
     <Compile Include="CSV\CSVDataProvider.cs" />
@@ -265,9 +264,7 @@
     <Compile Include="XMI\UmlBootstrap\Helper.cs" />
     <Compile Include="XMI\XmiPlugin.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Integration" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

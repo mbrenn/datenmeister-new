@@ -26,6 +26,22 @@ namespace DatenMeister.Tests.Runtime
         }
 
         [Test]
+        public void TestStoreAndLoadDefaultWorkspaces()
+        {
+            // Stores an empty workspace
+            var workSpaceCollection = WorkspaceLogic.GetDefaultLogic();
+            var workspaceLoader = new WorkspaceLoader(workSpaceCollection, "data/workspaces.xml");
+            var nr = workSpaceCollection.Workspaces.Count();
+            workspaceLoader.Store();
+
+            var newWorkSpaceCollection = WorkspaceLogic.GetDefaultLogic();
+            workspaceLoader = new WorkspaceLoader(newWorkSpaceCollection, "data/workspaces.xml");
+            workspaceLoader.Load();
+
+            Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(nr));
+        }
+
+        [Test]
         public void TestStoreAndLoadHavingTwoWorkspaces()
         {
             // Stores an empty workspace

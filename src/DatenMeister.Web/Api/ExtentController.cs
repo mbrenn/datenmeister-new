@@ -77,7 +77,7 @@ namespace DatenMeister.Web.Api
                     new
                     {
                         uri = extent.contextURI(),
-                        dataLayer = _workspaceLogic.GetDataLayerOfExtent(extent).id,
+                        dataLayer = _workspaceLogic.GetWorkspaceOfExtent(extent).id,
                         count = extent.elements().Count()
                     });
             }
@@ -498,14 +498,14 @@ namespace DatenMeister.Web.Api
             var result = _viewFinder.FindView(foundExtent, foundElement, view);
             itemModel.c = DynamicConverter.ToDynamic(result, false);
             itemModel.v = ConvertToJson(foundElement, result);
-            itemModel.layer = _workspaceLogic?.GetDataLayerOfObject(foundElement)?.id;
+            itemModel.layer = _workspaceLogic?.GetWorkspaceOfObject(foundElement)?.id;
 
             // Check, if item is of type IElement and has a metaclass
             var metaClass = foundElement.getMetaClass();
             if (metaClass != null)
             {
-                var dataLayer =_workspaceLogic?.GetDataLayerOfObject(metaClass);
-                var extents  = _workspaceLogic?.GetExtentsForDatalayer(dataLayer);
+                var dataLayer =_workspaceLogic?.GetWorkspaceOfObject(metaClass);
+                var extents  = _workspaceLogic?.GetExtentsForWorkspace(dataLayer);
                 var extentWithMetaClass = extents.WithElement(metaClass);
 
                 var metaClassModel = new ItemModel

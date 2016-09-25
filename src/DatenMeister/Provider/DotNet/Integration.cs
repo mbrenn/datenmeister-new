@@ -126,7 +126,7 @@ namespace DatenMeister.Integration
                 var extentTypes = new MofUriExtent(WorkspaceNames.UriInternalTypes);
                 var typeWorkspace = workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
                 typeWorkspace.AddExtent(extentTypes);
-                dataLayerLogic.AssignToDataLayer(extentTypes, dataLayerData.Types);
+                dataLayerLogic.AssignToWorkspace(extentTypes, dataLayerData.Types);
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();

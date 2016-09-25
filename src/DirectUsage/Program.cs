@@ -6,7 +6,6 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Integration;
 using DatenMeister.Integration;
-using DatenMeister.Models.Forms;
 
 namespace DirectUsage
 {
@@ -17,7 +16,7 @@ namespace DirectUsage
             var watch = new Stopwatch();
             
             watch.Start();
-            var dm = GiveMe.DatenMeister(new IntegrationSettings { PerformSlimIntegration = true });
+            var dm = GiveMe.DatenMeister(new IntegrationSettings { PerformSlimIntegration = false });
             Console.WriteLine($"Slim: {watch.Elapsed}");
             
             Console.WriteLine(dm.ToString());

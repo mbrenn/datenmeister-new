@@ -25,9 +25,9 @@ namespace DatenMeister.Runtime.Extents
         /// <returns>Enumeration of types</returns>
         public CreateableTypeResult GetCreatableTypes(IUriExtent extent)
         {
-            var dataLayer = _workspaceLogic.GetDataLayerOfExtent(extent);
-            var typeLayer = _workspaceLogic.GetMetaLayerFor(dataLayer);
-            var umlLayer= _workspaceLogic.GetMetaLayerFor(typeLayer);
+            var dataLayer = _workspaceLogic.GetWorkspaceOfExtent(extent);
+            var typeLayer = dataLayer.MetaWorkspace;
+            var umlLayer= typeLayer.MetaWorkspace;
 
             var uml = umlLayer.Get<_UML>();
             var classType = uml?.StructuredClassifiers.__Class;
@@ -46,7 +46,7 @@ namespace DatenMeister.Runtime.Extents
             return new CreateableTypeResult
             {
                 MetaLayer = typeLayer,
-                CreatableTypes = _workspaceLogic.GetExtentsForDatalayer(typeLayer)
+                CreatableTypes = _workspaceLogic.GetExtentsForWorkspace(typeLayer)
                     .SelectMany(x => x.elements().WhenMetaClassIs(classType))
                     .Cast<IElement>()
                     .ToList()

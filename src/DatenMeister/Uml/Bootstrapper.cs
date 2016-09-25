@@ -307,7 +307,7 @@ namespace DatenMeister.Uml
 
             // After having the classes from MOF and UML, go through all classes and set
             // the metaclass of these element depending on the attribute value of Xmi:Type
-            var extentsOfMetaLayer = _workspaceLogic.GetExtentsForDatalayer(metaLayer).ToList();
+            var extentsOfMetaLayer = _workspaceLogic.GetExtentsForWorkspace(metaLayer).ToList();
             var umlElements =
                 extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml).elements().GetAllDecendants();
             var mofElements =
@@ -525,8 +525,8 @@ namespace DatenMeister.Uml
             }
 
             // Assigns the extents to the datalayer
-            workspaceLogic.AssignToDataLayer(umlExtent, dataLayer);
-            workspaceLogic.AssignToDataLayer(primitiveExtent, dataLayer);
+            workspaceLogic.AssignToWorkspace(umlExtent, dataLayer);
+            workspaceLogic.AssignToWorkspace(primitiveExtent, dataLayer);
             
             var bootStrapper = new Bootstrapper(workspaceLogic);
             if (isSlim)
@@ -561,7 +561,7 @@ namespace DatenMeister.Uml
 
                 if (mode == BootstrapMode.Mof)
                 {
-                    workspaceLogic.AssignToDataLayer(mofExtent, dataLayer);
+                    workspaceLogic.AssignToWorkspace(mofExtent, dataLayer);
                     dataLayer.Create<FillTheMOF, _MOF>();
                 }
 
@@ -578,7 +578,7 @@ namespace DatenMeister.Uml
                     bootStrapper.StrapUml(
                         primitiveInfrastructure: primitiveExtent,
                         umlInfrastructure: umlExtent,
-                        mofDataLayer: workspaceLogic.GetMetaLayerFor(dataLayer));
+                        mofDataLayer: dataLayer.MetaWorkspace);
                 }
             }
 

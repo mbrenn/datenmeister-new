@@ -63,7 +63,7 @@ namespace DatenMeister.Runtime.Workspaces
             IExtent extent)
             where TFilledType : class, new()
         {
-            var dataLayer = logic.GetDataLayerOfExtent(extent);
+            var dataLayer = logic.GetWorkspaceOfExtent(extent);
             if (dataLayer == null)
             {
                 return null;

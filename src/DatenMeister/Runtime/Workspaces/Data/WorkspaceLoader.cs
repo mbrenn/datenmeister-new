@@ -33,9 +33,11 @@ namespace DatenMeister.Runtime.Workspaces.Data
             
                 foreach (var workspaceInfo in loaded.Workspaces)
                 {
-                    if (WorkspaceCollection.GetWorkspace(workspaceInfo.Id) != null)
+                    var foundWorkspace = WorkspaceCollection.GetWorkspace(workspaceInfo.Id);
+                    if (foundWorkspace != null)
                     {
-                        // Already exists
+                        // Already exists, update annoptation
+                        foundWorkspace.annotation = workspaceInfo.Annotation;
                         continue;
                     }
 

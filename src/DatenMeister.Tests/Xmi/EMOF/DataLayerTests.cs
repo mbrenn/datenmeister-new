@@ -22,14 +22,14 @@ namespace DatenMeister.Tests.Core
             var umlExtent = new MofUriExtent("Uml");
             var unAssignedExtent = new MofUriExtent("Unassigned");
 
-            logic.AssignToDataLayer(dataExtent, data.Data);
-            logic.AssignToDataLayer(typeExtent, data.Types);
-            logic.AssignToDataLayer(umlExtent, data.Uml);
+            logic.AssignToWorkspace(dataExtent, data.Data);
+            logic.AssignToWorkspace(typeExtent, data.Types);
+            logic.AssignToWorkspace(umlExtent, data.Uml);
 
-            Assert.That(logic.GetDataLayerOfExtent(dataExtent), Is.EqualTo(data.Data));
-            Assert.That(logic.GetDataLayerOfExtent(typeExtent), Is.EqualTo(data.Types));
-            Assert.That(logic.GetDataLayerOfExtent(umlExtent), Is.EqualTo(data.Uml));
-            Assert.That(logic.GetDataLayerOfExtent(unAssignedExtent), Is.EqualTo(data.Data));
+            Assert.That(logic.GetWorkspaceOfExtent(dataExtent), Is.EqualTo(data.Data));
+            Assert.That(logic.GetWorkspaceOfExtent(typeExtent), Is.EqualTo(data.Types));
+            Assert.That(logic.GetWorkspaceOfExtent(umlExtent), Is.EqualTo(data.Uml));
+            Assert.That(logic.GetWorkspaceOfExtent(unAssignedExtent), Is.EqualTo(data.Data));
             Assert.That(data.Data.MetaWorkspace, Is.EqualTo(data.Types));
         }
 
@@ -42,15 +42,15 @@ namespace DatenMeister.Tests.Core
             var dataExtent = new MofUriExtent("Data");
             var umlExtent = new MofUriExtent("Uml");
 
-            logic.AssignToDataLayer(dataExtent, data.Data);
-            logic.AssignToDataLayer(umlExtent, data.Uml);
+            logic.AssignToWorkspace(dataExtent, data.Data);
+            logic.AssignToWorkspace(umlExtent, data.Uml);
 
             var value = new MofElement(null, null);
-            var logicLayer = logic.GetDataLayerOfObject(value);
+            var logicLayer = logic.GetWorkspaceOfObject(value);
             Assert.That(logicLayer, Is.SameAs(data.Data)); // Per Default, only the Data
 
             umlExtent.elements().add(value);
-            logicLayer = logic.GetDataLayerOfObject(value);
+            logicLayer = logic.GetWorkspaceOfObject(value);
             Assert.That(logicLayer, Is.SameAs(data.Uml));
         }
 

@@ -123,7 +123,7 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// <returns></returns>
         private _FormAndFields GetFormAndFieldInstance(IExtent viewExtent)
         {
-            return  _workspaceLogic.GetDataLayerOfExtent(viewExtent).Get<_FormAndFields>();
+            return  _workspaceLogic.GetWorkspaceOfExtent(viewExtent).Get<_FormAndFields>();
         }
     }
 }

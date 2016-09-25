@@ -16,49 +16,35 @@ namespace DatenMeister.Runtime.Workspaces
 
         IEnumerable<Workspace> Workspaces { get; }
 
-        void SetDefaultDatalayer(Workspace layer);
-
-        /// <summary>
-        /// Sets the relationship between two layers
-        /// </summary>
-        /// <param name="dataLayer">Layer to be allocated to another layer</param>
-        /// <param name="metaDataLayer">Layer being allocated</param>
-        void SetRelationShip(Workspace dataLayer, Workspace metaDataLayer);
+        void SetDefaultWorkspace(Workspace layer);
 
         /// <summary>
         /// Assigns a layer
         /// </summary>
         /// <param name="extent"></param>
         /// <param name="dataLayer"></param>
-        void AssignToDataLayer(IExtent extent, Workspace dataLayer);
+        void AssignToWorkspace(IExtent extent, Workspace dataLayer);
 
         /// <summary>
         /// Gets the datalayer of a certain extent
         /// </summary>
         /// <param name="extent"></param>
         /// <returns></returns>
-        Workspace GetDataLayerOfExtent(IExtent extent);
+        Workspace GetWorkspaceOfExtent(IExtent extent);
 
         /// <summary>
         /// Gets the meta layer of a certain object
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        Workspace GetDataLayerOfObject(IObject value);
-
-        /// <summary>
-        /// Gets the meta layer for the given data layer
-        /// </summary>
-        /// <param name="data">Datalayer to be queried</param>
-        /// <returns>The corresponding datalayer</returns>
-        Workspace GetMetaLayerFor(Workspace data);
+        Workspace GetWorkspaceOfObject(IObject value);
 
         /// <summary>
         /// Gets all extents for a specific datalayer
         /// </summary>
         /// <param name="dataLayer">Datalayer to be retrieved</param>
         /// <returns>enumeration of extents within the datalayer</returns>
-        IEnumerable<IUriExtent> GetExtentsForDatalayer(Workspace dataLayer);
+        IEnumerable<IUriExtent> GetExtentsForWorkspace(Workspace dataLayer);
 
         /// <summary>
         /// Gets the datalayer by name

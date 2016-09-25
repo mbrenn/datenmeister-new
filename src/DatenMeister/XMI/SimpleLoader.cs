@@ -35,7 +35,7 @@ namespace DatenMeister.XMI
         /// <param name="resourceName">Path to the resources</param>
         public void LoadFromEmbeddedResource(IUriExtent extent, string resourceName)
         {
-            using (var stream = typeof(Locations).GetTypeInfo().Assembly.GetManifestResourceStream(resourceName))
+            using (var stream = typeof(WorkspaceNames).GetTypeInfo().Assembly.GetManifestResourceStream(resourceName))
             {
                 LoadFromStream(extent, stream);
             }

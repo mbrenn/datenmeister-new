@@ -19,7 +19,7 @@ namespace DatenMeister.Runtime.Workspaces
             _fileData = fileData;
         }
 
-        public void SetDefaultDatalayer(Workspace layer)
+        public void SetDefaultWorkspace(Workspace layer)
         {
             lock (_fileData)
             {
@@ -35,7 +35,7 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public void AssignToDataLayer(IExtent extent, Workspace dataLayer)
+        public void AssignToWorkspace(IExtent extent, Workspace dataLayer)
         {
             lock (_fileData)
             {
@@ -43,7 +43,7 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public Workspace GetDataLayerOfExtent(IExtent extent)
+        public Workspace GetWorkspaceOfExtent(IExtent extent)
         {
             lock (_fileData)
             {
@@ -52,7 +52,7 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public Workspace GetDataLayerOfObject(IObject value)
+        public Workspace GetWorkspaceOfObject(IObject value)
         {
             // If the object is contained by another object, query the contained objects
             // because the extents will only be stored in the root elements
@@ -60,7 +60,7 @@ namespace DatenMeister.Runtime.Workspaces
             var parent = asElement?.container();
             if (parent != null)
             {
-                return GetDataLayerOfObject(parent);
+                return GetWorkspaceOfObject(parent);
             }
 
             // If the object knows the extent to which it belongs to, it will return it
@@ -70,7 +70,7 @@ namespace DatenMeister.Runtime.Workspaces
                 var found = objectKnowsExtent.Extents.FirstOrDefault();
                 return found == null
                     ? _fileData.Default
-                    : GetDataLayerOfExtent(found);
+                    : GetWorkspaceOfExtent(found);
             }
 
             // Otherwise check it by the dataextent
@@ -80,18 +80,7 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        [Obsolete]
-        public Workspace GetMetaLayerFor(Workspace data)
-        {
-            if (data == null) throw new ArgumentNullException(nameof(data));
-
-            lock (_fileData)
-            {
-                return data.MetaWorkspace;
-            }
-        }
-
-        public IEnumerable<IUriExtent> GetExtentsForDatalayer(Workspace dataLayer)
+        public IEnumerable<IUriExtent> GetExtentsForWorkspace(Workspace dataLayer)
         {
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
@@ -201,14 +190,13 @@ namespace DatenMeister.Runtime.Workspaces
             logic.SetRelationShip(workspaceTypes, workspaceUml);
             logic.SetRelationShip(workspaceUml, workspaceMof);
             logic.SetRelationShip(workspaceMof, workspaceMof);
-            logic.SetDefaultDatalayer(workspaceData);
+            logic.SetDefaultWorkspace(workspaceData);
             return workspace;
         }
 
         public static IWorkspaceLogic GetDefaultLogic()
         {
-            var data = InitDefault();
-            return new WorkspaceLogic(data);
+            return new WorkspaceLogic(InitDefault());
         }
 
         public static IWorkspaceLogic GetEmptyLogic()

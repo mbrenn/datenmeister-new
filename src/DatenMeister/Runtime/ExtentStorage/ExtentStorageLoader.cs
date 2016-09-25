@@ -81,7 +81,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             if (!string.IsNullOrEmpty(configuration.DataLayer))
             {
-                _workspaceLogic.AssignToDataLayer(
+                _workspaceLogic.AssignToWorkspace(
                     loadedExtent, 
                     _workspaceLogic.GetById(configuration.DataLayer));
             }

@@ -22,7 +22,7 @@ namespace DatenMeister.Tests.Runtime
             var mapper = new ManualConfigurationToExtentStorageMapper();
             mapper.AddMapping(typeof (CSVStorageConfiguration), scope => new CSVStorage(null));
             WorkspaceData dataLayers;
-            var dataLayerLogic = WorkspaceLogic.InitDefault(out dataLayers);
+            WorkspaceLogic.InitDefault(out dataLayers);
 
             var data = new ExtentStorageData();
             var logic = new ExtentStorageLoader(data, mapper, new WorkspaceLogic(dataLayers));

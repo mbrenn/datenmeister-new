@@ -106,7 +106,10 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             if (_workspaceLogic != null)
             {
-                var workspace = _workspaceLogic.GetWorkspace(configuration.Workspace);
+                var workspace = string.IsNullOrEmpty(configuration.Workspace)
+                    ? _workspaceLogic.GetDefaultWorkspace()
+                    : _workspaceLogic.GetWorkspace(configuration.Workspace);
+
                 if (workspace == null)
                 {
                     throw new InvalidOperationException($"Workspace {configuration.Workspace} not found");

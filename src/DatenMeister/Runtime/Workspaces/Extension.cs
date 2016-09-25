@@ -241,5 +241,29 @@ namespace DatenMeister.Runtime.Workspaces
                 throw new InvalidOperationException();
             }
         }
+
+        public static Workspace GetData(
+            this IWorkspaceLogic logic)
+        {
+            return logic.GetWorkspace(WorkspaceNames.NameData);
+        }
+
+        public static Workspace GetTypes(
+            this IWorkspaceLogic logic)
+        {
+            return logic.GetWorkspace(WorkspaceNames.NameTypes);
+        }
+
+        public static Workspace GetUml(
+            this IWorkspaceLogic logic)
+        {
+            return logic.GetWorkspace(WorkspaceNames.NameUml);
+        }
+
+        public static Workspace GetMof(
+            this IWorkspaceLogic logic)
+        {
+            return logic.GetWorkspace(WorkspaceNames.NameMof);
+        }
     }
 }

@@ -66,12 +66,11 @@ namespace DatenMeister.Tests.Xmi
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             WorkspaceData data;
-            var dataLayers = WorkspaceLogic.InitDefault(out data);
+            WorkspaceLogic.InitDefault(out data);
             var dataLayerLogic = new WorkspaceLogic(data);
 
-
             var strapper = Bootstrapper.PerformFullBootstrap(dataLayerLogic,
-                dataLayers.Uml, 
+                data.Uml, 
                 BootstrapMode.Mof,
                 new Bootstrapper.FilePaths
                 {
@@ -153,11 +152,11 @@ namespace DatenMeister.Tests.Xmi
         public static void CreateUmlAndMofInstance(out _MOF mof, out _UML uml)
         {
             WorkspaceData data;
-            var dataLayers = WorkspaceLogic.InitDefault(out data);
+            WorkspaceLogic.InitDefault(out data);
             var dataLayerLogic = new WorkspaceLogic(data);
             var strapper = Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic,
-                dataLayers.Mof,
+                data.Mof,
                 BootstrapMode.Mof);
             Assert.That(strapper, Is.Not.Null);
             Assert.That(strapper.UmlInfrastructure, Is.Not.Null);
@@ -167,8 +166,8 @@ namespace DatenMeister.Tests.Xmi
                 Is.GreaterThan(500));
 
             // Check, if the filled classes are working
-            mof = dataLayers.Mof.Get<_MOF>();
-            uml = dataLayers.Mof.Get<_UML>();
+            mof = data.Mof.Get<_MOF>();
+            uml = data.Mof.Get<_UML>();
             Assert.That(mof, Is.Not.Null);
             Assert.That(uml, Is.Not.Null);
         }
@@ -176,14 +175,14 @@ namespace DatenMeister.Tests.Xmi
         private static _UML GetFilledUml()
         {
             WorkspaceData data;
-            var dataLayers = WorkspaceLogic.InitDefault(out data);
+            WorkspaceLogic.InitDefault(out data);
             var dataLayerLogic = new WorkspaceLogic(data);
             Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic,
-                dataLayers.Mof, 
+                data.Mof, 
                 BootstrapMode.Mof);
 
-            return dataLayers.Mof.Get<_UML>();
+            return data.Mof.Get<_UML>();
         }
     }
 }

@@ -63,10 +63,9 @@ namespace DatenMeister.Integration
 
             // Workspaces
             WorkspaceData dataLayerData;
-            var workspaces = WorkspaceLogic.InitDefault(out dataLayerData);
+            WorkspaceLogic.InitDefault(out dataLayerData);
             kernel.RegisterInstance(dataLayerData).As<WorkspaceData>();
             kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
-            kernel.RegisterInstance(workspaces).As<Workspaces>();
 
             // Adds the name resolution  
             kernel.RegisterType<UmlNameResolution>().As<IUmlNameResolution>();
@@ -110,31 +109,31 @@ namespace DatenMeister.Integration
                 Debug.Write("Bootstrapping MOF and UML...");
                 Bootstrapper.PerformFullBootstrap(
                     paths,
-                    workspaceLogic.GetWorkspace(Workspaces.NameMof),
+                    workspaceLogic.GetWorkspace(WorkspaceNames.NameMof),
                     dataLayerLogic,
-                    workspaces.Mof,
+                    dataLayerData.Mof,
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimMof : BootstrapMode.Mof);
                 Bootstrapper.PerformFullBootstrap(
                     paths,
-                    workspaceLogic.GetWorkspace(Workspaces.NameUml),
+                    workspaceLogic.GetWorkspace(WorkspaceNames.NameUml),
                     dataLayerLogic,
-                    workspaces.Uml,
+                    dataLayerData.Uml,
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml);
                 umlWatch.Stop();
                 Debug.WriteLine($" Done: {umlWatch.Elapsed.Milliseconds} ms");
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var mofFactory = new MofFactory();
-                var extentTypes = new MofUriExtent(Workspaces.UriInternalTypes);
-                var typeWorkspace = workspaceLogic.GetWorkspace(Workspaces.NameTypes);
+                var extentTypes = new MofUriExtent(WorkspaceNames.UriInternalTypes);
+                var typeWorkspace = workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
                 typeWorkspace.AddExtent(extentTypes);
-                dataLayerLogic.AssignToDataLayer(extentTypes, workspaces.Types);
+                dataLayerLogic.AssignToDataLayer(extentTypes, dataLayerData.Types);
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();
-                workspaces.Data.Set(fields);
+                dataLayerData.Data.Set(fields);
                 IntegrateFormAndFields.Assign(
-                    workspaces.Uml.Get<_UML>(),
+                    dataLayerData.Uml.Get<_UML>(),
                     mofFactory,
                     extentTypes.elements(),
                     fields,
@@ -192,16 +191,16 @@ namespace DatenMeister.Integration
             var workspaceCollection = scope.Resolve<IWorkspaceLogic>();
 
             // Creates the user types, if not existing
-            if (workspaceCollection.FindExtent(Workspaces.UriUserTypes) == null)
+            if (workspaceCollection.FindExtent(WorkspaceNames.UriUserTypes) == null)
             {
                 Debug.WriteLine("Creates the extent for the user types");
                 // Creates the extent for user types
                 var loader = scope.Resolve<ExtentStorageLoader>();
                 var storageConfiguration = new XmiStorageConfiguration
                 {
-                    ExtentUri = Workspaces.UriUserTypes,
+                    ExtentUri = WorkspaceNames.UriUserTypes,
                     Path = PathUserTypes,
-                    Workspace = Workspaces.NameTypes,
+                    Workspace = WorkspaceNames.NameTypes,
                     DataLayer = "Types"
                 };
 

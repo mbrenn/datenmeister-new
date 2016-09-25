@@ -23,11 +23,10 @@ namespace DatenMeister.Tests.Uml
             using (var scope = builder.BeginLifetimeScope())
             {
                 var classifierMethods = scope.Resolve<ClassifierMethods>();
-                var dataLayers = scope.Resolve<Workspaces>();
                 var dataLayerLogic = scope.Resolve<WorkspaceLogic>();
 
                 // Gets the logic
-                var uml = dataLayers.Uml.Get<_UML>();
+                var uml = dataLayerLogic.GetUml().Get<_UML>();
                 var feature = uml.Classification.__Feature;
                 var properties = classifierMethods.GetPropertyNamesOfClassifier(feature).ToList();
 
@@ -49,11 +48,10 @@ namespace DatenMeister.Tests.Uml
             using (var scope = builder.BeginLifetimeScope())
             {
                 var workspaceCollection = scope.Resolve<IWorkspaceLogic>();
-                var dataLayers = scope.Resolve<Workspaces>();
                 var dataLayerLogic = scope.Resolve<WorkspaceLogic>();
 
                 // Gets the logic
-                var uml = dataLayers.Uml.Get<_UML>();
+                var uml = dataLayerLogic.GetUml().Get<_UML>();
                 var feature = uml.Classification.__Feature;
                 var namedElementMethods = scope.Resolve<NamedElementMethods>();
                 var fullName = namedElementMethods.GetFullName(feature);
@@ -61,7 +59,7 @@ namespace DatenMeister.Tests.Uml
                 Assert.That(fullName, Is.Not.Null);
                 Assert.That(fullName, Is.EqualTo("UML::Classification::Feature"));
                 
-                var umlExtent = workspaceCollection.GetWorkspace(Workspaces.NameUml).FindExtent(Workspaces.UriUml);
+                var umlExtent = workspaceCollection.GetWorkspace(WorkspaceNames.NameUml).FindExtent(WorkspaceNames.UriUml);
                 // now the other way
                 var foundElement = namedElementMethods.GetByFullName(umlExtent.elements(), fullName);
                 Assert.That(foundElement, Is.EqualTo(feature));

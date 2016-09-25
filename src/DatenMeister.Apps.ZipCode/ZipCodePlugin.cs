@@ -19,7 +19,7 @@ namespace DatenMeister.Apps.ZipCode
 
         public void Start()
         {
-            var typeExtent = _dataLayerLogic.FindExtent(Workspaces.UriInternalTypes);
+            var typeExtent = _dataLayerLogic.FindExtent(WorkspaceNames.UriInternalTypes);
             var layerOfTypes = _dataLayerLogic.GetDataLayerOfExtent(typeExtent);
             var layerOfUml = _dataLayerLogic.GetMetaLayerFor(layerOfTypes);
             var uml = layerOfUml.Get<_UML>();

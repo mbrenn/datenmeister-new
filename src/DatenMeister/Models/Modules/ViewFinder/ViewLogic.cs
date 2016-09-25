@@ -30,7 +30,7 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// </summary>
         public void Integrate()
         {
-            var mgmtWorkspace = _workspaceLogic.GetWorkspace(Workspaces.NameManagement);
+            var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
 
             var dotNetUriExtent = new XmlUriExtent(_workspaceLogic, UriViewExtent);
             mgmtWorkspace.AddExtent(dotNetUriExtent);
@@ -50,7 +50,7 @@ namespace DatenMeister.Models.Modules.ViewFinder
 
         private IUriExtent GetViewExtent()
         {
-            var mgmtWorkspace = _workspaceLogic.GetWorkspace(Workspaces.NameManagement);
+            var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
 
             var foundExtent = mgmtWorkspace.FindExtent(UriViewExtent);
             if (foundExtent == null)

@@ -15,7 +15,7 @@ namespace DatenMeister.Tests.Core
         public void TestDataLayers()
         {
             WorkspaceData data;
-            var dataLayers = WorkspaceLogic.InitDefault(out data);
+            WorkspaceLogic.InitDefault(out data);
             var logic = new WorkspaceLogic(data);
 
             var dataExtent = new MofUriExtent("Data");
@@ -23,57 +23,57 @@ namespace DatenMeister.Tests.Core
             var umlExtent = new MofUriExtent("Uml");
             var unAssignedExtent = new MofUriExtent("Unassigned");
 
-            logic.AssignToDataLayer(dataExtent, dataLayers.Data);
-            logic.AssignToDataLayer(typeExtent, dataLayers.Types);
-            logic.AssignToDataLayer(umlExtent, dataLayers.Uml);
+            logic.AssignToDataLayer(dataExtent, data.Data);
+            logic.AssignToDataLayer(typeExtent, data.Types);
+            logic.AssignToDataLayer(umlExtent, data.Uml);
 
-            Assert.That(logic.GetDataLayerOfExtent(dataExtent), Is.EqualTo(dataLayers.Data));
-            Assert.That(logic.GetDataLayerOfExtent(typeExtent), Is.EqualTo(dataLayers.Types));
-            Assert.That(logic.GetDataLayerOfExtent(umlExtent), Is.EqualTo(dataLayers.Uml));
-            Assert.That(logic.GetDataLayerOfExtent(unAssignedExtent), Is.EqualTo(dataLayers.Data));
-            Assert.That(dataLayers.Data.MetaWorkspace, Is.EqualTo(dataLayers.Types));
+            Assert.That(logic.GetDataLayerOfExtent(dataExtent), Is.EqualTo(data.Data));
+            Assert.That(logic.GetDataLayerOfExtent(typeExtent), Is.EqualTo(data.Types));
+            Assert.That(logic.GetDataLayerOfExtent(umlExtent), Is.EqualTo(data.Uml));
+            Assert.That(logic.GetDataLayerOfExtent(unAssignedExtent), Is.EqualTo(data.Data));
+            Assert.That(data.Data.MetaWorkspace, Is.EqualTo(data.Types));
         }
 
         [Test]
         public void TestDataLayersForItem()
         {
             WorkspaceData data;
-            var dataLayers = WorkspaceLogic.InitDefault(out data);
+            WorkspaceLogic.InitDefault(out data);
             var logic = new WorkspaceLogic(data);
 
             var dataExtent = new MofUriExtent("Data");
             var umlExtent = new MofUriExtent("Uml");
 
-            logic.AssignToDataLayer(dataExtent, dataLayers.Data);
-            logic.AssignToDataLayer(umlExtent, dataLayers.Uml);
+            logic.AssignToDataLayer(dataExtent, data.Data);
+            logic.AssignToDataLayer(umlExtent, data.Uml);
 
             var value = new MofElement(null, null);
             var logicLayer = logic.GetDataLayerOfObject(value);
-            Assert.That(logicLayer, Is.SameAs(dataLayers.Data)); // Per Default, only the Data
+            Assert.That(logicLayer, Is.SameAs(data.Data)); // Per Default, only the Data
 
             umlExtent.elements().add(value);
             logicLayer = logic.GetDataLayerOfObject(value);
-            Assert.That(logicLayer, Is.SameAs(dataLayers.Uml));
+            Assert.That(logicLayer, Is.SameAs(data.Uml));
         }
 
         [Test]
         public void TestClassTreeUsage()
         {
             WorkspaceData data;
-            var dataLayers = WorkspaceLogic.InitDefault(out data);
+            WorkspaceLogic.InitDefault(out data);
             var dataLayerLogic = new WorkspaceLogic(data);
 
             var strapper = Bootstrapper.PerformFullBootstrap(
-                dataLayerLogic, 
-                dataLayers.Uml,
+                dataLayerLogic,
+                data.Uml,
                 BootstrapMode.Mof);
 
-            var primitiveTypes = dataLayers.Uml.Create<FillThePrimitiveTypes, _PrimitiveTypes>();
+            var primitiveTypes = data.Uml.Create<FillThePrimitiveTypes, _PrimitiveTypes>();
             Assert.That(primitiveTypes, Is.Not.Null );
             Assert.That(primitiveTypes.__Real, Is.Not.Null);
             Assert.That(primitiveTypes.__Real, Is.Not.TypeOf<object>());
             
-            var primitiveTypes2 = dataLayers.Uml.Create<FillThePrimitiveTypes, _PrimitiveTypes>();
+            var primitiveTypes2 = data.Uml.Create<FillThePrimitiveTypes, _PrimitiveTypes>();
             Assert.That(primitiveTypes2, Is.SameAs(primitiveTypes));
         }
     }

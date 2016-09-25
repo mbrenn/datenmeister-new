@@ -17,10 +17,6 @@ namespace DatenMeister.Runtime.Workspaces
         public WorkspaceLogic(WorkspaceData fileData)
         {
             _fileData = fileData;
-            if (_fileData.Default == null)
-            {
-                throw new InvalidOperationException("DataLayer.Default was not set");
-            }
         }
 
         public void SetDefaultDatalayer(Workspace layer)
@@ -122,6 +118,11 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        public Workspace GetDefaultWorkspace()
+        {
+            return _fileData.Default;
+        }
+
         /// <summary>
         /// Adds a workspace and assigns the meta workspace for the given workspace
         /// The meta workspace can also be the same as the added workspace
@@ -178,39 +179,29 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public static Workspaces InitDefault(out WorkspaceData workspace)
+        public static void InitDefault(out WorkspaceData workspace)
         {
-            var workspaces = new Workspaces
-            {
-                Data = new Workspace(Runtime.Workspaces.Workspaces.NameData, "All the data workspaces"),
-                Types = new Workspace(Runtime.Workspaces.Workspaces.NameTypes, "All the types belonging to us. "),
-                Uml = new Workspace(Runtime.Workspaces.Workspaces.NameUml, "The extents belonging to UML are stored here."),
-                Mof = new Workspace(Runtime.Workspaces.Workspaces.NameMof, "The extents belonging to MOF are stored here.")
-            };
-            var workspaceMgmt = (new Workspace(Runtime.Workspaces.Workspaces.NameManagement, "Management data for DatenMeister"));
+            var workspaceData = new Workspace(WorkspaceNames.NameData, "All the data workspaces");
+            var workspaceTypes = new Workspace(WorkspaceNames.NameTypes, "All the types belonging to us. ");
+            var workspaceUml = new Workspace(WorkspaceNames.NameUml, "The extents belonging to UML are stored here.");
+            var workspaceMof = new Workspace(WorkspaceNames.NameMof, "The extents belonging to MOF are stored here.");
+            var workspaceMgmt = new Workspace(WorkspaceNames.NameManagement, "Management data for DatenMeister");
 
-            workspace = new WorkspaceData {Default = workspaces.Data};
+            workspace = new WorkspaceData {Default = workspaceData};
 
             var logic = new WorkspaceLogic(workspace);
-            logic.AddWorkspace(workspaces.Data);
-            logic.AddWorkspace(workspaces.Types);
-            logic.AddWorkspace(workspaces.Uml);
-            logic.AddWorkspace(workspaces.Mof);
+            logic.AddWorkspace(workspaceData);
+            logic.AddWorkspace(workspaceTypes);
+            logic.AddWorkspace(workspaceUml);
+            logic.AddWorkspace(workspaceMof);
             logic.AddWorkspace(workspaceMgmt);
 
-            logic.SetRelationShip(workspaces.Data, workspaces.Types);
-            logic.SetRelationShip(workspaceMgmt, workspaces.Types);
-            logic.SetRelationShip(workspaces.Types, workspaces.Uml);
-            logic.SetRelationShip(workspaces.Uml, workspaces.Mof);
-            logic.SetRelationShip(workspaces.Mof, workspaces.Mof);
-            logic.SetDefaultDatalayer(workspaces.Data);
-
-            workspace.Workspaces.Add(workspaces.Mof);
-            workspace.Workspaces.Add(workspaces.Uml);
-            workspace.Workspaces.Add(workspaces.Types);
-            workspace.Workspaces.Add(workspaces.Data);
-
-            return workspaces;
+            logic.SetRelationShip(workspaceData, workspaceTypes);
+            logic.SetRelationShip(workspaceMgmt, workspaceTypes);
+            logic.SetRelationShip(workspaceTypes, workspaceUml);
+            logic.SetRelationShip(workspaceUml, workspaceMof);
+            logic.SetRelationShip(workspaceMof, workspaceMof);
+            logic.SetDefaultDatalayer(workspaceData);
         }
 
         public static IWorkspaceLogic GetDefaultLogic()
@@ -218,6 +209,11 @@ namespace DatenMeister.Runtime.Workspaces
             WorkspaceData data;
             InitDefault(out data);
             return new WorkspaceLogic(data);
+        }
+
+        public static IWorkspaceLogic GetEmptyLogic()
+        {
+            return new WorkspaceLogic(new WorkspaceData());
         }
     }
 }

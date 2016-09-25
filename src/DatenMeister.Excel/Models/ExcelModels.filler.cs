@@ -3,7 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
 namespace DatenMeister.Excel
 {
-    public class FillTheExcelModels : DatenMeister.Core.Filler.IFiller<_ExcelModels>
+    public class FillTheExcelModels : Core.Filler.IFiller<_ExcelModels>
     {
         private static readonly object[] EmptyList = new object[] { };
         private static string GetNameOfElement(IObject element)
@@ -14,7 +14,7 @@ namespace DatenMeister.Excel
 
         public void Fill(IEnumerable<object> collection, _ExcelModels tree)
         {
-            FillTheExcelModels.DoFill(collection, tree);
+            DoFill(collection, tree);
         }
 
         public static void DoFill(IEnumerable<object> collection, _ExcelModels tree)

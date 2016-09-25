@@ -75,7 +75,7 @@ namespace DatenMeister.Runtime.Workspaces
                 filledType = new TFilledType();
 
                 // Go through all extents of this datalayer
-                foreach (var oneExtent in this.extent)
+                foreach (var oneExtent in extent)
                 {
                     filler.Fill(oneExtent.elements(), filledType);
                 }

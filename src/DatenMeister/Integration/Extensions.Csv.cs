@@ -16,7 +16,7 @@ namespace DatenMeister.Integration
         /// <param name="uri">Uri for the loaded extent</param>
         /// <param name="settings">Settings being loaded</param>
         /// <returns>Extent to be used</returns>
-        public static IUriExtent LoadCsv(this IDatenMeisterScope scope, string uri, string path, CSV.CSVSettings settings = null)
+        public static IUriExtent LoadCsv(this IDatenMeisterScope scope, string uri, string path, CSVSettings settings = null)
         {
             settings = settings ?? new CSVSettings();
 

@@ -32,32 +32,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../DatenMeister.Web.Application" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../DatenMeister.SourceGeneration.Console" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../DirectUsage" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/csc.exe" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/csc.exe.config" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/csc.rsp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/csi.exe" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/csi.rsp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.Build.Tasks.CodeAnalysis.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.CodeAnalysis.CSharp.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.CodeAnalysis.CSharp.Scripting.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.CodeAnalysis.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.CodeAnalysis.Scripting.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.CodeAnalysis.VisualBasic.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.CSharp.Core.targets" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.DiaSymReader.Native.amd64.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.DiaSymReader.Native.x86.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/Microsoft.VisualBasic.Core.targets" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/System.AppContext.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/System.Collections.Immutable.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/System.Diagnostics.StackTrace.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/System.IO.FileSystem.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/System.IO.FileSystem.Primitives.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/System.Reflection.Metadata.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/vbc.exe" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/vbc.exe.config" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/vbc.rsp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/VBCSCompiler.exe" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/Microsoft.Net.Compilers.1.3.2/tools/VBCSCompiler.exe.config" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../scripts/ImportDatenMeister.csx" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../scripts/LoadDatenMeister.csx" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.Excel/bin" />

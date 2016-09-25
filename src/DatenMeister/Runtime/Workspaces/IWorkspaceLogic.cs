@@ -66,5 +66,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="id"></param>
         /// <returns></returns>
         Workspace GetById(string id);
+
+        Workspace GetDefaultWorkspace();
     }
 }

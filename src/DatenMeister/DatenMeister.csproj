@@ -55,8 +55,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Provider\DotNet\Integration.cs" />
     <Compile Include="Runtime\Workspaces\IWorkspace.cs" />
-    <Compile Include="Runtime\Workspaces\Workspaces.cs" />
+    <Compile Include="Runtime\Workspaces\WorkspaceNames.cs" />
     <Compile Include="Core\EMOF\Integrate.cs" />
     <Compile Include="CSV\Integrate.cs" />
     <Compile Include="Integration\Extensions.Xmi.cs" />
@@ -122,7 +123,6 @@
     <Compile Include="Integration\Helper.cs" />
     <Compile Include="Integration\IDatenMeisterScope.cs" />
     <Compile Include="Integration\IIntegrationHooks.cs" />
-    <Compile Include="Integration\Integration.cs" />
     <Compile Include="Integration\IntegrationSettings.cs" />
     <Compile Include="Integration\Extensions.Csv.cs" />
     <Compile Include="Integration\Modules\FormAndFields.dotnet.cs" />
@@ -264,6 +264,9 @@
     <Compile Include="XMI\Standards\XmiId.cs" />
     <Compile Include="XMI\UmlBootstrap\Helper.cs" />
     <Compile Include="XMI\XmiPlugin.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Integration" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -23,12 +23,12 @@ namespace DatenMeister.Provider.DotNet
 
         public IObject createFromString(IElement dataType, string value)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public string convertToString(IElement dataType, IObject value)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -24,12 +24,12 @@ namespace DatenMeister.Tests.Runtime
                 integrateZipCodes.Start();
 
                 var extentFunctions = scope.Resolve<ExtentFunctions>();
-                var dataLayers = scope.Resolve<Workspaces>();
+                var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
 
                 var dataExtent = new MofUriExtent("dm:///test");
                 var creatableTypes = extentFunctions.GetCreatableTypes(dataExtent);
                 Assert.That(creatableTypes, Is.Not.Null);
-                Assert.That(creatableTypes.MetaLayer, Is.EqualTo(dataLayers.Types));
+                Assert.That(creatableTypes.MetaLayer, Is.EqualTo(dataLayerLogic.GetTypes()));
                 Assert.That(creatableTypes.CreatableTypes.Count, Is.GreaterThan(1));
             }
         }

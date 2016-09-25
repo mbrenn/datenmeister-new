@@ -264,13 +264,12 @@ namespace DatenMeister.Tests.Xmi.EMOF
             using (var scope = builder.BeginLifetimeScope())
             {
                 var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
-                var dataLayers = scope.Resolve<Workspaces>();
-                var umlDataLayer = dataLayers.Uml;
+                var umlDataLayer = dataLayerLogic.GetUml();
                 var uml = umlDataLayer.Get<_UML>();
                 Assert.That(uml, Is.Not.Null);
 
                 var extent = new XmlUriExtent(scope.Resolve<IWorkspaceLogic>(), "dm:///test");
-                dataLayerLogic.AssignToDataLayer(extent, dataLayers.Types);
+                dataLayerLogic.AssignToDataLayer(extent, dataLayerLogic.GetTypes());
 
                 var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(scope, extent);
 

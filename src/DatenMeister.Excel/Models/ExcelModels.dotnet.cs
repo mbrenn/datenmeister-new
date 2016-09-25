@@ -22,14 +22,14 @@ namespace DatenMeister.Excel
         {
             var generator = new DotNetTypeGenerator(factory, uml);
             {
-                var type = typeof(DatenMeister.Excel.Models.Workbook);
+                var type = typeof(Models.Workbook);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__Workbook = typeAsElement;
                 lookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Excel.Models.Table);
+                var type = typeof(Models.Table);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__Table = typeAsElement;

@@ -309,9 +309,9 @@ namespace DatenMeister.Uml
             // the metaclass of these element depending on the attribute value of Xmi:Type
             var extentsOfMetaLayer = _workspaceLogic.GetExtentsForDatalayer(metaLayer).ToList();
             var umlElements =
-                extentsOfMetaLayer.First(x => x.contextURI() == Workspaces.UriUml).elements().GetAllDecendants();
+                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml).elements().GetAllDecendants();
             var mofElements =
-                extentsOfMetaLayer.First(x => x.contextURI() == Workspaces.UriMof).elements().GetAllDecendants();
+                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriMof).elements().GetAllDecendants();
             umlElements
                 .Cast<IElement>()
                 .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")
@@ -370,8 +370,8 @@ namespace DatenMeister.Uml
             }
 
             var metaClassGeneralization =
-                extentsOfMetaLayer.First(x => x.contextURI() == Workspaces.UriUml)
-                    .element(Workspaces.UriUml + "#Generalization");
+                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml)
+                    .element(WorkspaceNames.UriUml + "#Generalization");
             EvaluateGeneralizations(umlDescendents, metaClassGeneralization);
 
             // ConvertPropertiesToRealProperties(allElements);
@@ -496,9 +496,9 @@ namespace DatenMeister.Uml
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
             var factory = new MofFactory();
-            var umlExtent = new MofUriExtent(Workspaces.UriUml);
-            var mofExtent = new MofUriExtent(Workspaces.UriMof);
-            var primitiveExtent = new MofUriExtent(Workspaces.UriPrimitiveTypes);
+            var umlExtent = new MofUriExtent(WorkspaceNames.UriUml);
+            var mofExtent = new MofUriExtent(WorkspaceNames.UriMof);
+            var primitiveExtent = new MofUriExtent(WorkspaceNames.UriPrimitiveTypes);
 
             if (!isSlim)
             {

@@ -179,7 +179,7 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public static void InitDefault(out WorkspaceData workspace)
+        public static WorkspaceData InitDefault()
         {
             var workspaceData = new Workspace(WorkspaceNames.NameData, "All the data workspaces");
             var workspaceTypes = new Workspace(WorkspaceNames.NameTypes, "All the types belonging to us. ");
@@ -187,7 +187,7 @@ namespace DatenMeister.Runtime.Workspaces
             var workspaceMof = new Workspace(WorkspaceNames.NameMof, "The extents belonging to MOF are stored here.");
             var workspaceMgmt = new Workspace(WorkspaceNames.NameManagement, "Management data for DatenMeister");
 
-            workspace = new WorkspaceData {Default = workspaceData};
+            var workspace = new WorkspaceData {Default = workspaceData};
 
             var logic = new WorkspaceLogic(workspace);
             logic.AddWorkspace(workspaceData);
@@ -202,12 +202,12 @@ namespace DatenMeister.Runtime.Workspaces
             logic.SetRelationShip(workspaceUml, workspaceMof);
             logic.SetRelationShip(workspaceMof, workspaceMof);
             logic.SetDefaultDatalayer(workspaceData);
+            return workspace;
         }
 
         public static IWorkspaceLogic GetDefaultLogic()
         {
-            WorkspaceData data;
-            InitDefault(out data);
+            var data = InitDefault();
             return new WorkspaceLogic(data);
         }
 

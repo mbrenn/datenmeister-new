@@ -14,8 +14,7 @@ namespace DatenMeister.Tests.Core
         [Test]
         public void TestDataLayers()
         {
-            WorkspaceData data;
-            WorkspaceLogic.InitDefault(out data);
+            var data = WorkspaceLogic.InitDefault();
             var logic = new WorkspaceLogic(data);
 
             var dataExtent = new MofUriExtent("Data");
@@ -37,8 +36,7 @@ namespace DatenMeister.Tests.Core
         [Test]
         public void TestDataLayersForItem()
         {
-            WorkspaceData data;
-            WorkspaceLogic.InitDefault(out data);
+            var data = WorkspaceLogic.InitDefault();
             var logic = new WorkspaceLogic(data);
 
             var dataExtent = new MofUriExtent("Data");
@@ -59,8 +57,7 @@ namespace DatenMeister.Tests.Core
         [Test]
         public void TestClassTreeUsage()
         {
-            WorkspaceData data;
-            WorkspaceLogic.InitDefault(out data);
+            var data = WorkspaceLogic.InitDefault();
             var dataLayerLogic = new WorkspaceLogic(data);
 
             var strapper = Bootstrapper.PerformFullBootstrap(

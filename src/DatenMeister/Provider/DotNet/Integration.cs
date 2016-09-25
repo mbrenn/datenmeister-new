@@ -62,8 +62,7 @@ namespace DatenMeister.Integration
             kernel.RegisterType<ExtentStorageLoader>().As<IExtentStorageLoader>();
 
             // Workspaces
-            WorkspaceData dataLayerData;
-            WorkspaceLogic.InitDefault(out dataLayerData);
+            var dataLayerData = WorkspaceLogic.InitDefault();
             kernel.RegisterInstance(dataLayerData).As<WorkspaceData>();
             kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
 

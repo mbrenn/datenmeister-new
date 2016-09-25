@@ -65,8 +65,7 @@ namespace DatenMeister.Tests.Xmi
         {
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            WorkspaceData data;
-            WorkspaceLogic.InitDefault(out data);
+            var data = WorkspaceLogic.InitDefault();
             var dataLayerLogic = new WorkspaceLogic(data);
 
             var strapper = Bootstrapper.PerformFullBootstrap(dataLayerLogic,
@@ -151,8 +150,7 @@ namespace DatenMeister.Tests.Xmi
         /// <param name="uml">Uml instance to be returned</param>
         public static void CreateUmlAndMofInstance(out _MOF mof, out _UML uml)
         {
-            WorkspaceData data;
-            WorkspaceLogic.InitDefault(out data);
+            var data = WorkspaceLogic.InitDefault();
             var dataLayerLogic = new WorkspaceLogic(data);
             var strapper = Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic,
@@ -174,8 +172,7 @@ namespace DatenMeister.Tests.Xmi
 
         private static _UML GetFilledUml()
         {
-            WorkspaceData data;
-            WorkspaceLogic.InitDefault(out data);
+            var data = WorkspaceLogic.InitDefault();
             var dataLayerLogic = new WorkspaceLogic(data);
             Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic,

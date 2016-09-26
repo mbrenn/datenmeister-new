@@ -47,7 +47,7 @@ namespace DatenMeister.Runtime.Extents
             {
                 MetaLayer = typeLayer,
                 CreatableTypes = _workspaceLogic.GetExtentsForWorkspace(typeLayer)
-                    .SelectMany(x => x.elements().WhenMetaClassIs(classType))
+                    .SelectMany(x => x.elements().GetAllDescendants().WhenMetaClassIs(classType))
                     .Cast<IElement>()
                     .ToList()
             };

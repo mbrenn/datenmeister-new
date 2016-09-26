@@ -309,9 +309,9 @@ namespace DatenMeister.Uml
             // the metaclass of these element depending on the attribute value of Xmi:Type
             var extentsOfMetaLayer = _workspaceLogic.GetExtentsForWorkspace(metaLayer).ToList();
             var umlElements =
-                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml).elements().GetAllDecendants();
+                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml).elements().GetAllDescendants();
             var mofElements =
-                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriMof).elements().GetAllDecendants();
+                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriMof).elements().GetAllDescendants();
             umlElements
                 .Cast<IElement>()
                 .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")

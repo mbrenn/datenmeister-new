@@ -70,7 +70,7 @@ namespace DatenMeister.Runtime.Functions.Queries
                 comparer);
         }
 
-        public static IReflectiveCollection GetAllDecendants(
+        public static IReflectiveCollection GetAllDescendants(
             this IReflectiveCollection collection)
         {
             return new MofReflectiveSequence(AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
@@ -87,6 +87,19 @@ namespace DatenMeister.Runtime.Functions.Queries
                 groupByColumn,
                 aggregateColumn,
                 aggregatorFunc);
+        }
+
+        /// <summary>
+        /// Orders the reflective section by the given property
+        /// </summary>
+        /// <param name="collection">Collection to be ordered</param>
+        /// <param name="property">Property being used as key</param>
+        /// <returns>Ordered reflective collection</returns>
+        public static IReflectiveCollection OrderBy(
+            this IReflectiveCollection collection,
+            string property)
+        {
+            return new OrderByProperty(collection, property);
         }
     }
 }

@@ -328,11 +328,11 @@ namespace DatenMeister.Web.Api
             IUriExtent foundExtent;
             _workspaceLogic.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
 
-            var foundTypes = _extentFunctions.GetCreatableTypes(foundExtent);
+            var foundTypes = _extentFunctions.GetCreatableTypes(foundExtent).CreatableTypes.OrderBy(x=>x.get("name").ToString());
 
             return new
             {
-                types = from type in foundTypes.CreatableTypes
+                types = from type in foundTypes
                     let typeExtent = type.GetUriExtentOf()
                     select new
                     {

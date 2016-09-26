@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web.Http;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.Models.PostModels;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -14,16 +13,14 @@ namespace DatenMeister.Web.Api
     [RoutePrefix("api/datenmeister/example")]
     public class ExampleController : ApiController
     {
-        private readonly IDataLayerLogic _dataLayerLogic;
-        private readonly IWorkspaceCollection _collection;
+        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IExtentStorageLoader _loader;
 
         private static readonly Random Random = new Random();
 
-        public ExampleController(IDataLayerLogic dataLayerLogic, IWorkspaceCollection collection, IExtentStorageLoader loader)
+        public ExampleController(IWorkspaceLogic workspaceLogic,IExtentStorageLoader loader)
         {
-            _dataLayerLogic = dataLayerLogic;
-            _collection = collection;
+            _workspaceLogic = workspaceLogic;
             _loader = loader;
         }
 

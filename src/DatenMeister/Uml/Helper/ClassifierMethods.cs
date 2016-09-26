@@ -3,18 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Uml.Helper
 {
     public class ClassifierMethods
     {
-        private readonly IDataLayerLogic _dataLayerLogic;
-        public ClassifierMethods(IDataLayerLogic dataLayerLogic)
+        private readonly IWorkspaceLogic _workspaceLogic;
+        public ClassifierMethods(IWorkspaceLogic workspaceLogic)
         {
-            _dataLayerLogic = dataLayerLogic;
+            _workspaceLogic = workspaceLogic;
         }
 
         /// <summary>

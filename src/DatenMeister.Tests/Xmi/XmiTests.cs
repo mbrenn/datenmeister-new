@@ -5,12 +5,12 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using DatenMeister.Core;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Attributes;
 using DatenMeister.Core.EMOF.Helper;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml;
 using DatenMeister.XMI;
 using DatenMeister.XMI.Standards;
@@ -19,7 +19,7 @@ using NUnit.Framework;
 namespace DatenMeister.Tests.Xmi
 {
     /// <summary>
-    /// Zusammenfassungsbeschreibung für MofObjectTests
+    /// Zusammenfassungsbeschreibung fï¿½r MofObjectTests
     /// </summary>
     [TestFixture]
     public class XmiTests
@@ -63,14 +63,13 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void TestGetUriAndRetrieveElement()
         {
-
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            
-            var dataLayerLogic = new DataLayerLogic(new DataLayerData());
-            var dataLayers = new DataLayers();
-            dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
+
+            var data = WorkspaceLogic.InitDefault();
+            var dataLayerLogic = new WorkspaceLogic(data);
+
             var strapper = Bootstrapper.PerformFullBootstrap(dataLayerLogic,
-                dataLayers.Uml, 
+                data.Uml, 
                 BootstrapMode.Mof,
                 new Bootstrapper.FilePaths
                 {
@@ -125,15 +124,12 @@ namespace DatenMeister.Tests.Xmi
             string generalProperty;
             if (package.isSet("generalization"))
             {
-                generalizedElements = package.get("generalization") as IEnumerable<object>;
+                generalizedElements = (package.get("generalization") as IEnumerable<object>).ToList();
                 generalProperty = "general";
             }
             else
             {
-                generalizedElements = package.get(
-                    _UML._Classification._Classifier.generalization) as IEnumerable<object>;
-                generalProperty = _UML._Classification._Generalization.general;
-                throw new InvalidOperationException("Not supported at the moment");
+                throw new InvalidOperationException("No generalizations currently found");
             }
 
             Assert.That(generalizedElements, Is.Not.Null);
@@ -154,11 +150,11 @@ namespace DatenMeister.Tests.Xmi
         /// <param name="uml">Uml instance to be returned</param>
         public static void CreateUmlAndMofInstance(out _MOF mof, out _UML uml)
         {
-            var dataLayerLogic = new DataLayerLogic(new DataLayerData());
-            var dataLayers = new DataLayers();
-            dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
-            var strapper = Bootstrapper.PerformFullBootstrap(dataLayerLogic,
-                dataLayers.Mof,
+            var data = WorkspaceLogic.InitDefault();
+            var dataLayerLogic = new WorkspaceLogic(data);
+            var strapper = Bootstrapper.PerformFullBootstrap(
+                dataLayerLogic,
+                data.Mof,
                 BootstrapMode.Mof);
             Assert.That(strapper, Is.Not.Null);
             Assert.That(strapper.UmlInfrastructure, Is.Not.Null);
@@ -168,29 +164,22 @@ namespace DatenMeister.Tests.Xmi
                 Is.GreaterThan(500));
 
             // Check, if the filled classes are working
-            mof = dataLayerLogic.Get<_MOF>(dataLayers.Mof);
-            uml = dataLayerLogic.Get<_UML>(dataLayers.Mof);
+            mof = data.Mof.Get<_MOF>();
+            uml = data.Mof.Get<_UML>();
             Assert.That(mof, Is.Not.Null);
             Assert.That(uml, Is.Not.Null);
         }
 
         private static _UML GetFilledUml()
         {
-            var dataLayerLogic = new DataLayerLogic(new DataLayerData());
-            var dataLayers = new DataLayers();
-            dataLayers.SetRelationsForDefaultDataLayers(dataLayerLogic);
+            var data = WorkspaceLogic.InitDefault();
+            var dataLayerLogic = new WorkspaceLogic(data);
             Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic,
-                dataLayers.Mof, 
-                BootstrapMode.Mof,
-                new Bootstrapper.FilePaths
-                {
-                    PathPrimitive = "Xmi/PrimitiveTypes.xmi",
-                    PathUml = "Xmi/UML.xmi",
-                    PathMof = "Xmi/MOF.xmi"
-                });
+                data.Mof, 
+                BootstrapMode.Mof);
 
-            return dataLayerLogic.Get<_UML>(dataLayers.Mof);
+            return data.Mof.Get<_UML>();
         }
     }
 }

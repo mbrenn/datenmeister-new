@@ -10,9 +10,9 @@ namespace DatenMeister.Web.Api
     [RoutePrefix("api/datenmeister/workspace")]
     public class WorkspaceController : ApiController
     {
-        private readonly IWorkspaceCollection _workspaceCollection;
+        private readonly IWorkspaceLogic _workspaceCollection;
 
-        public WorkspaceController(IWorkspaceCollection workspaceCollection)
+        public WorkspaceController(IWorkspaceLogic workspaceCollection)
         {
             _workspaceCollection = workspaceCollection;
         }
@@ -38,7 +38,7 @@ namespace DatenMeister.Web.Api
         [HttpPost]
         public object Create([FromBody] WorkspaceCreateModel model)
         {
-            var workspace = new Workspace<IExtent>(model.name, model.annotation);
+            var workspace = new Workspace(model.name, model.annotation);
             _workspaceCollection.AddWorkspace(workspace);
 
             return new {success = true};

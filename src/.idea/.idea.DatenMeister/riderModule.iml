@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../../../../TaskMeister/src/TaskMeister">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../TaskMeister/src/TaskMeister" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../../TaskMeister/src/TaskMeister.SourceGenerator.Console">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../TaskMeister/src/TaskMeister.SourceGenerator.Console" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../../TaskMeister/src/TaskMeister.SourceGenerator.Console/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../../TaskMeister/src/TaskMeister.SourceGenerator.Console/obj" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../../TaskMeister/src/TaskMeister.Tests">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../TaskMeister/src/TaskMeister.Tests" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../../TaskMeister/src/TaskMeisterLib">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../TaskMeister/src/TaskMeisterLib" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../../TaskMeister/src/TaskMeisterLib/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../../TaskMeister/src/TaskMeisterLib/obj" />
+    </content>
+    <content url="file://$MODULE_DIR$/../..">
+      <sourceFolder url="file://$MODULE_DIR$/../../DatenMeister" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../DatenMeister.Web" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../DatenMeister.UWP" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../DatenMeister.Integration.DotNet" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../DatenMeister.Excel" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../DatenMeister.Tests.Console" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../DatenMeister.Tests" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../ZipCodeFinder" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../DatenMeister.Apps.ZipCode" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../DatenMeister.Apps.ZipCode.AspNet" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../DatenMeister.Apps.ZipCode.Web" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../DatenMeister.Web.Application" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../DatenMeister.SourceGeneration.Console" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../DirectUsage" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../scripts/ImportDatenMeister.csx" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../scripts/LoadDatenMeister.csx" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.Excel/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.Excel/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.Integration.DotNet/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.Integration.DotNet/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.SourceGeneration.Console/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.SourceGeneration.Console/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.Tests.Console/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.Tests.Console/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.Tests/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.Tests/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.UWP/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.UWP/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.Web.Application/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.Web.Application/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.Web/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister.Web/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DatenMeister/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DirectUsage/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../DirectUsage/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../packages" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

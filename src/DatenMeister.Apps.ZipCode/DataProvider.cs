@@ -37,7 +37,7 @@ namespace DatenMeister.Apps.ZipCode
             ZipCodes = new MofUriExtent("datenmeister:///zipcodes");
             var factory = new MofFactory();
 
-            var csvProvider = new CSVDataProvider(null, null);
+            var csvProvider = new CSVDataProvider(null);
 
             csvProvider.Load(
                 ZipCodes,

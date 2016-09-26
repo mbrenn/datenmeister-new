@@ -14,11 +14,11 @@ namespace DatenMeister.Tests.Runtime
         public void TestStoreAndLoadEmptyWorkspaces()
         {
             // Stores an empty workspace
-            var workSpaceCollection = new WorkspaceCollection();
+            var workSpaceCollection = WorkspaceLogic.GetEmptyLogic();
             var workspaceLoader = new WorkspaceLoader(workSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Store();
 
-            var newWorkSpaceCollection = new WorkspaceCollection();
+            var newWorkSpaceCollection = WorkspaceLogic.GetEmptyLogic();
             workspaceLoader = new WorkspaceLoader(newWorkSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Load();
 
@@ -26,16 +26,32 @@ namespace DatenMeister.Tests.Runtime
         }
 
         [Test]
+        public void TestStoreAndLoadDefaultWorkspaces()
+        {
+            // Stores an empty workspace
+            var workSpaceCollection = WorkspaceLogic.GetDefaultLogic();
+            var workspaceLoader = new WorkspaceLoader(workSpaceCollection, "data/workspaces.xml");
+            var nr = workSpaceCollection.Workspaces.Count();
+            workspaceLoader.Store();
+
+            var newWorkSpaceCollection = WorkspaceLogic.GetDefaultLogic();
+            workspaceLoader = new WorkspaceLoader(newWorkSpaceCollection, "data/workspaces.xml");
+            workspaceLoader.Load();
+
+            Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(nr));
+        }
+
+        [Test]
         public void TestStoreAndLoadHavingTwoWorkspaces()
         {
             // Stores an empty workspace
-            var workSpaceCollection = new WorkspaceCollection();
-            workSpaceCollection.AddWorkspace(new Workspace<IExtent>("test", "Continue"));
-            workSpaceCollection.AddWorkspace(new Workspace<IExtent>("another", "annotation"));
+            var workSpaceCollection = WorkspaceLogic.GetEmptyLogic();
+            workSpaceCollection.AddWorkspace(new Workspace("test", "Continue"));
+            workSpaceCollection.AddWorkspace(new Workspace("another", "annotation"));
             var workspaceLoader = new WorkspaceLoader(workSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Store();
 
-            var newWorkSpaceCollection = new WorkspaceCollection();
+            var newWorkSpaceCollection = WorkspaceLogic.GetEmptyLogic();
             workspaceLoader = new WorkspaceLoader(newWorkSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Load();
 
@@ -70,14 +86,14 @@ namespace DatenMeister.Tests.Runtime
         public void TestStoreAndLoadHavingTwoWorkspacesWithConflict()
         {
             // Stores an empty workspace
-            var workSpaceCollection = new WorkspaceCollection();
-            workSpaceCollection.AddWorkspace(new Workspace<IExtent>("test", "Continue"));
-            workSpaceCollection.AddWorkspace(new Workspace<IExtent>("another", "annotation"));
+            var workSpaceCollection = WorkspaceLogic.GetEmptyLogic();
+            workSpaceCollection.AddWorkspace(new Workspace("test", "Continue"));
+            workSpaceCollection.AddWorkspace(new Workspace("another", "annotation"));
             var workspaceLoader = new WorkspaceLoader(workSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Store();
 
-            var newWorkSpaceCollection = new WorkspaceCollection();
-            newWorkSpaceCollection.AddWorkspace(new Workspace<IExtent>("test", "Continue"));
+            var newWorkSpaceCollection = WorkspaceLogic.GetEmptyLogic();
+            newWorkSpaceCollection.AddWorkspace(new Workspace("test", "Continue"));
             workspaceLoader = new WorkspaceLoader(newWorkSpaceCollection, "data/workspaces.xml");
             workspaceLoader.Load();
 

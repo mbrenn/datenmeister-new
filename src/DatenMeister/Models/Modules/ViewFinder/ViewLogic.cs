@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -17,14 +17,12 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// Defines the uri of the view to the view extents
         /// </summary>
         public const string UriViewExtent = "dm:///management/views";
+        
+        private readonly IWorkspaceLogic _workspaceLogic;
 
-        private readonly IWorkspaceCollection _workspaceCollection;
-        private readonly IDataLayerLogic _dataLayerLogic;
-
-        public ViewLogic(IWorkspaceCollection workspaceCollection, IDataLayerLogic dataLayerLogic)
+        public ViewLogic(IWorkspaceLogic workspaceLogic)
         {
-            _workspaceCollection = workspaceCollection;
-            _dataLayerLogic = dataLayerLogic;
+            _workspaceLogic = workspaceLogic;
         }
 
         /// <summary>
@@ -32,9 +30,9 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// </summary>
         public void Integrate()
         {
-            var mgmtWorkspace = _workspaceCollection.GetWorkspace(WorkspaceNames.Management);
+            var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
 
-            var dotNetUriExtent = new XmlUriExtent(_workspaceCollection, UriViewExtent);
+            var dotNetUriExtent = new XmlUriExtent(_workspaceLogic, UriViewExtent);
             mgmtWorkspace.AddExtent(dotNetUriExtent);
         }
 
@@ -52,7 +50,7 @@ namespace DatenMeister.Models.Modules.ViewFinder
 
         private IUriExtent GetViewExtent()
         {
-            var mgmtWorkspace = _workspaceCollection.GetWorkspace(WorkspaceNames.Management);
+            var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
 
             var foundExtent = mgmtWorkspace.FindExtent(UriViewExtent);
             if (foundExtent == null)
@@ -103,6 +101,8 @@ namespace DatenMeister.Models.Modules.ViewFinder
                 WhenMetaClassIs(formAndFields.__DefaultViewForMetaclass).
                 Select(x=> x as IElement))
             {
+                Debug.Assert(element != null, "element != null");
+
                 var innerMetaClass = element.get(_FormAndFields._DefaultViewForMetaclass.metaclass);
                 var innerType = element.get(_FormAndFields._DefaultViewForMetaclass.viewType);
 
@@ -121,10 +121,9 @@ namespace DatenMeister.Models.Modules.ViewFinder
         /// </summary>
         /// <param name="viewExtent">Extent of the view</param>
         /// <returns></returns>
-        private _FormAndFields GetFormAndFieldInstance(IUriExtent viewExtent)
+        private _FormAndFields GetFormAndFieldInstance(IExtent viewExtent)
         {
-            return  _dataLayerLogic.Get<_FormAndFields>(
-                _dataLayerLogic.GetDataLayerOfExtent(viewExtent));
+            return  _workspaceLogic.GetWorkspaceOfExtent(viewExtent).MetaWorkspace.Get<_FormAndFields>();
         }
     }
 }

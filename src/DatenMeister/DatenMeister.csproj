@@ -55,6 +55,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Provider\DotNet\Integration.cs" />
+    <Compile Include="Runtime\Workspaces\IWorkspace.cs" />
+    <Compile Include="Runtime\Workspaces\WorkspaceNames.cs" />
     <Compile Include="Core\EMOF\Integrate.cs" />
     <Compile Include="CSV\Integrate.cs" />
     <Compile Include="Integration\Extensions.Xmi.cs" />
@@ -65,8 +68,6 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\DataLayer\DataLayers.cs" />
-    <Compile Include="Core\DataLayer\Extensions.cs" />
     <Compile Include="Core\EMOF\Attributes\AssignFactoryForExtentTypeAttribute.cs" />
     <Compile Include="Core\EMOF\Exceptions\MofException.cs" />
     <Compile Include="Core\EMOF\Helper\AllDescendentsQuery.cs" />
@@ -104,14 +105,11 @@
     <Compile Include="Core\Filler\mof.cs" />
     <Compile Include="Core\Filler\primitivetypes.cs" />
     <Compile Include="Core\Filler\uml.cs" />
-    <Compile Include="Core\DataLayer\IDataLayer.cs" />
-    <Compile Include="Core\DataLayer\IDataLayerLogic.cs" />
-    <Compile Include="Core\DataLayer\DataLayer.cs" />
-    <Compile Include="Core\EMOF\Attributes\DataLayerData.cs" />
-    <Compile Include="Core\DataLayer\DataLayerLogic.cs" />
-    <Compile Include="Core\Locations.cs" />
+    <Compile Include="Runtime\Workspaces\IWorkspaceLogic.cs" />
+    <Compile Include="Runtime\Workspaces\WorkspaceData.cs" />
+    <Compile Include="Runtime\Workspaces\WorkspaceLogic.cs" />
     <Compile Include="Core\Plugins\IDatenMeisterPlugin.cs" />
-    <Compile Include="Core\Workspace.cs" />
+    <Compile Include="Runtime\Workspaces\Workspace.cs" />
     <Compile Include="CSV\CSVDataProvider.cs" />
     <Compile Include="CSV\CSVPlugin.cs" />
     <Compile Include="CSV\CSVSettings.cs" />
@@ -124,7 +122,6 @@
     <Compile Include="Integration\Helper.cs" />
     <Compile Include="Integration\IDatenMeisterScope.cs" />
     <Compile Include="Integration\IIntegrationHooks.cs" />
-    <Compile Include="Integration\Integration.cs" />
     <Compile Include="Integration\IntegrationSettings.cs" />
     <Compile Include="Integration\Extensions.Csv.cs" />
     <Compile Include="Integration\Modules\FormAndFields.dotnet.cs" />
@@ -173,7 +170,6 @@
     <Compile Include="Models\PostModels\WorkspaceDeleteModel.cs" />
     <Compile Include="Models\PostModels\WorkspaceReferenceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\WorkspaceExtension.cs" />
     <Compile Include="Provider\DotNet\DotNetElement.cs" />
     <Compile Include="Provider\DotNet\DotNetExtent.cs" />
     <Compile Include="Provider\DotNet\DotNetFactory.cs" />
@@ -235,14 +231,11 @@
     <Compile Include="Runtime\Proxies\ReadOnly\ReadOnlyReflectiveSequence.cs" />
     <Compile Include="Runtime\Proxies\ReadOnly\ReadOnlyUriExtent.cs" />
     <Compile Include="Runtime\Proxies\ReflectiveList.cs" />
-    <Compile Include="Runtime\Workspaces\Data\WorkspaceData.cs" />
+    <Compile Include="Runtime\Workspaces\Data\WorkspaceFileData.cs" />
     <Compile Include="Runtime\Workspaces\Data\WorkspaceInfo.cs" />
     <Compile Include="Runtime\Workspaces\Data\WorkspaceLoader.cs" />
     <Compile Include="Runtime\Workspaces\Extension.cs" />
-    <Compile Include="Runtime\Workspaces\IWorkspaceCollection.cs" />
-    <Compile Include="Runtime\Workspaces\WorkspaceCollection.cs" />
     <Compile Include="Runtime\Workspaces\WorkspaceExtentAndItemReference.cs" />
-    <Compile Include="Runtime\Workspaces\WorkspaceNames.cs" />
     <Compile Include="SourcecodeGenerator\ClassTreeGenerator.cs" />
     <Compile Include="SourcecodeGenerator\DotNetIntegrationGenerator.cs" />
     <Compile Include="SourcecodeGenerator\FillClassTreeByExtentCreator.cs" />

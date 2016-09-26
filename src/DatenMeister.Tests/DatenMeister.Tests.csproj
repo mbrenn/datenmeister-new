@@ -104,7 +104,6 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Core\DataLayerTests.cs" />
     <Compile Include="CSV\CSVExtentTests.cs" />
     <Compile Include="DotNet\DotNetExtentTests.cs" />
     <Compile Include="DotNet\DotNetTests.cs" />
@@ -125,6 +124,7 @@
     <Compile Include="Uml\TestUmlMethods.cs" />
     <Compile Include="Web\TestAutoColumnCreator.cs" />
     <Compile Include="WorkspaceTests.cs" />
+    <Compile Include="Xmi\EMOF\DataLayerTests.cs" />
     <Compile Include="Xmi\EMOF\XmlExtentTests.cs" />
     <Compile Include="Xmi\Runtime\StorageTests.cs" />
     <Compile Include="Xmi\XmiTests.cs" />
@@ -171,7 +171,9 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Core" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

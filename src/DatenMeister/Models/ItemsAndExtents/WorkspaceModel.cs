@@ -1,14 +1,15 @@
 ﻿using System;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Models.ItemsAndExtents
 {
     public class WorkspaceModel
     {
-        private readonly Workspace<IExtent> _workspace;
+        private readonly Workspace _workspace;
 
-        public WorkspaceModel(Workspace<IExtent> workspace)
+        public WorkspaceModel(Workspace workspace)
         {
             if (workspace == null)
             {

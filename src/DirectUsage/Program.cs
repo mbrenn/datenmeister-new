@@ -6,7 +6,6 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Integration;
 using DatenMeister.Integration;
-using DatenMeister.Models.Forms;
 
 namespace DirectUsage
 {
@@ -15,9 +14,11 @@ namespace DirectUsage
         static void Main(string[] args)
         {
             var watch = new Stopwatch();
+            
             watch.Start();
-
-            var dm = GiveMe.DatenMeister();
+            var dm = GiveMe.DatenMeister(new IntegrationSettings { PerformSlimIntegration = false });
+            Console.WriteLine($"Slim: {watch.Elapsed}");
+            
             Console.WriteLine(dm.ToString());
 
             // Testing CSV
@@ -41,7 +42,6 @@ namespace DirectUsage
                 {
                     Console.WriteLine("Property: " + property);
                 }
-                
 
                 foreach (var item in (IEnumerable) sheetAsElement.get("items"))
                 {
@@ -49,11 +49,10 @@ namespace DirectUsage
                     Console.WriteLine(itemAsElement.get("Wert") + ": " + itemAsElement.get("Quadratzahl"));
                 }
             }
-
             watch.Stop();
-
+            
             Console.WriteLine(watch.Elapsed.ToString());
-            Console.ReadKey();
+            //Console.ReadKey();
         }
     }
 }

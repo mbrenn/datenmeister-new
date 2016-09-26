@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Helper;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -10,6 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.XMI;
 
@@ -20,7 +20,7 @@ namespace DatenMeister.Uml
     /// </summary>
     public class Bootstrapper
     {
-        private readonly IDataLayerLogic _dataLayerLogic;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
         ///     Stores a vlaue indicating whether the run was already performed.
@@ -63,22 +63,26 @@ namespace DatenMeister.Uml
         /// <summary>
         /// Initializes the bootstrapper after having the the necessary extents
         /// </summary>
-        /// <param name="primitiveInfrastructure">Extent reflecting the primitive structure XMI definition</param>
-        /// <param name="umlInfrastructure">Extent reflecting the Uml infrastructure XMI definition</param>
-        /// <param name="mofInfrastructure">Extent reflecting the MOF infrastructure XMI definition</param>
-        /// <param name="dataLayerLogic">Datalayerlogic  being used</param>
+        /// <param name="workspaceLogic">Datalayerlogic  being used</param>
         public Bootstrapper(
-            IDataLayerLogic dataLayerLogic)
+            IWorkspaceLogic workspaceLogic)
         {
-            if (dataLayerLogic == null) throw new ArgumentNullException(nameof(dataLayerLogic));
+            if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
 
-            _dataLayerLogic = dataLayerLogic;
+            _workspaceLogic = workspaceLogic;
         }
 
-        public void StrapUml(
+        private void StrapUml(
             IUriExtent primitiveInfrastructure,
             IUriExtent umlInfrastructure,
-            IDataLayer mofDataLayer)
+            Workspace mofDataLayer)
+        {
+            StrapUmlSlim(primitiveInfrastructure, umlInfrastructure);
+
+            StrapUml(mofDataLayer);
+        }
+
+        private void StrapUmlSlim(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure)
         {
             if (umlInfrastructure == null)
             {
@@ -91,10 +95,16 @@ namespace DatenMeister.Uml
 
             UmlInfrastructure = umlInfrastructure;
             PrimitiveInfrastructure = primitiveInfrastructure;
-
-            StrapUml(mofDataLayer);
         }
-        public void StrapMof(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure, IUriExtent mofInfrastructure)
+
+        private void StrapMof(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure, IUriExtent mofInfrastructure)
+        {
+            StrapMofSlim(primitiveInfrastructure, umlInfrastructure, mofInfrastructure);
+
+            StrapMof();
+        }
+
+        private void StrapMofSlim(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure, IUriExtent mofInfrastructure)
         {
             if (umlInfrastructure == null)
             {
@@ -112,8 +122,6 @@ namespace DatenMeister.Uml
             UmlInfrastructure = umlInfrastructure;
             MofInfrastructure = mofInfrastructure;
             PrimitiveInfrastructure = primitiveInfrastructure;
-
-            StrapMof();
         }
 
         /// <summary>
@@ -232,7 +240,7 @@ namespace DatenMeister.Uml
         /// <summary>
         ///     Performs the bootstrap
         /// </summary>
-        private void StrapUml(IDataLayer metaLayer)
+        private void StrapUml(Workspace metaLayer)
         {
             if (_wasRun)
             {
@@ -299,11 +307,11 @@ namespace DatenMeister.Uml
 
             // After having the classes from MOF and UML, go through all classes and set
             // the metaclass of these element depending on the attribute value of Xmi:Type
-            var extentsOfMetaLayer = _dataLayerLogic.GetExtentsForDatalayer(metaLayer).ToList();
+            var extentsOfMetaLayer = _workspaceLogic.GetExtentsForWorkspace(metaLayer).ToList();
             var umlElements =
-                extentsOfMetaLayer.First(x => x.contextURI() == Locations.UriUml).elements().GetAllDecendants();
+                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml).elements().GetAllDescendants();
             var mofElements =
-                extentsOfMetaLayer.First(x => x.contextURI() == Locations.UriMof).elements().GetAllDecendants();
+                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriMof).elements().GetAllDescendants();
             umlElements
                 .Cast<IElement>()
                 .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")
@@ -362,8 +370,8 @@ namespace DatenMeister.Uml
             }
 
             var metaClassGeneralization =
-                extentsOfMetaLayer.First(x => x.contextURI() == Locations.UriUml)
-                    .element(Locations.UriUml + "#Generalization");
+                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml)
+                    .element(WorkspaceNames.UriUml + "#Generalization");
             EvaluateGeneralizations(umlDescendents, metaClassGeneralization);
 
             // ConvertPropertiesToRealProperties(allElements);
@@ -373,6 +381,7 @@ namespace DatenMeister.Uml
         /// Evaluates the 
         /// </summary>
         /// <param name="umlDescendents"></param>
+        /// <param name="metaClassGeneralization">The metaclass being used to find the generalization class type</param>
         private void EvaluateGeneralizations(IEnumerable<IObject> umlDescendents, IElement metaClassGeneralization)
         {
             // Now we handle the generalization information. 
@@ -405,11 +414,11 @@ namespace DatenMeister.Uml
         /// and not the real properties anymore
         /// </summary>
         /// <param name="allElements"></param>
-        private void ConvertPropertiesToRealProperties(List<IObject> allElements)
+        private void ConvertPropertiesToRealProperties(IEnumerable<IObject> allElements)
         {
             // Now we replace the property information from string form to real properties
             List<Action> actions = new List<Action>();
-            var classifierMethod = new ClassifierMethods(_dataLayerLogic);
+            var classifierMethod = new ClassifierMethods(_workspaceLogic);
 
             foreach (var element in allElements.OfType<IObjectAllProperties>())
             {
@@ -469,74 +478,111 @@ namespace DatenMeister.Uml
         }
 
         /// <summary>
-        ///     Performs a full bootstrap by reading in the uml class
+        /// Performs a full bootstrap by reading in the uml class
         /// </summary>
-        /// <param name="dataLayerLogic">The datalayer logic to be used</param>
+        /// <param name="workspaceLogic">The datalayer logic to be used</param>
         /// <param name="dataLayer">The datalayer to be filled before the bootstrap itself</param>
+        /// <param name="mode">The mode being used to load the information</param>
         /// <param name="paths">Paths storing the uml information</param>
         /// <returns>The instance of the bootstrapper</returns>
-        public static Bootstrapper PerformFullBootstrap(IDataLayerLogic dataLayerLogic, IDataLayer dataLayer, BootstrapMode mode, FilePaths paths = null)
+        public static Bootstrapper PerformFullBootstrap(
+            IWorkspaceLogic workspaceLogic,
+            Workspace dataLayer,
+            BootstrapMode mode,
+            FilePaths paths = null)
         {
-            var loadsMof = mode == BootstrapMode.Mof;
-            var factory = new MofFactory();
-            var umlExtent = new MofUriExtent(Locations.UriUml);
-            var mofExtent = new MofUriExtent(Locations.UriMof);
-            var primitiveExtent = new MofUriExtent(Locations.UriPrimitiveTypes);
-            var loader = new SimpleLoader(factory);
-            if (paths == null || paths.LoadFromEmbeddedResources)
-            {
-                loader.LoadFromEmbeddedResource(primitiveExtent, "DatenMeister.XmiFiles.PrimitiveTypes.xmi");
-                loader.LoadFromEmbeddedResource(umlExtent, "DatenMeister.XmiFiles.UML.xmi");
+            var isSlim = mode == BootstrapMode.SlimMof || mode == BootstrapMode.SlimUml;
+            if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
+            if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-                if (loadsMof)
-                {
-                    loader.LoadFromEmbeddedResource(mofExtent, "DatenMeister.XmiFiles.MOF.xmi");
-                }
-            }
-            else
+            var factory = new MofFactory();
+            var umlExtent = new MofUriExtent(WorkspaceNames.UriUml);
+            var mofExtent = new MofUriExtent(WorkspaceNames.UriMof);
+            var primitiveExtent = new MofUriExtent(WorkspaceNames.UriPrimitiveTypes);
+
+            if (!isSlim)
             {
-                loader.LoadFromFile(primitiveExtent, paths.PathPrimitive);
-                loader.LoadFromFile(umlExtent, paths.PathUml);
-                if (loadsMof)
+                var loader = new SimpleLoader(factory);
+                if (paths == null || paths.LoadFromEmbeddedResources)
                 {
-                    loader.LoadFromFile(mofExtent, paths.PathMof);
+                    loader.LoadFromEmbeddedResource(primitiveExtent, "DatenMeister.XmiFiles.PrimitiveTypes.xmi");
+                    loader.LoadFromEmbeddedResource(umlExtent, "DatenMeister.XmiFiles.UML.xmi");
+
+                    if (mode == BootstrapMode.Mof)
+                    {
+                        loader.LoadFromEmbeddedResource(mofExtent, "DatenMeister.XmiFiles.MOF.xmi");
+                    }
+                }
+                else
+                {
+                    loader.LoadFromFile(primitiveExtent, paths.PathPrimitive);
+                    loader.LoadFromFile(umlExtent, paths.PathUml);
+                    if (mode == BootstrapMode.Mof)
+                    {
+                        loader.LoadFromFile(mofExtent, paths.PathMof);
+                    }
                 }
             }
 
             // Assigns the extents to the datalayer
-            if (dataLayer != null && dataLayerLogic != null)
+            dataLayer.AddExtent(umlExtent);
+            dataLayer.AddExtent(primitiveExtent);
+            if (mode == BootstrapMode.Mof || mode == BootstrapMode.SlimMof)
             {
-                
-                dataLayerLogic.AssignToDataLayer(umlExtent, dataLayer);
-                dataLayerLogic.AssignToDataLayer(primitiveExtent, dataLayer);
-                dataLayerLogic.Create<FillTheUML, _UML>(dataLayer);
-                dataLayerLogic.Create<FillThePrimitiveTypes, _PrimitiveTypes>(dataLayer);
-
-                if (loadsMof)
+                dataLayer.AddExtent(mofExtent);
+            }
+            
+            var bootStrapper = new Bootstrapper(workspaceLogic);
+            if (isSlim)
+            {
+                // Now do the bootstrap
+                if (mode == BootstrapMode.SlimMof)
                 {
-                    dataLayerLogic.Create<FillTheMOF, _MOF>(dataLayer);
-                    dataLayerLogic.AssignToDataLayer(mofExtent, dataLayer);
+                    bootStrapper.StrapMofSlim(
+                        primitiveInfrastructure: primitiveExtent,
+                        umlInfrastructure: umlExtent,
+                        mofInfrastructure: mofExtent);
+                }
+                else if (mode == BootstrapMode.SlimUml)
+                {
+                    bootStrapper.StrapUmlSlim(
+                        primitiveInfrastructure: primitiveExtent,
+                        umlInfrastructure: umlExtent);
+                }
+
+                dataLayer.Set(new _UML());
+                dataLayer.Set(new _PrimitiveTypes());
+
+                if (mode == BootstrapMode.SlimMof)
+                {
+                    dataLayer.Set(new _MOF());
                 }
             }
             else
             {
-                // To support the creation of _MOF and _UML, we need to have datalayers and their logic
-                throw new InvalidOperationException("datalayers or dataLayerLogic is null");
-            }
+                // Now do the bootstrap
+                if (mode == BootstrapMode.Mof)
+                {
+                    bootStrapper.StrapMof(
+                        primitiveInfrastructure: primitiveExtent,
+                        umlInfrastructure: umlExtent,
+                        mofInfrastructure: mofExtent);
+                }
+                else if (mode == BootstrapMode.Uml)
+                {
+                    bootStrapper.StrapUml(
+                        primitiveInfrastructure: primitiveExtent,
+                        umlInfrastructure: umlExtent,
+                        mofDataLayer: dataLayer.MetaWorkspace);
+                }
 
-            // Now do the bootstrap
-            var bootStrapper = new Bootstrapper(dataLayerLogic);
-            if (mode == BootstrapMode.Mof)
-            {
-                bootStrapper.StrapMof(primitiveInfrastructure: primitiveExtent, 
-                    umlInfrastructure: umlExtent, mofInfrastructure: mofExtent);
-            }
-            else if (mode == BootstrapMode.Uml)
-            {
-                bootStrapper.StrapUml(
-                    primitiveInfrastructure: primitiveExtent, 
-                    umlInfrastructure: umlExtent,
-                    mofDataLayer: dataLayerLogic.GetMetaLayerFor(dataLayer));
+                dataLayer.Create<FillTheUML, _UML>();
+                dataLayer.Create<FillThePrimitiveTypes, _PrimitiveTypes>();
+
+                if (mode == BootstrapMode.Mof)
+                {
+                    dataLayer.Create<FillTheMOF, _MOF>();
+                }
             }
 
             return bootStrapper;
@@ -547,31 +593,22 @@ namespace DatenMeister.Uml
         /// </summary>
         /// <param name="filePaths">Paths storing the uml</param>
         /// <param name="workspace">The workspace to which the extents will be aded</param>
-        /// <param name="dataLayerLogic">The datalayerlogic being used to add the </param>
+        /// <param name="workspaceLogic">The datalayerlogic being used to add the </param>
         /// <param name="dataLayer">The datalayer to which the new extents will be added</param>
         /// <param name="mode">Bootstrap mode. Is this for UML or MOF?</param>
         /// <returns></returns>
         public static Bootstrapper PerformFullBootstrap(
             FilePaths filePaths,
-            Workspace<IExtent> workspace,
-            IDataLayerLogic dataLayerLogic,
-            IDataLayer dataLayer,
+            Workspace workspace,
+            IWorkspaceLogic workspaceLogic,
+            Workspace dataLayer,
             BootstrapMode mode)
         {
             if (workspace == null) throw new ArgumentNullException(nameof(workspace));
-            if (dataLayerLogic == null) throw new ArgumentNullException(nameof(dataLayerLogic));
+            if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-            var strapper = PerformFullBootstrap(dataLayerLogic, dataLayer, mode, filePaths);
-
-            if (mode == BootstrapMode.Mof)
-            {
-                workspace.AddExtent(strapper.MofInfrastructure);
-            }
-
-            workspace.AddExtent(strapper.UmlInfrastructure);
-            workspace.AddExtent(strapper.PrimitiveInfrastructure);
-            return strapper;
+            return  PerformFullBootstrap(workspaceLogic, dataLayer, mode, filePaths);
         }
 
         /// <summary>

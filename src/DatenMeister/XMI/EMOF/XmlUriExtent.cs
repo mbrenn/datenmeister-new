@@ -21,9 +21,9 @@ namespace DatenMeister.XMI.EMOF
 
         internal XDocument Document => _document;
 
-        public IWorkspaceCollection Workspaces { get; set; }
+        public IWorkspaceLogic Workspaces { get; set; }
 
-        public XmlUriExtent(IWorkspaceCollection workspaces, string uri, string rootNodeName = DefaultRootNodeName)
+        public XmlUriExtent(IWorkspaceLogic workspaces, string uri, string rootNodeName = DefaultRootNodeName)
         {
             if (workspaces == null) throw new ArgumentNullException(nameof(workspaces));
             Workspaces = workspaces;
@@ -33,7 +33,7 @@ namespace DatenMeister.XMI.EMOF
             _rootNode.SetAttributeValue(_urlPropertyName, uri);
         }
 
-        public XmlUriExtent(IWorkspaceCollection workspaces, XDocument document, string uri, string rootNodeName = DefaultRootNodeName)
+        public XmlUriExtent(IWorkspaceLogic workspaces, XDocument document, string uri, string rootNodeName = DefaultRootNodeName)
         {
             if (workspaces == null) throw new ArgumentNullException(nameof(workspaces));
             Workspaces = workspaces;

@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
-using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Runtime.Workspaces.Data
 {
-    public class WorkspaceLoader : ObjectFileStorage<WorkspaceData>
+    public class WorkspaceLoader : ObjectFileStorage<WorkspaceFileData>
     {
         public string Filepath { get; set; }
 
-        public IWorkspaceCollection WorkspaceCollection { get; set; }
+        public IWorkspaceLogic WorkspaceCollection { get; set; }
 
-        public WorkspaceLoader(IWorkspaceCollection workspaceCollection, string filepath)
+        public WorkspaceLoader(IWorkspaceLogic workspaceCollection, string filepath)
         {
             Debug.Assert(workspaceCollection != null, "workspaceCollection != null");
             Debug.Assert(filepath != null, "filepath != null");
@@ -20,7 +18,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
             Filepath = filepath;
         }
 
-        public WorkspaceData Load()
+        public WorkspaceFileData Load()
         {
             try
             {
@@ -35,13 +33,15 @@ namespace DatenMeister.Runtime.Workspaces.Data
             
                 foreach (var workspaceInfo in loaded.Workspaces)
                 {
-                    if (WorkspaceCollection.GetWorkspace(workspaceInfo.Id) != null)
+                    var foundWorkspace = WorkspaceCollection.GetWorkspace(workspaceInfo.Id);
+                    if (foundWorkspace != null)
                     {
-                        // Already exists
+                        // Already exists, update annoptation
+                        foundWorkspace.annotation = workspaceInfo.Annotation;
                         continue;
                     }
 
-                    var workspace = new Workspace<IExtent>(workspaceInfo.Id, workspaceInfo.Annotation);
+                    var workspace = new Workspace(workspaceInfo.Id, workspaceInfo.Annotation);
                     WorkspaceCollection.AddWorkspace(workspace);
                 }
 
@@ -56,7 +56,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
 
         public void Store()
         {
-            var workSpaceData = new WorkspaceData();
+            var workSpaceData = new WorkspaceFileData();
             foreach (var workSpace in  WorkspaceCollection.Workspaces)
             {
                 workSpaceData.Workspaces.Add(new WorkspaceInfo

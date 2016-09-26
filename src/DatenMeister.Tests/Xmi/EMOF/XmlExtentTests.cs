@@ -4,7 +4,6 @@ using System.Linq;
 using System.Xml.Linq;
 using Autofac;
 using DatenMeister.Core;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
@@ -121,7 +120,6 @@ namespace DatenMeister.Tests.Xmi.EMOF
             Assert.That(otherMofReflectiveSequence.ElementAt(0), Is.EqualTo(mofObject2));
             Assert.That(otherMofReflectiveSequence.ElementAt(1), Is.EqualTo(mofObject4));
             Assert.That(otherMofReflectiveSequence.ElementAt(2), Is.EqualTo(mofObject1));
-
         }
 
         [Test]
@@ -131,7 +129,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var mofObject2 = new XmlElement(new XElement("item"));
             var mofObject3 = new XmlElement(new XElement("item"));
 
-            var extent = new XmlUriExtent(new WorkspaceCollection(),  "dm:///test/");
+            var extent = new XmlUriExtent(WorkspaceLogic.GetDefaultLogic(),  "dm:///test/");
             Assert.That(extent.contextURI(), Is.EqualTo("dm:///test/"));
 
             // At the moment, it is not defined whether to contain or not contain. Just to increase coverage
@@ -265,14 +263,13 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
-                var dataLayerLogic = scope.Resolve<IDataLayerLogic>();
-                var dataLayers = scope.Resolve<DataLayers>();
-                var umlDataLayer = dataLayers.Uml;
-                var uml = dataLayerLogic.Get<_UML>(umlDataLayer);
+                var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
+                var umlDataLayer = dataLayerLogic.GetUml();
+                var uml = umlDataLayer.Get<_UML>();
                 Assert.That(uml, Is.Not.Null);
 
-                var extent = new XmlUriExtent(scope.Resolve<IWorkspaceCollection>(), "dm:///test");
-                dataLayerLogic.AssignToDataLayer(extent, dataLayers.Types);
+                var extent = new XmlUriExtent(scope.Resolve<IWorkspaceLogic>(), "dm:///test");
+                dataLayerLogic.GetTypes().AddExtent(extent);
 
                 var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(scope, extent);
 

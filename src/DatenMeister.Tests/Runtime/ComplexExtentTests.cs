@@ -1,10 +1,11 @@
 ﻿using Autofac;
 using DatenMeister.Apps.ZipCode;
-using DatenMeister.Core.DataLayer;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.Extents;
+using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime
@@ -23,12 +24,12 @@ namespace DatenMeister.Tests.Runtime
                 integrateZipCodes.Start();
 
                 var extentFunctions = scope.Resolve<ExtentFunctions>();
-                var dataLayers = scope.Resolve<DataLayers>();
+                var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
 
                 var dataExtent = new MofUriExtent("dm:///test");
                 var creatableTypes = extentFunctions.GetCreatableTypes(dataExtent);
                 Assert.That(creatableTypes, Is.Not.Null);
-                Assert.That(creatableTypes.MetaLayer, Is.EqualTo(dataLayers.Types));
+                Assert.That(creatableTypes.MetaLayer, Is.EqualTo(dataLayerLogic.GetTypes()));
                 Assert.That(creatableTypes.CreatableTypes.Count, Is.GreaterThan(1));
             }
         }

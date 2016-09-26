@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Helper;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -16,13 +15,11 @@ namespace DatenMeister.CSV
     /// </summary>
     public class CSVDataProvider
     {
-        private readonly IWorkspaceCollection _workspaceCollection;
-        private readonly IDataLayerLogic _dataLayerLogic;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
-        public CSVDataProvider(IWorkspaceCollection workspaceCollection, IDataLayerLogic dataLayerLogic)
+        public CSVDataProvider(IWorkspaceLogic workspaceLogic)
         {
-            _workspaceCollection = workspaceCollection;
-            _dataLayerLogic = dataLayerLogic;
+            _workspaceLogic = workspaceLogic;
         }
 
         /// <summary>
@@ -74,7 +71,7 @@ namespace DatenMeister.CSV
             IElement metaClass = null;
             if (!string.IsNullOrEmpty(settings.MetaclassUri))
             {
-                metaClass = _workspaceCollection.FindItem(settings.MetaclassUri);
+                metaClass = _workspaceLogic.FindItem(settings.MetaclassUri);
             }
 
             using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(settings.Encoding)))

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Autofac;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -25,36 +24,24 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         private readonly IConfigurationToExtentStorageMapper _map;
 
-        /// <summary>
-        /// Stores the access to the workspaces
-        /// </summary>
-        private readonly IWorkspaceCollection _workspaceCollection;
-
         private readonly ILifetimeScope _diScope;
 
-        private readonly IDataLayerLogic _dataLayerLogic;
-
-        public ExtentStorageLoader(ExtentStorageData data,
-            IConfigurationToExtentStorageMapper map,
-            IDataLayerLogic dataLayerLogic)
-        {
-            if (data == null) throw new ArgumentNullException(nameof(data));
-            if (map == null) throw new ArgumentNullException(nameof(map));
-            if (dataLayerLogic == null) throw new ArgumentNullException(nameof(dataLayerLogic));
-            
-            _data = data;
-            _map = map;
-            _dataLayerLogic = dataLayerLogic;
-        }
+        private readonly IWorkspaceLogic _workspaceLogic;
+        
 
         public ExtentStorageLoader(
             ExtentStorageData data, 
             IConfigurationToExtentStorageMapper map,
-            IWorkspaceCollection workspaceCollection,
-            ILifetimeScope diScope, IDataLayerLogic dataLayerLogic) : this(data, map, dataLayerLogic)
+            ILifetimeScope diScope, 
+            IWorkspaceLogic workspaceLogic)
         {
-            Debug.Assert(workspaceCollection != null, "collection != null");
-            _workspaceCollection = workspaceCollection;
+            if (data == null) throw new ArgumentNullException(nameof(data));
+            if (map == null) throw new ArgumentNullException(nameof(map));
+            if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
+
+            _data = data;
+            _map = map;
+            _workspaceLogic = workspaceLogic;
             _diScope = diScope;
         }
 
@@ -87,14 +74,6 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             AddToWorkspaceIfPossible(configuration, loadedExtent);
 
-            if (!string.IsNullOrEmpty(configuration.DataLayer))
-            {
-                _dataLayerLogic.AssignToDataLayer(
-                    loadedExtent, 
-                    _dataLayerLogic.GetByName(configuration.DataLayer));
-            }
-
-
             // Stores the information into the data container
             var info = new ExtentStorageData.LoadedExtentInformation
             {
@@ -112,9 +91,12 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         private void AddToWorkspaceIfPossible(ExtentStorageConfiguration configuration, IUriExtent loadedExtent)
         {
-            if (_workspaceCollection != null)
+            if (_workspaceLogic != null)
             {
-                var workspace = _workspaceCollection.GetWorkspace(configuration.Workspace);
+                var workspace = string.IsNullOrEmpty(configuration.Workspace)
+                    ? _workspaceLogic.GetDefaultWorkspace()
+                    : _workspaceLogic.GetWorkspace(configuration.Workspace);
+
                 if (workspace == null)
                 {
                     throw new InvalidOperationException($"Workspace {configuration.Workspace} not found");

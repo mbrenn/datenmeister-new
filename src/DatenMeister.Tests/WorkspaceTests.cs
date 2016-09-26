@@ -1,6 +1,7 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests
@@ -11,7 +12,7 @@ namespace DatenMeister.Tests
         [Test]
         public void TestFindByUri()
         {
-            var workspace = new Workspace<IExtent>("data", "No annotation");
+            var workspace = new Workspace("data", "No annotation");
 
             var extent = new MofUriExtent("http://test/");
             var factory = new MofFactory();
@@ -34,7 +35,7 @@ namespace DatenMeister.Tests
         [Test]
         public void TestWorkspaceConfiguration()
         {
-            var workspace = new Workspace<IExtent>("data", "No annotation");
+            var workspace = new Workspace("data", "No annotation");
             Assert.That(workspace.id, Is.EqualTo("data"));
             Assert.That(workspace.annotation, Is.EqualTo("No annotation"));
         }

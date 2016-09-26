@@ -13,6 +13,16 @@
         /// <summary>
         /// Only primitive types and uml will be imported. These will be linked to the MOF classes
         /// </summary>
-        Uml
+        Uml,
+
+        /// <summary>
+        /// A slim integration but still mof
+        /// </summary>
+        SlimMof, 
+
+        /// <summary>
+        /// A slim integration but uml
+        /// </summary>
+        SlimUml
     }
 }

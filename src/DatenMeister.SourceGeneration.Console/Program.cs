@@ -3,6 +3,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Excel.Models;
 using DatenMeister.Models.Forms;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.SourcecodeGenerator;
 using DatenMeister.XMI;
 
@@ -58,9 +59,9 @@ namespace DatenMeister.SourceGeneration.Console
         private static void CreateSourceForUmlAndMof()
         {
             var factory = new MofFactory();
-            var umlExtent = new MofUriExtent(Locations.UriUml);
-            var mofExtent = new MofUriExtent(Locations.UriMof);
-            var primitiveTypeExtent = new MofUriExtent(Locations.UriPrimitiveTypes);
+            var umlExtent = new MofUriExtent(WorkspaceNames.UriUml);
+            var mofExtent = new MofUriExtent(WorkspaceNames.UriMof);
+            var primitiveTypeExtent = new MofUriExtent(WorkspaceNames.UriPrimitiveTypes);
             var loader = new SimpleLoader(factory);
             loader.LoadFromFile(umlExtent, "data/UML.xmi");
             loader.LoadFromFile(mofExtent, "data/MOF.xmi");

@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.Extents
 {
     public class ExtentFunctions
     {
-        private readonly IDataLayerLogic _dataLayerLogic;
-        public ExtentFunctions(IDataLayerLogic dataLayerLogic)
+        private readonly IWorkspaceLogic _workspaceLogic;
+        public ExtentFunctions(IWorkspaceLogic workspaceLogic)
         {
-            _dataLayerLogic = dataLayerLogic;
+            _workspaceLogic = workspaceLogic;
         }
 
         /// <summary>
@@ -25,11 +25,11 @@ namespace DatenMeister.Runtime.Extents
         /// <returns>Enumeration of types</returns>
         public CreateableTypeResult GetCreatableTypes(IUriExtent extent)
         {
-            var dataLayer = _dataLayerLogic.GetDataLayerOfExtent(extent);
-            var typeLayer = _dataLayerLogic.GetMetaLayerFor(dataLayer);
-            var umlLayer= _dataLayerLogic.GetMetaLayerFor(typeLayer);
+            var dataLayer = _workspaceLogic.GetWorkspaceOfExtent(extent);
+            var typeLayer = dataLayer.MetaWorkspace;
+            var umlLayer= typeLayer.MetaWorkspace;
 
-            var uml = _dataLayerLogic.Get<_UML>(umlLayer);
+            var uml = umlLayer.Get<_UML>();
             var classType = uml?.StructuredClassifiers.__Class;
 
             if (classType == null)
@@ -46,8 +46,8 @@ namespace DatenMeister.Runtime.Extents
             return new CreateableTypeResult
             {
                 MetaLayer = typeLayer,
-                CreatableTypes = _dataLayerLogic.GetExtentsForDatalayer(typeLayer)
-                    .SelectMany(x => x.elements().WhenMetaClassIs(classType))
+                CreatableTypes = _workspaceLogic.GetExtentsForWorkspace(typeLayer)
+                    .SelectMany(x => x.elements().GetAllDescendants().WhenMetaClassIs(classType))
                     .Cast<IElement>()
                     .ToList()
             };
@@ -55,7 +55,7 @@ namespace DatenMeister.Runtime.Extents
 
         public class CreateableTypeResult
         {
-            public IDataLayer MetaLayer { get; set; }
+            public Workspace MetaLayer { get; set; }
             public IList<IElement> CreatableTypes { get; set; }
         }
     }

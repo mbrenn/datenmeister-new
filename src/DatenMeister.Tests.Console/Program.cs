@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using DatenMeister.Core;
-using DatenMeister.Core.DataLayer;
 using DatenMeister.Core.EMOF.Attributes;
 using DatenMeister.Core.EMOF.Helper;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.Filler;
 using DatenMeister.CSV;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml;
 using DatenMeister.XMI;
 
@@ -47,7 +47,7 @@ namespace DatenMeister.Tests.Console
                 HasHeader = false
             };
 
-            var provider = new CSVDataProvider(null, null);
+            var provider = new CSVDataProvider(null);
             provider.Load(extent, factory, "data/plz.csv", csvSettings);
 
             System.Console.WriteLine($"Loaded: {extent.elements().Count()} Zipcodes");
@@ -62,7 +62,7 @@ namespace DatenMeister.Tests.Console
             var watch = new Stopwatch();
             watch.Start();
 
-            var dataLayerLogic = new DataLayerLogic(new DataLayerData());
+            var dataLayerLogic = new WorkspaceLogic(new WorkspaceData());
             var fullStrap = Bootstrapper.PerformFullBootstrap(dataLayerLogic,
                 null, 
                 BootstrapMode.Mof,
@@ -87,7 +87,7 @@ namespace DatenMeister.Tests.Console
 
             System.Console.WriteLine($"Having {n} elements with name");
 
-            System.Console.WriteLine($"Elapsed Time for Bootstrap {watch.ElapsedMilliseconds.ToString("n0")} ms");
+            System.Console.WriteLine($"Elapsed Time for Bootstrap {watch.ElapsedMilliseconds:n0} ms");
         }
 
         private static void TestFillTree()
@@ -95,8 +95,8 @@ namespace DatenMeister.Tests.Console
             var watch = new Stopwatch();
             watch.Start();
             var factory = new MofFactory();
-            var mofExtent = new MofUriExtent(Locations.UriMof);
-            var umlExtent = new MofUriExtent(Locations.UriUml);
+            var mofExtent = new MofUriExtent(WorkspaceNames.UriMof);
+            var umlExtent = new MofUriExtent(WorkspaceNames.UriUml);
             var loader = new SimpleLoader(factory);
             loader.LoadFromFile(mofExtent, "data/MOF.xmi");
             loader.LoadFromFile(mofExtent, "data/UML.xmi");
@@ -107,7 +107,7 @@ namespace DatenMeister.Tests.Console
             FillTheUML.DoFill(umlExtent.elements(), uml);
 
             watch.Stop();
-            System.Console.WriteLine($"Elapsed Time for MOF and UML Fill {watch.ElapsedMilliseconds.ToString("n0")} ms");
+            System.Console.WriteLine($"Elapsed Time for MOF and UML Fill {watch.ElapsedMilliseconds:n0} ms");
         }
     }
 }

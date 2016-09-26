@@ -31,9 +31,9 @@ namespace DatenMeister.Integration
         /// </summary>
         /// <param name="collection">Workspace collection to be queried</param>
         /// <returns>The found uri extent or null</returns>
-        public static IUriExtent FindTypeExtent(this IWorkspaceCollection collection)
+        public static IUriExtent FindTypeExtent(this IWorkspaceLogic collection)
         {
-            return collection.FindExtent(Locations.UriInternalTypes) as IUriExtent;
+            return collection.FindExtent(WorkspaceNames.UriInternalTypes) as IUriExtent;
         }
     }
 }

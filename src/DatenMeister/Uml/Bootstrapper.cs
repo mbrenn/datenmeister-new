@@ -525,20 +525,16 @@ namespace DatenMeister.Uml
             }
 
             // Assigns the extents to the datalayer
-            workspaceLogic.AssignToWorkspace(umlExtent, dataLayer);
-            workspaceLogic.AssignToWorkspace(primitiveExtent, dataLayer);
+            dataLayer.AddExtent(umlExtent);
+            dataLayer.AddExtent(primitiveExtent);
+            if (mode == BootstrapMode.Mof || mode == BootstrapMode.SlimMof)
+            {
+                dataLayer.AddExtent(mofExtent);
+            }
             
             var bootStrapper = new Bootstrapper(workspaceLogic);
             if (isSlim)
             {
-                dataLayer.Set(new _UML());
-                dataLayer.Set(new _PrimitiveTypes());
-
-                if (mode == BootstrapMode.SlimMof)
-                {
-                    dataLayer.Set(new _MOF());
-                }
-
                 // Now do the bootstrap
                 if (mode == BootstrapMode.SlimMof)
                 {
@@ -553,18 +549,17 @@ namespace DatenMeister.Uml
                         primitiveInfrastructure: primitiveExtent,
                         umlInfrastructure: umlExtent);
                 }
+
+                dataLayer.Set(new _UML());
+                dataLayer.Set(new _PrimitiveTypes());
+
+                if (mode == BootstrapMode.SlimMof)
+                {
+                    dataLayer.Set(new _MOF());
+                }
             }
             else
             {
-                dataLayer.Create<FillTheUML, _UML>();
-                dataLayer.Create<FillThePrimitiveTypes, _PrimitiveTypes>();
-
-                if (mode == BootstrapMode.Mof)
-                {
-                    workspaceLogic.AssignToWorkspace(mofExtent, dataLayer);
-                    dataLayer.Create<FillTheMOF, _MOF>();
-                }
-
                 // Now do the bootstrap
                 if (mode == BootstrapMode.Mof)
                 {
@@ -579,6 +574,14 @@ namespace DatenMeister.Uml
                         primitiveInfrastructure: primitiveExtent,
                         umlInfrastructure: umlExtent,
                         mofDataLayer: dataLayer.MetaWorkspace);
+                }
+
+                dataLayer.Create<FillTheUML, _UML>();
+                dataLayer.Create<FillThePrimitiveTypes, _PrimitiveTypes>();
+
+                if (mode == BootstrapMode.Mof)
+                {
+                    dataLayer.Create<FillTheMOF, _MOF>();
                 }
             }
 
@@ -605,16 +608,7 @@ namespace DatenMeister.Uml
             if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-            var strapper = PerformFullBootstrap(workspaceLogic, dataLayer, mode, filePaths);
-
-            if (mode == BootstrapMode.Mof || mode == BootstrapMode.SlimMof)
-            {
-                workspace.AddExtent(strapper.MofInfrastructure);
-            }
-
-            workspace.AddExtent(strapper.UmlInfrastructure);
-            workspace.AddExtent(strapper.PrimitiveInfrastructure);
-            return strapper;
+            return  PerformFullBootstrap(workspaceLogic, dataLayer, mode, filePaths);
         }
 
         /// <summary>

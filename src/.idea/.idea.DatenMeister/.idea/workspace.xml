@@ -11,8 +11,10 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeisterLib/Model/TaskMeisterModel.dotnet.cs" afterPath="$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeisterLib/Model/TaskMeisterModel.dotnet.cs" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeisterLib/TaskmeisterPlugin.cs" afterPath="$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeisterLib/TaskmeisterPlugin.cs" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Apps.ZipCode/ZipCodePlugin.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Apps.ZipCode/ZipCodePlugin.cs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Runtime/Extents/ExtentFunctions.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Runtime/Extents/ExtentFunctions.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/DataLayerTests.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/DataLayerTests.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/XmlExtentTests.cs" afterPath="$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/XmlExtentTests.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Provider/DotNet/Integration.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Provider/DotNet/Integration.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Runtime/ExtentStorage/ExtentStorageLoader.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Runtime/ExtentStorage/ExtentStorageLoader.cs" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceLogic.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceLogic.cs" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceLogic.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceLogic.cs" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Uml/Bootstrapper.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Uml/Bootstrapper.cs" />
@@ -36,43 +38,193 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="ComplexExtentTests.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../DatenMeister.Tests/Runtime/ComplexExtentTests.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="756">
-              <caret line="36" column="1" selection-start-line="36" selection-start-column="1" selection-end-line="36" selection-end-column="1" />
-              <folding>
-                <marker date="1474802403401" expanded="true" signature="6:280" ph="..." />
-                <marker date="1474802403401" expanded="true" signature="318:1350" ph="{...}" />
-                <marker date="1474802403401" expanded="true" signature="356:1348" ph="{...}" />
-                <marker date="1474802403401" expanded="true" signature="417:1342" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Integration.cs" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Integration.cs" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../../DatenMeister/Provider/DotNet/Integration.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1007">
-              <caret line="201" column="32" selection-start-line="201" selection-start-column="32" selection-end-line="201" selection-end-column="32" />
+            <state relative-caret-position="504">
+              <caret line="24" column="74" selection-start-line="24" selection-start-column="74" selection-end-line="24" selection-end-column="74" />
               <folding>
-                <marker date="1474803643306" expanded="true" signature="6:12" ph="..." />
-                <marker date="1474803643306" expanded="true" signature="6:658" ph="..." />
-                <marker date="1474803643306" expanded="true" signature="694:8705" ph="{...}" />
-                <marker date="1474803643306" expanded="true" signature="725:8703" ph="{...}" />
-                <marker date="1474803643306" expanded="true" signature="1078:1132" ph="{...}" />
-                <marker date="1474803643306" expanded="true" signature="1200:6552" ph="{...}" />
-                <marker date="1474803643306" expanded="true" signature="3342:3411" ph="/* ... */" />
-                <marker date="1474803643306" expanded="true" signature="6642:7796" ph="{...}" />
-                <marker date="1474803643306" expanded="true" signature="8544:8697" ph="{...}" />
-                <marker date="1474803643306" expanded="true" signature="8544:8703" ph="{...}" />
+                <marker date="1474917137737" expanded="true" signature="6:12" ph="..." />
+                <marker date="1474917137737" expanded="true" signature="6:658" ph="..." />
+                <marker date="1474917137737" expanded="true" signature="694:8681" ph="{...}" />
+                <marker date="1474917137737" expanded="true" signature="725:8679" ph="{...}" />
+                <marker date="1474917137737" expanded="true" signature="1078:1132" ph="{...}" />
+                <marker date="1474917137737" expanded="true" signature="1200:6528" ph="{...}" />
+                <marker date="1474917137737" expanded="true" signature="3342:3411" ph="/* ... */" />
+                <marker date="1474917137737" expanded="true" signature="6618:7772" ph="{...}" />
+                <marker date="1474917137737" expanded="true" signature="8520:8673" ph="{...}" />
+                <marker date="1474917137737" expanded="true" signature="8520:8679" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Extension.cs" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ExtentStorageLoader.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/ExtentStorage/ExtentStorageLoader.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-673">
+              <caret line="84" column="13" selection-start-line="84" selection-start-column="13" selection-end-line="84" selection-end-column="13" />
+              <folding>
+                <marker date="1474917154938" expanded="true" signature="6:307" ph="..." />
+                <marker date="1474917154938" expanded="true" signature="353:6341" ph="{...}" />
+                <marker date="1474917154938" expanded="true" signature="360:622" ph="/// ..." />
+                <marker date="1474917154938" expanded="true" signature="682:6339" ph="{...}" />
+                <marker date="1474917154938" expanded="true" signature="748:815" ph="/// ..." />
+                <marker date="1474917154938" expanded="true" signature="1149:1527" ph="{...}" />
+                <marker date="1474917154938" expanded="true" signature="1769:1821" ph="{...}" />
+                <marker date="1474917154938" expanded="true" signature="1831:2255" ph="/// ..." />
+                <marker date="1474917154938" expanded="true" signature="2364:3828" ph="{...}" />
+                <marker date="1474917154938" expanded="true" signature="3942:4492" ph="{...}" />
+                <marker date="1474917154938" expanded="true" signature="4502:4749" ph="/// ..." />
+                <marker date="1474917154938" expanded="true" signature="4800:5472" ph="{...}" />
+                <marker date="1474917154938" expanded="true" signature="5525:5932" ph="{...}" />
+                <marker date="1474917154938" expanded="true" signature="5964:6333" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Bootstrapper.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Uml/Bootstrapper.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1533">
+              <caret line="541" column="65" selection-start-line="541" selection-start-column="65" selection-end-line="541" selection-end-column="65" />
+              <folding>
+                <marker date="1474917273144" expanded="true" signature="6:489" ph="..." />
+                <marker date="1474917273144" expanded="true" signature="517:26063" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="524:611" ph="/// ..." />
+                <marker date="1474917273144" expanded="true" signature="641:26061" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="715:877" ph="/// ..." />
+                <marker date="1474917273144" expanded="true" signature="1335:1432" ph="/// ..." />
+                <marker date="1474917273144" expanded="true" signature="1508:1605" ph="/// ..." />
+                <marker date="1474917273144" expanded="true" signature="1681:1778" ph="/// ..." />
+                <marker date="1474917273144" expanded="true" signature="1860:1931" ph="/// ..." />
+                <marker date="1474917273144" expanded="true" signature="1961:2107" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="2117:2309" ph="/// ..." />
+                <marker date="1474917273144" expanded="true" signature="2382:2546" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="2704:2831" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="2932:3373" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="3500:3634" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="3765:4404" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="4414:4489" ph="/// ..." />
+                <marker date="1474917273144" expanded="true" signature="4521:9252" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="6007:6261" ph="/* ... */" />
+                <marker date="1474917273144" expanded="true" signature="7759:7926" ph="/* ... */" />
+                <marker date="1474917273144" expanded="true" signature="8716:8811" ph="/* ... */" />
+                <marker date="1474917273144" expanded="true" signature="8892:9095" ph="/* ... */" />
+                <marker date="1474917273144" expanded="true" signature="9262:9337" ph="/// ..." />
+                <marker date="1474917273144" expanded="true" signature="9388:15536" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="10709:10963" ph="/* ... */" />
+                <marker date="1474917273144" expanded="true" signature="12035:12202" ph="/* ... */" />
+                <marker date="1474917273144" expanded="true" signature="15019:15114" ph="/* ... */" />
+                <marker date="1474917273144" expanded="true" signature="15546:15780" ph="/// ..." />
+                <marker date="1474917273144" expanded="true" signature="15896:17029" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="15919:16122" ph="/* ... */" />
+                <marker date="1474917273144" expanded="true" signature="17039:17357" ph="/// ..." />
+                <marker date="1474917273144" expanded="true" signature="17446:19740" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="19750:20252" ph="/// ..." />
+                <marker date="1474917273144" expanded="true" signature="20454:24288" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="24298:24857" ph="/// ..." />
+                <marker date="1474917273144" expanded="true" signature="25089:25467" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="25477:25626" ph="/// ..." />
+                <marker date="1474917273144" expanded="true" signature="25657:26055" ph="{...}" />
+                <marker date="1474917273144" expanded="true" signature="25680:25830" ph="/// ..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DataLayerTests.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/DataLayerTests.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="504">
+              <caret line="24" column="43" selection-start-line="24" selection-start-column="43" selection-end-line="24" selection-end-column="43" />
+              <folding>
+                <marker date="1474917418104" expanded="true" signature="6:222" ph="..." />
+                <marker date="1474917418104" expanded="true" signature="257:2851" ph="{...}" />
+                <marker date="1474917418104" expanded="true" signature="309:2849" ph="{...}" />
+                <marker date="1474917418104" expanded="true" signature="367:390" ph="{...}" />
+                <marker date="1474917418104" expanded="true" signature="367:1289" ph="{...}" />
+                <marker date="1474917418104" expanded="true" signature="1349:2040" ph="{...}" />
+                <marker date="1474917418104" expanded="true" signature="2097:2843" ph="{...}" />
+                <marker date="1474917418104" expanded="true" signature="2158:2843" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="XmlExtentTests.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/XmlExtentTests.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1412">
+              <caret line="271" column="59" selection-start-line="271" selection-start-column="59" selection-end-line="271" selection-end-column="59" />
+              <folding>
+                <marker date="1474917418123" expanded="true" signature="6:557" ph="..." />
+                <marker date="1474917418123" expanded="true" signature="596:12410" ph="{...}" />
+                <marker date="1474917418123" expanded="true" signature="648:12408" ph="{...}" />
+                <marker date="1474917418123" expanded="true" signature="708:1304" ph="{...}" />
+                <marker date="1474917418123" expanded="true" signature="1373:2498" ph="{...}" />
+                <marker date="1474917418123" expanded="true" signature="2565:5615" ph="{...}" />
+                <marker date="1474917418123" expanded="true" signature="5667:8522" ph="{...}" />
+                <marker date="1474917418123" expanded="true" signature="8575:8802" ph="{...}" />
+                <marker date="1474917418123" expanded="true" signature="8861:10888" ph="{...}" />
+                <marker date="1474917418123" expanded="true" signature="10944:12402" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IWorkspaceLogic.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceLogic.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="336">
+              <caret line="16" column="50" selection-start-line="16" selection-start-column="50" selection-end-line="16" selection-end-column="50" />
+              <folding>
+                <marker date="1474917110864" expanded="true" signature="6:193" ph="..." />
+                <marker date="1474917110864" expanded="true" signature="236:1490" ph="{...}" />
+                <marker date="1474917110864" expanded="true" signature="275:1488" ph="{...}" />
+                <marker date="1474917110864" expanded="true" signature="482:643" ph="/// ..." />
+                <marker date="1474917110864" expanded="true" signature="709:870" ph="/// ..." />
+                <marker date="1474917110864" expanded="true" signature="935:1170" ph="/// ..." />
+                <marker date="1474917110864" expanded="true" signature="1257:1402" ph="/// ..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WorkspaceLogic.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceLogic.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2158">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <marker date="1474917273166" expanded="true" signature="6:206" ph="..." />
+                <marker date="1474917273166" expanded="true" signature="249:6682" ph="{...}" />
+                <marker date="1474917273166" expanded="true" signature="256:371" ph="/// ..." />
+                <marker date="1474917273166" expanded="true" signature="421:6680" ph="{...}" />
+                <marker date="1474917273166" expanded="true" signature="532:586" ph="{...}" />
+                <marker date="1474917273166" expanded="true" signature="644:764" ph="{...}" />
+                <marker date="1474917273166" expanded="true" signature="827:1054" ph="{...}" />
+                <marker date="1474917273166" expanded="true" signature="1116:2166" ph="{...}" />
+                <marker date="1474917273166" expanded="true" signature="1139:1291" ph="/* ... */" />
+                <marker date="1474917273166" expanded="true" signature="2250:2579" ph="{...}" />
+                <marker date="1474917273166" expanded="true" signature="2589:2855" ph="/// ..." />
+                <marker date="1474917273166" expanded="true" signature="2899:3053" ph="{...}" />
+                <marker date="1474917273166" expanded="true" signature="3101:3159" ph="{...}" />
+                <marker date="1474917273166" expanded="true" signature="3169:3430" ph="/// ..." />
+                <marker date="1474917273166" expanded="true" signature="3489:4245" ph="{...}" />
+                <marker date="1474917273166" expanded="true" signature="4295:4449" ph="{...}" />
+                <marker date="1474917273166" expanded="true" signature="4543:4704" ph="/// ..." />
+                <marker date="1474917273166" expanded="true" signature="4751:5047" ph="{...}" />
+                <marker date="1474917273166" expanded="true" signature="5098:6408" ph="{...}" />
+                <marker date="1474917273166" expanded="true" signature="6465:6539" ph="{...}" />
+                <marker date="1474917273166" expanded="true" signature="6594:6674" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Extension.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Extension.cs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
@@ -113,121 +265,34 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DataLayerTests.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/DataLayerTests.cs">
+      <file leaf-file-name="taskmeister.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/htdocs/js/taskmeister.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="944">
-              <caret line="59" column="12" selection-start-line="59" selection-start-column="12" selection-end-line="59" selection-end-column="12" />
+            <state relative-caret-position="294">
+              <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
               <folding>
-                <marker date="1474803643179" expanded="true" signature="6:222" ph="..." />
-                <marker date="1474803643179" expanded="true" signature="257:2926" ph="{...}" />
-                <marker date="1474803643179" expanded="true" signature="309:2924" ph="{...}" />
-                <marker date="1474803643179" expanded="true" signature="367:390" ph="{...}" />
-                <marker date="1474803643179" expanded="true" signature="2233:2918" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Helper.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Integration/Helper.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="735">
-              <caret line="35" column="41" selection-start-line="35" selection-start-column="41" selection-end-line="35" selection-end-column="41" />
-              <folding>
-                <marker date="1474802527455" expanded="true" signature="6:216" ph="..." />
-                <marker date="1474802527455" expanded="true" signature="252:1525" ph="{...}" />
-                <marker date="1474802527455" expanded="true" signature="285:1523" ph="{...}" />
-                <marker date="1474802527455" expanded="true" signature="400:533" ph="{...}" />
-                <marker date="1474802527455" expanded="true" signature="543:851" ph="/// ..." />
-                <marker date="1474802527455" expanded="true" signature="923:1078" ph="{...}" />
-                <marker date="1474802527455" expanded="true" signature="1088:1327" ph="/// ..." />
-                <marker date="1474802527455" expanded="true" signature="1408:1517" ph="{...}" />
-                <marker date="1474802527455" expanded="true" signature="1473:1517" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="XmiTests.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/XmiTests.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1070">
-              <caret line="174" column="12" selection-start-line="174" selection-start-column="12" selection-end-line="174" selection-end-column="12" />
-              <folding>
-                <marker date="1474803313817" expanded="true" signature="6:500" ph="..." />
-                <marker date="1474803313817" expanded="true" signature="534:6820" ph="{...}" />
-                <marker date="1474803313817" expanded="true" signature="541:629" ph="/// ..." />
-                <marker date="1474803313817" expanded="true" signature="673:6818" ph="{...}" />
-                <marker date="1474803313817" expanded="true" signature="738:1364" ph="{...}" />
-                <marker date="1474803313817" expanded="true" signature="1416:1535" ph="{...}" />
-                <marker date="1474803313817" expanded="true" signature="1588:1990" ph="{...}" />
-                <marker date="1474803313817" expanded="true" signature="2057:2189" ph="{...}" />
-                <marker date="1474803313817" expanded="true" signature="6557:6812" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WorkspaceNames.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceNames.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <marker date="1474802706459" expanded="true" signature="56:770" ph="{...}" />
-                <marker date="1474802706459" expanded="true" signature="97:768" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TestUmlMethods.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../DatenMeister.Tests/Uml/TestUmlMethods.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1029">
-              <caret line="49" column="75" selection-start-line="49" selection-start-column="75" selection-end-line="49" selection-end-column="75" />
-              <folding>
-                <marker date="1474802527551" expanded="true" signature="6:294" ph="..." />
-                <marker date="1474802527551" expanded="true" signature="328:2925" ph="{...}" />
-                <marker date="1474802527551" expanded="true" signature="380:2923" ph="{...}" />
-                <marker date="1474802527551" expanded="true" signature="449:1604" ph="{...}" />
-                <marker date="1474802527551" expanded="true" signature="1655:2917" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GlobalDatenMeister.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeisterLib/GlobalDatenMeister.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-295">
-              <caret line="55" column="12" selection-start-line="55" selection-start-column="12" selection-end-line="55" selection-end-column="12" />
-              <folding>
-                <marker date="1474803202631" expanded="true" signature="6:470" ph="..." />
-                <marker date="1474803202631" expanded="true" signature="493:4050" ph="{...}" />
-                <marker date="1474803202631" expanded="true" signature="538:4048" ph="{...}" />
-                <marker date="1474803202631" expanded="true" signature="956:1097" ph="{...}" />
-                <marker date="1474803202631" expanded="true" signature="1173:3762" ph="{...}" />
-                <marker date="1474803202631" expanded="true" signature="3806:4042" ph="{...}" />
+                <marker date="1472248333793" expanded="true" signature="180:1171" ph="{...}" />
+                <marker date="1472248333793" expanded="true" signature="193:1168" ph="{...}" />
+                <marker date="1472248333793" expanded="true" signature="230:1162" ph="{...}" />
+                <marker date="1472248333793" expanded="true" signature="361:1152" ph="{...}" />
+                <marker date="1472248333793" expanded="true" signature="477:868" ph="{...}" />
+                <marker date="1472248333793" expanded="true" signature="712:844" ph="{...}" />
+                <marker date="1472248333793" expanded="true" signature="989:1136" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="Program.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../DatenMeister.Tests.Console/Program.cs">
+        <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/Program.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="839">
-              <caret line="97" column="50" selection-start-line="97" selection-start-column="50" selection-end-line="97" selection-end-column="50" />
+            <state relative-caret-position="399">
+              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
               <folding>
-                <marker date="1474802527423" expanded="true" signature="6:329" ph="..." />
-                <marker date="1474802527423" expanded="true" signature="367:3720" ph="{...}" />
-                <marker date="1474802527423" expanded="true" signature="387:3718" ph="{...}" />
-                <marker date="1474802527423" expanded="true" signature="433:962" ph="{...}" />
-                <marker date="1474802527423" expanded="true" signature="1006:1678" ph="{...}" />
-                <marker date="1474802527423" expanded="true" signature="1726:2904" ph="{...}" />
-                <marker date="1474802527423" expanded="true" signature="2948:3712" ph="{...}" />
+                <marker date="1461096991547" expanded="true" signature="6:43" ph="..." />
+                <marker date="1461096991547" expanded="true" signature="83:519" ph="{...}" />
+                <marker date="1461096991547" expanded="true" signature="170:517" ph="{...}" />
+                <marker date="1461096991547" expanded="true" signature="216:511" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -246,26 +311,32 @@
         <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceData.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister.Web.Application/WebserverStartup.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceExtension.cs" />
-        <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceLogic.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspace.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Workspace.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister/Models/Modules/ViewFinder/ViewLogic.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Extents/ExtentFunctions.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister.Tests/Core/DataLayerTests.cs" />
-        <option value="$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/XmlExtentTests.cs" />
         <option value="$PROJECT_DIR$/../../DirectUsage/Program.cs" />
-        <option value="$PROJECT_DIR$/../../DatenMeister/Uml/Bootstrapper.cs" />
-        <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceLogic.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister/Integration/Integration.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister.Tests/Runtime/ReadOnlyProxyTests.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister.Tests/Runtime/ExtentStorageTests.cs" />
-        <option value="$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/DataLayerTests.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/XmiTests.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister.Tests/Runtime/ComplexExtentTests.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister.Tests/Uml/TestUmlMethods.cs" />
         <option value="$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeisterLib/GlobalDatenMeister.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Workspaces.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Extension.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister.Web.Application/htdocs/js/taskmeister.ts" />
+        <option value="$PROJECT_DIR$/../../DatenMeister.Web.Application/bin/Debug/App_Data/Database/extents.xml" />
+        <option value="$PROJECT_DIR$/../../DatenMeister.Web.Application/bin/Debug/App_Data/Database/workspaces.xml" />
+        <option value="$PROJECT_DIR$/../../DatenMeister.Web.Application/bin/Debug/App_Data/Database/usertypes.xml" />
+        <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceLogic.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister/Provider/DotNet/Integration.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/ExtentStorage/ExtentStorageLoader.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceLogic.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister/Uml/Bootstrapper.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/DataLayerTests.cs" />
+        <option value="$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/XmlExtentTests.cs" />
       </list>
     </option>
   </component>
@@ -311,10 +382,6 @@
               <option name="myItemId" value="DatenMeister (18 projects)" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Tools" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -327,10 +394,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Tests" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister.Tests.Console" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
           </PATH>
@@ -410,11 +473,43 @@
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Tests" />
+              <option name="myItemId" value="Libraries" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister.Tests" />
+              <option name="myItemId" value="Libraries" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Libraries" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -432,88 +527,6 @@
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Tests" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister.Tests" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Runtime" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Libraries" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Libraries" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister.Integration.DotNet" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Libraries" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="Libraries" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
@@ -574,11 +587,7 @@
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Workspaces" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Data" />
+              <option name="myItemId" value="ExtentStorage" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
           </PATH>
@@ -618,7 +627,21 @@
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Libraries" />
+              <option name="myItemId" value="Applications" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Applications" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -626,7 +649,7 @@
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Integration" />
+              <option name="myItemId" value="DatenMeister.Web.Application (with warnings)" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
           </PATH>
@@ -640,7 +663,7 @@
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Libraries" />
+              <option name="myItemId" value="Applications" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -648,43 +671,11 @@
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Core" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemId" value="DatenMeister.Web.Application (with warnings)" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Applications" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Applications" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TaskMeister" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TaskMeisterLib" />
+              <option name="myItemId" value="htdocs" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
           </PATH>
@@ -702,7 +693,45 @@
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="TaskMeister" />
+              <option name="myItemId" value="DatenMeister" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister.Web.Application (with warnings)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="htdocs" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister (18 projects)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Applications" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DatenMeister.Web.Application (with warnings)" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="App_Data" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
           </PATH>
@@ -715,8 +744,9 @@
     <property name="full.screen.before.presentation.mode" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.startup.tasks" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="SearchEverywhereHistoryKey" value="integra&#9;FILE&#9;file://C:/Projekte/datenmeister-new/src/DatenMeister/Provider/DotNet/Integration.cs&#10;WorkspaceLog&#9;FILE&#9;file://C:/Projekte/datenmeister-new/src/DatenMeister/Runtime/Workspaces/WorkspaceLogic.cs&#10;IWork&#9;FILE&#9;file://C:/Projekte/datenmeister-new/src/DatenMeister/Runtime/Workspaces/IWorkspaceLogic.cs&#10;Integration&#9;FILE&#9;file://C:/Projekte/datenmeister-new/src/DatenMeister/Provider/DotNet/Integration.cs" />
   </component>
-  <component name="RunManager" selected=".NET Project.Programs\DirectUsage">
+  <component name="RunManager" selected=".NET Project.Applications\DatenMeister\DatenMeister.Web.Application">
     <configuration default="false" name="Applications\DatenMeister\DatenMeister.Web.Application" type="DotNetProject" factoryName=".NET Project" temporary="true">
       <option name="PROJECT_PATH" value="$PROJECT_DIR$/../../DatenMeister.Web.Application/DatenMeister.Web.Application.csproj" />
       <option name="PROJECT_KIND" value="Console" />
@@ -756,8 +786,8 @@
     </list>
     <recent_temporary>
       <list size="2">
-        <item index="0" class="java.lang.String" itemvalue=".NET Project.Programs\DirectUsage" />
-        <item index="1" class="java.lang.String" itemvalue=".NET Project.Applications\DatenMeister\DatenMeister.Web.Application" />
+        <item index="0" class="java.lang.String" itemvalue=".NET Project.Applications\DatenMeister\DatenMeister.Web.Application" />
+        <item index="1" class="java.lang.String" itemvalue=".NET Project.Programs\DirectUsage" />
       </list>
     </recent_temporary>
   </component>
@@ -777,11 +807,13 @@
       <workItem from="1474716714679" duration="999000" />
       <workItem from="1474717865569" duration="6004000" />
       <workItem from="1474801980323" duration="1116000" />
+      <workItem from="1474911160139" duration="594000" />
+      <workItem from="1474916487944" duration="977000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8119000" />
+    <option name="totallyTimeSpent" value="9690000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -793,8 +825,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="3858" height="2128" extended-state="7" />
-    <editor active="true" />
+    <frame x="-9" y="-9" width="3858" height="2128" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Errors in solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -852,106 +884,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Provider/DotNet/Integration.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2436">
-          <caret line="116" column="45" selection-start-line="116" selection-start-column="45" selection-end-line="116" selection-end-column="45" />
-          <folding>
-            <marker date="1474803643306" expanded="true" signature="6:12" ph="..." />
-            <marker date="1474803643306" expanded="true" signature="6:658" ph="..." />
-            <marker date="1474803643306" expanded="true" signature="694:8705" ph="{...}" />
-            <marker date="1474803643306" expanded="true" signature="725:8703" ph="{...}" />
-            <marker date="1474803643306" expanded="true" signature="1078:1132" ph="{...}" />
-            <marker date="1474803643306" expanded="true" signature="1200:6552" ph="{...}" />
-            <marker date="1474803643306" expanded="true" signature="3342:3411" ph="/* ... */" />
-            <marker date="1474803643306" expanded="true" signature="6642:7796" ph="{...}" />
-            <marker date="1474803643306" expanded="true" signature="8544:8697" ph="{...}" />
-            <marker date="1474803643306" expanded="true" signature="8544:8703" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Uml/Bootstrapper.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1474803643368" expanded="true" signature="6:489" ph="..." />
-            <marker date="1474803643368" expanded="true" signature="517:26370" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="524:611" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="641:26368" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="715:877" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="1335:1432" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="1508:1605" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="1681:1778" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="1860:1931" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="1961:2107" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="2117:2309" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="2382:2546" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="2704:2831" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="2932:3373" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="3500:3634" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="3765:4404" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="4414:4489" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="4521:9252" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="6007:6261" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="7759:7926" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="8716:8811" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="8892:9095" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="9262:9337" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="9388:12269" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="10709:10963" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="12035:12202" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="15011:15106" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="15530:15764" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="15880:17013" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="15903:16106" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="17023:17341" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="17430:19724" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="19734:20236" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="23446:24260" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="24270:24829" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="25061:25774" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="25509:25774" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="25784:25933" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="25964:26362" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="25987:26137" ph="/// ..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Uml/BootstrapMode.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="5" column="16" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
-          <folding>
-            <marker date="1474724455264" expanded="true" signature="33:140" ph="/// ..." />
-            <marker date="1474724455264" expanded="true" signature="170:725" ph="{...}" />
-            <marker date="1474724455264" expanded="true" signature="185:330" ph="/// ..." />
-            <marker date="1474724455264" expanded="true" signature="361:496" ph="/// ..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Integration/IntegrationSettings.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="2" column="27" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
-          <folding>
-            <marker date="1473453237591" expanded="true" signature="73:748" ph="{...}" />
-            <marker date="1473453237591" expanded="true" signature="88:391" ph="/// ..." />
-            <marker date="1473453237591" expanded="true" signature="587:689" ph="/// ..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/Program.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeister/Dialogs/ActivityPage.xaml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -1019,7 +951,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="63">
           <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1037,13 +968,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Locations.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="32" selection-start-line="0" selection-start-column="32" selection-end-line="0" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/Locations.cs" />
     <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/WebserverStartup.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1051,35 +976,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/Program.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceCollection.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceCollection.cs" />
     <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceExtension.cs" />
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceCollection.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceLogic.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceCollection.cs" />
     <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspace.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1098,7 +997,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1328">
           <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1116,18 +1014,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/XmlExtentTests.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1328">
-          <caret line="269" column="38" selection-start-line="269" selection-start-column="38" selection-end-line="269" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/htdocs/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1135,15 +1025,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1473193962196" expanded="true" signature="6:127" ph="..." />
-            <marker date="1473193962196" expanded="true" signature="157:258" ph="/// ..." />
-            <marker date="1473193962196" expanded="true" signature="297:1245" ph="{...}" />
-            <marker date="1473193962196" expanded="true" signature="312:449" ph="/// ..." />
-            <marker date="1473193962196" expanded="true" signature="500:678" ph="/// ..." />
-            <marker date="1473193962196" expanded="true" signature="734:917" ph="/// ..." />
-            <marker date="1473193962196" expanded="true" signature="977:1195" ph="/// ..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1151,11 +1032,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="42">
           <caret line="2" column="27" selection-start-line="2" selection-start-column="27" selection-end-line="2" selection-end-column="27" />
-          <folding>
-            <marker date="1473453237591" expanded="true" signature="73:748" ph="{...}" />
-            <marker date="1473453237591" expanded="true" signature="88:391" ph="/// ..." />
-            <marker date="1473453237591" expanded="true" signature="587:689" ph="/// ..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1163,12 +1039,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="441">
           <caret line="21" column="12" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
-          <folding>
-            <marker date="1474727480959" expanded="true" signature="6:272" ph="..." />
-            <marker date="1474727480959" expanded="true" signature="295:2051" ph="{...}" />
-            <marker date="1474727480959" expanded="true" signature="315:2049" ph="{...}" />
-            <marker date="1474727480959" expanded="true" signature="361:2043" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1176,12 +1046,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
-          <folding>
-            <marker date="1473795724214" expanded="true" signature="50:685" ph="{...}" />
-            <marker date="1473795724214" expanded="true" signature="57:138" ph="/// ..." />
-            <marker date="1473795724214" expanded="true" signature="169:683" ph="{...}" />
-            <marker date="1473795724214" expanded="true" signature="266:677" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1189,94 +1053,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding>
-            <marker date="1474724455264" expanded="true" signature="33:140" ph="/// ..." />
-            <marker date="1474724455264" expanded="true" signature="170:725" ph="{...}" />
-            <marker date="1474724455264" expanded="true" signature="185:330" ph="/// ..." />
-            <marker date="1474724455264" expanded="true" signature="361:496" ph="/// ..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Uml/Bootstrapper.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="693">
-          <caret line="457" column="57" selection-start-line="457" selection-start-column="57" selection-end-line="457" selection-end-column="57" />
-          <folding>
-            <marker date="1474803643368" expanded="true" signature="6:489" ph="..." />
-            <marker date="1474803643368" expanded="true" signature="517:26370" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="524:611" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="641:26368" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="715:877" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="1335:1432" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="1508:1605" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="1681:1778" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="1860:1931" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="1961:2107" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="2117:2309" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="2382:2546" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="2704:2831" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="2932:3373" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="3500:3634" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="3765:4404" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="4414:4489" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="4521:9252" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="6007:6261" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="7759:7926" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="8716:8811" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="8892:9095" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="9262:9337" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="9388:12269" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="10709:10963" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="12035:12202" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="15011:15106" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="15530:15764" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="15880:17013" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="15903:16106" ph="/* ... */" />
-            <marker date="1474803643368" expanded="true" signature="17023:17341" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="17430:19724" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="19734:20236" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="23446:24260" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="24270:24829" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="25061:25774" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="25509:25774" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="25784:25933" ph="/// ..." />
-            <marker date="1474803643368" expanded="true" signature="25964:26362" ph="{...}" />
-            <marker date="1474803643368" expanded="true" signature="25987:26137" ph="/// ..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceLogic.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1049">
-          <caret line="207" column="53" selection-start-line="207" selection-start-column="53" selection-end-line="207" selection-end-column="53" />
-          <folding>
-            <marker date="1474803643535" expanded="true" signature="6:206" ph="..." />
-            <marker date="1474803643535" expanded="true" signature="249:7140" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="256:371" ph="/// ..." />
-            <marker date="1474803643535" expanded="true" signature="421:7138" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="532:585" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="801:921" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="1004:1138" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="1214:1337" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="1400:1627" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="1689:2739" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="1712:1864" ph="/* ... */" />
-            <marker date="1474803643535" expanded="true" signature="2816:3014" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="3098:3427" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="3437:3703" ph="/// ..." />
-            <marker date="1474803643535" expanded="true" signature="3747:3901" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="3949:4007" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="4017:4278" ph="/// ..." />
-            <marker date="1474803643535" expanded="true" signature="4337:5093" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="5143:5297" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="5391:5552" ph="/// ..." />
-            <marker date="1474803643535" expanded="true" signature="5599:5895" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="5964:7377" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="6985:6997" ph="{...}" />
-            <marker date="1474803643535" expanded="true" signature="7052:7132" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1284,12 +1060,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="441">
           <caret line="21" column="1" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
-          <folding>
-            <marker date="1473021933529" expanded="true" signature="57:758" ph="{...}" />
-            <marker date="1473021933529" expanded="true" signature="90:756" ph="{...}" />
-            <marker date="1473021933529" expanded="true" signature="105:442" ph="/// ..." />
-            <marker date="1473021933529" expanded="true" signature="557:750" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1297,14 +1067,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="965">
           <caret line="51" column="12" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
-          <folding>
-            <marker date="1474803316028" expanded="true" signature="6:393" ph="..." />
-            <marker date="1474803316028" expanded="true" signature="431:2633" ph="{...}" />
-            <marker date="1474803316028" expanded="true" signature="487:2631" ph="{...}" />
-            <marker date="1474803316028" expanded="true" signature="559:1443" ph="{...}" />
-            <marker date="1474803316028" expanded="true" signature="1456:1629" ph="/// ..." />
-            <marker date="1474803316028" expanded="true" signature="1687:2625" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1312,32 +1074,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="504">
           <caret line="24" column="12" selection-start-line="24" selection-start-column="12" selection-end-line="24" selection-end-column="12" />
-          <folding>
-            <marker date="1474803316086" expanded="true" signature="6:296" ph="..." />
-            <marker date="1474803316086" expanded="true" signature="334:1863" ph="{...}" />
-            <marker date="1474803316086" expanded="true" signature="390:1861" ph="{...}" />
-            <marker date="1474803316086" expanded="true" signature="456:1855" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/DataLayerTests.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="944">
-          <caret line="59" column="12" selection-start-line="59" selection-start-column="12" selection-end-line="59" selection-end-column="12" />
-          <folding>
-            <marker date="1474803643179" expanded="true" signature="6:222" ph="..." />
-            <marker date="1474803643179" expanded="true" signature="257:2926" ph="{...}" />
-            <marker date="1474803643179" expanded="true" signature="309:2924" ph="{...}" />
-            <marker date="1474803643179" expanded="true" signature="367:390" ph="{...}" />
-            <marker date="1474803643179" expanded="true" signature="2233:2918" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/XmiTests.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1070">
+        <state relative-caret-position="3654">
           <caret line="174" column="12" selection-start-line="174" selection-start-column="12" selection-end-line="174" selection-end-column="12" />
           <folding>
             <marker date="1474803313817" expanded="true" signature="6:500" ph="..." />
@@ -1359,7 +1101,6 @@
           <caret line="36" column="1" selection-start-line="36" selection-start-column="1" selection-end-line="36" selection-end-column="1" />
           <folding>
             <marker date="1474802403401" expanded="true" signature="6:280" ph="..." />
-            <marker date="1474802403401" expanded="true" signature="318:1350" ph="{...}" />
             <marker date="1474802403401" expanded="true" signature="356:1348" ph="{...}" />
             <marker date="1474802403401" expanded="true" signature="417:1342" ph="{...}" />
           </folding>
@@ -1372,7 +1113,6 @@
           <caret line="49" column="75" selection-start-line="49" selection-start-column="75" selection-end-line="49" selection-end-column="75" />
           <folding>
             <marker date="1474802527551" expanded="true" signature="6:294" ph="..." />
-            <marker date="1474802527551" expanded="true" signature="328:2925" ph="{...}" />
             <marker date="1474802527551" expanded="true" signature="380:2923" ph="{...}" />
             <marker date="1474802527551" expanded="true" signature="449:1604" ph="{...}" />
             <marker date="1474802527551" expanded="true" signature="1655:2917" ph="{...}" />
@@ -1382,7 +1122,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeisterLib/GlobalDatenMeister.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-295">
+        <state relative-caret-position="1155">
           <caret line="55" column="12" selection-start-line="55" selection-start-column="12" selection-end-line="55" selection-end-column="12" />
           <folding>
             <marker date="1474803202631" expanded="true" signature="6:470" ph="..." />
@@ -1397,7 +1137,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../DatenMeister.Tests.Console/Program.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="839">
+        <state relative-caret-position="2037">
           <caret line="97" column="50" selection-start-line="97" selection-start-column="50" selection-end-line="97" selection-end-column="50" />
           <folding>
             <marker date="1474802527423" expanded="true" signature="6:329" ph="..." />
@@ -1417,7 +1157,6 @@
           <caret line="35" column="41" selection-start-line="35" selection-start-column="41" selection-end-line="35" selection-end-column="41" />
           <folding>
             <marker date="1474802527455" expanded="true" signature="6:216" ph="..." />
-            <marker date="1474802527455" expanded="true" signature="252:1525" ph="{...}" />
             <marker date="1474802527455" expanded="true" signature="285:1523" ph="{...}" />
             <marker date="1474802527455" expanded="true" signature="400:533" ph="{...}" />
             <marker date="1474802527455" expanded="true" signature="543:851" ph="/// ..." />
@@ -1429,32 +1168,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Provider/DotNet/Integration.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1007">
-          <caret line="201" column="32" selection-start-line="201" selection-start-column="32" selection-end-line="201" selection-end-column="32" />
-          <folding>
-            <marker date="1474803643306" expanded="true" signature="6:12" ph="..." />
-            <marker date="1474803643306" expanded="true" signature="6:658" ph="..." />
-            <marker date="1474803643306" expanded="true" signature="694:8705" ph="{...}" />
-            <marker date="1474803643306" expanded="true" signature="725:8703" ph="{...}" />
-            <marker date="1474803643306" expanded="true" signature="1078:1132" ph="{...}" />
-            <marker date="1474803643306" expanded="true" signature="1200:6552" ph="{...}" />
-            <marker date="1474803643306" expanded="true" signature="3342:3411" ph="/* ... */" />
-            <marker date="1474803643306" expanded="true" signature="6642:7796" ph="{...}" />
-            <marker date="1474803643306" expanded="true" signature="8544:8697" ph="{...}" />
-            <marker date="1474803643306" expanded="true" signature="8544:8703" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceNames.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1474802706459" expanded="true" signature="56:770" ph="{...}" />
-            <marker date="1474802706459" expanded="true" signature="97:768" ph="{...}" />
+            <marker date="1474911174386" expanded="true" signature="97:768" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1494,6 +1213,231 @@
             <marker date="1474803643420" expanded="true" signature="9672:9757" ph="{...}" />
             <marker date="1474803643420" expanded="true" signature="9838:9921" ph="{...}" />
             <marker date="1474803643420" expanded="true" signature="10002:10085" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/htdocs/js/taskmeister.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+          <folding>
+            <marker date="1472248333793" expanded="true" signature="180:1171" ph="{...}" />
+            <marker date="1472248333793" expanded="true" signature="193:1168" ph="{...}" />
+            <marker date="1472248333793" expanded="true" signature="230:1162" ph="{...}" />
+            <marker date="1472248333793" expanded="true" signature="361:1152" ph="{...}" />
+            <marker date="1472248333793" expanded="true" signature="477:868" ph="{...}" />
+            <marker date="1472248333793" expanded="true" signature="712:844" ph="{...}" />
+            <marker date="1472248333793" expanded="true" signature="989:1136" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/Program.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding>
+            <marker date="1461096991547" expanded="true" signature="6:43" ph="..." />
+            <marker date="1461096991547" expanded="true" signature="83:519" ph="{...}" />
+            <marker date="1461096991547" expanded="true" signature="170:517" ph="{...}" />
+            <marker date="1461096991547" expanded="true" signature="216:511" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/bin/Debug/App_Data/Database/workspaces.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/bin/Debug/App_Data/Database/usertypes.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Web.Application/bin/Debug/App_Data/Database/extents.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="8" column="33" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/IWorkspaceLogic.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="16" column="50" selection-start-line="16" selection-start-column="50" selection-end-line="16" selection-end-column="50" />
+          <folding>
+            <marker date="1474917110864" expanded="true" signature="6:193" ph="..." />
+            <marker date="1474917110864" expanded="true" signature="236:1490" ph="{...}" />
+            <marker date="1474917110864" expanded="true" signature="275:1488" ph="{...}" />
+            <marker date="1474917110864" expanded="true" signature="482:643" ph="/// ..." />
+            <marker date="1474917110864" expanded="true" signature="709:870" ph="/// ..." />
+            <marker date="1474917110864" expanded="true" signature="935:1170" ph="/// ..." />
+            <marker date="1474917110864" expanded="true" signature="1257:1402" ph="/// ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/ExtentStorage/ExtentStorageLoader.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-673">
+          <caret line="84" column="13" selection-start-line="84" selection-start-column="13" selection-end-line="84" selection-end-column="13" />
+          <folding>
+            <marker date="1474917154938" expanded="true" signature="6:307" ph="..." />
+            <marker date="1474917154938" expanded="true" signature="353:6341" ph="{...}" />
+            <marker date="1474917154938" expanded="true" signature="360:622" ph="/// ..." />
+            <marker date="1474917154938" expanded="true" signature="682:6339" ph="{...}" />
+            <marker date="1474917154938" expanded="true" signature="748:815" ph="/// ..." />
+            <marker date="1474917154938" expanded="true" signature="1149:1527" ph="{...}" />
+            <marker date="1474917154938" expanded="true" signature="1769:1821" ph="{...}" />
+            <marker date="1474917154938" expanded="true" signature="1831:2255" ph="/// ..." />
+            <marker date="1474917154938" expanded="true" signature="2364:3828" ph="{...}" />
+            <marker date="1474917154938" expanded="true" signature="3942:4492" ph="{...}" />
+            <marker date="1474917154938" expanded="true" signature="4502:4749" ph="/// ..." />
+            <marker date="1474917154938" expanded="true" signature="4800:5472" ph="{...}" />
+            <marker date="1474917154938" expanded="true" signature="5525:5932" ph="{...}" />
+            <marker date="1474917154938" expanded="true" signature="5964:6333" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Uml/Bootstrapper.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1533">
+          <caret line="541" column="65" selection-start-line="541" selection-start-column="65" selection-end-line="541" selection-end-column="65" />
+          <folding>
+            <marker date="1474917273144" expanded="true" signature="6:489" ph="..." />
+            <marker date="1474917273144" expanded="true" signature="517:26063" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="524:611" ph="/// ..." />
+            <marker date="1474917273144" expanded="true" signature="641:26061" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="715:877" ph="/// ..." />
+            <marker date="1474917273144" expanded="true" signature="1335:1432" ph="/// ..." />
+            <marker date="1474917273144" expanded="true" signature="1508:1605" ph="/// ..." />
+            <marker date="1474917273144" expanded="true" signature="1681:1778" ph="/// ..." />
+            <marker date="1474917273144" expanded="true" signature="1860:1931" ph="/// ..." />
+            <marker date="1474917273144" expanded="true" signature="1961:2107" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="2117:2309" ph="/// ..." />
+            <marker date="1474917273144" expanded="true" signature="2382:2546" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="2704:2831" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="2932:3373" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="3500:3634" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="3765:4404" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="4414:4489" ph="/// ..." />
+            <marker date="1474917273144" expanded="true" signature="4521:9252" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="6007:6261" ph="/* ... */" />
+            <marker date="1474917273144" expanded="true" signature="7759:7926" ph="/* ... */" />
+            <marker date="1474917273144" expanded="true" signature="8716:8811" ph="/* ... */" />
+            <marker date="1474917273144" expanded="true" signature="8892:9095" ph="/* ... */" />
+            <marker date="1474917273144" expanded="true" signature="9262:9337" ph="/// ..." />
+            <marker date="1474917273144" expanded="true" signature="9388:15536" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="10709:10963" ph="/* ... */" />
+            <marker date="1474917273144" expanded="true" signature="12035:12202" ph="/* ... */" />
+            <marker date="1474917273144" expanded="true" signature="15019:15114" ph="/* ... */" />
+            <marker date="1474917273144" expanded="true" signature="15546:15780" ph="/// ..." />
+            <marker date="1474917273144" expanded="true" signature="15896:17029" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="15919:16122" ph="/* ... */" />
+            <marker date="1474917273144" expanded="true" signature="17039:17357" ph="/// ..." />
+            <marker date="1474917273144" expanded="true" signature="17446:19740" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="19750:20252" ph="/// ..." />
+            <marker date="1474917273144" expanded="true" signature="20454:24288" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="24298:24857" ph="/// ..." />
+            <marker date="1474917273144" expanded="true" signature="25089:25467" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="25477:25626" ph="/// ..." />
+            <marker date="1474917273144" expanded="true" signature="25657:26055" ph="{...}" />
+            <marker date="1474917273144" expanded="true" signature="25680:25830" ph="/// ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/DataLayerTests.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="24" column="43" selection-start-line="24" selection-start-column="43" selection-end-line="24" selection-end-column="43" />
+          <folding>
+            <marker date="1474917418104" expanded="true" signature="6:222" ph="..." />
+            <marker date="1474917418104" expanded="true" signature="257:2851" ph="{...}" />
+            <marker date="1474917418104" expanded="true" signature="309:2849" ph="{...}" />
+            <marker date="1474917418104" expanded="true" signature="367:390" ph="{...}" />
+            <marker date="1474917418104" expanded="true" signature="367:1289" ph="{...}" />
+            <marker date="1474917418104" expanded="true" signature="1349:2040" ph="{...}" />
+            <marker date="1474917418104" expanded="true" signature="2097:2843" ph="{...}" />
+            <marker date="1474917418104" expanded="true" signature="2158:2843" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister.Tests/Xmi/EMOF/XmlExtentTests.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1412">
+          <caret line="271" column="59" selection-start-line="271" selection-start-column="59" selection-end-line="271" selection-end-column="59" />
+          <folding>
+            <marker date="1474917418123" expanded="true" signature="6:557" ph="..." />
+            <marker date="1474917418123" expanded="true" signature="596:12410" ph="{...}" />
+            <marker date="1474917418123" expanded="true" signature="648:12408" ph="{...}" />
+            <marker date="1474917418123" expanded="true" signature="708:1304" ph="{...}" />
+            <marker date="1474917418123" expanded="true" signature="1373:2498" ph="{...}" />
+            <marker date="1474917418123" expanded="true" signature="2565:5615" ph="{...}" />
+            <marker date="1474917418123" expanded="true" signature="5667:8522" ph="{...}" />
+            <marker date="1474917418123" expanded="true" signature="8575:8802" ph="{...}" />
+            <marker date="1474917418123" expanded="true" signature="8861:10888" ph="{...}" />
+            <marker date="1474917418123" expanded="true" signature="10944:12402" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Workspaces/WorkspaceLogic.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2158">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1474917273166" expanded="true" signature="6:206" ph="..." />
+            <marker date="1474917273166" expanded="true" signature="249:6682" ph="{...}" />
+            <marker date="1474917273166" expanded="true" signature="256:371" ph="/// ..." />
+            <marker date="1474917273166" expanded="true" signature="421:6680" ph="{...}" />
+            <marker date="1474917273166" expanded="true" signature="532:586" ph="{...}" />
+            <marker date="1474917273166" expanded="true" signature="644:764" ph="{...}" />
+            <marker date="1474917273166" expanded="true" signature="827:1054" ph="{...}" />
+            <marker date="1474917273166" expanded="true" signature="1116:2166" ph="{...}" />
+            <marker date="1474917273166" expanded="true" signature="1139:1291" ph="/* ... */" />
+            <marker date="1474917273166" expanded="true" signature="2250:2579" ph="{...}" />
+            <marker date="1474917273166" expanded="true" signature="2589:2855" ph="/// ..." />
+            <marker date="1474917273166" expanded="true" signature="2899:3053" ph="{...}" />
+            <marker date="1474917273166" expanded="true" signature="3101:3159" ph="{...}" />
+            <marker date="1474917273166" expanded="true" signature="3169:3430" ph="/// ..." />
+            <marker date="1474917273166" expanded="true" signature="3489:4245" ph="{...}" />
+            <marker date="1474917273166" expanded="true" signature="4295:4449" ph="{...}" />
+            <marker date="1474917273166" expanded="true" signature="4543:4704" ph="/// ..." />
+            <marker date="1474917273166" expanded="true" signature="4751:5047" ph="{...}" />
+            <marker date="1474917273166" expanded="true" signature="5098:6408" ph="{...}" />
+            <marker date="1474917273166" expanded="true" signature="6465:6539" ph="{...}" />
+            <marker date="1474917273166" expanded="true" signature="6594:6674" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DatenMeister/Provider/DotNet/Integration.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="24" column="74" selection-start-line="24" selection-start-column="74" selection-end-line="24" selection-end-column="74" />
+          <folding>
+            <marker date="1474917137737" expanded="true" signature="6:12" ph="..." />
+            <marker date="1474917137737" expanded="true" signature="6:658" ph="..." />
+            <marker date="1474917137737" expanded="true" signature="694:8681" ph="{...}" />
+            <marker date="1474917137737" expanded="true" signature="725:8679" ph="{...}" />
+            <marker date="1474917137737" expanded="true" signature="1078:1132" ph="{...}" />
+            <marker date="1474917137737" expanded="true" signature="1200:6528" ph="{...}" />
+            <marker date="1474917137737" expanded="true" signature="3342:3411" ph="/* ... */" />
+            <marker date="1474917137737" expanded="true" signature="6618:7772" ph="{...}" />
+            <marker date="1474917137737" expanded="true" signature="8520:8673" ph="{...}" />
+            <marker date="1474917137737" expanded="true" signature="8520:8679" ph="{...}" />
           </folding>
         </state>
       </provider>

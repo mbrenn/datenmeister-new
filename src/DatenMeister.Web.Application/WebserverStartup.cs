@@ -59,7 +59,6 @@ namespace DatenMeister.Web.Application
             httpConfiguration.DependencyResolver = new AutofacWebApiDependencyResolver(_serverInjection);
 
             _lifetimeScope = _serverInjection.BeginLifetimeScope("DatenMeister Webapplication");
-
             app.UseAutofacMiddleware(_lifetimeScope);
 
             var configuration = new StaticFilesConfiguration(directory);

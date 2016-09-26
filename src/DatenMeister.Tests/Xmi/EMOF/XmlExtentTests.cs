@@ -269,7 +269,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 Assert.That(uml, Is.Not.Null);
 
                 var extent = new XmlUriExtent(scope.Resolve<IWorkspaceLogic>(), "dm:///test");
-                dataLayerLogic.AssignToWorkspace(extent, dataLayerLogic.GetTypes());
+                dataLayerLogic.GetTypes().AddExtent(extent);
 
                 var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(scope, extent);
 

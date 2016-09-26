@@ -16,15 +16,6 @@ namespace DatenMeister.Runtime.Workspaces
 
         IEnumerable<Workspace> Workspaces { get; }
 
-        void SetDefaultWorkspace(Workspace layer);
-
-        /// <summary>
-        /// Assigns a layer
-        /// </summary>
-        /// <param name="extent"></param>
-        /// <param name="dataLayer"></param>
-        void AssignToWorkspace(IExtent extent, Workspace dataLayer);
-
         /// <summary>
         /// Gets the datalayer of a certain extent
         /// </summary>

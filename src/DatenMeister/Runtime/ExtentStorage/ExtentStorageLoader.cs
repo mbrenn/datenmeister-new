@@ -27,26 +27,21 @@ namespace DatenMeister.Runtime.ExtentStorage
         private readonly ILifetimeScope _diScope;
 
         private readonly IWorkspaceLogic _workspaceLogic;
-
-        public ExtentStorageLoader(ExtentStorageData data,
-            IConfigurationToExtentStorageMapper map,
-            IWorkspaceLogic workspaceLogic)
-        {
-            if (data == null) throw new ArgumentNullException(nameof(data));
-            if (map == null) throw new ArgumentNullException(nameof(map));
-            if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
-            
-            _data = data;
-            _map = map;
-            _workspaceLogic = workspaceLogic;
-        }
+        
 
         public ExtentStorageLoader(
             ExtentStorageData data, 
             IConfigurationToExtentStorageMapper map,
             ILifetimeScope diScope, 
-            IWorkspaceLogic workspaceLogic) : this(data, map, workspaceLogic)
+            IWorkspaceLogic workspaceLogic)
         {
+            if (data == null) throw new ArgumentNullException(nameof(data));
+            if (map == null) throw new ArgumentNullException(nameof(map));
+            if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
+
+            _data = data;
+            _map = map;
+            _workspaceLogic = workspaceLogic;
             _diScope = diScope;
         }
 
@@ -78,14 +73,6 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
 
             AddToWorkspaceIfPossible(configuration, loadedExtent);
-
-            if (!string.IsNullOrEmpty(configuration.DataLayer))
-            {
-                _workspaceLogic.AssignToWorkspace(
-                    loadedExtent, 
-                    _workspaceLogic.GetById(configuration.DataLayer));
-            }
-
 
             // Stores the information into the data container
             var info = new ExtentStorageData.LoadedExtentInformation

@@ -24,7 +24,7 @@ namespace DatenMeister.Tests.Runtime
             var dataLayers = WorkspaceLogic.InitDefault();
 
             var data = new ExtentStorageData();
-            var logic = new ExtentStorageLoader(data, mapper, new WorkspaceLogic(dataLayers));
+            var logic = new ExtentStorageLoader(data, mapper, null, new WorkspaceLogic(dataLayers));
             var configuration = new CSVStorageConfiguration
             {
                 Path = "data.txt",

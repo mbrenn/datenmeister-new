@@ -27,22 +27,6 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public void SetRelationShip(Workspace dataLayer, Workspace metaDataLayer)
-        {
-            lock (_fileData)
-            {
-                dataLayer.MetaWorkspace = metaDataLayer;
-            }
-        }
-
-        public void AssignToWorkspace(IExtent extent, Workspace dataLayer)
-        {
-            lock (_fileData)
-            {
-                dataLayer.extent.Add(extent);
-            }
-        }
-
         public Workspace GetWorkspaceOfExtent(IExtent extent)
         {
             lock (_fileData)
@@ -185,11 +169,11 @@ namespace DatenMeister.Runtime.Workspaces
             logic.AddWorkspace(workspaceMof);
             logic.AddWorkspace(workspaceMgmt);
 
-            logic.SetRelationShip(workspaceData, workspaceTypes);
-            logic.SetRelationShip(workspaceMgmt, workspaceTypes);
-            logic.SetRelationShip(workspaceTypes, workspaceUml);
-            logic.SetRelationShip(workspaceUml, workspaceMof);
-            logic.SetRelationShip(workspaceMof, workspaceMof);
+            workspaceData.MetaWorkspace = workspaceTypes;
+            workspaceMgmt.MetaWorkspace = workspaceTypes;
+            workspaceTypes.MetaWorkspace = workspaceUml;
+            workspaceUml.MetaWorkspace = workspaceMof;
+            workspaceMof.MetaWorkspace = workspaceMof;
             logic.SetDefaultWorkspace(workspaceData);
             return workspace;
         }

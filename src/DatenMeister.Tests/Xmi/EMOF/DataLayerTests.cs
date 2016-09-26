@@ -22,9 +22,9 @@ namespace DatenMeister.Tests.Core
             var umlExtent = new MofUriExtent("Uml");
             var unAssignedExtent = new MofUriExtent("Unassigned");
 
-            logic.AssignToWorkspace(dataExtent, data.Data);
-            logic.AssignToWorkspace(typeExtent, data.Types);
-            logic.AssignToWorkspace(umlExtent, data.Uml);
+            data.Data.AddExtent(dataExtent);
+            data.Types.AddExtent(typeExtent);
+            data.Uml.AddExtent(umlExtent);
 
             Assert.That(logic.GetWorkspaceOfExtent(dataExtent), Is.EqualTo(data.Data));
             Assert.That(logic.GetWorkspaceOfExtent(typeExtent), Is.EqualTo(data.Types));
@@ -42,8 +42,8 @@ namespace DatenMeister.Tests.Core
             var dataExtent = new MofUriExtent("Data");
             var umlExtent = new MofUriExtent("Uml");
 
-            logic.AssignToWorkspace(dataExtent, data.Data);
-            logic.AssignToWorkspace(umlExtent, data.Uml);
+            data.Data.AddExtent(dataExtent);
+            data.Uml.AddExtent(umlExtent);
 
             var value = new MofElement(null, null);
             var logicLayer = logic.GetWorkspaceOfObject(value);

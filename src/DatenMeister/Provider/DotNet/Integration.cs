@@ -62,8 +62,8 @@ namespace DatenMeister.Integration
             kernel.RegisterType<ExtentStorageLoader>().As<IExtentStorageLoader>();
 
             // Workspaces
-            var dataLayerData = WorkspaceLogic.InitDefault();
-            kernel.RegisterInstance(dataLayerData).As<WorkspaceData>();
+            var workspaceData = WorkspaceLogic.InitDefault();
+            kernel.RegisterInstance(workspaceData).As<WorkspaceData>();
             kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
 
             // Adds the name resolution  
@@ -74,7 +74,6 @@ namespace DatenMeister.Integration
             kernel.RegisterInstance(dotNetTypeLookup).As<IDotNetTypeLookup>();
 
             var builder = kernel.Build();
-
             using (var scope = builder.BeginLifetimeScope())
             {
                 Core.EMOF.Integrate.Into(scope);
@@ -83,8 +82,6 @@ namespace DatenMeister.Integration
 
                 // Is used by .Net Provider to include the mappings for extent storages and factory types
                 _settings?.Hooks?.OnStartScope(scope);
-
-                var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
 
                 // Load the default extents
                 // Performs the bootstrap
@@ -109,14 +106,14 @@ namespace DatenMeister.Integration
                 Bootstrapper.PerformFullBootstrap(
                     paths,
                     workspaceLogic.GetWorkspace(WorkspaceNames.NameMof),
-                    dataLayerLogic,
-                    dataLayerData.Mof,
+                    workspaceLogic,
+                    workspaceData.Mof,
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimMof : BootstrapMode.Mof);
                 Bootstrapper.PerformFullBootstrap(
                     paths,
                     workspaceLogic.GetWorkspace(WorkspaceNames.NameUml),
-                    dataLayerLogic,
-                    dataLayerData.Uml,
+                    workspaceLogic,
+                    workspaceData.Uml,
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml);
                 umlWatch.Stop();
                 Debug.WriteLine($" Done: {umlWatch.Elapsed.Milliseconds} ms");
@@ -126,17 +123,16 @@ namespace DatenMeister.Integration
                 var extentTypes = new MofUriExtent(WorkspaceNames.UriInternalTypes);
                 var typeWorkspace = workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
                 typeWorkspace.AddExtent(extentTypes);
-                dataLayerLogic.AssignToWorkspace(extentTypes, dataLayerData.Types);
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();
-                dataLayerData.Data.Set(fields);
+                typeWorkspace.Set(fields);
                 IntegrateFormAndFields.Assign(
-                    dataLayerData.Uml.Get<_UML>(),
+                    workspaceData.Uml.Get<_UML>(),
                     mofFactory,
                     extentTypes.elements(),
                     fields,
-                    dotNetTypeLookup);
+                    dotNetTypeLookup);;
 
                 var viewLogic = new ViewLogic(workspaceLogic);
                 viewLogic.Integrate();
@@ -160,7 +156,8 @@ namespace DatenMeister.Integration
         {
             var innerContainer = new ContainerBuilder();
             // Loading and storing the workspaces  
-            var workspaceLoader = new WorkspaceLoader(scope.Resolve<IWorkspaceLogic>(),
+            var workspaceLoader = new WorkspaceLoader(
+                scope.Resolve<IWorkspaceLogic>(),
                 PathWorkspaces);
             workspaceLoader.Load();
             innerContainer.RegisterInstance(workspaceLoader).As<WorkspaceLoader>();
@@ -171,11 +168,9 @@ namespace DatenMeister.Integration
                 scope.Resolve<IExtentStorageLoader>(),
                 PathExtents);
             innerContainer.Register(c => new ExtentStorageConfigurationLoader(
-                    c.Resolve<ExtentStorageData>(),
-                    c.Resolve<IExtentStorageLoader>(),
-                    PathExtents))
-                .As<ExtentStorageConfigurationLoader>();
-
+                c.Resolve<ExtentStorageData>(),
+                c.Resolve<IExtentStorageLoader>(),
+                PathExtents)).As<ExtentStorageConfigurationLoader>();
             innerContainer.Update(builder);
 
             // Now start the plugins  

@@ -1,10 +1,9 @@
 ﻿using Autofac;
-using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Provider.CSV.Runtime.Storage;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.FactoryMapper;
 
-namespace DatenMeister.Core.EMOF
+namespace DatenMeister.Provider.CSV
 {
     /// <summary>
     /// Performs the integration into the Datenmeister
@@ -13,8 +12,8 @@ namespace DatenMeister.Core.EMOF
     {
         public static void Into(ILifetimeScope scope)
         {
-            var factoryMapper = scope.Resolve<IFactoryMapper>();
-            DefaultFactoryMapper.MapFactoryType(factoryMapper, typeof(MofUriExtent));
+            var storageMap = scope.Resolve<IConfigurationToExtentStorageMapper>();
+            ManualConfigurationToExtentStorageMapper.MapExtentLoaderType(storageMap, typeof(CSVStorage));
         }
     }
 }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.XMI.UmlBootstrap;
 using DatenMeister.SourcecodeGenerator.SourceParser;
-using DatenMeister.XMI.UmlBootstrap;
 
 namespace DatenMeister.SourcecodeGenerator
 {

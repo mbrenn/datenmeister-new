@@ -9,12 +9,12 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
+using DatenMeister.Provider.XMI.EMOF;
+using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.XMI.EMOF;
-using DatenMeister.XMI.ExtentStorage;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Xmi.EMOF

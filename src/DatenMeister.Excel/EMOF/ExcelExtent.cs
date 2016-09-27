@@ -2,7 +2,7 @@
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Helper;
-using DatenMeister.ManualMapping;
+using DatenMeister.Provider.ManualMapping;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 

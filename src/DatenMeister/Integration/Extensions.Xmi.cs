@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.XMI.EMOF;
 
 namespace DatenMeister.Integration
 {

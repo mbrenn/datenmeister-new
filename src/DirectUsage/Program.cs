@@ -29,7 +29,6 @@ namespace DirectUsage
             var xmiExtent = dm.CreateXmiExtent("dm:///extent");
             Console.WriteLine(xmiExtent.ToString());
 
-
             var excelExtent = dm.LoadExcel("d:///excel", "files/Quadratzahlen.xlsx");
 
             Console.WriteLine(excelExtent.ToString());
@@ -46,13 +45,34 @@ namespace DirectUsage
                 foreach (var item in (IEnumerable) sheetAsElement.get("items"))
                 {
                     var itemAsElement = (IElement) item;
-                    Console.WriteLine(itemAsElement.get("Wert") + ": " + itemAsElement.get("Quadratzahl"));
+                    // Console.WriteLine(itemAsElement.get("Wert") + ": " + itemAsElement.get("Quadratzahl"));
                 }
             }
-            watch.Stop();
+
+
+            var excelFunctions = dm.LoadExcel("d:///excel", "files/Functions.xlsx");
+            foreach (var sheet in excelFunctions.elements())
+            {
+                var sheetAsElement = (IElement) sheet;
+                var allProperties = ((IEnumerable<object>) sheetAsElement.get("items")).First() as IObjectAllProperties;
+                Console.WriteLine("Table:" + sheetAsElement.get("name"));
+                foreach (var property in allProperties.getPropertiesBeingSet())
+                {
+                    Console.WriteLine("Property: " + property);
+                }
+
+                foreach (var item in (IEnumerable) sheetAsElement.get("items"))
+                {
+                    var itemAsElement = (IElement) item;
+                    Console.WriteLine(itemAsElement.get("Id") + ": " + itemAsElement.get("Name"));
+                }
+            }
             
             Console.WriteLine(watch.Elapsed.ToString());
-            //Console.ReadKey();
+
+
+            watch.Stop();
+
         }
     }
 }

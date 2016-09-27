@@ -3,6 +3,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Excel.Models;
 using DatenMeister.Models.Forms;
+using DatenMeister.Provider.XMI;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.SourcecodeGenerator;
 using DatenMeister.XMI;

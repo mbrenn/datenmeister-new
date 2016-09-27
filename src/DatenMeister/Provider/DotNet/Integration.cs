@@ -6,7 +6,9 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Modules.ViewFinder;
+using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.DotNet;
+using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
@@ -14,14 +16,12 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
-using DatenMeister.XMI.ExtentStorage;
 using WorkspaceData = DatenMeister.Runtime.Workspaces.WorkspaceData;
 
 namespace DatenMeister.Integration
 {
     public class Integration
     {
-
         private const string PathWorkspaces = "App_Data/Database/workspaces.xml";
 
         private const string PathExtents = "App_Data/Database/extents.xml";
@@ -77,8 +77,8 @@ namespace DatenMeister.Integration
             using (var scope = builder.BeginLifetimeScope())
             {
                 Core.EMOF.Integrate.Into(scope);
-                CSV.Integrate.Into(scope);
-                XMI.Integrate.Into(scope);
+                Integrate.Into(scope);
+                Provider.XMI.Integrate.Into(scope);
 
                 // Is used by .Net Provider to include the mappings for extent storages and factory types
                 _settings?.Hooks?.OnStartScope(scope);

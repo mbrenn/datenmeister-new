@@ -4,7 +4,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Attributes;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.CSV.Runtime.Storage;
+using DatenMeister.Provider.CSV.Runtime.Storage;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Proxies.ReadOnly;
 using DatenMeister.Runtime.Workspaces;

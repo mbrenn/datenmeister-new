@@ -8,16 +8,16 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using Autofac;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Helper;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.CSV;
-using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ItemsAndExtents;
 using DatenMeister.Models.Modules.ViewFinder;
 using DatenMeister.Models.PostModels;
+using DatenMeister.Provider.CSV;
+using DatenMeister.Provider.CSV.Runtime.Storage;
+using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Dynamic;
 using DatenMeister.Runtime.Extents;
@@ -27,7 +27,6 @@ using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
-using DatenMeister.XMI.ExtentStorage;
 
 namespace DatenMeister.Web.Api
 {

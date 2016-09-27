@@ -5,15 +5,13 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Attributes;
 using DatenMeister.Core.EMOF.Helper;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
+using DatenMeister.Provider.XMI;
+using DatenMeister.Provider.XMI.Standards;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml;
-using DatenMeister.XMI;
-using DatenMeister.XMI.Standards;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Xmi

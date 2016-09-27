@@ -1,5 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.XMI;
+using DatenMeister.Provider.XMI;
 
 namespace DatenMeister.SourcecodeGenerator.SourceParser
 {

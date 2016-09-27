@@ -1,10 +1,10 @@
 ﻿using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.Core.EMOF.InMemory;
-using DatenMeister.CSV;
-using DatenMeister.CSV.Runtime.Storage;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
+using DatenMeister.Provider.CSV;
+using DatenMeister.Provider.CSV.Runtime.Storage;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.FactoryMapper;
 using NUnit.Framework;

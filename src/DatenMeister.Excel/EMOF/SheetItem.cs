@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Excel.Helper;
-using DatenMeister.ManualMapping;
+using DatenMeister.Provider.ManualMapping;
 using NPOI.SS.UserModel;
 
 namespace DatenMeister.Excel.EMOF

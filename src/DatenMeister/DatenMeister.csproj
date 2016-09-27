@@ -55,11 +55,36 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Provider\CSV\CSVDataProvider.cs" />
+    <Compile Include="Provider\CSV\CSVPlugin.cs" />
+    <Compile Include="Provider\CSV\CSVSettings.cs" />
+    <Compile Include="Provider\CSV\EMOF\CSVExtent.cs" />
+    <Compile Include="Provider\CSV\EMOF\CSVFactory.cs" />
+    <Compile Include="Provider\CSV\Integrate.cs" />
+    <Compile Include="Provider\CSV\Runtime\Storage\CSVStorage.cs" />
+    <Compile Include="Provider\CSV\Runtime\Storage\CSVStorageConfiguration.cs" />
     <Compile Include="Provider\DotNet\Integration.cs" />
+    <Compile Include="Provider\ManualMapping\IHasValue.cs" />
+    <Compile Include="Provider\ManualMapping\MMElement.cs" />
+    <Compile Include="Provider\ManualMapping\MMReflectiveCollection.cs" />
+    <Compile Include="Provider\ManualMapping\MMUriExtent.cs" />
+    <Compile Include="Provider\ManualMapping\PropertyMapping.cs" />
+    <Compile Include="Provider\ManualMapping\TypeMapping.cs" />
+    <Compile Include="Provider\XMI\EMOF\XmlElement.cs" />
+    <Compile Include="Provider\XMI\EMOF\XmlFactory.cs" />
+    <Compile Include="Provider\XMI\EMOF\XmlReflectiveSequence.cs" />
+    <Compile Include="Provider\XMI\EMOF\XmlUriExtent.cs" />
+    <Compile Include="Provider\XMI\ExtentStorage\XmiStorage.cs" />
+    <Compile Include="Provider\XMI\ExtentStorage\XmiStorageConfiguration.cs" />
+    <Compile Include="Provider\XMI\Integrate.cs" />
+    <Compile Include="Provider\XMI\Namespaces.cs" />
+    <Compile Include="Provider\XMI\SimpleLoader.cs" />
+    <Compile Include="Provider\XMI\Standards\XmiId.cs" />
+    <Compile Include="Provider\XMI\UmlBootstrap\Helper.cs" />
+    <Compile Include="Provider\XMI\XmiPlugin.cs" />
     <Compile Include="Runtime\Workspaces\IWorkspace.cs" />
     <Compile Include="Runtime\Workspaces\WorkspaceNames.cs" />
     <Compile Include="Core\EMOF\Integrate.cs" />
-    <Compile Include="CSV\Integrate.cs" />
     <Compile Include="Integration\Extensions.Xmi.cs" />
     <None Include="project.json" />
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
@@ -110,13 +135,6 @@
     <Compile Include="Runtime\Workspaces\WorkspaceLogic.cs" />
     <Compile Include="Core\Plugins\IDatenMeisterPlugin.cs" />
     <Compile Include="Runtime\Workspaces\Workspace.cs" />
-    <Compile Include="CSV\CSVDataProvider.cs" />
-    <Compile Include="CSV\CSVPlugin.cs" />
-    <Compile Include="CSV\CSVSettings.cs" />
-    <Compile Include="CSV\EMOF\CSVExtent.cs" />
-    <Compile Include="CSV\EMOF\CSVFactory.cs" />
-    <Compile Include="CSV\Runtime\Storage\CSVStorage.cs" />
-    <Compile Include="CSV\Runtime\Storage\CSVStorageConfiguration.cs" />
     <Compile Include="Integration\DatenMeisterScope.cs" />
     <Compile Include="Integration\GiveMe.cs" />
     <Compile Include="Integration\Helper.cs" />
@@ -126,12 +144,6 @@
     <Compile Include="Integration\Extensions.Csv.cs" />
     <Compile Include="Integration\Modules\FormAndFields.dotnet.cs" />
     <Compile Include="Json\DirectJsonConverter.cs" />
-    <Compile Include="ManualMapping\IHasValue.cs" />
-    <Compile Include="ManualMapping\MMElement.cs" />
-    <Compile Include="ManualMapping\MMReflectiveCollection.cs" />
-    <Compile Include="ManualMapping\MMUriExtent.cs" />
-    <Compile Include="ManualMapping\PropertyMapping.cs" />
-    <Compile Include="ManualMapping\TypeMapping.cs" />
     <Compile Include="Models\Forms\DateTimeFieldData.cs" />
     <Compile Include="Models\Forms\DefaultViewForMetaclass.cs" />
     <Compile Include="Models\Forms\DropDownFieldData.cs" />
@@ -251,18 +263,6 @@
     <Compile Include="Uml\Helper\IUmlNameResolution.cs" />
     <Compile Include="Uml\Helper\NamedElementMethods.cs" />
     <Compile Include="Uml\Helper\UmlNameResolution.cs" />
-    <Compile Include="XMI\EMOF\XmlElement.cs" />
-    <Compile Include="XMI\EMOF\XmlFactory.cs" />
-    <Compile Include="XMI\EMOF\XmlReflectiveSequence.cs" />
-    <Compile Include="XMI\EMOF\XmlUriExtent.cs" />
-    <Compile Include="XMI\ExtentStorage\XmiStorage.cs" />
-    <Compile Include="XMI\ExtentStorage\XmiStorageConfiguration.cs" />
-    <Compile Include="XMI\Integrate.cs" />
-    <Compile Include="XMI\Namespaces.cs" />
-    <Compile Include="XMI\SimpleLoader.cs" />
-    <Compile Include="XMI\Standards\XmiId.cs" />
-    <Compile Include="XMI\UmlBootstrap\Helper.cs" />
-    <Compile Include="XMI\XmiPlugin.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

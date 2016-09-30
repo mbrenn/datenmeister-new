@@ -6,7 +6,6 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.SourcecodeGenerator;
-using DatenMeister.XMI;
 
 namespace DatenMeister.SourceGeneration.Console
 {

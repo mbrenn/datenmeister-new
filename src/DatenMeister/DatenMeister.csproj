@@ -82,6 +82,8 @@
     <Compile Include="Provider\XMI\Standards\XmiId.cs" />
     <Compile Include="Provider\XMI\UmlBootstrap\Helper.cs" />
     <Compile Include="Provider\XMI\XmiPlugin.cs" />
+    <Compile Include="Runtime\Functions\Transformation\HierarchyMaker.cs" />
+    <Compile Include="Runtime\Functions\Transformation\HierarchyMakerSettings.cs" />
     <Compile Include="Runtime\Workspaces\IWorkspace.cs" />
     <Compile Include="Runtime\Workspaces\WorkspaceNames.cs" />
     <Compile Include="Core\EMOF\Integrate.cs" />
@@ -264,7 +266,6 @@
     <Compile Include="Uml\Helper\NamedElementMethods.cs" />
     <Compile Include="Uml\Helper\UmlNameResolution.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

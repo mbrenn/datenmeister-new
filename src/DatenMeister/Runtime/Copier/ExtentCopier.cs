@@ -1,25 +1,34 @@
-﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
+﻿using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Copier
 {
     public class ExtentCopier
     {
-        private IFactory _factory;
+        private readonly IFactory _factory;
 
         public ExtentCopier(IFactory factory)
         {
             _factory = factory;
         }
 
-        public void Copy(IUriExtent source, IUriExtent target)
+        public void Copy(IExtent source, IExtent target)
+        {
+            var sourceSequence = source.elements();
+            var targetSequence = target.elements();
+
+            Copy(sourceSequence, targetSequence);
+        }
+
+        public void Copy(IReflectiveSequence sourceSequence, IReflectiveSequence targetSequence)
         {
             var copier = new ObjectCopier(_factory);
-            foreach (var element in source.elements())
+            foreach (var element in sourceSequence)
             {
                 var elementAsElement = element as IElement;
                 var copiedElement = copier.Copy(elementAsElement);
-                target.elements().add(copiedElement);
+                targetSequence.add(copiedElement);
             }
         }
     }

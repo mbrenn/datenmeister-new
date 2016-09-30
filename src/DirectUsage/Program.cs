@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Integration;
 using DatenMeister.Integration;
+using DatenMeister.Runtime.Functions.Transformation;
 
 namespace DirectUsage
 {
@@ -51,25 +54,23 @@ namespace DirectUsage
 
 
             var excelFunctions = dm.LoadExcel("d:///excel", "files/Functions.xlsx");
-            foreach (var sheet in excelFunctions.elements())
+            var mofTarget = new MofUriExtent("dm:///");
+            HierarchyMaker.Convert(new HierarchyMakerSettings()
             {
-                var sheetAsElement = (IElement) sheet;
-                var allProperties = ((IEnumerable<object>) sheetAsElement.get("items")).First() as IObjectAllProperties;
-                Console.WriteLine("Table:" + sheetAsElement.get("name"));
-                foreach (var property in allProperties.getPropertiesBeingSet())
-                {
-                    Console.WriteLine("Property: " + property);
-                }
+                Sequence = ((IElement) excelFunctions.elements().First()).get("items") as IReflectiveSequence,
+                TargetSequence  =  mofTarget.elements(),
+                TargetFactory =  new MofFactory(),
+                NewChildColumn = "Parts",
+                OldIdColumn = "Id", 
+                OldParentColumn = "Parent"
+            });
 
-                foreach (var item in (IEnumerable) sheetAsElement.get("items"))
-                {
-                    var itemAsElement = (IElement) item;
-                    Console.WriteLine(itemAsElement.get("Id") + ": " + itemAsElement.get("Name"));
-                }
+            foreach (var element in mofTarget.elements())
+            {
+                Console.WriteLine(element.ToString());
             }
-            
-            Console.WriteLine(watch.Elapsed.ToString());
 
+            Console.ReadKey();
 
             watch.Stop();
 

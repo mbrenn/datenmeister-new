@@ -55,7 +55,7 @@ namespace DirectUsage
 
             var excelFunctions = dm.LoadExcel("d:///excel", "files/Functions.xlsx");
             var mofTarget = new MofUriExtent("dm:///");
-            HierarchyMaker.Convert(new HierarchyMakerSettings()
+            HierarchyMaker.Convert(new HierarchyByParentSettings()
             {
                 Sequence = ((IElement) excelFunctions.elements().First()).get("items") as IReflectiveSequence,
                 TargetSequence  =  mofTarget.elements(),

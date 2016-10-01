@@ -6,13 +6,27 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Core.EMOF.Helper
+namespace DatenMeister.Runtime
 {
-    /// <summary>
-    ///     Includes several methods to support the handling of objects
-    /// </summary>
     public static class ObjectHelper
     {
+        /// <summary>
+        /// Gets the value of a property if the property is set. 
+        /// If the property is no set, then null will be returned
+        /// </summary>
+        /// <param name="value">Object being queried</param>
+        /// <param name="property">Property of the object</param>
+        /// <returns>The value of the object or null, if not existing</returns>
+        public static object getOrDefault(this IObject value, string property)
+        {
+            if (value.isSet(property))
+            {
+                return value.get(property);
+            }
+
+            return null;
+        }
+
         public static Dictionary<object, object> AsDictionary(
             this IObject value,
             IEnumerable<string> properties)

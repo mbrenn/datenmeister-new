@@ -83,7 +83,10 @@
     <Compile Include="Provider\XMI\UmlBootstrap\Helper.cs" />
     <Compile Include="Provider\XMI\XmiPlugin.cs" />
     <Compile Include="Runtime\Functions\Transformation\HierarchyMaker.cs" />
-    <Compile Include="Runtime\Functions\Transformation\HierarchyMakerSettings.cs" />
+    <Compile Include="Runtime\Functions\Transformation\HierarchyByParentSettings.cs" />
+    <Compile Include="Runtime\Functions\Transformation\HierarchyMakerBase.cs" />
+    <Compile Include="Runtime\Functions\Transformation\HierarchyMakerByParentSettings.cs" />
+    <Compile Include="Runtime\ObjectHelper.cs" />
     <Compile Include="Runtime\Workspaces\IWorkspace.cs" />
     <Compile Include="Runtime\Workspaces\WorkspaceNames.cs" />
     <Compile Include="Core\EMOF\Integrate.cs" />
@@ -98,8 +101,6 @@
     <Compile Include="Core\EMOF\Attributes\AssignFactoryForExtentTypeAttribute.cs" />
     <Compile Include="Core\EMOF\Exceptions\MofException.cs" />
     <Compile Include="Core\EMOF\Helper\AllDescendentsQuery.cs" />
-    <Compile Include="Core\EMOF\Helper\ExtentHelper.cs" />
-    <Compile Include="Core\EMOF\Helper\ObjectHelper.cs" />
     <Compile Include="Core\EMOF\Helper\ReflectiveSequenceForExtent.cs" />
     <Compile Include="Core\EMOF\InMemory\ExtentUrlNavigator.cs" />
     <Compile Include="Core\EMOF\InMemory\MofElement.cs" />

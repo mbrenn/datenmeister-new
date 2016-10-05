@@ -9,7 +9,7 @@ using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Models.Modules.ViewFinder
+namespace DatenMeister.Modules.ViewFinder
 {
     public class ViewLogic
     {

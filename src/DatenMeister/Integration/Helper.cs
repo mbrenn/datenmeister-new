@@ -10,7 +10,7 @@ namespace DatenMeister.Integration
     {
         public static IContainer UseDatenMeister(this ContainerBuilder kernel, IntegrationSettings settings)
         {
-            var integration = new Integration(settings);
+            var integration = new Provider.DotNet.Integration(settings);
             return integration.UseDatenMeister(kernel);
         }
 

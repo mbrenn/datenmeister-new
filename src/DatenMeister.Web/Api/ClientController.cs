@@ -1,5 +1,5 @@
 ﻿using System.Web.Http;
-using DatenMeister.Models.Modules;
+using DatenMeister.Modules;
 
 namespace DatenMeister.Web.Api
 {

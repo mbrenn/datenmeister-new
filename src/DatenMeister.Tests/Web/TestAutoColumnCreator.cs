@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using DatenMeister.Core.EMOF.InMemory;
-using DatenMeister.Models.Modules.ViewFinder.Helper;
+using DatenMeister.Modules.ViewFinder.Helper;
+using DatenMeister.Uml.Helper;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Web

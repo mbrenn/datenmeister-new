@@ -22,13 +22,12 @@ namespace DatenMeister.Tests.Uml
             var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
-                var classifierMethods = scope.Resolve<ClassifierMethods>();
                 var dataLayerLogic = scope.Resolve<WorkspaceLogic>();
 
                 // Gets the logic
                 var uml = dataLayerLogic.GetUml().Get<_UML>();
                 var feature = uml.Classification.__Feature;
-                var properties = classifierMethods.GetPropertyNamesOfClassifier(feature).ToList();
+                var properties = ClassifierMethods.GetPropertyNamesOfClassifier(feature).ToList();
 
                 Assert.That(properties.Contains(_UML._Classification._Feature.isStatic), Is.True,
                     "isStatic");

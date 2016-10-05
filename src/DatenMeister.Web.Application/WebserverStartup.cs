@@ -6,7 +6,7 @@ using Autofac.Integration.WebApi;
 using BurnSystems.Owin.StaticFiles;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Models.Modules;
+using DatenMeister.Modules;
 using DatenMeister.Web.Application;
 using DatenMeister.Web.Modules;
 using Microsoft.Owin;

@@ -417,7 +417,6 @@ namespace DatenMeister.Uml
         {
             // Now we replace the property information from string form to real properties
             List<Action> actions = new List<Action>();
-            var classifierMethod = new ClassifierMethods(_workspaceLogic);
 
             foreach (var element in allElements.OfType<IObjectAllProperties>())
             {
@@ -434,7 +433,7 @@ namespace DatenMeister.Uml
                     continue;
                 }
 
-                var propertiesOfMetaClass = classifierMethod.GetPropertyNamesOfClassifier(metaClass).ToList();
+                var propertiesOfMetaClass = ClassifierMethods.GetPropertyNamesOfClassifier(metaClass).ToList();
                 var mapping = new Dictionary<string, string>();
                 foreach (var property in propertiesOfMetaClass)
                 {

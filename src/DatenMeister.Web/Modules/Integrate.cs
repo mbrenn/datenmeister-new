@@ -1,6 +1,6 @@
 ﻿using Autofac;
-using DatenMeister.Models.Modules;
-using DatenMeister.Models.Modules.ViewFinder;
+using DatenMeister.Modules;
+using DatenMeister.Modules.ViewFinder;
 
 namespace DatenMeister.Web.Modules
 {

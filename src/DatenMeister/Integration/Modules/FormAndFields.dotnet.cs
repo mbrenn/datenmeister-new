@@ -1,10 +1,10 @@
-using DatenMeister;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Filler;
+using DatenMeister.Models.Forms;
 using DatenMeister.Provider.DotNet;
 
-namespace DatenMeister.Models.Forms
+namespace DatenMeister.Integration.Modules
 {
     public static class IntegrateFormAndFields
     {

@@ -2,12 +2,13 @@
 using System.IO;
 using Autofac;
 using Autofac.Features.ResolveAnything;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Core.Filler;
+using DatenMeister.Integration;
+using DatenMeister.Integration.Modules;
 using DatenMeister.Models.Forms;
-using DatenMeister.Models.Modules.ViewFinder;
+using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.CSV;
-using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -18,7 +19,7 @@ using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
 using WorkspaceData = DatenMeister.Runtime.Workspaces.WorkspaceData;
 
-namespace DatenMeister.Integration
+namespace DatenMeister.Provider.DotNet
 {
     public class Integration
     {

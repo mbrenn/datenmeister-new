@@ -15,7 +15,7 @@ namespace DatenMeister.Integration.DotNet
         {
             settings.Hooks = new DotNetIntegrationHooks();
 
-            var integration = new Integration(settings);
+            var integration = new Provider.DotNet.Integration(settings);
             return integration.UseDatenMeister(kernel);
         }
     }

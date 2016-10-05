@@ -3,10 +3,10 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
-using DatenMeister.Models.Modules.ViewFinder.Helper;
+using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.DotNet;
 
-namespace DatenMeister.Models.Modules.ViewFinder
+namespace DatenMeister.Modules.ViewFinder
 {
     /// <summary>
     /// Includes the implementation of the IViewFinder
@@ -20,11 +20,12 @@ namespace DatenMeister.Models.Modules.ViewFinder
 
         public ViewFinderImpl(
             IDotNetTypeLookup dotNetTypeLookup,
-            ViewLogic viewLogic)
+            ViewLogic viewLogic, 
+            FormCreator formCreator)
         {
-            _formCreator = new FormCreator();
             _dotNetTypeLookup = dotNetTypeLookup;
             _viewLogic = viewLogic;
+            _formCreator = formCreator;
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
 ﻿using System;
 using Autofac;
 
-namespace DatenMeister.Models.Modules
+namespace DatenMeister.Modules
 {
     public class WebserverStartupPhases : IWebserverStartupPhases
     {

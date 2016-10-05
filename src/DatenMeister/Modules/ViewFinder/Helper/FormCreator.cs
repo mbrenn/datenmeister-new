@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 using DatenMeister.Models.Forms;
+using DatenMeister.Uml.Helper;
 
-namespace DatenMeister.Models.Modules.ViewFinder.Helper
+namespace DatenMeister.Modules.ViewFinder.Helper
 {
     /// <summary>
     /// Creates a view out of the given extent, elements (collection) or element). 
@@ -16,6 +16,7 @@ namespace DatenMeister.Models.Modules.ViewFinder.Helper
     /// </summary>
     public class FormCreator
     {
+
         [Flags]
         public enum CreationMode
         {
@@ -58,30 +59,23 @@ namespace DatenMeister.Models.Modules.ViewFinder.Helper
             if (creationMode.HasFlag(CreationMode.ByMetaClass)
                 && metaClass != null)
             {
-                if (metaClass.isSet(_UML._Classification._Classifier.attribute))
+                foreach (var property in ClassifierMethods.GetPropertiesOfClassifier(metaClass))
                 {
                     wasInMetaClass = true;
-                    var properties = metaClass.get(_UML._Classification._Classifier.attribute) as IEnumerable;
-                    if (properties != null)
+                    var propertyName = property.get("name").ToString();
+                    var isAlreadyIn = result.fields.Any(x => x.name == propertyName);
+                    if (isAlreadyIn)
                     {
-                        foreach (var property in properties.Cast<IObject>())
-                        {
-                            var propertyName = property.get("name").ToString();
-                            var isAlreadyIn = result.fields.Any(x => x.name == propertyName);
-                            if (isAlreadyIn)
-                            {
-                                continue;
-                            }
-
-                            FieldData column = new TextFieldData
-                            {
-                                name = propertyName,
-                                title = propertyName
-                            };
-
-                            result.fields.Add(column);
-                        }
+                        continue;
                     }
+
+                    FieldData column = new TextFieldData
+                    {
+                        name = propertyName,
+                        title = propertyName
+                    };
+
+                    result.fields.Add(column);
                 }
             }
 
@@ -89,13 +83,13 @@ namespace DatenMeister.Models.Modules.ViewFinder.Helper
             // This item does not have a metaclass and also no properties, so we try to find them by using the item
             var itemAsAllProperties = item as IObjectAllProperties;
 
-            var isByProperties = 
+            var isByProperties =
                 creationMode.HasFlag(CreationMode.ByProperties);
-            var isOnlyPropertiesIfNoMetaClass = 
+            var isOnlyPropertiesIfNoMetaClass =
                 creationMode.HasFlag(CreationMode.OnlyPropertiesIfNoMetaClass);
 
-            if ((isByProperties 
-                    || (isOnlyPropertiesIfNoMetaClass && !wasInMetaClass))
+            if ((isByProperties
+                 || (isOnlyPropertiesIfNoMetaClass && !wasInMetaClass))
                 && itemAsAllProperties != null)
             {
                 var properties = itemAsAllProperties.getPropertiesBeingSet();

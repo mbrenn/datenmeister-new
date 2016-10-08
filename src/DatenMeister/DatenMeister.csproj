@@ -85,7 +85,7 @@
     <Compile Include="Runtime\Functions\Transformation\HierarchyMaker.cs" />
     <Compile Include="Runtime\Functions\Transformation\HierarchyByParentSettings.cs" />
     <Compile Include="Runtime\Functions\Transformation\HierarchyMakerBase.cs" />
-    <Compile Include="Runtime\Functions\Transformation\HierarchyMakerByParentSettings.cs" />
+    <Compile Include="Runtime\Functions\Transformation\HierarchyByChildrenSettings.cs" />
     <Compile Include="Runtime\ObjectHelper.cs" />
     <Compile Include="Runtime\Workspaces\IWorkspace.cs" />
     <Compile Include="Runtime\Workspaces\WorkspaceNames.cs" />

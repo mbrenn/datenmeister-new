@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Proxies;
 
 namespace DatenMeister.Runtime
@@ -35,6 +36,11 @@ namespace DatenMeister.Runtime
             }
 
             return value;
+        }
+
+        public static IEnumerable<IObject> OnlyObjects(this IEnumerable<object> values)
+        {
+            return values.Select(x => x as IObject).Where(x => x != null);
         }
     }
 }

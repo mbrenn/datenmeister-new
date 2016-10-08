@@ -1,6 +1,6 @@
 namespace DatenMeister.Runtime.Functions.Transformation
 {
-    public class HierarchyMakerByParentSettings : HierarchyMakerBase
+    public class HierarchyByChildrenSettings : HierarchyMakerBase
     {
         /// <summary>
         /// Gets or sets the name of the column containing the ids of the children.

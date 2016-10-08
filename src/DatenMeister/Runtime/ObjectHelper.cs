@@ -101,6 +101,27 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
+        /// Gets a certain property value as a reflective sequence.
+        /// If the value is not a reflective sequence, an exception is thrown
+        /// </summary>
+        /// <param name="value">Value to be queried</param>
+        /// <param name="property">Property that is access</param>
+        /// <returns>The reflective sequence or an exception if the property is not
+        /// a reflective collection</returns>
+        public static IEnumerable<object> GetAsEnumerable(
+            this IObject value,
+            string property)
+        {
+            var result = value.get(property) as IEnumerable<object>;
+            if (result == null)
+            {
+                throw new InvalidOperationException("The given result is not a ReflectiveSequence");
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Returns the value as an IObject. 
         /// If the object is not an IObject, an exception is thrown
         /// </summary>
@@ -228,6 +249,24 @@ namespace DatenMeister.Runtime
                 throw new InvalidOperationException("The value behind the property is not an enumeration");
             }
 
+            foreach (var obj in GetByPropertyFromCollection(asEnumeration, propertyOfChild, requestValue))
+            {
+                yield return obj;
+            }
+        }
+
+        /// <summary>
+        /// Gets the enumeration of all object that have a certain property value in one of its children
+        /// </summary>
+        /// <param name="asEnumeration">The enumeration being queried</param>
+        /// <param name="propertyOfChild">Property that is queried</param>
+        /// <param name="requestValue">The value, that is used as a validation against the property</param>
+        /// <returns>Enumeration of objects</returns>
+        public  static IEnumerable<IObject> GetByPropertyFromCollection(
+            this IEnumerable<object> asEnumeration, 
+            string propertyOfChild, 
+            object requestValue)
+        {
             foreach (var x in asEnumeration)
             {
                 var asElement = x as IObject;

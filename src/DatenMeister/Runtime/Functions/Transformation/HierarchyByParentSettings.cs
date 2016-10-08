@@ -2,8 +2,6 @@
 {
     public class HierarchyByParentSettings : HierarchyMakerBase
     {
-
-
         /// <summary>
         /// Gets or sets the name of the column containing the parent-relationship
         /// </summary>

@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Integration;
 using DatenMeister.Integration;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Transformation;
 
 namespace DirectUsage
@@ -38,7 +39,7 @@ namespace DirectUsage
             foreach (var sheet in excelExtent.elements())
             {
                 var sheetAsElement = (IElement) sheet;
-                var allProperties = ((IEnumerable<object>) sheetAsElement.get("items")).First() as IObjectAllProperties;
+                var allProperties = sheetAsElement.GetAsEnumerable("items").First() as IObjectAllProperties;
                 Console.WriteLine("Table:" + sheetAsElement.get("name"));
                 foreach (var property in allProperties.getPropertiesBeingSet())
                 {
@@ -52,12 +53,11 @@ namespace DirectUsage
                 }
             }
 
-
             var excelFunctions = dm.LoadExcel("d:///excel", "files/Functions.xlsx");
             var mofTarget = new MofUriExtent("dm:///");
             HierarchyMaker.Convert(new HierarchyByParentSettings()
             {
-                Sequence = ((IElement) excelFunctions.elements().First()).get("items") as IReflectiveSequence,
+                Sequence = ((IElement) excelFunctions.elements().GetByPropertyFromCollection("name", "Per Parent").First()).get("items") as IReflectiveSequence,
                 TargetSequence  =  mofTarget.elements(),
                 TargetFactory =  new MofFactory(),
                 NewChildColumn = "Parts",
@@ -70,6 +70,24 @@ namespace DirectUsage
                 Console.WriteLine(element.ToString());
             }
 
+            mofTarget = new MofUriExtent("dm:///");
+            HierarchyMaker.Convert(new HierarchyByChildrenSettings()
+            {
+                Sequence = ((IElement)excelFunctions.elements().GetByPropertyFromCollection("name", "Per Child").First()).get("items") as IReflectiveSequence,
+                TargetSequence = mofTarget.elements(),
+                TargetFactory = new MofFactory(),
+                NewChildColumn = "Parts",
+                OldIdColumn = "Id",
+                OldChildrenColumn = "Child",
+                ChildIdSeparator = ","
+            });
+
+            foreach (var element in mofTarget.elements())
+            {
+                Console.WriteLine(element.ToString());
+            }
+
+            Console.WriteLine("Waiting for Key...");
             Console.ReadKey();
 
             watch.Stop();

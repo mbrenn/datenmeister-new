@@ -3,7 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Functions.Transformation
 {
-    public class HierarchyMakerBase
+    public abstract class HierarchyMakerBase
     {
         /// <summary>
         /// Gets or sets the extent that is used to convert the elements

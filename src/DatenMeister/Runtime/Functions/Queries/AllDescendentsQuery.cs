@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
 
-namespace DatenMeister.Core.EMOF.Helper
+namespace DatenMeister.Runtime.Functions.Queries
 {
     /// <summary>
     ///     This query returns all objects which are descendents (and sub-descendents)
@@ -13,7 +12,7 @@ namespace DatenMeister.Core.EMOF.Helper
     /// </summary>
     public class AllDescendentsQuery
     {
-        private HashSet<IObject> _alreadyVisited = new HashSet<IObject>();
+        private readonly HashSet<IObject> _alreadyVisited = new HashSet<IObject>();
 
         private AllDescendentsQuery()
         {
@@ -38,7 +37,13 @@ namespace DatenMeister.Core.EMOF.Helper
             return inner.GetDescendentsInternal(extent.elements());
         }
 
-        public IEnumerable<IObject> GetDescendentsInternal(IObject element)
+        public static IEnumerable<IObject> GetDescendents(IEnumerable enumeration)
+        {
+            var inner = new AllDescendentsQuery();
+            return inner.GetDescendentsInternal(enumeration);
+        }
+
+        private IEnumerable<IObject> GetDescendentsInternal(IObject element)
         {
             if (_alreadyVisited.Contains(element))
             {
@@ -81,7 +86,8 @@ namespace DatenMeister.Core.EMOF.Helper
                 }
             }
         }
-        public IEnumerable<IObject> GetDescendentsInternal(IEnumerable valueAsEnumerable)
+
+        private IEnumerable<IObject> GetDescendentsInternal(IEnumerable valueAsEnumerable)
         {
             foreach (var element in valueAsEnumerable)
             {
@@ -95,12 +101,5 @@ namespace DatenMeister.Core.EMOF.Helper
                 }
             }
         }
-
-        public static IEnumerable<IObject> GetDescendents(IEnumerable enumeration)
-        {
-            var inner = new AllDescendentsQuery();
-            return inner.GetDescendentsInternal(enumeration);
-        } 
-
     }
 }

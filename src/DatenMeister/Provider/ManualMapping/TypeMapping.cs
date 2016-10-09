@@ -10,10 +10,17 @@ namespace DatenMeister.Provider.ManualMapping
 
         public Func<object, IElement> CreateNewObject { get; set; }
 
-        public Func<object, string> GetId { get; set; }
+        public Action<IElement> InitializeNewObject { get; set; }
 
-        public Dictionary<string, PropertyMapping> Properties { get; } 
+        public Func<object, string> GetId { get; private set; }
+
+        private Dictionary<string, PropertyMapping> Properties { get; } 
             = new Dictionary<string, PropertyMapping>();
+
+        public TypeMapping(Func<object, string> getIdFunc)
+        {
+            GetId = getIdFunc;
+        }
 
         public PropertyMapping AddProperty<TInstanceValue, TReturnValue>(
             string property,
@@ -31,6 +38,11 @@ namespace DatenMeister.Provider.ManualMapping
             return propertyMapping;
         }
 
+        /// <summary>
+        /// Returns the property mapping for a certain property by name
+        /// </summary>
+        /// <param name="property">Name of the property being queried</param>
+        /// <returns>The found mapping</returns>
         public PropertyMapping FindProperty(string property)
         {
             PropertyMapping mapping;

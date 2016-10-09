@@ -39,7 +39,7 @@ namespace DirectUsage
             foreach (var sheet in excelExtent.elements())
             {
                 var sheetAsElement = (IElement) sheet;
-                var allProperties = sheetAsElement.GetAsEnumerable("items").First() as IObjectAllProperties;
+                var allProperties = (IObjectAllProperties) sheetAsElement.GetAsEnumerable("items").First();
                 Console.WriteLine("Table:" + sheetAsElement.get("name"));
                 foreach (var property in allProperties.getPropertiesBeingSet())
                 {
@@ -61,7 +61,7 @@ namespace DirectUsage
                 TargetSequence  =  mofTarget.elements(),
                 TargetFactory =  new MofFactory(),
                 NewChildColumn = "Parts",
-                OldIdColumn = "Id", 
+                IdColumn = "Id", 
                 OldParentColumn = "Parent"
             });
 
@@ -77,7 +77,7 @@ namespace DirectUsage
                 TargetSequence = mofTarget.elements(),
                 TargetFactory = new MofFactory(),
                 NewChildColumn = "Parts",
-                OldIdColumn = "Id",
+                IdColumn = "Id",
                 OldChildrenColumn = "Child",
                 ChildIdSeparator = ","
             });
@@ -86,6 +86,20 @@ namespace DirectUsage
             {
                 Console.WriteLine(element.ToString());
             }
+
+            mofTarget = new MofUriExtent("dm:///");
+            HierarchyMaker.Convert(new HierarchyByParentSettings()
+            {
+                Sequence = ((IElement)excelFunctions.elements().GetByPropertyFromCollection("name", "Länder").First()).get("items") as IReflectiveSequence,
+                TargetSequence = mofTarget.elements(),
+                TargetFactory = new MofFactory(),
+                NewChildColumn = "Länder",
+                IdColumn = "Id",
+                OldParentColumn = "Parent"
+            });
+
+            var foundElement = mofTarget.element("dm:///#Länder.1");
+            Console.WriteLine(foundElement.ToString());
 
             Console.WriteLine("Waiting for Key...");
             Console.ReadKey();

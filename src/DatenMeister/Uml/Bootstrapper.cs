@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Helper;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;

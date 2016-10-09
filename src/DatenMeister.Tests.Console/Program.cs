@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Helper;
 using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.Filler;
 using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.XMI;
+using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml;
 

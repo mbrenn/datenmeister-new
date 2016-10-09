@@ -6,13 +6,13 @@ using NPOI.SS.UserModel;
 
 namespace DatenMeister.Excel.EMOF
 {
-    public class RowItem : IElement, IObjectAllProperties
+    public class RowItem : IElement, IObjectAllProperties, IHasId
     {
         private readonly IElement _metaClass;
 
-        public SheetItem SheetItem { get; private set; }
+        public SheetItem SheetItem { get; }
 
-        public int Row { get; private set; }
+        public int Row { get; }
 
         public RowItem(SheetItem sheetItem, int row, IElement metaClass)
         {
@@ -83,6 +83,28 @@ namespace DatenMeister.Excel.EMOF
         public IEnumerable<string> getPropertiesBeingSet()
         {
             return SheetItem.Columns.Keys.ToList();
+        }
+
+        /// <summary>
+        /// Gets the id of a row
+        /// </summary>
+        public string Id
+        {
+            get
+            {
+                var firstPart = SheetItem.Value.SheetName;
+                string secondPart;
+                if (string.IsNullOrEmpty(SheetItem.Settings.IdColumn))
+                {
+                    secondPart = Row.ToString();
+                }
+                else
+                {
+                    secondPart = get(SheetItem.Settings.IdColumn).ToString();
+                }
+
+                return $"{firstPart}.{secondPart}";
+            }
         }
     }
 }

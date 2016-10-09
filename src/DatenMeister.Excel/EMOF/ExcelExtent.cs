@@ -1,6 +1,5 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Helper;
 using DatenMeister.Provider.ManualMapping;
 using NPOI.SS.UserModel;
@@ -13,13 +12,22 @@ namespace DatenMeister.Excel.EMOF
         private readonly _ExcelModels models = new _ExcelModels();
 
         private readonly XSSFWorkbook _workbook;
+        private readonly ExcelSettings _settings;
 
-        public ExcelExtent(string url, XSSFWorkbook workbook) : base (url)
+        public ExcelExtent(string url, XSSFWorkbook workbook, ExcelSettings settings) : base (url)
         {
             _workbook = workbook;
+            _settings = settings;
 
             // Maps the table to sheet item
-            var typeMapping = AddMappingForType<SheetItem, ISheet>(models.__Table);
+            var typeMapping = AddMappingForType<SheetItem, ISheet>(
+                models.__Table,
+                x => x.Value.SheetName,
+                x =>
+                {
+                    x.Settings = _settings;
+                });
+
             typeMapping.AddProperty<SheetItem, string>(
                 "name",
                 x => x.Value.SheetName,
@@ -58,7 +66,7 @@ namespace DatenMeister.Excel.EMOF
             for (var n = 0; n < _workbook.NumberOfSheets; n++)
             {
                 var sheet = _workbook.GetSheetAt(n);
-                var element = ConvertToElement(models.__Table, sheet) as SheetItem;
+                var element = (SheetItem) ConvertToElement(models.__Table, sheet);
                 element.InitializeData();
 
                 result.add(element);

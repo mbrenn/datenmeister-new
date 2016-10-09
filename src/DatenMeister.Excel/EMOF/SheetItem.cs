@@ -13,6 +13,8 @@ namespace DatenMeister.Excel.EMOF
         /// </summary>
         public Dictionary<string, int> Columns { get; set; } = new Dictionary<string, int>();
 
+        public ExcelSettings Settings { get; set; }
+
         /// <summary>
         /// First column where data can be found
         /// </summary>

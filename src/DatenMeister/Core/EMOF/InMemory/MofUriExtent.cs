@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Attributes;
-using DatenMeister.Core.EMOF.Helper;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Extents;
 
 namespace DatenMeister.Core.EMOF.InMemory
 {

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using DatenMeister.Core.EMOF.Helper;
+using System.Net;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Functions.Queries;
 
 namespace DatenMeister.Core.EMOF.InMemory
 {
@@ -42,7 +43,7 @@ namespace DatenMeister.Core.EMOF.InMemory
             }
 
             // Queries the object
-            var queryObjectId = fragment.Substring(1);
+            var queryObjectId = WebUtility.UrlDecode(fragment.Substring(1));
 
             // Now go through the list
             foreach (var element in AllDescendentsQuery.GetDescendents(_extent))

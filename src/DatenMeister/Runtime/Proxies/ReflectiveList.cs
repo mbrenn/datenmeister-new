@@ -19,12 +19,12 @@ namespace DatenMeister.Runtime.Proxies
         /// <summary>
         /// Stores the function that is used to convert an object to the given type
         /// </summary>
-        private Func<object, T> _wrapFunc;
+        private readonly Func<object, T> _wrapFunc;
 
         /// <summary>
         /// Converts the function that is used to unwrap the function
         /// </summary>
-        private Func<T, object> _unwrapFunc;
+        private readonly Func<T, object> _unwrapFunc;
 
 
         public ReflectiveList(IReflectiveCollection collection)

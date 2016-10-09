@@ -24,6 +24,6 @@ namespace DatenMeister.Runtime.Functions.Transformation
         /// <summary>
         /// Gets or sets the name of the column containing the id
         /// </summary>
-        public string OldIdColumn { get; set; }
+        public string IdColumn { get; set; }
     }
 }

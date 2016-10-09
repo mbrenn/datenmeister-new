@@ -37,6 +37,15 @@ namespace DatenMeister.Runtime.Copier
                 throw new ArgumentException($"{nameof(sourceElement)} is not of type IObjectAllProperties");
             }
 
+            // Transfers the id
+            var sourceWithId = sourceElement as IHasId;
+            var targetCanSetId = targetElement as ICanSetId;
+            if (sourceWithId != null && targetCanSetId != null)
+            {
+                targetCanSetId.Id = sourceWithId.Id;
+            }
+
+            // Transfers the properties
             foreach (var property in elementAsExt.getPropertiesBeingSet())
             {
                 var value = sourceElement.get(property);

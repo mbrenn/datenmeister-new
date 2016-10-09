@@ -6,7 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Core.EMOF.Helper
+namespace DatenMeister.Runtime.Extents
 {
     public class ReflectiveSequenceForExtent : IReflectiveSequence, IExtentCachesObject
     {

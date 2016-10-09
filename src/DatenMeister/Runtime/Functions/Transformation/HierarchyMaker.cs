@@ -22,7 +22,6 @@ namespace DatenMeister.Runtime.Functions.Transformation
             Debug.Assert(settings.TargetFactory != null);
             Debug.Assert(settings.TargetSequence != null);
 
-
             // Stores the lists
             var lists = new Dictionary<object, List<object>>();
 
@@ -31,7 +30,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
             // Now: Do the adding of the childrena into a temporary lists and copy 
             foreach (var element in settings.Sequence.Select(x => x as IObject).Where(x => x != null))
             {
-                var id = element.getOrDefault(settings.OldIdColumn);
+                var id = element.getOrDefault(settings.IdColumn);
 
                 if (id != null && element.isSet(settings.OldParentColumn))
                 {
@@ -60,7 +59,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
             // Copies all the elements which do not have parent into the generic one
             foreach (var element in settings.Sequence.Select(x => x as IElement).Where(x => x != null))
             {
-                var id = element.getOrDefault(settings.OldIdColumn);
+                var id = element.getOrDefault(settings.IdColumn);
                 if (id != null && element.isSet(settings.OldParentColumn))
                 {
                     var parentId = element.get(settings.OldParentColumn);
@@ -74,9 +73,9 @@ namespace DatenMeister.Runtime.Functions.Transformation
             // Adds the children to the target elements
             foreach (var element in targetExtent.Select(x => x as IObject).Where(x => x != null))
             {
-                if (element.isSet(settings.OldIdColumn))
+                if (element.isSet(settings.IdColumn))
                 {
-                    var key = element.get(settings.OldIdColumn);
+                    var key = element.get(settings.IdColumn);
                     List<object> list;
                     if (lists.TryGetValue(key, out list))
                     {
@@ -84,26 +83,6 @@ namespace DatenMeister.Runtime.Functions.Transformation
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Copies the elements into a dictionary where 
-        /// </summary>
-        /// <param name="settings"></param>
-        /// <returns></returns>
-        private static Dictionary<object, IObject> CopyElements(HierarchyMakerBase settings)
-        {
-            // First: List items by id
-            var copier = new ObjectCopier(settings.TargetFactory);
-            var values = new Dictionary<object, IObject>();
-            foreach (var element in settings.Sequence.OnlyObjects())
-            {
-                if (element.isSet(settings.OldIdColumn))
-                {
-                    values[element.get(settings.OldIdColumn)] = copier.Copy(element);
-                }
-            }
-            return values;
         }
 
         public static void Convert(HierarchyByChildrenSettings settings)
@@ -126,21 +105,23 @@ namespace DatenMeister.Runtime.Functions.Transformation
                     ?.Split(new[] {settings.ChildIdSeparator}, StringSplitOptions.RemoveEmptyEntries)
                     ?.Select(x => x.Trim());
 
-                if (childrenId != null)
+                if (childrenId == null)
                 {
-                    var list = new List<IObject>();
-                    foreach (var childId in childrenId)
-                    {
-                        if (copiedElements.ContainsKey(childId))
-                        {
-                            var found = copiedElements[childId];
-                            list.Add(found);
-                            isChild.Add(found);
-                        }
-                    }
-
-                    element.set(settings.NewChildColumn, list);
+                    continue;
                 }
+
+                var list = new List<IObject>();
+                foreach (var childId in childrenId)
+                {
+                    if (copiedElements.ContainsKey(childId))
+                    {
+                        var found = copiedElements[childId];
+                        list.Add(found);
+                        isChild.Add(found);
+                    }
+                }
+
+                element.set(settings.NewChildColumn, list);
             }
 
             // Ok, add the elements, which are not child to final sequence
@@ -152,6 +133,26 @@ namespace DatenMeister.Runtime.Functions.Transformation
                     settings.TargetSequence.add(element);
                 }
             }
+        }
+
+        /// <summary>
+        /// Copies the elements into a dictionary where 
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        private static Dictionary<object, IObject> CopyElements(HierarchyMakerBase settings)
+        {
+            // First: List items by id
+            var copier = new ObjectCopier(settings.TargetFactory);
+            var values = new Dictionary<object, IObject>();
+            foreach (var element in settings.Sequence.OnlyObjects())
+            {
+                if (element.isSet(settings.IdColumn))
+                {
+                    values[element.get(settings.IdColumn)] = copier.Copy(element);
+                }
+            }
+            return values;
         }
     }
 }

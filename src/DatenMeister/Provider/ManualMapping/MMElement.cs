@@ -3,7 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.ManualMapping
 {
-    public class MMElement<T> : IElement, IHasValue
+    public class MMElement<T> : IElement, IHasValue, IHasId
     {
 
         /// <summary>
@@ -27,12 +27,14 @@ namespace DatenMeister.Provider.ManualMapping
         /// </summary>
         public MMElement()
         {
-            
+
         }
 
         public MMElement(TypeMapping typeMapping, T value, IElement container = null)
         {
             if (typeMapping == null) throw new ArgumentNullException(nameof(typeMapping));
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
             TypeMapping = typeMapping;
             Value = value;
             Container = container;
@@ -53,7 +55,7 @@ namespace DatenMeister.Provider.ManualMapping
         {
             if (property == null) throw new ArgumentNullException(nameof(property));
 
-            var mapping =  FindProperty(property);
+            var mapping = FindProperty(property);
             return mapping.GetValueFunc(this);
         }
 
@@ -103,5 +105,7 @@ namespace DatenMeister.Provider.ManualMapping
 
             return mapping;
         }
+
+        public string Id => TypeMapping.GetId(this);
     }
 }

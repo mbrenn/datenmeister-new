@@ -26,8 +26,10 @@ namespace DatenMeister.Provider.ManualMapping
         /// <typeparam name="TValue">Type of the value being added</typeparam>
         /// <param name="metaClass">Metaclass which is used to 
         /// talk about the class</param>
+        /// <param name="getIdFunc">The query function to retrieve the id of an element</param>
+        /// <param name="initializeFunc">Defines the function that shall be called the function is initialized</param>
         /// <returns>The created type mapping</returns>
-        public TypeMapping AddMappingForType<T, TValue>(IElement metaClass) where T: MMElement<TValue>, new()
+        public TypeMapping AddMappingForType<T, TValue>(IElement metaClass, Func<T, string> getIdFunc, Action<T> initializeFunc = null) where T: MMElement<TValue>, new()
         {
             if (metaClass == null)
             {
@@ -39,16 +41,22 @@ namespace DatenMeister.Provider.ManualMapping
                 throw new InvalidOperationException("Metaclass is already set in typemapping");
             }
 
-            var typeMapping = new TypeMapping
+            var typeMapping = new TypeMapping(x=> getIdFunc((T) x))
             {
                 metaClass = metaClass
             };
+
             typeMapping.CreateNewObject = (value) => new T
             {
                 Extent = this,
                 TypeMapping = typeMapping,
                 Value = (TValue) value
             };
+
+            if (initializeFunc != null)
+            {
+                typeMapping.InitializeNewObject = x => { initializeFunc((T) x); };
+            }
 
             TypeMappings[metaClass] = typeMapping;
             return typeMapping;
@@ -89,7 +97,10 @@ namespace DatenMeister.Provider.ManualMapping
 
         public object ConvertToElement(IElement metaClass, object value)
         {
-            return GetMapping(metaClass)?.CreateNewObject(value);
+            var mapping = GetMapping(metaClass);
+            var result = mapping?.CreateNewObject(value);
+            mapping?.InitializeNewObject(result);
+            return result;
         }
     }
 }

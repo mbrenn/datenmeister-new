@@ -6,7 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Functions.Queries;
 
-namespace DatenMeister.Core.EMOF.InMemory
+namespace DatenMeister.Runtime
 {
     public class ExtentUrlNavigator<T> where T : class, IElement, IHasId
     {

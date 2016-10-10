@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Proxies;
 using NUnit.Framework;
 
@@ -18,7 +18,7 @@ namespace DatenMeister.Tests.Mof.Core
         [Test]
         public void TestInMemoryMofObject()
         { 
-            var mofObject = new MofObject();
+            var mofObject = new InMemoryObject();
             Assert.That(mofObject.isSet(property1), Is.False);
             mofObject.set(property1, "Test");
             mofObject.set(property2, property1);
@@ -33,9 +33,9 @@ namespace DatenMeister.Tests.Mof.Core
         [Test]
         public void TestStoreAndFindObject()
         {
-            var mofElement = new MofElement();
-            var otherMofElement = new MofElement();
-            var mofInstance = new MofUriExtent("datenmeister:///test");
+            var mofElement = new InMemoryElement();
+            var otherMofElement = new InMemoryElement();
+            var mofInstance = new InMemoryUriExtent("datenmeister:///test");
             mofInstance.elements().add(mofElement);
             mofInstance.elements().add(otherMofElement);
 
@@ -58,11 +58,11 @@ namespace DatenMeister.Tests.Mof.Core
         [Test]
         public void TestProxyForUriExtent()
         {
-            var uriExtent = new MofUriExtent("dm:///test");
+            var uriExtent = new InMemoryUriExtent("dm:///test");
             var proxiedUriExtent = new ProxyUriExtent(uriExtent).ActivateObjectConversion();
 
-            var mofElement = new MofElement();
-            var otherMofElement = new MofElement();
+            var mofElement = new InMemoryElement();
+            var otherMofElement = new InMemoryElement();
             proxiedUriExtent.elements().add(mofElement);
             proxiedUriExtent.elements().add(otherMofElement);
 
@@ -71,7 +71,7 @@ namespace DatenMeister.Tests.Mof.Core
 
             var proxiedElement = returned as ProxyMofElement;
             Assert.That(proxiedElement, Is.Not.Null);
-            Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<MofElement>());
+            Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<InMemoryElement>());
 
             Assert.That(proxiedUriExtent.elements().remove(proxiedElement), Is.True);
             Assert.That(proxiedUriExtent.elements().size, Is.EqualTo(1));
@@ -83,16 +83,16 @@ namespace DatenMeister.Tests.Mof.Core
             Assert.That(returned, Is.TypeOf<ProxyMofElement>());
 
             proxiedElement = returned as ProxyMofElement;
-            Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<MofElement>());
+            Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<InMemoryElement>());
         }
 
         [Test]
         public void TestKnowsExtent()
         {
-            var uriExtent = new MofUriExtent("dm:///test");
+            var uriExtent = new InMemoryUriExtent("dm:///test");
 
-            var mofElement = new MofElement();
-            var otherMofElement = new MofElement();
+            var mofElement = new InMemoryElement();
+            var otherMofElement = new InMemoryElement();
 
             Assert.That(((IObjectKnowsExtent)mofElement).Extents.FirstOrDefault(), Is.Null);
             Assert.That(((IObjectKnowsExtent)otherMofElement).Extents.FirstOrDefault(), Is.Null);

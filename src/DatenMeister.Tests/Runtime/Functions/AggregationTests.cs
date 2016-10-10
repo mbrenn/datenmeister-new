@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Functions.Aggregation;
 using DatenMeister.Runtime.Functions.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
@@ -93,37 +93,37 @@ namespace DatenMeister.Tests.Runtime.Functions
 
         }
 
-        private MofReflectiveSequence CreateReflectiveSequence()
+        private InMemoryReflectiveSequence CreateReflectiveSequence()
         {
-            var reflectiveSequence = new MofReflectiveSequence();
+            var reflectiveSequence = new InMemoryReflectiveSequence();
 
-            var value = new MofObject();
+            var value = new InMemoryObject();
             value.set(property1, 3);
             value.set(property3, "A"); // A = 3
             reflectiveSequence.add(value);
 
-            value = new MofObject();
+            value = new InMemoryObject();
             value.set(property1, 1);
             value.set(property3, "B"); // A = 3, B = 1
             reflectiveSequence.add(value);
 
-            value = new MofObject();
+            value = new InMemoryObject();
             value.set(property1, 2);
             value.set(property3, "A"); // A = 5, B = 1
             reflectiveSequence.add(value);
 
-            value = new MofObject();
+            value = new InMemoryObject();
             value.set(property1, 3);
             value.set(property3, "B"); // A = 5, B = 4
             reflectiveSequence.add(value);
 
-            value = new MofObject();
+            value = new InMemoryObject();
             value.set(property1, 4);
             value.set(property2, 4);
             value.set(property3, "A"); // A = 9, B = 4
             reflectiveSequence.add(value);
 
-            value = new MofObject();
+            value = new InMemoryObject();
             value.set(property2, 3);
             reflectiveSequence.add(value);
             return reflectiveSequence;

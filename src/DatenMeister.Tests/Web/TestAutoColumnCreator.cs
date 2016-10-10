@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Modules.ViewFinder.Helper;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Uml.Helper;
 using NUnit.Framework;
 
@@ -15,15 +15,15 @@ namespace DatenMeister.Tests.Web
             var property1 = "zip";
             var property2 = "location";
 
-            var mofObject = new MofObject();
+            var mofObject = new InMemoryObject();
             mofObject.set(property1, "55130");
             mofObject.set(property2, "Mainz");
 
-            var mofObject2 = new MofObject();
+            var mofObject2 = new InMemoryObject();
             mofObject2.set(property1, "65474");
             mofObject2.set(property2, "Bischofsheim");
 
-            var extent = new MofUriExtent("datenmeister:///test");
+            var extent = new InMemoryUriExtent("datenmeister:///test");
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
             var creator = new FormCreator();
@@ -50,19 +50,19 @@ namespace DatenMeister.Tests.Web
             var property2 = "location";
             var property3 = "other";
 
-            var mofObject = new MofObject();
+            var mofObject = new InMemoryObject();
             mofObject.set(property1, "55130");
             mofObject.set(property2, "Mainz");
 
-            var mofObject2 = new MofObject();
+            var mofObject2 = new InMemoryObject();
             mofObject2.set(property1, "65474");
             mofObject2.set(property2, "Bischofsheim");
 
-            var enumeration = new MofReflectiveSequence();
-            enumeration.add(new MofObject());
+            var enumeration = new InMemoryReflectiveSequence();
+            enumeration.add(new InMemoryObject());
             mofObject2.set(property3, enumeration);
 
-            var extent = new MofUriExtent("datenmeister:///test");
+            var extent = new InMemoryUriExtent("datenmeister:///test");
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
 

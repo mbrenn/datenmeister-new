@@ -1,9 +1,9 @@
 ﻿using DatenMeister.Core;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 using DatenMeister.Provider.DotNet;
+using DatenMeister.Provider.InMemory;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.DotNet
@@ -124,7 +124,7 @@ namespace DatenMeister.Tests.DotNet
         private static DotNetTypeLookup Initialize()
         {
             var uml = new _UML();
-            var mofFactory = new MofFactory();
+            var mofFactory = new InMemoryFactory();
             var dotNetTypeLookup = new DotNetTypeLookup();
             dotNetTypeLookup.GenerateAndAdd(uml, mofFactory, typeof(DotNetTests.TestClass));
             dotNetTypeLookup.GenerateAndAdd(uml, mofFactory, typeof(DotNetTests.Person));

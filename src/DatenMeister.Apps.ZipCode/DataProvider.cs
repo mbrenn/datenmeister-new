@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.CSV;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Functions.Queries;
 
 namespace DatenMeister.Apps.ZipCode
@@ -14,7 +14,7 @@ namespace DatenMeister.Apps.ZipCode
     {
         public static DataProvider TheOne { get; }
 
-        public MofUriExtent ZipCodes
+        public InMemoryUriExtent ZipCodes
         {
             get;
             private set;
@@ -34,8 +34,8 @@ namespace DatenMeister.Apps.ZipCode
                 HasHeader = false
             };
 
-            ZipCodes = new MofUriExtent("datenmeister:///zipcodes");
-            var factory = new MofFactory();
+            ZipCodes = new InMemoryUriExtent("datenmeister:///zipcodes");
+            var factory = new InMemoryFactory();
 
             var csvProvider = new CSVDataProvider(null);
 

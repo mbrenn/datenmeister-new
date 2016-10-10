@@ -1,12 +1,12 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Core.EMOF.InMemory
+namespace DatenMeister.Provider.InMemory
 {
     /// <summary>
     ///     Implements the interface according to MOF Core Specificaton 2.5, clause 9.4
     /// </summary>
-    public class MofFactory : IFactory
+    public class InMemoryFactory : IFactory
     {
         public IElement package
         {
@@ -15,7 +15,7 @@ namespace DatenMeister.Core.EMOF.InMemory
 
         public virtual IElement create(IElement metaClass)
         {
-            return new MofElement(null, metaClass);
+            return new InMemoryElement(null, metaClass);
         }
 
         public virtual string convertToString(IElement dataType, IObject value)

@@ -1,19 +1,19 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Core.EMOF.InMemory
+namespace DatenMeister.Provider.InMemory
 {
     /// <summary>
     ///     Implements the IElement according to the Mof specification
     /// </summary>
-    public class MofElement : MofObject, IElement, IElementSetMetaClass, IElementSetContainer
+    public class InMemoryElement : InMemoryObject, IElement, IElementSetMetaClass, IElementSetContainer
     {
         private IElement _container;
 
-        public MofElement()
+        public InMemoryElement()
         {
         }
 
-        public MofElement(IElement container, IElement metaClass) : this()
+        public InMemoryElement(IElement container, IElement metaClass) : this()
         {
             _container = container;
             metaclass = metaClass;

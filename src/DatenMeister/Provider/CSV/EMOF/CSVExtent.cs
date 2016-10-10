@@ -1,9 +1,9 @@
-﻿using DatenMeister.Core.EMOF.InMemory;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.InMemory;
 
 namespace DatenMeister.Provider.CSV.EMOF
 {
-    public class CSVExtent : MofUriExtent
+    public class CSVExtent : InMemoryUriExtent
     {
         /// <summary>
         /// Gets or sets the metaclass being used to create the elements within the extent

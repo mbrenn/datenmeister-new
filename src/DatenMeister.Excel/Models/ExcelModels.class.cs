@@ -1,5 +1,5 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Provider.InMemory;
 
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.1.0.0
 namespace DatenMeister.Excel
@@ -14,7 +14,7 @@ namespace DatenMeister.Excel
         }
 
         public _Workbook @Workbook = new _Workbook();
-        public IElement @__Workbook = new MofElement();
+        public IElement @__Workbook = new InMemoryElement();
 
         public class _Table
         {
@@ -27,7 +27,7 @@ namespace DatenMeister.Excel
         }
 
         public _Table @Table = new _Table();
-        public IElement @__Table = new MofElement();
+        public IElement @__Table = new InMemoryElement();
 
         public static _ExcelModels TheOne = new _ExcelModels();
 

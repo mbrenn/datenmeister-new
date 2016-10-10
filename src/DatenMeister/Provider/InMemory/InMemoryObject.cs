@@ -5,12 +5,12 @@ using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Core.EMOF.InMemory
+namespace DatenMeister.Provider.InMemory
 {
     /// <summary>
     ///     Describes the InMemory object, representing the Mof Object
     /// </summary>
-    public class MofObject : IObject, IObjectAllProperties, IHasId, IObjectKnowsExtent, ICanSetId, ISetKnownExtents
+    public class InMemoryObject : IObject, IObjectAllProperties, IHasId, IObjectKnowsExtent, ICanSetId, ISetKnownExtents
     {
         /// <summary>
         /// Stores the list of extents to which this element is stored
@@ -22,7 +22,7 @@ namespace DatenMeister.Core.EMOF.InMemory
         /// </summary>
         private readonly Dictionary<string, object> _values = new Dictionary<string, object>();
        
-        public MofObject()
+        public InMemoryObject()
         {
             Id = Guid.NewGuid().ToString();
         }

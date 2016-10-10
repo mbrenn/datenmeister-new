@@ -1,4 +1,4 @@
-﻿using DatenMeister.Core.EMOF.InMemory;
+﻿using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Copier;
 using NUnit.Framework;
 
@@ -13,13 +13,13 @@ namespace DatenMeister.Tests.Runtime
         [Test]
         public void TestCopyOfObject()
         {
-            var factory = new MofFactory();
+            var factory = new InMemoryFactory();
 
-            var mofObject = new MofElement();
+            var mofObject = new InMemoryElement();
             mofObject.set(property1, "55130");
             mofObject.set(property2, "Mainz");
 
-            var mofObject2 = new MofElement();
+            var mofObject2 = new InMemoryElement();
             mofObject2.set(property1, "65474");
             mofObject2.set(property2, "Bischofsheim");
 

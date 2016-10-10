@@ -1,13 +1,13 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Provider.XMI.Standards;
 using DatenMeister.Runtime.Functions.Queries;
@@ -27,8 +27,8 @@ namespace DatenMeister.Tests.Xmi
         public void LoadUmlInfrastructure()
         {
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var factory = new MofFactory();
-            var extent = new MofUriExtent("datenmeister:///target");
+            var factory = new InMemoryFactory();
+            var extent = new InMemoryUriExtent("datenmeister:///target");
             Assert.That(extent.elements().Count(), Is.EqualTo(0));
             var loader = new SimpleLoader(factory);
             loader.LoadFromFile(extent, "Xmi/UML.xmi");

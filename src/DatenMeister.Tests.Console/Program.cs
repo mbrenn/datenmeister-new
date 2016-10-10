@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.Filler;
 using DatenMeister.Provider.CSV;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
@@ -18,7 +18,7 @@ namespace DatenMeister.Tests.Console
             var property = "Prop";
             System.Console.WriteLine("DatenMeister Testing");
 
-            var element = new MofElement();
+            var element = new InMemoryElement();
             element.set(property, "Test");
 
             TestZipCodes();
@@ -36,8 +36,8 @@ namespace DatenMeister.Tests.Console
             // Checks the loading of the PLZ
             System.Console.WriteLine("Loading the Zip codes");
 
-            var extent = new MofUriExtent("mof:///plz");
-            var factory = new MofFactory();
+            var extent = new InMemoryUriExtent("mof:///plz");
+            var factory = new InMemoryFactory();
 
             var csvSettings = new CSVSettings
             {
@@ -93,9 +93,9 @@ namespace DatenMeister.Tests.Console
         {
             var watch = new Stopwatch();
             watch.Start();
-            var factory = new MofFactory();
-            var mofExtent = new MofUriExtent(WorkspaceNames.UriMof);
-            var umlExtent = new MofUriExtent(WorkspaceNames.UriUml);
+            var factory = new InMemoryFactory();
+            var mofExtent = new InMemoryUriExtent(WorkspaceNames.UriMof);
+            var umlExtent = new InMemoryUriExtent(WorkspaceNames.UriUml);
             var loader = new SimpleLoader(factory);
             loader.LoadFromFile(mofExtent, "data/MOF.xmi");
             loader.LoadFromFile(mofExtent, "data/UML.xmi");

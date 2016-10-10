@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
@@ -14,14 +14,14 @@ namespace DatenMeister.Tests
         {
             var workspace = new Workspace("data", "No annotation");
 
-            var extent = new MofUriExtent("http://test/");
-            var factory = new MofFactory();
+            var extent = new InMemoryUriExtent("http://test/");
+            var factory = new InMemoryFactory();
             var element = factory.create(null);
             extent.elements().add(element);
 
             workspace.AddExtent(extent);
 
-            var elementAsMofElement = (MofElement) element;
+            var elementAsMofElement = (InMemoryElement) element;
             var guid = elementAsMofElement.Id;
 
             // Now check, if everything is working

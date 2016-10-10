@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 using DatenMeister.Provider.DotNet;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator
@@ -15,8 +15,8 @@ namespace DatenMeister.SourcecodeGenerator
         {
             uml = uml ?? new _UML(); // Verifies that a uml is existing
 
-            var extent = new MofUriExtent("dm:///sourcegenerator");
-            var factory = new MofFactory();
+            var extent = new InMemoryUriExtent("dm:///sourcegenerator");
+            var factory = new InMemoryFactory();
 
             // Creates the package
             var package = factory.create(uml.Packages.__Package);

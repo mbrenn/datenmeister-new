@@ -1,10 +1,10 @@
 ﻿using System;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.InMemory;
 
 namespace DatenMeister.Provider.CSV.EMOF
 {
-    public class CSVFactory : MofFactory
+    public class CSVFactory : InMemoryFactory
     {
         private readonly IElement _metaClass;
 

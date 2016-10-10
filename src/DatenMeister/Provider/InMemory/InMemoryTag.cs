@@ -2,9 +2,9 @@
 using DatenMeister.Core.EMOF.Interface.Extension;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Core.EMOF.InMemory
+namespace DatenMeister.Provider.InMemory
 {
-    public class MofTag : ITag
+    public class InMemoryTag : ITag
     {
         public string name { get; set; }
 

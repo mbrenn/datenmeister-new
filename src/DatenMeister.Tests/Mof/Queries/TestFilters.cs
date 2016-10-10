@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Functions.Queries;
 using NUnit.Framework;
 
@@ -16,17 +16,17 @@ namespace DatenMeister.Tests.Mof.Queries
         {
             var properties = new[] { property1, property2 };
 
-            var mofObject = new MofObject();
+            var mofObject = new InMemoryObject();
             mofObject.set(property1, "55130");
             mofObject.set(property2, "Mainz");
 
-            var mofObject2 = new MofObject();
+            var mofObject2 = new InMemoryObject();
             mofObject2.set(property1, "65474");
             mofObject2.set(property2, "Bischofsheim");
 
-            var mofObject3 = new MofObject();
+            var mofObject3 = new InMemoryObject();
 
-            var mofExtent = new MofUriExtent("datenmeister:///");
+            var mofExtent = new InMemoryUriExtent("datenmeister:///");
             Assert.That(mofExtent.elements().add(mofObject), Is.True);
             Assert.That(mofExtent.elements().add(mofObject2), Is.True);
             Assert.That(mofExtent.elements().add(mofObject3), Is.True);

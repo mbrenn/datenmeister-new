@@ -4,11 +4,11 @@ using System.Linq;
 using System.Xml.Linq;
 using Autofac;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
@@ -41,7 +41,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public void TestXmlMofObjectWithElementSet()
         {
-            var mofElement = new MofObject();
+            var mofElement = new InMemoryObject();
             mofElement.set("Name", "Brenn");
             mofElement.set("Vorname", "Martin");
 
@@ -189,7 +189,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             extent.elements().remove(mofObject3);
             Assert.That(extent.elements().size(), Is.EqualTo(1));
 
-            var mofElement = new MofElement();
+            var mofElement = new InMemoryElement();
             Assert.Throws<ArgumentNullException>(() => extent.uri(mofElement));
 
             //Assert.Throws<InvalidOperationException>(() => extent.elements().add(mofElement));

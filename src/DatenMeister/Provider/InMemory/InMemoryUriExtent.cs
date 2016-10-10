@@ -3,12 +3,13 @@ using DatenMeister.Core.EMOF.Attributes;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 
-namespace DatenMeister.Core.EMOF.InMemory
+namespace DatenMeister.Provider.InMemory
 {
-    [AssignFactoryForExtentType(typeof(MofFactory))]
-    public class MofUriExtent : IUriExtent, IExtentCachesObject
+    [AssignFactoryForExtentType(typeof(InMemoryFactory))]
+    public class InMemoryUriExtent : IUriExtent, IExtentCachesObject
     {
         private readonly object _syncObject = new object();
 
@@ -21,13 +22,13 @@ namespace DatenMeister.Core.EMOF.InMemory
         /// </summary>
         private readonly List<object> _elements = new List<object>();
 
-        private readonly ExtentUrlNavigator<MofElement> _extentUrlNavigator;
+        private readonly ExtentUrlNavigator<InMemoryElement> _extentUrlNavigator;
 
-        public MofUriExtent(string uri)
+        public InMemoryUriExtent(string uri)
         {
             _contextUri = uri;
-            _reflectiveSequence = new ReflectiveSequenceForExtent(this, new MofReflectiveSequence(_elements));
-            _extentUrlNavigator = new ExtentUrlNavigator<MofElement>(this);
+            _reflectiveSequence = new ReflectiveSequenceForExtent(this, new InMemoryReflectiveSequence(_elements));
+            _extentUrlNavigator = new ExtentUrlNavigator<InMemoryElement>(this);
         }
 
         public virtual string contextURI()

@@ -1,7 +1,7 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Attributes;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.Filler;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml;
 using NUnit.Framework;
@@ -17,10 +17,10 @@ namespace DatenMeister.Tests.Core
             var data = WorkspaceLogic.InitDefault();
             var logic = new WorkspaceLogic(data);
 
-            var dataExtent = new MofUriExtent("Data");
-            var typeExtent = new MofUriExtent("Types");
-            var umlExtent = new MofUriExtent("Uml");
-            var unAssignedExtent = new MofUriExtent("Unassigned");
+            var dataExtent = new InMemoryUriExtent("Data");
+            var typeExtent = new InMemoryUriExtent("Types");
+            var umlExtent = new InMemoryUriExtent("Uml");
+            var unAssignedExtent = new InMemoryUriExtent("Unassigned");
 
             data.Data.AddExtent(dataExtent);
             data.Types.AddExtent(typeExtent);
@@ -39,13 +39,13 @@ namespace DatenMeister.Tests.Core
             var data = WorkspaceLogic.InitDefault();
             var logic = new WorkspaceLogic(data);
 
-            var dataExtent = new MofUriExtent("Data");
-            var umlExtent = new MofUriExtent("Uml");
+            var dataExtent = new InMemoryUriExtent("Data");
+            var umlExtent = new InMemoryUriExtent("Uml");
 
             data.Data.AddExtent(dataExtent);
             data.Uml.AddExtent(umlExtent);
 
-            var value = new MofElement(null, null);
+            var value = new InMemoryElement(null, null);
             var logicLayer = logic.GetWorkspaceOfObject(value);
             Assert.That(logicLayer, Is.SameAs(data.Data)); // Per Default, only the Data
 

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.InMemory;
 
 namespace DatenMeister.Runtime.Extents
 {
@@ -101,7 +101,7 @@ namespace DatenMeister.Runtime.Extents
                     _cachedObjects.Remove(value);
                 }
 
-                (value as MofObject)?.RemoveFromExtent(_extent);
+                (value as InMemoryObject)?.RemoveFromExtent(_extent);
 
                 return result;
             }
@@ -121,7 +121,7 @@ namespace DatenMeister.Runtime.Extents
                 _cachedObjects.Remove(oldObject);
                 _cachedObjects.Add(value);
 
-                (oldObject as MofObject)?.RemoveFromExtent(_extent);
+                (oldObject as InMemoryObject)?.RemoveFromExtent(_extent);
 
                 return oldObject;
             }

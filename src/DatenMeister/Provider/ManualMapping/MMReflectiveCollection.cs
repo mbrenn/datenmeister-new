@@ -1,8 +1,8 @@
-﻿using DatenMeister.Core.EMOF.InMemory;
+﻿using DatenMeister.Provider.InMemory;
 
 namespace DatenMeister.Provider.ManualMapping
 {
-    public class MMReflectiveCollection : MofReflectiveSequence{
+    public class MMReflectiveCollection : InMemoryReflectiveSequence{
          
     }
 }

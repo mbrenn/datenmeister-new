@@ -1,10 +1,10 @@
 ﻿using Autofac;
 using Autofac.Features.ResolveAnything;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.CSV.Runtime.Storage;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.FactoryMapper;
 using NUnit.Framework;
@@ -26,13 +26,13 @@ namespace DatenMeister.Tests.Integration
                 var mapper = new DefaultFactoryMapper();
                 mapper.PerformAutomaticMappingByAttribute();
 
-                Assert.That(mapper.HasMappingForExtentType(typeof(MofUriExtent)), Is.True);
-                Assert.That(mapper.HasMappingForExtentType(typeof(MofElement)), Is.False);
+                Assert.That(mapper.HasMappingForExtentType(typeof(InMemoryUriExtent)), Is.True);
+                Assert.That(mapper.HasMappingForExtentType(typeof(InMemoryElement)), Is.False);
 
-                Assert.That(mapper.FindFactoryFor(scope, typeof(MofUriExtent)), Is.TypeOf<MofFactory>());
+                Assert.That(mapper.FindFactoryFor(scope, typeof(InMemoryUriExtent)), Is.TypeOf<InMemoryFactory>());
 
-                var uriExtent = new MofUriExtent("dm:///localhost");
-                Assert.That(mapper.FindFactoryFor(scope, uriExtent), Is.TypeOf<MofFactory>());
+                var uriExtent = new InMemoryUriExtent("dm:///localhost");
+                Assert.That(mapper.FindFactoryFor(scope, uriExtent), Is.TypeOf<InMemoryFactory>());
             }
         }
 

@@ -4,18 +4,18 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Interface.Common;
 
-namespace DatenMeister.Core.EMOF.InMemory
+namespace DatenMeister.Provider.InMemory
 {
-    public class MofReflectiveSequence : IReflectiveSequence
+    public class InMemoryReflectiveSequence : IReflectiveSequence
     {
         private readonly List<object> _values;
 
-        public MofReflectiveSequence()
+        public InMemoryReflectiveSequence()
         {
             _values = new List<object>();
         }
 
-        public MofReflectiveSequence(List<object> values)
+        public InMemoryReflectiveSequence(List<object> values)
         {
             _values = values;
         }
@@ -94,9 +94,9 @@ namespace DatenMeister.Core.EMOF.InMemory
             return (_values as IEnumerable).GetEnumerator();
         }
 
-        public static MofReflectiveSequence Create<T>(List<T> values)
+        public static InMemoryReflectiveSequence Create<T>(List<T> values)
         {
-            return new MofReflectiveSequence(values.Cast<object>().ToList());
+            return new InMemoryReflectiveSequence(values.Cast<object>().ToList());
         }
 
         private void CheckIndex(int index)

@@ -1,5 +1,5 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Provider.InMemory;
 
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.1.0.0
 namespace DatenMeister.Models.Forms
@@ -20,7 +20,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _Form @Form = new _Form();
-        public IElement @__Form = new MofElement();
+        public IElement @__Form = new InMemoryElement();
 
         public class _FieldData
         {
@@ -45,7 +45,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _FieldData @FieldData = new _FieldData();
-        public IElement @__FieldData = new MofElement();
+        public IElement @__FieldData = new InMemoryElement();
 
         public class _TextFieldData
         {
@@ -73,7 +73,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _TextFieldData @TextFieldData = new _TextFieldData();
-        public IElement @__TextFieldData = new MofElement();
+        public IElement @__TextFieldData = new InMemoryElement();
 
         public class _DateTimeFieldData
         {
@@ -107,7 +107,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _DateTimeFieldData @DateTimeFieldData = new _DateTimeFieldData();
-        public IElement @__DateTimeFieldData = new MofElement();
+        public IElement @__DateTimeFieldData = new InMemoryElement();
 
         public class _DropDownFieldData
         {
@@ -135,7 +135,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _DropDownFieldData @DropDownFieldData = new _DropDownFieldData();
-        public IElement @__DropDownFieldData = new MofElement();
+        public IElement @__DropDownFieldData = new InMemoryElement();
 
         public class _DefaultViewForMetaclass
         {
@@ -151,7 +151,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _DefaultViewForMetaclass @DefaultViewForMetaclass = new _DefaultViewForMetaclass();
-        public IElement @__DefaultViewForMetaclass = new MofElement();
+        public IElement @__DefaultViewForMetaclass = new InMemoryElement();
 
         public static _FormAndFields TheOne = new _FormAndFields();
 

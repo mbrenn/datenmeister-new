@@ -2,10 +2,10 @@
 using System.Linq;
 using DatenMeister.Apps.ZipCode.Model;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 using DatenMeister.Provider.DotNet;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Tests.Xmi;
 using NUnit.Framework;
 
@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.ZipCodes
             _UML uml;
             XmiTests.CreateUmlAndMofInstance(out mof, out uml);
 
-            var mofFactory = new MofFactory();
+            var mofFactory = new InMemoryFactory();
             var dotNetTypeCreator = new DotNetTypeGenerator(mofFactory, uml);
             var dotNetClass = dotNetTypeCreator.CreateTypeFor(typeof(ZipCode));
 

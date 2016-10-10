@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -27,8 +27,8 @@ namespace DatenMeister.Provider.CSV.Runtime.Storage
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
             var provider = new CSVDataProvider(_workspaceLogic); 
-            var mofExtent = new MofUriExtent(csvConfiguration.ExtentUri);
-            var factory = new MofFactory();
+            var mofExtent = new InMemoryUriExtent(csvConfiguration.ExtentUri);
+            var factory = new InMemoryFactory();
 
             var doesFileExist = File.Exists(csvConfiguration.Path);
             if (doesFileExist)

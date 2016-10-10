@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Integration;
 using DatenMeister.Integration;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Transformation;
 
@@ -54,12 +54,12 @@ namespace DirectUsage
             }
 
             var excelFunctions = dm.LoadExcel("d:///excel", "files/Functions.xlsx");
-            var mofTarget = new MofUriExtent("dm:///");
+            var mofTarget = new InMemoryUriExtent("dm:///");
             HierarchyMaker.Convert(new HierarchyByParentSettings()
             {
                 Sequence = ((IElement) excelFunctions.elements().GetByPropertyFromCollection("name", "Per Parent").First()).get("items") as IReflectiveSequence,
                 TargetSequence  =  mofTarget.elements(),
-                TargetFactory =  new MofFactory(),
+                TargetFactory =  new InMemoryFactory(),
                 NewChildColumn = "Parts",
                 IdColumn = "Id", 
                 OldParentColumn = "Parent"
@@ -70,12 +70,12 @@ namespace DirectUsage
                 Console.WriteLine(element.ToString());
             }
 
-            mofTarget = new MofUriExtent("dm:///");
+            mofTarget = new InMemoryUriExtent("dm:///");
             HierarchyMaker.Convert(new HierarchyByChildrenSettings()
             {
                 Sequence = ((IElement)excelFunctions.elements().GetByPropertyFromCollection("name", "Per Child").First()).get("items") as IReflectiveSequence,
                 TargetSequence = mofTarget.elements(),
-                TargetFactory = new MofFactory(),
+                TargetFactory = new InMemoryFactory(),
                 NewChildColumn = "Parts",
                 IdColumn = "Id",
                 OldChildrenColumn = "Child",
@@ -87,12 +87,12 @@ namespace DirectUsage
                 Console.WriteLine(element.ToString());
             }
 
-            mofTarget = new MofUriExtent("dm:///");
+            mofTarget = new InMemoryUriExtent("dm:///");
             HierarchyMaker.Convert(new HierarchyByParentSettings()
             {
                 Sequence = ((IElement)excelFunctions.elements().GetByPropertyFromCollection("name", "Länder").First()).get("items") as IReflectiveSequence,
                 TargetSequence = mofTarget.elements(),
-                TargetFactory = new MofFactory(),
+                TargetFactory = new InMemoryFactory(),
                 NewChildColumn = "Länder",
                 IdColumn = "Id",
                 OldParentColumn = "Parent"

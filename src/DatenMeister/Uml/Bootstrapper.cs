@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.InMemory;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
@@ -492,10 +492,10 @@ namespace DatenMeister.Uml
             if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-            var factory = new MofFactory();
-            var umlExtent = new MofUriExtent(WorkspaceNames.UriUml);
-            var mofExtent = new MofUriExtent(WorkspaceNames.UriMof);
-            var primitiveExtent = new MofUriExtent(WorkspaceNames.UriPrimitiveTypes);
+            var factory = new InMemoryFactory();
+            var umlExtent = new InMemoryUriExtent(WorkspaceNames.UriUml);
+            var mofExtent = new InMemoryUriExtent(WorkspaceNames.UriMof);
+            var primitiveExtent = new InMemoryUriExtent(WorkspaceNames.UriPrimitiveTypes);
 
             if (!isSlim)
             {

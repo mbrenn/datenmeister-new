@@ -31,7 +31,7 @@ namespace DatenMeister.Runtime
             return GetProperties(elements);
         }
 
-        private static IEnumerable<string> GetProperties(this IReflectiveSequence elements)
+        public static IEnumerable<string> GetProperties(IReflectiveCollection elements)
         {
             var result = new List<object>();
             foreach (var item in elements)

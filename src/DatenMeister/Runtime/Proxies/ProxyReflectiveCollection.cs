@@ -93,12 +93,7 @@ namespace DatenMeister.Runtime.Proxies
                 }
 
                 var asObject = x as IObject;
-                if (asObject != null)
-                {
-                    return publicizeObject(asObject);
-                }
-
-                return x;
+                return asObject != null ? publicizeObject(asObject) : x;
             };
 
             PrivatizeElementFunc = x =>

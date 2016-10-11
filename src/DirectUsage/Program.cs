@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Integration;
 using DatenMeister.Integration;
+using DatenMeister.Provider;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Aggregation;
@@ -106,12 +107,12 @@ namespace DirectUsage
             var aggregate = new GroupByReflectiveCollection(
                 enumeration,
                 "Regierung",
-                new[] { "Regierung", "Id" },
+                new[] { "Name", "Id" },
                 new Func<IAggregator>[] {() => new ConcatAggregator(), () => new CountAggregator() },
                 new[] { "Regiert", "Anzahl" });
 
 
-            Console.WriteLine(enumeration.ToString());
+            Console.WriteLine(TableFormatter.ToText(aggregate));
 
             Console.WriteLine("Waiting for Key...");
             Console.ReadKey();

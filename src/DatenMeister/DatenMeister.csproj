@@ -70,6 +70,7 @@
     <Compile Include="Provider\ManualMapping\MMUriExtent.cs" />
     <Compile Include="Provider\ManualMapping\PropertyMapping.cs" />
     <Compile Include="Provider\ManualMapping\TypeMapping.cs" />
+    <Compile Include="Provider\TableFormatter.cs" />
     <Compile Include="Provider\XMI\EMOF\XmlElement.cs" />
     <Compile Include="Provider\XMI\EMOF\XmlFactory.cs" />
     <Compile Include="Provider\XMI\EMOF\XmlReflectiveSequence.cs" />

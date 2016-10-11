@@ -2,44 +2,34 @@
 
 namespace DatenMeister.Runtime.Functions.Interfaces
 {
-    public abstract class AggregatorByFunction<T> : Aggregator<T>
+    public abstract class AggregatorByFunction<T, TItem> : Aggregator<T, TItem>
     {
-        private T _start;
-        private Func<object, object, T> _aggregation;
         private T _aggregationResult;
 
-        internal Func<object, object, T> Aggregation
-        {
-            get { return _aggregation; }
-            set { _aggregation = value; }
-        }
+        internal Func<T, TItem, T> Aggregation { get; set; }
 
-        internal T Start
-        {
-            get { return _start; }
-            set { _start = value; }
-        }
+        internal T Start { get; set; }
 
         public AggregatorByFunction()
         {
             
         }
-
+        
         public AggregatorByFunction(
-            T start, Func<object, object, T> aggregation)
+            T start, Func<T, TItem, T> aggregation)
         {
-            _start = start;
-            _aggregation = aggregation;
+            Start = start;
+            Aggregation = aggregation;
         }
 
         protected override void StartAggregation()
         {
-            _aggregationResult = _start;
+            _aggregationResult = Start;
         }
 
-        protected override void AggregateValue(object value)
+        protected override void AggregateValue(TItem value)
         {
-            _aggregationResult = _aggregation(_aggregationResult, value);
+            _aggregationResult = Aggregation(_aggregationResult, value);
         }
 
         protected override T FinalizeAggregation()

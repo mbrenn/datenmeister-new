@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.DotNet;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider.InMemory
 {
@@ -72,7 +76,14 @@ namespace DatenMeister.Provider.InMemory
 
         public virtual void set(string property, object value)
         {
-            _values[property] = value;
+            if (DotNetHelper.IsOfEnumeration(value) && !(value is InMemoryReflectiveSequence))
+            {
+                _values[property] = new InMemoryReflectiveSequence((value as IEnumerable<object>).ToList());
+            }
+            else
+            {
+                _values[property] = value;
+            }
         }
 
         public virtual void unset(string property)

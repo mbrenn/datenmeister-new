@@ -2,9 +2,11 @@
 using System.IO;
 using System.Reflection;
 using System.Xml.Linq;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.Standards;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.XMI
@@ -105,21 +107,21 @@ namespace DatenMeister.Provider.XMI
                 }
             }
 
-            var dict = new Dictionary<string, List<object>>();
+            var dict = new Dictionary<string, IReflectiveCollection>();
 
             foreach (var subElement in element.Elements())
             {
                 var name = subElement.Name.ToString();
-                List<object> currentList;
+                IReflectiveCollection currentList;
                 if (dict.ContainsKey(name))
                 {
                     currentList = dict[name];
                 }
                 else
                 {
-                    currentList = new List<object>();
+                    resultingElement.set(name, new List<object>());
+                    currentList = resultingElement.GetAsReflectiveCollection(name);
                     dict[name] = currentList;
-                    resultingElement.set(name, currentList);
                 }
 
                 if (subElement.HasElements || subElement.HasAttributes)
@@ -131,11 +133,11 @@ namespace DatenMeister.Provider.XMI
                     asSetContainer?.setContainer(resultingElement);
 
                     // Adds the item to the current list
-                    currentList.Add(loadedElement);
+                    currentList.add(loadedElement);
                 }
                 else
                 {
-                    currentList.Add(subElement.Value);
+                    currentList.add(subElement.Value);
                 }
             }
 

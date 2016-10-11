@@ -82,6 +82,7 @@
     <Compile Include="Provider\XMI\Standards\XmiId.cs" />
     <Compile Include="Provider\XMI\UmlBootstrap\Helper.cs" />
     <Compile Include="Provider\XMI\XmiPlugin.cs" />
+    <Compile Include="Runtime\Functions\Aggregation\ConcatAggregator.cs" />
     <Compile Include="Runtime\Functions\Transformation\FilterHierarchy.cs" />
     <Compile Include="Runtime\Functions\Transformation\HierarchyMaker.cs" />
     <Compile Include="Runtime\Functions\Transformation\HierarchyByParentSettings.cs" />

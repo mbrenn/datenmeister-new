@@ -75,17 +75,19 @@ namespace DatenMeister.Runtime.Functions.Queries
             return new InMemoryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
         }
 
-        public static IReflectiveCollection GroupBy<T>(
+        public static IReflectiveCollection GroupProperties(
             this IReflectiveCollection collection,
             string groupByColumn,
             string aggregateColumn,
-            Func<IAggregator<T>> aggregatorFunc)
+            Func<IAggregator> aggregatorFunc, 
+            string aggregatedColumn)
         {
-            return  new GroupByReflectiveCollection<T>(
+            return  new GroupByReflectiveCollection(
                 collection,
                 groupByColumn,
                 aggregateColumn,
-                aggregatorFunc);
+                aggregatorFunc, 
+                aggregatedColumn);
         }
 
         /// <summary>

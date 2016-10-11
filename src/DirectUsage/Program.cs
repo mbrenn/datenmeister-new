@@ -9,6 +9,8 @@ using DatenMeister.Excel.Integration;
 using DatenMeister.Integration;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Functions.Aggregation;
+using DatenMeister.Runtime.Functions.Interfaces;
 using DatenMeister.Runtime.Functions.Transformation;
 
 namespace DirectUsage
@@ -99,7 +101,17 @@ namespace DirectUsage
             });
 
             var foundElement = mofTarget.element("dm:///#Länder.1");
-            Console.WriteLine(foundElement.ToString());
+
+            var enumeration = foundElement.GetAsReflectiveCollection("Länder");
+            var aggregate = new GroupByReflectiveCollection(
+                enumeration,
+                "Regierung",
+                new[] { "Regierung", "Id" },
+                new Func<IAggregator>[] {() => new ConcatAggregator(), () => new CountAggregator() },
+                new[] { "Regiert", "Anzahl" });
+
+
+            Console.WriteLine(enumeration.ToString());
 
             Console.WriteLine("Waiting for Key...");
             Console.ReadKey();

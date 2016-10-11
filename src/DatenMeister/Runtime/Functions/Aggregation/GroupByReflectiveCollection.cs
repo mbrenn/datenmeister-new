@@ -9,32 +9,38 @@
 
 namespace DatenMeister.Runtime.Functions.Aggregation
 {
-    public class GroupByReflectiveCollection<T> : ProxyReflectiveCollection
+    public class GroupByReflectiveCollection : ProxyReflectiveCollection
     {
         public GroupByReflectiveCollection(
             IReflectiveCollection collectionToBeAggregated,
             string groupByColumn,
             string aggregateColumn,
-            Func<IAggregator<T>> aggregator)
+            Func<IAggregator> aggregator,
+            string aggregatedColumn)
             : base(new InMemoryReflectiveSequence())
         {
-            Aggregate(collectionToBeAggregated,
+            Aggregate(
+                collectionToBeAggregated,
                 groupByColumn,
                 new[] {aggregateColumn},
-                new[] {aggregator});
+                new[] {aggregator},
+                new[] { aggregatedColumn });
         }
 
         public GroupByReflectiveCollection(
             IReflectiveCollection collectionToBeAggregated,
             string groupByColumn,
             IEnumerable<string> aggregateColumns,
-            IEnumerable<Func<IAggregator<T>>> aggregators)
+            IEnumerable<Func<IAggregator>> aggregators,
+            IEnumerable<string> aggregatedColumns)
             : base(new InMemoryReflectiveSequence())
         {
-            Aggregate(collectionToBeAggregated,
+            Aggregate(
+                collectionToBeAggregated,
                 groupByColumn,
                 aggregateColumns,
-                aggregators);
+                aggregators, 
+                aggregatedColumns);
         }
 
         /// <summary>
@@ -47,22 +53,36 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         /// <param name="aggregateColumns">The value that is used</param>
         /// <param name="aggregatorFunc">The function being used to 
         /// create a new aggregator</param>
+        /// <param name="aggregatedColumns">List of property names to which the aggregated values wll be stored</param>
         private void Aggregate(
             IReflectiveCollection collectionToBeAggregated,
             string groupByColumn,
             IEnumerable<string> aggregateColumns,
-            IEnumerable<Func<IAggregator<T>>> aggregatorFunc)
+            IEnumerable<Func<IAggregator>> aggregatorFunc,
+            IEnumerable<string> aggregatedColumns)
         {
-            var listColumns = aggregateColumns.ToList();
+            if (aggregateColumns == null) throw new ArgumentNullException(nameof(aggregateColumns));
+            if (aggregatorFunc == null) throw new ArgumentNullException(nameof(aggregatorFunc));
+            if (aggregatedColumns == null) throw new ArgumentNullException(nameof(aggregatedColumns));
+
+            var listAggregateColumns = aggregateColumns.ToList();
+            var listAggregatedColumns = aggregatedColumns?.ToList();
             var listAggregators = aggregatorFunc.ToList();
 
-            if (listColumns.Count != listAggregators.Count)
+            if (listAggregateColumns.Count != listAggregators.Count)
             {
-                throw new InvalidOperationException("The number of columns to functions are not equal");
+                throw new InvalidOperationException(
+                    "The number of columns to functions are not equal: listAggregateColumns.Count != listAggregators.Count");
             }
 
-            Dictionary<object, List<IAggregator<T>>> aggregatedValues = 
-                new Dictionary<object, List<IAggregator<T>>>();
+            if (listAggregatedColumns.Count != listAggregators.Count)
+            {
+                throw new InvalidOperationException(
+                    "The number of columns to functions are not equal: listAggregatedColumns.Count != listAggregators.Count");
+            }
+
+            var aggregatedValues = 
+                new Dictionary<object, List<IAggregator>>();
             foreach (var element in collectionToBeAggregated.Cast<IObject>())
             {
                 if (!element.isSet(groupByColumn))
@@ -72,12 +92,12 @@ namespace DatenMeister.Runtime.Functions.Aggregation
 
                 var groupByValue = element.get(groupByColumn);
 
-                List<IAggregator<T>> aggregators;
+                List<IAggregator> aggregators;
                 if (!aggregatedValues.TryGetValue(
                     groupByValue,
                     out aggregators))
                 {
-                    aggregators = new List<IAggregator<T>>();
+                    aggregators = new List<IAggregator>();
 
                     foreach (var aggregateFactory in listAggregators)
                     {
@@ -90,13 +110,11 @@ namespace DatenMeister.Runtime.Functions.Aggregation
 
                 var n = 0;
                 // Checks if the Aggregators have been created
-                foreach (var aggregateColumn in listColumns)
+                foreach (var aggregateColumn in listAggregateColumns)
                 {
                     // Add the value to the result
                     aggregators[n].Add(
-                        (T) Convert.ChangeType(
-                            element.getOrDefault(aggregateColumn),
-                            typeof(T)));
+                        element.getOrDefault(aggregateColumn));
 
                     n++;
                 }
@@ -110,7 +128,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
                 element.set(groupByColumn, pair.Key);
 
                 var n = 0;
-                foreach (var aggregateColumn in listColumns)
+                foreach (var aggregateColumn in listAggregatedColumns)
                 {
                     element.set(aggregateColumn, pair.Value[n].Result);
                     n++;

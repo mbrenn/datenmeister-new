@@ -3,7 +3,7 @@ using DatenMeister.Runtime.Functions.Interfaces;
 
 namespace DatenMeister.Runtime.Functions.Aggregation
 {
-    public class MinAggregator : DoubleAggregationByFunction
+    public class MinAggregator : DoubleAggregationByFunction<double>
     {
         public MinAggregator() : base(Math.Min)
         {

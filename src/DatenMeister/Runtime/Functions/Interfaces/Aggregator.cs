@@ -1,6 +1,8 @@
-﻿namespace DatenMeister.Runtime.Functions.Interfaces
+﻿using System;
+
+namespace DatenMeister.Runtime.Functions.Interfaces
 {
-    public abstract class Aggregator<T> : IAggregator<T>
+    public abstract class Aggregator<TAggregate, TItem> : IAggregator
     {
         private bool _isStarted;
 
@@ -13,26 +15,25 @@
         /// </summary>
         /// <param name="value">Value to be added</param>
         /// <returns>The aggregated value</returns>
-        public void Add(T value)
+        public void Add(object value)
         {
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
             if (!_isStarted)
             {
                 StartAggregation();
                 _isStarted = true;
             }
 
-            AggregateValue(value);
+            AggregateValue((TItem) Convert.ChangeType(value, typeof(TItem)));
         }
 
-        public T Result
-        {
-            get { return FinalizeAggregation(); }
-        }
+        public object Result => FinalizeAggregation();
 
         protected abstract void StartAggregation();
 
-        protected abstract void AggregateValue(object value);
+        protected abstract void AggregateValue(TItem value);
 
-        protected abstract T FinalizeAggregation();
+        protected abstract TAggregate FinalizeAggregation();
     }
 }

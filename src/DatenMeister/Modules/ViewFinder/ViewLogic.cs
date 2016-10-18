@@ -5,7 +5,9 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.XMI.EMOF;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
@@ -87,14 +89,15 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Finds the association view for the given element in the detail view
         /// </summary>
-        /// <param name="extent">Extent where the given type is located</param>
         /// <param name="metaClass">Metaclass to be queried</param>
         /// <param name="type">View type</param>
         /// <returns>The found element</returns>
-        public IElement FindViewFor(IUriExtent extent, IElement metaClass, ViewType type)
+        public IElement FindViewFor(IElement metaClass, ViewType type)
         {
             var viewExtent = GetViewExtent();
             var formAndFields = GetFormAndFieldInstance(viewExtent);
+            var metaClassId = metaClass.GetUri();
+            var typeAsString = type.ToString();
 
             foreach (
                 var element in viewExtent.elements().
@@ -104,11 +107,11 @@ namespace DatenMeister.Modules.ViewFinder
                 Debug.Assert(element != null, "element != null");
 
                 var innerMetaClass = element.get(_FormAndFields._DefaultViewForMetaclass.metaclass);
-                var innerType = element.get(_FormAndFields._DefaultViewForMetaclass.viewType);
+                var innerType = element.get(_FormAndFields._DefaultViewForMetaclass.viewType).ToString();
 
-                if (innerMetaClass.Equals(metaClass) && innerType.Equals(type))
+                if (innerMetaClass.Equals(metaClassId) && innerType.Equals(typeAsString))
                 {
-                    return element.get(_FormAndFields._DefaultViewForMetaclass.view) as IElement;
+                    return element.getFirstOrDefault(_FormAndFields._DefaultViewForMetaclass.view) as IElement;
                 }
             }
 
@@ -123,7 +126,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns></returns>
         private _FormAndFields GetFormAndFieldInstance(IExtent viewExtent)
         {
-            return  _workspaceLogic.GetWorkspaceOfExtent(viewExtent).MetaWorkspace.Get<_FormAndFields>();
+            return _workspaceLogic.GetWorkspaceOfExtent(viewExtent).MetaWorkspace.Get<_FormAndFields>();
         }
     }
 }

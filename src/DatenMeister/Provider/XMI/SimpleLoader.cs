@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Xml.Linq;
@@ -20,6 +21,10 @@ namespace DatenMeister.Provider.XMI
 
         private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>();
 
+        /// <summary>
+        /// Defines a list of actions that will be performed after the loading has finished
+        /// </summary>
+        private List<Action> _afterLoadActions = new List<Action>();
         /// <summary>
         ///     Initializes a new instance of the Loader class.
         /// </summary>
@@ -70,11 +75,17 @@ namespace DatenMeister.Provider.XMI
         public void LoadFromDocument(IUriExtent extent, XDocument document)
         {
             _idToElement.Clear();
+            _afterLoadActions.Clear();
 
             // Skip the first element
             foreach (var element in document.Elements().Elements())
             {
                 extent.elements().add(LoadElement(element));
+            }
+
+            foreach (var action in _afterLoadActions)
+            {
+                action();
             }
         }
 
@@ -111,6 +122,20 @@ namespace DatenMeister.Provider.XMI
 
             foreach (var subElement in element.Elements())
             {
+                // Checks, if the given element is a reference
+                var attributeIdRef = subElement.Attribute(Namespaces.Xmi + "idref");
+                if (attributeIdRef != null)
+                {
+                    _afterLoadActions.Add(
+                        () =>
+                        {
+                            var referencedElement = _idToElement[attributeIdRef.Value];
+                            resultingElement.set(subElement.Name.ToString(), referencedElement);
+                        });
+                    continue;
+                }
+
+                // Element is not a given element, so perform regular replacement of elements
                 var name = subElement.Name.ToString();
                 IReflectiveCollection currentList;
                 if (dict.ContainsKey(name))

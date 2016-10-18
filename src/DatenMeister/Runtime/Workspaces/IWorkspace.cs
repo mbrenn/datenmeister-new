@@ -1,4 +1,8 @@
-﻿using DatenMeister.Core.Filler;
+﻿using System.Security.Cryptography.X509Certificates;
+using DatenMeister.Core.Filler;
+using System.Collections;
+using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Runtime.Workspaces
 {
@@ -39,5 +43,10 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="value">Value to be set for the datalayer</param>
         void Set<TFilledType>(TFilledType value)
             where TFilledType : class, new();
+
+        /// <summary>
+        /// Gets a list of extents
+        /// </summary>
+        IList<IExtent> extent { get; }
     }
 }

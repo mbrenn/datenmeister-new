@@ -53,6 +53,10 @@ namespace DatenMeister.Uml.Helper
                     foreach (var generalization in generalizations.Cast<IElement>())
                     {
                         var general = generalization.get(propertyGeneral) as IElement;
+                        if (general == null)
+                        {
+                            throw new InvalidOperationException("Somehow I got a null.... Generalizations needs to be verified");
+                        }
                         yield return general;
                     }
                 }

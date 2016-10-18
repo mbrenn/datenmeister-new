@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -22,6 +23,30 @@ namespace DatenMeister.Runtime
             if (value.isSet(property))
             {
                 return value.get(property);
+            }
+
+            return null;
+        }
+        /// <summary>
+        /// Gets the value of a property if the property is set and is not an enumeration. 
+        /// If the property is an enumeration, the first element will be returned
+        /// If the property is no set, then null will be returned
+        /// </summary>
+        /// <param name="value">Object being queried</param>
+        /// <param name="property">Property of the object</param>
+        /// <returns>The value of the object or null, if not existing</returns>
+        public static object getFirstOrDefault(this IObject value, string property)
+        {
+            if (value.isSet(property))
+            {
+                var result = value.get(property);
+                if (DotNetHelper.IsOfEnumeration(result))
+                {
+                    var resultAsEnumeration = result as IEnumerable<object>;
+                    return resultAsEnumeration.FirstOrDefault();
+                }
+
+                return result;
             }
 
             return null;

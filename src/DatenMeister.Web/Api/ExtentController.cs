@@ -493,7 +493,7 @@ namespace DatenMeister.Web.Api
                 return NotFound();
             }
 
-            var result = _viewFinder.FindView(foundExtent, foundElement, view);
+            var result = _viewFinder.FindView(foundElement, view);
             itemModel.c = DynamicConverter.ToDynamic(result, false);
             itemModel.v = ConvertToJson(foundElement, result);
             itemModel.layer = _workspaceLogic?.GetWorkspaceOfObject(foundElement)?.id;

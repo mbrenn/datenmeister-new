@@ -21,11 +21,10 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Finds the view for a specific object in a detail view
         /// </summary>
-        /// <param name="extent">Owning extent to be used to find perfect view</param>
         /// <param name="value">Value for whom the object shall be created</param>
         /// <param name="viewname">Name of the view</param>
         /// <returns>Found view or null</returns>
-        IObject FindView(IUriExtent extent, IObject value, string viewname);
+        IObject FindView(IObject value, string viewname);
 
         /// <summary>
         /// Finds all views, which might be used for the given extent and item. 

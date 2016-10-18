@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Uml.Helper
 {
@@ -47,6 +49,30 @@ namespace DatenMeister.Uml.Helper
         }
 
         /// <summary>
+        /// Gets an element out of the workspace by a fullname
+        /// </summary>
+        /// <param name="workspace">Workspace to be queried</param>
+        /// <param name="fullName">Name of the element</param>
+        /// <returns>Found element or null</returns>
+        public IElement GetByFullName(IWorkspace workspace, string fullName)
+        {
+            return workspace.extent
+                .Select(extent => GetByFullName(extent.elements(), fullName))
+                .FirstOrDefault(result => result != null);
+        }
+
+        /// <summary>
+        /// Gets an element out of the workspace by a fullname
+        /// </summary>
+        /// <param name="extent">Extent to be queried</param>
+        /// <param name="fullName">Name of the element</param>
+        /// <returns>Found element or null</returns>
+        public IElement GetByFullName(IUriExtent extent, string fullName)
+        {
+            return GetByFullName(extent.elements(), fullName);
+        }
+
+        /// <summary>
         /// Gets the given element by the fullname by traversing through the name attributes
         /// </summary>
         /// <param name="collection">Collection to be queried, could also be an extent reflective collection</param>
@@ -73,6 +99,11 @@ namespace DatenMeister.Uml.Helper
                         found = currentValue;
                         break;
                     }
+                }
+
+                if (found == null)
+                {
+                    return null;
                 }
 
                 // Ok, get all list properties as one big enumeration

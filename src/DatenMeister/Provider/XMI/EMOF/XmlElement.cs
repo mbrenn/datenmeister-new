@@ -85,6 +85,11 @@ namespace DatenMeister.Provider.XMI.EMOF
             {
                 yield return attribute.Name.ToString();
             }
+
+            foreach (var element in _node.Elements().Distinct())
+            {
+                yield return element.Name.ToString();
+            }
         }
 
         public bool equals(object other)
@@ -133,7 +138,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         public bool isSet(string property)
         {
             var propertyAsString = ReturnObjectAsString(property);
-            return _node.Attribute(propertyAsString) != null;
+            return _node.Attribute(propertyAsString) != null || _node.Elements(propertyAsString).Any(); 
         }
 
         public void set(string property, object value)

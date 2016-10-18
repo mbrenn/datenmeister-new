@@ -9,8 +9,8 @@ namespace DatenMeister.Models.Forms
     {
         public ViewType viewType { get; set; } 
 
-        public IElement metaclass { get; set; }
+        public string metaclass { get; set; }
         
-        public IElement view { get; set; }
+        public Form view { get; set; }
     }
 }

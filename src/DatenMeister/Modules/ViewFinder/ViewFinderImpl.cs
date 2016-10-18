@@ -49,11 +49,10 @@ namespace DatenMeister.Modules.ViewFinder
         /// Finds a specific view by the given value and the given viewname. 
         /// If the given viewname is empty or null, the default view will be returned
         /// </summary>
-        /// <param name="extent">Owning extent to be used to find perfect view</param
         /// <param name="value">Value whose view need to be created</param>
         /// <param name="viewUrl">The view, that shall be done</param>
         /// <returns>The view itself</returns>
-        public IObject FindView(IUriExtent extent, IObject value, string viewUrl)
+        public IObject FindView(IObject value, string viewUrl)
         {
             Form form;
             if (viewUrl == "{All}")
@@ -79,7 +78,7 @@ namespace DatenMeister.Modules.ViewFinder
             if (valueAsElement != null)
             {
                 // Check, if we have a specific form
-                var viewResult = _viewLogic.FindViewFor(extent, metaClass, ViewType.Detail);
+                var viewResult = _viewLogic.FindViewFor(metaClass, ViewType.Detail);
                 if (viewResult != null)
                 {
                     return viewResult;

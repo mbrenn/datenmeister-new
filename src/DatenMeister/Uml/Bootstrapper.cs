@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -231,6 +232,7 @@ namespace DatenMeister.Uml
             // Now we handle the generalization information. 
             // For all classes and associations, whose type is class or associations, get the generalization property and convert it to a list of classes
             EvaluateGeneralizations(umlDescendents, UmlClasses["Generalization"]);
+            EvaluateGeneralizations(mofDescendents, UmlClasses["Generalization"]);
 
             // ConvertPropertiesToRealProperties(allElements);
         }
@@ -310,10 +312,6 @@ namespace DatenMeister.Uml
                 extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml).elements().GetAllDescendants();
             var mofElements =
                 extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriMof).elements().GetAllDescendants();
-            umlElements
-                .Cast<IElement>()
-                .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")
-                .ToList();
             var mofMetaClasses =
                 mofElements
                     .Cast<IElement>()
@@ -338,6 +336,7 @@ namespace DatenMeister.Uml
 
                 // Find it in the higher instance mof
                 IElement metaClass;
+                
                 // Translates the uri to the correct one
                 if (name.StartsWith("uml:"))
                 {
@@ -389,14 +388,19 @@ namespace DatenMeister.Uml
             {
                 if (elementInstance.isSet("general"))
                 {
-                    var general = elementInstance.get("general").ToString();
-                    if (UmlClasses.ContainsKey(general))
+                    var general = elementInstance.getFirstOrDefault("general");
+                    var generalAsString = general.ToString();
+                    if (DotNetHelper.IsOfMofObject(general))
                     {
-                        elementInstance.set("general", UmlClasses[general]);
+                        elementInstance.set("general", general as IElement);
                     }
-                    else if (UmlAssociations.ContainsKey(general))
+                    else if (UmlClasses.ContainsKey(generalAsString))
                     {
-                        elementInstance.set("general", UmlAssociations[general]);
+                        elementInstance.set("general", UmlClasses[generalAsString]);
+                    }
+                    else if (UmlAssociations.ContainsKey(generalAsString))
+                    {
+                        elementInstance.set("general", UmlAssociations[generalAsString]);
                     }
                     else
                     {

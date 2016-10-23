@@ -117,7 +117,7 @@
     <EmbeddedResource Include="Properties\DatenMeister.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\datenmeister-new\src\DatenMeister\DatenMeister.csproj">
+    <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{67f8bca3-8438-4e91-9dea-4189c1776e26}</Project>
       <Name>DatenMeister</Name>
     </ProjectReference>

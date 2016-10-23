@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
@@ -27,7 +29,7 @@ namespace DatenMeister.Runtime.Copier
         /// </summary>
         /// <param name="sourceElement">Source element which is verified</param>
         /// <param name="targetElement">Target element which is verified</param>
-        public void CopyProperties(IObject sourceElement, IObject targetElement)
+        private void CopyProperties(IObject sourceElement, IObject targetElement)
         {
             if (sourceElement == null) throw new ArgumentNullException(nameof(sourceElement));
             if (targetElement == null) throw new ArgumentNullException(nameof(targetElement));
@@ -48,26 +50,50 @@ namespace DatenMeister.Runtime.Copier
             // Transfers the properties
             foreach (var property in elementAsExt.getPropertiesBeingSet())
             {
-                var value = sourceElement.get(property);
-                if (value is IElement)
-                {
-                    targetElement.set(property, Copy(value as IElement));
-                }
-                if (value is IReflectiveCollection)
-                {
-                    var list = new List<object>();
-                    foreach (var innerValue in (value as IReflectiveCollection))
-                    {
-                        list.Add(Copy(innerValue as IElement));
-                    }
+                object result;
 
-                    targetElement.set(property, list);
-                }
-                else
-                {
-                    targetElement.set(property, value);
-                }
+                var value = sourceElement.get(property);
+                result = CopyValue(value);
+
+                targetElement.set(property, result);
             }
+        }
+
+        private object CopyValue(object value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            var valueAsElement = value as IElement;
+            if (valueAsElement != null)
+            {
+                return Copy(valueAsElement);
+            }
+
+            var valueAsCollection = value as IReflectiveCollection;
+            if (valueAsCollection != null)
+            {
+                return valueAsCollection
+                    .Select(innerValue => CopyValue(innerValue))
+                    .ToList();
+            }
+
+            return value;
+        }
+
+
+        /// <summary>
+        /// Copies the given element by using the factory
+        /// </summary>
+        /// <param name="factory">Factory to be used to create the element</param>
+        /// <param name="element">Element to be copied</param>
+        /// <returns>The created element that will be copied</returns>
+        public static IElement Copy(IFactory factory, IObject element)
+        {
+            var copier = new ObjectCopier(factory);
+            return copier.Copy(element);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace DatenMeister.SourcecodeGenerator
             WriteUsages(new[]
             {
                 "DatenMeister.Core.EMOF.Interface.Reflection",
-                "DatenMeister.Core.EMOF.InMemory"
+                "DatenMeister.Provider.InMemory"
             });
             
             base.Walk(extent);
@@ -99,7 +99,7 @@ namespace DatenMeister.SourcecodeGenerator
 
             Result.AppendLine();
             Result.AppendLine($"{stack.Indentation}public _{name} @{name} = new _{name}();");
-            Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new MofElement();");
+            Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new InMemoryElement();");
             Result.AppendLine(); 
         }
 

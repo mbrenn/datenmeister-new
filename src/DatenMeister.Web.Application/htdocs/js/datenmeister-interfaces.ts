@@ -47,13 +47,13 @@ export module ClientResponse {
     }
 
     export interface IDataForm {
-        fields: Array<IDataField>;
+        fields: Array<IFieldData>;
         name: string;
 
     }
 
-    export interface IDataField {
-        type: string;
+    export interface IFieldData {
+        fieldType: string;
         title?: string;
         name?: string;
         defaultValue?: any;
@@ -61,17 +61,20 @@ export module ClientResponse {
         isReadOnly?: boolean;
     }
 
-    export interface IDropDownDataField extends IDataField {
+    export interface IDropDownFieldData extends IFieldData {
         values: Array<string>;
     }
 
-    export interface ITextDataField extends IDataField {
+    export interface ITextFieldData extends IFieldData {
         lineHeight: number;
     }
 
-    export interface IDateTimeDataField extends IDataField {
+    export interface IDateTimeFieldData extends IFieldData {
         showDate: boolean;
         showTime: boolean;
+    }
+
+    export interface ISubElementsFieldData extends IFieldData {
     }
 
     export interface IDataTableItem {
@@ -171,16 +174,16 @@ export namespace View {
 
 export namespace Table {
 
-    export class DataField implements ClientResponse.IDataField {
-        type: string;
+    export class DataField implements ClientResponse.IFieldData {
+        fieldType: string;
         title: string;
         name: string;
         defaultValue: any;
         isEnumeration: boolean;
         isReadOnly: boolean;
 
-        constructor(title?: string, name?: string) {
-            this.type = ColumnTypes.textbox;
+        constructor(fieldType: string, title?: string, name?: string) {
+            this.fieldType = fieldType;
             this.title = title;
             this.name = name;
         }
@@ -196,43 +199,48 @@ export namespace Table {
         }
     }
 
-    export class TextDataField extends DataField implements ClientResponse.ITextDataField {
+    export class TextDataField extends DataField implements ClientResponse.ITextFieldData {
 
         lineHeight: number;
 
         constructor(title?: string, name?: string) {
-            super(title, name);
-            this.type = ColumnTypes.textbox;
+            super(ColumnTypes.textbox, title, name);
             this.lineHeight = 1;
         }
     }
 
-    export class DateTimeDataField extends DataField implements ClientResponse.IDateTimeDataField {
+    export class DateTimeDataField extends DataField implements ClientResponse.IDateTimeFieldData {
 
         showDate: boolean;
         showTime: boolean;
 
         constructor(title?: string, name?: string) {
-            super(title, name);
-            this.type = ColumnTypes.dropdown;
+            super(ColumnTypes.dateTime, title, name);
             this.showDate = true;
             this.showTime = true;
         }
     }
 
-    export class DropDownDataField extends DataField implements ClientResponse.IDropDownDataField {
+    export class DropDownDataField extends DataField implements ClientResponse.IDropDownFieldData {
         values: Array<string>;
 
         constructor(title?: string, name?: string) {
-            super(title, name);
-            this.type = ColumnTypes.dropdown;
+            super(ColumnTypes.dropdown, title, name);
+        }
+    }
+
+    export class SubElementsDataField extends DataField implements ClientResponse.ISubElementsFieldData {
+        
+        constructor(title?: string, name?: string) {
+            super(ColumnTypes.subElements, title, name);
         }
     }
 
     export class ColumnTypes {
-        static textbox = "textbox";
+        static textbox = "text";
         static dropdown = "dropdown";
         static dateTime = "datetime";
+        static subElements = "subelements";
     }
 
     export class DataTableItem {
@@ -273,16 +281,16 @@ export namespace Api {
     }
 
     export class FormForItemConfiguration {
-        columns: Array<ClientResponse.IDataField>;
+        columns: Array<ClientResponse.IFieldData>;
 
         onOkForm: (data: any) => void;
         onCancelForm: () => void;
 
         constructor() {
-            this.columns = new Array<ClientResponse.IDataField>();
+            this.columns = new Array<ClientResponse.IFieldData>();
         }
 
-        addColumn(column: ClientResponse.IDataField): void {
+        addColumn(column: ClientResponse.IFieldData): void {
             this.columns[this.columns.length] = column;
         }
     }

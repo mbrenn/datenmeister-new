@@ -137,6 +137,31 @@ namespace DatenMeister.Models.Forms
         public _DropDownFieldData @DropDownFieldData = new _DropDownFieldData();
         public IElement @__DropDownFieldData = new InMemoryElement();
 
+        public class _SubElementFieldData
+        {
+            public static string @fieldType = "fieldType";
+            public IElement _fieldType = null;
+
+            public static string @name = "name";
+            public IElement _name = null;
+
+            public static string @title = "title";
+            public IElement _title = null;
+
+            public static string @isEnumeration = "isEnumeration";
+            public IElement _isEnumeration = null;
+
+            public static string @defaultValue = "defaultValue";
+            public IElement _defaultValue = null;
+
+            public static string @isReadOnly = "isReadOnly";
+            public IElement _isReadOnly = null;
+
+        }
+
+        public _SubElementFieldData @SubElementFieldData = new _SubElementFieldData();
+        public IElement @__SubElementFieldData = new InMemoryElement();
+
         public class _DefaultViewForMetaclass
         {
             public static string @viewType = "viewType";

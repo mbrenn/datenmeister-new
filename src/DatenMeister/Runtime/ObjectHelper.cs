@@ -188,7 +188,7 @@ namespace DatenMeister.Runtime
         /// of the given element, the method will return a failure
         /// </summary>
         /// <param name="value">Value, which is queried</param>
-        /// <returns></returns>
+        /// <returns>The found extent</returns>
         public static IExtent GetExtentOf(this IObject value)
         {
             // If the object is contained by another object, query the contained objects 

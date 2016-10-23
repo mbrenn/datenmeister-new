@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -141,9 +142,8 @@ namespace DatenMeister.Uml
             var allElements =
                 umlDescendents
                     .Union(primitiveDescendents)
+                    .Union(mofDescendents)
                     .ToList();
-
-            allElements = allElements.Union(mofDescendents).ToList();
 
             // First, find the all classes of the uml namespace...
 
@@ -307,29 +307,34 @@ namespace DatenMeister.Uml
 
             // After having the classes from MOF and UML, go through all classes and set
             // the metaclass of these element depending on the attribute value of Xmi:Type
+            // If the current layer is UML, the metaLayer needs to trace to the MOF metalayer
             var extentsOfMetaLayer = _workspaceLogic.GetExtentsForWorkspace(metaLayer).ToList();
             var umlElements =
                 extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml).elements().GetAllDescendants();
             var mofElements =
                 extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriMof).elements().GetAllDescendants();
-            var mofMetaClasses =
+            var mofMetaClasses = 
                 mofElements
                     .Cast<IElement>()
                     .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")
                     .ToList();
-            // Hacky hack to get rid of one of the tags
+
+            // Hacky hack to get rid of one of the tags and the duplicate MOF Elements
             mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Tag").ElementAt(0));
             mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Factory").ElementAt(0));
             mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Extent").ElementAt(0));
             mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Element").ElementAt(0));
-            var umlNameCache =
+
+            var umlMetaClasses =
                 umlElements
                     .Cast<IElement>()
-                    .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")
+                    .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class");
+
+            var umlNameCache = umlMetaClasses
                     .ToDictionary(x => x.get("name").ToString(), x => x);
-            var mofNameCache =
-               mofMetaClasses
+            var mofNameCache = mofMetaClasses
                     .ToDictionary(x => x.get("name").ToString(), x => x);
+
             foreach (var elementInstance in allElements.Where(x => x.isSet(TypeProperty)))
             {
                 var name = elementInstance.get(TypeProperty).ToString();

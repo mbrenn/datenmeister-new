@@ -13,7 +13,9 @@ namespace DatenMeister.Models.Forms
                 typeof(TextFieldData),
                 typeof(DateTimeFieldData),
                 typeof(DropDownFieldData),
+                typeof(SubElementFieldData),
                 typeof(DefaultViewForMetaclass)
+                
             };
         }
     }

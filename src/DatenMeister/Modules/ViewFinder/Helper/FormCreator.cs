@@ -59,7 +59,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             if (creationMode.HasFlag(CreationMode.ByMetaClass)
                 && metaClass != null)
             {
-                foreach (var property in ClassifierMethods.GetPropertiesOfClassifier(metaClass))
+                foreach (var property in ClassifierMethods.GetPropertiesOfClassifier(metaClass)
+                    .OrderBy(x=>x.get("name").ToString()))
                 {
                     wasInMetaClass = true;
                     var propertyName = property.get("name").ToString();
@@ -69,7 +70,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                         continue;
                     }
 
-                    FieldData column = new TextFieldData
+                    var column = new TextFieldData
                     {
                         name = propertyName,
                         title = propertyName

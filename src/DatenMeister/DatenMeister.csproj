@@ -55,6 +55,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Models\Forms\SubElementFieldData.cs" />
     <Compile Include="Provider\CSV\CSVDataProvider.cs" />
     <Compile Include="Provider\CSV\CSVPlugin.cs" />
     <Compile Include="Provider\CSV\CSVSettings.cs" />

@@ -93,19 +93,23 @@ namespace DatenMeister.Tests.Mof.Core
 
             var mofElement = new InMemoryElement();
             var otherMofElement = new InMemoryElement();
+            var innerMofElement = new InMemoryElement();
 
             Assert.That(((IObjectKnowsExtent)mofElement).Extents.FirstOrDefault(), Is.Null);
             Assert.That(((IObjectKnowsExtent)otherMofElement).Extents.FirstOrDefault(), Is.Null);
 
             uriExtent.elements().add(mofElement);
 
-            Assert.That(((IObjectKnowsExtent)mofElement).Extents.First(), Is.SameAs(uriExtent));
+            Assert.That(((IObjectKnowsExtent)mofElement).Extents.FirstOrDefault(), Is.SameAs(uriExtent));
             Assert.That(((IObjectKnowsExtent)otherMofElement).Extents.FirstOrDefault(), Is.Null);
 
             uriExtent.elements().add(otherMofElement);
 
-            Assert.That(((IObjectKnowsExtent)mofElement).Extents.First(), Is.SameAs(uriExtent));
-            Assert.That(((IObjectKnowsExtent)otherMofElement).Extents.First(), Is.SameAs(uriExtent));
+            Assert.That(((IObjectKnowsExtent)mofElement).Extents.FirstOrDefault(), Is.SameAs(uriExtent));
+            Assert.That(((IObjectKnowsExtent)otherMofElement).Extents.FirstOrDefault(), Is.SameAs(uriExtent));
+
+            otherMofElement.set("Test", innerMofElement);
+            Assert.That(((IObjectKnowsExtent)otherMofElement.get("Test")).Extents.FirstOrDefault(), Is.SameAs(uriExtent));
         }
     }
 }

@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7c34ec0b-e67c-4823-b48d-a753fee70a86" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeisterLib/TaskmeisterPlugin.cs" afterPath="$PROJECT_DIR$/../../../../TaskMeister/src/TaskMeisterLib/TaskmeisterPlugin.cs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DatenMeister/Runtime/ObjectHelper.cs" afterPath="$PROJECT_DIR$/../../DatenMeister/Runtime/ObjectHelper.cs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../DirectUsage/Program.cs" afterPath="$PROJECT_DIR$/../../DirectUsage/Program.cs" />
-    </list>
+    <list default="true" id="7c34ec0b-e67c-4823-b48d-a753fee70a86" name="Default" comment="" />
     <ignored path="DatenMeister.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -32,44 +27,14 @@
             <state relative-caret-position="0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <marker date="1475700313524" expanded="true" signature="6:451" ph="..." />
-                <marker date="1475700313524" expanded="true" signature="486:573" ph="/// ..." />
-                <marker date="1475700313524" expanded="true" signature="603:25951" ph="{...}" />
-                <marker date="1475700313524" expanded="true" signature="677:839" ph="/// ..." />
-                <marker date="1475700313524" expanded="true" signature="1297:1394" ph="/// ..." />
-                <marker date="1475700313524" expanded="true" signature="1470:1567" ph="/// ..." />
-                <marker date="1475700313524" expanded="true" signature="1643:1740" ph="/// ..." />
-                <marker date="1475700313524" expanded="true" signature="1822:1893" ph="/// ..." />
-                <marker date="1475700313524" expanded="true" signature="1923:2069" ph="{...}" />
-                <marker date="1475700313524" expanded="true" signature="2079:2271" ph="/// ..." />
-                <marker date="1475700313524" expanded="true" signature="2344:2508" ph="{...}" />
-                <marker date="1475700313524" expanded="true" signature="2666:2793" ph="{...}" />
-                <marker date="1475700313524" expanded="true" signature="2894:3335" ph="{...}" />
-                <marker date="1475700313524" expanded="true" signature="3462:3596" ph="{...}" />
-                <marker date="1475700313524" expanded="true" signature="3727:4366" ph="{...}" />
-                <marker date="1475700313524" expanded="true" signature="4376:4451" ph="/// ..." />
-                <marker date="1475700313524" expanded="true" signature="4483:9214" ph="{...}" />
-                <marker date="1475700313524" expanded="true" signature="5969:6223" ph="/* ... */" />
-                <marker date="1475700313524" expanded="true" signature="7721:7888" ph="/* ... */" />
-                <marker date="1475700313524" expanded="true" signature="8678:8773" ph="/* ... */" />
-                <marker date="1475700313524" expanded="true" signature="8854:9057" ph="/* ... */" />
-                <marker date="1475700313524" expanded="true" signature="9224:9299" ph="/// ..." />
-                <marker date="1475700313524" expanded="true" signature="9350:15500" ph="{...}" />
-                <marker date="1475700313524" expanded="true" signature="10671:10925" ph="/* ... */" />
-                <marker date="1475700313524" expanded="true" signature="11997:12164" ph="/* ... */" />
-                <marker date="1475700313524" expanded="true" signature="14983:15078" ph="/* ... */" />
-                <marker date="1475700313524" expanded="true" signature="15510:15744" ph="/// ..." />
-                <marker date="1475700313524" expanded="true" signature="15860:16993" ph="{...}" />
-                <marker date="1475700313524" expanded="true" signature="15883:16086" ph="/* ... */" />
-                <marker date="1475700313524" expanded="true" signature="17003:17321" ph="/// ..." />
-                <marker date="1475700313524" expanded="true" signature="17410:19630" ph="{...}" />
-                <marker date="1475700313524" expanded="true" signature="19640:20142" ph="/// ..." />
-                <marker date="1475700313524" expanded="true" signature="20344:24178" ph="{...}" />
-                <marker date="1475700313524" expanded="true" signature="24188:24747" ph="/// ..." />
-                <marker date="1475700313524" expanded="true" signature="24979:25357" ph="{...}" />
-                <marker date="1475700313524" expanded="true" signature="25367:25516" ph="/// ..." />
-                <marker date="1475700313524" expanded="true" signature="25547:25945" ph="{...}" />
-                <marker date="1475700313524" expanded="true" signature="25570:25720" ph="/// ..." />
+                <marker date="1476127259363" expanded="true" signature="6:121" ph="..." />
+                <marker date="1476127259363" expanded="true" signature="20834:24160" ph="{...}" />
+                <marker date="1476127259363" expanded="true" signature="20834:25933" ph="{...}" />
+                <marker date="1476127259363" expanded="true" signature="24170:24729" ph="/// ..." />
+                <marker date="1476127259363" expanded="true" signature="24961:25339" ph="{...}" />
+                <marker date="1476127259363" expanded="true" signature="25349:25498" ph="/// ..." />
+                <marker date="1476127259363" expanded="true" signature="25529:25927" ph="{...}" />
+                <marker date="1476127259363" expanded="true" signature="25552:25702" ph="/// ..." />
               </folding>
             </state>
           </provider>
@@ -116,12 +81,12 @@
       <file leaf-file-name="HierarchyMaker.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Functions/Transformation/HierarchyMaker.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="16" column="42" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
+            <state relative-caret-position="420">
+              <caret line="20" column="42" selection-start-line="20" selection-start-column="42" selection-end-line="20" selection-end-column="42" />
               <folding>
-                <marker date="1475357220155" expanded="true" signature="6:61" ph="..." />
-                <marker date="1475357220155" expanded="true" signature="3585:3685" ph="{...}" />
-                <marker date="1475357220155" expanded="true" signature="3585:3691" ph="{...}" />
+                <marker date="1476004606759" expanded="true" signature="6:61" ph="..." />
+                <marker date="1476004606759" expanded="true" signature="6032:6042" ph="{...}" />
+                <marker date="1476004606759" expanded="true" signature="6032:6048" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -130,29 +95,13 @@
       <file leaf-file-name="HierarchyByParentSettings.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Functions/Transformation/HierarchyByParentSettings.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="16" column="1" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
+            <state relative-caret-position="294">
+              <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
               <folding>
-                <marker date="1475927177862" expanded="true" signature="121:504" ph="{...}" />
-                <marker date="1475927177862" expanded="true" signature="138:257" ph="/// ..." />
-                <marker date="1475927177862" expanded="true" signature="319:447" ph="/// ..." />
-                <marker date="1475927177862" expanded="true" signature="447:504" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HierarchyMakerByParentSettings.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Functions/Transformation/HierarchyMakerByParentSettings.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="21" column="1" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
-              <folding>
-                <marker date="1475927177982" expanded="true" signature="55:861" ph="{...}" />
-                <marker date="1475927177982" expanded="true" signature="126:859" ph="{...}" />
-                <marker date="1475927177982" expanded="true" signature="141:429" ph="/// ..." />
-                <marker date="1475927177982" expanded="true" signature="493:611" ph="/// ..." />
-                <marker date="1475927177982" expanded="true" signature="674:802" ph="/// ..." />
+                <marker date="1475941057521" expanded="true" signature="121:502" ph="{...}" />
+                <marker date="1475941057521" expanded="true" signature="136:255" ph="/// ..." />
+                <marker date="1475941057521" expanded="true" signature="317:445" ph="/// ..." />
+                <marker date="1475941057521" expanded="true" signature="445:502" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -162,12 +111,12 @@
         <entry file="file://$PROJECT_DIR$/../../DirectUsage/Program.cs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="175">
-              <caret line="38" column="38" selection-start-line="38" selection-start-column="38" selection-end-line="38" selection-end-column="38" />
+              <caret line="41" column="38" selection-start-line="41" selection-start-column="38" selection-end-line="41" selection-end-column="38" />
               <folding>
-                <marker date="1475927883907" expanded="true" signature="6:406" ph="..." />
-                <marker date="1475927883907" expanded="true" signature="429:2829" ph="{...}" />
-                <marker date="1475927883907" expanded="true" signature="449:2827" ph="{...}" />
-                <marker date="1475927883907" expanded="true" signature="495:2821" ph="{...}" />
+                <marker date="1476219359081" expanded="true" signature="6:150" ph="..." />
+                <marker date="1476219359081" expanded="true" signature="4782:4851" ph="{...}" />
+                <marker date="1476219359081" expanded="true" signature="4782:4857" ph="{...}" />
+                <marker date="1476219359081" expanded="true" signature="4782:4859" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -176,39 +125,37 @@
       <file leaf-file-name="ObjectHelper.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/ObjectHelper.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="776">
-              <caret line="267" column="12" selection-start-line="267" selection-start-column="12" selection-end-line="267" selection-end-column="12" />
+            <state relative-caret-position="5607">
+              <caret line="269" column="12" selection-start-line="269" selection-start-column="12" selection-end-line="269" selection-end-column="12" />
               <folding>
-                <marker date="1475929243518" expanded="true" signature="6:242" ph="..." />
-                <marker date="1475929243518" expanded="true" signature="274:11021" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="313:11019" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="328:703" ph="/// ..." />
-                <marker date="1475929243518" expanded="true" signature="782:939" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="1079:1356" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="1502:1874" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="1884:2330" ph="/// ..." />
-                <marker date="1475929243518" expanded="true" signature="2462:2744" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="2754:3194" ph="/// ..." />
-                <marker date="1475929243518" expanded="true" signature="3322:3600" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="3610:4049" ph="/// ..." />
-                <marker date="1475929243518" expanded="true" signature="4169:4447" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="4457:4719" ph="/// ..." />
-                <marker date="1475929243518" expanded="true" signature="4791:5032" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="5042:5304" ph="/// ..." />
-                <marker date="1475929243518" expanded="true" signature="5378:5621" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="5631:5997" ph="/// ..." />
-                <marker date="1475929243518" expanded="true" signature="6059:6880" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="6082:6235" ph="/* ... */" />
-                <marker date="1475929243518" expanded="true" signature="6890:7246" ph="/// ..." />
-                <marker date="1475929243518" expanded="true" signature="7314:7802" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="7812:8017" ph="/// ..." />
-                <marker date="1475929243518" expanded="true" signature="8076:8155" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="8165:8923" ph="/// ..." />
-                <marker date="1475929243518" expanded="true" signature="9126:9785" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="9795:10068" ph="/// ..." />
-                <marker date="1475929243518" expanded="true" signature="10232:10583" ph="{...}" />
-                <marker date="1475929243518" expanded="true" signature="10593:10782" ph="/// ..." />
-                <marker date="1475929243518" expanded="true" signature="10830:11013" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="6:242" ph="..." />
+                <marker date="1476129581498" expanded="true" signature="313:11234" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="328:703" ph="/// ..." />
+                <marker date="1476129581498" expanded="true" signature="782:939" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="1079:1356" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="1502:1874" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="1884:2330" ph="/// ..." />
+                <marker date="1476129581498" expanded="true" signature="2462:2744" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="2754:3194" ph="/// ..." />
+                <marker date="1476129581498" expanded="true" signature="3322:3600" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="3610:4049" ph="/// ..." />
+                <marker date="1476129581498" expanded="true" signature="4169:4447" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="4457:4719" ph="/// ..." />
+                <marker date="1476129581498" expanded="true" signature="4791:5032" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="5042:5304" ph="/// ..." />
+                <marker date="1476129581498" expanded="true" signature="5378:5621" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="5631:5997" ph="/// ..." />
+                <marker date="1476129581498" expanded="true" signature="6059:6880" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="6082:6235" ph="/* ... */" />
+                <marker date="1476129581498" expanded="true" signature="6890:7246" ph="/// ..." />
+                <marker date="1476129581498" expanded="true" signature="7314:7802" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="7812:8017" ph="/// ..." />
+                <marker date="1476129581498" expanded="true" signature="8076:8155" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="8165:8923" ph="/// ..." />
+                <marker date="1476129581498" expanded="true" signature="9126:9667" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="10447:10798" ph="{...}" />
+                <marker date="1476129581498" expanded="true" signature="10808:10997" ph="/// ..." />
+                <marker date="1476129581498" expanded="true" signature="11045:11228" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -299,8 +246,8 @@
         <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Functions/Transformation/HierarchyMakerSettings.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Functions/Transformation/HierarchyByParentSettings.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/Functions/Transformation/HierarchyMakerByParentSettings.cs" />
-        <option value="$PROJECT_DIR$/../../DirectUsage/Program.cs" />
         <option value="$PROJECT_DIR$/../../DatenMeister/Runtime/ObjectHelper.cs" />
+        <option value="$PROJECT_DIR$/../../DirectUsage/Program.cs" />
       </list>
     </option>
   </component>
@@ -343,155 +290,7 @@
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Tests" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Tests" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister.Tests" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Programs" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DirectUsage" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Libraries" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Libraries" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Libraries" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Runtime" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Libraries" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Modules" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister (18 projects)" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Libraries" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatenMeister" />
-              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Core" />
+              <option name="myItemId" value="DatenMeister (loading...)" />
               <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNodeRider" />
             </PATH_ELEMENT>
           </PATH>
@@ -573,11 +372,12 @@
       <workItem from="1475255803998" duration="1225000" />
       <workItem from="1475267704600" duration="374000" />
       <workItem from="1475927158162" duration="2104000" />
+      <workItem from="1476649188239" duration="26000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16768000" />
+    <option name="totallyTimeSpent" value="16794000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -592,27 +392,27 @@
     <frame x="-9" y="-9" width="3858" height="2128" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Errors in solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3997991" sideWeight="0.503125" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998493" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="UnitTesting" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998493" sideWeight="0.6171875" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Change Signature" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20677084" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Errors in solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998493" sideWeight="0.49895832" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3997991" sideWeight="0.503125" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="UnitTesting" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998493" sideWeight="0.6171875" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3997991" sideWeight="0.496875" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998493" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3997991" sideWeight="0.496875" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -925,27 +725,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1475356577563" expanded="true" signature="6:272" ph="..." />
-            <marker date="1475356577563" expanded="true" signature="316:409" ph="/// ..." />
-            <marker date="1475356577563" expanded="true" signature="442:8688" ph="{...}" />
-            <marker date="1475356577563" expanded="true" signature="570:636" ph="{...}" />
-            <marker date="1475356577563" expanded="true" signature="646:1119" ph="/// ..." />
-            <marker date="1475356577563" expanded="true" signature="1216:1398" ph="{...}" />
-            <marker date="1475356577563" expanded="true" signature="1408:1883" ph="/// ..." />
-            <marker date="1475356577563" expanded="true" signature="1982:2065" ph="{...}" />
-            <marker date="1475356577563" expanded="true" signature="2075:2445" ph="/// ..." />
-            <marker date="1475356577563" expanded="true" signature="2552:5033" ph="{...}" />
-            <marker date="1475356577563" expanded="true" signature="5043:5179" ph="/// ..." />
-            <marker date="1475356577563" expanded="true" signature="5261:5365" ph="{...}" />
-            <marker date="1475356577563" expanded="true" signature="5375:5651" ph="/// ..." />
-            <marker date="1475356577563" expanded="true" signature="5730:5984" ph="{...}" />
-            <marker date="1475356577563" expanded="true" signature="5994:6277" ph="/// ..." />
-            <marker date="1475356577563" expanded="true" signature="6376:7521" ph="{...}" />
-            <marker date="1475356577563" expanded="true" signature="6720:6923" ph="/* ... */" />
-            <marker date="1475356577563" expanded="true" signature="7531:7841" ph="/// ..." />
-            <marker date="1475356577563" expanded="true" signature="8030:8682" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -953,12 +732,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1473795724214" expanded="true" signature="50:685" ph="{...}" />
-            <marker date="1473795724214" expanded="true" signature="57:138" ph="/// ..." />
-            <marker date="1473795724214" expanded="true" signature="169:683" ph="{...}" />
-            <marker date="1473795724214" expanded="true" signature="266:677" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -983,44 +756,14 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1475700313524" expanded="true" signature="6:451" ph="..." />
-            <marker date="1475700313524" expanded="true" signature="486:573" ph="/// ..." />
-            <marker date="1475700313524" expanded="true" signature="603:25951" ph="{...}" />
-            <marker date="1475700313524" expanded="true" signature="677:839" ph="/// ..." />
-            <marker date="1475700313524" expanded="true" signature="1297:1394" ph="/// ..." />
-            <marker date="1475700313524" expanded="true" signature="1470:1567" ph="/// ..." />
-            <marker date="1475700313524" expanded="true" signature="1643:1740" ph="/// ..." />
-            <marker date="1475700313524" expanded="true" signature="1822:1893" ph="/// ..." />
-            <marker date="1475700313524" expanded="true" signature="1923:2069" ph="{...}" />
-            <marker date="1475700313524" expanded="true" signature="2079:2271" ph="/// ..." />
-            <marker date="1475700313524" expanded="true" signature="2344:2508" ph="{...}" />
-            <marker date="1475700313524" expanded="true" signature="2666:2793" ph="{...}" />
-            <marker date="1475700313524" expanded="true" signature="2894:3335" ph="{...}" />
-            <marker date="1475700313524" expanded="true" signature="3462:3596" ph="{...}" />
-            <marker date="1475700313524" expanded="true" signature="3727:4366" ph="{...}" />
-            <marker date="1475700313524" expanded="true" signature="4376:4451" ph="/// ..." />
-            <marker date="1475700313524" expanded="true" signature="4483:9214" ph="{...}" />
-            <marker date="1475700313524" expanded="true" signature="5969:6223" ph="/* ... */" />
-            <marker date="1475700313524" expanded="true" signature="7721:7888" ph="/* ... */" />
-            <marker date="1475700313524" expanded="true" signature="8678:8773" ph="/* ... */" />
-            <marker date="1475700313524" expanded="true" signature="8854:9057" ph="/* ... */" />
-            <marker date="1475700313524" expanded="true" signature="9224:9299" ph="/// ..." />
-            <marker date="1475700313524" expanded="true" signature="9350:15500" ph="{...}" />
-            <marker date="1475700313524" expanded="true" signature="10671:10925" ph="/* ... */" />
-            <marker date="1475700313524" expanded="true" signature="11997:12164" ph="/* ... */" />
-            <marker date="1475700313524" expanded="true" signature="14983:15078" ph="/* ... */" />
-            <marker date="1475700313524" expanded="true" signature="15510:15744" ph="/// ..." />
-            <marker date="1475700313524" expanded="true" signature="15860:16993" ph="{...}" />
-            <marker date="1475700313524" expanded="true" signature="15883:16086" ph="/* ... */" />
-            <marker date="1475700313524" expanded="true" signature="17003:17321" ph="/// ..." />
-            <marker date="1475700313524" expanded="true" signature="17410:19630" ph="{...}" />
-            <marker date="1475700313524" expanded="true" signature="19640:20142" ph="/// ..." />
-            <marker date="1475700313524" expanded="true" signature="20344:24178" ph="{...}" />
-            <marker date="1475700313524" expanded="true" signature="24188:24747" ph="/// ..." />
-            <marker date="1475700313524" expanded="true" signature="24979:25357" ph="{...}" />
-            <marker date="1475700313524" expanded="true" signature="25367:25516" ph="/// ..." />
-            <marker date="1475700313524" expanded="true" signature="25547:25945" ph="{...}" />
-            <marker date="1475700313524" expanded="true" signature="25570:25720" ph="/// ..." />
+            <marker date="1476127259363" expanded="true" signature="6:121" ph="..." />
+            <marker date="1476127259363" expanded="true" signature="20834:24160" ph="{...}" />
+            <marker date="1476127259363" expanded="true" signature="20834:25933" ph="{...}" />
+            <marker date="1476127259363" expanded="true" signature="24170:24729" ph="/// ..." />
+            <marker date="1476127259363" expanded="true" signature="24961:25339" ph="{...}" />
+            <marker date="1476127259363" expanded="true" signature="25349:25498" ph="/// ..." />
+            <marker date="1476127259363" expanded="true" signature="25529:25927" ph="{...}" />
+            <marker date="1476127259363" expanded="true" signature="25552:25702" ph="/// ..." />
           </folding>
         </state>
       </provider>
@@ -1061,12 +804,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Functions/Transformation/HierarchyMaker.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="16" column="42" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
+        <state relative-caret-position="420">
+          <caret line="20" column="42" selection-start-line="20" selection-start-column="42" selection-end-line="20" selection-end-column="42" />
           <folding>
-            <marker date="1475357220155" expanded="true" signature="6:61" ph="..." />
-            <marker date="1475357220155" expanded="true" signature="3585:3685" ph="{...}" />
-            <marker date="1475357220155" expanded="true" signature="3585:3691" ph="{...}" />
+            <marker date="1476004606759" expanded="true" signature="6:61" ph="..." />
+            <marker date="1476004606759" expanded="true" signature="6032:6042" ph="{...}" />
+            <marker date="1476004606759" expanded="true" signature="6032:6048" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1081,13 +824,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/Functions/Transformation/HierarchyByParentSettings.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="16" column="1" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
+        <state relative-caret-position="294">
+          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
           <folding>
-            <marker date="1475927177862" expanded="true" signature="121:504" ph="{...}" />
-            <marker date="1475927177862" expanded="true" signature="138:257" ph="/// ..." />
-            <marker date="1475927177862" expanded="true" signature="319:447" ph="/// ..." />
-            <marker date="1475927177862" expanded="true" signature="447:504" ph="{...}" />
+            <marker date="1475941057521" expanded="true" signature="121:502" ph="{...}" />
+            <marker date="1475941057521" expanded="true" signature="136:255" ph="/// ..." />
+            <marker date="1475941057521" expanded="true" signature="317:445" ph="/// ..." />
+            <marker date="1475941057521" expanded="true" signature="445:502" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1096,51 +839,43 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="441">
           <caret line="21" column="1" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
-          <folding>
-            <marker date="1475927177982" expanded="true" signature="55:861" ph="{...}" />
-            <marker date="1475927177982" expanded="true" signature="126:859" ph="{...}" />
-            <marker date="1475927177982" expanded="true" signature="141:429" ph="/// ..." />
-            <marker date="1475927177982" expanded="true" signature="493:611" ph="/// ..." />
-            <marker date="1475927177982" expanded="true" signature="674:802" ph="/// ..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../DatenMeister/Runtime/ObjectHelper.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="776">
-          <caret line="267" column="12" selection-start-line="267" selection-start-column="12" selection-end-line="267" selection-end-column="12" />
+        <state relative-caret-position="5607">
+          <caret line="269" column="12" selection-start-line="269" selection-start-column="12" selection-end-line="269" selection-end-column="12" />
           <folding>
-            <marker date="1475929243518" expanded="true" signature="6:242" ph="..." />
-            <marker date="1475929243518" expanded="true" signature="274:11021" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="313:11019" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="328:703" ph="/// ..." />
-            <marker date="1475929243518" expanded="true" signature="782:939" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="1079:1356" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="1502:1874" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="1884:2330" ph="/// ..." />
-            <marker date="1475929243518" expanded="true" signature="2462:2744" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="2754:3194" ph="/// ..." />
-            <marker date="1475929243518" expanded="true" signature="3322:3600" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="3610:4049" ph="/// ..." />
-            <marker date="1475929243518" expanded="true" signature="4169:4447" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="4457:4719" ph="/// ..." />
-            <marker date="1475929243518" expanded="true" signature="4791:5032" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="5042:5304" ph="/// ..." />
-            <marker date="1475929243518" expanded="true" signature="5378:5621" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="5631:5997" ph="/// ..." />
-            <marker date="1475929243518" expanded="true" signature="6059:6880" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="6082:6235" ph="/* ... */" />
-            <marker date="1475929243518" expanded="true" signature="6890:7246" ph="/// ..." />
-            <marker date="1475929243518" expanded="true" signature="7314:7802" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="7812:8017" ph="/// ..." />
-            <marker date="1475929243518" expanded="true" signature="8076:8155" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="8165:8923" ph="/// ..." />
-            <marker date="1475929243518" expanded="true" signature="9126:9785" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="9795:10068" ph="/// ..." />
-            <marker date="1475929243518" expanded="true" signature="10232:10583" ph="{...}" />
-            <marker date="1475929243518" expanded="true" signature="10593:10782" ph="/// ..." />
-            <marker date="1475929243518" expanded="true" signature="10830:11013" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="6:242" ph="..." />
+            <marker date="1476129581498" expanded="true" signature="313:11234" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="328:703" ph="/// ..." />
+            <marker date="1476129581498" expanded="true" signature="782:939" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="1079:1356" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="1502:1874" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="1884:2330" ph="/// ..." />
+            <marker date="1476129581498" expanded="true" signature="2462:2744" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="2754:3194" ph="/// ..." />
+            <marker date="1476129581498" expanded="true" signature="3322:3600" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="3610:4049" ph="/// ..." />
+            <marker date="1476129581498" expanded="true" signature="4169:4447" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="4457:4719" ph="/// ..." />
+            <marker date="1476129581498" expanded="true" signature="4791:5032" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="5042:5304" ph="/// ..." />
+            <marker date="1476129581498" expanded="true" signature="5378:5621" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="5631:5997" ph="/// ..." />
+            <marker date="1476129581498" expanded="true" signature="6059:6880" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="6082:6235" ph="/* ... */" />
+            <marker date="1476129581498" expanded="true" signature="6890:7246" ph="/// ..." />
+            <marker date="1476129581498" expanded="true" signature="7314:7802" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="7812:8017" ph="/// ..." />
+            <marker date="1476129581498" expanded="true" signature="8076:8155" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="8165:8923" ph="/// ..." />
+            <marker date="1476129581498" expanded="true" signature="9126:9667" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="10447:10798" ph="{...}" />
+            <marker date="1476129581498" expanded="true" signature="10808:10997" ph="/// ..." />
+            <marker date="1476129581498" expanded="true" signature="11045:11228" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1148,12 +883,12 @@
     <entry file="file://$PROJECT_DIR$/../../DirectUsage/Program.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
-          <caret line="38" column="38" selection-start-line="38" selection-start-column="38" selection-end-line="38" selection-end-column="38" />
+          <caret line="41" column="38" selection-start-line="41" selection-start-column="38" selection-end-line="41" selection-end-column="38" />
           <folding>
-            <marker date="1475927883907" expanded="true" signature="6:406" ph="..." />
-            <marker date="1475927883907" expanded="true" signature="429:2829" ph="{...}" />
-            <marker date="1475927883907" expanded="true" signature="449:2827" ph="{...}" />
-            <marker date="1475927883907" expanded="true" signature="495:2821" ph="{...}" />
+            <marker date="1476219359081" expanded="true" signature="6:150" ph="..." />
+            <marker date="1476219359081" expanded="true" signature="4782:4851" ph="{...}" />
+            <marker date="1476219359081" expanded="true" signature="4782:4857" ph="{...}" />
+            <marker date="1476219359081" expanded="true" signature="4782:4859" ph="{...}" />
           </folding>
         </state>
       </provider>

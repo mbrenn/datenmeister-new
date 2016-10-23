@@ -1,6 +1,4 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-
-namespace DatenMeister.Models.Forms
+﻿namespace DatenMeister.Models.Forms
 {
     /// <summary>
     /// Performs an allocation between the view and a specific metaclass which supports the retrieval of default views. 
@@ -12,5 +10,10 @@ namespace DatenMeister.Models.Forms
         public string metaclass { get; set; }
         
         public Form view { get; set; }
+
+        public override string ToString()
+        {
+            return $"View for: {viewType} - {metaclass}";
+        }
     }
 }

@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 
 namespace DatenMeister.Provider.InMemory
 {
@@ -76,15 +77,12 @@ namespace DatenMeister.Provider.InMemory
 
         public virtual void set(string property, object value)
         {
-            if (DotNetHelper.IsOfEnumeration(value) && !(value is InMemoryReflectiveSequence))
-            {
-                _values[property] = new InMemoryReflectiveSequence((value as IEnumerable<object>).ToList());
-            }
-            else
-            {
-                _values[property] = value;
-            }
+            var result = ConvertToInMemoryElement(value, this.GetUriExtentOf());
+
+            _values[property] = result;
         }
+
+        
 
         public virtual void unset(string property)
         {
@@ -143,6 +141,36 @@ namespace DatenMeister.Provider.InMemory
             {
                 _extents.Remove(extent);
             }
+        }
+
+        /// <summary>
+        /// Converts the stated element into a memoery element
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <param name="localExtent">Defines the uri for which the element is copied</param>
+        /// <returns>Converted element</returns>
+        public static object ConvertToInMemoryElement(object value, IUriExtent localExtent)
+        {
+            if (DotNetHelper.IsOfEnumeration(value) && !(value is InMemoryReflectiveSequence))
+            {
+                return new InMemoryReflectiveSequence((value as IEnumerable<object>).ToList());
+            }
+
+            if (DotNetHelper.IsOfMofObject(value))
+            {
+                var valueAsObject = (IObject)value;
+                if (localExtent != null && valueAsObject.GetUriExtentOf()?.contextURI() == localExtent.contextURI())
+                {
+                    return valueAsObject;
+                }
+
+                // Ok, it is not local, so convert it
+                var result = ObjectCopier.Copy(new InMemoryFactory(), (IObject) value);
+                ((ISetKnownExtents) result).AddToExtent(localExtent);
+                return result;
+            }
+
+            return value;
         }
     }
 }

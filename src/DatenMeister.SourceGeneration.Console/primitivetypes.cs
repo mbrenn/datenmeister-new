@@ -1,5 +1,5 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.EMOF.InMemory;
+using DatenMeister.Provider.InMemory;
 
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.1.0.0
 namespace DatenMeister.Core
@@ -11,35 +11,35 @@ namespace DatenMeister.Core
         }
 
         public _Boolean @Boolean = new _Boolean();
-        public IElement @__Boolean = new MofElement();
+        public IElement @__Boolean = new InMemoryElement();
 
         public class _Integer
         {
         }
 
         public _Integer @Integer = new _Integer();
-        public IElement @__Integer = new MofElement();
+        public IElement @__Integer = new InMemoryElement();
 
         public class _Real
         {
         }
 
         public _Real @Real = new _Real();
-        public IElement @__Real = new MofElement();
+        public IElement @__Real = new InMemoryElement();
 
         public class _String
         {
         }
 
         public _String @String = new _String();
-        public IElement @__String = new MofElement();
+        public IElement @__String = new InMemoryElement();
 
         public class _UnlimitedNatural
         {
         }
 
         public _UnlimitedNatural @UnlimitedNatural = new _UnlimitedNatural();
-        public IElement @__UnlimitedNatural = new MofElement();
+        public IElement @__UnlimitedNatural = new InMemoryElement();
 
         public static _PrimitiveTypes TheOne = new _PrimitiveTypes();
 

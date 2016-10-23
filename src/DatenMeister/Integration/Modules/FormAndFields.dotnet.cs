@@ -1,10 +1,10 @@
+using DatenMeister;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
-using DatenMeister.Models.Forms;
 using DatenMeister.Provider.DotNet;
 
-namespace DatenMeister.Integration.Modules
+namespace DatenMeister.Models.Forms
 {
     public static class IntegrateFormAndFields
     {
@@ -22,42 +22,49 @@ namespace DatenMeister.Integration.Modules
         {
             var generator = new DotNetTypeGenerator(factory, uml);
             {
-                var type = typeof(Form);
+                var type = typeof(DatenMeister.Models.Forms.Form);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__Form = typeAsElement;
                 lookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(FieldData);
+                var type = typeof(DatenMeister.Models.Forms.FieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__FieldData = typeAsElement;
                 lookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(TextFieldData);
+                var type = typeof(DatenMeister.Models.Forms.TextFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__TextFieldData = typeAsElement;
                 lookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DateTimeFieldData);
+                var type = typeof(DatenMeister.Models.Forms.DateTimeFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__DateTimeFieldData = typeAsElement;
                 lookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DropDownFieldData);
+                var type = typeof(DatenMeister.Models.Forms.DropDownFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__DropDownFieldData = typeAsElement;
                 lookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DefaultViewForMetaclass);
+                var type = typeof(DatenMeister.Models.Forms.SubElementFieldData);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__SubElementFieldData = typeAsElement;
+                lookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.DefaultViewForMetaclass);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__DefaultViewForMetaclass = typeAsElement;

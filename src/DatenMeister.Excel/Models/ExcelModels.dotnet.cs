@@ -2,7 +2,6 @@ using DatenMeister;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
 using DatenMeister.Provider.DotNet;
 
 namespace DatenMeister.Excel
@@ -23,14 +22,14 @@ namespace DatenMeister.Excel
         {
             var generator = new DotNetTypeGenerator(factory, uml);
             {
-                var type = typeof(Models.Workbook);
+                var type = typeof(DatenMeister.Excel.Models.Workbook);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__Workbook = typeAsElement;
                 lookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(Models.Table);
+                var type = typeof(DatenMeister.Excel.Models.Table);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__Table = typeAsElement;

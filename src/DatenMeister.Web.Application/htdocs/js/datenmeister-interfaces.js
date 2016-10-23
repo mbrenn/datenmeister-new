@@ -86,8 +86,8 @@ define(["require", "exports"], function (require, exports) {
     var Table;
     (function (Table) {
         var DataField = (function () {
-            function DataField(title, name) {
-                this.type = ColumnTypes.textbox;
+            function DataField(fieldType, title, name) {
+                this.fieldType = fieldType;
                 this.title = title;
                 this.name = name;
             }
@@ -105,8 +105,7 @@ define(["require", "exports"], function (require, exports) {
         var TextDataField = (function (_super) {
             __extends(TextDataField, _super);
             function TextDataField(title, name) {
-                _super.call(this, title, name);
-                this.type = ColumnTypes.textbox;
+                _super.call(this, ColumnTypes.textbox, title, name);
                 this.lineHeight = 1;
             }
             return TextDataField;
@@ -115,8 +114,7 @@ define(["require", "exports"], function (require, exports) {
         var DateTimeDataField = (function (_super) {
             __extends(DateTimeDataField, _super);
             function DateTimeDataField(title, name) {
-                _super.call(this, title, name);
-                this.type = ColumnTypes.dropdown;
+                _super.call(this, ColumnTypes.dateTime, title, name);
                 this.showDate = true;
                 this.showTime = true;
             }
@@ -126,18 +124,26 @@ define(["require", "exports"], function (require, exports) {
         var DropDownDataField = (function (_super) {
             __extends(DropDownDataField, _super);
             function DropDownDataField(title, name) {
-                _super.call(this, title, name);
-                this.type = ColumnTypes.dropdown;
+                _super.call(this, ColumnTypes.dropdown, title, name);
             }
             return DropDownDataField;
         }(DataField));
         Table.DropDownDataField = DropDownDataField;
+        var SubElementsDataField = (function (_super) {
+            __extends(SubElementsDataField, _super);
+            function SubElementsDataField(title, name) {
+                _super.call(this, ColumnTypes.subElements, title, name);
+            }
+            return SubElementsDataField;
+        }(DataField));
+        Table.SubElementsDataField = SubElementsDataField;
         var ColumnTypes = (function () {
             function ColumnTypes() {
             }
-            ColumnTypes.textbox = "textbox";
+            ColumnTypes.textbox = "text";
             ColumnTypes.dropdown = "dropdown";
             ColumnTypes.dateTime = "datetime";
+            ColumnTypes.subElements = "subelements";
             return ColumnTypes;
         }());
         Table.ColumnTypes = ColumnTypes;

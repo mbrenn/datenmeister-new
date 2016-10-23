@@ -13,7 +13,7 @@ namespace DatenMeister.Provider.DotNet
         /// <summary>
         /// Stores the list of extents to which this element is stored
         /// </summary>
-        private IExtent _extent;
+        private DotNetExtent _extent;
 
         private readonly IDotNetTypeLookup _typeLookup;
 
@@ -66,7 +66,7 @@ namespace DatenMeister.Provider.DotNet
             }
 
             var result = member.GetValue(_value);
-            return _typeLookup.CreateDotNetElementIfNecessary(result, this, null);
+            return _typeLookup.CreateDotNetElementIfNecessary(result, this, _extent);
         }
 
         public void set(string property, object value)
@@ -101,7 +101,13 @@ namespace DatenMeister.Provider.DotNet
 
         public IEnumerable<IExtent> Extents
         {
-            get { yield return _extent; }
+            get
+            {
+                if (_extent != null)
+                {
+                    yield return _extent;
+                }
+            }
         }
         
         /// <summary>

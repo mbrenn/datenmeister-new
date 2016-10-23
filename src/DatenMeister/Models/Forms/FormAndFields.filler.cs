@@ -3,7 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
 namespace DatenMeister.Models.Forms
 {
-    public class FillTheFormAndFields : Core.Filler.IFiller<_FormAndFields>
+    public class FillTheFormAndFields : DatenMeister.Core.Filler.IFiller<_FormAndFields>
     {
         private static readonly object[] EmptyList = new object[] { };
         private static string GetNameOfElement(IObject element)
@@ -14,7 +14,7 @@ namespace DatenMeister.Models.Forms
 
         public void Fill(IEnumerable<object> collection, _FormAndFields tree)
         {
-            DoFill(collection, tree);
+            FillTheFormAndFields.DoFill(collection, tree);
         }
 
         public static void DoFill(IEnumerable<object> collection, _FormAndFields tree)
@@ -214,6 +214,41 @@ namespace DatenMeister.Models.Forms
                                 if(name == "isReadOnly") // Looking for property
                                 {
                                     tree.DropDownFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
+                        if(name == "SubElementFieldData") // Looking for class
+                        {
+                            tree.__SubElementFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "fieldType") // Looking for property
+                                {
+                                    tree.SubElementFieldData._fieldType = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.SubElementFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.SubElementFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.SubElementFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.SubElementFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.SubElementFieldData._isReadOnly = value;
                                 }
                             }
                         }

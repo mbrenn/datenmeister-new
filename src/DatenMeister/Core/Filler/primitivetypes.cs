@@ -2,7 +2,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
 
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.1.0.0
-namespace DatenMeister.Core.Filler
+namespace DatenMeister.Core
 {
     public class _PrimitiveTypes
     {

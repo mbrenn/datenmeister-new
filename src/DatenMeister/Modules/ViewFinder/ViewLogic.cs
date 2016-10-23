@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Provider.DotNet;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
@@ -34,7 +35,7 @@ namespace DatenMeister.Modules.ViewFinder
         {
             var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
 
-            var dotNetUriExtent = new XmlUriExtent(_workspaceLogic, UriViewExtent);
+            var dotNetUriExtent = new InMemoryUriExtent(UriViewExtent);
             mgmtWorkspace.AddExtent(dotNetUriExtent);
         }
 

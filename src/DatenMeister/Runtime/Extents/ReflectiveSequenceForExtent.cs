@@ -45,6 +45,8 @@ namespace DatenMeister.Runtime.Extents
             {
                 _reflectiveSequence.add(index, value);
                 _cachedObjects.Add(value);
+
+                (value as ISetKnownExtents)?.AddToExtent(_extent);
             }
         }
 
@@ -62,6 +64,7 @@ namespace DatenMeister.Runtime.Extents
                 {
                     foreach (var value in values)
                     {
+                        (value as ISetKnownExtents)?.AddToExtent(_extent);
                         _cachedObjects.Add(value);
                     }
                 }

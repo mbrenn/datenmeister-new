@@ -110,7 +110,7 @@ namespace DatenMeister.Tests.DotNet
         {
             var lookup = Initialize();
             var metaClass = lookup.ToElement(typeof(DotNetTests.TestClass));
-            var factory = new DotNetFactory(lookup);
+            var factory = new DotNetFactory(null, lookup);
             var created = factory.create(metaClass);
             Assert.That(created, Is.TypeOf<DotNetElement>());
             created.set("Title", "Test");

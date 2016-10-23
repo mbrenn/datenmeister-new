@@ -2,9 +2,9 @@
 using System.IO;
 using Autofac;
 using Autofac.Features.ResolveAnything;
+using DatenMeister.Core;
 using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
-using DatenMeister.Integration.Modules;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.CSV;
@@ -78,8 +78,8 @@ namespace DatenMeister.Provider.DotNet
             using (var scope = builder.BeginLifetimeScope())
             {
                 Core.EMOF.Integrate.Into(scope);
-                Integrate.Into(scope);
-                Provider.XMI.Integrate.Into(scope);
+                CSV.Integrate.Into(scope);
+                XMI.Integrate.Into(scope);
 
                 // Is used by .Net Provider to include the mappings for extent storages and factory types
                 _settings?.Hooks?.OnStartScope(scope);

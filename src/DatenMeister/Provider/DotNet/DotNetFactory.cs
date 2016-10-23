@@ -5,10 +5,12 @@ namespace DatenMeister.Provider.DotNet
 {
     public class DotNetFactory : IFactory
     {
+        private readonly DotNetExtent _extent;
         private readonly IDotNetTypeLookup _typeLookup;
 
-        public DotNetFactory(IDotNetTypeLookup typeLookup)
+        public DotNetFactory(DotNetExtent extent, IDotNetTypeLookup typeLookup)
         {
+            _extent = extent;
             _typeLookup = typeLookup;
         }
 
@@ -18,7 +20,7 @@ namespace DatenMeister.Provider.DotNet
         {
             var type = _typeLookup.ToType(metaClass);
             var result = Activator.CreateInstance(type);
-            return _typeLookup.CreateDotNetElementIfNecessary(result, null, null) as IElement;
+            return _typeLookup.CreateDotNetElementIfNecessary(result, null, _extent) as IElement;
         }
 
         public IObject createFromString(IElement dataType, string value)

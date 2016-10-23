@@ -62,6 +62,8 @@ namespace DatenMeister.Uml.Plugin
                     name = "name",
                     title = "Classname"
                 });
+            form.fields.Add(
+                new SubElementFieldData("ownedAttribute", "Properties"));
 
             defaultView.view = form;
             var element = _typeLookup.CreateDotNetElement(defaultView);

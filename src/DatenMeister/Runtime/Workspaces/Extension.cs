@@ -242,6 +242,10 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        public static Workspace GetManagementWorkspace(this IWorkspaceLogic logic)
+        {
+            return logic.GetWorkspace(WorkspaceNames.NameManagement);
+        }
         public static Workspace GetData(
             this IWorkspaceLogic logic)
         {

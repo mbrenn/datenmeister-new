@@ -15,5 +15,10 @@
             this.extent = extent;
             this.item = item;
         }
+
+        public override string ToString()
+        {
+            return $"{ws} - {extent} - {item}";
+        }
     }
 }

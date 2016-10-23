@@ -52,7 +52,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{B5F1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Integration.DotNet", "DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj", "{DDE7E649-F341-4D2D-8F54-21F0CCDF3FB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskMeister.SourceGenerator.Console", "..\..\TaskMeister\src\TaskMeister.SourceGenerator.Console\TaskMeister.SourceGenerator.Console.csproj", "{0F7A008C-D684-41FB-9AD9-3E8B70EF7764}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskMeister.SourceGenerator.Console", "TaskMeister.SourceGenerator.Console\TaskMeister.SourceGenerator.Console.csproj", "{0F7A008C-D684-41FB-9AD9-3E8B70EF7764}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Programs", "Programs", "{6C6505ED-AB7F-47D4-9777-C19A7D9F6405}"
 EndProject

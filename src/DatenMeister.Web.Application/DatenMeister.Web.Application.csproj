@@ -337,7 +337,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\taskmeister\src\TaskMeisterLib\TaskMeisterLib.csproj">
+    <ProjectReference Include="..\TaskMeisterLib\TaskMeisterLib.csproj">
       <Project>{1988dbbc-5d98-454e-8be1-62a5e9194fa3}</Project>
       <Name>TaskMeisterLib</Name>
     </ProjectReference>

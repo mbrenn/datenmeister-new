@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xmi uri="dm:///xmitypes">
+  <item id="5c8f3ead-d13b-47f4-bbb7-2040caa83e0e" name="IActivity">
+    <attribute id="7ac6a157-3113-4571-85ed-ea91818fbe7b" name="Name" />
+    <attribute id="081947d8-40e0-4a75-af88-9a96c8e53dbe" name="Description" />
+    <attribute id="8c476415-21f8-48ac-8c91-62942aff12dd" name="State" />
+    <attribute id="35856fc5-6a39-4ba7-b5f5-ace76af7b2d1" name="Created" />
+  </item>
+  <item id="38038616-0caf-40b1-a132-99b7ac60d482" name="IPerson">
+    <attribute id="75720d00-f97c-4693-b02f-74c84838ab68" name="name" />
+    <attribute id="ef0fbeee-2320-4428-a48f-7e9d0036bca0" name="prename" />
+    <attribute id="a4651455-573a-4ba0-83ae-0aaac038ab8a" name="department" />
+    <attribute id="df6dcaee-9e0d-4f41-ad21-fc62315de4e0" name="role" />
+  </item>
+</xmi>

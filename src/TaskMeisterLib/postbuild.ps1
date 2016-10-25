@@ -1,6 +1,6 @@
 ﻿param([string] $outputPath)
 
-$targetPath = "..\..\..\..\..\datenmeister-new\src\DatenMeister.Web.Application\${outputPath}plugins\"
+$targetPath = "..\..\..\DatenMeister.Web.Application\${outputPath}plugins\"
 
 if ( Test-Path $targetPath )
 {

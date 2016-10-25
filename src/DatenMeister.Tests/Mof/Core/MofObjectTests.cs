@@ -31,6 +31,21 @@ namespace DatenMeister.Tests.Mof.Core
         }
 
         [Test]
+        public void TestSetInMemory()
+        {
+            var mofObject = new InMemoryObject();
+            Assert.That(mofObject.isSet(property1), Is.False);
+            mofObject.set(property1, "Test");
+            mofObject.set(property2, 2);
+
+            Assert.That(mofObject.isSet(property1), Is.True);
+            Assert.That(mofObject.isSet(property2), Is.True);
+
+            Assert.That(mofObject.get(property1).ToString(), Is.EqualTo("Test"));
+            Assert.That(mofObject.get(property2), Is.EqualTo(2));
+        }
+
+        [Test]
         public void TestStoreAndFindObject()
         {
             var mofElement = new InMemoryElement();

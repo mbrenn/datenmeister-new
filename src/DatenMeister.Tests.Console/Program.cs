@@ -1,112 +1,44 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using DatenMeister.Core;
-using DatenMeister.Core.Filler;
-using DatenMeister.Provider.CSV;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.XMI;
-using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml;
+// ***********************************************************************
+// Copyright (c) 2015 Charlie Poole
+//
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+// 
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// ***********************************************************************
 
-namespace DatenMeister.Tests.Console
+using DatenMeister.Tests;
+using NUnitLite;
+
+namespace NUnitLite.Tests
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// The main program executes the tests. Output may be routed to
+        /// various locations, depending on the arguments passed.
+        /// </summary>
+        /// <remarks>Run with --help for a full list of arguments supported</remarks>
+        /// <param name="args"></param>
+        public static int Main(string[] args)
         {
-            var property = "Prop";
-            System.Console.WriteLine("DatenMeister Testing");
-
-            var element = new InMemoryElement();
-            element.set(property, "Test");
-
-            TestZipCodes();
-            System.Console.WriteLine("----");
-            TestUmlBootstrap();
-            System.Console.WriteLine("----");
-            TestFillTree();
-            System.Console.WriteLine("----");
-            System.Console.WriteLine("Please press key.");
-            System.Console.ReadKey();
-        }
-
-        private static void TestZipCodes()
-        {
-            // Checks the loading of the PLZ
-            System.Console.WriteLine("Loading the Zip codes");
-
-            var extent = new InMemoryUriExtent("mof:///plz");
-            var factory = new InMemoryFactory();
-
-            var csvSettings = new CSVSettings
-            {
-                Encoding = "ISO-8859-1",
-                Separator = '\t',
-                HasHeader = false
-            };
-
-            var provider = new CSVDataProvider(null);
-            provider.Load(extent, factory, "data/plz.csv", csvSettings);
-
-            System.Console.WriteLine($"Loaded: {extent.elements().Count()} Zipcodes");
-
-            System.Console.WriteLine();
-        }
-
-        private static void TestUmlBootstrap()
-        {
-            System.Console.WriteLine("Testing Uml-Bootstrap.");
-
-            var watch = new Stopwatch();
-            watch.Start();
-
-            var dataLayerLogic = new WorkspaceLogic(new WorkspaceData());
-            var fullStrap = Bootstrapper.PerformFullBootstrap(dataLayerLogic,
-                null, 
-                BootstrapMode.Mof,
-                new Bootstrapper.FilePaths
-                {
-                    PathPrimitive = "data/PrimitiveTypes.xmi",
-                    PathUml = "data/UML.xmi",
-                    PathMof = "data/MOF.xmi"
-                });
-            watch.Stop();
-
-            var descendents = AllDescendentsQuery.GetDescendents(fullStrap.UmlInfrastructure);
-            System.Console.WriteLine($"Having {descendents.Count()} elements");
-            var n = 0;
-            foreach (var child in descendents)
-            {
-                if (child.isSet("name"))
-                {
-                    n++;
-                }
-            }
-
-            System.Console.WriteLine($"Having {n} elements with name");
-
-            System.Console.WriteLine($"Elapsed Time for Bootstrap {watch.ElapsedMilliseconds:n0} ms");
-        }
-
-        private static void TestFillTree()
-        {
-            var watch = new Stopwatch();
-            watch.Start();
-            var factory = new InMemoryFactory();
-            var mofExtent = new InMemoryUriExtent(WorkspaceNames.UriMof);
-            var umlExtent = new InMemoryUriExtent(WorkspaceNames.UriUml);
-            var loader = new SimpleLoader(factory);
-            loader.LoadFromFile(mofExtent, "data/MOF.xmi");
-            loader.LoadFromFile(mofExtent, "data/UML.xmi");
-
-            var mof = new _MOF();
-            var uml = new _UML();
-            FillTheMOF.DoFill(mofExtent.elements(), mof);
-            FillTheUML.DoFill(umlExtent.elements(), uml);
-
-            watch.Stop();
-            System.Console.WriteLine($"Elapsed Time for MOF and UML Fill {watch.ElapsedMilliseconds:n0} ms");
+            var result = new AutoRun(typeof(WorkspaceTests).Assembly).Execute(args);
+            //System.Console.ReadKey();
+            return result;
         }
     }
 }

@@ -5,7 +5,6 @@ using System.Xml.Linq;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Provider.InMemory;

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Reflection;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
 using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider.DotNet
@@ -17,8 +17,12 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="typeLookup">Type lookup being used</param>
         /// <param name="value">Value to be converted</param>
+        /// <param name="extent">Defines the extent being associated to the DotNetElement</param>
         /// <param name="id">If set, the id will be set to the given element</param>
-        public static DotNetElement CreateDotNetElement(this IDotNetTypeLookup typeLookup, object value,
+        public static DotNetElement CreateDotNetElement(
+            this IDotNetTypeLookup typeLookup, 
+            object value,
+            DotNetExtent extent,
             string id = null)
         {
             if (value == null)
@@ -33,13 +37,31 @@ namespace DatenMeister.Provider.DotNet
                     $"The type '{value.GetType().FullName}' is not known to the DotNetTypeLookup");
             }
 
-            var result= new DotNetElement(typeLookup, value, metaclass);
+            var result= new DotNetElement(typeLookup, value, metaclass, extent);
             if (!string.IsNullOrEmpty(id))
             {
                 result.Id = id;
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Creates a new dot net element ot of the given type lookup and the value. 
+        /// In addition, the method also creates the extents from the owner to the given value
+        /// </summary>
+        /// <param name="typeLookup"></param>
+        /// <param name="value"></param>
+        /// <param name="owner"></param>
+        /// <param name="id">Defines the id being used for the object</param>
+        /// <returns></returns>
+        public static DotNetElement CreateDotNetElement(
+            this IDotNetTypeLookup typeLookup, 
+            object value, 
+            DotNetElement owner = null, 
+            string id = null)
+        {
+            return CreateDotNetElement(typeLookup, value, owner?.Extent, id);
         }
 
         /// <summary>
@@ -77,26 +99,6 @@ namespace DatenMeister.Provider.DotNet
 
             var constructorInfo = dotNetReflectiveSequenceType.GetConstructor(new[] {type, typeof(IDotNetTypeLookup), typeof(DotNetElement)});
             return constructorInfo.Invoke(new[] {list, lookup, container}) as IReflectiveSequence;
-        }
-
-        /// <summary>
-        /// Creates a new dot net element ot of the given type lookup and the value. 
-        /// In addition, the method also creates the extents from the owner to the given value
-        /// </summary>
-        /// <param name="typeLookup"></param>
-        /// <param name="value"></param>
-        /// <param name="owner"></param>
-        /// <returns></returns>
-        public static DotNetElement CreateDotNetElement(this IDotNetTypeLookup typeLookup, object value, DotNetElement owner)
-        {
-            var result = CreateDotNetElement(typeLookup, value);
-            if (owner != null)
-            {
-                result.SetContainer(owner);
-                result.TransferExtents(owner);
-            }
-
-            return result;
         }
 
         /// <summary>

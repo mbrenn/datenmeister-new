@@ -45,6 +45,20 @@ namespace DatenMeister.Provider.DotNet
             _container = container;
         }
 
+        /// <summary>
+        /// Initializes a new instance 
+        /// </summary>
+        /// <param name="typeLookup"></param>
+        /// <param name="value"></param>
+        /// <param name="mofType"></param>
+        /// <param name="extent"></param>
+        public DotNetElement(IDotNetTypeLookup typeLookup, object value, IElement mofType, DotNetExtent extent)
+            : this(typeLookup, value, mofType)
+        {
+            if (extent == null) throw new ArgumentNullException(nameof(extent));
+            _extent = extent;
+        }
+
         public bool equals(object other)
         {
             var element = other as DotNetElement;
@@ -109,7 +123,9 @@ namespace DatenMeister.Provider.DotNet
                 }
             }
         }
-        
+
+        public DotNetExtent Extent => _extent;
+
         /// <summary>
         /// Transfers the information about extent ownership from one element to another
         /// </summary>

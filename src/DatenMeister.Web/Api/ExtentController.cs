@@ -373,12 +373,12 @@ namespace DatenMeister.Web.Api
 
             return new
             {
-                views = from type in foundViews
-                    let typeExtent = type.GetUriExtentOf()
+                views = from viewType in foundViews
+                    let typeExtent = viewType.GetUriExtentOf()
                     select new
                     {
-                        name = _resolution.GetName(type),
-                        uri = typeExtent.uri(type),
+                        name = _resolution.GetName(viewType),
+                        uri = typeExtent.uri(viewType),
                         ext = typeExtent.contextURI(),
                         ws = _workspaceLogic.FindWorkspace(typeExtent)?.id
                     }

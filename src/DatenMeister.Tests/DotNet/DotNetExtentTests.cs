@@ -1,9 +1,11 @@
-﻿using DatenMeister.Core;
+﻿using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.DotNet
@@ -121,6 +123,85 @@ namespace DatenMeister.Tests.DotNet
             Assert.That(((DotNetTests.TestClass) found.GetNativeValue()).Title, Is.EqualTo("Test"));
         }
 
+        [Test]
+        public static void TestExtentReferences()
+        {
+            var lookup = Initialize();
+            var extent = new DotNetExtent("dm:///test", lookup);
+
+            var parent = new DotNetTests.PersonWithParent
+            {
+                Name = "Eric",
+                Prename = "Maier"
+            };
+
+            var child = new DotNetTests.PersonWithParent
+            {
+                Name = "Ericson",
+                Prename = "Maierson",
+                Parent = parent
+            };
+
+            var personAsElement = lookup.CreateDotNetElement(child);
+            extent.elements().add(personAsElement);
+
+            var element = extent.elements().ElementAt(0).AsIObject();
+            Assert.That(element != null);
+            var asKnowsExtent = (IObjectKnowsExtent) element;
+            Assert.That(asKnowsExtent.Extents.First(), Is.EqualTo(extent));
+
+            var parentObject = element.get("Parent");
+            Assert.That(parentObject, Is.Not.Null);
+            var parentAsObject = parentObject.AsIObject();
+            Assert.That(parentAsObject, Is.Not.Null);
+            asKnowsExtent = (IObjectKnowsExtent)parentAsObject;
+            Assert.That(asKnowsExtent.Extents.First(), Is.EqualTo(extent));
+        }
+
+        [Test]
+        public static void TestExtentReferencesWithSequence()
+        {
+            var lookup = Initialize();
+            var extent = new DotNetExtent("dm:///test", lookup);
+
+            var parent = new DotNetTests.TestClassWithList
+            {
+                Title = "TestClass"
+            };
+
+            var child1 = new DotNetTests.Person
+            {
+                Name = "Ericson",
+                Prename = "Maierson"
+            };
+
+            var child2 = new DotNetTests.Person
+            {
+                Name = "Ericson",
+                Prename = "Maierson"
+            };
+
+            parent.Persons.Add(child1);
+            parent.Persons.Add(child2);
+
+            var personAsElement = lookup.CreateDotNetElement(parent);
+            extent.elements().add(personAsElement);
+
+            var element = extent.elements().ElementAt(0).AsIObject();
+
+            // Gets the children and verifies if they are a reflective colleciton
+            var parentObject = element.get("Persons");
+            Assert.That(parentObject, Is.Not.Null);
+            var persons = (IReflectiveCollection) parentObject;
+            Assert.That(persons, Is.Not.Null);
+
+            // Ok, now get the child and see, if OK
+            var childRetrieved = persons.ElementAt(0);
+            Assert.That(childRetrieved, Is.Not.Null);
+            var asKnowsExtent = (IObjectKnowsExtent) childRetrieved;
+            Assert.That(asKnowsExtent.Extents.First(), Is.EqualTo(extent));
+        }
+
         private static DotNetTypeLookup Initialize()
         {
             var uml = new _UML();
@@ -128,10 +209,10 @@ namespace DatenMeister.Tests.DotNet
             var dotNetTypeLookup = new DotNetTypeLookup();
             dotNetTypeLookup.GenerateAndAdd(uml, mofFactory, typeof(DotNetTests.TestClass));
             dotNetTypeLookup.GenerateAndAdd(uml, mofFactory, typeof(DotNetTests.Person));
+            dotNetTypeLookup.GenerateAndAdd(uml, mofFactory, typeof(DotNetTests.PersonWithParent));
             dotNetTypeLookup.GenerateAndAdd(uml, mofFactory, typeof(DotNetTests.TestClassWithList));
             return dotNetTypeLookup;
         }
-
 
     }
 }

@@ -51,11 +51,10 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="typeLookup"></param>
         /// <param name="value"></param>
         /// <param name="mofType"></param>
-        /// <param name="extent"></param>
+        /// <param name="extent">The Extent to which the element is allocated. May be null if not allocated</param>
         public DotNetElement(IDotNetTypeLookup typeLookup, object value, IElement mofType, DotNetExtent extent)
             : this(typeLookup, value, mofType)
         {
-            if (extent == null) throw new ArgumentNullException(nameof(extent));
             _extent = extent;
         }
 

@@ -27,13 +27,12 @@ namespace DatenMeister.Provider.DotNet
             _contextUri = contextUri;
             _navigator = new ExtentUrlNavigator<DotNetElement>(this);
 
+            // Creates the Reflective seqeunce
             var reflectiveSequence =
-                typeLookup.CreateDotNetReflectiveSequence(new List<object>(), null);
+                typeLookup.CreateDotNetReflectiveSequence(new List<object>(), this);
             _elements = new ReflectiveSequenceForExtent(
                 this, 
                 reflectiveSequence);
-
-            ((IDotNetReflectiveSequence)reflectiveSequence).SetExtent(this);
         }
 
         public bool useContainment()

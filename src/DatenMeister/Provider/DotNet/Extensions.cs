@@ -37,7 +37,7 @@ namespace DatenMeister.Provider.DotNet
                     $"The type '{value.GetType().FullName}' is not known to the DotNetTypeLookup");
             }
 
-            var result= new DotNetElement(typeLookup, value, metaclass, extent);
+            var result = new DotNetElement(typeLookup, value, metaclass, extent);
             if (!string.IsNullOrEmpty(id))
             {
                 result.Id = id;
@@ -99,6 +99,23 @@ namespace DatenMeister.Provider.DotNet
 
             var constructorInfo = dotNetReflectiveSequenceType.GetConstructor(new[] {type, typeof(IDotNetTypeLookup), typeof(DotNetElement)});
             return constructorInfo.Invoke(new[] {list, lookup, container}) as IReflectiveSequence;
+        }
+
+        /// <summary>
+        /// Creates a .net reflective sequence
+        /// </summary>
+        /// <param name="lookup">The dotnet lookup to be used</param>
+        /// <param name="list">The list to be parsed</param>
+        /// <param name="extent">Stores the extent for the given element</param>
+        /// <returns>The created reflective sequence working on the given list</returns>
+        public static IReflectiveSequence CreateDotNetReflectiveSequence(
+            this IDotNetTypeLookup lookup,
+            object list,
+            DotNetExtent extent)
+        {
+            var result = CreateDotNetReflectiveSequence(lookup, list, (DotNetElement) null);
+            ((IDotNetReflectiveSequence)result).SetExtent(extent);
+            return result;
         }
 
         /// <summary>
@@ -167,6 +184,7 @@ namespace DatenMeister.Provider.DotNet
             {
                 dotNetResult.SetExtent(extent);
             }
+
             return dotNetResult;
         }
 

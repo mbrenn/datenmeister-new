@@ -44,5 +44,12 @@ namespace DatenMeister.Tests.DotNet
             public List<string> Authors {get;set; } = new List<string>();
             public List<Person> Persons { get; set; } = new List<Person>();
         }
+
+        public class PersonWithParent
+        {
+            public string Name { get; set; }
+            public string Prename { get; set; }
+            public PersonWithParent Parent { get; set; }
+        }
     }
 }

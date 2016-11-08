@@ -33,7 +33,7 @@ namespace DatenMeister.Runtime.Extents
                 }
 
 
-                (value as ISetKnownExtents)?.AddToExtent(_extent);
+                (value as ISetExtent)?.SetExtent(_extent);
 
                 return result;
             }
@@ -46,7 +46,7 @@ namespace DatenMeister.Runtime.Extents
                 _reflectiveSequence.add(index, value);
                 _cachedObjects.Add(value);
 
-                (value as ISetKnownExtents)?.AddToExtent(_extent);
+                (value as ISetExtent)?.SetExtent(_extent);
             }
         }
 
@@ -64,7 +64,7 @@ namespace DatenMeister.Runtime.Extents
                 {
                     foreach (var value in values)
                     {
-                        (value as ISetKnownExtents)?.AddToExtent(_extent);
+                        (value as ISetExtent)?.SetExtent(_extent);
                         _cachedObjects.Add(value);
                     }
                 }
@@ -104,7 +104,7 @@ namespace DatenMeister.Runtime.Extents
                     _cachedObjects.Remove(value);
                 }
 
-                (value as InMemoryObject)?.RemoveFromExtent(_extent);
+                (value as ISetExtent)?.SetExtent(null);
 
                 return result;
             }
@@ -124,7 +124,7 @@ namespace DatenMeister.Runtime.Extents
                 _cachedObjects.Remove(oldObject);
                 _cachedObjects.Add(value);
 
-                (oldObject as InMemoryObject)?.RemoveFromExtent(_extent);
+                (oldObject as ISetExtent)?.SetExtent(null);
 
                 return oldObject;
             }

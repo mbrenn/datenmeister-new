@@ -147,15 +147,15 @@ namespace DatenMeister.Tests.DotNet
 
             var element = extent.elements().ElementAt(0).AsIObject();
             Assert.That(element != null);
-            var asKnowsExtent = (IObjectKnowsExtent) element;
-            Assert.That(asKnowsExtent.Extents.First(), Is.EqualTo(extent));
+            var asKnowsExtent = (IHasExtent) element;
+            Assert.That(asKnowsExtent.Extent, Is.EqualTo(extent));
 
             var parentObject = element.get("Parent");
             Assert.That(parentObject, Is.Not.Null);
             var parentAsObject = parentObject.AsIObject();
             Assert.That(parentAsObject, Is.Not.Null);
-            asKnowsExtent = (IObjectKnowsExtent)parentAsObject;
-            Assert.That(asKnowsExtent.Extents.First(), Is.EqualTo(extent));
+            asKnowsExtent = (IHasExtent)parentAsObject;
+            Assert.That(asKnowsExtent.Extent, Is.EqualTo(extent));
         }
 
         [Test]
@@ -198,8 +198,8 @@ namespace DatenMeister.Tests.DotNet
             // Ok, now get the child and see, if OK
             var childRetrieved = persons.ElementAt(0);
             Assert.That(childRetrieved, Is.Not.Null);
-            var asKnowsExtent = (IObjectKnowsExtent) childRetrieved;
-            Assert.That(asKnowsExtent.Extents.First(), Is.EqualTo(extent));
+            var asKnowsExtent = (IHasExtent) childRetrieved;
+            Assert.That(asKnowsExtent.Extent, Is.EqualTo(extent));
         }
 
         private static DotNetTypeLookup Initialize()

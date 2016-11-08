@@ -33,9 +33,10 @@ namespace DatenMeister.Tests.Mof.Queries
 
             var result = mofExtent.elements().WhenOneOfThePropertyContains(properties,
                 "Mai");
+            var foundElement = result.ElementAt(0);
 
             Assert.That(result.size(), Is.EqualTo(1));
-            Assert.That(result.ElementAt(0), Is.EqualTo(mofObject));
+            Assert.That(foundElement, Is.EqualTo(mofObject));
 
             result = mofExtent.elements().WhenOneOfThePropertyContains(properties,
                 "55130");

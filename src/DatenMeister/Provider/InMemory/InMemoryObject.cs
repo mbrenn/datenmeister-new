@@ -15,12 +15,12 @@ namespace DatenMeister.Provider.InMemory
     /// <summary>
     ///     Describes the InMemory object, representing the Mof Object
     /// </summary>
-    public class InMemoryObject : IObject, IObjectAllProperties, IHasId, IObjectKnowsExtent, ICanSetId, ISetKnownExtents
+    public class InMemoryObject : IObject, IObjectAllProperties, IHasId, IHasExtent, ICanSetId, ISetExtent
     {
         /// <summary>
         /// Stores the list of extents to which this element is stored
         /// </summary>
-        private readonly HashSet<IExtent> _extents = new HashSet<IExtent>();
+        private IExtent _extent;
 
         /// <summary>
         ///     Stores the values direct within the memory
@@ -34,19 +34,7 @@ namespace DatenMeister.Provider.InMemory
 
         public string Id { get; set; }
         
-        IEnumerable<IExtent> IObjectKnowsExtent.Extents
-        {
-            get
-            {
-                lock (_extents)
-                {
-                    foreach (var extent in _extents)
-                    {
-                        yield return extent;
-                    }
-                }
-            }
-        }
+        IExtent IHasExtent.Extent => _extent;
 
         public bool equals(object other)
         {
@@ -127,20 +115,9 @@ namespace DatenMeister.Provider.InMemory
             return builder.ToString();
         }
 
-        public void AddToExtent(IExtent extent)
+        public void SetExtent(IExtent extent)
         {
-            lock (_extents)
-            {
-                _extents.Add(extent);
-            }
-        }
-
-        public void RemoveFromExtent(IExtent extent)
-        {
-            lock (_extents)
-            {
-                _extents.Remove(extent);
-            }
+            _extent = extent;
         }
 
         /// <summary>
@@ -153,20 +130,27 @@ namespace DatenMeister.Provider.InMemory
         {
             if (DotNetHelper.IsOfEnumeration(value) && !(value is InMemoryReflectiveSequence))
             {
-                return new InMemoryReflectiveSequence((value as IEnumerable<object>).ToList());
+                return new InMemoryReflectiveSequence(localExtent, (value as IEnumerable<object>).ToList());
             }
 
             if (DotNetHelper.IsOfMofObject(value))
             {
                 var valueAsObject = (IObject)value;
-                if (localExtent != null && valueAsObject.GetUriExtentOf()?.contextURI() == localExtent.contextURI())
+                var extentOfValue = valueAsObject.GetUriExtentOf();
+                if (localExtent != null && extentOfValue?.contextURI() == localExtent.contextURI())
                 {
+                    return valueAsObject;
+                }
+                if (extentOfValue == null && value is InMemoryObject)
+                {
+                    // Object does not have an extent until now... So get the ownership
+                    (value as ISetExtent)?.SetExtent(localExtent);
                     return valueAsObject;
                 }
 
                 // Ok, it is not local, so convert it
                 var result = ObjectCopier.Copy(new InMemoryFactory(), (IObject) value);
-                ((ISetKnownExtents) result).AddToExtent(localExtent);
+                ((ISetExtent) result).SetExtent(localExtent);
                 return result;
             }
 

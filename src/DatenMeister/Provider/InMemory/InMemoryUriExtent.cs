@@ -27,7 +27,7 @@ namespace DatenMeister.Provider.InMemory
         public InMemoryUriExtent(string uri)
         {
             _contextUri = uri;
-            _reflectiveSequence = new ReflectiveSequenceForExtent(this, new InMemoryReflectiveSequence(_elements));
+            _reflectiveSequence = new ReflectiveSequenceForExtent(this, new InMemoryReflectiveSequence(this, _elements));
             _extentUrlNavigator = new ExtentUrlNavigator<InMemoryElement>(this);
         }
 

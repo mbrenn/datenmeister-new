@@ -129,8 +129,8 @@
     <Compile Include="Core\EMOF\Interface\Reflection\IObject.cs" />
     <Compile Include="Core\EMOF\Interface\Common\IReflectiveSequence.cs" />
     <Compile Include="Core\EMOF\Interface\Reflection\IObjectAllProperties.cs" />
-    <Compile Include="Core\EMOF\Interface\Reflection\IObjectKnowsExtent.cs" />
-    <Compile Include="Core\EMOF\Interface\Reflection\ISetKnownExtents.cs" />
+    <Compile Include="Core\EMOF\Interface\Reflection\IHasExtent.cs" />
+    <Compile Include="Core\EMOF\Interface\Reflection\ISetExtent.cs" />
     <Compile Include="Core\Filler\DummyFiller.cs" />
     <Compile Include="Core\Filler\FillTheMOF.cs" />
     <Compile Include="Core\Filler\FillThePrimitiveTypes.cs" />

@@ -201,10 +201,10 @@ namespace DatenMeister.Runtime
             }
 
             // If the object knows the extent to which it belongs to, it will return it
-            var objectKnowsExtent = value as IObjectKnowsExtent;
+            var objectKnowsExtent = value as IHasExtent;
             if (objectKnowsExtent != null)
             {
-                return objectKnowsExtent.Extents.FirstOrDefault() as IUriExtent;
+                return objectKnowsExtent.Extent as IUriExtent;
             }
 
             throw new ArgumentException($"The following element does not implement the IObjectKnowsExtent interface: {value}");

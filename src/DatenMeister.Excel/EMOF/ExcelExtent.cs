@@ -40,7 +40,7 @@ namespace DatenMeister.Excel.EMOF
                 "items",
                 x =>
                 {
-                    var collection = new MMReflectiveCollection();
+                    var collection = new MMReflectiveCollection(this);
 
                     var n = x.RowOffset;
                     while (true)
@@ -62,7 +62,7 @@ namespace DatenMeister.Excel.EMOF
 
         public override IReflectiveSequence elements()
         {
-            var result = new MMReflectiveCollection();
+            var result = new MMReflectiveCollection(this);
             for (var n = 0; n < _workbook.NumberOfSheets; n++)
             {
                 var sheet = _workbook.GetSheetAt(n);

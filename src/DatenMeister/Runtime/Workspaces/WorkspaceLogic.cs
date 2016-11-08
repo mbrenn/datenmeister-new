@@ -47,10 +47,10 @@ namespace DatenMeister.Runtime.Workspaces
             }
 
             // If the object knows the extent to which it belongs to, it will return it
-            var objectKnowsExtent = value as IObjectKnowsExtent;
+            var objectKnowsExtent = value as IHasExtent;
             if (objectKnowsExtent != null)
             {
-                var found = objectKnowsExtent.Extents.FirstOrDefault();
+                var found = objectKnowsExtent.Extent;
                 return found == null
                     ? _fileData.Default
                     : GetWorkspaceOfExtent(found);

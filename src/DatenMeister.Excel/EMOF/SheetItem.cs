@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Helper;
 using DatenMeister.Provider.ManualMapping;
 using NPOI.SS.UserModel;
@@ -7,6 +9,14 @@ namespace DatenMeister.Excel.EMOF
 {
     public class SheetItem : MMElement<ISheet>
     {
+        public SheetItem() : base(null)
+        {
+        }
+
+        public SheetItem(IUriExtent localExtent) : base(localExtent)
+        {
+        }
+
         /// <summary>
         /// Gets or sets the columns and their names
         /// The name of the column mapping to the column

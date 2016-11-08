@@ -16,7 +16,7 @@ namespace DatenMeister.Provider.XMI.EMOF
     /// <summary>
     /// Abstracts the IObject from EMOF
     /// </summary>
-    public class XmlElement : IElement, IHasId, IObjectKnowsExtent, IObjectAllProperties
+    public class XmlElement : IElement, IHasId, IHasExtent, IObjectAllProperties
     {
         public static readonly XName TypeAttribute = Namespaces.Xmi + "type";
         private static readonly XName AttributeNameForId = "id";
@@ -53,6 +53,8 @@ namespace DatenMeister.Provider.XMI.EMOF
                 node.SetAttributeValue(AttributeNameForId, Guid.NewGuid().ToString());
             }
         }
+
+        public IExtent Extent => _owningExtent;
 
         /// <summary>
         /// Initializes a new instance of the XmlElement class.
@@ -275,11 +277,6 @@ namespace DatenMeister.Provider.XMI.EMOF
         public IElement container()
         {
             return null;
-        }
-
-        public IEnumerable<IExtent> Extents
-        {
-            get { yield return _owningExtent; }
         }
     }
 }

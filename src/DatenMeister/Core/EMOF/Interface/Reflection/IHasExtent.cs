@@ -9,12 +9,11 @@ namespace DatenMeister.Core.EMOF.Interface.Reflection
     /// up the lookup for datalayers and containing events and should be 
     /// implemented by every object
     /// </summary>
-    public interface IObjectKnowsExtent
+    public interface IHasExtent
     {
         /// <summary>
-        /// Gets the list of all extents where the object is stored.
-        /// If the interface is implemented, the list needs to be complete
+        /// Gets the list extent where the object is stored.
         /// </summary>
-        IEnumerable<IExtent> Extents { get; }
+        IExtent Extent { get; }
     }
 }

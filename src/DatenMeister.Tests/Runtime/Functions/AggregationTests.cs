@@ -96,7 +96,7 @@ namespace DatenMeister.Tests.Runtime.Functions
 
         private InMemoryReflectiveSequence CreateReflectiveSequence()
         {
-            var reflectiveSequence = new InMemoryReflectiveSequence();
+            var reflectiveSequence = new InMemoryReflectiveSequence(null);
 
             var value = new InMemoryObject();
             value.set(property1, 3);

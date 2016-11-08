@@ -8,7 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.DotNet
 {
-    public class DotNetElement : IElement, IHasId, IObjectKnowsExtent, ICanSetId, IObjectAllProperties
+    public class DotNetElement : IElement, IHasId, IHasExtent, ICanSetId, IObjectAllProperties
     {
         /// <summary>
         /// Stores the list of extents to which this element is stored
@@ -112,18 +112,9 @@ namespace DatenMeister.Provider.DotNet
 
         public string Id { get; set; }
 
-        public IEnumerable<IExtent> Extents
-        {
-            get
-            {
-                if (_extent != null)
-                {
-                    yield return _extent;
-                }
-            }
-        }
-
         public DotNetExtent Extent => _extent;
+
+        IExtent IHasExtent.Extent => _extent;
 
         /// <summary>
         /// Transfers the information about extent ownership from one element to another

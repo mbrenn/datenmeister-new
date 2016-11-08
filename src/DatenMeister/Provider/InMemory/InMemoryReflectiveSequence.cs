@@ -3,31 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Provider.InMemory
 {
     public class InMemoryReflectiveSequence : IReflectiveSequence
     {
+        /// <summary>
+        /// Stores the extent belonging to the given extent
+        /// </summary>
+        private IUriExtent _localExtent;
+
         private readonly List<object> _values;
 
-        public InMemoryReflectiveSequence()
+        public InMemoryReflectiveSequence(IUriExtent localExtent)
         {
+            _localExtent = localExtent;
             _values = new List<object>();
         }
 
-        public InMemoryReflectiveSequence(List<object> values)
+        public InMemoryReflectiveSequence(IUriExtent localExtent, List<object> values)
         {
             _values = values;
+            _localExtent = localExtent;
         }
 
         public virtual bool add(object value)
         {
-            return addInternal(value);
+            return AddInternal(value);
         }
 
-        private bool addInternal(object value)
+        private bool AddInternal(object value)
         {
-            _values.Add(value);
+            _values.Add(InMemoryObject.ConvertToInMemoryElement(value, _localExtent));
             return true;
         }
 
@@ -41,7 +49,7 @@ namespace DatenMeister.Provider.InMemory
             var result = false;
             foreach (var value in values)
             {
-                result |= addInternal(value);
+                result |= AddInternal(value);
             }
 
             return result;
@@ -80,7 +88,7 @@ namespace DatenMeister.Provider.InMemory
         {
             CheckIndex(index);
             var old = _values[index];
-            _values[index] = value;
+            _values[index] = InMemoryObject.ConvertToInMemoryElement(value, _localExtent);
             return old;
         }
 
@@ -94,9 +102,9 @@ namespace DatenMeister.Provider.InMemory
             return (_values as IEnumerable).GetEnumerator();
         }
 
-        public static InMemoryReflectiveSequence Create<T>(List<T> values)
+        public static InMemoryReflectiveSequence Create<T>(IUriExtent extent, List<T> values)
         {
-            return new InMemoryReflectiveSequence(values.Cast<object>().ToList());
+            return new InMemoryReflectiveSequence(extent, values.Cast<object>().ToList());
         }
 
         private void CheckIndex(int index)

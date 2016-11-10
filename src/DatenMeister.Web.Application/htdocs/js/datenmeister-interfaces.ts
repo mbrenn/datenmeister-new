@@ -31,6 +31,7 @@ export module ClientResponse {
 
     export interface IItemModel {
         name: string;
+        fullname: string;
         uri: string;
         ext: string;
         ws: string;

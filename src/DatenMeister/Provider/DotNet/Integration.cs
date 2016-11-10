@@ -3,11 +3,9 @@ using System.IO;
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
-using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
-using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
@@ -135,7 +133,7 @@ namespace DatenMeister.Provider.DotNet
                     fields,
                     dotNetTypeLookup);;
 
-                var viewLogic = new ViewLogic(workspaceLogic);
+                var viewLogic = scope.Resolve<ViewLogic>();
                 viewLogic.Integrate();
 
                 // Boots up the typical DatenMeister Environment  

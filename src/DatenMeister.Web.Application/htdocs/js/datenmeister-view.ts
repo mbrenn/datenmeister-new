@@ -2,14 +2,18 @@
 import * as DMTables from "./datenmeister-tables";
 import * as DMClient from "./datenmeister-client";
 import * as DMQuery from "./datenmeister-query";
+import * as DMVP from "./datenmeister-viewport";
 
 // This interface should be implemented by all views that can be added via 'setView' to a layout
 export interface IView {
+    viewport: DMVP.ViewPort;
     getContent(): JQuery;
     getLayoutInformation(): DMI.Api.ILayoutChangedEvent;
 }
 
+// Defines a base implementation of the IView interface
 export class ViewBase implements IView{
+    public viewport: DMVP.ViewPort;
     protected layout: DMI.Api.ILayout;
     protected content: JQuery;
     protected layoutInformation: DMI.Api.ILayoutChangedEvent;
@@ -218,13 +222,6 @@ export class ExtentView extends ViewBase implements IView{
             table.currentQuery = query;
         }
 
-        configuration.onNewItemClicked = (metaclass) => {
-            DMClient.ExtentApi.createItem(ws, extentUrl, undefined, metaclass)
-                .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
-                    this.onItemCreated(ws, extentUrl, innerData.newuri);
-                });
-        };
-
         configuration.onViewChanged = (viewUrl) => {
             query.view = viewUrl;
             tthis.loadAndCreateHtmlForExtent(ws, extentUrl, query);
@@ -232,6 +229,20 @@ export class ExtentView extends ViewBase implements IView{
         
         DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done(
             (data) => {
+
+                configuration.onNewItemClicked = (metaclass) => {
+                    var view = new NavigationView(tthis.layout);
+                    for (let typeKey in data.types) {
+                        var type = data.types[typeKey];
+                        view.addLink(type.name, () => alert(type.name));
+                    }
+
+                    tthis.viewport.setView(view);
+                    /*DMClient.ExtentApi.createItem(ws, extentUrl, undefined, metaclass)
+                        .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
+                            this.onItemCreated(ws, extentUrl, innerData.newuri);
+                        });*/
+                };
                 table.setCreatableTypes(data.types);
             });
 
@@ -339,9 +350,13 @@ export class ItemView extends ViewBase implements IView
             "<th>Layer: </th><td class='dm-tablecell-layer'></td>" +
             "</tr>" +
             "</table>");
+
         if (data.metaclass !== undefined && data.metaclass !== null) {
-            var domMetaClassLink = $("<a href='#'>3</a>").text(data.metaclass.name);
-            domMetaClassLink.click(() => {
+            var domMetaClassLink = $("<span><a href='#'>3</a> (<span class='fullname'></span>)</span>");
+            $("a", domMetaClassLink).text(data.metaclass.name);
+            $(".fullname", domMetaClassLink).text(data.metaclass.fullname);
+
+            $("a", domMetaClassLink).click(() => {
                 tthis.layout.navigateToItem(
                     data.metaclass.ws,
                     data.metaclass.ext,
@@ -369,7 +384,6 @@ export class ItemView extends ViewBase implements IView
         }
 
         this.content.append(domTableOwner);
-        this.content.append(domTableInfo);
         this.content.append(domTableInfo);
     }
 }

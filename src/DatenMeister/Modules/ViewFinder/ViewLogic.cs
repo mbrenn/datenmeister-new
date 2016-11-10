@@ -11,6 +11,7 @@ using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.ViewFinder
 {
@@ -22,10 +23,12 @@ namespace DatenMeister.Modules.ViewFinder
         public const string UriViewExtent = "dm:///management/views";
         
         private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly NamedElementMethods _namedElementMethods;
 
-        public ViewLogic(IWorkspaceLogic workspaceLogic)
+        public ViewLogic(IWorkspaceLogic workspaceLogic, NamedElementMethods namedElementMethods)
         {
             _workspaceLogic = workspaceLogic;
+            _namedElementMethods = namedElementMethods;
         }
 
         /// <summary>
@@ -97,7 +100,7 @@ namespace DatenMeister.Modules.ViewFinder
         {
             var viewExtent = GetViewExtent();
             var formAndFields = GetFormAndFieldInstance(viewExtent);
-            var metaClassId = metaClass.GetUri();
+            var metaClassId = _namedElementMethods.GetFullName(metaClass);
             var typeAsString = type.ToString();
 
             foreach (

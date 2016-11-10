@@ -16,5 +16,6 @@ export class ViewPort {
         this.container.append(view.getContent());
 
         this.layout.throwLayoutChangedEvent(view.getLayoutInformation());
+        view.viewport = this;
     }
 }

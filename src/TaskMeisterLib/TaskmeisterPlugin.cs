@@ -2,7 +2,6 @@
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
@@ -11,6 +10,7 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using TaskMeister.Model;
 
 namespace TaskMeister
@@ -32,6 +32,7 @@ namespace TaskMeister
         private readonly IWebserverStartupPhases _webserverStartupPhases;
         private readonly ViewLogic _viewLogic;
         private readonly IDotNetTypeLookup _typeLookup;
+        private readonly NamedElementMethods _namedElementMethods;
 
         public TaskmeisterPlugin(
             ILifetimeScope lifetimeScope,
@@ -39,7 +40,8 @@ namespace TaskMeister
             IFactoryMapper factoryMapper,
             IWebserverStartupPhases webserverStartupPhases,
             ViewLogic viewLogic,
-            IDotNetTypeLookup typeLookup)
+            IDotNetTypeLookup typeLookup,
+            NamedElementMethods namedElementMethods)
         {
             _lifetimeScope = lifetimeScope;
             _workspaceLogic = workspaceLogic;
@@ -47,6 +49,7 @@ namespace TaskMeister
             _webserverStartupPhases = webserverStartupPhases;
             _viewLogic = viewLogic;
             _typeLookup = typeLookup;
+            _namedElementMethods = namedElementMethods;
         }
 
         public void Start()
@@ -84,7 +87,7 @@ namespace TaskMeister
             var date = new DefaultViewForMetaclass
             {
                 view = taskDetailView,
-                metaclass =  (model.__IActivity as IHasId).Id,
+                metaclass =  _namedElementMethods.GetFullName(model.__IActivity),
                 viewType = ViewType.Detail
             };
 

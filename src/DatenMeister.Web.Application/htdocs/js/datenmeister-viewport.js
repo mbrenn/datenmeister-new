@@ -9,6 +9,7 @@ define(["require", "exports"], function (require, exports) {
             this.container.empty();
             this.container.append(view.getContent());
             this.layout.throwLayoutChangedEvent(view.getLayoutInformation());
+            view.viewport = this;
         };
         return ViewPort;
     }());

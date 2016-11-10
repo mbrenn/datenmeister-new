@@ -44,6 +44,7 @@ namespace DatenMeister.Web.Api
         private readonly ExtentFunctions _extentFunctions;
         private readonly ILifetimeScope _diScope;
         private readonly IViewFinder _viewFinder;
+        private readonly NamedElementMethods _namedElementMethods;
 
         public ExtentController(
             IFactoryMapper mapper, 
@@ -52,7 +53,8 @@ namespace DatenMeister.Web.Api
             IWorkspaceLogic workspaceLogic, 
             ExtentFunctions extentFunctions,
             ILifetimeScope diScope,
-            IViewFinder viewFinder)
+            IViewFinder viewFinder,
+            NamedElementMethods namedElementMethods)
         {
             _mapper = mapper;
             _resolution = resolution;
@@ -61,6 +63,7 @@ namespace DatenMeister.Web.Api
             _extentFunctions = extentFunctions;
             _diScope = diScope;
             _viewFinder = viewFinder;
+            _namedElementMethods = namedElementMethods;
         }
 
         [Route("all")]
@@ -76,7 +79,8 @@ namespace DatenMeister.Web.Api
                     {
                         uri = extent.contextURI(),
                         dataLayer = _workspaceLogic.GetWorkspaceOfExtent(extent).id,
-                        count = extent.elements().Count()
+                        count = extent.elements().Count(),
+                        type = extent.GetType().Name
                     });
             }
 
@@ -301,8 +305,7 @@ namespace DatenMeister.Web.Api
                     extentName = extentName.Replace(c, '-');
                 }
 
-                extentName = $"{extentName.Replace('=', '-')}.csv";
-                
+                extentName = $"{extentName.Replace('=', '-')}.csv"; 
 
                 httpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
                 httpResponse.Content.Headers.Add("Content-Disposition", $"attachment;filename={extentName}");
@@ -509,6 +512,7 @@ namespace DatenMeister.Web.Api
                 var metaClassModel = new ItemModel
                 {
                     name = _resolution.GetName(metaClass),
+                    fullname = _namedElementMethods.GetFullName(metaClass),
                     uri = extentWithMetaClass?.uri(metaClass),
                     ext = extentWithMetaClass?.contextURI(),
                     ws = _workspaceLogic.Workspaces.FindWorkspace(extentWithMetaClass)?.id,
@@ -707,7 +711,19 @@ namespace DatenMeister.Web.Api
                 }
                 else
                 {
-                    result[property] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
+                    var asElement = propertyValue as IElement;
+                    if (asElement != null)
+                    {
+                        result[property] = new
+                        {
+                            u = asElement.GetUri(),
+                            v = _resolution.GetName(asElement)
+                        };
+                    }
+                    else
+                    {
+                        result[property] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
+                    }
                 }
             }
 

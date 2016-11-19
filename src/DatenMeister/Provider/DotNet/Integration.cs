@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using Autofac;
 using Autofac.Features.ResolveAnything;
@@ -115,7 +116,7 @@ namespace DatenMeister.Provider.DotNet
                     workspaceData.Uml,
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml);
                 umlWatch.Stop();
-                Debug.WriteLine($" Done: {umlWatch.Elapsed.Milliseconds} ms");
+                Debug.WriteLine($" Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var mofFactory = new InMemoryFactory();
@@ -131,7 +132,7 @@ namespace DatenMeister.Provider.DotNet
                     mofFactory,
                     extentTypes.elements(),
                     fields,
-                    dotNetTypeLookup);;
+                    dotNetTypeLookup);
 
                 var viewLogic = scope.Resolve<ViewLogic>();
                 viewLogic.Integrate();

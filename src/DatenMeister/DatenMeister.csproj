@@ -163,7 +163,6 @@
     <Compile Include="Models\Forms\FormAndFields.filler.cs" />
     <Compile Include="Models\Forms\TextFieldData.cs" />
     <Compile Include="Models\Forms\ViewType.cs" />
-    <Compile Include="Models\ItemsAndExtents\DataTableItem.cs" />
     <Compile Include="Models\ItemsAndExtents\ExtentContentModel.cs" />
     <Compile Include="Models\ItemsAndExtents\ExtentModel.cs" />
     <Compile Include="Models\ItemsAndExtents\FormViewSettings.cs" />

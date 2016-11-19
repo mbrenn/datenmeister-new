@@ -465,7 +465,7 @@ namespace DatenMeister.Web.Api
                 search = search,
                 filteredItemCount = filteredAmount,
                 items = filteredItems
-                    .Select(x => new DataTableItem
+                    .Select(x => new ItemContentModel
                     {
                         uri = foundExtent.uri(x as IElement),
                         v = ConvertToJson(x as IElement, result)
@@ -533,10 +533,10 @@ namespace DatenMeister.Web.Api
             IUriExtent foundExtent;
             _workspaceLogic.RetrieveWorkspaceAndExtent(model.ws, model.extent, out foundWorkspace, out foundExtent);
 
-            if (!string.IsNullOrEmpty(model.container))
+            /*if (!string.IsNullOrEmpty(model.container))
             {
                 throw new InvalidOperationException("Element creation within container is not supported.");
-            }
+            }*/
 
             // If the metaclass was given, look for it, otherwise we do not have a type
             IElement metaclass = null;

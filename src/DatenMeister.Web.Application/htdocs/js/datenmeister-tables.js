@@ -438,8 +438,14 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
                 return domDD;
             }
             if (column.fieldType === DMI.Table.ColumnTypes.subElements) {
-                var domSE = $("<div>SUBELEMENTS</div>");
+                var domSE = $("<div>SUBELEMENT</div>");
                 var asSE = column;
+                var btn = $("<button>New Element</button>");
+                btn.click(function () {
+                    //DMClient.ExtentApi.createItem();
+                    alert('Test');
+                });
+                domSE.append(btn);
                 return domSE;
             }
         }

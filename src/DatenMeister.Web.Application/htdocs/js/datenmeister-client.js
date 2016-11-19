@@ -72,12 +72,11 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
     })(WorkspaceApi = exports.WorkspaceApi || (exports.WorkspaceApi = {}));
     var ExtentApi;
     (function (ExtentApi) {
-        function createItem(ws, extentUrl, container, metaclass) {
+        function createItem(ws, extentUrl, metaclass) {
             var callback = $.Deferred();
             var postModel = new DMI.PostModels.ItemCreateModel();
             postModel.ws = ws;
             postModel.extent = extentUrl;
-            postModel.container = container;
             postModel.metaclass = metaclass;
             $.ajax({
                 url: "/api/datenmeister/extent/item_create",

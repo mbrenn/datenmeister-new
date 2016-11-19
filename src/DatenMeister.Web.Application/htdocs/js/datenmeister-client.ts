@@ -80,12 +80,11 @@ export module WorkspaceApi {
 
 export module ExtentApi {
 
-    export function createItem(ws: string, extentUrl: string, container ?: string, metaclass?: string): JQueryDeferred<DMI.ClientResponse.ICreateItemResult> {
+    export function createItem(ws: string, extentUrl: string, metaclass?: string): JQueryDeferred<DMI.ClientResponse.ICreateItemResult> {
         var callback = $.Deferred();
         var postModel = new DMI.PostModels.ItemCreateModel();
         postModel.ws = ws;
         postModel.extent = extentUrl;
-        postModel.container = container;
         postModel.metaclass = metaclass;
 
         $.ajax(
@@ -304,7 +303,7 @@ export module ItemApi {
         return callback;
     }
 
-    export function setProperties(ws: string, extentUrl: string, itemUrl: string, item: DMI.ClientResponse.IDataTableItem): JQueryPromise<boolean> {
+    export function setProperties(ws: string, extentUrl: string, itemUrl: string, item: DMI.ClientResponse.IItemContentModel): JQueryPromise<boolean> {
         var callback = $.Deferred();
 
         var postModel = new DMI.PostModels.ItemSetPropertiesModel();

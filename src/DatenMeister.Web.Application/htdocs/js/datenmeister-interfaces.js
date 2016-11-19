@@ -9,6 +9,15 @@ define(["require", "exports"], function (require, exports) {
     (function (ClientResponse) {
         ;
         ;
+        /**
+         * Implements the IItemModel interface by containing all the fields
+         */
+        var ItemContentModel = (function () {
+            function ItemContentModel() {
+            }
+            return ItemContentModel;
+        }());
+        ClientResponse.ItemContentModel = ItemContentModel;
     })(ClientResponse = exports.ClientResponse || (exports.ClientResponse = {}));
     var PostModels;
     (function (PostModels) {
@@ -147,14 +156,6 @@ define(["require", "exports"], function (require, exports) {
             return ColumnTypes;
         }());
         Table.ColumnTypes = ColumnTypes;
-        var DataTableItem = (function () {
-            function DataTableItem() {
-                this.uri = "local:///";
-                this.v = new Array();
-            }
-            return DataTableItem;
-        }());
-        Table.DataTableItem = DataTableItem;
     })(Table = exports.Table || (exports.Table = {}));
     var Api;
     (function (Api) {

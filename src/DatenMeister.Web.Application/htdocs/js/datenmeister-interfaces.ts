@@ -1,25 +1,31 @@
 ﻿/* Stores all the models that can be returned via one of the */
-import Datenmeisterlayout = require("datenmeister-layout");
 import * as DMRibbon from  "./datenmeister-ribbon";
 
-
 export module ClientResponse {
+
     export interface ICreateItemResult {
         success: boolean;
         newuri: string;
     }
+
+    /**
+     * Stores the information about the workspace
+     */
     export interface IWorkspace {
         id: string;
         annotation: string;
     };
 
+    /**
+     * Stores the information about the selected extent
+     */
     export interface IExtent {
         uri: string;
     }
 
     export interface IItemsContent {
         columns: IDataForm;
-        items: Array<IDataTableItem>;
+        items: Array<IItemContentModel>;
         search: string;
         totalItemCount: number;
         filteredItemCount: number;
@@ -29,7 +35,11 @@ export module ClientResponse {
         url: string;
     };
 
+    /**
+     * Defines the information to reference the content model
+     */
     export interface IItemModel {
+        id: string;
         name: string;
         fullname: string;
         uri: string;
@@ -38,19 +48,34 @@ export module ClientResponse {
         layer: string;
     }
 
-    export interface IItemContentModel {
-        id: string;
-        uri: string;
+    /**
+     * Defines the information of model and also includes the content
+     */
+    export interface IItemContentModel extends IItemModel {
         v: Array<string>;
         c: IDataForm;
         metaclass?: IItemModel;
+    }
+
+    /**
+     * Implements the IItemModel interface by containing all the fields
+     */
+    export class ItemContentModel implements IItemContentModel {
+        id: string;
+        name: string;
+        fullname: string;
+        uri: string;
+        ext: string;
+        ws: string;
         layer: string;
+        v: Array<string>;
+        c: IDataForm;
+        metaclass: IItemModel;
     }
 
     export interface IDataForm {
         fields: Array<IFieldData>;
         name: string;
-
     }
 
     export interface IFieldData {
@@ -79,7 +104,15 @@ export module ClientResponse {
     }
 
     export interface IDataTableItem {
-        // Stores the url of the object which can be used for reference
+        /**
+         * Stores name of the workspace
+         */ 
+        ws: string;
+
+        /**
+         * Stores the url of the extent
+         */
+        ext: string;
         uri: string;
         v: Array<string>;
     }
@@ -142,8 +175,13 @@ export module PostModels {
     }
 
     export class ItemCreateModel extends ExtentReferenceModel {
-        container: string;
+//        container: string;
         metaclass: string;
+
+        // Defines the url of the item to which the item shall be added
+        parentItem: string;
+        // Defines the property to which the item will be added
+        parentProperty: string;
     }
 
     export class ItemUnsetPropertyModel extends ItemReferenceModel {
@@ -243,17 +281,6 @@ export namespace Table {
         static dateTime = "datetime";
         static subElements = "subelements";
     }
-
-    export class DataTableItem {
-        // stores the url of the object which can be used for reference
-        uri: string;
-        v: Array<string>;
-
-        constructor() {
-            this.uri = "local:///";
-            this.v = new Array<string>();
-        }
-    }
 }
 
 export namespace Api {
@@ -269,7 +296,7 @@ export namespace Api {
             settings?: View.IItemViewSettings): void;
 
         setStatus(statusDom: JQuery): void;
-        throwLayoutChangedEvent(data: ILayoutChangedEvent): void;
+        throwViewPortChanged(data: ILayoutChangedEvent): void;
 
         showDialogNewWorkspace(): void;
         showNavigationForNewExtents(workspace: string): void;

@@ -6,7 +6,7 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
                 var tab = ev.layout.getRibbon().getOrAddTab("Tasks");
                 if (ev.extent !== undefined && ev.extent !== null) {
                     tab.addIcon("Add Task", "...", function () {
-                        DMClient.ExtentApi.createItem(ev.workspace, ev.extent, undefined, "datenmeister:///types#TaskMeisterLib.Model.IActivity")
+                        DMClient.ExtentApi.createItem(ev.workspace, ev.extent, "datenmeister:///types#TaskMeisterLib.Model.IActivity")
                             .done(function (innerData) {
                             ev.layout.navigateToItem(ev.workspace, ev.extent, innerData.newuri);
                         });

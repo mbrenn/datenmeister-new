@@ -11,7 +11,7 @@ export function load(plugin: DMI.Api.PluginParameter): DMI.Api.IPluginResult {
                     "Add Task",
                     "...",
                     () => {
-                        DMClient.ExtentApi.createItem(ev.workspace, ev.extent, undefined, "datenmeister:///types#TaskMeisterLib.Model.IActivity")
+                        DMClient.ExtentApi.createItem(ev.workspace, ev.extent, "datenmeister:///types#TaskMeisterLib.Model.IActivity")
                             .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
                                 ev.layout.navigateToItem(ev.workspace, ev.extent, innerData.newuri);
                             });

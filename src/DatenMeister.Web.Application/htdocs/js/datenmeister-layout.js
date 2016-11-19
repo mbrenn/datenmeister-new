@@ -235,7 +235,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             dom.empty();
             dom.append(statusDom);
         };
-        Layout.prototype.throwLayoutChangedEvent = function (data) {
+        Layout.prototype.throwViewPortChanged = function (data) {
             if (data !== undefined && data != null) {
                 data.layout = this;
             }
@@ -251,7 +251,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             }
         };
         Layout.prototype.renavigate = function () {
-            this.throwLayoutChangedEvent(this.lastLayoutConfiguration);
+            this.throwViewPortChanged(this.lastLayoutConfiguration);
         };
         Layout.prototype.gotoHome = function () {
             this.navigateToExtents("Data");

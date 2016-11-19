@@ -242,7 +242,6 @@ export class Layout implements DMI.Api.ILayout {
         this.mainViewPort.setView(view);
     }
 
-
     showDialogNewCsvExtent(workspace: string) {
         var tthis = this;
         var configuration = new DMI.Api.DialogConfiguration();
@@ -320,7 +319,7 @@ export class Layout implements DMI.Api.ILayout {
 
     lastLayoutConfiguration: DMI.Api.ILayoutChangedEvent;
 
-    throwLayoutChangedEvent(data: DMI.Api.ILayoutChangedEvent): void {
+    throwViewPortChanged(data: DMI.Api.ILayoutChangedEvent): void {
         if (data !== undefined && data != null) {
             data.layout = this;
         }
@@ -340,7 +339,7 @@ export class Layout implements DMI.Api.ILayout {
     }
 
     renavigate(): void {
-        this.throwLayoutChangedEvent(this.lastLayoutConfiguration);
+        this.throwViewPortChanged(this.lastLayoutConfiguration);
     }
 
     gotoHome(): void {

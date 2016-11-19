@@ -28,6 +28,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             domItem.val(displayText);
             domItem.click(onClick);
             container.append(domItem);
+            return domItem;
         };
         return ViewBase;
     }());
@@ -303,8 +304,13 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             this.domList = domList;
             this.content.append(this.domList);
         }
+        /**
+         * Adds a link to the view
+         * @param displayText Text to be shown
+         * @param onClick The function that is called when the user clicks
+         */
         NavigationView.prototype.addLink = function (displayText, onClick) {
-            this.insertLink(this.domList, displayText, onClick);
+            return this.insertLink(this.domList, displayText, onClick);
         };
         return NavigationView;
     }(ViewBase));
@@ -315,7 +321,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             _super.call(this, layout);
         }
         DialogView.prototype.createDialog = function (configuration) {
-            var value = new DMI.Table.DataTableItem();
+            var value = new DMI.ClientResponse.ItemContentModel();
             var tableConfiguration = new DMTables.ItemContentConfiguration();
             tableConfiguration.autoProperties = false;
             tableConfiguration.columns = configuration.columns;

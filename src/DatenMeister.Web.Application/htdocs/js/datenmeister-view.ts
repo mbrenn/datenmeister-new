@@ -39,13 +39,15 @@ export class ViewBase implements IView{
         this.layoutInformation = layoutInformation;
     }
 
-    insertLink(container: JQuery, displayText: string, onClick: () => void): void {
+    insertLink(container: JQuery, displayText: string, onClick: () => void): JQuery {
         var domItem =
             $(`<input type='button' class='btn'></input>`);
         
         domItem.val(displayText);
         domItem.click(onClick);
         container.append(domItem);
+
+        return domItem;
     }
 }
 
@@ -183,7 +185,7 @@ export class ExtentView extends ViewBase implements IView{
         ws: string,
         extentUrl: string,
         query?: DMI.PostModels.IItemTableQuery): JQueryPromise<Object> {
-        var tthis: ExtentView = this;
+        var tthis = this;
 
         // Creates the layout configuration and the handling on requests of the user
         var configuration: DMTables.ItemListTableConfiguration = new DMTables.ItemListTableConfiguration();
@@ -400,8 +402,13 @@ export class NavigationView extends ViewBase implements IView {
         this.content.append(this.domList);
     }
 
-    addLink(displayText: string, onClick: () => void): void {
-        this.insertLink(this.domList, displayText, onClick);
+    /**
+     * Adds a link to the view 
+     * @param displayText Text to be shown
+     * @param onClick The function that is called when the user clicks
+     */
+    addLink(displayText: string, onClick: () => void): JQuery {
+        return this.insertLink(this.domList, displayText, onClick);
     }
 }
 
@@ -411,7 +418,7 @@ export class DialogView extends ViewBase implements IView {
     }
 
     createDialog(configuration: DMI.Api.DialogConfiguration) {
-        var value = new DMI.Table.DataTableItem();
+        var value = new DMI.ClientResponse.ItemContentModel();
         var tableConfiguration = new DMTables.ItemContentConfiguration();
         tableConfiguration.autoProperties = false;
         tableConfiguration.columns = configuration.columns;

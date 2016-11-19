@@ -1,4 +1,6 @@
 ﻿import * as DMI from "./datenmeister-interfaces"
+import * as DMClient from "./datenmeister-client"
+
 
 export class ItemListTableConfiguration {
     onNewItemClicked: (typeUrl?: string) => void;
@@ -395,12 +397,12 @@ export class ItemContentConfiguration {
 }
 
 export class ItemContentTable {
-    item: DMI.ClientResponse.IDataTableItem;
+    item: DMI.ClientResponse.IItemContentModel;
     configuration: ItemContentConfiguration;
     domContainer: JQuery;
     domForEditArray: Array<JQuery>;
 
-    constructor(item: DMI.ClientResponse.IDataTableItem, configuration: ItemContentConfiguration) {
+    constructor(item: DMI.ClientResponse.IItemContentModel, configuration: ItemContentConfiguration) {
         this.item = item;
         this.configuration = configuration;
     }
@@ -558,7 +560,7 @@ export class ItemContentTable {
 }
 
 function createDomForContent(
-    item: DMI.ClientResponse.IDataTableItem,
+    item: DMI.ClientResponse.IItemContentModel,
     column: DMI.ClientResponse.IFieldData,
     inEditMode?: boolean,
     configuration?: ItemListTableConfiguration | ItemContentConfiguration): JQuery {
@@ -587,8 +589,16 @@ function createDomForContent(
         }
 
         if (column.fieldType === DMI.Table.ColumnTypes.subElements) {
-            let domSE = $("<div>SUBELEMENTS</div>");
+            let domSE = $("<div>SUBELEMENT</div>");
             let asSE = column as DMI.ClientResponse.ISubElementsFieldData;
+            var btn = $("<button>New Element</button>");
+            btn.click(() => {
+                
+                //DMClient.ExtentApi.createItem();
+                alert('Test');
+            });
+            domSE.append(btn);
+
 
             return domSE;
         }
@@ -597,7 +607,7 @@ function createDomForContent(
     return createDefaultDomForContent(item, column, inEditMode, configuration);
 }
 
-function createDefaultDomForContent(item: DMI.ClientResponse.IDataTableItem,
+function createDefaultDomForContent(item: DMI.ClientResponse.IItemContentModel,
     column: DMI.ClientResponse.IFieldData,
     inEditMode: boolean,
     configuration?: ItemListTableConfiguration | ItemContentConfiguration) : JQuery {

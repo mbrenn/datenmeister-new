@@ -2,16 +2,11 @@
 
 namespace DatenMeister.Models.ItemsAndExtents
 {
-    public class ItemContentModel
+    public class ItemContentModel : ItemModel
     {
-        public string uri { get; set; }
-
-        public string layer { get; set; }
-
-        public Dictionary<string, object> v { get; set; }
-
+        public string id { get; set; }
+        public Dictionary<string, object> v { get; set; } = new Dictionary<string, object>();
         public object c { get; set; }
-
         public ItemModel metaclass { get; set; }
     }
 }

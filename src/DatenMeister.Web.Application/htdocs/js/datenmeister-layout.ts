@@ -19,6 +19,9 @@ export class Layout implements DMI.Api.ILayout {
         this.parent = parent;
         this.pluginResults = new Array<DMI.Api.IPluginResult>();
         this.mainViewPort = new DMViewPort.ViewPort($("#dm-viewport", this.parent), this);
+        this.mainViewPort.onViewPortChanged = data => {
+            this.throwViewPortChanged(data);
+        };
     }
 
     refreshView() : void {

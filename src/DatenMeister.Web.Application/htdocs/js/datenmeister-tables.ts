@@ -593,9 +593,17 @@ function createDomForContent(
             let asSE = column as DMI.ClientResponse.ISubElementsFieldData;
             var btn = $("<button>New Element</button>");
             btn.click(() => {
-                
-                //DMClient.ExtentApi.createItem();
-                alert('Test');
+                alert(item.ws);
+                alert(item.ext);
+                alert(item.uri);
+                alert(column.name);
+                DMClient.ExtentApi.createItemAsSubElement(
+                    item.ws,
+                    item.ext,
+                    item.uri,
+                    column.name,
+                    null
+                );
             });
             domSE.append(btn);
 

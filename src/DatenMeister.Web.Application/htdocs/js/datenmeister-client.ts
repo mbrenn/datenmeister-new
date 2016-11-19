@@ -99,6 +99,33 @@ export module ExtentApi {
         return callback;
     }
 
+    export function createItemAsSubElement(
+        ws: string,
+        extentUrl: string,
+        parentItem: string,
+        parentProperty: string,
+        metaclass?: string): JQueryDeferred<DMI.ClientResponse.ICreateItemResult> {
+
+        var callback = $.Deferred();
+        var postModel = new DMI.PostModels.ItemCreateModel();
+        postModel.ws = ws;
+        postModel.ext = extentUrl;
+        postModel.metaclass = metaclass;
+        postModel.parentItem = parentItem;
+        postModel.parentProperty = parentProperty;
+
+        $.ajax(
+            {
+                url: "/api/datenmeister/extent/item_create",
+                data: postModel,
+                method: "POST",
+                success: (data: any) => { callback.resolve(data); },
+                error: (data: any) => { callback.reject(false); }
+            });
+
+        return callback;
+    }
+
     /* Deletes an item from the database and returns the value indicatng whether the deleteion was successful */
     export function deleteItem(ws: string, extent: string, item: string): JQueryPromise<boolean> {
         var callback = $.Deferred();
@@ -251,7 +278,11 @@ export module ItemApi {
             + "&extent=" + encodeURIComponent(extentUrl)
             + "&item=" + encodeURIComponent(itemUrl),
             cache: false,
-            success: data => {
+            success: (data: DMI.ClientResponse.IItemContentModel) => {
+                // Adds the necessary information into the ItemContentModel
+                data.ws = ws;
+                data.ext = extentUrl;
+                data.uri = itemUrl;
                 callback.resolve(data);
             },
             error: data => {

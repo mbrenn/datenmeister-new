@@ -2,9 +2,13 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
     "use strict";
     var Layout = (function () {
         function Layout(parent) {
+            var _this = this;
             this.parent = parent;
             this.pluginResults = new Array();
             this.mainViewPort = new DMViewPort.ViewPort($("#dm-viewport", this.parent), this);
+            this.mainViewPort.onViewPortChanged = function (data) {
+                _this.throwViewPortChanged(data);
+            };
         }
         Layout.prototype.refreshView = function () {
             if (this.onRefresh !== undefined && this.onRefresh !== null) {

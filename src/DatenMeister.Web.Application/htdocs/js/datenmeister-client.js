@@ -88,6 +88,24 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             return callback;
         }
         ExtentApi.createItem = createItem;
+        function createItemAsSubElement(ws, extentUrl, parentItem, parentProperty, metaclass) {
+            var callback = $.Deferred();
+            var postModel = new DMI.PostModels.ItemCreateModel();
+            postModel.ws = ws;
+            postModel.ext = extentUrl;
+            postModel.metaclass = metaclass;
+            postModel.parentItem = parentItem;
+            postModel.parentProperty = parentProperty;
+            $.ajax({
+                url: "/api/datenmeister/extent/item_create",
+                data: postModel,
+                method: "POST",
+                success: function (data) { callback.resolve(data); },
+                error: function (data) { callback.reject(false); }
+            });
+            return callback;
+        }
+        ExtentApi.createItemAsSubElement = createItemAsSubElement;
         /* Deletes an item from the database and returns the value indicatng whether the deleteion was successful */
         function deleteItem(ws, extent, item) {
             var callback = $.Deferred();
@@ -221,6 +239,10 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
                     + "&item=" + encodeURIComponent(itemUrl),
                 cache: false,
                 success: function (data) {
+                    // Adds the necessary information into the ItemContentModel
+                    data.ws = ws;
+                    data.ext = extentUrl;
+                    data.uri = itemUrl;
                     callback.resolve(data);
                 },
                 error: function (data) {

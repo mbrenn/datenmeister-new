@@ -84,7 +84,7 @@ export module ExtentApi {
         var callback = $.Deferred();
         var postModel = new DMI.PostModels.ItemCreateModel();
         postModel.ws = ws;
-        postModel.extent = extentUrl;
+        postModel.ext = extentUrl;
         postModel.metaclass = metaclass;
 
         $.ajax(
@@ -105,7 +105,7 @@ export module ExtentApi {
 
         var postModel = new DMI.PostModels.ItemDeleteModel();
         postModel.ws = ws;
-        postModel.extent = extent;
+        postModel.ext = extent;
         postModel.item = item;
 
         $.ajax(
@@ -164,7 +164,7 @@ export module ExtentApi {
 
         var postModel = new DMI.PostModels.ExtentReferenceModel();
         postModel.ws = ws;
-        postModel.extent = extent;
+        postModel.ext = extent;
 
         $.ajax(
             {
@@ -267,7 +267,7 @@ export module ItemApi {
 
         var postModel = new DMI.PostModels.ItemUnsetPropertyModel();
         postModel.ws = ws;
-        postModel.extent = extent;
+        postModel.ext = extent;
         postModel.item = item;
         postModel.property = property;
 
@@ -287,7 +287,7 @@ export module ItemApi {
 
         var postModel = new DMI.PostModels.ItemSetPropertyModel();
         postModel.ws = ws;
-        postModel.extent = extentUrl;
+        postModel.ext = extentUrl;
         postModel.item = itemUrl;
         postModel.property = property;
         postModel.newValue = newValue;
@@ -308,7 +308,7 @@ export module ItemApi {
 
         var postModel = new DMI.PostModels.ItemSetPropertiesModel();
         postModel.ws = ws;
-        postModel.extent = extentUrl;
+        postModel.ext = extentUrl;
         postModel.item = itemUrl;
         postModel.v = new Array();
         for (var k in item.v) {

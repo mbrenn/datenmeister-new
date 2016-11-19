@@ -273,7 +273,7 @@ namespace DatenMeister.Web.Api
         public object DeleteExtent([FromBody] ExtentReferenceModel model)
         {
             var workspace = GetWorkspace(model.ws);
-            var removed = workspace.RemoveExtent(model.extent);
+            var removed = workspace.RemoveExtent(model.ext);
 
             return new
             {
@@ -531,7 +531,7 @@ namespace DatenMeister.Web.Api
         {
             Workspace foundWorkspace;
             IUriExtent foundExtent;
-            _workspaceLogic.RetrieveWorkspaceAndExtent(model.ws, model.extent, out foundWorkspace, out foundExtent);
+            _workspaceLogic.RetrieveWorkspaceAndExtent(model.ws, model.ext, out foundWorkspace, out foundExtent);
 
             /*if (!string.IsNullOrEmpty(model.container))
             {

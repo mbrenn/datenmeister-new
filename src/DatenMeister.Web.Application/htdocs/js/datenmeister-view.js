@@ -342,7 +342,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             this.setLayoutInformation({
                 type: DMI.Api.PageType.Dialog,
                 workspace: configuration.ws,
-                extent: configuration.extent
+                extent: configuration.ext
             });
         };
         return DialogView;

@@ -3,10 +3,10 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
     var ItemsFromExtentProvider = (function () {
         function ItemsFromExtentProvider(ws, extent) {
             this.ws = ws;
-            this.extent = extent;
+            this.ext = extent;
         }
         ItemsFromExtentProvider.prototype.performQuery = function (query) {
-            return DMClient.ExtentApi.getItems(this.ws, this.extent, query);
+            return DMClient.ExtentApi.getItems(this.ws, this.ext, query);
         };
         return ItemsFromExtentProvider;
     }());

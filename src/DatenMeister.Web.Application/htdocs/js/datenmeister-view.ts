@@ -442,7 +442,7 @@ export class DialogView extends ViewBase implements IView {
         this.setLayoutInformation({
                 type: DMI.Api.PageType.Dialog,
                 workspace: configuration.ws,
-                extent: configuration.extent
+                extent: configuration.ext
             });
     }
 }

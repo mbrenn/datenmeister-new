@@ -76,7 +76,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             var callback = $.Deferred();
             var postModel = new DMI.PostModels.ItemCreateModel();
             postModel.ws = ws;
-            postModel.extent = extentUrl;
+            postModel.ext = extentUrl;
             postModel.metaclass = metaclass;
             $.ajax({
                 url: "/api/datenmeister/extent/item_create",
@@ -93,7 +93,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             var callback = $.Deferred();
             var postModel = new DMI.PostModels.ItemDeleteModel();
             postModel.ws = ws;
-            postModel.extent = extent;
+            postModel.ext = extent;
             postModel.item = item;
             $.ajax({
                 url: "/api/datenmeister/extent/item_delete",
@@ -143,7 +143,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             var callback = $.Deferred();
             var postModel = new DMI.PostModels.ExtentReferenceModel();
             postModel.ws = ws;
-            postModel.extent = extent;
+            postModel.ext = extent;
             $.ajax({
                 url: "/api/datenmeister/extent/extent_delete",
                 data: postModel,
@@ -234,7 +234,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             var callback = $.Deferred();
             var postModel = new DMI.PostModels.ItemUnsetPropertyModel();
             postModel.ws = ws;
-            postModel.extent = extent;
+            postModel.ext = extent;
             postModel.item = item;
             postModel.property = property;
             $.ajax({
@@ -251,7 +251,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             var callback = $.Deferred();
             var postModel = new DMI.PostModels.ItemSetPropertyModel();
             postModel.ws = ws;
-            postModel.extent = extentUrl;
+            postModel.ext = extentUrl;
             postModel.item = itemUrl;
             postModel.property = property;
             postModel.newValue = newValue;
@@ -269,7 +269,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             var callback = $.Deferred();
             var postModel = new DMI.PostModels.ItemSetPropertiesModel();
             postModel.ws = ws;
-            postModel.extent = extentUrl;
+            postModel.ext = extentUrl;
             postModel.item = itemUrl;
             postModel.v = new Array();
             for (var k in item.v) {

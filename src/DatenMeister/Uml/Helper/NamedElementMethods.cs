@@ -10,6 +10,9 @@ using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Uml.Helper
 {
+    /// <summary>
+    /// Defines some helper methods for NamedElements
+    /// </summary>
     public class NamedElementMethods
     {
         private readonly IUmlNameResolution _umlNameResolution;

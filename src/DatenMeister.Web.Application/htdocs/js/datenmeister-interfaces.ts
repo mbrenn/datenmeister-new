@@ -167,7 +167,7 @@ export module PostModels {
     /** This class is used to reference a single object within the database */
     export class ExtentReferenceModel {
         ws: string;
-        extent: string;
+        ext: string;
     }
 
     export class ItemReferenceModel extends ExtentReferenceModel {
@@ -325,7 +325,7 @@ export namespace Api {
 
     export class DialogConfiguration extends FormForItemConfiguration {
         ws: string;
-        extent: string;
+        ext: string;
     }
 
     export enum PageType {

@@ -11,7 +11,7 @@ namespace DatenMeister.Models.PostModels
 
         public WorkspaceExtentAndItemReference AsItem()
         {
-            return new WorkspaceExtentAndItemReference(ws, extent, item);
+            return new WorkspaceExtentAndItemReference(ws, ext, item);
         }
     }
 }

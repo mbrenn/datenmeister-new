@@ -5,15 +5,15 @@ import * as DMClient from "./datenmeister-client"
 export class ItemsFromExtentProvider implements DMI.Api.IItemsProvider {
 
     ws: string;
-    extent: string;
+    ext: string;
 
     constructor(ws: string, extent: string) {
         this.ws = ws;
-        this.extent = extent;
+        this.ext = extent;
     }
 
 
     performQuery(query: DMI.PostModels.IItemTableQuery): JQueryDeferred<DMI.ClientResponse.IItemsContent> {
-        return DMClient.ExtentApi.getItems(this.ws, this.extent, query);
+        return DMClient.ExtentApi.getItems(this.ws, this.ext, query);
     }
 }

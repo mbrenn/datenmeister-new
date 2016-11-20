@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -8,6 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using Autofac;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
@@ -549,7 +551,33 @@ namespace DatenMeister.Web.Api
             var factory = _mapper.FindFactoryFor(_diScope, foundExtent);
             var element = factory.create(metaclass);
 
-            foundExtent.elements().add(element);
+            if (string.IsNullOrEmpty(model.parentItem))
+            {
+                // The element will be created at root of the extent
+                foundExtent.elements().add(element);
+            }
+            else
+            {
+                // The element will be created as a subitem for the parent item
+                var parentElement = _workspaceLogic.FindItem(model.parentItem);
+                if (parentElement == null)
+                {
+                    throw new InvalidOperationException($"The parent item {model.parentItem} cannot be found");
+                }
+
+                var propertyValue  = parentElement.get(model.parentProperty);
+                if (propertyValue is IReflectiveCollection)
+                {
+                    var propertyValueAsReflectiveCollection = propertyValue as IReflectiveCollection;
+                    propertyValueAsReflectiveCollection.add(element);
+                }
+                else
+                {
+                    var list = new List<object> {element};
+                    parentElement.set(model.parentProperty, list);
+                }
+            }
+
             var newUrl = foundExtent.uri(element);
             
             return new

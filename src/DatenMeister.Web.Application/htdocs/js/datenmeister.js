@@ -64,7 +64,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         var mode = DMHelper.getParameterByNameFromHash("mode");
         var view = DMHelper.getParameterByNameFromHash("view");
         layout.onViewPortChanged = function (data) {
-            buildRibbons(layout, data);
+            layout.buildRibbons(data);
         };
         if (ws === "") {
             // per default, show the data extent
@@ -89,40 +89,5 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         $(".body-content").show();
     }
     exports.parseAndNavigateToWindowLocation = parseAndNavigateToWindowLocation;
-    function buildRibbons(layout, changeEvent) {
-        var ribbon = layout.getRibbon();
-        ribbon.clear();
-        var tabFile = ribbon.getOrAddTab("File");
-        tabFile.addIcon("Home", "img/icons/home", function () { layout.gotoHome(); });
-        tabFile.addIcon("Refresh", "img/icons/refresh_update", function () { layout.refreshView(); });
-        tabFile.addIcon("Workspaces", "img/icons/database", function () { layout.navigateToWorkspaces(); });
-        tabFile.addIcon("Add Workspace", "img/icons/database-add", function () { layout.showDialogNewWorkspace(); });
-        if (changeEvent !== null && changeEvent !== undefined && changeEvent.workspace !== undefined) {
-            // Ok, we have a workspace
-            tabFile.addIcon("Delete Workspace", "img/icons/database-delete", function () {
-                DMClient.WorkspaceApi.deleteWorkspace(changeEvent.workspace)
-                    .done(function () { return layout.navigateToWorkspaces(); });
-            });
-            tabFile.addIcon("Create Extent", "img/icons/folder_open-new", function () {
-                layout.showNavigationForNewExtents(changeEvent.workspace);
-            });
-            tabFile.addIcon("Add Extent", "img/icons/folder_open-add", function () {
-                layout.showDialogAddCsvExtent(changeEvent.workspace);
-            });
-            if (changeEvent.extent !== undefined) {
-                tabFile.addIcon("Delete Extent", "img/icons/folder_open-delete", function () {
-                    DMClient.ExtentApi.deleteExtent(changeEvent.workspace, changeEvent.extent)
-                        .done(function () { return layout.navigateToExtents(changeEvent.workspace); });
-                });
-                tabFile.addIcon("Export Extent", "img/icons/folder_open-download", function () {
-                    layout.exportExtent(changeEvent.workspace, changeEvent.extent);
-                });
-            }
-            tabFile.addIcon("Add ZipCodes", "img/icons/folder_open-mail", function () {
-                DMClient.ExampleApi.addZipCodes(changeEvent.workspace).done(function () { return layout.refreshView(); });
-            });
-        }
-        tabFile.addIcon("Close", "img/icons/close_window", function () { window.close(); });
-    }
 });
 //# sourceMappingURL=datenmeister.js.map

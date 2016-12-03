@@ -565,7 +565,7 @@ namespace DatenMeister.Web.Api
                     throw new InvalidOperationException($"The parent item {model.parentItem} cannot be found");
                 }
 
-                var propertyValue  = parentElement.get(model.parentProperty);
+                var propertyValue = parentElement.get(model.parentProperty);
                 if (propertyValue is IReflectiveCollection)
                 {
                     var propertyValueAsReflectiveCollection = propertyValue as IReflectiveCollection;

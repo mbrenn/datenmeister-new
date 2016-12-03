@@ -1,6 +1,13 @@
 ﻿
-import DMView = require("./datenmeister-view");
 import DMI = require("./datenmeister-interfaces");
+
+
+// This interface should be implemented by all views that can be added via 'setView' to a layout
+export interface IView {
+    viewport: ViewPort;
+    getContent(): JQuery;
+    getLayoutInformation(): DMI.Api.ILayoutChangedEvent;
+}
 
 export class ViewPort {
     private container: JQuery;
@@ -12,7 +19,11 @@ export class ViewPort {
         this.layout = layout;
     }
 
-    setView(view: DMView.IView): void {
+    /**
+     * Sets the view into the dom
+     * @param view view to be set
+     */
+    setView(view: IView): void {
         this.container.empty();
         this.container.append(view.getContent());
 

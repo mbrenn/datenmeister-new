@@ -59,7 +59,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             if (creationMode.HasFlag(CreationMode.ByMetaClass)
                 && metaClass != null)
             {
-                foreach (var property in ClassifierMethods.GetPropertiesOfClassifier(metaClass)
+                var classifierMethods = ClassifierMethods.GetPropertiesOfClassifier(metaClass).Where(x=> x.isSet("name")).ToList();
+                foreach (var property in classifierMethods
                     .OrderBy(x=>x.get("name").ToString()))
                 {
                     wasInMetaClass = true;

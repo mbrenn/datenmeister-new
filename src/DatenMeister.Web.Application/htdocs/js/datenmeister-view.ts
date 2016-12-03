@@ -1,25 +1,24 @@
 ﻿import * as DMI from "./datenmeister-interfaces";
+import * as DMN from "./datenmeister-navigation";
 import * as DMTables from "./datenmeister-tables";
 import * as DMClient from "./datenmeister-client";
 import * as DMQuery from "./datenmeister-query";
 import * as DMVP from "./datenmeister-viewport";
+import * as DMDialog from "./datenmeister-dialogs";
+import * as DMToolbar from "./datenmeister-toolbar"
 
-// This interface should be implemented by all views that can be added via 'setView' to a layout
-export interface IView {
-    viewport: DMVP.ViewPort;
-    getContent(): JQuery;
-    getLayoutInformation(): DMI.Api.ILayoutChangedEvent;
-}
 
 // Defines a base implementation of the IView interface
-export class ViewBase implements IView{
+export class ViewBase implements DMVP.IView{
     public viewport: DMVP.ViewPort;
-    protected layout: DMI.Api.ILayout;
+    protected navigation: DMN.INavigation;
     protected content: JQuery;
     protected layoutInformation: DMI.Api.ILayoutChangedEvent;
 
-    constructor(layout: DMI.Api.ILayout) {
-        this.layout = layout;
+    protected toolbar: DMToolbar.Toolbar;
+
+    constructor(navigation: DMN.INavigation) {
+        this.navigation = navigation;
         this.content = $("<div></div>");
     }
 
@@ -39,21 +38,42 @@ export class ViewBase implements IView{
         this.layoutInformation = layoutInformation;
     }
 
-    insertLink(container: JQuery, displayText: string, onClick: () => void): JQuery {
+    addButtonLink(displayText: string, onClick: () => void): JQuery {
         var domItem =
             $(`<input type='button' class='btn'></input>`);
         
         domItem.val(displayText);
         domItem.click(onClick);
-        container.append(domItem);
+        this.content.append(domItem);
 
         return domItem;
     }
+
+    addEmptyDiv(): JQuery {
+        var result = $("<div></div>");
+        this.content.append(result);
+        return result;
+    }
+
+    addToolbar(): DMToolbar.Toolbar {
+        return new DMToolbar.Toolbar(this.content);
+    }
 }
 
-export class WorkspaceView extends ViewBase implements IView {
-    constructor(layout: DMI.Api.ILayout) {
-        super(layout);
+export class ListView extends ViewBase {
+
+    onItemEdit: (ws: string, extentUrl: string, itemUrl: string) => void;
+    onItemView: (ws: string, extentUrl: string, itemUrl: string) => void;
+    onItemCreated: (ws: string, extentUrl: string, itemUrl: string) => void;
+
+    constructor(navigation: DMN.INavigation) {
+        super(navigation);
+    }
+}
+
+export class WorkspaceView extends ViewBase implements DMVP.IView {
+    constructor(navigation: DMN.INavigation) {
+        super(navigation);
     }
 
     onWorkspaceSelected: (id: string) => void;
@@ -103,21 +123,16 @@ export class WorkspaceView extends ViewBase implements IView {
 
         this.content.append(compiledTable);
 
-        this.insertLink(this.content,
+        this.addButtonLink(
             "Add new Workspace",
-            () => this.layout.showDialogNewWorkspace());
+            () => DMDialog.showDialogNewWorkspace(this.navigation));
     }
 }
 
-export class ExtentView extends ViewBase implements IView{
-    constructor(layout: DMI.Api.ILayout) {
-        super(layout);
+export class ExtentView extends ListView implements DMVP.IView {
+    constructor(navigation: DMN.INavigation) {
+        super(navigation);
     }
-
-    onExtentSelected: (ws: string, extent: string) => void;
-    onItemEdit: (ws: string, extentUrl: string, itemUrl: string) => void;
-    onItemView: (ws: string, extentUrl: string, itemUrl: string) => void;
-    onItemCreated: (ws: string, extentUrl: string, itemUrl: string) => void;
 
     loadAndCreateHtmlForWorkspace(ws: string): JQueryPromise<boolean> {
         var callback = $.Deferred();
@@ -160,8 +175,8 @@ export class ExtentView extends ViewBase implements IView{
                         .click(
                             ((localEntry: DMI.ClientResponse.IExtent) => (
                                 () => {
-                                    if (tthis.onExtentSelected !== undefined) {
-                                        tthis.onExtentSelected(ws, localEntry.uri);
+                                    if (tthis.onItemView !== undefined) {
+                                        tthis.onItemView(ws, localEntry.uri, null);
                                     }
 
                                     return false;
@@ -175,16 +190,37 @@ export class ExtentView extends ViewBase implements IView{
 
             this.content.append(compiledTable);
         }
-        
-        this.insertLink(this.content,
+
+        this.addButtonLink(
             "Add new Extent",
-            () => tthis.layout.showNavigationForNewExtents(ws));
+            () => DMDialog.showNavigationForNewExtents(tthis.navigation, ws));
+    }
+}
+
+export class ItemsOfExtentView extends ListView implements DMVP.IView {
+    onNewItemClicked: (typeUrl?: string) => void;
+    onViewChanged: (typeUrl?: string) => void;
+    onPageChange: (newPage: number) => void;
+
+    supportSearchbox: boolean;
+
+    /* true, if new properties shall be supported */
+    supportNewItem: boolean;
+    supportViews: boolean;
+    supportPaging: boolean;
+
+    constructor(navigation: DMN.INavigation) {
+        super(navigation); this.supportSearchbox = true;
+        this.supportNewItem = true;
+        this.supportPaging = true;
+        this.supportViews = true;
     }
 
     loadAndCreateHtmlForExtent(
         ws: string,
         extentUrl: string,
-        query?: DMI.PostModels.IItemTableQuery): JQueryPromise<Object> {
+        query?: DMI.Api.IItemTableQuery) : void{
+
         var tthis = this;
 
         // Creates the layout configuration and the handling on requests of the user
@@ -214,45 +250,25 @@ export class ExtentView extends ViewBase implements IView{
             return false;
         };
 
-        configuration.layout = this.layout;
+        configuration.navigation = this.navigation;
 
-        // Creates the layout
+        // Creates the provider
         var provider: DMQuery.ItemsFromExtentProvider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
-        var table = new DMTables.ItemListTable(this.content, provider, configuration);
+
+        // Creates the table
+        var toolbar = this.addToolbar();
+        var container = this.addEmptyDiv();
+
+        var table = new DMTables.ItemListTable(container, provider, configuration);
         
         if (query !== undefined && query !== null) {
             table.currentQuery = query;
         }
 
-        configuration.onViewChanged = (viewUrl) => {
+        this.onViewChanged = (viewUrl) => {
             query.view = viewUrl;
             tthis.loadAndCreateHtmlForExtent(ws, extentUrl, query);
         };
-        
-        DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done(
-            (data) => {
-
-                configuration.onNewItemClicked = (metaclass) => {
-                    var view = new NavigationView(tthis.layout);
-                    for (let typeKey in data.types) {
-                        var type = data.types[typeKey];
-                        view.addLink(type.name, () => alert(type.name));
-                    }
-
-                    tthis.viewport.setView(view);
-                    /*DMClient.ExtentApi.createItem(ws, extentUrl, undefined, metaclass)
-                        .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
-                            this.onItemCreated(ws, extentUrl, innerData.newuri);
-                        });*/
-                };
-                table.setCreatableTypes(data.types);
-            });
-
-        DMClient.ExtentApi.getViews(ws, extentUrl)
-            .done(
-                (data) => {
-                    table.setViews(data.views);
-                });
 
         this.setLayoutInformation(
             {
@@ -261,19 +277,31 @@ export class ExtentView extends ViewBase implements IView{
                 extent: extentUrl
             });
 
-        return table.loadAndShow();
+        
+        table.loadAndShow();
+
+        // Adds the searchbox and connects it to the tables
+        if (this.supportSearchbox) {
+            var box = new DMToolbar.ToolbarSearchbox();
+            box.onSearch = (searchText: string) => {
+                table.currentQuery.searchString = searchText;
+                table.reload();
+            };
+
+            toolbar.addItem(box);
+        }
     }
 }
 
-export class ItemView extends ViewBase implements IView
+export class ItemView extends ViewBase implements DMVP.IView
 {
     onItemView: (ws: string, extentUrl: string, itemUrl: string) => void;
 
-    constructor(layout: DMI.Api.ILayout) {
-        super(layout);
+    constructor(navigation: DMN.INavigation) {
+        super(navigation);
     }
 
-    loadAndCreateHtmlForItem(ws: string, extentUrl: string, itemUrl: string, settings?: DMI.View.IItemViewSettings): JQueryDeferred<Object> {
+    loadAndCreateHtmlForItem(ws: string, extentUrl: string, itemUrl: string, settings?: DMN.Settings.IItemViewSettings): JQueryDeferred<Object> {
         var tthis = this;
 
         this.setLayoutInformation({
@@ -289,7 +317,7 @@ export class ItemView extends ViewBase implements IView
             });
     }
 
-    createHtmlForItem(ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMI.View.IItemViewSettings) {
+    createHtmlForItem(ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMN.Settings.IItemViewSettings) {
         var tthis = this;
         this.content.empty();
         var configuration = new DMTables.ItemContentConfiguration();
@@ -308,22 +336,22 @@ export class ItemView extends ViewBase implements IView
         var table = new DMTables.ItemContentTable(data, configuration);
         if (isReadonly) {
             configuration.onOkForm = () => {
-                tthis.layout.navigateToItems(ws, extentUrl);
+                tthis.navigation.navigateToItems(ws, extentUrl);
             }
 
             configuration.onCancelForm = () => {
-                tthis.layout.navigateToItems(ws, extentUrl);
+                tthis.navigation.navigateToItems(ws, extentUrl);
             }
         } else {
             configuration.onOkForm = () => {
                 DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item)
                     .done(() => {
-                        tthis.layout.navigateToItems(ws, extentUrl);
+                        tthis.navigation.navigateToItems(ws, extentUrl);
                     });
             };
 
             configuration.onCancelForm = () => {
-                tthis.layout.navigateToItems(ws, extentUrl);
+                tthis.navigation.navigateToItems(ws, extentUrl);
             }
         }
 
@@ -359,7 +387,7 @@ export class ItemView extends ViewBase implements IView
             $(".fullname", domMetaClassLink).text(data.metaclass.fullname);
 
             $("a", domMetaClassLink).click(() => {
-                tthis.layout.navigateToItem(
+                tthis.navigation.navigateToItem(
                     data.metaclass.ws,
                     data.metaclass.ext,
                     data.metaclass.uri
@@ -392,14 +420,10 @@ export class ItemView extends ViewBase implements IView
 
 // This class gives a navigation view with some links which can be clicked by the user and
 // a user-defined action is being performed
-export class NavigationView extends ViewBase implements IView {
+export class EmptyView extends ViewBase implements DMVP.IView {
 
-    private domList : JQuery;
-    constructor(layout: DMI.Api.ILayout) {
-        super(layout);
-        var domList = $("<ul class='dm-navigation-list'></ul>");
-        this.domList = domList;
-        this.content.append(this.domList);
+    constructor(navigation: DMN.INavigation) {
+        super(navigation);
     }
 
     /**
@@ -408,16 +432,16 @@ export class NavigationView extends ViewBase implements IView {
      * @param onClick The function that is called when the user clicks
      */
     addLink(displayText: string, onClick: () => void): JQuery {
-        return this.insertLink(this.domList, displayText, onClick);
+        return this.addButtonLink(displayText, onClick);
     }
 }
 
-export class DialogView extends ViewBase implements IView {
-    constructor(layout: DMI.Api.ILayout) {
-        super(layout);
+export class DialogView extends ViewBase implements DMVP.IView {
+    constructor(navigation: DMN.INavigation) {
+        super(navigation);
     }
 
-    createDialog(configuration: DMI.Api.DialogConfiguration) {
+    createDialog(configuration: DMN.DialogConfiguration) {
         var value = new DMI.ClientResponse.ItemContentModel();
         var tableConfiguration = new DMTables.ItemContentConfiguration();
         tableConfiguration.autoProperties = false;
@@ -443,6 +467,35 @@ export class DialogView extends ViewBase implements IView {
                 type: DMI.Api.PageType.Dialog,
                 workspace: configuration.ws,
                 extent: configuration.ext
+            });
+    }
+}
+
+export class CreatetableTypesView extends ViewBase implements DMVP.IView {
+    private extentUrl: string;
+    private ws: string;
+
+    constructor(navigation: DMN.INavigation, ws: string, extentUrl: string) {
+        super(navigation);
+        this.extentUrl = extentUrl;
+        this.ws = ws;
+    }
+
+    load(): void {
+        var tthis = this;
+        DMClient.ExtentApi.getCreatableTypes(this.ws, this.extentUrl).done(
+            (data) => {
+                var view = new EmptyView(tthis.navigation);
+                for (let typeKey in data.types) {
+                    var type = data.types[typeKey];
+                    view.addLink(type.name, () => alert(type.name));
+                }
+
+                tthis.navigation.navigateToView(view);
+                /*DMClient.ExtentApi.createItem(ws, extentUrl, undefined, metaclass)
+                    .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
+                        this.onItemCreated(ws, extentUrl, innerData.newuri);
+                    });*/
             });
     }
 }

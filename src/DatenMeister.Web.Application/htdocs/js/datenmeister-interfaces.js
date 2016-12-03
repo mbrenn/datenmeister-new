@@ -14,6 +14,7 @@ define(["require", "exports"], function (require, exports) {
          */
         var ItemContentModel = (function () {
             function ItemContentModel() {
+                this.v = [];
             }
             return ItemContentModel;
         }());
@@ -21,12 +22,6 @@ define(["require", "exports"], function (require, exports) {
     })(ClientResponse = exports.ClientResponse || (exports.ClientResponse = {}));
     var PostModels;
     (function (PostModels) {
-        var ItemInExtentQuery = (function () {
-            function ItemInExtentQuery() {
-            }
-            return ItemInExtentQuery;
-        }());
-        PostModels.ItemInExtentQuery = ItemInExtentQuery;
         /** This class is used to reference a single object within the database */
         var ExtentReferenceModel = (function () {
             function ExtentReferenceModel() {
@@ -83,15 +78,6 @@ define(["require", "exports"], function (require, exports) {
         }(ItemReferenceModel));
         PostModels.ItemSetPropertiesModel = ItemSetPropertiesModel;
     })(PostModels = exports.PostModels || (exports.PostModels = {}));
-    var View;
-    (function (View) {
-        var ItemViewSettings = (function () {
-            function ItemViewSettings() {
-            }
-            return ItemViewSettings;
-        }());
-        View.ItemViewSettings = ItemViewSettings;
-    })(View = exports.View || (exports.View = {}));
     var Table;
     (function (Table) {
         var DataField = (function () {
@@ -159,24 +145,12 @@ define(["require", "exports"], function (require, exports) {
     })(Table = exports.Table || (exports.Table = {}));
     var Api;
     (function (Api) {
-        var FormForItemConfiguration = (function () {
-            function FormForItemConfiguration() {
-                this.columns = new Array();
+        var ItemInExtentQuery = (function () {
+            function ItemInExtentQuery() {
             }
-            FormForItemConfiguration.prototype.addColumn = function (column) {
-                this.columns[this.columns.length] = column;
-            };
-            return FormForItemConfiguration;
+            return ItemInExtentQuery;
         }());
-        Api.FormForItemConfiguration = FormForItemConfiguration;
-        var DialogConfiguration = (function (_super) {
-            __extends(DialogConfiguration, _super);
-            function DialogConfiguration() {
-                _super.apply(this, arguments);
-            }
-            return DialogConfiguration;
-        }(FormForItemConfiguration));
-        Api.DialogConfiguration = DialogConfiguration;
+        Api.ItemInExtentQuery = ItemInExtentQuery;
         (function (PageType) {
             PageType[PageType["Workspaces"] = 0] = "Workspaces";
             PageType[PageType["Extents"] = 1] = "Extents";

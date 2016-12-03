@@ -147,7 +147,7 @@ export module ExtentApi {
         return callback;
     }
 
-    export function getItems(ws: string, extentUrl: string, query?: DMI.PostModels.IItemTableQuery): JQueryDeferred<DMI.ClientResponse.IExtentContent> {
+    export function getItems(ws: string, extentUrl: string, query?: DMI.Api.IItemTableQuery): JQueryDeferred<DMI.ClientResponse.IExtentContent> {
         var callback = $.Deferred();
         getAjaxForItems(ws, extentUrl, query)
             .done((data: DMI.ClientResponse.IExtentContent) => {
@@ -160,7 +160,7 @@ export module ExtentApi {
         return callback;
     }
 
-    function getAjaxForItems(ws: string, extentUrl: string, query?: DMI.PostModels.IItemTableQuery): JQueryXHR {
+    function getAjaxForItems(ws: string, extentUrl: string, query?: DMI.Api.IItemTableQuery): JQueryXHR {
         var url = "/api/datenmeister/extent/items?ws=" + encodeURIComponent(ws)
             + "&extent=" + encodeURIComponent(extentUrl);
 

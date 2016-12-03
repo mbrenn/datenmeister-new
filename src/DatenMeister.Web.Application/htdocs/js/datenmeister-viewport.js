@@ -5,6 +5,10 @@ define(["require", "exports"], function (require, exports) {
             this.container = container;
             this.layout = layout;
         }
+        /**
+         * Sets the view into the dom
+         * @param view view to be set
+         */
         ViewPort.prototype.setView = function (view) {
             this.container.empty();
             this.container.append(view.getContent());

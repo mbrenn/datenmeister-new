@@ -13,7 +13,7 @@ export class ItemsFromExtentProvider implements DMI.Api.IItemsProvider {
     }
 
 
-    performQuery(query: DMI.PostModels.IItemTableQuery): JQueryDeferred<DMI.ClientResponse.IItemsContent> {
+    performQuery(query: DMI.Api.IItemTableQuery): JQueryDeferred<DMI.ClientResponse.IItemsContent> {
         return DMClient.ExtentApi.getItems(this.ws, this.ext, query);
     }
 }

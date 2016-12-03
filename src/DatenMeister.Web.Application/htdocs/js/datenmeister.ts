@@ -5,10 +5,11 @@ import * as DMHelper from "./datenmeister-helper";
 import * as DMI from "./datenmeister-interfaces";
 import * as DMTables from "./datenmeister-tables";
 import * as DMView from "./datenmeister-view";
-import * as DMClient from "./datenmeister-client";
 import * as DMRibbon from "./datenmeister-ribbon";
+import * as DMClient from "./datenmeister-client";
 import * as DMLayout from "./datenmeister-layout";
 import * as DMLog from "./datenmeister-logging";
+import * as DMN from "./datenmeister-navigation";
 
 export function start() {
 
@@ -83,7 +84,7 @@ export function parseAndNavigateToWindowLocation(layout: DMLayout.Layout) {
     var mode = DMHelper.getParameterByNameFromHash("mode");
     var view = DMHelper.getParameterByNameFromHash("view");
     layout.onViewPortChanged = (data) => {
-         buildRibbons(layout, data);
+         layout.buildRibbons(data);
     };
 
     if (ws === "") {
@@ -96,7 +97,7 @@ export function parseAndNavigateToWindowLocation(layout: DMLayout.Layout) {
     } else if (itemUrl === "") {
         layout.showItems(ws, extentUrl, view);
     } else {
-        var settings: DMI.View.IItemViewSettings = {};
+        var settings: DMN.Settings.IItemViewSettings = {};
         if (mode === "readonly") {
             settings.isReadonly = true;
         }
@@ -105,50 +106,4 @@ export function parseAndNavigateToWindowLocation(layout: DMLayout.Layout) {
     }
 
     $(".body-content").show();
-}
-
-function buildRibbons(layout: DMLayout.Layout, changeEvent: DMI.Api.ILayoutChangedEvent) {
-    var ribbon = layout.getRibbon();
-    ribbon.clear();
-    var tabFile = ribbon.getOrAddTab("File");
-
-    tabFile.addIcon("Home", "img/icons/home", () => { layout.gotoHome(); });
-    tabFile.addIcon("Refresh", "img/icons/refresh_update", () => { layout.refreshView(); });
-
-    tabFile.addIcon("Workspaces", "img/icons/database", () => { layout.navigateToWorkspaces(); });
-    tabFile.addIcon("Add Workspace", "img/icons/database-add", () => { layout.showDialogNewWorkspace(); });
-
-    if (changeEvent !== null && changeEvent !== undefined && changeEvent.workspace !== undefined) {
-        // Ok, we have a workspace
-        tabFile.addIcon("Delete Workspace", "img/icons/database-delete", () => {
-            DMClient.WorkspaceApi.deleteWorkspace(changeEvent.workspace)
-                .done(() => layout.navigateToWorkspaces());
-        });
-
-        tabFile.addIcon("Create Extent", "img/icons/folder_open-new", () => {
-            layout.showNavigationForNewExtents(changeEvent.workspace);
-        });
-
-        tabFile.addIcon("Add Extent", "img/icons/folder_open-add", () => {
-            layout.showDialogAddCsvExtent(changeEvent.workspace);
-        });
-
-        if (changeEvent.extent !== undefined) {
-            tabFile.addIcon("Delete Extent", "img/icons/folder_open-delete", () => {
-                DMClient.ExtentApi.deleteExtent(changeEvent.workspace, changeEvent.extent)
-                    .done(() => layout.navigateToExtents(changeEvent.workspace));
-            });
-
-            tabFile.addIcon("Export Extent", "img/icons/folder_open-download", () => {
-                layout.exportExtent(changeEvent.workspace, changeEvent.extent);
-            });
-        }
-
-        tabFile.addIcon("Add ZipCodes", "img/icons/folder_open-mail", () => {
-            DMClient.ExampleApi.addZipCodes(changeEvent.workspace).done(
-                () => layout.refreshView());
-        });
-    }
-
-    tabFile.addIcon("Close", "img/icons/close_window", () => { window.close(); });
 }

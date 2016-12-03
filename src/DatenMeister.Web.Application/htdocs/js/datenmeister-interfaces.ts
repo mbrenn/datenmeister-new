@@ -1,5 +1,6 @@
 ﻿/* Stores all the models that can be returned via one of the */
 import * as DMRibbon from  "./datenmeister-ribbon";
+import * as DMN from  "./datenmeister-navigation";
 
 export module ClientResponse {
 
@@ -71,6 +72,10 @@ export module ClientResponse {
         v: Array<string>;
         c: IDataForm;
         metaclass: IItemModel;
+
+        constructor() {
+            this.v = [];
+        }
     }
 
     export interface IDataForm {
@@ -128,13 +133,6 @@ export module ClientResponse {
 
 export module PostModels {
 
-    export interface IItemTableQuery {
-        view: string;
-        searchString?: string;
-        offset?: number;
-        amount?: number;
-    }
-
     export interface IWorkspaceCreateModel {
         name: string;
         annotation: string;
@@ -155,13 +153,6 @@ export module PostModels {
         filename?: string;
         name?: string;
         columns?: string;
-    }
-
-    export class ItemInExtentQuery implements IItemTableQuery {
-        searchString: string;
-        offset: number;
-        amount: number;
-        view: string;
     }
 
     /** This class is used to reference a single object within the database */
@@ -198,16 +189,6 @@ export module PostModels {
 
     export class ItemSetPropertiesModel extends ItemReferenceModel {
         v: Array<any>;
-    }
-}
-
-export namespace View {
-    export interface IItemViewSettings {
-        isReadonly?: boolean;
-    }
-
-    export class ItemViewSettings implements IItemViewSettings {
-        isReadonly: boolean;
     }
 }
 
@@ -286,46 +267,32 @@ export namespace Table {
 export namespace Api {
     export interface ILayout {
         renavigate(): void;
-        navigateToWorkspaces(): void;
-        navigateToExtents(workspaceId: string): void;
-        navigateToItems(ws: string, extentUrl: string, viewUrl?: string): void;
-        navigateToItem(ws: string,
-            extentUrl: string,
-            itemUrl: string,
-            viewUrl?: string,
-            settings?: View.IItemViewSettings): void;
-
-        setStatus(statusDom: JQuery): void;
         throwViewPortChanged(data: ILayoutChangedEvent): void;
-
-        showDialogNewWorkspace(): void;
-        showNavigationForNewExtents(workspace: string): void;
-
         getRibbon(): DMRibbon.Ribbon;
     }
 
+    /**
+     * Defines the interface that will get called, when a table reads additional information from the 
+     */
     export interface IItemsProvider {
-        performQuery(query: PostModels.IItemTableQuery): JQueryDeferred<ClientResponse.IItemsContent>;
+        performQuery(query: IItemTableQuery): JQueryDeferred<ClientResponse.IItemsContent>;
     }
 
-    export class FormForItemConfiguration {
-        columns: Array<ClientResponse.IFieldData>;
-
-        onOkForm: (data: any) => void;
-        onCancelForm: () => void;
-
-        constructor() {
-            this.columns = new Array<ClientResponse.IFieldData>();
-        }
-
-        addColumn(column: ClientResponse.IFieldData): void {
-            this.columns[this.columns.length] = column;
-        }
+    /**
+     * Defines the information interface being used to retrieve additional information from a database
+     */
+    export interface IItemTableQuery {
+        view: string;
+        searchString?: string;
+        offset?: number;
+        amount?: number;
     }
 
-    export class DialogConfiguration extends FormForItemConfiguration {
-        ws: string;
-        ext: string;
+    export class ItemInExtentQuery implements IItemTableQuery {
+        searchString: string;
+        offset: number;
+        amount: number;
+        view: string;
     }
 
     export enum PageType {
@@ -337,6 +304,7 @@ export namespace Api {
     }
 
     export interface ILayoutChangedEvent {
+        navigation?: DMN.INavigation;   // Will be set at the thrower
         layout?: ILayout;   // Will be set at the thrower
         type: PageType;
         workspace?: string;
@@ -349,7 +317,15 @@ export namespace Api {
         layout: ILayout;
     }
 
+    /**
+     * This interface has to be returned by all plugins
+     */
     export interface IPluginResult {
+    /**
+     * Returns a function that will be called, if the viewport changes
+     * @param ev Parameter containing the information about the changed view set
+     * @returns {} The function
+     */
         onViewPortChanged?: (ev: ILayoutChangedEvent) => void;
     }
 }

@@ -1,40 +1,25 @@
 ﻿import * as DMI from "./datenmeister-interfaces"
+import * as DMN from "./datenmeister-navigation"
 import * as DMClient from "./datenmeister-client"
-
+import * as DMToolbar from "./datenmeister-toolbar"
 
 export class ItemListTableConfiguration {
-    onNewItemClicked: (typeUrl?: string) => void;
-    onViewChanged: (typeUrl?: string) => void;
     onItemEdit: (url: string) => boolean;
     onItemDelete: (url: string, domRow: JQuery) => boolean;
     onItemView: (url: string) => boolean;
-    onPageChange: (newPage: number) => void;
-    supportSearchbox: boolean;
-
-    /* true, if new properties shall be supported */
-    supportNewItem: boolean;
-    supportViews: boolean;
 
     showColumnForId: boolean;
-
-    supportPaging: boolean;
     itemsPerPage: number;
+    navigation: DMN.INavigation;
 
-    layout: DMI.Api.ILayout;
-
-    /* This method is called each time, the user has changed content in the search field */
-    onSearch: (searchText: string) => void;
-
+    paging: DMToolbar.ToolbarPaging;
+    
     constructor() {
         this.onItemEdit = (url: string) => false;
         this.onItemDelete = (url: string, domRow: JQuery) => false;
-        this.supportSearchbox = true;
-        this.supportNewItem = true;
-        this.showColumnForId = false;
 
-        this.supportPaging = true;
+        this.showColumnForId = false;
         this.itemsPerPage = 20;
-        this.supportViews = true;
     }
 }
 
@@ -49,34 +34,22 @@ export class ItemListTable {
     lastProcessedSearchString: string;
     domTotalNumber: JQuery;
     domFilteredNumber: JQuery;
-    currentPage: number;
     totalPages: number;
     domNewItem: JQuery;
-    domViews: JQuery;
     createableTypes: Array<DMI.ClientResponse.IItemModel>;
-    views: Array<DMI.ClientResponse.IItemModel>;
 
     provider: DMI.Api.IItemsProvider;
+    currentQuery: DMI.Api.IItemTableQuery;
 
-    currentQuery: DMI.PostModels.IItemTableQuery;
+    onUpdatePageInformation: (info) => void ;
 
     constructor(dom: JQuery, provider: DMI.Api.IItemsProvider, configuration: ItemListTableConfiguration) {
         this.domContainer = dom;
         this.provider = provider;
         this.configuration = configuration;
-        this.currentPage = 1;
         this.totalPages = 0;
-        this.currentQuery = new DMI.PostModels.ItemInExtentQuery();
+        this.currentQuery = new DMI.Api.ItemInExtentQuery();
         this.currentQuery.amount = configuration.itemsPerPage;
-    }
-
-    throwOnPageChange(): void {
-        this.currentQuery.offset = (this.currentPage - 1) * this.configuration.itemsPerPage;
-        this.reload();
-
-        if (this.configuration.onPageChange !== undefined) {
-            this.configuration.onPageChange(this.currentPage);
-        }
     }
 
     // Replaces the content at the dom with the created table
@@ -97,96 +70,12 @@ export class ItemListTable {
         var tthis = this;
         this.domContainer.empty();
 
-        var domToolbar = $("<div class='dm-toolbar row'></div>");
-
-        if (this.configuration.supportNewItem) {
-            this.domNewItem = $("<div class='col-md-2'><a href='#' class='btn btn-default'>Create new item</a></div>");
-            $("a", this.domNewItem).click(() => {
-                if (tthis.configuration.onNewItemClicked !== undefined) {
-                    tthis.configuration.onNewItemClicked();
-                }
-
-                return false;
-            });
-
-            domToolbar.append(this.domNewItem);
-
-            // Updates the layout for the creatable types
-            this.updateLayoutForCreatableTypes();
-        }
-
-        if (this.configuration.supportViews) {
-            this.domViews = $("<div class='col-md-2'>Loading Views</div>");
-            domToolbar.append(this.domViews);
-
-            this.updateLayoutForViews();
-        }
-
-        if (this.configuration.supportPaging) {
-            var domPaging = $("<div class='col-md-5 text-center form-inline'>"
-                + "<a href='#' class='dm-prevpage btn btn-default'>&lt;&lt;</a> Page "
-                + "<input class='form-control dm-page-selected' type='textbox' value='1'/> of "
-                + "<span class='dm_totalpages'> </span> "
-                + "<a href='#' class='dm-jumppage btn btn-default'>GO</a>&nbsp;"
-                + "<a href='#' class='dm-nextpage btn btn-default'>&gt;&gt;</a>");
-            domToolbar.append(domPaging);
-
-            var domPrev = $(".dm-prevpage", domPaging);
-            var domNext = $(".dm-nextpage", domPaging);
-            var domGo = $(".dm-jumppage", domPaging);
-            var domCurrentPage = $(".dm-page-selected", domPaging);
-
-            domPrev.click(() => {
-                tthis.currentPage--;
-                tthis.currentPage = Math.max(1, tthis.currentPage);
-                domCurrentPage.val(tthis.currentPage.toString());
-                tthis.throwOnPageChange();
-                return false;
-            });
-
-            domNext.click(() => {
-                tthis.currentPage++;
-                tthis.currentPage = Math.min(tthis.totalPages, tthis.currentPage);
-                domCurrentPage.val(tthis.currentPage.toString());
-                tthis.throwOnPageChange();
-                return false;
-            });
-
-            domGo.click(() => {
-                tthis.currentPage = domCurrentPage.val();
-                tthis.currentPage = Math.max(1, tthis.currentPage);
-                tthis.currentPage = Math.min(tthis.totalPages, tthis.currentPage);
-                domCurrentPage.val(tthis.currentPage.toString());
-                tthis.throwOnPageChange();
-                return false;
-            });
-        }
-
-        if (this.configuration.supportSearchbox) {
-            var domSearchBox = $("<div class='form-inline col-md-3'><input type='textbox' class='form-control' placeholder='Search...' /></div>");
-            var domInput = $("input", domSearchBox);
-            $("input", domSearchBox).keyup(() => {
-                var searchValue = domInput.val();
-                tthis.lastProcessedSearchString = searchValue;
-                tthis.currentQuery.searchString = searchValue;
-                tthis.reload();
-
-                if (tthis.configuration.onSearch !== undefined) {
-                    tthis.configuration.onSearch(searchValue);
-                }
-            });
-
-            domToolbar.append(domSearchBox);
-        }
-
-        this.domContainer.append(domToolbar);
-
         var domAmount = $("<div>Total: <span class='totalnumber'>##</span>, Filtered: <span class='filterednumber'>##</span>");
         this.domTotalNumber = $(".totalnumber", domAmount);
         this.domFilteredNumber = $(".filterednumber", domAmount);
 
-        if (this.configuration.layout !== undefined) {
-            this.configuration.layout.setStatus(domAmount);
+        if (this.configuration.navigation !== undefined) {
+            this.configuration.navigation.setStatus(domAmount);
         } else {
             this.domContainer.append(domAmount);
         }
@@ -223,66 +112,6 @@ export class ItemListTable {
         this.domContainer.append(this.domTable);
     }
 
-    setCreatableTypes(data: Array<DMI.ClientResponse.IItemModel>) {
-        this.createableTypes = data;
-        this.updateLayoutForCreatableTypes();
-    }
-
-    setViews(views: DMI.ClientResponse.IItemModel[]): void {
-        this.views = views;
-        this.updateLayoutForViews();
-    }
-
-    updateLayoutForCreatableTypes() {
-        if (this.domNewItem === undefined || this.domNewItem === null) {
-            // Html for this element was not yet created
-            return;
-        }
-
-        var tthis = this;
-        if (this.createableTypes !== null && this.createableTypes !== undefined) {
-            var data = this.createableTypes;
-            this.domNewItem.empty();
-            var domDropDown = $("<select class='form-control'><option>Create Type...</option><option value=''>Unspecified</option></select>");
-            for (var n in data) {
-                var type = data[n];
-                var domOption = $("<option value='" + type.uri + "'></option>");
-                domOption.text(type.name);
-
-                domDropDown.append(domOption);
-            }
-
-            domDropDown.change(() => {
-                tthis.configuration.onNewItemClicked(domDropDown.val());
-            });
-
-            this.domNewItem.append(domDropDown);
-        }
-    }
-
-    updateLayoutForViews() {
-        var tthis = this;
-        if (this.domViews !== null && this.domViews !== undefined) {
-            var data = this.views;
-            this.domViews.empty();
-            var domDropDown = $("<select class='form-control'><option>Switch to view...</option><option value='{All}'>All properties</option></select>");
-            for (var n in data) {
-                var type = data[n];
-                var domOption = $("<option value='" + type.uri + "'></option>");
-                domOption.text(type.name);
-
-                domDropDown.append(domOption);
-            }
-
-            domDropDown.change(() => {
-                // User clicked on a new view
-                tthis.configuration.onViewChanged(domDropDown.val());
-            });
-
-            this.domViews.append(domDropDown);
-        }
-    }
-
     updateDomForItems(data: DMI.ClientResponse.IItemsContent): void {
         $("tr", this.domTable).has("td")
             .remove();
@@ -293,9 +122,10 @@ export class ItemListTable {
         this.domTotalNumber.text(data.totalItemCount);
         this.domFilteredNumber.text(data.filteredItemCount);
 
-        if (this.configuration.supportPaging) {
+        if (this.configuration.paging !== undefined) {
             var domTotalPages = $(".dm_totalpages", this.domContainer);
-            this.totalPages = Math.floor((data.filteredItemCount - 1) / this.configuration.itemsPerPage) + 1;
+            this.configuration.paging.setTotalPages(
+                Math.floor((data.filteredItemCount - 1) / this.configuration.itemsPerPage) + 1);
             domTotalPages.text(this.totalPages);
         }
 
@@ -559,6 +389,13 @@ export class ItemContentTable {
     }
 }
 
+/**
+ * Creates the DOM for the content as defined by the columns
+ * @param item Item, whose content shall be shown
+ * @param column Column defining the content
+ * @param inEditMode true, if the field is in edit mode
+ * @param configuration Configuration of the complete table
+ */
 function createDomForContent(
     item: DMI.ClientResponse.IItemContentModel,
     column: DMI.ClientResponse.IFieldData,
@@ -593,20 +430,18 @@ function createDomForContent(
             let asSE = column as DMI.ClientResponse.ISubElementsFieldData;
             var btn = $("<button>New Element</button>");
             btn.click(() => {
-                alert(item.ws);
-                alert(item.ext);
-                alert(item.uri);
-                alert(column.name);
                 DMClient.ExtentApi.createItemAsSubElement(
                     item.ws,
                     item.ext,
                     item.uri,
                     column.name,
                     null
-                );
+                ).done((data) => {
+                    var uri = data.newuri;
+                    alert(uri);
+                });
             });
             domSE.append(btn);
-
 
             return domSE;
         }
@@ -615,6 +450,14 @@ function createDomForContent(
     return createDefaultDomForContent(item, column, inEditMode, configuration);
 }
 
+
+/**
+ * Creates the DOM for the content as defined by column, when the column.fieldType is not set
+ * @param item Item, whose content shall be shown
+ * @param column Column defining the content
+ * @param inEditMode true, if the field is in edit mode
+ * @param configuration Configuration of the complete table
+ */
 function createDefaultDomForContent(item: DMI.ClientResponse.IItemContentModel,
     column: DMI.ClientResponse.IFieldData,
     inEditMode: boolean,

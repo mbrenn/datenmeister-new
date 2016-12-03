@@ -13,7 +13,7 @@ export function load(plugin: DMI.Api.PluginParameter): DMI.Api.IPluginResult {
                     () => {
                         DMClient.ExtentApi.createItem(ev.workspace, ev.extent, "datenmeister:///types#TaskMeisterLib.Model.IActivity")
                             .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
-                                ev.layout.navigateToItem(ev.workspace, ev.extent, innerData.newuri);
+                                ev.navigation.navigateToItem(ev.workspace, ev.extent, innerData.newuri);
                             });
                     });
 
@@ -21,7 +21,7 @@ export function load(plugin: DMI.Api.PluginParameter): DMI.Api.IPluginResult {
                     "Show Tasks",
                     "...,",
                     () => {
-                        ev.layout.navigateToItems(ev.workspace, ev.extent, "dm:///management/views#Views.Activity.Detail");
+                        ev.navigation.navigateToItems(ev.workspace, ev.extent, "dm:///management/views#Views.Activity.Detail");
                     });
             }
         }

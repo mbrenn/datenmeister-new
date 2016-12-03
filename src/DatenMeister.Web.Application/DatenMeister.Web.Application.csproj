@@ -373,6 +373,7 @@
     <TypeScriptCompile Include="htdocs\js\datenmeister-client.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="htdocs\js\datenmeister-dialogs.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-helper.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </TypeScriptCompile>
@@ -383,6 +384,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </TypeScriptCompile>
     <TypeScriptCompile Include="htdocs\js\datenmeister-logging.ts" />
+    <TypeScriptCompile Include="htdocs\js\datenmeister-navigation.ts" />
     <TypeScriptCompile Include="htdocs\js\datenmeister-query.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </TypeScriptCompile>
@@ -402,6 +404,7 @@
     <TypeScriptCompile Include="htdocs\js\datenmeister.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="htdocs\js\datenmeister-toolbar.ts" />
     <TypeScriptCompile Include="htdocs\js\taskmeister.ts" />
     <TypeScriptCompile Include="htdocs\js\typings\jquery\jquery.d.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

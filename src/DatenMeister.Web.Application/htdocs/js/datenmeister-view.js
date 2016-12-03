@@ -3,12 +3,12 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-tables", "./datenmeister-client", "./datenmeister-query"], function (require, exports, DMI, DMTables, DMClient, DMQuery) {
+define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-tables", "./datenmeister-client", "./datenmeister-query", "./datenmeister-dialogs", "./datenmeister-toolbar"], function (require, exports, DMI, DMTables, DMClient, DMQuery, DMDialog, DMToolbar) {
     "use strict";
     // Defines a base implementation of the IView interface
     var ViewBase = (function () {
-        function ViewBase(layout) {
-            this.layout = layout;
+        function ViewBase(navigation) {
+            this.navigation = navigation;
             this.content = $("<div></div>");
         }
         ViewBase.prototype.getContent = function () {
@@ -23,20 +23,36 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
         ViewBase.prototype.setLayoutInformation = function (layoutInformation) {
             this.layoutInformation = layoutInformation;
         };
-        ViewBase.prototype.insertLink = function (container, displayText, onClick) {
+        ViewBase.prototype.addButtonLink = function (displayText, onClick) {
             var domItem = $("<input type='button' class='btn'></input>");
             domItem.val(displayText);
             domItem.click(onClick);
-            container.append(domItem);
+            this.content.append(domItem);
             return domItem;
+        };
+        ViewBase.prototype.addEmptyDiv = function () {
+            var result = $("<div></div>");
+            this.content.append(result);
+            return result;
+        };
+        ViewBase.prototype.addToolbar = function () {
+            return new DMToolbar.Toolbar(this.content);
         };
         return ViewBase;
     }());
     exports.ViewBase = ViewBase;
+    var ListView = (function (_super) {
+        __extends(ListView, _super);
+        function ListView(navigation) {
+            _super.call(this, navigation);
+        }
+        return ListView;
+    }(ViewBase));
+    exports.ListView = ListView;
     var WorkspaceView = (function (_super) {
         __extends(WorkspaceView, _super);
-        function WorkspaceView(layout) {
-            _super.call(this, layout);
+        function WorkspaceView(navigation) {
+            _super.call(this, navigation);
         }
         WorkspaceView.prototype.loadAndCreateHtmlForWorkbenchs = function () {
             var result = $.Deferred();
@@ -72,15 +88,15 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                 }
             }
             this.content.append(compiledTable);
-            this.insertLink(this.content, "Add new Workspace", function () { return _this.layout.showDialogNewWorkspace(); });
+            this.addButtonLink("Add new Workspace", function () { return DMDialog.showDialogNewWorkspace(_this.navigation); });
         };
         return WorkspaceView;
     }(ViewBase));
     exports.WorkspaceView = WorkspaceView;
     var ExtentView = (function (_super) {
         __extends(ExtentView, _super);
-        function ExtentView(layout) {
-            _super.call(this, layout);
+        function ExtentView(navigation) {
+            _super.call(this, navigation);
         }
         ExtentView.prototype.loadAndCreateHtmlForWorkspace = function (ws) {
             var _this = this;
@@ -118,8 +134,8 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                         var dom = $(line);
                         $(".data", dom)
                             .click((function (localEntry) { return (function () {
-                            if (tthis.onExtentSelected !== undefined) {
-                                tthis.onExtentSelected(ws, localEntry.uri);
+                            if (tthis.onItemView !== undefined) {
+                                tthis.onItemView(ws, localEntry.uri, null);
                             }
                             return false;
                         }); })(entry));
@@ -128,9 +144,21 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                 }
                 this.content.append(compiledTable);
             }
-            this.insertLink(this.content, "Add new Extent", function () { return tthis.layout.showNavigationForNewExtents(ws); });
+            this.addButtonLink("Add new Extent", function () { return DMDialog.showNavigationForNewExtents(tthis.navigation, ws); });
         };
-        ExtentView.prototype.loadAndCreateHtmlForExtent = function (ws, extentUrl, query) {
+        return ExtentView;
+    }(ListView));
+    exports.ExtentView = ExtentView;
+    var ItemsOfExtentView = (function (_super) {
+        __extends(ItemsOfExtentView, _super);
+        function ItemsOfExtentView(navigation) {
+            _super.call(this, navigation);
+            this.supportSearchbox = true;
+            this.supportNewItem = true;
+            this.supportPaging = true;
+            this.supportViews = true;
+        }
+        ItemsOfExtentView.prototype.loadAndCreateHtmlForExtent = function (ws, extentUrl, query) {
             var tthis = this;
             // Creates the layout configuration and the handling on requests of the user
             var configuration = new DMTables.ItemListTableConfiguration();
@@ -155,50 +183,43 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                     .fail(function () { alert("FAILED"); });
                 return false;
             };
-            configuration.layout = this.layout;
-            // Creates the layout
+            configuration.navigation = this.navigation;
+            // Creates the provider
             var provider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
-            var table = new DMTables.ItemListTable(this.content, provider, configuration);
+            // Creates the table
+            var toolbar = this.addToolbar();
+            var container = this.addEmptyDiv();
+            var table = new DMTables.ItemListTable(container, provider, configuration);
             if (query !== undefined && query !== null) {
                 table.currentQuery = query;
             }
-            configuration.onViewChanged = function (viewUrl) {
+            this.onViewChanged = function (viewUrl) {
                 query.view = viewUrl;
                 tthis.loadAndCreateHtmlForExtent(ws, extentUrl, query);
             };
-            DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done(function (data) {
-                configuration.onNewItemClicked = function (metaclass) {
-                    var view = new NavigationView(tthis.layout);
-                    for (var typeKey in data.types) {
-                        var type = data.types[typeKey];
-                        view.addLink(type.name, function () { return alert(type.name); });
-                    }
-                    tthis.viewport.setView(view);
-                    /*DMClient.ExtentApi.createItem(ws, extentUrl, undefined, metaclass)
-                        .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
-                            this.onItemCreated(ws, extentUrl, innerData.newuri);
-                        });*/
-                };
-                table.setCreatableTypes(data.types);
-            });
-            DMClient.ExtentApi.getViews(ws, extentUrl)
-                .done(function (data) {
-                table.setViews(data.views);
-            });
             this.setLayoutInformation({
                 type: DMI.Api.PageType.Items,
                 workspace: ws,
                 extent: extentUrl
             });
-            return table.loadAndShow();
+            table.loadAndShow();
+            // Adds the searchbox and connects it to the tables
+            if (this.supportSearchbox) {
+                var box = new DMToolbar.ToolbarSearchbox();
+                box.onSearch = function (searchText) {
+                    table.currentQuery.searchString = searchText;
+                    table.reload();
+                };
+                toolbar.addItem(box);
+            }
         };
-        return ExtentView;
-    }(ViewBase));
-    exports.ExtentView = ExtentView;
+        return ItemsOfExtentView;
+    }(ListView));
+    exports.ItemsOfExtentView = ItemsOfExtentView;
     var ItemView = (function (_super) {
         __extends(ItemView, _super);
-        function ItemView(layout) {
-            _super.call(this, layout);
+        function ItemView(navigation) {
+            _super.call(this, navigation);
         }
         ItemView.prototype.loadAndCreateHtmlForItem = function (ws, extentUrl, itemUrl, settings) {
             var tthis = this;
@@ -229,21 +250,21 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             var table = new DMTables.ItemContentTable(data, configuration);
             if (isReadonly) {
                 configuration.onOkForm = function () {
-                    tthis.layout.navigateToItems(ws, extentUrl);
+                    tthis.navigation.navigateToItems(ws, extentUrl);
                 };
                 configuration.onCancelForm = function () {
-                    tthis.layout.navigateToItems(ws, extentUrl);
+                    tthis.navigation.navigateToItems(ws, extentUrl);
                 };
             }
             else {
                 configuration.onOkForm = function () {
                     DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item)
                         .done(function () {
-                        tthis.layout.navigateToItems(ws, extentUrl);
+                        tthis.navigation.navigateToItems(ws, extentUrl);
                     });
                 };
                 configuration.onCancelForm = function () {
-                    tthis.layout.navigateToItems(ws, extentUrl);
+                    tthis.navigation.navigateToItems(ws, extentUrl);
                 };
             }
             configuration.onItemView = function (url) {
@@ -273,7 +294,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                 $("a", domMetaClassLink).text(data.metaclass.name);
                 $(".fullname", domMetaClassLink).text(data.metaclass.fullname);
                 $("a", domMetaClassLink).click(function () {
-                    tthis.layout.navigateToItem(data.metaclass.ws, data.metaclass.ext, data.metaclass.uri);
+                    tthis.navigation.navigateToItem(data.metaclass.ws, data.metaclass.ext, data.metaclass.uri);
                     return false;
                 });
                 $(".dm-tablecell-metaclass", domTableInfo).append(domMetaClassLink);
@@ -296,29 +317,26 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
     exports.ItemView = ItemView;
     // This class gives a navigation view with some links which can be clicked by the user and
     // a user-defined action is being performed
-    var NavigationView = (function (_super) {
-        __extends(NavigationView, _super);
-        function NavigationView(layout) {
-            _super.call(this, layout);
-            var domList = $("<ul class='dm-navigation-list'></ul>");
-            this.domList = domList;
-            this.content.append(this.domList);
+    var EmptyView = (function (_super) {
+        __extends(EmptyView, _super);
+        function EmptyView(navigation) {
+            _super.call(this, navigation);
         }
         /**
          * Adds a link to the view
          * @param displayText Text to be shown
          * @param onClick The function that is called when the user clicks
          */
-        NavigationView.prototype.addLink = function (displayText, onClick) {
-            return this.insertLink(this.domList, displayText, onClick);
+        EmptyView.prototype.addLink = function (displayText, onClick) {
+            return this.addButtonLink(displayText, onClick);
         };
-        return NavigationView;
+        return EmptyView;
     }(ViewBase));
-    exports.NavigationView = NavigationView;
+    exports.EmptyView = EmptyView;
     var DialogView = (function (_super) {
         __extends(DialogView, _super);
-        function DialogView(layout) {
-            _super.call(this, layout);
+        function DialogView(navigation) {
+            _super.call(this, navigation);
         }
         DialogView.prototype.createDialog = function (configuration) {
             var value = new DMI.ClientResponse.ItemContentModel();
@@ -348,5 +366,30 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
         return DialogView;
     }(ViewBase));
     exports.DialogView = DialogView;
+    var CreatetableTypesView = (function (_super) {
+        __extends(CreatetableTypesView, _super);
+        function CreatetableTypesView(navigation, ws, extentUrl) {
+            _super.call(this, navigation);
+            this.extentUrl = extentUrl;
+            this.ws = ws;
+        }
+        CreatetableTypesView.prototype.load = function () {
+            var tthis = this;
+            DMClient.ExtentApi.getCreatableTypes(this.ws, this.extentUrl).done(function (data) {
+                var view = new EmptyView(tthis.navigation);
+                for (var typeKey in data.types) {
+                    var type = data.types[typeKey];
+                    view.addLink(type.name, function () { return alert(type.name); });
+                }
+                tthis.navigation.navigateToView(view);
+                /*DMClient.ExtentApi.createItem(ws, extentUrl, undefined, metaclass)
+                    .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
+                        this.onItemCreated(ws, extentUrl, innerData.newuri);
+                    });*/
+            });
+        };
+        return CreatetableTypesView;
+    }(ViewBase));
+    exports.CreatetableTypesView = CreatetableTypesView;
 });
 //# sourceMappingURL=datenmeister-view.js.map

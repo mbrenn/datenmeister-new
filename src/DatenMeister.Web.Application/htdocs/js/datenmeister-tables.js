@@ -83,9 +83,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             this.domTotalNumber.text(data.totalItemCount);
             this.domFilteredNumber.text(data.filteredItemCount);
             if (this.configuration.paging !== undefined) {
-                var domTotalPages = $(".dm_totalpages", this.domContainer);
                 this.configuration.paging.setTotalPages(Math.floor((data.filteredItemCount - 1) / this.configuration.itemsPerPage) + 1);
-                domTotalPages.text(this.totalPages);
             }
             // Now, the items
             var items = data.items;

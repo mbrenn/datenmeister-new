@@ -94,6 +94,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-viewp
             };
             var query = new DMI.Api.ItemInExtentQuery();
             query.view = viewname;
+            query.amount = 20;
             extentView.loadAndCreateHtmlForExtent(workspaceId, extentUrl, query);
             this.mainViewPort.setView(extentView);
         };

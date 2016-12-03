@@ -41,8 +41,6 @@ export class ItemListTable {
     provider: DMI.Api.IItemsProvider;
     currentQuery: DMI.Api.IItemTableQuery;
 
-    onUpdatePageInformation: (info) => void ;
-
     constructor(dom: JQuery, provider: DMI.Api.IItemsProvider, configuration: ItemListTableConfiguration) {
         this.domContainer = dom;
         this.provider = provider;
@@ -123,10 +121,10 @@ export class ItemListTable {
         this.domFilteredNumber.text(data.filteredItemCount);
 
         if (this.configuration.paging !== undefined) {
-            var domTotalPages = $(".dm_totalpages", this.domContainer);
             this.configuration.paging.setTotalPages(
                 Math.floor((data.filteredItemCount - 1) / this.configuration.itemsPerPage) + 1);
-            domTotalPages.text(this.totalPages);
+
+            
         }
 
         // Now, the items

@@ -277,19 +277,39 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
                 extent: extentUrl
             });
 
-        
-        table.loadAndShow();
-
         // Adds the searchbox and connects it to the tables
         if (this.supportSearchbox) {
-            var box = new DMToolbar.ToolbarSearchbox();
-            box.onSearch = (searchText: string) => {
+            var itemSearch = new DMToolbar.ToolbarSearchbox();
+            itemSearch.onSearch = (searchText: string) => {
                 table.currentQuery.searchString = searchText;
                 table.reload();
             };
 
-            toolbar.addItem(box);
+            toolbar.addItem(itemSearch);
         }
+
+        if (this.supportViews) {
+            var itemView = new DMToolbar.ToolbarViewSelection(ws, extentUrl);
+            itemView.onViewChanged = viewUrl => {
+                table.currentQuery.view = viewUrl;
+                table.reload();
+            };
+            toolbar.addItem(itemView);
+        }
+
+        if (this.supportPaging) {
+            var itemPaging = new DMToolbar.ToolbarPaging();
+            itemPaging.onPageChange = page => {
+                table.currentQuery.offset = (page - 1) * table.configuration.itemsPerPage;
+                table.reload();
+            };
+
+            table.configuration.paging = itemPaging;
+            toolbar.addItem(itemPaging);
+        }
+
+
+        table.loadAndShow();
     }
 }
 

@@ -118,20 +118,21 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
         __extends(ToolbarCreateableTypes, _super);
         function ToolbarCreateableTypes(ws, extentUrl) {
             _super.call(this, "createabletypes");
+            var tthis = this;
             this.extentUrl = extentUrl;
             this.ws = ws;
             var result = _super.prototype.create.call(this, 5);
+            DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done(function (data) {
+                tthis.createableTypes = data.types;
+                tthis.updateLayoutForCreatableTypes();
+            });
         }
         ToolbarCreateableTypes.prototype.updateLayoutForCreatableTypes = function () {
-            if (this.domContent === undefined || this.domContent === null) {
-                // Html for this element was not yet created
-                return;
-            }
             var tthis = this;
             if (this.createableTypes !== null && this.createableTypes !== undefined) {
                 var data = this.createableTypes;
                 this.domContent.empty();
-                var domDropDown = $("<select class='form-control'><option>Create Type...</option><option value=''>Unspecified</option></select>");
+                var domDropDown = $("<select class='form-control'><option value='{None}'>Create Type...</option><option value=''>Unspecified</option></select>");
                 for (var n in data) {
                     var type = data[n];
                     var domOption = $("<option value='" + type.uri + "'></option>");
@@ -139,6 +140,10 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
                     domDropDown.append(domOption);
                 }
                 domDropDown.change(function () {
+                    var value = domDropDown.val();
+                    if (value === "{None}" || value === undefined) {
+                        return;
+                    }
                     tthis.onNewItemClicked(domDropDown.val());
                 });
                 this.domContent.append(domDropDown);

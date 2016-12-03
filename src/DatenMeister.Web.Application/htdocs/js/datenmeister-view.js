@@ -228,6 +228,11 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                 table.configuration.paging = itemPaging;
                 toolbar.addItem(itemPaging);
             }
+            if (this.supportNewItem) {
+                var itemNew = new DMToolbar.ToolbarCreateableTypes(ws, extentUrl);
+                itemNew.onNewItemClicked = function (type) { alert(type); };
+                toolbar.addItem(itemNew);
+            }
             table.loadAndShow();
         };
         return ItemsOfExtentView;

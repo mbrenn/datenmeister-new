@@ -155,22 +155,23 @@ export class ToolbarCreateableTypes extends ToolbarItemBase {
 
     constructor(ws: string, extentUrl: string) {
         super("createabletypes");
+        var tthis = this;
         this.extentUrl = extentUrl;
         this.ws = ws;
         var result = super.create(5);
+        DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done((data) => {
+            tthis.createableTypes = data.types;
+            tthis.updateLayoutForCreatableTypes();
+        });
     }
 
     updateLayoutForCreatableTypes() {
-        if (this.domContent === undefined || this.domContent === null) {
-            // Html for this element was not yet created
-            return;
-        }
 
         var tthis = this;
         if (this.createableTypes !== null && this.createableTypes !== undefined) {
             var data = this.createableTypes;
             this.domContent.empty();
-            var domDropDown = $("<select class='form-control'><option>Create Type...</option><option value=''>Unspecified</option></select>");
+            var domDropDown = $("<select class='form-control'><option value='{None}'>Create Type...</option><option value=''>Unspecified</option></select>");
             for (var n in data) {
                 var type = data[n];
                 var domOption = $("<option value='" + type.uri + "'></option>");
@@ -180,6 +181,11 @@ export class ToolbarCreateableTypes extends ToolbarItemBase {
             }
 
             domDropDown.change(() => {
+                var value = domDropDown.val();
+                if (value === "{None}" || value === undefined) {
+                    return;
+                }
+
                 tthis.onNewItemClicked(domDropDown.val());
             });
 

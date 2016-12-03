@@ -308,6 +308,14 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
             toolbar.addItem(itemPaging);
         }
 
+        if (this.supportNewItem) {
+            var itemNew = new DMToolbar.ToolbarCreateableTypes(ws, extentUrl);
+            itemNew.onNewItemClicked = type => { alert(type); };
+
+
+            toolbar.addItem(itemNew);
+        }
+
 
         table.loadAndShow();
     }

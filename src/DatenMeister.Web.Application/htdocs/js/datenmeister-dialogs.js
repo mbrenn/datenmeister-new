@@ -9,7 +9,7 @@ define(["require", "exports", "./datenmeister-navigation", "./datenmeister-clien
             })
                 .done(function () { return navigation.navigateToWorkspaces(); });
         };
-        configuration.addColumn(new DMI.Table.DataField("Title", "name"));
+        configuration.addColumn(new DMI.Table.TextDataField("Name", "name"));
         var annotationColumn = new DMI.Table.TextDataField("Annotation", "annotation");
         annotationColumn.lineHeight = 4;
         configuration.addColumn(annotationColumn);
@@ -39,10 +39,10 @@ define(["require", "exports", "./datenmeister-navigation", "./datenmeister-clien
             })
                 .done(function () { return navigation.navigateToExtents(data.v["workspace"]); });
         };
-        configuration.addColumn(new DMI.Table.DataField("Workspace", "workspace").withDefaultValue(workspace));
-        configuration.addColumn(new DMI.Table.DataField("URI", "contextUri").withDefaultValue("dm:///"));
-        configuration.addColumn(new DMI.Table.DataField("Filename", "filename"));
-        configuration.addColumn(new DMI.Table.DataField("Columns", "columns").withDefaultValue("Column1,Column2"));
+        configuration.addColumn(new DMI.Table.TextDataField("Workspace", "workspace").withDefaultValue(workspace));
+        configuration.addColumn(new DMI.Table.TextDataField("URI", "contextUri").withDefaultValue("dm:///"));
+        configuration.addColumn(new DMI.Table.TextDataField("Filename", "filename"));
+        configuration.addColumn(new DMI.Table.TextDataField("Columns", "columns").withDefaultValue("Column1,Column2"));
         configuration.ws = workspace;
         navigation.navigateToDialog(configuration);
     }

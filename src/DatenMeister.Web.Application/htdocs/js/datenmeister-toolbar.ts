@@ -101,26 +101,23 @@ export class ToolbarViewSelection extends ToolbarItemBase {
     }
 }
 
-export class ToolBarNewItem extends ToolbarItemBase {
-    onNewItemClicked: () => void;
+export class ToolBarButtonItem extends ToolbarItemBase {
+    onClicked: () => void;
 
-    constructor() {
-        super("newitem");
-    }
-
-    create(): JQuery {
+    constructor(id: string, text: string) {
+        super(id);
         var tthis = this;
-        var result = super.create(2);
-        var domNewItem = $("<div class='col-md-2'><a href='#' class='btn btn-default'>Create new item</a></div>");
-        $("a", domNewItem).click(() => {
-            if (tthis.onNewItemClicked !== undefined) {
-                tthis.onNewItemClicked();
+        super.create(3);
+        var domNewItem = $(`<a href='#' class='btn btn-default'>${text}</a>`);
+        domNewItem.click(() => {
+            if (tthis.onClicked !== undefined) {
+                tthis.onClicked();
             }
 
             return false;
         });
 
-        return result;
+        this.domContent.append(domNewItem);
     }
 }
 
@@ -132,7 +129,7 @@ export class ToolbarSearchbox extends ToolbarItemBase {
         super("searchbox");
 
         var tthis = this;
-        var result = super.create(5);
+        var result = super.create(3);
         var domSearchBox = $("<input type='textbox' class='form-control' placeholder='Search...' />");
         domSearchBox.keyup(() => {
             var searchText = domSearchBox.val();
@@ -158,7 +155,7 @@ export class ToolbarCreateableTypes extends ToolbarItemBase {
         var tthis = this;
         this.extentUrl = extentUrl;
         this.ws = ws;
-        var result = super.create(5);
+        super.create(3);
         DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done((data) => {
             tthis.createableTypes = data.types;
             tthis.updateLayoutForCreatableTypes();

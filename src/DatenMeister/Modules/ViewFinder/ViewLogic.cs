@@ -98,6 +98,13 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns>The found element</returns>
         public IElement FindViewFor(IElement metaClass, ViewType type)
         {
+            // If no meta class is given, return null
+            if (metaClass == null)
+            {
+                return null;
+            }
+
+            // Gets the view for the given extent
             var viewExtent = GetViewExtent();
             var formAndFields = GetFormAndFieldInstance(viewExtent);
             var metaClassId = _namedElementMethods.GetFullName(metaClass);
@@ -110,6 +117,7 @@ namespace DatenMeister.Modules.ViewFinder
             {
                 Debug.Assert(element != null, "element != null");
 
+                // Gets the innerMetaClass
                 var innerMetaClass = element.get(_FormAndFields._DefaultViewForMetaclass.metaclass);
                 var innerType = element.get(_FormAndFields._DefaultViewForMetaclass.viewType).ToString();
 

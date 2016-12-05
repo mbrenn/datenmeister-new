@@ -30,6 +30,7 @@ namespace DatenMeister.Uml.Helper
         /// <returns>Full name of the element</returns>
         public string GetFullName(IElement value)
         {
+            if (value == null) throw new ArgumentNullException(nameof(value));
             var current = value.container();
             var result = _umlNameResolution.GetName(value);
             var depth = 0;

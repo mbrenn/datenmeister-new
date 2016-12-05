@@ -76,32 +76,30 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
         return ToolbarViewSelection;
     }(ToolbarItemBase));
     exports.ToolbarViewSelection = ToolbarViewSelection;
-    var ToolBarNewItem = (function (_super) {
-        __extends(ToolBarNewItem, _super);
-        function ToolBarNewItem() {
-            _super.call(this, "newitem");
-        }
-        ToolBarNewItem.prototype.create = function () {
+    var ToolBarButtonItem = (function (_super) {
+        __extends(ToolBarButtonItem, _super);
+        function ToolBarButtonItem(id, text) {
+            _super.call(this, id);
             var tthis = this;
-            var result = _super.prototype.create.call(this, 2);
-            var domNewItem = $("<div class='col-md-2'><a href='#' class='btn btn-default'>Create new item</a></div>");
-            $("a", domNewItem).click(function () {
-                if (tthis.onNewItemClicked !== undefined) {
-                    tthis.onNewItemClicked();
+            _super.prototype.create.call(this, 3);
+            var domNewItem = $("<a href='#' class='btn btn-default'>" + text + "</a>");
+            domNewItem.click(function () {
+                if (tthis.onClicked !== undefined) {
+                    tthis.onClicked();
                 }
                 return false;
             });
-            return result;
-        };
-        return ToolBarNewItem;
+            this.domContent.append(domNewItem);
+        }
+        return ToolBarButtonItem;
     }(ToolbarItemBase));
-    exports.ToolBarNewItem = ToolBarNewItem;
+    exports.ToolBarButtonItem = ToolBarButtonItem;
     var ToolbarSearchbox = (function (_super) {
         __extends(ToolbarSearchbox, _super);
         function ToolbarSearchbox() {
             _super.call(this, "searchbox");
             var tthis = this;
-            var result = _super.prototype.create.call(this, 5);
+            var result = _super.prototype.create.call(this, 3);
             var domSearchBox = $("<input type='textbox' class='form-control' placeholder='Search...' />");
             domSearchBox.keyup(function () {
                 var searchText = domSearchBox.val();
@@ -121,7 +119,7 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
             var tthis = this;
             this.extentUrl = extentUrl;
             this.ws = ws;
-            var result = _super.prototype.create.call(this, 5);
+            _super.prototype.create.call(this, 3);
             DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done(function (data) {
                 tthis.createableTypes = data.types;
                 tthis.updateLayoutForCreatableTypes();

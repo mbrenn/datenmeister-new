@@ -16,7 +16,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
         };
         ViewBase.prototype.getLayoutInformation = function () {
             if (this.layoutInformation == null || this.layoutInformation == undefined) {
-                throw "Layoutinformation is not set";
+                return null;
             }
             return this.layoutInformation;
         };
@@ -27,6 +27,12 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             var domItem = $("<input type='button' class='btn'></input>");
             domItem.val(displayText);
             domItem.click(onClick);
+            this.content.append(domItem);
+            return domItem;
+        };
+        ViewBase.prototype.addText = function (displayText) {
+            var domItem = $("<p></p>");
+            domItem.text(displayText);
             this.content.append(domItem);
             return domItem;
         };
@@ -159,6 +165,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             this.supportViews = true;
         }
         ItemsOfExtentView.prototype.loadAndCreateHtmlForExtent = function (ws, extentUrl, query) {
+            var _this = this;
             var tthis = this;
             // Creates the layout configuration and the handling on requests of the user
             var configuration = new DMTables.ItemListTableConfiguration();
@@ -202,6 +209,14 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                 workspace: ws,
                 extent: extentUrl
             });
+            if (this.supportNewItem) {
+                var itemNew = new DMToolbar.ToolBarButtonItem("newitem", "Create new Item");
+                itemNew.onClicked = function () {
+                    var view = new CreatetableTypesView(_this.navigation, ws, extentUrl);
+                    _this.navigation.navigateToView(view);
+                };
+                toolbar.addItem(itemNew);
+            }
             // Adds the searchbox and connects it to the tables
             if (this.supportSearchbox) {
                 var itemSearch = new DMToolbar.ToolbarSearchbox();
@@ -227,11 +242,6 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                 };
                 table.configuration.paging = itemPaging;
                 toolbar.addItem(itemPaging);
-            }
-            if (this.supportNewItem) {
-                var itemNew = new DMToolbar.ToolbarCreateableTypes(ws, extentUrl);
-                itemNew.onNewItemClicked = function (type) { alert(type); };
-                toolbar.addItem(itemNew);
             }
             table.loadAndShow();
         };
@@ -394,22 +404,34 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             _super.call(this, navigation);
             this.extentUrl = extentUrl;
             this.ws = ws;
-        }
-        CreatetableTypesView.prototype.load = function () {
             var tthis = this;
-            DMClient.ExtentApi.getCreatableTypes(this.ws, this.extentUrl).done(function (data) {
-                var view = new EmptyView(tthis.navigation);
-                for (var typeKey in data.types) {
-                    var type = data.types[typeKey];
-                    view.addLink(type.name, function () { return alert(type.name); });
-                }
-                tthis.navigation.navigateToView(view);
-                /*DMClient.ExtentApi.createItem(ws, extentUrl, undefined, metaclass)
-                    .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
-                        this.onItemCreated(ws, extentUrl, innerData.newuri);
-                    });*/
+            this.addButtonLink("Unspecified", function () {
+                DMClient.ExtentApi.createItem(ws, extentUrl, null)
+                    .done(function (innerData) {
+                    navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                });
             });
-        };
+            var domLoaded = this.addText("Loading...");
+            // Adds the default one, which creates just an empty, non-defined item.
+            // Adds the ones, that can be created
+            DMClient.ExtentApi.getCreatableTypes(this.ws, this.extentUrl).done(function (data) {
+                domLoaded.remove();
+                for (var typeKey in data.types) {
+                    if (data.types.hasOwnProperty(typeKey)) {
+                        var func = function (x) {
+                            var type = data.types[x];
+                            tthis.addButtonLink(type.name, function () {
+                                DMClient.ExtentApi.createItem(ws, extentUrl, type.name)
+                                    .done(function (innerData) {
+                                    navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                                });
+                            });
+                        };
+                        func(typeKey);
+                    }
+                }
+            });
+        }
         return CreatetableTypesView;
     }(ViewBase));
     exports.CreatetableTypesView = CreatetableTypesView;

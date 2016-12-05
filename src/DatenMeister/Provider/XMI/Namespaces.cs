@@ -16,5 +16,10 @@ namespace DatenMeister.Provider.XMI
         ///     Defines the Uml namespace
         /// </summary>
         public static readonly XNamespace Uml = "http://www.omg.org/spec/UML/20131001";
+
+        /// <summary>
+        ///     Defines the Uml namespace
+        /// </summary>
+        public static readonly XNamespace XmlNamespace = "http://www.w3.org/2000/xmlns/";
     }
 }

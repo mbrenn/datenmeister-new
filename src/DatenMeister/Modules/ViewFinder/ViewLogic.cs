@@ -98,6 +98,11 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns>The found element</returns>
         public IElement FindViewFor(IElement metaClass, ViewType type)
         {
+            if (metaClass == null)
+            {
+                // No Metaclass, so return null
+                return null;
+            }
             var viewExtent = GetViewExtent();
             var formAndFields = GetFormAndFieldInstance(viewExtent);
             var metaClassId = _namedElementMethods.GetFullName(metaClass);

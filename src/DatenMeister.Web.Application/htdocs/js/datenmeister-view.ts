@@ -49,6 +49,14 @@ export class ViewBase implements DMVP.IView{
         return domItem;
     }
 
+    addText(text:string): JQuery {
+        var result = $("<div></div>");
+        result.text(text);
+        this.content.append(text);
+
+        return result;
+    }
+
     addEmptyDiv(): JQuery {
         var result = $("<div></div>");
         this.content.append(result);
@@ -507,23 +515,36 @@ export class CreatetableTypesView extends ViewBase implements DMVP.IView {
         super(navigation);
         this.extentUrl = extentUrl;
         this.ws = ws;
-    }
-
-    load(): void {
         var tthis = this;
+
+        this.addButtonLink("Unspecified",
+            () => {
+                DMClient.ExtentApi.createItem(ws, extentUrl, null)
+                    .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
+                        navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                    });
+            });
+
+        var domLoading = this.addText("Loading...");
+
         DMClient.ExtentApi.getCreatableTypes(this.ws, this.extentUrl).done(
             (data) => {
+                domLoading.remove();
                 var view = new EmptyView(tthis.navigation);
                 for (let typeKey in data.types) {
-                    var type = data.types[typeKey];
-                    view.addLink(type.name, () => alert(type.name));
+                    var func = (x: string) => {
+                        var type = data.types[typeKey];
+                        view.addLink(type.name,
+                            () => DMClient.ExtentApi.createItem(ws, extentUrl, type.uri)
+                            .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
+                                navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                            }));
+                    }
+
+                    func(typeKey);
                 }
 
                 tthis.navigation.navigateToView(view);
-                /*DMClient.ExtentApi.createItem(ws, extentUrl, undefined, metaclass)
-                    .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
-                        this.onItemCreated(ws, extentUrl, innerData.newuri);
-                    });*/
             });
     }
 }

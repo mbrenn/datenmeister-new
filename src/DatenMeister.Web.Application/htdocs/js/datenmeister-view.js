@@ -30,6 +30,12 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             this.content.append(domItem);
             return domItem;
         };
+        ViewBase.prototype.addText = function (text) {
+            var result = $("<div></div>");
+            result.text(text);
+            this.content.append(text);
+            return result;
+        };
         ViewBase.prototype.addEmptyDiv = function () {
             var result = $("<div></div>");
             this.content.append(result);
@@ -394,22 +400,34 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             _super.call(this, navigation);
             this.extentUrl = extentUrl;
             this.ws = ws;
-        }
-        CreatetableTypesView.prototype.load = function () {
             var tthis = this;
+            this.addButtonLink("Unspecified", function () {
+                DMClient.ExtentApi.createItem(ws, extentUrl, null)
+                    .done(function (innerData) {
+                    navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                });
+            });
+            var domLoading = this.addText("Loading...");
             DMClient.ExtentApi.getCreatableTypes(this.ws, this.extentUrl).done(function (data) {
+                domLoading.remove();
                 var view = new EmptyView(tthis.navigation);
+                var _loop_1 = function(typeKey) {
+                    func = function (x) {
+                        var type = data.types[typeKey];
+                        view.addLink(type.name, function () { return DMClient.ExtentApi.createItem(ws, extentUrl, type.uri)
+                            .done(function (innerData) {
+                            navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                        }); });
+                    };
+                    func(typeKey);
+                };
+                var func;
                 for (var typeKey in data.types) {
-                    var type = data.types[typeKey];
-                    view.addLink(type.name, function () { return alert(type.name); });
+                    _loop_1(typeKey);
                 }
                 tthis.navigation.navigateToView(view);
-                /*DMClient.ExtentApi.createItem(ws, extentUrl, undefined, metaclass)
-                    .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
-                        this.onItemCreated(ws, extentUrl, innerData.newuri);
-                    });*/
             });
-        };
+        }
         return CreatetableTypesView;
     }(ViewBase));
     exports.CreatetableTypesView = CreatetableTypesView;

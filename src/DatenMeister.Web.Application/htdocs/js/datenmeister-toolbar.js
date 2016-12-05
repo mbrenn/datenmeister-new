@@ -76,32 +76,30 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
         return ToolbarViewSelection;
     }(ToolbarItemBase));
     exports.ToolbarViewSelection = ToolbarViewSelection;
-    var ToolBarNewItem = (function (_super) {
-        __extends(ToolBarNewItem, _super);
-        function ToolBarNewItem() {
-            _super.call(this, "newitem");
-        }
-        ToolBarNewItem.prototype.create = function () {
+    var ToolbarButton = (function (_super) {
+        __extends(ToolbarButton, _super);
+        function ToolbarButton(id, text) {
+            _super.call(this, id);
             var tthis = this;
             var result = _super.prototype.create.call(this, 2);
-            var domNewItem = $("<div class='col-md-2'><a href='#' class='btn btn-default'>Create new item</a></div>");
-            $("a", domNewItem).click(function () {
-                if (tthis.onNewItemClicked !== undefined) {
-                    tthis.onNewItemClicked();
+            var domNewItem = $("<a href='#' class='btn btn-default'>" + text + "</a>");
+            domNewItem.click(function () {
+                if (tthis.onClicked !== undefined) {
+                    tthis.onClicked();
                 }
                 return false;
             });
-            return result;
-        };
-        return ToolBarNewItem;
+            result.append(domNewItem);
+        }
+        return ToolbarButton;
     }(ToolbarItemBase));
-    exports.ToolBarNewItem = ToolBarNewItem;
+    exports.ToolbarButton = ToolbarButton;
     var ToolbarSearchbox = (function (_super) {
         __extends(ToolbarSearchbox, _super);
         function ToolbarSearchbox() {
             _super.call(this, "searchbox");
             var tthis = this;
-            var result = _super.prototype.create.call(this, 5);
+            var result = _super.prototype.create.call(this, 3);
             var domSearchBox = $("<input type='textbox' class='form-control' placeholder='Search...' />");
             domSearchBox.keyup(function () {
                 var searchText = domSearchBox.val();
@@ -158,7 +156,7 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
             _super.call(this, "paging");
             this.totalPages = 0;
             this.currentPage = 1;
-            var result = _super.prototype.create.call(this, 5);
+            var result = _super.prototype.create.call(this, 3);
             var tthis = this;
             var domPaging = $("<div class='form-inline'>" +
                 "<a href='#' class='dm-prevpage btn btn-default'>&lt;&lt;</a> Page " +

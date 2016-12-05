@@ -28,7 +28,7 @@ export class ViewBase implements DMVP.IView{
 
     getLayoutInformation(): DMI.Api.ILayoutChangedEvent {
         if (this.layoutInformation == null || this.layoutInformation == undefined) {
-            throw "Layoutinformation is not set";
+            return null;
         }
 
         return this.layoutInformation;
@@ -285,6 +285,18 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
                 extent: extentUrl
             });
 
+        if (this.supportNewItem) {
+            var itemNew = new DMToolbar.ToolbarButton("newitem", "Create Item");
+            itemNew.onClicked = () => {
+
+                var view = new CreatetableTypesView(this.navigation, ws, extentUrl);
+                this.navigation.navigateToView(view);
+            };
+
+            toolbar.addItem(itemNew);
+        }
+
+
         // Adds the searchbox and connects it to the tables
         if (this.supportSearchbox) {
             var itemSearch = new DMToolbar.ToolbarSearchbox();
@@ -315,15 +327,6 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
             table.configuration.paging = itemPaging;
             toolbar.addItem(itemPaging);
         }
-
-        if (this.supportNewItem) {
-            var itemNew = new DMToolbar.ToolbarCreateableTypes(ws, extentUrl);
-            itemNew.onNewItemClicked = type => { alert(type); };
-
-
-            toolbar.addItem(itemNew);
-        }
-
 
         table.loadAndShow();
     }
@@ -525,26 +528,25 @@ export class CreatetableTypesView extends ViewBase implements DMVP.IView {
                     });
             });
 
-        var domLoading = this.addText("Loading...");
-
+        
         DMClient.ExtentApi.getCreatableTypes(this.ws, this.extentUrl).done(
             (data) => {
-                domLoading.remove();
-                var view = new EmptyView(tthis.navigation);
+
                 for (let typeKey in data.types) {
                     var func = (x: string) => {
                         var type = data.types[typeKey];
-                        view.addLink(type.name,
-                            () => DMClient.ExtentApi.createItem(ws, extentUrl, type.uri)
-                            .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
-                                navigation.navigateToItem(ws, extentUrl, innerData.newuri);
-                            }));
+                        tthis.addButtonLink(
+                            type.name,
+                            () => {
+                                DMClient.ExtentApi.createItem(ws, extentUrl, type.uri)
+                                    .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
+                                        navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                                    });
+                            });
                     }
 
                     func(typeKey);
                 }
-
-                tthis.navigation.navigateToView(view);
             });
     }
 }

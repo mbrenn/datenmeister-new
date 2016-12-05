@@ -12,7 +12,10 @@ define(["require", "exports"], function (require, exports) {
         ViewPort.prototype.setView = function (view) {
             this.container.empty();
             this.container.append(view.getContent());
-            this.layout.throwViewPortChanged(view.getLayoutInformation());
+            var layoutInformation = view.getLayoutInformation();
+            if (layoutInformation !== undefined && layoutInformation !== null) {
+                this.layout.throwViewPortChanged(layoutInformation);
+            }
             view.viewport = this;
         };
         /**

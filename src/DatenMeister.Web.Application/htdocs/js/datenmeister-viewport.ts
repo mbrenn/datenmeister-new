@@ -27,7 +27,12 @@ export class ViewPort {
         this.container.empty();
         this.container.append(view.getContent());
 
-        this.layout.throwViewPortChanged(view.getLayoutInformation());
+        var layoutInformation = view.getLayoutInformation();
+
+        if (layoutInformation !== undefined && layoutInformation !== null) {
+            this.layout.throwViewPortChanged(layoutInformation);
+        }
+
         view.viewport = this;
     }
 

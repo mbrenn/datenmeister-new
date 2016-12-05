@@ -103,6 +103,7 @@ namespace DatenMeister.Modules.ViewFinder
                 // No Metaclass, so return null
                 return null;
             }
+
             var viewExtent = GetViewExtent();
             var formAndFields = GetFormAndFieldInstance(viewExtent);
             var metaClassId = _namedElementMethods.GetFullName(metaClass);

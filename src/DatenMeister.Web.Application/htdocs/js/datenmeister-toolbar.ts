@@ -101,26 +101,23 @@ export class ToolbarViewSelection extends ToolbarItemBase {
     }
 }
 
-export class ToolBarNewItem extends ToolbarItemBase {
-    onNewItemClicked: () => void;
+export class ToolbarButton extends ToolbarItemBase {
+    onClicked: () => void;
 
-    constructor() {
-        super("newitem");
-    }
-
-    create(): JQuery {
+    constructor(id: string, text: string) {
+        super(id);
         var tthis = this;
         var result = super.create(2);
-        var domNewItem = $("<div class='col-md-2'><a href='#' class='btn btn-default'>Create new item</a></div>");
-        $("a", domNewItem).click(() => {
-            if (tthis.onNewItemClicked !== undefined) {
-                tthis.onNewItemClicked();
+        var domNewItem = $(`<a href='#' class='btn btn-default'>${text}</a>`);
+        domNewItem.click(() => {
+            if (tthis.onClicked !== undefined) {
+                tthis.onClicked();
             }
 
             return false;
         });
 
-        return result;
+        result.append(domNewItem);
     }
 }
 
@@ -132,7 +129,7 @@ export class ToolbarSearchbox extends ToolbarItemBase {
         super("searchbox");
 
         var tthis = this;
-        var result = super.create(5);
+        var result = super.create(3);
         var domSearchBox = $("<input type='textbox' class='form-control' placeholder='Search...' />");
         domSearchBox.keyup(() => {
             var searchText = domSearchBox.val();
@@ -205,7 +202,7 @@ export class ToolbarPaging extends ToolbarItemBase {
         super("paging");
         this.totalPages = 0;
         this.currentPage = 1;
-        var result = super.create(5);
+        var result = super.create(3);
         var tthis = this;
         var domPaging = $("<div class='form-inline'>" +
             "<a href='#' class='dm-prevpage btn btn-default'>&lt;&lt;</a> Page " +

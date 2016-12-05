@@ -86,7 +86,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             foreach (var attribute in _node.Attributes())
             {
                 var xmlNamespace = attribute.Name.Namespace;
-                if (xmlNamespace == Namespaces.Xmi || xmlNamespace == Namespaces.Uml)
+                if (xmlNamespace == Namespaces.Xmi || xmlNamespace == Namespaces.XmlNamespace)
                 {
                     continue;
                 }

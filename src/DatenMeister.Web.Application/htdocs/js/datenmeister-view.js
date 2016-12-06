@@ -3,7 +3,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-tables", "./datenmeister-client", "./datenmeister-query", "./datenmeister-dialogs", "./datenmeister-toolbar"], function (require, exports, DMI, DMTables, DMClient, DMQuery, DMDialog, DMToolbar) {
+define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navigation", "./datenmeister-tables", "./datenmeister-client", "./datenmeister-query", "./datenmeister-dialogs", "./datenmeister-toolbar"], function (require, exports, DMI, DMN, DMTables, DMClient, DMQuery, DMDialog, DMToolbar) {
     "use strict";
     // Defines a base implementation of the IView interface
     var ViewBase = (function () {
@@ -175,7 +175,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                 }
                 return false;
             };
-            configuration.onItemView = function (url) {
+            configuration.onItemSelect = function (url) {
                 if (tthis.onItemView !== undefined) {
                     tthis.onItemView(ws, extentUrl, url);
                 }
@@ -272,11 +272,10 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             var configuration = new DMTables.ItemContentConfiguration();
             configuration.columns = data.c.fields;
             var isReadonly = false;
-            if (settings !== undefined && settings !== null) {
-                if (settings.isReadonly !== undefined && settings.isReadonly !== null) {
-                    isReadonly = settings.isReadonly;
-                }
+            if (settings === undefined) {
+                settings = new DMN.Settings.ItemViewSettings();
             }
+            isReadonly = settings.isReadonly === true;
             configuration.isReadOnly = isReadonly;
             configuration.supportNewProperties = !isReadonly;
             var table = new DMTables.ItemContentTable(data, configuration);
@@ -299,11 +298,15 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
                     tthis.navigation.navigateToItems(ws, extentUrl);
                 };
             }
-            configuration.onItemView = function (url) {
+            configuration.onItemSelect = function (url) {
                 if (tthis.onItemView !== undefined) {
                     tthis.onItemView(ws, extentUrl, url);
                 }
                 return false;
+            };
+            configuration.onEditButton = function () {
+                settings.isReadonly = false;
+                tthis.navigation.navigateToItem(ws, extentUrl, itemUrl, null, settings);
             };
             var domTableOwner = $("<div class='data-items'></div>");
             table.show(domTableOwner);

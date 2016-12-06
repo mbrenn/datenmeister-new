@@ -240,7 +240,7 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
 
             return false;
         };
-        configuration.onItemView = (url: string) => {
+        configuration.onItemSelect = (url: string) => {
             if (tthis.onItemView !== undefined) {
                 tthis.onItemView(ws, extentUrl, url);
             }
@@ -363,12 +363,12 @@ export class ItemView extends ViewBase implements DMVP.IView
         configuration.columns = data.c.fields;
         var isReadonly = false;
 
-        if (settings !== undefined && settings !== null) {
-            if (settings.isReadonly !== undefined && settings.isReadonly !== null) {
-                isReadonly = settings.isReadonly;
-            }
+        if (settings === undefined) {
+            settings = new DMN.Settings.ItemViewSettings();
         }
 
+        isReadonly = settings.isReadonly === true;
+        
         configuration.isReadOnly = isReadonly;
         configuration.supportNewProperties = !isReadonly;
 
@@ -394,12 +394,17 @@ export class ItemView extends ViewBase implements DMVP.IView
             }
         }
 
-        configuration.onItemView = (url: string) => {
+        configuration.onItemSelect = (url: string) => {
             if (tthis.onItemView !== undefined) {
                 tthis.onItemView(ws, extentUrl, url);
             }
 
             return false;
+        };
+
+        configuration.onEditButton = () => {
+            settings.isReadonly = false;
+            tthis.navigation.navigateToItem(ws, extentUrl, itemUrl, null, settings);
         };
 
         var domTableOwner = $("<div class='data-items'></div>");

@@ -33,33 +33,54 @@ namespace DatenMeister.Runtime
             }
 
             // Ok, not found, try to find it
-            var uriAsUri = new Uri(uri);
-            var fragment = uriAsUri.Fragment;
-            if (string.IsNullOrEmpty(uriAsUri.Fragment))
+            try
             {
-                throw new ArgumentException(
-                    "Uri does not contain a URI-Fragment defining the object being looked for.",
-                    nameof(uri));
-            }
+                var uriAsUri = new Uri(uri);
 
-            // Queries the object
-            var queryObjectId = WebUtility.UrlDecode(fragment.Substring(1));
-
-            // Now go through the list
-            foreach (var element in AllDescendentsQuery.GetDescendents(_extent))
-            {
-                var elementAsMofObject = element as IHasId;
-                Debug.Assert(elementAsMofObject != null, "elementAsMofObject != null");
-
-                if (elementAsMofObject.Id == queryObjectId)
+                var fragment = uriAsUri.Fragment;
+                if (string.IsNullOrEmpty(uriAsUri.Fragment))
                 {
-                    _cacheIds[uri] = elementAsMofObject;
-                    return elementAsMofObject as T;
-                }
-            }
+                    Debug.WriteLine(
+                        $"Uri does not contain a URI-Fragment defining the object being looked for.{nameof(uri)}");
 
-            // According to MOF Specification, return null, if not found
-            return null;
+                    return null;
+                }
+
+                var posHash = uri.IndexOf('#');
+                var left = uri.Substring(0, posHash);
+                if (left != _extent.contextURI())
+                {
+                    return null;
+                }
+
+
+                // Queries the object
+                var queryObjectId = WebUtility.UrlDecode(fragment.Substring(1));
+
+                // Now go through the list
+                foreach (var element in AllDescendentsQuery.GetDescendents(_extent))
+                {
+                    var elementAsMofObject = element as IHasId;
+                    Debug.Assert(elementAsMofObject != null, "elementAsMofObject != null");
+
+                    if (elementAsMofObject.Id == queryObjectId)
+                    {
+                        _cacheIds[uri] = elementAsMofObject;
+                        return elementAsMofObject as T;
+                    }
+                }
+
+                // According to MOF Specification, return null, if not found
+                return null;
+            }
+            catch(UriFormatException exc)
+            {
+                Debug.WriteLine(
+                    $"Exception while parsing URI {nameof(uri)}: {exc.Message}");
+
+                return null;
+
+            }
         }
 
         public virtual string uri(IElement element)
@@ -69,10 +90,10 @@ namespace DatenMeister.Runtime
                 throw new ArgumentNullException(nameof(element));
             }
 
-            var elementAsObject = element as T;
+            var elementAsObject = element as IHasId;
             if (elementAsObject == null)
             {
-                throw new InvalidOperationException($"element is not of type {typeof(T).Name}. Element is: " + element);
+                throw new InvalidOperationException($"element is not of type IHasId. Element is: " + element);
             }
 
             return _extent.contextURI() + "#" + elementAsObject.Id;

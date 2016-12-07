@@ -121,7 +121,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         private XElement ConvertValueAsXmlObject(object value)
         {
             var valueAsXmlObject = value as XmlElement;
-            if (valueAsXmlObject != null)
+            if (valueAsXmlObject != null && valueAsXmlObject.XmlNode.Name == _propertyName)
             {
                 return valueAsXmlObject.XmlNode;
             }

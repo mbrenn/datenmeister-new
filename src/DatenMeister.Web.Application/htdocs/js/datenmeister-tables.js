@@ -1,11 +1,13 @@
 define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-client"], function (require, exports, DMI, DMClient) {
     "use strict";
     var ItemListTableConfiguration = (function () {
-        function ItemListTableConfiguration() {
+        function ItemListTableConfiguration(navigation) {
             this.onItemEdit = function (url) { return false; };
             this.onItemDelete = function (url, domRow) { return false; };
             this.showColumnForId = false;
             this.itemsPerPage = 20;
+            this.isReadOnly = true;
+            this.navigation = navigation;
         }
         return ItemListTableConfiguration;
     }());
@@ -44,6 +46,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             this.domFilteredNumber = $(".filterednumber", domAmount);
             if (this.configuration.navigation !== undefined) {
                 this.configuration.navigation.setStatus(domAmount);
+                this.configuration.isReadOnly = true;
             }
             else {
                 this.domContainer.append(domAmount);
@@ -107,7 +110,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                     for (var c in columns) {
                         if (columns.hasOwnProperty(c)) {
                             domColumn = $("<td></td>");
-                            domColumn.append(createDomForContent(item, columns[c], false /* in readonly mode */, this.configuration));
+                            domColumn.append(createDomForContent(item, columns[c], this.configuration));
                             domRow.append(domColumn);
                         }
                     }
@@ -146,11 +149,12 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
     }());
     exports.ItemListTable = ItemListTable;
     var ItemContentConfiguration = (function () {
-        function ItemContentConfiguration() {
+        function ItemContentConfiguration(navigation) {
             this.isReadOnly = false;
             this.autoProperties = false;
             this.supportNewProperties = true;
             this.columns = new Array();
+            this.navigation = navigation;
         }
         ItemContentConfiguration.prototype.addColumn = function (column) {
             this.columns[this.columns.length] = column;
@@ -158,6 +162,9 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
         return ItemContentConfiguration;
     }());
     exports.ItemContentConfiguration = ItemContentConfiguration;
+    /**
+     * Defines the table for one item and shows all properties
+     */
     var ItemContentTable = (function () {
         function ItemContentTable(item, configuration) {
             this.item = item;
@@ -198,7 +205,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 domRow.append(domColumn);
                 domColumn = $("<td class='table_column_value'></td>");
                 domColumn.data("column", "value");
-                var domForEdit = createDomForContent(this.item, column, !this.configuration.isReadOnly, this.configuration);
+                var domForEdit = createDomForContent(this.item, column, this.configuration);
                 domColumn.append(domForEdit);
                 domRow.append(domColumn);
                 domColumn = $("<td></td>");
@@ -300,42 +307,77 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
      * @param inEditMode true, if the field is in edit mode
      * @param configuration Configuration of the complete table
      */
-    function createDomForContent(item, column, inEditMode, configuration) {
-        if (inEditMode === undefined) {
-            inEditMode = false;
+    function createDomForContent(item, column, configuration) {
+        if (column.fieldType === DMI.Table.ColumnTypes.dropdown) {
+            var dropdownField = new DropDownField();
+            return dropdownField.createDom(item, column, configuration);
         }
-        var contentValue = item.v[column.name];
-        if (contentValue === undefined) {
-            contentValue = column.defaultValue;
+        if (column.fieldType === DMI.Table.ColumnTypes.subElements) {
+            var field = new SubElementField();
+            return field.createDom(item, column, configuration);
         }
-        if (inEditMode) {
-            if (column.fieldType === DMI.Table.ColumnTypes.dropdown) {
-                var domDD = $("<select></select>");
-                var asDD = column;
-                for (var name in asDD.values) {
-                    var displayText = asDD.values[name];
-                    var domOption = $("<option></option>").attr("value", name).text(displayText);
-                    domDD.append(domOption);
-                }
-                domDD.val(contentValue);
-                return domDD;
+        return createDefaultDomForContent(item, column, configuration);
+    }
+    var DropDownField = (function () {
+        function DropDownField() {
+        }
+        DropDownField.prototype.createDom = function (item, column, configuration) {
+            var contentValue = item.v[column.name];
+            if (contentValue === undefined) {
+                contentValue = column.defaultValue;
             }
-            if (column.fieldType === DMI.Table.ColumnTypes.subElements) {
-                var domSE = $("<div>SUBELEMENT</div>");
-                var asSE = column;
+            var domDD = $("<select></select>");
+            var asDD = column;
+            for (var name in asDD.values) {
+                var displayText = asDD.values[name];
+                var domOption = $("<option></option>").attr("value", name).text(displayText);
+                domDD.append(domOption);
+            }
+            domDD.val(contentValue);
+            return domDD;
+        };
+        return DropDownField;
+    }());
+    exports.DropDownField = DropDownField;
+    var SubElementField = (function () {
+        function SubElementField() {
+        }
+        SubElementField.prototype.createDom = function (item, column, configuration) {
+            var domSE = $("<ul></ul>");
+            var asSE = column;
+            // The content value
+            var contentValue = item.v[column.name];
+            for (var n in contentValue) {
+                var subItem = contentValue[n];
+                var func = function (innerItem) {
+                    var domLine = $("<li><a href='#'></a></li>");
+                    var domA = $("a", domLine);
+                    domA.text(innerItem.v);
+                    domA.click(function () {
+                        configuration.navigation.navigateToItem(item.ws, item.ext, innerItem.u);
+                        return false;
+                    });
+                    domSE.append(domLine);
+                };
+                func(subItem);
+            }
+            // For read-only things, don't show the button for new properties
+            if (!configuration.isReadOnly) {
                 var btn = $("<button>New Element</button>");
                 btn.click(function () {
                     DMClient.ExtentApi.createItemAsSubElement(item.ws, item.ext, item.uri, column.name, null).done(function (data) {
                         var uri = data.newuri;
-                        alert(uri);
+                        configuration.navigation.navigateToItem(item.ws, item.ext, uri);
+                        return false;
                     });
                 });
                 domSE.append(btn);
-                return domSE;
             }
-        }
-        return createDefaultDomForContent(item, column, inEditMode, configuration);
-    }
+            return domSE;
+        };
+        return SubElementField;
+    }());
+    exports.SubElementField = SubElementField;
     /**
      * Creates the DOM for the content as defined by column, when the column.fieldType is not set
      * @param item Item, whose content shall be shown
@@ -343,7 +385,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
      * @param inEditMode true, if the field is in edit mode
      * @param configuration Configuration of the complete table
      */
-    function createDefaultDomForContent(item, column, inEditMode, configuration) {
+    function createDefaultDomForContent(item, column, configuration) {
         var contentValue = item.v[column.name];
         if (contentValue === undefined) {
             contentValue = column.defaultValue;
@@ -374,17 +416,23 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             return domResult;
         }
         else {
-            if (inEditMode) {
-                var asTextBox = column;
-                // We have a textbox, so check if we have multiple line
-                if (asTextBox.lineHeight !== undefined && asTextBox.lineHeight > 1) {
-                    var domTextBoxMultiple = $("<textarea class='form-control'></textarea>")
-                        .attr('rows', asTextBox.lineHeight);
-                    domTextBoxMultiple.val(contentValue);
-                    if (asTextBox.isReadOnly) {
-                        domTextBoxMultiple.attr("readonly", "readonly");
-                    }
-                    return domTextBoxMultiple;
+            var asTextBox = column;
+            var isReadonly = configuration.isReadOnly || asTextBox.isReadOnly;
+            // We have a textbox, so check if we have multiple line
+            if (asTextBox.lineHeight !== undefined && asTextBox.lineHeight > 1) {
+                var domTextBoxMultiple = $("<textarea class='form-control'></textarea>")
+                    .attr('rows', asTextBox.lineHeight);
+                domTextBoxMultiple.val(contentValue);
+                if (isReadonly) {
+                    domTextBoxMultiple.attr("readonly", "readonly");
+                }
+                return domTextBoxMultiple;
+            }
+            else {
+                if (isReadonly) {
+                    var domResult = $("<span class='dm-itemtable-data'></span>");
+                    domResult.text(contentValue);
+                    return domResult;
                 }
                 else {
                     var domTextBox = $("<input type='textbox' class='form-control' />");
@@ -394,11 +442,6 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                     }
                     return domTextBox;
                 }
-            }
-            else {
-                var domResult = $("<span class='dm-itemtable-data'></span>");
-                domResult.text(contentValue);
-                return domResult;
             }
         }
     }

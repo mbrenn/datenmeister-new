@@ -188,8 +188,8 @@ namespace DatenMeister.Tests.Xmi.EMOF
             extent.elements().remove(mofObject3);
             Assert.That(extent.elements().size(), Is.EqualTo(1));
 
-            var mofElement = new InMemoryElement();
-            Assert.Throws<ArgumentNullException>(() => extent.uri(mofElement));
+            /*var mofElement = new InMemoryElement();
+            Assert.Throws<ArgumentNullException>(() => extent.uri(mofElement));*/
 
             //Assert.Throws<InvalidOperationException>(() => extent.elements().add(mofElement));
         }

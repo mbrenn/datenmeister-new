@@ -5,6 +5,8 @@ using DatenMeister.Core.EMOF.Attributes;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.DotNet;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.XMI.EMOF
@@ -23,6 +25,9 @@ namespace DatenMeister.Provider.XMI.EMOF
 
         public IWorkspaceLogic Workspaces { get; set; }
 
+
+        private readonly ExtentUrlNavigator<XmlElement> _navigator;
+
         public XmlUriExtent(IWorkspaceLogic workspaces, string uri, string rootNodeName = DefaultRootNodeName)
         {
             if (workspaces == null) throw new ArgumentNullException(nameof(workspaces));
@@ -31,6 +36,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             _rootNode = new XElement(rootNodeName);
             _document.Add(_rootNode);
             _rootNode.SetAttributeValue(_urlPropertyName, uri);
+            _navigator = new ExtentUrlNavigator<XmlElement>(this);
         }
 
         public XmlUriExtent(IWorkspaceLogic workspaces, XDocument document, string uri, string rootNodeName = DefaultRootNodeName)
@@ -46,6 +52,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             }
             
             _rootNode.SetAttributeValue(_urlPropertyName, uri);
+            _navigator = new ExtentUrlNavigator<XmlElement>(this);
         }
 
         public bool useContainment()
@@ -71,44 +78,17 @@ namespace DatenMeister.Provider.XMI.EMOF
 
         public string uri(IElement element)
         {
-            var xmlElement = element as XmlElement;
-            if (xmlElement == null)
-            {
-                throw new ArgumentNullException(nameof(xmlElement), "given element is not an XmlElement");
-            }
-
-            var hasId = (IHasId) xmlElement;
-            return $"{contextURI()}#{hasId.Id}";
+            return _navigator.uri(element);
         }
 
+        /// <summary>
+        /// Gets the element by the uri
+        /// </summary>
+        /// <param name="uri">Uri of the element to be retrieved</param>
+        /// <returns>The found element</returns>
         public IElement element(string uri)
         {
-            // Split in #
-            var posHash = uri.IndexOf('#');
-            if (posHash == -1)
-            {
-                return null;
-            }
-
-            var extentUrl = uri.Substring(0, posHash);
-            var id = uri.Substring(posHash + 1);
-
-            if (extentUrl != contextURI())
-            {
-                // Not in this extent
-                return null;
-            }
-
-            foreach (var innerElement in elements().Cast<XmlElement>())
-            {
-                if (((IHasId) innerElement).Id == id)
-                {
-                    return innerElement;
-                }
-            }
-
-            // Not found
-            return null;
+            return _navigator.element(uri);
         }
     }
 }

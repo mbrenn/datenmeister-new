@@ -168,7 +168,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
             var _this = this;
             var tthis = this;
             // Creates the layout configuration and the handling on requests of the user
-            var configuration = new DMTables.ItemListTableConfiguration();
+            var configuration = new DMTables.ItemListTableConfiguration(this.navigation);
             configuration.onItemEdit = function (url) {
                 if (tthis.onItemEdit !== undefined) {
                     tthis.onItemEdit(ws, extentUrl, url);
@@ -269,7 +269,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
         ItemView.prototype.createHtmlForItem = function (ws, extentUrl, itemUrl, data, settings) {
             var tthis = this;
             this.content.empty();
-            var configuration = new DMTables.ItemContentConfiguration();
+            var configuration = new DMTables.ItemContentConfiguration(this.navigation);
             configuration.columns = data.c.fields;
             var isReadonly = false;
             if (settings === undefined) {
@@ -375,7 +375,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
         }
         DialogView.prototype.createDialog = function (configuration) {
             var value = new DMI.ClientResponse.ItemContentModel();
-            var tableConfiguration = new DMTables.ItemContentConfiguration();
+            var tableConfiguration = new DMTables.ItemContentConfiguration(this.navigation);
             tableConfiguration.autoProperties = false;
             tableConfiguration.columns = configuration.columns;
             tableConfiguration.isReadOnly = false;

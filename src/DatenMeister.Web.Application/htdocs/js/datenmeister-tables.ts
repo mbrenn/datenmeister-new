@@ -8,18 +8,22 @@ export class ItemListTableConfiguration {
     onItemDelete: (url: string, domRow: JQuery) => boolean;
     onItemSelect: (url: string) => boolean;
 
+    isReadOnly: boolean;
+
     showColumnForId: boolean;
     itemsPerPage: number;
     navigation: DMN.INavigation;
 
     paging: DMToolbar.ToolbarPaging;
     
-    constructor() {
+    constructor(navigation: DMN.INavigation) {
         this.onItemEdit = (url: string) => false;
         this.onItemDelete = (url: string, domRow: JQuery) => false;
 
         this.showColumnForId = false;
         this.itemsPerPage = 20;
+        this.isReadOnly = true;
+        this.navigation = navigation;
     }
 }
 
@@ -41,7 +45,10 @@ export class ItemListTable {
     provider: DMI.Api.IItemsProvider;
     currentQuery: DMI.Api.IItemTableQuery;
 
-    constructor(dom: JQuery, provider: DMI.Api.IItemsProvider, configuration: ItemListTableConfiguration) {
+    constructor(
+        dom: JQuery,
+        provider: DMI.Api.IItemsProvider,
+        configuration: ItemListTableConfiguration) {
         this.domContainer = dom;
         this.provider = provider;
         this.configuration = configuration;
@@ -74,6 +81,7 @@ export class ItemListTable {
 
         if (this.configuration.navigation !== undefined) {
             this.configuration.navigation.setStatus(domAmount);
+            this.configuration.isReadOnly = true;
         } else {
             this.domContainer.append(domAmount);
         }
@@ -123,8 +131,6 @@ export class ItemListTable {
         if (this.configuration.paging !== undefined) {
             this.configuration.paging.setTotalPages(
                 Math.floor((data.filteredItemCount - 1) / this.configuration.itemsPerPage) + 1);
-
-            
         }
 
         // Now, the items
@@ -152,7 +158,10 @@ export class ItemListTable {
                 for (var c in columns) {
                     if (columns.hasOwnProperty(c)) {
                         domColumn = $("<td></td>");
-                        domColumn.append(createDomForContent(item, columns[c], false /* in readonly mode */, this.configuration));
+                        domColumn.append(createDomForContent(
+                            item,
+                            columns[c],
+                            this.configuration));
 
                         domRow.append(domColumn);
                     }
@@ -206,6 +215,8 @@ export class ItemContentConfiguration {
      * Includes the information whether the button to create new properties shall be included
      */
     supportNewProperties: boolean;
+
+    navigation: DMN.INavigation;
     
     onItemSelect: (url: string) => boolean;
 
@@ -218,11 +229,12 @@ export class ItemContentConfiguration {
      */
     onEditButton: () => void;
 
-    constructor() {
+    constructor(navigation: DMN.INavigation) {
         this.isReadOnly = false;
         this.autoProperties = false;
         this.supportNewProperties = true;
         this.columns = new Array<DMI.ClientResponse.IFieldData>();
+        this.navigation = navigation;
     }
 
     addColumn(column: DMI.ClientResponse.IFieldData) {
@@ -230,13 +242,18 @@ export class ItemContentConfiguration {
     }
 }
 
+/**
+ * Defines the table for one item and shows all properties
+ */
 export class ItemContentTable {
     item: DMI.ClientResponse.IItemContentModel;
     configuration: ItemContentConfiguration;
     domContainer: JQuery;
     domForEditArray: Array<JQuery>;
 
-    constructor(item: DMI.ClientResponse.IItemContentModel, configuration: ItemContentConfiguration) {
+    constructor(
+        item: DMI.ClientResponse.IItemContentModel,
+        configuration: ItemContentConfiguration) {
         this.item = item;
         this.configuration = configuration;
     }
@@ -284,7 +301,10 @@ export class ItemContentTable {
 
             domColumn = $("<td class='table_column_value'></td>");
             domColumn.data("column", "value");
-            var domForEdit = createDomForContent(this.item, column, !this.configuration.isReadOnly, this.configuration);
+            var domForEdit = createDomForContent(
+                this.item,
+                column,
+                this.configuration);
             domColumn.append(domForEdit);
             domRow.append(domColumn);
             
@@ -413,35 +433,73 @@ export class ItemContentTable {
 function createDomForContent(
     item: DMI.ClientResponse.IItemContentModel,
     column: DMI.ClientResponse.IFieldData,
-    inEditMode?: boolean,
-    configuration?: ItemListTableConfiguration | ItemContentConfiguration): JQuery {
+    configuration: ItemListTableConfiguration | ItemContentConfiguration): JQuery {
 
-    if (inEditMode === undefined) {
-        inEditMode = false;
+    if (column.fieldType === DMI.Table.ColumnTypes.dropdown) {
+        var dropdownField = new DropDownField();
+        return dropdownField.createDom(item, column, configuration);
     }
 
-    var contentValue = item.v[column.name];
-    if (contentValue === undefined) {
-        contentValue = column.defaultValue;
+    if (column.fieldType === DMI.Table.ColumnTypes.subElements) {
+        var field = new SubElementField();
+        return field.createDom(item, column, configuration);
     }
 
-    if (inEditMode) {
-        if (column.fieldType === DMI.Table.ColumnTypes.dropdown) {
-            let domDD = $("<select></select>");
-            let asDD = column as DMI.ClientResponse.IDropDownFieldData;
-            for (var name in asDD.values) {
-                var displayText = asDD.values[name];
-                let domOption = $("<option></option>").attr("value", name).text(displayText);
-                domDD.append(domOption);
-            }
+    return createDefaultDomForContent(item, column, configuration);
+}
 
-            domDD.val(contentValue);
-            return domDD;
+export class DropDownField {
+
+    createDom(item: DMI.ClientResponse.IItemContentModel,
+        column: DMI.ClientResponse.IFieldData,
+        configuration: ItemListTableConfiguration | ItemContentConfiguration): JQuery {
+        var contentValue = item.v[column.name];
+        if (contentValue === undefined) {
+            contentValue = column.defaultValue;
         }
 
-        if (column.fieldType === DMI.Table.ColumnTypes.subElements) {
-            let domSE = $("<div>SUBELEMENT</div>");
-            let asSE = column as DMI.ClientResponse.ISubElementsFieldData;
+        let domDD = $("<select></select>");
+        let asDD = column as DMI.ClientResponse.IDropDownFieldData;
+        for (var name in asDD.values) {
+            var displayText = asDD.values[name];
+            let domOption = $("<option></option>").attr("value", name).text(displayText);
+            domDD.append(domOption);
+        }
+
+        domDD.val(contentValue);
+        return domDD;
+    }
+}
+
+export class SubElementField {
+
+    createDom(item: DMI.ClientResponse.IItemContentModel,
+        column: DMI.ClientResponse.IFieldData,
+        configuration: ItemListTableConfiguration | ItemContentConfiguration): JQuery {
+        let domSE = $("<ul></ul>");
+        let asSE = column as DMI.ClientResponse.ISubElementsFieldData;
+
+        // The content value
+        var contentValue = item.v[column.name];
+        for (var n in contentValue) {
+            var subItem = contentValue[n];
+
+            var func = innerItem => {
+                var domLine = $("<li><a href='#'></a></li>");
+                var domA = $("a", domLine);
+                domA.text(innerItem.v);
+                domA.click(() => {
+                    configuration.navigation.navigateToItem(item.ws, item.ext, innerItem.u);
+                    return false;
+                });
+                domSE.append(domLine);
+            };
+
+            func(subItem);
+        }
+
+        // For read-only things, don't show the button for new properties
+        if (!configuration.isReadOnly) {
             var btn = $("<button>New Element</button>");
             btn.click(() => {
                 DMClient.ExtentApi.createItemAsSubElement(
@@ -452,16 +510,16 @@ function createDomForContent(
                     null
                 ).done((data) => {
                     var uri = data.newuri;
-                    alert(uri);
+                    configuration.navigation.navigateToItem(item.ws, item.ext, uri);
+                    return false;
                 });
             });
+
             domSE.append(btn);
-
-            return domSE;
         }
-    }
 
-    return createDefaultDomForContent(item, column, inEditMode, configuration);
+        return domSE;
+    }
 }
 
 
@@ -472,10 +530,10 @@ function createDomForContent(
  * @param inEditMode true, if the field is in edit mode
  * @param configuration Configuration of the complete table
  */
-function createDefaultDomForContent(item: DMI.ClientResponse.IItemContentModel,
+function createDefaultDomForContent(
+    item: DMI.ClientResponse.IItemContentModel,
     column: DMI.ClientResponse.IFieldData,
-    inEditMode: boolean,
-    configuration?: ItemListTableConfiguration | ItemContentConfiguration) : JQuery {
+    configuration: ItemListTableConfiguration | ItemContentConfiguration) : JQuery {
 
     var contentValue = item.v[column.name];
     if (contentValue === undefined) {
@@ -508,18 +566,24 @@ function createDefaultDomForContent(item: DMI.ClientResponse.IItemContentModel,
 
         return domResult;
     } else {
-        if (inEditMode) {
-            let asTextBox = <DMI.ClientResponse.ITextFieldData>column;
-            // We have a textbox, so check if we have multiple line
-            if (asTextBox.lineHeight !== undefined && asTextBox.lineHeight > 1) {
-                let domTextBoxMultiple = $("<textarea class='form-control'></textarea>")
-                    .attr('rows', asTextBox.lineHeight)
-                domTextBoxMultiple.val(contentValue);
-                if (asTextBox.isReadOnly) {
-                    domTextBoxMultiple.attr("readonly", "readonly");
-                }
+        let asTextBox = column as DMI.ClientResponse.ITextFieldData;
+        var isReadonly = configuration.isReadOnly || asTextBox.isReadOnly;
 
-                return domTextBoxMultiple;
+        // We have a textbox, so check if we have multiple line
+        if (asTextBox.lineHeight !== undefined && asTextBox.lineHeight > 1) {
+            let domTextBoxMultiple = $("<textarea class='form-control'></textarea>")
+                .attr('rows', asTextBox.lineHeight);
+            domTextBoxMultiple.val(contentValue);
+            if (isReadonly) {
+                domTextBoxMultiple.attr("readonly", "readonly");
+            }
+
+            return domTextBoxMultiple;
+        } else {
+            if (isReadonly) {
+                let domResult = $("<span class='dm-itemtable-data'></span>");
+                domResult.text(contentValue);
+                return domResult;
             } else {
                 let domTextBox = $("<input type='textbox' class='form-control' />");
                 domTextBox.val(contentValue);
@@ -530,10 +594,6 @@ function createDefaultDomForContent(item: DMI.ClientResponse.IItemContentModel,
 
                 return domTextBox;
             }
-        } else {
-            let domResult = $("<span class='dm-itemtable-data'></span>");
-            domResult.text(contentValue);
-            return domResult;
         }
     }
 }

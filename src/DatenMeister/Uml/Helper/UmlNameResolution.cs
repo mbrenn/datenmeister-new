@@ -11,9 +11,18 @@ namespace DatenMeister.Uml.Helper
         {
             // If the element is not uml induced or the property is empty, check by
             // the default "name" property
-            return element.isSet(_UML._CommonStructure._NamedElement.name)
-                ? element.get(_UML._CommonStructure._NamedElement.name).ToString()
-                : element.ToString();
+            if ( element.isSet(_UML._CommonStructure._NamedElement.name) )
+            {
+                return element.get(_UML._CommonStructure._NamedElement.name).ToString();
+            }
+
+            var elementAsHasId = element as IHasId;
+            if (elementAsHasId != null)
+            {
+                return elementAsHasId.Id;
+            }
+
+            return element.ToString();
         }
 
         public string GetName(object element)

@@ -232,7 +232,9 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
         var tthis = this;
 
         // Creates the layout configuration and the handling on requests of the user
-        var configuration: DMTables.ItemListTableConfiguration = new DMTables.ItemListTableConfiguration();
+        var configuration: DMTables.ItemListTableConfiguration =
+            new DMTables.ItemListTableConfiguration(this.navigation);
+
         configuration.onItemEdit = (url: string) => {
             if (tthis.onItemEdit !== undefined) {
                 tthis.onItemEdit(ws, extentUrl, url);
@@ -359,7 +361,7 @@ export class ItemView extends ViewBase implements DMVP.IView
     createHtmlForItem(ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMN.Settings.IItemViewSettings) {
         var tthis = this;
         this.content.empty();
-        var configuration = new DMTables.ItemContentConfiguration();
+        var configuration = new DMTables.ItemContentConfiguration(this.navigation);
         configuration.columns = data.c.fields;
         var isReadonly = false;
 
@@ -487,7 +489,7 @@ export class DialogView extends ViewBase implements DMVP.IView {
 
     createDialog(configuration: DMN.DialogConfiguration) {
         var value = new DMI.ClientResponse.ItemContentModel();
-        var tableConfiguration = new DMTables.ItemContentConfiguration();
+        var tableConfiguration = new DMTables.ItemContentConfiguration(this.navigation);
         tableConfiguration.autoProperties = false;
         tableConfiguration.columns = configuration.columns;
         tableConfiguration.isReadOnly = false;

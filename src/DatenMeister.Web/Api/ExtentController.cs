@@ -558,6 +558,11 @@ namespace DatenMeister.Web.Api
             }
             else
             {
+                if (string.IsNullOrEmpty(model.parentProperty))
+                {
+                    throw new InvalidOperationException($"No property being set for item {model.parentItem}");
+                }
+
                 // The element will be created as a subitem for the parent item
                 var parentElement = _workspaceLogic.FindItem(model.parentItem);
                 if (parentElement == null)

@@ -275,6 +275,25 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
+                        if(name == "DefaultViewForExtentType") // Looking for class
+                        {
+                            tree.__DefaultViewForExtentType = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "extentType") // Looking for property
+                                {
+                                    tree.DefaultViewForExtentType._extentType = value;
+                                }
+                                if(name == "view") // Looking for property
+                                {
+                                    tree.DefaultViewForExtentType._view = value;
+                                }
+                            }
+                        }
                     }
                 }
             }

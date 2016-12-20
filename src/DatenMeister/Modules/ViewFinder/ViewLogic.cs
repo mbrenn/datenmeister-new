@@ -15,6 +15,10 @@ using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.ViewFinder
 {
+    /// <summary>
+    /// Defines the access to the view logic and abstracts the access to the view extent
+    /// </summary>
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ViewLogic
     {
         /// <summary>
@@ -126,6 +130,39 @@ namespace DatenMeister.Modules.ViewFinder
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Looks in the view extent and checks for all elements, where the type of the extent is fitting to the view
+        /// </summary>
+        /// <param name="extentType">Type of the extent</param>
+        /// <param name="list"></param>
+        /// <returns>The found view</returns>
+        public IElement FindViewForExtentType(string extentType, ViewType type)
+        {
+            if (string.IsNullOrEmpty(extentType))
+            {
+                return null;
+            }
+
+            var viewExtent = GetViewExtent();
+            var formAndFields = GetFormAndFieldInstance(viewExtent);
+            foreach (
+                var element in viewExtent.elements().
+                WhenMetaClassIs(formAndFields.__DefaultViewForExtentType).
+                Select(x => x as IElement))
+            {
+                Debug.Assert(element != null, "element != null");
+
+                var innerExtentType = element.get(_FormAndFields._DefaultViewForExtentType.extentType);
+
+                if (innerExtentType.Equals(extentType))
+                {
+                    return element.getFirstOrDefault(_FormAndFields._DefaultViewForMetaclass.view) as IElement;
+                }
+            }
+
+            throw new NotImplementedException();
         }
 
         /// <summary>

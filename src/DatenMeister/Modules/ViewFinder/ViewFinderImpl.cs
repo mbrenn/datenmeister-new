@@ -36,13 +36,29 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns>The found view</returns>
         public IObject FindView(IUriExtent extent, string viewUrl)
         {
-            if (string.IsNullOrEmpty(viewUrl) || viewUrl == "{All}")
+            if (viewUrl == "{All}")
             {
                 var view = _formCreator.CreateForm(extent, FormCreator.CreationMode.All);
                 return _dotNetTypeLookup.CreateDotNetElement(view);
             }
 
-            return _viewLogic.GetViewByUrl(viewUrl);
+            if (!string.IsNullOrEmpty(viewUrl))
+            {
+                _viewLogic.GetViewByUrl(viewUrl);
+            }
+
+            if (extent.isSet(_FormAndFields._DefaultViewForExtentType.extentType))
+            {
+                var extentType = extent.get(_FormAndFields._DefaultViewForExtentType.extentType).ToString();
+                var viewResult = _viewLogic.FindViewForExtentType(extentType, ViewType.List);
+                if (viewResult != null)
+                {
+                    return viewResult;
+                }
+            }
+
+            // Ok, find it by creating the properties
+            return FindView(extent, "{All}");
         }
 
         /// <summary>
@@ -85,10 +101,7 @@ namespace DatenMeister.Modules.ViewFinder
                 }
             }
 
-            form = _formCreator.CreateForm(
-                value,
-                FormCreator.CreationMode.OnlyPropertiesIfNoMetaClass);
-            return _dotNetTypeLookup.CreateDotNetElement(form);
+            return FindView(value, "{All}");
         }
 
         /// <summary>

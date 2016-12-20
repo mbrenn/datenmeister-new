@@ -59,6 +59,17 @@ namespace DatenMeister.Uml.Plugin
                     new TextFieldData("name", "Classname")));
 
             AddForView(packageView);
+
+
+            var classExtentView = new DefaultViewForExtentType(
+                "Uml.Classes",
+                new Form(
+                    "Class",
+                    new TextFieldData("name", "Classname"),
+                    new SubElementFieldData("ownedAttribute", "Properties"),
+                    new SubElementFieldData("attribute", "Properties")));
+
+            AddForView(classExtentView);
         }
 
         /// <summary>
@@ -69,10 +80,15 @@ namespace DatenMeister.Uml.Plugin
         {
             var element = _typeLookup.CreateDotNetElement(classView);
             _viewLogic.Add(element);
+        }
 
-            // Adds it also as a list
-            classView.viewType = ViewType.List;
-            element = _typeLookup.CreateDotNetElement(classView);
+        /// <summary>
+        /// Adds a default view for as a detail and list item
+        /// </summary>
+        /// <param name="classView">Defaultview to be added</param>
+        private void AddForView(DefaultViewForExtentType classView)
+        {
+            var element = _typeLookup.CreateDotNetElement(classView);
             _viewLogic.Add(element);
         }
     }

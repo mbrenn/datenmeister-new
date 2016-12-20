@@ -178,6 +178,19 @@ namespace DatenMeister.Models.Forms
         public _DefaultViewForMetaclass @DefaultViewForMetaclass = new _DefaultViewForMetaclass();
         public IElement @__DefaultViewForMetaclass = new InMemoryElement();
 
+        public class _DefaultViewForExtentType
+        {
+            public static string @extentType = "extentType";
+            public IElement _extentType = null;
+
+            public static string @view = "view";
+            public IElement _view = null;
+
+        }
+
+        public _DefaultViewForExtentType @DefaultViewForExtentType = new _DefaultViewForExtentType();
+        public IElement @__DefaultViewForExtentType = new InMemoryElement();
+
         public static _FormAndFields TheOne = new _FormAndFields();
 
     }

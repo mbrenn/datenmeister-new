@@ -70,6 +70,13 @@ namespace DatenMeister.Models.Forms
                 filledStructure.__DefaultViewForMetaclass = typeAsElement;
                 lookup.Add(typeAsElement, type);
             }
+            {
+                var type = typeof(DatenMeister.Models.Forms.DefaultViewForExtentType);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__DefaultViewForExtentType = typeAsElement;
+                lookup.Add(typeAsElement, type);
+            }
         }
     }
 }

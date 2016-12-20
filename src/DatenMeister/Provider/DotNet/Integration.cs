@@ -185,7 +185,8 @@ namespace DatenMeister.Provider.DotNet
             var workspaceCollection = scope.Resolve<IWorkspaceLogic>();
 
             // Creates the user types, if not existing
-            if (workspaceCollection.FindExtent(WorkspaceNames.UriUserTypes) == null)
+            var foundExtent = workspaceCollection.FindExtent(WorkspaceNames.UriUserTypes);
+            if (foundExtent == null)
             {
                 Debug.WriteLine("Creates the extent for the user types");
                 // Creates the extent for user types
@@ -198,8 +199,10 @@ namespace DatenMeister.Provider.DotNet
                     DataLayer = "Types"
                 };
 
-                loader.LoadExtent(storageConfiguration, true);
+                foundExtent = loader.LoadExtent(storageConfiguration, true);
             }
+
+            foundExtent.set(_FormAndFields._DefaultViewForExtentType.extentType, "Uml.Classes");
         }
     }
 }

@@ -41,7 +41,7 @@ namespace DatenMeister.Runtime
                 if (string.IsNullOrEmpty(uriAsUri.Fragment))
                 {
                     Debug.WriteLine(
-                        $"Uri does not contain a URI-Fragment defining the object being looked for.{nameof(uri)}");
+                        $"Uri does not contain a URI-Fragment defining the object being looked for. {nameof(uri)}");
 
                     return null;
                 }

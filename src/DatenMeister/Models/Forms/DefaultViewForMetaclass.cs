@@ -11,6 +11,21 @@
         
         public Form view { get; set; }
 
+        public DefaultViewForMetaclass()
+        {
+        }
+
+        public DefaultViewForMetaclass(string metaClass, ViewType viewType)
+        {
+            this.metaclass = metaClass;
+            this.viewType = viewType;
+        }
+
+        public DefaultViewForMetaclass(string metaClass, ViewType viewType, Form form) : this(metaClass, viewType)
+        {
+            this.view = form;
+        }
+
         public override string ToString()
         {
             return $"View for: {viewType} - {metaclass}";

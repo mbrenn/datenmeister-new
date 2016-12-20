@@ -40,30 +40,39 @@ namespace DatenMeister.Uml.Plugin
         /// </summary>
         private void InitViews()
         {
-            var defaultView = new DefaultViewForMetaclass
-            {
-                metaclass = "UML::StructuredClassifiers::Class",
-                viewType = ViewType.Detail
-            };
+            var classView = new DefaultViewForMetaclass(
+                "UML::StructuredClassifiers::Class",
+                ViewType.Detail,
+                new Form(
+                    "Class",
+                    new TextFieldData("name", "Classname"),
+                    new SubElementFieldData("ownedAttribute", "Properties"),
+                    new SubElementFieldData("attribute", "Properties")));
+            
+            AddForView(classView);
 
-            var form = new Form {name = "Class"};
-            form.fields.Add(
-                new TextFieldData
-                {
-                    name = "name",
-                    title = "Classname"
-                });
-            form.fields.Add(
-                new SubElementFieldData("ownedAttribute", "Properties"));
-            form.fields.Add(
-                new SubElementFieldData("attribute", "Properties"));
+            var packageView = new DefaultViewForMetaclass(
+                "UML::Packages::Package",
+                ViewType.Detail,
+                new Form(
+                    "Package",
+                    new TextFieldData("name", "Classname")));
 
-            defaultView.view = form;
-            var element = _typeLookup.CreateDotNetElement(defaultView);
+            AddForView(packageView);
+        }
 
+        /// <summary>
+        /// Adds a default view for as a detail and list item
+        /// </summary>
+        /// <param name="classView">Defaultview to be added</param>
+        private void AddForView(DefaultViewForMetaclass classView)
+        {
+            var element = _typeLookup.CreateDotNetElement(classView);
             _viewLogic.Add(element);
 
-            defaultView.viewType = ViewType.List;
+            // Adds it also as a list
+            classView.viewType = ViewType.List;
+            element = _typeLookup.CreateDotNetElement(classView);
             _viewLogic.Add(element);
         }
     }

@@ -84,5 +84,35 @@ namespace DatenMeister.Runtime.Proxies
 
             return this;
         }
+
+        /// <inheritdoc />
+        public bool @equals(object other)
+        {
+            return Extent.@equals(other);
+        }
+
+        /// <inheritdoc />
+        public object get(string property)
+        {
+            return Extent.get(property);
+        }
+
+        /// <inheritdoc />
+        public void set(string property, object value)
+        {
+            Extent.set(property, value);
+        }
+
+        /// <inheritdoc />
+        public bool isSet(string property)
+        {
+            return Extent.isSet(property);
+        }
+
+        /// <inheritdoc />
+        public void unset(string property)
+        {
+            Extent.unset(property);
+        }
     }
 }

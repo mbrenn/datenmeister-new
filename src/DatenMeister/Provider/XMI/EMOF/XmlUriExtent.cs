@@ -90,5 +90,36 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             return _navigator.element(uri);
         }
+
+
+        /// <inheritdoc />
+        public bool @equals(object other)
+        {
+            return Equals(other);
+        }
+
+        /// <inheritdoc />
+        public object get(string property)
+        {
+            return new XmlElement(_rootNode, this).get(property);
+        }
+
+        /// <inheritdoc />
+        public void set(string property, object value)
+        {
+            new XmlElement(_rootNode, this).set(property, value);
+        }
+
+        /// <inheritdoc />
+        public bool isSet(string property)
+        {
+            return new XmlElement(_rootNode, this).isSet(property);
+        }
+
+        /// <inheritdoc />
+        public void unset(string property)
+        {
+            new XmlElement(_rootNode, this).unset(property);
+        }
     }
 }

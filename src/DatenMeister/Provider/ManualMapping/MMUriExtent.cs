@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.InMemory;
 
 namespace DatenMeister.Provider.ManualMapping
 {
@@ -12,6 +13,11 @@ namespace DatenMeister.Provider.ManualMapping
 
         public Dictionary<IElement, TypeMapping> TypeMappings { get; }
             = new Dictionary<IElement, TypeMapping>();
+
+        /// <summary>
+        /// Stores the object that stores the properties of the given extent
+        /// </summary>
+        private readonly InMemoryObject _innerObject = new InMemoryObject();
 
         public MMUriExtent(string uri)
         {
@@ -101,6 +107,36 @@ namespace DatenMeister.Provider.ManualMapping
             var result = mapping?.CreateNewObject(value);
             mapping?.InitializeNewObject(result);
             return result;
+        }
+
+        /// <inheritdoc />
+        public bool @equals(object other)
+        {
+            return Equals(other);
+        }
+
+        /// <inheritdoc />
+        public object get(string property)
+        {
+            return _innerObject.get(property);
+        }
+
+        /// <inheritdoc />
+        public void set(string property, object value)
+        {
+            _innerObject.set(property, value);
+        }
+
+        /// <inheritdoc />
+        public bool isSet(string property)
+        {
+            return _innerObject.isSet(property);
+        }
+
+        /// <inheritdoc />
+        public void unset(string property)
+        {
+            _innerObject.unset(property);
         }
     }
 }

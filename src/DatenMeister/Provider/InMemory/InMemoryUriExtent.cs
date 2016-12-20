@@ -18,6 +18,11 @@ namespace DatenMeister.Provider.InMemory
         private readonly ReflectiveSequenceForExtent _reflectiveSequence;
 
         /// <summary>
+        /// Stores the object that stores the properties
+        /// </summary>
+        private readonly InMemoryObject _innerObject = new InMemoryObject();
+
+        /// <summary>
         ///     Stores all the elements
         /// </summary>
         private readonly List<object> _elements = new List<object>();
@@ -76,6 +81,36 @@ namespace DatenMeister.Provider.InMemory
         public override string ToString()
         {
             return $"{GetType().FullName}: {_elements.Count} items";
+        }
+
+        /// <inheritdoc />
+        public bool @equals(object other)
+        {
+            return Equals(other);
+        }
+
+        /// <inheritdoc />
+        public object get(string property)
+        {
+            return _innerObject.get(property);
+        }
+
+        /// <inheritdoc />
+        public void set(string property, object value)
+        {
+            _innerObject.set(property, value);
+        }
+
+        /// <inheritdoc />
+        public bool isSet(string property)
+        {
+            return _innerObject.isSet(property);
+        }
+
+        /// <inheritdoc />
+        public void unset(string property)
+        {
+            _innerObject.unset(property);
         }
     }
 }

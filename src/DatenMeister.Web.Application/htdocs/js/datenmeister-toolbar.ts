@@ -56,14 +56,19 @@ export class ToolbarItemBase implements IToolbarItem {
 }
 
 export class ToolbarViewSelection extends ToolbarItemBase {
-    private extentUrl: string;
+    
     private ws: string;
+    private extentUrl: string;
+    private itemUrl: string;
+
     onViewChanged: (typeUrl?: string) => void;
 
-    constructor(ws: string, extentUrl: string) {
+    constructor(ws: string, extentUrl: string, itemUrl?: string) {
         super("view");
-        this.extentUrl = extentUrl;
+        
         this.ws = ws;
+        this.extentUrl = extentUrl;
+        this.itemUrl = itemUrl;
 
         var tthis = this;
         super.create(2, "Loading views");
@@ -83,7 +88,7 @@ export class ToolbarViewSelection extends ToolbarItemBase {
             var domDropDown = $("<select class='form-control'><option value='{None}'>Switch to view...</option><option value='{All}'>All properties</option></select>");
             for (var n in data) {
                 var type = data[n];
-                var domOption = $("<option value='" + type.uri + "'></option>");
+                var domOption = $(`<option value='${type.uri}'></option>`);
                 domOption.text(type.name);
                 domDropDown.append(domOption);
             }
@@ -184,6 +189,49 @@ export class ToolbarCreateableTypes extends ToolbarItemBase {
                 }
 
                 tthis.onNewItemClicked(domDropDown.val());
+            });
+
+            this.domContent.append(domDropDown);
+        }
+    }
+}
+
+export class ToolbarMetaClasses extends ToolbarItemBase {
+    onItemClicked: (type?: string) => void;
+    metaClasses: Array<DMI.ClientResponse.IItemModel>;
+
+    ws: string;
+    extentUrl: string;
+
+    constructor(ws: string, extentUrl: string) {
+        super("metaclasses");
+        this.extentUrl = extentUrl;
+        this.ws = ws;
+        super.create(2);
+    }
+
+    updateLayout(metaClasses: Array<DMI.ClientResponse.IItemModel>) {
+        var tthis = this;
+        this.metaClasses = metaClasses;
+        if (this.metaClasses !== null && this.metaClasses !== undefined) {
+            var data = this.metaClasses;
+            this.domContent.empty();
+            var domDropDown = $("<select class='form-control'><option value='{All}'>All MetaClasses</option></select>");
+            for (var n in data) {
+                var type = data[n];
+                var domOption = $("<option value='" + type.uri + "'></option>");
+                domOption.text(type.name);
+
+                domDropDown.append(domOption);
+            }
+
+            domDropDown.change(() => {
+                var value = domDropDown.val();
+                if (value === "{None}" || value === undefined) {
+                    return;
+                }
+
+                tthis.onItemClicked(domDropDown.val());
             });
 
             this.domContent.append(domDropDown);

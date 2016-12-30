@@ -4,6 +4,7 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.InMemory
 {
@@ -12,20 +13,24 @@ namespace DatenMeister.Provider.InMemory
         /// <summary>
         /// Stores the extent belonging to the given extent
         /// </summary>
-        private IUriExtent _localExtent;
+        private readonly IUriExtent _localExtent;
+
+        private InMemoryObject _owner;
 
         private readonly List<object> _values;
 
-        public InMemoryReflectiveSequence(IUriExtent localExtent)
+        public InMemoryReflectiveSequence(IUriExtent localExtent, InMemoryObject owner)
         {
             _localExtent = localExtent;
+            _owner = owner;
             _values = new List<object>();
         }
 
-        public InMemoryReflectiveSequence(IUriExtent localExtent, List<object> values)
+        public InMemoryReflectiveSequence(IUriExtent localExtent, InMemoryObject owner, List<object> values)
         {
             _values = values;
             _localExtent = localExtent;
+            _owner = owner;
         }
 
         public virtual bool add(object value)
@@ -35,7 +40,7 @@ namespace DatenMeister.Provider.InMemory
 
         private bool AddInternal(object value)
         {
-            _values.Add(InMemoryObject.ConvertToInMemoryElement(value, _localExtent));
+            _values.Add(InMemoryObject.ConvertToInMemoryElement(value, null, _localExtent));
             return true;
         }
 
@@ -64,7 +69,7 @@ namespace DatenMeister.Provider.InMemory
         {
             CheckIndex(index);
 
-            return _values[index];
+            return InMemoryObject.VerifyExtentOfObject(_owner, _values[index]);
         }
 
         public IEnumerator<object> GetEnumerator()
@@ -88,8 +93,8 @@ namespace DatenMeister.Provider.InMemory
         {
             CheckIndex(index);
             var old = _values[index];
-            _values[index] = InMemoryObject.ConvertToInMemoryElement(value, _localExtent);
-            return old;
+            _values[index] = InMemoryObject.ConvertToInMemoryElement(value, null, _localExtent);
+            return InMemoryObject.VerifyExtentOfObject(_owner, old);
         }
 
         public virtual int size()
@@ -102,9 +107,9 @@ namespace DatenMeister.Provider.InMemory
             return (_values as IEnumerable).GetEnumerator();
         }
 
-        public static InMemoryReflectiveSequence Create<T>(IUriExtent extent, List<T> values)
+        public static InMemoryReflectiveSequence Create<T>(IUriExtent extent, InMemoryObject owner, List<T> values)
         {
-            return new InMemoryReflectiveSequence(extent, values.Cast<object>().ToList());
+            return new InMemoryReflectiveSequence(extent, owner, values.Cast<object>().ToList());
         }
 
         private void CheckIndex(int index)

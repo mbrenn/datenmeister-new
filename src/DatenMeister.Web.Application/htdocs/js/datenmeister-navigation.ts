@@ -22,21 +22,19 @@ export class DialogConfiguration extends FormForItemConfiguration {
     ext: string;
 }
 
-export namespace Settings {
-    export interface IItemViewSettings {
-        isReadonly?: boolean;
-    }
+export interface IItemViewSettings {
+    isReadonly?: boolean;
+}
 
-    export class ItemViewSettings implements IItemViewSettings {
-        isReadonly: boolean;
-    }
+export class ItemViewSettings implements IItemViewSettings {
+    isReadonly: boolean;
 }
 
 export interface INavigation {
     navigateToWorkspaces(): void;
     navigateToExtents(workspaceId: string): void;
     navigateToItems(ws: string, extentUrl: string, viewname?: string): void;
-    navigateToItem(ws: string, extentUrl: string, itemUrl: string, viewname?: string, settings?: Settings.IItemViewSettings);
+    navigateToItem(ws: string, extentUrl: string, itemUrl: string, viewname?: string, settings?: IItemViewSettings);
     navigateToDialog(configuration: DialogConfiguration): void;
     navigateToView(navigationView: DMViewport.IView): void;
 

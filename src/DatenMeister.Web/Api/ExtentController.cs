@@ -434,6 +434,12 @@ namespace DatenMeister.Web.Api
 
             // Perform the filtering
             IEnumerable<object> filteredItems = foundItems;
+            var metaClasses = filteredItems.GetMetaClasses().Select(x => new ItemModel
+            {
+                name = _resolution.GetName(x),
+                uri = x.GetUri()
+            });
+
             if (!string.IsNullOrEmpty(search))
             {
                 filteredItems = foundItems.WhenOneOfThePropertyContains(properties, search, StringComparison.CurrentCultureIgnoreCase);
@@ -456,7 +462,8 @@ namespace DatenMeister.Web.Api
 
             filteredItems = filteredItems
                 .Skip(o)
-                .Take(amount);
+                .Take(amount)
+                .ToList();
 
             // Now return our stuff
             var resultModel = new ExtentContentModel
@@ -466,6 +473,7 @@ namespace DatenMeister.Web.Api
                 totalItemCount = totalItems.Count(),
                 search = search,
                 filteredItemCount = filteredAmount,
+                metaClasses = metaClasses,
                 items = filteredItems
                     .Select(x => new ItemContentModel
                     {
@@ -712,15 +720,17 @@ namespace DatenMeister.Web.Api
         {
             var result = new Dictionary<string, object>();
 
+            // Goes through the fieldss of the property
             foreach (var field in form.GetAsReflectiveCollection(_FormAndFields._Form.fields)
                 .Select(x=>x.AsIElement())
                 .Where(field => element.isSet(field.get(_FormAndFields._Form.name).ToString())))
             {
-                var property = field.get(_FormAndFields._Form.name).ToString();
+                var property = field.get(_FormAndFields._FieldData.name).ToString();
                 var propertyValue = element.get(property);
 
                 if (ObjectHelper.IsTrue(field.get(_FormAndFields._FieldData.isEnumeration)))
                 {
+                    // Checks if the given element ís an enumeration
                     if (DotNetHelper.IsOfEnumeration(propertyValue))
                     {
                         var list = new List<object>();
@@ -739,28 +749,40 @@ namespace DatenMeister.Web.Api
                     }
                     else
                     {
-                        result[property] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
+                        result[property] = ConvertToJson(propertyValue);
                     }
                 }
                 else
                 {
-                    var asElement = propertyValue as IElement;
-                    if (asElement != null)
-                    {
-                        result[property] = new
-                        {
-                            u = asElement.GetUri(),
-                            v = _resolution.GetName(asElement)
-                        };
-                    }
-                    else
-                    {
-                        result[property] = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
-                    }
+                    result[property] = ConvertToJson(propertyValue);
                 }
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Converts the value to a json object that can be returned to the client
+        /// </summary>
+        /// <param name="propertyValue"></param>
+        /// <returns></returns>
+        private object ConvertToJson(object propertyValue)
+        {
+            object tempResult;
+            var asElement = propertyValue as IElement;
+            if (asElement != null)
+            {
+                tempResult = new
+                {
+                    u = asElement.GetUri(),
+                    v = _resolution.GetName(asElement)
+                };
+            }
+            else
+            {
+                tempResult = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
+            }
+            return tempResult;
         }
     }
 }

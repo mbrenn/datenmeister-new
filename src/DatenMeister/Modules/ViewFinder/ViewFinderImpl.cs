@@ -70,10 +70,9 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns>The view itself</returns>
         public IObject FindView(IObject value, string viewUrl)
         {
-            Form form;
             if (viewUrl == "{All}")
             {
-                form = _formCreator.CreateForm(
+                var form = _formCreator.CreateForm(
                     value,
                     FormCreator.CreationMode.All);
                 return _dotNetTypeLookup.CreateDotNetElement(form);

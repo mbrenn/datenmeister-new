@@ -58,7 +58,7 @@ export class Layout implements DMI.Api.ILayout, DMN.INavigation {
         this.showItems(ws, extentUrl, viewname);
     }
 
-    navigateToItem(ws: string, extentUrl: string, itemUrl: string, viewname?: string, settings?: DMN.Settings.IItemViewSettings): void {
+    navigateToItem(ws: string, extentUrl: string, itemUrl: string, viewname?: string, settings?: DMN.IItemViewSettings): void {
         var url = `#ws=${encodeURIComponent(ws)}&ext=${encodeURIComponent(extentUrl)}&item=${encodeURIComponent(itemUrl)}`;
 
         if (settings !== undefined && settings !== null) {
@@ -130,7 +130,7 @@ export class Layout implements DMI.Api.ILayout, DMN.INavigation {
             tthis.navigateToItem(ws, extentUrl, itemUrl);
         };
 
-        var query = new DMI.Api.ItemInExtentQuery();
+        var query = new DMI.Api.ItemTableQuery();
         query.view = viewname;
         query.amount = 20;
 
@@ -142,7 +142,7 @@ export class Layout implements DMI.Api.ILayout, DMN.INavigation {
         extentUrl: string,
         itemUrl: string,
         viewname?: string,
-        settings?: DMN.Settings.IItemViewSettings) {
+        settings?: DMN.IItemViewSettings) {
         var tthis = this;
 
         var itemView = new DMView.ItemView(this);

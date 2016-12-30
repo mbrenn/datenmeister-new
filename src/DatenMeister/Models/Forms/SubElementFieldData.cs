@@ -6,6 +6,11 @@
     public class SubElementFieldData : FieldData
     {
         /// <summary>
+        /// Gets or sets the metaclass that will be created when the user creates a new instance
+        /// </summary>
+        public string metaClassUri { get; set; }
+
+        /// <summary>
         /// Initializes a new element of the subelement field data and sets the field as an enumeration
         /// </summary>
         public SubElementFieldData() : base("subelements")

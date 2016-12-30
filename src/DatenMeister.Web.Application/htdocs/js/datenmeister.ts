@@ -97,7 +97,7 @@ export function parseAndNavigateToWindowLocation(layout: DMLayout.Layout) {
     } else if (itemUrl === "") {
         layout.showItems(ws, extentUrl, view);
     } else {
-        var settings: DMN.Settings.IItemViewSettings = {};
+        var settings: DMN.IItemViewSettings = {};
         if (mode === "readonly") {
             settings.isReadonly = true;
         }

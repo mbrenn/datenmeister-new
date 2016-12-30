@@ -8,6 +8,11 @@ namespace DatenMeister.Provider.InMemory
     /// </summary>
     public class InMemoryFactory : IFactory
     {
+        /// <summary>
+        /// Defines the default factory
+        /// </summary>
+        public static InMemoryFactory Default { get; } = new InMemoryFactory();
+
         public IElement package
         {
             get { throw new NotImplementedException(); }

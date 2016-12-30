@@ -23,14 +23,11 @@ define(["require", "exports"], function (require, exports) {
         return DialogConfiguration;
     }(FormForItemConfiguration));
     exports.DialogConfiguration = DialogConfiguration;
-    var Settings;
-    (function (Settings) {
-        var ItemViewSettings = (function () {
-            function ItemViewSettings() {
-            }
-            return ItemViewSettings;
-        }());
-        Settings.ItemViewSettings = ItemViewSettings;
-    })(Settings = exports.Settings || (exports.Settings = {}));
+    var ItemViewSettings = (function () {
+        function ItemViewSettings() {
+        }
+        return ItemViewSettings;
+    }());
+    exports.ItemViewSettings = ItemViewSettings;
 });
 //# sourceMappingURL=datenmeister-navigation.js.map

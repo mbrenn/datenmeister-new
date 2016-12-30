@@ -1,4 +1,5 @@
-﻿import * as DMI from "./datenmeister-interfaces"
+﻿import * as DMH from "./datenmeister-helper"
+import * as DMI from "./datenmeister-interfaces"
 import * as DMN from "./datenmeister-navigation"
 import * as DMClient from "./datenmeister-client"
 import * as DMToolbar from "./datenmeister-toolbar"
@@ -45,6 +46,8 @@ export class ItemListTable {
     provider: DMI.Api.IItemsProvider;
     currentQuery: DMI.Api.IItemTableQuery;
 
+    onDataReceived: DMH.SimpleEventClass<(data: DMI.ClientResponse.IItemsContent) => void>;
+
     constructor(
         dom: JQuery,
         provider: DMI.Api.IItemsProvider,
@@ -53,8 +56,9 @@ export class ItemListTable {
         this.provider = provider;
         this.configuration = configuration;
         this.totalPages = 0;
-        this.currentQuery = new DMI.Api.ItemInExtentQuery();
+        this.currentQuery = new DMI.Api.ItemTableQuery();
         this.currentQuery.amount = configuration.itemsPerPage;
+        this.onDataReceived = new DMH.SimpleEventClass<(data: DMI.ClientResponse.IItemsContent) => void>();
     }
 
     // Replaces the content at the dom with the created table
@@ -119,6 +123,8 @@ export class ItemListTable {
     }
 
     updateDomForItems(data: DMI.ClientResponse.IItemsContent): void {
+        this.onDataReceived.trigger(data);
+
         $("tr", this.domTable).has("td")
             .remove();
         this.createRowsForItems(data);
@@ -507,7 +513,7 @@ export class SubElementField {
                     item.ext,
                     item.uri,
                     column.name,
-                    null
+                    asSE.metaClassUri
                 ).done((data) => {
                     var uri = data.newuri;
                     configuration.navigation.navigateToItem(item.ws, item.ext, uri);
@@ -559,40 +565,65 @@ function createDefaultDomForContent(
                         return false;
                     };
                 })(listValue));
+
                 domInner.text(listValue.v);
                 domResult.append(domEntry);
             }
         }
 
         return domResult;
+
     } else {
-        let asTextBox = column as DMI.ClientResponse.ITextFieldData;
-        var isReadonly = configuration.isReadOnly || asTextBox.isReadOnly;
+        // Just a single value to be shown. 
 
-        // We have a textbox, so check if we have multiple line
-        if (asTextBox.lineHeight !== undefined && asTextBox.lineHeight > 1) {
-            let domTextBoxMultiple = $("<textarea class='form-control'></textarea>")
-                .attr('rows', asTextBox.lineHeight);
-            domTextBoxMultiple.val(contentValue);
-            if (isReadonly) {
-                domTextBoxMultiple.attr("readonly", "readonly");
-            }
+        if (contentValue !== undefined && contentValue !== null && contentValue.u !== undefined && contentValue.u !== null) {
+            // Single value, which is a reference
+            var domAnchor = $("<a href='#'></a>");
+            domAnchor.click(((innerListValue) => {
+                return () => {
+                    if (configuration !== undefined && configuration.onItemSelect !== undefined) {
+                        configuration.onItemSelect(innerListValue.u);
+                    } else {
+                        alert("No Event handler for 'onItemView' within createDomForContent");
+                    }
 
-            return domTextBoxMultiple;
+                    return false;
+                };
+            })(contentValue));
+            domAnchor.text(contentValue.v);
+            return domAnchor;
+
         } else {
-            if (isReadonly) {
-                let domResult = $("<span class='dm-itemtable-data'></span>");
-                domResult.text(contentValue);
-                return domResult;
-            } else {
-                let domTextBox = $("<input type='textbox' class='form-control' />");
-                domTextBox.val(contentValue);
+            // Single value, which is not a reference
+            let asTextBox = column as DMI.ClientResponse.ITextFieldData;
+            var isReadonly = configuration.isReadOnly || asTextBox.isReadOnly;
 
-                if (asTextBox.isReadOnly) {
-                    domTextBox.attr("readonly", "readonly");
+            // We have a textbox, so check if we have multiple line
+            if (asTextBox.lineHeight !== undefined && asTextBox.lineHeight > 1) {
+                let domTextBoxMultiple = $("<textarea class='form-control'></textarea>")
+                    .attr('rows', asTextBox.lineHeight);
+                domTextBoxMultiple.val(contentValue);
+                if (isReadonly) {
+                    domTextBoxMultiple.attr("readonly", "readonly");
                 }
 
-                return domTextBox;
+                return domTextBoxMultiple;
+            } else {
+                // Single line
+                if (isReadonly) {
+                    let domResult = $("<span class='dm-itemtable-data'></span>");
+                    domResult.text(contentValue);
+                    return domResult;
+                } else {
+                    let domTextBox = $("<input type='textbox' class='form-control' />");
+                    domTextBox.val(contentValue);
+
+                    if (asTextBox.isReadOnly) {
+                        domTextBox.attr("readonly", "readonly");
+                    }
+
+                    return domTextBox;
+                }
             }
         }
     }

@@ -58,7 +58,7 @@ namespace DatenMeister.Tests.Web
             mofObject2.set(property1, "65474");
             mofObject2.set(property2, "Bischofsheim");
 
-            var enumeration = new InMemoryReflectiveSequence(null);
+            var enumeration = new InMemoryReflectiveSequence(null, null);
             enumeration.add(new InMemoryObject());
             mofObject2.set(property3, enumeration);
 

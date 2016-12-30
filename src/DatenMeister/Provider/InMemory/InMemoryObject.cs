@@ -26,14 +26,14 @@ namespace DatenMeister.Provider.InMemory
         ///     Stores the values direct within the memory
         /// </summary>
         private readonly Dictionary<string, object> _values = new Dictionary<string, object>();
-       
+
         public InMemoryObject()
         {
             Id = Guid.NewGuid().ToString();
         }
 
         public string Id { get; set; }
-        
+
         IExtent IHasExtent.Extent => _extent;
 
         public bool equals(object other)
@@ -52,7 +52,7 @@ namespace DatenMeister.Provider.InMemory
             object result;
             if (_values.TryGetValue(property, out result))
             {
-                return result;
+                return VerifyExtentOfObject(this, result);
             }
 
             throw new MofException("Property not found: " + property);
@@ -70,7 +70,7 @@ namespace DatenMeister.Provider.InMemory
             _values[property] = result;
         }
 
-        
+
 
         public virtual void unset(string property)
         {
@@ -120,37 +120,64 @@ namespace DatenMeister.Provider.InMemory
             _extent = extent;
         }
 
+        private object ConvertToInMemoryElement(object value, IUriExtent localExtent)
+        {
+            return ConvertToInMemoryElement(value, this, localExtent);
+        }
+
+        public static object VerifyExtentOfObject(InMemoryObject source, object other)
+        {
+            var otherHasExtent = other as IHasExtent;
+            if (otherHasExtent != null)
+            {
+                if (otherHasExtent.Extent == null)
+                {
+                    var otherSetExtent = other as ISetExtent;
+                    otherSetExtent?.SetExtent(source._extent);
+                    return otherHasExtent;
+                }
+            }
+
+            return other;
+        }
+
         /// <summary>
         /// Converts the stated element into a memoery element
         /// </summary>
         /// <param name="value">Value to be converted</param>
+        /// <param name="owner">Owner of the object which is now used for conversion</param>
         /// <param name="localExtent">Defines the uri for which the element is copied</param>
         /// <returns>Converted element</returns>
-        public static object ConvertToInMemoryElement(object value, IUriExtent localExtent)
+        public static object ConvertToInMemoryElement(object value, InMemoryObject owner, IUriExtent localExtent)
         {
             if (DotNetHelper.IsOfEnumeration(value) && !(value is InMemoryReflectiveSequence))
             {
-                return new InMemoryReflectiveSequence(localExtent, (value as IEnumerable<object>).ToList());
+                return new InMemoryReflectiveSequence(localExtent, owner, (value as IEnumerable<object>).ToList());
             }
 
-            if (DotNetHelper.IsOfMofObject(value))
+            var isComposite = true;
+            if (DotNetHelper.IsOfMofObject(value) && isComposite)
             {
-                var valueAsObject = (IObject)value;
+                var valueAsObject = (IObject) value;
                 var extentOfValue = valueAsObject.GetUriExtentOf();
                 if (localExtent != null && extentOfValue?.contextURI() == localExtent.contextURI())
                 {
                     return valueAsObject;
                 }
+
+                IObject result;
                 if (extentOfValue == null && value is InMemoryObject)
                 {
-                    // Object does not have an extent until now... So get the ownership
-                    (value as ISetExtent)?.SetExtent(localExtent);
-                    return valueAsObject;
+                    result = valueAsObject; // Object does not have an extent until now... So set the ownership
+                }
+                else
+                {
+                    result = ObjectCopier.Copy(new InMemoryFactory(), (IObject) value);
                 }
 
                 // Ok, it is not local, so convert it
-                var result = ObjectCopier.Copy(new InMemoryFactory(), (IObject) value);
-                ((ISetExtent) result).SetExtent(localExtent);
+                (result as ISetExtent)?.SetExtent(localExtent);
+                //(result as InMemoryElement)?.setContainer(owner);
                 return result;
             }
 

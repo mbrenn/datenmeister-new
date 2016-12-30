@@ -3,7 +3,8 @@
  using DatenMeister.Models.Forms;
  using DatenMeister.Modules.ViewFinder;
  using DatenMeister.Provider.DotNet;
- using DatenMeister.Runtime;
+using DatenMeister.Provider.XMI;
+using DatenMeister.Runtime;
  using DatenMeister.Runtime.Workspaces;
  using DatenMeister.Uml.Helper;
 
@@ -40,8 +41,10 @@ namespace DatenMeister.Uml.Plugin
         /// </summary>
         private void InitViews()
         {
+            var umlExtent = _workspaceLogic.FindExtent(WorkspaceNames.UriUml);
+
             var classView = new DefaultViewForMetaclass(
-                "UML::StructuredClassifiers::Class",
+                WorkspaceNames.UriUml + "#Class",
                 ViewType.Detail,
                 new Form(
                     "Class",
@@ -52,7 +55,7 @@ namespace DatenMeister.Uml.Plugin
             AddForView(classView);
 
             var packageView = new DefaultViewForMetaclass(
-                "UML::Packages::Package",
+                WorkspaceNames.UriUml + "#Package",
                 ViewType.Detail,
                 new Form(
                     "Package",

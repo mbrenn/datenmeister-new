@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
@@ -200,6 +201,11 @@ namespace DatenMeister.Provider.DotNet
                 };
 
                 foundExtent = loader.LoadExtent(storageConfiguration, true);
+            }
+            else
+            {
+                var numberOfTypes = foundExtent.elements().Count();
+                Debug.WriteLine($"Loaded the extent for user types, containing of {numberOfTypes} types");
             }
 
             foundExtent.set(_FormAndFields._DefaultViewForExtentType.extentType, "Uml.Classes");

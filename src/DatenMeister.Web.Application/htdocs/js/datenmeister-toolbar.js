@@ -40,10 +40,11 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
     exports.ToolbarItemBase = ToolbarItemBase;
     var ToolbarViewSelection = (function (_super) {
         __extends(ToolbarViewSelection, _super);
-        function ToolbarViewSelection(ws, extentUrl) {
+        function ToolbarViewSelection(ws, extentUrl, itemUrl) {
             _super.call(this, "view");
-            this.extentUrl = extentUrl;
             this.ws = ws;
+            this.extentUrl = extentUrl;
+            this.itemUrl = itemUrl;
             var tthis = this;
             _super.prototype.create.call(this, 2, "Loading views");
             DMClient.ExtentApi.getViews(this.ws, this.extentUrl)
@@ -150,6 +151,40 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
         return ToolbarCreateableTypes;
     }(ToolbarItemBase));
     exports.ToolbarCreateableTypes = ToolbarCreateableTypes;
+    var ToolbarMetaClasses = (function (_super) {
+        __extends(ToolbarMetaClasses, _super);
+        function ToolbarMetaClasses(ws, extentUrl) {
+            _super.call(this, "metaclasses");
+            this.extentUrl = extentUrl;
+            this.ws = ws;
+            _super.prototype.create.call(this, 2);
+        }
+        ToolbarMetaClasses.prototype.updateLayout = function (metaClasses) {
+            var tthis = this;
+            this.metaClasses = metaClasses;
+            if (this.metaClasses !== null && this.metaClasses !== undefined) {
+                var data = this.metaClasses;
+                this.domContent.empty();
+                var domDropDown = $("<select class='form-control'><option value='{All}'>All MetaClasses</option></select>");
+                for (var n in data) {
+                    var type = data[n];
+                    var domOption = $("<option value='" + type.uri + "'></option>");
+                    domOption.text(type.name);
+                    domDropDown.append(domOption);
+                }
+                domDropDown.change(function () {
+                    var value = domDropDown.val();
+                    if (value === "{None}" || value === undefined) {
+                        return;
+                    }
+                    tthis.onItemClicked(domDropDown.val());
+                });
+                this.domContent.append(domDropDown);
+            }
+        };
+        return ToolbarMetaClasses;
+    }(ToolbarItemBase));
+    exports.ToolbarMetaClasses = ToolbarMetaClasses;
     var ToolbarPaging = (function (_super) {
         __extends(ToolbarPaging, _super);
         function ToolbarPaging() {

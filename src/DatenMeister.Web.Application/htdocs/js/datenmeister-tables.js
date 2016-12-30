@@ -1,4 +1,4 @@
-define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-client"], function (require, exports, DMI, DMClient) {
+define(["require", "exports", "./datenmeister-helper", "./datenmeister-interfaces", "./datenmeister-client"], function (require, exports, DMH, DMI, DMClient) {
     "use strict";
     var ItemListTableConfiguration = (function () {
         function ItemListTableConfiguration(navigation) {
@@ -22,8 +22,9 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             this.provider = provider;
             this.configuration = configuration;
             this.totalPages = 0;
-            this.currentQuery = new DMI.Api.ItemInExtentQuery();
+            this.currentQuery = new DMI.Api.ItemTableQuery();
             this.currentQuery.amount = configuration.itemsPerPage;
+            this.onDataReceived = new DMH.SimpleEventClass();
         }
         // Replaces the content at the dom with the created table
         ItemListTable.prototype.loadAndShow = function () {
@@ -77,6 +78,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             this.domContainer.append(this.domTable);
         };
         ItemListTable.prototype.updateDomForItems = function (data) {
+            this.onDataReceived.trigger(data);
             $("tr", this.domTable).has("td")
                 .remove();
             this.createRowsForItems(data);
@@ -365,7 +367,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             if (!configuration.isReadOnly) {
                 var btn = $("<button>New Element</button>");
                 btn.click(function () {
-                    DMClient.ExtentApi.createItemAsSubElement(item.ws, item.ext, item.uri, column.name, null).done(function (data) {
+                    DMClient.ExtentApi.createItemAsSubElement(item.ws, item.ext, item.uri, column.name, asSE.metaClassUri).done(function (data) {
                         var uri = data.newuri;
                         configuration.navigation.navigateToItem(item.ws, item.ext, uri);
                         return false;
@@ -416,31 +418,53 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             return domResult;
         }
         else {
-            var asTextBox = column;
-            var isReadonly = configuration.isReadOnly || asTextBox.isReadOnly;
-            // We have a textbox, so check if we have multiple line
-            if (asTextBox.lineHeight !== undefined && asTextBox.lineHeight > 1) {
-                var domTextBoxMultiple = $("<textarea class='form-control'></textarea>")
-                    .attr('rows', asTextBox.lineHeight);
-                domTextBoxMultiple.val(contentValue);
-                if (isReadonly) {
-                    domTextBoxMultiple.attr("readonly", "readonly");
-                }
-                return domTextBoxMultiple;
+            // Just a single value to be shown. 
+            if (contentValue !== undefined && contentValue !== null && contentValue.u !== undefined && contentValue.u !== null) {
+                // Single value, which is a reference
+                var domAnchor = $("<a href='#'></a>");
+                domAnchor.click((function (innerListValue) {
+                    return function () {
+                        if (configuration !== undefined && configuration.onItemSelect !== undefined) {
+                            configuration.onItemSelect(innerListValue.u);
+                        }
+                        else {
+                            alert("No Event handler for 'onItemView' within createDomForContent");
+                        }
+                        return false;
+                    };
+                })(contentValue));
+                domAnchor.text(contentValue.v);
+                return domAnchor;
             }
             else {
-                if (isReadonly) {
-                    var domResult = $("<span class='dm-itemtable-data'></span>");
-                    domResult.text(contentValue);
-                    return domResult;
+                // Single value, which is not a reference
+                var asTextBox = column;
+                var isReadonly = configuration.isReadOnly || asTextBox.isReadOnly;
+                // We have a textbox, so check if we have multiple line
+                if (asTextBox.lineHeight !== undefined && asTextBox.lineHeight > 1) {
+                    var domTextBoxMultiple = $("<textarea class='form-control'></textarea>")
+                        .attr('rows', asTextBox.lineHeight);
+                    domTextBoxMultiple.val(contentValue);
+                    if (isReadonly) {
+                        domTextBoxMultiple.attr("readonly", "readonly");
+                    }
+                    return domTextBoxMultiple;
                 }
                 else {
-                    var domTextBox = $("<input type='textbox' class='form-control' />");
-                    domTextBox.val(contentValue);
-                    if (asTextBox.isReadOnly) {
-                        domTextBox.attr("readonly", "readonly");
+                    // Single line
+                    if (isReadonly) {
+                        var domResult = $("<span class='dm-itemtable-data'></span>");
+                        domResult.text(contentValue);
+                        return domResult;
                     }
-                    return domTextBox;
+                    else {
+                        var domTextBox = $("<input type='textbox' class='form-control' />");
+                        domTextBox.val(contentValue);
+                        if (asTextBox.isReadOnly) {
+                            domTextBox.attr("readonly", "readonly");
+                        }
+                        return domTextBox;
+                    }
                 }
             }
         }

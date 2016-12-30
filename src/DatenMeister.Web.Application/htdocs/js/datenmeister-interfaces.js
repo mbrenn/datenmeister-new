@@ -145,12 +145,12 @@ define(["require", "exports"], function (require, exports) {
     })(Table = exports.Table || (exports.Table = {}));
     var Api;
     (function (Api) {
-        var ItemInExtentQuery = (function () {
-            function ItemInExtentQuery() {
+        var ItemTableQuery = (function () {
+            function ItemTableQuery() {
             }
-            return ItemInExtentQuery;
+            return ItemTableQuery;
         }());
-        Api.ItemInExtentQuery = ItemInExtentQuery;
+        Api.ItemTableQuery = ItemTableQuery;
         (function (PageType) {
             PageType[PageType["Workspaces"] = 0] = "Workspaces";
             PageType[PageType["Extents"] = 1] = "Extents";

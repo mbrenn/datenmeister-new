@@ -252,11 +252,15 @@ export module ExtentApi {
         return callback;
     }
 
-    export function getViews(ws: string, extent: string): JQueryDeferred<DMI.ClientResponse.IExtentViews> {
+    export function getViews(ws: string, extent: string, item?: string): JQueryDeferred<DMI.ClientResponse.IExtentViews> {
         var callback = $.Deferred();
+        var uri = `/api/datenmeister/extent/get_views?ws=${encodeURIComponent(ws)}&extent=${encodeURIComponent(extent)}`;
+        if (item !== null && item !== undefined) {
+            uri += `&item=${encodeURIComponent(item)}`;
+        }
+
         $.ajax({
-            url: "/api/datenmeister/extent/get_views?ws=" + encodeURIComponent(ws)
-            + "&extent=" + encodeURIComponent(extent),
+            url: uri,
             cache: false,
             success: data => {
                 callback.resolve(data);
@@ -274,9 +278,7 @@ export module ItemApi {
     export function getItem(ws: string, extentUrl: string, itemUrl: string): JQueryDeferred<DMI.ClientResponse.IItemContentModel> {
         var callback = $.Deferred();
         $.ajax({
-            url: "/api/datenmeister/extent/item?ws=" + encodeURIComponent(ws)
-            + "&extent=" + encodeURIComponent(extentUrl)
-            + "&item=" + encodeURIComponent(itemUrl),
+            url: `/api/datenmeister/extent/item?ws=${encodeURIComponent(ws)}&extent=${encodeURIComponent(extentUrl)}&item=${encodeURIComponent(itemUrl)}`,
             cache: false,
             success: (data: DMI.ClientResponse.IItemContentModel) => {
                 // Adds the necessary information into the ItemContentModel

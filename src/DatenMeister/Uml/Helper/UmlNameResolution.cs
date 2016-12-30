@@ -9,6 +9,11 @@ namespace DatenMeister.Uml.Helper
     {
         public string GetName(IObject element)
         {
+            if (element == null)
+            {
+                return "null";
+            }
+
             // If the element is not uml induced or the property is empty, check by
             // the default "name" property
             if ( element.isSet(_UML._CommonStructure._NamedElement.name) )

@@ -216,12 +216,16 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
     supportNewItem: boolean;
     supportViews: boolean;
     supportPaging: boolean;
+    supportMetaClasses: boolean;
+    toolbarMetaClasses: DMToolbar.ToolbarMetaClasses;
 
     constructor(navigation: DMN.INavigation) {
-        super(navigation); this.supportSearchbox = true;
+        super(navigation);
+        this.supportSearchbox = true;
         this.supportNewItem = true;
         this.supportPaging = true;
         this.supportViews = true;
+        this.supportMetaClasses = true;
     }
 
     loadAndCreateHtmlForExtent(
@@ -266,7 +270,7 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
         var provider: DMQuery.ItemsFromExtentProvider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
 
         // Creates the table
-        var toolbar = this.addToolbar();
+        this.toolbar = this.addToolbar();
         var container = this.addEmptyDiv();
 
         var table = new DMTables.ItemListTable(container, provider, configuration);
@@ -295,7 +299,7 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
                 this.navigation.navigateToView(view);
             };
 
-            toolbar.addItem(itemNew);
+            this.toolbar.addItem(itemNew);
         }
 
 
@@ -307,7 +311,7 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
                 table.reload();
             };
 
-            toolbar.addItem(itemSearch);
+            this.toolbar.addItem(itemSearch);
         }
 
         if (this.supportViews) {
@@ -316,8 +320,22 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
                 table.currentQuery.view = viewUrl;
                 table.reload();
             };
-            toolbar.addItem(itemView);
+            this.toolbar.addItem(itemView);
         }
+
+        if (this.supportMetaClasses) {
+            this.toolbarMetaClasses = new DMToolbar.ToolbarMetaClasses(ws, extentUrl);
+            this.toolbarMetaClasses.onItemClicked = viewUrl => {
+                alert('X');
+                table.reload();
+            };
+            this.toolbar.addItem(this.toolbarMetaClasses);
+
+            table.onDataReceived.addListener((data) => {
+                tthis.toolbarMetaClasses.updateLayout(data.metaClasses);
+            });
+        }
+
 
         if (this.supportPaging) {
             var itemPaging = new DMToolbar.ToolbarPaging();
@@ -327,7 +345,7 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
             };
 
             table.configuration.paging = itemPaging;
-            toolbar.addItem(itemPaging);
+            this.toolbar.addItem(itemPaging);
         }
 
         table.loadAndShow();
@@ -337,12 +355,14 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
 export class ItemView extends ViewBase implements DMVP.IView
 {
     onItemView: (ws: string, extentUrl: string, itemUrl: string) => void;
+    supportViews: boolean;
 
     constructor(navigation: DMN.INavigation) {
         super(navigation);
+        this.supportViews = true;
     }
 
-    loadAndCreateHtmlForItem(ws: string, extentUrl: string, itemUrl: string, settings?: DMN.Settings.IItemViewSettings): JQueryDeferred<Object> {
+    loadAndCreateHtmlForItem(ws: string, extentUrl: string, itemUrl: string, settings?: DMN.IItemViewSettings): JQueryDeferred<Object> {
         var tthis = this;
 
         this.setLayoutInformation({
@@ -358,15 +378,16 @@ export class ItemView extends ViewBase implements DMVP.IView
             });
     }
 
-    createHtmlForItem(ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMN.Settings.IItemViewSettings) {
+    createHtmlForItem(ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMN.IItemViewSettings) {
         var tthis = this;
         this.content.empty();
         var configuration = new DMTables.ItemContentConfiguration(this.navigation);
         configuration.columns = data.c.fields;
         var isReadonly = false;
+        this.toolbar = this.addToolbar();
 
         if (settings === undefined) {
-            settings = new DMN.Settings.ItemViewSettings();
+            settings = new DMN.ItemViewSettings();
         }
 
         isReadonly = settings.isReadonly === true;
@@ -403,6 +424,15 @@ export class ItemView extends ViewBase implements DMVP.IView
 
             return false;
         };
+
+        if (this.supportViews) {
+            var itemView = new DMToolbar.ToolbarViewSelection(ws, extentUrl, itemUrl);
+            itemView.onViewChanged = viewUrl => {
+                this.navigation.navigateToItem(ws, extentUrl, itemUrl, viewUrl, settings);
+            };
+
+            this.toolbar.addItem(itemView);
+        }
 
         configuration.onEditButton = () => {
             settings.isReadonly = false;

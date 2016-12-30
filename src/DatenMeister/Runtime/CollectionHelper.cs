@@ -42,5 +42,15 @@ namespace DatenMeister.Runtime
         {
             return values.Select(x => x as IObject).Where(x => x != null);
         }
+
+        /// <summary>
+        /// Gets all metaclasses of a reflectivecollection, where each metaclass is returned once
+        /// </summary>
+        /// <param name="values">Reflective collection to be evaluated</param>
+        /// <returns>Enumeration of distincting elements</returns>
+        public static IEnumerable<IElement> GetMetaClasses(this IEnumerable<object> values)
+        {
+            return values.OfType<IElement>().Select(x => x.getMetaClass()).Where(x => x != null).Distinct();
+        }
     }
 }

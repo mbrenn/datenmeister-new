@@ -91,6 +91,7 @@ namespace DatenMeister.Modules.ViewFinder
             var formAndFields = GetFormAndFieldInstance(viewExtent);
 
             return viewExtent.elements()
+                .GetAllDescendants()
                 .WhenMetaClassIs(formAndFields.__Form);
         }
 
@@ -110,7 +111,7 @@ namespace DatenMeister.Modules.ViewFinder
 
             var viewExtent = GetViewExtent();
             var formAndFields = GetFormAndFieldInstance(viewExtent);
-            var metaClassId = _namedElementMethods.GetFullName(metaClass);
+            var metaClassUri = metaClass.GetUri();
             var typeAsString = type.ToString();
 
             foreach (
@@ -123,7 +124,7 @@ namespace DatenMeister.Modules.ViewFinder
                 var innerMetaClass = element.get(_FormAndFields._DefaultViewForMetaclass.metaclass);
                 var innerType = element.get(_FormAndFields._DefaultViewForMetaclass.viewType).ToString();
 
-                if (innerMetaClass.Equals(metaClassId) && innerType.Equals(typeAsString))
+                if (innerMetaClass.Equals(metaClassUri) && innerType.Equals(typeAsString))
                 {
                     return element.getFirstOrDefault(_FormAndFields._DefaultViewForMetaclass.view) as IElement;
                 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Models.ItemsAndExtents
 {
@@ -20,6 +21,8 @@ namespace DatenMeister.Models.ItemsAndExtents
         public object columns { get; set; }
 
         public IEnumerable<ItemContentModel> items { get; set; }
+
+        public IEnumerable<ItemModel> metaClasses { get; set; }
 
         /// <summary>
         /// Gets or sets the search string, which is used to validate that the correct 

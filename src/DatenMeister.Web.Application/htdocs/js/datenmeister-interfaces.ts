@@ -27,6 +27,7 @@ export module ClientResponse {
     export interface IItemsContent {
         columns: IDataForm;
         items: Array<IItemContentModel>;
+        metaClasses: Array<IItemModel>;
         search: string;
         totalItemCount: number;
         filteredItemCount: number;
@@ -106,6 +107,7 @@ export module ClientResponse {
     }
 
     export interface ISubElementsFieldData extends IFieldData {
+        metaClassUri: string;
     }
 
     export interface IDataTableItem {
@@ -250,7 +252,9 @@ export namespace Table {
     }
 
     export class SubElementsDataField extends DataField implements ClientResponse.ISubElementsFieldData {
-        
+
+        metaClassUri: string;
+
         constructor(title?: string, name?: string) {
             super(ColumnTypes.subElements, title, name);
         }
@@ -288,7 +292,7 @@ export namespace Api {
         amount?: number;
     }
 
-    export class ItemInExtentQuery implements IItemTableQuery {
+    export class ItemTableQuery implements IItemTableQuery {
         searchString: string;
         offset: number;
         amount: number;

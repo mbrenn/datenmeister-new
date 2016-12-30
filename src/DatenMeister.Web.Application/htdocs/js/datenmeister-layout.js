@@ -92,7 +92,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-viewp
             extentView.onItemCreated = function (ws, extentUrl, itemUrl) {
                 tthis.navigateToItem(ws, extentUrl, itemUrl);
             };
-            var query = new DMI.Api.ItemInExtentQuery();
+            var query = new DMI.Api.ItemTableQuery();
             query.view = viewname;
             query.amount = 20;
             extentView.loadAndCreateHtmlForExtent(workspaceId, extentUrl, query);

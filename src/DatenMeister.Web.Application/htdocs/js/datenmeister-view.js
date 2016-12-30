@@ -163,6 +163,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
             this.supportNewItem = true;
             this.supportPaging = true;
             this.supportViews = true;
+            this.supportMetaClasses = true;
         }
         ItemsOfExtentView.prototype.loadAndCreateHtmlForExtent = function (ws, extentUrl, query) {
             var _this = this;
@@ -194,7 +195,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
             // Creates the provider
             var provider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
             // Creates the table
-            var toolbar = this.addToolbar();
+            this.toolbar = this.addToolbar();
             var container = this.addEmptyDiv();
             var table = new DMTables.ItemListTable(container, provider, configuration);
             if (query !== undefined && query !== null) {
@@ -215,7 +216,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
                     var view = new CreatetableTypesView(_this.navigation, ws, extentUrl);
                     _this.navigation.navigateToView(view);
                 };
-                toolbar.addItem(itemNew);
+                this.toolbar.addItem(itemNew);
             }
             // Adds the searchbox and connects it to the tables
             if (this.supportSearchbox) {
@@ -224,7 +225,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
                     table.currentQuery.searchString = searchText;
                     table.reload();
                 };
-                toolbar.addItem(itemSearch);
+                this.toolbar.addItem(itemSearch);
             }
             if (this.supportViews) {
                 var itemView = new DMToolbar.ToolbarViewSelection(ws, extentUrl);
@@ -232,7 +233,18 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
                     table.currentQuery.view = viewUrl;
                     table.reload();
                 };
-                toolbar.addItem(itemView);
+                this.toolbar.addItem(itemView);
+            }
+            if (this.supportMetaClasses) {
+                this.toolbarMetaClasses = new DMToolbar.ToolbarMetaClasses(ws, extentUrl);
+                this.toolbarMetaClasses.onItemClicked = function (viewUrl) {
+                    alert('X');
+                    table.reload();
+                };
+                this.toolbar.addItem(this.toolbarMetaClasses);
+                table.onDataReceived.addListener(function (data) {
+                    tthis.toolbarMetaClasses.updateLayout(data.metaClasses);
+                });
             }
             if (this.supportPaging) {
                 var itemPaging = new DMToolbar.ToolbarPaging();
@@ -241,7 +253,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
                     table.reload();
                 };
                 table.configuration.paging = itemPaging;
-                toolbar.addItem(itemPaging);
+                this.toolbar.addItem(itemPaging);
             }
             table.loadAndShow();
         };
@@ -252,6 +264,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
         __extends(ItemView, _super);
         function ItemView(navigation) {
             _super.call(this, navigation);
+            this.supportViews = true;
         }
         ItemView.prototype.loadAndCreateHtmlForItem = function (ws, extentUrl, itemUrl, settings) {
             var tthis = this;
@@ -267,13 +280,15 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
             });
         };
         ItemView.prototype.createHtmlForItem = function (ws, extentUrl, itemUrl, data, settings) {
+            var _this = this;
             var tthis = this;
             this.content.empty();
             var configuration = new DMTables.ItemContentConfiguration(this.navigation);
             configuration.columns = data.c.fields;
             var isReadonly = false;
+            this.toolbar = this.addToolbar();
             if (settings === undefined) {
-                settings = new DMN.Settings.ItemViewSettings();
+                settings = new DMN.ItemViewSettings();
             }
             isReadonly = settings.isReadonly === true;
             configuration.isReadOnly = isReadonly;
@@ -304,6 +319,13 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
                 }
                 return false;
             };
+            if (this.supportViews) {
+                var itemView = new DMToolbar.ToolbarViewSelection(ws, extentUrl, itemUrl);
+                itemView.onViewChanged = function (viewUrl) {
+                    _this.navigation.navigateToItem(ws, extentUrl, itemUrl, viewUrl, settings);
+                };
+                this.toolbar.addItem(itemView);
+            }
             configuration.onEditButton = function () {
                 settings.isReadonly = false;
                 tthis.navigation.navigateToItem(ws, extentUrl, itemUrl, null, settings);

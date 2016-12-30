@@ -8,7 +8,7 @@ namespace DatenMeister.Provider.ManualMapping
         /// Initializes a new instance of the MMReflectiveCollection and sets the extent
         /// </summary>
         /// <param name="localExtent"></param>
-        public MMReflectiveCollection(IUriExtent localExtent) : base(localExtent)
+        public MMReflectiveCollection(IUriExtent localExtent) : base(localExtent, null)
         {
         }
     }

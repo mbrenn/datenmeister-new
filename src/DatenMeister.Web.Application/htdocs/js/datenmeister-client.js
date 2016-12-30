@@ -212,11 +212,14 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             return callback;
         }
         ExtentApi.getCreatableTypes = getCreatableTypes;
-        function getViews(ws, extent) {
+        function getViews(ws, extent, item) {
             var callback = $.Deferred();
+            var uri = "/api/datenmeister/extent/get_views?ws=" + encodeURIComponent(ws) + "&extent=" + encodeURIComponent(extent);
+            if (item !== null && item !== undefined) {
+                uri += "&item=" + encodeURIComponent(item);
+            }
             $.ajax({
-                url: "/api/datenmeister/extent/get_views?ws=" + encodeURIComponent(ws)
-                    + "&extent=" + encodeURIComponent(extent),
+                url: uri,
                 cache: false,
                 success: function (data) {
                     callback.resolve(data);
@@ -234,9 +237,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         function getItem(ws, extentUrl, itemUrl) {
             var callback = $.Deferred();
             $.ajax({
-                url: "/api/datenmeister/extent/item?ws=" + encodeURIComponent(ws)
-                    + "&extent=" + encodeURIComponent(extentUrl)
-                    + "&item=" + encodeURIComponent(itemUrl),
+                url: "/api/datenmeister/extent/item?ws=" + encodeURIComponent(ws) + "&extent=" + encodeURIComponent(extentUrl) + "&item=" + encodeURIComponent(itemUrl),
                 cache: false,
                 success: function (data) {
                     // Adds the necessary information into the ItemContentModel

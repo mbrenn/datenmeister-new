@@ -495,7 +495,7 @@ export class SubElementField {
                 var domA = $("a", domLine);
                 domA.text(innerItem.v);
                 domA.click(() => {
-                    configuration.navigation.navigateToItem(item.ws, item.ext, innerItem.u);
+                    configuration.navigation.navigateToItem(innerItem.ws, innerItem.ext, innerItem.u);
                     return false;
                 });
                 domSE.append(domLine);
@@ -527,7 +527,6 @@ export class SubElementField {
         return domSE;
     }
 }
-
 
 /**
  * Creates the DOM for the content as defined by column, when the column.fieldType is not set

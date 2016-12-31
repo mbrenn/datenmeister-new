@@ -356,7 +356,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
                     var domA = $("a", domLine);
                     domA.text(innerItem.v);
                     domA.click(function () {
-                        configuration.navigation.navigateToItem(item.ws, item.ext, innerItem.u);
+                        configuration.navigation.navigateToItem(innerItem.ws, innerItem.ext, innerItem.u);
                         return false;
                     });
                     domSE.append(domLine);

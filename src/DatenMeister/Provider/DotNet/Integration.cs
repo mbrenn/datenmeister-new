@@ -77,7 +77,7 @@ namespace DatenMeister.Provider.DotNet
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
-                Core.EMOF.Integrate.Into(scope);
+                Integrate.Into(scope);
                 CSV.Integrate.Into(scope);
                 XMI.Integrate.Into(scope);
 

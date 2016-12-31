@@ -1,10 +1,7 @@
 ﻿using Autofac;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.FactoryMapper;
 
-namespace DatenMeister.Core.EMOF
+namespace DatenMeister.Provider.InMemory
 {
     /// <summary>
     /// Performs the integration into the Datenmeister

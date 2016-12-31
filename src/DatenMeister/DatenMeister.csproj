@@ -95,7 +95,7 @@
     <Compile Include="Runtime\Proxies\PureReflectiveSequence.cs" />
     <Compile Include="Runtime\Workspaces\IWorkspace.cs" />
     <Compile Include="Runtime\Workspaces\WorkspaceNames.cs" />
-    <Compile Include="Core\EMOF\Integrate.cs" />
+    <Compile Include="Provider\InMemory\Integrate.cs" />
     <Compile Include="Integration\Extensions.Xmi.cs" />
     <Compile Include="Uml\Plugin\UmlPlugin.cs" />
     <None Include="project.json" />

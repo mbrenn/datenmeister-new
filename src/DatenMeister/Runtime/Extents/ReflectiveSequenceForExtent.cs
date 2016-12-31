@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.InMemory;
 
 namespace DatenMeister.Runtime.Extents
 {
@@ -31,7 +30,6 @@ namespace DatenMeister.Runtime.Extents
                 {
                     _cachedObjects.Add(value);
                 }
-
 
                 (value as ISetExtent)?.SetExtent(_extent);
 

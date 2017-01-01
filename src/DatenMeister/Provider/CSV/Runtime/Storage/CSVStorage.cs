@@ -27,6 +27,9 @@ namespace DatenMeister.Provider.CSV.Runtime.Storage
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
             var provider = new CSVDataProvider(_workspaceLogic); 
+
+            throw new NotImplementedException();
+            /*
             var mofExtent = new InMemoryUriExtent(csvConfiguration.ExtentUri);
             var factory = new InMemoryFactory();
 
@@ -41,7 +44,7 @@ namespace DatenMeister.Provider.CSV.Runtime.Storage
                     $"File does not exist and empty extents is not given in argument {nameof(createAlsoEmpty)}");
             }
 
-            return mofExtent;
+            return mofExtent;*/
         }
 
         public void StoreExtent(IUriExtent extent, ExtentStorageConfiguration configuration)

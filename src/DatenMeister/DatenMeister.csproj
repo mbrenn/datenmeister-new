@@ -55,23 +55,32 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Core\EMOF\Implementation\Element.cs" />
+    <Compile Include="Core\EMOF\Implementation\Extent.cs" />
+    <Compile Include="Core\EMOF\Implementation\ExtentReflectiveSequence.cs" />
+    <Compile Include="Core\EMOF\Implementation\Object.cs" />
+    <Compile Include="Core\EMOF\Implementation\UriExtent.cs" />
     <Compile Include="Models\Forms\DefaultViewForExtentType.cs" />
     <Compile Include="Models\Forms\SubElementFieldData.cs" />
     <Compile Include="Provider\CSV\CSVDataProvider.cs" />
     <Compile Include="Provider\CSV\CSVPlugin.cs" />
     <Compile Include="Provider\CSV\CSVSettings.cs" />
     <Compile Include="Provider\CSV\EMOF\CSVExtent.cs" />
-    <Compile Include="Provider\CSV\EMOF\CSVFactory.cs" />
     <Compile Include="Provider\CSV\Integrate.cs" />
     <Compile Include="Provider\CSV\Runtime\Storage\CSVStorage.cs" />
     <Compile Include="Provider\CSV\Runtime\Storage\CSVStorageConfiguration.cs" />
+    <Compile Include="Provider\DotNet\DotNetElement.cs" />
+    <Compile Include="Provider\DotNet\DotNetTypeGenerator.cs" />
+    <Compile Include="Provider\DotNet\DotNetTypeLookup.cs" />
+    <Compile Include="Provider\DotNet\Extensions.cs" />
+    <Compile Include="Provider\DotNet\IDotNetTypeLookup.cs" />
     <Compile Include="Provider\DotNet\Integration.cs" />
-    <Compile Include="Provider\ManualMapping\IHasValue.cs" />
-    <Compile Include="Provider\ManualMapping\MMElement.cs" />
-    <Compile Include="Provider\ManualMapping\MMReflectiveCollection.cs" />
-    <Compile Include="Provider\ManualMapping\MMUriExtent.cs" />
-    <Compile Include="Provider\ManualMapping\PropertyMapping.cs" />
-    <Compile Include="Provider\ManualMapping\TypeMapping.cs" />
+    <Compile Include="Provider\InMemory\InMemoryProvider.cs" />
+    <Compile Include="Provider\IProviderElement.cs" />
+    <Compile Include="Provider\IProviderObject.cs" />
+    <Compile Include="Provider\UriReference.cs" />
+    <Compile Include="Provider\IProvider.cs" />
+    <Compile Include="Provider\ElementReference.cs" />
     <Compile Include="Provider\TableFormatter.cs" />
     <Compile Include="Provider\XMI\EMOF\XmlElement.cs" />
     <Compile Include="Provider\XMI\EMOF\XmlFactory.cs" />
@@ -95,7 +104,6 @@
     <Compile Include="Runtime\Proxies\PureReflectiveSequence.cs" />
     <Compile Include="Runtime\Workspaces\IWorkspace.cs" />
     <Compile Include="Runtime\Workspaces\WorkspaceNames.cs" />
-    <Compile Include="Provider\InMemory\Integrate.cs" />
     <Compile Include="Integration\Extensions.Xmi.cs" />
     <Compile Include="Uml\Plugin\UmlPlugin.cs" />
     <None Include="project.json" />
@@ -111,11 +119,7 @@
     <Compile Include="Runtime\Extents\ReflectiveSequenceForExtent.cs" />
     <Compile Include="Runtime\ExtentUrlNavigator.cs" />
     <Compile Include="Provider\InMemory\InMemoryElement.cs" />
-    <Compile Include="Provider\InMemory\InMemoryFactory.cs" />
     <Compile Include="Provider\InMemory\InMemoryObject.cs" />
-    <Compile Include="Provider\InMemory\InMemoryReflectiveSequence.cs" />
-    <Compile Include="Provider\InMemory\InMemoryTag.cs" />
-    <Compile Include="Provider\InMemory\InMemoryUriExtent.cs" />
     <Compile Include="Core\EMOF\Interface\Common\IReflectiveCollection.cs" />
     <Compile Include="Core\EMOF\Interface\Identifiers\IExtent.cs" />
     <Compile Include="Core\EMOF\Interface\Extension\ITag.cs" />
@@ -191,15 +195,6 @@
     <Compile Include="Models\PostModels\WorkspaceDeleteModel.cs" />
     <Compile Include="Models\PostModels\WorkspaceReferenceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Provider\DotNet\DotNetElement.cs" />
-    <Compile Include="Provider\DotNet\DotNetExtent.cs" />
-    <Compile Include="Provider\DotNet\DotNetFactory.cs" />
-    <Compile Include="Provider\DotNet\DotNetReflectiveSequence.cs" />
-    <Compile Include="Provider\DotNet\DotNetTypeGenerator.cs" />
-    <Compile Include="Provider\DotNet\DotNetTypeLookup.cs" />
-    <Compile Include="Provider\DotNet\Extensions.cs" />
-    <Compile Include="Provider\DotNet\IDotNetReflectiveSequence.cs" />
-    <Compile Include="Provider\DotNet\IDotNetTypeLookup.cs" />
     <Compile Include="Runtime\CollectionHelper.cs" />
     <Compile Include="Runtime\Copier\ExtentCopier.cs" />
     <Compile Include="Runtime\Copier\ObjectCopier.cs" />

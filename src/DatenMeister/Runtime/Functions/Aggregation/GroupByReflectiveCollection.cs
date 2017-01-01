@@ -17,7 +17,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             string aggregateColumn,
             Func<IAggregator> aggregator,
             string aggregatedColumn)
-            : base(new InMemoryReflectiveSequence(null, null))
+            : base(null ) //new InMemoryReflectiveSequence(null, null))
         {
             Aggregate(
                 collectionToBeAggregated,
@@ -33,7 +33,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             IEnumerable<string> aggregateColumns,
             IEnumerable<Func<IAggregator>> aggregators,
             IEnumerable<string> aggregatedColumns)
-            : base(new InMemoryReflectiveSequence(null, null))
+            : base(null) // new InMemoryReflectiveSequence(null, null))
         {
             Aggregate(
                 collectionToBeAggregated,
@@ -121,7 +121,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             }
 
             // Now store the values into the aggregation
-            var mofFactory = new InMemoryFactory();
+            var mofFactory = (IFactory) null;//  new InMemoryFactory();
             foreach (var pair in aggregatedValues)
             {
                 var element = mofFactory.create(null);

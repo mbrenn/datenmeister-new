@@ -5,6 +5,8 @@ using System.Linq;
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
@@ -77,7 +79,6 @@ namespace DatenMeister.Provider.DotNet
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
-                Integrate.Into(scope);
                 CSV.Integrate.Into(scope);
                 XMI.Integrate.Into(scope);
 
@@ -120,8 +121,8 @@ namespace DatenMeister.Provider.DotNet
                 Debug.WriteLine($" Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
-                var mofFactory = new InMemoryFactory();
-                var extentTypes = new InMemoryUriExtent(WorkspaceNames.UriInternalTypes);
+                var mofFactory = (IFactory) null; //  InMemoryFactory();
+                var extentTypes = new UriExtent(new InMemoryProvider());//  WorkspaceNames.UriInternalTypes);
                 var typeWorkspace = workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
                 typeWorkspace.AddExtent(extentTypes);
 

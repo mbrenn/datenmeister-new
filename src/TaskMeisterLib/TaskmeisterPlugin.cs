@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Autofac;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
@@ -69,7 +69,7 @@ namespace TaskMeister
             // View for the activity list
             var view = new Form { name = "Activity List" };
             view.fields.Add(new TextFieldData("name", "Name!"));
-            _viewLogic.Add(_typeLookup.CreateDotNetElement(view, typeExtent as DotNetExtent, "Views.Activity.Detail"));
+            _viewLogic.Add(_typeLookup.CreateDotNetElement(view, typeExtent as Extent, "Views.Activity.Detail"));
 
             // View for the default list
             var taskDetailView = new Form { name = "Activity Detail" };

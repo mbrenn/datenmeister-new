@@ -4,7 +4,6 @@ namespace DatenMeister.Core.EMOF.Interface.Reflection
 {
     public interface ISetExtent
     {
-
         /// <summary>
         /// Adds the element to the given extent
         /// </summary>

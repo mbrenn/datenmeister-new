@@ -8,13 +8,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.DotNet
 {
-    public class DotNetElement : IElement, IHasId, IHasExtent, ICanSetId, IObjectAllProperties
+    public class DotNetElement : IProviderObject
     {
-        /// <summary>
-        /// Stores the list of extents to which this element is stored
-        /// </summary>
-        private DotNetExtent _extent;
-
         private readonly IDotNetTypeLookup _typeLookup;
 
         private readonly object _value;
@@ -44,20 +39,6 @@ namespace DatenMeister.Provider.DotNet
             Id = typeLookup.GetId(value);
             _container = container;
         }
-
-        /// <summary>
-        /// Initializes a new instance 
-        /// </summary>
-        /// <param name="typeLookup"></param>
-        /// <param name="value"></param>
-        /// <param name="mofType"></param>
-        /// <param name="extent">The Extent to which the element is allocated. May be null if not allocated</param>
-        public DotNetElement(IDotNetTypeLookup typeLookup, object value, IElement mofType, DotNetExtent extent)
-            : this(typeLookup, value, mofType)
-        {
-            _extent = extent;
-        }
-
         public bool equals(object other)
         {
             var element = other as DotNetElement;
@@ -79,7 +60,7 @@ namespace DatenMeister.Provider.DotNet
             }
 
             var result = member.GetValue(_value);
-            return _typeLookup.CreateDotNetElementIfNecessary(result, this, _extent);
+            return _typeLookup.CreateDotNetElementIfNecessary(result, this);
         }
 
         public void set(string property, object value)
@@ -112,19 +93,6 @@ namespace DatenMeister.Provider.DotNet
 
         public string Id { get; set; }
 
-        public DotNetExtent Extent => _extent;
-
-        IExtent IHasExtent.Extent => _extent;
-
-        /// <summary>
-        /// Transfers the information about extent ownership from one element to another
-        /// </summary>
-        /// <param name="other">The other element from which the extents shall be transfered</param>
-        public void TransferExtents(DotNetElement other)
-        {
-            _extent = other._extent;
-        }
-
         /// <summary>
         /// Gets all properties that can be set
         /// </summary>
@@ -135,24 +103,46 @@ namespace DatenMeister.Provider.DotNet
             return members.Select(x => x.Name);
         }
 
-        /// <summary>
-        /// Sets the container manually 
-        /// </summary>
-        /// <param name="owner">Container to be set</param>
-        internal void SetContainer(DotNetElement owner)
+        /// <inheritdoc />
+        public bool IsPropertySet(string property)
         {
-            _container = owner;
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Sets the extent of the given DotNetElement. 
-        /// This is used to 'root-reference' the elements to their extents
-        /// if returned by elements();
-        /// </summary>
-        /// <param name="extent">The extent that shall be set</param>
-        internal void SetExtent(DotNetExtent extent)
+        /// <inheritdoc />
+        public object GetProperty(string property)
         {
-            _extent = extent;
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<string> GetProperties()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public bool DeleteProperty(string property)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void SetProperty(string property, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public bool AddToProperty(string property, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public bool RemoveFromProperty(string property, object value)
+        {
+            throw new NotImplementedException();
         }
     }
 }

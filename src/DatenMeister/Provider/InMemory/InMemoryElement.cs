@@ -1,51 +1,57 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using System;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.InMemory
 {
     /// <summary>
     ///     Implements the IElement according to the Mof specification
     /// </summary>
-    public class InMemoryElement : InMemoryObject, IElement, IElementSetMetaClass, IElementSetContainer
+    [Obsolete]
+    public class InMemoryElement : IElement
     {
-        private IElement _container;
-
-        public InMemoryElement()
+        /// <inheritdoc />
+        public bool @equals(object other)
         {
+            throw new NotImplementedException();
         }
 
-        public InMemoryElement(IElement container, IElement metaClass) : this()
+        /// <inheritdoc />
+        public object get(string property)
         {
-            _container = container;
-            metaclass = metaClass;
+            throw new NotImplementedException();
         }
 
-        public virtual IElement metaclass { get; private set; }
-
-        public virtual IElement container()
+        /// <inheritdoc />
+        public void set(string property, object value)
         {
-            return _container;
+            throw new NotImplementedException();
         }
 
-        public virtual IElement getMetaClass()
+        /// <inheritdoc />
+        public bool isSet(string property)
         {
-            return metaclass;
+            throw new NotImplementedException();
         }
 
-        public virtual void setMetaClass(IElement metaClass)
+        /// <inheritdoc />
+        public void unset(string property)
         {
-            metaclass = metaClass;
+            throw new NotImplementedException();
         }
 
-        public void setContainer(IElement container)
+        /// <inheritdoc />
+        public IElement metaclass { get; }
+
+        /// <inheritdoc />
+        public IElement getMetaClass()
         {
-            _container = container;
+            throw new NotImplementedException();
         }
 
-        public override string ToString()
+        /// <inheritdoc />
+        public IElement container()
         {
-            return metaclass == null || !metaclass.isSet("name")? 
-                base.ToString() :
-                $"[{metaclass.get("name")}] {base.ToString()}";
+            throw new NotImplementedException();
         }
     }
 }

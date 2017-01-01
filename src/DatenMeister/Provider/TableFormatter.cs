@@ -12,16 +12,17 @@ namespace DatenMeister.Provider
     public class TableFormatter
     {
         private StringBuilder _result;
+
         /// <summary>
         /// Converts an enumeration of elements to a table like text
         /// </summary>
         /// <param name="collection">Collection to be enumerated</param>
         /// <returns>The string containing all the values</returns>
         public string ConvertToText(IReflectiveCollection collection)
-        {_result = new StringBuilder();
+        {
+            _result = new StringBuilder();
             var columnWidth = new Dictionary<string, int>();
             var properties = ExtentHelper.GetProperties(collection).ToList();
-
 
             // Find the lengths
             foreach (var property in properties)
@@ -40,7 +41,7 @@ namespace DatenMeister.Provider
                 foreach (var property in properties)
                 {
                     var value = asObject.getOrDefault(property);
-                    if ( value == null )
+                    if (value == null)
                     {
                         continue;
                     }

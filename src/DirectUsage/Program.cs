@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Integration;
@@ -35,7 +36,7 @@ namespace DirectUsage
             // Testing Excel
             var xmiExtent = dm.CreateXmiExtent("dm:///extent");
             Console.WriteLine(xmiExtent.ToString());
-
+            /*
             var excelExtent = dm.LoadExcel("d:///excel", "files/Quadratzahlen.xlsx");
 
             Console.WriteLine(excelExtent.ToString());
@@ -56,8 +57,8 @@ namespace DirectUsage
                 }
             }
 
-            var excelFunctions = dm.LoadExcel("d:///excel", "files/Functions.xlsx");
-            var mofTarget = new InMemoryUriExtent("dm:///");
+            //var excelFunctions = dm.LoadExcel("d:///excel", "files/Functions.xlsx");
+            var mofTarget = new UriExtent(new InMemoryProvider());//("dm:///"));
             HierarchyMaker.Convert(new HierarchyByParentSettings()
             {
                 Sequence = ((IElement) excelFunctions.elements().GetByPropertyFromCollection("name", "Per Parent").First()).get("items") as IReflectiveSequence,
@@ -73,7 +74,7 @@ namespace DirectUsage
                 Console.WriteLine(element.ToString());
             }
 
-            mofTarget = new InMemoryUriExtent("dm:///");
+            mofTarget = new UriExtent(new InMemoryProvider());//("dm:///"));
             HierarchyMaker.Convert(new HierarchyByChildrenSettings()
             {
                 Sequence = ((IElement)excelFunctions.elements().GetByPropertyFromCollection("name", "Per Child").First()).get("items") as IReflectiveSequence,
@@ -118,7 +119,7 @@ namespace DirectUsage
             Console.ReadKey();
 
             watch.Stop();
-
+            */
         }
     }
 }

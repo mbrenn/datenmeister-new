@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using System;
+using DatenMeister.Core.EMOF.Interface.Reflection;
  using DatenMeister.Core.Plugins;
  using DatenMeister.Models.Forms;
  using DatenMeister.Modules.ViewFinder;
@@ -81,8 +82,11 @@ namespace DatenMeister.Uml.Plugin
         /// <param name="classView">Defaultview to be added</param>
         private void AddForView(DefaultViewForMetaclass classView)
         {
+            throw  new NotImplementedException();
+            /*
             var element = _typeLookup.CreateDotNetElement(classView);
             _viewLogic.Add(element);
+            */
         }
 
         /// <summary>
@@ -91,8 +95,11 @@ namespace DatenMeister.Uml.Plugin
         /// <param name="classView">Defaultview to be added</param>
         private void AddForView(DefaultViewForExtentType classView)
         {
+            throw new NotImplementedException();
+            /*
             var element = _typeLookup.CreateDotNetElement(classView);
             _viewLogic.Add(element);
+            */
         }
     }
 }

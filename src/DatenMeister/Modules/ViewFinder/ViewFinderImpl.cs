@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -39,7 +40,8 @@ namespace DatenMeister.Modules.ViewFinder
             if (viewUrl == "{All}")
             {
                 var view = _formCreator.CreateForm(extent, FormCreator.CreationMode.All);
-                return _dotNetTypeLookup.CreateDotNetElement(view);
+                throw new NotImplementedException();
+                // return _dotNetTypeLookup.CreateDotNetElement(view);
             }
 
             if (!string.IsNullOrEmpty(viewUrl))
@@ -75,7 +77,8 @@ namespace DatenMeister.Modules.ViewFinder
                 var form = _formCreator.CreateForm(
                     value,
                     FormCreator.CreationMode.All);
-                return _dotNetTypeLookup.CreateDotNetElement(form);
+                throw new NotImplementedException();
+                // return _dotNetTypeLookup.CreateDotNetElement(form);
             }
 
             if (!string.IsNullOrEmpty(viewUrl))

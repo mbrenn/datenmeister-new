@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Provider.CSV;
@@ -21,7 +22,9 @@ namespace DatenMeister.Integration
             settings = settings ?? new CSVSettings();
 
             var provider = scope.Resolve<CSVDataProvider>();
-            var extent = new CSVExtent(uri);
+
+            throw new NotImplementedException();
+            /*var extent = new CSVExtent(uri);
             var factory = new CSVFactory(extent);
 
             using (var stream = new FileStream(path, FileMode.Open))
@@ -29,7 +32,7 @@ namespace DatenMeister.Integration
                 provider.Load(extent, factory, stream, settings);
             }
 
-            return extent;
+            return extent;*/
         }
 
     }

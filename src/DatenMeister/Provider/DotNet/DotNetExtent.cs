@@ -81,25 +81,25 @@ namespace DatenMeister.Provider.DotNet
         /// <inheritdoc />
         public object get(string property)
         {
-            return _innerObject.get(property);
+            return _innerObject.GetProperty(property);
         }
 
         /// <inheritdoc />
         public void set(string property, object value)
         {
-            _innerObject.set(property, value);
+            _innerObject.SetProperty(property, value);
         }
 
         /// <inheritdoc />
         public bool isSet(string property)
         {
-            return _innerObject.isSet(property);
+            return _innerObject.IsPropertySet(property);
         }
 
         /// <inheritdoc />
         public void unset(string property)
         {
-            _innerObject.unset(property);
+            _innerObject.DeleteProperty(property);
         }
     }
 }

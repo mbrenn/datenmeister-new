@@ -72,7 +72,8 @@ namespace DatenMeister.Runtime.Functions.Queries
         public static IReflectiveCollection GetAllDescendants(
             this IReflectiveCollection collection)
         {
-            return new InMemoryReflectiveSequence(null, null, AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
+            throw new NotImplementedException();
+            // return new InMemoryReflectiveSequence(null, null, AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
         }
 
         public static IReflectiveCollection GroupProperties(

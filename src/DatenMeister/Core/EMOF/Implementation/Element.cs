@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -7,10 +8,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IElement metaclass { get; }
 
+        public Element(IProviderObject providedObject, IElement metaclass) : base (providedObject)
+        {
+            this.metaclass = metaclass;
+        }
+        
+
         /// <inheritdoc />
         public IElement getMetaClass()
         {
-            throw new System.NotImplementedException();
+            return metaclass;
         }
 
         /// <inheritdoc />

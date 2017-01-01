@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 using DatenMeister.Provider.InMemory;
@@ -27,8 +28,8 @@ namespace DatenMeister.Tests.Xmi
         public void LoadUmlInfrastructure()
         {
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var factory = new InMemoryFactory();
-            var extent = new InMemoryUriExtent("datenmeister:///target");
+            var factory = (IFactory) null; //new InMemoryFactory();
+            var extent = new UriExtent(new InMemoryProvider(), "datenmeister:///target");
             Assert.That(extent.elements().Count(), Is.EqualTo(0));
             var loader = new SimpleLoader(factory);
             loader.LoadFromFile(extent, "Xmi/UML.xmi");

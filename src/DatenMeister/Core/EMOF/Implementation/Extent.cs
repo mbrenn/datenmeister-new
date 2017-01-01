@@ -19,43 +19,49 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public bool @equals(object other)
         {
-            throw new System.NotImplementedException();
+            if (other is Extent)
+            {
+                var otherAsExtent = other as Extent;
+                return Equals(otherAsExtent);
+            }
+
+            return false;
         }
 
         /// <inheritdoc />
         public object get(string property)
         {
-            throw new System.NotImplementedException();
+            return Provider.Get(null).GetProperty(property);
         }
 
         /// <inheritdoc />
         public void set(string property, object value)
         {
-            throw new System.NotImplementedException();
+            Provider.Get(null).SetProperty(property, value);
         }
 
         /// <inheritdoc />
         public bool isSet(string property)
         {
-            throw new System.NotImplementedException();
+            return Provider.Get(null).IsPropertySet(property);
         }
 
         /// <inheritdoc />
         public void unset(string property)
         {
-            throw new System.NotImplementedException();
+            Provider.Get(null).DeleteProperty(property);
         }
 
         /// <inheritdoc />
         public bool useContainment()
         {
-            throw new System.NotImplementedException();
+            return false;
         }
 
         /// <inheritdoc />
         public IReflectiveSequence elements()
         {
-            throw new System.NotImplementedException();
+            return new ExtentReflectiveSequence(this);
         }
     }
 }

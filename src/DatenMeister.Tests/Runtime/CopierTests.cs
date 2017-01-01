@@ -13,8 +13,6 @@ namespace DatenMeister.Tests.Runtime
         [Test]
         public void TestCopyOfObject()
         {
-            var factory = new InMemoryFactory();
-
             var mofObject = new InMemoryElement();
             mofObject.set(property1, "55130");
             mofObject.set(property2, "Mainz");
@@ -23,7 +21,7 @@ namespace DatenMeister.Tests.Runtime
             mofObject2.set(property1, "65474");
             mofObject2.set(property2, "Bischofsheim");
 
-            var copier = new ObjectCopier(factory);
+            var copier = new ObjectCopier(null);
             var result1 = copier.Copy(mofObject);
             var result2 = copier.Copy(mofObject2);
 

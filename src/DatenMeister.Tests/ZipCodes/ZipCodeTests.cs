@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.ZipCodes
             _UML uml;
             XmiTests.CreateUmlAndMofInstance(out mof, out uml);
 
-            var mofFactory = new InMemoryFactory();
+            var mofFactory = (IFactory) null; // new InMemoryFactory();
             var dotNetTypeCreator = new DotNetTypeGenerator(mofFactory, uml);
             var dotNetClass = dotNetTypeCreator.CreateTypeFor(typeof(ZipCode));
 

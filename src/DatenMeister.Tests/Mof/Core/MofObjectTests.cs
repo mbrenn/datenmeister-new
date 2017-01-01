@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Proxies;
@@ -19,30 +20,30 @@ namespace DatenMeister.Tests.Mof.Core
         public void TestInMemoryMofObject()
         { 
             var mofObject = new InMemoryObject();
-            Assert.That(mofObject.isSet(property1), Is.False);
-            mofObject.set(property1, "Test");
-            mofObject.set(property2, property1);
+            Assert.That(mofObject.IsPropertySet(property1), Is.False);
+            mofObject.SetProperty(property1, "Test");
+            mofObject.SetProperty(property2, property1);
 
-            Assert.That(mofObject.isSet(property1),Is.True);
-            Assert.That(mofObject.isSet(property2),Is.True);
+            Assert.That(mofObject.IsPropertySet(property1),Is.True);
+            Assert.That(mofObject.IsPropertySet(property2),Is.True);
 
-            Assert.That(mofObject.get(property1).ToString(), Is.EqualTo("Test"));
-            Assert.That(mofObject.get(property2), Is.EqualTo(property1));
+            Assert.That(mofObject.GetProperty(property1).ToString(), Is.EqualTo("Test"));
+            Assert.That(mofObject.GetProperty(property2), Is.EqualTo(property1));
         }
 
         [Test]
         public void TestSetInMemory()
         {
             var mofObject = new InMemoryObject();
-            Assert.That(mofObject.isSet(property1), Is.False);
-            mofObject.set(property1, "Test");
-            mofObject.set(property2, 2);
+            Assert.That(mofObject.IsPropertySet(property1), Is.False);
+            mofObject.SetProperty(property1, "Test");
+            mofObject.SetProperty(property2, 2);
 
-            Assert.That(mofObject.isSet(property1), Is.True);
-            Assert.That(mofObject.isSet(property2), Is.True);
+            Assert.That(mofObject.IsPropertySet(property1), Is.True);
+            Assert.That(mofObject.IsPropertySet(property2), Is.True);
 
-            Assert.That(mofObject.get(property1).ToString(), Is.EqualTo("Test"));
-            Assert.That(mofObject.get(property2), Is.EqualTo(2));
+            Assert.That(mofObject.GetProperty(property1).ToString(), Is.EqualTo("Test"));
+            Assert.That(mofObject.GetProperty(property2), Is.EqualTo(2));
         }
 
         [Test]
@@ -50,7 +51,7 @@ namespace DatenMeister.Tests.Mof.Core
         {
             var mofElement = new InMemoryElement();
             var otherMofElement = new InMemoryElement();
-            var mofInstance = new InMemoryUriExtent("datenmeister:///test");
+            var mofInstance = new UriExtent(new InMemoryProvider(), "datenmeister:///test");
             mofInstance.elements().add(mofElement);
             mofInstance.elements().add(otherMofElement);
 
@@ -73,7 +74,7 @@ namespace DatenMeister.Tests.Mof.Core
         [Test]
         public void TestProxyForUriExtent()
         {
-            var uriExtent = new InMemoryUriExtent("dm:///test");
+            var uriExtent = new UriExtent(new InMemoryProvider(), "dm:///test");
             var proxiedUriExtent = new ProxyUriExtent(uriExtent).ActivateObjectConversion();
 
             var mofElement = new InMemoryElement();
@@ -104,7 +105,7 @@ namespace DatenMeister.Tests.Mof.Core
         [Test]
         public void TestKnowsExtent()
         {
-            var uriExtent = new InMemoryUriExtent("dm:///test");
+            var uriExtent = new UriExtent(new InMemoryProvider(), "dm:///test");
 
             var mofElement = new InMemoryElement();
             var otherMofElement = new InMemoryElement();

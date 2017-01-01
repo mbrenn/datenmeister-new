@@ -68,13 +68,13 @@ namespace DatenMeister.Provider.InMemory
         }
 
         /// <inheritdoc />
-        public Dictionary<string, object> GetRootObjects()
+        public IEnumerable<ElementReference> GetRootObjects()
         {
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
-        public Dictionary<string, object> GetAllObjects()
+        public IEnumerable<ElementReference> GetAllObjects()
         {
             throw new System.NotImplementedException();
         }

@@ -1,9 +1,17 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
-    public class Object: IObject
+    public class Object : IObject
     {
+        private readonly IProviderObject _providedObject;
+
+        public Object(IProviderObject providedObject)
+        {
+            _providedObject = providedObject;
+        }
+
         /// <inheritdoc />
         public bool @equals(object other)
         {

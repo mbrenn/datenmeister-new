@@ -503,9 +503,9 @@ namespace DatenMeister.Uml
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
             var factory = (IFactory) null; // InMemoryFactory();
-            var umlExtent = new UriExtent(new InMemoryProvider() ); //InMemoryUriExtent(WorkspaceNames.UriUml);
-            var mofExtent = new UriExtent(new InMemoryProvider()); // new InMemoryUriExtent(WorkspaceNames.UriMof);
-            var primitiveExtent = new UriExtent(new InMemoryProvider()); // new InMemoryUriExtent(WorkspaceNames.UriPrimitiveTypes);
+            var umlExtent = new UriExtent(new InMemoryProvider(), WorkspaceNames.UriUml);
+            var mofExtent = new UriExtent(new InMemoryProvider(), WorkspaceNames.UriMof);
+            var primitiveExtent = new UriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypes); 
 
             if (!isSlim)
             {

@@ -2,18 +2,14 @@
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Helper;
-using DatenMeister.Provider.ManualMapping;
+using DatenMeister.Provider;
 using NPOI.SS.UserModel;
 
 namespace DatenMeister.Excel.EMOF
 {
-    public class SheetItem : MMElement<ISheet>
+    public class SheetItem : IProviderObject
     {
-        public SheetItem() : base(null)
-        {
-        }
-
-        public SheetItem(IUriExtent localExtent) : base(localExtent)
+        public SheetItem() 
         {
         }
 
@@ -39,7 +35,7 @@ namespace DatenMeister.Excel.EMOF
         /// Initializes data
         /// </summary>
         public void InitializeData()
-        {
+        {/*
             var n = ColumnOffset;
             while (true)
             {
@@ -54,6 +50,49 @@ namespace DatenMeister.Excel.EMOF
             }
 
             RowOffset++;
+            */
+        }
+
+        /// <inheritdoc />
+        public bool IsPropertySet(string property)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public object GetProperty(string property)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<string> GetProperties()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public bool DeleteProperty(string property)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void SetProperty(string property, object value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public bool AddToProperty(string property, object value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public bool RemoveFromProperty(string property, object value)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

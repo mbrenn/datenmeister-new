@@ -35,7 +35,7 @@ namespace DatenMeister.Apps.ZipCode
                 HasHeader = false
             };
 
-            ZipCodes = new UriExtent(new InMemoryProvider());//  "datenmeister:///zipcodes");
+            ZipCodes = new UriExtent(new InMemoryProvider(), "datenmeister:///zipcodes");
             var factory = (IFactory) null;//  new InMemoryFactory();
 
             var csvProvider = new CSVDataProvider(null);

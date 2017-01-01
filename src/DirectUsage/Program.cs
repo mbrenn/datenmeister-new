@@ -36,6 +36,7 @@ namespace DirectUsage
             // Testing Excel
             var xmiExtent = dm.CreateXmiExtent("dm:///extent");
             Console.WriteLine(xmiExtent.ToString());
+
             /*
             var excelExtent = dm.LoadExcel("d:///excel", "files/Quadratzahlen.xlsx");
 

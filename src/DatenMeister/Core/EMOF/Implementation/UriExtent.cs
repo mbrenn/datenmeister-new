@@ -6,15 +6,18 @@ namespace DatenMeister.Core.EMOF.Implementation
 {
     public class UriExtent  : Extent, IUriExtent
     {
+        private readonly string _uri;
+
         /// <inheritdoc />
-        public UriExtent(IProvider provider) : base(provider)
+        public UriExtent(IProvider provider, string uri) : base(provider)
         {
+            _uri = uri;
         }
 
         /// <inheritdoc />
         public string contextURI()
         {
-            throw new System.NotImplementedException();
+            return _uri;
         }
 
         /// <inheritdoc />

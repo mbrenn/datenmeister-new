@@ -10,8 +10,8 @@ namespace DatenMeister.Provider
 
         IProviderObject Get(string id);
 
-        Dictionary<string, object> GetRootObjects();
+        IEnumerable<ElementReference> GetRootObjects();
 
-        Dictionary<string, object> GetAllObjects();
+        IEnumerable<ElementReference> GetAllObjects();
     }
 }

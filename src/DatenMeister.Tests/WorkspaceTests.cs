@@ -1,5 +1,7 @@
 ﻿using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
@@ -14,21 +16,20 @@ namespace DatenMeister.Tests
         {
             var workspace = new Workspace("data", "No annotation");
 
-            var extent = new InMemoryUriExtent("http://test/");
-            var factory = new InMemoryFactory();
+            var extent = new UriExtent(new InMemoryProvider(), "http://test/");
+            var factory = (IFactory) null; //new InMemoryFactory();
             var element = factory.create(null);
             extent.elements().add(element);
 
             workspace.AddExtent(extent);
 
-            var elementAsMofElement = (InMemoryElement) element;
-            var guid = elementAsMofElement.Id;
+            var uri = extent.uri(element);
 
             // Now check, if everything is working
-            var found = extent.element("http://test/#" + guid);
+            var found = extent.element(uri);
             Assert.That(found, Is.EqualTo(element));
 
-            var anotherFound = workspace.FindElementByUri("http://test/#" + guid);
+            var anotherFound = workspace.FindElementByUri(uri);
             Assert.That(anotherFound, Is.EqualTo(element));
         }
 

@@ -1,22 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Excel.Helper;
-using DatenMeister.Provider.ManualMapping;
+using DatenMeister.Provider;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
 namespace DatenMeister.Excel.EMOF
 {
-    public class ExcelExtent : MMUriExtent
+    public class ExcelExtent : IProvider
     {
         private readonly _ExcelModels models = new _ExcelModels();
 
         private readonly XSSFWorkbook _workbook;
         private readonly ExcelSettings _settings;
 
-        public ExcelExtent(string url, XSSFWorkbook workbook, ExcelSettings settings) : base (url)
+        public ExcelExtent(string url, XSSFWorkbook workbook, ExcelSettings settings)
         {
-            _workbook = workbook;
+            /*_workbook = workbook;
             _settings = settings;
 
             // Maps the table to sheet item
@@ -57,12 +57,12 @@ namespace DatenMeister.Excel.EMOF
 
                     return collection;
                 },
-                (x, value) => { throw new InvalidOperationException(); });
+                (x, value) => { throw new InvalidOperationException(); });*/
         }
 
-        public override IReflectiveSequence elements()
+        public IReflectiveSequence elements()
         {
-            var result = new MMReflectiveCollection(this);
+            /*var result = new MMReflectiveCollection(this);
             for (var n = 0; n < _workbook.NumberOfSheets; n++)
             {
                 var sheet = _workbook.GetSheetAt(n);
@@ -72,7 +72,38 @@ namespace DatenMeister.Excel.EMOF
                 result.add(element);
             }
 
-            return result;
+            return result;*/
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IProviderObject CreateElement(string metaClassUri)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void DeleteElement(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IProviderObject Get(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<ElementReference> GetRootObjects()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<ElementReference> GetAllObjects()
+        {
+            throw new NotImplementedException();
         }
     }
 }

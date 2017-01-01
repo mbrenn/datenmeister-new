@@ -2,11 +2,12 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Helper;
+using DatenMeister.Provider;
 using NPOI.SS.UserModel;
 
 namespace DatenMeister.Excel.EMOF
 {
-    public class RowItem : IElement, IObjectAllProperties, IHasId
+    public class RowItem : IProviderObject
     {
         private readonly IElement _metaClass;
 
@@ -20,6 +21,50 @@ namespace DatenMeister.Excel.EMOF
             SheetItem = sheetItem;
             Row = row;
         }
+
+        /// <inheritdoc />
+        public bool IsPropertySet(string property)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public object GetProperty(string property)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<string> GetProperties()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public bool DeleteProperty(string property)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void SetProperty(string property, object value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public bool AddToProperty(string property, object value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public bool RemoveFromProperty(string property, object value)
+        {
+            throw new System.NotImplementedException();
+        }
+
+/*
 
         public bool @equals(object other)
         {
@@ -105,6 +150,6 @@ namespace DatenMeister.Excel.EMOF
 
                 return $"{firstPart}.{secondPart}";
             }
-        }
+        }*/
     }
 }

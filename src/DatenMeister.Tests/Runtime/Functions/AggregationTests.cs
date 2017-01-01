@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Functions.Aggregation;
@@ -94,8 +95,9 @@ namespace DatenMeister.Tests.Runtime.Functions
 
         }
 
-        private InMemoryReflectiveSequence CreateReflectiveSequence()
+        private IReflectiveCollection CreateReflectiveSequence()
         {
+            /*
             var reflectiveSequence = new InMemoryReflectiveSequence(null, null);
 
             var value = new InMemoryObject();
@@ -128,6 +130,9 @@ namespace DatenMeister.Tests.Runtime.Functions
             value.set(property2, 3);
             reflectiveSequence.add(value);
             return reflectiveSequence;
+            */
+
+            throw new NotImplementedException();
         }
     }
 }

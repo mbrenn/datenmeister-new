@@ -41,8 +41,8 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestXmlMofObjectWithElementSet()
         {
             var mofElement = new InMemoryObject();
-            mofElement.set("Name", "Brenn");
-            mofElement.set("Vorname", "Martin");
+            mofElement.SetProperty("Name", "Brenn");
+            mofElement.SetProperty("Vorname", "Martin");
 
             var xmlNode = new XElement("item");
             var xmlElement = new XmlElement(xmlNode);

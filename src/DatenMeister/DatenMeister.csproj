@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\DatenMeister.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -55,11 +56,14 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Core\EMOF\Implementation\Element.cs" />
+    <Compile Include="Core\EMOF\Implementation\IUriResolver.cs" />
+    <Compile Include="Core\EMOF\Implementation\MofElement.cs" />
     <Compile Include="Core\EMOF\Implementation\Extent.cs" />
     <Compile Include="Core\EMOF\Implementation\ExtentReflectiveSequence.cs" />
-    <Compile Include="Core\EMOF\Implementation\Object.cs" />
+    <Compile Include="Core\EMOF\Implementation\MofFactory.cs" />
+    <Compile Include="Core\EMOF\Implementation\MofObject.cs" />
     <Compile Include="Core\EMOF\Implementation\UriExtent.cs" />
+    <Compile Include="Core\EMOF\Implementation\ExtentResolver.cs" />
     <Compile Include="Models\Forms\DefaultViewForExtentType.cs" />
     <Compile Include="Models\Forms\SubElementFieldData.cs" />
     <Compile Include="Provider\CSV\CSVDataProvider.cs" />

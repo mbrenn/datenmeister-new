@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Helper;
@@ -9,15 +10,15 @@ namespace DatenMeister.Excel.EMOF
 {
     public class RowItem : IProviderObject
     {
-        private readonly IElement _metaClass;
-
         public SheetItem SheetItem { get; }
+
+        /// <inheritdoc />
+        public string MetaclassUri { get; }
 
         public int Row { get; }
 
-        public RowItem(SheetItem sheetItem, int row, IElement metaClass)
+        public RowItem(SheetItem sheetItem, int row)
         {
-            _metaClass = metaClass;
             SheetItem = sheetItem;
             Row = row;
         }
@@ -53,7 +54,7 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public bool AddToProperty(string property, object value)
+        public bool AddToProperty(string property, object value, int index)
         {
             throw new System.NotImplementedException();
         }
@@ -128,7 +129,7 @@ namespace DatenMeister.Excel.EMOF
         public IEnumerable<string> getPropertiesBeingSet()
         {
             return SheetItem.Columns.Keys.ToList();
-        }
+        }*/
 
         /// <summary>
         /// Gets the id of a row
@@ -137,6 +138,8 @@ namespace DatenMeister.Excel.EMOF
         {
             get
             {
+                throw new NotImplementedException();
+                /*
                 var firstPart = SheetItem.Value.SheetName;
                 string secondPart;
                 if (string.IsNullOrEmpty(SheetItem.Settings.IdColumn))
@@ -148,8 +151,8 @@ namespace DatenMeister.Excel.EMOF
                     secondPart = get(SheetItem.Settings.IdColumn).ToString();
                 }
 
-                return $"{firstPart}.{secondPart}";
+                return $"{firstPart}.{secondPart}";*/
             }
-        }*/
+        }
     }
 }

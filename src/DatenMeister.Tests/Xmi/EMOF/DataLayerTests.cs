@@ -46,7 +46,9 @@ namespace DatenMeister.Tests.Core
             data.Data.AddExtent(dataExtent);
             data.Uml.AddExtent(umlExtent);
 
-            var value = new InMemoryElement();
+            var factory = new MofFactory(dataExtent);
+            var value = factory.create(null);
+
             var logicLayer = logic.GetWorkspaceOfObject(value);
             Assert.That(logicLayer, Is.SameAs(data.Data)); // Per Default, only the Data
 

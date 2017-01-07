@@ -121,8 +121,8 @@ namespace DatenMeister.Provider.DotNet
                 Debug.WriteLine($" Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
-                var mofFactory = (IFactory) null; //  InMemoryFactory();
                 var extentTypes = new UriExtent(new InMemoryProvider(), WorkspaceNames.UriInternalTypes);
+                var mofFactory = new MofFactory(extentTypes);
                 var typeWorkspace = workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
                 typeWorkspace.AddExtent(extentTypes);
 

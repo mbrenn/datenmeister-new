@@ -84,7 +84,7 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public bool AddToProperty(string property, object value)
+        public bool AddToProperty(string property, object value, int index)
         {
             throw new System.NotImplementedException();
         }
@@ -94,5 +94,11 @@ namespace DatenMeister.Excel.EMOF
         {
             throw new System.NotImplementedException();
         }
+
+        /// <inheritdoc />
+        public string Id { get; }
+
+        /// <inheritdoc />
+        public string MetaclassUri { get; }
     }
 }

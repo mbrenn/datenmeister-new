@@ -91,6 +91,7 @@ namespace DatenMeister.Provider.DotNet
 
         public IElement container() => _container;
 
+        
         public string Id { get; set; }
 
         /// <summary>
@@ -134,7 +135,7 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <inheritdoc />
-        public bool AddToProperty(string property, object value)
+        public bool AddToProperty(string property, object value, int index = -1)
         {
             throw new NotImplementedException();
         }
@@ -143,6 +144,12 @@ namespace DatenMeister.Provider.DotNet
         public bool RemoveFromProperty(string property, object value)
         {
             throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public string MetaclassUri
+        {
+            get { throw new NotImplementedException(); }
         }
     }
 }

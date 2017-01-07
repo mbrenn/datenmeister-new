@@ -11,17 +11,23 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         public IProvider Provider { get; set; }
 
+        /// <summary>
+        /// Gets or sets the resolver being used to resolve the uri
+        /// </summary>
+        public IUriResolver Resolver { get; private set; }
+
         public Extent(IProvider provider)
         {
             Provider = provider;
+            Resolver = new ExtentResolver(this);
         }
 
         /// <inheritdoc />
         public bool @equals(object other)
         {
-            if (other is Extent)
+            var otherAsExtent = other as Extent;
+            if (otherAsExtent != null)
             {
-                var otherAsExtent = other as Extent;
                 return Equals(otherAsExtent);
             }
 

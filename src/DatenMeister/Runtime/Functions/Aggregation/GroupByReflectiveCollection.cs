@@ -1,6 +1,7 @@
 ﻿ using System;
  using System.Collections.Generic;
  using System.Linq;
+ using DatenMeister.Core.EMOF.Implementation;
  using DatenMeister.Core.EMOF.Interface.Common;
  using DatenMeister.Core.EMOF.Interface.Reflection;
  using DatenMeister.Provider.InMemory;
@@ -11,6 +12,11 @@ namespace DatenMeister.Runtime.Functions.Aggregation
 {
     public class GroupByReflectiveCollection : ProxyReflectiveCollection
     {
+        /// <summary>
+        /// Stores the extent being used to provide the information
+        /// </summary>
+        private UriExtent _extent = new UriExtent(new InMemoryProvider(), "dm:///temp");
+
         public GroupByReflectiveCollection(
             IReflectiveCollection collectionToBeAggregated,
             string groupByColumn,
@@ -124,7 +130,9 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             var mofFactory = (IFactory) null;//  new InMemoryFactory();
             foreach (var pair in aggregatedValues)
             {
-                var element = mofFactory.create(null);
+                var factory = new MofFactory(_extent);
+                var element = factory.create(null);
+
                 element.set(groupByColumn, pair.Key);
 
                 var n = 0;

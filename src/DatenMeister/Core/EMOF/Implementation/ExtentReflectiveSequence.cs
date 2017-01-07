@@ -1,13 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Provider;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
+    /// <summary>
+    /// Implements the reflective sequence for 
+    /// </summary>
     public class ExtentReflectiveSequence : IReflectiveSequence
     {
         private readonly Extent _extent;
 
+        /// <summary>
+        /// Initializes a new instance of the ExtentReflectiveSequence class
+        /// </summary>
+        /// <param name="extent"></param>
         public ExtentReflectiveSequence(Extent extent)
         {
             _extent = extent;
@@ -16,7 +26,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IEnumerator<object> GetEnumerator()
         {
-            throw new System.NotImplementedException();
+            foreach (var element in _extent.Provider.GetRootObjects())
+            {
+                var resultElement = new MofElement(element,_extent);
+                yield return resultElement;
+            }
         }
 
         /// <inheritdoc />
@@ -28,55 +42,108 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public bool add(object value)
         {
-            throw new System.NotImplementedException();
+           return AddInternal(value, -1);
         }
 
         /// <inheritdoc />
         public bool addAll(IReflectiveSequence value)
         {
-            throw new System.NotImplementedException();
+            bool? result = null;
+
+            foreach (var element in value)
+            {
+                if (result == null)
+                {
+                    result = add(element);
+                }
+                else
+                {
+                    result |= add(element);
+                }
+            }
+
+            return result == true;
         }
 
         /// <inheritdoc />
         public void clear()
         {
-            throw new System.NotImplementedException();
+            _extent.Provider.DeleteAllElements();
         }
 
         /// <inheritdoc />
         public bool remove(object value)
         {
-            throw new System.NotImplementedException();
+            var valueAsObject = value as MofObject;
+            if (valueAsObject != null)
+            {
+                return _extent.Provider.DeleteElement(valueAsObject.ProviderObject.Id);
+                
+            }
+
+            throw new NotImplementedException("Only the deletion of values are supported");
         }
 
         /// <inheritdoc />
         public int size()
         {
-            throw new System.NotImplementedException();
+            return _extent.Provider.GetRootObjects().Count();
         }
 
         /// <inheritdoc />
         public void add(int index, object value)
         {
-            throw new System.NotImplementedException();
+            AddInternal(value, index);
+        }
+
+        /// <summary>
+        /// Adds the object internally
+        /// </summary>
+        /// <param name="value">Value to be added</param>
+        /// <param name="index">Index of the object to be added</param>
+        /// <returns>true, if object could be added</returns>
+        private bool AddInternal(object value, int index)
+        {
+            var valueAsObject = value as MofObject;
+            if (valueAsObject != null)
+            {
+                if (valueAsObject.Extent == _extent || valueAsObject.Extent == null)
+                {
+                    _extent.Provider.AddElement(valueAsObject.ProviderObject, index);
+                    valueAsObject.Extent = _extent;
+                    return true;
+                }
+            }
+
+            throw new NotImplementedException("Only objects from the extent are currently supported");
         }
 
         /// <inheritdoc />
         public object get(int index)
         {
-            throw new System.NotImplementedException();
+            return _extent.Provider.GetRootObjects().ElementAt(index);
         }
 
         /// <inheritdoc />
         public void remove(int index)
         {
-            throw new System.NotImplementedException();
+            remove(_extent.Provider.GetRootObjects().ElementAt(index));
         }
 
         /// <inheritdoc />
         public object set(int index, object value)
         {
-            throw new System.NotImplementedException();
+            var size = this.size();
+            if (index < 0 || index >= size)
+            {
+                throw new ArgumentException("Object could not be added due to wrong index: " + index);
+            }
+
+            var result = get(index);
+            remove(index);
+            set(index, value);
+
+            return result;
         }
     }
 }

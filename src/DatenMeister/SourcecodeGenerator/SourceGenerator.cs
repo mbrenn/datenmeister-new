@@ -17,7 +17,7 @@ namespace DatenMeister.SourcecodeGenerator
             uml = uml ?? new _UML(); // Verifies that a uml is existing
 
             var extent = new UriExtent(new InMemoryProvider(), "dm:///");
-            var factory = (IFactory) null; // new InMemoryFactory();
+            var factory = new MofFactory(extent);
 
             // Creates the package
             var package = factory.create(uml.Packages.__Package);

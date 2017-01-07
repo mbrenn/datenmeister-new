@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using DatenMeister.Core.EMOF.Exceptions;
+using DatenMeister.Core.EMOF.Implementation;
 
 namespace DatenMeister.Provider.InMemory
 {
@@ -11,13 +12,27 @@ namespace DatenMeister.Provider.InMemory
     public class InMemoryObject : IProviderObject
     {
         /// <summary>
+        /// Creates an empty mof object that can be used to identify a specific object. All content will be stored within the InMemoryObject
+        /// </summary>
+        /// <returns>The created object as MofObject</returns>
+        public static MofObject CreateEmpty()
+        {
+            var inner = new InMemoryObject(null);
+            return new MofObject(inner, null);
+        }
+
+        /// <summary>
         ///     Stores the values direct within the memory
         /// </summary>
         private readonly Dictionary<string, object> _values = new Dictionary<string, object>();
 
-        public InMemoryObject()
+        /// <inheritdoc />
+        public string MetaclassUri { get; }
+
+        public InMemoryObject(string metaclassUri = null)
         {
             Id = Guid.NewGuid().ToString();
+            MetaclassUri = metaclassUri;
         }
 
         public string Id { get; set; }
@@ -87,11 +102,11 @@ namespace DatenMeister.Provider.InMemory
         }
 
         /// <inheritdoc />
-        public bool AddToProperty(string property, object value)
+        public bool AddToProperty(string property, object value, int index)
         {
             var result = GetListOfProperty(property);
 
-            result.Add(value);
+            result.Insert(index, value);
             return true;
         }
 

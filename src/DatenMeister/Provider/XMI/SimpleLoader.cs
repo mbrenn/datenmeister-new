@@ -29,9 +29,9 @@ namespace DatenMeister.Provider.XMI
         ///     Initializes a new instance of the Loader class.
         /// </summary>
         /// <param name="factory">Factory to be used</param>
-        public SimpleLoader(
-            IFactory factory)
+        public SimpleLoader(IFactory factory)
         {
+            if (factory == null) throw new ArgumentNullException(nameof(factory));
             _factory = factory;
         }
 

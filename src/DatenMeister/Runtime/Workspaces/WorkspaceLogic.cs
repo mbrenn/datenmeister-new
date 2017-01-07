@@ -18,6 +18,10 @@ namespace DatenMeister.Runtime.Workspaces
             _fileData = fileData;
         }
 
+        /// <summary>
+        /// Sets the default workspace that will be assumed, when the extent is not assigned to a workspace
+        /// </summary>
+        /// <param name="layer"></param>
         public void SetDefaultWorkspace(Workspace layer)
         {
             lock (_fileData)
@@ -35,6 +39,11 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        /// <summary>
+        /// Gets the workspace of the extent which is storing the object
+        /// </summary>
+        /// <param name="value">Value to be queried</param>
+        /// <returns>The found workspace or the default one, if no extent was found</returns>
         public Workspace GetWorkspaceOfObject(IObject value)
         {
             // If the object is contained by another object, query the contained objects
@@ -46,21 +55,25 @@ namespace DatenMeister.Runtime.Workspaces
                 return GetWorkspaceOfObject(parent);
             }
 
+            Workspace result = null;
             // If the object knows the extent to which it belongs to, it will return it
             var objectKnowsExtent = value as IHasExtent;
             if (objectKnowsExtent != null)
             {
                 var found = objectKnowsExtent.Extent;
-                return found == null
-                    ? _fileData.Default
-                    : GetWorkspaceOfExtent(found);
+                result = GetWorkspaceOfExtent(found);
             }
 
             // Otherwise check it by the dataextent
-            lock (_fileData)
+            if (result != null)
             {
-                return _fileData.Workspaces.FirstOrDefault(x => x.extent.Cast<IUriExtent>().WithElement(value) != null);
+                lock (_fileData)
+                {
+                    result =_fileData.Workspaces.FirstOrDefault(x => x.extent.Cast<IUriExtent>().WithElement(value) != null);
+                }
             }
+
+            return result ?? _fileData.Default;
         }
 
         public IEnumerable<IUriExtent> GetExtentsForWorkspace(Workspace dataLayer)

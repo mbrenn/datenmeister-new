@@ -11,6 +11,11 @@ namespace DatenMeister.Runtime.Extents
     public class ExtentFunctions
     {
         private readonly IWorkspaceLogic _workspaceLogic;
+
+        /// <summary>
+        /// Initializes a new instance of the ExtentFunctions class.
+        /// </summary>
+        /// <param name="workspaceLogic"></param>
         public ExtentFunctions(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;

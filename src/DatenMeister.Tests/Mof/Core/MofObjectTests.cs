@@ -106,10 +106,11 @@ namespace DatenMeister.Tests.Mof.Core
         public void TestKnowsExtent()
         {
             var uriExtent = new UriExtent(new InMemoryProvider(), "dm:///test");
+            var factory = new MofFactory(uriExtent);
 
-            var mofElement = new InMemoryElement();
-            var otherMofElement = new InMemoryElement();
-            var innerMofElement = new InMemoryElement();
+            var mofElement = factory.create(null);
+            var otherMofElement = InMemoryObject.CreateEmpty(); 
+            var innerMofElement = factory.create(null); 
 
             Assert.That(((IHasExtent)mofElement).Extent, Is.Null);
             Assert.That(((IHasExtent)otherMofElement).Extent, Is.Null);

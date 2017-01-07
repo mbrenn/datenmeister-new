@@ -1,82 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 
 namespace DatenMeister.Provider.InMemory
 {
+    /// <summary>
+    /// Stores all elements in the memory
+    /// </summary>
     public class InMemoryProvider : IProvider
     {
-       // private List<InMemoryObject> _elements = new List<InMemoryObject>();
+        /// <summary>
+        /// Stores the elements of the current provider
+        /// </summary>
+       private List<InMemoryObject> _elements = new List<InMemoryObject>();
 
         /// <inheritdoc />
         public IProviderObject CreateElement(string metaClassUri)
         {
-            var element = new InMemoryObject();
-            return element;
+            return new InMemoryObject(metaClassUri);
         }
 
+        /// <inheritdoc />
+        public void AddElement(IProviderObject valueAsObject, int index = -1)
+        {
+            lock (_elements)
+            {
+                var toBeAdded = (InMemoryObject) valueAsObject;
+                if (index == -1)
+                {
+                    _elements.Add(toBeAdded);
+                }
+                else
+                {
+                    _elements.Insert(index, toBeAdded);
+                }
+            }
+
+        }
+
+        /// <inheritdoc />
+        public bool DeleteElement(string id)
+        {
+            lock (_elements)
+            {
+                return _elements.RemoveAll(x => x.Id == id) > 0;
+            }
+        }
+
+        /// <inheritdoc />
+        public void DeleteAllElements()
+        {
+            lock (_elements)
+            {
+                _elements.Clear();
+            }
+        }
+
+        /// <inheritdoc />
         public IProviderObject Get(string id)
         {
-            throw new NotImplementedException();
+            lock (_elements)
+            {
+                return _elements.First(x => x.Id == id);
+            }
         }
 
         /// <inheritdoc />
-        public void DeleteElement(string id)
+        public IEnumerable<IProviderObject> GetRootObjects()
         {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public bool IsPropertySet(string id, string property)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public object GetProperty(string id, string property)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public IEnumerable<string> GetProperties(string id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public bool DeleteProperty(string id, string property)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public void SetProperty(string id, string property, object value)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public bool AddToProperty(string id, string property, object value)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public bool RemoveFromProperty(string id, string property, object value)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public IEnumerable<ElementReference> GetRootObjects()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public IEnumerable<ElementReference> GetAllObjects()
-        {
-            throw new System.NotImplementedException();
+            return _elements;
         }
     }
 }

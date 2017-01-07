@@ -83,7 +83,7 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public void DeleteElement(string id)
+        public bool DeleteElement(string id)
         {
             throw new NotImplementedException();
         }
@@ -95,13 +95,25 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public IEnumerable<ElementReference> GetRootObjects()
+        public IEnumerable<IProviderObject> GetRootObjects()
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public IEnumerable<ElementReference> GetAllObjects()
+        public IEnumerable<IProviderObject> GetAllObjects()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void AddElement(IProviderObject valueAsObject, int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void DeleteAllElements()
         {
             throw new NotImplementedException();
         }

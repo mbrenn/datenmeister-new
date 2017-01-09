@@ -14,10 +14,6 @@ namespace DatenMeister.Provider.XMI
 {
     public class SimpleLoader
     {
-        /// <summary>
-        ///     Stores the factory to be used to create the instances
-        /// </summary>
-        private readonly IFactory _factory;
 
         private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>();
 
@@ -25,35 +21,26 @@ namespace DatenMeister.Provider.XMI
         /// Defines a list of actions that will be performed after the loading has finished
         /// </summary>
         private readonly List<Action> _afterLoadActions = new List<Action>();
-
-        /// <summary>
-        ///     Initializes a new instance of the Loader class.
-        /// </summary>
-        /// <param name="factory">Factory to be used</param>
-        public SimpleLoader(IFactory factory)
-        {
-            if (factory == null) throw new ArgumentNullException(nameof(factory));
-            _factory = factory;
-        }
+        
 
         /// <summary>
         /// Loads the xmi from the embedded resources
         /// </summary>
         /// <param name="extent">Extent being loaded</param>
         /// <param name="resourceName">Path to the resources</param>
-        public void LoadFromEmbeddedResource(IUriExtent extent, string resourceName)
+        public void LoadFromEmbeddedResource(IFactory factory, IUriExtent extent, string resourceName)
         {
             using (var stream = typeof(WorkspaceNames).GetTypeInfo().Assembly.GetManifestResourceStream(resourceName))
             {
-                LoadFromStream(extent, stream);
+                LoadFromStream(factory, extent, stream);
             }
         }
 
-        public void LoadFromFile(IUriExtent extent, string filePath)
+        public void LoadFromFile(IFactory factory, IUriExtent extent, string filePath)
         {
             using (var stream = new FileStream(filePath, FileMode.Open))
             {
-                LoadFromStream(extent, stream);
+                LoadFromStream(factory, extent, stream);
             }
         }
 
@@ -62,10 +49,10 @@ namespace DatenMeister.Provider.XMI
         /// </summary>
         /// <param name="extent">Extent to which the data is loaded</param>
         /// <param name="stream">Stream to be used for loading</param>
-        public void LoadFromStream(IUriExtent extent, Stream stream)
+        public void LoadFromStream(IFactory factory, IUriExtent extent, Stream stream)
         {
             var document = XDocument.Load(stream);
-            LoadFromDocument(extent, document);
+            LoadFromDocument(factory, extent, document);
         }
 
         /// <summary>
@@ -73,7 +60,7 @@ namespace DatenMeister.Provider.XMI
         /// </summary>
         /// <param name="extent">Extent to which the data is loaded</param>
         /// <param name="document">Document to be loaded</param>
-        public void LoadFromDocument(IUriExtent extent, XDocument document)
+        public void LoadFromDocument(IFactory factory, IUriExtent extent, XDocument document)
         {
             _idToElement.Clear();
             _afterLoadActions.Clear();
@@ -81,7 +68,7 @@ namespace DatenMeister.Provider.XMI
             // Skip the first element
             foreach (var element in document.Elements().Elements())
             {
-                extent.elements().add(LoadElement(element));
+                extent.elements().add(LoadElement(factory, element));
             }
 
             foreach (var action in _afterLoadActions)
@@ -94,9 +81,9 @@ namespace DatenMeister.Provider.XMI
         ///     Loads the specific element with a very simple loading algorithm
         /// </summary>
         /// <param name="element"></param>
-        private IObject LoadElement(XElement element)
+        private IObject LoadElement(IFactory factory, XElement element)
         {
-            var resultingElement = _factory.create(null);
+            var resultingElement = factory.create(null);
             foreach (var attribute in element.Attributes())
             {
                 resultingElement.set(attribute.Name.ToString(), attribute.Value);
@@ -152,7 +139,7 @@ namespace DatenMeister.Provider.XMI
 
                 if (subElement.HasElements || subElement.HasAttributes)
                 {
-                    var loadedElement = LoadElement(subElement);
+                    var loadedElement = LoadElement(factory, subElement);
 
                     // Sets the container being used
                     var asSetContainer = loadedElement as IElementSetContainer;

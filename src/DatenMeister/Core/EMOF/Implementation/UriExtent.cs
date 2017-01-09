@@ -4,6 +4,9 @@ using DatenMeister.Provider;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
+    /// <summary>
+    /// Implements the MOF interface for the uriextent
+    /// </summary>
     public class UriExtent  : Extent, IUriExtent
     {
         private readonly string _uri;

@@ -31,8 +31,8 @@ namespace DatenMeister.Tests.Xmi
             var factory = (IFactory) null; //new InMemoryFactory();
             var extent = new UriExtent(new InMemoryProvider(), "datenmeister:///target");
             Assert.That(extent.elements().Count(), Is.EqualTo(0));
-            var loader = new SimpleLoader(factory);
-            loader.LoadFromFile(extent, "Xmi/UML.xmi");
+            var loader = new SimpleLoader();
+            loader.LoadFromFile(factory, extent, "Xmi/UML.xmi");
 
             var firstElement = (extent.elements().ElementAt(0) as IObject);
             Assert.That(firstElement, Is.Not.Null);

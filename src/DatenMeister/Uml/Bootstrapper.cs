@@ -504,30 +504,29 @@ namespace DatenMeister.Uml
 
             var umlExtent = new UriExtent(new InMemoryProvider(), WorkspaceNames.UriUml);
             var mofExtent = new UriExtent(new InMemoryProvider(), WorkspaceNames.UriMof);
-
-            var factory = new MofFactory(mofExtent);
+            
             var primitiveExtent = new UriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypes); 
 
             if (!isSlim)
             {
-                var loader = new SimpleLoader(factory);
+                var loader = new SimpleLoader();
                 if (paths == null || paths.LoadFromEmbeddedResources)
                 {
-                    loader.LoadFromEmbeddedResource(primitiveExtent, "DatenMeister.XmiFiles.PrimitiveTypes.xmi");
-                    loader.LoadFromEmbeddedResource(umlExtent, "DatenMeister.XmiFiles.UML.xmi");
+                    loader.LoadFromEmbeddedResource(new MofFactory(primitiveExtent),  primitiveExtent, "DatenMeister.XmiFiles.PrimitiveTypes.xmi");
+                    loader.LoadFromEmbeddedResource(new MofFactory(umlExtent), umlExtent, "DatenMeister.XmiFiles.UML.xmi");
 
                     if (mode == BootstrapMode.Mof)
                     {
-                        loader.LoadFromEmbeddedResource(mofExtent, "DatenMeister.XmiFiles.MOF.xmi");
+                        loader.LoadFromEmbeddedResource(new MofFactory(mofExtent), mofExtent, "DatenMeister.XmiFiles.MOF.xmi");
                     }
                 }
                 else
                 {
-                    loader.LoadFromFile(primitiveExtent, paths.PathPrimitive);
-                    loader.LoadFromFile(umlExtent, paths.PathUml);
+                    loader.LoadFromFile(new MofFactory(primitiveExtent), primitiveExtent, paths.PathPrimitive);
+                    loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, paths.PathUml);
                     if (mode == BootstrapMode.Mof)
                     {
-                        loader.LoadFromFile(mofExtent, paths.PathMof);
+                        loader.LoadFromFile(new MofFactory(mofExtent), mofExtent, paths.PathMof);
                     }
                 }
             }

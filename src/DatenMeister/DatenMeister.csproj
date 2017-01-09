@@ -62,6 +62,7 @@
     <Compile Include="Core\EMOF\Implementation\ExtentReflectiveSequence.cs" />
     <Compile Include="Core\EMOF\Implementation\MofFactory.cs" />
     <Compile Include="Core\EMOF\Implementation\MofObject.cs" />
+    <Compile Include="Core\EMOF\Implementation\MofReflectiveSequence.cs" />
     <Compile Include="Core\EMOF\Implementation\UriExtent.cs" />
     <Compile Include="Core\EMOF\Implementation\ExtentResolver.cs" />
     <Compile Include="Models\Forms\DefaultViewForExtentType.cs" />

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
@@ -53,30 +55,73 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public object get(string property)
         {
-            return ProviderObject.GetProperty(property);
+            var result = ProviderObject.GetProperty(property);
+            return ConvertToMofObject(property, result);
+        }
+
+        private object ConvertToMofObject(string property, object result)
+        {
+            if (DotNetHelper.IsOfMofObject(result))
+            {
+                return result;
+            }
+
+            var resultAsProviderObject = result as IProviderObject;
+            if (resultAsProviderObject != null)
+            {
+                return new MofObject(resultAsProviderObject, Extent);
+            }
+
+            if (result is IEnumerable<object>)
+            {
+                return new MofReflectiveSequence(this, property, (IEnumerable<object>) result);
+            }
+
+            throw new NotImplementedException($"Type of {result.GetType()} currently not supported.");
         }
 
         /// <inheritdoc />
         public void set(string property, object value)
         {
+            if (DotNetHelper.IsOfEnumeration(value))
+            {
+                var valueAsEnumeration = (IEnumerable<object>) value;
+                ProviderObject.EmptyListForProperty(property);
+                foreach (var child in valueAsEnumeration)
+                {
+                    ProviderObject.AddToProperty(property, ConvertForSetting(child));
+                }
+            }
+            else
+            {
+                ProviderObject.SetProperty(property, ConvertForSetting(value));
+            }
+        }
+
+        /// <summary>
+        /// Converts the object to be set by the data provider
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <returns>The converted object or an exception if the object cannot be converted</returns>
+        public object ConvertForSetting(object value)
+        {
             if (DotNetHelper.IsOfPrimitiveType(value))
             {
-                ProviderObject.SetProperty(property, value);
+                return value;
             }
-            else if (DotNetHelper.IsOfMofObject(value))
+
+            if (DotNetHelper.IsOfMofObject(value))
             {
-                var asMofObject = (MofObject) value ;
+                var asMofObject = (MofObject) value;
 
                 if (asMofObject.Extent == null)
                 {
                     var result = ObjectCopier.Copy(new MofFactory(Extent), asMofObject);
-                    ProviderObject.SetProperty(property, result);
-                }
-                else
-                {
-                    throw new NotImplementedException($"Type of {value.GetType()} currently not supported.");
+                    return result;
                 }
             }
+
+            throw new NotImplementedException($"Type of {value.GetType()} currently not supported.");
         }
 
         /// <inheritdoc />

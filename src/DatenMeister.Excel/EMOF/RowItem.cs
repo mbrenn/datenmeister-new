@@ -154,5 +154,11 @@ namespace DatenMeister.Excel.EMOF
                 return $"{firstPart}.{secondPart}";*/
             }
         }
+
+        /// <inheritdoc />
+        public void EmptyListForProperty(string property)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

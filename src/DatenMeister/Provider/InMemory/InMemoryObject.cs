@@ -29,6 +29,10 @@ namespace DatenMeister.Provider.InMemory
         /// <inheritdoc />
         public string MetaclassUri { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the InMemoryObject.
+        /// </summary>
+        /// <param name="metaclassUri">Uri of the metaclass</param>
         public InMemoryObject(string metaclassUri = null)
         {
             Id = Guid.NewGuid().ToString();
@@ -37,6 +41,11 @@ namespace DatenMeister.Provider.InMemory
 
         public string Id { get; set; }
 
+        /// <summary>
+        /// Gets the property of the element or returns an exception, if the property could not be found
+        /// </summary>
+        /// <param name="property"></param>
+        /// <returns></returns>
         public object GetProperty(string property)
         {
             object result;
@@ -101,12 +110,22 @@ namespace DatenMeister.Provider.InMemory
             return builder.ToString();
         }
 
+
+
         /// <inheritdoc />
         public bool AddToProperty(string property, object value, int index)
         {
             var result = GetListOfProperty(property);
 
-            result.Insert(index, value);
+            if (index == -1)
+            {
+                result.Add(value);
+            }
+            else
+            {
+                result.Insert(index, value);
+            }
+            
             return true;
         }
 
@@ -130,6 +149,12 @@ namespace DatenMeister.Provider.InMemory
         {
             var result = GetListOfProperty(property);
             return result.Remove(value);
+        }
+
+        /// <inheritdoc />
+        public void EmptyListForProperty(string property)
+        {
+            _values[property] = new List<object>();
         }
     }
 }

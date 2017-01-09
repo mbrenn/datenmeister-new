@@ -100,5 +100,11 @@ namespace DatenMeister.Excel.EMOF
 
         /// <inheritdoc />
         public string MetaclassUri { get; }
+
+        /// <inheritdoc />
+        public void EmptyListForProperty(string property)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

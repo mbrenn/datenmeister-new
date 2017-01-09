@@ -31,5 +31,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             throw new System.NotImplementedException();
         }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"UriExent: {contextURI()}";
+        }
     }
 }

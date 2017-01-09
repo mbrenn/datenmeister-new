@@ -24,7 +24,8 @@ namespace DatenMeister.Provider.XMI
         /// <summary>
         /// Defines a list of actions that will be performed after the loading has finished
         /// </summary>
-        private List<Action> _afterLoadActions = new List<Action>();
+        private readonly List<Action> _afterLoadActions = new List<Action>();
+
         /// <summary>
         ///     Initializes a new instance of the Loader class.
         /// </summary>

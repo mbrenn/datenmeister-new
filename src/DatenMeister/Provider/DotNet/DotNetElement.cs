@@ -25,8 +25,18 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         private readonly Type _type;
 
+        /// <summary>
+        /// Stores the container object
+        /// </summary>
         private IElement _container;
         
+        /// <summary>
+        /// Initializes a new instance of the DotNetElement class. 
+        /// </summary>
+        /// <param name="typeLookup">Typelookup to be used to create element</param>
+        /// <param name="value">Value to be set</param>
+        /// <param name="mofType">metaclass to be set to the object</param>
+        /// <param name="container">The corresponding container object</param>
         public DotNetElement(IDotNetTypeLookup typeLookup, object value, IElement mofType, IElement container = null)
         {
             Debug.Assert(mofType != null, "type != null");
@@ -39,6 +49,7 @@ namespace DatenMeister.Provider.DotNet
             Id = typeLookup.GetId(value);
             _container = container;
         }
+
         public bool equals(object other)
         {
             var element = other as DotNetElement;
@@ -150,6 +161,12 @@ namespace DatenMeister.Provider.DotNet
         public string MetaclassUri
         {
             get { throw new NotImplementedException(); }
+        }
+
+        /// <inheritdoc />
+        public void EmptyListForProperty(string property)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -27,6 +27,12 @@ namespace DatenMeister.Provider
 
         void SetProperty(string property, object value);
 
+        /// <summary>
+        /// Empties a list of a property and prepares the property that there is a call for <c>AddProperty</c>. 
+        /// </summary>
+        /// <param name="property">Property to be emptied</param>
+        void EmptyListForProperty(string property);
+
         bool AddToProperty(string property, object value, int index = -1);
 
         bool RemoveFromProperty(string property, object value);

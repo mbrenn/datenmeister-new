@@ -39,7 +39,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             var uriMetaClass = (elementAsMetaClass?.Extent as UriExtent)?.uri(metaClass);
             return new MofElement(
                 _extent.Provider.CreateElement(uriMetaClass),
-                null);
+                _extent);
         }
 
         /// <inheritdoc />

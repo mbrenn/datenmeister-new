@@ -9,7 +9,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class MofElement : MofObject, IElement
     {
-        private readonly IElement _container;
+        private IElement _container;
 
         /// <summary>
         /// Initialized a new instance of the MofElement class which is an abstraction of the provided database. 
@@ -41,6 +41,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IElement container()
         {
             return _container;
+        }
+
+        internal void SetContainer(IElement container)
+        {
+            _container = container;
         }
     }
 }

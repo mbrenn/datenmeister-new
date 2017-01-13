@@ -20,6 +20,8 @@ namespace DatenMeister.Provider.DotNet
         /// <returns></returns>
         public object GetNativeValue() => _value;
 
+        public IProvider Provider => _provider;
+
         /// <summary>
         /// Stores the type of the value
         /// </summary>
@@ -29,6 +31,8 @@ namespace DatenMeister.Provider.DotNet
         /// Stores the container object
         /// </summary>
         private IElement _container;
+
+        private DotNetExtent _provider;
         
         /// <summary>
         /// Initializes a new instance of the DotNetElement class. 
@@ -37,10 +41,11 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="value">Value to be set</param>
         /// <param name="mofType">metaclass to be set to the object</param>
         /// <param name="container">The corresponding container object</param>
-        public DotNetElement(IDotNetTypeLookup typeLookup, object value, IElement mofType, IElement container = null)
+        public DotNetElement(DotNetExtent provider, IDotNetTypeLookup typeLookup, object value, IElement mofType, IElement container = null)
         {
             Debug.Assert(mofType != null, "type != null");
             Debug.Assert(value != null, "value != null");
+            _provider = provider;
             _typeLookup = typeLookup;
             _value = value;
             metaclass = mofType;

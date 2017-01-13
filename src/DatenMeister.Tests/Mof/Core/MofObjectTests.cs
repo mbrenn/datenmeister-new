@@ -18,14 +18,15 @@ namespace DatenMeister.Tests.Mof.Core
 
         [Test]
         public void TestInMemoryMofObject()
-        { 
-            var mofObject = new InMemoryObject();
+        {
+            var provider = new InMemoryProvider();
+            var mofObject = new InMemoryObject(provider);
             Assert.That(mofObject.IsPropertySet(property1), Is.False);
             mofObject.SetProperty(property1, "Test");
             mofObject.SetProperty(property2, property1);
 
-            Assert.That(mofObject.IsPropertySet(property1),Is.True);
-            Assert.That(mofObject.IsPropertySet(property2),Is.True);
+            Assert.That(mofObject.IsPropertySet(property1), Is.True);
+            Assert.That(mofObject.IsPropertySet(property2), Is.True);
 
             Assert.That(mofObject.GetProperty(property1).ToString(), Is.EqualTo("Test"));
             Assert.That(mofObject.GetProperty(property2), Is.EqualTo(property1));
@@ -34,7 +35,8 @@ namespace DatenMeister.Tests.Mof.Core
         [Test]
         public void TestSetInMemory()
         {
-            var mofObject = new InMemoryObject();
+            var provider = new InMemoryProvider();
+            var mofObject = new InMemoryObject(provider);
             Assert.That(mofObject.IsPropertySet(property1), Is.False);
             mofObject.SetProperty(property1, "Test");
             mofObject.SetProperty(property2, 2);
@@ -49,9 +51,10 @@ namespace DatenMeister.Tests.Mof.Core
         [Test]
         public void TestStoreAndFindObject()
         {
-            var mofElement = new InMemoryElement();
+            var provider = new InMemoryProvider();
             var otherMofElement = new InMemoryElement();
             var mofInstance = new UriExtent(new InMemoryProvider(), "datenmeister:///test");
+            var mofElement = new MofElement(new InMemoryObject(provider), mofInstance);
             mofInstance.elements().add(mofElement);
             mofInstance.elements().add(otherMofElement);
 

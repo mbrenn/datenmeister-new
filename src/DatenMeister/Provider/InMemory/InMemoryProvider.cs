@@ -18,7 +18,7 @@ namespace DatenMeister.Provider.InMemory
         /// <inheritdoc />
         public IProviderObject CreateElement(string metaClassUri)
         {
-            return new InMemoryObject(metaClassUri);
+            return new InMemoryObject(this, metaClassUri);
         }
 
         /// <inheritdoc />

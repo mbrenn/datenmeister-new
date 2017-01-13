@@ -15,19 +15,19 @@ namespace DatenMeister.Tests.Mof.Queries
         [Test]
         public void TestMultiplePropertyFilter()
         {
+            var mofExtent = new UriExtent(new InMemoryProvider(), "datenmeister:///");
             var properties = new[] { property1, property2 };
 
-            var mofObject = new InMemoryObject();
+            var mofObject = new InMemoryObject(mofExtent.Provider);
             mofObject.SetProperty(property1, "55130");
             mofObject.SetProperty(property2, "Mainz");
 
-            var mofObject2 = new InMemoryObject();
+            var mofObject2 = new InMemoryObject(mofExtent.Provider);
             mofObject2.SetProperty(property1, "65474");
             mofObject2.SetProperty(property2, "Bischofsheim");
 
-            var mofObject3 = new InMemoryObject();
+            var mofObject3 = new InMemoryObject(mofExtent.Provider);
 
-            var mofExtent = new UriExtent(new InMemoryProvider(), "datenmeister:///");
             Assert.That(mofExtent.elements().add(mofObject), Is.True);
             Assert.That(mofExtent.elements().add(mofObject2), Is.True);
             Assert.That(mofExtent.elements().add(mofObject3), Is.True);

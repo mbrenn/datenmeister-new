@@ -10,6 +10,8 @@ namespace DatenMeister.Excel.EMOF
 {
     public class RowItem : IProviderObject
     {
+        public IProvider Provider => SheetItem.Provider;
+
         public SheetItem SheetItem { get; }
 
         /// <inheritdoc />

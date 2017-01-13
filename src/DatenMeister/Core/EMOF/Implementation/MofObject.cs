@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
@@ -12,7 +11,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// <summary>
     /// Implements the abstraction of the Mof Object.
     /// </summary>
-    public class MofObject : IObject, IHasExtent
+    public class MofObject : IObject, IHasExtent, IObjectAllProperties
     {
         /// <summary>
         /// Gets the extent of the mof object
@@ -56,28 +55,34 @@ namespace DatenMeister.Core.EMOF.Implementation
         public object get(string property)
         {
             var result = ProviderObject.GetProperty(property);
-            return ConvertToMofObject(property, result);
+            return ConvertToMofObject(this, property, result);
         }
 
-        private object ConvertToMofObject(string property, object result)
+        /// <summary>
+        /// Converts the object to a mof object that can be added to the MofObject
+        /// </summary>
+        /// <param name="property">Property to be set</param>
+        /// <param name="value">Value to be converted</param>
+        /// <returns>The converted object</returns>
+        internal static object ConvertToMofObject(MofObject container, string property, object value)
         {
-            if (DotNetHelper.IsOfMofObject(result))
+            if (DotNetHelper.IsOfPrimitiveType(value))
             {
-                return result;
+                return value;
             }
 
-            var resultAsProviderObject = result as IProviderObject;
+            var resultAsProviderObject = value as IProviderObject;
             if (resultAsProviderObject != null)
             {
-                return new MofObject(resultAsProviderObject, Extent);
+                return new MofElement(resultAsProviderObject, container.Extent, container as MofElement);
             }
 
-            if (result is IEnumerable<object>)
+            if (value is IEnumerable<object>)
             {
-                return new MofReflectiveSequence(this, property, (IEnumerable<object>) result);
+                return new MofReflectiveSequence(container, property, (IEnumerable<object>) value);
             }
 
-            throw new NotImplementedException($"Type of {result.GetType()} currently not supported.");
+            throw new NotImplementedException($"Type of {value.GetType()} currently not supported.");
         }
 
         /// <inheritdoc />
@@ -95,6 +100,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             else
             {
                 ProviderObject.SetProperty(property, ConvertForSetting(value));
+                
             }
         }
 
@@ -116,8 +122,9 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                 if (asMofObject.Extent == null)
                 {
-                    var result = ObjectCopier.Copy(new MofFactory(Extent), asMofObject);
-                    return result;
+                    var result = ObjectCopier.Copy(new MofFactory(ProviderObject.Provider), asMofObject) as MofElement;
+                    result?.SetContainer(this as IElement);
+                    return result.ProviderObject;
                 }
             }
 
@@ -134,6 +141,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void unset(string property)
         {
             ProviderObject.DeleteProperty(property);
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<string> getPropertiesBeingSet()
+        {
+            return ProviderObject.GetProperties();
         }
     }
 }

@@ -1,29 +1,43 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
+    /// <summary>
+    /// Implements the factory according to the MOF specification
+    /// </summary>
     public class MofFactory : IFactory
     {
-        private readonly Extent _extent;
-
+        private readonly IProvider _provider;
         /// <summary>
         /// Initializes a new instance of the Factory
         /// </summary>
         /// <param name="extent"></param>
         public MofFactory(Extent extent)
         {
-            _extent = extent;
+            if (extent == null) throw new ArgumentNullException(nameof(extent));
+            _provider = extent.Provider;
+            if (_provider == null) throw new ArgumentNullException(nameof(_provider));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the provider
+        /// </summary>
+        /// <param name="providerObject">Provider object to be set</param>
+        public MofFactory(IProvider providerObject)
+        {
+            if (providerObject == null) throw new ArgumentNullException(nameof(providerObject));
+            _provider = providerObject;
         }
 
         /// <summary>
         /// Initializes a new instance of the Factory
         /// </summary>
         /// <param name="extent"></param>
-        public MofFactory(IExtent extent)
+        public MofFactory(IExtent extent) : this ((Extent) extent)
         {
-            _extent = (Extent) extent;
         }
 
         /// <inheritdoc />
@@ -38,8 +52,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             var elementAsMetaClass = (MofElement) metaClass;
             var uriMetaClass = (elementAsMetaClass?.Extent as UriExtent)?.uri(metaClass);
             return new MofElement(
-                _extent.Provider.CreateElement(uriMetaClass),
-                _extent);
+                _provider.CreateElement(uriMetaClass),
+                null);
         }
 
         /// <inheritdoc />

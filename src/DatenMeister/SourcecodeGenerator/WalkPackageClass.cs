@@ -105,7 +105,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// </param>
         private void StartNamespace(ref CallStack stack)
         {
-            Result.AppendLine($"{stack.Indentation}// Created by {GetType().FullName} Version {FactoryVersion}");
+            Result.AppendLine($"{stack.Indentation}// Created by {GetType().FullName} Version {FactoryVersion} created at {DateTime.Now}");
 
             // Check, if we have namespaces
             if (!string.IsNullOrEmpty(Namespace))

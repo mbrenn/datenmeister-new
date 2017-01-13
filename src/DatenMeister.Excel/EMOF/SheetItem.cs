@@ -9,6 +9,11 @@ namespace DatenMeister.Excel.EMOF
 {
     public class SheetItem : IProviderObject
     {
+        /// <summary>
+        /// Gets the provider being used to create the element
+        /// </summary>
+        public IProvider Provider { get; }
+
         public SheetItem() 
         {
         }
@@ -30,6 +35,11 @@ namespace DatenMeister.Excel.EMOF
         /// First of data
         /// </summary>
         public int RowOffset { get; set; }
+
+        public SheetItem(ExcelExtent provider)
+        {
+            Provider = provider;
+        }
 
         /// <summary>
         /// Initializes data

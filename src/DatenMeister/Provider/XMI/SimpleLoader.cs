@@ -80,7 +80,8 @@ namespace DatenMeister.Provider.XMI
         /// <summary>
         ///     Loads the specific element with a very simple loading algorithm
         /// </summary>
-        /// <param name="element"></param>
+        /// <param name="factory">Factory being used to create instances</param>
+        /// <param name="element">Xml Element to be used to load object</param>
         private IObject LoadElement(IFactory factory, XElement element)
         {
             var resultingElement = factory.create(null);

@@ -9,36 +9,42 @@ using DatenMeister.Runtime.Extents;
 
 namespace DatenMeister.Provider.DotNet
 {
-    public class DotNetExtent : IUriExtent
+    public class DotNetExtent : IProvider
     {
         private readonly object _syncObject = new object();
 
         private readonly string _contextUri;
-
-        private readonly ExtentUrlNavigator<DotNetElement> _navigator;
 
         private readonly IReflectiveSequence _elements;
 
         /// <summary>
         /// Stores the object that stores the properties
         /// </summary>
-        private readonly InMemoryObject _innerObject = new InMemoryObject();
+        //private readonly InMemoryObject _innerObject = new InMemoryObject();
 
+        /// <summary>
+        /// Initializes a new instance of the DotNetExtent class
+        /// </summary>
+        /// <param name="contextUri">Uri of the context</param>
+        /// <param name="typeLookup">Looked up type</param>
         public DotNetExtent(string contextUri, IDotNetTypeLookup typeLookup)
         {
+            throw new InvalidOperationException();
+
+            /*
             if (typeLookup == null) throw new ArgumentNullException(nameof(typeLookup));
             if (string.IsNullOrEmpty(contextUri))
                 throw new ArgumentException("Value cannot be null or empty.", nameof(contextUri));
 
             _contextUri = contextUri;
-            _navigator = new ExtentUrlNavigator<DotNetElement>(this);
+            // _navigator = new ExtentUrlNavigator<DotNetElement>(this);
 
             // Creates the Reflective seqeunce
             var reflectiveSequence =
                 typeLookup.CreateDotNetReflectiveSequence(new List<object>(), this);
             _elements = new ReflectiveSequenceForExtent(
                 this, 
-                reflectiveSequence);
+                reflectiveSequence);*/
         }
 
         public bool useContainment()
@@ -60,7 +66,8 @@ namespace DatenMeister.Provider.DotNet
         {
             lock (_syncObject)
             {
-                return _navigator.uri(element);
+                throw new InvalidOperationException();
+                // return _navigator.uri(element);
             }
         }
 
@@ -68,7 +75,8 @@ namespace DatenMeister.Provider.DotNet
         {
             lock (_syncObject)
             {
-                return _navigator.element(uri);
+                throw new InvalidOperationException();
+                // return _navigator.element(uri);
             }
         }
 
@@ -79,27 +87,39 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <inheritdoc />
-        public object get(string property)
+        public IProviderObject CreateElement(string metaClassUri)
         {
-            return _innerObject.GetProperty(property);
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public void set(string property, object value)
+        public void AddElement(IProviderObject valueAsObject, int index = -1)
         {
-            _innerObject.SetProperty(property, value);
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public bool isSet(string property)
+        public bool DeleteElement(string id)
         {
-            return _innerObject.IsPropertySet(property);
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public void unset(string property)
+        public void DeleteAllElements()
         {
-            _innerObject.DeleteProperty(property);
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IProviderObject Get(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<IProviderObject> GetRootObjects()
+        {
+            throw new NotImplementedException();
         }
     }
 }

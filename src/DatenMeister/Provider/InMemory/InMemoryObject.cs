@@ -11,6 +11,8 @@ namespace DatenMeister.Provider.InMemory
     /// </summary>
     public class InMemoryObject : IProviderObject
     {
+        public IProvider Provider { get; }
+
         /// <summary>
         /// Creates an empty mof object that can be used to identify a specific object. All content will be stored within the InMemoryObject
         /// </summary>
@@ -33,10 +35,19 @@ namespace DatenMeister.Provider.InMemory
         /// Initializes a new instance of the InMemoryObject.
         /// </summary>
         /// <param name="metaclassUri">Uri of the metaclass</param>
-        public InMemoryObject(string metaclassUri = null)
+        public InMemoryObject(IProvider provider, string metaclassUri = null)
         {
+            Provider = provider;
             Id = Guid.NewGuid().ToString();
             MetaclassUri = metaclassUri;
+        }
+
+        internal static void CheckValue ( object value)
+        {
+            if (value is MofReflectiveSequence || value is MofObject)
+            {
+                throw new InvalidOperationException($"Value is of type {value.GetType()}");
+            }
         }
 
         public string Id { get; set; }
@@ -64,6 +75,7 @@ namespace DatenMeister.Provider.InMemory
 
         public void SetProperty(string property, object value)
         {
+            CheckValue(value);
             _values[property] = value;
         }
 
@@ -110,11 +122,10 @@ namespace DatenMeister.Provider.InMemory
             return builder.ToString();
         }
 
-
-
         /// <inheritdoc />
         public bool AddToProperty(string property, object value, int index)
         {
+            CheckValue(value);
             var result = GetListOfProperty(property);
 
             if (index == -1)
@@ -147,6 +158,7 @@ namespace DatenMeister.Provider.InMemory
         /// <inheritdoc />
         public bool RemoveFromProperty(string property, object value)
         {
+            CheckValue(value);
             var result = GetListOfProperty(property);
             return result.Remove(value);
         }

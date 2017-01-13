@@ -20,6 +20,7 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="id">If set, the id will be set to the given element</param>
         public static DotNetElement CreateDotNetElement(
             this IDotNetTypeLookup typeLookup,
+            DotNetExtent provider,
             object value,
             string id = null)
         {
@@ -35,7 +36,7 @@ namespace DatenMeister.Provider.DotNet
                     $"The type '{value.GetType().FullName}' is not known to the DotNetTypeLookup");
             }
 
-            var result = new DotNetElement(typeLookup, value, metaclass);
+            var result = new DotNetElement(provider, typeLookup, value, metaclass);
             if (!string.IsNullOrEmpty(id))
             {
                 result.Id = id;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 
 namespace DatenMeister.Core.EMOF.Implementation
@@ -31,13 +32,27 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IEnumerator<object> GetEnumerator()
         {
-            throw new NotImplementedException();
+            var result = GetPropertyAsEnumerable();
+            foreach (var item in result)
+            {
+                yield return MofObject.ConvertToMofObject(_mofObject, _property, item);
+            }
+        }
+
+        /// <summary>
+        /// Gets the given property as an enumerable
+        /// </summary>
+        /// <returns>Enumerable which was retrieved</returns>
+        private IEnumerable<object> GetPropertyAsEnumerable()
+        {
+            return (IEnumerable<object>) _mofObject.ProviderObject.GetProperty(_property);
         }
 
         /// <inheritdoc />
         public bool add(object value)
         {
-            return _mofObject.ProviderObject.AddToProperty(_property, value);
+            var valueToBeAdded = _mofObject.ConvertForSetting(value);
+            return _mofObject.ProviderObject.AddToProperty(_property, valueToBeAdded);
         }
 
         /// <inheritdoc />
@@ -75,19 +90,20 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public int size()
         {
-            throw new NotImplementedException();
+            return GetPropertyAsEnumerable().Count();
         }
 
         /// <inheritdoc />
         public void add(int index, object value)
         {
-            throw new NotImplementedException();
+            var valueToBeAdded = _mofObject.ConvertForSetting(value);
+            _mofObject.ProviderObject.AddToProperty(_property, valueToBeAdded, index);
         }
 
         /// <inheritdoc />
         public object get(int index)
         {
-            throw new NotImplementedException();
+            return GetPropertyAsEnumerable().ElementAt(index);
         }
 
         /// <inheritdoc />
@@ -99,7 +115,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public object set(int index, object value)
         {
-            throw new NotImplementedException();
+            var valueToBeAdded = _mofObject.ConvertForSetting(value);
+
+            var valueToBeRemoved = GetPropertyAsEnumerable().ElementAt(index);
+            _mofObject.ProviderObject.RemoveFromProperty(_property, valueToBeRemoved);
+            add(index, value);
+
+            return MofObject.ConvertToMofObject(_mofObject, _property, valueToBeRemoved);
         }
     }
 }

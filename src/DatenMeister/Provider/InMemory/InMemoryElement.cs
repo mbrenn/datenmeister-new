@@ -1,4 +1,5 @@
 ﻿using System;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.InMemory
@@ -7,8 +8,13 @@ namespace DatenMeister.Provider.InMemory
     ///     Implements the IElement according to the Mof specification
     /// </summary>
     [Obsolete]
-    public class InMemoryElement : IElement
+    public class InMemoryElement : MofElement
     {
+        /// <inheritdoc />
+        public InMemoryElement() : base(new InMemoryObject(null), null)
+        {
+        }
+
         /// <inheritdoc />
         public bool @equals(object other)
         {

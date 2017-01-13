@@ -16,6 +16,11 @@ namespace DatenMeister.Runtime.Copier
             _factory = factory;
         }
 
+        /// <summary>
+        /// Copies the element as given in <c>element</c>
+        /// </summary>
+        /// <param name="element">Element that shall be copied</param>
+        /// <returns>true, if element has been successfully copied</returns>
         public IElement Copy(IObject element)
         {
             var targetElement = _factory.create((element as IElement)?.getMetaClass());
@@ -53,13 +58,13 @@ namespace DatenMeister.Runtime.Copier
                 object result;
 
                 var value = sourceElement.get(property);
-                result = CopyValue(value);
+                result = CopyValue(value, targetElement as IElement);
 
                 targetElement.set(property, result);
             }
         }
 
-        private object CopyValue(object value)
+        private object CopyValue(object value, IElement containingElement)
         {
             if (value == null)
             {
@@ -69,14 +74,14 @@ namespace DatenMeister.Runtime.Copier
             var valueAsElement = value as IElement;
             if (valueAsElement != null)
             {
-                return Copy(valueAsElement);
+                var copiedElement = Copy(valueAsElement);
             }
 
             var valueAsCollection = value as IReflectiveCollection;
             if (valueAsCollection != null)
             {
                 return valueAsCollection
-                    .Select(innerValue => CopyValue(innerValue))
+                    .Select(innerValue => CopyValue(innerValue, containingElement))
                     .ToList();
             }
 

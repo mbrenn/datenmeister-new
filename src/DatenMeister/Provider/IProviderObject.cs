@@ -8,6 +8,11 @@ namespace DatenMeister.Provider
     public interface IProviderObject
     {
         /// <summary>
+        /// Gets the corresponding provider of the object, which has created and might storing the object
+        /// </summary>
+        IProvider Provider { get; }
+
+        /// <summary>
         /// Gets the id of the provided object 
         /// </summary>
         string Id { get; }

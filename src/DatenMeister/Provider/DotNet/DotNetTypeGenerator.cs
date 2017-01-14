@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 
@@ -53,7 +54,7 @@ namespace DatenMeister.Provider.DotNet
             foreach (var property in type.GetProperties())
             {
                 var umlProperty = _factoryForTypes.create(_umlHost.Classification.__Property);
-                (umlProperty as IElementSetMetaClass)?.setContainer(umlClass);
+                (umlProperty as MofElement)?.SetContainer(umlClass);
                 umlProperty.set(_UML._CommonStructure._NamedElement.name, property.Name);
                 
                 properties.Add(umlProperty);

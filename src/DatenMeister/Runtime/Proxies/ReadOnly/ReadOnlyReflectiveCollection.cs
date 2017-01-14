@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
+﻿using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 
 namespace DatenMeister.Runtime.Proxies.ReadOnly
 {
@@ -7,7 +8,7 @@ namespace DatenMeister.Runtime.Proxies.ReadOnly
         public ReadOnlyReflectiveCollection(IReflectiveSequence sequence) : base(sequence)
         {
             ActivateObjectConversion(
-                x => new ReadOnlyElement(x),
+                x => new ReadOnlyElement((MofElement) x),
                 x => new ReadOnlyObject(x),
                 x => x.GetProxiedElement(),
                 x => x.GetProxiedElement());

@@ -109,7 +109,7 @@ namespace DatenMeister.Excel.EMOF
         public string Id { get; }
 
         /// <inheritdoc />
-        public string MetaclassUri { get; }
+        public string MetaclassUri { get; set; }
 
         /// <inheritdoc />
         public void EmptyListForProperty(string property)

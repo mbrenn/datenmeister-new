@@ -15,7 +15,7 @@ namespace DatenMeister.Excel.EMOF
         public SheetItem SheetItem { get; }
 
         /// <inheritdoc />
-        public string MetaclassUri { get; }
+        public string MetaclassUri { get; set; }
 
         public int Row { get; }
 

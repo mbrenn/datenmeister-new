@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
@@ -7,6 +8,7 @@ using DatenMeister.Runtime.Functions.Aggregation;
 using DatenMeister.Runtime.Functions.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace DatenMeister.Tests.Runtime.Functions
 {
@@ -97,40 +99,45 @@ namespace DatenMeister.Tests.Runtime.Functions
 
         private IReflectiveCollection CreateReflectiveSequence()
         {
-            /*
-            var reflectiveSequence = new InMemoryReflectiveSequence(null, null);
+            var provider = new InMemoryProvider();
+            var extent = new UriExtent(provider, "dm:///test");
+            var element = new MofObject(new InMemoryObject(provider), extent);
+            var factory = new MofFactory(extent);
 
-            var value = new InMemoryObject();
+            element.set("c", new List<object>());
+            var reflectiveSequence = element.get("c") as IReflectiveSequence;
+
+            var value = factory.create(null);
             value.set(property1, 3);
             value.set(property3, "A"); // A = 3
             reflectiveSequence.add(value);
 
-            value = new InMemoryObject();
+            value = factory.create(null);
             value.set(property1, 1);
             value.set(property3, "B"); // A = 3, B = 1
             reflectiveSequence.add(value);
 
-            value = new InMemoryObject();
+            value = factory.create(null);
             value.set(property1, 2);
             value.set(property3, "A"); // A = 5, B = 1
             reflectiveSequence.add(value);
 
-            value = new InMemoryObject();
+            value = factory.create(null);
             value.set(property1, 3);
             value.set(property3, "B"); // A = 5, B = 4
             reflectiveSequence.add(value);
 
-            value = new InMemoryObject();
+            value = factory.create(null);
             value.set(property1, 4);
             value.set(property2, 4);
             value.set(property3, "A"); // A = 9, B = 4
             reflectiveSequence.add(value);
 
-            value = new InMemoryObject();
+            value = factory.create(null);
             value.set(property2, 3);
             reflectiveSequence.add(value);
             return reflectiveSequence;
-            */
+            
 
             throw new NotImplementedException();
         }

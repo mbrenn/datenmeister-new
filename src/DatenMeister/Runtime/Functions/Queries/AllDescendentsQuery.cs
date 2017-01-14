@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
@@ -52,6 +53,8 @@ namespace DatenMeister.Runtime.Functions.Queries
 
             yield return element;
 
+            var asMofObject = (MofObject) element;
+
             _alreadyVisited.Add(element);
 
             // Now go through the list
@@ -63,7 +66,7 @@ namespace DatenMeister.Runtime.Functions.Queries
 
             foreach (var property in elementAsIObjectExt.getPropertiesBeingSet())
             {
-                var value = element.get(property);
+                var value = asMofObject.get(property, noReferences: true);
                 if (value is IObject)
                 {
                     // Value is an object... perfect!

@@ -1,10 +1,11 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Proxies.ReadOnly
 {
     public class ReadOnlyElement : ProxyMofElement
     {
-        public ReadOnlyElement(IElement element) : base(element)
+        public ReadOnlyElement(MofElement element) : base(element)
         {
         }
 
@@ -18,7 +19,7 @@ namespace DatenMeister.Runtime.Proxies.ReadOnly
             throw new ReadOnlyAccessException("Element is read-only");
         }
 
-        public override void setMetaClass(IElement metaClass)
+        public override void SetMetaClass(IElement metaClass)
         {
             throw new ReadOnlyAccessException("Element is read-only");
         }

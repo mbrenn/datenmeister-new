@@ -11,8 +11,13 @@ namespace DatenMeister.Runtime.Copier
     {
         private readonly IFactory _factory;
 
+        /// <summary>
+        /// Initializes a new instance of the ObjectCopier. 
+        /// </summary>
+        /// <param name="factory"></param>
         public ObjectCopier(IFactory factory)
         {
+            if (factory == null) throw new ArgumentNullException(nameof(factory));
             _factory = factory;
         }
 

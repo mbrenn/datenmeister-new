@@ -1,4 +1,5 @@
 ﻿using System;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -63,7 +64,7 @@ namespace DatenMeister.Runtime.Proxies
         public ProxyUriExtent ActivateObjectConversion()
         {
             return ActivateObjectConversion(
-                x => new ProxyMofElement(x),
+                x => new ProxyMofElement((MofElement) x),
                 x => new ProxyReflectiveSequence(x),
                 x => x.GetProxiedElement());
         }

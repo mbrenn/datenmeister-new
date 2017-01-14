@@ -165,7 +165,15 @@ namespace DatenMeister.Provider.DotNet
         /// <inheritdoc />
         public string MetaclassUri
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                throw new NotImplementedException(); 
+                
+            }
+            set
+            {
+                throw new InvalidOperationException("Type of DotNet Types cannot be modified");
+            }
         }
 
         /// <inheritdoc />

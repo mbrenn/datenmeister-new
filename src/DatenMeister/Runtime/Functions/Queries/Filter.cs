@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
@@ -72,8 +73,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         public static IReflectiveCollection GetAllDescendants(
             this IReflectiveCollection collection)
         {
-            throw new NotImplementedException();
-            // return new InMemoryReflectiveSequence(null, null, AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
+            return new TemporaryReflectiveCollection(AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
         }
 
         public static IReflectiveCollection GroupProperties(

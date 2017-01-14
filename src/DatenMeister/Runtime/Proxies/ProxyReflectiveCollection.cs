@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
@@ -114,7 +115,7 @@ namespace DatenMeister.Runtime.Proxies
         public ProxyReflectiveCollection ActivateObjectConversion()
         {
             return ActivateObjectConversion(
-                x => new ProxyMofElement(x),
+                x => new ProxyMofElement((MofElement) x),
                 x => new ProxyMofObject(x),
                 x => x.GetProxiedElement(),
                 x => x.GetProxiedElement());

@@ -1,16 +1,17 @@
 ﻿using System;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Proxies
 {
     public class ProxyMofElement : ProxyMofObject, IElement, IElementSetMetaClass
     {
-        protected IElement Element
+        protected MofElement Element
         {
-            get { return Object as IElement; }
+            get { return Object as MofElement; }
         }
 
-        public ProxyMofElement(IElement element) : base(element)
+        public ProxyMofElement(MofElement element) : base(element)
         {
         }
 
@@ -36,18 +37,18 @@ namespace DatenMeister.Runtime.Proxies
             return Element.getMetaClass();
         }
 
-        public virtual void setContainer ( IElement container)
+        public virtual void SetContainer ( IElement container)
         {
-            var asSetMetaClass = Element as IElementSetMetaClass;
+            var asSetMetaClass = Element as MofElement;
             if (asSetMetaClass == null)
             {
                 throw new InvalidOperationException("Element does not support interface IElementSetMetaClass");
             }
 
-            asSetMetaClass.setContainer(container);
+            asSetMetaClass.SetContainer(container);
         }
 
-        public virtual void setMetaClass(IElement metaClass)
+        public virtual void SetMetaClass(IElement metaClass)
         {
             var asSetMetaClass = Element as IElementSetMetaClass;
             if (asSetMetaClass == null)
@@ -55,7 +56,7 @@ namespace DatenMeister.Runtime.Proxies
                 throw new InvalidOperationException("Element does not support interface IElementSetMetaClass");
             }
 
-            asSetMetaClass.setMetaClass(metaClass);
+            asSetMetaClass.SetMetaClass(metaClass);
         }
     }
 }

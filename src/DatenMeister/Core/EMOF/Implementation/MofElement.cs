@@ -7,7 +7,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// <summary>
     /// Defines a Mof Element according to MOF specification
     /// </summary>
-    public class MofElement : MofObject, IElement
+    public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId
     {
         private IElement _container;
 
@@ -43,9 +43,22 @@ namespace DatenMeister.Core.EMOF.Implementation
             return _container;
         }
 
-        internal void SetContainer(IElement container)
+        public void SetContainer(IElement container)
         {
             _container = container;
         }
+
+        /// <summary>
+        /// Sets the meta class for the given element
+        /// </summary>
+        /// <param name="metaClass">Metaclass to be set</param>
+        public void SetMetaClass(IElement metaClass)
+        {
+            var mofElement = (MofElement) metaClass;
+            ProviderObject.MetaclassUri = (mofElement.Extent as UriExtent).uri(metaClass);
+        }
+
+        /// <inheritdoc />
+        public string Id => ProviderObject.Id;
     }
 }

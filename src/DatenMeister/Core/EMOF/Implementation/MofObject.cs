@@ -40,6 +40,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            return @equals(obj);
+        }
+
+        /// <inheritdoc />
         public bool @equals(object other)
         {
             var otherAsObject = other as MofObject;
@@ -54,8 +60,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public object get(string property)
         {
+            return get(property, false);
+        }
+
+        public object get(string property, bool noReferences)
+        {
             var result = ProviderObject.GetProperty(property);
-            return ConvertToMofObject(this, property, result);
+            return ConvertToMofObject(this, property, result, noReferences);
         }
 
         /// <summary>
@@ -64,7 +75,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="property">Property to be set</param>
         /// <param name="value">Value to be converted</param>
         /// <returns>The converted object</returns>
-        internal static object ConvertToMofObject(MofObject container, string property, object value)
+        internal static object ConvertToMofObject(MofObject container, string property, object value, bool noReferences = false)
         {
             if (DotNetHelper.IsOfPrimitiveType(value))
             {
@@ -81,6 +92,18 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 return new MofReflectiveSequence(container, property, (IEnumerable<object>) value);
             }
+
+            if (value is UriReference )
+            {
+                if (noReferences)
+                {
+                    return null;
+                }
+
+                var valueAsUriReference = value as UriReference;
+                return container.Extent.Resolver.Resolve(valueAsUriReference.Uri);
+            }
+
 
             throw new NotImplementedException($"Type of {value.GetType()} currently not supported.");
         }
@@ -122,9 +145,19 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                 if (asMofObject.Extent == null)
                 {
-                    var result = ObjectCopier.Copy(new MofFactory(ProviderObject.Provider), asMofObject) as MofElement;
-                    result?.SetContainer(this as IElement);
+                    var result = (MofElement) ObjectCopier.Copy(new MofFactory(ProviderObject.Provider), asMofObject);
+                    result.SetContainer(this as IElement);
                     return result.ProviderObject;
+                }
+                else
+                {
+                    // It is a reference
+                    var reference = new UriReference()
+                    {
+                        Uri = ((UriExtent) asMofObject.Extent).uri(asMofObject as IElement)
+                    };
+
+                    return reference;
                 }
             }
 

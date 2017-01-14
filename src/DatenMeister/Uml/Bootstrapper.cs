@@ -32,10 +32,10 @@ namespace DatenMeister.Uml
         private static readonly string TypeProperty;
         private static readonly string IdProperty;
 
-        public Dictionary<string, IElement> MofClasses { get; } = new Dictionary<string, IElement>();
+        private Dictionary<string, IElement> MofClasses { get; } = new Dictionary<string, IElement>();
 
-        public Dictionary<string, IElement> UmlClasses { get; } = new Dictionary<string, IElement>();
-        public Dictionary<string, IElement> UmlAssociations { get; } = new Dictionary<string, IElement>();
+        private Dictionary<string, IElement> UmlClasses { get; } = new Dictionary<string, IElement>();
+        private Dictionary<string, IElement> UmlAssociations { get; } = new Dictionary<string, IElement>();
 
         /// <summary>
         ///     Stores the extent for the uml infrastructure
@@ -213,12 +213,12 @@ namespace DatenMeister.Uml
                 if (name.StartsWith("uml:"))
                 {
                     name = name.Substring(4);
-                    ((IElementSetMetaClass) elementInstance).setMetaClass(UmlClasses[name]);
+                    ((IElementSetMetaClass) elementInstance).SetMetaClass(UmlClasses[name]);
                 }
                 else if (name.StartsWith("mofext:"))
                 {
                     name = name.Substring(7);
-                    ((IElementSetMetaClass) elementInstance).setMetaClass(MofClasses[name]);
+                    ((IElementSetMetaClass) elementInstance).SetMetaClass(MofClasses[name]);
                 }
                 else
                 {
@@ -365,7 +365,7 @@ namespace DatenMeister.Uml
                     throw new InvalidOperationException($"Metaclass for {name} is not found");
                 }
 
-                ((IElementSetMetaClass)elementInstance).setMetaClass(metaClass);
+                ((IElementSetMetaClass)elementInstance).SetMetaClass(metaClass);
 
                 // We strip out the property and id information. 
                 // It is not really required 

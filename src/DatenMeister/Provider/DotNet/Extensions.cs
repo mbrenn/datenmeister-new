@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
@@ -16,11 +17,11 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="typeLookup">Type lookup being used</param>
         /// <param name="value">Value to be converted</param>
-        /// <param name="extent">Defines the extent being associated to the DotNetElement</param>
+        /// <param name="provider">Defines the extent being associated to the DotNetElement</param>
         /// <param name="id">If set, the id will be set to the given element</param>
         public static DotNetElement CreateDotNetElement(
             this IDotNetTypeLookup typeLookup,
-            DotNetExtent provider,
+            DotNetProvider provider,
             object value,
             string id = null)
         {
@@ -153,7 +154,12 @@ namespace DatenMeister.Provider.DotNet
 
             if (DotNetHelper.IsEnumeration(resultType))
             {
-                return dotNetTypeLookup.CreateDotNetReflectiveSequence(result, container);
+                var listResult = new List<object>();
+                var asEnumeration = (IEnumerable<object>) result;
+                foreach (var item in asEnumeration)
+                {
+                    listResult.Add(dotNetTypeLookup.CreateDotNetElementIfNecessary(item, container));
+                }
             }
 
             if (DotNetHelper.IsOfMofObject(result))
@@ -161,12 +167,10 @@ namespace DatenMeister.Provider.DotNet
                 // Returns the given element itself, if it is an MofElement or MofObject
                 return result;
             }
+            
+            var dotNetResult = dotNetTypeLookup.CreateDotNetElement((DotNetProvider) container.Provider, container);
 
-            throw new NotImplementedException();
-            /*
-            var dotNetResult = dotNetTypeLookup.CreateDotNetElement(result, container);
-
-            return dotNetResult;*/
+            return dotNetResult;
         }
 
         /// <summary>
@@ -181,8 +185,21 @@ namespace DatenMeister.Provider.DotNet
         {
             var dotNetTypeCreator = new DotNetTypeGenerator(factory, uml);
             var element = dotNetTypeCreator.CreateTypeFor(dotNetType);
-            typeLookup.Add(element, dotNetType);
+            
+            typeLookup.Add(element.GetUri(), dotNetType);
             return element;
+        }
+
+
+        /// <summary>
+        /// Adds an association between type and element
+        /// </summary>
+        /// <param name="lookup">The DotNetType lookup to whom the value will be added</param>
+        /// <param name="element">Element to be added</param>
+        /// <param name="type">Type to be added</param>
+        public static void Add(this IDotNetTypeLookup lookup, IElement element, Type type)
+        {
+            lookup.Add(element.GetUri(), type);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,53 +21,52 @@ namespace DatenMeister.Provider.DotNet
         /// <returns></returns>
         public object GetNativeValue() => _value;
 
-        public IProvider Provider => _provider;
+        public IProvider Provider { get; }
 
         /// <summary>
         /// Stores the type of the value
         /// </summary>
         private readonly Type _type;
 
-        /// <summary>
-        /// Stores the container object
-        /// </summary>
-        private IElement _container;
+        /// <inheritdoc />
+        public string MetaclassUri { get; set; }
 
-        private DotNetExtent _provider;
-        
+        public string Id { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the DotNetElement class. 
         /// </summary>
+        /// <param name="provider">The Dotnet Provider storing the items</param>
         /// <param name="typeLookup">Typelookup to be used to create element</param>
         /// <param name="value">Value to be set</param>
-        /// <param name="mofType">metaclass to be set to the object</param>
-        /// <param name="container">The corresponding container object</param>
-        public DotNetElement(DotNetExtent provider, IDotNetTypeLookup typeLookup, object value, IElement mofType, IElement container = null)
+        /// <param name="metaClassUri">metaclass to be set to the object</param>
+        public DotNetElement(DotNetProvider provider, IDotNetTypeLookup typeLookup, object value, string metaClassUri)
         {
-            Debug.Assert(mofType != null, "type != null");
+            Debug.Assert(metaClassUri != null, "type != null");
             Debug.Assert(value != null, "value != null");
-            _provider = provider;
+            Provider = provider;
             _typeLookup = typeLookup;
             _value = value;
-            metaclass = mofType;
+            MetaclassUri = metaClassUri;
             _type = value.GetType();
 
             Id = typeLookup.GetId(value);
-            _container = container;
         }
 
-        public bool equals(object other)
+        /// <inheritdoc />
+        public bool IsPropertySet(string property)
         {
-            var element = other as DotNetElement;
-            if (element != null)
-            {
-                return element._value == _value;
-            }
-
-            return false;
+            return _type.GetProperty(property) != null;
         }
 
-        public object get(string property)
+        /// <inheritdoc />
+        public object GetProperty(string property)
+        {
+            var result = GetValueOfProperty(property);
+            return _typeLookup.CreateDotNetElementIfNecessary(result, this);
+        }
+
+        private object GetValueOfProperty(string property)
         {
             var member = _type.GetProperty(property,
                 BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
@@ -76,10 +76,25 @@ namespace DatenMeister.Provider.DotNet
             }
 
             var result = member.GetValue(_value);
-            return _typeLookup.CreateDotNetElementIfNecessary(result, this);
+            return result;
         }
 
-        public void set(string property, object value)
+        /// <inheritdoc />
+        public IEnumerable<string> GetProperties()
+        {
+            var members = _type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
+            return members.Select(x => x.Name);
+        }
+
+        /// <inheritdoc />
+        public bool DeleteProperty(string property)
+        {
+            SetProperty(property, null);
+            return true;
+        }
+
+        /// <inheritdoc />
+        public void SetProperty(string property, object value)
         {
             var member = _type.GetProperty(property);
             if (member == null)
@@ -90,96 +105,43 @@ namespace DatenMeister.Provider.DotNet
             member.SetValue(_value, Extensions.ConvertToNative(value));
         }
 
-        public bool isSet(string property)
+        public IList GetPropertyAsList(string property)
         {
-            return _type.GetProperty(property) != null;
-
-        }
-
-        public void unset(string property)
-        {
-            set(property, null);
-        }
-
-        public IElement metaclass { get; private set; }
-
-        public IElement getMetaClass() => metaclass;
-
-        public IElement container() => _container;
-
-        
-        public string Id { get; set; }
-
-        /// <summary>
-        /// Gets all properties that can be set
-        /// </summary>
-        /// <returns>Enumeration of properties</returns>
-        public IEnumerable<string> getPropertiesBeingSet()
-        {
-            var members = _type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
-            return members.Select(x => x.Name);
-        }
-
-        /// <inheritdoc />
-        public bool IsPropertySet(string property)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public object GetProperty(string property)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public IEnumerable<string> GetProperties()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public bool DeleteProperty(string property)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public void SetProperty(string property, object value)
-        {
-            throw new NotImplementedException();
+            return GetValueOfProperty(property) as IList;
         }
 
         /// <inheritdoc />
         public bool AddToProperty(string property, object value, int index = -1)
         {
-            throw new NotImplementedException();
+            var list = GetPropertyAsList(property);
+            if (list == null)
+            {
+                EmptyListForProperty(property);
+                list = GetPropertyAsList(property);
+            }
+
+            return list.Add(value) != -1;
         }
 
         /// <inheritdoc />
         public bool RemoveFromProperty(string property, object value)
         {
-            throw new NotImplementedException();
-        }
+            var list = GetPropertyAsList(property);
+            if (list == null)
+            {
+                EmptyListForProperty(property);
+                list = GetPropertyAsList(property);
+            }
 
-        /// <inheritdoc />
-        public string MetaclassUri
-        {
-            get
-            {
-                throw new NotImplementedException(); 
-                
-            }
-            set
-            {
-                throw new InvalidOperationException("Type of DotNet Types cannot be modified");
-            }
+            var result = list.Contains(value);
+            list.Remove(value);
+            return result;
         }
 
         /// <inheritdoc />
         public void EmptyListForProperty(string property)
         {
-            throw new NotImplementedException();
+            SetProperty(property, new List<object>());
         }
     }
 }

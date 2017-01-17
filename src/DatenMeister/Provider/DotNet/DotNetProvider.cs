@@ -9,13 +9,15 @@ using DatenMeister.Runtime.Extents;
 
 namespace DatenMeister.Provider.DotNet
 {
-    public class DotNetExtent : IProvider
+    /// <summary>
+    /// Implements the provider for the DotNet objects
+    /// </summary>
+    public class DotNetProvider : IProvider
     {
+        private readonly IDotNetTypeLookup _typeLookup;
         private readonly object _syncObject = new object();
-
-        private readonly string _contextUri;
-
-        private readonly IReflectiveSequence _elements;
+        
+        private readonly List<object> _elements;
 
         /// <summary>
         /// Stores the object that stores the properties
@@ -27,9 +29,10 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="contextUri">Uri of the context</param>
         /// <param name="typeLookup">Looked up type</param>
-        public DotNetExtent(string contextUri, IDotNetTypeLookup typeLookup)
+        public DotNetProvider(IDotNetTypeLookup typeLookup)
         {
-            throw new InvalidOperationException();
+            _typeLookup = typeLookup;
+            _elements = new List<object>();
 
             /*
             if (typeLookup == null) throw new ArgumentNullException(nameof(typeLookup));
@@ -47,49 +50,12 @@ namespace DatenMeister.Provider.DotNet
                 reflectiveSequence);*/
         }
 
-        public bool useContainment()
-        {
-            return false;
-        }
-
-        public IReflectiveSequence elements()
-        {
-            return _elements;
-        }
-
-        public string contextURI()
-        {
-            return _contextUri;
-        }
-
-        public string uri(IElement element)
-        {
-            lock (_syncObject)
-            {
-                throw new InvalidOperationException();
-                // return _navigator.uri(element);
-            }
-        }
-
-        public IElement element(string uri)
-        {
-            lock (_syncObject)
-            {
-                throw new InvalidOperationException();
-                // return _navigator.element(uri);
-            }
-        }
-
-        /// <inheritdoc />
-        public bool @equals(object other)
-        {
-            return Equals(other);
-        }
-
         /// <inheritdoc />
         public IProviderObject CreateElement(string metaClassUri)
         {
-            throw new NotImplementedException();
+            var type = _typeLookup.ToType(metaClassUri);
+            var result = Activator.CreateInstance(type);
+            return new DotNetElement(this, _typeLookup, result, metaClassUri);
         }
 
         /// <inheritdoc />

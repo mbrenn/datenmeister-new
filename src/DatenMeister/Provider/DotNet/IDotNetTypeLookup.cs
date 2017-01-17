@@ -16,11 +16,11 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="element">Element to be added</param>
         /// <param name="type">Type to be added</param>
-        void Add(IElement element, Type type);
+        void Add(string element, Type type);
 
-        IElement ToElement(Type type);
+        string ToElement(Type type);
 
-        Type ToType(IElement element);
+        Type ToType(string element);
 
         /// <summary>
         /// Gets the id of a certain element

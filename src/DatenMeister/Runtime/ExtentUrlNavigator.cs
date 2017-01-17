@@ -8,6 +8,10 @@ using DatenMeister.Runtime.Functions.Queries;
 
 namespace DatenMeister.Runtime
 {
+    /// <summary>
+    /// Caches the ids to improve navigation
+    /// </summary>
+    /// <typeparam name="T">Type of the elements that are abstracted</typeparam>
     public class ExtentUrlNavigator<T> where T : class, IElement, IHasId
     {
         private readonly Dictionary<string, IHasId> _cacheIds = new Dictionary<string, IHasId>();

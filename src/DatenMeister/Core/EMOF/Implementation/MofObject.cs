@@ -35,6 +35,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="extent">The extent being used to access the item</param>
         public MofObject(IProviderObject providedObject, Extent extent)
         {
+            if (providedObject == null) throw new ArgumentNullException(nameof(providedObject));
+            if (providedObject.Provider == null)
+            {
+                // ReSharper disable once NotResolvedInText
+                throw new ArgumentNullException("providedObject.Provider");
+            }
             ProviderObject = providedObject;
             Extent = extent;
         }

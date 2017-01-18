@@ -55,7 +55,7 @@ namespace DatenMeister.Provider.DotNet
         {
             var type = _typeLookup.ToType(metaClassUri);
             var result = Activator.CreateInstance(type);
-            return new DotNetElement(this, _typeLookup, result, metaClassUri);
+            return new DotNetProviderObject(this, _typeLookup, result, metaClassUri);
         }
 
         /// <inheritdoc />

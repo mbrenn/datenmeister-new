@@ -14,13 +14,13 @@ namespace DatenMeister.Provider.InMemory
         public IProvider Provider { get; }
 
         /// <summary>
-        /// Creates an empty mof object that can be used to identify a specific object. All content will be stored within the InMemoryObject
+        /// Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the InMemoryObject
         /// </summary>
         /// <returns>The created object as MofObject</returns>
-        public static MofObject CreateEmpty()
+        public static MofElement CreateEmpty()
         {
-            var inner = new InMemoryObject(null);
-            return new MofObject(inner, null);
+            var inner = new InMemoryObject(InMemoryProvider.TemporaryProvider);
+            return new MofElement(inner, null);
         }
 
         /// <summary>

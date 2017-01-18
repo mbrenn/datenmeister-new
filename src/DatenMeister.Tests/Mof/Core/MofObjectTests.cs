@@ -52,7 +52,7 @@ namespace DatenMeister.Tests.Mof.Core
         public void TestStoreAndFindObject()
         {
             var provider = new InMemoryProvider();
-            var otherMofElement = new InMemoryElement();
+            var otherMofElement = InMemoryObject.CreateEmpty();
             var mofInstance = new UriExtent(new InMemoryProvider(), "datenmeister:///test");
             var mofElement = new MofElement(new InMemoryObject(provider), mofInstance);
             mofInstance.elements().add(mofElement);
@@ -70,8 +70,8 @@ namespace DatenMeister.Tests.Mof.Core
 
             Assert.That(found1, Is.Not.Null);
             Assert.That(found2, Is.Not.Null);
-            Assert.That(found1, Is.SameAs(mofElement));
-            Assert.That(found2, Is.SameAs(otherMofElement));
+            Assert.That(found1, Is.EqualTo(mofElement));
+            Assert.That(found2, Is.EqualTo(otherMofElement));
         }
 
         [Test]
@@ -80,8 +80,8 @@ namespace DatenMeister.Tests.Mof.Core
             var uriExtent = new UriExtent(new InMemoryProvider(), "dm:///test");
             var proxiedUriExtent = new ProxyUriExtent(uriExtent).ActivateObjectConversion();
 
-            var mofElement = new InMemoryElement();
-            var otherMofElement = new InMemoryElement();
+            var mofElement = InMemoryObject.CreateEmpty();
+            var otherMofElement = InMemoryObject.CreateEmpty();
             proxiedUriExtent.elements().add(mofElement);
             proxiedUriExtent.elements().add(otherMofElement);
 
@@ -90,7 +90,7 @@ namespace DatenMeister.Tests.Mof.Core
 
             var proxiedElement = returned as ProxyMofElement;
             Assert.That(proxiedElement, Is.Not.Null);
-            Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<InMemoryElement>());
+            Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<MofElement>());
 
             Assert.That(proxiedUriExtent.elements().remove(proxiedElement), Is.True);
             Assert.That(proxiedUriExtent.elements().size, Is.EqualTo(1));
@@ -102,7 +102,7 @@ namespace DatenMeister.Tests.Mof.Core
             Assert.That(returned, Is.TypeOf<ProxyMofElement>());
 
             proxiedElement = returned as ProxyMofElement;
-            Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<InMemoryElement>());
+            Assert.That(proxiedElement.GetProxiedElement(), Is.TypeOf<MofElement>());
         }
 
         [Test]
@@ -116,12 +116,12 @@ namespace DatenMeister.Tests.Mof.Core
             var innerMofElement = factory.create(null); 
 
             Assert.That(((IHasExtent)mofElement).Extent, Is.Null);
-            Assert.That(((IHasExtent)otherMofElement).Extent, Is.Null);
+            Assert.That(((IHasExtent) otherMofElement).Extent, Is.Null);
 
             uriExtent.elements().add(mofElement);
 
             Assert.That(((IHasExtent)mofElement).Extent, Is.SameAs(uriExtent));
-            Assert.That(((IHasExtent)otherMofElement).Extent, Is.Null);
+            Assert.That(((IHasExtent) otherMofElement).Extent, Is.Null);
 
             uriExtent.elements().add(otherMofElement);
 

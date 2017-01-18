@@ -75,7 +75,7 @@
     <Compile Include="Provider\CSV\Integrate.cs" />
     <Compile Include="Provider\CSV\Runtime\Storage\CSVStorage.cs" />
     <Compile Include="Provider\CSV\Runtime\Storage\CSVStorageConfiguration.cs" />
-    <Compile Include="Provider\DotNet\DotNetElement.cs" />
+    <Compile Include="Provider\DotNet\DotNetProviderObject.cs" />
     <Compile Include="Provider\DotNet\DotNetProvider.cs" />
     <Compile Include="Provider\DotNet\DotNetTypeGenerator.cs" />
     <Compile Include="Provider\DotNet\DotNetTypeLookup.cs" />

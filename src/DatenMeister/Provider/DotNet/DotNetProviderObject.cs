@@ -9,7 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.DotNet
 {
-    public class DotNetElement : IProviderObject
+    public class DotNetProviderObject : IProviderObject
     {
         private readonly IDotNetTypeLookup _typeLookup;
 
@@ -40,7 +40,7 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="typeLookup">Typelookup to be used to create element</param>
         /// <param name="value">Value to be set</param>
         /// <param name="metaClassUri">metaclass to be set to the object</param>
-        public DotNetElement(DotNetProvider provider, IDotNetTypeLookup typeLookup, object value, string metaClassUri)
+        public DotNetProviderObject(DotNetProvider provider, IDotNetTypeLookup typeLookup, object value, string metaClassUri)
         {
             Debug.Assert(metaClassUri != null, "type != null");
             Debug.Assert(value != null, "value != null");

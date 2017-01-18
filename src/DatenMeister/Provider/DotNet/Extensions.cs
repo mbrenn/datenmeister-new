@@ -19,7 +19,7 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="value">Value to be converted</param>
         /// <param name="provider">Defines the extent being associated to the DotNetElement</param>
         /// <param name="id">If set, the id will be set to the given element</param>
-        public static DotNetElement CreateDotNetElement(
+        public static DotNetProviderObject CreateDotNetElement(
             this IDotNetTypeLookup typeLookup,
             DotNetProvider provider,
             object value,
@@ -37,7 +37,7 @@ namespace DatenMeister.Provider.DotNet
                     $"The type '{value.GetType().FullName}' is not known to the DotNetTypeLookup");
             }
 
-            var result = new DotNetElement(provider, typeLookup, value, metaclass);
+            var result = new DotNetProviderObject(provider, typeLookup, value, metaclass);
             if (!string.IsNullOrEmpty(id))
             {
                 result.Id = id;
@@ -56,7 +56,7 @@ namespace DatenMeister.Provider.DotNet
         public static IReflectiveSequence CreateDotNetReflectiveSequence(
             this IDotNetTypeLookup lookup, 
             object list,
-            DotNetElement container)
+            DotNetProviderObject container)
         {
             throw new NotImplementedException();
             /*
@@ -116,7 +116,7 @@ namespace DatenMeister.Provider.DotNet
                 return element;
             }
 
-            var elementAsDotNetElement = element as DotNetElement;
+            var elementAsDotNetElement = element as DotNetProviderObject;
             if (elementAsDotNetElement != null)
             {
                 return elementAsDotNetElement.GetNativeValue();
@@ -138,7 +138,7 @@ namespace DatenMeister.Provider.DotNet
         public static object CreateDotNetElementIfNecessary(
             this IDotNetTypeLookup dotNetTypeLookup, 
             object result,
-            DotNetElement container)
+            DotNetProviderObject container)
         {
             if (result == null)
             {

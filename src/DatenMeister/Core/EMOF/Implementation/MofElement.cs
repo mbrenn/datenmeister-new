@@ -1,6 +1,8 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
+using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -9,6 +11,23 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId
     {
+        /// <summary>
+        /// Stores the resolver
+        /// </summary>
+        private IUriResolver _resolver;
+
+        /// <inheritdoc />
+        public string Id => ProviderObject.Id;
+
+        /// <summary>
+        /// Initialiezs a new instance of the MofElement. This method is just used for migration
+        /// </summary>
+        [Obsolete]
+        public MofElement() : base(new InMemoryObject(InMemoryProvider.TemporaryProvider), InMemoryProvider.TemporaryExtent)
+        {
+
+        }
+
         private IElement _container;
 
         /// <summary>
@@ -17,7 +36,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="providedObject">Provided object by database</param>
         /// <param name="extent">Extent to which the object is allocated to</param>
         /// <param name="container"></param>
-        public MofElement(IProviderObject providedObject, Extent extent, IElement container = null) : base (providedObject, extent)
+        public MofElement(IProviderObject providedObject, Extent extent, IElement container = null)
+            : base(providedObject, extent)
         {
             _container = container;
         }
@@ -34,7 +54,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return null;
             }
 
-            return Extent.Resolver.Resolve(uri);
+            return Extent?.Resolver.Resolve(uri);
         }
 
         /// <inheritdoc />
@@ -46,6 +66,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void SetContainer(IElement container)
         {
             _container = container;
+            Extent = ((MofElement) container).Extent;
         }
 
         /// <summary>
@@ -55,10 +76,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void SetMetaClass(IElement metaClass)
         {
             var mofElement = (MofElement) metaClass;
-            ProviderObject.MetaclassUri = (mofElement.Extent as UriExtent).uri(metaClass);
+            ProviderObject.MetaclassUri = ((UriExtent) mofElement.Extent).uri(metaClass);
         }
-
-        /// <inheritdoc />
-        public string Id => ProviderObject.Id;
     }
 }

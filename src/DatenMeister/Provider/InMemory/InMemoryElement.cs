@@ -11,7 +11,7 @@ namespace DatenMeister.Provider.InMemory
     public class InMemoryElement : MofElement
     {
         /// <inheritdoc />
-        public InMemoryElement() : base(new InMemoryObject(null), null)
+        public InMemoryElement() : base()
         {
         }
 

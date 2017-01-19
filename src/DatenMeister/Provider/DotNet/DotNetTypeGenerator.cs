@@ -27,8 +27,8 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="umlHost">The UML reference storing the metaclass for class, properties, etc. </param>
         public DotNetTypeGenerator(IFactory factoryForTypes, _UML umlHost)
         {
-            Debug.Assert(umlHost != null, "umlHost != null");
-            Debug.Assert(factoryForTypes != null, "factoryForTypes != null");
+            if (factoryForTypes == null) throw new ArgumentNullException(nameof(factoryForTypes));
+            if (umlHost == null) throw new ArgumentNullException(nameof(umlHost));
             _factoryForTypes = factoryForTypes;
             _umlHost = umlHost;
         }

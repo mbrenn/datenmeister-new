@@ -17,7 +17,7 @@ namespace DatenMeister.Tests
             var workspace = new Workspace("data", "No annotation");
 
             var extent = new UriExtent(new InMemoryProvider(), "http://test/");
-            var factory = (IFactory) null; //new InMemoryFactory();
+            var factory = new MofFactory(extent);
             var element = factory.create(null);
             extent.elements().add(element);
 

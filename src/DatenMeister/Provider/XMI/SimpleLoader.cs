@@ -12,9 +12,11 @@ using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.XMI
 {
+    /// <summary>
+    /// Includes a simple XMI loader which is attribute and element driven
+    /// </summary>
     public class SimpleLoader
     {
-
         private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>();
 
         /// <summary>
@@ -38,6 +40,7 @@ namespace DatenMeister.Provider.XMI
 
         public void LoadFromFile(IFactory factory, IUriExtent extent, string filePath)
         {
+            if (factory == null) throw new ArgumentNullException(nameof(factory));
             using (var stream = new FileStream(filePath, FileMode.Open))
             {
                 LoadFromStream(factory, extent, stream);
@@ -47,6 +50,7 @@ namespace DatenMeister.Provider.XMI
         /// <summary>
         ///     Loads the file from a stream
         /// </summary>
+        /// <param name="factory"></param>
         /// <param name="extent">Extent to which the data is loaded</param>
         /// <param name="stream">Stream to be used for loading</param>
         public void LoadFromStream(IFactory factory, IUriExtent extent, Stream stream)
@@ -58,6 +62,7 @@ namespace DatenMeister.Provider.XMI
         /// <summary>
         ///     Loads the document from an XDocument
         /// </summary>
+        /// <param name="factory"></param>
         /// <param name="extent">Extent to which the data is loaded</param>
         /// <param name="document">Document to be loaded</param>
         public void LoadFromDocument(IFactory factory, IUriExtent extent, XDocument document)
@@ -84,6 +89,9 @@ namespace DatenMeister.Provider.XMI
         /// <param name="element">Xml Element to be used to load object</param>
         private IObject LoadElement(IFactory factory, XElement element)
         {
+            if (factory == null) throw new ArgumentNullException(nameof(factory));
+            if (element == null) throw new ArgumentNullException(nameof(element));
+
             var resultingElement = factory.create(null);
             foreach (var attribute in element.Attributes())
             {

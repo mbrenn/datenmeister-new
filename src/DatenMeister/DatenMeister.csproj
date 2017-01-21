@@ -90,8 +90,6 @@
     <Compile Include="Provider\ElementReference.cs" />
     <Compile Include="Provider\TableFormatter.cs" />
     <Compile Include="Provider\XMI\EMOF\XmlElement.cs" />
-    <Compile Include="Provider\XMI\EMOF\XmlFactory.cs" />
-    <Compile Include="Provider\XMI\EMOF\XmlReflectiveSequence.cs" />
     <Compile Include="Provider\XMI\EMOF\XmlUriExtent.cs" />
     <Compile Include="Provider\XMI\ExtentStorage\XmiStorage.cs" />
     <Compile Include="Provider\XMI\ExtentStorage\XmiStorageConfiguration.cs" />

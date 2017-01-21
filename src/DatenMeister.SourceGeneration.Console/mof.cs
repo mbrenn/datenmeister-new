@@ -1,7 +1,7 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
 
-// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.1.0.0 created at 14.01.2017 21:08:46
+// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.1.0.0 created at 21.01.2017 22:32:50
 namespace DatenMeister.Core
 {
     public class _MOF

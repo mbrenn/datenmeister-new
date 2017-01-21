@@ -26,7 +26,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets the provided object
         /// </summary>
-        internal IProviderObject ProviderObject { get; }
+        public IProviderObject ProviderObject { get; }
 
         /// <summary>
         /// Initializes a new instance of the MofObject class. 
@@ -80,8 +80,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="property">Property to be set</param>
         /// <param name="value">Value to be converted</param>
+        /// <param name="noReferences">True, if references shall be resolved</param>
         /// <returns>The converted object</returns>
-        internal static object ConvertToMofObject(MofObject container, string property, object value, bool noReferences = false)
+        internal static object ConvertToMofObject(MofObject container, string property, object value,
+            bool noReferences = false)
         {
             if (DotNetHelper.IsOfPrimitiveType(value))
             {
@@ -96,17 +98,17 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             if (value is IEnumerable<object>)
             {
-                return new MofReflectiveSequence(container, property, (IEnumerable<object>) value);
+                return new MofReflectiveSequence(container, property);
             }
 
-            if (value is UriReference )
+            var valueAsUriReference = value as UriReference;
+            if (valueAsUriReference != null)
             {
                 if (noReferences)
                 {
                     return null;
                 }
-
-                var valueAsUriReference = value as UriReference;
+                
                 return container.Extent.Resolver.Resolve(valueAsUriReference.Uri);
             }
 
@@ -152,7 +154,11 @@ namespace DatenMeister.Core.EMOF.Implementation
                 if (asMofObject.Extent == null)
                 {
                     var result = (MofElement) ObjectCopier.Copy(new MofFactory(ProviderObject.Provider), asMofObject);
-                    result.SetContainer(this as IElement);
+                    if (this is IElement)
+                    {
+                        result.SetContainer(this as IElement);
+                    }
+
                     return result.ProviderObject;
                 }
                 else

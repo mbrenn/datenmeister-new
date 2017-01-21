@@ -106,7 +106,7 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public string Id { get; }
+        public string Id { get; set; }
 
         /// <inheritdoc />
         public string MetaclassUri { get; set; }

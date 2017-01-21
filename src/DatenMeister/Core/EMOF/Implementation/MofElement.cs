@@ -9,7 +9,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// <summary>
     /// Defines a Mof Element according to MOF specification
     /// </summary>
-    public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId
+    public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICanSetId
     {
         /// <summary>
         /// Stores the resolver
@@ -17,9 +17,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         private IUriResolver _resolver;
 
         /// <inheritdoc />
-        public string Id => ProviderObject.Id;
+        public string Id
+        {
+            get { return ProviderObject.Id; }
+            set { ProviderObject.Id = value; }
+        }
 
-        /// <summary>
+    /// <summary>
         /// Initialiezs a new instance of the MofElement. This method is just used for migration
         /// </summary>
         [Obsolete]
@@ -36,7 +40,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="providedObject">Provided object by database</param>
         /// <param name="extent">Extent to which the object is allocated to</param>
         /// <param name="container"></param>
-        public MofElement(IProviderObject providedObject, Extent extent, IElement container = null)
+        public MofElement(
+            IProviderObject providedObject, 
+            Extent extent,
+            IElement container = null)
             : base(providedObject, extent)
         {
             _container = container;

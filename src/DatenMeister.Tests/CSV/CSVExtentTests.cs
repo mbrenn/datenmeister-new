@@ -1,7 +1,9 @@
 ﻿using System.IO;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.CSV.Runtime.Storage;
+using DatenMeister.Provider.XMI.EMOF;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.CSV
@@ -28,13 +30,15 @@ namespace DatenMeister.Tests.CSV
             };
 
             var storage = new CSVStorage(null);
-            var extent = storage.LoadExtent(storageConfiguration, false);
+            var provider = storage.LoadExtent(storageConfiguration, false);
+            var extent = new UriExtent(provider, "dm:////test/");
+
             
             Assert.That(storageConfiguration.Settings.Columns.Count, Is.EqualTo(3));
             Assert.That(extent.elements().Count(), Is.EqualTo(4));
 
             // Stores the csv file
-            storage.StoreExtent(extent, storageConfiguration);
+            storage.StoreExtent(provider, storageConfiguration);
             var readCsvFile = File.ReadAllText("data.txt");
 
             Assert.That(readCsvFile, Is.EqualTo(csvFile));
@@ -42,7 +46,7 @@ namespace DatenMeister.Tests.CSV
             var firstElement = extent.elements().ElementAt(0) as IObject;
             Assert.That(firstElement, Is.Not.Null);
             firstElement.set(storageConfiguration.Settings.Columns[0], "eens");
-            storage.StoreExtent(extent, storageConfiguration);
+            storage.StoreExtent(provider, storageConfiguration);
             readCsvFile = File.ReadAllText("data.txt");
             Assert.That(readCsvFile, Is.EqualTo(csvOtherFile));
 

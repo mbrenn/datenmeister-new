@@ -7,6 +7,7 @@ using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.XMI.Standards;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
@@ -16,45 +17,22 @@ namespace DatenMeister.Provider.XMI.EMOF
     /// <summary>
     /// Abstracts the IObject from EMOF
     /// </summary>
-    public class XmlElement : IElement, IHasId, IHasExtent, IObjectAllProperties
+    public class XmlElement : IProviderObject
     {
         public static readonly XName TypeAttribute = Namespaces.Xmi + "type";
-        private static readonly XName AttributeNameForId = "id";
 
         private readonly XElement _node;
 
         public XElement XmlNode => _node;
 
         /// <summary>
-        /// Stores the owning element of the element. 
-        /// </summary>
-        private readonly XmlElement _container;
-
-        /// <summary>
-        /// Stores the owning extent of the object.
-        /// This object or the container should be set
-        /// </summary>
-        private readonly XmlUriExtent _owningExtent;
-
-        /// <summary>
         /// Gets the id of the XmlElement
         /// </summary>
-        public string Id => _node.Attribute(AttributeNameForId).Value;
-
-        public XmlElement(XElement node, XmlElement container = null)
+        public string Id
         {
-            Debug.Assert(node != null, "node != null");
-            _node = node;
-            _container = container;
-
-            // Checks, if an id is given. if not. set it. 
-            if (node.Attribute(AttributeNameForId) == null)
-            {
-                node.SetAttributeValue(AttributeNameForId, Guid.NewGuid().ToString());
-            }
+            get { return XmiId.Get(_node); }
+            set { XmiId.Set(_node, value); }
         }
-
-        public IExtent Extent => _owningExtent;
 
         /// <summary>
         /// Initializes a new instance of the XmlElement class.
@@ -62,164 +40,21 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <param name="node">Node to be used</param>
         /// <param name="extent">Extent to be set</param>
         public XmlElement(XElement node, XmlUriExtent extent)
-            : this(node)
         {
-            _owningExtent = extent;
-        }
+            Debug.Assert(node != null, "node != null");
+            _node = node;
+            Provider = extent;
 
-        public override bool Equals(object obj)
-        {
-            return equals(obj);
+            // Checks, if an id is given. if not. set it. 
+            if (!XmiId.HasId(node))
+            {
+                XmiId.Set(node, Guid.NewGuid().ToString());
+            }
         }
 
         public override int GetHashCode()
         {
             return _node.GetHashCode();
-        }
-
-        /// <summary>
-        /// Gets all the properties that are set within the xml node
-        /// </summary>
-        /// <returns>Enumeration of objects</returns>
-        public IEnumerable<string> getPropertiesBeingSet()
-        {
-            foreach (var attribute in _node.Attributes())
-            {
-                var xmlNamespace = attribute.Name.Namespace;
-                if (xmlNamespace == Namespaces.Xmi || xmlNamespace == Namespaces.XmlNamespace)
-                {
-                    continue;
-                }
-
-                yield return attribute.Name.ToString();
-            }
-
-            foreach (var element in _node.Elements().Distinct())
-            {
-                yield return element.Name.ToString();
-            }
-        }
-
-        public bool equals(object other)
-        {
-            Debug.Write($"this:{GetHashCode()} other:{other.GetHashCode()}");
-            var otherAsXmlObject = other as XmlElement;
-
-            // Simple implementation will look, if all the attributes are same
-            if (_node.Attributes().Count() != otherAsXmlObject?._node.Attributes().Count())
-            {
-                return false;
-            }
-
-            foreach (var attribute in _node.Attributes())
-            {
-                var otherAttribute = otherAsXmlObject._node.Attribute(attribute.Name);
-                if (otherAttribute == null)
-                {
-                    return false;
-                }
-
-                if (otherAttribute.Value != attribute.Value)
-                {
-                    return false;
-                }
-            }
-
-            // Ok, all the attributes are the same, we regard it as the same... until now
-            return true;
-        }
-
-        public object get(string property)
-        {
-            var propertyAsString = ReturnObjectAsString(property);
-            // Check, if there are subelements as the given property
-            if (_node.Elements(propertyAsString).Any())
-            {
-                var xmiReflection = new XmlReflectiveSequence(_owningExtent, _node, property);
-                return xmiReflection;
-            }
-
-            // Check, if there is the attribute, otherwise null
-            return _node.Attribute(propertyAsString)?.Value;
-        }
-
-        public bool isSet(string property)
-        {
-            var propertyAsString = ReturnObjectAsString(property);
-            return _node.Attribute(propertyAsString) != null || _node.Elements(propertyAsString).Any(); 
-        }
-
-        public void set(string property, object value)
-        {
-            if (value == null)
-            {
-                unset(property);
-                return;
-            }
-
-            var propertyAsString = ReturnObjectAsString(property);
-
-            if (DotNetHelper.IsOfMofObject(value))
-            {
-                // Remove attribute and remove element
-                UnsetProperty(propertyAsString);
-                var valueAsObject = value as IObject;
-
-                var factory = new XmlFactory {Owner = _owningExtent, ElementName = propertyAsString};
-                var objectCopier =
-                    new ObjectCopier(factory);
-                var targetElement = (XmlElement) objectCopier.Copy(valueAsObject);
-
-                _node.Add(targetElement._node);
-            }
-            else if (DotNetHelper.IsOfEnumeration(value))
-            {
-                // Remove attribute and remove element
-                UnsetProperty(propertyAsString);
-
-                // Now create the elements
-                var objectCopier =
-                    new ObjectCopier(new XmlFactory { Owner = _owningExtent, ElementName = propertyAsString });
-
-                var valueAsEnumeration = (IEnumerable) value;
-                foreach (var innerValue in valueAsEnumeration)
-                {
-                    var innerValueAsIElement = innerValue as IObject;
-                    if (innerValueAsIElement != null)
-                    {
-                        var copiedElement = (XmlElement) objectCopier.Copy(innerValueAsIElement);
-                        _node.Add(copiedElement._node);
-                    }
-                    else
-                    {
-                        // We add them as real elements.
-                        var element = new XElement(propertyAsString)
-                        {
-                            Value = ReturnObjectAsString(innerValue)
-                        };
-
-                        _node.Add(element);
-                    }
-                }
-            }
-            else
-            {
-                _node.SetAttributeValue(propertyAsString, ReturnObjectAsString(value));
-            }
-        }
-
-        private void UnsetProperty(string propertyAsString)
-        {
-            _node.Attributes(propertyAsString).FirstOrDefault()?.Remove();
-            foreach (var x in _node.Elements(propertyAsString).ToList())
-            {
-                x.Remove();
-            }
-        }
-
-        public void unset(string property)
-        {
-            UnsetProperty(property);
         }
 
         private string ReturnObjectAsString(object property)
@@ -249,40 +84,195 @@ namespace DatenMeister.Provider.XMI.EMOF
                 throw new ArgumentNullException(nameof(property));
             }
 
-            throw new InvalidOperationException($"Only strings as properties are supported at the moment. Type is: {property.GetType()}");
+            throw new InvalidOperationException(
+                $"Only strings as properties are supported at the moment. Type is: {property.GetType()}");
         }
 
-        public IElement metaclass => getMetaClass();
-
-        public IElement getMetaClass()
+        private XElement ConvertValueAsXmlObject(string property, object value)
         {
-            // Find the metaclass uri.
-            var attribute = XmlNode.Attribute(TypeAttribute);
-            if (attribute == null)
+            var valueAsXmlObject = value as XmlElement;
+            if (valueAsXmlObject != null)
             {
-                return null;
+                valueAsXmlObject.XmlNode.Name = property;
+                return valueAsXmlObject.XmlNode;
             }
 
-            var extent = GetExtent();
-            if (extent?.Workspaces == null)
+            /*var valueAsElement = value as IElement;
+            if (valueAsElement != null)
             {
-                // We have it, now try to find it. 
-                // First of all, we need to get a list of all extents in the meta layer
-                throw new InvalidOperationException("We have a metaclass but cannot find it due to missing extent");
+                var copier = new ObjectCopier(new XmlFactory { Owner = _extent, ElementName = _propertyName });
+                return ((XmlElement) copier.Copy(valueAsElement)).XmlNode;
+            }*/
+
+            if (DotNetHelper.IsOfPrimitiveType(value))
+            {
+                return new XElement(property, value.ToString());
             }
 
-            return extent.Workspaces.FindItem(attribute.Value);
+            throw new InvalidOperationException("Value is not an XmlObject or an IElement: " + value);
         }
 
-        private XmlUriExtent GetExtent()
-        {
-            return _owningExtent ?? _container?.GetExtent();
-        }
-             
+        /// <inheritdoc />
+        public IProvider Provider { get; }
 
-        public IElement container()
+        /// <inheritdoc />
+        public string MetaclassUri { get; set; }
+
+        /// <inheritdoc />
+        public bool IsPropertySet(string property)
         {
-            return null;
+            var propertyAsString = ReturnObjectAsString(property);
+            return _node.Attribute(propertyAsString) != null || _node.Elements(propertyAsString).Any();
+        }
+
+        /// <inheritdoc />
+        public object GetProperty(string property)
+        {
+            var propertyAsString = ReturnObjectAsString(property);
+            // Check, if there are subelements as the given property
+            if (_node.Elements(propertyAsString).Any())
+            {
+                var list = new List<object>();
+                foreach (var element in _node.Elements(propertyAsString))
+                {
+                    list.Add(new XmlElement(element, (XmlUriExtent) Provider));
+                }
+
+                return list;
+            }
+
+            // Check, if there is the attribute, otherwise null
+            var attribute = _node.Attribute(propertyAsString);
+            if (attribute != null)
+            {
+                return attribute.Value;
+            }
+
+            // For unknown objects, return an empty enumeration which will then be converted to an Reflective Sequence
+            return new List<object>();
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<string> GetProperties()
+        {
+            foreach (var attribute in _node.Attributes())
+            {
+                var xmlNamespace = attribute.Name.Namespace;
+                if (xmlNamespace == Namespaces.Xmi || xmlNamespace == Namespaces.XmlNamespace)
+                {
+                    continue;
+                }
+
+                yield return attribute.Name.ToString();
+            }
+
+            foreach (var element in _node.Elements().Distinct())
+            {
+                yield return element.Name.ToString();
+            }
+        }
+
+        /// <inheritdoc />
+        public bool DeleteProperty(string property)
+        {
+            _node.Attributes(property).FirstOrDefault()?.Remove();
+            foreach (var x in _node.Elements(property).ToList())
+            {
+                x.Remove();
+            }
+
+            return true;
+        }
+
+        /// <inheritdoc />
+        public void SetProperty(string property, object value)
+        {
+            if (value == null)
+            {
+                DeleteProperty(property);
+                return;
+            }
+
+            var propertyAsString = ReturnObjectAsString(property);
+
+            var elementAsXml = value as XmlElement;
+            if (elementAsXml != null)
+            {
+                elementAsXml.XmlNode.Name = property;
+                _node.Add(elementAsXml._node);
+            }
+            else
+            {
+                DeleteProperty(property);
+                _node.SetAttributeValue(propertyAsString, ReturnObjectAsString(value));
+            }
+        }
+
+        /// <inheritdoc />
+        public void EmptyListForProperty(string property)
+        {
+            _node.Attribute(property)?.Remove();
+            _node.Elements(property)?.Remove();
+        }
+
+        /// <summary>
+        /// Gets the size of all elements of a property, if that is an enumeration
+        /// </summary>
+        /// <param name="property">Property to be queried</param>
+        /// <returns>The size of the list</returns>
+        private int GetSizeOfList(string property)
+        {
+            return _node.Elements(property).Count();
+        }
+
+        /// <inheritdoc />
+        public bool AddToProperty(string property, object value, int index = -1)
+        {
+            if (index == GetSizeOfList(property) || index == -1)
+            {
+                var valueAsXmlObject = ConvertValueAsXmlObject(property, value);
+                _node.Add(valueAsXmlObject);
+            }
+            else
+            {
+                var valueAsXmlObject = ConvertValueAsXmlObject(property, value);
+                var addedBefore = _node.Elements(property).ElementAt(index);
+                addedBefore.AddBeforeSelf(valueAsXmlObject);
+            }
+
+            return true;
+        }
+
+        /// <inheritdoc />
+        public bool RemoveFromProperty(string property, object value)
+        {
+            if (value is XmlElement)
+            {
+                var valueAsXmlElement = value as XmlElement;
+
+                foreach (var subElement in _node.Elements(property))
+                {
+                    if (XmiId.Get(subElement) == XmiId.Get(valueAsXmlElement.XmlNode))
+                    {
+                        subElement.Remove();
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                var valueAsString = ReturnObjectAsString(value);
+                foreach (var subElement in _node.Elements(property))
+                {
+                    if (subElement.Value.Equals(valueAsString))
+                    {
+                        subElement.Remove();
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

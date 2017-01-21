@@ -155,6 +155,10 @@ namespace DatenMeister.Excel.EMOF
 
                 return $"{firstPart}.{secondPart}";*/
             }
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
 
         /// <inheritdoc />

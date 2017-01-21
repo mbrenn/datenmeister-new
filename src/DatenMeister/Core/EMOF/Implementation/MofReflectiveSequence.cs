@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -14,13 +15,11 @@ namespace DatenMeister.Core.EMOF.Implementation
     {
         private readonly MofObject _mofObject;
         private readonly string _property;
-        private readonly IEnumerable<object> _result;
 
-        public MofReflectiveSequence(MofObject mofObject, string property, IEnumerable<object> result)
+        public MofReflectiveSequence(MofObject mofObject, string property)
         {
             _mofObject = mofObject;
             _property = property;
-            _result = result;
         }
 
         /// <inheritdoc />
@@ -32,7 +31,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IEnumerator<object> GetEnumerator()
         {
-            var result = GetPropertyAsEnumerable();
+            var result =GetPropertyAsEnumerable();
             foreach (var item in result)
             {
                 yield return MofObject.ConvertToMofObject(_mofObject, _property, item);
@@ -84,7 +83,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public bool remove(object value)
         {
-            throw new NotImplementedException();
+            if (value is MofObject)
+            {
+                var asProviderObject = (value as MofObject).ProviderObject;
+                return _mofObject.ProviderObject.RemoveFromProperty(_property, asProviderObject);
+            }
+            else
+            {
+                return _mofObject.ProviderObject.RemoveFromProperty(_property, value);
+            }
         }
 
         /// <inheritdoc />
@@ -103,20 +110,21 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public object get(int index)
         {
-            return GetPropertyAsEnumerable().ElementAt(index);
+            var providerObject =  GetPropertyAsEnumerable().ElementAt(index);
+            return MofObject.ConvertToMofObject(_mofObject, _property, providerObject);
         }
 
         /// <inheritdoc />
         public void remove(int index)
         {
-            throw new NotImplementedException();
+            _mofObject.ProviderObject.RemoveFromProperty(
+                _property,
+                ((IEnumerable<object>) _mofObject.ProviderObject.GetProperty(_property)).ElementAt(index));
         }
 
         /// <inheritdoc />
         public object set(int index, object value)
         {
-            var valueToBeAdded = _mofObject.ConvertForSetting(value);
-
             var valueToBeRemoved = GetPropertyAsEnumerable().ElementAt(index);
             _mofObject.ProviderObject.RemoveFromProperty(_property, valueToBeRemoved);
             add(index, value);

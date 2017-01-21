@@ -35,14 +35,14 @@ namespace DatenMeister.Apps.ZipCode
                 HasHeader = false
             };
 
-            ZipCodes = new UriExtent(new InMemoryProvider(), "datenmeister:///zipcodes");
+            var provider = new InMemoryProvider();
+            ZipCodes = new UriExtent(provider, "datenmeister:///zipcodes");
             var factory = new MofFactory(ZipCodes);
 
             var csvProvider = new CSVDataProvider(null);
 
             csvProvider.Load(
-                ZipCodes,
-                factory,
+                provider,
                 stream,
                 csvSettings);
 

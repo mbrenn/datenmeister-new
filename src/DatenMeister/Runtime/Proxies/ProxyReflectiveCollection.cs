@@ -10,7 +10,7 @@ namespace DatenMeister.Runtime.Proxies
 {
     public class ProxyReflectiveCollection : IReflectiveCollection
     {
-        protected readonly IReflectiveCollection Collection;
+        protected IReflectiveCollection Collection { get; set; }
         
         /// <summary>
         /// Gets or sets the conversion method being used, when content of the 
@@ -24,7 +24,6 @@ namespace DatenMeister.Runtime.Proxies
         /// </summary>
         public Func<object, object> PrivatizeElementFunc { get; set; }
         
-
         public ProxyReflectiveCollection(IReflectiveCollection collection)
         {
             Collection = collection;

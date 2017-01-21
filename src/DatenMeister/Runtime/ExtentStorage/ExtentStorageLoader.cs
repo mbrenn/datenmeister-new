@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -72,13 +73,14 @@ namespace DatenMeister.Runtime.ExtentStorage
                 throw new InvalidOperationException("Extent for configuration could not be loaded");
             }
 
-            AddToWorkspaceIfPossible(configuration, loadedExtent);
+            var uriExtent = new UriExtent(loadedExtent, configuration.ExtentUri);
+            AddToWorkspaceIfPossible(configuration, uriExtent);
 
             // Stores the information into the data container
             var info = new ExtentStorageData.LoadedExtentInformation
             {
                 Configuration = configuration,
-                Extent = loadedExtent
+                Extent = uriExtent
             };
 
             lock (_data.LoadedExtents)
@@ -86,7 +88,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 _data.LoadedExtents.Add(info);
             }
 
-            return loadedExtent;
+            return uriExtent;
         }
 
         private void AddToWorkspaceIfPossible(ExtentStorageConfiguration configuration, IUriExtent loadedExtent)
@@ -127,9 +129,13 @@ namespace DatenMeister.Runtime.ExtentStorage
             Debug.WriteLine($"Writing extent: {information.Configuration}");
 
             var extentStorage = _map.CreateFor(_diScope, information.Configuration);
-            extentStorage.StoreExtent(information.Extent, information.Configuration);
+            extentStorage.StoreExtent(((UriExtent) information.Extent).Provider, information.Configuration);
         }
 
+        /// <summary>
+        /// Detaches the extent by removing it from the database of loaded extents
+        /// </summary>
+        /// <param name="extent"></param>
         public void DetachExtent(IUriExtent extent)
         {
             lock (_data.LoadedExtents)

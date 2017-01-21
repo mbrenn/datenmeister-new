@@ -1,19 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using DatenMeister.Core.EMOF.Attributes;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.DotNet;
-using DatenMeister.Runtime;
+using DatenMeister.Provider.XMI.Standards;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.XMI.EMOF
 {
-    [AssignFactoryForExtentType(typeof(XmlFactory))]
-    public class XmlUriExtent : IUriExtent
+    /// <summary>
+    /// Defines the provider for xml manipulation
+    /// </summary>
+    public class XmlUriExtent : IProvider
     {
+        /// <summary>
+        /// Defines the name of the element
+        /// </summary>
+        public string ElementName { get; set; } = DefaultElementNodeName;
+
         public const string DefaultRootNodeName = "xmi";
         public const string DefaultElementNodeName = "item";
         private readonly string _urlPropertyName = "uri";
@@ -22,27 +25,19 @@ namespace DatenMeister.Provider.XMI.EMOF
         private readonly XElement _rootNode;
 
         internal XDocument Document => _document;
-
-        public IWorkspaceLogic Workspaces { get; set; }
-
-
-        private readonly ExtentUrlNavigator<XmlElement> _navigator;
-
-        public XmlUriExtent(IWorkspaceLogic workspaces, string uri, string rootNodeName = DefaultRootNodeName)
+        
+        public XmlUriExtent(/*string rootNodeName = DefaultRootNodeName*/)
         {
-            if (workspaces == null) throw new ArgumentNullException(nameof(workspaces));
-            Workspaces = workspaces;
+            var rootNodeName = DefaultRootNodeName;
             _document = new XDocument();
             _rootNode = new XElement(rootNodeName);
             _document.Add(_rootNode);
-            _rootNode.SetAttributeValue(_urlPropertyName, uri);
-            _navigator = new ExtentUrlNavigator<XmlElement>(this);
+            /*_rootNode.SetAttributeValue(_urlPropertyName, uri);*/
         }
 
-        public XmlUriExtent(IWorkspaceLogic workspaces, XDocument document, string uri, string rootNodeName = DefaultRootNodeName)
+        public XmlUriExtent(XDocument document/*, string rootNodeName = DefaultRootNodeName*/)
         {
-            if (workspaces == null) throw new ArgumentNullException(nameof(workspaces));
-            Workspaces = workspaces;
+            var rootNodeName = DefaultRootNodeName;
             _document = document;
             _rootNode = _document.Element(rootNodeName);
 
@@ -50,76 +45,73 @@ namespace DatenMeister.Provider.XMI.EMOF
             {
                 throw new InvalidOperationException($"The given document does not have a root node called {rootNodeName}.");
             }
-            
-            _rootNode.SetAttributeValue(_urlPropertyName, uri);
-            _navigator = new ExtentUrlNavigator<XmlElement>(this);
         }
 
-        public bool useContainment()
+        /// <inheritdoc />
+        public IProviderObject CreateElement(string metaClassUri)
         {
+            var node = new XElement(ElementName);
+            if (!string.IsNullOrEmpty(metaClassUri))
+            {
+                node.Add(new XAttribute(XmlElement.TypeAttribute, metaClassUri));
+            }
+
+            return new XmlElement(node, this);
+        }
+
+        /// <inheritdoc />
+        public void AddElement(IProviderObject valueAsObject, int index = -1)
+        {
+            _rootNode.Add(((XmlElement) valueAsObject).XmlNode);
+        }
+
+        /// <inheritdoc />
+        public bool DeleteElement(string id)
+        {
+            var found = FindById(id);
+            if (found != null)
+            {
+                found.Remove();
+                return true;
+            }
+
             return false;
         }
 
-        public IReflectiveSequence elements()
+        /// <inheritdoc />
+        public void DeleteAllElements()
         {
-            return new XmlReflectiveSequence(this, _rootNode, DefaultElementNodeName);
+            _rootNode.RemoveAll();
         }
 
-        public string contextURI()
+        /// <inheritdoc />
+        public IProviderObject Get(string id)
         {
-            var attribute = _rootNode.Attribute(_urlPropertyName);
-            if (attribute == null)
+            if (id == null)
             {
-                throw new InvalidOperationException("Extent does not have a uri");
+                return new XmlElement(_rootNode, this);
             }
 
-            return _rootNode.Attribute(_urlPropertyName).Value;
-        }
-
-        public string uri(IElement element)
-        {
-            return _navigator.uri(element);
+            var result = FindById(id);
+            return result == null ? null : new XmlElement(result, this);
         }
 
         /// <summary>
-        /// Gets the element by the uri
+        /// Finds a certain Xml Element by its id
         /// </summary>
-        /// <param name="uri">Uri of the element to be retrieved</param>
+        /// <param name="id">Id to be queried</param>
         /// <returns>The found element</returns>
-        public IElement element(string uri)
+        public XElement FindById(string id)
         {
-            return _navigator.element(uri);
+            return _rootNode.Descendants().FirstOrDefault(x => XmiId.Get(x) == id);
         }
-
-
         /// <inheritdoc />
-        public bool @equals(object other)
+        public IEnumerable<IProviderObject> GetRootObjects()
         {
-            return Equals(other);
-        }
-
-        /// <inheritdoc />
-        public object get(string property)
-        {
-            return new XmlElement(_rootNode, this).get(property);
-        }
-
-        /// <inheritdoc />
-        public void set(string property, object value)
-        {
-            new XmlElement(_rootNode, this).set(property, value);
-        }
-
-        /// <inheritdoc />
-        public bool isSet(string property)
-        {
-            return new XmlElement(_rootNode, this).isSet(property);
-        }
-
-        /// <inheritdoc />
-        public void unset(string property)
-        {
-            new XmlElement(_rootNode, this).unset(property);
+            foreach (var element in _rootNode.Elements())
+            {
+                yield return new XmlElement(element, this);
+            }
         }
     }
 }

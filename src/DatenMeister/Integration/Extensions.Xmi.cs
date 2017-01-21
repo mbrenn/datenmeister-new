@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.Workspaces;
@@ -17,9 +18,8 @@ namespace DatenMeister.Integration
 			this IDatenMeisterScope scope,
             string uri)
 		{
-		    var workspaceCollection = scope.Resolve<IWorkspaceLogic>();
-            var result = new XmlUriExtent(workspaceCollection,uri);
-		    return result;
+            var xmlProvider = new XmlUriExtent();
+		    return new UriExtent(xmlProvider, uri);
 		}
     }
 }

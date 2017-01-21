@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -295,7 +296,7 @@ namespace DatenMeister.Web.Api
             
             using (var stream = new StringWriter())
             {
-                provider.SaveToStream(stream, foundExtent, new CSVSettings());
+                provider.SaveToStream(stream, ((UriExtent) foundExtent).Provider, new CSVSettings());
                 var httpResponse = new HttpResponseMessage
                 {
                     Content = new StringContent(stream.GetStringBuilder().ToString())

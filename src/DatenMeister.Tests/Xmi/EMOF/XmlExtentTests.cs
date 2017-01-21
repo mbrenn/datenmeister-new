@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Autofac;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
@@ -24,11 +27,12 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public void TestXmlMofObject()
         {
-            var mofObject = new XmlElement(new XElement("item"));
+            var xmlExtent = new XmlUriExtent();
+            var uriExtent = new UriExtent(xmlExtent, "dm:///test/" );
+            var mofFactory = new MofFactory(uriExtent);
+            var mofObject = mofFactory.create(null);
             mofObject.set("test", "testvalue");
             Assert.That(mofObject.getMetaClass(), Is.Null);
-            Assert.That(mofObject.metaclass, Is.Null);
-            Assert.That(mofObject.container(), Is.Null);
 
             Assert.That(mofObject.isSet("none"), Is.False);
             Assert.That(mofObject.isSet("test"), Is.True);
@@ -40,16 +44,23 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public void TestXmlMofObjectWithElementSet()
         {
-            var provider = new InMemoryProvider();
-            var mofElement = new InMemoryObject(provider);
-            mofElement.SetProperty("Name", "Brenn");
-            mofElement.SetProperty("Vorname", "Martin");
+            var tempExtent = new UriExtent(new InMemoryProvider(), "dm:///temp/");
+            var imFactory = new MofFactory(tempExtent);
+            var mofElement = imFactory.create(null);
+            mofElement.set("Name", "Brenn");
+            mofElement.set("Vorname", "Martin");
 
-            var xmlNode = new XElement("item");
-            var xmlElement = new XmlElement(xmlNode);
+            var xmlExtent = new XmlUriExtent();
+            var uriExtent = new UriExtent(xmlExtent, "dm:///test/");
+            var mofFactory = new MofFactory(uriExtent);
+            
+            var xmlElement = mofFactory.create(null);
             xmlElement.set("X", "y");
             xmlElement.set("Person", mofElement);
-            
+
+            // Get the xml properties
+            var providerObject = ((MofObject) xmlElement).ProviderObject;
+            var xmlNode = ((XmlElement) providerObject).XmlNode;
             Assert.That(xmlNode.Attribute("X")?.Value, Is.EqualTo("y"));
             Assert.That(xmlNode.Elements("Person").Count(), Is.EqualTo(1));
             Assert.That(xmlNode.Element("Person")?.Attribute("Name")?.Value, Is.EqualTo("Brenn"));
@@ -57,7 +68,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
 
             Assert.That(xmlElement.get("X"), Is.EqualTo("y"));
             var person = CollectionHelper.MakeSingle(xmlElement.get("Person"));
-            Assert.That(person, Is.TypeOf<XmlElement>());
+            Assert.That(person, Is.TypeOf<MofElement>());
 
             var personAsElement = (IElement) person;
             Assert.That(personAsElement.get("Name"), Is.EqualTo("Brenn"));
@@ -67,12 +78,21 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public void TestXmlMofReflectiveSequence()
         {
-            var mofObject1 = new XmlElement(new XElement("item"));
-            var mofObject2 = new XmlElement(new XElement("item"));
-            var mofObject3 = new XmlElement(new XElement("item"));
-            var mofObject4 = new XmlElement(new XElement("item"));
+            var xmlExtent = new XmlUriExtent();
+            var uriExtent = new UriExtent(xmlExtent, "dm:///test/");
+            var mofFactory = new MofFactory(uriExtent);
+            var mofObject1 = mofFactory.create(null);
+            var mofObject2 = mofFactory.create(null);
+            var mofObject3 = mofFactory.create(null);
+            var mofObject4 = mofFactory.create(null);
 
-            var mofReflectiveSequence = new XmlReflectiveSequence(null, new XElement("items"), "item");
+            var mofContainer = mofFactory.create(null); ;
+
+            mofContainer.set("items", new List<object>());
+            mofContainer.set("items2", new List<object>());
+            mofContainer.set("items3", new List<object>());
+            var mofReflectiveSequence = mofContainer.get("items") as IReflectiveSequence;
+            Assert.That(mofReflectiveSequence, Is.Not.Null);
             Assert.That(mofReflectiveSequence.size(), Is.EqualTo(0));
             Assert.That(mofReflectiveSequence.ToArray().Count, Is.EqualTo(0));
 
@@ -95,7 +115,9 @@ namespace DatenMeister.Tests.Xmi.EMOF
             mofReflectiveSequence.add(mofObject1);
             mofReflectiveSequence.add(mofObject2);
 
-            var otherMofReflectiveSequence = new XmlReflectiveSequence(null, new XElement("items"), "item");
+
+            var otherMofReflectiveSequence = mofContainer.get("items2") as IReflectiveSequence;
+            Assert.That(otherMofReflectiveSequence, Is.Not.Null);
             otherMofReflectiveSequence.addAll(mofReflectiveSequence);
             Assert.That(otherMofReflectiveSequence.size(), Is.EqualTo(2));
             Assert.That(otherMofReflectiveSequence.ToArray().Count, Is.EqualTo(2));
@@ -104,8 +126,8 @@ namespace DatenMeister.Tests.Xmi.EMOF
             Assert.That(otherMofReflectiveSequence.size(), Is.EqualTo(0));
             Assert.That(otherMofReflectiveSequence.ToArray().Count, Is.EqualTo(0));
 
-
-            otherMofReflectiveSequence = new XmlReflectiveSequence(null, new XElement("items"), "item");
+            otherMofReflectiveSequence = mofContainer.get("items3") as IReflectiveSequence;
+            Assert.That(otherMofReflectiveSequence, Is.Not.Null);
             otherMofReflectiveSequence.add(0, mofObject1);
             otherMofReflectiveSequence.add(0, mofObject2);
             otherMofReflectiveSequence.add(1, mofObject3);
@@ -125,11 +147,14 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public void TestXmlExtent()
         {
-            var mofObject1 = new XmlElement(new XElement("item"));
-            var mofObject2 = new XmlElement(new XElement("item"));
-            var mofObject3 = new XmlElement(new XElement("item"));
 
-            var extent = new XmlUriExtent(WorkspaceLogic.GetDefaultLogic(),  "dm:///test/");
+            var xmlProvider = new XmlUriExtent();
+            var extent = new UriExtent(xmlProvider, "dm:///test/");
+            var factory = new MofFactory(extent);
+            var mofObject1 = factory.create(null);
+            var mofObject2 = factory.create(null);
+            var mofObject3 = factory.create(null);
+
             Assert.That(extent.contextURI(), Is.EqualTo("dm:///test/"));
 
             // At the moment, it is not defined whether to contain or not contain. Just to increase coverage
@@ -198,10 +223,12 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public void TestXmlFactory()
         {
-            var factory = new XmlFactory();
+            var xmlProvider = new XmlUriExtent();
+            var extent = new UriExtent(xmlProvider, "dm:///test/");
+            var factory = new MofFactory(extent);
             var mofElement = factory.create(null);
             Assert.That(mofElement, Is.Not.Null);
-            Assert.That(mofElement, Is.TypeOf<XmlElement>());
+            Assert.That(mofElement, Is.TypeOf<MofElement>());
         }
 
         [Test]
@@ -268,7 +295,8 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 var uml = umlDataLayer.Get<_UML>();
                 Assert.That(uml, Is.Not.Null);
 
-                var extent = new XmlUriExtent(scope.Resolve<IWorkspaceLogic>(), "dm:///test");
+                var xmlProvider = new XmlUriExtent();
+                var extent = new UriExtent(xmlProvider, "dm:///test/");
                 dataLayerLogic.GetTypes().AddExtent(extent);
 
                 var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(scope, extent);

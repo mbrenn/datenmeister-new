@@ -26,15 +26,14 @@ namespace DatenMeister.Provider.CSV
         ///     Loads the CSV Extent out of the settings and stores the extent Uri
         /// </summary>
         /// <param name="extent">The uri being used for an extent</param>
-        /// <param name="factory">Factory being used to create a new instance</param>
         /// <param name="path">Path being used to load the extent</param>
         /// <param name="settings">Settings to load the extent</param>
         /// <returns>The loaded extent</returns>
-        public void Load(IUriExtent extent, IFactory factory, string path, CSVSettings settings)
+        public void Load(IProvider extent, string path, CSVSettings settings)
         {
             using (var fileStream = new FileStream(path, FileMode.Open))
             {
-                Load(extent, factory, fileStream, settings);
+                Load(extent, fileStream, settings);
             }
         }
 
@@ -42,13 +41,12 @@ namespace DatenMeister.Provider.CSV
         ///     Loads the CSV Extent out of the settings and stores the extent Uri
         /// </summary>
         /// <param name="extent">The uri being used for an extent</param>
-        /// <param name="factory">Factory being used to create a new instance</param>
         /// <param name="stream">Path being used to load the extent</param>
         /// <param name="settings">Settings to load the extent</param>
         /// <returns>The loaded extent</returns>
-        public void Load(IUriExtent extent, IFactory factory, Stream stream, CSVSettings settings)
+        public void Load(IProvider extent, Stream stream, CSVSettings settings)
         {
-            ReadFromStream(extent, factory, stream, settings);
+            ReadFromStream(extent, stream, settings);
         }
 
         /// <summary>
@@ -57,8 +55,7 @@ namespace DatenMeister.Provider.CSV
         /// <param name="extent">Extet being stored</param>
         /// <param name="stream">Stream being used to read in</param>
         /// <param name="settings">Settings being used to store it.</param>
-        /// <param name="factory">Factory to be used to create the items</param>
-        private void ReadFromStream(IExtent extent, IFactory factory, Stream stream, CSVSettings settings)
+        private void ReadFromStream(IProvider extent, Stream stream, CSVSettings settings)
         {
             if (settings == null)
             {
@@ -102,7 +99,7 @@ namespace DatenMeister.Provider.CSV
                 {
                     var values = SplitLine(line, settings);
 
-                    var csvObject = factory.create(metaClass);
+                    var csvObject = extent.CreateElement(metaClass?.GetUri());
                     
                     // we now have the created object, let's fill it
                     var valueCount = values.Count;
@@ -122,11 +119,11 @@ namespace DatenMeister.Provider.CSV
                             foundColumn = columns[n];
                         }
 
-                        csvObject.set(foundColumn, values[n]);
+                        csvObject.SetProperty(foundColumn, values[n]);
                     }
 
 
-                    extent.elements().add(csvObject);
+                    extent.AddElement(csvObject);
                 }
             }
         }
@@ -146,7 +143,7 @@ namespace DatenMeister.Provider.CSV
         /// <param name="extent">Extent to be stored</param>
         /// <param name="path">Path, where file shall be stored</param>
         /// <param name="settings">Settings being used</param>
-        public void Save(IUriExtent extent, string path, CSVSettings settings)
+        public void Save(IProvider extent, string path, CSVSettings settings)
         {
             // Open File
             using (var streamWriter = new StreamWriter(File.OpenWrite(path), Encoding.GetEncoding(settings.Encoding)))
@@ -161,7 +158,7 @@ namespace DatenMeister.Provider.CSV
         /// <param name="streamWriter">Stream, where data will be stored</param>
         /// <param name="extent">Extent being stored</param>
         /// <param name="settings">Settings of the csv</param>
-        public void SaveToStream(TextWriter streamWriter, IUriExtent extent, CSVSettings settings)
+        public void SaveToStream(TextWriter streamWriter, IProvider extent, CSVSettings settings)
         {
             var columns = new List<string>();
 
@@ -175,7 +172,7 @@ namespace DatenMeister.Provider.CSV
             {
                 // Column headers given by number by asking each object about the number of properties and
                 // then use the maximum value of the elements. This assumes that every element has the same type
-                columns = extent.GetProperties().ToList();
+                columns = extent.GetRootObjects().ElementAtOrDefault(0)?.GetProperties()?.ToList();
             }
             // Writes the header
             if (settings.HasHeader)
@@ -184,13 +181,13 @@ namespace DatenMeister.Provider.CSV
             }
 
             // Writes the elements
-            foreach (var element in extent.elements().Select(x => x as IObject))
+            foreach (var element in extent.GetRootObjects().Select(x => x))
             {
                 WriteRow(
                     streamWriter,
                     settings,
                     columns,
-                    x => element.isSet(x) ? element.get(x) : string.Empty);
+                    x => element.IsPropertySet(x) ? element.GetProperty(x) : string.Empty);
             }
         }
 

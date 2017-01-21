@@ -23,14 +23,20 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             string aggregateColumn,
             Func<IAggregator> aggregator,
             string aggregatedColumn)
-            : base(null ) //new InMemoryReflectiveSequence(null, null))
+            : base(null)
         {
+            // Creates the necessary collection
+            var mofFactory = new MofFactory(_extent);
+            var element = mofFactory.create(null);
+            element.set("items", new List<object>());
+            Collection = element.get("items") as IReflectiveCollection;
+            
             Aggregate(
                 collectionToBeAggregated,
                 groupByColumn,
                 new[] {aggregateColumn},
                 new[] {aggregator},
-                new[] { aggregatedColumn });
+                new[] {aggregatedColumn});
         }
 
         public GroupByReflectiveCollection(
@@ -127,7 +133,6 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             }
 
             // Now store the values into the aggregation
-            var mofFactory = (IFactory) null;//  new InMemoryFactory();
             foreach (var pair in aggregatedValues)
             {
                 var factory = new MofFactory(_extent);

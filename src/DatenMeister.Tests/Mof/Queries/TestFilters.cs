@@ -17,16 +17,17 @@ namespace DatenMeister.Tests.Mof.Queries
         {
             var mofExtent = new UriExtent(new InMemoryProvider(), "datenmeister:///");
             var properties = new[] { property1, property2 };
+            var factory = new MofFactory(mofExtent);
 
-            var mofObject = new InMemoryObject(mofExtent.Provider);
-            mofObject.SetProperty(property1, "55130");
-            mofObject.SetProperty(property2, "Mainz");
+            var mofObject = factory.create(null);
+            mofObject.set(property1, "55130");
+            mofObject.set(property2, "Mainz");
 
-            var mofObject2 = new InMemoryObject(mofExtent.Provider);
-            mofObject2.SetProperty(property1, "65474");
-            mofObject2.SetProperty(property2, "Bischofsheim");
+            var mofObject2 = factory.create(null);
+            mofObject2.set(property1, "65474");
+            mofObject2.set(property2, "Bischofsheim");
 
-            var mofObject3 = new InMemoryObject(mofExtent.Provider);
+            var mofObject3 = factory.create(null);
 
             Assert.That(mofExtent.elements().add(mofObject), Is.True);
             Assert.That(mofExtent.elements().add(mofObject2), Is.True);

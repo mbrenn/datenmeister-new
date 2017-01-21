@@ -27,9 +27,9 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void LoadUmlInfrastructure()
         {
-            Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var factory = (IFactory) null; //new InMemoryFactory();
             var extent = new UriExtent(new InMemoryProvider(), "datenmeister:///target");
+            Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var factory = new MofFactory(extent);
             Assert.That(extent.elements().Count(), Is.EqualTo(0));
             var loader = new SimpleLoader();
             loader.LoadFromFile(factory, extent, "Xmi/UML.xmi");

@@ -191,6 +191,8 @@ namespace DatenMeister.Runtime
         /// <returns>The found extent</returns>
         public static IExtent GetExtentOf(this IObject value)
         {
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
             // If the object is contained by another object, query the contained objects 
             // because the extents will only be stored in the root elements
             var asElement = value as IElement;
@@ -207,7 +209,7 @@ namespace DatenMeister.Runtime
                 return objectKnowsExtent.Extent as IUriExtent;
             }
 
-            throw new ArgumentException($"The following element does not implement the IObjectKnowsExtent interface: {value}");
+            throw new ArgumentException($"The following element does not implement the IObjectKnowsExtent interface: {value}, {value.GetType()}");
         }
 
         /// <summary>

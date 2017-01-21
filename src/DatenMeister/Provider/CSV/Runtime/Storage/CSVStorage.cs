@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.ExtentStorage;
@@ -23,20 +24,17 @@ namespace DatenMeister.Provider.CSV.Runtime.Storage
             _workspaceLogic = workspaceLogic;
         }
 
-        public IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty)
+        public IProvider LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty)
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
-            var provider = new CSVDataProvider(_workspaceLogic); 
+            var dataProvider = new CSVDataProvider(_workspaceLogic);
 
-            throw new NotImplementedException();
-            /*
-            var mofExtent = new InMemoryUriExtent(csvConfiguration.ExtentUri);
-            var factory = new InMemoryFactory();
+            var provider = new InMemoryProvider();
 
             var doesFileExist = File.Exists(csvConfiguration.Path);
             if (doesFileExist)
             {
-                provider.Load(mofExtent, factory, csvConfiguration.Path, csvConfiguration.Settings);
+                dataProvider.Load(provider, csvConfiguration.Path, csvConfiguration.Settings);
             }
             else if (!createAlsoEmpty)
             {
@@ -44,10 +42,10 @@ namespace DatenMeister.Provider.CSV.Runtime.Storage
                     $"File does not exist and empty extents is not given in argument {nameof(createAlsoEmpty)}");
             }
 
-            return mofExtent;*/
+            return provider;
         }
 
-        public void StoreExtent(IUriExtent extent, ExtentStorageConfiguration configuration)
+        public void StoreExtent(IProvider extent, ExtentStorageConfiguration configuration)
         {
             var csvConfiguration = (CSVStorageConfiguration) configuration;
 

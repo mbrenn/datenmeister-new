@@ -9,6 +9,10 @@ namespace DatenMeister.Core.EMOF.Implementation
     {
         private readonly IEnumerable<object> _values;
 
+        public TemporaryReflectiveCollection()
+        {
+            _values = new List<object>();
+        }
         public TemporaryReflectiveCollection(IEnumerable<object> values )
         {
             _values = values;
@@ -29,7 +33,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public bool add(object value)
         {
-            throw new System.NotImplementedException();
+            (_values as IList<object>)?.Add(value);
+            return true;
         }
 
         /// <inheritdoc />

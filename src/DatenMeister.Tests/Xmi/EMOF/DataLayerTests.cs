@@ -18,10 +18,10 @@ namespace DatenMeister.Tests.Core
             var data = WorkspaceLogic.InitDefault();
             var logic = new WorkspaceLogic(data);
 
-            var dataExtent = new UriExtent(new InMemoryProvider(), "Data");
-            var typeExtent = new UriExtent(new InMemoryProvider(), "Types");
-            var umlExtent = new UriExtent(new InMemoryProvider(), "Uml");
-            var unAssignedExtent = new UriExtent(new InMemoryProvider(), "Unassigned");
+            var dataExtent = new MofUriExtent(new InMemoryProvider(), "Data");
+            var typeExtent = new MofUriExtent(new InMemoryProvider(), "Types");
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), "Uml");
+            var unAssignedExtent = new MofUriExtent(new InMemoryProvider(), "Unassigned");
 
             data.Data.AddExtent(dataExtent);
             data.Types.AddExtent(typeExtent);
@@ -40,8 +40,8 @@ namespace DatenMeister.Tests.Core
             var data = WorkspaceLogic.InitDefault();
             var logic = new WorkspaceLogic(data);
 
-            var dataExtent = new UriExtent(new InMemoryProvider(), "Data");
-            var umlExtent = new UriExtent(new InMemoryProvider(), "Uml");
+            var dataExtent = new MofUriExtent(new InMemoryProvider(), "Data");
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), "Uml");
 
             data.Data.AddExtent(dataExtent);
             data.Uml.AddExtent(umlExtent);

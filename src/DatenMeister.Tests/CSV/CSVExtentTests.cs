@@ -31,7 +31,7 @@ namespace DatenMeister.Tests.CSV
 
             var storage = new CSVStorage(null);
             var provider = storage.LoadExtent(storageConfiguration, false);
-            var extent = new UriExtent(provider, "dm:////test/");
+            var extent = new MofUriExtent(provider, "dm:////test/");
 
             
             Assert.That(storageConfiguration.Settings.Columns.Count, Is.EqualTo(3));

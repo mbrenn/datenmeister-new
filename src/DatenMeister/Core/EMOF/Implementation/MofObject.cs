@@ -166,7 +166,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     // It is a reference
                     var reference = new UriReference()
                     {
-                        Uri = ((UriExtent) asMofObject.Extent).uri(asMofObject as IElement)
+                        Uri = ((MofUriExtent) asMofObject.Extent).uri(asMofObject as IElement)
                     };
 
                     return reference;

@@ -83,7 +83,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void SetMetaClass(IElement metaClass)
         {
             var mofElement = (MofElement) metaClass;
-            ProviderObject.MetaclassUri = ((UriExtent) mofElement.Extent).uri(metaClass);
+            ProviderObject.MetaclassUri = ((MofUriExtent) mofElement.Extent).uri(metaClass);
         }
     }
 }

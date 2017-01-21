@@ -14,7 +14,7 @@ namespace DatenMeister.Tests.Runtime
         [Test]
         public void TestCopyOfObject()
         {
-            var mofExtent = new UriExtent(new InMemoryProvider(), "dm:///");
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///");
             var mofObject = new MofFactory(mofExtent).create(null);
             mofObject.set(property1, "55130");
             mofObject.set(property2, "Mainz");

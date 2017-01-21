@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
 
 namespace DatenMeister.Runtime.Workspaces
 {
+    /// <summary>
+    /// Defines the workspace logic is used to organize the workspaces
+    /// </summary>
     public interface IWorkspaceLogic
     {
-        Workspace AddWorkspace(Workspace workspace);
+        void AddWorkspace(Workspace workspace);
 
         void RemoveWorkspace(string id);
 
@@ -36,13 +37,6 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="dataLayer">Datalayer to be retrieved</param>
         /// <returns>enumeration of extents within the datalayer</returns>
         IEnumerable<IUriExtent> GetExtentsForWorkspace(Workspace dataLayer);
-
-        /// <summary>
-        /// Gets the datalayer by name
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Workspace GetById(string id);
 
         Workspace GetDefaultWorkspace();
     }

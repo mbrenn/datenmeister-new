@@ -16,7 +16,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
         public void TestXmlStorage()
         {
             var xmlProvider = new XmlUriExtent();
-            var extent = new UriExtent(xmlProvider, "dm:///test/");
+            var extent = new MofUriExtent(xmlProvider, "dm:///test/");
             var factory = new MofFactory(extent);
             var mofObject1 = factory.create(null);
             var mofObject2 = factory.create(null);
@@ -40,7 +40,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
             var xmiStorage = new XmiStorage(WorkspaceLogic.GetDefaultLogic());
             xmiStorage.StoreExtent(extent.Provider, xmiStorageConfiguration);
 
-            var otherExtent = new UriExtent(xmiStorage.LoadExtent(xmiStorageConfiguration), "dm:///tests/");
+            var otherExtent = new MofUriExtent(xmiStorage.LoadExtent(xmiStorageConfiguration), "dm:///tests/");
             Assert.That(otherExtent.elements().size(), Is.EqualTo(3));
             Assert.That(otherExtent.contextURI(), Is.EqualTo("dm:///tests/"));
             Assert.That((otherExtent.elements().ElementAt(0) as IObject)?.get("name"), Is.EqualTo("Martin"));

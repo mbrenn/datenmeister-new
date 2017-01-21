@@ -296,7 +296,7 @@ namespace DatenMeister.Web.Api
             
             using (var stream = new StringWriter())
             {
-                provider.SaveToStream(stream, ((UriExtent) foundExtent).Provider, new CSVSettings());
+                provider.SaveToStream(stream, ((MofUriExtent) foundExtent).Provider, new CSVSettings());
                 var httpResponse = new HttpResponseMessage
                 {
                     Content = new StringContent(stream.GetStringBuilder().ToString())

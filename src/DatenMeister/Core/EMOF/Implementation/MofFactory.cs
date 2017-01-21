@@ -50,7 +50,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IElement create(IElement metaClass)
         {
             var elementAsMetaClass = (MofElement) metaClass;
-            var uriMetaClass = (elementAsMetaClass?.Extent as UriExtent)?.uri(metaClass);
+            var uriMetaClass = (elementAsMetaClass?.Extent as MofUriExtent)?.uri(metaClass);
             return new MofElement(
                 _provider.CreateElement(uriMetaClass),
                 null);

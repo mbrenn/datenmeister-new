@@ -73,7 +73,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 throw new InvalidOperationException("Extent for configuration could not be loaded");
             }
 
-            var uriExtent = new UriExtent(loadedExtent, configuration.ExtentUri);
+            var uriExtent = new MofUriExtent(loadedExtent, configuration.ExtentUri);
             AddToWorkspaceIfPossible(configuration, uriExtent);
 
             // Stores the information into the data container
@@ -129,7 +129,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             Debug.WriteLine($"Writing extent: {information.Configuration}");
 
             var extentStorage = _map.CreateFor(_diScope, information.Configuration);
-            extentStorage.StoreExtent(((UriExtent) information.Extent).Provider, information.Configuration);
+            extentStorage.StoreExtent(((MofUriExtent) information.Extent).Provider, information.Configuration);
         }
 
         /// <summary>

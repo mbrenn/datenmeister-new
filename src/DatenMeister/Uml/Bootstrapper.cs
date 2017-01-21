@@ -502,10 +502,10 @@ namespace DatenMeister.Uml
             if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-            var umlExtent = new UriExtent(new InMemoryProvider(), WorkspaceNames.UriUml);
-            var mofExtent = new UriExtent(new InMemoryProvider(), WorkspaceNames.UriMof);
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriUml);
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriMof);
             
-            var primitiveExtent = new UriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypes); 
+            var primitiveExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypes); 
 
             if (!isSlim)
             {

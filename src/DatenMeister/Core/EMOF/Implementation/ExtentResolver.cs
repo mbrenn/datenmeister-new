@@ -11,7 +11,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores the extent to which the resolver is allocated
         /// </summary>
-        public Extent _extent;
+        private Extent _extent;
 
         /// <summary>
         /// Initializes a new instance of the UriResolver class.
@@ -25,7 +25,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IElement Resolve(string uri)
         {
-            var asUriExtent = _extent as UriExtent;
+            var asUriExtent = _extent as MofUriExtent;
             if (asUriExtent != null)
             {
                 return asUriExtent.element(uri);

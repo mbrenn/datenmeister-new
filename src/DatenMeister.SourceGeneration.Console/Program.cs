@@ -60,9 +60,9 @@ namespace DatenMeister.SourceGeneration.Console
 
         private static void CreateSourceForUmlAndMof()
         {
-            var umlExtent = new UriExtent(new InMemoryProvider(), WorkspaceNames.UriUml);
-            var mofExtent = new UriExtent(new InMemoryProvider(), WorkspaceNames.UriMof);
-            var primitiveTypeExtent = new UriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypes);
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriUml);
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriMof);
+            var primitiveTypeExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypes);
 
             var loader = new SimpleLoader();
             loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, "data/UML.xmi");

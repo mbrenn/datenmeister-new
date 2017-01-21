@@ -113,7 +113,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// The meta workspace can also be the same as the added workspace
         /// </summary>
         /// <param name="workspace">Workspace to be added</param>
-        public Workspace AddWorkspace(Workspace workspace)
+        public void AddWorkspace(Workspace workspace)
         {
             if (workspace == null) throw new ArgumentNullException(nameof(workspace));
 

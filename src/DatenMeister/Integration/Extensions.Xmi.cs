@@ -19,7 +19,7 @@ namespace DatenMeister.Integration
             string uri)
 		{
             var xmlProvider = new XmlUriExtent();
-		    return new UriExtent(xmlProvider, uri);
+		    return new MofUriExtent(xmlProvider, uri);
 		}
     }
 }

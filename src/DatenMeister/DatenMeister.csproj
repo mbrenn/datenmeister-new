@@ -64,7 +64,7 @@
     <Compile Include="Core\EMOF\Implementation\MofObject.cs" />
     <Compile Include="Core\EMOF\Implementation\MofReflectiveSequence.cs" />
     <Compile Include="Core\EMOF\Implementation\TemporaryReflectiveCollection.cs" />
-    <Compile Include="Core\EMOF\Implementation\UriExtent.cs" />
+    <Compile Include="Core\EMOF\Implementation\MofUriExtent.cs" />
     <Compile Include="Core\EMOF\Implementation\ExtentResolver.cs" />
     <Compile Include="Models\Forms\DefaultViewForExtentType.cs" />
     <Compile Include="Models\Forms\SubElementFieldData.cs" />

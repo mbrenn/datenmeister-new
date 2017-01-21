@@ -27,7 +27,7 @@ namespace DatenMeister.Tests.Runtime
                 var extentFunctions = scope.Resolve<ExtentFunctions>();
                 var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
 
-                var dataExtent = new UriExtent(new InMemoryProvider(), "dm:///test");
+                var dataExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
                 var creatableTypes = extentFunctions.GetCreatableTypes(dataExtent);
                 Assert.That(creatableTypes, Is.Not.Null);
                 Assert.That(creatableTypes.MetaLayer, Is.EqualTo(dataLayerLogic.GetTypes()));

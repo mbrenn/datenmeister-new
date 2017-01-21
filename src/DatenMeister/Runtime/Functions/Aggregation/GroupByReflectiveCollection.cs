@@ -15,7 +15,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         /// <summary>
         /// Stores the extent being used to provide the information
         /// </summary>
-        private UriExtent _extent = new UriExtent(new InMemoryProvider(), "dm:///temp");
+        private MofUriExtent _extent = new MofUriExtent(new InMemoryProvider(), "dm:///temp");
 
         public GroupByReflectiveCollection(
             IReflectiveCollection collectionToBeAggregated,

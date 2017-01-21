@@ -15,7 +15,7 @@ namespace DatenMeister.Apps.ZipCode
     {
         public static DataProvider TheOne { get; }
 
-        public UriExtent ZipCodes
+        public MofUriExtent ZipCodes
         {
             get;
             private set;
@@ -36,7 +36,7 @@ namespace DatenMeister.Apps.ZipCode
             };
 
             var provider = new InMemoryProvider();
-            ZipCodes = new UriExtent(provider, "datenmeister:///zipcodes");
+            ZipCodes = new MofUriExtent(provider, "datenmeister:///zipcodes");
             var factory = new MofFactory(ZipCodes);
 
             var csvProvider = new CSVDataProvider(null);

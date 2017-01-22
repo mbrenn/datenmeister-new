@@ -39,6 +39,10 @@ namespace DatenMeister.Provider
         /// <returns>The found object or null, if not found</returns>
         IProviderObject Get(string id);
 
+        /// <summary>
+        /// Gets all objects that are at root at the element
+        /// </summary>
+        /// <returns>All objects at root</returns>
         IEnumerable<IProviderObject> GetRootObjects();
     }
 }

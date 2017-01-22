@@ -19,8 +19,7 @@ namespace DatenMeister.Excel.EMOF
             }
 
             var workbook = new XSSFWorkbook(excelPath);
-            return new ExcelExtent(url, workbook, settings);
-
+            return new ExcelExtent(workbook, settings);
         }
     }
 }

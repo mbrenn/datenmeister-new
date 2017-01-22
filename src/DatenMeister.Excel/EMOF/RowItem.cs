@@ -28,31 +28,48 @@ namespace DatenMeister.Excel.EMOF
         /// <inheritdoc />
         public bool IsPropertySet(string property)
         {
-            throw new System.NotImplementedException();
+            return SheetItem.Columns.ContainsKey(property);
         }
 
         /// <inheritdoc />
         public object GetProperty(string property)
         {
-            throw new System.NotImplementedException();
+            int column;
+            if (SheetItem.Columns.TryGetValue(property, out column))
+            {
+                return SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.GetStringContent();
+            }
+
+            return null;
         }
 
         /// <inheritdoc />
         public IEnumerable<string> GetProperties()
         {
-            throw new System.NotImplementedException();
+            return SheetItem.Columns.Keys.ToList();
         }
 
         /// <inheritdoc />
         public bool DeleteProperty(string property)
         {
-            throw new System.NotImplementedException();
+            int column;
+            if (SheetItem.Columns.TryGetValue(property, out column))
+            {
+                SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.SetCellValue(string.Empty);
+                SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.SetCellType(CellType.Blank);
+            }
+
+            return true;
         }
 
         /// <inheritdoc />
         public void SetProperty(string property, object value)
         {
-            throw new System.NotImplementedException();
+            int column;
+            if (SheetItem.Columns.TryGetValue(property, out column))
+            {
+                SheetItem.Sheet.GetRow(Row)?.GetCell(column)?.SetCellValue(value.ToString());
+            }
         }
 
         /// <inheritdoc />
@@ -140,9 +157,7 @@ namespace DatenMeister.Excel.EMOF
         {
             get
             {
-                throw new NotImplementedException();
-                /*
-                var firstPart = SheetItem.Value.SheetName;
+                var firstPart = SheetItem.Sheet.SheetName;
                 string secondPart;
                 if (string.IsNullOrEmpty(SheetItem.Settings.IdColumn))
                 {
@@ -150,10 +165,10 @@ namespace DatenMeister.Excel.EMOF
                 }
                 else
                 {
-                    secondPart = get(SheetItem.Settings.IdColumn).ToString();
+                    secondPart = GetProperty(SheetItem.Settings.IdColumn).ToString();
                 }
 
-                return $"{firstPart}.{secondPart}";*/
+                return $"{firstPart}.{secondPart}";
             }
             set
             {

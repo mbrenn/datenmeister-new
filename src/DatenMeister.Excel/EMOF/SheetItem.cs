@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Helper;
@@ -9,14 +10,13 @@ namespace DatenMeister.Excel.EMOF
 {
     public class SheetItem : IProviderObject
     {
+        private readonly ExcelExtent _extent;
+        public ISheet Sheet { get; set; }
+
         /// <summary>
         /// Gets the provider being used to create the element
         /// </summary>
         public IProvider Provider { get; }
-
-        public SheetItem() 
-        {
-        }
 
         /// <summary>
         /// Gets or sets the columns and their names
@@ -36,20 +36,28 @@ namespace DatenMeister.Excel.EMOF
         /// </summary>
         public int RowOffset { get; set; }
 
-        public SheetItem(ExcelExtent provider)
+        /// <summary>
+        /// Initializes a new instance of the SheetItem
+        /// </summary>
+        /// <param name="extent">Extent to which the item belongs</param>
+        /// <param name="sheet">The sheet that is used for access</param>
+        public SheetItem(ExcelExtent extent, ISheet sheet)
         {
-            Provider = provider;
+            _extent = extent;
+            Sheet = sheet;
+
+            InitializeData();
         }
 
         /// <summary>
         /// Initializes data
         /// </summary>
-        public void InitializeData()
-        {/*
+        private void InitializeData()
+        {
             var n = ColumnOffset;
             while (true)
             {
-                var headline = Value.GetRow(RowOffset)?.GetCell(n)?.GetStringContent();
+                var headline = Sheet.GetRow(RowOffset)?.GetCell(n)?.GetStringContent();
                 if (string.IsNullOrEmpty(headline))
                 {
                     break;
@@ -60,25 +68,49 @@ namespace DatenMeister.Excel.EMOF
             }
 
             RowOffset++;
-            */
         }
 
         /// <inheritdoc />
         public bool IsPropertySet(string property)
         {
-            throw new System.NotImplementedException();
+            return property == "items" || property == "name";
         }
 
         /// <inheritdoc />
         public object GetProperty(string property)
         {
-            throw new System.NotImplementedException();
+            if (property == "items")
+            {
+                var collection = new List<object>();
+
+                var n = RowOffset;
+                while (true)
+                {
+                    var cell = Sheet.GetRow(n)?.GetCell(ColumnOffset);
+                    if (string.IsNullOrEmpty(cell?.GetStringContent()))
+                    {
+                        break;
+                    }
+
+                    collection.Add(new RowItem(this, n));
+                    n++;
+                }
+
+                return collection;
+            }
+
+            if (property == "name")
+            {
+                return Sheet.SheetName;
+            }
+
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
         public IEnumerable<string> GetProperties()
         {
-            throw new System.NotImplementedException();
+            return new[] {"items", "name"};
         }
 
         /// <inheritdoc />

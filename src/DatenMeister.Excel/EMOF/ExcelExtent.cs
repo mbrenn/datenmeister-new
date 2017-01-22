@@ -14,12 +14,12 @@ namespace DatenMeister.Excel.EMOF
         private readonly XSSFWorkbook _workbook;
         private readonly ExcelSettings _settings;
 
-        public ExcelExtent(string url, XSSFWorkbook workbook, ExcelSettings settings)
+        public ExcelExtent(XSSFWorkbook workbook, ExcelSettings settings)
         {
-            /*_workbook = workbook;
+            _workbook = workbook;
             _settings = settings;
 
-            // Maps the table to sheet item
+            /*// Maps the table to sheet item
             var typeMapping = AddMappingForType<SheetItem, ISheet>(
                 models.__Table,
                 x => x.Value.SheetName,
@@ -60,22 +60,6 @@ namespace DatenMeister.Excel.EMOF
                 (x, value) => { throw new InvalidOperationException(); });*/
         }
 
-        public IReflectiveSequence elements()
-        {
-            /*var result = new MMReflectiveCollection(this);
-            for (var n = 0; n < _workbook.NumberOfSheets; n++)
-            {
-                var sheet = _workbook.GetSheetAt(n);
-                var element = (SheetItem) ConvertToElement(models.__Table, sheet);
-                element.InitializeData();
-
-                result.add(element);
-            }
-
-            return result;*/
-            throw new NotImplementedException();
-        }
-
         /// <inheritdoc />
         public IProviderObject CreateElement(string metaClassUri)
         {
@@ -97,7 +81,11 @@ namespace DatenMeister.Excel.EMOF
         /// <inheritdoc />
         public IEnumerable<IProviderObject> GetRootObjects()
         {
-            throw new NotImplementedException();
+            for (var n = 0; n < _workbook.NumberOfSheets; n++)
+            {
+                var sheet = _workbook.GetSheetAt(n);
+                yield return new SheetItem(this, sheet);
+            }
         }
 
         /// <inheritdoc />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Reflection;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime
@@ -131,13 +132,34 @@ namespace DatenMeister.Runtime
         /// <returns>true, if this is a boolean</returns>
         public static bool IsOfBoolean(object property)
         {
-            var type = typeof(bool);
+            var type = property.GetType();
             return IsBoolean(type);
         }
 
         private static bool IsBoolean(Type type)
         {
             return type == typeof(bool);
+        }
+
+        /// <summary>
+        /// Returns true, if the given element is of type IReflectiveCollection or if it can implement this interface
+        /// </summary>
+        /// <param name="value">Value to be verified</param>
+        /// <returns>true, if that is the case</returns>
+        public static bool IsOfReflectiveCollection(object value)
+        {
+            var type = value.GetType();
+            return IsReflectiveCollection(type);
+        }
+
+        /// <summary>
+        /// Returns true, if the given element is of type IReflectiveCollection or if it can implement this interface
+        /// </summary>
+        /// <param name="type">Type to be verified</param>
+        /// <returns>true, if that is the case</returns>
+        private static bool IsReflectiveCollection(Type type)
+        {
+            return typeof(IReflectiveCollection).IsAssignableFrom(type);
         }
     }
 }

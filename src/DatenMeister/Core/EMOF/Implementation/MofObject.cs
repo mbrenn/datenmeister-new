@@ -79,11 +79,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Converts the object to a mof object that can be added to the MofObject
         /// </summary>
+        /// <param name="container">Container to be added</param>
         /// <param name="property">Property to be set</param>
         /// <param name="value">Value to be converted</param>
         /// <param name="noReferences">True, if references shall be resolved</param>
         /// <returns>The converted object</returns>
-        internal static object ConvertToMofObject(MofObject container, string property, object value,
+        internal static object ConvertToMofObject(
+            MofObject container, 
+            string property, 
+            object value,
             bool noReferences = false)
         {
             if (DotNetHelper.IsOfPrimitiveType(value))
@@ -107,7 +111,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 if (noReferences)
                 {
-                    return null;
+                    return valueAsUriReference;
                 }
                 
                 return container.Extent.Resolver.Resolve(valueAsUriReference.Uri);

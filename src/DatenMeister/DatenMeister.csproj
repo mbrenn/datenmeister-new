@@ -99,6 +99,7 @@
     <Compile Include="Provider\XMI\Standards\XmiId.cs" />
     <Compile Include="Provider\XMI\UmlBootstrap\Helper.cs" />
     <Compile Include="Provider\XMI\XmiPlugin.cs" />
+    <Compile Include="Runtime\ExtentFormatter.cs" />
     <Compile Include="Runtime\Functions\Aggregation\ConcatAggregator.cs" />
     <Compile Include="Runtime\Functions\Transformation\FilterHierarchy.cs" />
     <Compile Include="Runtime\Functions\Transformation\HierarchyMaker.cs" />
@@ -113,7 +114,9 @@
     <Compile Include="Runtime\Workspaces\WorkspaceUriResolver.cs" />
     <Compile Include="Uml\Plugin\UmlPlugin.cs" />
     <None Include="project.json" />
-    <EmbeddedResource Include="XmiFiles\MOF.xmi" />
+    <EmbeddedResource Include="XmiFiles\MOF.xmi">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
     <EmbeddedResource Include="XmiFiles\UML.xmi" />
     <!-- A reference to the entire .NET Framework is automatically included -->

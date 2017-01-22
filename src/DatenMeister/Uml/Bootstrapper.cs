@@ -310,10 +310,8 @@ namespace DatenMeister.Uml
             // the metaclass of these element depending on the attribute value of Xmi:Type
             // If the current layer is UML, the metaLayer needs to trace to the MOF metalayer
             var extentsOfMetaLayer = _workspaceLogic.GetExtentsForWorkspace(metaLayer).ToList();
-            var rootUmlElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml).elements();
-            var umlElements = rootUmlElements.GetAllDescendants();
-            var rootMofElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriMof).elements();
-            var mofElements = rootMofElements.GetAllDescendants();
+            var umlElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml).elements().GetAllDescendants();
+            var mofElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriMof).elements().GetAllDescendants();
             var mofMetaClasses = 
                 mofElements
                     .Cast<IElement>()
@@ -322,6 +320,11 @@ namespace DatenMeister.Uml
 
             // Hacky hack to get rid of one of the tags and the duplicate MOF Elements
             mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Tag").ElementAt(0));
+            while (mofMetaClasses.Count(x => x.get("name").ToString() == "Tag") > 1)
+            {
+                mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Tag").ElementAt(1));
+            }
+
             mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Factory").ElementAt(0));
             mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Extent").ElementAt(0));
             mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Element").ElementAt(0));

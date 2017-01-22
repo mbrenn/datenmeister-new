@@ -14,14 +14,16 @@ namespace DatenMeister.Tests
         [Test]
         public void TestFindByUri()
         {
+            var workspaceLogic = new WorkspaceLogic(new WorkspaceData());
             var workspace = new Workspace("data", "No annotation");
+            workspaceLogic.AddWorkspace(workspace);
 
             var extent = new MofUriExtent(new InMemoryProvider(), "http://test/");
             var factory = new MofFactory(extent);
             var element = factory.create(null);
             extent.elements().add(element);
 
-            workspace.AddExtent(extent);
+            workspaceLogic.AddExtent(workspace, extent);
 
             var uri = extent.uri(element);
 

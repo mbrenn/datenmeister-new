@@ -124,7 +124,7 @@ namespace DatenMeister.Provider.DotNet
                 var extentTypes = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriInternalTypes);
                 var mofFactory = new MofFactory(extentTypes);
                 var typeWorkspace = workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
-                typeWorkspace.AddExtent(extentTypes);
+                workspaceLogic.AddExtent(typeWorkspace, extentTypes);
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();

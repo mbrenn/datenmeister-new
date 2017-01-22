@@ -14,8 +14,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets or sets the resolver being used to resolve the uri
         /// </summary>
-        public IUriResolver Resolver { get; private set; }
+        public IUriResolver Resolver { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the Extent 
+        /// </summary>
+        /// <param name="provider">Provider being used for the extent</param>
         public Extent(IProvider provider)
         {
             Provider = provider;

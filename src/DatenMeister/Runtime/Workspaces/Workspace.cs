@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Extension;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Filler;
@@ -49,21 +50,6 @@ namespace DatenMeister.Runtime.Workspaces
 
             this.id = id;
             this.annotation = annotation;
-        }
-
-        public void AddExtent(IUriExtent newExtent)
-        {
-            if (newExtent == null) throw new ArgumentNullException(nameof(newExtent));
-
-            lock (_syncObject)
-            {
-                if (_extent.Any(x => (x as IUriExtent)?.contextURI() == newExtent.contextURI()))
-                {
-                    throw new InvalidOperationException($"Extent with uri {newExtent.contextURI()} is already added");
-                }
-
-                _extent.Add(newExtent);
-            }
         }
 
         public TFilledType Create<TFiller, TFilledType>()

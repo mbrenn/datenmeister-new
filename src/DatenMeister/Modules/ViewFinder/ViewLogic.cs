@@ -44,7 +44,7 @@ namespace DatenMeister.Modules.ViewFinder
             var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
 
             var dotNetUriExtent = new MofUriExtent(new InMemoryProvider(), UriViewExtent);
-            mgmtWorkspace.AddExtent(dotNetUriExtent);
+            _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
         }
 
 

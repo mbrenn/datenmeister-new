@@ -310,10 +310,10 @@ namespace DatenMeister.Uml
             // the metaclass of these element depending on the attribute value of Xmi:Type
             // If the current layer is UML, the metaLayer needs to trace to the MOF metalayer
             var extentsOfMetaLayer = _workspaceLogic.GetExtentsForWorkspace(metaLayer).ToList();
-            var umlElements =
-                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml).elements().GetAllDescendants();
-            var mofElements =
-                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriMof).elements().GetAllDescendants();
+            var rootUmlElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml).elements();
+            var umlElements = rootUmlElements.GetAllDescendants();
+            var rootMofElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriMof).elements();
+            var mofElements = rootMofElements.GetAllDescendants();
             var mofMetaClasses = 
                 mofElements
                     .Cast<IElement>()
@@ -532,11 +532,11 @@ namespace DatenMeister.Uml
             }
 
             // Assigns the extents to the datalayer
-            dataLayer.AddExtent(umlExtent);
-            dataLayer.AddExtent(primitiveExtent);
+            workspaceLogic.AddExtent(dataLayer, umlExtent);
+            workspaceLogic.AddExtent(dataLayer, primitiveExtent);
             if (mode == BootstrapMode.Mof || mode == BootstrapMode.SlimMof)
             {
-                dataLayer.AddExtent(mofExtent);
+                workspaceLogic.AddExtent(dataLayer, mofExtent);
             }
             
             var bootStrapper = new Bootstrapper(workspaceLogic);

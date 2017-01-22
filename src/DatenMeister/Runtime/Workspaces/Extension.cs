@@ -90,9 +90,10 @@ namespace DatenMeister.Runtime.Workspaces
         /// <typeparam name="T">Type of the extents in the workspace</typeparam>
         /// <typeparam name="Q">Type of the extent being added. Needs to be of type IUriExtent</typeparam>
         /// <param name="workspace">Workspace where extent will be added</param>
+        /// <param name="workspaceLogic">Workspacelogic being used</param>
         /// <param name="extent">Extent being added</param>
         /// <returns>true, if addition was succesfsul</returns>
-        public static bool AddExtentNoDuplicate(this Workspace workspace, IUriExtent extent) 
+        public static bool AddExtentNoDuplicate(this Workspace workspace, IWorkspaceLogic workspaceLogic, IUriExtent extent) 
         {
             var contextUri = extent.contextURI();
             var found = workspace.extent.FirstOrDefault(x =>
@@ -103,7 +104,7 @@ namespace DatenMeister.Runtime.Workspaces
 
             if (found == null)
             {
-                workspace.AddExtent(extent);
+                workspaceLogic.AddExtent(workspace, extent);
                 return true;
             }
 

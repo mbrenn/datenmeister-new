@@ -39,5 +39,12 @@ namespace DatenMeister.Runtime.Workspaces
         IEnumerable<IUriExtent> GetExtentsForWorkspace(Workspace dataLayer);
 
         Workspace GetDefaultWorkspace();
+        
+        /// <summary>
+        /// Adds an extent to the workspace
+        /// </summary>
+        /// <param name="workspace">Workspace to which the extent shall be added</param>
+        /// <param name="newExtent">The extent to be added</param>
+        void AddExtent(Workspace workspace, IUriExtent newExtent);
     }
 }

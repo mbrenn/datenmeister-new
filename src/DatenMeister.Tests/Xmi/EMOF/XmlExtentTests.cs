@@ -297,7 +297,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
 
                 var xmlProvider = new XmlUriExtent();
                 var extent = new MofUriExtent(xmlProvider, "dm:///test/");
-                dataLayerLogic.GetTypes().AddExtent(extent);
+                dataLayerLogic.AddExtent(dataLayerLogic.GetTypes(), extent);
 
                 var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(scope, extent);
 

@@ -23,7 +23,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             set { ProviderObject.Id = value; }
         }
 
-    /// <summary>
+        /// <summary>
         /// Initialiezs a new instance of the MofElement. This method is just used for migration
         /// </summary>
         [Obsolete]

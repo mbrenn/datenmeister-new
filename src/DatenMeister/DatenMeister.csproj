@@ -110,6 +110,7 @@
     <Compile Include="Runtime\Workspaces\IWorkspace.cs" />
     <Compile Include="Runtime\Workspaces\WorkspaceNames.cs" />
     <Compile Include="Integration\Extensions.Xmi.cs" />
+    <Compile Include="Runtime\Workspaces\WorkspaceUriResolver.cs" />
     <Compile Include="Uml\Plugin\UmlPlugin.cs" />
     <None Include="project.json" />
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
@@ -13,6 +14,10 @@ namespace DatenMeister.Runtime.Workspaces
     {
         private readonly WorkspaceData _fileData;
 
+        /// <summary>
+        /// Initializes a new instance of the WorkspaceLogic
+        /// </summary>
+        /// <param name="fileData"></param>
         public WorkspaceLogic(WorkspaceData fileData)
         {
             _fileData = fileData;
@@ -133,8 +138,6 @@ namespace DatenMeister.Runtime.Workspaces
                     workspace.MetaWorkspace = _fileData.Default?.MetaWorkspace;
                 }
             }
-
-            return workspace;
         }
 
         public Workspace GetWorkspace(string id)
@@ -145,6 +148,9 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        /// <summary>
+        /// Gets an enumeration of all workspaces
+        /// </summary>
         public IEnumerable<Workspace> Workspaces => _fileData.Workspaces.ToList();
 
         /// <summary>
@@ -164,6 +170,31 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        /// <summary>
+        /// Adds an extent to the workspace
+        /// </summary>
+        /// <param name="workspace">Workspace to which the extent shall be added</param>
+        /// <param name="newExtent">The extent to be added</param>
+        public void AddExtent(Workspace workspace, IUriExtent newExtent)
+        {
+            if (newExtent == null) throw new ArgumentNullException(nameof(newExtent));
+
+            lock (workspace.SyncObject)
+            {
+                if (workspace.extent.Any(x => (x as IUriExtent)?.contextURI() == newExtent.contextURI()))
+                {
+                    throw new InvalidOperationException($"Extent with uri {newExtent.contextURI()} is already added");
+                }
+
+                workspace.extent.Add(newExtent);
+                ((Extent) newExtent).Resolver = new WorkspaceUriResolver(this);
+            }
+        }
+
+        /// <summary>
+        /// Performs an initialization of the common workspaces
+        /// </summary>
+        /// <returns>The data containing the workspaces</returns>
         public static WorkspaceData InitDefault()
         {
             var workspaceData = new Workspace(WorkspaceNames.NameData, "All the data workspaces");

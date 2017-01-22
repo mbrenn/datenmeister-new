@@ -7,16 +7,32 @@ namespace DatenMeister.Uml.Helper
 {
     public class UmlNameResolution : IUmlNameResolution
     {
-        public string GetName(IObject element)
+
+        /// <summary>
+        /// Gets the name of the given object
+        /// </summary>
+        /// <param name="element">Element whose name is requested</param>
+        /// <returns>The found name or null, if not found</returns>
+        string IUmlNameResolution.GetName(IObject element)
         {
-            if (element == null)
+            return GetName(element);
+        }
+
+        /// <summary>
+        /// Gets the name of the given object
+        /// </summary>
+        /// <param name="element">Element whose name is requested</param>
+        /// <returns>The found name or null, if not found</returns>
+        public static string GetName(IObject element)
+        {
+            if(element == null)
             {
                 return "null";
             }
 
             // If the element is not uml induced or the property is empty, check by
             // the default "name" property
-            if ( element.isSet(_UML._CommonStructure._NamedElement.name) )
+            if (element.isSet(_UML._CommonStructure._NamedElement.name))
             {
                 return element.get(_UML._CommonStructure._NamedElement.name).ToString();
             }

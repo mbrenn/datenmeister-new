@@ -104,7 +104,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     throw new InvalidOperationException($"Workspace {configuration.Workspace} not found");
                 }
 
-                workspace.AddExtentNoDuplicate(loadedExtent);
+                workspace.AddExtentNoDuplicate(_workspaceLogic, loadedExtent);
             }
         }
 

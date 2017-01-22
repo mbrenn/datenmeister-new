@@ -23,9 +23,9 @@ namespace DatenMeister.Tests.Core
             var umlExtent = new MofUriExtent(new InMemoryProvider(), "Uml");
             var unAssignedExtent = new MofUriExtent(new InMemoryProvider(), "Unassigned");
 
-            data.Data.AddExtent(dataExtent);
-            data.Types.AddExtent(typeExtent);
-            data.Uml.AddExtent(umlExtent);
+            logic.AddExtent(data.Data, dataExtent);
+            logic.AddExtent(data.Types, typeExtent);
+            logic.AddExtent(data.Uml, umlExtent);
 
             Assert.That(logic.GetWorkspaceOfExtent(dataExtent), Is.EqualTo(data.Data));
             Assert.That(logic.GetWorkspaceOfExtent(typeExtent), Is.EqualTo(data.Types));
@@ -43,8 +43,8 @@ namespace DatenMeister.Tests.Core
             var dataExtent = new MofUriExtent(new InMemoryProvider(), "Data");
             var umlExtent = new MofUriExtent(new InMemoryProvider(), "Uml");
 
-            data.Data.AddExtent(dataExtent);
-            data.Uml.AddExtent(umlExtent);
+            logic.AddExtent(data.Data, dataExtent);
+            logic.AddExtent(data.Uml, umlExtent);
 
             var factory = new MofFactory(dataExtent);
             var value = factory.create(null);

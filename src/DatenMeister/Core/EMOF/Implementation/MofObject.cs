@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -192,6 +193,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IEnumerable<string> getPropertiesBeingSet()
         {
             return ProviderObject.GetProperties();
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return UmlNameResolution.GetName(this);
         }
     }
 }

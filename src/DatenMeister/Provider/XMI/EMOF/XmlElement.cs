@@ -116,7 +116,16 @@ namespace DatenMeister.Provider.XMI.EMOF
         public IProvider Provider { get; }
 
         /// <inheritdoc />
-        public string MetaclassUri { get; set; }
+        public string MetaclassUri {
+            get
+            {
+                return _node.Attribute(TypeAttribute)?.Value;
+            }
+            set
+            {
+                _node.SetAttributeValue(TypeAttribute, value);
+            }
+        }
 
         /// <inheritdoc />
         public bool IsPropertySet(string property)

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -15,7 +14,6 @@ using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
@@ -257,12 +255,10 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 // Creates the extent
                 var loader = scope.Resolve<IExtentStorageLoader>();
                 var loadedExtent = loader.LoadExtent(storageConfiguration, true);
-                Assert.That(loadedExtent, Is.TypeOf<XmlUriExtent>());
 
                 // Includes some data
-                var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(scope, loadedExtent);
+                var factory = new MofFactory(loadedExtent);
                 var createdElement = factory.create(null);
-                Assert.That(createdElement, Is.TypeOf<XmlElement>());
                 loadedExtent.elements().add(createdElement);
 
                 createdElement.set("test", "Test");
@@ -299,8 +295,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 var extent = new MofUriExtent(xmlProvider, "dm:///test/");
                 dataLayerLogic.AddExtent(dataLayerLogic.GetTypes(), extent);
 
-                var factory = scope.Resolve<IFactoryMapper>().FindFactoryFor(scope, extent);
-
+                var factory = new MofFactory(extent);
                 var interfaceClass = uml.SimpleClassifiers.__Interface;
                 var element = factory.create(interfaceClass);
                 Assert.That(element, Is.Not.Null);

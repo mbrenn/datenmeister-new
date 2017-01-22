@@ -25,7 +25,6 @@ using DatenMeister.Runtime.Dynamic;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -39,8 +38,7 @@ namespace DatenMeister.Web.Api
         /// Defines the maximum numnber of items that shall be returned via GetItems
         /// </summary>
         private const int MaxItemAmount = 100;
-
-        private readonly IFactoryMapper _mapper;
+        
         private readonly IUmlNameResolution _resolution;
         private readonly IExtentStorageLoader _extentStorageLoader;
         private readonly IWorkspaceLogic _workspaceLogic;
@@ -50,7 +48,6 @@ namespace DatenMeister.Web.Api
         private readonly NamedElementMethods _namedElementMethods;
 
         public ExtentController(
-            IFactoryMapper mapper, 
             IUmlNameResolution resolution, 
             IExtentStorageLoader extentStorageLoader, 
             IWorkspaceLogic workspaceLogic, 
@@ -59,7 +56,6 @@ namespace DatenMeister.Web.Api
             IViewFinder viewFinder,
             NamedElementMethods namedElementMethods)
         {
-            _mapper = mapper;
             _resolution = resolution;
             _extentStorageLoader = extentStorageLoader;
             _workspaceLogic = workspaceLogic;
@@ -557,7 +553,7 @@ namespace DatenMeister.Web.Api
             }
 
             // Creates the type
-            var factory = _mapper.FindFactoryFor(_diScope, foundExtent);
+            var factory = new MofFactory(foundExtent);
             var element = factory.create(metaclass);
 
             if (string.IsNullOrEmpty(model.parentItem))

@@ -222,9 +222,6 @@
     <Compile Include="Runtime\ExtentStorage\Interfaces\IExtentStorageLoader.cs" />
     <Compile Include="Runtime\ExtentStorage\ManualConfigurationToExtentStorageMapper.cs" />
     <Compile Include="Runtime\Extents\ExtentFunctions.cs" />
-    <Compile Include="Runtime\FactoryMapper\DefaultFactoryMapper.cs" />
-    <Compile Include="Runtime\FactoryMapper\Extensions.cs" />
-    <Compile Include="Runtime\FactoryMapper\IFactoryMapper.cs" />
     <Compile Include="Runtime\Functions\Aggregation\AverageAggregator.cs" />
     <Compile Include="Runtime\Functions\Aggregation\CountAggregator.cs" />
     <Compile Include="Runtime\Functions\Aggregation\Extensions.cs" />

@@ -6,7 +6,6 @@ using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
@@ -14,7 +13,6 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
@@ -51,9 +49,7 @@ namespace DatenMeister.Provider.DotNet
             var watch = new Stopwatch();
             watch.Start();
 
-            // Defines the factory method for a certain extent type  
-            var factoryMapper = new DefaultFactoryMapper();
-            kernel.RegisterInstance(factoryMapper).As<IFactoryMapper>();
+            // Defines the factory method for a certain extent type
 
             // Finds the loader for a certain extent type  
             var storageMap = new ManualConfigurationToExtentStorageMapper();

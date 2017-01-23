@@ -70,6 +70,11 @@ namespace DatenMeister.Runtime.Functions.Queries
                 comparer);
         }
 
+        /// <summary>
+        /// Gets all descendents of a reflective collection by opening all properties recursively
+        /// </summary>
+        /// <param name="collection">Collection to be evaluated</param>
+        /// <returns>A reflective collection, containing all items</returns>
         public static IReflectiveCollection GetAllDescendants(
             this IReflectiveCollection collection)
         {
@@ -80,14 +85,14 @@ namespace DatenMeister.Runtime.Functions.Queries
             this IReflectiveCollection collection,
             string groupByColumn,
             string aggregateColumn,
-            Func<IAggregator> aggregatorFunc, 
+            Func<IAggregator> aggregatorFunc,
             string aggregatedColumn)
         {
-            return  new GroupByReflectiveCollection(
+            return new GroupByReflectiveCollection(
                 collection,
                 groupByColumn,
                 aggregateColumn,
-                aggregatorFunc, 
+                aggregatorFunc,
                 aggregatedColumn);
         }
 

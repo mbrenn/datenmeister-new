@@ -10,12 +10,14 @@
 
 namespace DatenMeister.Runtime.Functions.Aggregation
 {
-    public class GroupByReflectiveCollection : ProxyReflectiveCollection
+    public class GroupByReflectiveCollection : TemporaryReflectiveCollection
     {
         /// <summary>
         /// Stores the extent being used to provide the information
         /// </summary>
-        private MofUriExtent _extent = new MofUriExtent(new InMemoryProvider(), "dm:///temp");
+        private readonly MofUriExtent _extent = new MofUriExtent(new InMemoryProvider(), "dm:///temp");
+
+        private readonly MofFactory _mofFactory;
 
         public GroupByReflectiveCollection(
             IReflectiveCollection collectionToBeAggregated,
@@ -23,13 +25,9 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             string aggregateColumn,
             Func<IAggregator> aggregator,
             string aggregatedColumn)
-            : base(null)
         {
             // Creates the necessary collection
-            var mofFactory = new MofFactory(_extent);
-            var element = mofFactory.create(null);
-            element.set("items", new List<object>());
-            Collection = element.get("items") as IReflectiveCollection;
+            _mofFactory = new MofFactory(_extent);
             
             Aggregate(
                 collectionToBeAggregated,
@@ -45,8 +43,9 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             IEnumerable<string> aggregateColumns,
             IEnumerable<Func<IAggregator>> aggregators,
             IEnumerable<string> aggregatedColumns)
-            : base(null) // new InMemoryReflectiveSequence(null, null))
         {
+            _mofFactory = new MofFactory(_extent);
+
             Aggregate(
                 collectionToBeAggregated,
                 groupByColumn,
@@ -78,7 +77,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             if (aggregatedColumns == null) throw new ArgumentNullException(nameof(aggregatedColumns));
 
             var listAggregateColumns = aggregateColumns.ToList();
-            var listAggregatedColumns = aggregatedColumns?.ToList();
+            var listAggregatedColumns = aggregatedColumns.ToList();
             var listAggregators = aggregatorFunc.ToList();
 
             if (listAggregateColumns.Count != listAggregators.Count)
@@ -135,8 +134,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             // Now store the values into the aggregation
             foreach (var pair in aggregatedValues)
             {
-                var factory = new MofFactory(_extent);
-                var element = factory.create(null);
+                var element = _mofFactory.create(null);
 
                 element.set(groupByColumn, pair.Key);
 

@@ -67,5 +67,17 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Creates an element by the given value and the metaclass, that is set
+        /// </summary>
+        /// <param name="value">Value to be set</param>
+        /// <param name="id">Id, that shall be set</param>
+        /// <param name="metaClass">Metaclass that shall be assigned to the factory</param>
+        /// <returns>Created element</returns>
+        public IElement create(object value, string id = "", IElement metaClass = null)
+        {
+            throw new InvalidOperationException();
+        }
     }
 }

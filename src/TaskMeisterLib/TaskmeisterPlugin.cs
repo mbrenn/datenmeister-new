@@ -8,7 +8,6 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Modules;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.DotNet;
-using DatenMeister.Runtime.FactoryMapper;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using TaskMeister.Model;
@@ -21,31 +20,23 @@ namespace TaskMeister
     // ReSharper disable once UnusedMember.Global
     public class TaskmeisterPlugin : IDatenMeisterPlugin
     {
-        private readonly ILifetimeScope _lifetimeScope;
-
         /// <summary>
         /// Stores the workspace collection
         /// </summary>
 
         private readonly IWorkspaceLogic _workspaceLogic;
-        private readonly IFactoryMapper _factoryMapper;
         private readonly IWebserverStartupPhases _webserverStartupPhases;
         private readonly ViewLogic _viewLogic;
         private readonly IDotNetTypeLookup _typeLookup;
         private readonly NamedElementMethods _namedElementMethods;
 
-        public TaskmeisterPlugin(
-            ILifetimeScope lifetimeScope,
-            IWorkspaceLogic workspaceLogic,
-            IFactoryMapper factoryMapper,
+        public TaskmeisterPlugin(IWorkspaceLogic workspaceLogic,
             IWebserverStartupPhases webserverStartupPhases,
             ViewLogic viewLogic,
             IDotNetTypeLookup typeLookup,
             NamedElementMethods namedElementMethods)
         {
-            _lifetimeScope = lifetimeScope;
             _workspaceLogic = workspaceLogic;
-            _factoryMapper = factoryMapper;
             _webserverStartupPhases = webserverStartupPhases;
             _viewLogic = viewLogic;
             _typeLookup = typeLookup;
@@ -61,7 +52,7 @@ namespace TaskMeister
             var typeExtent = _workspaceLogic.FindTypeExtent();
 
             var uml = _workspaceLogic.GetFromMetaLayer<_UML>(typeExtent);
-            var factory = _factoryMapper.FindFactoryFor(_lifetimeScope, typeExtent);
+            var factory = new MofFactory(typeExtent);
             IntegrateTaskMeisterModel.Assign(uml, factory, typeExtent.elements(), model, _typeLookup);
 
             Debug.WriteLine("TaskMeister - Types added");
@@ -69,7 +60,7 @@ namespace TaskMeister
             // View for the activity list
             var view = new Form { name = "Activity List" };
             view.fields.Add(new TextFieldData("name", "Name!"));
-            _viewLogic.Add(_typeLookup.CreateDotNetElement(view, typeExtent as Extent, "Views.Activity.Detail"));
+            _viewLogic.Add(factory.create(view, "Views.Activity.Detail"));
 
             // View for the default list
             var taskDetailView = new Form { name = "Activity Detail" };
@@ -91,7 +82,7 @@ namespace TaskMeister
                 viewType = ViewType.Detail
             };
 
-            _viewLogic.Add(_typeLookup.CreateDotNetElement(date));
+            _viewLogic.Add(factory.create(date));
 
             // Creates default view
             _webserverStartupPhases.AfterInitialization += (x, y) =>

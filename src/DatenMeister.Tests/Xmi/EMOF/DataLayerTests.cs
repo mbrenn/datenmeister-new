@@ -1,5 +1,4 @@
 ﻿using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Attributes;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Filler;
 using DatenMeister.Provider.InMemory;

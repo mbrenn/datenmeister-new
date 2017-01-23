@@ -122,7 +122,6 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\EMOF\Attributes\AssignFactoryForExtentTypeAttribute.cs" />
     <Compile Include="Core\EMOF\Exceptions\MofException.cs" />
     <Compile Include="Runtime\Functions\Queries\AllDescendentsQuery.cs" />
     <Compile Include="Runtime\Extents\ReflectiveSequenceForExtent.cs" />

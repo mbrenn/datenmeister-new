@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.DotNet
 {

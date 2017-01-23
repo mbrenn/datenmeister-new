@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Attributes;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Provider.XMI.ExtentStorage;
@@ -23,7 +23,7 @@ namespace TaskMeister
 
         public static _TaskMeisterModel TaskMeister { get; private set; }
 
-        private static readonly IUriExtent TypeLayer = new InMemoryUriExtent("dm:///typemaster/types");
+        private static readonly IUriExtent TypeLayer = new MofUriExtent(new InMemoryProvider(), "dm:///typemaster/types");
 
         public static IActivityProvider TaskMeisterProvider { get; private set; }
 
@@ -67,8 +67,8 @@ namespace TaskMeister
             switch (initType)
             {
                 case InitType.NonPersistantGeneric:
-                    dataExtent = new InMemoryUriExtent(uriTaskMeister);
-                    factory = new InMemoryFactory();
+                    dataExtent = new MofUriExtent(new InMemoryProvider(), uriTaskMeister);
+                    factory = new MofFactory(dataExtent);
 
                     _persistFunction = null;
                     break;
@@ -80,23 +80,24 @@ namespace TaskMeister
                         ExtentUri = uriTaskMeister
                     };
 
-                    factory = new XmlFactory();
+                    IProvider provider;
                     var xmiStorage = new XmiStorage(workspaceLogic);
                     try
                     {
-                        dataExtent = xmiStorage.LoadExtent(xmiConfiguration, true);
+                        provider = xmiStorage.LoadExtent(xmiConfiguration, true);
                     }
                     catch (Exception exception)
                     {
                         Debug.WriteLine(exception.ToString());
-                        dataExtent = new XmlUriExtent(workspaceLogic, uriTaskMeister);
+                        provider = new XmlUriExtent();
                     }
 
+                    dataExtent = new MofUriExtent(provider, uriTaskMeister);
+                    factory = new MofFactory(dataExtent);
                     _persistFunction = async () =>
                     {
-
                         var xmi = new XmiStorage(workspaceLogic);
-                        await Task.Run(() => xmi.StoreExtent(dataExtent, xmiConfiguration));
+                        await Task.Run(() => xmi.StoreExtent(provider, xmiConfiguration));
                     };
 
                     break;

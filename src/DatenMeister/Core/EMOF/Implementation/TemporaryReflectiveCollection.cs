@@ -7,33 +7,33 @@ namespace DatenMeister.Core.EMOF.Implementation
 {
     public class TemporaryReflectiveCollection : IReflectiveCollection
     {
-        private readonly IEnumerable<object> _values;
+        protected readonly IEnumerable<object> Values;
 
         public TemporaryReflectiveCollection()
         {
-            _values = new List<object>();
+            Values = new List<object>();
         }
         public TemporaryReflectiveCollection(IEnumerable<object> values )
         {
-            _values = values;
+            Values = values;
         }
 
         /// <inheritdoc />
         public IEnumerator<object> GetEnumerator()
         {
-            return _values.GetEnumerator();
+            return Values.GetEnumerator();
         }
 
         /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _values.GetEnumerator();
+            return Values.GetEnumerator();
         }
 
         /// <inheritdoc />
         public bool add(object value)
         {
-            (_values as IList<object>)?.Add(value);
+            (Values as IList<object>)?.Add(value);
             return true;
         }
 
@@ -58,7 +58,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public int size()
         {
-            return _values.Count();
+            return Values.Count();
         }
     }
 }

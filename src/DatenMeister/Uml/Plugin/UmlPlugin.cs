@@ -64,7 +64,6 @@ namespace DatenMeister.Uml.Plugin
 
             AddForView(packageView);
 
-
             var classExtentView = new DefaultViewForExtentType(
                 "Uml.Classes",
                 new Form(

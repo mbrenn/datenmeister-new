@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Drawing;
+using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
@@ -130,6 +131,23 @@ namespace DatenMeister.Tests.Mof.Core
 
             otherMofElement.set("Test", innerMofElement);
             Assert.That(((IHasExtent)otherMofElement.get("Test")).Extent, Is.SameAs(uriExtent));
+        }
+
+        [Test]
+        public void TestSetDotNet()
+        {
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var factory = new MofFactory(uriExtent);
+
+            var mofElement = factory.create(null);
+            var value = new Point(23, 24);
+            mofElement.set("point", value);
+
+            var retrieve = mofElement.get("point");
+            Assert.That(retrieve is IObject, Is.True);
+            var asObject = (IObject) retrieve;
+            Assert.That(asObject.get("X"), Is.EqualTo(23));
+            Assert.That(asObject.get("Y"), Is.EqualTo(24));
         }
     }
 }

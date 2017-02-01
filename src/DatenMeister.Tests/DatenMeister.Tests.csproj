@@ -87,6 +87,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.FileSystem, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.FileSystem.4.0.1\lib\net46\System.IO.FileSystem.dll</HintPath>
       <Private>True</Private>
@@ -127,6 +128,7 @@
     <Compile Include="Runtime\ReadOnlyProxyTests.cs" />
     <Compile Include="Runtime\WorkspaceTests.cs" />
     <Compile Include="Uml\TestUmlMethods.cs" />
+    <Compile Include="Web\TestAutoColumnCreator.cs" />
     <Compile Include="WorkspaceTests.cs" />
     <Compile Include="Xmi\EMOF\DataLayerTests.cs" />
     <Compile Include="Xmi\EMOF\XmlExtentTests.cs" />
@@ -179,7 +181,6 @@
     <Folder Include="Core\" />
     <Folder Include="DotNet\" />
     <Folder Include="Integration\" />
-    <Folder Include="Web\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

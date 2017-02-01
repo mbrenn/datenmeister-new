@@ -11,6 +11,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     public class MofFactory : IFactory
     {
         private readonly IProvider _provider;
+
         /// <summary>
         /// Initializes a new instance of the Factory
         /// </summary>
@@ -25,11 +26,30 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Initializes a new instance of the provider
         /// </summary>
-        /// <param name="providerObject">Provider object to be set</param>
-        public MofFactory(IProvider providerObject)
+        /// <param name="provider">Provider object to be set</param>
+        public MofFactory(IProvider provider)
         {
-            if (providerObject == null) throw new ArgumentNullException(nameof(providerObject));
-            _provider = providerObject;
+            if (provider == null) throw new ArgumentNullException(nameof(provider));
+            _provider = provider;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the MofFactory by retrieving an object
+        /// </summary>
+        /// <param name="value">Value to be set</param>
+        public MofFactory(MofObject value)
+        {
+            var extent = value.Extent;
+            if (extent != null)
+            {
+                // First, try the correct way via the extent.
+                _provider = extent.Provider;
+            }
+            else
+            {
+                // If not available, do it via the providerobject
+                _provider = value.ProviderObject.Provider;
+            }
         }
 
         /// <summary>

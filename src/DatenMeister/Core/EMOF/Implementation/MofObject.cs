@@ -42,6 +42,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 // ReSharper disable once NotResolvedInText
                 throw new ArgumentNullException("providedObject.Provider");
             }
+
             ProviderObject = providedObject;
             Extent = extent;
         }
@@ -136,12 +137,12 @@ namespace DatenMeister.Core.EMOF.Implementation
             else
             {
                 ProviderObject.SetProperty(property, ConvertForSetting(value));
-                
             }
         }
 
         /// <summary>
-        /// Converts the object to be set by the data provider
+        /// Converts the object to be set by the data provider. This is the inverse object to ConvertToMofObject. 
+        /// An arbitrary object shall be stored into the database
         /// </summary>
         /// <param name="value">Value to be converted</param>
         /// <returns>The converted object or an exception if the object cannot be converted</returns>
@@ -169,7 +170,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 else
                 {
                     // It is a reference
-                    var reference = new UriReference()
+                    var reference = new UriReference
                     {
                         Uri = ((MofUriExtent) asMofObject.Extent).uri(asMofObject as IElement)
                     };
@@ -177,8 +178,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                     return reference;
                 }
             }
-
-            throw new NotImplementedException($"Type of {value.GetType()} currently not supported.");
+            // Then, we have a simple dotnet type, that we try to convert. Let's hope, that it works
+            return ConvertForSetting(DotNetSetter.Convert(this, value));
         }
 
         /// <inheritdoc />

@@ -56,6 +56,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Core\EMOF\Implementation\DotNetSetter.cs" />
     <Compile Include="Core\EMOF\Implementation\IUriResolver.cs" />
     <Compile Include="Core\EMOF\Implementation\MofElement.cs" />
     <Compile Include="Core\EMOF\Implementation\Extent.cs" />

@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Uml.Helper;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace DatenMeister.Tests.Web
 {
@@ -14,16 +17,16 @@ namespace DatenMeister.Tests.Web
         {
             var property1 = "zip";
             var property2 = "location";
-
-            var mofObject = new InMemoryObject();
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///");
+            var factory = new MofFactory(extent);
+            var mofObject = factory.create(null);
             mofObject.set(property1, "55130");
             mofObject.set(property2, "Mainz");
 
-            var mofObject2 = new InMemoryObject();
+            var mofObject2 = factory.create(null);
             mofObject2.set(property1, "65474");
             mofObject2.set(property2, "Bischofsheim");
-
-            var extent = new InMemoryUriExtent("datenmeister:///test");
+            
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
             var creator = new FormCreator();
@@ -50,19 +53,19 @@ namespace DatenMeister.Tests.Web
             var property2 = "location";
             var property3 = "other";
 
-            var mofObject = new InMemoryObject();
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///");
+            var factory = new MofFactory(extent);
+            var mofObject = factory.create(null);
             mofObject.set(property1, "55130");
             mofObject.set(property2, "Mainz");
 
-            var mofObject2 = new InMemoryObject();
+            var mofObject2 = factory.create(null);
             mofObject2.set(property1, "65474");
             mofObject2.set(property2, "Bischofsheim");
 
-            var enumeration = new InMemoryReflectiveSequence(null, null);
-            enumeration.add(new InMemoryObject());
-            mofObject2.set(property3, enumeration);
+            var valueList = new List<object> {factory.create(null)};
+            mofObject2.set(property3, valueList);
 
-            var extent = new InMemoryUriExtent("datenmeister:///test");
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
 
@@ -70,7 +73,7 @@ namespace DatenMeister.Tests.Web
             var creator = new FormCreator();
             var result = creator.CreateForm(extent, FormCreator.CreationMode.All);
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.fields.Count(), Is.EqualTo(3));
+            Assert.That(result.fields.Count, Is.EqualTo(3));
             var firstColumn = result.fields.FirstOrDefault(x => x.name == "zip");
             var secondColumn = result.fields.FirstOrDefault(x => x.name == "location");
             var thirdColumn = result.fields.FirstOrDefault(x => x.name == "other");

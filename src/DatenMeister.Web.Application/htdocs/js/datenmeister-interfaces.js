@@ -32,7 +32,7 @@ define(["require", "exports"], function (require, exports) {
         var ItemReferenceModel = (function (_super) {
             __extends(ItemReferenceModel, _super);
             function ItemReferenceModel() {
-                _super.apply(this, arguments);
+                return _super !== null && _super.apply(this, arguments) || this;
             }
             return ItemReferenceModel;
         }(ExtentReferenceModel));
@@ -40,7 +40,7 @@ define(["require", "exports"], function (require, exports) {
         var ItemCreateModel = (function (_super) {
             __extends(ItemCreateModel, _super);
             function ItemCreateModel() {
-                _super.apply(this, arguments);
+                return _super !== null && _super.apply(this, arguments) || this;
             }
             return ItemCreateModel;
         }(ExtentReferenceModel));
@@ -48,7 +48,7 @@ define(["require", "exports"], function (require, exports) {
         var ItemUnsetPropertyModel = (function (_super) {
             __extends(ItemUnsetPropertyModel, _super);
             function ItemUnsetPropertyModel() {
-                _super.apply(this, arguments);
+                return _super !== null && _super.apply(this, arguments) || this;
             }
             return ItemUnsetPropertyModel;
         }(ItemReferenceModel));
@@ -56,7 +56,7 @@ define(["require", "exports"], function (require, exports) {
         var ItemDeleteModel = (function (_super) {
             __extends(ItemDeleteModel, _super);
             function ItemDeleteModel() {
-                _super.apply(this, arguments);
+                return _super !== null && _super.apply(this, arguments) || this;
             }
             return ItemDeleteModel;
         }(ItemReferenceModel));
@@ -64,7 +64,7 @@ define(["require", "exports"], function (require, exports) {
         var ItemSetPropertyModel = (function (_super) {
             __extends(ItemSetPropertyModel, _super);
             function ItemSetPropertyModel() {
-                _super.apply(this, arguments);
+                return _super !== null && _super.apply(this, arguments) || this;
             }
             return ItemSetPropertyModel;
         }(ItemReferenceModel));
@@ -72,7 +72,7 @@ define(["require", "exports"], function (require, exports) {
         var ItemSetPropertiesModel = (function (_super) {
             __extends(ItemSetPropertiesModel, _super);
             function ItemSetPropertiesModel() {
-                _super.apply(this, arguments);
+                return _super !== null && _super.apply(this, arguments) || this;
             }
             return ItemSetPropertiesModel;
         }(ItemReferenceModel));
@@ -100,8 +100,9 @@ define(["require", "exports"], function (require, exports) {
         var TextDataField = (function (_super) {
             __extends(TextDataField, _super);
             function TextDataField(title, name) {
-                _super.call(this, ColumnTypes.textbox, title, name);
-                this.lineHeight = 1;
+                var _this = _super.call(this, ColumnTypes.textbox, title, name) || this;
+                _this.lineHeight = 1;
+                return _this;
             }
             return TextDataField;
         }(DataField));
@@ -109,9 +110,10 @@ define(["require", "exports"], function (require, exports) {
         var DateTimeDataField = (function (_super) {
             __extends(DateTimeDataField, _super);
             function DateTimeDataField(title, name) {
-                _super.call(this, ColumnTypes.dateTime, title, name);
-                this.showDate = true;
-                this.showTime = true;
+                var _this = _super.call(this, ColumnTypes.dateTime, title, name) || this;
+                _this.showDate = true;
+                _this.showTime = true;
+                return _this;
             }
             return DateTimeDataField;
         }(DataField));
@@ -119,7 +121,7 @@ define(["require", "exports"], function (require, exports) {
         var DropDownDataField = (function (_super) {
             __extends(DropDownDataField, _super);
             function DropDownDataField(title, name) {
-                _super.call(this, ColumnTypes.dropdown, title, name);
+                return _super.call(this, ColumnTypes.dropdown, title, name) || this;
             }
             return DropDownDataField;
         }(DataField));
@@ -127,7 +129,7 @@ define(["require", "exports"], function (require, exports) {
         var SubElementsDataField = (function (_super) {
             __extends(SubElementsDataField, _super);
             function SubElementsDataField(title, name) {
-                _super.call(this, ColumnTypes.subElements, title, name);
+                return _super.call(this, ColumnTypes.subElements, title, name) || this;
             }
             return SubElementsDataField;
         }(DataField));
@@ -135,12 +137,12 @@ define(["require", "exports"], function (require, exports) {
         var ColumnTypes = (function () {
             function ColumnTypes() {
             }
-            ColumnTypes.textbox = "text";
-            ColumnTypes.dropdown = "dropdown";
-            ColumnTypes.dateTime = "datetime";
-            ColumnTypes.subElements = "subelements";
             return ColumnTypes;
         }());
+        ColumnTypes.textbox = "text";
+        ColumnTypes.dropdown = "dropdown";
+        ColumnTypes.dateTime = "datetime";
+        ColumnTypes.subElements = "subelements";
         Table.ColumnTypes = ColumnTypes;
     })(Table = exports.Table || (exports.Table = {}));
     var Api;
@@ -151,14 +153,14 @@ define(["require", "exports"], function (require, exports) {
             return ItemTableQuery;
         }());
         Api.ItemTableQuery = ItemTableQuery;
+        var PageType;
         (function (PageType) {
             PageType[PageType["Workspaces"] = 0] = "Workspaces";
             PageType[PageType["Extents"] = 1] = "Extents";
             PageType[PageType["Items"] = 2] = "Items";
             PageType[PageType["ItemDetail"] = 3] = "ItemDetail";
             PageType[PageType["Dialog"] = 4] = "Dialog";
-        })(Api.PageType || (Api.PageType = {}));
-        var PageType = Api.PageType;
+        })(PageType = Api.PageType || (Api.PageType = {}));
         var PluginParameter = (function () {
             function PluginParameter() {
             }

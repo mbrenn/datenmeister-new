@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -17,18 +19,18 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         private readonly Dictionary<object, string> _idCacheDictionary = new Dictionary<object, string>();
 
-        private readonly Dictionary<string, Type> _elementsToTypes =
-            new Dictionary<string, Type>();
+        private readonly Dictionary<IElement, Type> _elementsToTypes =
+            new Dictionary<IElement, Type>();
 
-        private readonly Dictionary<Type, string> _typesToElememts = 
-            new Dictionary<Type, string>();
+        private readonly Dictionary<Type, IElement> _typesToElememts = 
+            new Dictionary<Type, IElement>();
 
         /// <summary>
         /// Adds an association between type and element
         /// </summary>
         /// <param name="element">Element to be added</param>
         /// <param name="type">Type to be added</param>
-        public void Add(string element, Type type)
+        public void Add(IElement element, Type type)
         {
             if (_elementsToTypes.ContainsKey(element)
                 || _typesToElememts.ContainsKey(type))
@@ -39,18 +41,31 @@ namespace DatenMeister.Provider.DotNet
             _typesToElememts[type] = element;
         }
 
-        public string ToElement(Type type)
+        public IElement ToElement(Type type)
         {
-            string result;
+            IElement result;
             _typesToElememts.TryGetValue(type, out result);
             return result;
         }
 
-        public Type ToType(string element)
+        public Type ToType(IElement element)
         {
             Type result;
             _elementsToTypes.TryGetValue(element, out result);
             return result;
+        }
+
+        public Type ToType(string elementUri)
+        {
+            foreach (var pair in _elementsToTypes)
+            {
+                if (pair.Key.GetUri() == elementUri)
+                {
+                    return pair.Value;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

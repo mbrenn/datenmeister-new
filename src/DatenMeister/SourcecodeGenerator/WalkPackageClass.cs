@@ -123,7 +123,8 @@ namespace DatenMeister.SourcecodeGenerator
         ///     Creates a C# source code. Not to be used for recursive
         ///     call since the namespace is just once created
         /// </summary>
-        /// <param name="element">
+        /// <param name="stack">
+        /// Defines the stack for tjhe given
         ///     Regards the given element as a package
         ///     and returns a full namespace for the package.
         /// </param>
@@ -216,38 +217,47 @@ namespace DatenMeister.SourcecodeGenerator
         public class CallStack
         {
             /// <summary>
-            ///     Stores the owner stack
-            /// </summary>
-            private CallStack _ownerStack;
-
-            /// <summary>
             /// Initializes a new instance of the callback
             /// </summary>
             /// <param name="ownerStack">The owning callstack. It may be null, if this is the root
             /// call stack</param>
             public CallStack(CallStack ownerStack)
             {
-                _ownerStack = ownerStack;
+                Owner = ownerStack;
                 Indentation = ownerStack == null ? string.Empty : $"{ownerStack.NextIndentation}";
                 Level = ownerStack?.Level + 1 ?? 0;
                 Fullname = ownerStack?.Fullname;
             }
 
+            /// <summary>
+            /// Gets or sets the current level of the call stack
+            /// </summary>
             public int Level { get; set; }
 
+            /// <summary>
+            /// Gets or sets the full name of the call stack
+            /// </summary>
             public string Fullname { get; set; }
 
+            /// <summary>
+            /// Gets or sets the indentation, which is just some space
+            /// </summary>
             public string Indentation { get; set; }
 
-            public string NextIndentation
-            {
-                get { return Indentation + "    "; }
-            }
+            /// <summary>
+            ///     Stores the owner stack
+            /// </summary>
+            public CallStack Owner { get; set; }
 
-            public CallStack Next
-            {
-                get { return new CallStack(this); }
-            }
+            /// <summary>
+            /// Gets the string for the next indentation
+            /// </summary>
+            public string NextIndentation => Indentation + "    ";
+
+            /// <summary>
+            /// Gets the callstack for the next level
+            /// </summary>
+            public CallStack Next => new CallStack(this);
 
             /// <summary>
             ///     Creates an indented callstack without increasing the level.
@@ -263,14 +273,9 @@ namespace DatenMeister.SourcecodeGenerator
             }
 
             /// <summary>
-            ///     Stores the owner stack
+            /// Converts the call stack to a string, containing level and full name
             /// </summary>
-            public CallStack Owner
-            {
-                get { return _ownerStack; }
-                set { _ownerStack = value; }
-            }
-
+            /// <returns>The converted stack</returns>
             public override string ToString()
             {
                 return $"Level: {Level} ({Fullname})";

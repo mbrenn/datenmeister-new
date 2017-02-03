@@ -37,9 +37,26 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="receiver">Object which shall receive the dotnet value</param>
         /// <param name="value">Value to be set</param>
-        public static object Convert(MofObject receiver, object value)
+        public static object Convert(MofExtent receiver, object value)
         {
             var factory = new MofFactory(receiver);
+            return Convert(value, factory);
+        }
+
+        /// <summary>
+        /// Sets the given object into the MofObject. 
+        /// </summary>
+        /// <param name="mofObject">Object which shall receive the dotnet value</param>
+        /// <param name="value">Value to be set</param>
+        public static object Convert(MofObject mofObject, object value)
+        {
+            var factory = new MofFactory(mofObject);
+            return Convert(value, factory);
+        }
+
+
+        private static object Convert(object value, MofFactory factory)
+        {
             var setter = new DotNetSetter(factory);
 
             // First, initialize all necessary methods

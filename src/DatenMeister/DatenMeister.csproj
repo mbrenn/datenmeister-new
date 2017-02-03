@@ -25,7 +25,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\DatenMeister.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -59,7 +60,7 @@
     <Compile Include="Core\EMOF\Implementation\DotNetSetter.cs" />
     <Compile Include="Core\EMOF\Implementation\IUriResolver.cs" />
     <Compile Include="Core\EMOF\Implementation\MofElement.cs" />
-    <Compile Include="Core\EMOF\Implementation\Extent.cs" />
+    <Compile Include="Core\EMOF\Implementation\MofExtent.cs" />
     <Compile Include="Core\EMOF\Implementation\ExtentReflectiveSequence.cs" />
     <Compile Include="Core\EMOF\Implementation\MofFactory.cs" />
     <Compile Include="Core\EMOF\Implementation\MofObject.cs" />

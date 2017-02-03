@@ -50,7 +50,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
     var ListView = (function (_super) {
         __extends(ListView, _super);
         function ListView(navigation) {
-            _super.call(this, navigation);
+            return _super.call(this, navigation) || this;
         }
         return ListView;
     }(ViewBase));
@@ -58,7 +58,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
     var WorkspaceView = (function (_super) {
         __extends(WorkspaceView, _super);
         function WorkspaceView(navigation) {
-            _super.call(this, navigation);
+            return _super.call(this, navigation) || this;
         }
         WorkspaceView.prototype.loadAndCreateHtmlForWorkbenchs = function () {
             var result = $.Deferred();
@@ -102,7 +102,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
     var ExtentView = (function (_super) {
         __extends(ExtentView, _super);
         function ExtentView(navigation) {
-            _super.call(this, navigation);
+            return _super.call(this, navigation) || this;
         }
         ExtentView.prototype.loadAndCreateHtmlForWorkspace = function (ws) {
             var _this = this;
@@ -158,12 +158,13 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
     var ItemsOfExtentView = (function (_super) {
         __extends(ItemsOfExtentView, _super);
         function ItemsOfExtentView(navigation) {
-            _super.call(this, navigation);
-            this.supportSearchbox = true;
-            this.supportNewItem = true;
-            this.supportPaging = true;
-            this.supportViews = true;
-            this.supportMetaClasses = true;
+            var _this = _super.call(this, navigation) || this;
+            _this.supportSearchbox = true;
+            _this.supportNewItem = true;
+            _this.supportPaging = true;
+            _this.supportViews = true;
+            _this.supportMetaClasses = true;
+            return _this;
         }
         ItemsOfExtentView.prototype.loadAndCreateHtmlForExtent = function (ws, extentUrl, query) {
             var _this = this;
@@ -263,8 +264,9 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
     var ItemView = (function (_super) {
         __extends(ItemView, _super);
         function ItemView(navigation) {
-            _super.call(this, navigation);
-            this.supportViews = true;
+            var _this = _super.call(this, navigation) || this;
+            _this.supportViews = true;
+            return _this;
         }
         ItemView.prototype.loadAndCreateHtmlForItem = function (ws, extentUrl, itemUrl, settings) {
             var tthis = this;
@@ -377,7 +379,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
     var EmptyView = (function (_super) {
         __extends(EmptyView, _super);
         function EmptyView(navigation) {
-            _super.call(this, navigation);
+            return _super.call(this, navigation) || this;
         }
         /**
          * Adds a link to the view
@@ -393,7 +395,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
     var DialogView = (function (_super) {
         __extends(DialogView, _super);
         function DialogView(navigation) {
-            _super.call(this, navigation);
+            return _super.call(this, navigation) || this;
         }
         DialogView.prototype.createDialog = function (configuration) {
             var value = new DMI.ClientResponse.ItemContentModel();
@@ -426,19 +428,19 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
     var CreatetableTypesView = (function (_super) {
         __extends(CreatetableTypesView, _super);
         function CreatetableTypesView(navigation, ws, extentUrl) {
-            _super.call(this, navigation);
-            this.extentUrl = extentUrl;
-            this.ws = ws;
-            var tthis = this;
-            this.addButtonLink("Unspecified", function () {
+            var _this = _super.call(this, navigation) || this;
+            _this.extentUrl = extentUrl;
+            _this.ws = ws;
+            var tthis = _this;
+            _this.addButtonLink("Unspecified", function () {
                 DMClient.ExtentApi.createItem(ws, extentUrl, null)
                     .done(function (innerData) {
                     navigation.navigateToItem(ws, extentUrl, innerData.newuri);
                 });
             });
-            DMClient.ExtentApi.getCreatableTypes(this.ws, this.extentUrl).done(function (data) {
-                var _loop_1 = function(typeKey) {
-                    func = function (x) {
+            DMClient.ExtentApi.getCreatableTypes(_this.ws, _this.extentUrl).done(function (data) {
+                for (var typeKey in data.types) {
+                    var func = function (x) {
                         var type = data.types[typeKey];
                         tthis.addButtonLink(type.name, function () {
                             DMClient.ExtentApi.createItem(ws, extentUrl, type.uri)
@@ -448,12 +450,9 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
                         });
                     };
                     func(typeKey);
-                };
-                var func;
-                for (var typeKey in data.types) {
-                    _loop_1(typeKey);
                 }
             });
+            return _this;
         }
         return CreatetableTypesView;
     }(ViewBase));

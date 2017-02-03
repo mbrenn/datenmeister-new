@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 
@@ -34,7 +36,7 @@ namespace DatenMeister.Provider.DotNet
                     $"The type '{value.GetType().FullName}' is not known to the DotNetTypeLookup");
             }
 
-            var result = new DotNetProviderObject(provider, typeLookup, value, metaclass);
+            var result = new DotNetProviderObject(provider, typeLookup, value, metaclass.GetUri());
             if (!string.IsNullOrEmpty(id))
             {
                 result.Id = id;
@@ -157,6 +159,8 @@ namespace DatenMeister.Provider.DotNet
                 {
                     listResult.Add(dotNetTypeLookup.CreateDotNetElementIfNecessary(item, container));
                 }
+
+                return listResult;
             }
 
             if (DotNetHelper.IsOfMofObject(result))
@@ -165,7 +169,7 @@ namespace DatenMeister.Provider.DotNet
                 return result;
             }
             
-            var dotNetResult = dotNetTypeLookup.CreateDotNetElement((DotNetProvider) container.Provider, container);
+            var dotNetResult = dotNetTypeLookup.CreateDotNetElement((DotNetProvider) container.Provider, result);
 
             return dotNetResult;
         }
@@ -176,14 +180,17 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="typeLookup">Type Lookup to be used</param>
         /// <param name="uml">Uml instance being used to create all necessary instances</param>
         /// <param name="factory">The factory to create the type</param>
+        /// <param name="extent"></param>
         /// <param name="dotNetType">And finally the .Net type that is converted and adde</param>
         /// <returns></returns>
-        public static IElement GenerateAndAdd(this IDotNetTypeLookup typeLookup, _UML uml, IFactory factory, Type dotNetType)
+        public static IElement GenerateAndAdd(this IDotNetTypeLookup typeLookup, _UML uml, IExtent extent, Type dotNetType)
         {
+            var factory = new MofFactory(extent);
             var dotNetTypeCreator = new DotNetTypeGenerator(factory, uml);
             var element = dotNetTypeCreator.CreateTypeFor(dotNetType);
+            extent.elements().add(element);
             
-            typeLookup.Add(element.GetUri(), dotNetType);
+            typeLookup.Add(element, dotNetType);
             return element;
         }
 
@@ -196,7 +203,7 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="type">Type to be added</param>
         public static void Add(this IDotNetTypeLookup lookup, IElement element, Type type)
         {
-            lookup.Add(element.GetUri(), type);
+            lookup.Add(element, type);
         }
     }
 }

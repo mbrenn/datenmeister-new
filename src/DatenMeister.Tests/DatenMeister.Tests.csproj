@@ -113,6 +113,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CSV\CSVExtentTests.cs" />
+    <Compile Include="DotNet\DotNetExtentTests.cs" />
+    <Compile Include="DotNet\DotNetTests.cs" />
     <Compile Include="Excel\ExcelTests.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
@@ -179,7 +181,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\" />
-    <Folder Include="DotNet\" />
     <Folder Include="Integration\" />
   </ItemGroup>
   <Choose>

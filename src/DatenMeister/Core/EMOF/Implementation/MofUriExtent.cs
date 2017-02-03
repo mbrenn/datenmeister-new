@@ -2,13 +2,14 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
     /// <summary>
     /// Implements the MOF interface for the uriextent
     /// </summary>
-    public class MofUriExtent : Extent, IUriExtent
+    public class MofUriExtent : MofExtent, IUriExtent
     {
         private readonly string _uri;
         private ExtentUrlNavigator<MofElement> _navigator;

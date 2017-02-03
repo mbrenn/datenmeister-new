@@ -16,11 +16,23 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="element">Element to be added</param>
         /// <param name="type">Type to be added</param>
-        void Add(string element, Type type);
+        void Add(IElement element, Type type);
 
-        string ToElement(Type type);
+        IElement ToElement(Type type);
 
-        Type ToType(string element);
+        /// <summary>
+        /// Converts an element, describing the type to the real .Net Type
+        /// </summary>
+        /// <param name="element">Element to be converted</param>
+        /// <returns>Converted element</returns>
+        Type ToType(IElement element);
+
+        /// <summary>
+        /// Finds the element by the uri and converts the element to a real .Net Type
+        /// </summary>
+        /// <param name="elementUri">Uri of the element to be converted</param>
+        /// <returns>Converted element</returns>
+        Type ToType(string elementUri);
 
         /// <summary>
         /// Gets the id of a certain element

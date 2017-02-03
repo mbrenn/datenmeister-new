@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Filler;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
@@ -16,9 +17,13 @@ namespace DatenMeister.Tests.DotNet
         {
             _MOF mof;
             _UML uml;
+
+            var lookup = DotNetExtentTests.Initialize();
+            var provider = new DotNetProvider(lookup);
+            var extent = new MofUriExtent(provider, "dm:///test");
             XmiTests.CreateUmlAndMofInstance(out mof, out uml);
 
-            var mofFactory= new InMemoryFactory();
+            var mofFactory= new MofFactory(extent);
             var dotNetTypeCreator = new DotNetTypeGenerator(mofFactory, uml);
             var dotNetClass = dotNetTypeCreator.CreateTypeFor(typeof (TestClass));
 

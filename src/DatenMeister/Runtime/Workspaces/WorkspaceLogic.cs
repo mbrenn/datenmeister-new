@@ -187,7 +187,7 @@ namespace DatenMeister.Runtime.Workspaces
                 }
 
                 workspace.extent.Add(newExtent);
-                ((Extent) newExtent).Resolver = new WorkspaceUriResolver(this);
+                ((MofExtent) newExtent).Resolver = new WorkspaceUriResolver(this);
             }
         }
 

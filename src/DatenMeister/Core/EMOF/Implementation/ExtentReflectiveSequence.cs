@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Provider;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -12,13 +13,13 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class ExtentReflectiveSequence : IReflectiveSequence
     {
-        private readonly Extent _extent;
+        private readonly MofExtent _extent;
 
         /// <summary>
         /// Initializes a new instance of the ExtentReflectiveSequence class
         /// </summary>
         /// <param name="extent"></param>
-        public ExtentReflectiveSequence(Extent extent)
+        public ExtentReflectiveSequence(MofExtent extent)
         {
             _extent = extent;
         }
@@ -113,9 +114,18 @@ namespace DatenMeister.Core.EMOF.Implementation
                     valueAsObject.Extent = _extent;
                     return true;
                 }
+
+                throw new NotImplementedException("Only objects from the extent are currently supported");
             }
 
-            throw new NotImplementedException("Only objects from the extent are currently supported");
+            if (DotNetHelper.IsOfPrimitiveType(value))
+            {
+                throw new InvalidOperationException(
+                    $"An instance of a primitive type may not be added to the extent root elements: {value}");
+            }
+
+            _extent.Provider.AddElement((IProviderObject)MofExtent.ConvertForSetting(_extent, value), index);
+            return true;
         }
 
         /// <inheritdoc />

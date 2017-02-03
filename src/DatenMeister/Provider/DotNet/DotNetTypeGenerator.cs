@@ -29,6 +29,7 @@ namespace DatenMeister.Provider.DotNet
         {
             if (factoryForTypes == null) throw new ArgumentNullException(nameof(factoryForTypes));
             if (umlHost == null) throw new ArgumentNullException(nameof(umlHost));
+
             _factoryForTypes = factoryForTypes;
             _umlHost = umlHost;
         }

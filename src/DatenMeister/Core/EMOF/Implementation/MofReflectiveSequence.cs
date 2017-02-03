@@ -50,7 +50,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public bool add(object value)
         {
-            var valueToBeAdded = _mofObject.ConvertForSetting(value);
+            var valueToBeAdded = MofExtent.ConvertForSetting(_mofObject, value);
             return _mofObject.ProviderObject.AddToProperty(_property, valueToBeAdded);
         }
 
@@ -103,7 +103,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public void add(int index, object value)
         {
-            var valueToBeAdded = _mofObject.ConvertForSetting(value);
+            var valueToBeAdded = MofExtent.ConvertForSetting(_mofObject, value);
             _mofObject.ProviderObject.AddToProperty(_property, valueToBeAdded, index);
         }
 

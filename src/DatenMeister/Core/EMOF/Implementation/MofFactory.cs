@@ -16,7 +16,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Initializes a new instance of the Factory
         /// </summary>
         /// <param name="extent"></param>
-        public MofFactory(Extent extent)
+        public MofFactory(MofExtent extent)
         {
             if (extent == null) throw new ArgumentNullException(nameof(extent));
             _provider = extent.Provider;
@@ -56,7 +56,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Initializes a new instance of the Factory
         /// </summary>
         /// <param name="extent"></param>
-        public MofFactory(IExtent extent) : this ((Extent) extent)
+        public MofFactory(IExtent extent) : this ((MofExtent) extent)
         {
         }
 

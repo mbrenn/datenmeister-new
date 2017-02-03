@@ -17,7 +17,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets the extent of the mof object
         /// </summary>
-        public Extent Extent { get; set; }
+        public MofExtent Extent { get; set; }
 
         /// <summary>
         /// Gets the extent of the mof object
@@ -34,7 +34,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="providedObject">The database abstraction of the object</param>
         /// <param name="extent">The extent being used to access the item</param>
-        public MofObject(IProviderObject providedObject, Extent extent)
+        public MofObject(IProviderObject providedObject, MofExtent extent)
         {
             if (providedObject == null) throw new ArgumentNullException(nameof(providedObject));
             if (providedObject.Provider == null)
@@ -63,6 +63,12 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             return false;
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return ProviderObject?.GetHashCode() ?? base.GetHashCode();
         }
 
         /// <inheritdoc />
@@ -131,55 +137,13 @@ namespace DatenMeister.Core.EMOF.Implementation
                 ProviderObject.EmptyListForProperty(property);
                 foreach (var child in valueAsEnumeration)
                 {
-                    ProviderObject.AddToProperty(property, ConvertForSetting(child));
+                    ProviderObject.AddToProperty(property, MofExtent.ConvertForSetting(this, child));
                 }
             }
             else
             {
-                ProviderObject.SetProperty(property, ConvertForSetting(value));
+                ProviderObject.SetProperty(property, MofExtent.ConvertForSetting(this, value));
             }
-        }
-
-        /// <summary>
-        /// Converts the object to be set by the data provider. This is the inverse object to ConvertToMofObject. 
-        /// An arbitrary object shall be stored into the database
-        /// </summary>
-        /// <param name="value">Value to be converted</param>
-        /// <returns>The converted object or an exception if the object cannot be converted</returns>
-        public object ConvertForSetting(object value)
-        {
-            if (DotNetHelper.IsOfPrimitiveType(value))
-            {
-                return value;
-            }
-
-            if (DotNetHelper.IsOfMofObject(value))
-            {
-                var asMofObject = (MofObject) value;
-
-                if (asMofObject.Extent == null)
-                {
-                    var result = (MofElement) ObjectCopier.Copy(new MofFactory(ProviderObject.Provider), asMofObject);
-                    if (this is IElement)
-                    {
-                        result.SetContainer(this as IElement);
-                    }
-
-                    return result.ProviderObject;
-                }
-                else
-                {
-                    // It is a reference
-                    var reference = new UriReference
-                    {
-                        Uri = ((MofUriExtent) asMofObject.Extent).uri(asMofObject as IElement)
-                    };
-
-                    return reference;
-                }
-            }
-            // Then, we have a simple dotnet type, that we try to convert. Let's hope, that it works
-            return ConvertForSetting(DotNetSetter.Convert(this, value));
         }
 
         /// <inheritdoc />

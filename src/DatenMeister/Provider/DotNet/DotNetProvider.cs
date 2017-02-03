@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Extents;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -18,6 +14,8 @@ namespace DatenMeister.Provider.DotNet
         private readonly object _syncObject = new object();
         
         private readonly List<object> _elements;
+
+        private Dictionary<string, object> _idStorage = new Dictionary<string, object>();
 
         /// <summary>
         /// Stores the object that stores the properties
@@ -53,33 +51,84 @@ namespace DatenMeister.Provider.DotNet
         /// <inheritdoc />
         public IProviderObject CreateElement(string metaClassUri)
         {
-            var type = _typeLookup.ToType(metaClassUri);
+            lock (_syncObject)
+            {
+                var type = _typeLookup.ToType(metaClassUri);
+                return CreateElementOfType(metaClassUri, type);
+            }
+        }
+
+        private DotNetProviderObject CreateElementOfType(string metaClassUri, Type type)
+        {
             var result = Activator.CreateInstance(type);
-            return new DotNetProviderObject(this, _typeLookup, result, metaClassUri);
+            var providerObject = new DotNetProviderObject(this, _typeLookup, result, metaClassUri);
+            _idStorage[providerObject.Id] = providerObject.GetNativeValue();
+
+            return providerObject;
+        }
+
+        /// <inheritdoc />
+        public IProviderObject CreateElement(IElement metaClass)
+        {
+            if (metaClass == null) throw new ArgumentNullException(nameof(metaClass));
+
+            lock (_syncObject)
+            {
+                return CreateElement(metaClass.GetUri());
+            }
         }
 
         /// <inheritdoc />
         public void AddElement(IProviderObject valueAsObject, int index = -1)
         {
-            throw new NotImplementedException();
+            lock (_syncObject)
+            {
+                var providerObject = valueAsObject as DotNetProviderObject;
+                if (providerObject == null) throw new ArgumentNullException(nameof(providerObject));
+                _idStorage[valueAsObject.Id] = providerObject.GetNativeValue();
+
+                if (index == -1)
+                {
+                    _elements.Add(providerObject.GetNativeValue());
+                }
+                else
+                {
+                    _elements.Insert(index, providerObject.GetNativeValue());
+                }
+            }
         }
 
         /// <inheritdoc />
         public bool DeleteElement(string id)
         {
-            throw new NotImplementedException();
+            object toBeDelected;
+            if (_idStorage.TryGetValue(id, out toBeDelected))
+            {
+                return _elements.Remove(toBeDelected);
+            }
+
+            return false;
         }
 
         /// <inheritdoc />
         public void DeleteAllElements()
         {
-            throw new NotImplementedException();
+            lock (_syncObject)
+            {
+                _elements.Clear();
+            }
         }
 
         /// <inheritdoc />
         public IProviderObject Get(string id)
         {
-            throw new NotImplementedException();
+            object result;
+            if (_idStorage.TryGetValue(id, out result))
+            {
+                return new DotNetProviderObject(this, _typeLookup, result);
+            }
+
+            return null;
         }
 
         /// <inheritdoc />

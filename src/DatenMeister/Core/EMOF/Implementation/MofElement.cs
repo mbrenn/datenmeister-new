@@ -11,11 +11,6 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICanSetId
     {
-        /// <summary>
-        /// Stores the resolver
-        /// </summary>
-        private IUriResolver _resolver;
-
         /// <inheritdoc />
         public string Id
         {
@@ -42,7 +37,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="container"></param>
         public MofElement(
             IProviderObject providedObject, 
-            Extent extent,
+            MofExtent extent,
             IElement container = null)
             : base(providedObject, extent)
         {

@@ -41,16 +41,17 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
     var ToolbarViewSelection = (function (_super) {
         __extends(ToolbarViewSelection, _super);
         function ToolbarViewSelection(ws, extentUrl, itemUrl) {
-            _super.call(this, "view");
-            this.ws = ws;
-            this.extentUrl = extentUrl;
-            this.itemUrl = itemUrl;
-            var tthis = this;
-            _super.prototype.create.call(this, 2, "Loading views");
-            DMClient.ExtentApi.getViews(this.ws, this.extentUrl)
+            var _this = _super.call(this, "view") || this;
+            _this.ws = ws;
+            _this.extentUrl = extentUrl;
+            _this.itemUrl = itemUrl;
+            var tthis = _this;
+            _super.prototype.create.call(_this, 2, "Loading views");
+            DMClient.ExtentApi.getViews(_this.ws, _this.extentUrl)
                 .done(function (data) {
                 tthis.updateLayoutForViews(data.views);
             });
+            return _this;
         }
         ToolbarViewSelection.prototype.updateLayoutForViews = function (views) {
             var tthis = this;
@@ -80,9 +81,9 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
     var ToolbarButton = (function (_super) {
         __extends(ToolbarButton, _super);
         function ToolbarButton(id, text) {
-            _super.call(this, id);
-            var tthis = this;
-            var result = _super.prototype.create.call(this, 2);
+            var _this = _super.call(this, id) || this;
+            var tthis = _this;
+            var result = _super.prototype.create.call(_this, 2);
             var domNewItem = $("<a href='#' class='btn btn-default'>" + text + "</a>");
             domNewItem.click(function () {
                 if (tthis.onClicked !== undefined) {
@@ -91,6 +92,7 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
                 return false;
             });
             result.append(domNewItem);
+            return _this;
         }
         return ToolbarButton;
     }(ToolbarItemBase));
@@ -98,9 +100,9 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
     var ToolbarSearchbox = (function (_super) {
         __extends(ToolbarSearchbox, _super);
         function ToolbarSearchbox() {
-            _super.call(this, "searchbox");
-            var tthis = this;
-            var result = _super.prototype.create.call(this, 3);
+            var _this = _super.call(this, "searchbox") || this;
+            var tthis = _this;
+            var result = _super.prototype.create.call(_this, 3);
             var domSearchBox = $("<input type='textbox' class='form-control' placeholder='Search...' />");
             domSearchBox.keyup(function () {
                 var searchText = domSearchBox.val();
@@ -109,6 +111,7 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
                 }
             });
             result.append(domSearchBox);
+            return _this;
         }
         return ToolbarSearchbox;
     }(ToolbarItemBase));
@@ -116,15 +119,16 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
     var ToolbarCreateableTypes = (function (_super) {
         __extends(ToolbarCreateableTypes, _super);
         function ToolbarCreateableTypes(ws, extentUrl) {
-            _super.call(this, "createabletypes");
-            var tthis = this;
-            this.extentUrl = extentUrl;
-            this.ws = ws;
-            var result = _super.prototype.create.call(this, 5);
+            var _this = _super.call(this, "createabletypes") || this;
+            var tthis = _this;
+            _this.extentUrl = extentUrl;
+            _this.ws = ws;
+            var result = _super.prototype.create.call(_this, 5);
             DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done(function (data) {
                 tthis.createableTypes = data.types;
                 tthis.updateLayoutForCreatableTypes();
             });
+            return _this;
         }
         ToolbarCreateableTypes.prototype.updateLayoutForCreatableTypes = function () {
             var tthis = this;
@@ -154,10 +158,11 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
     var ToolbarMetaClasses = (function (_super) {
         __extends(ToolbarMetaClasses, _super);
         function ToolbarMetaClasses(ws, extentUrl) {
-            _super.call(this, "metaclasses");
-            this.extentUrl = extentUrl;
-            this.ws = ws;
-            _super.prototype.create.call(this, 2);
+            var _this = _super.call(this, "metaclasses") || this;
+            _this.extentUrl = extentUrl;
+            _this.ws = ws;
+            _super.prototype.create.call(_this, 2);
+            return _this;
         }
         ToolbarMetaClasses.prototype.updateLayout = function (metaClasses) {
             var tthis = this;
@@ -188,11 +193,11 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
     var ToolbarPaging = (function (_super) {
         __extends(ToolbarPaging, _super);
         function ToolbarPaging() {
-            _super.call(this, "paging");
-            this.totalPages = 0;
-            this.currentPage = 1;
-            var result = _super.prototype.create.call(this, 3);
-            var tthis = this;
+            var _this = _super.call(this, "paging") || this;
+            _this.totalPages = 0;
+            _this.currentPage = 1;
+            var result = _super.prototype.create.call(_this, 3);
+            var tthis = _this;
             var domPaging = $("<div class='form-inline'>" +
                 "<a href='#' class='dm-prevpage btn btn-default'>&lt;&lt;</a> Page " +
                 "<input class='form-control dm-page-selected' type='textbox' value='1'/> of " +
@@ -226,6 +231,7 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
                 return false;
             });
             result.append(domPaging);
+            return _this;
         }
         ToolbarPaging.prototype.throwOnPageChange = function () {
             if (this.onPageChange !== undefined) {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -40,8 +41,11 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="metaClassUri">metaclass to be set to the object</param>
         public DotNetProviderObject(DotNetProvider provider, IDotNetTypeLookup typeLookup, object value, string metaClassUri)
         {
-            Debug.Assert(metaClassUri != null, "type != null");
-            Debug.Assert(value != null, "value != null");
+            if (provider == null) throw new ArgumentNullException(nameof(provider));
+            if (typeLookup == null) throw new ArgumentNullException(nameof(typeLookup));
+            if (value == null) throw new ArgumentNullException(nameof(value));
+            if (metaClassUri == null) throw new ArgumentNullException(nameof(metaClassUri));
+
             Provider = provider;
             _typeLookup = typeLookup;
             _value = value;
@@ -49,6 +53,18 @@ namespace DatenMeister.Provider.DotNet
             _type = value.GetType();
 
             Id = typeLookup.GetId(value);
+        }
+
+        public DotNetProviderObject(DotNetProvider dotNetProvider, IDotNetTypeLookup typeLookup, object result)
+        {
+            if (dotNetProvider == null) throw new ArgumentNullException(nameof(dotNetProvider));
+            if (typeLookup == null) throw new ArgumentNullException(nameof(typeLookup));
+
+            Provider = dotNetProvider;
+            _typeLookup = typeLookup;
+            _value = result;
+
+            MetaclassUri = typeLookup.ToElement(_value.GetType()).GetUri();
         }
 
         /// <inheritdoc />

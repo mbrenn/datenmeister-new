@@ -11,13 +11,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores the extent to which the resolver is allocated
         /// </summary>
-        private Extent _extent;
+        private MofExtent _extent;
 
         /// <summary>
         /// Initializes a new instance of the UriResolver class.
         /// </summary>
         /// <param name="extent">Extent being used as a relative source for information</param>
-        public ExtentResolver(Extent extent)
+        public ExtentResolver(MofExtent extent)
         {
             _extent = extent;
         }

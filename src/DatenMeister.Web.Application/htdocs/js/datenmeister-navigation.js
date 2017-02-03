@@ -18,7 +18,7 @@ define(["require", "exports"], function (require, exports) {
     var DialogConfiguration = (function (_super) {
         __extends(DialogConfiguration, _super);
         function DialogConfiguration() {
-            _super.apply(this, arguments);
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         return DialogConfiguration;
     }(FormForItemConfiguration));

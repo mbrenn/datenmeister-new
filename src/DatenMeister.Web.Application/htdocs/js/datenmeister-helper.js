@@ -21,7 +21,7 @@ define(["require", "exports"], function (require, exports) {
             trigger: function () {
                 var args = [];
                 for (var _i = 0; _i < arguments.length; _i++) {
-                    args[_i - 0] = arguments[_i];
+                    args[_i] = arguments[_i];
                 }
                 cbs.forEach(function (cb) { return cb.apply(context, args); });
             }
@@ -44,7 +44,7 @@ define(["require", "exports"], function (require, exports) {
             var _this = this;
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i - 0] = arguments[_i];
+                args[_i] = arguments[_i];
             }
             this.cbs.forEach(function (cb) { return cb.apply(_this.context, args); });
         };

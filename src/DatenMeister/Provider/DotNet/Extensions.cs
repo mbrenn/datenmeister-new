@@ -131,7 +131,6 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="dotNetTypeLookup">The .NetType Lookup being used</param>
         /// <param name="result">Value to be converted</param>
         /// <param name="container">Defines the container for the .Net element</param>
-        /// <param name="extent">The extent that is directly owning the elements. 
         /// See also IDotNetReflectiveSequence</param>
         /// <returns>The converted or non-converted type</returns>
         public static object CreateDotNetElementIfNecessary(
@@ -179,8 +178,7 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="typeLookup">Type Lookup to be used</param>
         /// <param name="uml">Uml instance being used to create all necessary instances</param>
-        /// <param name="factory">The factory to create the type</param>
-        /// <param name="extent"></param>
+        /// <param name="extent">Extent to which the generated element will be added</param>
         /// <param name="dotNetType">And finally the .Net type that is converted and adde</param>
         /// <returns></returns>
         public static IElement GenerateAndAdd(this IDotNetTypeLookup typeLookup, _UML uml, IExtent extent, Type dotNetType)
@@ -193,7 +191,6 @@ namespace DatenMeister.Provider.DotNet
             typeLookup.Add(element, dotNetType);
             return element;
         }
-
 
         /// <summary>
         /// Adds an association between type and element

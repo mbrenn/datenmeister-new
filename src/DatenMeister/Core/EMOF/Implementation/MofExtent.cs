@@ -1,7 +1,9 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
+﻿using System;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
+using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 
@@ -9,6 +11,12 @@ namespace DatenMeister.Core.EMOF.Implementation
 {
     public class MofExtent : IExtent
     {
+        /// <summary>
+        /// This type lookup can be used to convert the instances of the .Net types to real MOF meta classes. 
+        /// It is only used, if the data 
+        /// </summary>
+        private readonly IDotNetTypeLookup _typeLookup;
+
         /// <summary>
         /// Gets or sets the provider for the given extent
         /// </summary>
@@ -23,10 +31,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Initializes a new instance of the Extent 
         /// </summary>
         /// <param name="provider">Provider being used for the extent</param>
-        public MofExtent(IProvider provider)
+        public MofExtent(IProvider provider, DotNetTypeLookup typeLookup = null)
         {
             Provider = provider;
             Resolver = new ExtentResolver(this);
+            _typeLookup = typeLookup;
         }
 
         /// <inheritdoc />
@@ -76,14 +85,19 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             return new ExtentReflectiveSequence(this);
         }
-        
+
         /// <summary>
         /// Converts the object to be set by the data provider. This is the inverse object to ConvertToMofObject. 
         /// An arbitrary object shall be stored into the database
         /// </summary>
         /// <param name="value">Value to be converted</param>
         /// <returns>The converted object or an exception if the object cannot be converted</returns>
-        public static object ConvertForSetting(MofExtent extent, object value)
+        public object ConvertForSetting(object value)
+        {
+            return ConvertForSetting(value, this);
+        }
+
+        public static object ConvertForSetting(object value, MofExtent extent)
         {
             if (DotNetHelper.IsOfPrimitiveType(value))
             {
@@ -92,11 +106,11 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             if (DotNetHelper.IsOfMofObject(value))
             {
-                var asMofObject = (MofObject)value;
+                var asMofObject = (MofObject) value;
 
                 if (asMofObject.Extent == null)
                 {
-                    var result = (MofElement)ObjectCopier.Copy(new MofFactory(extent), asMofObject);
+                    var result = (MofElement) ObjectCopier.Copy(new MofFactory(extent), asMofObject);
                     /*if (this is IElement)
                     {
                         result.SetContainer((IElement) this);
@@ -109,7 +123,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     // It is a reference
                     var reference = new UriReference
                     {
-                        Uri = ((MofUriExtent)asMofObject.Extent).uri(asMofObject as IElement)
+                        Uri = ((MofUriExtent) asMofObject.Extent).uri(asMofObject as IElement)
                     };
 
                     return reference;
@@ -117,8 +131,16 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             // Then, we have a simple dotnet type, that we try to convert. Let's hope, that it works
-            return ConvertForSetting(extent, DotNetSetter.Convert(extent, value));
+            if (extent == null)
+            {
+
+                throw new InvalidOperationException(
+                    "This element was not created by a factory. So a setting by .Net Object is not possible");
+            }
+
+            return ConvertForSetting(DotNetSetter.Convert(extent._typeLookup, extent, value), extent);
         }
+
         /// <summary>
         /// Converts the object to be set by the data provider. This is the inverse object to ConvertToMofObject. 
         /// An arbitrary object shall be stored into the database
@@ -127,39 +149,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>The converted object or an exception if the object cannot be converted</returns>
         public static object ConvertForSetting(MofObject mofObject, object value)
         {
-            if (DotNetHelper.IsOfPrimitiveType(value))
-            {
-                return value;
-            }
+            
+            return ConvertForSetting(value, mofObject.CreatedByExtent);
 
-            if (DotNetHelper.IsOfMofObject(value))
-            {
-                var asMofObject = (MofObject)value;
-
-                if (asMofObject.Extent == null)
-                {
-                    var result = (MofElement)ObjectCopier.Copy(new MofFactory(mofObject), asMofObject);
-                    /*if (this is IElement)
-                    {
-                        result.SetContainer((IElement) this);
-                    }*/
-
-                    return result.ProviderObject;
-                }
-                else
-                {
-                    // It is a reference
-                    var reference = new UriReference
-                    {
-                        Uri = ((MofUriExtent)asMofObject.Extent).uri(asMofObject as IElement)
-                    };
-
-                    return reference;
-                }
-            }
-
-            // Then, we have a simple dotnet type, that we try to convert. Let's hope, that it works
-            return ConvertForSetting(mofObject, DotNetSetter.Convert(mofObject, value));
         }
     }
 }

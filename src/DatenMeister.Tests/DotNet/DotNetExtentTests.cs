@@ -105,10 +105,9 @@ namespace DatenMeister.Tests.DotNet
             var provider = new DotNetProvider(lookup);
             var extent = new MofUriExtent(provider, "dm:///test");
             Assert.That(extent.elements(), Is.Not.Null);
-            extent.elements().add("Test");
             extent.elements().add(new DotNetTests.Person());
 
-            Assert.That(extent.elements().size(), Is.EqualTo(2));
+            Assert.That(extent.elements().size(), Is.EqualTo(1));
         }
 
         [Test]

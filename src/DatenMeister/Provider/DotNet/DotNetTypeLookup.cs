@@ -17,7 +17,8 @@ namespace DatenMeister.Provider.DotNet
         /// <summary>
         /// Defines a cache between all objects and their id 
         /// </summary>
-        private readonly Dictionary<object, string> _idCacheDictionary = new Dictionary<object, string>();
+        private readonly Dictionary<object, string> _cacheObjectToId = 
+            new Dictionary<object, string>();
 
         private readonly Dictionary<IElement, Type> _elementsToTypes =
             new Dictionary<IElement, Type>();
@@ -75,13 +76,13 @@ namespace DatenMeister.Provider.DotNet
         /// <returns>The returned id</returns>
         public string GetId(object value)
         {
-            lock (_idCacheDictionary)
+            lock (_cacheObjectToId)
             {
                 string id;
-                if (!_idCacheDictionary.TryGetValue(value, out id))
+                if (!_cacheObjectToId.TryGetValue(value, out id))
                 {
                     id = Guid.NewGuid().ToString();
-                    _idCacheDictionary[value] = id;
+                    _cacheObjectToId[value] = id;
                 }
 
                 return id;

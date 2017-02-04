@@ -55,16 +55,17 @@ namespace DatenMeister.Provider.DotNet
             Id = typeLookup.GetId(value);
         }
 
-        public DotNetProviderObject(DotNetProvider dotNetProvider, IDotNetTypeLookup typeLookup, object result)
+        public DotNetProviderObject(DotNetProvider dotNetProvider, IDotNetTypeLookup typeLookup, object value)
         {
             if (dotNetProvider == null) throw new ArgumentNullException(nameof(dotNetProvider));
             if (typeLookup == null) throw new ArgumentNullException(nameof(typeLookup));
 
             Provider = dotNetProvider;
             _typeLookup = typeLookup;
-            _value = result;
+            _value = value;
+            _type = value.GetType();
 
-            MetaclassUri = typeLookup.ToElement(_value.GetType()).GetUri();
+            MetaclassUri = typeLookup.ToElement(_type).GetUri();
         }
 
         /// <inheritdoc />

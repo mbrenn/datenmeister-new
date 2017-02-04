@@ -76,9 +76,25 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="metaClass">Metaclass to be set</param>
         public void SetMetaClass(IElement metaClass)
-        {
+        {   
             var mofElement = (MofElement) metaClass;
+            if (mofElement.Extent == null)
+            {
+                throw new InvalidOperationException("The given metaclass is not connected to an element");
+            }
+
             ProviderObject.MetaclassUri = ((MofUriExtent) mofElement.Extent).uri(metaClass);
+        }
+
+        /// <summary>
+        /// Sets the extent by which the element was created
+        /// </summary>
+        /// <param name="extent">Extent being used to define the the creator</param>
+        /// <returns>this element. </returns>
+        public new IElement CreatedBy(MofExtent extent)
+        {
+            base.CreatedBy(extent);
+            return this;
         }
     }
 }

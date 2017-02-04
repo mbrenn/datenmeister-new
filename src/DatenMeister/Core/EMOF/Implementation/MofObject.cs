@@ -15,9 +15,24 @@ namespace DatenMeister.Core.EMOF.Implementation
     public class MofObject : IObject, IHasExtent, IObjectAllProperties
     {
         /// <summary>
+        /// Stores the extent
+        /// </summary>
+        private MofExtent _extent;
+
+        /// <summary> 
         /// Gets the extent of the mof object
         /// </summary>
-        public MofExtent Extent { get; set; }
+        public MofExtent Extent
+        {
+            get { return _extent; }
+            set { _extent = CreatedByExtent = value; }
+        }
+
+        /// <summary>
+        /// Stores the extent that is used to create the element. 
+        /// This extent is used for type lookup and other referencing things. 
+        /// </summary>
+        internal MofExtent CreatedByExtent { get; private set; }
 
         /// <summary>
         /// Gets the extent of the mof object
@@ -44,7 +59,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             ProviderObject = providedObject;
-            Extent = extent;
+            CreatedByExtent = Extent = extent;
         }
 
         /// <inheritdoc />
@@ -124,7 +139,6 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return container.Extent.Resolver.Resolve(valueAsUriReference.Uri);
             }
 
-
             throw new NotImplementedException($"Type of {value.GetType()} currently not supported.");
         }
 
@@ -168,6 +182,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         public override string ToString()
         {
             return UmlNameResolution.GetName(this);
+        }
+
+        public virtual IObject CreatedBy(MofExtent extent)
+        {
+            CreatedByExtent = extent;
+            return this;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 
@@ -11,11 +12,10 @@ namespace DatenMeister.Provider.DotNet
     public class DotNetProvider : IProvider
     {
         private readonly IDotNetTypeLookup _typeLookup;
+
         private readonly object _syncObject = new object();
         
-        private readonly List<object> _elements;
-
-        private Dictionary<string, object> _idStorage = new Dictionary<string, object>();
+        private readonly List<DotNetProviderObject> _elements = new List<DotNetProviderObject>();
 
         /// <summary>
         /// Stores the object that stores the properties
@@ -30,7 +30,6 @@ namespace DatenMeister.Provider.DotNet
         public DotNetProvider(IDotNetTypeLookup typeLookup)
         {
             _typeLookup = typeLookup;
-            _elements = new List<object>();
 
             /*
             if (typeLookup == null) throw new ArgumentNullException(nameof(typeLookup));
@@ -54,6 +53,11 @@ namespace DatenMeister.Provider.DotNet
             lock (_syncObject)
             {
                 var type = _typeLookup.ToType(metaClassUri);
+                if (type == null)
+                {
+                    throw new InvalidOperationException("No metaclass with uri '" + metaClassUri + "' is known");
+                }
+
                 return CreateElementOfType(metaClassUri, type);
             }
         }
@@ -62,20 +66,8 @@ namespace DatenMeister.Provider.DotNet
         {
             var result = Activator.CreateInstance(type);
             var providerObject = new DotNetProviderObject(this, _typeLookup, result, metaClassUri);
-            _idStorage[providerObject.Id] = providerObject.GetNativeValue();
 
             return providerObject;
-        }
-
-        /// <inheritdoc />
-        public IProviderObject CreateElement(IElement metaClass)
-        {
-            if (metaClass == null) throw new ArgumentNullException(nameof(metaClass));
-
-            lock (_syncObject)
-            {
-                return CreateElement(metaClass.GetUri());
-            }
         }
 
         /// <inheritdoc />
@@ -85,15 +77,14 @@ namespace DatenMeister.Provider.DotNet
             {
                 var providerObject = valueAsObject as DotNetProviderObject;
                 if (providerObject == null) throw new ArgumentNullException(nameof(providerObject));
-                _idStorage[valueAsObject.Id] = providerObject.GetNativeValue();
 
                 if (index == -1)
                 {
-                    _elements.Add(providerObject.GetNativeValue());
+                    _elements.Add(providerObject);
                 }
                 else
                 {
-                    _elements.Insert(index, providerObject.GetNativeValue());
+                    _elements.Insert(index, providerObject);
                 }
             }
         }
@@ -101,13 +92,10 @@ namespace DatenMeister.Provider.DotNet
         /// <inheritdoc />
         public bool DeleteElement(string id)
         {
-            object toBeDelected;
-            if (_idStorage.TryGetValue(id, out toBeDelected))
+            lock (_syncObject)
             {
-                return _elements.Remove(toBeDelected);
+                return _elements.RemoveAll(x => x.Id == id) > 0;
             }
-
-            return false;
         }
 
         /// <inheritdoc />
@@ -122,19 +110,19 @@ namespace DatenMeister.Provider.DotNet
         /// <inheritdoc />
         public IProviderObject Get(string id)
         {
-            object result;
-            if (_idStorage.TryGetValue(id, out result))
+            lock (_syncObject)
             {
-                return new DotNetProviderObject(this, _typeLookup, result);
+                return _elements.FirstOrDefault(x => x.Id == id);
             }
-
-            return null;
         }
 
         /// <inheritdoc />
         public IEnumerable<IProviderObject> GetRootObjects()
         {
-            throw new NotImplementedException();
+            foreach (var element in _elements)
+            {
+                yield return element;
+            }
         }
     }
 }

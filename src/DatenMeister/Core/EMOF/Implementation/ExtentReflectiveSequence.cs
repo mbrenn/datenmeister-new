@@ -29,7 +29,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             foreach (var element in _extent.Provider.GetRootObjects())
             {
-                var resultElement = new MofElement(element,_extent);
+                var resultElement = new MofElement(element, _extent);
                 yield return resultElement;
             }
         }
@@ -124,7 +124,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     $"An instance of a primitive type may not be added to the extent root elements: {value}");
             }
 
-            _extent.Provider.AddElement((IProviderObject)MofExtent.ConvertForSetting(_extent, value), index);
+            _extent.Provider.AddElement((IProviderObject) _extent.ConvertForSetting(value), index);
             return true;
         }
 

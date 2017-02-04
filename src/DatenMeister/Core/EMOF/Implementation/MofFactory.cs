@@ -10,7 +10,15 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class MofFactory : IFactory
     {
+        /// <summary>
+        /// Stores the provider, which is used to create the elements
+        /// </summary>
         private readonly IProvider _provider;
+
+        /// <summary>
+        /// Stores the extent being connected to the factory
+        /// </summary>
+        private readonly MofExtent _extent;
 
         /// <summary>
         /// Initializes a new instance of the Factory
@@ -19,6 +27,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         public MofFactory(MofExtent extent)
         {
             if (extent == null) throw new ArgumentNullException(nameof(extent));
+
+            _extent = extent;
             _provider = extent.Provider;
             if (_provider == null) throw new ArgumentNullException(nameof(_provider));
         }
@@ -43,6 +53,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             if (extent != null)
             {
                 // First, try the correct way via the extent.
+                _extent = extent;
                 _provider = extent.Provider;
             }
             else
@@ -70,10 +81,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IElement create(IElement metaClass)
         {
             var elementAsMetaClass = (MofElement) metaClass;
-            var uriMetaClass = (elementAsMetaClass?.Extent as MofUriExtent)?.uri(metaClass);
+            if (elementAsMetaClass != null && elementAsMetaClass.Extent == null)
+            {
+                throw new InvalidOperationException("We cannot create an instance by a metaclass which is not connected to an extent. It won't be found later on.");
+            }
+
+            var uriMetaClass = ((MofUriExtent) elementAsMetaClass?.Extent)?.uri(metaClass);
             return new MofElement(
                 _provider.CreateElement(uriMetaClass),
-                null);
+                null).CreatedBy(_extent);
         }
 
         /// <inheritdoc />

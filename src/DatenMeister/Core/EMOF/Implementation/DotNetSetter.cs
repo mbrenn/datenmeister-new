@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime;
 
 namespace DatenMeister.Core.EMOF.Implementation
@@ -18,6 +19,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         private readonly MofFactory _factory;
 
+        private readonly IDotNetTypeLookup _typeLookup;
+
         /// <summary>
         /// Stores a list of already visited elements, so a recursion is avoided
         /// </summary>
@@ -27,9 +30,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Initializes a new instance of the DotNetSetter class
         /// </summary>
         /// <param name="factory">Factory to be set</param>
-        public DotNetSetter(MofFactory factory)
+        /// <param name="typeLookup">The lookup class being used to retrieve the meta class. May be null</param>
+        public DotNetSetter(MofFactory factory, IDotNetTypeLookup typeLookup)
         {
             _factory = factory;
+            _typeLookup = typeLookup;
         }
 
         /// <summary>
@@ -37,10 +42,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="receiver">Object which shall receive the dotnet value</param>
         /// <param name="value">Value to be set</param>
-        public static object Convert(MofExtent receiver, object value)
+        /// /// <param name="typeLookup">The lookup class being used to retrieve the meta class</param>
+        public static object Convert(IDotNetTypeLookup typeLookup, MofExtent receiver, object value)
         {
             var factory = new MofFactory(receiver);
-            return Convert(value, factory);
+            return Convert(typeLookup, value, factory);
         }
 
         /// <summary>
@@ -48,16 +54,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="mofObject">Object which shall receive the dotnet value</param>
         /// <param name="value">Value to be set</param>
-        public static object Convert(MofObject mofObject, object value)
+        public static object Convert(IDotNetTypeLookup typeLookup, MofObject mofObject, object value)
         {
             var factory = new MofFactory(mofObject);
-            return Convert(value, factory);
+            return Convert(typeLookup, value, factory);
         }
 
 
-        private static object Convert(object value, MofFactory factory)
+        private static object Convert(IDotNetTypeLookup typeLookup, object value, MofFactory factory)
         {
-            var setter = new DotNetSetter(factory);
+            var setter = new DotNetSetter(factory, typeLookup);
 
             // First, initialize all necessary methods
             return setter.Convert(value);
@@ -83,7 +89,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                 _visitedElements.Add(value);
 
-                var createdElement = _factory.create(null);
+                var createdElement = _factory.create(_typeLookup?.ToElement(value.GetType()));
                 
                 var type = value.GetType();
                 foreach (var reflectedProperty in type.GetProperties(BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public))

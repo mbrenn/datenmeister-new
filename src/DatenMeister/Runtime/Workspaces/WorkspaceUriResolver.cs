@@ -10,8 +10,15 @@ namespace DatenMeister.Runtime.Workspaces
     /// </summary>
     public class WorkspaceUriResolver : IUriResolver
     {
-        private IWorkspaceLogic _workspaceLogic;
+        /// <summary>
+        /// Stores the workspace logic by which the elements shall be retrieved
+        /// </summary>
+        private readonly IWorkspaceLogic _workspaceLogic;
 
+        /// <summary>
+        /// Initializes a new instance of the WorkspaceUriResolver class
+        /// </summary>
+        /// <param name="workspaceLogic"></param>
         public WorkspaceUriResolver(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
@@ -33,6 +40,12 @@ namespace DatenMeister.Runtime.Workspaces
             }
 
             throw new InvalidOperationException($"The given element with uri {uri} is not found within all workspaces");
+        }
+
+        /// <inheritdoc />
+        public void AddMetaExtent(MofUriExtent extent)
+        {
+            // Assumption is, that the given meta extent is already available in the workspace
         }
     }
 }

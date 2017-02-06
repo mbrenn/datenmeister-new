@@ -54,9 +54,31 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="view">View to be added</param>
         public void Add(IObject view)
         {
-            var foundExtent = GetViewExtent();
+            GetViewExtent().elements().add(view);
+        }
 
-            foundExtent.elements().add(view);
+        /// <summary>
+        /// Adds the form
+        /// </summary>
+        /// <param name="form">Default view to be used</param>
+        /// <param name="id">Id of the element that shall be created</param>
+        public void Add(Form form, string id = null)
+        {
+            var viewExtent = GetViewExtent();
+            var factory = new MofFactory(viewExtent);
+            GetViewExtent().elements().add(factory.createFrom(form, id));
+        }
+
+        /// <summary>
+        /// Adds a default view for a certain meta class
+        /// </summary>
+        /// <param name="defaultView">Default view to be used</param>
+        /// <param name="id">Id of the element that shall be created</param>
+        public void Add(DefaultViewForMetaclass defaultView, string id = null)
+        {
+            var viewExtent = GetViewExtent();
+            var factory = new MofFactory(viewExtent);
+            GetViewExtent().elements().add(factory.createFrom(defaultView, id));
         }
 
         private IUriExtent GetViewExtent()

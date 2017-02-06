@@ -13,5 +13,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="uri"></param>
         /// <returns></returns>
         IElement Resolve(string uri);
+
+        /// <summary>
+        /// Adds an extent as a meta extent, so it will also be used to retrieve the element
+        /// </summary>
+        /// <param name="extent">Extent to be added</param>
+        void AddMetaExtent(MofUriExtent extent);
     }
 }

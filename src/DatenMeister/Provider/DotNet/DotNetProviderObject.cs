@@ -65,7 +65,7 @@ namespace DatenMeister.Provider.DotNet
             _value = value;
             _type = value.GetType();
 
-            MetaclassUri = typeLookup.ToElement(_type).GetUri();
+            MetaclassUri = typeLookup.ToElement(_type);
         }
 
         /// <inheritdoc />
@@ -78,7 +78,7 @@ namespace DatenMeister.Provider.DotNet
         public object GetProperty(string property)
         {
             var result = GetValueOfProperty(property);
-            return _typeLookup.CreateDotNetElementIfNecessary(result, this);
+            return _typeLookup.CreateDotNetElementIfNecessary(result, Provider as DotNetProvider);
         }
 
         private object GetValueOfProperty(string property)

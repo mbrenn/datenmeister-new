@@ -17,17 +17,18 @@ namespace DatenMeister.Tests.DotNet
         [Test]
         public void TestValue()
         {
-            var dotNetTypeLookup = Initialize();
-            var provider = new DotNetProvider(dotNetTypeLookup);
+            var typeExtent = DotNetExtentTests.Initialize();
+            var provider = new DotNetProvider(typeExtent.TypeLookup);
+            var extent = new MofUriExtent(provider, "dm:///test", typeExtent.TypeLookup);
             var value = new DotNetTests.TestClass();
-            var dotNetElement = dotNetTypeLookup.CreateDotNetElement(provider, value);
+            var dotNetElement = extent.TypeLookup.CreateDotNetElement(extent, value);
 
-            Assert.That(dotNetElement.GetProperty("Title"), Is.Null);
-            Assert.That(dotNetElement.GetProperty("Number"), Is.Not.Null);
-            Assert.That(dotNetElement.GetProperty("Number"), Is.EqualTo(0));
+            Assert.That(dotNetElement.get("Title"), Is.Null);
+            Assert.That(dotNetElement.get("Number"), Is.Not.Null);
+            Assert.That(dotNetElement.get("Number"), Is.EqualTo(0));
 
-            dotNetElement.SetProperty("Title", "Your Movie");
-            dotNetElement.SetProperty("Number", 3);
+            dotNetElement.set("Title", "Your Movie");
+            dotNetElement.set("Number", 3);
 
             Assert.That(value.Title, Is.EqualTo("Your Movie"));
             Assert.That(value.Number, Is.EqualTo(3));
@@ -36,12 +37,13 @@ namespace DatenMeister.Tests.DotNet
         [Test]
         public void TestListWithStrings()
         {
-            var dotNetTypeLookup = Initialize();
-            var provider = new DotNetProvider(dotNetTypeLookup);
+            var extent = Initialize();
+            var provider = new DotNetProvider(extent.TypeLookup);
+            var dotNetExtent = new MofUriExtent(provider, "dm:///", extent.TypeLookup);
             var value = new DotNetTests.TestClassWithList();
-            var dotNetElement = dotNetTypeLookup.CreateDotNetElement(provider, value);
+            var dotNetElement = extent.TypeLookup.CreateDotNetElement(dotNetExtent, value);
 
-            var result = dotNetElement.GetProperty("Authors");
+            var result = dotNetElement.get("Authors");
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.InstanceOf<IReflectiveSequence>());
 
@@ -65,12 +67,14 @@ namespace DatenMeister.Tests.DotNet
         [Test]
         public void TestListWithObjects()
         {
-            var dotNetTypeLookup = Initialize();
+            var typeExtent = DotNetExtentTests.Initialize();
+            var provider = new DotNetProvider(typeExtent.TypeLookup);
+            var extent = new MofUriExtent(provider, "dm:///test", typeExtent.TypeLookup);
+            extent.Resolver.AddMetaExtent(typeExtent);
             var value = new DotNetTests.TestClassWithList();
-            var provider = new DotNetProvider(dotNetTypeLookup);
-            var dotNetElement = dotNetTypeLookup.CreateDotNetElement(provider, value);
+            var dotNetElement = extent.TypeLookup.CreateDotNetElement(extent, value);
 
-            var persons = dotNetElement.GetProperty("Persons");
+            var persons = dotNetElement.get("Persons");
             Assert.That(persons, Is.Not.Null);
             Assert.That(persons, Is.InstanceOf<IReflectiveSequence>());
 
@@ -101,9 +105,10 @@ namespace DatenMeister.Tests.DotNet
         [Test]
         public void TestExtent()
         {
-            var lookup = Initialize();
-            var provider = new DotNetProvider(lookup);
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var typeExtent = Initialize();
+            var provider = new DotNetProvider(typeExtent.TypeLookup);
+            var extent = new MofUriExtent(provider, "dm:///test", typeExtent.TypeLookup);
+            extent.Resolver.AddMetaExtent(typeExtent);
             Assert.That(extent.elements(), Is.Not.Null);
             extent.elements().add(new DotNetTests.Person());
 
@@ -113,16 +118,18 @@ namespace DatenMeister.Tests.DotNet
         [Test]
         public void TestFactory()
         {
-            var lookup = Initialize();
-            var provider = new DotNetProvider(lookup);
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var typeExtent = Initialize();
+            var provider = new DotNetProvider(typeExtent.TypeLookup);
+            var extent = new MofUriExtent(provider, "dm:///test", typeExtent.TypeLookup);
             var factory = new MofFactory(extent);
 
-            var metaClass = lookup.ToElement(typeof(DotNetTests.TestClass));
-            var created = factory.create(metaClass);
+            var metaClass = typeExtent.TypeLookup.ToElement(typeof(DotNetTests.TestClass));
+            var created = factory.create(typeExtent.Resolver.Resolve(metaClass));
             Assert.That(created, Is.TypeOf<MofElement>());
             created.set("Title", "Test");
-            Assert.That(created.getMetaClass(), Is.EqualTo(metaClass));
+            var metaClassObject = created.getMetaClass();
+            Assert.That(metaClassObject, Is.Not.Null);
+            Assert.That(metaClassObject.GetUri(), Is.EqualTo(metaClass));
             Assert.That(created.get("Title"), Is.EqualTo("Test"));
 
             var found = (DotNetProviderObject) ((MofElement)created).ProviderObject;
@@ -132,9 +139,9 @@ namespace DatenMeister.Tests.DotNet
         [Test]
         public static void TestExtentReferences()
         {
-            var lookup = Initialize();
-            var provider = new DotNetProvider(lookup);
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var typeExtent = Initialize();
+            var provider = new DotNetProvider(typeExtent.TypeLookup);
+            var extent = new MofUriExtent(provider, "dm:///test", typeExtent.TypeLookup);
 
             var parent = new DotNetTests.PersonWithParent
             {
@@ -149,7 +156,7 @@ namespace DatenMeister.Tests.DotNet
                 Parent = parent
             };
 
-            var personAsElement = lookup.CreateDotNetElement(provider, child);
+            var personAsElement = typeExtent.TypeLookup.CreateDotNetElement(extent, child);
             extent.elements().add(personAsElement);
 
             var element = extent.elements().ElementAt(0).AsIObject();
@@ -168,9 +175,9 @@ namespace DatenMeister.Tests.DotNet
         [Test]
         public static void TestExtentReferencesWithSequence()
         {
-            var lookup = Initialize();
-            var provider = new DotNetProvider(lookup);
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var typeExtent = Initialize();
+            var provider = new DotNetProvider(typeExtent.TypeLookup);
+            var extent = new MofUriExtent(provider, "dm:///test", typeExtent.TypeLookup);
 
             var parent = new DotNetTests.TestClassWithList
             {
@@ -192,7 +199,7 @@ namespace DatenMeister.Tests.DotNet
             parent.Persons.Add(child1);
             parent.Persons.Add(child2);
 
-            var personAsElement = lookup.CreateDotNetElement(provider, parent);
+            var personAsElement = extent.TypeLookup.CreateDotNetElement(extent, parent);
             extent.elements().add(personAsElement);
 
             var element = extent.elements().ElementAt(0).AsIObject();
@@ -210,18 +217,17 @@ namespace DatenMeister.Tests.DotNet
             Assert.That(asKnowsExtent.Extent, Is.EqualTo(extent));
         }
 
-        internal static DotNetTypeLookup Initialize()
+        internal static MofUriExtent Initialize()
         {
             var uml = new _UML();
             var dotNetTypeLookup = new DotNetTypeLookup();
-            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
-            var factory = new MofFactory(extent);
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test", dotNetTypeLookup);
 
             dotNetTypeLookup.GenerateAndAdd(uml, extent, typeof(DotNetTests.TestClass));
             dotNetTypeLookup.GenerateAndAdd(uml, extent, typeof(DotNetTests.Person));
             dotNetTypeLookup.GenerateAndAdd(uml, extent, typeof(DotNetTests.PersonWithParent));
             dotNetTypeLookup.GenerateAndAdd(uml, extent, typeof(DotNetTests.TestClassWithList));
-            return dotNetTypeLookup;
+            return extent;
         }
 
     }

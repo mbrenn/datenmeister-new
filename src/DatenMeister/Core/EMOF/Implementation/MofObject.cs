@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -112,6 +113,11 @@ namespace DatenMeister.Core.EMOF.Implementation
             object value,
             bool noReferences = false)
         {
+            if (value == null)
+            {
+                return null;
+            }
+
             if (DotNetHelper.IsOfPrimitiveType(value))
             {
                 return value;

@@ -14,18 +14,11 @@ namespace DatenMeister.Provider.DotNet
         /// <summary>
         /// Adds an association between type and element
         /// </summary>
-        /// <param name="element">Element to be added</param>
+        /// <param name="elementUri">Uri of the metaclass to be added</param>
         /// <param name="type">Type to be added</param>
-        void Add(IElement element, Type type);
+        void Add(string elementUri, Type type);
 
-        IElement ToElement(Type type);
-
-        /// <summary>
-        /// Converts an element, describing the type to the real .Net Type
-        /// </summary>
-        /// <param name="element">Element to be converted</param>
-        /// <returns>Converted element</returns>
-        Type ToType(IElement element);
+        string ToElement(Type type);
 
         /// <summary>
         /// Finds the element by the uri and converts the element to a real .Net Type
@@ -35,7 +28,8 @@ namespace DatenMeister.Provider.DotNet
         Type ToType(string elementUri);
 
         /// <summary>
-        /// Gets the id of a certain element
+        /// Gets the id of a certain element. The method is used to support the caching
+        /// of the elements, so the same .Net element always have the same id
         /// </summary>
         /// <param name="value">Value to be queried</param>
         /// <returns>The returned id</returns>

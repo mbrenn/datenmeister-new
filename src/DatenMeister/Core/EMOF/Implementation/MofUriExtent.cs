@@ -1,6 +1,7 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
+using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 
@@ -15,7 +16,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         private ExtentUrlNavigator<MofElement> _navigator;
 
         /// <inheritdoc />
-        public MofUriExtent(IProvider provider, string uri) : base(provider)
+        public MofUriExtent(IProvider provider, string uri, IDotNetTypeLookup typeLookup = null) :
+            base(provider, typeLookup)
         {
             _uri = uri;
             _navigator = new ExtentUrlNavigator<MofElement>(this);

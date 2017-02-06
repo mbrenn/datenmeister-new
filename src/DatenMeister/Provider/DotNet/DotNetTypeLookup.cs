@@ -20,18 +20,18 @@ namespace DatenMeister.Provider.DotNet
         private readonly Dictionary<object, string> _cacheObjectToId = 
             new Dictionary<object, string>();
 
-        private readonly Dictionary<IElement, Type> _elementsToTypes =
-            new Dictionary<IElement, Type>();
+        private readonly Dictionary<string, Type> _elementsToTypes =
+            new Dictionary<string, Type>();
 
-        private readonly Dictionary<Type, IElement> _typesToElememts = 
-            new Dictionary<Type, IElement>();
+        private readonly Dictionary<Type, string> _typesToElememts = 
+            new Dictionary<Type, string>();
 
         /// <summary>
         /// Adds an association between type and element
         /// </summary>
         /// <param name="element">Element to be added</param>
         /// <param name="type">Type to be added</param>
-        public void Add(IElement element, Type type)
+        public void Add(string element, Type type)
         {
             if (_elementsToTypes.ContainsKey(element)
                 || _typesToElememts.ContainsKey(type))
@@ -42,31 +42,19 @@ namespace DatenMeister.Provider.DotNet
             _typesToElememts[type] = element;
         }
 
-        public IElement ToElement(Type type)
+        public string ToElement(Type type)
         {
-            IElement result;
+            string result;
             _typesToElememts.TryGetValue(type, out result);
             return result;
         }
 
-        public Type ToType(IElement element)
+        /// <inheritdoc />
+        public Type ToType(string element)
         {
             Type result;
             _elementsToTypes.TryGetValue(element, out result);
             return result;
-        }
-
-        public Type ToType(string elementUri)
-        {
-            foreach (var pair in _elementsToTypes)
-            {
-                if (pair.Key.GetUri() == elementUri)
-                {
-                    return pair.Value;
-                }
-            }
-
-            return null;
         }
 
         /// <summary>

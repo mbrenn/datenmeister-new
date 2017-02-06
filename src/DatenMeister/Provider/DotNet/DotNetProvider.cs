@@ -52,6 +52,11 @@ namespace DatenMeister.Provider.DotNet
         {
             lock (_syncObject)
             {
+                if (string.IsNullOrEmpty(metaClassUri))
+                {
+                    throw new InvalidOperationException(".Net-Provider requires a meta class");
+                }
+
                 var type = _typeLookup.ToType(metaClassUri);
                 if (type == null)
                 {

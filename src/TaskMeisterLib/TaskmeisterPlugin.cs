@@ -60,7 +60,7 @@ namespace TaskMeister
             // View for the activity list
             var view = new Form { name = "Activity List" };
             view.fields.Add(new TextFieldData("name", "Name!"));
-            _viewLogic.Add(factory.create(view, "Views.Activity.Detail"));
+            _viewLogic.Add(view, "Views.Activity.Detail");
 
             // View for the default list
             var taskDetailView = new Form { name = "Activity Detail" };
@@ -82,7 +82,7 @@ namespace TaskMeister
                 viewType = ViewType.Detail
             };
 
-            _viewLogic.Add(factory.create(date));
+            _viewLogic.Add(date);
 
             // Creates default view
             _webserverStartupPhases.AfterInitialization += (x, y) =>

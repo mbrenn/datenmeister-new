@@ -16,9 +16,34 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="typeLookup">Type lookup being used</param>
         /// <param name="value">Value to be converted</param>
-        /// <param name="provider">Defines the extent being associated to the DotNetElement</param>
+        /// <param name="extent">Defines the extent being associated to the DotNetElement</param>
         /// <param name="id">If set, the id will be set to the given element</param>
-        public static DotNetProviderObject CreateDotNetElement(
+        public static IElement CreateDotNetElement(
+            this IDotNetTypeLookup typeLookup,
+            MofUriExtent extent,
+            object value,
+            string id = null)
+        {
+            var providerAsDotNet = extent.Provider as DotNetProvider;
+            if (providerAsDotNet == null)
+            {
+                throw new InvalidOperationException("Given extent is not from DotNetProvider");
+            }
+
+            var result = CreateDotNetProviderObject(typeLookup, providerAsDotNet, value, id);
+
+            return new MofElement(result, extent);
+        }
+
+        /// <summary>
+        /// Creates a DotNetProvider object out of the internal information
+        /// </summary>
+        /// <param name="typeLookup"></param>
+        /// <param name="extent"></param>
+        /// <param name="value"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private static DotNetProviderObject CreateDotNetProviderObject(
             this IDotNetTypeLookup typeLookup,
             DotNetProvider provider,
             object value,
@@ -36,7 +61,7 @@ namespace DatenMeister.Provider.DotNet
                     $"The type '{value.GetType().FullName}' is not known to the DotNetTypeLookup");
             }
 
-            var result = new DotNetProviderObject(provider, typeLookup, value, metaclass.GetUri());
+            var result = new DotNetProviderObject(provider, typeLookup, value, metaclass);
             if (!string.IsNullOrEmpty(id))
             {
                 result.Id = id;
@@ -130,13 +155,11 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="dotNetTypeLookup">The .NetType Lookup being used</param>
         /// <param name="result">Value to be converted</param>
-        /// <param name="container">Defines the container for the .Net element</param>
-        /// See also IDotNetReflectiveSequence</param>
         /// <returns>The converted or non-converted type</returns>
         public static object CreateDotNetElementIfNecessary(
             this IDotNetTypeLookup dotNetTypeLookup, 
             object result,
-            DotNetProviderObject container)
+            DotNetProvider provider)
         {
             if (result == null)
             {
@@ -156,7 +179,7 @@ namespace DatenMeister.Provider.DotNet
                 var asEnumeration = (IEnumerable<object>) result;
                 foreach (var item in asEnumeration)
                 {
-                    listResult.Add(dotNetTypeLookup.CreateDotNetElementIfNecessary(item, container));
+                    listResult.Add(dotNetTypeLookup.CreateDotNetElementIfNecessary(item, provider));
                 }
 
                 return listResult;
@@ -168,7 +191,7 @@ namespace DatenMeister.Provider.DotNet
                 return result;
             }
             
-            var dotNetResult = dotNetTypeLookup.CreateDotNetElement((DotNetProvider) container.Provider, result);
+            var dotNetResult = dotNetTypeLookup.CreateDotNetProviderObject(provider, result);
 
             return dotNetResult;
         }
@@ -200,7 +223,7 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="type">Type to be added</param>
         public static void Add(this IDotNetTypeLookup lookup, IElement element, Type type)
         {
-            lookup.Add(element, type);
+            lookup.Add(element.GetUri(), type);
         }
     }
 }

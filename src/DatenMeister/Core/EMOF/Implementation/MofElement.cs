@@ -56,7 +56,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return null;
             }
 
-            return Extent?.Resolver.Resolve(uri);
+            return CreatedByExtent?.Resolver.Resolve(uri);
         }
 
         /// <inheritdoc />

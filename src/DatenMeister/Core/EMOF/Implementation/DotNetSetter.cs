@@ -26,15 +26,18 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         private readonly HashSet<object> _visitedElements = new HashSet<object>();
 
+        private IUriResolver _resolver;
+
         /// <summary>
         /// Initializes a new instance of the DotNetSetter class
         /// </summary>
-        /// <param name="factory">Factory to be set</param>
+        /// <param name="extent">Extent being used as reference to find typeLookup and Resolver</param>
         /// <param name="typeLookup">The lookup class being used to retrieve the meta class. May be null</param>
-        public DotNetSetter(MofFactory factory, IDotNetTypeLookup typeLookup)
+        public DotNetSetter(MofExtent extent)
         {
-            _factory = factory;
-            _typeLookup = typeLookup;
+            _factory = new MofFactory(extent);
+            _typeLookup = extent.TypeLookup;
+            _resolver = extent.Resolver;
         }
 
         /// <summary>
@@ -43,29 +46,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="receiver">Object which shall receive the dotnet value</param>
         /// <param name="value">Value to be set</param>
         /// /// <param name="typeLookup">The lookup class being used to retrieve the meta class</param>
-        public static object Convert(IDotNetTypeLookup typeLookup, MofExtent receiver, object value)
+        public static object Convert(MofExtent receiver, object value)
         {
-            var factory = new MofFactory(receiver);
-            return Convert(typeLookup, value, factory);
-        }
-
-        /// <summary>
-        /// Sets the given object into the MofObject. 
-        /// </summary>
-        /// <param name="mofObject">Object which shall receive the dotnet value</param>
-        /// <param name="value">Value to be set</param>
-        public static object Convert(IDotNetTypeLookup typeLookup, MofObject mofObject, object value)
-        {
-            var factory = new MofFactory(mofObject);
-            return Convert(typeLookup, value, factory);
-        }
-
-
-        private static object Convert(IDotNetTypeLookup typeLookup, object value, MofFactory factory)
-        {
-            var setter = new DotNetSetter(factory, typeLookup);
-
-            // First, initialize all necessary methods
+            var setter = new DotNetSetter(receiver);
             return setter.Convert(value);
         }
 
@@ -79,6 +62,10 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 return value;
             }
+            else if (value == null)
+            {
+                return null;
+            }
             else
             {
                 // Check, if the element already existed 
@@ -89,7 +76,11 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                 _visitedElements.Add(value);
 
-                var createdElement = _factory.create(_typeLookup?.ToElement(value.GetType()));
+                var metaClassUri = _typeLookup?.ToElement(value.GetType());
+                var createdElement = _factory.create(
+                    metaClassUri == null ?
+                    null : 
+                    _resolver.Resolve(metaClassUri));
                 
                 var type = value.GetType();
                 foreach (var reflectedProperty in type.GetProperties(BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public))

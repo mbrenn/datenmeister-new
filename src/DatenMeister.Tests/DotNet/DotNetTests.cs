@@ -18,9 +18,10 @@ namespace DatenMeister.Tests.DotNet
             _MOF mof;
             _UML uml;
 
-            var lookup = DotNetExtentTests.Initialize();
-            var provider = new DotNetProvider(lookup);
+            var typeExtent = DotNetExtentTests.Initialize();
+            var provider = new DotNetProvider(typeExtent.TypeLookup);
             var extent = new MofUriExtent(provider, "dm:///test");
+            extent.Resolver.AddMetaExtent(typeExtent);
             XmiTests.CreateUmlAndMofInstance(out mof, out uml);
 
             var mofFactory= new MofFactory(extent);

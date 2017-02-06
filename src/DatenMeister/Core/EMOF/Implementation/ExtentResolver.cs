@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Core.EMOF.Implementation
@@ -11,7 +13,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores the extent to which the resolver is allocated
         /// </summary>
-        private MofExtent _extent;
+        private readonly MofExtent _extent;
+
+        /// <summary>
+        /// Stores a list of other extents that shall also be considered as meta extents
+        /// </summary>
+        private readonly List<MofUriExtent> _metaExtents = new List<MofUriExtent>();
 
         /// <summary>
         /// Initializes a new instance of the UriResolver class.
@@ -22,13 +29,44 @@ namespace DatenMeister.Core.EMOF.Implementation
             _extent = extent;
         }
 
+        /// <summary>
+        /// Adds an extent as a meta extent, so it will also be used to retrieve the element
+        /// </summary>
+        /// <param name="extent">Extent to be added</param>
+        public void AddMetaExtent(MofUriExtent extent)
+        {
+            lock (_metaExtents)
+            {
+                if (_metaExtents.Any(x => x.contextURI() == extent.contextURI()))
+                {
+                    // Already in 
+                    return;
+                }
+
+                _metaExtents.Add(extent);
+            }
+        }
+
         /// <inheritdoc />
         public IElement Resolve(string uri)
         {
             var asUriExtent = _extent as MofUriExtent;
-            if (asUriExtent != null)
+            var result = asUriExtent?.element(uri);
+            if (result != null)
             {
-                return asUriExtent.element(uri);
+                return result;
+            }
+
+            lock (_metaExtents)
+            {
+                foreach (var metaExtent in _metaExtents)
+                {
+                    var element = metaExtent.element(uri);
+                    if (element != null)
+                    {
+                        return element;
+                    }
+                }
             }
 
             throw new NotImplementedException($"The given element with uri {uri} is not of type UriExtent");

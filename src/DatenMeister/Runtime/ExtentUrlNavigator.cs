@@ -100,7 +100,7 @@ namespace DatenMeister.Runtime
                 throw new InvalidOperationException($"element is not of type IHasId. Element is: " + element);
             }
 
-            return _extent.contextURI() + "#" + elementAsObject.Id;
+            return _extent.contextURI() + "#" + WebUtility.UrlEncode(elementAsObject.Id);
         }
     }
 }

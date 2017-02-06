@@ -80,16 +80,39 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IElement create(IElement metaClass)
         {
-            var elementAsMetaClass = (MofElement) metaClass;
-            if (elementAsMetaClass != null && elementAsMetaClass.Extent == null)
+            var elementAsMetaClass = metaClass as MofElement;
+            var extentAsMofUriExtent = elementAsMetaClass?.Extent as MofUriExtent;
+            if (elementAsMetaClass != null && extentAsMofUriExtent == null)
             {
-                throw new InvalidOperationException("We cannot create an instance by a metaclass which is not connected to an extent. It won't be found later on.");
+                throw new InvalidOperationException(
+                    "We cannot create an instance by a metaclass which is not connected to an extent. It won't be found later on.");
             }
 
+            if (extentAsMofUriExtent != null)
+            {
+                _extent.Resolver.AddMetaExtent(extentAsMofUriExtent);
+            }
+            
+
             var uriMetaClass = ((MofUriExtent) elementAsMetaClass?.Extent)?.uri(metaClass);
-            return new MofElement(
-                _provider.CreateElement(uriMetaClass),
-                null).CreatedBy(_extent);
+            return new MofElement(_provider.CreateElement(uriMetaClass), null).CreatedBy(_extent);
+        }
+
+        /// <summary>
+        /// Creates an element by getting a dotnet value. The 
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <param name="id">Id of the element that shall be set</param>
+        /// <returns>The created .Net object</returns>
+        public IObject createFrom(object value, string id = null)
+        {
+            var result = (MofElement ) _extent.ConvertForSetting(value);
+            if (result != null && !string.IsNullOrEmpty(id))
+            {
+                result.Id = id;
+            }
+
+            return result;  
         }
 
         /// <inheritdoc />
@@ -102,18 +125,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         public string convertToString(IElement dataType, IObject value)
         {
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Creates an element by the given value and the metaclass, that is set
-        /// </summary>
-        /// <param name="value">Value to be set</param>
-        /// <param name="id">Id, that shall be set</param>
-        /// <param name="metaClass">Metaclass that shall be assigned to the factory</param>
-        /// <returns>Created element</returns>
-        public IElement create(object value, string id = "", IElement metaClass = null)
-        {
-            throw new InvalidOperationException();
         }
     }
 }

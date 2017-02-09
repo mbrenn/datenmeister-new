@@ -43,7 +43,7 @@ namespace DatenMeister.Runtime.Workspaces
         }
 
         /// <inheritdoc />
-        public void AddMetaExtent(MofUriExtent extent)
+        public void AddMetaExtent(IUriExtent extent)
         {
             // Assumption is, that the given meta extent is already available in the workspace
         }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Reflection;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider;
 
 namespace DatenMeister.Runtime
 {
@@ -160,6 +161,16 @@ namespace DatenMeister.Runtime
         private static bool IsReflectiveCollection(Type type)
         {
             return typeof(IReflectiveCollection).IsAssignableFrom(type);
+        }
+
+        /// <summary>
+        /// Determines whether the given element is of PRovider OBject
+        /// </summary>
+        /// <param name="element">Element to be verified</param>
+        /// <returns>true, if the given element is of type IProviderObject</returns>
+        public static bool IsOfProviderObject(object element)
+        {
+            return element is IProviderObject;
         }
     }
 }

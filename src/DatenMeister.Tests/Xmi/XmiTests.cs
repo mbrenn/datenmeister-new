@@ -148,7 +148,7 @@ namespace DatenMeister.Tests.Xmi
         /// </summary>
         /// <param name="mof">Mof instance to be returned</param>
         /// <param name="uml">Uml instance to be returned</param>
-        public static void CreateUmlAndMofInstance(out _MOF mof, out _UML uml)
+        public static Bootstrapper CreateUmlAndMofInstance(out _MOF mof, out _UML uml)
         {
             var data = WorkspaceLogic.InitDefault();
             var dataLayerLogic = new WorkspaceLogic(data);
@@ -168,6 +168,8 @@ namespace DatenMeister.Tests.Xmi
             uml = data.Mof.Get<_UML>();
             Assert.That(mof, Is.Not.Null);
             Assert.That(uml, Is.Not.Null);
+
+            return strapper;
         }
 
         private static _UML GetFilledUml()

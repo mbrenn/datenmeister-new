@@ -31,7 +31,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IEnumerator<object> GetEnumerator()
         {
-            var result =GetPropertyAsEnumerable();
+            var result = GetPropertyAsEnumerable();
             foreach (var item in result)
             {
                 yield return MofObject.ConvertToMofObject(_mofObject, _property, item);

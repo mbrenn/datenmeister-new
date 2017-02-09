@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Core.EMOF.Implementation
@@ -18,7 +19,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores a list of other extents that shall also be considered as meta extents
         /// </summary>
-        private readonly List<MofUriExtent> _metaExtents = new List<MofUriExtent>();
+        private readonly List<IUriExtent> _metaExtents = new List<IUriExtent>();
 
         /// <summary>
         /// Initializes a new instance of the UriResolver class.
@@ -33,7 +34,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Adds an extent as a meta extent, so it will also be used to retrieve the element
         /// </summary>
         /// <param name="extent">Extent to be added</param>
-        public void AddMetaExtent(MofUriExtent extent)
+        public void AddMetaExtent(IUriExtent extent)
         {
             lock (_metaExtents)
             {

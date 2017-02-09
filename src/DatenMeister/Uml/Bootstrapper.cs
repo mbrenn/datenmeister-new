@@ -50,7 +50,7 @@ namespace DatenMeister.Uml
         /// <summary>
         ///     Stores the extent for the uml infrastructure
         /// </summary>
-        public IUriExtent PrimitiveInfrastructure { get; private set; }
+        public IUriExtent PrimitiveTypesInfrastructure { get; private set; }
 
         /// <summary>
         /// The static constructor
@@ -95,7 +95,7 @@ namespace DatenMeister.Uml
             }
 
             UmlInfrastructure = umlInfrastructure;
-            PrimitiveInfrastructure = primitiveInfrastructure;
+            PrimitiveTypesInfrastructure = primitiveInfrastructure;
         }
 
         private void StrapMof(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure, IUriExtent mofInfrastructure)
@@ -122,7 +122,7 @@ namespace DatenMeister.Uml
 
             UmlInfrastructure = umlInfrastructure;
             MofInfrastructure = mofInfrastructure;
-            PrimitiveInfrastructure = primitiveInfrastructure;
+            PrimitiveTypesInfrastructure = primitiveInfrastructure;
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace DatenMeister.Uml
             _wasRun = true;
 
             var umlDescendents = AllDescendentsQuery.GetDescendents(UmlInfrastructure).ToList();
-            var primitiveDescendents = AllDescendentsQuery.GetDescendents(PrimitiveInfrastructure).ToList();
+            var primitiveDescendents = AllDescendentsQuery.GetDescendents(PrimitiveTypesInfrastructure).ToList();
             var mofDescendents = AllDescendentsQuery.GetDescendents(MofInfrastructure).ToList();
             var allElements =
                 umlDescendents
@@ -251,7 +251,7 @@ namespace DatenMeister.Uml
             _wasRun = true;
 
             var umlDescendents = AllDescendentsQuery.GetDescendents(UmlInfrastructure).ToList();
-            var primitiveDescendents = AllDescendentsQuery.GetDescendents(PrimitiveInfrastructure).ToList();
+            var primitiveDescendents = AllDescendentsQuery.GetDescendents(PrimitiveTypesInfrastructure).ToList();
             var allElements =
                     umlDescendents
                     .Union(primitiveDescendents)

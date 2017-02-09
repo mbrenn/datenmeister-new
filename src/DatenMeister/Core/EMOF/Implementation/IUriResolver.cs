@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -18,6 +19,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Adds an extent as a meta extent, so it will also be used to retrieve the element
         /// </summary>
         /// <param name="extent">Extent to be added</param>
-        void AddMetaExtent(MofUriExtent extent);
+        void AddMetaExtent(IUriExtent extent);
     }
 }

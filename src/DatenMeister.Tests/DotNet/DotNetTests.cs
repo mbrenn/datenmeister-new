@@ -22,11 +22,14 @@ namespace DatenMeister.Tests.DotNet
             var provider = new DotNetProvider(typeExtent.TypeLookup);
             var extent = new MofUriExtent(provider, "dm:///test");
             extent.Resolver.AddMetaExtent(typeExtent);
-            XmiTests.CreateUmlAndMofInstance(out mof, out uml);
+            var strapper = XmiTests.CreateUmlAndMofInstance(out mof, out uml);
+            extent.Resolver.AddMetaExtent(strapper.UmlInfrastructure);
+            extent.Resolver.AddMetaExtent(strapper.MofInfrastructure);
+            extent.Resolver.AddMetaExtent(strapper.PrimitiveTypesInfrastructure);
 
-            var mofFactory= new MofFactory(extent);
+            var mofFactory = new MofFactory(typeExtent);
             var dotNetTypeCreator = new DotNetTypeGenerator(mofFactory, uml);
-            var dotNetClass = dotNetTypeCreator.CreateTypeFor(typeof (TestClass));
+            var dotNetClass = dotNetTypeCreator.CreateTypeFor(typeof(TestClass));
 
             Assert.That(dotNetClass.get(_UML._CommonStructure._NamedElement.name), Is.EqualTo("TestClass"));
         }

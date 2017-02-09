@@ -99,7 +99,7 @@ namespace DatenMeister.Tests.DotNet
 
             Assert.That(personAsElement.get("Name"), Is.EqualTo("M"));
             personAsElement.set("Prename", "Herr");
-            Assert.That(person1.Prename, Is.EqualTo("Herr"));
+            Assert.That(personAsElement.get("Prename"), Is.EqualTo("Herr"));
         }
 
         [Test]

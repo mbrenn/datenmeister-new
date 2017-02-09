@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -135,7 +136,7 @@ namespace DatenMeister.Provider.DotNet
                 list = GetPropertyAsList(property);
             }
 
-            return list.Add(value) != -1;
+            return list.Add(Extensions.ConvertToNative(value)) != -1;
         }
 
         /// <inheritdoc />
@@ -147,6 +148,8 @@ namespace DatenMeister.Provider.DotNet
                 EmptyListForProperty(property);
                 list = GetPropertyAsList(property);
             }
+
+            value = Extensions.ConvertToNative(value);
 
             var result = list.Contains(value);
             list.Remove(value);

@@ -135,7 +135,7 @@ namespace DatenMeister.Provider.DotNet
         /// <returns>The converted object</returns>
         public static object ConvertToNative(object element)
         {
-            if (!DotNetHelper.IsOfMofElement(element))
+            if (!DotNetHelper.IsOfProviderObject(element))
             {
                 return element;
             }
@@ -146,7 +146,7 @@ namespace DatenMeister.Provider.DotNet
                 return elementAsDotNetElement.GetNativeValue();
             }
 
-            throw new InvalidOperationException("Converting from another IElement instance, except DotNetElement, is not supported (yet).");
+            throw new InvalidOperationException("Converting from another IProviderObject instance, except DotNetElement, is not supported (yet).");
         }
 
         /// <summary>

@@ -292,7 +292,7 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
             });
 
         if (this.supportNewItem) {
-            var itemNew = new DMToolbar.ToolbarButton("newitem", "Create Item");
+            var itemNew = new DMToolbar.ToolBarButtonItem("newitem", "Create Item");
             itemNew.onClicked = () => {
 
                 var view = new CreatetableTypesView(this.navigation, ws, extentUrl);
@@ -399,11 +399,10 @@ export class ItemView extends ViewBase implements DMVP.IView
         if (isReadonly) {
             configuration.onOkForm = () => {
                 tthis.navigation.navigateToItems(ws, extentUrl);
-            }
-
+            };
             configuration.onCancelForm = () => {
                 tthis.navigation.navigateToItems(ws, extentUrl);
-            }
+            };
         } else {
             configuration.onOkForm = () => {
                 DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item)
@@ -414,7 +413,7 @@ export class ItemView extends ViewBase implements DMVP.IView
 
             configuration.onCancelForm = () => {
                 tthis.navigation.navigateToItems(ws, extentUrl);
-            }
+            };
         }
 
         configuration.onItemSelect = (url: string) => {
@@ -534,8 +533,7 @@ export class DialogView extends ViewBase implements DMVP.IView {
             if (configuration.onOkForm !== undefined) {
                 configuration.onOkForm(value);
             }
-        }
-
+        };
         var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
         itemTable.show(this.content);
 
@@ -550,7 +548,7 @@ export class DialogView extends ViewBase implements DMVP.IView {
 export class CreatetableTypesView extends ViewBase implements DMVP.IView {
     private extentUrl: string;
     private ws: string;
-
+    
     constructor(navigation: DMN.INavigation, ws: string, extentUrl: string) {
         super(navigation);
         this.extentUrl = extentUrl;
@@ -566,6 +564,20 @@ export class CreatetableTypesView extends ViewBase implements DMVP.IView {
             });
 
         
+
+        this.addButtonLink("Unspecified",
+            () => {
+                DMClient.ExtentApi.createItem(ws, extentUrl, null)
+                    .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
+                        navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                    });
+            });
+
+        var domLoaded = this.addText("Loading...");
+
+        
+        // Adds the default one, which creates just an empty, non-defined item.
+        // Adds the ones, that can be created
         DMClient.ExtentApi.getCreatableTypes(this.ws, this.extentUrl).done(
             (data) => {
 

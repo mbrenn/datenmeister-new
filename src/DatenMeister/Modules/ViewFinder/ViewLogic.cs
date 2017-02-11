@@ -6,7 +6,9 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
@@ -24,7 +26,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// Defines the uri of the view to the view extents
         /// </summary>
         public const string UriViewExtent = "dm:///management/views";
-        
+
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly NamedElementMethods _namedElementMethods;
 
@@ -90,7 +92,7 @@ namespace DatenMeister.Modules.ViewFinder
             var factory = new MofFactory(viewExtent);
             GetViewExtent().elements().add(factory.createFrom(defaultView, id));
         }
-        
+
 
         private IUriExtent GetViewExtent()
         {
@@ -151,7 +153,7 @@ namespace DatenMeister.Modules.ViewFinder
             foreach (
                 var element in viewExtent.elements().
                 WhenMetaClassIs(formAndFields.__DefaultViewForMetaclass).
-                Select(x=> x as IElement))
+                Select(x => x as IElement))
             {
                 Debug.Assert(element != null, "element != null");
 

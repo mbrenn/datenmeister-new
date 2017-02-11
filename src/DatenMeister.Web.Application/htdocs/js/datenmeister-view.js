@@ -212,7 +212,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
                 extent: extentUrl
             });
             if (this.supportNewItem) {
-                var itemNew = new DMToolbar.ToolbarButton("newitem", "Create Item");
+                var itemNew = new DMToolbar.ToolBarButtonItem("newitem", "Create Item");
                 itemNew.onClicked = function () {
                     var view = new CreatetableTypesView(_this.navigation, ws, extentUrl);
                     _this.navigation.navigateToView(view);
@@ -438,6 +438,15 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
                     navigation.navigateToItem(ws, extentUrl, innerData.newuri);
                 });
             });
+            _this.addButtonLink("Unspecified", function () {
+                DMClient.ExtentApi.createItem(ws, extentUrl, null)
+                    .done(function (innerData) {
+                    navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                });
+            });
+            var domLoaded = _this.addText("Loading...");
+            // Adds the default one, which creates just an empty, non-defined item.
+            // Adds the ones, that can be created
             DMClient.ExtentApi.getCreatableTypes(_this.ws, _this.extentUrl).done(function (data) {
                 for (var typeKey in data.types) {
                     var func = function (x) {

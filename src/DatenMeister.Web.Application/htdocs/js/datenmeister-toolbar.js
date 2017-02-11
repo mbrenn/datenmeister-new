@@ -78,12 +78,12 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
         return ToolbarViewSelection;
     }(ToolbarItemBase));
     exports.ToolbarViewSelection = ToolbarViewSelection;
-    var ToolbarButton = (function (_super) {
-        __extends(ToolbarButton, _super);
-        function ToolbarButton(id, text) {
+    var ToolBarButtonItem = (function (_super) {
+        __extends(ToolBarButtonItem, _super);
+        function ToolBarButtonItem(id, text) {
             var _this = _super.call(this, id) || this;
             var tthis = _this;
-            var result = _super.prototype.create.call(_this, 2);
+            _super.prototype.create.call(_this, 3);
             var domNewItem = $("<a href='#' class='btn btn-default'>" + text + "</a>");
             domNewItem.click(function () {
                 if (tthis.onClicked !== undefined) {
@@ -91,12 +91,12 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
                 }
                 return false;
             });
-            result.append(domNewItem);
+            _this.domContent.append(domNewItem);
             return _this;
         }
-        return ToolbarButton;
+        return ToolBarButtonItem;
     }(ToolbarItemBase));
-    exports.ToolbarButton = ToolbarButton;
+    exports.ToolBarButtonItem = ToolBarButtonItem;
     var ToolbarSearchbox = (function (_super) {
         __extends(ToolbarSearchbox, _super);
         function ToolbarSearchbox() {
@@ -123,7 +123,7 @@ define(["require", "exports", "./datenmeister-client"], function (require, expor
             var tthis = _this;
             _this.extentUrl = extentUrl;
             _this.ws = ws;
-            var result = _super.prototype.create.call(_this, 5);
+            _super.prototype.create.call(_this, 3);
             DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done(function (data) {
                 tthis.createableTypes = data.types;
                 tthis.updateLayoutForCreatableTypes();

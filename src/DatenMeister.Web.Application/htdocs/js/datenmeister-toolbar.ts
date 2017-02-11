@@ -106,13 +106,13 @@ export class ToolbarViewSelection extends ToolbarItemBase {
     }
 }
 
-export class ToolbarButton extends ToolbarItemBase {
+export class ToolBarButtonItem extends ToolbarItemBase {
     onClicked: () => void;
 
     constructor(id: string, text: string) {
         super(id);
         var tthis = this;
-        var result = super.create(2);
+        super.create(3);
         var domNewItem = $(`<a href='#' class='btn btn-default'>${text}</a>`);
         domNewItem.click(() => {
             if (tthis.onClicked !== undefined) {
@@ -122,7 +122,7 @@ export class ToolbarButton extends ToolbarItemBase {
             return false;
         });
 
-        result.append(domNewItem);
+        this.domContent.append(domNewItem);
     }
 }
 
@@ -160,7 +160,7 @@ export class ToolbarCreateableTypes extends ToolbarItemBase {
         var tthis = this;
         this.extentUrl = extentUrl;
         this.ws = ws;
-        var result = super.create(5);
+        super.create(3);
         DMClient.ExtentApi.getCreatableTypes(ws, extentUrl).done((data) => {
             tthis.createableTypes = data.types;
             tthis.updateLayoutForCreatableTypes();

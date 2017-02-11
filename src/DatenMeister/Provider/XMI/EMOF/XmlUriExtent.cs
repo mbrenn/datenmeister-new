@@ -52,16 +52,16 @@ namespace DatenMeister.Provider.XMI.EMOF
             var node = new XElement(ElementName);
             if (!string.IsNullOrEmpty(metaClassUri))
             {
-                node.Add(new XAttribute(XmlElement.TypeAttribute, metaClassUri));
+                node.Add(new XAttribute(XmlProviderObject.TypeAttribute, metaClassUri));
             }
 
-            return new XmlElement(node, this);
+            return new XmlProviderObject(node, this);
         }
 
         /// <inheritdoc />
         public void AddElement(IProviderObject valueAsObject, int index = -1)
         {
-            _rootNode.Add(((XmlElement) valueAsObject).XmlNode);
+            _rootNode.Add(((XmlProviderObject) valueAsObject).XmlNode);
         }
 
         /// <inheritdoc />
@@ -88,11 +88,11 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             if (id == null)
             {
-                return new XmlElement(_rootNode, this);
+                return new XmlProviderObject(_rootNode, this);
             }
 
             var result = FindById(id);
-            return result == null ? null : new XmlElement(result, this);
+            return result == null ? null : new XmlProviderObject(result, this);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             foreach (var element in _rootNode.Elements())
             {
-                yield return new XmlElement(element, this);
+                yield return new XmlProviderObject(element, this);
             }
         }
     }

@@ -404,7 +404,9 @@
     <TypeScriptCompile Include="htdocs\js\datenmeister.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="htdocs\js\datenmeister-toolbar.ts" />
+    <TypeScriptCompile Include="htdocs\js\datenmeister-toolbar.ts">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="htdocs\js\taskmeister.ts" />
     <TypeScriptCompile Include="htdocs\js\typings\jquery\jquery.d.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

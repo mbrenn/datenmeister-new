@@ -43,7 +43,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             // Checks, if an id is given. if not. set it. 
             if (!XmiId.HasId(node))
             {
-                XmiId.Set(node, Guid.NewGuid().ToString());
+                XmiId.Set(node, XmiId.CreateNew());
             }
         }
 

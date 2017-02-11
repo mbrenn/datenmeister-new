@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace DatenMeister.Provider.XMI.Standards
@@ -8,6 +9,11 @@ namespace DatenMeister.Provider.XMI.Standards
     /// </summary>
     public static class XmiId
     {
+        /// <summary>
+        /// Verifies of the given document is valid and does not have duplicates
+        /// </summary>
+        /// <param name="document">Document to be verified</param>
+        /// <returns>true, if there are no duplicates</returns>
         public static bool IsValid(XDocument document)
         {
             var foundIds = document.Descendants().Attributes(Namespaces.Xmi + "id").Select(x => x.Value).OrderBy(x => x);
@@ -26,6 +32,14 @@ namespace DatenMeister.Provider.XMI.Standards
             return true;
         }
 
+        /// <summary>
+        /// Creates a new id which is unique.
+        /// </summary>
+        /// <returns>The new id</returns>
+        public static string CreateNew()
+        {
+            return Guid.NewGuid().ToString();
+        }
         /// <summary>
         /// Gets the id of a certain Xml Element
         /// </summary>

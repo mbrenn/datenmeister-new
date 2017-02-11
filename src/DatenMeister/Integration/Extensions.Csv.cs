@@ -1,9 +1,7 @@
 ﻿using System;
-using System.IO;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Provider.CSV;
-using DatenMeister.Provider.CSV.EMOF;
 
 namespace DatenMeister.Integration
 {

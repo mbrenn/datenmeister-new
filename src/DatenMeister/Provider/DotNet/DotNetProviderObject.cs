@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
 
 namespace DatenMeister.Provider.DotNet
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DatenMeister.Runtime.Workspaces
+﻿namespace DatenMeister.Runtime.Workspaces
 {
     public static class WorkspaceNames
     {

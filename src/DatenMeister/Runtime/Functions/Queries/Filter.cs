@@ -4,7 +4,6 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Functions.Aggregation;
 using DatenMeister.Runtime.Functions.Interfaces;
 

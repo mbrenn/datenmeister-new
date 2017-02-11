@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.Standards;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Copier;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.XMI.EMOF
 {

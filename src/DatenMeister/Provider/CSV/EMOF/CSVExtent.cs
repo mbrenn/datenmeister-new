@@ -1,6 +1,4 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-
-namespace DatenMeister.Provider.CSV.EMOF
+﻿namespace DatenMeister.Provider.CSV.EMOF
 {
     /*public class CSVExtent : InMemoryUriExtent
     {

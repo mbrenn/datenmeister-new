@@ -3,7 +3,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Copier;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {

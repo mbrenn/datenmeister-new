@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.Provider.XMI.Standards;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.XMI.EMOF
 {

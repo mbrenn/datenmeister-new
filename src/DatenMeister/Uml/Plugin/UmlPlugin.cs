@@ -1,11 +1,7 @@
-﻿using System;
-using DatenMeister.Core.EMOF.Interface.Reflection;
- using DatenMeister.Core.Plugins;
- using DatenMeister.Models.Forms;
- using DatenMeister.Modules.ViewFinder;
-using DatenMeister.Provider.XMI;
-using DatenMeister.Runtime;
- using DatenMeister.Runtime.Workspaces;
+﻿using DatenMeister.Core.Plugins;
+using DatenMeister.Models.Forms;
+using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Uml.Plugin
 {

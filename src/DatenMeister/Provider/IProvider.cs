@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using DatenMeister.Core.EMOF.Implementation;
 
 namespace DatenMeister.Provider
 {

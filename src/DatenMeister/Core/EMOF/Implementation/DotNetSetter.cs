@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -86,7 +87,21 @@ namespace DatenMeister.Core.EMOF.Implementation
                 foreach (var reflectedProperty in type.GetProperties(BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public))
                 {
                     var innerValue = reflectedProperty.GetValue(value);
-                    createdElement.set(reflectedProperty.Name, Convert(innerValue));
+                    if (DotNetHelper.IsOfEnumeration(innerValue))
+                    {
+                        var list = new List<object>();
+                        var enumeration = (IEnumerable) innerValue;
+                        foreach (var innerElementValue in enumeration)
+                        {
+                            list.Add(Convert(innerElementValue));
+                        }
+
+                        createdElement.set(reflectedProperty.Name, list);
+                    }
+                    else
+                    {
+                        createdElement.set(reflectedProperty.Name, Convert(innerValue));
+                    }
                 }
 
                 return createdElement;

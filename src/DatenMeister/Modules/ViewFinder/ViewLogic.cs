@@ -81,6 +81,19 @@ namespace DatenMeister.Modules.ViewFinder
             GetViewExtent().elements().add(factory.createFrom(defaultView, id));
         }
 
+        /// <summary>
+        /// Adds a default view for a certain meta class
+        /// </summary>
+        /// <param name="defaultView">Default view to be used</param>
+        /// <param name="id">Id of the element that shall be created</param>
+        public void Add(DefaultViewForExtentType defaultView, string id = null)
+        {
+            var viewExtent = GetViewExtent();
+            var factory = new MofFactory(viewExtent);
+            GetViewExtent().elements().add(factory.createFrom(defaultView, id));
+        }
+        
+
         private IUriExtent GetViewExtent()
         {
             var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);

@@ -3,32 +3,22 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
  using DatenMeister.Core.Plugins;
  using DatenMeister.Models.Forms;
  using DatenMeister.Modules.ViewFinder;
- using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Runtime;
  using DatenMeister.Runtime.Workspaces;
- using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Uml.Plugin
 {
     // ReSharper disable once UnusedMember.Global
     public class UmlPlugin : IDatenMeisterPlugin
     {
-        private readonly IWorkspaceLogic _workspaceLogic;
-
-        private readonly NamedElementMethods _namedElementMethods;
-        private readonly IDotNetTypeLookup _typeLookup;
-
         /// <summary>
         /// Defines the view logic
         /// </summary>
         private readonly ViewLogic _viewLogic;
 
-        public UmlPlugin(IWorkspaceLogic workspaceLogic, NamedElementMethods namedElementMethods, IDotNetTypeLookup typeLookup, ViewLogic viewLogic)
+        public UmlPlugin(ViewLogic viewLogic)
         {
-            _workspaceLogic = workspaceLogic;
-            _namedElementMethods = namedElementMethods;
-            _typeLookup = typeLookup;
             _viewLogic = viewLogic;
         }
 
@@ -42,8 +32,6 @@ namespace DatenMeister.Uml.Plugin
         /// </summary>
         private void InitViews()
         {
-            var umlExtent = _workspaceLogic.FindExtent(WorkspaceNames.UriUml);
-
             var classView = new DefaultViewForMetaclass(
                 WorkspaceNames.UriUml + "#Class",
                 ViewType.Detail,
@@ -81,7 +69,7 @@ namespace DatenMeister.Uml.Plugin
         /// <param name="classView">Defaultview to be added</param>
         private void AddForView(DefaultViewForMetaclass classView)
         {
-            throw  new NotImplementedException();
+            _viewLogic.Add(classView);
             /*
             var element = _typeLookup.CreateDotNetElement(classView);
             _viewLogic.Add(element);
@@ -94,7 +82,7 @@ namespace DatenMeister.Uml.Plugin
         /// <param name="classView">Defaultview to be added</param>
         private void AddForView(DefaultViewForExtentType classView)
         {
-            throw new NotImplementedException();
+            _viewLogic.Add(classView);
             /*
             var element = _typeLookup.CreateDotNetElement(classView);
             _viewLogic.Add(element);

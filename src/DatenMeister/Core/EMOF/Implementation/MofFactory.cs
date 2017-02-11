@@ -99,20 +99,21 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Creates an element by getting a dotnet value. The 
+        /// Creates an element by getting a dotnet value. 
         /// </summary>
         /// <param name="value">Value to be converted</param>
         /// <param name="id">Id of the element that shall be set</param>
         /// <returns>The created .Net object</returns>
         public IObject createFrom(object value, string id = null)
         {
-            var result = (MofElement ) _extent.ConvertForSetting(value);
+            var result = (IProviderObject) _extent.ConvertForSetting(value);
+
             if (result != null && !string.IsNullOrEmpty(id))
             {
                 result.Id = id;
             }
 
-            return result;  
+            return new MofElement(result, _extent);
         }
 
         /// <inheritdoc />

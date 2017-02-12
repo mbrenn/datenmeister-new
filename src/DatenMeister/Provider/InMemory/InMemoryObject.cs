@@ -42,7 +42,7 @@ namespace DatenMeister.Provider.InMemory
             MetaclassUri = metaclassUri;
         }
 
-        internal static void CheckValue ( object value)
+        internal static void CheckValue(object value)
         {
             if (value is MofReflectiveSequence || value is MofObject)
             {

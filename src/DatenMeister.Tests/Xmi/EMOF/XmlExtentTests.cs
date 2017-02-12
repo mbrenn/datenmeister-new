@@ -117,8 +117,8 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var otherMofReflectiveSequence = mofContainer.get("items2") as IReflectiveSequence;
             Assert.That(otherMofReflectiveSequence, Is.Not.Null);
             otherMofReflectiveSequence.addAll(mofReflectiveSequence);
-            Assert.That(otherMofReflectiveSequence.size(), Is.EqualTo(2));
-            Assert.That(otherMofReflectiveSequence.ToArray().Count, Is.EqualTo(2));
+            Assert.That(otherMofReflectiveSequence.size(), Is.EqualTo(4));
+            Assert.That(otherMofReflectiveSequence.ToArray().Count, Is.EqualTo(4));
 
             otherMofReflectiveSequence.clear();
             Assert.That(otherMofReflectiveSequence.size(), Is.EqualTo(0));

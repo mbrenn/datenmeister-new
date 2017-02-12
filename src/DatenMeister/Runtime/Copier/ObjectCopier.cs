@@ -84,8 +84,7 @@ namespace DatenMeister.Runtime.Copier
             if (valueAsCollection != null)
             {
                 return valueAsCollection
-                    .Select(innerValue => CopyValue(innerValue, containingElement))
-                    .ToList();
+                    .Select(innerValue => CopyValue(innerValue, containingElement));
             }
 
             return value;

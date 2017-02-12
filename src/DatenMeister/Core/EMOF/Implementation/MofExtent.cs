@@ -122,9 +122,16 @@ namespace DatenMeister.Core.EMOF.Implementation
             if (DotNetHelper.IsOfMofObject(value))
             {
                 var asMofObject = (MofObject) value;
-
+                
                 if (asMofObject.Extent == null)
                 {
+                    if (asMofObject.ProviderObject.Provider == extent.Provider)
+                    {
+                        // if the given value is created by the provider, but has not been allocated
+                        // to an object until now, it can be used directly. 
+                        return asMofObject.ProviderObject;
+                    }
+
                     var result = (MofElement) ObjectCopier.Copy(new MofFactory(extent), asMofObject);
                     var containerAsElement = container as IElement;
                     if (containerAsElement != null)
@@ -174,7 +181,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         public static object ConvertForSetting(MofObject mofObject, object value)
         {
             return ConvertForSetting(value, mofObject.CreatedByExtent, mofObject);
-
         }
     }
 }

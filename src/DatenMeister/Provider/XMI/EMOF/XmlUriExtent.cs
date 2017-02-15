@@ -23,7 +23,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         private readonly XDocument _document;
         private readonly XElement _rootNode;
 
-        internal XDocument Document => _document;
+        public XDocument Document => _document;
         
         public XmlUriExtent(/*string rootNodeName = DefaultRootNodeName*/)
         {

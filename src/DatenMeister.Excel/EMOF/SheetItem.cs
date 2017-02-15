@@ -4,13 +4,13 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Helper;
 using DatenMeister.Provider;
+using DatenMeister.Runtime;
 using NPOI.SS.UserModel;
 
 namespace DatenMeister.Excel.EMOF
 {
     public class SheetItem : IProviderObject
     {
-        private readonly ExcelExtent _extent;
         public ISheet Sheet { get; set; }
 
         /// <summary>
@@ -19,12 +19,15 @@ namespace DatenMeister.Excel.EMOF
         public IProvider Provider { get; }
 
         /// <summary>
+        /// Gets the provider as a typed instance
+        /// </summary>
+        public ExcelExtent ExcelProvider => (ExcelExtent)Provider;
+
+        /// <summary>
         /// Gets or sets the columns and their names
         /// The name of the column mapping to the column
         /// </summary>
         public Dictionary<string, int> Columns { get; set; } = new Dictionary<string, int>();
-
-        public ExcelSettings Settings { get; set; }
 
         /// <summary>
         /// First column where data can be found
@@ -43,7 +46,7 @@ namespace DatenMeister.Excel.EMOF
         /// <param name="sheet">The sheet that is used for access</param>
         public SheetItem(ExcelExtent extent, ISheet sheet)
         {
-            _extent = extent;
+            Provider = extent;
             Sheet = sheet;
 
             InitializeData();
@@ -54,6 +57,8 @@ namespace DatenMeister.Excel.EMOF
         /// </summary>
         private void InitializeData()
         {
+            Columns.Clear();
+            
             var n = ColumnOffset;
             while (true)
             {
@@ -104,6 +109,16 @@ namespace DatenMeister.Excel.EMOF
                 return Sheet.SheetName;
             }
 
+            if (property == "columnOffset")
+            {
+                return ColumnOffset;
+            }
+
+            if (property == "rowOffset")
+            {
+                return RowOffset;
+            }
+
             throw new NotImplementedException();
         }
 
@@ -122,7 +137,19 @@ namespace DatenMeister.Excel.EMOF
         /// <inheritdoc />
         public void SetProperty(string property, object value)
         {
-            throw new System.NotImplementedException();
+            switch (property)
+            {
+                case "columnOffset":
+                    ColumnOffset = (int) value;
+                    InitializeData();
+                    break;
+                case "rowOffset":
+                    RowOffset = (int) value;
+                    InitializeData();
+                    break;
+                default:
+                    throw new System.NotImplementedException("Given property is not known");
+            }
         }
 
         /// <inheritdoc />

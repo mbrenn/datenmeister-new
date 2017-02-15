@@ -216,7 +216,11 @@ namespace DatenMeister.Provider.XMI.EMOF
             else
             {
                 DeleteProperty(property);
-                _node.SetAttributeValue(propertyAsString, ReturnObjectAsString(value));
+                var xmlTextValue = ReturnObjectAsString(value);
+                if (!string.IsNullOrEmpty(xmlTextValue))
+                {
+                    _node.SetAttributeValue(propertyAsString, xmlTextValue);
+                }
             }
         }
 

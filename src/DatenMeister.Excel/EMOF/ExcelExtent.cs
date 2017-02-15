@@ -12,12 +12,12 @@ namespace DatenMeister.Excel.EMOF
         private readonly _ExcelModels models = new _ExcelModels();
 
         private readonly XSSFWorkbook _workbook;
-        private readonly ExcelSettings _settings;
+        public ExcelSettings Settings { get; }
 
         public ExcelExtent(XSSFWorkbook workbook, ExcelSettings settings)
         {
             _workbook = workbook;
-            _settings = settings;
+            Settings = settings ?? new ExcelSettings();
 
             /*// Maps the table to sheet item
             var typeMapping = AddMappingForType<SheetItem, ISheet>(

@@ -91,8 +91,8 @@
     <Compile Include="Provider\IProvider.cs" />
     <Compile Include="Provider\ElementReference.cs" />
     <Compile Include="Provider\TableFormatter.cs" />
-    <Compile Include="Provider\XMI\EMOF\XmlProviderObject.cs" />
-    <Compile Include="Provider\XMI\EMOF\XmlUriExtent.cs" />
+    <Compile Include="Provider\XMI\EMOF\XmiProviderObject.cs" />
+    <Compile Include="Provider\XMI\EMOF\XmiProvider.cs" />
     <Compile Include="Provider\XMI\ExtentStorage\XmiStorage.cs" />
     <Compile Include="Provider\XMI\ExtentStorage\XmiStorageConfiguration.cs" />
     <Compile Include="Provider\XMI\Integrate.cs" />

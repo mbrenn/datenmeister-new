@@ -31,7 +31,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 {
                     // We need to create an empty Xmi file... Not the best thing at the moment, but we try it. 
                     xmlDocument = new XDocument(
-                        new XElement(XmlUriExtent.DefaultRootNodeName));
+                        new XElement(XmiProvider.DefaultRootNodeName));
                 }
                 else
                 {
@@ -44,7 +44,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 xmlDocument = XDocument.Load(xmiConfiguration.Path);
             }
 
-            var result = new XmlUriExtent(xmlDocument);
+            var result = new XmiProvider(xmlDocument);
 
             return result;
         }
@@ -54,7 +54,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             var xmiConfiguration = configuration as XmiStorageConfiguration;
             if (xmiConfiguration != null)
             {
-                var xmlExtent = extent as XmlUriExtent;
+                var xmlExtent = extent as XmiProvider;
                 if (xmlExtent == null)
                 {
                     throw new InvalidOperationException("Only XmlUriExtents are supported");

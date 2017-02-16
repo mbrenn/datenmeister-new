@@ -9,7 +9,7 @@ namespace DatenMeister.Provider.XMI.EMOF
     /// <summary>
     /// Defines the provider for xml manipulation
     /// </summary>
-    public class XmlUriExtent : IProvider
+    public class XmiProvider : IProvider
     {
         /// <summary>
         /// Defines the name of the element
@@ -25,7 +25,7 @@ namespace DatenMeister.Provider.XMI.EMOF
 
         public XDocument Document => _document;
         
-        public XmlUriExtent(/*string rootNodeName = DefaultRootNodeName*/)
+        public XmiProvider(/*string rootNodeName = DefaultRootNodeName*/)
         {
             var rootNodeName = DefaultRootNodeName;
             _document = new XDocument();
@@ -34,7 +34,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             /*_rootNode.SetAttributeValue(_urlPropertyName, uri);*/
         }
 
-        public XmlUriExtent(XDocument document/*, string rootNodeName = DefaultRootNodeName*/)
+        public XmiProvider(XDocument document/*, string rootNodeName = DefaultRootNodeName*/)
         {
             var rootNodeName = DefaultRootNodeName;
             _document = document;
@@ -52,16 +52,16 @@ namespace DatenMeister.Provider.XMI.EMOF
             var node = new XElement(ElementName);
             if (!string.IsNullOrEmpty(metaClassUri))
             {
-                node.Add(new XAttribute(XmlProviderObject.TypeAttribute, metaClassUri));
+                node.Add(new XAttribute(XmiProviderObject.TypeAttribute, metaClassUri));
             }
 
-            return new XmlProviderObject(node, this);
+            return new XmiProviderObject(node, this);
         }
 
         /// <inheritdoc />
         public void AddElement(IProviderObject valueAsObject, int index = -1)
         {
-            _rootNode.Add(((XmlProviderObject) valueAsObject).XmlNode);
+            _rootNode.Add(((XmiProviderObject) valueAsObject).XmlNode);
         }
 
         /// <inheritdoc />
@@ -88,11 +88,11 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             if (id == null)
             {
-                return new XmlProviderObject(_rootNode, this);
+                return new XmiProviderObject(_rootNode, this);
             }
 
             var result = FindById(id);
-            return result == null ? null : new XmlProviderObject(result, this);
+            return result == null ? null : new XmiProviderObject(result, this);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             foreach (var element in _rootNode.Elements())
             {
-                yield return new XmlProviderObject(element, this);
+                yield return new XmiProviderObject(element, this);
             }
         }
     }

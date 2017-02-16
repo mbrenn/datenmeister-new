@@ -12,7 +12,7 @@ namespace DatenMeister.Provider.XMI.EMOF
     /// <summary>
     /// Abstracts the IObject from EMOF
     /// </summary>
-    public class XmlProviderObject : IProviderObject
+    public class XmiProviderObject : IProviderObject
     {
         public static readonly XName TypeAttribute = Namespaces.Xmi + "type";
 
@@ -34,7 +34,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// </summary>
         /// <param name="node">Node to be used</param>
         /// <param name="extent">Extent to be set</param>
-        public XmlProviderObject(XElement node, XmlUriExtent extent)
+        public XmiProviderObject(XElement node, XmiProvider extent)
         {
             Debug.Assert(node != null, "node != null");
             _node = node;
@@ -93,7 +93,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <returns>The XmlNode reflecting the given element</returns>
         private XElement ConvertValueAsXmlObject(string property, object value)
         {
-            var valueAsXmlObject = value as XmlProviderObject;
+            var valueAsXmlObject = value as XmiProviderObject;
             if (valueAsXmlObject != null)
             {
                 valueAsXmlObject.XmlNode.Name = property;
@@ -147,7 +147,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                 var list = new List<object>();
                 foreach (var element in _node.Elements(propertyAsString))
                 {
-                    list.Add(new XmlProviderObject(element, (XmlUriExtent) Provider));
+                    list.Add(new XmiProviderObject(element, (XmiProvider) Provider));
                 }
 
                 return list;
@@ -207,7 +207,7 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             var propertyAsString = ReturnObjectAsString(property);
 
-            var elementAsXml = value as XmlProviderObject;
+            var elementAsXml = value as XmiProviderObject;
             if (elementAsXml != null)
             {
                 elementAsXml.XmlNode.Name = property;
@@ -262,9 +262,9 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public bool RemoveFromProperty(string property, object value)
         {
-            if (value is XmlProviderObject)
+            if (value is XmiProviderObject)
             {
-                var valueAsXmlElement = value as XmlProviderObject;
+                var valueAsXmlElement = value as XmiProviderObject;
 
                 foreach (var subElement in _node.Elements(property))
                 {

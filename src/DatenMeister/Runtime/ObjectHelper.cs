@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -243,6 +244,14 @@ namespace DatenMeister.Runtime
         /// <returns>Uri of the element</returns>
         public static string GetUri(this IElement element)
         {
+            // First, verifies if the element has direct access to the uri of the element
+            var asKnowsUri = element as IKnowsUri;
+            if (asKnowsUri != null)
+            {
+                return asKnowsUri.Uri;
+            }
+
+            // If not, try to get the information via the extent which owns the object
             return element.GetUriExtentOf()?.uri(element);
         }
 

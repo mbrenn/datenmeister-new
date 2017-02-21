@@ -23,13 +23,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         private readonly HashSet<object> _visitedElements = new HashSet<object>();
 
-        private IUriResolver _resolver;
+        /// <summary>
+        /// Stores the resolver to find metaclasses by .Net Types
+        /// </summary>
+        private readonly IUriResolver _resolver;
 
         /// <summary>
         /// Initializes a new instance of the DotNetSetter class
         /// </summary>
         /// <param name="extent">Extent being used as reference to find typeLookup and Resolver</param>
-        /// <param name="typeLookup">The lookup class being used to retrieve the meta class. May be null</param>
         public DotNetSetter(MofExtent extent)
         {
             _factory = new MofFactory(extent);

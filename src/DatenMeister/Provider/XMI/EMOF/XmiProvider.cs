@@ -18,7 +18,6 @@ namespace DatenMeister.Provider.XMI.EMOF
 
         public const string DefaultRootNodeName = "xmi";
         public const string DefaultElementNodeName = "item";
-        private readonly string _urlPropertyName = "uri";
 
         private readonly XDocument _document;
         private readonly XElement _rootNode;

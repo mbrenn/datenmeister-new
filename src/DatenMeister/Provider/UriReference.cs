@@ -7,6 +7,9 @@
     /// </summary>
     public class UriReference
     {
+        /// <summary>
+        /// Stores the Uri to which the element is a reference
+        /// </summary>
         public string Uri { get; set; }
     }
 }

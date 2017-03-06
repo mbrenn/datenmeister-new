@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
 
@@ -11,9 +13,12 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// <summary>
     /// Implements the reflective sequence for 
     /// </summary>
-    public class ExtentReflectiveSequence : IReflectiveSequence
+    public class ExtentReflectiveSequence : IReflectiveSequence, IHasExtent
     {
         private readonly MofExtent _extent;
+
+        /// <inheritdoc />
+        public IExtent Extent => _extent;
 
         /// <summary>
         /// Initializes a new instance of the ExtentReflectiveSequence class

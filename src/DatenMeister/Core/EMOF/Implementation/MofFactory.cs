@@ -1,7 +1,9 @@
 ﻿using System;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
+using DatenMeister.Runtime.Extents;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -31,6 +33,14 @@ namespace DatenMeister.Core.EMOF.Implementation
             _extent = extent;
             _provider = extent.Provider;
             if (_provider == null) throw new ArgumentNullException(nameof(_provider));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the MofFactory
+        /// </summary>
+        /// <param name="collection">Colleciton to be used</param>
+        public MofFactory(IReflectiveCollection collection) : this(((IHasExtent) collection).Extent)
+        {
         }
 
         /// <summary>

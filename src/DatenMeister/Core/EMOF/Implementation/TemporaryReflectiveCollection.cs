@@ -13,7 +13,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             Values = new List<object>();
         }
-        public TemporaryReflectiveCollection(IEnumerable<object> values )
+
+        public TemporaryReflectiveCollection(IEnumerable<object> values)
         {
             Values = values;
         }

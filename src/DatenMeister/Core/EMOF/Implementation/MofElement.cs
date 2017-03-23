@@ -66,6 +66,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 result = new MofObjectShadow(uri);
             }
+
             return result;
         }
 

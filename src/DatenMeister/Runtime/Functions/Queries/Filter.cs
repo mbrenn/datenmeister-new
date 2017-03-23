@@ -80,6 +80,15 @@ namespace DatenMeister.Runtime.Functions.Queries
             return new TemporaryReflectiveCollection(AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
         }
 
+        /// <summary>
+        /// Groups all properties by performing an aggregation
+        /// </summary>
+        /// <param name="collection">Collection to be aggregated</param>
+        /// <param name="groupByColumn">The column which shall be used to identify same keys</param>
+        /// <param name="aggregateColumn">The column which will be aggregated</param>
+        /// <param name="aggregatorFunc">The function which creates an aggregator to combine the values</param>
+        /// <param name="aggregatedColumn">The target column to which the property will be allocated</param>
+        /// <returns></returns>
         public static IReflectiveCollection GroupProperties(
             this IReflectiveCollection collection,
             string groupByColumn,
@@ -106,6 +115,13 @@ namespace DatenMeister.Runtime.Functions.Queries
             string property)
         {
             return new OrderByProperty(collection, property);
+        }
+
+        public static IReflectiveCollection FilterDistinct(
+            this IReflectiveCollection collection,
+            string property)
+        {
+            return new DistinctReflectiveCollection(collection, property);
         }
     }
 }

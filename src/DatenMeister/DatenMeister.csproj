@@ -103,6 +103,7 @@
     <Compile Include="Provider\XMI\XmiPlugin.cs" />
     <Compile Include="Runtime\ExtentFormatter.cs" />
     <Compile Include="Runtime\Functions\Aggregation\ConcatAggregator.cs" />
+    <Compile Include="Runtime\Functions\Algorithm\Permutation.cs" />
     <Compile Include="Runtime\Functions\Queries\DistinctReflectiveCollection.cs" />
     <Compile Include="Runtime\Functions\Transformation\FilterHierarchy.cs" />
     <Compile Include="Runtime\Functions\Transformation\HierarchyMaker.cs" />

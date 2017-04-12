@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace DatenMeister.Runtime.Functions.Algorithm
 {
     /// <summary>
     /// Implements an algorithm for permutations
     /// </summary>
-    /// <typeparam name="T">Type to be implemented</typeparam>
-    public static class Permutation<T>
+    public static class Permutation
     {
         /// <summary>
         /// Swaps the two variables
@@ -14,7 +14,7 @@ namespace DatenMeister.Runtime.Functions.Algorithm
         /// <param name="list">List of elements whose element shall be swapped</param>
         /// <param name="a">Index of the first variable</param>
         /// <param name="b">Index of the second variable</param>
-        private static void Swap(IList<T> list, int a, int b)
+        private static void Swap<T>(IList<T> list, int a, int b)
         {
             if (a.Equals(b))
             {
@@ -31,13 +31,13 @@ namespace DatenMeister.Runtime.Functions.Algorithm
         /// </summary>
         /// <param name="list">List to be evaluated</param>
         /// <returns>Enumeration of all combinations</returns>
-        public static IEnumerable<IList<T>> GetPer(IList<T> list)
+        public static IEnumerable<IList<T>> GetPer<T>(IList<T> list)
         {
             var x = list.Count - 1;
             return GetPer(list, 0, x);
         }
 
-        private static IEnumerable<IList<T>> GetPer(IList<T> list, int k, int m)
+        private static IEnumerable<IList<T>> GetPer<T>(IList<T> list, int k, int m)
         {
             if (k == m)
             {

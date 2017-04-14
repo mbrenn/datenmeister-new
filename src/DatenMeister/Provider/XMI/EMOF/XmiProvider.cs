@@ -22,6 +22,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         private readonly XDocument _document;
         private readonly XElement _rootNode;
 
+        public XElement RootNode => _rootNode;
+
         public XDocument Document => _document;
         
         public XmiProvider(/*string rootNodeName = DefaultRootNodeName*/)

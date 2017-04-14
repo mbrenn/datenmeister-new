@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -25,7 +26,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public void TestXmlMofObject()
         {
-            var xmlExtent = new XmlUriExtent();
+            var xmlExtent = new XmiProvider();
             var uriExtent = new MofUriExtent(xmlExtent, "dm:///test/" );
             var mofFactory = new MofFactory(uriExtent);
             var mofObject = mofFactory.create(null);
@@ -48,7 +49,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             mofElement.set("Name", "Brenn");
             mofElement.set("Vorname", "Martin");
 
-            var xmlExtent = new XmlUriExtent();
+            var xmlExtent = new XmiProvider();
             var uriExtent = new MofUriExtent(xmlExtent, "dm:///test/");
             var mofFactory = new MofFactory(uriExtent);
             
@@ -58,7 +59,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
 
             // Get the xml properties
             var providerObject = ((MofObject) xmlElement).ProviderObject;
-            var xmlNode = ((XmlProviderObject) providerObject).XmlNode;
+            var xmlNode = ((XmiProvider) providerObject).RootNode;
             Assert.That(xmlNode.Attribute("X")?.Value, Is.EqualTo("y"));
             Assert.That(xmlNode.Elements("Person").Count(), Is.EqualTo(1));
             Assert.That(xmlNode.Element("Person")?.Attribute("Name")?.Value, Is.EqualTo("Brenn"));
@@ -76,7 +77,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public void TestXmlMofReflectiveSequence()
         {
-            var xmlExtent = new XmlUriExtent();
+            var xmlExtent = new XmiProvider();
             var uriExtent = new MofUriExtent(xmlExtent, "dm:///test/");
             var mofFactory = new MofFactory(uriExtent);
             var mofObject1 = mofFactory.create(null);
@@ -146,7 +147,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestXmlExtent()
         {
 
-            var xmlProvider = new XmlUriExtent();
+            var xmlProvider = new XmiProvider();
             var extent = new MofUriExtent(xmlProvider, "dm:///test/");
             var factory = new MofFactory(extent);
             var mofObject1 = factory.create(null);
@@ -221,7 +222,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public void TestXmlFactory()
         {
-            var xmlProvider = new XmlUriExtent();
+            var xmlProvider = new XmiProvider();
             var extent = new MofUriExtent(xmlProvider, "dm:///test/");
             var factory = new MofFactory(extent);
             var mofElement = factory.create(null);
@@ -291,7 +292,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 var uml = umlDataLayer.Get<_UML>();
                 Assert.That(uml, Is.Not.Null);
 
-                var xmlProvider = new XmlUriExtent();
+                var xmlProvider = new XmiProvider();
                 var extent = new MofUriExtent(xmlProvider, "dm:///test/");
                 dataLayerLogic.AddExtent(dataLayerLogic.GetTypes(), extent);
 

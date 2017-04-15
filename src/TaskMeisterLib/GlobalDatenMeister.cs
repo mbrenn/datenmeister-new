@@ -89,7 +89,7 @@ namespace TaskMeister
                     catch (Exception exception)
                     {
                         Debug.WriteLine(exception.ToString());
-                        provider = new XmlUriExtent();
+                        provider = new XmiProvider();
                     }
 
                     dataExtent = new MofUriExtent(provider, uriTaskMeister);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -58,7 +59,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
 
             // Get the xml properties
             var providerObject = ((MofObject) xmlElement).ProviderObject;
-            var xmlNode = ((XmiProviderObject) providerObject).XmlNode;
+            var xmlNode = ((XmiProvider) providerObject).RootNode;
             Assert.That(xmlNode.Attribute("X")?.Value, Is.EqualTo("y"));
             Assert.That(xmlNode.Elements("Person").Count(), Is.EqualTo(1));
             Assert.That(xmlNode.Element("Person")?.Attribute("Name")?.Value, Is.EqualTo("Brenn"));

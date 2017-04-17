@@ -10,7 +10,12 @@ namespace DatenMeister.Web.Application
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
+#if DEBUG
+                .UseEnvironment("Development")
+#endif
+                .UseUrls("http://*:8080")
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseWebRoot("htdocs")
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();

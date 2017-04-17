@@ -1,10 +1,10 @@
-﻿using System.Web.Http;
-using DatenMeister.Modules;
+﻿using DatenMeister.Modules;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.Web.Api
 {
-    [RoutePrefix("api/datenmeister/client")]
-    public class ClientController : ApiController
+    [Route("api/datenmeister/client")]
+    public class ClientController : Controller
     {
         private readonly IClientModulePlugin _clientModulePlugin;
 

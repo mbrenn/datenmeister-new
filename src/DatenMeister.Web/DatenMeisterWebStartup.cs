@@ -3,6 +3,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using DatenMeister.Integration;
 using DatenMeister.Modules;
+using DatenMeister.Web.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,8 @@ namespace DatenMeister.Web
             };
             
             kernel.RegisterInstance(new WebserverStartupPhases()).As<IWebserverStartupPhases>();
+
+            kernel.RegisterWebModules();
             var container = kernel.UseDatenMeister(settings);
             return container;
         }

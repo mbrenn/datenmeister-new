@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator
@@ -23,7 +24,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// </summary>
         public ClassTreeGenerator(ISourceParser parser = null) : base(parser)
         {
-            FactoryVersion = new Version(1, 1, 0, 0);
+            FactoryVersion = new Version(1, 2, 0, 0);
         }
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace DatenMeister.SourcecodeGenerator
             WriteUsages(new[]
             {
                 "DatenMeister.Core.EMOF.Interface.Reflection",
+                "DatenMeister.Core.EMOF.Implementation",
                 "DatenMeister.Provider.InMemory"
             });
             
@@ -88,6 +90,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// <param name="classInstance">The class that shall be retrieved</param>
         protected override void WalkClass(IObject classInstance, CallStack stack)
         {
+            var asElement = classInstance as IElement;
             var name = GetNameOfElement(classInstance);
 
             Result.AppendLine($"{stack.Indentation}public class _{name}");
@@ -99,7 +102,7 @@ namespace DatenMeister.SourcecodeGenerator
 
             Result.AppendLine();
             Result.AppendLine($"{stack.Indentation}public _{name} @{name} = new _{name}();");
-            Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new InMemoryElement();");
+            Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement.GetUri()}\");");
             Result.AppendLine(); 
         }
 

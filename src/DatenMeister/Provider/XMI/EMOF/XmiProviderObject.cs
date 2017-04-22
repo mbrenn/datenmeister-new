@@ -109,7 +109,7 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             if (DotNetHelper.IsOfPrimitiveType(value))
             {
-                return new XElement(property, value.ToString());
+                return new XElement(property, DotNetHelper.ToString(value));
             }
 
             throw new InvalidOperationException("Value is not an XmlObject or an IElement: " + value);

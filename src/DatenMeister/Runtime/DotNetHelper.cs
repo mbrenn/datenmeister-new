@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Globalization;
 using System.Reflection;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -93,6 +94,16 @@ namespace DatenMeister.Runtime
         public static bool IsOfEnum(object value)
         {
             return value != null && IsEnum(value.GetType());
+        }
+
+        internal static object ToString(object value)
+        {
+            if (value is double valueAsDouble)
+            {
+                return valueAsDouble.ToString(CultureInfo.InvariantCulture);
+            }
+
+            return value.ToString();
         }
 
         /// <summary>

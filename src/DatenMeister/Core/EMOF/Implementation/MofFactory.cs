@@ -57,9 +57,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Initializes a new instance of the MofFactory by retrieving an object
         /// </summary>
         /// <param name="value">Value to be set</param>
-        public MofFactory(MofObject value)
+        public MofFactory(IObject value)
         {
-            var extent = value.Extent;
+            var asMofObject = ((MofObject) value);
+            var extent = asMofObject.Extent;
             if (extent != null)
             {
                 // First, try the correct way via the extent.
@@ -69,7 +70,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             else
             {
                 // If not available, do it via the providerobject
-                _provider = value.ProviderObject.Provider;
+                _provider = asMofObject.ProviderObject.Provider;
             }
         }
 

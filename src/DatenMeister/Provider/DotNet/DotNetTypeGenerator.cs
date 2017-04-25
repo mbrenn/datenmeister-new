@@ -53,7 +53,11 @@ namespace DatenMeister.Provider.DotNet
             foreach (var property in type.GetProperties())
             {
                 var umlProperty = _factoryForTypes.create(_umlHost.Classification.__Property);
-                (umlProperty as MofElement)?.SetContainer(umlClass);
+                if (umlProperty is MofElement propertyAsElement)
+                {
+                    propertyAsElement.Container = umlClass;
+                }
+                
                 umlProperty.set(_UML._CommonStructure._NamedElement.name, property.Name);
                 
                 properties.Add(umlProperty);

@@ -206,9 +206,8 @@ namespace DatenMeister.Provider.XMI.EMOF
             }
 
             var propertyAsString = ReturnObjectAsString(property);
-
-            var elementAsXml = value as XmiProviderObject;
-            if (elementAsXml != null)
+            
+            if (value is XmiProviderObject elementAsXml )
             {
                 elementAsXml.XmlNode.Name = property;
                 _node.Add(elementAsXml._node);

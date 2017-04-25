@@ -14,14 +14,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public string Id
         {
-            get { return ProviderObject.Id; }
-            set { ProviderObject.Id = value; }
+            get => ProviderObject.Id;
+            set => ProviderObject.Id = value;
         }
-
-        /// <summary>
-        /// Stores the container object
-        /// </summary>
-        private IElement _container;
 
         /// <summary>
         /// Initialiezs a new instance of the MofElement. This method is just used for migration
@@ -44,7 +39,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             IElement container = null)
             : base(providedObject, extent)
         {
-            _container = container;
+            Container = container;
         }
 
         /// <inheritdoc />
@@ -73,15 +68,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IElement container()
         {
-            return _container;
+            return Container as IElement;
         }
-
-        public void SetContainer(IElement container)
-        {
-            _container = container;
-            Extent = ((MofElement) container).Extent;
-        }
-
+        
         /// <summary>
         /// Sets the meta class for the given element
         /// </summary>

@@ -136,7 +136,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     var containerAsElement = container as IElement;
                     if (containerAsElement != null)
                     {
-                        result.SetContainer(containerAsElement);
+                        result.Container = containerAsElement;
                     }
 
                     return result.ProviderObject;
@@ -180,7 +180,17 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>The converted object or an exception if the object cannot be converted</returns>
         public static object ConvertForSetting(MofObject mofObject, object value)
         {
-            return ConvertForSetting(value, mofObject.CreatedByExtent, mofObject);
+            var result = ConvertForSetting(value, mofObject.CreatedByExtent, mofObject);
+
+            if (result is IProviderObject)
+            {
+                if (value is MofObject childAsObject)
+                {
+                    childAsObject.Container = mofObject;
+                }
+            }
+
+            return result;
         }
     }
 }

@@ -6,10 +6,7 @@ namespace DatenMeister.Runtime.Proxies
 {
     public class ProxyMofElement : ProxyMofObject, IElement, IElementSetMetaClass
     {
-        protected MofElement Element
-        {
-            get { return Object as MofElement; }
-        }
+        private MofElement Element => Object as MofElement;
 
         public ProxyMofElement(MofElement element) : base(element)
         {
@@ -37,15 +34,10 @@ namespace DatenMeister.Runtime.Proxies
             return Element.getMetaClass();
         }
 
-        public virtual void SetContainer ( IElement container)
+        public IObject Container
         {
-            var asSetMetaClass = Element as MofElement;
-            if (asSetMetaClass == null)
-            {
-                throw new InvalidOperationException("Element does not support interface IElementSetMetaClass");
-            }
-
-            asSetMetaClass.SetContainer(container);
+            get => Element.Container as IElement;
+            set => Element.Container = value;
         }
 
         public virtual void SetMetaClass(IElement metaClass)

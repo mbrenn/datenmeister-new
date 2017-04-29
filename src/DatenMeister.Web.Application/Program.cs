@@ -1,19 +1,26 @@
-﻿using System;
-using Microsoft.Owin.Hosting;
+﻿using System.IO;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 
 namespace DatenMeister.Web.Application
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-           using(WebApp.Start<WebserverStartup>("http://localhost:8080"))
-            {
-                Console.WriteLine("Running on http://localhost:8080");
-                Console.WriteLine("Press key to stop the server");
-                Console.ReadKey();
-            }
+            var host = new WebHostBuilder()
+                .UseKestrel()
+#if DEBUG
+                .UseEnvironment("Development")
+#endif
+                .UseUrls("http://*:8080")
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseWebRoot("htdocs")
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
+
+            host.Run();
         }
     }
 }

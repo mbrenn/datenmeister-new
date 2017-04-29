@@ -28,9 +28,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="extent"></param>
         public MofFactory(MofExtent extent)
         {
-            if (extent == null) throw new ArgumentNullException(nameof(extent));
+            _extent = extent ?? throw new ArgumentNullException(nameof(extent));
 
-            _extent = extent;
             _provider = extent.Provider;
             if (_provider == null) throw new ArgumentNullException(nameof(_provider));
         }
@@ -78,34 +77,39 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Initializes a new instance of the Factory
         /// </summary>
         /// <param name="extent"></param>
-        public MofFactory(IExtent extent) : this ((MofExtent) extent)
+        public MofFactory(IExtent extent) : this((MofExtent) extent)
         {
         }
 
         /// <inheritdoc />
-        public IElement package
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public IElement package => throw new NotImplementedException();
 
         /// <inheritdoc />
         public IElement create(IElement metaClass)
         {
-            var elementAsMetaClass = metaClass as MofElement;
-            var extentAsMofUriExtent = elementAsMetaClass?.Extent as MofUriExtent;
-            if (elementAsMetaClass != null && extentAsMofUriExtent == null)
+            string uriMetaClass;
+            if (metaClass is MofObjectShadow shadow)
             {
-                throw new InvalidOperationException(
-                    "We cannot create an instance by a metaclass which is not connected to an extent. It won't be found later on.");
+                uriMetaClass = shadow.Uri;
+            }
+            else
+            {
+                var elementAsMetaClass = metaClass as MofElement;
+                var extentAsMofUriExtent = elementAsMetaClass?.Extent as MofUriExtent;
+                if (elementAsMetaClass != null && extentAsMofUriExtent == null)
+                {
+                    throw new InvalidOperationException(
+                        "We cannot create an instance by a metaclass which is not connected to an extent. It won't be found later on.");
+                }
+
+                if (extentAsMofUriExtent != null)
+                {
+                    _extent.Resolver.AddMetaExtent(extentAsMofUriExtent);
+                }
+                
+                uriMetaClass = ((MofUriExtent) elementAsMetaClass?.Extent)?.uri(metaClass);
             }
 
-            if (extentAsMofUriExtent != null)
-            {
-                _extent.Resolver.AddMetaExtent(extentAsMofUriExtent);
-            }
-            
-
-            var uriMetaClass = ((MofUriExtent) elementAsMetaClass?.Extent)?.uri(metaClass);
             return new MofElement(_provider.CreateElement(uriMetaClass), null).CreatedBy(_extent);
         }
 

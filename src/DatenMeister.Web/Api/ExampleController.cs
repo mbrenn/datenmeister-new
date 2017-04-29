@@ -2,16 +2,17 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Web.Http;
+
 using DatenMeister.Models.PostModels;
 using DatenMeister.Provider.CSV.Runtime.Storage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.Web.Api
 {
-    [RoutePrefix("api/datenmeister/example")]
-    public class ExampleController : ApiController
+    [Route("api/datenmeister/example")]
+    public class ExampleController : Controller
     {
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IExtentStorageLoader _loader;
@@ -28,7 +29,7 @@ namespace DatenMeister.Web.Api
         public void AddZipExample([FromBody] WorkspaceReferenceModel workspace)
         {
             // Finds the file and copies the file to the given location
-            var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+            var appBase = AppContext.BaseDirectory;
             string filename;
             var tries = 0;
             int randomNumber;
@@ -41,14 +42,14 @@ namespace DatenMeister.Web.Api
                 {
                     throw new InvalidOperationException("Did not find a unique name for zip extent");
                 }
-            } while (File.Exists(filename));
+            } while (System.IO.File.Exists(filename));
 
             var originalFilename = Path.Combine(
                 appBase,
                 "App_Data/Example",
                 "plz.csv");
 
-            File.Copy(originalFilename, filename);
+            System.IO.File.Copy(originalFilename, filename);
 
             var defaultConfiguration = new CSVStorageConfiguration
             {

@@ -15,7 +15,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
         [Test]
         public void TestXmlStorage()
         {
-            var xmlProvider = new XmlUriExtent();
+            var xmlProvider = new XmiProvider();
             var extent = new MofUriExtent(xmlProvider, "dm:///test/");
             var factory = new MofFactory(extent);
             var mofObject1 = factory.create(null);

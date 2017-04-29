@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Web.Http;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -28,11 +27,12 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.Web.Api
 {
-    [RoutePrefix("api/datenmeister/extent")]
-    public class ExtentController : ApiController
+    [Route("api/datenmeister/extent")]
+    public class ExtentController : Controller
     {
         /// <summary>
         /// Defines the maximum numnber of items that shall be returned via GetItems
@@ -155,7 +155,7 @@ namespace DatenMeister.Web.Api
             if (!Path.IsPathRooted(filename))
             {
                 filename = Path.GetFileName(filename);
-                var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+                var appBase = AppContext.BaseDirectory;
                 filename = Path.Combine(appBase, "App_Data/Database", filename);
             }
             return filename;
@@ -410,7 +410,7 @@ namespace DatenMeister.Web.Api
 
             if (foundExtent == null)
             {
-                return Content(HttpStatusCode.NotFound, "Extent Not Found");
+                return Content(HttpStatusCode.NotFound.ToString(), "Extent Not Found");
             }
 
             var totalItems = foundExtent.elements();
@@ -419,7 +419,7 @@ namespace DatenMeister.Web.Api
             var result = _viewFinder.FindView(foundExtent, view);
             if (result == null)
             {
-                return Content(HttpStatusCode.NotFound, "View Not Found");
+                return Content(HttpStatusCode.NotFound.ToString(), "View Not Found");
             }
 
             var fields =

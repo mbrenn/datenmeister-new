@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9026F9A3-C366-43DA-ABAD-8CC94A3E793F}</ProjectGuid>
+    <ProjectGuid>{0661BBB5-9525-4871-9169-22DC13D068DC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DatenMeister.Excel</RootNamespace>

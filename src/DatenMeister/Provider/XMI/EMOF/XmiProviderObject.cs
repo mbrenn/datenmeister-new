@@ -16,6 +16,16 @@ namespace DatenMeister.Provider.XMI.EMOF
     {
         public static readonly XName TypeAttribute = Namespaces.Xmi + "type";
 
+        /// <summary>
+        /// Converts a property name to a property string used for references
+        /// </summary>
+        /// <param name="propertyName">The name of the property to be converted</param>
+        /// <returns>The proeprty with added-ref</returns>
+        private static string ConvertPropertyToReference(string propertyName)
+        {
+            return propertyName + "-ref";
+        }
+
         public XElement XmlNode { get; }
 
         /// <summary>
@@ -34,9 +44,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <param name="extent">Extent to be set</param>
         public XmiProviderObject(XElement node, XmiProvider extent)
         {
-            Debug.Assert(node != null, "node != null");
-            XmlNode = node;
-            Provider = extent;
+            XmlNode = node ?? throw new ArgumentNullException(nameof(node));
+            Provider = extent ?? throw new ArgumentNullException(nameof(extent));
 
             // Checks, if an id is given. if not. set it. 
             if (!XmiId.HasId(node))
@@ -50,35 +59,40 @@ namespace DatenMeister.Provider.XMI.EMOF
             return XmlNode.GetHashCode();
         }
 
-        private string ReturnObjectAsString(object property)
+        /// <summary>
+        /// Converts the object to a string value
+        /// </summary>
+        /// <param name="value">Value to be converted to a string</param>
+        /// <returns>Converted the value to text</returns>
+        private string ReturnObjectAsString(object value)
         {
-            if (property is string)
+            if (value is string)
             {
-                return property.ToString();
+                return value.ToString();
             }
 
-            if (DotNetHelper.IsOfBoolean(property))
+            if (DotNetHelper.IsOfBoolean(value))
             {
-                return property.ToString();
+                return value.ToString();
             }
 
-            if (DotNetHelper.IsOfNumber(property))
+            if (DotNetHelper.IsOfNumber(value))
             {
-                return property.ToString();
+                return value.ToString();
             }
 
-            if (property is DateTime)
+            if (value is DateTime propertyAsDateTime)
             {
-                return ((DateTime) property).ToUniversalTime().ToString(CultureInfo.InvariantCulture);
+                return propertyAsDateTime.ToUniversalTime().ToString(CultureInfo.InvariantCulture);
             }
 
-            if (property == null)
+            if (value == null)
             {
-                throw new ArgumentNullException(nameof(property));
+                throw new ArgumentNullException(nameof(value));
             }
 
             throw new InvalidOperationException(
-                $"Only strings as properties are supported at the moment. Type is: {property.GetType()}");
+                $"Only strings as properties are supported at the moment. Type is: {value.GetType()}");
         }
 
         /// <summary>
@@ -133,7 +147,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         public object GetProperty(string property)
         {
             var propertyAsString = ReturnObjectAsString(property);
-            // Check, if there are subelements as the given property
+            // Check, if there are subelements as the given value
             if (XmlNode.Elements(propertyAsString).Any())
             {
                 var list = new List<object>();
@@ -150,6 +164,12 @@ namespace DatenMeister.Provider.XMI.EMOF
             if (attribute != null)
             {
                 return attribute.Value;
+            }
+
+            var uriAttribute = XmlNode.Attribute(ConvertPropertyToReference(propertyAsString));
+            if (uriAttribute != null)
+            {
+                var uriReference = new UriReference(uriAttribute.Value);
             }
 
             // For unknown objects, return an empty enumeration which will then be converted to an Reflective Sequence
@@ -199,13 +219,19 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             var propertyAsString = ReturnObjectAsString(property);
 
-            if (value is XmiProviderObject elementAsXml)
+            if (value is UriReference uriReference)
             {
+                XmlNode.SetAttributeValue(ConvertPropertyToReference(propertyAsString), uriReference.Uri);
+            }
+            else if (value is XmiProviderObject elementAsXml)
+            {
+                // Includes the XmiProvider to the node. Will be added to the node
                 elementAsXml.XmlNode.Name = property;
                 XmlNode.Add(elementAsXml.XmlNode);
             }
             else
             {
+                // Sets the property of the node...
                 DeleteProperty(property);
                 var xmlTextValue = ReturnObjectAsString(value);
                 if (!string.IsNullOrEmpty(xmlTextValue))
@@ -223,7 +249,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <summary>
-        /// Gets the size of all elements of a property, if that is an enumeration
+        /// Gets the size of all elements of a value, if that is an enumeration
         /// </summary>
         /// <param name="property">Property to be queried</param>
         /// <returns>The size of the list</returns>
@@ -253,10 +279,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public bool RemoveFromProperty(string property, object value)
         {
-            if (value is XmiProviderObject)
+            if (value is XmiProviderObject valueAsXmlElement)
             {
-                var valueAsXmlElement = value as XmiProviderObject;
-
                 foreach (var subElement in XmlNode.Elements(property))
                 {
                     if (XmiId.Get(subElement) == XmiId.Get(valueAsXmlElement.XmlNode))

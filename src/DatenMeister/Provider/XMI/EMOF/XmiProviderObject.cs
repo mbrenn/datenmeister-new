@@ -76,6 +76,11 @@ namespace DatenMeister.Provider.XMI.EMOF
                 return value.ToString();
             }
 
+            if (value is double valueAsDouble)
+            {
+                return valueAsDouble.ToString(CultureInfo.InvariantCulture);
+            }
+
             if (DotNetHelper.IsOfNumber(value))
             {
                 return value.ToString();
@@ -169,7 +174,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             var uriAttribute = XmlNode.Attribute(ConvertPropertyToReference(propertyAsString));
             if (uriAttribute != null)
             {
-                var uriReference = new UriReference(uriAttribute.Value);
+                return new UriReference(uriAttribute.Value);
             }
 
             // For unknown objects, return an empty enumeration which will then be converted to an Reflective Sequence

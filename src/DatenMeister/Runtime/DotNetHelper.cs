@@ -34,7 +34,6 @@ namespace DatenMeister.Runtime
                    || type == typeof(DateTime);
         }
 
-
         /// <summary>
         /// Evaluates whether the given type is a primitive type. 
         /// A primitive type is considered all numbers, strings, timespan and DateTime

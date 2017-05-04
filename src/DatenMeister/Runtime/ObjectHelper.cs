@@ -147,6 +147,34 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
+        /// Gets a certain property value as a reflective sequence.
+        /// If the value is not a reflective sequence, an exception is thrown
+        /// </summary>
+        /// <param name="value">Value to be queried</param>
+        /// <param name="property">Property that is access</param>
+        /// <returns>The reflective sequence or an exception if the property is not
+        /// a reflective collection</returns>
+        public static IEnumerable<object> ForceAsEnumerable(
+            this IObject value,
+            string property)
+        {
+            if (!value.isSet(property))
+            {
+                // If value is not set, an empty list is returned
+                return new object[] { };
+            }
+
+            var result = value.get(property);
+            if (result is IEnumerable<object> resultAsEnumerable)
+            {
+                // Ok, directly return it as enumerable
+                return resultAsEnumerable;
+            }
+
+            return result == null ? new object[]{} : new[] {result};
+        }
+
+        /// <summary>
         /// Returns the value as an IObject. 
         /// If the object is not an IObject, an exception is thrown
         /// </summary>

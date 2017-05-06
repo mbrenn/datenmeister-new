@@ -70,7 +70,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
             }
 
-            throw new NotImplementedException($"The given element with uri {uri} is not of type UriExtent");
+            return null;
         }
     }
 }

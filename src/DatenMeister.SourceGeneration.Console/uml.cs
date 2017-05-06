@@ -2,7 +2,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Provider.InMemory;
 
-// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0 created at 18.04.2017 22:17:27
+// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0 created at 06.05.2017 21:02:59
 namespace DatenMeister.Core
 {
     public class _UML

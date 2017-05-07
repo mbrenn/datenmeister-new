@@ -1,7 +1,8 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Provider.InMemory;
 
-// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.1.0.0
+// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0 created at 07.05.2017 12:36:17
 namespace DatenMeister.Models.Forms
 {
     public class _FormAndFields
@@ -20,7 +21,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _Form @Form = new _Form();
-        public IElement @__Form = new InMemoryElement();
+        public IElement @__Form = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.Form");
 
         public class _FieldData
         {
@@ -45,7 +46,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _FieldData @FieldData = new _FieldData();
-        public IElement @__FieldData = new InMemoryElement();
+        public IElement @__FieldData = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FieldData");
 
         public class _TextFieldData
         {
@@ -73,7 +74,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _TextFieldData @TextFieldData = new _TextFieldData();
-        public IElement @__TextFieldData = new InMemoryElement();
+        public IElement @__TextFieldData = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.TextFieldData");
 
         public class _DateTimeFieldData
         {
@@ -107,7 +108,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _DateTimeFieldData @DateTimeFieldData = new _DateTimeFieldData();
-        public IElement @__DateTimeFieldData = new InMemoryElement();
+        public IElement @__DateTimeFieldData = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DateTimeFieldData");
 
         public class _DropDownFieldData
         {
@@ -135,10 +136,13 @@ namespace DatenMeister.Models.Forms
         }
 
         public _DropDownFieldData @DropDownFieldData = new _DropDownFieldData();
-        public IElement @__DropDownFieldData = new InMemoryElement();
+        public IElement @__DropDownFieldData = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DropDownFieldData");
 
         public class _SubElementFieldData
         {
+            public static string @metaClassUri = "metaClassUri";
+            public IElement _metaClassUri = null;
+
             public static string @fieldType = "fieldType";
             public IElement _fieldType = null;
 
@@ -160,7 +164,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _SubElementFieldData @SubElementFieldData = new _SubElementFieldData();
-        public IElement @__SubElementFieldData = new InMemoryElement();
+        public IElement @__SubElementFieldData = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.SubElementFieldData");
 
         public class _DefaultViewForMetaclass
         {
@@ -176,7 +180,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _DefaultViewForMetaclass @DefaultViewForMetaclass = new _DefaultViewForMetaclass();
-        public IElement @__DefaultViewForMetaclass = new InMemoryElement();
+        public IElement @__DefaultViewForMetaclass = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DefaultViewForMetaclass");
 
         public class _DefaultViewForExtentType
         {
@@ -189,7 +193,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _DefaultViewForExtentType @DefaultViewForExtentType = new _DefaultViewForExtentType();
-        public IElement @__DefaultViewForExtentType = new InMemoryElement();
+        public IElement @__DefaultViewForExtentType = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DefaultViewForExtentType");
 
         public static _FormAndFields TheOne = new _FormAndFields();
 

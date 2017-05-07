@@ -1,7 +1,5 @@
 ﻿using System.IO;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
@@ -21,7 +19,8 @@ namespace DatenMeister.SourceGeneration.Console
             System.Console.Write("Create Sourcecode for Web-Fields...");
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
-                { 
+                {
+                    ExtentUrl = "dm:///DatenMeister/Types/FormAndFields",
                     Name = "FormAndFields",
                     Path = "./",
                     Namespace = "DatenMeister.Models.Forms",
@@ -32,7 +31,8 @@ namespace DatenMeister.SourceGeneration.Console
             System.Console.Write("Create Sourcecode for Excel...");
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
-                {
+                { 
+                    ExtentUrl = "dm:///DatenMeister/Types/Excel",
                     Name = "ExcelModels",
                     Path = "./",
                     Namespace = "DatenMeister.Excel",

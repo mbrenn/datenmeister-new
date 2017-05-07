@@ -32,7 +32,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             public IUriExtent Extent { get; set; }
 
-            public ExtentStorageConfiguration Configuration { get; set; }
+            public ExtentLoaderConfig Configuration { get; set; }
         }
     }
 }

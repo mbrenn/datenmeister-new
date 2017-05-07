@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
@@ -9,7 +10,7 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// In addition, it will also use the ExtentManager class to load the actual data
     /// of the extents
     /// </summary>
-    public class ExtentConfigurationLoader : ObjectFileStorage<ExtentStorageConfigurationCollection>
+    public class ExtentConfigurationLoader : ObjectFileStorage<ExtentLoaderConfigData>
     {
         /// <summary>
         /// Gets the information about the loaded extents, 
@@ -32,7 +33,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         /// <summary>
         /// Adds a type for the serialization of the configuration file since the 
-        /// ExtentStorageConfiguration instances might be derived
+        /// ExtentLoaderConfig instances might be derived
         /// </summary>
         /// <param name="type"></param>
         public void AddAdditionalType(Type type)
@@ -55,7 +56,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         public void LoadAllExtents()
         {
-            ExtentStorageConfigurationCollection loaded = null;
+            ExtentLoaderConfigData loaded = null;
             try
             {
                 loaded = Load(ExtentStorageData.FilePath);
@@ -93,7 +94,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             ExtentManager.StoreAll();
 
             // Stores the information abotu the used extends
-            var toBeStored = new ExtentStorageConfigurationCollection();
+            var toBeStored = new ExtentLoaderConfigData();
             foreach (var loadedExtent in ExtentStorageData.LoadedExtents)
             {
                 toBeStored.Extents.Add(loadedExtent.Configuration);

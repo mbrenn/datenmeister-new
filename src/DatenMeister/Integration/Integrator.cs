@@ -59,7 +59,7 @@ namespace DatenMeister.Integration
                 FilePath = PathExtents
             };
             kernel.RegisterInstance(extentStorageData).As<ExtentStorageData>();
-            kernel.RegisterType<ExtentManager>().As<IExtentStorageLoader>();
+            kernel.RegisterType<ExtentManager>().As<IExtentManager>();
 
             // Workspaces
             var workspaceData = WorkspaceLogic.InitDefault();
@@ -82,7 +82,7 @@ namespace DatenMeister.Integration
             kernel.RegisterInstance(workspaceLoadingConfiguration).As<WorkspaceLoaderConfig>();
             kernel.RegisterType<WorkspaceLoader>().As<WorkspaceLoader>();
 
-            kernel.RegisterType<ExtentStorageConfigurationLoader>().As<ExtentStorageConfigurationLoader>();
+            kernel.RegisterType<ExtentConfigurationLoader>().As<ExtentConfigurationLoader>();
 
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
@@ -177,7 +177,7 @@ namespace DatenMeister.Integration
             _settings?.Hooks?.BeforeLoadExtents(scope);
 
             // Loads all extents after all plugins were started  
-            scope.Resolve<ExtentStorageConfigurationLoader>().LoadAllExtents();
+            scope.Resolve<ExtentConfigurationLoader>().LoadAllExtents();
         }
 
         /// <summary>

@@ -22,7 +22,7 @@ namespace DatenMeister.Integration
         {
             settings = settings ?? new CSVSettings();
 
-            var provider = scope.Resolve<CSVDataProvider>();
+            var provider = scope.Resolve<CSVLoader>();
 
             var memoryProvider = new InMemoryProvider();
             var extent = new MofUriExtent(memoryProvider, uri);

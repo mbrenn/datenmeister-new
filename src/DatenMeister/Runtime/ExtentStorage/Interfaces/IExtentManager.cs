@@ -3,7 +3,7 @@ using DatenMeister.Runtime.ExtentStorage.Configuration;
 
 namespace DatenMeister.Runtime.ExtentStorage.Interfaces
 {
-    public interface IExtentStorageLoader
+    public interface IExtentManager
     {
         /// <summary>
         /// Loads the extent by using the extent storage
@@ -11,7 +11,7 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// <param name="configuration">Configuration being used to load</param>
         /// <param name="createAlsoEmpty">true, if also empty extents will be created, if the file does not exist</param>
         /// <returns>The loaded extent</returns>
-        IUriExtent LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty);
+        IUriExtent LoadExtent(ExtentLoaderConfig configuration, bool createAlsoEmpty);
 
         /// <summary>
         /// Stores the extent according to the used configuration during loading. 

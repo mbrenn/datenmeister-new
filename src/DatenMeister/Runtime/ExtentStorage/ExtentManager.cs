@@ -16,12 +16,13 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// This loader is responsible to retrieve an extent by the given ExtentStorageConfiguration
     /// and storing it afterwards at the same location
     /// </summary>
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ExtentStorageLoader : IExtentStorageLoader
     {
         private readonly ExtentStorageData _data;
 
         /// <summary>
-        /// Stores the mapping
+        /// Stores the mapping between configuration types and storage provider
         /// </summary>
         private readonly IConfigurationToExtentStorageMapper _map;
 
@@ -29,20 +30,15 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         private readonly IWorkspaceLogic _workspaceLogic;
         
-
         public ExtentStorageLoader(
             ExtentStorageData data, 
             IConfigurationToExtentStorageMapper map,
             ILifetimeScope diScope, 
             IWorkspaceLogic workspaceLogic)
         {
-            if (data == null) throw new ArgumentNullException(nameof(data));
-            if (map == null) throw new ArgumentNullException(nameof(map));
-            if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
-
-            _data = data;
-            _map = map;
-            _workspaceLogic = workspaceLogic;
+            _data = data ?? throw new ArgumentNullException(nameof(data));
+            _map = map ?? throw new ArgumentNullException(nameof(map));
+            _workspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
             _diScope = diScope;
         }
 
@@ -91,6 +87,12 @@ namespace DatenMeister.Runtime.ExtentStorage
             return uriExtent;
         }
 
+        /// <summary>
+        /// Adds the given extent to the workspace according to the ExtentStorageConfiguration. If the
+        /// workspace does not exist, it will be created
+        /// </summary>
+        /// <param name="configuration">Configuration to be used</param>
+        /// <param name="loadedExtent">The loaded extent to be added to the workpace</param>
         private void AddToWorkspaceIfPossible(ExtentStorageConfiguration configuration, IUriExtent loadedExtent)
         {
             if (_workspaceLogic != null)

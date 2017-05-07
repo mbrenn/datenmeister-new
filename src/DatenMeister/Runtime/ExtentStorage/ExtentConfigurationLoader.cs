@@ -5,24 +5,29 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 namespace DatenMeister.Runtime.ExtentStorage
 {
     /// <summary>
-    /// This loader is used to store and load extents out of a file
+    /// This loader is used to store and load the extent storage out of a file.
+    /// In addition, it will also use the ExtentManager class to load the actual data
+    /// of the extents
     /// </summary>
-    public class ExtentStorageConfigurationLoader : ObjectFileStorage<ExtentStorageConfigurationCollection>
+    public class ExtentConfigurationLoader : ObjectFileStorage<ExtentStorageConfigurationCollection>
     {
-        private string Filepath { get; }
+        /// <summary>
+        /// Gets the information about the loaded extents, 
+        /// and filepath where to look after
+        /// </summary>
         private ExtentStorageData ExtentStorageData { get; }
-        private IExtentStorageLoader ExtentLoaderLogic { get; }
 
-        public ExtentStorageConfigurationLoader(
+        /// <summary>
+        /// Gets the extent manager being used to actual load an extent
+        /// </summary>
+        private IExtentManager ExtentManager { get; }
+
+        public ExtentConfigurationLoader(
             ExtentStorageData extentStorageData,
-            IExtentStorageLoader extentLoaderLogic,
-            string filepath)
+            IExtentManager extentManager)
         {
-            Debug.Assert(filepath != null, "filepath != null");
-
-            ExtentLoaderLogic = extentLoaderLogic;
+            ExtentManager = extentManager;
             ExtentStorageData = extentStorageData;
-            Filepath = filepath;
         }
 
         /// <summary>
@@ -36,7 +41,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
-        /// Gets the additional types for the xml parsing
+        /// Gets the additional types for the xml parsing. 
+        /// This method is called by the base class to support the loading if unknown extent types
         /// </summary>
         /// <returns>Array of additional types</returns>
         public override Type[] GetAdditionalTypes()
@@ -52,7 +58,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             ExtentStorageConfigurationCollection loaded = null;
             try
             {
-                loaded = Load(Filepath);
+                loaded = Load(ExtentStorageData.FilePath);
             }
             catch (Exception exc)
             {
@@ -68,7 +74,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             {
                 try
                 {
-                    ExtentLoaderLogic.LoadExtent(info, false);
+                    ExtentManager.LoadExtent(info, false);
                 }
                 catch (Exception exc)
                 {
@@ -84,7 +90,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         public void StoreAllExtents()
         {
             // Stores the extents themselves into the different database
-            ExtentLoaderLogic.StoreAll();
+            ExtentManager.StoreAll();
 
             // Stores the information abotu the used extends
             var toBeStored = new ExtentStorageConfigurationCollection();
@@ -93,7 +99,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 toBeStored.Extents.Add(loadedExtent.Configuration);
             }
 
-            Save(Filepath, toBeStored);
+            Save(ExtentStorageData.FilePath, toBeStored);
         }
     }
 }

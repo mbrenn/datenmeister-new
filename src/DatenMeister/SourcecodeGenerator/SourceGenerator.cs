@@ -15,7 +15,7 @@ namespace DatenMeister.SourcecodeGenerator
         {
             uml = uml ?? new _UML(); // Verifies that a uml is existing
 
-            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///");
+            var extent = new MofUriExtent(new InMemoryProvider(), options.ExtentUrl);
             var factory = new MofFactory(extent);
 
             // Creates the package
@@ -48,7 +48,8 @@ namespace DatenMeister.SourcecodeGenerator
             classTreeGenerator.Walk(extent);
 
             var pathOfClassTree = GetPath(options, ".class.cs");
-            File.WriteAllText(pathOfClassTree, classTreeGenerator.Result.ToString());
+            var fileContent = classTreeGenerator.Result.ToString();
+            File.WriteAllText(pathOfClassTree, fileContent);
 
             ////////////////////////////////////////
             // Creates now the filler
@@ -61,7 +62,8 @@ namespace DatenMeister.SourcecodeGenerator
             fillerGenerator.Walk(extent);
 
             var pathOfFillerTree = GetPath(options, ".filler.cs");
-            File.WriteAllText(pathOfFillerTree, fillerGenerator.Result.ToString());
+            fileContent = fillerGenerator.Result.ToString();
+            File.WriteAllText(pathOfFillerTree, fileContent);
 
             ////////////////////////////////////////
             // Creates the Dot Net Integration Parser
@@ -72,6 +74,12 @@ namespace DatenMeister.SourcecodeGenerator
             File.WriteAllText(pathOfDotNetIngegration, dotNetGenerator.Result.ToString());
         }
 
+        /// <summary>
+        /// Gets the path by adding the extension to the suggested filename
+        /// </summary>
+        /// <param name="options">Options for Source code generator</param>
+        /// <param name="extension">File extension to be set</param>
+        /// <returns>Path to be used</returns>
         private static string GetPath(SourceGeneratorOptions options, string extension)
         {
             var pathOfDotNetIngegration =

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
 using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Provider.CSV;
+using DatenMeister.Provider.InMemory;
 
 namespace DatenMeister.Integration
 {
@@ -21,16 +24,15 @@ namespace DatenMeister.Integration
 
             var provider = scope.Resolve<CSVDataProvider>();
 
-            throw new NotImplementedException();
-            /*var extent = new CSVExtent(uri);
-            var factory = new CSVFactory(extent);
-
+            var memoryProvider = new InMemoryProvider();
+            var extent = new MofUriExtent(memoryProvider, uri);
+            
             using (var stream = new FileStream(path, FileMode.Open))
             {
-                provider.Load(extent, factory, stream, settings);
+                provider.Load(memoryProvider, stream, settings);
             }
 
-            return extent;*/
+            return extent;
         }
 
     }

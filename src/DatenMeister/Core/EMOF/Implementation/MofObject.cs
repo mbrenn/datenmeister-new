@@ -80,16 +80,55 @@ namespace DatenMeister.Core.EMOF.Implementation
             return @equals(obj);
         }
 
+        /// <summary>
+        /// Verifies if the two elements reference to the same instance
+        /// </summary>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        /// <returns></returns>
+        public static bool AreEqual(IObject first, IObject second)
+        {
+            if (first == null || second == null)
+            {
+                // If one is at least null, it shall be 
+                return false;
+            }
+
+            var firstAsMofObject = first as MofObject;
+            var secondAsMofObject = second as MofObject;
+            var firstAsShadow = first as MofObjectShadow;
+            var secondAsShadow = second as MofObjectShadow;
+            var firstAsElement = first as MofElement;
+            var secondAsElement = second as MofElement;
+
+            if (firstAsMofObject != null && secondAsMofObject != null)
+            {
+                return firstAsMofObject.ProviderObject.Id == secondAsMofObject.ProviderObject.Id;
+            }
+
+            if (firstAsShadow != null && secondAsShadow != null)
+            {
+                return firstAsShadow.Uri == secondAsShadow.Uri;
+            }
+
+            if (firstAsShadow != null && secondAsElement != null)
+            {
+                return firstAsShadow.Uri == secondAsElement.GetUri();
+            }
+
+            if (secondAsShadow != null && firstAsElement != null)
+            {
+                return secondAsShadow.Uri == firstAsElement.GetUri();
+            }
+
+            throw new InvalidOperationException(
+                $"Combination of {first.GetType()} and {second.GetType()} is not known to verify equality");
+        }
+
         /// <inheritdoc />
         public bool @equals(object other)
         {
-            var otherAsObject = other as MofObject;
-            if (otherAsObject != null)
-            {
-                return otherAsObject.ProviderObject.Id == ProviderObject.Id;
-            }
-
-            return false;
+            return AreEqual(this, other as IObject);
         }
 
         /// <inheritdoc />

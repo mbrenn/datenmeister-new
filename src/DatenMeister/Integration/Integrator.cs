@@ -6,9 +6,9 @@ using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
@@ -19,9 +19,9 @@ using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
 using WorkspaceData = DatenMeister.Runtime.Workspaces.WorkspaceData;
 
-namespace DatenMeister.Provider.DotNet
+namespace DatenMeister.Integration
 {
-    public class Integration
+    public class Integrator
     {
         private const string PathWorkspaces = "App_Data/Database/workspaces.xml";
 
@@ -31,7 +31,7 @@ namespace DatenMeister.Provider.DotNet
 
         private IntegrationSettings _settings;
 
-        public Integration(IntegrationSettings settings)
+        public Integrator(IntegrationSettings settings)
         {
             _settings = settings;
         }
@@ -49,16 +49,17 @@ namespace DatenMeister.Provider.DotNet
             var watch = new Stopwatch();
             watch.Start();
 
-            // Defines the factory method for a certain extent type
-
             // Finds the loader for a certain extent type  
             var storageMap = new ManualConfigurationToExtentStorageMapper();
             kernel.RegisterInstance(storageMap).As<IConfigurationToExtentStorageMapper>();
 
             // Defines the extent storage data  
-            var extentStorageData = new ExtentStorageData();
+            var extentStorageData = new ExtentStorageData
+            {
+                FilePath = PathExtents
+            };
             kernel.RegisterInstance(extentStorageData).As<ExtentStorageData>();
-            kernel.RegisterType<ExtentStorageLoader>().As<IExtentStorageLoader>();
+            kernel.RegisterType<ExtentManager>().As<IExtentStorageLoader>();
 
             // Workspaces
             var workspaceData = WorkspaceLogic.InitDefault();
@@ -72,11 +73,22 @@ namespace DatenMeister.Provider.DotNet
             var dotNetTypeLookup = new DotNetTypeLookup();
             kernel.RegisterInstance(dotNetTypeLookup).As<IDotNetTypeLookup>();
 
+            // Loading and storing the workspaces
+            var workspaceLoadingConfiguration = new WorkspaceLoaderConfig()
+            {
+                Filepath = PathWorkspaces
+            };
+
+            kernel.RegisterInstance(workspaceLoadingConfiguration).As<WorkspaceLoaderConfig>();
+            kernel.RegisterType<WorkspaceLoader>().As<WorkspaceLoader>();
+
+            kernel.RegisterType<ExtentStorageConfigurationLoader>().As<ExtentStorageConfigurationLoader>();
+
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
-                CSV.Integrate.Into(scope);
-                XMI.Integrate.Into(scope);
+                Provider.CSV.Integrate.Into(scope);
+                Provider.XMI.Integrate.Into(scope);
 
                 // Is used by .Net Provider to include the mappings for extent storages and factory types
                 _settings?.Hooks?.OnStartScope(scope);
@@ -98,6 +110,7 @@ namespace DatenMeister.Provider.DotNet
                     };
 
                 var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
+
                 var umlWatch = new Stopwatch();
                 umlWatch.Start();
                 Debug.Write("Bootstrapping MOF and UML...");
@@ -114,6 +127,7 @@ namespace DatenMeister.Provider.DotNet
                     workspaceData.Uml,
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml);
                 umlWatch.Stop();
+
                 Debug.WriteLine($" Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
@@ -138,7 +152,7 @@ namespace DatenMeister.Provider.DotNet
                 // Boots up the typical DatenMeister Environment  
                 if (_settings.EstablishDataEnvironment)
                 {
-                    LoadsWorkspacesAndExtents(builder, scope);
+                    LoadsWorkspacesAndExtents(scope);
                 }
 
                 CreatesUserTypeExtent(scope);
@@ -150,34 +164,27 @@ namespace DatenMeister.Provider.DotNet
             return builder;
         }
 
-        private void LoadsWorkspacesAndExtents(IContainer builder, ILifetimeScope scope)
+        /// <summary>
+        /// Loads the workspaces from memory and the extents according to the files.
+        /// </summary>
+        /// <param name="scope">Dependency injection container</param>
+        private void LoadsWorkspacesAndExtents(ILifetimeScope scope)
         {
-            var innerContainer = new ContainerBuilder();
-            // Loading and storing the workspaces  
-            var workspaceLoader = new WorkspaceLoader(
-                scope.Resolve<IWorkspaceLogic>(),
-                PathWorkspaces);
+            var workspaceLoader = scope.Resolve<WorkspaceLoader>();
             workspaceLoader.Load();
-            innerContainer.RegisterInstance(workspaceLoader).As<WorkspaceLoader>();
-
-            // Loading and storing the extents  
-            var extentLoader = new ExtentStorageConfigurationLoader(
-                scope.Resolve<ExtentStorageData>(),
-                scope.Resolve<IExtentStorageLoader>(),
-                PathExtents);
-            innerContainer.Register(c => new ExtentStorageConfigurationLoader(
-                c.Resolve<ExtentStorageData>(),
-                c.Resolve<IExtentStorageLoader>(),
-                PathExtents)).As<ExtentStorageConfigurationLoader>();
-            innerContainer.Update(builder);
 
             // Now start the plugins  
             _settings?.Hooks?.BeforeLoadExtents(scope);
 
             // Loads all extents after all plugins were started  
-            extentLoader.LoadAllExtents();
+            scope.Resolve<ExtentStorageConfigurationLoader>().LoadAllExtents();
         }
 
+        /// <summary>
+        /// Creates the user type extent storing the types for the user. 
+        /// If the extent is already existing, debugs the number of found extents
+        /// </summary>
+        /// <param name="scope">Dependency injection container</param>
         private static void CreatesUserTypeExtent(ILifetimeScope scope)
         {
             var workspaceCollection = scope.Resolve<IWorkspaceLogic>();
@@ -188,7 +195,7 @@ namespace DatenMeister.Provider.DotNet
             {
                 Debug.WriteLine("Creates the extent for the user types");
                 // Creates the extent for user types
-                var loader = scope.Resolve<ExtentStorageLoader>();
+                var loader = scope.Resolve<ExtentManager>();
                 var storageConfiguration = new XmiStorageConfiguration
                 {
                     ExtentUri = WorkspaceNames.UriUserTypes,

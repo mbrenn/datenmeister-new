@@ -39,7 +39,7 @@ namespace DatenMeister.Provider.DotNet
         /// Creates a DotNetProvider object out of the internal information
         /// </summary>
         /// <param name="typeLookup"></param>
-        /// <param name="extent"></param>
+        /// <param name="provider"></param>
         /// <param name="value"></param>
         /// <param name="id"></param>
         /// <returns></returns>

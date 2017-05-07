@@ -11,16 +11,16 @@ namespace DatenMeister.Provider.XMI
     // ReSharper disable once InconsistentNaming
     public class XmiPlugin : IDatenMeisterPlugin
     {
-        private readonly ExtentStorageConfigurationLoader _extentStorageLoader;
+        private readonly ExtentConfigurationLoader _extentLoader;
 
-        public XmiPlugin(ExtentStorageConfigurationLoader extentStorageLoader)
+        public XmiPlugin(ExtentConfigurationLoader extentLoader)
         {
-            _extentStorageLoader = extentStorageLoader;
+            _extentLoader = extentLoader;
         }
 
         public void Start()
         {
-            _extentStorageLoader.AddAdditionalType(typeof(XmiStorageConfiguration));
+            _extentLoader.AddAdditionalType(typeof(XmiStorageConfiguration));
         }
     }
 }

@@ -19,15 +19,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Initialiezs a new instance of the MofElement. This method is just used for migration
-        /// </summary>
-        [Obsolete]
-        public MofElement() : base(new InMemoryObject(InMemoryProvider.TemporaryProvider), InMemoryProvider.TemporaryExtent)
-        {
-
-        }
-
-        /// <summary>
         /// Initialized a new instance of the MofElement class which is an abstraction of the provided database. 
         /// </summary>
         /// <param name="providedObject">Provided object by database</param>

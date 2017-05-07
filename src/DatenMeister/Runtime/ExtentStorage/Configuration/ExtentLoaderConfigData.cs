@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
 
-namespace DatenMeister.Runtime.ExtentStorage
+namespace DatenMeister.Runtime.ExtentStorage.Configuration
 {
     /// <summary>
     /// Defines a container class to store all configurations being loaded. 
     /// This is the file that is persisted to the filesystem and is used to reload the formerly loaded extents
-    /// </summary>
-    public class ExtentStorageConfigurationCollection
+    /// </summary>  
+    public class ExtentLoaderConfigData
     {
-        public List<ExtentStorageConfiguration> Extents { get; } = new List<ExtentStorageConfiguration>();
+        public List<ExtentLoaderConfig> Extents { get; } = new List<ExtentLoaderConfig>();
     }
 }

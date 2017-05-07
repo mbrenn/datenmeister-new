@@ -1,6 +1,6 @@
 ﻿namespace DatenMeister.Runtime.ExtentStorage.Configuration
 {
-    public class ExtentFileStorageConfiguration : ExtentStorageConfiguration
+    public class ExtentFileLoaderConfig : ExtentLoaderConfig
     {
         /// <summary>
         /// Gets or sets the path to which the storage shall be stored

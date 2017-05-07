@@ -11,21 +11,21 @@ namespace DatenMeister.Provider.CSV.Runtime
     /// <summary>
     /// The engine being used to load and store the extent into a csv file
     /// </summary>
-    [ConfiguredBy(typeof(CSVLoaderConfiguration))]
+    [ConfiguredBy(typeof(CSVExtentLoaderConfig))]
     // ReSharper disable once InconsistentNaming
-    public class CSVLoader : IExtentStorage
+    public class CSVExtentLoader : IExtentLoader
     {
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        public CSVLoader(IWorkspaceLogic workspaceLogic)
+        public CSVExtentLoader(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
         }
 
-        public IProvider LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty)
+        public IProvider LoadExtent(ExtentLoaderConfig configuration, bool createAlsoEmpty)
         {
-            var csvConfiguration = (CSVLoaderConfiguration) configuration;
-            var dataProvider = new CSVDataProvider(_workspaceLogic);
+            var csvConfiguration = (CSVExtentLoaderConfig) configuration;
+            var dataProvider = new CSVLoader(_workspaceLogic);
 
             var provider = new InMemoryProvider();
 
@@ -43,11 +43,11 @@ namespace DatenMeister.Provider.CSV.Runtime
             return provider;
         }
 
-        public void StoreExtent(IProvider extent, ExtentStorageConfiguration configuration)
+        public void StoreExtent(IProvider extent, ExtentLoaderConfig configuration)
         {
-            var csvConfiguration = (CSVLoaderConfiguration) configuration;
+            var csvConfiguration = (CSVExtentLoaderConfig) configuration;
 
-            var provider = new CSVDataProvider(_workspaceLogic);
+            var provider = new CSVLoader(_workspaceLogic);
             provider.Save(extent, csvConfiguration.Path, csvConfiguration.Settings);
         }
     }

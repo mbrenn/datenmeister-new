@@ -12,11 +12,11 @@ namespace DatenMeister.Provider.CSV
     /// <summary>
     ///     Loads and stores the the extent from an CSV file
     /// </summary>
-    public class CSVDataProvider
+    public class CSVLoader
     {
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        public CSVDataProvider(IWorkspaceLogic workspaceLogic)
+        public CSVLoader(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
         }

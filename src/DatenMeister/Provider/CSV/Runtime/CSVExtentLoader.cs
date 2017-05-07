@@ -6,25 +6,25 @@ using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Provider.CSV.Runtime.Storage
+namespace DatenMeister.Provider.CSV.Runtime
 {
     /// <summary>
     /// The engine being used to load and store the extent into a csv file
     /// </summary>
-    [ConfiguredBy(typeof(CSVStorageConfiguration))]
+    [ConfiguredBy(typeof(CSVLoaderConfiguration))]
     // ReSharper disable once InconsistentNaming
-    public class CSVStorage : IExtentStorage
+    public class CSVLoader : IExtentStorage
     {
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        public CSVStorage(IWorkspaceLogic workspaceLogic)
+        public CSVLoader(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
         }
 
         public IProvider LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty)
         {
-            var csvConfiguration = (CSVStorageConfiguration) configuration;
+            var csvConfiguration = (CSVLoaderConfiguration) configuration;
             var dataProvider = new CSVDataProvider(_workspaceLogic);
 
             var provider = new InMemoryProvider();
@@ -45,7 +45,7 @@ namespace DatenMeister.Provider.CSV.Runtime.Storage
 
         public void StoreExtent(IProvider extent, ExtentStorageConfiguration configuration)
         {
-            var csvConfiguration = (CSVStorageConfiguration) configuration;
+            var csvConfiguration = (CSVLoaderConfiguration) configuration;
 
             var provider = new CSVDataProvider(_workspaceLogic);
             provider.Save(extent, csvConfiguration.Path, csvConfiguration.Settings);

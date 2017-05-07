@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 
 using DatenMeister.Models.PostModels;
-using DatenMeister.Provider.CSV.Runtime.Storage;
+using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +15,11 @@ namespace DatenMeister.Web.Api
     public class ExampleController : Controller
     {
         private readonly IWorkspaceLogic _workspaceLogic;
-        private readonly IExtentStorageLoader _loader;
+        private readonly IExtentManager _loader;
 
         private static readonly Random Random = new Random();
 
-        public ExampleController(IWorkspaceLogic workspaceLogic,IExtentStorageLoader loader)
+        public ExampleController(IWorkspaceLogic workspaceLogic,IExtentManager loader)
         {
             _workspaceLogic = workspaceLogic;
             _loader = loader;
@@ -51,7 +51,7 @@ namespace DatenMeister.Web.Api
 
             System.IO.File.Copy(originalFilename, filename);
 
-            var defaultConfiguration = new CSVStorageConfiguration
+            var defaultConfiguration = new CSVExtentLoaderConfig
             {
                 ExtentUri = $"datenmeister:///zipcodes/{randomNumber}",
                 Path = filename,

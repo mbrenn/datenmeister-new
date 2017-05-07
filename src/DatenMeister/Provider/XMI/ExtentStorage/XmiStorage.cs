@@ -10,7 +10,7 @@ using DatenMeister.Runtime.Workspaces;
 namespace DatenMeister.Provider.XMI.ExtentStorage
 {
     [ConfiguredBy(typeof(XmiStorageConfiguration))]
-    public class XmiStorage : IExtentStorage
+    public class XmiStorage : IExtentLoader
     {
         private readonly IWorkspaceLogic _workspaceCollection;
         
@@ -20,7 +20,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             _workspaceCollection = workspaceCollection;
         }
 
-        public IProvider LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty = false)
+        public IProvider LoadExtent(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)
         {
             var xmiConfiguration = (XmiStorageConfiguration) configuration;
 
@@ -49,7 +49,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             return result;
         }
 
-        public void StoreExtent(IProvider extent, ExtentStorageConfiguration configuration)
+        public void StoreExtent(IProvider extent, ExtentLoaderConfig configuration)
         {
             var xmiConfiguration = configuration as XmiStorageConfiguration;
             if (xmiConfiguration != null)

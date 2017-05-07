@@ -5,35 +5,47 @@ namespace DatenMeister.Runtime.Workspaces.Data
 {
     public class WorkspaceLoader : ObjectFileStorage<WorkspaceFileData>
     {
-        public string Filepath { get; set; }
+        /// <summary>
+        /// Stores the configuration of the workspace loader
+        /// </summary>
+        public WorkspaceLoaderConfig Config { get; set; }
 
-        public IWorkspaceLogic WorkspaceCollection { get; set; }
+        /// <summary>
+        /// Stores the workspace logic storing the workspaces in memory
+        /// </summary>
+        public IWorkspaceLogic WorkspaceLogic { get; set; }
 
-        public WorkspaceLoader(IWorkspaceLogic workspaceCollection, string filepath)
+        public WorkspaceLoader(IWorkspaceLogic workspaceLogic, WorkspaceLoaderConfig config)
         {
-            Debug.Assert(workspaceCollection != null, "workspaceCollection != null");
-            Debug.Assert(filepath != null, "filepath != null");
+            Debug.Assert(workspaceLogic != null, "workspaceLogic != null");
+            Debug.Assert(config != null, "filepath != null");
 
-            WorkspaceCollection = workspaceCollection;
-            Filepath = filepath;
+            WorkspaceLogic = workspaceLogic;
+            Config = config;
         }
 
+        /// <summary>
+        /// Loads the workspaces from the given file. 
+        /// If the workspace is already existing, the annotation will be overridden. 
+        /// If not, it will be created.
+        /// </summary>
+        /// <returns></returns>
         public WorkspaceFileData Load()
         {
             try
             {
-                var loaded = Load(Filepath);
+                var workspaceData = Load(Config.Filepath);
 
-                if (loaded == null)
+                if (workspaceData == null)
                 {
                     // Not existing
                     return null;
                 }
 
             
-                foreach (var workspaceInfo in loaded.Workspaces)
+                foreach (var workspaceInfo in workspaceData.Workspaces)
                 {
-                    var foundWorkspace = WorkspaceCollection.GetWorkspace(workspaceInfo.Id);
+                    var foundWorkspace = WorkspaceLogic.GetWorkspace(workspaceInfo.Id);
                     if (foundWorkspace != null)
                     {
                         // Already exists, update annoptation
@@ -42,10 +54,10 @@ namespace DatenMeister.Runtime.Workspaces.Data
                     }
 
                     var workspace = new Workspace(workspaceInfo.Id, workspaceInfo.Annotation);
-                    WorkspaceCollection.AddWorkspace(workspace);
+                    WorkspaceLogic.AddWorkspace(workspace);
                 }
 
-                return loaded;
+                return workspaceData;
             }
             catch (Exception e)
             {
@@ -54,10 +66,14 @@ namespace DatenMeister.Runtime.Workspaces.Data
             }
         }
 
+        /// <summary>
+        /// Stores the workspaces in the file by converting them into the the workspace filedata and then moving it into
+        /// the file by using the ObjectFileStorage
+        /// </summary>
         public void Store()
         {
             var workSpaceData = new WorkspaceFileData();
-            foreach (var workSpace in  WorkspaceCollection.Workspaces)
+            foreach (var workSpace in WorkspaceLogic.Workspaces)
             {
                 workSpaceData.Workspaces.Add(new WorkspaceInfo
                 {
@@ -66,7 +82,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
                 });
             }
 
-            Save(Filepath, workSpaceData);
+            Save(Config.Filepath, workSpaceData);
         }
     }
 }

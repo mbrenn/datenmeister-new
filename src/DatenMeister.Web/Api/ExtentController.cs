@@ -17,7 +17,7 @@ using DatenMeister.Models.ItemsAndExtents;
 using DatenMeister.Models.PostModels;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.CSV;
-using DatenMeister.Provider.CSV.Runtime.Storage;
+using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Dynamic;
@@ -40,7 +40,7 @@ namespace DatenMeister.Web.Api
         private const int MaxItemAmount = 100;
         
         private readonly IUmlNameResolution _resolution;
-        private readonly IExtentStorageLoader _extentStorageLoader;
+        private readonly IExtentManager _extentManager;
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentFunctions _extentFunctions;
         private readonly ILifetimeScope _diScope;
@@ -49,7 +49,7 @@ namespace DatenMeister.Web.Api
 
         public ExtentController(
             IUmlNameResolution resolution, 
-            IExtentStorageLoader extentStorageLoader, 
+            IExtentManager extentManager, 
             IWorkspaceLogic workspaceLogic, 
             ExtentFunctions extentFunctions,
             ILifetimeScope diScope,
@@ -57,7 +57,7 @@ namespace DatenMeister.Web.Api
             NamedElementMethods namedElementMethods)
         {
             _resolution = resolution;
-            _extentStorageLoader = extentStorageLoader;
+            _extentManager = extentManager;
             _workspaceLogic = workspaceLogic;
             _extentFunctions = extentFunctions;
             _diScope = diScope;
@@ -136,7 +136,7 @@ namespace DatenMeister.Web.Api
 
             // Creates the new workspace
             var configuration = GetStorageConfiguration(model, filename);
-            var createdExtent = _extentStorageLoader.LoadExtent(configuration, true);
+            var createdExtent = _extentManager.LoadExtent(configuration, true);
 
             return new
             {
@@ -207,7 +207,7 @@ namespace DatenMeister.Web.Api
 
             // Creates the new workspace
             var configuration = GetStorageConfiguration(model, filename);
-            var createdExtent = _extentStorageLoader.LoadExtent(configuration, true);
+            var createdExtent = _extentManager.LoadExtent(configuration, true);
 
             return new
             {
@@ -222,9 +222,9 @@ namespace DatenMeister.Web.Api
         /// <param name="model">Model to be used to retrieve the information</param>
         /// <param name="filename">Filename to be used</param>
         /// <returns></returns>
-        private static ExtentStorageConfiguration GetStorageConfiguration(ExtentAddModel model, string filename)
+        private static ExtentLoaderConfig GetStorageConfiguration(ExtentAddModel model, string filename)
         {
-            ExtentStorageConfiguration configuration;
+            ExtentLoaderConfig configuration;
             switch (model.type)
             {
                 case "xmi":
@@ -237,7 +237,7 @@ namespace DatenMeister.Web.Api
 
                     break;
                 case "csv":
-                    var csvExtentData = new CSVStorageConfiguration
+                    var csvExtentData = new CSVExtentLoaderConfig
                     {
                         ExtentUri = model.contextUri,
                         Path = filename,
@@ -288,7 +288,7 @@ namespace DatenMeister.Web.Api
             IUriExtent foundExtent;
             _workspaceLogic.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
 
-            var provider = new CSVDataProvider(_workspaceLogic);
+            var provider = new CSVLoader(_workspaceLogic);
             
             using (var stream = new StringWriter())
             {

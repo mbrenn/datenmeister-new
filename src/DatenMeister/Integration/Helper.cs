@@ -10,7 +10,7 @@ namespace DatenMeister.Integration
     {
         public static IContainer UseDatenMeister(this ContainerBuilder kernel, IntegrationSettings settings)
         {
-            var integration = new Provider.DotNet.Integration(settings);
+            var integration = new Integrator(settings);
             return integration.UseDatenMeister(kernel);
         }
 
@@ -22,7 +22,7 @@ namespace DatenMeister.Integration
         public static void UnuseDatenMeister(this ILifetimeScope scope)
         {
             scope.Resolve<WorkspaceLoader>().Store();
-            scope.Resolve<ExtentStorageConfigurationLoader>().StoreAllExtents();
+            scope.Resolve<ExtentConfigurationLoader>().StoreAllExtents();
         }
 
         /// <summary>

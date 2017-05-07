@@ -9,7 +9,7 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
     /// The application can use this implementation to load and store a file on startup
     /// and end of application
     /// </summary>
-    public interface IExtentStorage
+    public interface IExtentLoader
     {
         /// <summary>
         /// Loads the extent according to the given configuration

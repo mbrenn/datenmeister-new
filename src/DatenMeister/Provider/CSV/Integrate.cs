@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using DatenMeister.Provider.CSV.Runtime.Storage;
+using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
@@ -13,7 +13,7 @@ namespace DatenMeister.Provider.CSV
         public static void Into(ILifetimeScope scope)
         {
             var storageMap = scope.Resolve<IConfigurationToExtentStorageMapper>();
-            ManualConfigurationToExtentStorageMapper.MapExtentLoaderType(storageMap, typeof(CSVStorage));
+            ManualConfigurationToExtentStorageMapper.MapExtentLoaderType(storageMap, typeof(CSVExtentLoader));
         }
     }
 }

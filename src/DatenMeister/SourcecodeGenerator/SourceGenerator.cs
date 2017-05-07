@@ -48,7 +48,8 @@ namespace DatenMeister.SourcecodeGenerator
             classTreeGenerator.Walk(extent);
 
             var pathOfClassTree = GetPath(options, ".class.cs");
-            File.WriteAllText(pathOfClassTree, classTreeGenerator.Result.ToString());
+            var fileContent = classTreeGenerator.Result.ToString();
+            File.WriteAllText(pathOfClassTree, fileContent);
 
             ////////////////////////////////////////
             // Creates now the filler
@@ -61,7 +62,8 @@ namespace DatenMeister.SourcecodeGenerator
             fillerGenerator.Walk(extent);
 
             var pathOfFillerTree = GetPath(options, ".filler.cs");
-            File.WriteAllText(pathOfFillerTree, fillerGenerator.Result.ToString());
+            fileContent = fillerGenerator.Result.ToString();
+            File.WriteAllText(pathOfFillerTree, fileContent);
 
             ////////////////////////////////////////
             // Creates the Dot Net Integration Parser

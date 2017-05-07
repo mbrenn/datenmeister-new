@@ -117,13 +117,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         public bool @equals(object other)
         {
-            var asElement = other as IElement;
-            if (asElement == null)
-            {
-                return false;
-            }
-
-            return asElement.GetUri() == Uri;
+            return MofObject.AreEqual(this, other as IObject);
         }
 
         public object get(string property)

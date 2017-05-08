@@ -16,8 +16,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
         
         public XmiStorage(IWorkspaceLogic workspaceCollection)
         {
-            if (workspaceCollection == null) throw new ArgumentNullException(nameof(workspaceCollection));
-            _workspaceCollection = workspaceCollection;
+            _workspaceCollection = workspaceCollection ?? throw new ArgumentNullException(nameof(workspaceCollection));
         }
 
         public IProvider LoadExtent(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)

@@ -59,7 +59,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             foreach (
                 var customAttribute in type.GetTypeInfo().GetCustomAttributes(typeof(ConfiguredByAttribute), false))
             {
-                if (customAttribute is ConfiguredByAttribute configuredByAttribute )
+                if (customAttribute is ConfiguredByAttribute configuredByAttribute)
                 {
                     map.AddMapping(configuredByAttribute.ConfigurationType,
                         scope => (IExtentLoader) scope.Resolve(type));

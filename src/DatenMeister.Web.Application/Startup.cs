@@ -38,13 +38,13 @@ namespace DatenMeister.Web.Application
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime lifetime)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
             app.UseFileServer();
-            _startup.Configure(app, env, loggerFactory);
+            _startup.Configure(lifetime);
             app.UseMvc();
         }
     }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Globalization;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using DatenMeister.Integration;
@@ -13,21 +15,23 @@ namespace DatenMeister.Web
 {
     public class DatenMeisterWebStartup
     {
-        
+        private IContainer _container;
+        private ILifetimeScope _localScope;
+
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var containerBuilder = new ContainerBuilder();
             containerBuilder.Populate(services);
-            var container = CreateKernel(containerBuilder);
-            return new AutofacServiceProvider(container);
+            _container = CreateKernel(containerBuilder);
+            return new AutofacServiceProvider(_container);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationLifetime lifetime)
         {
-
+            lifetime.ApplicationStopped.Register(OnApplicationStop);
         }
 
-        private static IContainer CreateKernel(ContainerBuilder kernel)
+        private IContainer CreateKernel(ContainerBuilder kernel)
         {
             var settings = new IntegrationSettings
             {
@@ -35,10 +39,19 @@ namespace DatenMeister.Web
             };
             
             kernel.RegisterInstance(new WebserverStartupPhases()).As<IWebserverStartupPhases>();
-
             kernel.RegisterWebModules();
             var container = kernel.UseDatenMeister(settings);
+            _localScope = container.BeginLifetimeScope("DatenMeister Webapplication");
+
             return container;
+        }
+
+        /// <summary>
+        /// Called if the application is stopped
+        /// </summary>
+        private void OnApplicationStop()
+        {
+            _localScope.UnuseDatenMeister();
         }
     }
 }

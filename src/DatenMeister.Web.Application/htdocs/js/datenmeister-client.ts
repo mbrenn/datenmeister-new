@@ -1,4 +1,6 @@
-﻿import * as DMI from "./datenmeister-interfaces";
+﻿/// <reference path="typings/jquery/jquery.d.ts" />
+
+import * as DMI from "./datenmeister-interfaces";
 
 export module ClientApi {
     export function getPlugins(): JQueryPromise<IGetPluginsResponse> {
@@ -45,6 +47,7 @@ export module WorkspaceApi {
         var callback = $.Deferred();
         $.ajax({
             url: "/api/datenmeister/workspace/create",
+            contentType: "application/json",
             method: "POST",
             data: model,
             cache: false,
@@ -63,6 +66,7 @@ export module WorkspaceApi {
         var callback = $.Deferred();
         $.ajax({
             url: "/api/datenmeister/workspace/delete",
+            contentType: "application/json",
             method: "POST",
             data: { name: workspace },
             cache: false,
@@ -90,6 +94,7 @@ export module ExtentApi {
         $.ajax(
             {
                 url: "/api/datenmeister/extent/item_create",
+                contentType: "application/json",
                 data: postModel,
                 method: "POST",
                 success: (data: any) => { callback.resolve(data); },
@@ -117,6 +122,7 @@ export module ExtentApi {
         $.ajax(
             {
                 url: "/api/datenmeister/extent/item_create",
+                contentType: "application/json",
                 data: postModel,
                 method: "POST",
                 success: (data: any) => { callback.resolve(data); },
@@ -138,6 +144,7 @@ export module ExtentApi {
         $.ajax(
             {
                 url: "/api/datenmeister/extent/item_delete",
+                contentType: "application/json",
                 data: postModel,
                 method: "POST",
                 success: (data: any) => { callback.resolve(true); },
@@ -196,6 +203,7 @@ export module ExtentApi {
         $.ajax(
             {
                 url: "/api/datenmeister/extent/extent_delete",
+                contentType: "application/json",
                 data: postModel,
                 method: "POST",
                 success: (data: any) => { callback.resolve(true); },
@@ -211,6 +219,7 @@ export module ExtentApi {
         $.ajax(
             {
                 url: "/api/datenmeister/extent/extent_create",
+                contentType: "application/json",
                 data: extentData,
                 method: "POST",
                 success: (data: any) => { callback.resolve(true); },
@@ -226,6 +235,7 @@ export module ExtentApi {
         $.ajax(
             {
                 url: "/api/datenmeister/extent/extent_add",
+                contentType: "application/json",
                 data: extentData,
                 method: "POST",
                 success: (data: any) => { callback.resolve(true); },
@@ -308,6 +318,7 @@ export module ItemApi {
             url: "/api/datenmeister/extent/item_unset_property",
             data: postModel,
             method: "POST",
+            contentType: "application/json",
             success: (data: any) => { callback.resolve(true); },
             error: (data: any) => { callback.resolve(false); }
         });
@@ -327,6 +338,7 @@ export module ItemApi {
 
         $.ajax({
             url: "/api/datenmeister/extent/item_set_property",
+            contentType: "application/json",
             data: postModel,
             method: "POST",
             success: (data: any) => { callback.resolve(true); },
@@ -358,6 +370,7 @@ export module ItemApi {
             url: "/api/datenmeister/extent/item_set_properties",
             data: postModel,
             method: "POST",
+            contentType: "application/json",
             success: (data: any) => { callback.resolve(true); },
             error: (data: any) => { callback.resolve(false); }
         });
@@ -374,6 +387,7 @@ export module ExampleApi {
             url: "/api/datenmeister/example/addzipcodes",
             data: { ws: workspace },
             method: "POST",
+            contentType: "application/json",
             success: (data: any) => { callback.resolve(true); },
             error: (data: any) => { callback.resolve(false); }
         });

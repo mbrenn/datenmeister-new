@@ -1,4 +1,4 @@
-﻿/// <reference path="typings/jquery/jquery.d.ts" />
+﻿/// <reference path="typings/jquery.d.ts" />
 
 import * as DMI from "./datenmeister-interfaces";
 

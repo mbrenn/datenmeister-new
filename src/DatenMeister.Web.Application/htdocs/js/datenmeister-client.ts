@@ -1,6 +1,6 @@
-﻿/// <reference path="typings/jquery.d.ts" />
+﻿import * as DMI from "./datenmeister-interfaces";
 
-import * as DMI from "./datenmeister-interfaces";
+
 
 export module ClientApi {
     export function getPlugins(): JQueryPromise<IGetPluginsResponse> {

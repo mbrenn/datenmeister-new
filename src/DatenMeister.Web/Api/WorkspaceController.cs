@@ -36,6 +36,10 @@ namespace DatenMeister.Web.Api
         [HttpPost]
         public object Create([FromBody] WorkspaceCreateModel model)
         {
+            if (model == null)
+            {
+                return new { success = true };
+            }
             var workspace = new Workspace(model.name, model.annotation);
             _workspaceCollection.AddWorkspace(workspace);
 

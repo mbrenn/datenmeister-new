@@ -1,6 +1,4 @@
-﻿/// <reference path="typings/jquery.d.ts" />
-/// <reference path="typings/underscore.d.ts" />
-
+﻿
 export interface ILogging {
     writeMessage(line: any);
     writeError(line: any);

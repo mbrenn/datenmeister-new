@@ -1,6 +1,4 @@
-﻿/// <reference path="typings/jquery.d.ts" />
-/// <reference path="typings/underscore.d.ts" />
-
+﻿
 import * as DMHelper from "./datenmeister-helper";
 import * as DMI from "./datenmeister-interfaces";
 import * as DMTables from "./datenmeister-tables";

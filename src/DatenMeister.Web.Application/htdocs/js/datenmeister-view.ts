@@ -1,6 +1,4 @@
-﻿
-/// <reference path="typings/underscore.d.ts" />
-import * as _ from "./typings/underscore"
+﻿///<reference path="../../node_modules/@types/underscore/index.d.ts"/>
 import * as DMI from "./datenmeister-interfaces";
 import * as DMN from "./datenmeister-navigation";
 import * as DMTables from "./datenmeister-tables";
@@ -8,7 +6,10 @@ import * as DMClient from "./datenmeister-client";
 import * as DMQuery from "./datenmeister-query";
 import * as DMVP from "./datenmeister-viewport";
 import * as DMDialog from "./datenmeister-dialogs";
-import * as DMToolbar from "./datenmeister-toolbar"
+import * as DMToolbar from "./datenmeister-toolbar";
+
+declare var _: _.UnderscoreStatic;
+
 
 // Defines a base implementation of the IView interface
 export class ViewBase implements DMVP.IView{
@@ -392,7 +393,7 @@ export class ItemView extends ViewBase implements DMVP.IView
             settings = new DMN.ItemViewSettings();
         }
 
-        isReadonly = settings.isReadonly === true;
+        isReadonly = settings.isReadonly;
         
         configuration.isReadOnly = isReadonly;
         configuration.supportNewProperties = !isReadonly;

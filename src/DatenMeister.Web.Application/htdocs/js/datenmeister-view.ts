@@ -1,6 +1,5 @@
 ﻿///<reference path="../../node_modules/@types/underscore/index.d.ts"/>
 import * as DMI from "./datenmeister-interfaces";
-import * as DMN from "./datenmeister-navigation";
 import * as DMTables from "./datenmeister-tables";
 import * as DMClient from "./datenmeister-client";
 import * as DMQuery from "./datenmeister-query";
@@ -12,15 +11,15 @@ declare var _: _.UnderscoreStatic;
 
 
 // Defines a base implementation of the IView interface
-export class ViewBase implements DMVP.IView{
+export class ViewBase implements DMI.Views.IView{
     public viewport: DMVP.ViewPort;
-    protected navigation: DMN.INavigation;
+    protected navigation: DMI.Navigation.INavigation;
     protected content: JQuery;
     protected layoutInformation: DMI.Api.ILayoutChangedEvent;
 
     protected toolbar: DMToolbar.Toolbar;
 
-    constructor(navigation: DMN.INavigation) {
+    constructor(navigation: DMI.Navigation.INavigation) {
         this.navigation = navigation;
         this.content = $("<div></div>");
     }
@@ -77,13 +76,13 @@ export class ListView extends ViewBase {
     onItemView: (ws: string, extentUrl: string, itemUrl: string) => void;
     onItemCreated: (ws: string, extentUrl: string, itemUrl: string) => void;
 
-    constructor(navigation: DMN.INavigation) {
+    constructor(navigation: DMI.Navigation.INavigation) {
         super(navigation);
     }
 }
 
-export class WorkspaceView extends ViewBase implements DMVP.IView {
-    constructor(navigation: DMN.INavigation) {
+export class WorkspaceView extends ViewBase implements DMI.Views.IView {
+    constructor(navigation: DMI.Navigation.INavigation) {
         super(navigation);
     }
 
@@ -140,8 +139,8 @@ export class WorkspaceView extends ViewBase implements DMVP.IView {
     }
 }
 
-export class ExtentView extends ListView implements DMVP.IView {
-    constructor(navigation: DMN.INavigation) {
+export class ExtentView extends ListView implements DMI.Views.IView {
+    constructor(navigation: DMI.Navigation.INavigation) {
         super(navigation);
     }
 
@@ -208,7 +207,7 @@ export class ExtentView extends ListView implements DMVP.IView {
     }
 }
 
-export class ItemsOfExtentView extends ListView implements DMVP.IView {
+export class ItemsOfExtentView extends ListView implements DMI.Views.IView {
     onNewItemClicked: (typeUrl?: string) => void;
     onViewChanged: (typeUrl?: string) => void;
     onPageChange: (newPage: number) => void;
@@ -222,7 +221,7 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
     supportMetaClasses: boolean;
     toolbarMetaClasses: DMToolbar.ToolbarMetaClasses;
 
-    constructor(navigation: DMN.INavigation) {
+    constructor(navigation: DMI.Navigation.INavigation) {
         super(navigation);
         this.supportSearchbox = true;
         this.supportNewItem = true;
@@ -355,17 +354,17 @@ export class ItemsOfExtentView extends ListView implements DMVP.IView {
     }
 }
 
-export class ItemView extends ViewBase implements DMVP.IView
+export class ItemView extends ViewBase implements DMI.Views.IView
 {
     onItemView: (ws: string, extentUrl: string, itemUrl: string) => void;
     supportViews: boolean;
 
-    constructor(navigation: DMN.INavigation) {
+    constructor(navigation: DMI.Navigation.INavigation) {
         super(navigation);
         this.supportViews = true;
     }
 
-    loadAndCreateHtmlForItem(ws: string, extentUrl: string, itemUrl: string, settings?: DMN.IItemViewSettings): JQueryDeferred<Object> {
+    loadAndCreateHtmlForItem(ws: string, extentUrl: string, itemUrl: string, settings?: DMI.Navigation.IItemViewSettings): JQueryDeferred<Object> {
         var tthis = this;
 
         this.setLayoutInformation({
@@ -381,7 +380,7 @@ export class ItemView extends ViewBase implements DMVP.IView
             });
     }
 
-    createHtmlForItem(ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMN.IItemViewSettings) {
+    createHtmlForItem(ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMI.Navigation.IItemViewSettings) {
         var tthis = this;
         this.content.empty();
         var configuration = new DMTables.ItemContentConfiguration(this.navigation);
@@ -390,7 +389,7 @@ export class ItemView extends ViewBase implements DMVP.IView
         this.toolbar = this.addToolbar();
 
         if (settings === undefined) {
-            settings = new DMN.ItemViewSettings();
+            settings = new DMI.Navigation.ItemViewSettings();
         }
 
         isReadonly = settings.isReadonly;
@@ -498,9 +497,9 @@ export class ItemView extends ViewBase implements DMVP.IView
 
 // This class gives a navigation view with some links which can be clicked by the user and
 // a user-defined action is being performed
-export class EmptyView extends ViewBase implements DMVP.IView {
+export class EmptyView extends ViewBase implements DMI.Views.IView {
 
-    constructor(navigation: DMN.INavigation) {
+    constructor(navigation: DMI.Navigation.INavigation) {
         super(navigation);
     }
 
@@ -514,12 +513,12 @@ export class EmptyView extends ViewBase implements DMVP.IView {
     }
 }
 
-export class DialogView extends ViewBase implements DMVP.IView {
-    constructor(navigation: DMN.INavigation) {
+export class DialogView extends ViewBase implements DMI.Views.IView {
+    constructor(navigation: DMI.Navigation.INavigation) {
         super(navigation);
     }
 
-    createDialog(configuration: DMN.DialogConfiguration) {
+    createDialog(configuration: DMI.Navigation.DialogConfiguration) {
         var value = new DMI.ClientResponse.ItemContentModel();
         var tableConfiguration = new DMTables.ItemContentConfiguration(this.navigation);
         tableConfiguration.autoProperties = false;
@@ -548,11 +547,11 @@ export class DialogView extends ViewBase implements DMVP.IView {
     }
 }
 
-export class CreatetableTypesView extends ViewBase implements DMVP.IView {
+export class CreatetableTypesView extends ViewBase implements DMI.Views.IView {
     private extentUrl: string;
     private ws: string;
     
-    constructor(navigation: DMN.INavigation, ws: string, extentUrl: string) {
+    constructor(navigation: DMI.Navigation.INavigation, ws: string, extentUrl: string) {
         super(navigation);
         this.extentUrl = extentUrl;
         this.ws = ws;

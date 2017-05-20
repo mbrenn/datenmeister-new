@@ -1,13 +1,12 @@
 ﻿
-import DMI = require("./datenmeister-interfaces");
-import DMN = require("./datenmeister-navigation");
-import DMViewPort = require("./datenmeister-viewport");
-import DMView = require("./datenmeister-view");
+import * as DMI from "./datenmeister-interfaces";
+import * as DMViewPort from "./datenmeister-viewport";
+import * as DMView from "./datenmeister-view";
 import * as DMDialog from "./datenmeister-dialogs";
 import * as DMClient from "./datenmeister-client";
 import * as DMRibbon from "./datenmeister-ribbon";
 
-export class Layout implements DMI.Api.ILayout, DMN.INavigation {
+export class Layout implements DMI.Api.ILayout, DMI.Navigation.INavigation {
     pluginResults: Array<DMI.Api.IPluginResult>;
     mainViewPort: DMViewPort.ViewPort;
     parent: JQuery;
@@ -38,7 +37,7 @@ export class Layout implements DMI.Api.ILayout, DMN.INavigation {
         this.showWorkspaces();
     }
 
-    navigateToView(view: DMViewPort.IView): void {
+    navigateToView(view: DMI.Views.IView): void {
         this.mainViewPort.setView(view);
     }
 
@@ -58,7 +57,7 @@ export class Layout implements DMI.Api.ILayout, DMN.INavigation {
         this.showItems(ws, extentUrl, viewname);
     }
 
-    navigateToItem(ws: string, extentUrl: string, itemUrl: string, viewname?: string, settings?: DMN.IItemViewSettings): void {
+    navigateToItem(ws: string, extentUrl: string, itemUrl: string, viewname?: string, settings?: DMI.Navigation.IItemViewSettings): void {
         var url = `#ws=${encodeURIComponent(ws)}&ext=${encodeURIComponent(extentUrl)}&item=${encodeURIComponent(itemUrl)}`;
 
         if (settings !== undefined && settings !== null) {
@@ -80,7 +79,7 @@ export class Layout implements DMI.Api.ILayout, DMN.INavigation {
             `/api/datenmeister/extent/extent_export_csv?ws=${encodeURIComponent(ws)}&extent=${encodeURIComponent(extentUrl)}`);
     }
 
-    navigateToDialog(configuration: DMN.DialogConfiguration): void {
+    navigateToDialog(configuration: DMI.Navigation.DialogConfiguration): void {
         var dialog = new DMView.DialogView(this);
         dialog.createDialog(configuration);
         this.mainViewPort.setView(dialog);
@@ -142,7 +141,7 @@ export class Layout implements DMI.Api.ILayout, DMN.INavigation {
         extentUrl: string,
         itemUrl: string,
         viewname?: string,
-        settings?: DMN.IItemViewSettings) {
+        settings?: DMI.Navigation.IItemViewSettings) {
         var tthis = this;
 
         var itemView = new DMView.ItemView(this);

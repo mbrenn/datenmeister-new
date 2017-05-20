@@ -1,8 +1,8 @@
-define(["require", "exports", "./datenmeister-navigation", "./datenmeister-client", "./datenmeister-interfaces", "./datenmeister-view"], function (require, exports, DMN, DMClient, DMI, DMView) {
+define(["require", "exports", "./datenmeister-client", "./datenmeister-interfaces", "./datenmeister-view"], function (require, exports, DMClient, DMI, DMView) {
     "use strict";
     exports.__esModule = true;
     function showDialogNewWorkspace(navigation) {
-        var configuration = new DMN.DialogConfiguration();
+        var configuration = new DMI.Navigation.DialogConfiguration();
         configuration.onOkForm = function (data) {
             DMClient.WorkspaceApi.createWorkspace({
                 name: data.v["name"],
@@ -29,7 +29,7 @@ define(["require", "exports", "./datenmeister-navigation", "./datenmeister-clien
     }
     exports.showNavigationForNewExtents = showNavigationForNewExtents;
     function showDialogNewCsvExtent(navigation, workspace) {
-        var configuration = new DMN.DialogConfiguration();
+        var configuration = new DMI.Navigation.DialogConfiguration();
         configuration.onOkForm = function (data) {
             DMClient.ExtentApi.createExtent({
                 type: "csv",
@@ -49,7 +49,7 @@ define(["require", "exports", "./datenmeister-navigation", "./datenmeister-clien
     }
     exports.showDialogNewCsvExtent = showDialogNewCsvExtent;
     function showDialogAddCsvExtent(navigation, workspace) {
-        var configuration = new DMN.DialogConfiguration();
+        var configuration = new DMI.Navigation.DialogConfiguration();
         configuration.onOkForm = function (data) {
             DMClient.ExtentApi.addExtent({
                 type: "csv",
@@ -67,7 +67,7 @@ define(["require", "exports", "./datenmeister-navigation", "./datenmeister-clien
     }
     exports.showDialogAddCsvExtent = showDialogAddCsvExtent;
     function showDialogNewXmiExtent(navigation, workspace) {
-        var configuration = new DMN.DialogConfiguration();
+        var configuration = new DMI.Navigation.DialogConfiguration();
         configuration.onOkForm = function (data) {
             DMClient.ExtentApi.createExtent({
                 type: "xmi",

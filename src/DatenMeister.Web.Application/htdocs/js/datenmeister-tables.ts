@@ -1,6 +1,5 @@
 ﻿import * as DMH from "./datenmeister-helper"
 import * as DMI from "./datenmeister-interfaces"
-import * as DMN from "./datenmeister-navigation"
 import * as DMClient from "./datenmeister-client"
 import * as DMToolbar from "./datenmeister-toolbar"
 
@@ -13,11 +12,11 @@ export class ItemListTableConfiguration {
 
     showColumnForId: boolean;
     itemsPerPage: number;
-    navigation: DMN.INavigation;
+    navigation: DMI.Navigation.INavigation;
 
     paging: DMToolbar.ToolbarPaging;
     
-    constructor(navigation: DMN.INavigation) {
+    constructor(navigation: DMI.Navigation.INavigation) {
         this.onItemEdit = (url: string) => false;
         this.onItemDelete = (url: string, domRow: JQuery) => false;
 
@@ -222,7 +221,7 @@ export class ItemContentConfiguration {
      */
     supportNewProperties: boolean;
 
-    navigation: DMN.INavigation;
+    navigation: DMI.Navigation.INavigation;
     
     onItemSelect: (url: string) => boolean;
 
@@ -235,7 +234,7 @@ export class ItemContentConfiguration {
      */
     onEditButton: () => void;
 
-    constructor(navigation: DMN.INavigation) {
+    constructor(navigation: DMI.Navigation.INavigation) {
         this.isReadOnly = false;
         this.autoProperties = false;
         this.supportNewProperties = true;

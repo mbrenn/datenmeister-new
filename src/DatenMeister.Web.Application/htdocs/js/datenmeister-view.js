@@ -8,7 +8,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navigation", "./datenmeister-tables", "./datenmeister-client", "./datenmeister-query", "./datenmeister-dialogs", "./datenmeister-toolbar"], function (require, exports, DMI, DMN, DMTables, DMClient, DMQuery, DMDialog, DMToolbar) {
+define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-tables", "./datenmeister-client", "./datenmeister-query", "./datenmeister-dialogs", "./datenmeister-toolbar"], function (require, exports, DMI, DMTables, DMClient, DMQuery, DMDialog, DMToolbar) {
     "use strict";
     exports.__esModule = true;
     // Defines a base implementation of the IView interface
@@ -296,7 +296,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-navig
             var isReadonly = false;
             this.toolbar = this.addToolbar();
             if (settings === undefined) {
-                settings = new DMN.ItemViewSettings();
+                settings = new DMI.Navigation.ItemViewSettings();
             }
             isReadonly = settings.isReadonly;
             configuration.isReadOnly = isReadonly;

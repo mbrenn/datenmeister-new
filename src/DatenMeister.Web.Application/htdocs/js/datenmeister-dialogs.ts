@@ -1,11 +1,9 @@
-﻿
-import DMN = require("./datenmeister-navigation");
-import DMClient = require("./datenmeister-client");
+﻿import DMClient = require("./datenmeister-client");
 import DMI = require("./datenmeister-interfaces");
 import DMView = require("./datenmeister-view");
 
-export function showDialogNewWorkspace(navigation: DMN.INavigation): void {
-    var configuration = new DMN.DialogConfiguration();
+export function showDialogNewWorkspace(navigation: DMI.Navigation.INavigation): void {
+    var configuration = new DMI.Navigation.DialogConfiguration();
 
     configuration.onOkForm = data => {
         DMClient.WorkspaceApi.createWorkspace(
@@ -24,7 +22,7 @@ export function showDialogNewWorkspace(navigation: DMN.INavigation): void {
     navigation.navigateToDialog(configuration);
 }
 
-export function showNavigationForNewExtents(navigation: DMN.INavigation, workspace: string) {
+export function showNavigationForNewExtents(navigation: DMI.Navigation.INavigation, workspace: string) {
     var view = new DMView.EmptyView(navigation);
 
     view.addLink("New CSV Extent",
@@ -40,8 +38,8 @@ export function showNavigationForNewExtents(navigation: DMN.INavigation, workspa
     navigation.navigateToView(view);
 }
 
-export function showDialogNewCsvExtent(navigation: DMN.INavigation, workspace: string) {
-    var configuration = new DMN.DialogConfiguration();
+export function showDialogNewCsvExtent(navigation: DMI.Navigation.INavigation, workspace: string) {
+    var configuration = new DMI.Navigation.DialogConfiguration();
 
     configuration.onOkForm = data => {
         DMClient.ExtentApi.createExtent(
@@ -64,8 +62,8 @@ export function showDialogNewCsvExtent(navigation: DMN.INavigation, workspace: s
     navigation.navigateToDialog(configuration);
 }
 
-export function showDialogAddCsvExtent(navigation: DMN.INavigation, workspace: string) {
-    var configuration = new DMN.DialogConfiguration();
+export function showDialogAddCsvExtent(navigation: DMI.Navigation.INavigation, workspace: string) {
+    var configuration = new DMI.Navigation.DialogConfiguration();
 
     configuration.onOkForm = data => {
         DMClient.ExtentApi.addExtent(
@@ -86,8 +84,8 @@ export function showDialogAddCsvExtent(navigation: DMN.INavigation, workspace: s
     navigation.navigateToDialog(configuration);
 }
 
-export function showDialogNewXmiExtent(navigation: DMN.INavigation, workspace: string) {
-    var configuration = new DMN.DialogConfiguration();
+export function showDialogNewXmiExtent(navigation: DMI.Navigation.INavigation, workspace: string) {
+    var configuration = new DMI.Navigation.DialogConfiguration();
     configuration.onOkForm = data => {
         DMClient.ExtentApi.createExtent(
             {

@@ -151,6 +151,33 @@ define(["require", "exports"], function (require, exports) {
         ColumnTypes.subElements = "subelements";
         Table.ColumnTypes = ColumnTypes;
     })(Table = exports.Table || (exports.Table = {}));
+    var Navigation;
+    (function (Navigation) {
+        var FormForItemConfiguration = (function () {
+            function FormForItemConfiguration() {
+                this.columns = new Array();
+            }
+            FormForItemConfiguration.prototype.addColumn = function (column) {
+                this.columns[this.columns.length] = column;
+            };
+            return FormForItemConfiguration;
+        }());
+        Navigation.FormForItemConfiguration = FormForItemConfiguration;
+        var DialogConfiguration = (function (_super) {
+            __extends(DialogConfiguration, _super);
+            function DialogConfiguration() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            return DialogConfiguration;
+        }(FormForItemConfiguration));
+        Navigation.DialogConfiguration = DialogConfiguration;
+        var ItemViewSettings = (function () {
+            function ItemViewSettings() {
+            }
+            return ItemViewSettings;
+        }());
+        Navigation.ItemViewSettings = ItemViewSettings;
+    })(Navigation = exports.Navigation || (exports.Navigation = {}));
     var Api;
     (function (Api) {
         var ItemTableQuery = (function () {

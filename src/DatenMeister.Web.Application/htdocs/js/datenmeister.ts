@@ -7,7 +7,6 @@ import * as DMRibbon from "./datenmeister-ribbon";
 import * as DMClient from "./datenmeister-client";
 import * as DMLayout from "./datenmeister-layout";
 import * as DMLog from "./datenmeister-logging";
-import * as DMN from "./datenmeister-navigation";
 
 export function start() {
 
@@ -95,7 +94,7 @@ export function parseAndNavigateToWindowLocation(layout: DMLayout.Layout) {
     } else if (itemUrl === "") {
         layout.showItems(ws, extentUrl, view);
     } else {
-        var settings: DMN.IItemViewSettings = {};
+        var settings: DMI.Navigation.IItemViewSettings = {};
         if (mode === "readonly") {
             settings.isReadonly = true;
         }

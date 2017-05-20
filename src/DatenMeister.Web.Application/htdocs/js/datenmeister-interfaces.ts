@@ -1,6 +1,5 @@
 ﻿/* Stores all the models that can be returned via one of the */
 import * as DMRibbon from  "./datenmeister-ribbon";
-import * as DMN from  "./datenmeister-navigation";
 
 export module ClientResponse {
 
@@ -268,7 +267,68 @@ export namespace Table {
     }
 }
 
+export namespace Views {
+    // This interface should be implemented by all views that can be added via 'setView' to a layout
+    export interface IView {
+        viewport: IViewPort;
+        getContent(): JQuery;
+        getLayoutInformation(): Api.ILayoutChangedEvent;
+    }
+
+    export interface IViewPort {
+        setView(view: IView): void;
+    }
+}
+
+export namespace Navigation {
+    
+    export class FormForItemConfiguration {
+        columns: Array<ClientResponse.IFieldData>;
+
+        onOkForm: (data: any) => void;
+        onCancelForm: () => void;
+
+        constructor() {
+            this.columns = new Array<ClientResponse.IFieldData>();
+        }
+
+        addColumn(column: ClientResponse.IFieldData): void {
+            this.columns[this.columns.length] = column;
+        }
+    }
+
+    export class DialogConfiguration extends FormForItemConfiguration {
+        ws: string;
+        ext: string;
+    }
+
+    export interface IItemViewSettings {
+        isReadonly?: boolean;
+    }
+
+    export class ItemViewSettings implements IItemViewSettings {
+        isReadonly: boolean;
+    }
+
+    export interface INavigation {
+        navigateToWorkspaces(): void;
+        navigateToExtents(workspaceId: string): void;
+        navigateToItems(ws: string, extentUrl: string, viewname?: string): void;
+        navigateToItem(ws: string, extentUrl: string, itemUrl: string, viewname?: string, settings?: IItemViewSettings);
+        navigateToDialog(configuration: DialogConfiguration): void;
+        navigateToView(navigationView: Views.IView): void;
+
+        /**
+         * Sets the status within the current navigation view that can be navigated
+         * @param statusDom Statusinformation that can be set
+         */
+        setStatus(statusDom: JQuery): void;
+    
+    }
+}
+
 export namespace Api {
+
     export interface ILayout {
         renavigate(): void;
         throwViewPortChanged(data: ILayoutChangedEvent): void;
@@ -308,7 +368,7 @@ export namespace Api {
     }
 
     export interface ILayoutChangedEvent {
-        navigation?: DMN.INavigation;   // Will be set at the thrower
+        navigation?: Navigation.INavigation;   // Will be set at the thrower
         layout?: ILayout;   // Will be set at the thrower
         type: PageType;
         workspace?: string;

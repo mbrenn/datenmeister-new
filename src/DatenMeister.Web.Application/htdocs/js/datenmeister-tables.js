@@ -1,4 +1,4 @@
-define(["require", "exports", "./datenmeister-helper", "./datenmeister-interfaces", "./datenmeister-client"], function (require, exports, DMH, DMI, DMClient) {
+define(["require", "exports", "./datenmeister-helper", "./datenmeister-clientinterface", "./datenmeister-viewmodels", "./datenmeister-client"], function (require, exports, DMH, DMCI, DMVM, DMClient) {
     "use strict";
     exports.__esModule = true;
     var ItemListTableConfiguration = (function () {
@@ -23,7 +23,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
             this.provider = provider;
             this.configuration = configuration;
             this.totalPages = 0;
-            this.currentQuery = new DMI.Api.ItemTableQuery();
+            this.currentQuery = new DMCI.Out.ItemTableQuery();
             this.currentQuery.amount = configuration.itemsPerPage;
             this.onDataReceived = new DMH.SimpleEventClass();
         }
@@ -311,11 +311,11 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
      * @param configuration Configuration of the complete table
      */
     function createDomForContent(item, column, configuration) {
-        if (column.fieldType === DMI.Table.ColumnTypes.dropdown) {
+        if (column.fieldType === DMVM.ColumnTypes.dropdown) {
             var dropdownField = new DropDownField();
             return dropdownField.createDom(item, column, configuration);
         }
-        if (column.fieldType === DMI.Table.ColumnTypes.subElements) {
+        if (column.fieldType === DMVM.ColumnTypes.subElements) {
             var field = new SubElementField();
             return field.createDom(item, column, configuration);
         }

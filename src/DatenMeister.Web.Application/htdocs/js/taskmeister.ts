@@ -1,5 +1,6 @@
 ﻿import * as DMI from "./datenmeister-interfaces";
 import * as DMClient from "./datenmeister-client";
+import * as DMCI from "./datenmeister-clientinterface";
 
 
 export function load(plugin: DMI.Api.PluginParameter): DMI.Api.IPluginResult {
@@ -12,7 +13,7 @@ export function load(plugin: DMI.Api.PluginParameter): DMI.Api.IPluginResult {
                     "...",
                     () => {
                         DMClient.ExtentApi.createItem(ev.workspace, ev.extent, "datenmeister:///types#TaskMeisterLib.Model.IActivity")
-                            .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
+                            .done((innerData: DMCI.In.ICreateItemResult) => {
                                 ev.navigation.navigateToItem(ev.workspace, ev.extent, innerData.newuri);
                             });
                     });

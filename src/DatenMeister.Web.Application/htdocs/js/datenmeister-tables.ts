@@ -1,5 +1,7 @@
 ﻿import * as DMH from "./datenmeister-helper"
 import * as DMI from "./datenmeister-interfaces"
+import * as DMCI from "./datenmeister-clientinterface"
+import * as DMVM from "./datenmeister-viewmodels"
 import * as DMClient from "./datenmeister-client"
 import * as DMToolbar from "./datenmeister-toolbar"
 
@@ -40,12 +42,12 @@ export class ItemListTable {
     domFilteredNumber: JQuery;
     totalPages: number;
     domNewItem: JQuery;
-    createableTypes: Array<DMI.ClientResponse.IItemModel>;
+    createableTypes: Array<DMCI.In.IItemModel>;
 
     provider: DMI.Api.IItemsProvider;
-    currentQuery: DMI.Api.IItemTableQuery;
+    currentQuery: DMCI.Out.IItemTableQuery;
 
-    onDataReceived: DMH.SimpleEventClass<(data: DMI.ClientResponse.IItemsContent) => void>;
+    onDataReceived: DMH.SimpleEventClass<(data: DMCI.In.IItemsContent) => void>;
 
     constructor(
         dom: JQuery,
@@ -55,25 +57,25 @@ export class ItemListTable {
         this.provider = provider;
         this.configuration = configuration;
         this.totalPages = 0;
-        this.currentQuery = new DMI.Api.ItemTableQuery();
+        this.currentQuery = new DMCI.Out.ItemTableQuery();
         this.currentQuery.amount = configuration.itemsPerPage;
-        this.onDataReceived = new DMH.SimpleEventClass<(data: DMI.ClientResponse.IItemsContent) => void>();
+        this.onDataReceived = new DMH.SimpleEventClass<(data: DMCI.In.IItemsContent) => void>();
     }
 
     // Replaces the content at the dom with the created table
-    loadAndShow(): JQueryDeferred<DMI.ClientResponse.IItemsContent> {
+    loadAndShow(): JQueryDeferred<DMCI.In.IItemsContent> {
         return this.provider.performQuery(this.currentQuery).done((data) => {
             this.createDomForTable(data);
         });
     }
 
-    reload(): JQueryDeferred<DMI.ClientResponse.IItemsContent> {
+    reload(): JQueryDeferred<DMCI.In.IItemsContent> {
         return this.provider.performQuery(this.currentQuery).done((data) => {
             this.updateDomForItems(data);
         });
     }
 
-    createDomForTable(data: DMI.ClientResponse.IItemsContent)
+    createDomForTable(data: DMCI.In.IItemsContent)
     {
         var tthis = this;
         this.domContainer.empty();
@@ -121,7 +123,7 @@ export class ItemListTable {
         this.domContainer.append(this.domTable);
     }
 
-    updateDomForItems(data: DMI.ClientResponse.IItemsContent): void {
+    updateDomForItems(data: DMCI.In.IItemsContent): void {
         this.onDataReceived.trigger(data);
 
         $("tr", this.domTable).has("td")
@@ -129,7 +131,7 @@ export class ItemListTable {
         this.createRowsForItems(data);
     }
 
-    createRowsForItems(data: DMI.ClientResponse.IItemsContent): void {
+    createRowsForItems(data: DMCI.In.IItemsContent): void {
         this.domTotalNumber.text(data.totalItemCount);
         this.domFilteredNumber.text(data.filteredItemCount);
 
@@ -209,7 +211,7 @@ export class ItemListTable {
 
 export class ItemContentConfiguration {
     autoProperties: boolean;
-    columns: Array<DMI.ClientResponse.IFieldData>;
+    columns: Array<DMCI.In.IFieldData>;
 
     // Gets or sets a flag, whether we should start with full edit mode
     // if we start with edit mode, all property values will be shown as an edit field
@@ -238,11 +240,11 @@ export class ItemContentConfiguration {
         this.isReadOnly = false;
         this.autoProperties = false;
         this.supportNewProperties = true;
-        this.columns = new Array<DMI.ClientResponse.IFieldData>();
+        this.columns = new Array<DMCI.In.IFieldData>();
         this.navigation = navigation;
     }
 
-    addColumn(column: DMI.ClientResponse.IFieldData) {
+    addColumn(column: DMCI.In.IFieldData) {
         this.columns[this.columns.length] = column;
     }
 }
@@ -251,13 +253,13 @@ export class ItemContentConfiguration {
  * Defines the table for one item and shows all properties
  */
 export class ItemContentTable {
-    item: DMI.ClientResponse.IItemContentModel;
+    item: DMCI.In.IItemContentModel;
     configuration: ItemContentConfiguration;
     domContainer: JQuery;
     domForEditArray: Array<JQuery>;
 
     constructor(
-        item: DMI.ClientResponse.IItemContentModel,
+        item: DMCI.In.IItemContentModel,
         configuration: ItemContentConfiguration) {
         this.item = item;
         this.configuration = configuration;
@@ -276,7 +278,7 @@ export class ItemContentTable {
         domTable.append(domRow);
 
         var propertyValue = this.item.v;
-        var column: DMI.ClientResponse.IFieldData;
+        var column: DMCI.In.IFieldData;
 
         if (this.configuration.autoProperties) {
             this.configuration.columns.length = 0;
@@ -436,16 +438,16 @@ export class ItemContentTable {
  * @param configuration Configuration of the complete table
  */
 function createDomForContent(
-    item: DMI.ClientResponse.IItemContentModel,
-    column: DMI.ClientResponse.IFieldData,
+    item: DMCI.In.IItemContentModel,
+    column: DMCI.In.IFieldData,
     configuration: ItemListTableConfiguration | ItemContentConfiguration): JQuery {
 
-    if (column.fieldType === DMI.Table.ColumnTypes.dropdown) {
+    if (column.fieldType === DMVM.ColumnTypes.dropdown) {
         var dropdownField = new DropDownField();
         return dropdownField.createDom(item, column, configuration);
     }
 
-    if (column.fieldType === DMI.Table.ColumnTypes.subElements) {
+    if (column.fieldType === DMVM.ColumnTypes.subElements) {
         var field = new SubElementField();
         return field.createDom(item, column, configuration);
     }
@@ -455,8 +457,8 @@ function createDomForContent(
 
 export class DropDownField {
 
-    createDom(item: DMI.ClientResponse.IItemContentModel,
-        column: DMI.ClientResponse.IFieldData,
+    createDom(item: DMCI.In.IItemContentModel,
+        column: DMCI.In.IFieldData,
         configuration: ItemListTableConfiguration | ItemContentConfiguration): JQuery {
         var contentValue = item.v[column.name];
         if (contentValue === undefined) {
@@ -464,7 +466,7 @@ export class DropDownField {
         }
 
         let domDD = $("<select></select>");
-        let asDD = column as DMI.ClientResponse.IDropDownFieldData;
+        let asDD = column as DMCI.In.IDropDownFieldData;
         for (var name in asDD.values) {
             var displayText = asDD.values[name];
             let domOption = $("<option></option>").attr("value", name).text(displayText);
@@ -478,11 +480,11 @@ export class DropDownField {
 
 export class SubElementField {
 
-    createDom(item: DMI.ClientResponse.IItemContentModel,
-        column: DMI.ClientResponse.IFieldData,
+    createDom(item: DMCI.In.IItemContentModel,
+        column: DMCI.In.IFieldData,
         configuration: ItemListTableConfiguration | ItemContentConfiguration): JQuery {
         let domSE = $("<ul></ul>");
-        let asSE = column as DMI.ClientResponse.ISubElementsFieldData;
+        let asSE = column as DMCI.In.ISubElementsFieldData;
 
         // The content value
         var contentValue = item.v[column.name];
@@ -535,8 +537,8 @@ export class SubElementField {
  * @param configuration Configuration of the complete table
  */
 function createDefaultDomForContent(
-    item: DMI.ClientResponse.IItemContentModel,
-    column: DMI.ClientResponse.IFieldData,
+    item: DMCI.In.IItemContentModel,
+    column: DMCI.In.IFieldData,
     configuration: ItemListTableConfiguration | ItemContentConfiguration) : JQuery {
 
     var contentValue = item.v[column.name];
@@ -593,7 +595,7 @@ function createDefaultDomForContent(
 
         } else {
             // Single value, which is not a reference
-            let asTextBox = column as DMI.ClientResponse.ITextFieldData;
+            let asTextBox = column as DMCI.In.ITextFieldData;
             var isReadonly = configuration.isReadOnly || asTextBox.isReadOnly;
 
             // We have a textbox, so check if we have multiple line

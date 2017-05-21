@@ -1,4 +1,4 @@
-define(["require", "exports", "./datenmeister-interfaces"], function (require, exports, DMI) {
+define(["require", "exports", "./datenmeister-clientinterface"], function (require, exports, DMC) {
     "use strict";
     exports.__esModule = true;
     var ClientApi;
@@ -77,7 +77,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
     (function (ExtentApi) {
         function createItem(ws, extentUrl, metaclass) {
             var callback = $.Deferred();
-            var postModel = new DMI.PostModels.ItemCreateModel();
+            var postModel = new DMC.Out.ItemCreateModel();
             postModel.ws = ws;
             postModel.ext = extentUrl;
             postModel.metaclass = metaclass;
@@ -94,7 +94,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         ExtentApi.createItem = createItem;
         function createItemAsSubElement(ws, extentUrl, parentItem, parentProperty, metaclass) {
             var callback = $.Deferred();
-            var postModel = new DMI.PostModels.ItemCreateModel();
+            var postModel = new DMC.Out.ItemCreateModel();
             postModel.ws = ws;
             postModel.ext = extentUrl;
             postModel.metaclass = metaclass;
@@ -114,7 +114,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         /* Deletes an item from the database and returns the value indicatng whether the deleteion was successful */
         function deleteItem(ws, extent, item) {
             var callback = $.Deferred();
-            var postModel = new DMI.PostModels.ItemDeleteModel();
+            var postModel = new DMC.Out.ItemDeleteModel();
             postModel.ws = ws;
             postModel.ext = extent;
             postModel.item = item;
@@ -165,7 +165,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         }
         function deleteExtent(ws, extent) {
             var callback = $.Deferred();
-            var postModel = new DMI.PostModels.ExtentReferenceModel();
+            var postModel = new DMC.Out.ExtentReferenceModel();
             postModel.ws = ws;
             postModel.ext = extent;
             $.ajax({
@@ -264,7 +264,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         ItemApi.getItem = getItem;
         function deleteProperty(ws, extent, item, property) {
             var callback = $.Deferred();
-            var postModel = new DMI.PostModels.ItemUnsetPropertyModel();
+            var postModel = new DMC.Out.ItemUnsetPropertyModel();
             postModel.ws = ws;
             postModel.ext = extent;
             postModel.item = item;
@@ -282,7 +282,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         ItemApi.deleteProperty = deleteProperty;
         function setProperty(ws, extentUrl, itemUrl, property, newValue) {
             var callback = $.Deferred();
-            var postModel = new DMI.PostModels.ItemSetPropertyModel();
+            var postModel = new DMC.Out.ItemSetPropertyModel();
             postModel.ws = ws;
             postModel.ext = extentUrl;
             postModel.item = itemUrl;
@@ -301,7 +301,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         ItemApi.setProperty = setProperty;
         function setProperties(ws, extentUrl, itemUrl, item) {
             var callback = $.Deferred();
-            var postModel = new DMI.PostModels.ItemSetPropertiesModel();
+            var postModel = new DMC.Out.ItemSetPropertiesModel();
             postModel.ws = ws;
             postModel.ext = extentUrl;
             postModel.item = itemUrl;

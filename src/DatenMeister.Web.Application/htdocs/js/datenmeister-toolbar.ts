@@ -1,7 +1,7 @@
 ﻿
 
-import DMClient = require("./datenmeister-client");
-import DMI = require("./datenmeister-interfaces");
+import * as DMClient from "./datenmeister-client";
+import * as DMCI from "./datenmeister-clientinterface";
 
 export class Toolbar {
     domToolbar: JQuery;
@@ -80,7 +80,7 @@ export class ToolbarViewSelection extends ToolbarItemBase {
             });
     }
 
-    updateLayoutForViews(views: Array<DMI.ClientResponse.IItemModel>) {
+    updateLayoutForViews(views: Array<DMCI.In.IItemModel>) {
         var tthis = this;
         if (this.domContent !== null && this.domContent !== undefined) {
             var data = views;
@@ -150,7 +150,7 @@ export class ToolbarSearchbox extends ToolbarItemBase {
 
 export class ToolbarCreateableTypes extends ToolbarItemBase {
     onNewItemClicked: (type?: string) => void;
-    createableTypes: Array<DMI.ClientResponse.IItemModel>;
+    createableTypes: Array<DMCI.In.IItemModel>;
 
     ws: string;
     extentUrl: string;
@@ -198,7 +198,7 @@ export class ToolbarCreateableTypes extends ToolbarItemBase {
 
 export class ToolbarMetaClasses extends ToolbarItemBase {
     onItemClicked: (type?: string) => void;
-    metaClasses: Array<DMI.ClientResponse.IItemModel>;
+    metaClasses: Array<DMCI.In.IItemModel>;
 
     ws: string;
     extentUrl: string;
@@ -210,7 +210,7 @@ export class ToolbarMetaClasses extends ToolbarItemBase {
         super.create(2);
     }
 
-    updateLayout(metaClasses: Array<DMI.ClientResponse.IItemModel>) {
+    updateLayout(metaClasses: Array<DMCI.In.IItemModel>) {
         var tthis = this;
         this.metaClasses = metaClasses;
         if (this.metaClasses !== null && this.metaClasses !== undefined) {

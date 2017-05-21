@@ -8,7 +8,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-tables", "./datenmeister-client", "./datenmeister-query", "./datenmeister-dialogs", "./datenmeister-toolbar"], function (require, exports, DMI, DMTables, DMClient, DMQuery, DMDialog, DMToolbar) {
+define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clientinterface", "./datenmeister-tables", "./datenmeister-client", "./datenmeister-query", "./datenmeister-dialogs", "./datenmeister-toolbar"], function (require, exports, DMI, DMCI, DMTables, DMClient, DMQuery, DMDialog, DMToolbar) {
     "use strict";
     exports.__esModule = true;
     // Defines a base implementation of the IView interface
@@ -404,7 +404,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-table
             return _super.call(this, navigation) || this;
         }
         DialogView.prototype.createDialog = function (configuration) {
-            var value = new DMI.ClientResponse.ItemContentModel();
+            var value = new DMCI.In.ItemContentModel();
             var tableConfiguration = new DMTables.ItemContentConfiguration(this.navigation);
             tableConfiguration.autoProperties = false;
             tableConfiguration.columns = configuration.columns;

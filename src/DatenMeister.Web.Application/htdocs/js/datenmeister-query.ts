@@ -1,6 +1,7 @@
 ﻿
-import * as DMI from "./datenmeister-interfaces"
 import * as DMClient from "./datenmeister-client"
+import * as DMCI from "./datenmeister-clientinterface"
+import * as DMI from "./datenmeister-interfaces"
 
 export class ItemsFromExtentProvider implements DMI.Api.IItemsProvider {
 
@@ -13,7 +14,7 @@ export class ItemsFromExtentProvider implements DMI.Api.IItemsProvider {
     }
 
 
-    performQuery(query: DMI.Api.IItemTableQuery): JQueryDeferred<DMI.ClientResponse.IItemsContent> {
+    performQuery(query: DMCI.Out.IItemTableQuery): JQueryDeferred<DMCI.In.IItemsContent> {
         return DMClient.ExtentApi.getItems(this.ws, this.ext, query);
     }
 }

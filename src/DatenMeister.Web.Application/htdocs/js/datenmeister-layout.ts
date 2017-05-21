@@ -1,5 +1,6 @@
 ﻿
 import * as DMI from "./datenmeister-interfaces";
+import * as DMCI from "./datenmeister-clientinterface";
 import * as DMViewPort from "./datenmeister-viewport";
 import * as DMView from "./datenmeister-view";
 import * as DMDialog from "./datenmeister-dialogs";
@@ -129,7 +130,7 @@ export class Layout implements DMI.Api.ILayout, DMI.Navigation.INavigation {
             tthis.navigateToItem(ws, extentUrl, itemUrl);
         };
 
-        var query = new DMI.Api.ItemTableQuery();
+        var query = new DMCI.Out.ItemTableQuery();
         query.view = viewname;
         query.amount = 20;
 

@@ -1,4 +1,4 @@
-define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-viewport", "./datenmeister-view", "./datenmeister-dialogs", "./datenmeister-client", "./datenmeister-ribbon"], function (require, exports, DMI, DMViewPort, DMView, DMDialog, DMClient, DMRibbon) {
+define(["require", "exports", "./datenmeister-clientinterface", "./datenmeister-viewport", "./datenmeister-view", "./datenmeister-dialogs", "./datenmeister-client", "./datenmeister-ribbon"], function (require, exports, DMCI, DMViewPort, DMView, DMDialog, DMClient, DMRibbon) {
     "use strict";
     exports.__esModule = true;
     var Layout = (function () {
@@ -93,7 +93,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-viewp
             extentView.onItemCreated = function (ws, extentUrl, itemUrl) {
                 tthis.navigateToItem(ws, extentUrl, itemUrl);
             };
-            var query = new DMI.Api.ItemTableQuery();
+            var query = new DMCI.Out.ItemTableQuery();
             query.view = viewname;
             query.amount = 20;
             extentView.loadAndCreateHtmlForExtent(workspaceId, extentUrl, query);

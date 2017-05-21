@@ -1,5 +1,6 @@
 ﻿///<reference path="../../node_modules/@types/underscore/index.d.ts"/>
 import * as DMI from "./datenmeister-interfaces";
+import * as DMCI from "./datenmeister-clientinterface";
 import * as DMTables from "./datenmeister-tables";
 import * as DMClient from "./datenmeister-client";
 import * as DMQuery from "./datenmeister-query";
@@ -105,7 +106,7 @@ export class WorkspaceView extends ViewBase implements DMI.Views.IView {
         return result;
     }
 
-    createHtmlForWorkbenchs(data: Array<DMI.ClientResponse.IWorkspace>) {
+    createHtmlForWorkbenchs(data: Array<DMCI.In.IWorkspace>) {
         this.content.empty();
         var compiledTable = $($("#template_workspace_table").html());
         var compiled = _.template($("#template_workspace").html());
@@ -150,7 +151,7 @@ export class ExtentView extends ListView implements DMI.Views.IView {
         {
             url: `/api/datenmeister/extent/all?ws=${encodeURIComponent(ws)}`,
             cache: false,
-            success: (data: Array<DMI.ClientResponse.IExtent>) => {
+            success: (data: Array<DMCI.In.IExtent>) => {
                 this.createHtmlForWorkspace(ws, data);
                 callback.resolve(true);
             },
@@ -167,7 +168,7 @@ export class ExtentView extends ListView implements DMI.Views.IView {
         return callback;
     }
 
-    createHtmlForWorkspace(ws: string, data: Array<DMI.ClientResponse.IExtent>) {
+    createHtmlForWorkspace(ws: string, data: Array<DMCI.In.IExtent>) {
         var tthis = this;
         this.content.empty();
 
@@ -178,12 +179,12 @@ export class ExtentView extends ListView implements DMI.Views.IView {
             var compiled = _.template($("#template_extent").html());
             for (var n in data) {
                 if (data.hasOwnProperty(n)) {
-                    var entry: DMI.ClientResponse.IExtent = data[n];
+                    var entry: DMCI.In.IExtent = data[n];
                     var line: string = compiled(entry);
                     var dom: JQuery = $(line);
                     $(".data", dom)
                         .click(
-                            ((localEntry: DMI.ClientResponse.IExtent) => (
+                            ((localEntry: DMCI.In.IExtent) => (
                                 () => {
                                     if (tthis.onItemView !== undefined) {
                                         tthis.onItemView(ws, localEntry.uri, null);
@@ -233,7 +234,7 @@ export class ItemsOfExtentView extends ListView implements DMI.Views.IView {
     loadAndCreateHtmlForExtent(
         ws: string,
         extentUrl: string,
-        query?: DMI.Api.IItemTableQuery) : void{
+        query?: DMCI.Out.IItemTableQuery) : void{
 
         var tthis = this;
 
@@ -380,7 +381,7 @@ export class ItemView extends ViewBase implements DMI.Views.IView
             });
     }
 
-    createHtmlForItem(ws: string, extentUrl: string, itemUrl: string, data: DMI.ClientResponse.IItemContentModel, settings?: DMI.Navigation.IItemViewSettings) {
+    createHtmlForItem(ws: string, extentUrl: string, itemUrl: string, data: DMCI.In.IItemContentModel, settings?: DMI.Navigation.IItemViewSettings) {
         var tthis = this;
         this.content.empty();
         var configuration = new DMTables.ItemContentConfiguration(this.navigation);
@@ -519,7 +520,7 @@ export class DialogView extends ViewBase implements DMI.Views.IView {
     }
 
     createDialog(configuration: DMI.Navigation.DialogConfiguration) {
-        var value = new DMI.ClientResponse.ItemContentModel();
+        var value = new DMCI.In.ItemContentModel();
         var tableConfiguration = new DMTables.ItemContentConfiguration(this.navigation);
         tableConfiguration.autoProperties = false;
         tableConfiguration.columns = configuration.columns;
@@ -560,7 +561,7 @@ export class CreatetableTypesView extends ViewBase implements DMI.Views.IView {
         this.addButtonLink("Unspecified",
             () => {
                 DMClient.ExtentApi.createItem(ws, extentUrl, null)
-                    .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
+                    .done((innerData: DMCI.In.ICreateItemResult) => {
                         navigation.navigateToItem(ws, extentUrl, innerData.newuri);
                     });
             });
@@ -570,7 +571,7 @@ export class CreatetableTypesView extends ViewBase implements DMI.Views.IView {
         this.addButtonLink("Unspecified",
             () => {
                 DMClient.ExtentApi.createItem(ws, extentUrl, null)
-                    .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
+                    .done((innerData: DMCI.In.ICreateItemResult) => {
                         navigation.navigateToItem(ws, extentUrl, innerData.newuri);
                     });
             });
@@ -590,7 +591,7 @@ export class CreatetableTypesView extends ViewBase implements DMI.Views.IView {
                             type.name,
                             () => {
                                 DMClient.ExtentApi.createItem(ws, extentUrl, type.uri)
-                                    .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
+                                    .done((innerData: DMCI.In.ICreateItemResult) => {
                                         navigation.navigateToItem(ws, extentUrl, innerData.newuri);
                                     });
                             });

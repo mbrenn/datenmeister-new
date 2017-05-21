@@ -2,7 +2,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
     "use strict";
     exports.__esModule = true;
     function start() {
-        var layout = new DMLayout.Layout($("body"));
+        var layout = new DMLayout.ApplicationWindow($("body"));
         // Information, when an ajax request failed
         $(document).ajaxError(function (ev, xhr, settings, error) {
             if (xhr.responseJSON !== undefined &&
@@ -37,7 +37,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         // Loads the clientplugins
         DMClient.ClientApi.getPlugins()
             .done(function (data) {
-            var parameter = new DMI.Api.PluginParameter();
+            var parameter = new DMI.Plugin.PluginParameter();
             parameter.version = "1.0";
             parameter.layout = layout;
             for (var n in data.scriptPaths) {
@@ -48,7 +48,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
                     if (result !== undefined && result !== null) {
                         layout.pluginResults[layout.pluginResults.length] = result;
                         if (result.onViewPortChanged !== undefined) {
-                            layout.renavigate();
+                            layout.mainViewPort.refresh();
                         }
                     }
                 });
@@ -62,28 +62,25 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         var itemUrl = DMHelper.getParameterByNameFromHash("item");
         var mode = DMHelper.getParameterByNameFromHash("mode");
         var view = DMHelper.getParameterByNameFromHash("view");
-        layout.onViewPortChanged = function (data) {
-            layout.buildRibbons(data);
-        };
         if (ws === "") {
             // per default, show the data extent
-            layout.showExtents("Data");
+            layout.mainViewPort.showExtents("Data");
         }
         else if (ws === "{all}") {
-            layout.showWorkspaces();
+            layout.mainViewPort.showWorkspaces();
         }
         else if (extentUrl === "") {
-            layout.showExtents(ws);
+            layout.mainViewPort.showExtents(ws);
         }
         else if (itemUrl === "") {
-            layout.showItems(ws, extentUrl, view);
+            layout.mainViewPort.showItems(ws, extentUrl, view);
         }
         else {
             var settings = {};
             if (mode === "readonly") {
                 settings.isReadonly = true;
             }
-            layout.showItem(ws, extentUrl, itemUrl, view, settings);
+            layout.mainViewPort.showItem(ws, extentUrl, itemUrl, view, settings);
         }
         $(".body-content").show();
     }

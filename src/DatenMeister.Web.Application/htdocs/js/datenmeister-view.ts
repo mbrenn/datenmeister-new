@@ -16,7 +16,7 @@ export class ViewBase implements DMI.Views.IView{
     public viewport: DMVP.ViewPort;
     protected navigation: DMI.Navigation.INavigation;
     protected content: JQuery;
-    protected layoutInformation: DMI.Api.ILayoutChangedEvent;
+    protected layoutInformation: DMI.Api.IViewState;
 
     protected toolbar: DMToolbar.Toolbar;
 
@@ -29,7 +29,7 @@ export class ViewBase implements DMI.Views.IView{
         return this.content;
     }
 
-    getLayoutInformation(): DMI.Api.ILayoutChangedEvent {
+    getViewState(): DMI.Api.IViewState {
         if (this.layoutInformation == null || this.layoutInformation == undefined) {
             return null;
         }
@@ -37,7 +37,7 @@ export class ViewBase implements DMI.Views.IView{
         return this.layoutInformation;
     }
 
-    setLayoutInformation(layoutInformation: DMI.Api.ILayoutChangedEvent): void {
+    setLayoutInformation(layoutInformation: DMI.Api.IViewState): void {
         this.layoutInformation = layoutInformation;
     }
 

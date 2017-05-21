@@ -3,18 +3,21 @@ import * as DMClient from "./datenmeister-client";
 import * as DMCI from "./datenmeister-clientinterface";
 
 
-export function load(plugin: DMI.Api.PluginParameter): DMI.Api.IPluginResult {
+export function load(plugin: DMI.Plugin.PluginParameter): DMI.Plugin.IPluginResult {
     return {
-        onViewPortChanged: (ev) => {
+        onRibbonUpdate: (ev) => {
             var tab = ev.layout.getRibbon().getOrAddTab("Tasks");
-            if (ev.extent !== undefined && ev.extent !== null) {
+            if (ev.viewState.extent !== undefined && ev.viewState.extent !== null) {
                 tab.addIcon(
                     "Add Task",
                     "...",
                     () => {
-                        DMClient.ExtentApi.createItem(ev.workspace, ev.extent, "datenmeister:///types#TaskMeisterLib.Model.IActivity")
+                        DMClient.ExtentApi.createItem(
+                                ev.viewState.workspace,
+                                ev.viewState.extent,
+                                "datenmeister:///types#TaskMeisterLib.Model.IActivity")
                             .done((innerData: DMCI.In.ICreateItemResult) => {
-                                ev.navigation.navigateToItem(ev.workspace, ev.extent, innerData.newuri);
+                                ev.navigation.navigateToItem(ev.viewState.workspace, ev.viewState.extent, innerData.newuri);
                             });
                     });
 
@@ -22,9 +25,12 @@ export function load(plugin: DMI.Api.PluginParameter): DMI.Api.IPluginResult {
                     "Show Tasks",
                     "...,",
                     () => {
-                        ev.navigation.navigateToItems(ev.workspace, ev.extent, "dm:///management/views#Views.Activity.Detail");
+                        ev.navigation.navigateToItems(ev.viewState.workspace, ev.viewState.extent, "dm:///management/views#Views.Activity.Detail");
                     });
             }
+        },
+        onViewPortChanged: (ev) => {
+            
         }
     };
 }

@@ -1,7 +1,5 @@
 ﻿import * as DMC from "./datenmeister-clientinterface";
 
-
-
 export module ClientApi {
     export function getPlugins(): JQueryPromise<IGetPluginsResponse> {
         var callback = $.Deferred();

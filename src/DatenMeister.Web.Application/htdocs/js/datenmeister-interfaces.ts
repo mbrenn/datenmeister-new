@@ -7,7 +7,7 @@ export namespace Views {
     export interface IView {
         viewport: IViewPort;
         getContent(): JQuery;
-        getLayoutInformation(): Api.ILayoutChangedEvent;
+        getViewState(): Api.IViewState;
     }
 
     export interface IViewPort {
@@ -58,10 +58,11 @@ export namespace Navigation {
          * @param statusDom Statusinformation that can be set
          */
         setStatus(statusDom: JQuery): void;
+
+        refresh();
     
     }
 }
-
 
 export namespace Api {
     /**
@@ -72,7 +73,6 @@ export namespace Api {
     }
 
     export interface ILayout {
-        renavigate(): void;
         throwViewPortChanged(data: ILayoutChangedEvent): void;
         getRibbon(): DMRibbon.Ribbon;
     }
@@ -85,29 +85,58 @@ export namespace Api {
         Dialog
     }
 
-    export interface ILayoutChangedEvent {
-        navigation?: Navigation.INavigation;   // Will be set at the thrower
-        layout?: ILayout;   // Will be set at the thrower
+    export interface IViewState {
         type: PageType;
         workspace?: string;
         extent?: string;
         item?: string;
     }
 
+    export class ViewState {
+        type: PageType;
+        workspace: string;
+        extent: string;
+        item: string;
+    }
+
+    export interface ILayoutChangedEvent {
+        navigation?: Navigation.INavigation; // Will be set by the thrower
+        viewState: IViewState;
+    }
+
+    /*
+     * Stores the event being used when an update of ribbon is required
+     */
+    export interface IRibbonUpdateEvent {
+        navigation?: Navigation.INavigation; // Will be set by the thrower
+        layout?: ILayout;
+        viewState: IViewState;
+    }
+}
+
+export namespace Plugin
+{
+
     export class PluginParameter {
         version: string;
-        layout: ILayout;
+        layout: Api.ILayout;
     }
 
     /**
      * This interface has to be returned by all plugins
      */
     export interface IPluginResult {
-    /**
-     * Returns a function that will be called, if the viewport changes
-     * @param ev Parameter containing the information about the changed view set
-     * @returns {} The function
-     */
-        onViewPortChanged?: (ev: ILayoutChangedEvent) => void;
+        /**
+         * Called after a ribbon shall be updated due to a change of the viewport
+         * This method will be called by the ApplicationWindow
+         */
+        onRibbonUpdate?: (ev: Api.IRibbonUpdateEvent) => void;
+
+        /**
+         * Returns a function that will be called, if the viewport changes
+         * @param ev Parameter containing the information about the changed view set
+         * @returns {} The function
+         */
+        onViewPortChanged?: (ev: Api.ILayoutChangedEvent) => void;
     }
 }

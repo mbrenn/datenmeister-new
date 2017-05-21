@@ -48,12 +48,21 @@ define(["require", "exports"], function (require, exports) {
             PageType[PageType["ItemDetail"] = 3] = "ItemDetail";
             PageType[PageType["Dialog"] = 4] = "Dialog";
         })(PageType = Api.PageType || (Api.PageType = {}));
+        var ViewState = (function () {
+            function ViewState() {
+            }
+            return ViewState;
+        }());
+        Api.ViewState = ViewState;
+    })(Api = exports.Api || (exports.Api = {}));
+    var Plugin;
+    (function (Plugin) {
         var PluginParameter = (function () {
             function PluginParameter() {
             }
             return PluginParameter;
         }());
-        Api.PluginParameter = PluginParameter;
-    })(Api = exports.Api || (exports.Api = {}));
+        Plugin.PluginParameter = PluginParameter;
+    })(Plugin = exports.Plugin || (exports.Plugin = {}));
 });
 //# sourceMappingURL=datenmeister-interfaces.js.map

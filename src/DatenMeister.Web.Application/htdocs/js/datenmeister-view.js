@@ -20,7 +20,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
         ViewBase.prototype.getContent = function () {
             return this.content;
         };
-        ViewBase.prototype.getLayoutInformation = function () {
+        ViewBase.prototype.getViewState = function () {
             if (this.layoutInformation == null || this.layoutInformation == undefined) {
                 return null;
             }

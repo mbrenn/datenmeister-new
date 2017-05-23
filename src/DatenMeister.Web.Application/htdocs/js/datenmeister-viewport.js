@@ -5,6 +5,7 @@ define(["require", "exports", "./datenmeister-clientinterface", "./datenmeister-
         function ViewPort(container, layout) {
             this.container = container;
             this.layout = layout;
+            this.isMasterView = true;
         }
         /**
          * Sets the view into the dom
@@ -66,7 +67,6 @@ define(["require", "exports", "./datenmeister-clientinterface", "./datenmeister-
         };
         ViewPort.prototype.showWorkspaces = function () {
             var tthis = this;
-            tthis.createTitle();
             var workbenchLogic = new DMView.WorkspaceView(this);
             workbenchLogic.onWorkspaceSelected = function (id) {
                 // Loads the extent of the workspace, if the user has clicked on one of the workbenches
@@ -118,9 +118,6 @@ define(["require", "exports", "./datenmeister-clientinterface", "./datenmeister-
         ViewPort.prototype.gotoHome = function () {
             this.navigateToExtents("Data");
         };
-        ViewPort.prototype.renavigate = function () {
-            this.throwViewPortChanged(this.viewState);
-        };
         ViewPort.prototype.refresh = function () {
             if (this.onRefresh !== undefined && this.onRefresh !== null) {
                 this.onRefresh();
@@ -140,6 +137,7 @@ define(["require", "exports", "./datenmeister-clientinterface", "./datenmeister-
             if (this.onViewPortChanged !== undefined) {
                 this.onViewPortChanged(ev);
             }
+            this.createTitle();
             this.layout.throwViewPortChanged(ev);
         };
         ViewPort.prototype.createTitle = function (ws, extentUrl, itemUrl) {

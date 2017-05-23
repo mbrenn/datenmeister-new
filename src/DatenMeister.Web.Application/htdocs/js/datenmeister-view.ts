@@ -16,7 +16,7 @@ export class ViewBase implements DMI.Views.IView{
     public viewport: DMVP.ViewPort;
     protected navigation: DMI.Navigation.INavigation;
     protected content: JQuery;
-    protected layoutInformation: DMI.Api.IViewState;
+    protected viewState: DMI.Api.IViewState;
 
     protected toolbar: DMToolbar.Toolbar;
 
@@ -30,15 +30,20 @@ export class ViewBase implements DMI.Views.IView{
     }
 
     getViewState(): DMI.Api.IViewState {
-        if (this.layoutInformation == null || this.layoutInformation == undefined) {
+        if (this.viewState == null || this.viewState == undefined) {
             return null;
         }
 
-        return this.layoutInformation;
+        return this.viewState;
     }
 
-    setLayoutInformation(layoutInformation: DMI.Api.IViewState): void {
-        this.layoutInformation = layoutInformation;
+    setViewState(layoutInformation: DMI.Api.IViewState): void {
+        this.viewState = layoutInformation;
+    }
+
+    addContent(domContent: JQuery): void {
+        this.content.append(domContent);
+
     }
 
     addButtonLink(displayText: string, onClick: () => void): JQuery {
@@ -98,7 +103,7 @@ export class WorkspaceView extends ViewBase implements DMI.Views.IView {
                 result.resolve(true);
             });
 
-        this.setLayoutInformation(
+        this.setViewState(
         {
             type: DMI.Api.PageType.Workspaces
         });
@@ -160,7 +165,7 @@ export class ExtentView extends ListView implements DMI.Views.IView {
             }
         });
 
-        this.setLayoutInformation({
+        this.setViewState({
             type: DMI.Api.PageType.Extents,
             workspace: ws
         });
@@ -287,7 +292,7 @@ export class ItemsOfExtentView extends ListView implements DMI.Views.IView {
             tthis.loadAndCreateHtmlForExtent(ws, extentUrl, query);
         };
 
-        this.setLayoutInformation(
+        this.setViewState(
             {
                 type: DMI.Api.PageType.Items,
                 workspace: ws,
@@ -368,7 +373,7 @@ export class ItemView extends ViewBase implements DMI.Views.IView
     loadAndCreateHtmlForItem(ws: string, extentUrl: string, itemUrl: string, settings?: DMI.Navigation.IItemViewSettings): JQueryDeferred<Object> {
         var tthis = this;
 
-        this.setLayoutInformation({
+        this.setViewState({
             type: DMI.Api.PageType.ItemDetail,
             workspace: ws,
             extent: extentUrl,
@@ -540,7 +545,7 @@ export class DialogView extends ViewBase implements DMI.Views.IView {
         var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
         itemTable.show(this.content);
 
-        this.setLayoutInformation({
+        this.setViewState({
                 type: DMI.Api.PageType.Dialog,
                 workspace: configuration.ws,
                 extent: configuration.ext

@@ -1,6 +1,4 @@
-﻿
-
-import * as DMClient from "./datenmeister-client";
+﻿import * as DMClient from "./datenmeister-client";
 import * as DMCI from "./datenmeister-clientinterface";
 
 export class Toolbar {

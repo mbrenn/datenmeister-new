@@ -1,7 +1,5 @@
 ﻿import * as DMI from "./datenmeister-interfaces";
-import * as DMCI from "./datenmeister-clientinterface";
 import * as DMViewPort from "./datenmeister-viewport";
-import * as DMView from "./datenmeister-view";
 import * as DMDialog from "./datenmeister-dialogs";
 import * as DMClient from "./datenmeister-client";
 import * as DMRibbon from "./datenmeister-ribbon";

@@ -21,13 +21,16 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             return this.content;
         };
         ViewBase.prototype.getViewState = function () {
-            if (this.layoutInformation == null || this.layoutInformation == undefined) {
+            if (this.viewState == null || this.viewState == undefined) {
                 return null;
             }
-            return this.layoutInformation;
+            return this.viewState;
         };
-        ViewBase.prototype.setLayoutInformation = function (layoutInformation) {
-            this.layoutInformation = layoutInformation;
+        ViewBase.prototype.setViewState = function (layoutInformation) {
+            this.viewState = layoutInformation;
+        };
+        ViewBase.prototype.addContent = function (domContent) {
+            this.content.append(domContent);
         };
         ViewBase.prototype.addButtonLink = function (displayText, onClick) {
             var domItem = $("<input type='button' class='btn'></input>");
@@ -74,7 +77,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 tthis.createHtmlForWorkbenchs(data);
                 result.resolve(true);
             });
-            this.setLayoutInformation({
+            this.setViewState({
                 type: DMI.Api.PageType.Workspaces
             });
             return result;
@@ -124,7 +127,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                     callback.reject(false);
                 }
             });
-            this.setLayoutInformation({
+            this.setViewState({
                 type: DMI.Api.PageType.Extents,
                 workspace: ws
             });
@@ -212,7 +215,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 query.view = viewUrl;
                 tthis.loadAndCreateHtmlForExtent(ws, extentUrl, query);
             };
-            this.setLayoutInformation({
+            this.setViewState({
                 type: DMI.Api.PageType.Items,
                 workspace: ws,
                 extent: extentUrl
@@ -276,7 +279,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
         }
         ItemView.prototype.loadAndCreateHtmlForItem = function (ws, extentUrl, itemUrl, settings) {
             var tthis = this;
-            this.setLayoutInformation({
+            this.setViewState({
                 type: DMI.Api.PageType.ItemDetail,
                 workspace: ws,
                 extent: extentUrl,
@@ -422,7 +425,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             };
             var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
             itemTable.show(this.content);
-            this.setLayoutInformation({
+            this.setViewState({
                 type: DMI.Api.PageType.Dialog,
                 workspace: configuration.ws,
                 extent: configuration.ext

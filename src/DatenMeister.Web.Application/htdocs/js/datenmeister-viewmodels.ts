@@ -1,5 +1,4 @@
-﻿
-import * as DMCI from "./datenmeister-clientinterface";
+﻿import * as DMCI from "./datenmeister-clientinterface";
 
 export class DataField implements DMCI.In.IFieldData {
     fieldType: string;

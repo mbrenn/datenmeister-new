@@ -1,9 +1,9 @@
-﻿
-import DMI = require("./datenmeister-interfaces");
+﻿import DMI = require("./datenmeister-interfaces");
 import DMCI = require("./datenmeister-clientinterface");
 import DMView = require("./datenmeister-view");
 
 export class ViewPort implements DMI.Navigation.INavigation{
+    private isMasterView: boolean;
     private container: JQuery;
     private layout: DMI.Api.ILayout;
     onViewPortChanged: (data: DMI.Api.ILayoutChangedEvent) => void;
@@ -13,6 +13,7 @@ export class ViewPort implements DMI.Navigation.INavigation{
     constructor(container: JQuery, layout: DMI.Api.ILayout) {
         this.container = container;
         this.layout = layout;
+        this.isMasterView = true;
     }
 
     /**
@@ -93,7 +94,6 @@ export class ViewPort implements DMI.Navigation.INavigation{
 
     showWorkspaces() {
         var tthis = this;
-        tthis.createTitle();
 
         var workbenchLogic = new DMView.WorkspaceView(this);
         workbenchLogic.onWorkspaceSelected = (id: string) => {
@@ -168,10 +168,6 @@ export class ViewPort implements DMI.Navigation.INavigation{
     gotoHome(): void {
         this.navigateToExtents("Data");
     }
-    
-    renavigate(): void {
-        this.throwViewPortChanged(this.viewState);
-    }
 
     refresh(): void {
         if (this.onRefresh !== undefined && this.onRefresh !== null) {
@@ -198,6 +194,8 @@ export class ViewPort implements DMI.Navigation.INavigation{
         if (this.onViewPortChanged !== undefined) {
             this.onViewPortChanged(ev);
         }
+
+        this.createTitle();
 
         this.layout.throwViewPortChanged(ev);
     }

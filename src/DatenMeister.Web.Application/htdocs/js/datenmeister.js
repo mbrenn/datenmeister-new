@@ -1,4 +1,4 @@
-define(["require", "exports", "./datenmeister-helper", "./datenmeister-interfaces", "./datenmeister-client", "./datenmeister-layout", "./datenmeister-logging"], function (require, exports, DMHelper, DMI, DMClient, DMLayout, DMLog) {
+define(["require", "exports", "./datenmeister-helper", "./datenmeister-interfaces", "./datenmeister-client", "./datenmeister-layout", "./datenmeister-view", "./datenmeister-logging"], function (require, exports, DMHelper, DMI, DMClient, DMLayout, DMView, DMLog) {
     "use strict";
     exports.__esModule = true;
     function start() {
@@ -63,24 +63,23 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-interface
         var mode = DMHelper.getParameterByNameFromHash("mode");
         var view = DMHelper.getParameterByNameFromHash("view");
         if (ws === "") {
-            // per default, show the data extent
-            layout.mainViewPort.showExtents("Data");
+            DMView.navigateToWorkspaces(layout.mainViewPort);
         }
         else if (ws === "{all}") {
-            layout.mainViewPort.showWorkspaces();
+            DMView.navigateToWorkspaces(layout.mainViewPort);
         }
         else if (extentUrl === "") {
-            layout.mainViewPort.showExtents(ws);
+            DMView.navigateToExtents(layout.mainViewPort, ws);
         }
         else if (itemUrl === "") {
-            layout.mainViewPort.showItems(ws, extentUrl, view);
+            DMView.navigateToItems(layout.mainViewPort, ws, extentUrl, view);
         }
         else {
             var settings = {};
             if (mode === "readonly") {
                 settings.isReadonly = true;
             }
-            layout.mainViewPort.showItem(ws, extentUrl, itemUrl, view, settings);
+            layout.mainViewPort.showItem(layout.mainViewPort, ws, extentUrl, itemUrl, view, settings);
         }
         $(".body-content").show();
     }

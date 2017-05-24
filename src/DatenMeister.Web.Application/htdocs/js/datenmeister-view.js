@@ -13,8 +13,8 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
     exports.__esModule = true;
     // Defines a base implementation of the IView interface
     var ViewBase = (function () {
-        function ViewBase(navigation) {
-            this.navigation = navigation;
+        function ViewBase(viewport) {
+            this.viewport = viewport;
             this.content = $("<div></div>");
         }
         ViewBase.prototype.getContent = function () {
@@ -53,23 +53,70 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
         ViewBase.prototype.addToolbar = function () {
             return new DMToolbar.Toolbar(this.content);
         };
+        ViewBase.prototype.refresh = function () {
+        };
         return ViewBase;
     }());
     exports.ViewBase = ViewBase;
     var ListView = (function (_super) {
         __extends(ListView, _super);
-        function ListView(navigation) {
-            return _super.call(this, navigation) || this;
+        function ListView(viewport) {
+            return _super.call(this, viewport) || this;
         }
         return ListView;
     }(ViewBase));
     exports.ListView = ListView;
+    function navigateToWorkspaces(viewport) {
+        var view = new WorkspaceView(viewport);
+        view.load();
+        viewport.setView(view);
+        return view;
+    }
+    exports.navigateToWorkspaces = navigateToWorkspaces;
+    function navigateToItems(viewport, ws, extentUrl, viewname) {
+        var url = "#ws=" + encodeURIComponent(ws) + "&ext=" + encodeURIComponent(extentUrl);
+        if (viewname !== undefined && viewname !== null) {
+            url += "&view=" + encodeURIComponent(viewname);
+        }
+        history.pushState({}, "", url);
+        this.showItems(ws, extentUrl, viewname);
+    }
+    exports.navigateToItems = navigateToItems;
+    function navigateToExtents(viewport, workspaceId) {
+        history.pushState({}, "", "#ws=" + encodeURIComponent(workspaceId));
+        this.showExtents(workspaceId);
+    }
+    exports.navigateToExtents = navigateToExtents;
+    function navigateToItem(viewport, ws, extentUrl, itemUrl, viewname, settings) {
+        var url = "#ws=" + encodeURIComponent(ws) + "&ext=" + encodeURIComponent(extentUrl) + "&item=" + encodeURIComponent(itemUrl);
+        if (settings !== undefined && settings !== null) {
+            if (settings.isReadonly) {
+                url += "&mode=readonly";
+            }
+        }
+        if (viewname !== undefined && viewname !== null) {
+            url += "&view=" + encodeURIComponent(viewname);
+        }
+        history.pushState({}, "", url);
+        this.showItem(ws, extentUrl, itemUrl, viewname, settings);
+    }
+    exports.navigateToItem = navigateToItem;
+    function exportExtent(viewport, ws, extentUrl) {
+        window.open("/api/datenmeister/extent/extent_export_csv?ws=" + encodeURIComponent(ws) + "&extent=" + encodeURIComponent(extentUrl));
+    }
+    exports.exportExtent = exportExtent;
+    function navigateToDialog(viewport, configuration) {
+        var dialog = new DialogView(this);
+        dialog.createDialog(configuration);
+        this.setView(dialog);
+    }
+    exports.navigateToDialog = navigateToDialog;
     var WorkspaceView = (function (_super) {
         __extends(WorkspaceView, _super);
-        function WorkspaceView(navigation) {
-            return _super.call(this, navigation) || this;
+        function WorkspaceView(viewport) {
+            return _super.call(this, viewport) || this;
         }
-        WorkspaceView.prototype.loadAndCreateHtmlForWorkbenchs = function () {
+        WorkspaceView.prototype.load = function () {
             var result = $.Deferred();
             var tthis = this;
             DMClient.WorkspaceApi.getAllWorkspaces()
@@ -84,6 +131,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
         };
         WorkspaceView.prototype.createHtmlForWorkbenchs = function (data) {
             var _this = this;
+            var tthis = this;
             this.content.empty();
             var compiledTable = $($("#template_workspace_table").html());
             var compiled = _.template($("#template_workspace").html());
@@ -97,23 +145,25 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                         if (_this.onWorkspaceSelected != undefined) {
                             _this.onWorkspaceSelected(workspaceId);
                         }
+                        alert('X' + workspaceId);
+                        navigateToExtents(tthis.viewport, workspaceId);
                         return false;
                     }); })(entry));
                     $(compiledTable).append(dom);
                 }
             }
             this.content.append(compiledTable);
-            this.addButtonLink("Add new Workspace", function () { return DMDialog.showDialogNewWorkspace(_this.navigation); });
+            this.addButtonLink("Add new Workspace", function () { return DMDialog.showDialogNewWorkspace(_this.viewport); });
         };
         return WorkspaceView;
     }(ViewBase));
     exports.WorkspaceView = WorkspaceView;
     var ExtentView = (function (_super) {
         __extends(ExtentView, _super);
-        function ExtentView(navigation) {
-            return _super.call(this, navigation) || this;
+        function ExtentView(viewport) {
+            return _super.call(this, viewport) || this;
         }
-        ExtentView.prototype.loadAndCreateHtmlForWorkspace = function (ws) {
+        ExtentView.prototype.load = function (ws) {
             var _this = this;
             var callback = $.Deferred();
             $.ajax({
@@ -159,15 +209,15 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 }
                 this.content.append(compiledTable);
             }
-            this.addButtonLink("Add new Extent", function () { return DMDialog.showNavigationForNewExtents(tthis.navigation, ws); });
+            this.addButtonLink("Add new Extent", function () { return DMDialog.showNavigationForNewExtents(tthis.viewport, ws); });
         };
         return ExtentView;
     }(ListView));
     exports.ExtentView = ExtentView;
     var ItemsOfExtentView = (function (_super) {
         __extends(ItemsOfExtentView, _super);
-        function ItemsOfExtentView(navigation) {
-            var _this = _super.call(this, navigation) || this;
+        function ItemsOfExtentView(viewport) {
+            var _this = _super.call(this, viewport) || this;
             _this.supportSearchbox = true;
             _this.supportNewItem = true;
             _this.supportPaging = true;
@@ -175,11 +225,11 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             _this.supportMetaClasses = true;
             return _this;
         }
-        ItemsOfExtentView.prototype.loadAndCreateHtmlForExtent = function (ws, extentUrl, query) {
+        ItemsOfExtentView.prototype.load = function (ws, extentUrl, query) {
             var _this = this;
             var tthis = this;
             // Creates the layout configuration and the handling on requests of the user
-            var configuration = new DMTables.ItemListTableConfiguration(this.navigation);
+            var configuration = new DMTables.ItemListTableConfiguration();
             configuration.onItemEdit = function (url) {
                 if (tthis.onItemEdit !== undefined) {
                     tthis.onItemEdit(ws, extentUrl, url);
@@ -201,7 +251,6 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                     .fail(function () { alert("FAILED"); });
                 return false;
             };
-            configuration.navigation = this.navigation;
             // Creates the provider
             var provider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
             // Creates the table
@@ -213,7 +262,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             }
             this.onViewChanged = function (viewUrl) {
                 query.view = viewUrl;
-                tthis.loadAndCreateHtmlForExtent(ws, extentUrl, query);
+                tthis.load(ws, extentUrl, query);
             };
             this.setViewState({
                 type: DMI.Api.PageType.Items,
@@ -223,8 +272,8 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             if (this.supportNewItem) {
                 var itemNew = new DMToolbar.ToolBarButtonItem("newitem", "Create Item");
                 itemNew.onClicked = function () {
-                    var view = new CreatetableTypesView(_this.navigation, ws, extentUrl);
-                    _this.navigation.navigateToView(view);
+                    var view = new CreatetableTypesView(_this.viewport, ws, extentUrl);
+                    _this.viewport.setView(view);
                 };
                 this.toolbar.addItem(itemNew);
             }
@@ -267,17 +316,35 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             }
             table.loadAndShow();
         };
+        ItemsOfExtentView.prototype.showItems = function (viewport, workspaceId, extentUrl, viewname) {
+            var tthis = this;
+            // TODO: this.viewport.createTitle(workspaceId, extentUrl);
+            var extentView = new ItemsOfExtentView(this.viewport);
+            extentView.onItemEdit = function (ws, extentUrl, itemUrl) {
+                navigateToItem(tthis.viewport, ws, extentUrl, itemUrl);
+            };
+            extentView.onItemView = function (ws, extentUrl, itemUrl) {
+                navigateToItem(tthis.viewport, ws, extentUrl, itemUrl, undefined, { isReadonly: true });
+            };
+            extentView.onItemCreated = function (ws, extentUrl, itemUrl) {
+                navigateToItem(tthis.viewport, ws, extentUrl, itemUrl);
+            };
+            var query = new DMCI.Out.ItemTableQuery();
+            query.view = viewname;
+            query.amount = 20;
+            extentView.load(workspaceId, extentUrl, query);
+        };
         return ItemsOfExtentView;
     }(ListView));
     exports.ItemsOfExtentView = ItemsOfExtentView;
     var ItemView = (function (_super) {
         __extends(ItemView, _super);
-        function ItemView(navigation) {
-            var _this = _super.call(this, navigation) || this;
+        function ItemView(viewport) {
+            var _this = _super.call(this, viewport) || this;
             _this.supportViews = true;
             return _this;
         }
-        ItemView.prototype.loadAndCreateHtmlForItem = function (ws, extentUrl, itemUrl, settings) {
+        ItemView.prototype.load = function (ws, extentUrl, itemUrl, settings) {
             var tthis = this;
             this.setViewState({
                 type: DMI.Api.PageType.ItemDetail,
@@ -291,10 +358,9 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             });
         };
         ItemView.prototype.createHtmlForItem = function (ws, extentUrl, itemUrl, data, settings) {
-            var _this = this;
             var tthis = this;
             this.content.empty();
-            var configuration = new DMTables.ItemContentConfiguration(this.navigation);
+            var configuration = new DMTables.ItemContentConfiguration();
             configuration.columns = data.c.fields;
             var isReadonly = false;
             this.toolbar = this.addToolbar();
@@ -307,21 +373,21 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             var table = new DMTables.ItemContentTable(data, configuration);
             if (isReadonly) {
                 configuration.onOkForm = function () {
-                    tthis.navigation.navigateToItems(ws, extentUrl);
+                    navigateToItems(tthis.viewport, ws, extentUrl);
                 };
                 configuration.onCancelForm = function () {
-                    tthis.navigation.navigateToItems(ws, extentUrl);
+                    navigateToItems(tthis.viewport, ws, extentUrl);
                 };
             }
             else {
                 configuration.onOkForm = function () {
                     DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item)
                         .done(function () {
-                        tthis.navigation.navigateToItems(ws, extentUrl);
+                        navigateToItems(tthis.viewport, ws, extentUrl);
                     });
                 };
                 configuration.onCancelForm = function () {
-                    tthis.navigation.navigateToItems(ws, extentUrl);
+                    navigateToItems(tthis.viewport, ws, extentUrl);
                 };
             }
             configuration.onItemSelect = function (url) {
@@ -333,13 +399,13 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             if (this.supportViews) {
                 var itemView = new DMToolbar.ToolbarViewSelection(ws, extentUrl, itemUrl);
                 itemView.onViewChanged = function (viewUrl) {
-                    _this.navigation.navigateToItem(ws, extentUrl, itemUrl, viewUrl, settings);
+                    navigateToItem(tthis.viewport, ws, extentUrl, itemUrl, viewUrl, settings);
                 };
                 this.toolbar.addItem(itemView);
             }
             configuration.onEditButton = function () {
                 settings.isReadonly = false;
-                tthis.navigation.navigateToItem(ws, extentUrl, itemUrl, null, settings);
+                navigateToItem(tthis.viewport, ws, extentUrl, itemUrl, null, settings);
             };
             var domTableOwner = $("<div class='data-items'></div>");
             table.show(domTableOwner);
@@ -362,7 +428,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 $("a", domMetaClassLink).text(data.metaclass.name);
                 $(".fullname", domMetaClassLink).text(data.metaclass.fullname);
                 $("a", domMetaClassLink).click(function () {
-                    tthis.navigation.navigateToItem(data.metaclass.ws, data.metaclass.ext, data.metaclass.uri);
+                    navigateToItem(tthis.viewport, data.metaclass.ws, data.metaclass.ext, data.metaclass.uri);
                     return false;
                 });
                 $(".dm-tablecell-metaclass", domTableInfo).append(domMetaClassLink);
@@ -387,8 +453,8 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
     // a user-defined action is being performed
     var EmptyView = (function (_super) {
         __extends(EmptyView, _super);
-        function EmptyView(navigation) {
-            return _super.call(this, navigation) || this;
+        function EmptyView(viewport) {
+            return _super.call(this, viewport) || this;
         }
         /**
          * Adds a link to the view
@@ -403,12 +469,12 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
     exports.EmptyView = EmptyView;
     var DialogView = (function (_super) {
         __extends(DialogView, _super);
-        function DialogView(navigation) {
-            return _super.call(this, navigation) || this;
+        function DialogView(viewport) {
+            return _super.call(this, viewport) || this;
         }
         DialogView.prototype.createDialog = function (configuration) {
             var value = new DMCI.In.ItemContentModel();
-            var tableConfiguration = new DMTables.ItemContentConfiguration(this.navigation);
+            var tableConfiguration = new DMTables.ItemContentConfiguration();
             tableConfiguration.autoProperties = false;
             tableConfiguration.columns = configuration.columns;
             tableConfiguration.isReadOnly = false;
@@ -436,21 +502,21 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
     exports.DialogView = DialogView;
     var CreatetableTypesView = (function (_super) {
         __extends(CreatetableTypesView, _super);
-        function CreatetableTypesView(navigation, ws, extentUrl) {
-            var _this = _super.call(this, navigation) || this;
+        function CreatetableTypesView(viewport, ws, extentUrl) {
+            var _this = _super.call(this, viewport) || this;
             _this.extentUrl = extentUrl;
             _this.ws = ws;
             var tthis = _this;
             _this.addButtonLink("Unspecified", function () {
                 DMClient.ExtentApi.createItem(ws, extentUrl, null)
                     .done(function (innerData) {
-                    navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                    navigateToItem(tthis.viewport, ws, extentUrl, innerData.newuri);
                 });
             });
             _this.addButtonLink("Unspecified", function () {
                 DMClient.ExtentApi.createItem(ws, extentUrl, null)
                     .done(function (innerData) {
-                    navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                    navigateToItem(tthis.viewport, ws, extentUrl, innerData.newuri);
                 });
             });
             var domLoaded = _this.addText("Loading...");
@@ -463,7 +529,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                         tthis.addButtonLink(type.name, function () {
                             DMClient.ExtentApi.createItem(ws, extentUrl, type.uri)
                                 .done(function (innerData) {
-                                navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                                navigateToItem(tthis.viewport, ws, extentUrl, innerData.newuri);
                             });
                         });
                     };

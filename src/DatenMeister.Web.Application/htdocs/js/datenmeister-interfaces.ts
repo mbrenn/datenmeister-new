@@ -8,6 +8,9 @@ export namespace Views {
         viewport: IViewPort;
         getContent(): JQuery;
         getViewState(): Api.IViewState;
+        
+        /// Called, when the user clicks on refresh. The view has to reload the complete dynamic data
+        refresh(): void;
     }
 
     export interface IViewPort {
@@ -44,24 +47,6 @@ export namespace Navigation {
     export class ItemViewSettings implements IItemViewSettings {
         isReadonly: boolean;
     }
-
-    export interface INavigation {
-        navigateToWorkspaces(): void;
-        navigateToExtents(workspaceId: string): void;
-        navigateToItems(ws: string, extentUrl: string, viewname?: string): void;
-        navigateToItem(ws: string, extentUrl: string, itemUrl: string, viewname?: string, settings?: IItemViewSettings);
-        navigateToDialog(configuration: DialogConfiguration): void;
-        navigateToView(navigationView: Views.IView): void;
-
-        /**
-         * Sets the status within the current navigation view that can be navigated
-         * @param statusDom Statusinformation that can be set
-         */
-        setStatus(statusDom: JQuery): void;
-
-        refresh();
-    
-    }
 }
 
 export namespace Api {
@@ -75,6 +60,7 @@ export namespace Api {
     export interface ILayout {
         throwViewPortChanged(data: ILayoutChangedEvent): void;
         getRibbon(): DMRibbon.Ribbon;
+        mainViewPort: Views.IViewPort;
     }
 
     export enum PageType {
@@ -100,7 +86,6 @@ export namespace Api {
     }
 
     export interface ILayoutChangedEvent {
-        navigation?: Navigation.INavigation; // Will be set by the thrower
         viewState: IViewState;
     }
 
@@ -108,7 +93,6 @@ export namespace Api {
      * Stores the event being used when an update of ribbon is required
      */
     export interface IRibbonUpdateEvent {
-        navigation?: Navigation.INavigation; // Will be set by the thrower
         layout?: ILayout;
         viewState: IViewState;
     }

@@ -1,4 +1,4 @@
-define(["require", "exports", "./datenmeister-clientinterface", "./datenmeister-view"], function (require, exports, DMCI, DMView) {
+define(["require", "exports", "./datenmeister-view"], function (require, exports, DMView) {
     "use strict";
     exports.__esModule = true;
     var ViewPort = (function () {
@@ -18,109 +18,49 @@ define(["require", "exports", "./datenmeister-clientinterface", "./datenmeister-
             var viewState = view.getViewState();
             if (viewState !== undefined && viewState !== null) {
                 var ev = {
-                    navigation: this,
                     viewState: viewState
                 };
                 this.layout.throwViewPortChanged(ev);
             }
             view.viewport = this;
+            this.addViewState(view.getViewState());
+            this.currentView = view;
         };
-        ViewPort.prototype.navigateToWorkspaces = function () {
-            history.pushState({}, "", "#ws={all}");
-            this.showWorkspaces();
+        ViewPort.prototype.addViewState = function (viewState) {
+            if (viewState.workspace === undefined) {
+                history.pushState({}, "", "#ws={all}");
+            }
         };
         ViewPort.prototype.navigateToView = function (view) {
             this.setView(view);
         };
-        ViewPort.prototype.navigateToExtents = function (workspaceId) {
-            history.pushState({}, "", "#ws=" + encodeURIComponent(workspaceId));
-            this.showExtents(workspaceId);
-        };
-        ViewPort.prototype.navigateToItems = function (ws, extentUrl, viewname) {
-            var url = "#ws=" + encodeURIComponent(ws) + "&ext=" + encodeURIComponent(extentUrl);
-            if (viewname !== undefined && viewname !== null) {
-                url += "&view=" + encodeURIComponent(viewname);
-            }
-            history.pushState({}, "", url);
-            this.showItems(ws, extentUrl, viewname);
-        };
-        ViewPort.prototype.navigateToItem = function (ws, extentUrl, itemUrl, viewname, settings) {
-            var url = "#ws=" + encodeURIComponent(ws) + "&ext=" + encodeURIComponent(extentUrl) + "&item=" + encodeURIComponent(itemUrl);
-            if (settings !== undefined && settings !== null) {
-                if (settings.isReadonly) {
-                    url += "&mode=readonly";
-                }
-            }
-            if (viewname !== undefined && viewname !== null) {
-                url += "&view=" + encodeURIComponent(viewname);
-            }
-            history.pushState({}, "", url);
-            this.showItem(ws, extentUrl, itemUrl, viewname, settings);
-        };
-        ViewPort.prototype.exportExtent = function (ws, extentUrl) {
-            window.open("/api/datenmeister/extent/extent_export_csv?ws=" + encodeURIComponent(ws) + "&extent=" + encodeURIComponent(extentUrl));
-        };
-        ViewPort.prototype.navigateToDialog = function (configuration) {
-            var dialog = new DMView.DialogView(this);
-            dialog.createDialog(configuration);
-            this.setView(dialog);
-        };
-        ViewPort.prototype.showWorkspaces = function () {
-            var tthis = this;
-            var workbenchLogic = new DMView.WorkspaceView(this);
-            workbenchLogic.onWorkspaceSelected = function (id) {
-                // Loads the extent of the workspace, if the user has clicked on one of the workbenches
-                tthis.navigateToExtents(id);
-            };
-            workbenchLogic.loadAndCreateHtmlForWorkbenchs();
-            this.setView(workbenchLogic);
-        };
-        ViewPort.prototype.showExtents = function (workspaceId) {
+        ViewPort.prototype.showExtents = function (viewport, workspaceId) {
             var tthis = this;
             tthis.createTitle(workspaceId);
             var extentView = new DMView.ExtentView(this);
             extentView.onItemView = function (ws, extentUrl, itemUrl) {
-                tthis.navigateToItems(ws, extentUrl);
+                DMView.navigateToItems(viewport, ws, extentUrl);
                 return false;
             };
-            extentView.loadAndCreateHtmlForWorkspace(workspaceId);
+            extentView.load(workspaceId);
             this.setView(extentView);
         };
-        ViewPort.prototype.showItems = function (workspaceId, extentUrl, viewname) {
-            var tthis = this;
-            this.createTitle(workspaceId, extentUrl);
-            var extentView = new DMView.ItemsOfExtentView(this);
-            extentView.onItemEdit = function (ws, extentUrl, itemUrl) {
-                tthis.navigateToItem(ws, extentUrl, itemUrl);
-            };
-            extentView.onItemView = function (ws, extentUrl, itemUrl) {
-                tthis.navigateToItem(ws, extentUrl, itemUrl, undefined, { isReadonly: true });
-            };
-            extentView.onItemCreated = function (ws, extentUrl, itemUrl) {
-                tthis.navigateToItem(ws, extentUrl, itemUrl);
-            };
-            var query = new DMCI.Out.ItemTableQuery();
-            query.view = viewname;
-            query.amount = 20;
-            extentView.loadAndCreateHtmlForExtent(workspaceId, extentUrl, query);
-            this.setView(extentView);
-        };
-        ViewPort.prototype.showItem = function (workspaceId, extentUrl, itemUrl, viewname, settings) {
+        ViewPort.prototype.showItem = function (viewport, workspaceId, extentUrl, itemUrl, viewname, settings) {
             var tthis = this;
             var itemView = new DMView.ItemView(this);
             itemView.onItemView = function (ws, extentUrl, itemUrl) {
-                tthis.navigateToItem(ws, extentUrl, itemUrl, undefined, { isReadonly: true });
+                DMView.navigateToItem(viewport, ws, extentUrl, itemUrl, undefined, { isReadonly: true });
             };
             this.createTitle(workspaceId, extentUrl, itemUrl);
-            itemView.loadAndCreateHtmlForItem(workspaceId, extentUrl, itemUrl, settings);
+            itemView.load(workspaceId, extentUrl, itemUrl, settings);
             this.setView(itemView);
         };
         ViewPort.prototype.gotoHome = function () {
-            this.navigateToExtents("Data");
+            DMView.navigateToWorkspaces(this);
         };
         ViewPort.prototype.refresh = function () {
-            if (this.onRefresh !== undefined && this.onRefresh !== null) {
-                this.onRefresh();
+            if (this.currentView !== undefined && this.currentView !== null) {
+                this.currentView.refresh();
             }
         };
         ViewPort.prototype.setStatus = function (statusDom) {
@@ -131,7 +71,6 @@ define(["require", "exports", "./datenmeister-clientinterface", "./datenmeister-
         ViewPort.prototype.throwViewPortChanged = function (data) {
             this.viewState = data;
             var ev = {
-                navigation: this,
                 viewState: data
             };
             if (this.onViewPortChanged !== undefined) {
@@ -141,52 +80,37 @@ define(["require", "exports", "./datenmeister-clientinterface", "./datenmeister-
             this.layout.throwViewPortChanged(ev);
         };
         ViewPort.prototype.createTitle = function (ws, extentUrl, itemUrl) {
+            var _this = this;
             var tthis = this;
             var containerTitle = $(".container-title", this.container);
             var ba = "&gt;&gt";
             if (ws === undefined) {
                 containerTitle.text("Workspaces");
-                this.onRefresh = function () {
-                    tthis.showWorkspaces();
-                    return false;
-                };
             }
             else if (extentUrl === undefined) {
                 containerTitle.html("<a href='#' class='link_workspaces'>Workspace '<b>" + ws + "</b>'</a> " + ba + " Extents");
-                this.onRefresh = function () {
-                    tthis.showExtents(ws);
-                    return false;
-                };
             }
             else if (itemUrl == undefined) {
                 containerTitle
                     .html("<a href='#' class='link_workspaces'> Workspace '<b>" + ws + "</b>'</a> " + ba + " <a href='#' class='link_extents'>Extent '<b>" + extentUrl + "</b>'</a> " + ba + " Items");
-                this.onRefresh = function () {
-                    tthis.showItems(ws, extentUrl);
-                    return false;
-                };
             }
             else {
                 containerTitle
                     .html("<a href='#' class='link_workspaces'>Workspace '<b>" + ws + "</b>'</a> " + ba + " <a href='#' class='link_extents'>Extent '<b>" + extentUrl + "</b>'</a> " + ba + " <a href='#' class='link_items'>Items</a>");
-                this.onRefresh = function () {
-                    tthis.showItem(ws, extentUrl, itemUrl);
-                    return false;
-                };
             }
             $(".link_workspaces", containerTitle)
                 .click(function () {
-                tthis.navigateToWorkspaces();
+                DMView.navigateToWorkspaces(_this);
                 return false;
             });
             $(".link_extents", containerTitle)
                 .click(function () {
-                tthis.navigateToExtents(ws);
+                DMView.navigateToExtents(_this, ws);
                 return false;
             });
             $(".link_items", containerTitle)
                 .click(function () {
-                tthis.showItems(ws, extentUrl);
+                DMView.navigateToItems(_this, ws, extentUrl);
                 return false;
             });
         };

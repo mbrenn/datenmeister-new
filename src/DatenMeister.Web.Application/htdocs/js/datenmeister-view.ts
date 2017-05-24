@@ -4,24 +4,22 @@ import * as DMCI from "./datenmeister-clientinterface";
 import * as DMTables from "./datenmeister-tables";
 import * as DMClient from "./datenmeister-client";
 import * as DMQuery from "./datenmeister-query";
-import * as DMVP from "./datenmeister-viewport";
 import * as DMDialog from "./datenmeister-dialogs";
 import * as DMToolbar from "./datenmeister-toolbar";
-
+import IView = DMI.Views.IView;
+import IViewPort = DMI.Views.IViewPort;
 declare var _: _.UnderscoreStatic;
-
 
 // Defines a base implementation of the IView interface
 export class ViewBase implements DMI.Views.IView{
-    public viewport: DMVP.ViewPort;
-    protected navigation: DMI.Navigation.INavigation;
+    public viewport: DMI.Views.IViewPort;
     protected content: JQuery;
     protected viewState: DMI.Api.IViewState;
 
     protected toolbar: DMToolbar.Toolbar;
 
-    constructor(navigation: DMI.Navigation.INavigation) {
-        this.navigation = navigation;
+    constructor(viewport: DMI.Views.IViewPort) {
+        this.viewport = viewport;
         this.content = $("<div></div>");
     }
 
@@ -74,6 +72,10 @@ export class ViewBase implements DMI.Views.IView{
     addToolbar(): DMToolbar.Toolbar {
         return new DMToolbar.Toolbar(this.content);
     }
+
+    refresh(): void {
+        
+    }
 }
 
 export class ListView extends ViewBase {
@@ -82,19 +84,77 @@ export class ListView extends ViewBase {
     onItemView: (ws: string, extentUrl: string, itemUrl: string) => void;
     onItemCreated: (ws: string, extentUrl: string, itemUrl: string) => void;
 
-    constructor(navigation: DMI.Navigation.INavigation) {
-        super(navigation);
+    constructor(viewport: DMI.Views.IViewPort) {
+        super(viewport);
     }
 }
 
+export function navigateToWorkspaces(viewport: IViewPort): IView {
+    var view = new WorkspaceView(viewport);
+    view.load();
+    viewport.setView(view);
+    return view;
+}
+
+export function navigateToItems(viewport: IViewPort, ws: string, extentUrl: string, viewname ?: string): void {
+    var url = `#ws=${encodeURIComponent(ws)}&ext=${encodeURIComponent(extentUrl)}`;
+    if (viewname !== undefined && viewname !== null) {
+        url += `&view=${encodeURIComponent(viewname)}`;
+    }
+
+    history.pushState({}, "", url);
+
+    this.showItems(ws, extentUrl, viewname);
+}
+
+
+export function navigateToExtents(viewport: IViewPort, workspaceId: string): void {
+    history.pushState({}, "", `#ws=${encodeURIComponent(workspaceId)}`);
+this.showExtents(workspaceId);
+}
+
+export function navigateToItem(
+    viewport: IViewPort,
+    ws: string,
+    extentUrl: string,
+    itemUrl: string,
+    viewname ?: string,
+    settings ?: DMI.Navigation.IItemViewSettings): void {
+    var url = `#ws=${encodeURIComponent(ws)}&ext=${encodeURIComponent(extentUrl)}&item=${encodeURIComponent(itemUrl)}`;
+
+    if (settings !== undefined && settings !== null) {
+        if (settings.isReadonly) {
+            url += "&mode=readonly";
+        }
+    }
+
+    if (viewname !== undefined && viewname !== null) {
+        url += `&view=${encodeURIComponent(viewname)}`;
+    }
+
+    history.pushState({}, "", url);
+    this.showItem(ws, extentUrl, itemUrl, viewname, settings);
+}
+
+export function exportExtent(viewport: IViewPort, ws: string, extentUrl: string) {
+    window.open(
+        `/api/datenmeister/extent/extent_export_csv?ws=${encodeURIComponent(ws)}&extent=${encodeURIComponent(extentUrl)}`);
+}
+
+export function navigateToDialog(viewport: IViewPort, configuration: DMI.Navigation.DialogConfiguration): void {
+    var dialog = new DialogView(this);
+    dialog.createDialog(configuration);
+    this.setView(dialog);
+}
+
 export class WorkspaceView extends ViewBase implements DMI.Views.IView {
-    constructor(navigation: DMI.Navigation.INavigation) {
-        super(navigation);
+    constructor(viewport: DMI.Views.IViewPort) {
+        super(viewport);
     }
 
     onWorkspaceSelected: (id: string) => void;
 
-    loadAndCreateHtmlForWorkbenchs(): JQueryPromise<boolean> {
+    load(): JQueryPromise<boolean> {
         var result = $.Deferred();
         var tthis = this;
         DMClient.WorkspaceApi.getAllWorkspaces()
@@ -112,6 +172,7 @@ export class WorkspaceView extends ViewBase implements DMI.Views.IView {
     }
 
     createHtmlForWorkbenchs(data: Array<DMCI.In.IWorkspace>) {
+        var tthis = this;
         this.content.empty();
         var compiledTable = $($("#template_workspace_table").html());
         var compiled = _.template($("#template_workspace").html());
@@ -128,6 +189,9 @@ export class WorkspaceView extends ViewBase implements DMI.Views.IView {
                                 this.onWorkspaceSelected(workspaceId);
                             }
 
+                            alert('X' + workspaceId);
+
+                            navigateToExtents(tthis.viewport, workspaceId);
                             return false;
                         })
                     )(entry)
@@ -141,16 +205,17 @@ export class WorkspaceView extends ViewBase implements DMI.Views.IView {
 
         this.addButtonLink(
             "Add new Workspace",
-            () => DMDialog.showDialogNewWorkspace(this.navigation));
+            () => DMDialog.showDialogNewWorkspace(this.viewport));
     }
 }
 
+
 export class ExtentView extends ListView implements DMI.Views.IView {
-    constructor(navigation: DMI.Navigation.INavigation) {
-        super(navigation);
+    constructor(viewport: DMI.Views.IViewPort) {
+        super(viewport);
     }
 
-    loadAndCreateHtmlForWorkspace(ws: string): JQueryPromise<boolean> {
+    load(ws: string): JQueryPromise<boolean> {
         var callback = $.Deferred();
         $.ajax(
         {
@@ -209,7 +274,7 @@ export class ExtentView extends ListView implements DMI.Views.IView {
 
         this.addButtonLink(
             "Add new Extent",
-            () => DMDialog.showNavigationForNewExtents(tthis.navigation, ws));
+            () => DMDialog.showNavigationForNewExtents(tthis.viewport, ws));
     }
 }
 
@@ -227,8 +292,8 @@ export class ItemsOfExtentView extends ListView implements DMI.Views.IView {
     supportMetaClasses: boolean;
     toolbarMetaClasses: DMToolbar.ToolbarMetaClasses;
 
-    constructor(navigation: DMI.Navigation.INavigation) {
-        super(navigation);
+    constructor(viewport: DMI.Views.IViewPort) {
+        super(viewport);
         this.supportSearchbox = true;
         this.supportNewItem = true;
         this.supportPaging = true;
@@ -236,7 +301,7 @@ export class ItemsOfExtentView extends ListView implements DMI.Views.IView {
         this.supportMetaClasses = true;
     }
 
-    loadAndCreateHtmlForExtent(
+    load(
         ws: string,
         extentUrl: string,
         query?: DMCI.Out.IItemTableQuery) : void{
@@ -245,7 +310,7 @@ export class ItemsOfExtentView extends ListView implements DMI.Views.IView {
 
         // Creates the layout configuration and the handling on requests of the user
         var configuration: DMTables.ItemListTableConfiguration =
-            new DMTables.ItemListTableConfiguration(this.navigation);
+            new DMTables.ItemListTableConfiguration();
 
         configuration.onItemEdit = (url: string) => {
             if (tthis.onItemEdit !== undefined) {
@@ -271,9 +336,7 @@ export class ItemsOfExtentView extends ListView implements DMI.Views.IView {
                 .fail(() => { alert("FAILED"); });
             return false;
         };
-
-        configuration.navigation = this.navigation;
-
+        
         // Creates the provider
         var provider: DMQuery.ItemsFromExtentProvider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
 
@@ -289,7 +352,7 @@ export class ItemsOfExtentView extends ListView implements DMI.Views.IView {
 
         this.onViewChanged = (viewUrl) => {
             query.view = viewUrl;
-            tthis.loadAndCreateHtmlForExtent(ws, extentUrl, query);
+            tthis.load(ws, extentUrl, query);
         };
 
         this.setViewState(
@@ -303,8 +366,8 @@ export class ItemsOfExtentView extends ListView implements DMI.Views.IView {
             var itemNew = new DMToolbar.ToolBarButtonItem("newitem", "Create Item");
             itemNew.onClicked = () => {
 
-                var view = new CreatetableTypesView(this.navigation, ws, extentUrl);
-                this.navigation.navigateToView(view);
+                var view = new CreatetableTypesView(this.viewport, ws, extentUrl);
+                this.viewport.setView(view);
             };
 
             this.toolbar.addItem(itemNew);
@@ -358,6 +421,29 @@ export class ItemsOfExtentView extends ListView implements DMI.Views.IView {
 
         table.loadAndShow();
     }
+
+    showItems(viewport: IViewPort, workspaceId: string, extentUrl: string, viewname?: string) {
+        var tthis = this;
+        // TODO: this.viewport.createTitle(workspaceId, extentUrl);
+        var extentView = new ItemsOfExtentView(this.viewport);
+        extentView.onItemEdit = (ws: string, extentUrl: string, itemUrl: string) => {
+            navigateToItem(tthis.viewport, ws, extentUrl, itemUrl);
+        };
+
+        extentView.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
+            navigateToItem(tthis.viewport, ws, extentUrl, itemUrl, undefined, { isReadonly: true });
+        };
+
+        extentView.onItemCreated = (ws: string, extentUrl: string, itemUrl: string) => {
+            navigateToItem(tthis.viewport, ws, extentUrl, itemUrl);
+        };
+
+        var query = new DMCI.Out.ItemTableQuery();
+        query.view = viewname;
+        query.amount = 20;
+
+        extentView.load(workspaceId, extentUrl, query);
+    }
 }
 
 export class ItemView extends ViewBase implements DMI.Views.IView
@@ -365,12 +451,12 @@ export class ItemView extends ViewBase implements DMI.Views.IView
     onItemView: (ws: string, extentUrl: string, itemUrl: string) => void;
     supportViews: boolean;
 
-    constructor(navigation: DMI.Navigation.INavigation) {
-        super(navigation);
+    constructor(viewport: DMI.Views.IViewPort) {
+        super(viewport);
         this.supportViews = true;
     }
 
-    loadAndCreateHtmlForItem(ws: string, extentUrl: string, itemUrl: string, settings?: DMI.Navigation.IItemViewSettings): JQueryDeferred<Object> {
+    load(ws: string, extentUrl: string, itemUrl: string, settings?: DMI.Navigation.IItemViewSettings): JQueryDeferred<Object> {
         var tthis = this;
 
         this.setViewState({
@@ -389,7 +475,7 @@ export class ItemView extends ViewBase implements DMI.Views.IView
     createHtmlForItem(ws: string, extentUrl: string, itemUrl: string, data: DMCI.In.IItemContentModel, settings?: DMI.Navigation.IItemViewSettings) {
         var tthis = this;
         this.content.empty();
-        var configuration = new DMTables.ItemContentConfiguration(this.navigation);
+        var configuration = new DMTables.ItemContentConfiguration();
         configuration.columns = data.c.fields;
         var isReadonly = false;
         this.toolbar = this.addToolbar();
@@ -406,21 +492,21 @@ export class ItemView extends ViewBase implements DMI.Views.IView
         var table = new DMTables.ItemContentTable(data, configuration);
         if (isReadonly) {
             configuration.onOkForm = () => {
-                tthis.navigation.navigateToItems(ws, extentUrl);
+                navigateToItems(tthis.viewport, ws, extentUrl);
             };
             configuration.onCancelForm = () => {
-                tthis.navigation.navigateToItems(ws, extentUrl);
+                navigateToItems(tthis.viewport, ws, extentUrl);
             };
         } else {
             configuration.onOkForm = () => {
                 DMClient.ItemApi.setProperties(ws, extentUrl, itemUrl, table.item)
                     .done(() => {
-                        tthis.navigation.navigateToItems(ws, extentUrl);
+                        navigateToItems(tthis.viewport, ws, extentUrl);
                     });
             };
 
             configuration.onCancelForm = () => {
-                tthis.navigation.navigateToItems(ws, extentUrl);
+                navigateToItems(tthis.viewport, ws, extentUrl);
             };
         }
 
@@ -435,7 +521,7 @@ export class ItemView extends ViewBase implements DMI.Views.IView
         if (this.supportViews) {
             var itemView = new DMToolbar.ToolbarViewSelection(ws, extentUrl, itemUrl);
             itemView.onViewChanged = viewUrl => {
-                this.navigation.navigateToItem(ws, extentUrl, itemUrl, viewUrl, settings);
+                navigateToItem(tthis.viewport, ws, extentUrl, itemUrl, viewUrl, settings);
             };
 
             this.toolbar.addItem(itemView);
@@ -443,7 +529,7 @@ export class ItemView extends ViewBase implements DMI.Views.IView
 
         configuration.onEditButton = () => {
             settings.isReadonly = false;
-            tthis.navigation.navigateToItem(ws, extentUrl, itemUrl, null, settings);
+            navigateToItem(tthis.viewport, ws, extentUrl, itemUrl, null, settings);
         };
 
         var domTableOwner = $("<div class='data-items'></div>");
@@ -470,7 +556,8 @@ export class ItemView extends ViewBase implements DMI.Views.IView
             $(".fullname", domMetaClassLink).text(data.metaclass.fullname);
 
             $("a", domMetaClassLink).click(() => {
-                tthis.navigation.navigateToItem(
+                navigateToItem(
+                    tthis.viewport, 
                     data.metaclass.ws,
                     data.metaclass.ext,
                     data.metaclass.uri
@@ -505,8 +592,8 @@ export class ItemView extends ViewBase implements DMI.Views.IView
 // a user-defined action is being performed
 export class EmptyView extends ViewBase implements DMI.Views.IView {
 
-    constructor(navigation: DMI.Navigation.INavigation) {
-        super(navigation);
+    constructor(viewport: DMI.Views.IViewPort) {
+        super(viewport);
     }
 
     /**
@@ -520,13 +607,13 @@ export class EmptyView extends ViewBase implements DMI.Views.IView {
 }
 
 export class DialogView extends ViewBase implements DMI.Views.IView {
-    constructor(navigation: DMI.Navigation.INavigation) {
-        super(navigation);
+    constructor(viewport: DMI.Views.IViewPort) {
+        super(viewport);
     }
 
     createDialog(configuration: DMI.Navigation.DialogConfiguration) {
         var value = new DMCI.In.ItemContentModel();
-        var tableConfiguration = new DMTables.ItemContentConfiguration(this.navigation);
+        var tableConfiguration = new DMTables.ItemContentConfiguration();
         tableConfiguration.autoProperties = false;
         tableConfiguration.columns = configuration.columns;
         tableConfiguration.isReadOnly = false;
@@ -557,8 +644,8 @@ export class CreatetableTypesView extends ViewBase implements DMI.Views.IView {
     private extentUrl: string;
     private ws: string;
     
-    constructor(navigation: DMI.Navigation.INavigation, ws: string, extentUrl: string) {
-        super(navigation);
+    constructor(viewport: DMI.Views.IViewPort, ws: string, extentUrl: string) {
+        super(viewport);
         this.extentUrl = extentUrl;
         this.ws = ws;
         var tthis = this;
@@ -567,7 +654,7 @@ export class CreatetableTypesView extends ViewBase implements DMI.Views.IView {
             () => {
                 DMClient.ExtentApi.createItem(ws, extentUrl, null)
                     .done((innerData: DMCI.In.ICreateItemResult) => {
-                        navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                        navigateToItem(tthis.viewport, ws, extentUrl, innerData.newuri);
                     });
             });
 
@@ -577,7 +664,7 @@ export class CreatetableTypesView extends ViewBase implements DMI.Views.IView {
             () => {
                 DMClient.ExtentApi.createItem(ws, extentUrl, null)
                     .done((innerData: DMCI.In.ICreateItemResult) => {
-                        navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                        navigateToItem(tthis.viewport, ws, extentUrl, innerData.newuri);
                     });
             });
 
@@ -597,7 +684,7 @@ export class CreatetableTypesView extends ViewBase implements DMI.Views.IView {
                             () => {
                                 DMClient.ExtentApi.createItem(ws, extentUrl, type.uri)
                                     .done((innerData: DMCI.In.ICreateItemResult) => {
-                                        navigation.navigateToItem(ws, extentUrl, innerData.newuri);
+                                        navigateToItem(tthis.viewport, ws, extentUrl, innerData.newuri);
                                     });
                             });
                     }

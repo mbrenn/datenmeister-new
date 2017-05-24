@@ -2,13 +2,12 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-clientint
     "use strict";
     exports.__esModule = true;
     var ItemListTableConfiguration = (function () {
-        function ItemListTableConfiguration(navigation) {
+        function ItemListTableConfiguration() {
             this.onItemEdit = function (url) { return false; };
             this.onItemDelete = function (url, domRow) { return false; };
             this.showColumnForId = false;
             this.itemsPerPage = 20;
             this.isReadOnly = true;
-            this.navigation = navigation;
         }
         return ItemListTableConfiguration;
     }());
@@ -46,13 +45,8 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-clientint
             var domAmount = $("<div>Total: <span class='totalnumber'>##</span>, Filtered: <span class='filterednumber'>##</span>");
             this.domTotalNumber = $(".totalnumber", domAmount);
             this.domFilteredNumber = $(".filterednumber", domAmount);
-            if (this.configuration.navigation !== undefined) {
-                this.configuration.navigation.setStatus(domAmount);
-                this.configuration.isReadOnly = true;
-            }
-            else {
-                this.domContainer.append(domAmount);
-            }
+            this.configuration.isReadOnly = true;
+            this.domContainer.append(domAmount);
             this.domTable = $("<table class='table table-condensed'></table>");
             // First the headline
             var domRow = $("<tr></tr>");
@@ -152,12 +146,11 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-clientint
     }());
     exports.ItemListTable = ItemListTable;
     var ItemContentConfiguration = (function () {
-        function ItemContentConfiguration(navigation) {
+        function ItemContentConfiguration() {
             this.isReadOnly = false;
             this.autoProperties = false;
             this.supportNewProperties = true;
             this.columns = new Array();
-            this.navigation = navigation;
         }
         ItemContentConfiguration.prototype.addColumn = function (column) {
             this.columns[this.columns.length] = column;
@@ -357,7 +350,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-clientint
                     var domA = $("a", domLine);
                     domA.text(innerItem.v);
                     domA.click(function () {
-                        configuration.navigation.navigateToItem(innerItem.ws, innerItem.ext, innerItem.u);
+                        //TODO: Needs to be done by inner field navigateToItem(innerItem.ws, innerItem.ext, innerItem.u);
                         return false;
                     });
                     domSE.append(domLine);
@@ -370,7 +363,7 @@ define(["require", "exports", "./datenmeister-helper", "./datenmeister-clientint
                 btn.click(function () {
                     DMClient.ExtentApi.createItemAsSubElement(item.ws, item.ext, item.uri, column.name, asSE.metaClassUri).done(function (data) {
                         var uri = data.newuri;
-                        configuration.navigation.navigateToItem(item.ws, item.ext, uri);
+                        // Needs to be done by inner element. configuration.navigation.navigateToItem(item.ws, item.ext, uri);
                         return false;
                     });
                 });

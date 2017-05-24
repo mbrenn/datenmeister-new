@@ -14,18 +14,16 @@ export class ItemListTableConfiguration {
 
     showColumnForId: boolean;
     itemsPerPage: number;
-    navigation: DMI.Navigation.INavigation;
 
     paging: DMToolbar.ToolbarPaging;
     
-    constructor(navigation: DMI.Navigation.INavigation) {
+    constructor() {
         this.onItemEdit = (url: string) => false;
         this.onItemDelete = (url: string, domRow: JQuery) => false;
 
         this.showColumnForId = false;
         this.itemsPerPage = 20;
         this.isReadOnly = true;
-        this.navigation = navigation;
     }
 }
 
@@ -84,12 +82,8 @@ export class ItemListTable {
         this.domTotalNumber = $(".totalnumber", domAmount);
         this.domFilteredNumber = $(".filterednumber", domAmount);
 
-        if (this.configuration.navigation !== undefined) {
-            this.configuration.navigation.setStatus(domAmount);
-            this.configuration.isReadOnly = true;
-        } else {
-            this.domContainer.append(domAmount);
-        }
+        this.configuration.isReadOnly = true;
+        this.domContainer.append(domAmount);
 
         this.domTable = $("<table class='table table-condensed'></table>");
 
@@ -222,8 +216,6 @@ export class ItemContentConfiguration {
      * Includes the information whether the button to create new properties shall be included
      */
     supportNewProperties: boolean;
-
-    navigation: DMI.Navigation.INavigation;
     
     onItemSelect: (url: string) => boolean;
 
@@ -236,12 +228,11 @@ export class ItemContentConfiguration {
      */
     onEditButton: () => void;
 
-    constructor(navigation: DMI.Navigation.INavigation) {
+    constructor() {
         this.isReadOnly = false;
         this.autoProperties = false;
         this.supportNewProperties = true;
         this.columns = new Array<DMCI.In.IFieldData>();
-        this.navigation = navigation;
     }
 
     addColumn(column: DMCI.In.IFieldData) {
@@ -496,7 +487,7 @@ export class SubElementField {
                 var domA = $("a", domLine);
                 domA.text(innerItem.v);
                 domA.click(() => {
-                    configuration.navigation.navigateToItem(innerItem.ws, innerItem.ext, innerItem.u);
+                    //TODO: Needs to be done by inner field navigateToItem(innerItem.ws, innerItem.ext, innerItem.u);
                     return false;
                 });
                 domSE.append(domLine);
@@ -517,7 +508,7 @@ export class SubElementField {
                     asSE.metaClassUri
                 ).done((data) => {
                     var uri = data.newuri;
-                    configuration.navigation.navigateToItem(item.ws, item.ext, uri);
+                    // Needs to be done by inner element. configuration.navigation.navigateToItem(item.ws, item.ext, uri);
                     return false;
                 });
             });

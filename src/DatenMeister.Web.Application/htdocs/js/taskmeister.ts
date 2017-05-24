@@ -1,6 +1,7 @@
 ﻿import * as DMI from "./datenmeister-interfaces";
 import * as DMClient from "./datenmeister-client";
 import * as DMCI from "./datenmeister-clientinterface";
+import * as DMView from "./datenmeister-view";
 
 
 export function load(plugin: DMI.Plugin.PluginParameter): DMI.Plugin.IPluginResult {
@@ -17,7 +18,7 @@ export function load(plugin: DMI.Plugin.PluginParameter): DMI.Plugin.IPluginResu
                                 ev.viewState.extent,
                                 "datenmeister:///types#TaskMeisterLib.Model.IActivity")
                             .done((innerData: DMCI.In.ICreateItemResult) => {
-                                ev.navigation.navigateToItem(ev.viewState.workspace, ev.viewState.extent, innerData.newuri);
+                                DMView.navigateToItem(ev.layout.mainViewPort, ev.viewState.workspace, ev.viewState.extent, innerData.newuri);
                             });
                     });
 
@@ -25,7 +26,7 @@ export function load(plugin: DMI.Plugin.PluginParameter): DMI.Plugin.IPluginResu
                     "Show Tasks",
                     "...,",
                     () => {
-                        ev.navigation.navigateToItems(ev.viewState.workspace, ev.viewState.extent, "dm:///management/views#Views.Activity.Detail");
+                        DMView.navigateToItems(ev.layout.mainViewPort, ev.viewState.workspace, ev.viewState.extent, "dm:///management/views#Views.Activity.Detail");
                     });
             }
         },

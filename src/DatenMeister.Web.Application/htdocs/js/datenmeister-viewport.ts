@@ -1,14 +1,15 @@
 ﻿import DMI = require("./datenmeister-interfaces");
-import DMCI = require("./datenmeister-clientinterface");
 import DMView = require("./datenmeister-view");
+import IViewState = DMI.Api.IViewState;
+import IViewPort = DMI.Views.IViewPort;
 
-export class ViewPort implements DMI.Navigation.INavigation{
+export class ViewPort {
     private isMasterView: boolean;
     private container: JQuery;
     private layout: DMI.Api.ILayout;
     onViewPortChanged: (data: DMI.Api.ILayoutChangedEvent) => void;
     viewState: DMI.Api.IViewState;
-    onRefresh: () => void;
+    currentView: DMI.Views.IView;
 
     constructor(container: JQuery, layout: DMI.Api.ILayout) {
         this.container = container;
@@ -30,120 +31,42 @@ export class ViewPort implements DMI.Navigation.INavigation{
         if (viewState !== undefined && viewState !== null) {
             var ev =
             {
-                navigation: this,
                 viewState: viewState
             };
             this.layout.throwViewPortChanged(ev);
         }
 
         view.viewport = this;
+        this.addViewState(view.getViewState());
+        this.currentView = view;
     }
 
-    navigateToWorkspaces(): void {
-        history.pushState({}, "", "#ws={all}");
-        this.showWorkspaces();
+    addViewState(viewState: IViewState) {
+        if (viewState.workspace === undefined) {
+            history.pushState({}, "", "#ws={all}");
+        }
     }
 
     navigateToView(view: DMI.Views.IView): void {
         this.setView(view);
     }
 
-    navigateToExtents(workspaceId: string): void {
-        history.pushState({}, "", `#ws=${encodeURIComponent(workspaceId)}`);
-        this.showExtents(workspaceId);
-    }
-
-    navigateToItems(ws: string, extentUrl: string, viewname?: string): void {
-        var url = `#ws=${encodeURIComponent(ws)}&ext=${encodeURIComponent(extentUrl)}`;
-        if (viewname !== undefined && viewname !== null) {
-            url += `&view=${encodeURIComponent(viewname)}`;
-        }
-
-        history.pushState({}, "", url);
-
-        this.showItems(ws, extentUrl, viewname);
-    }
-
-    navigateToItem(ws: string, extentUrl: string, itemUrl: string, viewname?: string, settings?: DMI.Navigation.IItemViewSettings): void {
-        var url = `#ws=${encodeURIComponent(ws)}&ext=${encodeURIComponent(extentUrl)}&item=${encodeURIComponent(itemUrl)}`;
-
-        if (settings !== undefined && settings !== null) {
-            if (settings.isReadonly) {
-                url += "&mode=readonly";
-            }
-        }
-
-        if (viewname !== undefined && viewname !== null) {
-            url += `&view=${encodeURIComponent(viewname)}`;
-        }
-
-        history.pushState({}, "", url);
-        this.showItem(ws, extentUrl, itemUrl, viewname, settings);
-    }
-
-    exportExtent(ws: string, extentUrl: string) {
-        window.open(
-            `/api/datenmeister/extent/extent_export_csv?ws=${encodeURIComponent(ws)}&extent=${encodeURIComponent(extentUrl)}`);
-    }
-
-    navigateToDialog(configuration: DMI.Navigation.DialogConfiguration): void {
-        var dialog = new DMView.DialogView(this);
-        dialog.createDialog(configuration);
-        this.setView(dialog);
-    }
-
-    showWorkspaces() {
-        var tthis = this;
-
-        var workbenchLogic = new DMView.WorkspaceView(this);
-        workbenchLogic.onWorkspaceSelected = (id: string) => {
-            // Loads the extent of the workspace, if the user has clicked on one of the workbenches
-            tthis.navigateToExtents(id);
-        };
-
-        workbenchLogic.loadAndCreateHtmlForWorkbenchs();
-        this.setView(workbenchLogic);
-    }
-
-    showExtents(workspaceId: string) {
+    showExtents(viewport: IViewPort, workspaceId: string) {
         var tthis = this;
         tthis.createTitle(workspaceId);
         var extentView = new DMView.ExtentView(this);
         extentView.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
-            tthis.navigateToItems(ws, extentUrl);
+            DMView.navigateToItems(viewport, ws, extentUrl);
             return false;
         };
 
-        extentView.loadAndCreateHtmlForWorkspace(workspaceId);
+        extentView.load(workspaceId);
         this.setView(extentView);
     }
 
-    showItems(workspaceId: string, extentUrl: string, viewname?: string) {
-        var tthis = this;
-
-        this.createTitle(workspaceId, extentUrl);
-        var extentView = new DMView.ItemsOfExtentView(this);
-        extentView.onItemEdit = (ws: string, extentUrl: string, itemUrl: string) => {
-            tthis.navigateToItem(ws, extentUrl, itemUrl);
-        };
-
-        extentView.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
-            tthis.navigateToItem(ws, extentUrl, itemUrl, undefined, { isReadonly: true });
-        };
-
-        extentView.onItemCreated = (ws: string, extentUrl: string, itemUrl: string) => {
-            tthis.navigateToItem(ws, extentUrl, itemUrl);
-        };
-
-        var query = new DMCI.Out.ItemTableQuery();
-        query.view = viewname;
-        query.amount = 20;
-
-        extentView.loadAndCreateHtmlForExtent(workspaceId, extentUrl, query);
-        this.setView(extentView);
-    }
-
-    showItem(workspaceId: string,
+    showItem(
+        viewport: IViewPort,
+        workspaceId: string,
         extentUrl: string,
         itemUrl: string,
         viewname?: string,
@@ -153,11 +76,11 @@ export class ViewPort implements DMI.Navigation.INavigation{
         var itemView = new DMView.ItemView(this);
 
         itemView.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
-            tthis.navigateToItem(ws, extentUrl, itemUrl, undefined, { isReadonly: true });
+            DMView.navigateToItem(viewport, ws, extentUrl, itemUrl, undefined, { isReadonly: true });
         };
 
         this.createTitle(workspaceId, extentUrl, itemUrl);
-        itemView.loadAndCreateHtmlForItem(
+        itemView.load(
             workspaceId,
             extentUrl,
             itemUrl,
@@ -166,12 +89,12 @@ export class ViewPort implements DMI.Navigation.INavigation{
     }
 
     gotoHome(): void {
-        this.navigateToExtents("Data");
+        DMView.navigateToWorkspaces(this);
     }
 
     refresh(): void {
-        if (this.onRefresh !== undefined && this.onRefresh !== null) {
-            this.onRefresh();
+        if (this.currentView !== undefined && this.currentView !== null) {
+            this.currentView.refresh();
         }
     }
 
@@ -186,7 +109,6 @@ export class ViewPort implements DMI.Navigation.INavigation{
 
         var ev =
         {
-            navigation: this,
             viewState: data
         };
 
@@ -206,51 +128,35 @@ export class ViewPort implements DMI.Navigation.INavigation{
         var ba = "&gt;&gt";
         if (ws === undefined) {
             containerTitle.text("Workspaces");
-            this.onRefresh = () => {
-                tthis.showWorkspaces();
-                return false;
-            };
         } else if (extentUrl === undefined) {
             containerTitle.html(
                 `<a href='#' class='link_workspaces'>Workspace '<b>${ws}</b>'</a> ${ba} Extents`);
-            this.onRefresh = () => {
-                tthis.showExtents(ws);
-                return false;
-            };
         } else if (itemUrl == undefined) {
             containerTitle
                 .html(
                     `<a href='#' class='link_workspaces'> Workspace '<b>${ws}</b>'</a> ${ba
                     } <a href='#' class='link_extents'>Extent '<b>${extentUrl}</b>'</a> ${ba
                     } Items`);
-            this.onRefresh = () => {
-                tthis.showItems(ws, extentUrl);
-                return false;
-            };
         } else {
             containerTitle
                 .html(`<a href='#' class='link_workspaces'>Workspace '<b>${ws}</b>'</a> ${ba
                     } <a href='#' class='link_extents'>Extent '<b>${extentUrl}</b>'</a> ${ba
                     } <a href='#' class='link_items'>Items</a>`);
-            this.onRefresh = () => {
-                tthis.showItem(ws, extentUrl, itemUrl);
-                return false;
-            };
         }
 
         $(".link_workspaces", containerTitle)
             .click(() => {
-                tthis.navigateToWorkspaces();
+                DMView.navigateToWorkspaces(this);
                 return false;
             });
         $(".link_extents", containerTitle)
             .click(() => {
-                tthis.navigateToExtents(ws);
+                DMView.navigateToExtents(this, ws);
                 return false;
             });
         $(".link_items", containerTitle)
             .click(() => {
-                tthis.showItems(ws, extentUrl);
+                DMView.navigateToItems(this, ws, extentUrl);
                 return false;
             });
     }

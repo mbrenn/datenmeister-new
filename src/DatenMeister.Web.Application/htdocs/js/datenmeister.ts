@@ -3,6 +3,7 @@ import * as DMHelper from "./datenmeister-helper";
 import * as DMI from "./datenmeister-interfaces";
 import * as DMClient from "./datenmeister-client";
 import * as DMLayout from "./datenmeister-layout";
+import * as DMView from "./datenmeister-view";
 import * as DMLog from "./datenmeister-logging";
 
 export function start() {
@@ -79,21 +80,20 @@ export function parseAndNavigateToWindowLocation(layout: DMLayout.ApplicationWin
     var view = DMHelper.getParameterByNameFromHash("view");
 
     if (ws === "") {
-        // per default, show the data extent
-        layout.mainViewPort.showExtents("Data");
+        DMView.navigateToWorkspaces(layout.mainViewPort); 
     } else if (ws === "{all}") {
-        layout.mainViewPort.showWorkspaces();
+        DMView.navigateToWorkspaces(layout.mainViewPort); 
     } else if (extentUrl === "") {
-        layout.mainViewPort.showExtents(ws);
+        DMView.navigateToExtents(layout.mainViewPort, ws);
     } else if (itemUrl === "") {
-        layout.mainViewPort.showItems(ws, extentUrl, view);
+        DMView.navigateToItems(layout.mainViewPort, ws, extentUrl, view);
     } else {
         var settings: DMI.Navigation.IItemViewSettings = {};
         if (mode === "readonly") {
             settings.isReadonly = true;
         }
 
-        layout.mainViewPort.showItem(ws, extentUrl, itemUrl, view, settings);
+        layout.mainViewPort.showItem(layout.mainViewPort, ws, extentUrl, itemUrl, view, settings);
     }
 
     $(".body-content").show();

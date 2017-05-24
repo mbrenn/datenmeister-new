@@ -1,34 +1,34 @@
-define(["require", "exports", "./datenmeister-client", "./datenmeister-interfaces", "./datenmeister-view", "./datenmeister-viewmodels"], function (require, exports, DMClient, DMI, DMView, DMVM) {
+define(["require", "exports", "./datenmeister-client", "./datenmeister-interfaces", "./datenmeister-viewmodels", "./datenmeister-view"], function (require, exports, DMClient, DMI, DMVM, DMView) {
     "use strict";
     exports.__esModule = true;
-    function showDialogNewWorkspace(navigation) {
+    function showDialogNewWorkspace(viewport) {
         var configuration = new DMI.Navigation.DialogConfiguration();
         configuration.onOkForm = function (data) {
             DMClient.WorkspaceApi.createWorkspace({
                 name: data.v["name"],
                 annotation: data.v["annotation"]
             })
-                .done(function () { return navigation.navigateToWorkspaces(); });
+                .done(function () { return DMView.navigateToWorkspaces(viewport); });
         };
         configuration.addColumn(new DMVM.TextDataField("Name", "name"));
         var annotationColumn = new DMVM.TextDataField("Annotation", "annotation");
         annotationColumn.lineHeight = 4;
         configuration.addColumn(annotationColumn);
-        navigation.navigateToDialog(configuration);
+        DMView.navigateToDialog(viewport, configuration);
     }
     exports.showDialogNewWorkspace = showDialogNewWorkspace;
-    function showNavigationForNewExtents(navigation, workspace) {
-        var view = new DMView.EmptyView(navigation);
+    function showNavigationForNewExtents(viewport, workspace) {
+        var view = new DMView.EmptyView(viewport);
         view.addLink("New CSV Extent", function () {
-            showDialogNewCsvExtent(navigation, workspace);
+            showDialogNewCsvExtent(viewport, workspace);
         });
         view.addLink("New XmlExtent", function () {
-            showDialogNewXmiExtent(navigation, workspace);
+            showDialogNewXmiExtent(viewport, workspace);
         });
-        navigation.navigateToView(view);
+        viewport.setView(view);
     }
     exports.showNavigationForNewExtents = showNavigationForNewExtents;
-    function showDialogNewCsvExtent(navigation, workspace) {
+    function showDialogNewCsvExtent(viewport, workspace) {
         var configuration = new DMI.Navigation.DialogConfiguration();
         configuration.onOkForm = function (data) {
             DMClient.ExtentApi.createExtent({
@@ -38,17 +38,17 @@ define(["require", "exports", "./datenmeister-client", "./datenmeister-interface
                 filename: data.v["filename"],
                 columns: data.v["columns"]
             })
-                .done(function () { return navigation.navigateToExtents(data.v["workspace"]); });
+                .done(function () { return DMView.navigateToExtents(viewport, data.v["workspace"]); });
         };
         configuration.addColumn(new DMVM.TextDataField("Workspace", "workspace").withDefaultValue(workspace));
         configuration.addColumn(new DMVM.TextDataField("URI", "contextUri").withDefaultValue("dm:///"));
         configuration.addColumn(new DMVM.TextDataField("Filename", "filename"));
         configuration.addColumn(new DMVM.TextDataField("Columns", "columns").withDefaultValue("Column1,Column2"));
         configuration.ws = workspace;
-        navigation.navigateToDialog(configuration);
+        DMView.navigateToDialog(viewport, configuration);
     }
     exports.showDialogNewCsvExtent = showDialogNewCsvExtent;
-    function showDialogAddCsvExtent(navigation, workspace) {
+    function showDialogAddCsvExtent(viewport, workspace) {
         var configuration = new DMI.Navigation.DialogConfiguration();
         configuration.onOkForm = function (data) {
             DMClient.ExtentApi.addExtent({
@@ -57,16 +57,16 @@ define(["require", "exports", "./datenmeister-client", "./datenmeister-interface
                 contextUri: data.v["contextUri"],
                 filename: data.v["filename"]
             })
-                .done(function () { return navigation.navigateToExtents(data.v["workspace"]); });
+                .done(function () { return DMView.navigateToExtents(viewport, data.v["workspace"]); });
         };
         configuration.addColumn(new DMVM.TextDataField("Workspace", "workspace").withDefaultValue(workspace));
         configuration.addColumn(new DMVM.TextDataField("URI", "contextUri").withDefaultValue("dm:///"));
         configuration.addColumn(new DMVM.TextDataField("Filename", "filename"));
         configuration.ws = workspace;
-        navigation.navigateToDialog(configuration);
+        DMView.navigateToDialog(viewport, configuration);
     }
     exports.showDialogAddCsvExtent = showDialogAddCsvExtent;
-    function showDialogNewXmiExtent(navigation, workspace) {
+    function showDialogNewXmiExtent(viewport, workspace) {
         var configuration = new DMI.Navigation.DialogConfiguration();
         configuration.onOkForm = function (data) {
             DMClient.ExtentApi.createExtent({
@@ -75,12 +75,12 @@ define(["require", "exports", "./datenmeister-client", "./datenmeister-interface
                 contextUri: data.v["contextUri"],
                 name: data.v["name"]
             })
-                .done(function () { return navigation.navigateToExtents(data.v["workspace"]); });
+                .done(function () { return DMView.navigateToExtents(viewport, data.v["workspace"]); });
         };
         configuration.addColumn(new DMVM.TextDataField("Name", "name").withDefaultValue("name"));
         configuration.addColumn(new DMVM.TextDataField("Workspace", "workspace").withDefaultValue(workspace).asReadOnly());
         configuration.addColumn(new DMVM.TextDataField("URI", "contextUri").withDefaultValue("dm:///"));
-        navigation.navigateToDialog(configuration);
+        DMView.navigateToDialog(viewport, configuration);
     }
     exports.showDialogNewXmiExtent = showDialogNewXmiExtent;
 });

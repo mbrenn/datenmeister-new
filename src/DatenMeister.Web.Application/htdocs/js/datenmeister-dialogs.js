@@ -4,11 +4,15 @@ define(["require", "exports", "./datenmeister-client", "./datenmeister-interface
     function showDialogNewWorkspace(viewport) {
         var configuration = new DMI.Navigation.DialogConfiguration();
         configuration.onOkForm = function (data) {
-            DMClient.WorkspaceApi.createWorkspace({
-                name: data.v["name"],
-                annotation: data.v["annotation"]
-            })
-                .done(function () { return DMView.WorkspaceList.navigateToWorkspaces(viewport); });
+            alert(data.name);
+            alert(data.annotation);
+            return;
+            /*DMClient.WorkspaceApi.createWorkspace(
+                {
+                    name: data["name"],
+                    annotation: data["annotation"]
+                })
+                .done(() => DMView.WorkspaceList.navigateToWorkspaces(viewport));*/
         };
         configuration.addColumn(new DMVM.TextDataField("Name", "name"));
         var annotationColumn = new DMVM.TextDataField("Annotation", "annotation");

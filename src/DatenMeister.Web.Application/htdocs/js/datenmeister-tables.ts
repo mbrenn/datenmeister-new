@@ -8,10 +8,10 @@ import * as DMToolbar from "./datenmeister-toolbar"
 
 
 export class ListTableConfiguration {
-    fields: Array<IField>;
+    fields: Array<Fields.IField>;
 
     constructor() {
-        this.fields = new Array<IField>();
+        this.fields = new Array<Fields.IField>();
     }
 }
 /**
@@ -57,7 +57,7 @@ export class ListTableComposer {
         this.rows = new Array<JQuery>();
         // Creates the headrow
         var domHeadRow = $("<tr></tr>");
-        var field: IField;
+        var field: Fields.IField;
         var n;
         for (n in this.configuration.fields) {
             field = this.configuration.fields[n];
@@ -94,6 +94,300 @@ export class ListTableComposer {
     }
 }
 
+
+export class ListDetailConfiguration {
+    fields: Array<Fields.IField>;
+
+    constructor() {
+        this.fields = new Array<Fields.IField>();
+    }
+}
+
+export class DetailTableComposer {
+
+    item: any;
+    configuration: ListDetailConfiguration;
+    domForEditArray: Array<JQuery>;
+    container: JQuery;
+    domTable: JQuery;
+
+    onClickOk: (newItem: any) => void;
+    onClickCancel: () => void;
+    
+
+    constructor(configuration: ListDetailConfiguration, container: JQuery) {
+        this.configuration = configuration;
+        this.container = container;
+    }
+
+
+    composeTable(item: any):void {
+        this.item = item;
+        this.domTable = $("<table class='table table-condensed'></table>");
+        this.composeContent();
+        this.container.append(this.domTable);
+    }
+
+    refresh() {
+        this.domTable.empty();
+        this.composeContent();
+    }
+
+    composeContent() {
+        var tthis = this;
+        var domRow: JQuery;
+        domRow = $("<tr><th>Title</th><th>Value</th><th></th></tr>");
+
+        this.domTable.append(domRow);
+
+        var field: Fields.IField;
+
+        this.domForEditArray = new Array<JQuery>();
+
+        // Now, the items
+        for (var f in this.configuration.fields) {
+            field = this.configuration.fields[f];
+            domRow = $("<tr></tr>");
+            var domColumn = $("<td class='table_column_name'></td>");
+            domColumn.data("column", "name");
+            domColumn.text(field.title);
+            domRow.append(domColumn);
+
+            domColumn = $("<td class='table_column_value'></td>");
+            domColumn.data("column", "value");
+            var domForEdit = field.createDom(this.item);
+            domColumn.append(domForEdit);
+            domRow.append(domColumn);
+
+            domColumn = $("<td></td>");
+            domRow.append(domColumn);
+
+            this.domForEditArray[field.name] = domForEdit;
+
+            this.domTable.append(domRow);
+        }
+
+        // Add new property
+        /*if (this.configuration.supportNewProperties) {
+            this.offerNewProperty(domTable);
+        }*/
+
+        // Adds the OK, Cancel button
+        var domOkCancel = $("<tr><td colspan='3' class='text-right'></td></tr>");
+        var domOkCancelColumn = $("td", domOkCancel);
+/*        var domOk = $("<button class='btn btn-primary dm-button-ok'>OK</button>");
+        domOkCancelColumn.append(domOk);*/
+
+        if (this.onClickOk !== undefined || this.onClickOk !== undefined) {
+            var domEdit = $("<button class='btn btn-primary dm-button-ok'>OK</button>");
+            domEdit.click(() => {
+                tthis.clickOnOk();
+            });
+
+            domOkCancelColumn.append(domEdit);
+        }
+
+        if (this.onClickCancel !== undefined || this.onClickCancel !== undefined) {
+            var domCancel = $("<button class='btn btn-default dm-button-cancel'>Cancel</button>");
+            domCancel.click(() => tthis.clickOnCancel());
+            domOkCancelColumn.append(domCancel);
+        }
+
+        this.domTable.append(domOkCancel);
+        
+    }
+
+    clickOnOk(): void {
+        if (this.onClickOk !== undefined && this.onClickOk !== null) {
+            var newItem = $.extend({}, this.item);
+            this.submitForm(newItem);
+            this.onClickOk(newItem);
+        }
+        
+    }
+
+    clickOnCancel(): void {
+        if (this.onClickCancel !== undefined && this.onClickCancel !== null) {
+            this.onClickCancel();
+        }
+    }
+
+    submitForm(newItem: any) {
+        var fields = this.configuration.fields;
+        for (var f in fields) {
+            if (fields.hasOwnProperty(f)) {
+                var field = fields[f];
+                var domEdit = this.domForEditArray[field.name];
+
+                var value = domEdit.val();
+                newItem[field.name] = value;
+            }
+        }
+    }
+
+    /*item: any;
+    domForEditArray: Array<JQuery>;
+
+    constructor(
+        item: DMCI.In.IItemContentModel,
+        configuration: ItemContentConfiguration) {
+        this.item = item;
+        this.configuration = configuration;
+    }
+
+    show(dom: JQuery) {
+        dom.empty();
+        this.domContainer = dom;
+
+        var domTable = $("<table class='table table-condensed'></table>");
+
+        // First the headline
+        var domRow: JQuery;
+        domRow = $("<tr><th>Title</th><th>Value</th><th></th></tr>");
+
+        domTable.append(domRow);
+
+        var propertyValue = this.item.v;
+        var column: DMCI.In.IFieldData;
+
+        if (this.configuration.autoProperties) {
+            this.configuration.columns.length = 0;
+            for (let property in propertyValue) {
+                if (propertyValue.hasOwnProperty(property)) {
+                    column = {
+                        fieldType: "textbox",
+                        title: property,
+                        name: property
+                    };
+
+                    this.configuration.columns[this.configuration.columns.length] = column;
+                }
+            }
+        }
+
+        this.domForEditArray = new Array<JQuery>();
+
+        // Now, the items
+        for (var columnNr in this.configuration.columns) {
+            column = this.configuration.columns[columnNr];
+            domRow = $("<tr></tr>");
+            var domColumn = $("<td class='table_column_name'></td>");
+            domColumn.data("column", "name");
+            domColumn.text(column.title);
+            domRow.append(domColumn);
+
+            domColumn = $("<td class='table_column_value'></td>");
+            domColumn.data("column", "value");
+            var domForEdit = createDomForContent(
+                this.item,
+                column,
+                this.configuration);
+            domColumn.append(domForEdit);
+            domRow.append(domColumn);
+
+            domColumn = $("<td></td>");
+            domRow.append(domColumn);
+
+            this.domForEditArray[column.name] = domForEdit;
+
+            domTable.append(domRow);
+        }
+
+        // Add new property
+        if (this.configuration.supportNewProperties) {
+            this.offerNewProperty(domTable);
+        }
+
+        // Adds the OK, Cancel button
+        var domOkCancel = $("<tr><td colspan='3' class='text-right'></td></tr>");
+        var domOkCancelColumn = $("td", domOkCancel);
+        var domOk = $("<button class='btn btn-primary dm-button-ok'>OK</button>");
+        domOkCancelColumn.append(domOk);
+
+        if (this.configuration.onEditButton !== undefined) {
+            var domEdit = $("<button class='btn btn-primary dm-button-ok'>Edit</button>");
+            domEdit.click(() => {
+                this.configuration.onEditButton();
+            });
+
+            domOkCancelColumn.append(domEdit);
+        }
+
+        var domCancel = $("<button class='btn btn-default dm-button-cancel'>Cancel</button>");
+
+        domOkCancelColumn.append(domCancel);
+
+        domOk.click(() => {
+            this.submitForm();
+            if (this.configuration.onOkForm !== undefined) {
+                this.configuration.onOkForm();
+            }
+        });
+
+        domCancel.click(() => {
+                if (this.configuration.onCancelForm !== undefined) {
+                    this.configuration.onCancelForm();
+                }
+            }
+        );
+
+        domTable.append(domOkCancel);
+
+        dom.append(domTable);
+    }
+
+    offerNewProperty(domTable: JQuery) {
+        var tthis = this;
+        var domNewProperty = $("<tr><td colspan='3'><button class='btn btn-default'>Add Property</button></td></tr>");
+        $("button", domNewProperty).click(() => {
+            domNewProperty.empty();
+            var domNewPropertyName = $("<td class='table_column_name'><input type='textbox' class='form-control' /></td>");
+            var domNewPropertyValue = $("<td class='table_column_value'><input type='textbox' class='form-control' /></td>");
+            domNewProperty.append(domNewPropertyName);
+            domNewProperty.append(domNewPropertyValue);
+            var inputProperty = $("input", domNewPropertyName);
+            var inputValue = $("input", domNewPropertyValue);
+
+            var tdButtons = $("<td class='table_column_edit'></td>");
+            var domNewPropertyEdit = $("<button href='#' class='btn btn-default dm-button-ok'>OK</button>");
+            var domNewPropertyCancel = $("<button href='#' class='btn btn-default dm-button-cancel'>Cancel</button>");
+            tdButtons.append(domNewPropertyEdit);
+            tdButtons.append(domNewPropertyCancel);
+            domNewProperty.append(tdButtons);
+
+            domNewPropertyEdit.click(() => {
+                var property = inputProperty.val();
+                var newValue = inputValue.val();
+
+                tthis.submitForm();
+                tthis.item.v[property] = newValue;
+
+                // Adds the new property to the autogenerated rows                    
+                var column = {
+                    fieldType: "textbox",
+                    title: property,
+                    name: property
+                };
+
+                tthis.configuration.columns[this.configuration.columns.length] = column;
+
+                tthis.show(tthis.domContainer);
+                return false;
+            });
+
+            domNewPropertyCancel.click(() => {
+                tthis.show(tthis.domContainer);
+                return false;
+            });
+
+            return false;
+        });
+
+        domTable.append(domNewProperty);
+    }*/
+}
+
+
 export namespace Fields {
     export function addEditButton(
         configuration: ListTableConfiguration,
@@ -103,127 +397,128 @@ export namespace Fields {
         configuration.fields[configuration.fields.length] = buttonField;
         return buttonField;
     }
-}
 
 
-export interface IField {
-    getFieldType(): string;
-    title: string;
-    name: string;
-    defaultValue: any;
-    isEnumeration: boolean;
-    isReadOnly?: boolean;
+    export interface IField {
+        getFieldType(): string;
+        title: string;
+        name: string;
+        defaultValue: any;
+        isEnumeration: boolean;
+        isReadOnly?: boolean;
 
-    createDom(item: DMCI.In.ITableItem): JQuery;
+        createDom(item: any): JQuery;
 
-}
-
-export class FieldBase implements IField {
-    title: string;
-    name: string;
-    defaultValue: any;
-    isEnumeration: boolean;
-    isReadOnly?: boolean;
-
-    getFieldType(): string { throw new Error("Not implemented"); }
-
-    createDom(item: DMCI.In.ITableItem): JQuery { throw new Error("Not implemented"); }
-
-    readOnly(): FieldBase {
-        this.isReadOnly = true;
-        return this;
-    }
-}
-
-export class ButtonField extends FieldBase {
-
-    onClick: (item: any) => void;
-
-    constructor(title: string,
-        onClick: (item: any) => void) {
-        super();
-        this.title = title;
-        this.onClick = onClick;
     }
 
-    createDom(item: DMCI.In.ITableItem): JQuery {
-        var button = $("<button href='#' class='btn btn-primary'></button>");
-        button.click(() => {
-            this.onClick(item);
-            return false;
-        });
-        button.text(this.title);
-        return button;
-    };
-}
+    export class FieldBase implements IField {
+        title: string;
+        name: string;
+        defaultValue: any;
+        isEnumeration: boolean;
+        isReadOnly?: boolean;
 
-export class TextboxField extends FieldBase {
-    lineHeight: number;
-    getFieldType(): string { return DMVM.ColumnTypes.textbox; }
+        getFieldType(): string { throw new Error("Not implemented"); }
 
-    constructor(name: string, title: string) {
-        super();
-        this.title = title;
-        this.name = name;
+        createDom(item: any): JQuery { throw new Error("Not implemented"); }
+
+        readOnly(): FieldBase {
+            this.isReadOnly = true;
+            return this;
+        }
     }
 
-    createDom(item: any): JQuery {
-        var contentValue = item[this.name];
-        var isReadonly = this.isReadOnly;
+    export class ButtonField extends FieldBase {
 
-        // We have a textbox, so check if we have multiple line
-        if (this.lineHeight !== undefined && this.lineHeight > 1) {
-            let domTextBoxMultiple = $("<textarea class='form-control'></textarea>")
-                .attr('rows', this.lineHeight);
-            domTextBoxMultiple.val(contentValue);
-            if (isReadonly) {
-                domTextBoxMultiple.attr("readonly", "readonly");
-            }
+        onClick: (item: any) => void;
 
-            return domTextBoxMultiple;
-        } else {
-            // Single line
-            if (isReadonly) {
-                let domResult = $("<span class='dm-itemtable-data'></span>");
-                domResult.text(contentValue);
-                return domResult;
-            } else {
-                let domTextBox = $("<input type='textbox' class='form-control' />");
-                domTextBox.val(contentValue);
+        constructor(title: string,
+            onClick: (item: any) => void) {
+            super();
+            this.title = title;
+            this.onClick = onClick;
+        }
 
-                if (this.isReadOnly) {
-                    domTextBox.attr("readonly", "readonly");
+        createDom(item: any): JQuery {
+            var button = $("<button href='#' class='btn btn-primary'></button>");
+            button.click(() => {
+                this.onClick(item);
+                return false;
+            });
+            button.text(this.title);
+            return button;
+        };
+    }
+
+    export class TextboxField extends FieldBase {
+        lineHeight: number;
+        getFieldType(): string { return DMVM.ColumnTypes.textbox; }
+
+        constructor(name: string, title: string) {
+            super();
+            this.title = title;
+            this.name = name;
+        }
+
+        createDom(item: any): JQuery {
+            var contentValue = item[this.name];
+            var isReadonly = this.isReadOnly;
+
+            // We have a textbox, so check if we have multiple line
+            if (this.lineHeight !== undefined && this.lineHeight > 1) {
+                let domTextBoxMultiple = $("<textarea class='form-control'></textarea>")
+                    .attr('rows', this.lineHeight);
+                domTextBoxMultiple.val(contentValue);
+                if (isReadonly) {
+                    domTextBoxMultiple.attr("readonly", "readonly");
                 }
 
-                return domTextBox;
+                return domTextBoxMultiple;
+            } else {
+                // Single line
+                if (isReadonly) {
+                    let domResult = $("<span class='dm-itemtable-data'></span>");
+                    domResult.text(contentValue);
+                    return domResult;
+                } else {
+                    let domTextBox = $("<input type='textbox' class='form-control' />");
+                    domTextBox.val(contentValue);
+
+                    if (this.isReadOnly) {
+                        domTextBox.attr("readonly", "readonly");
+                    }
+
+                    return domTextBox;
+                }
             }
         }
     }
-}
 
-export class DropDownField extends FieldBase{
+    export class DropDownField extends FieldBase {
 
-    values: Array<string>;
+        values: Array<string>;
 
-    getFieldType(): string {
-        return DMVM.ColumnTypes.dropdown;
-    }
-
-    createDom(item: any): JQuery {
-        var contentValue = item[this.name];
-        if (contentValue === undefined) {
-            contentValue = this.defaultValue;
+        getFieldType(): string {
+            return DMVM.ColumnTypes.dropdown;
         }
 
-        let domDD = $("<select></select>");
-        for (var name in this.values) {
-            var displayText = this.values[name];
-            let domOption = $("<option></option>").attr("value", name).text(displayText);
-            domDD.append(domOption);
+        createDom(item: any): JQuery {
+            var contentValue = item[this.name];
+            if (contentValue === undefined) {
+                contentValue = this.defaultValue;
+            }
+
+            let domDD = $("<select></select>");
+            for (var name in this.values) {
+                var displayText = this.values[name];
+                let domOption = $("<option></option>").attr("value", name).text(displayText);
+                domDD.append(domOption);
+            }
+
+            domDD.val(contentValue);
+            return domDD;
         }
-
-        domDD.val(contentValue);
-        return domDD;
     }
-}
 
+
+}

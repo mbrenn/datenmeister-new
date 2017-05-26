@@ -122,8 +122,8 @@ export namespace WorkspaceList {
         createHtmlForWorkbenchs(data: Array<DMCI.In.IWorkspace>) {
             var tthis = this;
             var fields = [
-                new DMTables.TextboxField("id", "Name").readOnly(),
-                new DMTables.TextboxField("annotation", "Annotation").readOnly()
+                new DMTables.Fields.TextboxField("id", "Name").readOnly(),
+                new DMTables.Fields.TextboxField("annotation", "Annotation").readOnly()
             ];
 
             var configuration = new DMTables.ListTableConfiguration();

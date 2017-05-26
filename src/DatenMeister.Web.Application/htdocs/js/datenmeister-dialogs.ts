@@ -7,12 +7,16 @@ export function showDialogNewWorkspace(viewport: DMI.Views.IViewPort): void {
     var configuration = new DMI.Navigation.DialogConfiguration();
 
     configuration.onOkForm = data => {
-        DMClient.WorkspaceApi.createWorkspace(
+        alert(data.name);
+        alert(data.annotation);
+
+        return;
+        /*DMClient.WorkspaceApi.createWorkspace(
             {
-                name: data.v["name"],
-                annotation: data.v["annotation"]
+                name: data["name"],
+                annotation: data["annotation"]
             })
-            .done(() => DMView.WorkspaceList.navigateToWorkspaces(viewport));
+            .done(() => DMView.WorkspaceList.navigateToWorkspaces(viewport));*/
     };
 
     configuration.addColumn(new DMVM.TextDataField("Name", "name"));

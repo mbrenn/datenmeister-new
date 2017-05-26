@@ -6,7 +6,7 @@ export namespace Views {
     // This interface should be implemented by all views that can be added via 'setView' to a layout
     export interface IView {
         viewport: IViewPort;
-        getContent(): JQuery;
+        load(): JQuery;
         getViewState(): Api.IViewState;
         
         /// Called, when the user clicks on refresh. The view has to reload the complete dynamic data
@@ -76,6 +76,8 @@ export namespace Api {
         workspace?: string;
         extent?: string;
         item?: string;
+        isReadonly?: boolean;
+        viewname?: string;
     }
 
     export class ViewState {
@@ -83,6 +85,8 @@ export namespace Api {
         workspace: string;
         extent: string;
         item: string;
+        isReadonly: boolean;
+        viewname: string;
     }
 
     export interface ILayoutChangedEvent {

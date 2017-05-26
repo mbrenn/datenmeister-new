@@ -14,7 +14,7 @@ define(["require", "exports", "./datenmeister-view"], function (require, exports
         ViewPort.prototype.setView = function (view) {
             var viewContainer = $(".dm-view", this.container);
             viewContainer.empty();
-            viewContainer.append(view.getContent());
+            viewContainer.append(view.load());
             var viewState = view.getViewState();
             if (viewState !== undefined && viewState !== null) {
                 var ev = {
@@ -27,25 +27,29 @@ define(["require", "exports", "./datenmeister-view"], function (require, exports
             this.currentView = view;
         };
         ViewPort.prototype.addViewState = function (viewState) {
+            var url = "#";
             if (viewState.workspace === undefined) {
-                history.pushState({}, "", "#ws={all}");
+                url += "ws={all}";
             }
-            if (viewState.extent === undefined) {
-                history.pushState({}, "", "#ws=" + encodeURIComponent(viewState.workspace));
+            else if (viewState.extent === undefined) {
+                url += "ws=" + encodeURIComponent(viewState.workspace);
             }
+            else if (viewState.item === undefined) {
+                url += "ws=" + encodeURIComponent(viewState.workspace) + "&ext=" + encodeURIComponent(viewState.extent) + "}";
+            }
+            else {
+                url += "ws=" + encodeURIComponent(viewState.workspace) + "&ext=" + encodeURIComponent(viewState.extent) + "&item=" + encodeURIComponent(viewState.item);
+            }
+            if (viewState.isReadonly) {
+                url += "&mode=readonly";
+            }
+            if (viewState.viewname !== undefined && viewState.viewname !== null) {
+                url += "&view=" + encodeURIComponent(viewState.viewname);
+            }
+            history.pushState({}, "", url);
         };
         ViewPort.prototype.navigateToView = function (view) {
             this.setView(view);
-        };
-        ViewPort.prototype.showItem = function (viewport, workspaceId, extentUrl, itemUrl, viewname, settings) {
-            var tthis = this;
-            var itemView = new DMView.ItemDetail.ItemView(this);
-            itemView.onItemView = function (ws, extentUrl, itemUrl) {
-                DMView.ItemDetail.navigateToItem(viewport, ws, extentUrl, itemUrl, undefined, { isReadonly: true });
-            };
-            this.createTitle(workspaceId, extentUrl, itemUrl);
-            itemView.load(workspaceId, extentUrl, itemUrl, settings);
-            this.setView(itemView);
         };
         ViewPort.prototype.gotoHome = function () {
             DMView.WorkspaceList.navigateToWorkspaces(this);

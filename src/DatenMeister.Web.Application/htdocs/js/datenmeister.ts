@@ -93,7 +93,7 @@ export function parseAndNavigateToWindowLocation(layout: DMLayout.ApplicationWin
             settings.isReadonly = true;
         }
 
-        layout.mainViewPort.showItem(layout.mainViewPort, ws, extentUrl, itemUrl, view, settings);
+        DMView.ItemDetail.navigateToItem(layout.mainViewPort, ws, extentUrl, itemUrl, view, settings);
     }
 
     $(".body-content").show();

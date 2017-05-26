@@ -23,10 +23,6 @@ export class ViewBase implements DMI.Views.IView{
         this.content = $("<div></div>");
     }
 
-    getContent(): JQuery {
-        return this.content;
-    }
-
     getViewState(): DMI.Api.IViewState {
         if (this.viewState == null || this.viewState == undefined) {
             return null;
@@ -74,7 +70,12 @@ export class ViewBase implements DMI.Views.IView{
     }
 
     refresh(): void {
-        
+    }
+
+    load(): JQuery {
+        this.content = $("<div></div>");
+        this.refresh();
+        return this.content;
     }
 }
 
@@ -92,7 +93,6 @@ export class ListView extends ViewBase {
 export namespace WorkspaceList {
     export function navigateToWorkspaces(viewport: IViewPort): IView {
         var view = new WorkspaceView(viewport);
-        view.load();
         viewport.setView(view);
         return view;
     }
@@ -104,13 +104,11 @@ export namespace WorkspaceList {
 
         onWorkspaceSelected: (id: string) => void;
 
-        load(): JQueryPromise<boolean> {
-            var result = $.Deferred();
+        refresh(): JQuery {
             var tthis = this;
             DMClient.WorkspaceApi.getAllWorkspaces()
                 .done((data) => {
                     tthis.createHtmlForWorkbenchs(data);
-                    result.resolve(true);
                 });
 
             this.setViewState(
@@ -118,38 +116,35 @@ export namespace WorkspaceList {
                     type: DMI.Api.PageType.Workspaces
                 });
 
-            return result;
+            return this.content;
         }
 
         createHtmlForWorkbenchs(data: Array<DMCI.In.IWorkspace>) {
             var tthis = this;
-            this.content.empty();
-            var compiledTable = $($("#template_workspace_table").html());
-            var compiled = _.template($("#template_workspace").html());
-            for (var n in data) {
-                if (data.hasOwnProperty(n)) {
-                    var entry = data[n];
-                    var line = compiled(entry);
-                    var dom = $(line);
-                    $(".data", dom).click(
-                        (localEntry => (
-                            () => {
-                                var workspaceId = localEntry.id;
-                                if (this.onWorkspaceSelected != undefined) {
-                                    this.onWorkspaceSelected(workspaceId);
-                                }
-                                
-                                ExtentList.navigateToExtents(tthis.viewport, workspaceId);
-                                return false;
-                            })
-                        )(entry)
-                    );
+            var fields = [
+                new DMTables.TextboxField("id", "Name").readOnly(),
+                new DMTables.TextboxField("annotation", "Annotation").readOnly()
+            ];
 
-                    $(compiledTable).append(dom);
-                }
-            }
+            var configuration = new DMTables.ListTableConfiguration();
+            configuration.fields = fields;
 
-            this.content.append(compiledTable);
+            DMTables.Fields.addEditButton(
+                configuration,
+                (item: DMCI.In.IWorkspace) => {
+                    var workspaceId = item.id;
+                    if (this.onWorkspaceSelected != undefined) {
+                        this.onWorkspaceSelected(workspaceId);
+                    }
+
+                    ExtentList.navigateToExtents(tthis.viewport, workspaceId);
+                    return false;
+                });
+
+            var table = new DMTables.ListTableComposer(configuration, this.content);
+
+            table.composeTable(data);
+
 
             this.addButtonLink(
                 "Add new Workspace",
@@ -163,7 +158,6 @@ export namespace ExtentList {
 
     export function navigateToExtents(viewport: IViewPort, workspaceId: string): DMI.Views.IView {
         var view = new ExtentView(viewport, workspaceId);
-        view.load();
         viewport.setView(view);
         return view;
     }
@@ -176,7 +170,7 @@ export namespace ExtentList {
             this.ws = ws;
         }
 
-        load(): JQueryPromise<boolean> {
+        load(): JQuery {
             var tthis = this;
             // TODO tthis.createTitle(workspaceId);
             this.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
@@ -203,7 +197,9 @@ export namespace ExtentList {
                 workspace: this.ws
             });
 
-            return callback;
+            this.content = $("<div></div>");
+
+            return this.content;
         }
 
         createHtmlForWorkspace(data: Array<DMCI.In.IExtent>) {
@@ -275,7 +271,10 @@ export namespace ItemList {
         supportMetaClasses: boolean;
         toolbarMetaClasses: DMToolbar.ToolbarMetaClasses;
 
-        constructor(viewport: DMI.Views.IViewPort) {
+        constructor(viewport: DMI.Views.IViewPort,
+            ws: string,
+            extentUrl: string,
+            query?: DMCI.Out.IItemTableQuery) {
             super(viewport);
             this.supportSearchbox = true;
             this.supportNewItem = true;
@@ -284,12 +283,9 @@ export namespace ItemList {
             this.supportMetaClasses = true;
         }
 
-        load(
-            ws: string,
-            extentUrl: string,
-            query?: DMCI.Out.IItemTableQuery): void {
+        load(): JQuery {
 
-            var tthis = this;
+            /* var tthis = this;
 
             // Creates the layout configuration and the handling on requests of the user
             var configuration: DMTables.ItemListTableConfiguration =
@@ -402,13 +398,18 @@ export namespace ItemList {
                 this.toolbar.addItem(itemPaging);
             }
 
-            table.loadAndShow();
+            table.loadAndShow();*/
+            throw ("Not implemented");
         }
 
         showItems(viewport: IViewPort, workspaceId: string, extentUrl: string, viewname?: string) {
             var tthis = this;
             // TODO: this.viewport.createTitle(workspaceId, extentUrl);
-            var extentView = new ItemsOfExtentView(this.viewport);
+
+            var query = new DMCI.Out.ItemTableQuery();
+            query.view = viewname;
+            query.amount = 20;
+            var extentView = new ItemsOfExtentView(this.viewport, workspaceId, extentUrl, query);
             extentView.onItemEdit = (ws: string, extentUrl: string, itemUrl: string) => {
                 ItemDetail.navigateToItem(tthis.viewport, ws, extentUrl, itemUrl);
             };
@@ -420,12 +421,6 @@ export namespace ItemList {
             extentView.onItemCreated = (ws: string, extentUrl: string, itemUrl: string) => {
                 ItemDetail. navigateToItem(tthis.viewport, ws, extentUrl, itemUrl);
             };
-
-            var query = new DMCI.Out.ItemTableQuery();
-            query.view = viewname;
-            query.amount = 20;
-
-            extentView.load(workspaceId, extentUrl, query);
         }
     }
 }
@@ -437,22 +432,16 @@ export namespace ItemDetail {
         extentUrl: string,
         itemUrl: string,
         viewname ?: string,
-        settings ?: DMI.Navigation.IItemViewSettings): void {
-        var url =
-            `#ws=${encodeURIComponent(ws)}&ext=${encodeURIComponent(extentUrl)}&item=${encodeURIComponent(itemUrl)}`;
+        settings?: DMI.Navigation.IItemViewSettings): void {
 
-        if (settings !== undefined && settings !== null) {
-            if (settings.isReadonly) {
-                url += "&mode=readonly";
-            }
-        }
+        var itemView = new ItemView(this, ws, extentUrl, itemUrl, settings);
+        itemView.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
+            navigateToItem(viewport, ws, extentUrl, itemUrl, undefined, { isReadonly: true });
+        };
 
-        if (viewname !== undefined && viewname !== null) {
-            url += `&view=${encodeURIComponent(viewname)}`;
-        }
+        // TODO: this.createTitle(workspaceId, extentUrl, itemUrl);
 
-        history.pushState({}, "", url);
-        this.showItem(ws, extentUrl, itemUrl, viewname, settings);
+        this.setView(itemView);
     }
 
 
@@ -460,13 +449,9 @@ export namespace ItemDetail {
         onItemView: (ws: string, extentUrl: string, itemUrl: string) => void;
         supportViews: boolean;
 
-        constructor(viewport: DMI.Views.IViewPort) {
+        constructor(viewport: DMI.Views.IViewPort, ws: string, extentUrl: string, itemUrl: string, settings?: DMI.Navigation.IItemViewSettings) {
             super(viewport);
             this.supportViews = true;
-        }
-
-        load(ws: string, extentUrl: string, itemUrl: string, settings?: DMI.Navigation.IItemViewSettings): JQueryDeferred<Object> {
-            var tthis = this;
 
             this.setViewState({
                 type: DMI.Api.PageType.ItemDetail,
@@ -474,14 +459,23 @@ export namespace ItemDetail {
                 extent: extentUrl,
                 item: itemUrl
             });
+        }
 
-            return DMClient.ItemApi.getItem(ws, extentUrl, itemUrl)
+        load(): JQuery {
+            var tthis = this;
+            /*
+            DMClient.ItemApi.getItem(ws, extentUrl, itemUrl)
                 .done((data) => {
                     tthis.createHtmlForItem(ws, extentUrl, itemUrl, data, settings);
-                });
+                });*/
+
+            throw "Not Implemented";
+
         }
 
         createHtmlForItem(ws: string, extentUrl: string, itemUrl: string, data: DMCI.In.IItemContentModel, settings?: DMI.Navigation.IItemViewSettings) {
+            throw ("Not Implemented");
+            /*
             var tthis = this;
             this.content.empty();
             var configuration = new DMTables.ItemContentConfiguration();
@@ -594,6 +588,7 @@ export namespace ItemDetail {
 
             this.content.append(domTableOwner);
             this.content.append(domTableInfo);
+            */
         }
     }
 
@@ -631,6 +626,7 @@ export class DialogView extends ViewBase implements DMI.Views.IView {
     }
 
     createDialog(configuration: DMI.Navigation.DialogConfiguration) {
+        /*
         var value = new DMCI.In.ItemContentModel();
         var tableConfiguration = new DMTables.ItemContentConfiguration();
         tableConfiguration.autoProperties = false;
@@ -656,6 +652,8 @@ export class DialogView extends ViewBase implements DMI.Views.IView {
                 workspace: configuration.ws,
                 extent: configuration.ext
             });
+        */
+        alert("Not implemented");
     }
 }
 

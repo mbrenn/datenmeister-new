@@ -54,6 +54,10 @@
         metaclass?: IItemModel;
     }
 
+    export interface ITableItem {
+        v: Array<string>;
+    }
+
 /**
  * Implements the IItemModel interface by containing all the fields
  */

@@ -24,7 +24,7 @@ export class ViewPort {
     setView(view: DMI.Views.IView): void {
         var viewContainer = $(".dm-view", this.container);
         viewContainer.empty();
-        viewContainer.append(view.getContent());
+        viewContainer.append(view.load());
 
         var viewState = view.getViewState();
 
@@ -42,41 +42,34 @@ export class ViewPort {
     }
 
     addViewState(viewState: IViewState) {
+        var url = "#";
         if (viewState.workspace === undefined) {
-            history.pushState({}, "", "#ws={all}");
+            url += "ws={all}";
+        } else if (viewState.extent === undefined) {
+            url += `ws=${encodeURIComponent(viewState.workspace)}`;
+        } else if (viewState.item === undefined) {
+            url += `ws=${encodeURIComponent(viewState.workspace)}&ext=${encodeURIComponent(viewState.extent)}}`;
+        } else {
+            url += `ws=${encodeURIComponent(viewState.workspace)}&ext=${encodeURIComponent(viewState.extent)}&item=${
+                encodeURIComponent(viewState.item)}`;
+
         }
 
-        if (viewState.extent === undefined) {
-            history.pushState({}, "", `#ws=${encodeURIComponent(viewState.workspace)}`);
+        if (viewState.isReadonly) {
+            url += "&mode=readonly";
         }
+
+        if (viewState.viewname !== undefined && viewState.viewname !== null) {
+            url += `&view=${encodeURIComponent(viewState.viewname)}`;
+        }
+
+        history.pushState({}, "", url);
+
     }
+
 
     navigateToView(view: DMI.Views.IView): void {
         this.setView(view);
-    }
-
-    showItem(
-        viewport: IViewPort,
-        workspaceId: string,
-        extentUrl: string,
-        itemUrl: string,
-        viewname?: string,
-        settings?: DMI.Navigation.IItemViewSettings) {
-        var tthis = this;
-
-        var itemView = new DMView.ItemDetail.ItemView(this);
-
-        itemView.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
-            DMView.ItemDetail.navigateToItem(viewport, ws, extentUrl, itemUrl, undefined, { isReadonly: true });
-        };
-
-        this.createTitle(workspaceId, extentUrl, itemUrl);
-        itemView.load(
-            workspaceId,
-            extentUrl,
-            itemUrl,
-            settings);
-        this.setView(itemView);
     }
 
     gotoHome(): void {

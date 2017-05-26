@@ -96,7 +96,7 @@ namespace DatenMeister.Web.Api
         ///     exception is thrown</returns>
         private Workspace GetWorkspace(string ws)
         {
-            var workspace = _workspaceLogic.Workspaces.First(x => x.id == ws);
+            var workspace = _workspaceLogic.Workspaces.FirstOrDefault(x => x.id == ws);
             if (workspace == null)
             {
                 throw new InvalidOperationException("Workspace not found");

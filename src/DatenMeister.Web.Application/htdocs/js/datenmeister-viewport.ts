@@ -45,23 +45,14 @@ export class ViewPort {
         if (viewState.workspace === undefined) {
             history.pushState({}, "", "#ws={all}");
         }
+
+        if (viewState.extent === undefined) {
+            history.pushState({}, "", `#ws=${encodeURIComponent(viewState.workspace)}`);
+        }
     }
 
     navigateToView(view: DMI.Views.IView): void {
         this.setView(view);
-    }
-
-    showExtents(viewport: IViewPort, workspaceId: string) {
-        var tthis = this;
-        tthis.createTitle(workspaceId);
-        var extentView = new DMView.ExtentView(this);
-        extentView.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
-            DMView.navigateToItems(viewport, ws, extentUrl);
-            return false;
-        };
-
-        extentView.load(workspaceId);
-        this.setView(extentView);
     }
 
     showItem(
@@ -73,10 +64,10 @@ export class ViewPort {
         settings?: DMI.Navigation.IItemViewSettings) {
         var tthis = this;
 
-        var itemView = new DMView.ItemView(this);
+        var itemView = new DMView.ItemDetail.ItemView(this);
 
         itemView.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
-            DMView.navigateToItem(viewport, ws, extentUrl, itemUrl, undefined, { isReadonly: true });
+            DMView.ItemDetail.navigateToItem(viewport, ws, extentUrl, itemUrl, undefined, { isReadonly: true });
         };
 
         this.createTitle(workspaceId, extentUrl, itemUrl);
@@ -89,7 +80,7 @@ export class ViewPort {
     }
 
     gotoHome(): void {
-        DMView.navigateToWorkspaces(this);
+        DMView.WorkspaceList.navigateToWorkspaces(this);
     }
 
     refresh(): void {
@@ -146,17 +137,17 @@ export class ViewPort {
 
         $(".link_workspaces", containerTitle)
             .click(() => {
-                DMView.navigateToWorkspaces(this);
+                DMView.WorkspaceList.navigateToWorkspaces(this);
                 return false;
             });
         $(".link_extents", containerTitle)
             .click(() => {
-                DMView.navigateToExtents(this, ws);
+                DMView.ExtentList.navigateToExtents(this, ws);
                 return false;
             });
         $(".link_items", containerTitle)
             .click(() => {
-                DMView.navigateToItems(this, ws, extentUrl);
+                DMView.ItemList.navigateToItems(this, ws, extentUrl);
                 return false;
             });
     }

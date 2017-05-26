@@ -8,7 +8,7 @@ define(["require", "exports", "./datenmeister-client", "./datenmeister-interface
                 name: data.v["name"],
                 annotation: data.v["annotation"]
             })
-                .done(function () { return DMView.navigateToWorkspaces(viewport); });
+                .done(function () { return DMView.WorkspaceList.navigateToWorkspaces(viewport); });
         };
         configuration.addColumn(new DMVM.TextDataField("Name", "name"));
         var annotationColumn = new DMVM.TextDataField("Annotation", "annotation");
@@ -38,7 +38,7 @@ define(["require", "exports", "./datenmeister-client", "./datenmeister-interface
                 filename: data.v["filename"],
                 columns: data.v["columns"]
             })
-                .done(function () { return DMView.navigateToExtents(viewport, data.v["workspace"]); });
+                .done(function () { return DMView.ExtentList.navigateToExtents(viewport, data.v["workspace"]); });
         };
         configuration.addColumn(new DMVM.TextDataField("Workspace", "workspace").withDefaultValue(workspace));
         configuration.addColumn(new DMVM.TextDataField("URI", "contextUri").withDefaultValue("dm:///"));
@@ -57,7 +57,7 @@ define(["require", "exports", "./datenmeister-client", "./datenmeister-interface
                 contextUri: data.v["contextUri"],
                 filename: data.v["filename"]
             })
-                .done(function () { return DMView.navigateToExtents(viewport, data.v["workspace"]); });
+                .done(function () { return DMView.ExtentList.navigateToExtents(viewport, data.v["workspace"]); });
         };
         configuration.addColumn(new DMVM.TextDataField("Workspace", "workspace").withDefaultValue(workspace));
         configuration.addColumn(new DMVM.TextDataField("URI", "contextUri").withDefaultValue("dm:///"));
@@ -75,7 +75,7 @@ define(["require", "exports", "./datenmeister-client", "./datenmeister-interface
                 contextUri: data.v["contextUri"],
                 name: data.v["name"]
             })
-                .done(function () { return DMView.navigateToExtents(viewport, data.v["workspace"]); });
+                .done(function () { return DMView.ExtentList.navigateToExtents(viewport, data.v["workspace"]); });
         };
         configuration.addColumn(new DMVM.TextDataField("Name", "name").withDefaultValue("name"));
         configuration.addColumn(new DMVM.TextDataField("Workspace", "workspace").withDefaultValue(workspace).asReadOnly());

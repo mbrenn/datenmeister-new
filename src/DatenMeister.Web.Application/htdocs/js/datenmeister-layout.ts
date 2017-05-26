@@ -74,14 +74,14 @@ export class ApplicationWindow implements DMI.Api.ILayout {
         tabFile.addIcon("Home", "img/icons/home", () => { tthis.mainViewPort.gotoHome(); });
         tabFile.addIcon("Refresh", "img/icons/refresh_update", () => { tthis.mainViewPort.refresh(); });
 
-        tabFile.addIcon("Workspaces", "img/icons/database", () => { DMView.navigateToWorkspaces(tthis.mainViewPort); });
+        tabFile.addIcon("Workspaces", "img/icons/database", () => { DMView.WorkspaceList.navigateToWorkspaces(tthis.mainViewPort); });
         tabFile.addIcon("Add Workspace", "img/icons/database-add", () => { DMDialog.showDialogNewWorkspace(tthis.mainViewPort); });
 
         if (changeEvent !== null && changeEvent !== undefined && changeEvent.viewState.workspace !== undefined) {
             // Ok, we have a workspace
             tabFile.addIcon("Delete Workspace", "img/icons/database-delete", () => {
                 DMClient.WorkspaceApi.deleteWorkspace(changeEvent.viewState.workspace)
-                    .done(() => DMView.navigateToWorkspaces(tthis.mainViewPort));
+                    .done(() => DMView.WorkspaceList.navigateToWorkspaces(tthis.mainViewPort));
             });
 
             tabFile.addIcon("Create Extent", "img/icons/folder_open-new", () => {
@@ -95,7 +95,7 @@ export class ApplicationWindow implements DMI.Api.ILayout {
             if (changeEvent.viewState.extent !== undefined) {
                 tabFile.addIcon("Delete Extent", "img/icons/folder_open-delete", () => {
                     DMClient.ExtentApi.deleteExtent(changeEvent.viewState.workspace, changeEvent.viewState.extent)
-                        .done(() => DMView.navigateToExtents(tthis.mainViewPort, changeEvent.viewState.workspace));
+                        .done(() => DMView.ExtentList.navigateToExtents(tthis.mainViewPort, changeEvent.viewState.workspace));
                 });
 
                 tabFile.addIcon("Export Extent", "img/icons/folder_open-download", () => {

@@ -80,13 +80,13 @@ export function parseAndNavigateToWindowLocation(layout: DMLayout.ApplicationWin
     var view = DMHelper.getParameterByNameFromHash("view");
 
     if (ws === "") {
-        DMView.navigateToWorkspaces(layout.mainViewPort); 
+        DMView.WorkspaceList.navigateToWorkspaces(layout.mainViewPort); 
     } else if (ws === "{all}") {
-        DMView.navigateToWorkspaces(layout.mainViewPort); 
+        DMView.WorkspaceList.navigateToWorkspaces(layout.mainViewPort); 
     } else if (extentUrl === "") {
-        DMView.navigateToExtents(layout.mainViewPort, ws);
+        DMView.ExtentList.navigateToExtents(layout.mainViewPort, ws);
     } else if (itemUrl === "") {
-        DMView.navigateToItems(layout.mainViewPort, ws, extentUrl, view);
+        DMView.ItemList.navigateToItems(layout.mainViewPort, ws, extentUrl, view);
     } else {
         var settings: DMI.Navigation.IItemViewSettings = {};
         if (mode === "readonly") {

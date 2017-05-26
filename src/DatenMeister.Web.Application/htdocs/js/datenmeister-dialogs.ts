@@ -12,7 +12,7 @@ export function showDialogNewWorkspace(viewport: DMI.Views.IViewPort): void {
                 name: data.v["name"],
                 annotation: data.v["annotation"]
             })
-            .done(() => DMView.navigateToWorkspaces(viewport));
+            .done(() => DMView.WorkspaceList.navigateToWorkspaces(viewport));
     };
 
     configuration.addColumn(new DMVM.TextDataField("Name", "name"));
@@ -51,7 +51,7 @@ export function showDialogNewCsvExtent(viewport: DMI.Views.IViewPort, workspace:
                 filename: data.v["filename"],
                 columns: data.v["columns"]
             })
-            .done(() => DMView.navigateToExtents(viewport, data.v["workspace"]));
+            .done(() => DMView.ExtentList.navigateToExtents(viewport, data.v["workspace"]));
     };
 
     configuration.addColumn(new DMVM.TextDataField("Workspace", "workspace").withDefaultValue(workspace));
@@ -74,7 +74,7 @@ export function showDialogAddCsvExtent(viewport: DMI.Views.IViewPort, workspace:
                 contextUri: data.v["contextUri"],
                 filename: data.v["filename"]
             })
-            .done(() => DMView.navigateToExtents(viewport, data.v["workspace"]));
+            .done(() => DMView.ExtentList.navigateToExtents(viewport, data.v["workspace"]));
     };
 
     configuration.addColumn(new DMVM.TextDataField("Workspace", "workspace").withDefaultValue(workspace));
@@ -97,7 +97,7 @@ export function showDialogNewXmiExtent(
                 contextUri: data.v["contextUri"],
                 name: data.v["name"]
             })
-            .done(() => DMView.navigateToExtents(viewport, data.v["workspace"]));
+            .done(() => DMView.ExtentList.navigateToExtents(viewport, data.v["workspace"]));
     };
 
     configuration.addColumn(new DMVM.TextDataField("Name", "name").withDefaultValue("name"));

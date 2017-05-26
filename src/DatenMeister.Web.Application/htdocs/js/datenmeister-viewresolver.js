@@ -6,7 +6,7 @@ define(["require", "exports", "./datenmeister-view"], function (require, exports
         }
         ViewResolver.prototype.resolveView = function (viewPort, viewState) {
             if (viewState.workspace === undefined || viewState.workspace === null) {
-                DMV.navigateToWorkspaces(viewPort);
+                DMV.WorkspaceList.navigateToWorkspaces(viewPort);
             }
         };
         return ViewResolver;

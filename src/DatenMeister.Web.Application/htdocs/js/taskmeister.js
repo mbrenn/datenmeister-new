@@ -9,11 +9,11 @@ define(["require", "exports", "./datenmeister-client", "./datenmeister-view"], f
                     tab.addIcon("Add Task", "...", function () {
                         DMClient.ExtentApi.createItem(ev.viewState.workspace, ev.viewState.extent, "datenmeister:///types#TaskMeisterLib.Model.IActivity")
                             .done(function (innerData) {
-                            DMView.navigateToItem(ev.layout.mainViewPort, ev.viewState.workspace, ev.viewState.extent, innerData.newuri);
+                            DMView.ItemDetail.navigateToItem(ev.layout.mainViewPort, ev.viewState.workspace, ev.viewState.extent, innerData.newuri);
                         });
                     });
                     tab.addIcon("Show Tasks", "...,", function () {
-                        DMView.navigateToItems(ev.layout.mainViewPort, ev.viewState.workspace, ev.viewState.extent, "dm:///management/views#Views.Activity.Detail");
+                        DMView.ItemList.navigateToItems(ev.layout.mainViewPort, ev.viewState.workspace, ev.viewState.extent, "dm:///management/views#Views.Activity.Detail");
                     });
                 }
             },

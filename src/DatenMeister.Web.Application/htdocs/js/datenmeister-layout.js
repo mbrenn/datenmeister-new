@@ -52,13 +52,13 @@ define(["require", "exports", "./datenmeister-viewport", "./datenmeister-view", 
             var tabFile = ribbon.getOrAddTab("File");
             tabFile.addIcon("Home", "img/icons/home", function () { tthis.mainViewPort.gotoHome(); });
             tabFile.addIcon("Refresh", "img/icons/refresh_update", function () { tthis.mainViewPort.refresh(); });
-            tabFile.addIcon("Workspaces", "img/icons/database", function () { DMView.navigateToWorkspaces(tthis.mainViewPort); });
+            tabFile.addIcon("Workspaces", "img/icons/database", function () { DMView.WorkspaceList.navigateToWorkspaces(tthis.mainViewPort); });
             tabFile.addIcon("Add Workspace", "img/icons/database-add", function () { DMDialog.showDialogNewWorkspace(tthis.mainViewPort); });
             if (changeEvent !== null && changeEvent !== undefined && changeEvent.viewState.workspace !== undefined) {
                 // Ok, we have a workspace
                 tabFile.addIcon("Delete Workspace", "img/icons/database-delete", function () {
                     DMClient.WorkspaceApi.deleteWorkspace(changeEvent.viewState.workspace)
-                        .done(function () { return DMView.navigateToWorkspaces(tthis.mainViewPort); });
+                        .done(function () { return DMView.WorkspaceList.navigateToWorkspaces(tthis.mainViewPort); });
                 });
                 tabFile.addIcon("Create Extent", "img/icons/folder_open-new", function () {
                     DMDialog.showNavigationForNewExtents(tthis.mainViewPort, changeEvent.viewState.workspace);
@@ -69,7 +69,7 @@ define(["require", "exports", "./datenmeister-viewport", "./datenmeister-view", 
                 if (changeEvent.viewState.extent !== undefined) {
                     tabFile.addIcon("Delete Extent", "img/icons/folder_open-delete", function () {
                         DMClient.ExtentApi.deleteExtent(changeEvent.viewState.workspace, changeEvent.viewState.extent)
-                            .done(function () { return DMView.navigateToExtents(tthis.mainViewPort, changeEvent.viewState.workspace); });
+                            .done(function () { return DMView.ExtentList.navigateToExtents(tthis.mainViewPort, changeEvent.viewState.workspace); });
                     });
                     tabFile.addIcon("Export Extent", "img/icons/folder_open-download", function () {
                         // navigateToExportExtent(changeEvent.viewState.workspace, changeEvent.viewState.extent);

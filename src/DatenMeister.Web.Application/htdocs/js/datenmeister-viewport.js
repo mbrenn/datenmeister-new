@@ -30,33 +30,25 @@ define(["require", "exports", "./datenmeister-view"], function (require, exports
             if (viewState.workspace === undefined) {
                 history.pushState({}, "", "#ws={all}");
             }
+            if (viewState.extent === undefined) {
+                history.pushState({}, "", "#ws=" + encodeURIComponent(viewState.workspace));
+            }
         };
         ViewPort.prototype.navigateToView = function (view) {
             this.setView(view);
         };
-        ViewPort.prototype.showExtents = function (viewport, workspaceId) {
-            var tthis = this;
-            tthis.createTitle(workspaceId);
-            var extentView = new DMView.ExtentView(this);
-            extentView.onItemView = function (ws, extentUrl, itemUrl) {
-                DMView.navigateToItems(viewport, ws, extentUrl);
-                return false;
-            };
-            extentView.load(workspaceId);
-            this.setView(extentView);
-        };
         ViewPort.prototype.showItem = function (viewport, workspaceId, extentUrl, itemUrl, viewname, settings) {
             var tthis = this;
-            var itemView = new DMView.ItemView(this);
+            var itemView = new DMView.ItemDetail.ItemView(this);
             itemView.onItemView = function (ws, extentUrl, itemUrl) {
-                DMView.navigateToItem(viewport, ws, extentUrl, itemUrl, undefined, { isReadonly: true });
+                DMView.ItemDetail.navigateToItem(viewport, ws, extentUrl, itemUrl, undefined, { isReadonly: true });
             };
             this.createTitle(workspaceId, extentUrl, itemUrl);
             itemView.load(workspaceId, extentUrl, itemUrl, settings);
             this.setView(itemView);
         };
         ViewPort.prototype.gotoHome = function () {
-            DMView.navigateToWorkspaces(this);
+            DMView.WorkspaceList.navigateToWorkspaces(this);
         };
         ViewPort.prototype.refresh = function () {
             if (this.currentView !== undefined && this.currentView !== null) {
@@ -100,17 +92,17 @@ define(["require", "exports", "./datenmeister-view"], function (require, exports
             }
             $(".link_workspaces", containerTitle)
                 .click(function () {
-                DMView.navigateToWorkspaces(_this);
+                DMView.WorkspaceList.navigateToWorkspaces(_this);
                 return false;
             });
             $(".link_extents", containerTitle)
                 .click(function () {
-                DMView.navigateToExtents(_this, ws);
+                DMView.ExtentList.navigateToExtents(_this, ws);
                 return false;
             });
             $(".link_items", containerTitle)
                 .click(function () {
-                DMView.navigateToItems(_this, ws, extentUrl);
+                DMView.ItemList.navigateToItems(_this, ws, extentUrl);
                 return false;
             });
         };

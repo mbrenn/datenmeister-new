@@ -6,7 +6,7 @@ import IViewPort = DMI.Views.IViewPort;
 export class ViewResolver{
     resolveView(viewPort: IViewPort, viewState: IViewState) {
         if (viewState.workspace === undefined || viewState.workspace === null) {
-            DMV.navigateToWorkspaces(viewPort);
+            DMV.WorkspaceList.navigateToWorkspaces(viewPort);
         }
     }
 }

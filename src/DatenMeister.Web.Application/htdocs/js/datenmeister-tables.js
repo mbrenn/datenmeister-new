@@ -71,19 +71,22 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
         return ListTableComposer;
     }());
     exports.ListTableComposer = ListTableComposer;
-    var ListDetailConfiguration = (function () {
-        function ListDetailConfiguration() {
+    var DetailTableConfiguration = (function () {
+        function DetailTableConfiguration() {
             this.fields = new Array();
         }
-        return ListDetailConfiguration;
+        return DetailTableConfiguration;
     }());
-    exports.ListDetailConfiguration = ListDetailConfiguration;
+    exports.DetailTableConfiguration = DetailTableConfiguration;
     var DetailTableComposer = (function () {
         function DetailTableComposer(configuration, container) {
             this.configuration = configuration;
             this.container = container;
         }
         DetailTableComposer.prototype.composeTable = function (item) {
+            if (item === undefined || item === null) {
+                item = {};
+            }
             this.item = item;
             this.domTable = $("<table class='table table-condensed'></table>");
             this.composeContent();
@@ -277,5 +280,38 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
         }(FieldBase));
         Fields.DropDownField = DropDownField;
     })(Fields = exports.Fields || (exports.Fields = {}));
+    /**
+     * Converts field data structure to real fields
+     * @param fieldDatas The data to be converted as an array
+     */
+    function convertFieldDataToFields(fieldDatas) {
+        var result = new Array();
+        for (var n in fieldDatas) {
+            result[n] = convertFieldDataToField(fieldDatas[n]);
+        }
+        return result;
+    }
+    exports.convertFieldDataToFields = convertFieldDataToFields;
+    /**
+     * Converts one instance of field data to a real field
+     * @param data Data to be converted
+     */
+    function convertFieldDataToField(data) {
+        var field;
+        switch (data.fieldType) {
+            case DMVM.ColumnTypes.textbox:
+                field = new Fields.TextboxField();
+                break;
+            default:
+                throw "Unknown fieldtype: " + data.fieldType;
+        }
+        field.title = data.title;
+        field.isReadOnly = data.isReadOnly;
+        field.isEnumeration = data.isEnumeration;
+        field.defaultValue = data.defaultValue;
+        field.name = data.name;
+        return field;
+    }
+    exports.convertFieldDataToField = convertFieldDataToField;
 });
 //# sourceMappingURL=datenmeister-tables.js.map

@@ -48,7 +48,7 @@ define(["require", "exports", "./datenmeister-client", "./datenmeister-interface
         configuration.addColumn(new DMVM.TextDataField("URI", "contextUri").withDefaultValue("dm:///"));
         configuration.addColumn(new DMVM.TextDataField("Filename", "filename"));
         configuration.addColumn(new DMVM.TextDataField("Columns", "columns").withDefaultValue("Column1,Column2"));
-        configuration.ws = workspace;
+        // TODO configuration.ws = workspace;
         DMView.navigateToDialog(viewport, configuration);
     }
     exports.showDialogNewCsvExtent = showDialogNewCsvExtent;
@@ -66,7 +66,7 @@ define(["require", "exports", "./datenmeister-client", "./datenmeister-interface
         configuration.addColumn(new DMVM.TextDataField("Workspace", "workspace").withDefaultValue(workspace));
         configuration.addColumn(new DMVM.TextDataField("URI", "contextUri").withDefaultValue("dm:///"));
         configuration.addColumn(new DMVM.TextDataField("Filename", "filename"));
-        configuration.ws = workspace;
+        // TODO configuration.ws = workspace;
         DMView.navigateToDialog(viewport, configuration);
     }
     exports.showDialogAddCsvExtent = showDialogAddCsvExtent;

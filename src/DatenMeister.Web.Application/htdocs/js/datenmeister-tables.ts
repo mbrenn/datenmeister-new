@@ -95,7 +95,7 @@ export class ListTableComposer {
 }
 
 
-export class ListDetailConfiguration {
+export class DetailTableConfiguration {
     fields: Array<Fields.IField>;
 
     constructor() {
@@ -106,7 +106,7 @@ export class ListDetailConfiguration {
 export class DetailTableComposer {
 
     item: any;
-    configuration: ListDetailConfiguration;
+    configuration: DetailTableConfiguration;
     domForEditArray: Array<JQuery>;
     container: JQuery;
     domTable: JQuery;
@@ -115,13 +115,16 @@ export class DetailTableComposer {
     onClickCancel: () => void;
     
 
-    constructor(configuration: ListDetailConfiguration, container: JQuery) {
+    constructor(configuration: DetailTableConfiguration, container: JQuery) {
         this.configuration = configuration;
         this.container = container;
     }
 
 
-    composeTable(item: any):void {
+    composeTable(item?: any): void {
+        if (item === undefined || item === null) {
+            item = {};
+        }
         this.item = item;
         this.domTable = $("<table class='table table-condensed'></table>");
         this.composeContent();
@@ -454,7 +457,7 @@ export namespace Fields {
         lineHeight: number;
         getFieldType(): string { return DMVM.ColumnTypes.textbox; }
 
-        constructor(name: string, title: string) {
+        constructor(name?: string, title?: string) {
             super();
             this.title = title;
             this.name = name;
@@ -495,7 +498,6 @@ export namespace Fields {
     }
 
     export class DropDownField extends FieldBase {
-
         values: Array<string>;
 
         getFieldType(): string {
@@ -519,6 +521,42 @@ export namespace Fields {
             return domDD;
         }
     }
+}
+
+/**
+ * Converts field data structure to real fields
+ * @param fieldDatas The data to be converted as an array
+ */
+export function convertFieldDataToFields(fieldDatas: Array<DMCI.In.IFieldData>): Array<Fields.IField> {
+    var result = new Array<Fields.IField>();
+    for (var n in fieldDatas) {
+        result[n] = convertFieldDataToField(fieldDatas[n]);
+    }
+
+    return result;
+}
+
+/**
+ * Converts one instance of field data to a real field
+ * @param data Data to be converted
+ */
+export function convertFieldDataToField(data: DMCI.In.IFieldData): Fields.IField {
+    var field: Fields.FieldBase;
+
+    switch (data.fieldType) {
+        case DMVM.ColumnTypes.textbox:
+            field = new Fields.TextboxField();
+            break;
+        default:
+            throw "Unknown fieldtype: " + data.fieldType;
+    }
+
+    field.title = data.title;
+    field.isReadOnly = data.isReadOnly;
+    field.isEnumeration = data.isEnumeration;
+    field.defaultValue = data.defaultValue;
+    field.name = data.name;
+    return field;
 
 
 }

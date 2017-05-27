@@ -42,6 +42,10 @@ export class ViewPort {
     }
 
     addViewState(viewState: IViewState) {
+        if (viewState === undefined || viewState === null) {
+            return;
+        }
+
         var url = "#";
         if (viewState.workspace === undefined) {
             url += "ws={all}";

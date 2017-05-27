@@ -509,9 +509,9 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
         ItemDetail.ItemView = ItemView;
     })(ItemDetail = exports.ItemDetail || (exports.ItemDetail = {}));
     function navigateToDialog(viewport, configuration) {
-        var dialog = new DialogView(this);
+        var dialog = new DialogView(viewport);
         dialog.createDialog(configuration);
-        this.setView(dialog);
+        viewport.setView(dialog);
     }
     exports.navigateToDialog = navigateToDialog;
     // This class gives a navigation view with some links which can be clicked by the user and
@@ -538,6 +538,20 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             return _super.call(this, viewport) || this;
         }
         DialogView.prototype.createDialog = function (configuration) {
+            var tableConfiguration = new DMTables.DetailTableConfiguration();
+            tableConfiguration.fields = DMTables.convertFieldDataToFields(configuration.columns);
+            var detailTable = new DMTables.DetailTableComposer(tableConfiguration, this.content);
+            detailTable.composeTable();
+            if (configuration.onOkForm !== undefined && configuration.onOkForm !== null) {
+                detailTable.onClickOk = function (newItem) {
+                    configuration.onOkForm(newItem);
+                };
+            }
+            if (configuration.onCancelForm !== undefined && configuration.onCancelForm !== null) {
+                detailTable.onClickCancel = function () {
+                    configuration.onCancelForm();
+                };
+            }
             /*
             var value = new DMCI.In.ItemContentModel();
             var tableConfiguration = new DMTables.ItemContentConfiguration();
@@ -551,21 +565,12 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 }
             };
     
-            tableConfiguration.onOkForm = () => {
-                if (configuration.onOkForm !== undefined) {
-                    configuration.onOkForm(value);
-                }
-            };
-            var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
-            itemTable.show(this.content);
-    
             this.setViewState({
                     type: DMI.Api.PageType.Dialog,
                     workspace: configuration.ws,
                     extent: configuration.ext
                 });
             */
-            alert("Not implemented");
         };
         return DialogView;
     }(ViewBase));
@@ -589,7 +594,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                     ItemDetail.navigateToItem(tthis.viewport, ws, extentUrl, innerData.newuri);
                 });
             });
-            var domLoaded = _this.addText("Loading...");
+            _this.addText("Loading...");
             // Adds the default one, which creates just an empty, non-defined item.
             // Adds the ones, that can be created
             DMClient.ExtentApi.getCreatableTypes(_this.ws, _this.extentUrl).done(function (data) {

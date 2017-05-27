@@ -36,8 +36,8 @@ export namespace Navigation {
     }
 
     export class DialogConfiguration extends FormForItemConfiguration {
-        ws: string;
-        ext: string;
+        /*ws: string;
+        ext: string;*/
     }
 
     export interface IItemViewSettings {

@@ -1,6 +1,7 @@
 ﻿///<reference path="../../node_modules/@types/underscore/index.d.ts"/>
 import * as DMI from "./datenmeister-interfaces";
 import * as DMCI from "./datenmeister-clientinterface";
+import * as DMVM from "./datenmeister-viewmodels"
 import * as DMTables from "./datenmeister-tables";
 import * as DMClient from "./datenmeister-client";
 import * as DMQuery from "./datenmeister-query";
@@ -142,7 +143,6 @@ export namespace WorkspaceList {
                 });
 
             var table = new DMTables.ListTableComposer(configuration, this.content);
-
             table.composeTable(data);
 
 
@@ -595,9 +595,9 @@ export namespace ItemDetail {
 }
 
 export function navigateToDialog(viewport: IViewPort, configuration: DMI.Navigation.DialogConfiguration): void {
-    var dialog = new DialogView(this);
+    var dialog = new DialogView(viewport);
     dialog.createDialog(configuration);
-    this.setView(dialog);
+    viewport.setView(dialog);
 }
 
 
@@ -626,6 +626,24 @@ export class DialogView extends ViewBase implements DMI.Views.IView {
     }
 
     createDialog(configuration: DMI.Navigation.DialogConfiguration) {
+        var tableConfiguration = new DMTables.DetailTableConfiguration();
+        tableConfiguration.fields = DMTables.convertFieldDataToFields(configuration.columns);
+        
+        var detailTable = new DMTables.DetailTableComposer(tableConfiguration, this.content);
+        detailTable.composeTable();
+
+        if (configuration.onOkForm !== undefined && configuration.onOkForm !== null) {
+            detailTable.onClickOk = (newItem: any) => {
+                configuration.onOkForm(newItem);
+            }
+        }
+
+        if (configuration.onCancelForm !== undefined && configuration.onCancelForm !== null) {
+            detailTable.onClickCancel = () => {
+                configuration.onCancelForm();
+            }
+        }
+
         /*
         var value = new DMCI.In.ItemContentModel();
         var tableConfiguration = new DMTables.ItemContentConfiguration();
@@ -639,21 +657,12 @@ export class DialogView extends ViewBase implements DMI.Views.IView {
             }
         };
 
-        tableConfiguration.onOkForm = () => {
-            if (configuration.onOkForm !== undefined) {
-                configuration.onOkForm(value);
-            }
-        };
-        var itemTable = new DMTables.ItemContentTable(value, tableConfiguration);
-        itemTable.show(this.content);
-
         this.setViewState({
                 type: DMI.Api.PageType.Dialog,
                 workspace: configuration.ws,
                 extent: configuration.ext
             });
         */
-        alert("Not implemented");
     }
 }
 
@@ -685,8 +694,7 @@ export class CreatetableTypesView extends ViewBase implements DMI.Views.IView {
                     });
             });
 
-        var domLoaded = this.addText("Loading...");
-
+        this.addText("Loading...");
         
         // Adds the default one, which creates just an empty, non-defined item.
         // Adds the ones, that can be created

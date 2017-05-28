@@ -38,8 +38,9 @@ namespace DatenMeister.Web.Api
         {
             if (model == null)
             {
-                return new { success = true };
+                return new { success = false };
             }
+
             var workspace = new Workspace(model.name, model.annotation);
             _workspaceCollection.AddWorkspace(workspace);
 

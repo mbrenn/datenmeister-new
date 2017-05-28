@@ -15,6 +15,7 @@ export namespace Views {
 
     export interface IViewPort {
         setView(view: IView): void;
+        navigateBack(): void;
     }
 }
 

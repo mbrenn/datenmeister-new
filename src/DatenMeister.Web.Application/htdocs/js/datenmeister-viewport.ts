@@ -1,9 +1,8 @@
 ﻿import DMI = require("./datenmeister-interfaces");
 import DMView = require("./datenmeister-view");
 import IViewState = DMI.Api.IViewState;
-import IViewPort = DMI.Views.IViewPort;
 
-export class ViewPort {
+export class ViewPort implements DMI.Views.IViewPort {
     private isMasterView: boolean;
     private container: JQuery;
     private layout: DMI.Api.ILayout;
@@ -37,7 +36,7 @@ export class ViewPort {
         }
 
         view.viewport = this;
-        this.addViewState(view.getViewState());
+        this.addViewState(viewState);
         this.currentView = view;
     }
 
@@ -71,9 +70,9 @@ export class ViewPort {
 
     }
 
-
-    navigateToView(view: DMI.Views.IView): void {
-        this.setView(view);
+    navigateBack(): void {
+        alert('X');
+        this.gotoHome();
     }
 
     gotoHome(): void {
@@ -81,6 +80,7 @@ export class ViewPort {
     }
 
     refresh(): void {
+        $(".dm-view", this.container).empty();
         if (this.currentView !== undefined && this.currentView !== null) {
             this.currentView.refresh();
         }
@@ -134,17 +134,17 @@ export class ViewPort {
 
         $(".link_workspaces", containerTitle)
             .click(() => {
-                DMView.WorkspaceList.navigateToWorkspaces(this);
+                DMView.WorkspaceList.navigateToWorkspaces(tthis);
                 return false;
             });
         $(".link_extents", containerTitle)
             .click(() => {
-                DMView.ExtentList.navigateToExtents(this, ws);
+                DMView.ExtentList.navigateToExtents(tthis, ws);
                 return false;
             });
         $(".link_items", containerTitle)
             .click(() => {
-                DMView.ItemList.navigateToItems(this, ws, extentUrl);
+                DMView.ItemList.navigateToItems(tthis, ws, extentUrl);
                 return false;
             });
     }

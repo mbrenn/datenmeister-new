@@ -47,7 +47,7 @@ export module WorkspaceApi {
             url: "/api/datenmeister/workspace/create",
             contentType: "application/json",
             method: "POST",
-            data: model,
+            data: JSON.stringify(model),
             cache: false,
             success: data => {
                 callback.resolve(true);
@@ -66,7 +66,7 @@ export module WorkspaceApi {
             url: "/api/datenmeister/workspace/delete",
             contentType: "application/json",
             method: "POST",
-            data: { name: workspace },
+            data: JSON.stringify({ name: workspace }),
             cache: false,
             success: data => {
                 callback.resolve(true);
@@ -93,7 +93,7 @@ export module ExtentApi {
             {
                 url: "/api/datenmeister/extent/item_create",
                 contentType: "application/json",
-                data: postModel,
+                data: JSON.stringify(postModel),
                 method: "POST",
                 success: (data: any) => { callback.resolve(data); },
                 error: (data: any) => { callback.reject(false); }
@@ -121,7 +121,7 @@ export module ExtentApi {
             {
                 url: "/api/datenmeister/extent/item_create",
                 contentType: "application/json",
-                data: postModel,
+                data: JSON.stringify(postModel),
                 method: "POST",
                 success: (data: any) => { callback.resolve(data); },
                 error: (data: any) => { callback.reject(false); }
@@ -143,7 +143,7 @@ export module ExtentApi {
             {
                 url: "/api/datenmeister/extent/item_delete",
                 contentType: "application/json",
-                data: postModel,
+                data: JSON.stringify(postModel),
                 method: "POST",
                 success: (data: any) => { callback.resolve(true); },
                 error: (data: any) => { callback.reject(false); }
@@ -202,7 +202,7 @@ export module ExtentApi {
             {
                 url: "/api/datenmeister/extent/extent_delete",
                 contentType: "application/json",
-                data: postModel,
+                data: JSON.stringify(postModel),
                 method: "POST",
                 success: (data: any) => { callback.resolve(true); },
                 error: (data: any) => { callback.reject(false); }
@@ -218,7 +218,7 @@ export module ExtentApi {
             {
                 url: "/api/datenmeister/extent/extent_create",
                 contentType: "application/json",
-                data: extentData,
+                data: JSON.stringify(extentData),
                 method: "POST",
                 success: (data: any) => { callback.resolve(true); },
                 error: (data: any) => { callback.reject(false); }
@@ -234,7 +234,7 @@ export module ExtentApi {
             {
                 url: "/api/datenmeister/extent/extent_add",
                 contentType: "application/json",
-                data: extentData,
+                data: JSON.stringify(extentData),
                 method: "POST",
                 success: (data: any) => { callback.resolve(true); },
                 error: (data: any) => { callback.reject(false); }
@@ -314,7 +314,7 @@ export module ItemApi {
 
         $.ajax({
             url: "/api/datenmeister/extent/item_unset_property",
-            data: postModel,
+            data: JSON.stringify(postModel),
             method: "POST",
             contentType: "application/json",
             success: (data: any) => { callback.resolve(true); },
@@ -366,7 +366,7 @@ export module ItemApi {
 
         $.ajax({
             url: "/api/datenmeister/extent/item_set_properties",
-            data: postModel,
+            data: JSON.stringify(postModel),
             method: "POST",
             contentType: "application/json",
             success: (data: any) => { callback.resolve(true); },
@@ -383,7 +383,7 @@ export module ExampleApi {
         var callback = $.Deferred();
         $.ajax({
             url: "/api/datenmeister/example/addzipcodes",
-            data: { ws: workspace },
+            data: JSON.stringify({ ws: workspace }),
             method: "POST",
             contentType: "application/json",
             success: (data: any) => { callback.resolve(true); },

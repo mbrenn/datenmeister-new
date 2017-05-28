@@ -90,7 +90,6 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 this.setViewState({
                     type: DMI.Api.PageType.Workspaces
                 });
-                return this.content;
             };
             WorkspaceView.prototype.createHtmlForWorkbenchs = function (data) {
                 var _this = this;
@@ -509,8 +508,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
         ItemDetail.ItemView = ItemView;
     })(ItemDetail = exports.ItemDetail || (exports.ItemDetail = {}));
     function navigateToDialog(viewport, configuration) {
-        var dialog = new DialogView(viewport);
-        dialog.createDialog(configuration);
+        var dialog = new DialogView(viewport, configuration);
         viewport.setView(dialog);
     }
     exports.navigateToDialog = navigateToDialog;
@@ -534,24 +532,34 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
     exports.EmptyView = EmptyView;
     var DialogView = (function (_super) {
         __extends(DialogView, _super);
-        function DialogView(viewport) {
-            return _super.call(this, viewport) || this;
+        function DialogView(viewport, configuration) {
+            var _this = _super.call(this, viewport) || this;
+            _this.configuration = configuration;
+            return _this;
         }
-        DialogView.prototype.createDialog = function (configuration) {
+        DialogView.prototype.refresh = function () {
+            var tthis = this;
             var tableConfiguration = new DMTables.DetailTableConfiguration();
-            tableConfiguration.fields = DMTables.convertFieldDataToFields(configuration.columns);
+            tableConfiguration.fields = DMTables.convertFieldDataToFields(this.configuration.columns);
             var detailTable = new DMTables.DetailTableComposer(tableConfiguration, this.content);
-            detailTable.composeTable();
-            if (configuration.onOkForm !== undefined && configuration.onOkForm !== null) {
+            if (this.configuration.onOkForm !== undefined && this.configuration.onOkForm !== null) {
                 detailTable.onClickOk = function (newItem) {
-                    configuration.onOkForm(newItem);
+                    tthis.configuration.onOkForm(newItem);
                 };
             }
-            if (configuration.onCancelForm !== undefined && configuration.onCancelForm !== null) {
+            if (this.configuration.onCancelForm !== undefined && this.configuration.onCancelForm !== null) {
                 detailTable.onClickCancel = function () {
-                    configuration.onCancelForm();
+                    tthis.configuration.onCancelForm();
+                    return false;
                 };
             }
+            else {
+                detailTable.onClickCancel = function () {
+                    tthis.viewport.navigateBack();
+                    return false;
+                };
+            }
+            detailTable.composeTable();
             /*
             var value = new DMCI.In.ItemContentModel();
             var tableConfiguration = new DMTables.ItemContentConfiguration();

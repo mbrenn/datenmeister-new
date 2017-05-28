@@ -23,10 +23,13 @@ define(["require", "exports", "./datenmeister-view"], function (require, exports
                 this.layout.throwViewPortChanged(ev);
             }
             view.viewport = this;
-            this.addViewState(view.getViewState());
+            this.addViewState(viewState);
             this.currentView = view;
         };
         ViewPort.prototype.addViewState = function (viewState) {
+            if (viewState === undefined || viewState === null) {
+                return;
+            }
             var url = "#";
             if (viewState.workspace === undefined) {
                 url += "ws={all}";
@@ -48,13 +51,15 @@ define(["require", "exports", "./datenmeister-view"], function (require, exports
             }
             history.pushState({}, "", url);
         };
-        ViewPort.prototype.navigateToView = function (view) {
-            this.setView(view);
+        ViewPort.prototype.navigateBack = function () {
+            alert('X');
+            this.gotoHome();
         };
         ViewPort.prototype.gotoHome = function () {
             DMView.WorkspaceList.navigateToWorkspaces(this);
         };
         ViewPort.prototype.refresh = function () {
+            $(".dm-view", this.container).empty();
             if (this.currentView !== undefined && this.currentView !== null) {
                 this.currentView.refresh();
             }
@@ -76,7 +81,6 @@ define(["require", "exports", "./datenmeister-view"], function (require, exports
             this.layout.throwViewPortChanged(ev);
         };
         ViewPort.prototype.createTitle = function (ws, extentUrl, itemUrl) {
-            var _this = this;
             var tthis = this;
             var containerTitle = $(".container-title", this.container);
             var ba = "&gt;&gt";
@@ -96,17 +100,17 @@ define(["require", "exports", "./datenmeister-view"], function (require, exports
             }
             $(".link_workspaces", containerTitle)
                 .click(function () {
-                DMView.WorkspaceList.navigateToWorkspaces(_this);
+                DMView.WorkspaceList.navigateToWorkspaces(tthis);
                 return false;
             });
             $(".link_extents", containerTitle)
                 .click(function () {
-                DMView.ExtentList.navigateToExtents(_this, ws);
+                DMView.ExtentList.navigateToExtents(tthis, ws);
                 return false;
             });
             $(".link_items", containerTitle)
                 .click(function () {
-                DMView.ItemList.navigateToItems(_this, ws, extentUrl);
+                DMView.ItemList.navigateToItems(tthis, ws, extentUrl);
                 return false;
             });
         };

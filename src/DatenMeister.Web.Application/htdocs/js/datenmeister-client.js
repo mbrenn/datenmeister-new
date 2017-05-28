@@ -42,7 +42,7 @@ define(["require", "exports", "./datenmeister-clientinterface"], function (requi
                 url: "/api/datenmeister/workspace/create",
                 contentType: "application/json",
                 method: "POST",
-                data: model,
+                data: JSON.stringify(model),
                 cache: false,
                 success: function (data) {
                     callback.resolve(true);
@@ -60,7 +60,7 @@ define(["require", "exports", "./datenmeister-clientinterface"], function (requi
                 url: "/api/datenmeister/workspace/delete",
                 contentType: "application/json",
                 method: "POST",
-                data: { name: workspace },
+                data: JSON.stringify({ name: workspace }),
                 cache: false,
                 success: function (data) {
                     callback.resolve(true);
@@ -84,7 +84,7 @@ define(["require", "exports", "./datenmeister-clientinterface"], function (requi
             $.ajax({
                 url: "/api/datenmeister/extent/item_create",
                 contentType: "application/json",
-                data: postModel,
+                data: JSON.stringify(postModel),
                 method: "POST",
                 success: function (data) { callback.resolve(data); },
                 error: function (data) { callback.reject(false); }
@@ -103,7 +103,7 @@ define(["require", "exports", "./datenmeister-clientinterface"], function (requi
             $.ajax({
                 url: "/api/datenmeister/extent/item_create",
                 contentType: "application/json",
-                data: postModel,
+                data: JSON.stringify(postModel),
                 method: "POST",
                 success: function (data) { callback.resolve(data); },
                 error: function (data) { callback.reject(false); }
@@ -121,7 +121,7 @@ define(["require", "exports", "./datenmeister-clientinterface"], function (requi
             $.ajax({
                 url: "/api/datenmeister/extent/item_delete",
                 contentType: "application/json",
-                data: postModel,
+                data: JSON.stringify(postModel),
                 method: "POST",
                 success: function (data) { callback.resolve(true); },
                 error: function (data) { callback.reject(false); }
@@ -171,7 +171,7 @@ define(["require", "exports", "./datenmeister-clientinterface"], function (requi
             $.ajax({
                 url: "/api/datenmeister/extent/extent_delete",
                 contentType: "application/json",
-                data: postModel,
+                data: JSON.stringify(postModel),
                 method: "POST",
                 success: function (data) { callback.resolve(true); },
                 error: function (data) { callback.reject(false); }
@@ -184,7 +184,7 @@ define(["require", "exports", "./datenmeister-clientinterface"], function (requi
             $.ajax({
                 url: "/api/datenmeister/extent/extent_create",
                 contentType: "application/json",
-                data: extentData,
+                data: JSON.stringify(extentData),
                 method: "POST",
                 success: function (data) { callback.resolve(true); },
                 error: function (data) { callback.reject(false); }
@@ -197,7 +197,7 @@ define(["require", "exports", "./datenmeister-clientinterface"], function (requi
             $.ajax({
                 url: "/api/datenmeister/extent/extent_add",
                 contentType: "application/json",
-                data: extentData,
+                data: JSON.stringify(extentData),
                 method: "POST",
                 success: function (data) { callback.resolve(true); },
                 error: function (data) { callback.reject(false); }
@@ -271,7 +271,7 @@ define(["require", "exports", "./datenmeister-clientinterface"], function (requi
             postModel.property = property;
             $.ajax({
                 url: "/api/datenmeister/extent/item_unset_property",
-                data: postModel,
+                data: JSON.stringify(postModel),
                 method: "POST",
                 contentType: "application/json",
                 success: function (data) { callback.resolve(true); },
@@ -316,7 +316,7 @@ define(["require", "exports", "./datenmeister-clientinterface"], function (requi
             }
             $.ajax({
                 url: "/api/datenmeister/extent/item_set_properties",
-                data: postModel,
+                data: JSON.stringify(postModel),
                 method: "POST",
                 contentType: "application/json",
                 success: function (data) { callback.resolve(true); },
@@ -332,7 +332,7 @@ define(["require", "exports", "./datenmeister-clientinterface"], function (requi
             var callback = $.Deferred();
             $.ajax({
                 url: "/api/datenmeister/example/addzipcodes",
-                data: { ws: workspace },
+                data: JSON.stringify({ ws: workspace }),
                 method: "POST",
                 contentType: "application/json",
                 success: function (data) { callback.resolve(true); },

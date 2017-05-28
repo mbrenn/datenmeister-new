@@ -105,7 +105,7 @@ export namespace WorkspaceList {
 
         onWorkspaceSelected: (id: string) => void;
 
-        refresh(): JQuery {
+        refresh(): void {
             var tthis = this;
             DMClient.WorkspaceApi.getAllWorkspaces()
                 .done((data) => {
@@ -116,8 +116,6 @@ export namespace WorkspaceList {
                 {
                     type: DMI.Api.PageType.Workspaces
                 });
-
-            return this.content;
         }
 
         createHtmlForWorkbenchs(data: Array<DMCI.In.IWorkspace>) {
@@ -595,8 +593,7 @@ export namespace ItemDetail {
 }
 
 export function navigateToDialog(viewport: IViewPort, configuration: DMI.Navigation.DialogConfiguration): void {
-    var dialog = new DialogView(viewport);
-    dialog.createDialog(configuration);
+    var dialog = new DialogView(viewport, configuration);
     viewport.setView(dialog);
 }
 
@@ -621,28 +618,41 @@ export class EmptyView extends ViewBase implements DMI.Views.IView {
 }
 
 export class DialogView extends ViewBase implements DMI.Views.IView {
-    constructor(viewport: DMI.Views.IViewPort) {
+    /**
+     * Configuration fo the dialog
+     */
+    configuration: DMI.Navigation.DialogConfiguration;
+
+    constructor(viewport: DMI.Views.IViewPort, configuration: DMI.Navigation.DialogConfiguration) {
         super(viewport);
+        this.configuration = configuration;
     }
 
-    createDialog(configuration: DMI.Navigation.DialogConfiguration) {
+    refresh(): void {
+        var tthis = this;
         var tableConfiguration = new DMTables.DetailTableConfiguration();
-        tableConfiguration.fields = DMTables.convertFieldDataToFields(configuration.columns);
+        tableConfiguration.fields = DMTables.convertFieldDataToFields(this.configuration.columns);
         
         var detailTable = new DMTables.DetailTableComposer(tableConfiguration, this.content);
-        detailTable.composeTable();
 
-        if (configuration.onOkForm !== undefined && configuration.onOkForm !== null) {
+        if (this.configuration.onOkForm !== undefined && this.configuration.onOkForm !== null) {
             detailTable.onClickOk = (newItem: any) => {
-                configuration.onOkForm(newItem);
+                tthis.configuration.onOkForm(newItem);
             }
         }
 
-        if (configuration.onCancelForm !== undefined && configuration.onCancelForm !== null) {
+        if (this.configuration.onCancelForm !== undefined && this.configuration.onCancelForm !== null) {
             detailTable.onClickCancel = () => {
-                configuration.onCancelForm();
+                tthis.configuration.onCancelForm();
+                return false;
+            }
+        } else {
+            detailTable.onClickCancel = () => {
+                tthis.viewport.navigateBack();
+                return false;
             }
         }
+        detailTable.composeTable();
 
         /*
         var value = new DMCI.In.ItemContentModel();

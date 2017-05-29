@@ -1,4 +1,4 @@
-define(["require", "exports", "./datenmeister-view"], function (require, exports, DMView) {
+define(["require", "exports", "./datenmeister-view", "./datenmeister-viewresolver"], function (require, exports, DMView, DMViewResolver) {
     "use strict";
     exports.__esModule = true;
     var ViewPort = (function () {
@@ -6,6 +6,7 @@ define(["require", "exports", "./datenmeister-view"], function (require, exports
             this.container = container;
             this.layout = layout;
             this.isMasterView = true;
+            this.viewStateHistory = new Array();
         }
         /**
          * Sets the view into the dom
@@ -26,7 +27,7 @@ define(["require", "exports", "./datenmeister-view"], function (require, exports
             this.addViewState(viewState);
             this.currentView = view;
         };
-        ViewPort.prototype.addViewState = function (viewState) {
+        ViewPort.prototype.gotoViewState = function (viewState) {
             if (viewState === undefined || viewState === null) {
                 return;
             }
@@ -51,9 +52,15 @@ define(["require", "exports", "./datenmeister-view"], function (require, exports
             }
             history.pushState({}, "", url);
         };
+        ViewPort.prototype.addViewState = function (viewState) {
+            this.gotoViewState(viewState);
+            this.viewStateHistory.push(viewState);
+        };
         ViewPort.prototype.navigateBack = function () {
-            alert('X');
-            this.gotoHome();
+            this.viewStateHistory.pop();
+            var viewState = this.viewStateHistory[this.viewStateHistory.length - 1];
+            this.gotoViewState(viewState);
+            DMViewResolver.resolveView(this, viewState);
         };
         ViewPort.prototype.gotoHome = function () {
             DMView.WorkspaceList.navigateToWorkspaces(this);

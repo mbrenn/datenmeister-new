@@ -1,5 +1,6 @@
 ﻿import DMI = require("./datenmeister-interfaces");
 import DMView = require("./datenmeister-view");
+import DMViewResolver = require("./datenmeister-viewresolver");
 import IViewState = DMI.Api.IViewState;
 
 export class ViewPort implements DMI.Views.IViewPort {
@@ -10,10 +11,13 @@ export class ViewPort implements DMI.Views.IViewPort {
     viewState: DMI.Api.IViewState;
     currentView: DMI.Views.IView;
 
+    viewStateHistory: Array<DMI.Api.IViewState>;
+
     constructor(container: JQuery, layout: DMI.Api.ILayout) {
         this.container = container;
         this.layout = layout;
         this.isMasterView = true;
+        this.viewStateHistory = new Array<DMI.Api.IViewState>();
     }
 
     /**
@@ -40,7 +44,7 @@ export class ViewPort implements DMI.Views.IViewPort {
         this.currentView = view;
     }
 
-    addViewState(viewState: IViewState) {
+    gotoViewState(viewState: IViewState) {
         if (viewState === undefined || viewState === null) {
             return;
         }
@@ -65,14 +69,22 @@ export class ViewPort implements DMI.Views.IViewPort {
         if (viewState.viewname !== undefined && viewState.viewname !== null) {
             url += `&view=${encodeURIComponent(viewState.viewname)}`;
         }
-
         history.pushState({}, "", url);
+    }
+
+    addViewState(viewState: IViewState) {
+
+        this.gotoViewState(viewState);
+        this.viewStateHistory.push(viewState);
 
     }
 
     navigateBack(): void {
-        alert('X');
-        this.gotoHome();
+        this.viewStateHistory.pop();
+        var viewState = this.viewStateHistory[this.viewStateHistory.length - 1];
+        this.gotoViewState(viewState);
+
+        DMViewResolver.resolveView(this, viewState);
     }
 
     gotoHome(): void {

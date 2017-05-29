@@ -48,6 +48,8 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
                 var domColumn = $("<th></th>");
                 domColumn.text(field.title);
                 domHeadRow.append(domColumn);
+                // Apply style to headline cell
+                field.applyStandardStyles(domColumn);
             }
             this.domTable.append(domHeadRow);
             // Create content
@@ -62,8 +64,11 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
                 for (var f in this.configuration.fields) {
                     field = this.configuration.fields[f];
                     var domCell = $("<td></td>");
-                    domCell.append(field.createDom(item));
+                    var domField = field.createDom(item);
+                    domCell.append(domField);
                     domRow.append(domCell);
+                    // Apply style to headline cell
+                    field.applyStandardStyles(domCell);
                 }
                 this.domTable.append(domRow);
             }
@@ -174,10 +179,39 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
     (function (Fields) {
         function addEditButton(configuration, onClick) {
             var buttonField = new ButtonField("EDIT", onClick);
+            buttonField.horizontalAlignment = Alignments.Right;
             configuration.fields[configuration.fields.length] = buttonField;
             return buttonField;
         }
         Fields.addEditButton = addEditButton;
+        function addDeleteButton(configuration, onClick) {
+            var buttonField = new ButtonField("DELETE");
+            buttonField.horizontalAlignment = Alignments.Right;
+            buttonField.click(function (item, button) {
+                if (button !== undefined && button.state === true) {
+                    onClick(item);
+                }
+                else {
+                    button.state = true;
+                    button.setText("CONFIRM");
+                }
+            });
+            configuration.fields[configuration.fields.length] = buttonField;
+            return buttonField;
+        }
+        Fields.addDeleteButton = addDeleteButton;
+        /**
+         * Enumerates the alignments
+         */
+        var Alignments;
+        (function (Alignments) {
+            Alignments[Alignments["Left"] = 0] = "Left";
+            Alignments[Alignments["Center"] = 1] = "Center";
+            Alignments[Alignments["Right"] = 2] = "Right";
+            Alignments[Alignments["Top"] = 3] = "Top";
+            Alignments[Alignments["Middle"] = 4] = "Middle";
+            Alignments[Alignments["Bottom"] = 5] = "Bottom";
+        })(Alignments = Fields.Alignments || (Fields.Alignments = {}));
         var FieldBase = (function () {
             function FieldBase() {
             }
@@ -186,6 +220,11 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
             FieldBase.prototype.readOnly = function () {
                 this.isReadOnly = true;
                 return this;
+            };
+            FieldBase.prototype.applyStandardStyles = function (dom) {
+                if (this.horizontalAlignment === Alignments.Right) {
+                    dom.css("text-align", "right");
+                }
             };
             return FieldBase;
         }());
@@ -198,20 +237,41 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
                 _this.onClick = onClick;
                 return _this;
             }
+            ButtonField.prototype.click = function (onClick) {
+                this.onClick = onClick;
+            };
             ButtonField.prototype.createDom = function (item) {
                 var _this = this;
-                var button = $("<button href='#' class='btn btn-primary'></button>");
-                button.click(function () {
-                    _this.onClick(item);
+                var domButton = $("<button href='#' class='btn btn-primary'></button>");
+                var instance = new ButtonFieldInstance();
+                instance.domContainer = domButton;
+                domButton.click(function () {
+                    _this.onClick(item, instance);
                     return false;
                 });
-                button.text(this.title);
-                return button;
+                domButton.text(this.title);
+                return domButton;
             };
             ;
             return ButtonField;
         }(FieldBase));
         Fields.ButtonField = ButtonField;
+        var ButtonFieldInstance = (function () {
+            function ButtonFieldInstance() {
+                this.state = false;
+            }
+            ButtonFieldInstance.prototype.setText = function (text) {
+                this.domContainer.text(text);
+            };
+            ButtonFieldInstance.prototype.setState = function (state) {
+                this.state = state;
+            };
+            ButtonFieldInstance.prototype.getState = function () {
+                return this.state;
+            };
+            return ButtonFieldInstance;
+        }());
+        Fields.ButtonFieldInstance = ButtonFieldInstance;
         var TextboxField = (function (_super) {
             __extends(TextboxField, _super);
             function TextboxField(name, title) {

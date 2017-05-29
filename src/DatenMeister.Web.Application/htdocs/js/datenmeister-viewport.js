@@ -59,7 +59,7 @@ define(["require", "exports", "./datenmeister-view"], function (require, exports
             DMView.WorkspaceList.navigateToWorkspaces(this);
         };
         ViewPort.prototype.refresh = function () {
-            $(".dm-view", this.container).empty();
+            //$(".dm-view", this.container).empty();
             if (this.currentView !== undefined && this.currentView !== null) {
                 this.currentView.refresh();
             }

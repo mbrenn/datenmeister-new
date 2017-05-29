@@ -83,6 +83,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             }
             WorkspaceView.prototype.refresh = function () {
                 var tthis = this;
+                this.content.empty();
                 DMClient.WorkspaceApi.getAllWorkspaces()
                     .done(function (data) {
                     tthis.createHtmlForWorkbenchs(data);
@@ -102,10 +103,12 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 configuration.fields = fields;
                 DMTables.Fields.addEditButton(configuration, function (item) {
                     var workspaceId = item.id;
-                    if (_this.onWorkspaceSelected != undefined) {
-                        _this.onWorkspaceSelected(workspaceId);
-                    }
                     ExtentList.navigateToExtents(tthis.viewport, workspaceId);
+                    return false;
+                });
+                DMTables.Fields.addDeleteButton(configuration, function (item) {
+                    var workspaceId = item.id;
+                    DMClient.WorkspaceApi.deleteWorkspace(workspaceId).done(function () { return WorkspaceList.navigateToWorkspaces(tthis.viewport); });
                     return false;
                 });
                 var table = new DMTables.ListTableComposer(configuration, this.content);

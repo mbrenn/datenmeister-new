@@ -103,10 +103,9 @@ export namespace WorkspaceList {
             super(viewport);
         }
 
-        onWorkspaceSelected: (id: string) => void;
-
         refresh(): void {
             var tthis = this;
+            this.content.empty();
             DMClient.WorkspaceApi.getAllWorkspaces()
                 .done((data) => {
                     tthis.createHtmlForWorkbenchs(data);
@@ -132,11 +131,16 @@ export namespace WorkspaceList {
                 configuration,
                 (item: DMCI.In.IWorkspace) => {
                     var workspaceId = item.id;
-                    if (this.onWorkspaceSelected != undefined) {
-                        this.onWorkspaceSelected(workspaceId);
-                    }
-
                     ExtentList.navigateToExtents(tthis.viewport, workspaceId);
+                    return false;
+                });
+
+            DMTables.Fields.addDeleteButton(
+                configuration,
+                (item: DMCI.In.IWorkspace) => {
+                    var workspaceId = item.id;
+                    DMClient.WorkspaceApi.deleteWorkspace(workspaceId).done(
+                        () => WorkspaceList.navigateToWorkspaces(tthis.viewport));
                     return false;
                 });
 

@@ -65,6 +65,9 @@ export class ListTableComposer {
             domColumn.text(field.title);
             domHeadRow.append(domColumn);
 
+            // Apply style to headline cell
+            field.applyStandardStyles(domColumn);
+
         }
 
         this.domTable.append(domHeadRow);
@@ -84,8 +87,13 @@ export class ListTableComposer {
             for (var f in this.configuration.fields) {
                 field = this.configuration.fields[f];
                 var domCell = $("<td></td>");
-                domCell.append(field.createDom(item));
+                var domField = field.createDom(item);
+                domCell.append(domField);
                 domRow.append(domCell);
+
+                // Apply style to headline cell
+                field.applyStandardStyles(domCell);
+
             }
 
             this.domTable.append(domRow);
@@ -394,9 +402,28 @@ export class DetailTableComposer {
 export namespace Fields {
     export function addEditButton(
         configuration: ListTableConfiguration,
-        onClick: (item: any) => void) :IField
-    {
+        onClick: (item: any) => void): IField {
         var buttonField = new ButtonField("EDIT", onClick);
+        buttonField.horizontalAlignment = Alignments.Right;
+        configuration.fields[configuration.fields.length] = buttonField;
+        return buttonField;
+    }
+
+    export function addDeleteButton(
+        configuration: ListTableConfiguration,
+        onClick: (item: any) => void): IField {
+        var buttonField = new ButtonField("DELETE");
+        buttonField.horizontalAlignment = Alignments.Right;
+        buttonField.click((item: any, button: ButtonFieldInstance) => {
+            if (button !== undefined && button.state === true) {
+                onClick(item);
+            } else {
+                button.state = true;
+                button.setText("CONFIRM");
+            }
+
+        });
+
         configuration.fields[configuration.fields.length] = buttonField;
         return buttonField;
     }
@@ -411,7 +438,22 @@ export namespace Fields {
         isReadOnly?: boolean;
 
         createDom(item: any): JQuery;
+        applyStandardStyles(domCell: JQuery);
 
+    }
+
+    /**
+     * Enumerates the alignments
+     */
+    export enum Alignments
+    {
+        Left,
+        Center,
+        Right,
+        Top, 
+        Middle,
+        Bottom
+        
     }
 
     export class FieldBase implements IField {
@@ -420,6 +462,7 @@ export namespace Fields {
         defaultValue: any;
         isEnumeration: boolean;
         isReadOnly?: boolean;
+        horizontalAlignment: Alignments;
 
         getFieldType(): string { throw new Error("Not implemented"); }
 
@@ -429,28 +472,66 @@ export namespace Fields {
             this.isReadOnly = true;
             return this;
         }
+
+        applyStandardStyles(dom: JQuery) {
+            if (this.horizontalAlignment === Alignments.Right) {
+                dom.css("text-align", "right");
+            }
+        }
     }
 
     export class ButtonField extends FieldBase {
-
-        onClick: (item: any) => void;
+        onClick: (item: any, button: ButtonFieldInstance) => void;
 
         constructor(title: string,
-            onClick: (item: any) => void) {
+            onClick?: (item: any, button: ButtonFieldInstance) => void) {
             super();
             this.title = title;
             this.onClick = onClick;
         }
 
+        click(onClick: (item: any, button: ButtonFieldInstance) => void) {
+            this.onClick = onClick;
+        }
+
         createDom(item: any): JQuery {
-            var button = $("<button href='#' class='btn btn-primary'></button>");
-            button.click(() => {
-                this.onClick(item);
+            var domButton = $("<button href='#' class='btn btn-primary'></button>");
+
+            var instance = new ButtonFieldInstance();
+            instance.domContainer = domButton;
+
+            domButton.click(() => {
+                this.onClick(item, instance);
                 return false;
             });
-            button.text(this.title);
-            return button;
+            domButton.text(this.title);
+            return domButton;
         };
+    }
+
+    export class ButtonFieldInstance {
+        /**
+         * Just a status for delete button
+         */
+        state: Boolean;
+
+        domContainer: JQuery;
+
+        constructor() {
+            this.state = false;
+        }
+
+        setText(text: string): void {
+            this.domContainer.text(text);
+        }
+
+        setState(state: Boolean) {
+            this.state = state;
+        }
+
+        getState(): Boolean {
+            return this.state;
+        }
     }
 
     export class TextboxField extends FieldBase {

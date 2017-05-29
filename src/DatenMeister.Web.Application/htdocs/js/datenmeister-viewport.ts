@@ -80,7 +80,7 @@ export class ViewPort implements DMI.Views.IViewPort {
     }
 
     refresh(): void {
-        $(".dm-view", this.container).empty();
+        //$(".dm-view", this.container).empty();
         if (this.currentView !== undefined && this.currentView !== null) {
             this.currentView.refresh();
         }

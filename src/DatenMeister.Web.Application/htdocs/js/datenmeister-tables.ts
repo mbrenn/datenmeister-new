@@ -93,7 +93,6 @@ export class ListTableComposer {
 
                 // Apply style to headline cell
                 field.applyStandardStyles(domCell);
-
             }
 
             this.domTable.append(domRow);
@@ -171,6 +170,7 @@ export class DetailTableComposer {
             domRow.append(domColumn);
 
             domColumn = $("<td></td>");
+
             domRow.append(domColumn);
 
             this.domForEditArray[field.name] = domForEdit;
@@ -405,6 +405,7 @@ export namespace Fields {
         onClick: (item: any) => void): IField {
         var buttonField = new ButtonField("EDIT", onClick);
         buttonField.horizontalAlignment = Alignments.Right;
+        buttonField.width = -1;
         configuration.fields[configuration.fields.length] = buttonField;
         return buttonField;
     }
@@ -414,6 +415,7 @@ export namespace Fields {
         onClick: (item: any) => void): IField {
         var buttonField = new ButtonField("DELETE");
         buttonField.horizontalAlignment = Alignments.Right;
+        buttonField.width = -1;
         buttonField.click((item: any, button: ButtonFieldInstance) => {
             if (button !== undefined && button.state === true) {
                 onClick(item);
@@ -436,6 +438,11 @@ export namespace Fields {
         defaultValue: any;
         isEnumeration: boolean;
         isReadOnly?: boolean;
+        /**
+         * Stores the with of the field.
+         * If the width is -1, the corresponding column will be set to a minimum width
+         */
+        width: number;
 
         createDom(item: any): JQuery;
         applyStandardStyles(domCell: JQuery);
@@ -463,6 +470,7 @@ export namespace Fields {
         isEnumeration: boolean;
         isReadOnly?: boolean;
         horizontalAlignment: Alignments;
+        width: number;
 
         getFieldType(): string { throw new Error("Not implemented"); }
 
@@ -476,6 +484,13 @@ export namespace Fields {
         applyStandardStyles(dom: JQuery) {
             if (this.horizontalAlignment === Alignments.Right) {
                 dom.css("text-align", "right");
+            }
+
+            // Defines the width of the cell
+            if (this.width === -1) {
+                dom.css("width", "1%");
+            } else if (this.width !== undefined && this.width !== null) {
+                dom.css("width", this.width + "%");
             }
         }
     }

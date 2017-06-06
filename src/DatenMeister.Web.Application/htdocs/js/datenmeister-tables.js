@@ -180,6 +180,7 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
         function addEditButton(configuration, onClick) {
             var buttonField = new ButtonField("EDIT", onClick);
             buttonField.horizontalAlignment = Alignments.Right;
+            buttonField.width = -1;
             configuration.fields[configuration.fields.length] = buttonField;
             return buttonField;
         }
@@ -187,6 +188,7 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
         function addDeleteButton(configuration, onClick) {
             var buttonField = new ButtonField("DELETE");
             buttonField.horizontalAlignment = Alignments.Right;
+            buttonField.width = -1;
             buttonField.click(function (item, button) {
                 if (button !== undefined && button.state === true) {
                     onClick(item);
@@ -224,6 +226,13 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
             FieldBase.prototype.applyStandardStyles = function (dom) {
                 if (this.horizontalAlignment === Alignments.Right) {
                     dom.css("text-align", "right");
+                }
+                // Defines the width of the cell
+                if (this.width === -1) {
+                    dom.css("width", "1%");
+                }
+                else if (this.width !== undefined && this.width !== null) {
+                    dom.css("width", this.width + "%");
                 }
             };
             return FieldBase;

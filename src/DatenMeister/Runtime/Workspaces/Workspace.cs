@@ -41,12 +41,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         public Workspace(string id, string annotation = null)
         {
-            if (id == null)
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
-
-            this.id = id;
+            this.id = id ?? throw new ArgumentNullException(nameof(id));
             this.annotation = annotation;
         }
 

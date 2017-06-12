@@ -67,9 +67,7 @@ namespace DatenMeister.Uml
         public Bootstrapper(
             IWorkspaceLogic workspaceLogic)
         {
-            if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
-
-            _workspaceLogic = workspaceLogic;
+            _workspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
         }
 
         private void StrapUml(
@@ -84,17 +82,8 @@ namespace DatenMeister.Uml
 
         private void StrapUmlSlim(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure)
         {
-            if (umlInfrastructure == null)
-            {
-                throw new ArgumentNullException(nameof(umlInfrastructure));
-            }
-            if (primitiveInfrastructure == null)
-            {
-                throw new ArgumentNullException(nameof(primitiveInfrastructure));
-            }
-
-            UmlInfrastructure = umlInfrastructure;
-            PrimitiveTypesInfrastructure = primitiveInfrastructure;
+            UmlInfrastructure = umlInfrastructure ?? throw new ArgumentNullException(nameof(umlInfrastructure));
+            PrimitiveTypesInfrastructure = primitiveInfrastructure ?? throw new ArgumentNullException(nameof(primitiveInfrastructure));
         }
 
         private void StrapMof(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure, IUriExtent mofInfrastructure)
@@ -106,22 +95,9 @@ namespace DatenMeister.Uml
 
         private void StrapMofSlim(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure, IUriExtent mofInfrastructure)
         {
-            if (umlInfrastructure == null)
-            {
-                throw new ArgumentNullException(nameof(umlInfrastructure));
-            }
-            if (primitiveInfrastructure == null)
-            {
-                throw new ArgumentNullException(nameof(primitiveInfrastructure));
-            }
-            if (mofInfrastructure == null)
-            {
-                throw new ArgumentNullException(nameof(mofInfrastructure));
-            }
-
-            UmlInfrastructure = umlInfrastructure;
-            MofInfrastructure = mofInfrastructure;
-            PrimitiveTypesInfrastructure = primitiveInfrastructure;
+            UmlInfrastructure = umlInfrastructure ?? throw new ArgumentNullException(nameof(umlInfrastructure));
+            MofInfrastructure = mofInfrastructure ?? throw new ArgumentNullException(nameof(mofInfrastructure));
+            PrimitiveTypesInfrastructure = primitiveInfrastructure ?? throw new ArgumentNullException(nameof(primitiveInfrastructure));
         }
 
         /// <summary>

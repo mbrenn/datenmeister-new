@@ -27,6 +27,9 @@ define(["require", "exports", "./datenmeister-view"], function (require, exports
             this.currentView = view;
         };
         ViewPort.prototype.addViewState = function (viewState) {
+            if (viewState === undefined || viewState === null) {
+                return;
+            }
             var url = "#";
             if (viewState.workspace === undefined) {
                 url += "ws={all}";

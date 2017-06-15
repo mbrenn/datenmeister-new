@@ -178,7 +178,7 @@ export namespace ExtentList {
             this.ws = ws;
         }
 
-        load(): JQuery {
+        refresh(): void {
             var tthis = this;
             // TODO tthis.createTitle(workspaceId);
             this.onItemView = (ws: string, extentUrl: string, itemUrl: string) => {
@@ -186,31 +186,45 @@ export namespace ExtentList {
                 return false;
             };
 
-            var callback = $.Deferred();
-            $.ajax(
-                {
-                    url: `/api/datenmeister/extent/all?ws=${encodeURIComponent(tthis.ws)}`,
-                    cache: false,
-                    success: (data: Array<DMCI.In.IExtent>) => {
-                        tthis.createHtmlForWorkspace(data);
-                        callback.resolve(true);
-                    },
-                    error: data => {
-                        callback.reject(false);
-                    }
+            DMClient.ExtentApi.getExtents(this.ws)
+                .done((data: Array<DMCI.In.IExtent>) => {
+                    tthis.createHtmlForWorkspace(data);
                 });
 
             this.setViewState({
                 type: DMI.Api.PageType.Extents,
                 workspace: this.ws
             });
-
-            this.content = $("<div></div>");
-
-            return this.content;
         }
 
         createHtmlForWorkspace(data: Array<DMCI.In.IExtent>) {
+            var tthis = this;
+            var fields = [
+                new DMTables.Fields.TextboxField("uri", "Uri").readOnly(),
+                new DMTables.Fields.TextboxField("count", "Items").readOnly(),
+                new DMTables.Fields.TextboxField("dataLayer", "Layer").readOnly(),
+                new DMTables.Fields.TextboxField("type", "Type").readOnly()
+            ];
+
+            var configuration = new DMTables.ListTableConfiguration();
+            configuration.fields = fields;
+
+            DMTables.Fields.addEditButton(
+                configuration,
+                (item: DMCI.In.IExtent) => {
+                    alert('X');
+                });
+
+            DMTables.Fields.addDeleteButton(
+                configuration,
+                (item: DMCI.In.IExtent) => {
+                    alert('Del');
+                });
+
+            var table = new DMTables.ListTableComposer(configuration, this.content);
+            table.composeTable(data);
+
+            /*
             var tthis = this;
             this.content.empty();
 
@@ -239,7 +253,7 @@ export namespace ExtentList {
                 }
 
                 this.content.append(compiledTable);
-            }
+            }*/
 
             this.addButtonLink(
                 "Add new Extent",

@@ -82,6 +82,24 @@ export module WorkspaceApi {
 
 export module ExtentApi {
 
+    export function getExtents(ws: string): JQueryDeferred<Array<any>> {
+
+        var callback = $.Deferred();
+        $.ajax(
+            {
+                url: `/api/datenmeister/extent/all?ws=${encodeURIComponent(ws)}`,
+                cache: false,
+                success: (data: Array<DMC.In.IExtent>) => {
+                    callback.resolve(data);
+                },
+                error: data => {
+                    callback.reject(false);
+                }
+            });
+
+        return callback
+    }
+
     export function createItem(ws: string, extentUrl: string, metaclass?: string): JQueryDeferred<DMC.In.ICreateItemResult> {
         var callback = $.Deferred();
         var postModel = new DMC.Out.ItemCreateModel();

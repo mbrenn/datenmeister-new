@@ -75,6 +75,21 @@ define(["require", "exports", "./datenmeister-clientinterface"], function (requi
     })(WorkspaceApi = exports.WorkspaceApi || (exports.WorkspaceApi = {}));
     var ExtentApi;
     (function (ExtentApi) {
+        function getExtents(ws) {
+            var callback = $.Deferred();
+            $.ajax({
+                url: "/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws),
+                cache: false,
+                success: function (data) {
+                    callback.resolve(data);
+                },
+                error: function (data) {
+                    callback.reject(false);
+                }
+            });
+            return callback;
+        }
+        ExtentApi.getExtents = getExtents;
         function createItem(ws, extentUrl, metaclass) {
             var callback = $.Deferred();
             var postModel = new DMC.Out.ItemCreateModel();

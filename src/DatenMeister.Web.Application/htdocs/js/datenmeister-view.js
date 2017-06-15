@@ -139,7 +139,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 _this.ws = ws;
                 return _this;
             }
-            ExtentView.prototype.load = function () {
+            ExtentView.prototype.refresh = function () {
                 var _this = this;
                 var tthis = this;
                 // TODO tthis.createTitle(workspaceId);
@@ -147,50 +147,63 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                     ItemList.navigateToItems(_this.viewport, ws, extentUrl);
                     return false;
                 };
-                var callback = $.Deferred();
-                $.ajax({
-                    url: "/api/datenmeister/extent/all?ws=" + encodeURIComponent(tthis.ws),
-                    cache: false,
-                    success: function (data) {
-                        tthis.createHtmlForWorkspace(data);
-                        callback.resolve(true);
-                    },
-                    error: function (data) {
-                        callback.reject(false);
-                    }
+                DMClient.ExtentApi.getExtents(this.ws)
+                    .done(function (data) {
+                    tthis.createHtmlForWorkspace(data);
                 });
                 this.setViewState({
                     type: DMI.Api.PageType.Extents,
                     workspace: this.ws
                 });
-                this.content = $("<div></div>");
-                return this.content;
             };
             ExtentView.prototype.createHtmlForWorkspace = function (data) {
-                var _this = this;
+                var tthis = this;
+                var fields = [
+                    new DMTables.Fields.TextboxField("uri", "Uri").readOnly(),
+                    new DMTables.Fields.TextboxField("count", "Items").readOnly(),
+                    new DMTables.Fields.TextboxField("dataLayer", "Layer").readOnly(),
+                    new DMTables.Fields.TextboxField("type", "Type").readOnly()
+                ];
+                var configuration = new DMTables.ListTableConfiguration();
+                configuration.fields = fields;
+                DMTables.Fields.addEditButton(configuration, function (item) {
+                    alert('X');
+                });
+                DMTables.Fields.addDeleteButton(configuration, function (item) {
+                    alert('Del');
+                });
+                var table = new DMTables.ListTableComposer(configuration, this.content);
+                table.composeTable(data);
+                /*
                 var tthis = this;
                 this.content.empty();
+    
                 if (data.length === 0) {
                     this.content.html("<p>No extents were found</p>");
-                }
-                else {
+                } else {
                     var compiledTable = $($("#template_extent_table").html());
                     var compiled = _.template($("#template_extent").html());
                     for (var n in data) {
                         if (data.hasOwnProperty(n)) {
-                            var entry = data[n];
-                            var line = compiled(entry);
-                            var dom = $(line);
+                            var entry: DMCI.In.IExtent = data[n];
+                            var line: string = compiled(entry);
+                            var dom: JQuery = $(line);
                             $(".data", dom)
-                                .click((function (localEntry) { return (function () {
-                                ItemList.navigateToItems(_this.viewport, tthis.ws, localEntry.uri);
-                                return false;
-                            }); })(entry));
+                                .click(
+                                    ((localEntry: DMCI.In.IExtent) => (
+                                    () => {
+                                            ItemList.navigateToItems(this.viewport, tthis.ws, localEntry.uri);
+                                            return false;
+                                        })
+                                    )(entry)
+                                );
+    
                             compiledTable.append(dom);
                         }
                     }
+    
                     this.content.append(compiledTable);
-                }
+                }*/
                 this.addButtonLink("Add new Extent", function () { return DMDialog.showNavigationForNewExtents(tthis.viewport, tthis.ws); });
             };
             return ExtentView;

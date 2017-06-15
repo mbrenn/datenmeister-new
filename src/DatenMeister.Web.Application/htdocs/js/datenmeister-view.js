@@ -57,6 +57,11 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             this.refresh();
             return this.content;
         };
+        /**
+         * This event will be called after the dom has been added to the window
+         */
+        ViewBase.prototype.onViewShown = function () {
+        };
         return ViewBase;
     }());
     exports.ViewBase = ViewBase;
@@ -544,44 +549,28 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             var tthis = this;
             var tableConfiguration = new DMTables.DetailTableConfiguration();
             tableConfiguration.fields = DMTables.convertFieldDataToFields(this.configuration.columns);
-            var detailTable = new DMTables.DetailTableComposer(tableConfiguration, this.content);
+            this.detailTable = new DMTables.DetailTableComposer(tableConfiguration, this.content);
             if (this.configuration.onOkForm !== undefined && this.configuration.onOkForm !== null) {
-                detailTable.onClickOk = function (newItem) {
+                this.detailTable.onClickOk = function (newItem) {
                     tthis.configuration.onOkForm(newItem);
                 };
             }
             if (this.configuration.onCancelForm !== undefined && this.configuration.onCancelForm !== null) {
-                detailTable.onClickCancel = function () {
+                this.detailTable.onClickCancel = function () {
                     tthis.configuration.onCancelForm();
                     return false;
                 };
             }
             else {
-                detailTable.onClickCancel = function () {
+                this.detailTable.onClickCancel = function () {
                     tthis.viewport.navigateBack();
                     return false;
                 };
             }
-            detailTable.composeTable();
-            /*
-            var value = new DMCI.In.ItemContentModel();
-            var tableConfiguration = new DMTables.ItemContentConfiguration();
-            tableConfiguration.autoProperties = false;
-            tableConfiguration.columns = configuration.columns;
-            tableConfiguration.isReadOnly = false;
-            tableConfiguration.supportNewProperties = false;
-            tableConfiguration.onCancelForm = () => {
-                if (configuration.onCancelForm !== undefined) {
-                    configuration.onCancelForm();
-                }
-            };
-    
-            this.setViewState({
-                    type: DMI.Api.PageType.Dialog,
-                    workspace: configuration.ws,
-                    extent: configuration.ext
-                });
-            */
+            this.detailTable.composeTable();
+        };
+        DialogView.prototype.onViewShown = function () {
+            this.detailTable.setFocusOnFirstRow();
         };
         return DialogView;
     }(ViewBase));

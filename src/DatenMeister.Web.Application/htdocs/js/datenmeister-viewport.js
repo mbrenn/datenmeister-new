@@ -26,6 +26,7 @@ define(["require", "exports", "./datenmeister-view", "./datenmeister-viewresolve
             view.viewport = this;
             this.addViewState(viewState);
             this.currentView = view;
+            view.onViewShown();
         };
         ViewPort.prototype.gotoViewState = function (viewState) {
             if (viewState === undefined || viewState === null) {

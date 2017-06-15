@@ -11,6 +11,11 @@ export namespace Views {
         
         /// Called, when the user clicks on refresh. The view has to reload the complete dynamic data
         refresh(): void;
+
+        /**
+         * Called, if the dom is added to the window
+         */
+        onViewShown(): void;
     }
 
     export interface IViewPort {

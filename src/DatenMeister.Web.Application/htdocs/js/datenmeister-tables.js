@@ -64,7 +64,8 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
                 for (var f in this.configuration.fields) {
                     field = this.configuration.fields[f];
                     var domCell = $("<td></td>");
-                    var domField = field.createDom(item);
+                    var fieldInstance = field.createInstance(item);
+                    var domField = fieldInstance.getDom();
                     domCell.append(domField);
                     domRow.append(domCell);
                     // Apply style to headline cell
@@ -104,6 +105,7 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
         DetailTableComposer.prototype.composeContent = function () {
             var tthis = this;
             var domRow;
+            // Creates the 
             domRow = $("<tr><th>Title</th><th>Value</th><th></th></tr>");
             this.domTable.append(domRow);
             var field;
@@ -111,30 +113,34 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
             // Now, the items
             for (var f in this.configuration.fields) {
                 field = this.configuration.fields[f];
+                // Creates the row
                 domRow = $("<tr></tr>");
+                // Title column
                 var domColumn = $("<td class='table_column_name'></td>");
                 domColumn.data("column", "name");
                 domColumn.text(field.title);
                 domRow.append(domColumn);
+                // Value column
                 domColumn = $("<td class='table_column_value'></td>");
                 domColumn.data("column", "value");
-                var domForEdit = field.createDom(this.item);
+                var fieldInstance = field.createInstance(this.item);
+                var domForEdit = fieldInstance.getDom();
                 domColumn.append(domForEdit);
                 domRow.append(domColumn);
+                // Third column
                 domColumn = $("<td></td>");
                 domRow.append(domColumn);
-                this.domForEditArray[field.name] = domForEdit;
+                // Stores the fieldinstance
+                this.domForEditArray[field.name] = fieldInstance;
                 this.domTable.append(domRow);
             }
             // Add new property
             /*if (this.configuration.supportNewProperties) {
                 this.offerNewProperty(domTable);
             }*/
-            // Adds the OK, Cancel button
+            // Adds the OK and Cancel button
             var domOkCancel = $("<tr><td colspan='3' class='text-right'></td></tr>");
             var domOkCancelColumn = $("td", domOkCancel);
-            /*        var domOk = $("<button class='btn btn-primary dm-button-ok'>OK</button>");
-                    domOkCancelColumn.append(domOk);*/
             if (this.onClickOk !== undefined || this.onClickOk !== undefined) {
                 var domEdit = $("<button class='btn btn-primary dm-button-ok'>OK</button>");
                 domEdit.click(function () {
@@ -148,6 +154,17 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
                 domOkCancelColumn.append(domCancel);
             }
             this.domTable.append(domOkCancel);
+        };
+        /**
+         * Sets the focus on the first field of the table
+         */
+        DetailTableComposer.prototype.setFocusOnFirstRow = function () {
+            if (this.configuration.fields.length > 0) {
+                var firstProperty = this.configuration.fields[0].name;
+                if (firstProperty != undefined && this.domForEditArray[firstProperty] != undefined) {
+                    this.domForEditArray[firstProperty].focus();
+                }
+            }
         };
         DetailTableComposer.prototype.clickOnOk = function () {
             if (this.onClickOk !== undefined && this.onClickOk !== null) {
@@ -218,7 +235,7 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
             function FieldBase() {
             }
             FieldBase.prototype.getFieldType = function () { throw new Error("Not implemented"); };
-            FieldBase.prototype.createDom = function (item) { throw new Error("Not implemented"); };
+            FieldBase.prototype.createInstance = function (item) { throw new Error("Not implemented"); };
             FieldBase.prototype.readOnly = function () {
                 this.isReadOnly = true;
                 return this;
@@ -238,6 +255,17 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
             return FieldBase;
         }());
         Fields.FieldBase = FieldBase;
+        var FieldInstanceBase = (function () {
+            function FieldInstanceBase(dom) {
+                this.dom = dom;
+            }
+            FieldInstanceBase.prototype.getDom = function () {
+                return this.dom;
+            };
+            FieldInstanceBase.prototype.focus = function () { };
+            return FieldInstanceBase;
+        }());
+        Fields.FieldInstanceBase = FieldInstanceBase;
         var ButtonField = (function (_super) {
             __extends(ButtonField, _super);
             function ButtonField(title, onClick) {
@@ -249,25 +277,30 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
             ButtonField.prototype.click = function (onClick) {
                 this.onClick = onClick;
             };
-            ButtonField.prototype.createDom = function (item) {
+            ButtonField.prototype.createInstance = function (item) {
                 var _this = this;
                 var domButton = $("<button href='#' class='btn btn-primary'></button>");
-                var instance = new ButtonFieldInstance();
-                instance.domContainer = domButton;
+                var instance = new ButtonFieldInstance(domButton);
                 domButton.click(function () {
                     _this.onClick(item, instance);
                     return false;
                 });
                 domButton.text(this.title);
-                return domButton;
+                return instance;
             };
             ;
             return ButtonField;
         }(FieldBase));
         Fields.ButtonField = ButtonField;
-        var ButtonFieldInstance = (function () {
-            function ButtonFieldInstance() {
-                this.state = false;
+        /**
+         * Implements the instance of a field which can be used to trigger the instance.
+         */
+        var ButtonFieldInstance = (function (_super) {
+            __extends(ButtonFieldInstance, _super);
+            function ButtonFieldInstance(dom) {
+                var _this = _super.call(this, dom) || this;
+                _this.state = false;
+                return _this;
             }
             ButtonFieldInstance.prototype.setText = function (text) {
                 this.domContainer.text(text);
@@ -278,8 +311,10 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
             ButtonFieldInstance.prototype.getState = function () {
                 return this.state;
             };
+            ButtonFieldInstance.prototype.focus = function () {
+            };
             return ButtonFieldInstance;
-        }());
+        }(FieldInstanceBase));
         Fields.ButtonFieldInstance = ButtonFieldInstance;
         var TextboxField = (function (_super) {
             __extends(TextboxField, _super);
@@ -290,25 +325,25 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
                 return _this;
             }
             TextboxField.prototype.getFieldType = function () { return DMVM.ColumnTypes.textbox; };
-            TextboxField.prototype.createDom = function (item) {
+            TextboxField.prototype.createInstance = function (item) {
                 var contentValue = item[this.name];
                 var isReadonly = this.isReadOnly;
                 // We have a textbox, so check if we have multiple line
                 if (this.lineHeight !== undefined && this.lineHeight > 1) {
                     var domTextBoxMultiple = $("<textarea class='form-control'></textarea>")
-                        .attr('rows', this.lineHeight);
+                        .attr("rows", this.lineHeight);
                     domTextBoxMultiple.val(contentValue);
                     if (isReadonly) {
                         domTextBoxMultiple.attr("readonly", "readonly");
                     }
-                    return domTextBoxMultiple;
+                    return new TextboxFieldInstance(domTextBoxMultiple, domTextBoxMultiple);
                 }
                 else {
                     // Single line
                     if (isReadonly) {
-                        var domResult = $("<span class='dm-itemtable-data'></span>");
-                        domResult.text(contentValue);
-                        return domResult;
+                        var domSpan = $("<span class='dm-itemtable-data'></span>");
+                        domSpan.text(contentValue);
+                        return new TextboxFieldInstance(domSpan, undefined);
                     }
                     else {
                         var domTextBox = $("<input type='textbox' class='form-control' />");
@@ -316,13 +351,28 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
                         if (this.isReadOnly) {
                             domTextBox.attr("readonly", "readonly");
                         }
-                        return domTextBox;
+                        return new TextboxFieldInstance(domTextBox, domTextBox);
                     }
                 }
             };
             return TextboxField;
         }(FieldBase));
         Fields.TextboxField = TextboxField;
+        var TextboxFieldInstance = (function (_super) {
+            __extends(TextboxFieldInstance, _super);
+            function TextboxFieldInstance(dom, domFocus) {
+                var _this = _super.call(this, dom) || this;
+                _this.domFocus = domFocus;
+                return _this;
+            }
+            TextboxFieldInstance.prototype.focus = function () {
+                if (this.domFocus != undefined) {
+                    this.domFocus.focus();
+                }
+            };
+            return TextboxFieldInstance;
+        }(FieldInstanceBase));
+        Fields.TextboxFieldInstance = TextboxFieldInstance;
         var DropDownField = (function (_super) {
             __extends(DropDownField, _super);
             function DropDownField() {
@@ -331,7 +381,7 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
             DropDownField.prototype.getFieldType = function () {
                 return DMVM.ColumnTypes.dropdown;
             };
-            DropDownField.prototype.createDom = function (item) {
+            DropDownField.prototype.createInstance = function (item) {
                 var contentValue = item[this.name];
                 if (contentValue === undefined) {
                     contentValue = this.defaultValue;
@@ -343,7 +393,7 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
                     domDD.append(domOption);
                 }
                 domDD.val(contentValue);
-                return domDD;
+                return new FieldInstanceBase(domDD);
             };
             return DropDownField;
         }(FieldBase));

@@ -87,7 +87,8 @@ export class ListTableComposer {
             for (var f in this.configuration.fields) {
                 field = this.configuration.fields[f];
                 var domCell = $("<td></td>");
-                var domField = field.createDom(item);
+                var fieldInstance = field.createInstance(item);
+                var domField = fieldInstance.getDom();
                 domCell.append(domField);
                 domRow.append(domCell);
 
@@ -114,7 +115,7 @@ export class DetailTableComposer {
 
     item: any;
     configuration: DetailTableConfiguration;
-    domForEditArray: Array<JQuery>;
+    domForEditArray: Array<Fields.IFieldInstance>;
     container: JQuery;
     domTable: JQuery;
 
@@ -146,35 +147,44 @@ export class DetailTableComposer {
     composeContent() {
         var tthis = this;
         var domRow: JQuery;
+
+        // Creates the 
         domRow = $("<tr><th>Title</th><th>Value</th><th></th></tr>");
 
         this.domTable.append(domRow);
 
         var field: Fields.IField;
-
-        this.domForEditArray = new Array<JQuery>();
+        this.domForEditArray = new Array<Fields.IFieldInstance>();
 
         // Now, the items
         for (var f in this.configuration.fields) {
             field = this.configuration.fields[f];
+
+            // Creates the row
             domRow = $("<tr></tr>");
+
+            // Title column
             var domColumn = $("<td class='table_column_name'></td>");
             domColumn.data("column", "name");
             domColumn.text(field.title);
             domRow.append(domColumn);
 
+            // Value column
             domColumn = $("<td class='table_column_value'></td>");
             domColumn.data("column", "value");
-            var domForEdit = field.createDom(this.item);
+            var fieldInstance = field.createInstance(this.item);
+
+            var domForEdit = fieldInstance.getDom();
             domColumn.append(domForEdit);
             domRow.append(domColumn);
 
+            // Third column
             domColumn = $("<td></td>");
-
             domRow.append(domColumn);
 
-            this.domForEditArray[field.name] = domForEdit;
 
+            // Stores the fieldinstance
+            this.domForEditArray[field.name] = fieldInstance;
             this.domTable.append(domRow);
         }
 
@@ -183,11 +193,9 @@ export class DetailTableComposer {
             this.offerNewProperty(domTable);
         }*/
 
-        // Adds the OK, Cancel button
+        // Adds the OK and Cancel button
         var domOkCancel = $("<tr><td colspan='3' class='text-right'></td></tr>");
         var domOkCancelColumn = $("td", domOkCancel);
-/*        var domOk = $("<button class='btn btn-primary dm-button-ok'>OK</button>");
-        domOkCancelColumn.append(domOk);*/
 
         if (this.onClickOk !== undefined || this.onClickOk !== undefined) {
             var domEdit = $("<button class='btn btn-primary dm-button-ok'>OK</button>");
@@ -206,6 +214,19 @@ export class DetailTableComposer {
 
         this.domTable.append(domOkCancel);
         
+    }
+
+    /**
+     * Sets the focus on the first field of the table
+     */
+    setFocusOnFirstRow(): void {
+        if (this.configuration.fields.length > 0) {
+            var firstProperty = this.configuration.fields[0].name;
+            if (firstProperty != undefined && this.domForEditArray[firstProperty] != undefined) {
+                this.domForEditArray[firstProperty].focus();
+            }
+
+        }
     }
 
     clickOnOk(): void {
@@ -438,15 +459,23 @@ export namespace Fields {
         defaultValue: any;
         isEnumeration: boolean;
         isReadOnly?: boolean;
+
         /**
          * Stores the with of the field.
          * If the width is -1, the corresponding column will be set to a minimum width
          */
         width: number;
 
-        createDom(item: any): JQuery;
+        createInstance(item: any): IFieldInstance;
         applyStandardStyles(domCell: JQuery);
+    }
 
+    /**
+     * Defines the instance of a field which allows a focus
+     */
+    export interface IFieldInstance {
+        getDom() : JQuery;
+        focus() : void;
     }
 
     /**
@@ -463,7 +492,7 @@ export namespace Fields {
         
     }
 
-    export class FieldBase implements IField {
+    export class FieldBase {
         title: string;
         name: string;
         defaultValue: any;
@@ -474,7 +503,7 @@ export namespace Fields {
 
         getFieldType(): string { throw new Error("Not implemented"); }
 
-        createDom(item: any): JQuery { throw new Error("Not implemented"); }
+        createInstance(item: any): IFieldInstance { throw new Error("Not implemented"); }
 
         readOnly(): FieldBase {
             this.isReadOnly = true;
@@ -495,7 +524,20 @@ export namespace Fields {
         }
     }
 
-    export class ButtonField extends FieldBase {
+    export class FieldInstanceBase {
+        dom: JQuery;
+
+        constructor(dom: JQuery) {
+            this.dom = dom;
+        }
+        getDom(): JQuery {
+            return this.dom;
+        }
+
+        focus() {}
+    }
+
+    export class ButtonField extends FieldBase implements IField {
         onClick: (item: any, button: ButtonFieldInstance) => void;
 
         constructor(title: string,
@@ -509,22 +551,24 @@ export namespace Fields {
             this.onClick = onClick;
         }
 
-        createDom(item: any): JQuery {
+        createInstance(item: any): IFieldInstance {
             var domButton = $("<button href='#' class='btn btn-primary'></button>");
 
-            var instance = new ButtonFieldInstance();
-            instance.domContainer = domButton;
+            var instance = new ButtonFieldInstance(domButton);
 
             domButton.click(() => {
                 this.onClick(item, instance);
                 return false;
             });
             domButton.text(this.title);
-            return domButton;
+            return instance;
         };
     }
 
-    export class ButtonFieldInstance {
+    /**
+     * Implements the instance of a field which can be used to trigger the instance. 
+     */
+    export class ButtonFieldInstance extends FieldInstanceBase implements IFieldInstance {
         /**
          * Just a status for delete button
          */
@@ -532,7 +576,9 @@ export namespace Fields {
 
         domContainer: JQuery;
 
-        constructor() {
+        constructor(dom: JQuery) {
+            super(dom);
+
             this.state = false;
         }
 
@@ -547,9 +593,13 @@ export namespace Fields {
         getState(): Boolean {
             return this.state;
         }
+
+        focus() {
+            
+        }
     }
 
-    export class TextboxField extends FieldBase {
+    export class TextboxField extends FieldBase implements IField {
         lineHeight: number;
         getFieldType(): string { return DMVM.ColumnTypes.textbox; }
 
@@ -559,26 +609,26 @@ export namespace Fields {
             this.name = name;
         }
 
-        createDom(item: any): JQuery {
+        createInstance(item: any): IFieldInstance {
             var contentValue = item[this.name];
             var isReadonly = this.isReadOnly;
-
+            
             // We have a textbox, so check if we have multiple line
             if (this.lineHeight !== undefined && this.lineHeight > 1) {
                 let domTextBoxMultiple = $("<textarea class='form-control'></textarea>")
-                    .attr('rows', this.lineHeight);
+                    .attr("rows", this.lineHeight);
                 domTextBoxMultiple.val(contentValue);
                 if (isReadonly) {
                     domTextBoxMultiple.attr("readonly", "readonly");
                 }
-
-                return domTextBoxMultiple;
+                
+                return new TextboxFieldInstance(domTextBoxMultiple, domTextBoxMultiple);
             } else {
                 // Single line
                 if (isReadonly) {
-                    let domResult = $("<span class='dm-itemtable-data'></span>");
-                    domResult.text(contentValue);
-                    return domResult;
+                    let domSpan = $("<span class='dm-itemtable-data'></span>");
+                    domSpan.text(contentValue);
+                    return new TextboxFieldInstance(domSpan, undefined);
                 } else {
                     let domTextBox = $("<input type='textbox' class='form-control' />");
                     domTextBox.val(contentValue);
@@ -587,20 +637,39 @@ export namespace Fields {
                         domTextBox.attr("readonly", "readonly");
                     }
 
-                    return domTextBox;
+                    return new TextboxFieldInstance(domTextBox, domTextBox);
                 }
             }
         }
     }
 
-    export class DropDownField extends FieldBase {
+    export class TextboxFieldInstance extends FieldInstanceBase implements IFieldInstance {
+
+        /**
+         * The element getting the focus
+         */
+        domFocus: JQuery;
+
+        constructor(dom: JQuery, domFocus: JQuery) {
+            super(dom);
+            this.domFocus = domFocus;
+        }
+
+        focus(): void {
+            if (this.domFocus != undefined) {
+                this.domFocus.focus();
+            }
+        }
+    }
+
+    export class DropDownField extends FieldBase implements IField {
         values: Array<string>;
 
         getFieldType(): string {
             return DMVM.ColumnTypes.dropdown;
         }
 
-        createDom(item: any): JQuery {
+        createInstance(item: any): IFieldInstance {
             var contentValue = item[this.name];
             if (contentValue === undefined) {
                 contentValue = this.defaultValue;
@@ -614,7 +683,7 @@ export namespace Fields {
             }
 
             domDD.val(contentValue);
-            return domDD;
+            return new FieldInstanceBase(domDD);
         }
     }
 }
@@ -644,7 +713,7 @@ export function convertFieldDataToField(data: DMCI.In.IFieldData): Fields.IField
             field = new Fields.TextboxField();
             break;
         default:
-            throw "Unknown fieldtype: " + data.fieldType;
+            throw `Unknown fieldtype: ${data.fieldType}`;
     }
 
     field.title = data.title;

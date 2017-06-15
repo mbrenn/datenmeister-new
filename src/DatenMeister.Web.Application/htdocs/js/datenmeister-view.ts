@@ -78,6 +78,12 @@ export class ViewBase implements DMI.Views.IView{
         this.refresh();
         return this.content;
     }
+
+    /**
+     * This event will be called after the dom has been added to the window
+     */
+    onViewShown(): void {
+    }
 }
 
 export class ListView extends ViewBase {
@@ -626,6 +632,7 @@ export class DialogView extends ViewBase implements DMI.Views.IView {
      * Configuration fo the dialog
      */
     configuration: DMI.Navigation.DialogConfiguration;
+    detailTable: DMTables.DetailTableComposer;
 
     constructor(viewport: DMI.Views.IViewPort, configuration: DMI.Navigation.DialogConfiguration) {
         super(viewport);
@@ -636,47 +643,32 @@ export class DialogView extends ViewBase implements DMI.Views.IView {
         var tthis = this;
         var tableConfiguration = new DMTables.DetailTableConfiguration();
         tableConfiguration.fields = DMTables.convertFieldDataToFields(this.configuration.columns);
-        
-        var detailTable = new DMTables.DetailTableComposer(tableConfiguration, this.content);
+
+        this.detailTable = new DMTables.DetailTableComposer(tableConfiguration, this.content);
 
         if (this.configuration.onOkForm !== undefined && this.configuration.onOkForm !== null) {
-            detailTable.onClickOk = (newItem: any) => {
+            this.detailTable.onClickOk = (newItem: any) => {
                 tthis.configuration.onOkForm(newItem);
             }
         }
 
         if (this.configuration.onCancelForm !== undefined && this.configuration.onCancelForm !== null) {
-            detailTable.onClickCancel = () => {
+            this.detailTable.onClickCancel = () => {
                 tthis.configuration.onCancelForm();
                 return false;
             }
         } else {
-            detailTable.onClickCancel = () => {
+            this.detailTable.onClickCancel = () => {
                 tthis.viewport.navigateBack();
                 return false;
             }
         }
-        detailTable.composeTable();
 
-        /*
-        var value = new DMCI.In.ItemContentModel();
-        var tableConfiguration = new DMTables.ItemContentConfiguration();
-        tableConfiguration.autoProperties = false;
-        tableConfiguration.columns = configuration.columns;
-        tableConfiguration.isReadOnly = false;
-        tableConfiguration.supportNewProperties = false;
-        tableConfiguration.onCancelForm = () => {
-            if (configuration.onCancelForm !== undefined) {
-                configuration.onCancelForm();
-            }
-        };
+        this.detailTable.composeTable();
+    }
 
-        this.setViewState({
-                type: DMI.Api.PageType.Dialog,
-                workspace: configuration.ws,
-                extent: configuration.ext
-            });
-        */
+    onViewShown(): void {
+        this.detailTable.setFocusOnFirstRow();
     }
 }
 

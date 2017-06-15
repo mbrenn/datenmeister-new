@@ -42,6 +42,8 @@ export class ViewPort implements DMI.Views.IViewPort {
         view.viewport = this;
         this.addViewState(viewState);
         this.currentView = view;
+
+        view.onViewShown();
     }
 
     gotoViewState(viewState: IViewState) {

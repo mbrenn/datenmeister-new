@@ -31,6 +31,10 @@ namespace DatenMeister.Core.EMOF.Implementation
             : base(providedObject, extent)
         {
             Container = container;
+            if (CreatedByExtent == null)
+            {
+                CreatedByExtent = ((MofElement) container)?.CreatedByExtent;
+            }
         }
 
         /// <inheritdoc />

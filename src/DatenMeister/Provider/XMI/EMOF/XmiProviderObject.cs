@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
@@ -26,6 +25,9 @@ namespace DatenMeister.Provider.XMI.EMOF
             return propertyName + "-ref";
         }
 
+        /// <summary>
+        /// Gets the Xml Node
+        /// </summary>
         public XElement XmlNode { get; }
 
         /// <summary>
@@ -184,6 +186,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public IEnumerable<string> GetProperties()
         {
+            var result = new List<string>();
             foreach (var attribute in XmlNode.Attributes())
             {
                 var xmlNamespace = attribute.Name.Namespace;
@@ -192,13 +195,15 @@ namespace DatenMeister.Provider.XMI.EMOF
                     continue;
                 }
 
-                yield return attribute.Name.ToString();
+                result.Add(attribute.Name.ToString());
             }
 
             foreach (var element in XmlNode.Elements().Distinct())
             {
-                yield return element.Name.ToString();
+                result.Add(element.Name.ToString());
             }
+
+            return result.Distinct();
         }
 
         /// <inheritdoc />

@@ -1,5 +1,6 @@
 ﻿using System;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Uml.Helper
@@ -35,16 +36,25 @@ namespace DatenMeister.Uml.Helper
             {
                 return element.get(_UML._CommonStructure._NamedElement.name).ToString();
             }
-
-            var elementAsHasId = element as IHasId;
-            if (elementAsHasId != null)
+            
+            if (element is IHasId elementAsHasId)
             {
                 return elementAsHasId.Id;
+            }
+
+            if (element is MofObjectShadow shadowedObject)
+            {
+                return shadowedObject.Uri;
             }
 
             return element.ToString();
         }
 
+        /// <summary>
+        /// Gets the name of the given object
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
         public string GetName(object element)
         {
             if (element == null)

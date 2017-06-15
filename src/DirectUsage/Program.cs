@@ -1,24 +1,14 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.IO;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Excel.Integration;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Provider;
 using DatenMeister.Provider.DotNet;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Aggregation;
-using DatenMeister.Runtime.Functions.Interfaces;
-using DatenMeister.Runtime.Functions.Transformation;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DirectUsage
@@ -40,7 +30,7 @@ namespace DirectUsage
             var created = dotNetTypeGenerator.CreateTypeFor(typeof(FieldData));
             var objectAsText = ExtentFormatter.ToText(created);
             Console.WriteLine(objectAsText);
-
+            File.WriteAllText("types.txt", objectAsText);
 
 
             /*watch.Start();

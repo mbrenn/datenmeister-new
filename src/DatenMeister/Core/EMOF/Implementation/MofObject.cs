@@ -44,7 +44,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Stores the extent that is used to create the element. 
         /// This extent is used for type lookup and other referencing things. 
         /// </summary>
-        internal MofExtent CreatedByExtent { get; private set; }
+        public MofExtent CreatedByExtent { get; protected set; }
 
         /// <summary>
         /// Gets the extent of the mof object

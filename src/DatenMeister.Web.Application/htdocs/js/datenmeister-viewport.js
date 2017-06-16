@@ -32,6 +32,9 @@ define(["require", "exports", "./datenmeister-view", "./datenmeister-viewresolve
             if (viewState === undefined || viewState === null) {
                 return;
             }
+            if (viewState === undefined || viewState === null) {
+                return;
+            }
             var url = "#";
             if (viewState.workspace === undefined) {
                 url += "ws={all}";

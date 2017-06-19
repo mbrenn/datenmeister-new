@@ -14,7 +14,6 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ItemsAndExtents;
-using DatenMeister.Models.PostModels;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.CSV.Runtime;
@@ -27,6 +26,7 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.Web.PostModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.Web.Api
@@ -71,7 +71,7 @@ namespace DatenMeister.Web.Api
             var result = new List<object>();
             var workspace = GetWorkspace(ws);
 
-            foreach (var extent in workspace.extent.Cast<IUriExtent>())
+            foreach (var extent in workspace.extent.Cast<MofUriExtent>())
             {
                 result.Add(
                     new
@@ -79,7 +79,8 @@ namespace DatenMeister.Web.Api
                         uri = extent.contextURI(),
                         dataLayer = _workspaceLogic.GetWorkspaceOfExtent(extent).id,
                         count = extent.elements().Count(),
-                        type = extent.GetType().Name
+                        type = extent.GetType().Name,
+                        providerType = extent.Provider.GetType().Name
                     });
             }
 

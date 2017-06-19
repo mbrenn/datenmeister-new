@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Models.PostModels
+namespace DatenMeister.Web.PostModels
 {
     /// <summary>
     ///     This class is used to reference a single object within the database

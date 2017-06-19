@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Models.PostModels
+﻿namespace DatenMeister.Web.PostModels
 {
     public class ItemUnsetPropertyModel : ItemReferenceModel
     {

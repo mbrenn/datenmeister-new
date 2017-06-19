@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using DatenMeister.Models.PostModels;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Web.PostModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.Web.Api

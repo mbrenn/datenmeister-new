@@ -199,7 +199,7 @@ namespace DatenMeister.Modules.ViewFinder
                 }
             }
 
-            throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>

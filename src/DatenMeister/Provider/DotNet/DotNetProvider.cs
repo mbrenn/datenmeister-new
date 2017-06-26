@@ -23,7 +23,6 @@ namespace DatenMeister.Provider.DotNet
         /// <summary>
         /// Initializes a new instance of the DotNetExtent class
         /// </summary>
-        /// <param name="contextUri">Uri of the context</param>
         /// <param name="typeLookup">Looked up type</param>
         public DotNetProvider(IDotNetTypeLookup typeLookup)
         {

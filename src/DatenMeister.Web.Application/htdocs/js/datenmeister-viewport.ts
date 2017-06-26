@@ -57,7 +57,7 @@ export class ViewPort implements DMI.Views.IViewPort {
         } else if (viewState.extent === undefined) {
             url += `ws=${encodeURIComponent(viewState.workspace)}`;
         } else if (viewState.item === undefined) {
-            url += `ws=${encodeURIComponent(viewState.workspace)}&ext=${encodeURIComponent(viewState.extent)}}`;
+            url += `ws=${encodeURIComponent(viewState.workspace)}&ext=${encodeURIComponent(viewState.extent)}`;
         } else {
             url += `ws=${encodeURIComponent(viewState.workspace)}&ext=${encodeURIComponent(viewState.extent)}&item=${
                 encodeURIComponent(viewState.item)}`;
@@ -96,6 +96,7 @@ export class ViewPort implements DMI.Views.IViewPort {
     refresh(): void {
         //$(".dm-view", this.container).empty();
         if (this.currentView !== undefined && this.currentView !== null) {
+            this.currentView.emptyContent();
             this.currentView.refresh();
         }
     }

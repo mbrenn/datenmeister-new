@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -29,6 +28,9 @@ namespace DatenMeister.Provider.DotNet
         /// <inheritdoc />
         public string MetaclassUri { get; set; }
 
+        /// <summary>
+        /// Gets or sets the id of the object of the DotNetProviderObject
+        /// </summary>
         public string Id { get; set; }
 
         /// <summary>
@@ -40,15 +42,10 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="metaClassUri">metaclass to be set to the object</param>
         public DotNetProviderObject(DotNetProvider provider, IDotNetTypeLookup typeLookup, object value, string metaClassUri)
         {
-            if (provider == null) throw new ArgumentNullException(nameof(provider));
-            if (typeLookup == null) throw new ArgumentNullException(nameof(typeLookup));
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            if (metaClassUri == null) throw new ArgumentNullException(nameof(metaClassUri));
-
-            Provider = provider;
-            _typeLookup = typeLookup;
-            _value = value;
-            MetaclassUri = metaClassUri;
+            Provider = provider ?? throw new ArgumentNullException(nameof(provider));
+            _typeLookup = typeLookup ?? throw new ArgumentNullException(nameof(typeLookup));
+            _value = value ?? throw new ArgumentNullException(nameof(value));
+            MetaclassUri = metaClassUri ?? throw new ArgumentNullException(nameof(metaClassUri));
             _type = value.GetType();
 
             Id = typeLookup.GetId(value);
@@ -56,11 +53,8 @@ namespace DatenMeister.Provider.DotNet
 
         public DotNetProviderObject(DotNetProvider dotNetProvider, IDotNetTypeLookup typeLookup, object value)
         {
-            if (dotNetProvider == null) throw new ArgumentNullException(nameof(dotNetProvider));
-            if (typeLookup == null) throw new ArgumentNullException(nameof(typeLookup));
-
-            Provider = dotNetProvider;
-            _typeLookup = typeLookup;
+            Provider = dotNetProvider ?? throw new ArgumentNullException(nameof(dotNetProvider));
+            _typeLookup = typeLookup ?? throw new ArgumentNullException(nameof(typeLookup));
             _value = value;
             _type = value.GetType();
 

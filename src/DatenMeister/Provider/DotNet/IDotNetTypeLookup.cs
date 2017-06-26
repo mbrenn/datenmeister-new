@@ -17,6 +17,11 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="type">Type to be added</param>
         void Add(string elementUri, Type type);
 
+        /// <summary>
+        /// Converts the element to a string, containing the type
+        /// </summary>
+        /// <param name="type">Type to be converted</param>
+        /// <returns>String of the element</returns>
         string ToElement(Type type);
 
         /// <summary>

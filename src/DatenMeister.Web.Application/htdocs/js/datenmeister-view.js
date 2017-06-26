@@ -8,7 +8,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clientinterface", "./datenmeister-tables", "./datenmeister-client", "./datenmeister-dialogs", "./datenmeister-toolbar"], function (require, exports, DMI, DMCI, DMTables, DMClient, DMDialog, DMToolbar) {
+define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clientinterface", "./datenmeister-tables", "./datenmeister-client", "./datenmeister-query", "./datenmeister-dialogs", "./datenmeister-toolbar"], function (require, exports, DMI, DMCI, DMTables, DMClient, DMQuery, DMDialog, DMToolbar) {
     "use strict";
     exports.__esModule = true;
     // Defines a base implementation of the IView interface
@@ -17,6 +17,9 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             this.viewport = viewport;
             this.content = $("<div></div>");
         }
+        ViewBase.prototype.emptyContent = function () {
+            this.content.empty();
+        };
         ViewBase.prototype.getViewState = function () {
             if (this.viewState == null || this.viewState == undefined) {
                 return null;
@@ -51,6 +54,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             return new DMToolbar.Toolbar(this.content);
         };
         ViewBase.prototype.refresh = function () {
+            this.content.empty();
         };
         ViewBase.prototype.load = function () {
             this.content = $("<div></div>");
@@ -88,7 +92,6 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             }
             WorkspaceView.prototype.refresh = function () {
                 var tthis = this;
-                this.content.empty();
                 DMClient.WorkspaceApi.getAllWorkspaces()
                     .done(function (data) {
                     tthis.createHtmlForWorkbenchs(data);
@@ -167,43 +170,14 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 var configuration = new DMTables.ListTableConfiguration();
                 configuration.fields = fields;
                 DMTables.Fields.addEditButton(configuration, function (item) {
-                    alert('X');
+                    ItemList.navigateToItems(tthis.viewport, tthis.ws, item.uri);
                 });
                 DMTables.Fields.addDeleteButton(configuration, function (item) {
-                    alert('Del');
+                    DMClient.ExtentApi.deleteExtent(tthis.ws, item.uri)
+                        .done(function () { return tthis.refresh(); });
                 });
                 var table = new DMTables.ListTableComposer(configuration, this.content);
                 table.composeTable(data);
-                /*
-                var tthis = this;
-                this.content.empty();
-    
-                if (data.length === 0) {
-                    this.content.html("<p>No extents were found</p>");
-                } else {
-                    var compiledTable = $($("#template_extent_table").html());
-                    var compiled = _.template($("#template_extent").html());
-                    for (var n in data) {
-                        if (data.hasOwnProperty(n)) {
-                            var entry: DMCI.In.IExtent = data[n];
-                            var line: string = compiled(entry);
-                            var dom: JQuery = $(line);
-                            $(".data", dom)
-                                .click(
-                                    ((localEntry: DMCI.In.IExtent) => (
-                                    () => {
-                                            ItemList.navigateToItems(this.viewport, tthis.ws, localEntry.uri);
-                                            return false;
-                                        })
-                                    )(entry)
-                                );
-    
-                            compiledTable.append(dom);
-                        }
-                    }
-    
-                    this.content.append(compiledTable);
-                }*/
                 this.addButtonLink("Add new Extent", function () { return DMDialog.showNavigationForNewExtents(tthis.viewport, tthis.ws); });
             };
             return ExtentView;
@@ -213,12 +187,9 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
     var ItemList;
     (function (ItemList) {
         function navigateToItems(viewport, ws, extentUrl, viewname) {
-            var url = "#ws=" + encodeURIComponent(ws) + "&ext=" + encodeURIComponent(extentUrl);
-            if (viewname !== undefined && viewname !== null) {
-                url += "&view=" + encodeURIComponent(viewname);
-            }
-            history.pushState({}, "", url);
-            this.showItems(ws, extentUrl, viewname);
+            var view = new ItemsOfExtentView(viewport, ws, extentUrl);
+            viewport.setView(view);
+            return view;
         }
         ItemList.navigateToItems = navigateToItems;
         function exportExtent(viewport, ws, extentUrl) {
@@ -234,76 +205,72 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 _this.supportPaging = true;
                 _this.supportViews = true;
                 _this.supportMetaClasses = true;
+                _this.ws = ws;
+                _this.extentUrl = extentUrl;
+                _this.query = query;
+                if (_this.query === undefined || _this.query === null) {
+                    _this.query = new DMCI.Out.ItemTableQuery();
+                    _this.query.amount = 20;
+                }
                 return _this;
             }
-            ItemsOfExtentView.prototype.load = function () {
-                /* var tthis = this;
-    
+            ItemsOfExtentView.prototype.refresh = function () {
+                var _this = this;
+                this.setViewState({
+                    type: DMI.Api.PageType.Items,
+                    workspace: this.ws,
+                    extent: this.extentUrl
+                });
+                var tthis = this;
                 // Creates the layout configuration and the handling on requests of the user
-                var configuration: DMTables.ItemListTableConfiguration =
-                    new DMTables.ItemListTableConfiguration();
-    
+                /*
                 configuration.onItemEdit = (url: string) => {
                     if (tthis.onItemEdit !== undefined) {
-                        tthis.onItemEdit(ws, extentUrl, url);
+                        tthis.onItemEdit(tthis.ws, tthis.extentUrl, url);
                     }
     
                     return false;
                 };
                 configuration.onItemSelect = (url: string) => {
                     if (tthis.onItemView !== undefined) {
-                        tthis.onItemView(ws, extentUrl, url);
+                        tthis.onItemView(tthis.ws, tthis.extentUrl, url);
                     }
     
                     return false;
                 };
     
                 configuration.onItemDelete = (url: string, domRow: JQuery) => {
-                    var callback = DMClient.ExtentApi.deleteItem(ws, extentUrl, url);
+                    var callback = DMClient.ExtentApi.deleteItem(tthis.ws, tthis.extentUrl, url);
                     callback
                         .done(() => {
                             domRow.find("td").fadeOut(500, () => { domRow.remove(); });
                         })
                         .fail(() => { alert("FAILED"); });
                     return false;
-                };
-    
+                };*/
                 // Creates the provider
-                var provider: DMQuery.ItemsFromExtentProvider = new DMQuery.ItemsFromExtentProvider(ws, extentUrl);
-    
+                var provider = new DMQuery.ItemsFromExtentProvider(this.ws, this.extentUrl);
+                this.composeForProvider(provider);
                 // Creates the table
                 this.toolbar = this.addToolbar();
                 var container = this.addEmptyDiv();
-    
-                var table = new DMTables.ItemListTable(container, provider, configuration);
-    
-                if (query !== undefined && query !== null) {
+                this.table = new DMTables.ListTableComposer(new DMTables.ListTableConfiguration(), container);
+                /*if (query !== undefined && query !== null) {
                     table.currentQuery = query;
-                }
-    
-                this.onViewChanged = (viewUrl) => {
+                }*/
+                /*this.onViewChanged = (viewUrl) => {
                     query.view = viewUrl;
                     tthis.load(ws, extentUrl, query);
-                };
-    
-                this.setViewState(
-                    {
-                        type: DMI.Api.PageType.Items,
-                        workspace: ws,
-                        extent: extentUrl
-                    });
-    
+                };*/
                 if (this.supportNewItem) {
                     var itemNew = new DMToolbar.ToolBarButtonItem("newitem", "Create Item");
-                    itemNew.onClicked = () => {
-    
-                        var view = new CreatetableTypesView(this.viewport, ws, extentUrl);
-                        this.viewport.setView(view);
+                    itemNew.onClicked = function () {
+                        var view = new CreatetableTypesView(_this.viewport, tthis.ws, tthis.extentUrl);
+                        _this.viewport.setView(view);
                     };
-    
                     this.toolbar.addItem(itemNew);
                 }
-    
+                /*
     
                 // Adds the searchbox and connects it to the tables
                 if (this.supportSearchbox) {
@@ -349,26 +316,20 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                     table.configuration.paging = itemPaging;
                     this.toolbar.addItem(itemPaging);
                 }
-    
-                table.loadAndShow();*/
-                throw ("Not implemented");
+                */
             };
-            ItemsOfExtentView.prototype.showItems = function (viewport, workspaceId, extentUrl, viewname) {
-                var tthis = this;
-                // TODO: this.viewport.createTitle(workspaceId, extentUrl);
-                var query = new DMCI.Out.ItemTableQuery();
-                query.view = viewname;
-                query.amount = 20;
-                var extentView = new ItemsOfExtentView(this.viewport, workspaceId, extentUrl, query);
-                extentView.onItemEdit = function (ws, extentUrl, itemUrl) {
-                    ItemDetail.navigateToItem(tthis.viewport, ws, extentUrl, itemUrl);
-                };
-                extentView.onItemView = function (ws, extentUrl, itemUrl) {
-                    ItemDetail.navigateToItem(tthis.viewport, ws, extentUrl, itemUrl, undefined, { isReadonly: true });
-                };
-                extentView.onItemCreated = function (ws, extentUrl, itemUrl) {
-                    ItemDetail.navigateToItem(tthis.viewport, ws, extentUrl, itemUrl);
-                };
+            ItemsOfExtentView.prototype.composeForProvider = function (provider) {
+                var _this = this;
+                provider.performQuery(this.query).done(function (items) {
+                    var configuration = new DMTables.ListTableConfiguration();
+                    for (var c in items.columns.fields) {
+                        var column = items.columns.fields[c];
+                        configuration.addField(new DMTables.Fields.TextboxField(column.name, column.title));
+                    }
+                    _this.table.configuration = configuration;
+                    _this.table.items = items.items;
+                    _this.table.composeContent();
+                });
             };
             return ItemsOfExtentView;
         }(ListView));

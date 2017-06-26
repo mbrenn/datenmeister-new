@@ -8,6 +8,12 @@ export namespace Views {
         viewport: IViewPort;
         load(): JQuery;
         getViewState(): Api.IViewState;
+
+        /**
+         * Empties the content of the DOM
+         * @returns {} 
+         */
+        emptyContent(): void;
         
         /// Called, when the user clicks on refresh. The view has to reload the complete dynamic data
         refresh(): void;

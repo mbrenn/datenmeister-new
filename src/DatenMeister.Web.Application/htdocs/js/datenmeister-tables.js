@@ -15,6 +15,9 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
         function ListTableConfiguration() {
             this.fields = new Array();
         }
+        ListTableConfiguration.prototype.addField = function (field) {
+            this.fields[this.fields.length] = field;
+        };
         return ListTableConfiguration;
     }());
     exports.ListTableConfiguration = ListTableConfiguration;
@@ -38,6 +41,7 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
             this.composeContent();
         };
         ListTableComposer.prototype.composeContent = function () {
+            this.domTable.empty();
             this.rows = new Array();
             // Creates the headrow
             var domHeadRow = $("<tr></tr>");
@@ -103,6 +107,7 @@ define(["require", "exports", "./datenmeister-viewmodels"], function (require, e
             this.composeContent();
         };
         DetailTableComposer.prototype.composeContent = function () {
+            this.domTable.empty();
             var tthis = this;
             var domRow;
             // Creates the 

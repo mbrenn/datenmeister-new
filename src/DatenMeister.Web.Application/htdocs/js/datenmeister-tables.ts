@@ -13,6 +13,10 @@ export class ListTableConfiguration {
     constructor() {
         this.fields = new Array<Fields.IField>();
     }
+
+    addField(field: Fields.IField) {
+        this.fields[this.fields.length] = field;
+    }
 }
 /**
  * Composes the table as a list view
@@ -54,6 +58,7 @@ export class ListTableComposer {
 
     composeContent() {
 
+        this.domTable.empty();
         this.rows = new Array<JQuery>();
         // Creates the headrow
         var domHeadRow = $("<tr></tr>");
@@ -98,7 +103,6 @@ export class ListTableComposer {
 
             this.domTable.append(domRow);
         }
-        
     }
 }
 
@@ -145,6 +149,8 @@ export class DetailTableComposer {
     }
 
     composeContent() {
+        this.domTable.empty();
+
         var tthis = this;
         var domRow: JQuery;
 

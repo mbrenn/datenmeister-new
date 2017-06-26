@@ -12,7 +12,7 @@ namespace DatenMeister.Provider.InMemory
         /// <summary>
         /// Stores the temporary extent that can be used to create temporary objects
         /// </summary>
-        public static MofUriExtent TemporaryExtent = new MofUriExtent(new InMemoryProvider(), "dm:///temp");
+        public static readonly MofUriExtent TemporaryExtent = new MofUriExtent(new InMemoryProvider(), "dm:///temp");
 
         /// <summary>
         /// Gets the used temporary provider
@@ -22,8 +22,17 @@ namespace DatenMeister.Provider.InMemory
         /// <summary>
         /// Stores the elements of the current provider
         /// </summary>
-        private List<InMemoryObject> _elements = new List<InMemoryObject>();
+        private readonly List<InMemoryObject> _elements = new List<InMemoryObject>();
 
+        /// <summary>
+        /// Stores the memory object for lacal information
+        /// </summary>
+        private InMemoryObject _extentElement;
+
+        public InMemoryProvider()
+        {
+            _extentElement = new InMemoryObject(this);
+        }
         /// <inheritdoc />
         public IProviderObject CreateElement(string metaClassUri)
         {
@@ -71,6 +80,11 @@ namespace DatenMeister.Provider.InMemory
         {
             lock (_elements)
             {
+                if (id == null)
+                {
+                    return _extentElement;
+                }
+
                 return _elements.First(x => x.Id == id);
             }
         }

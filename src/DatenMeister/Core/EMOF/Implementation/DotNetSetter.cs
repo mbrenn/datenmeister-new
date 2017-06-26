@@ -44,7 +44,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="receiver">Object which shall receive the dotnet value</param>
         /// <param name="value">Value to be set</param>
-        /// /// <param name="typeLookup">The lookup class being used to retrieve the meta class</param>
         public static object Convert(MofExtent receiver, object value)
         {
             var setter = new DotNetSetter(receiver);

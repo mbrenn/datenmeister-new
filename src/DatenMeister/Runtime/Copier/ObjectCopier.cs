@@ -5,6 +5,9 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Copier
 {
+    /// <summary>
+    /// The object copier can be used to copy one mof element to another mof element
+    /// </summary>
     public class ObjectCopier
     {
         private readonly IFactory _factory;
@@ -15,8 +18,7 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="factory"></param>
         public ObjectCopier(IFactory factory)
         {
-            if (factory == null) throw new ArgumentNullException(nameof(factory));
-            _factory = factory;
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
         /// <summary>
@@ -58,10 +60,8 @@ namespace DatenMeister.Runtime.Copier
             // Transfers the properties
             foreach (var property in elementAsExt.getPropertiesBeingSet())
             {
-                object result;
-
                 var value = sourceElement.get(property);
-                result = CopyValue(value, targetElement as IElement);
+                var result = CopyValue(value, targetElement as IElement);
 
                 targetElement.set(property, result);
             }
@@ -78,6 +78,7 @@ namespace DatenMeister.Runtime.Copier
             if (valueAsElement != null)
             {
                 var copiedElement = Copy(valueAsElement);
+                return copiedElement;
             }
 
             var valueAsCollection = value as IReflectiveCollection;

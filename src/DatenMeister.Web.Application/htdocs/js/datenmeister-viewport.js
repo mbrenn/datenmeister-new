@@ -40,7 +40,7 @@ define(["require", "exports", "./datenmeister-view", "./datenmeister-viewresolve
                 url += "ws=" + encodeURIComponent(viewState.workspace);
             }
             else if (viewState.item === undefined) {
-                url += "ws=" + encodeURIComponent(viewState.workspace) + "&ext=" + encodeURIComponent(viewState.extent) + "}";
+                url += "ws=" + encodeURIComponent(viewState.workspace) + "&ext=" + encodeURIComponent(viewState.extent);
             }
             else {
                 url += "ws=" + encodeURIComponent(viewState.workspace) + "&ext=" + encodeURIComponent(viewState.extent) + "&item=" + encodeURIComponent(viewState.item);
@@ -69,6 +69,7 @@ define(["require", "exports", "./datenmeister-view", "./datenmeister-viewresolve
         ViewPort.prototype.refresh = function () {
             //$(".dm-view", this.container).empty();
             if (this.currentView !== undefined && this.currentView !== null) {
+                this.currentView.emptyContent();
                 this.currentView.refresh();
             }
         };

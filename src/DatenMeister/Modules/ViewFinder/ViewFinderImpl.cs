@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.DotNet;
+using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.ViewFinder
 {
@@ -40,8 +44,8 @@ namespace DatenMeister.Modules.ViewFinder
             if (viewUrl == "{All}")
             {
                 var view = _formCreator.CreateForm(extent, FormCreator.CreationMode.All);
-                throw new NotImplementedException();
-                // return _dotNetTypeLookup.CreateDotNetElement(view);
+                return DotNetHelper.ConvertToMofElement(view, extent, _dotNetTypeLookup);
+                //return _dotNetTypeLookup.CreateDotNetElement(InMemoryProvider.TemporaryExtent, view);
             }
 
             if (!string.IsNullOrEmpty(viewUrl))
@@ -77,8 +81,9 @@ namespace DatenMeister.Modules.ViewFinder
                 var form = _formCreator.CreateForm(
                     value,
                     FormCreator.CreationMode.All);
-                throw new NotImplementedException();
-                // return _dotNetTypeLookup.CreateDotNetElement(form);
+
+                return DotNetHelper.ConvertToMofElement(form, value.GetUriExtentOf(), _dotNetTypeLookup);
+                // return _dotNetTypeLookup.CreateDotNetElement(InMemoryProvider.TemporaryExtent, form);
             }
 
             if (!string.IsNullOrEmpty(viewUrl))

@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
+using DatenMeister.Provider.DotNet;
 
 namespace DatenMeister.Runtime
 {
@@ -181,6 +185,107 @@ namespace DatenMeister.Runtime
         public static bool IsOfProviderObject(object element)
         {
             return element is IProviderObject;
+        }
+
+        /// <summary>
+        /// Converts the given element to a mof element
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <param name="extent">The extent being used to create and resolve the element</param>
+        /// <param name="typeLookup">The type lookup </param>
+        /// <returns>The converted element</returns>
+        public static IElement ConvertToMofElement(
+            object value,
+            IUriExtent extent,
+            IDotNetTypeLookup typeLookup = null)
+        {
+            return ConvertToMofElement(
+                value,
+                new ExtentResolver((MofExtent) extent),
+                new MofFactory(extent),
+                typeLookup);
+        }
+
+
+        /// <summary>
+        /// Converts the given element to a mof element
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <param name="resolver">The resolver being used to figure out the </param>
+        /// <param name="factory">Factory being used to create the mof element</param>
+        /// <param name="typeLookup">The type lookup being used define the type</param>
+        /// <returns>The converted element</returns>
+        public static IElement ConvertToMofElement(
+            object value,
+            IUriResolver resolver,
+            IFactory factory,
+            IDotNetTypeLookup typeLookup = null)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+            
+            // Creates the mof element for type
+            IElement valueType = null;
+
+            var typeUri = typeLookup?.ToElement(value.GetType());
+
+            if (!string.IsNullOrEmpty(typeUri))
+            {
+                valueType = resolver.Resolve(typeUri);
+            }
+
+            var instanceValue = factory.create(valueType);
+
+            // Now sets the properties
+            var typeOfValue = value.GetType();
+            foreach (var property in typeOfValue.GetProperties())
+            {
+                var propertyValue = property.GetValue(value);
+
+                instanceValue.set(property.Name,
+                    ConvertPropertyValue(propertyValue, resolver, factory, typeLookup));
+            }
+
+            return instanceValue;
+        }
+
+        /// <summary>
+        /// Converts the given value to a property that can be directly added the mof element
+        /// </summary>
+        /// <param name="value">Value to be used</param>
+        /// <param name="resolver">Uriresolver being used to find references and/or meta classes</param>
+        /// <param name="factory">Factory being used to create a new instance</param>
+        /// <param name="typeLookup">Dotnet Typelookup to convert the dotnet type to the correct meta class</param>
+        /// <returns>The converted object that can directly be set. </returns>
+        private static object ConvertPropertyValue(object value, IUriResolver resolver, IFactory factory, IDotNetTypeLookup typeLookup)
+        {
+            if (IsOfPrimitiveType(value))
+            {
+                return value;
+            }
+
+            if (IsOfEnumeration(value))
+            {
+                var propertyValueAsList = (IEnumerable) value;
+                var list = new List<object>();
+                foreach (var listItem in propertyValueAsList)
+                {
+                    if (IsOfPrimitiveType(listItem))
+                    {
+                        list.Add(listItem);
+                    }
+                    else
+                    {
+                        list.Add(ConvertToMofElement(listItem, resolver, factory, typeLookup));
+                    }
+                }
+
+                return list;
+            }
+
+            return ConvertToMofElement(value, resolver, factory, typeLookup);
         }
     }
 }

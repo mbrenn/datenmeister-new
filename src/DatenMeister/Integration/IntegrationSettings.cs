@@ -11,6 +11,9 @@
 
         public string PathToXmiFiles { get; set; } // = "App_Data";
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the data environment including all the metamodels shall be established
+        /// </summary>
         public bool EstablishDataEnvironment { get; set; }
 
         /// <summary>

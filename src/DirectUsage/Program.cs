@@ -24,7 +24,7 @@ namespace DirectUsage
 
             var xmlExtent = new MofUriExtent(new XmiProvider(), "dm:///test");
             var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
-            var uml = workspaceLogic.GetUml().Get<_UML>();
+            var uml = workspaceLogic.GetUmlWorkspace().Get<_UML>();
 
             var dotNetTypeGenerator = new DotNetTypeGenerator(new MofFactory(xmlExtent), uml);
             var created = dotNetTypeGenerator.CreateTypeFor(typeof(FieldData));

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
@@ -79,7 +81,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspace">The workspace being queried</param>
         /// <param name="uri">The uri of the extent that is looked for</param>
         /// <returns>The found extent or null, if not found</returns>
-        public static IUriExtent FindExtent(this Workspace workspace, string uri)
+        public static IUriExtent FindExtent(this IWorkspace workspace, string uri)
         {
             return (IUriExtent) workspace.extent.FirstOrDefault(x => (x as IUriExtent)?.contextURI() == uri);
         }
@@ -247,25 +249,37 @@ namespace DatenMeister.Runtime.Workspaces
         {
             return logic.GetWorkspace(WorkspaceNames.NameManagement);
         }
-        public static Workspace GetData(
+        public static Workspace GetDataWorkspace(
             this IWorkspaceLogic logic)
         {
             return logic.GetWorkspace(WorkspaceNames.NameData);
         }
 
-        public static Workspace GetTypes(
+        public static Workspace GetTypesWorkspace(
             this IWorkspaceLogic logic)
         {
             return logic.GetWorkspace(WorkspaceNames.NameTypes);
         }
 
-        public static Workspace GetUml(
+        /// <summary>
+        /// Gets the data 
+        /// </summary>
+        /// <param name="scope">Scope of dependency container</param>
+        /// <returns>The Uml instance being used</returns>
+        public static _UML GetUmlData(this ILifetimeScope scope)
+        {
+            var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
+            var uml = workspaceLogic.GetUmlWorkspace();
+            return uml.Get<_UML>();
+        }
+
+        public static Workspace GetUmlWorkspace(
             this IWorkspaceLogic logic)
         {
             return logic.GetWorkspace(WorkspaceNames.NameUml);
         }
 
-        public static Workspace GetMof(
+        public static Workspace GetMofWorkspace(
             this IWorkspaceLogic logic)
         {
             return logic.GetWorkspace(WorkspaceNames.NameMof);

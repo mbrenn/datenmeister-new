@@ -6,7 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Extents
-{
+{/*
     public class ReflectiveSequenceForExtent : IReflectiveSequence, IExtentCachesObject
     {
         private readonly IReflectiveSequence _reflectiveSequence;
@@ -149,5 +149,5 @@ namespace DatenMeister.Runtime.Extents
         {
             return GetEnumerator();
         }
-    }
+    }*/
 }

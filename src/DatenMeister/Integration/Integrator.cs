@@ -7,6 +7,7 @@ using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.UserManagement;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
@@ -155,6 +156,7 @@ namespace DatenMeister.Integration
                 if (_settings.EstablishDataEnvironment)
                 {
                     LoadsWorkspacesAndExtents(scope);
+                    UserLogic.Initialize(scope);
                 }
 
                 CreatesUserTypeExtent(scope);

@@ -1,5 +1,13 @@
-﻿using Autofac;
+﻿using System.Diagnostics;
+using System.Linq;
+using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.Functions.Algorithm;
+using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.UserManagement
@@ -18,9 +26,35 @@ namespace DatenMeister.Modules.UserManagement
         /// Initializes the user logic and creates and loads the default extent
         /// </summary>
         /// <param name="scope"></param>
-        public void Initialize(ILifetimeScope scope)
+        public static void Initialize(ILifetimeScope scope)
         {
-            LocalTypeSupport.AddLocalType(scope, typeof(User));
+            var types = LocalTypeSupport.AddLocalType(
+                scope,
+                new[] {typeof(User), typeof(UserManagementSettings)}
+            );
+
+            var settingsMetaClass = LocalTypeSupport.GetMetaClassFor(scope, typeof(UserManagementSettings));
+
+            var extent = ExtentCreator.GetOrCreateXmiExtentInInternalDatabase(
+                scope,
+                WorkspaceNames.NameManagement,
+                ExtentUri,
+                "DatenMeister.Users");
+
+            var settings = extent.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() as IElement;
+            if (settings == null)
+            {
+                // Create new settings
+                var factory = new MofFactory(extent);
+                var element = factory.create(types[1]);
+                element.set(nameof(UserManagementSettings.Salt), RandomFunctions.GetRandomAlphanumericString(16));
+                extent.elements().add(element);
+                Debug.WriteLine("UserLogic - Created Salt...");
+            }
+            else
+            {
+                Debug.WriteLine("UserLogic - Salt is existing");
+            }
         }
     }
 }

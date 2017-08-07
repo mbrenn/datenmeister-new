@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.Workspaces;
@@ -14,22 +17,49 @@ namespace DatenMeister.Modules.TypeSupport
     /// </summary>
     public static class LocalTypeSupport
     {
+
+        public static IList<IElement> AddLocalType(ILifetimeScope scope, IEnumerable<Type> types)
+        {
+            var result = new List<IElement>();
+            var internalTypeExtent = GetInternalTypeExtent(scope);
+
+            var generator = new DotNetTypeGenerator(
+                new MofFactory(internalTypeExtent),
+                scope.GetUmlData());
+
+            foreach (var type in types)
+            {
+                var element = generator.CreateTypeFor(type);
+                internalTypeExtent.elements().add(element);
+                result.Add(element);
+            }
+
+            return result;
+        }
+
+        private static IUriExtent GetInternalTypeExtent(ILifetimeScope scope)
+        {
+            var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
+            var workspace = workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
+            var internalTypeExtent = GetInternalTypeExtent(workspace);
+            return internalTypeExtent;
+        }
+
         /// <summary>
         /// Adds a local type to the default instance of the DatenMeister
         /// </summary>
         /// <param name="scope">Scope to be added</param>
         /// <param name="type">Type to be added</param>
-        public static void AddLocalType(ILifetimeScope scope, Type type)
+        public static IElement AddLocalType(ILifetimeScope scope, Type type)
         {
-            var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
-            var workspace = workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
-            var internalTypeExtent = GetInternalTypeExtent(workspace);
-            var generator = new DotNetTypeGenerator(
-                new MofFactory(internalTypeExtent),
-                scope.GetUmlData());
+            return AddLocalType(scope, new[]{type}).First();
+        }
 
-            var element = generator.CreateTypeFor(type);
-            internalTypeExtent.elements().add(element);
+        public static IElement GetMetaClassFor(ILifetimeScope scope, Type type)
+        {
+            var internalTypeExtent = GetInternalTypeExtent(scope);
+            var found = internalTypeExtent.element(internalTypeExtent.contextURI() + "#" + type.FullName);
+            return found;
         }
 
         /// <summary>

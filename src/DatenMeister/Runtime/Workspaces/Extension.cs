@@ -269,6 +269,16 @@ namespace DatenMeister.Runtime.Workspaces
         public static _UML GetUmlData(this ILifetimeScope scope)
         {
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
+            return GetUmlData(workspaceLogic);
+        }
+
+        /// <summary>
+        /// Gets the uml data from the workspace
+        /// </summary>
+        /// <param name="workspaceLogic">Workspace logic being used</param>
+        /// <returns>The UML Data</returns>
+        public static _UML GetUmlData(this IWorkspaceLogic workspaceLogic)
+        {
             var uml = workspaceLogic.GetUmlWorkspace();
             return uml.Get<_UML>();
         }

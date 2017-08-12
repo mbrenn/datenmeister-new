@@ -156,7 +156,7 @@ namespace DatenMeister.Integration
                 if (_settings.EstablishDataEnvironment)
                 {
                     LoadsWorkspacesAndExtents(scope);
-                    UserLogic.Initialize(scope);
+                    scope.Resolve<UserLogic>().Initialize();
                 }
 
                 CreatesUserTypeExtent(scope);

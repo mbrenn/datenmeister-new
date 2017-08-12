@@ -22,24 +22,36 @@ namespace DatenMeister.Modules.UserManagement
         /// </summary>
         public const string ExtentUri = "datenmeister:///users";
 
+        private const string ExtentName = "DatenMeister.Users";
+
+        private readonly LocalTypeSupport _localTypeSupport;
+
+        private readonly ExtentCreator _extentCreator;
+
+        private readonly IWorkspaceLogic _workspaceLogic;
+
+        public UserLogic(LocalTypeSupport localTypeSupport, ExtentCreator extentCreator, IWorkspaceLogic workspaceLogic)
+        {
+            _localTypeSupport = localTypeSupport;
+            _extentCreator = extentCreator;
+            _workspaceLogic = workspaceLogic;
+        }
+
         /// <summary>
         /// Initializes the user logic and creates and loads the default extent
         /// </summary>
-        /// <param name="scope"></param>
-        public static void Initialize(ILifetimeScope scope)
+        public void Initialize()
         {
-            var types = LocalTypeSupport.AddLocalType(
-                scope,
+            var types = _localTypeSupport.AddLocalType(
                 new[] {typeof(User), typeof(UserManagementSettings)}
             );
 
-            var settingsMetaClass = LocalTypeSupport.GetMetaClassFor(scope, typeof(UserManagementSettings));
+            var settingsMetaClass = _localTypeSupport.GetMetaClassFor(typeof(UserManagementSettings));
 
-            var extent = ExtentCreator.GetOrCreateXmiExtentInInternalDatabase(
-                scope,
+            var extent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
                 WorkspaceNames.NameManagement,
                 ExtentUri,
-                "DatenMeister.Users");
+                ExtentName);
 
             var settings = extent.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() as IElement;
             if (settings == null)
@@ -55,6 +67,26 @@ namespace DatenMeister.Modules.UserManagement
             {
                 Debug.WriteLine("UserLogic - Salt is existing");
             }
+        }
+
+        public (string password, string salt) HashPassword(string password)
+        {
+            var salt = RandomFunctions.GetRandomAlphanumericString(16);
+            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement).FindExtent(ExtentName);
+            var settingsMetaClass = _localTypeSupport.GetMetaClassFor(typeof(UserManagementSettings));
+            var settings = userDatabase.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() as IElement;
+
+            Debug.Assert(settings != null, "settings != null");
+            var globalSalt = settings.get(nameof(UserManagementSettings.Salt)).ToString();
+
+            var totalPassword = salt + password + globalSalt;
+
+            return (totalPassword, salt);
+        }
+
+        public void AddUser(string username, string password)
+        {
+            
         }
     }
 }

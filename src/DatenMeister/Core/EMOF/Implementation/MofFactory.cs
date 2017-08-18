@@ -142,5 +142,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             throw new NotImplementedException();
         }
+
+
+        public static MofFactory CreateByExtent(IUriExtent loadedExtent)
+        {
+            return new MofFactory(loadedExtent);
+        }
     }
 }

@@ -149,5 +149,32 @@ namespace DatenMeister.Tests.Mof.Core
             Assert.That(asObject.get("X"), Is.EqualTo(23));
             Assert.That(asObject.get("Y"), Is.EqualTo(24));
         }
+
+        /// <summary>
+        /// Defines the point class being used for the test above
+        /// </summary>
+        public class Point
+        {
+            /// <summary>
+            /// Initializes a new instance of the Point class
+            /// </summary>
+            /// <param name="x">The first coordinate</param>
+            /// <param name="y">The second coordinate</param>
+            public Point(int x, int y)
+            {
+                X = x;
+                Y = y;
+            }
+
+            /// <summary>
+            /// Gets the first coordinate
+            /// </summary>
+            public int X { get; }
+
+            /// <summary>
+            /// Gets the second coordinate
+            /// </summary>
+            public int Y { get; }
+        }
     }
 }

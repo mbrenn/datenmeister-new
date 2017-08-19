@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.CSV.Runtime.Storage;
+using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
@@ -18,12 +18,12 @@ namespace DatenMeister.Tests.Runtime
             File.WriteAllText("data.txt", csvFile);
             
             var mapper = new ManualConfigurationToExtentStorageMapper();
-            mapper.AddMapping(typeof (CSVStorageConfiguration), scope => new CSVStorage(null));
+            mapper.AddMapping(typeof (CSVExtentLoaderConfig), scope => new CSVExtentLoader(null));
             var dataLayers = WorkspaceLogic.InitDefault();
 
             var data = new ExtentStorageData();
-            var logic = new ExtentStorageLoader(data, mapper, null, new WorkspaceLogic(dataLayers));
-            var configuration = new CSVStorageConfiguration
+            var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(dataLayers));
+            var configuration = new CSVExtentLoaderConfig
             {
                 Path = "data.txt",
                 ExtentUri = "dm:///local/",
@@ -41,7 +41,7 @@ namespace DatenMeister.Tests.Runtime
             logic.StoreExtent(csvExtent);
 
             // Changes content, store it and check, if stored
-            (csvExtent.elements().ElementAt(0) as IObject).set(configuration.Settings.Columns[0], "eens");
+            ((IObject) csvExtent.elements().ElementAt(0)).set(configuration.Settings.Columns[0], "eens");
             logic.StoreAll();
 
             var read = File.ReadAllText("data.txt");

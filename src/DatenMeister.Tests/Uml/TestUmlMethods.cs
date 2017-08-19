@@ -4,7 +4,6 @@ using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
 using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
-using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using NUnit.Framework;
@@ -19,7 +18,7 @@ namespace DatenMeister.Tests.Uml
         {
             var kernel = new ContainerBuilder();
             kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
-            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
+            var builder = kernel.UseDatenMeister(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
                 var dataLayerLogic = scope.Resolve<WorkspaceLogic>();
@@ -43,7 +42,7 @@ namespace DatenMeister.Tests.Uml
         {
             var kernel = new ContainerBuilder();
             kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
-            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
+            var builder = kernel.UseDatenMeister(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
                 var workspaceCollection = scope.Resolve<IWorkspaceLogic>();

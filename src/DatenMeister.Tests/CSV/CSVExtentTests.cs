@@ -2,7 +2,7 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.CSV.Runtime.Storage;
+using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.XMI.EMOF;
 using NUnit.Framework;
 
@@ -18,7 +18,7 @@ namespace DatenMeister.Tests.CSV
             var csvOtherFile = "eens 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
             File.WriteAllText("data.txt", csvFile);
 
-            var storageConfiguration = new CSVStorageConfiguration
+            var storageConfiguration = new CSVExtentLoaderConfig
             {
                 Path = "data.txt",
                 ExtentUri = "dm:///test",
@@ -29,7 +29,7 @@ namespace DatenMeister.Tests.CSV
                 }
             };
 
-            var storage = new CSVStorage(null);
+            var storage = new CSVExtentLoader(null);
             var provider = storage.LoadExtent(storageConfiguration, false);
             var extent = new MofUriExtent(provider, "dm:////test/");
 

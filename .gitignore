@@ -171,3 +171,4 @@ icons
 project.lock.json
 *.js.map
 /src/DatenMeister.Web.Application/App_Data/Database
+/src/.vs

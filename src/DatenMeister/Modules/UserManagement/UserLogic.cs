@@ -88,5 +88,14 @@ namespace DatenMeister.Modules.UserManagement
         {
             
         }
+
+        public bool VerifyUser(string username, string password)
+        {
+            return true;
+        }
+
+        public void ChangePassword(string username, string password)
+        {
+        }
     }
 }

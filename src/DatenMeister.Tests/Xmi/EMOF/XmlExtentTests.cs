@@ -287,13 +287,13 @@ namespace DatenMeister.Tests.Xmi.EMOF
             using (var scope = builder.BeginLifetimeScope())
             {
                 var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
-                var umlDataLayer = dataLayerLogic.GetUml();
+                var umlDataLayer = dataLayerLogic.GetUmlWorkspace();
                 var uml = umlDataLayer.Get<_UML>();
                 Assert.That(uml, Is.Not.Null);
 
                 var xmlProvider = new XmiProvider();
                 var extent = new MofUriExtent(xmlProvider, "dm:///test/");
-                dataLayerLogic.AddExtent(dataLayerLogic.GetTypes(), extent);
+                dataLayerLogic.AddExtent(dataLayerLogic.GetTypesWorkspace(), extent);
 
                 var factory = new MofFactory(extent);
                 var interfaceClass = uml.SimpleClassifiers.__Interface;

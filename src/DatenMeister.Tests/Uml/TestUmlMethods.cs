@@ -24,7 +24,7 @@ namespace DatenMeister.Tests.Uml
                 var dataLayerLogic = scope.Resolve<WorkspaceLogic>();
 
                 // Gets the logic
-                var uml = dataLayerLogic.GetUml().Get<_UML>();
+                var uml = dataLayerLogic.GetUmlWorkspace().Get<_UML>();
                 var feature = uml.Classification.__Feature;
                 var properties = ClassifierMethods.GetPropertyNamesOfClassifier(feature).ToList();
 
@@ -49,7 +49,7 @@ namespace DatenMeister.Tests.Uml
                 var dataLayerLogic = scope.Resolve<WorkspaceLogic>();
 
                 // Gets the logic
-                var uml = dataLayerLogic.GetUml().Get<_UML>();
+                var uml = dataLayerLogic.GetUmlWorkspace().Get<_UML>();
                 var feature = uml.Classification.__Feature;
                 var namedElementMethods = scope.Resolve<NamedElementMethods>();
                 var fullName = namedElementMethods.GetFullName(feature);

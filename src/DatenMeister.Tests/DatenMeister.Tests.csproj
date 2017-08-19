@@ -62,7 +62,6 @@
     <Compile Include="DotNet\DotNetExtentTests.cs" />
     <Compile Include="DotNet\DotNetTests.cs" />
     <Compile Include="Excel\ExcelTests.cs" />
-    <Compile Include="ManualMapping\ManualMappingTests.cs" />
     <Compile Include="Mof\Core\MofObjectTests.cs" />
     <Compile Include="Mof\Queries\TestFilters.cs" />
     <Compile Include="Program.cs" />
@@ -110,7 +109,9 @@
       <Name>DatenMeister</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Modules\" />
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>

@@ -57,7 +57,7 @@ namespace DatenMeister.Tests.Runtime
             workspaceLoader.Store();
 
             var newWorkSpaceCollection = WorkspaceLogic.GetEmptyLogic();
-            workspaceLoader = CreateWorkspaceLoader(workSpaceCollection);
+            workspaceLoader = CreateWorkspaceLoader(newWorkSpaceCollection);
             workspaceLoader.Load();
 
             Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(2));
@@ -99,7 +99,7 @@ namespace DatenMeister.Tests.Runtime
 
             var newWorkSpaceCollection = WorkspaceLogic.GetEmptyLogic();
             newWorkSpaceCollection.AddWorkspace(new Workspace("test", "Continue"));
-            workspaceLoader = CreateWorkspaceLoader(workSpaceCollection);
+            workspaceLoader = CreateWorkspaceLoader(newWorkSpaceCollection);
             workspaceLoader.Load();
 
             Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(2));

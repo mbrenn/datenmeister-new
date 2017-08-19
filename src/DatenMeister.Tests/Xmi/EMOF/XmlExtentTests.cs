@@ -58,7 +58,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
 
             // Get the xml properties
             var providerObject = ((MofObject) xmlElement).ProviderObject;
-            var xmlNode = ((XmiProvider) providerObject).RootNode;
+            var xmlNode = ((XmiProviderObject) providerObject).XmlNode;
             Assert.That(xmlNode.Attribute("X")?.Value, Is.EqualTo("y"));
             Assert.That(xmlNode.Elements("Person").Count(), Is.EqualTo(1));
             Assert.That(xmlNode.Element("Person")?.Attribute("Name")?.Value, Is.EqualTo("Brenn"));

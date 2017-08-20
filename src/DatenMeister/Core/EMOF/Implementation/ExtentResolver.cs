@@ -14,7 +14,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores the extent to which the resolver is allocated
         /// </summary>
-        private readonly MofExtent _extent;
+        private readonly IExtent _extent;
 
         /// <summary>
         /// Stores a list of other extents that shall also be considered as meta extents
@@ -25,7 +25,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Initializes a new instance of the UriResolver class.
         /// </summary>
         /// <param name="extent">Extent being used as a relative source for information</param>
-        public ExtentResolver(MofExtent extent)
+        public ExtentResolver(IExtent extent)
         {
             _extent = extent;
         }
@@ -71,6 +71,13 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             return null;
+        }
+
+        public IElement ResolveById(string id)
+        {
+            var asUriExtent = _extent as MofUriExtent;
+            var uri = asUriExtent?.contextURI() + "#" + id;
+            return (_extent as IUriExtent)?.element(uri);
         }
     }
 }

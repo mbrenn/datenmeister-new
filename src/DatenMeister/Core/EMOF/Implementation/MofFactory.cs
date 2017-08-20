@@ -104,7 +104,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                 if (extentAsMofUriExtent != null)
                 {
-                    _extent.Resolver.AddMetaExtent(extentAsMofUriExtent);
+                    _extent?.Resolver.AddMetaExtent(extentAsMofUriExtent);
                 }
                 
                 uriMetaClass = ((MofUriExtent) elementAsMetaClass?.Extent)?.uri(metaClass);

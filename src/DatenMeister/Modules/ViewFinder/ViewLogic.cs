@@ -94,7 +94,7 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
 
-        private IUriExtent GetViewExtent()
+        public IUriExtent GetViewExtent()
         {
             var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
 

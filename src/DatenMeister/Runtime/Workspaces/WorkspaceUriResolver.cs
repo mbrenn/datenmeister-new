@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -40,6 +41,24 @@ namespace DatenMeister.Runtime.Workspaces
             }
 
             throw new InvalidOperationException($"The given element with uri {uri} is not found within all workspaces");
+        }
+
+        public IElement ResolveById(string id)
+        {
+            foreach (var workspace in _workspaceLogic.Workspaces)
+            {
+                foreach (var extent in workspace.extent.OfType<IUriExtent>())
+                {
+                    var extentUriResolver = new ExtentResolver(extent);
+                    var result = extentUriResolver.ResolveById(id);
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return null;
         }
 
         /// <inheritdoc />

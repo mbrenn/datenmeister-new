@@ -45,5 +45,23 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             return $"UriExent: {contextURI()}";
         }
+
+        /// <summary>
+        /// Gets the id of the element as defined in the uri. 
+        /// The format of the uri is expected to be like protocol://path#id.
+        /// The text after the first '#' is returned
+        /// </summary>
+        /// <param name="uri">Uri to be looked for</param>
+        /// <returns>Found uri</returns>
+        public static string GetIdOfUri(string uri)
+        {
+            var pos = uri.IndexOf('#');
+            if (pos == -1)
+            {
+                return uri;
+            }
+
+            return uri.Substring(pos + 1);
+        }
     }
 }

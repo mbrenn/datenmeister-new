@@ -16,6 +16,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         IElement Resolve(string uri);
 
         /// <summary>
+        /// Resolves a certain element by id
+        /// </summary>
+        /// <param name="id">Path to be queried</param>
+        /// <returns>The found element for the id</returns>
+        IElement ResolveById(string id);
+
+        /// <summary>
         /// Adds an extent as a meta extent, so it will also be used to retrieve the element
         /// </summary>
         /// <param name="extent">Extent to be added</param>

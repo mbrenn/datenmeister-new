@@ -290,8 +290,6 @@ export namespace ItemList {
         }
 
         refresh(): void {
-
-
             this.setViewState({
                 type: DMI.Api.PageType.Items,
                 workspace: this.ws,
@@ -466,7 +464,7 @@ export namespace ItemDetail {
 
         // TODO: this.createTitle(workspaceId, extentUrl, itemUrl);
 
-        this.setView(itemView);
+        viewport.setView(itemView);
     }
 
 
@@ -699,16 +697,7 @@ export class CreatetableTypesView extends ViewBase implements DMI.Views.IView {
         this.ws = ws;
         var tthis = this;
 
-        this.addButtonLink("Unspecified",
-            () => {
-                DMClient.ExtentApi.createItem(ws, extentUrl, null)
-                    .done((innerData: DMCI.In.ICreateItemResult) => {
-                        ItemDetail. navigateToItem(tthis.viewport, ws, extentUrl, innerData.newuri);
-                    });
-            });
-
-        
-
+        // Adds the default one, which creates just an empty, non-defined item.
         this.addButtonLink("Unspecified",
             () => {
                 DMClient.ExtentApi.createItem(ws, extentUrl, null)
@@ -719,7 +708,6 @@ export class CreatetableTypesView extends ViewBase implements DMI.Views.IView {
 
         this.addText("Loading...");
         
-        // Adds the default one, which creates just an empty, non-defined item.
         // Adds the ones, that can be created
         DMClient.ExtentApi.getCreatableTypes(this.ws, this.extentUrl).done(
             (data) => {

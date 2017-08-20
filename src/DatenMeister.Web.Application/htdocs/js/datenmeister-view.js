@@ -343,7 +343,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 navigateToItem(viewport, ws, extentUrl, itemUrl, undefined, { isReadonly: true });
             };
             // TODO: this.createTitle(workspaceId, extentUrl, itemUrl);
-            this.setView(itemView);
+            viewport.setView(itemView);
         }
         ItemDetail.navigateToItem = navigateToItem;
         var ItemView = (function (_super) {
@@ -556,12 +556,7 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
             _this.extentUrl = extentUrl;
             _this.ws = ws;
             var tthis = _this;
-            _this.addButtonLink("Unspecified", function () {
-                DMClient.ExtentApi.createItem(ws, extentUrl, null)
-                    .done(function (innerData) {
-                    ItemDetail.navigateToItem(tthis.viewport, ws, extentUrl, innerData.newuri);
-                });
-            });
+            // Adds the default one, which creates just an empty, non-defined item.
             _this.addButtonLink("Unspecified", function () {
                 DMClient.ExtentApi.createItem(ws, extentUrl, null)
                     .done(function (innerData) {
@@ -569,7 +564,6 @@ define(["require", "exports", "./datenmeister-interfaces", "./datenmeister-clien
                 });
             });
             _this.addText("Loading...");
-            // Adds the default one, which creates just an empty, non-defined item.
             // Adds the ones, that can be created
             DMClient.ExtentApi.getCreatableTypes(_this.ws, _this.extentUrl).done(function (data) {
                 for (var typeKey in data.types) {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Extension;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 
 namespace DatenMeister.Runtime.Workspaces
@@ -11,7 +12,7 @@ namespace DatenMeister.Runtime.Workspaces
     /// MOF Facility Object Lifecycle (MOFFOL)
     /// </summary>
     /// <typeparam name="T">Type of the extents being handled</typeparam>
-    public class Workspace : IWorkspace
+    public class Workspace : IWorkspace, IObject
     {
         private readonly object _syncObject = new object();
 
@@ -112,6 +113,36 @@ namespace DatenMeister.Runtime.Workspaces
             return !string.IsNullOrEmpty(annotation) 
                 ? $"({id}) {annotation}" 
                 : $"({id})";
+        }
+
+        public bool @equals(object other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object get(string property)
+        {
+            if (property == "id")
+            {
+                return id;
+            }
+
+            throw new InvalidOperationException($"Given property {id} is not set.");
+        }
+
+        public void set(string property, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool isSet(string property)
+        {
+            return property == "id";
+        }
+
+        public void unset(string property)
+        {
+            throw new NotImplementedException();
         }
     }
 }

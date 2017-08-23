@@ -11,7 +11,7 @@ namespace DatenMeister.Runtime.Workspaces
     /// </summary>
     public class WorkspaceView
     {
-        private ViewLogic _viewLogic;
+        private readonly ViewLogic _viewLogic;
         private readonly WorkspaceUriResolver _uriResolver;
 
         public WorkspaceView(ViewLogic viewLogic, WorkspaceUriResolver uriResolver)
@@ -29,17 +29,16 @@ namespace DatenMeister.Runtime.Workspaces
             // Finds the forms
             var formType =
                 _uriResolver.ResolveById(
-                    MofUriExtent.GetIdOfUri("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.Form"));
+                    MofUriExtent.GetIdOfUri("#DatenMeister.Models.Forms.Form"));
             var textFieldDataType = _uriResolver.ResolveById(
-                MofUriExtent.GetIdOfUri(
-                    "dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.TextFieldData"));
+                MofUriExtent.GetIdOfUri("#DatenMeister.Models.Forms.TextFieldData"));
 
             var factory = new MofFactory(_viewLogic.GetViewExtent());
             var form = factory.create(formType);
 
             var nameField = factory.create(textFieldDataType);
-            nameField.set(_FormAndFields._FieldData.name, "Name");
-            nameField.set(_FormAndFields._FieldData.title, "id");
+            nameField.set(_FormAndFields._FieldData.name, "id");
+            nameField.set(_FormAndFields._FieldData.title, "Name");
 
             // Sets the fields of form
             var fields = new[] {nameField};

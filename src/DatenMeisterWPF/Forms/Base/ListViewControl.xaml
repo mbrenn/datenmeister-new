@@ -6,8 +6,10 @@
              xmlns:local="clr-namespace:DatenMeisterWPF.Forms.Base"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" x:Name="ButtonBar" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+        </StackPanel>
         <DataGrid x:Name="DataGrid"/>
 
-    </Grid>
+    </DockPanel>
 </UserControl>

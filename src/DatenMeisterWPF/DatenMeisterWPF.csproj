@@ -91,6 +91,7 @@
     <Compile Include="Forms\Base\ListViewControl.xaml.cs">
       <DependentUpon>ListViewControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Base\ViewButton.cs" />
     <Compile Include="Forms\IntroScreen.xaml.cs">
       <DependentUpon>IntroScreen.xaml</DependentUpon>
     </Compile>

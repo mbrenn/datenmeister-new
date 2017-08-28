@@ -29,7 +29,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
         /// If the workspace is already existing, the annotation will be overridden. 
         /// If not, it will be created.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The loaded workspace</returns>
         public WorkspaceFileData Load()
         {
             try

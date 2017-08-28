@@ -2,6 +2,7 @@
 using System.Linq;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.XMI.ExtentStorage;
@@ -69,10 +70,18 @@ namespace DatenMeister.Modules.UserManagement
             }
         }
 
+        /// <summary>
+        /// Clears the database and all user
+        /// </summary>
+        public void ClearDatabase()
+        {
+            GetsUserDatabase().elements().clear();
+        }
+
         public (string password, string salt) HashPassword(string password)
         {
+            var userDatabase = GetsUserDatabase();
             var salt = RandomFunctions.GetRandomAlphanumericString(16);
-            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement).FindExtent(ExtentName);
             var settingsMetaClass = _localTypeSupport.GetMetaClassFor(typeof(UserManagementSettings));
             var settings = userDatabase.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() as IElement;
 
@@ -82,6 +91,12 @@ namespace DatenMeister.Modules.UserManagement
             var totalPassword = salt + password + globalSalt;
 
             return (totalPassword, salt);
+        }
+
+        private IUriExtent GetsUserDatabase()
+        {
+            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement).FindExtent(ExtentName);
+            return userDatabase;
         }
 
         public void AddUser(string username, string password)

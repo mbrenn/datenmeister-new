@@ -12,6 +12,7 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -75,7 +76,7 @@ namespace DatenMeister.Integration
             kernel.RegisterInstance(dotNetTypeLookup).As<IDotNetTypeLookup>();
 
             // Loading and storing the workspaces
-            var workspaceLoadingConfiguration = new WorkspaceLoaderConfig()
+            var workspaceLoadingConfiguration = new WorkspaceLoaderConfig
             {
                 Filepath = PathWorkspaces
             };
@@ -149,8 +150,14 @@ namespace DatenMeister.Integration
                     fields,
                     dotNetTypeLookup);
 
+                // Adds the views and their view logic
                 var viewLogic = scope.Resolve<ViewLogic>();
                 viewLogic.Integrate();
+
+                
+                // Includes the extent for the helping extents
+                Provider.HelpingExtents.Helper.Initialize(workspaceLogic);
+
 
                 // Boots up the typical DatenMeister Environment  
                 if (_settings.EstablishDataEnvironment)

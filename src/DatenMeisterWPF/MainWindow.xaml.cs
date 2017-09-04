@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using DatenMeister.Integration;
+using DatenMeister.Provider.HelpingExtents;
 using DatenMeisterWPF.Forms;
 
 namespace DatenMeisterWPF
@@ -23,8 +24,14 @@ namespace DatenMeisterWPF
                 () => GiveMe.DatenMeister());
             MainControl.Content = null;
 
-            var workspaceControl = new WorkspaceViewControl();
+            /*var workspaceControl = new WorkspaceViewControl();
             workspaceControl.Show(datenMeister);
+            MainControl.Content = workspaceControl;*/
+
+            
+            var workspaceControl = new ElementListViewControl();
+            var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(datenMeister);
+            workspaceControl.Show(datenMeister, workspaceExtent.elements(), null);
             MainControl.Content = workspaceControl;
         }
     }

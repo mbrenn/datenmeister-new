@@ -32,9 +32,7 @@ namespace DatenMeisterWPF.Forms.Base
             var items = new List<ExpandoObject>();
             _itemMapping.Clear();
 
-            var fields = FormDefinition?.get(_FormAndFields._Form.fields) as IReflectiveCollection;
-
-            if (fields == null)
+            if (!(FormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
             {
                 return;
             }

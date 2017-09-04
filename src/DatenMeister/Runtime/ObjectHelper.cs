@@ -42,7 +42,7 @@ namespace DatenMeister.Runtime
                 var result = value.get(property);
                 if (DotNetHelper.IsOfEnumeration(result))
                 {
-                    var resultAsEnumeration = result as IEnumerable<object>;
+                    var resultAsEnumeration = (IEnumerable<object>) result;
                     return resultAsEnumeration.FirstOrDefault();
                 }
 
@@ -95,8 +95,7 @@ namespace DatenMeister.Runtime
             this IObject value,
             string property)
         {
-            var result = value.get(property) as IReflectiveCollection;
-            if (result == null)
+            if (!(value.get(property) is IReflectiveCollection result))
             {
                 throw new InvalidOperationException("The given result is not a ReflectiveCollection");
             }
@@ -116,8 +115,7 @@ namespace DatenMeister.Runtime
             this IObject value,
             string property)
         {
-            var result = value.get(property) as IReflectiveSequence;
-            if (result == null)
+            if (!(value.get(property) is IReflectiveSequence result))
             {
                 throw new InvalidOperationException("The given result is not a ReflectiveSequence");
             }
@@ -137,8 +135,7 @@ namespace DatenMeister.Runtime
             this IObject value,
             string property)
         {
-            var result = value.get(property) as IEnumerable<object>;
-            if (result == null)
+            if (!(value.get(property) is IEnumerable<object> result))
             {
                 throw new InvalidOperationException("The given result is not a ReflectiveSequence");
             }
@@ -183,8 +180,7 @@ namespace DatenMeister.Runtime
         public static IObject AsIObject(
             this object value)
         {
-            var result = value as IObject;
-            if (result == null)
+            if (!(value is IObject result))
             {
                 throw new InvalidOperationException("The given value is not an IObject");
             }
@@ -201,8 +197,7 @@ namespace DatenMeister.Runtime
         public static IElement AsIElement(
             this object value)
         {
-            var result = value as IElement;
-            if (result == null)
+            if (!(value is IElement result))
             {
                 throw new InvalidOperationException("The given value is not an IElement");
             }
@@ -231,8 +226,7 @@ namespace DatenMeister.Runtime
             }
 
             // If the object knows the extent to which it belongs to, it will return it
-            var objectKnowsExtent = value as IHasExtent;
-            if (objectKnowsExtent != null)
+            if (value is IHasExtent objectKnowsExtent)
             {
                 return objectKnowsExtent.Extent as IUriExtent;
             }
@@ -256,8 +250,7 @@ namespace DatenMeister.Runtime
             }
 
             // Checks, if the given result is a uriextent
-            var resultAsUriExtent = result as IUriExtent;
-            if (resultAsUriExtent == null)
+            if (!(result is IUriExtent resultAsUriExtent))
             {
                 throw new InvalidOperationException($"The returned extent is not an IUriExtent {result}");
             }
@@ -273,8 +266,7 @@ namespace DatenMeister.Runtime
         public static string GetUri(this IElement element)
         {
             // First, verifies if the element has direct access to the uri of the element
-            var asKnowsUri = element as IKnowsUri;
-            if (asKnowsUri != null)
+            if (element is IKnowsUri asKnowsUri)
             {
                 return asKnowsUri.Uri;
             }

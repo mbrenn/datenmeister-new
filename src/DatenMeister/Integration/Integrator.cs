@@ -86,6 +86,9 @@ namespace DatenMeister.Integration
 
             kernel.RegisterType<ExtentConfigurationLoader>().As<ExtentConfigurationLoader>();
 
+            // Adds the view finder
+            kernel.RegisterType<ViewFinderImpl>().As<IViewFinder>();
+
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
@@ -156,7 +159,7 @@ namespace DatenMeister.Integration
 
                 
                 // Includes the extent for the helping extents
-                Provider.HelpingExtents.Helper.Initialize(workspaceLogic);
+                Provider.HelpingExtents.ManagementProviderHelper.Initialize(workspaceLogic);
 
 
                 // Boots up the typical DatenMeister Environment  

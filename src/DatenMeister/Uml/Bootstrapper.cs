@@ -593,7 +593,7 @@ namespace DatenMeister.Uml
             if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-            return  PerformFullBootstrap(workspaceLogic, dataLayer, mode, filePaths);
+            return PerformFullBootstrap(workspaceLogic, dataLayer, mode, filePaths);
         }
 
         /// <summary>

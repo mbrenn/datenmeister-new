@@ -17,7 +17,6 @@ namespace DatenMeister.Tests.Uml
         public void TestGeneralizedProperties()
         {
             var kernel = new ContainerBuilder();
-            kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
             var builder = kernel.UseDatenMeister(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
@@ -41,7 +40,6 @@ namespace DatenMeister.Tests.Uml
         public void TestFullName()
         {
             var kernel = new ContainerBuilder();
-            kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
             var builder = kernel.UseDatenMeister(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {

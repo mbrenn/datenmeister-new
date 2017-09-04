@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.HelpingExtents
@@ -25,7 +27,7 @@ namespace DatenMeister.Provider.HelpingExtents
 
             AddMapping(
                 "extents",
-                w => w.extent,
+                w => w.extent.Select(x => new ExtentObject(provider, (IUriExtent) x)),
                 (w, v) => throw new InvalidOperationException("Extent cannot be set"));
         }
 

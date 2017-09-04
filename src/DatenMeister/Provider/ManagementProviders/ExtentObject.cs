@@ -9,13 +9,13 @@ namespace DatenMeister.Provider.HelpingExtents
         {
             AddMapping(
                 "uri",
-                E => E.contextURI(),
-                (E, v) => throw new InvalidOperationException("Uri cannot be set"));
+                e => e.contextURI(),
+                (e, v) => throw new InvalidOperationException("Uri cannot be set"));
 
             AddMapping(
                 "count",
-                E => E.elements().size(),
-                (E, v) => throw new InvalidOperationException("Count cannot be set"));
+                e => e.elements().size(),
+                (e, v) => throw new InvalidOperationException("Count cannot be set"));
         }
 
     }

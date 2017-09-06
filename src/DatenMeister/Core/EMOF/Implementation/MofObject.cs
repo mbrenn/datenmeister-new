@@ -63,14 +63,14 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="extent">The extent being used to access the item</param>
         public MofObject(IProviderObject providedObject, MofExtent extent)
         {
-            if (providedObject == null) throw new ArgumentNullException(nameof(providedObject));
+            ProviderObject = providedObject ?? throw new ArgumentNullException(nameof(providedObject));
+
             if (providedObject.Provider == null)
             {
                 // ReSharper disable once NotResolvedInText
                 throw new ArgumentNullException("providedObject.Provider");
             }
-
-            ProviderObject = providedObject;
+            
             CreatedByExtent = Extent = extent;
         }
 
@@ -143,6 +143,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             return get(property, false);
         }
 
+        // ReSharper disable once InconsistentNaming
         public object get(string property, bool noReferences)
         {
             var result = ProviderObject.GetProperty(property);
@@ -238,7 +239,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             return UmlNameResolution.GetName(this);
         }
 
-        public virtual IObject CreatedBy(MofExtent extent)
+        public IObject CreatedBy(MofExtent extent)
         {
             CreatedByExtent = extent;
             return this;

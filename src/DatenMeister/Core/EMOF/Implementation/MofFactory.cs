@@ -48,8 +48,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="provider">Provider object to be set</param>
         public MofFactory(IProvider provider)
         {
-            if (provider == null) throw new ArgumentNullException(nameof(provider));
-            _provider = provider;
+            _provider = provider ?? throw new ArgumentNullException(nameof(provider));
         }
 
         /// <summary>
@@ -58,7 +57,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">Value to be set</param>
         public MofFactory(IObject value)
         {
-            var asMofObject = ((MofObject) value);
+            var asMofObject = (MofObject) value;
             var extent = asMofObject.Extent;
             if (extent != null)
             {

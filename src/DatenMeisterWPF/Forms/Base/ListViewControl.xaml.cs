@@ -7,6 +7,7 @@ using System.Windows.Data;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Forms.Base
 {
@@ -21,7 +22,6 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         public IEnumerable<IObject> Items { get; set; }
-
 
         public IElement FormDefinition { get; set; }
 
@@ -71,6 +71,15 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             DataGrid.ItemsSource = items;
+        }
+
+        public void AddDefaultButtons()
+        {
+            AddGenericButton("View Config", () =>
+            {
+                var dlg = new ItemXmlViewWindow {Item = FormDefinition};
+                dlg.ShowDialog();
+            });
         }
 
         /// <summary>

@@ -8,6 +8,7 @@ using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider.XMI.EMOF
 {
+    /// <inheritdoc />
     /// <summary>
     /// Abstracts the IObject from EMOF
     /// </summary>
@@ -30,6 +31,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// </summary>
         public XElement XmlNode { get; }
 
+        /// <inheritdoc />
         /// <summary>
         /// Gets the id of the XmlElement
         /// </summary>
@@ -39,15 +41,18 @@ namespace DatenMeister.Provider.XMI.EMOF
             set => XmiId.Set(XmlNode, value);
         }
 
+        /// <inheritdoc />
+        public IProvider Provider { get; }
+
         /// <summary>
         /// Initializes a new instance of the XmlElement class.
         /// </summary>
         /// <param name="node">Node to be used</param>
-        /// <param name="extent">Extent to be set</param>
-        public XmiProviderObject(XElement node, XmiProvider extent)
+        /// <param name="provider">Provider to be set</param>
+        public XmiProviderObject(XElement node, XmiProvider provider)
         {
             XmlNode = node ?? throw new ArgumentNullException(nameof(node));
-            Provider = extent ?? throw new ArgumentNullException(nameof(extent));
+            Provider = provider ?? throw new ArgumentNullException(nameof(provider));
 
             // Checks, if an id is given. if not. set it. 
             if (!XmiId.HasId(node))
@@ -112,8 +117,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <returns>The XmlNode reflecting the given element</returns>
         private XElement ConvertValueAsXmlObject(string property, object value)
         {
-            var valueAsXmlObject = value as XmiProviderObject;
-            if (valueAsXmlObject != null)
+            if (value is XmiProviderObject valueAsXmlObject)
             {
                 valueAsXmlObject.XmlNode.Name = property;
                 return valueAsXmlObject.XmlNode;
@@ -133,9 +137,6 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             throw new InvalidOperationException("Value is not an XmlObject or an IElement: " + value);
         }
-
-        /// <inheritdoc />
-        public IProvider Provider { get; }
 
         /// <inheritdoc />
         public string MetaclassUri {
@@ -255,7 +256,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         public void EmptyListForProperty(string property)
         {
             XmlNode.Attribute(property)?.Remove();
-            XmlNode.Elements(property)?.Remove();
+            XmlNode.Elements(property).Remove();
         }
 
         /// <summary>

@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DatenMeisterWPF.Windows"
         mc:Ignorable="d"
-        Title="Xml of item window" Height="300" Width="300">
+        Title="Xml of item window" Height="600" Width="1000">
     <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom">
-            <Button x:Name="CloseButton" Click="CloseButton_Click">Close</Button>
+        <StackPanel DockPanel.Dock="Bottom" Margin="10">
+            <Button x:Name="CloseButton" Click="CloseButton_Click" IsCancel="True">Close</Button>
         </StackPanel>
-        <TextBox x:Name="XmlTextField"></TextBox>
+        <TextBox x:Name="XmlTextField" Margin="10"></TextBox>
     </DockPanel>
 </Window>

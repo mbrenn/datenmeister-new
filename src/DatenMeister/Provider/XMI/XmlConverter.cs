@@ -1,4 +1,6 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.EMOF;
@@ -11,7 +13,7 @@ namespace DatenMeister.Provider.XMI
     /// </summary>
     public class XmlConverter
     {
-        private MofExtent _extent;
+        private readonly MofExtent _extent;
 
         public XmlConverter()
         {
@@ -32,6 +34,26 @@ namespace DatenMeister.Provider.XMI
 
             return ((XmiProviderObject) result.ProviderObject).XmlNode;
         }
-        
+
+        /// <summary>
+        /// Converts the given element to an xml element
+        /// </summary>
+        /// <param name="elements">Element to be converted</param>
+        /// <returns>Converted element to be shown</returns>
+        public XElement ConvertToXml(IEnumerable<object> elements)
+        {
+            var factory = new MofFactory(_extent);
+            var copier = new ObjectCopier(factory);
+            var rootItem = (MofObject) factory.create(null);
+
+            var list = 
+                elements.Cast<IElement>()
+                    .Select(element => copier.Copy(element))
+                    .Cast<object>().ToList();
+
+            rootItem.set("items", list);
+
+            return ((XmiProviderObject) rootItem.ProviderObject).XmlNode;
+        }
     }
 }

@@ -75,9 +75,17 @@ namespace DatenMeisterWPF.Forms.Base
 
         public void AddDefaultButtons()
         {
+            AddGenericButton("View Extent", () =>
+            {
+                var dlg = new ItemXmlViewWindow();
+                dlg.UpdateContent(Items);
+                dlg.ShowDialog();
+            });
+
             AddGenericButton("View Config", () =>
             {
-                var dlg = new ItemXmlViewWindow {Item = FormDefinition};
+                var dlg = new ItemXmlViewWindow();
+                dlg.UpdateContent(FormDefinition);
                 dlg.ShowDialog();
             });
         }

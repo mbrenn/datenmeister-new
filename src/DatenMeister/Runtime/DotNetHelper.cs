@@ -58,6 +58,21 @@ namespace DatenMeister.Runtime
         {
             return type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type);
         }
+
+        /// <summary>
+        /// Evaluates the given object and returns it as an enumeration, if it is an enumeration
+        /// </summary>
+        /// <param name="value">Value to be converted to an enumeration</param>
+        /// <returns>Enumeration of the value or null, if not an evaluation</returns>
+        public static IEnumerable<object> AsEnumeration(object value)
+        {
+            if (IsOfEnumeration(value))
+            {
+                return value as IEnumerable<object>;
+            }
+
+            return null;
+        }
         
         /// <summary>
         /// Evaluates whether the given type is an enumeration but is not a string

@@ -17,6 +17,5 @@ namespace DatenMeister.Provider.HelpingExtents
                 e => e.elements().size(),
                 (e, v) => throw new InvalidOperationException("Count cannot be set"));
         }
-
     }
 }

@@ -24,10 +24,7 @@ namespace DatenMeisterWPF.Forms
                 formDefinition = viewFinder.CreateView(sequence);
             }
 
-            FormDefinition = formDefinition;
-            Items = sequence.Cast<IObject>();
-
-            UpdateContent();
+            UpdateContent(scope, sequence.Cast<IObject>(), formDefinition);
         }
     }
 }

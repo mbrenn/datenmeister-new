@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
+using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Forms.Base
@@ -27,9 +34,16 @@ namespace DatenMeisterWPF.Forms.Base
 
         private readonly IDictionary<ExpandoObject, IObject> _itemMapping = new Dictionary<ExpandoObject, IObject>();
 
-        public void UpdateContent()
+        /// <summary>
+        /// Updates the content by going through the fields and items
+        /// </summary>
+        public void UpdateContent(IDatenMeisterScope scope, IEnumerable<IObject> items, IElement formDefinition)
         {
-            var items = new List<ExpandoObject>();
+            Items = items;
+            FormDefinition = formDefinition;
+            var umlNameResolve = scope.Resolve<IUmlNameResolution>();
+
+            var listItems = new List<ExpandoObject>();
             _itemMapping.Clear();
 
             if (!(FormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
@@ -41,10 +55,12 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 var name = field.get(_FormAndFields._FieldData.name).ToString();
                 var title = field.get(_FormAndFields._FieldData.title);
+                var isEnumeration = ObjectHelper.IsTrue(field.get(_FormAndFields._FieldData.isEnumeration));
                 var dataColumn = new DataGridTextColumn
                 {
                     Header = title,
-                    Binding = new Binding(name)
+                    Binding = new Binding(name),
+                    IsReadOnly = isEnumeration
                 };
 
                 DataGrid.Columns.Add(dataColumn);
@@ -60,19 +76,63 @@ namespace DatenMeisterWPF.Forms.Base
                     foreach (var field in fields.Cast<IElement>())
                     {
                         var name = field.get(_FormAndFields._FieldData.name).ToString();
+                        var isEnumeration = ObjectHelper.IsTrue(field.get(_FormAndFields._FieldData.isEnumeration));
                         var value = item.isSet(name) ? item.get(name) : null;
 
-                        asDictionary.Add(name, value);
+                        if (isEnumeration)
+                        {
+                            var result = new StringBuilder();
+                            var valueAsList = DotNetHelper.AsEnumeration(value);
+                            var nr = string.Empty;
+                            foreach (var valueElement in valueAsList)
+                            {
+                                result.Append(nr + umlNameResolve.GetName(valueElement));
+                                nr = "\r\n";
+                            }
+
+                            asDictionary.Add(name, result.ToString());
+                        }
+                        else
+                        {
+                            asDictionary.Add(name, value);
+
+                        }
                     }
 
                     _itemMapping[itemObject] = item;
-                    items.Add(itemObject);
+                    listItems.Add(itemObject);
+
+
+                    // Adds the notification for the property
+                    var noMessageBox = false;
+                    (itemObject as INotifyPropertyChanged).PropertyChanged += (x, y) =>
+                    {
+                        try
+                        {
+                            var newPropertyValue = (itemObject as IDictionary<string, object>)[y.PropertyName];
+                            item.set(y.PropertyName, newPropertyValue);
+                        }
+                        catch (Exception exc)
+                        {
+                            if (!noMessageBox)
+                            {
+                                MessageBox.Show(exc.Message);
+                            }
+
+                            noMessageBox = true;
+                            (itemObject as IDictionary<string, object>)[y.PropertyName] = item.get(y.PropertyName);
+                            noMessageBox = false;
+                        }
+                    };
                 }
             }
 
-            DataGrid.ItemsSource = items;
+            DataGrid.ItemsSource = listItems;
         }
 
+        /// <summary>
+        /// Adds the default buttons
+        /// </summary>
         public void AddDefaultButtons()
         {
             AddGenericButton("View Extent", () =>
@@ -142,7 +202,7 @@ namespace DatenMeisterWPF.Forms.Base
                     return null;
                 }
 
-                return _itemMapping[selectedItem as ExpandoObject];
+                return _itemMapping[(ExpandoObject)selectedItem];
 
             }
         }

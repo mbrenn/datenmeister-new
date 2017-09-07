@@ -22,10 +22,9 @@ namespace DatenMeisterWPF.Forms
 
             AddItemButton("Open Workspace", (x) => MessageBox.Show("TEST" + ((Workspace) x).id));
 
-            FormDefinition = workspaceView.CreateForm();
-            Items = workspaces;
+            var formDefinition = workspaceView.CreateForm();
 
-            UpdateContent();
+            UpdateContent(scope, workspaces, formDefinition);
         }
     }
 }

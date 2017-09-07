@@ -32,6 +32,7 @@ namespace DatenMeisterWPF
             var workspaceControl = new ElementListViewControl();
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(datenMeister);
             workspaceControl.Show(datenMeister, workspaceExtent.elements(), null);
+            workspaceControl.SupportNewItems = false;
             workspaceControl.AddDefaultButtons();
             MainControl.Content = workspaceControl;
         }

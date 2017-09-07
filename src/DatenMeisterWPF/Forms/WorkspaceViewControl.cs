@@ -25,6 +25,8 @@ namespace DatenMeisterWPF.Forms
             var formDefinition = workspaceView.CreateForm();
 
             UpdateContent(scope, workspaces, formDefinition);
+            SupportNewItems = false;
+
         }
     }
 }

@@ -31,9 +31,14 @@ namespace DatenMeisterWPF.Forms.Base
         public IEnumerable<IObject> Items { get; set; }
 
         public IElement FormDefinition { get; set; }
-
+        
         private readonly IDictionary<ExpandoObject, IObject> _itemMapping = new Dictionary<ExpandoObject, IObject>();
 
+        public bool SupportNewItems
+        {
+            get => DataGrid.CanUserAddRows;
+            set => DataGrid.CanUserAddRows = value;
+        }
         /// <summary>
         /// Updates the content by going through the fields and items
         /// </summary>

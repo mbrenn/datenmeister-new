@@ -72,9 +72,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Forms\Base\DetailFormControl.xaml.cs">
+      <DependentUpon>DetailFormControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DetailFormWindow.xaml.cs">
+      <DependentUpon>DetailFormWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ItemXmlViewWindow.xaml.cs">
       <DependentUpon>ItemXmlViewWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Forms\Base\DetailFormControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\Base\ListViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -107,6 +117,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\DetailFormWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ItemXmlViewWindow.xaml">
       <SubType>Designer</SubType>

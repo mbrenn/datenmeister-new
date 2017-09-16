@@ -8,10 +8,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Windows;
@@ -31,6 +33,8 @@ namespace DatenMeisterWPF.Forms.Base
         public IEnumerable<IObject> Items { get; set; }
 
         public IElement FormDefinition { get; set; }
+
+        public IDatenMeisterScope Scope { get; set; }
         
         private readonly IDictionary<ExpandoObject, IObject> _itemMapping = new Dictionary<ExpandoObject, IObject>();
 
@@ -46,7 +50,15 @@ namespace DatenMeisterWPF.Forms.Base
         {
             Items = items;
             FormDefinition = formDefinition;
-            var umlNameResolve = scope.Resolve<IUmlNameResolution>();
+            Scope = scope;
+
+
+            UpdateContent();
+        }
+
+        private void UpdateContent()
+        {
+            var umlNameResolve = Scope.Resolve<IUmlNameResolution>();
 
             var listItems = new List<ExpandoObject>();
             _itemMapping.Clear();
@@ -55,7 +67,8 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 return;
             }
-            
+
+            DataGrid.Columns.Clear();
             foreach (var field in fields.Cast<IElement>())
             {
                 var name = field.get(_FormAndFields._FieldData.name).ToString();
@@ -100,7 +113,6 @@ namespace DatenMeisterWPF.Forms.Base
                         else
                         {
                             asDictionary.Add(name, value);
-
                         }
                     }
 
@@ -149,8 +161,20 @@ namespace DatenMeisterWPF.Forms.Base
 
             AddGenericButton("View Config", () =>
             {
-                var dlg = new ItemXmlViewWindow();
+                var dlg = new ItemXmlViewWindow
+                {
+                    SupportWriting = true
+                };
                 dlg.UpdateContent(FormDefinition);
+
+                dlg.UpdateButtonPressed += (x, y) =>
+                {
+                    var temporaryExtent = InMemoryProvider.TemporaryExtent;
+                    var factory = new MofFactory(temporaryExtent);
+                    FormDefinition = dlg.GetCurrentContentAsMof(factory);
+                    UpdateContent();
+                };
+
                 dlg.ShowDialog();
             });
         }

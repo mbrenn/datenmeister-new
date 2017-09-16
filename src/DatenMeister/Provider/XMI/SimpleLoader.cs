@@ -84,6 +84,16 @@ namespace DatenMeister.Provider.XMI
         }
 
         /// <summary>
+        /// Loads the Xml from a text
+        /// </summary>
+        /// <param name="factory">Factory to be used</param>
+        /// <param name="element">Element being used</param>
+        public IObject LoadFromText(IFactory factory, XElement element)
+        {
+            return LoadElement(factory, element);
+        }
+
+        /// <summary>
         ///     Loads the specific element with a very simple loading algorithm
         /// </summary>
         /// <param name="factory">Factory being used to create instances</param>

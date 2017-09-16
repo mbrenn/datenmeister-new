@@ -55,5 +55,17 @@ namespace DatenMeister.Provider.XMI
 
             return ((XmiProviderObject) rootItem.ProviderObject).XmlNode;
         }
+
+        /// <summary>
+        /// Converts the given XElement to a MOF object
+        /// </summary>
+        /// <param name="element">Element to be converted</param>
+        /// <param name="factory">Factory being used</param>
+        /// <returns>The converted element</returns>
+        public IObject ConvertFromXml(XElement element, IFactory factory)
+        {
+            var loader = new SimpleLoader();
+            return loader.LoadFromText(factory, element);
+        }
     }
 }

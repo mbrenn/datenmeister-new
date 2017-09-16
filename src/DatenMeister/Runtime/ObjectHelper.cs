@@ -343,7 +343,8 @@ namespace DatenMeister.Runtime
             return value.Equals(true) ||
                    value.Equals(1) ||
                    value.Equals("true") ||
-                   value.Equals("TRUE");
+                   value.Equals("TRUE") ||
+                   value is string && value.ToString().ToLower() == "true";
         }
     }
 }

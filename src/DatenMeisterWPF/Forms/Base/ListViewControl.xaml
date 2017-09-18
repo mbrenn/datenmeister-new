@@ -6,6 +6,11 @@
              xmlns:local="clr-namespace:DatenMeisterWPF.Forms.Base"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <DataTemplate x:Key="TemplateColumnButton">
+            <Button Click="ButtonBase_OnClick" Loaded="FrameworkElement_OnInitialized">Edit</Button>
+        </DataTemplate>
+    </UserControl.Resources>
     <DockPanel>
         <StackPanel Orientation="Horizontal" x:Name="ButtonBar" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10">
         </StackPanel>

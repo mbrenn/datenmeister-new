@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -177,6 +178,11 @@ namespace DatenMeisterWPF.Forms.Base
 
                 dlg.ShowDialog();
             });
+
+            AddRowItemButton("Open", (x) =>
+            {
+                MessageBox.Show("Item: " + x);
+            });
         }
 
         /// <summary>
@@ -221,6 +227,30 @@ namespace DatenMeisterWPF.Forms.Base
             return button;
         }
 
+        /// <summary>
+        /// Adds a button for a row item
+        /// </summary>
+        /// <param name="name">Name of the button</param>
+        /// <param name="pressed">Called, if the is button pressed</param>
+        public void AddRowItemButton(string name, Action<IObject> pressed)
+        {
+            var columnTemplate = FindResource("TemplateColumnButton") as DataTemplate;
+
+            var dataColumn = new ClickedTemplateColumn
+            {
+                Header = name,
+                CellTemplate = columnTemplate,
+                OnClick = pressed
+            };
+            
+
+            DataGrid.Columns.Add(dataColumn);
+        }
+
+
+        /// <summary>
+        /// Gets the currently selected object
+        /// </summary>
         private IObject SelectedItem
         {
             get
@@ -231,9 +261,55 @@ namespace DatenMeisterWPF.Forms.Base
                     return null;
                 }
 
-                return _itemMapping[(ExpandoObject)selectedItem];
+                return _itemMapping[(ExpandoObject) selectedItem];
 
             }
+        }
+
+        /// <summary>
+        /// Called, if the user clicks on the button
+        /// </summary>
+        /// <param name="sender">Sender being used</param>
+        /// <param name="e">Event arguments</param>
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            var result = GetObjectsFromEventRouting(e);
+            result.column.OnClick(result.selectedItem);
+        }
+
+        /// <summary>
+        /// Gets the object and column from the button being clicked by the user
+        /// </summary>
+        /// <param name="e">Event being called</param>
+        /// <returns>The selected item of the button and the column</returns>
+        private (IObject selectedItem, ClickedTemplateColumn column) GetObjectsFromEventRouting(RoutedEventArgs e)
+        {
+            var expandoObject = (ExpandoObject) ((ContentPresenter) ((Button) e.Source).TemplatedParent).Content;
+            var foundItem = _itemMapping[expandoObject];
+
+            var button = (Button) e.Source;
+            var contentPresenter = (ContentPresenter) button.TemplatedParent;
+            var column = (ClickedTemplateColumn) ((DataGridCell) contentPresenter.Parent).Column;
+            return (foundItem, column);
+        }
+
+
+        private void FrameworkElement_OnInitialized(object sender, RoutedEventArgs e)
+        {
+            var result = GetObjectsFromEventRouting(e);
+            var button = (Button)e.Source;
+            button.Content = result.column.Header.ToString();
+        }
+        /// <inheritdoc />
+        /// <summary>
+        /// The template being used to click
+        /// </summary>
+        private class ClickedTemplateColumn : DataGridTemplateColumn
+        {
+            /// <summary>
+            /// Gets or sets the action being called when the user clicks on the button
+            /// </summary>
+            public Action<IObject> OnClick { get; set; }
         }
     }
 }

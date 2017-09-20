@@ -97,7 +97,7 @@ namespace DatenMeister.Modules.ViewFinder
                     value,
                     FormCreator.CreationMode.All);
 
-                return DotNetHelper.ConvertToMofElement(form, value.GetUriExtentOf(), _dotNetTypeLookup);
+                return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetViewExtent(), _dotNetTypeLookup);
                 // return _dotNetTypeLookup.CreateDotNetElement(InMemoryProvider.TemporaryExtent, form);
             }
 

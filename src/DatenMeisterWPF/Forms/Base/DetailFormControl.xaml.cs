@@ -39,6 +39,8 @@ namespace DatenMeisterWPF.Forms.Base
             _element = element;
             _formDefinition = formDefinition;
             _scope = scope;
+
+            UpdateContent();
         }
 
         /// <summary>
@@ -76,6 +78,8 @@ namespace DatenMeisterWPF.Forms.Base
                 Grid.SetColumn(contentBlock, 1);
                 Grid.SetRow(contentBlock, n);
                 DataGrid.Children.Add(contentBlock);
+
+                n++;
             }
         }
 

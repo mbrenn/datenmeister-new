@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 
 namespace DatenMeisterWPF.Windows
 {
@@ -10,6 +12,11 @@ namespace DatenMeisterWPF.Windows
         public DetailFormWindow()
         {
             InitializeComponent();
+        }
+        
+        public void UpdateContent(IDatenMeisterScope scope, IElement element, IElement formDefinition)
+        {
+            DetailFormControl.UpdateContent(scope, element, formDefinition);
         }
     }
 }

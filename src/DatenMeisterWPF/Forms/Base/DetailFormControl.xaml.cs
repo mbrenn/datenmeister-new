@@ -27,6 +27,7 @@ namespace DatenMeisterWPF.Forms.Base
     {
         private IElement _formDefinition;
         private IElement _element;
+        private IDatenMeisterScope _scope;
 
         public DetailFormControl()
         {
@@ -37,8 +38,14 @@ namespace DatenMeisterWPF.Forms.Base
         {
             _element = element;
             _formDefinition = formDefinition;
+            _scope = scope;
+        }
 
-
+        /// <summary>
+        /// Updates the content
+        /// </summary>
+        public void UpdateContent()
+        { 
             if (!(_formDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
             {
                 return;
@@ -63,8 +70,7 @@ namespace DatenMeisterWPF.Forms.Base
                 Grid.SetColumn(titleBlock, 0);
                 Grid.SetRow(titleBlock, n);
                 DataGrid.Children.Add(titleBlock);
-
-
+                
                 // Content Block
                 var contentBlock = new TextBox();
                 Grid.SetColumn(contentBlock, 1);
@@ -72,8 +78,6 @@ namespace DatenMeisterWPF.Forms.Base
                 DataGrid.Children.Add(contentBlock);
             }
         }
-
-
 
         /// <summary>
         /// Adds a button to the view

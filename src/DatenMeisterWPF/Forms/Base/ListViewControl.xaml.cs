@@ -7,7 +7,6 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -52,7 +51,6 @@ namespace DatenMeisterWPF.Forms.Base
             Items = items;
             FormDefinition = formDefinition;
             Scope = scope;
-
 
             UpdateContent();
         }
@@ -181,7 +179,10 @@ namespace DatenMeisterWPF.Forms.Base
 
             AddRowItemButton("Open", (x) =>
             {
-                MessageBox.Show("Item: " + x);
+                var formControl = new DetailFormWindow();
+                formControl.Owner = Window.GetWindow(this);
+                formControl.UpdateContent(Scope, x as IElement, null);
+                formControl.Show();
             });
         }
 

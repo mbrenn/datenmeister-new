@@ -74,13 +74,34 @@ namespace DatenMeisterWPF.Forms.Base
                 DataGrid.Children.Add(titleBlock);
                 
                 // Content Block
-                var contentBlock = new TextBox();
-                Grid.SetColumn(contentBlock, 1);
-                Grid.SetRow(contentBlock, n);
-                DataGrid.Children.Add(contentBlock);
+                if (!isEnumeration)
+                {
+                    var contentBlock = new TextBox();
+                    Grid.SetColumn(contentBlock, 1);
+                    Grid.SetRow(contentBlock, n);
+                    DataGrid.Children.Add(contentBlock);
+
+                    var valueText = _element.get(name).ToString();
+                    contentBlock.Text = valueText;
+                }
 
                 n++;
             }
+        }
+
+        public void AddDefaultButtons()
+        {
+            AddGenericButton("Cancel", () =>
+            {
+                var window = Window.GetWindow(this);
+                window?.Close();
+            });
+
+            AddGenericButton("Save", () =>
+            {
+                var window = Window.GetWindow(this);
+                window?.Close();
+            });
         }
 
         /// <summary>

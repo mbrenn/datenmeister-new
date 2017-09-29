@@ -25,6 +25,7 @@ namespace DatenMeisterWPF.Windows
             }
 
             DetailFormControl.UpdateContent(scope, element, formDefinition);
+            DetailFormControl.AddDefaultButtons();
         }
     }
 }

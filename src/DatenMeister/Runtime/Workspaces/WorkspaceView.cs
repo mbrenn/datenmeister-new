@@ -27,24 +27,18 @@ namespace DatenMeister.Runtime.Workspaces
         public IElement CreateForm()
         {
             // Finds the forms
-            var formType =
-                _uriResolver.ResolveById(
-                    MofUriExtent.GetIdOfUri("#DatenMeister.Models.Forms.Form"));
-            var textFieldDataType = _uriResolver.ResolveById(
-                MofUriExtent.GetIdOfUri("#DatenMeister.Models.Forms.TextFieldData"));
+            var form = new Form();
+            form.fields.Add(
+                new TextFieldData("id", "Name"));
+            form.fields.Add(
+                new TextFieldData("annotation", "Annotation"));
+            form.fields.Add(
+                new TextFieldData("extents", "Extents")
+                {
+                    isEnumeration = true
+                });
 
-            var factory = new MofFactory(_viewLogic.GetViewExtent());
-            var form = factory.create(formType);
-
-            var nameField = factory.create(textFieldDataType);
-            nameField.set(_FormAndFields._FieldData.name, "id");
-            nameField.set(_FormAndFields._FieldData.title, "Name");
-
-            // Sets the fields of form
-            var fields = new[] {nameField};
-            form.set(_FormAndFields._Form.fields, fields);
-
-            return form;
+            return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
         }
     }
 }

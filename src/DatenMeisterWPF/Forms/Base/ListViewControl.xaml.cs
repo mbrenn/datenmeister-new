@@ -46,16 +46,16 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Updates the content by going through the fields and items
         /// </summary>
-        public void UpdateContent(IDatenMeisterScope scope, IEnumerable<IObject> items, IElement formDefinition)
+        public void SetContent(IDatenMeisterScope scope, IEnumerable<IObject> items, IElement formDefinition)
         {
             Items = items;
             FormDefinition = formDefinition;
             Scope = scope;
 
-            UpdateContent();
+            SetContent();
         }
 
-        private void UpdateContent()
+        private void SetContent()
         {
             var umlNameResolve = Scope.Resolve<IUmlNameResolution>();
 
@@ -171,7 +171,7 @@ namespace DatenMeisterWPF.Forms.Base
                     var temporaryExtent = InMemoryProvider.TemporaryExtent;
                     var factory = new MofFactory(temporaryExtent);
                     FormDefinition = dlg.GetCurrentContentAsMof(factory);
-                    UpdateContent();
+                    SetContent();
                 };
 
                 dlg.ShowDialog();

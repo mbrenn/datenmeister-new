@@ -1,17 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -28,6 +19,12 @@ namespace DatenMeisterWPF.Forms.Base
         private IElement _formDefinition;
         private IElement _element;
         private IDatenMeisterScope _scope;
+
+        /// <summary>
+        /// Stores the list of actions that will be performed when the user clicks on set
+        /// </summary>
+        private readonly List<Action> _setActions= new List<Action>();
+
 
         public DetailFormControl()
         {
@@ -47,7 +44,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// Updates the content
         /// </summary>
         public void UpdateContent()
-        { 
+        {
+            _setActions.Clear();
             if (!(_formDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
             {
                 return;
@@ -59,14 +57,16 @@ namespace DatenMeisterWPF.Forms.Base
                 var name = field.get(_FormAndFields._FieldData.name).ToString();
                 var title = field.get(_FormAndFields._FieldData.title).ToString();
                 var isEnumeration = ObjectHelper.IsTrue(field.get(_FormAndFields._FieldData.isEnumeration));
-                
+                var isReadOnly = field.get(_FormAndFields._FieldData.isReadOnly).ToString();
+
                 var row = new RowDefinition();
                 DataGrid.RowDefinitions.Add(row);
 
                 // Sets the title block
                 var titleBlock = new TextBlock
                 {
-                    Text = title
+                    Text = title,
+                    IsEnabled = !ObjectHelper.IsTrue(isReadOnly)
                 };
 
                 Grid.SetColumn(titleBlock, 0);
@@ -83,6 +83,15 @@ namespace DatenMeisterWPF.Forms.Base
 
                     var valueText = _element.get(name).ToString();
                     contentBlock.Text = valueText;
+
+                    _setActions.Add(
+                        () =>
+                        {
+                            if (valueText != contentBlock.Text)
+                            {
+                                _element.set(name, contentBlock.Text);
+                            }
+                        });
                 }
 
                 n++;
@@ -99,8 +108,20 @@ namespace DatenMeisterWPF.Forms.Base
 
             AddGenericButton("Save", () =>
             {
-                var window = Window.GetWindow(this);
-                window?.Close();
+                try
+                {
+                    foreach (var action in _setActions)
+                    {
+                        action();
+                    }
+
+                    var window = Window.GetWindow(this);
+                    window?.Close();
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.ToString());
+                }
             });
         }
 

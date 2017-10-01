@@ -3,30 +3,38 @@ using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Provider.HelpingExtents;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Forms.Base;
+using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Forms
 {
-    public class WorkspaceViewControl : ListViewControl
+    public class WorkspaceViewControl : ElementListViewControl
     {
         /// <summary>
         /// Shows the workspaces of the DatenMeister
         /// </summary>
         /// <param name="scope"></param>
-        public void Show(IDatenMeisterScope scope)
+        public void SetContent(IDatenMeisterScope scope)
         {
-            var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
-            var workspaces = workspaceLogic.Workspaces.Cast<IObject>().ToList();
             var workspaceView = scope.Resolve<WorkspaceView>();
 
-            AddItemButton("Open Workspace", (x) => MessageBox.Show("TEST" + ((Workspace) x).id));
-
-            var formDefinition = workspaceView.CreateForm();
-
-            UpdateContent(scope, workspaces, formDefinition);
+            var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(scope);
+            SetContent(scope, workspaceExtent.elements(), workspaceView.CreateForm());
             SupportNewItems = false;
+            AddDefaultButtons();
 
+
+            AddGenericButton("New Workspace", () =>
+            {
+                var dlg = new NewWorkspaceDialog();
+                dlg.SetContent(scope);
+                dlg.Owner = Window.GetWindow(this);
+                dlg.Show();
+            });
+
+            AddItemButton("Open Workspace", (x) => { });
         }
     }
 }

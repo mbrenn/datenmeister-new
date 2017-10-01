@@ -41,16 +41,14 @@ namespace DatenMeister.Provider.DotNet
 
         public string ToElement(Type type)
         {
-            string result;
-            _typesToElememts.TryGetValue(type, out result);
+            _typesToElememts.TryGetValue(type, out var result);
             return result;
         }
 
         /// <inheritdoc />
         public Type ToType(string element)
         {
-            Type result;
-            _elementsToTypes.TryGetValue(element, out result);
+            _elementsToTypes.TryGetValue(element, out var result);
             return result;
         }
 

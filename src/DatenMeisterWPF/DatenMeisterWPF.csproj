@@ -84,6 +84,7 @@
     <Compile Include="Windows\ItemXmlViewWindow.xaml.cs">
       <DependentUpon>ItemXmlViewWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\NewWorkspaceDialog.cs" />
     <Page Include="Forms\Base\DetailFormControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

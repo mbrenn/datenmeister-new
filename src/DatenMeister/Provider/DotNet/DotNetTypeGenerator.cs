@@ -37,8 +37,7 @@ namespace DatenMeister.Provider.DotNet
         public IElement CreateTypeFor(Type type)
         {
             var umlClass = _factoryForTypes.create(_umlHost.StructuredClassifiers.__Class);
-            var umlClassAsSet = umlClass as ICanSetId;
-            if (umlClassAsSet != null)
+            if (umlClass is ICanSetId umlClassAsSet)
             {
                 umlClassAsSet.Id = type.FullName;
             }

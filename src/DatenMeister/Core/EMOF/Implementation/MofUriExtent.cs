@@ -16,8 +16,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         private readonly ExtentUrlNavigator<MofElement> _navigator;
 
         /// <inheritdoc />
-        public MofUriExtent(IProvider provider, string uri, IDotNetTypeLookup typeLookup = null) :
-            base(provider, typeLookup)
+        public MofUriExtent(IProvider provider, string uri) :
+            base(provider)
         {
             _uri = uri;
             _navigator = new ExtentUrlNavigator<MofElement>(this);
@@ -64,9 +64,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             return uri.Substring(pos + 1);
         }
-
-
-
+        
         /// <inheritdoc />
         public IElement Resolve(string uri)
         {

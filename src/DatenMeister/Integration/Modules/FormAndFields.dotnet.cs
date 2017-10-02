@@ -1,5 +1,6 @@
 using DatenMeister;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
@@ -18,7 +19,7 @@ namespace DatenMeister.Models.Forms
         /// <param name="collection">Collection that shall be filled</param>
         /// <param name="filledStructure">The form and fields structure</param>
         /// <param name="lookup">And finally the Dotnet type</param>
-        public static void Assign(_UML uml,IFactory factory, IReflectiveCollection collection, _FormAndFields filledStructure, IDotNetTypeLookup lookup)
+        public static void Assign(_UML uml,IFactory factory, IReflectiveCollection collection, _FormAndFields filledStructure, MofUriExtent lookup)
         {
             var generator = new DotNetTypeGenerator(factory, uml);
             {
@@ -26,56 +27,56 @@ namespace DatenMeister.Models.Forms
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__Form = typeAsElement;
-                lookup.Add(typeAsElement, type);
+                lookup.TypeLookup.Add(typeAsElement, type);
             }
             {
                 var type = typeof(DatenMeister.Models.Forms.FieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__FieldData = typeAsElement;
-                lookup.Add(typeAsElement, type);
+                lookup.TypeLookup.Add(typeAsElement, type);
             }
             {
                 var type = typeof(DatenMeister.Models.Forms.TextFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__TextFieldData = typeAsElement;
-                lookup.Add(typeAsElement, type);
+                lookup.TypeLookup.Add(typeAsElement, type);
             }
             {
                 var type = typeof(DatenMeister.Models.Forms.DateTimeFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__DateTimeFieldData = typeAsElement;
-                lookup.Add(typeAsElement, type);
+                lookup.TypeLookup.Add(typeAsElement, type);
             }
             {
                 var type = typeof(DatenMeister.Models.Forms.DropDownFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__DropDownFieldData = typeAsElement;
-                lookup.Add(typeAsElement, type);
+                lookup.TypeLookup.Add(typeAsElement, type);
             }
             {
                 var type = typeof(DatenMeister.Models.Forms.SubElementFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__SubElementFieldData = typeAsElement;
-                lookup.Add(typeAsElement, type);
+                lookup.TypeLookup.Add(typeAsElement, type);
             }
             {
                 var type = typeof(DatenMeister.Models.Forms.DefaultViewForMetaclass);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__DefaultViewForMetaclass = typeAsElement;
-                lookup.Add(typeAsElement, type);
+                lookup.TypeLookup.Add(typeAsElement, type);
             }
             {
                 var type = typeof(DatenMeister.Models.Forms.DefaultViewForExtentType);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__DefaultViewForExtentType = typeAsElement;
-                lookup.Add(typeAsElement, type);
+                lookup.TypeLookup.Add(typeAsElement, type);
             }
         }
     }

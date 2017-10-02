@@ -19,8 +19,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         private readonly MofFactory _factory;
 
-        private readonly IDotNetTypeLookup _typeLookup;
-
         /// <summary>
         /// Stores a list of already visited elements, so a recursion is avoided
         /// </summary>
@@ -38,7 +36,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         public DotNetSetter(MofUriExtent extent)
         {
             _factory = new MofFactory(extent);
-            _typeLookup = extent.TypeLookup;
             _extent = extent;
         }
 
@@ -88,7 +85,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             _visitedElements.Add(value);
 
             // Gets the uri of the lookup up type
-            var metaClassUri = _typeLookup?.ToElement(value.GetType());
+            var metaClassUri = _extent?.GetMetaClassUri(value.GetType());
 
             // After having the uri, create the required element
             var createdElement = _factory.create(

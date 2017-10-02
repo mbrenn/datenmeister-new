@@ -40,11 +40,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Initializes a new instance of the Extent 
         /// </summary>
         /// <param name="provider">Provider being used for the extent</param>
-        /// <param name="typeLookup">Type lookup being used</param>
-        public MofExtent(IProvider provider, IDotNetTypeLookup typeLookup = null)
+        public MofExtent(IProvider provider)
         {
             Provider = provider;
-            TypeLookup = typeLookup ?? new DotNetTypeLookup();
+            TypeLookup = new DotNetTypeLookup(this);
         }
 
         /// <inheritdoc />
@@ -127,6 +126,50 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
+        /// Gets the uri of the metaclass by looking through current extent, meta extent and meta workspaces
+        /// </summary>
+        /// <param name="type">Type to be converted</param>
+        /// <returns>Retrieved meta class uri</returns>
+        public string GetMetaClassUri(Type type)
+        {
+            var result = TypeLookup.ToElement(type);
+            if (!string.IsNullOrEmpty(result))
+            {
+                return result;
+            }
+
+            // Now look into the explicit extents
+            foreach (var metaExtent in MetaExtents.OfType<MofExtent>())
+            {
+                var element = metaExtent.TypeLookup.ToElement(type);
+                if (!string.IsNullOrEmpty(element))
+                {
+                    return element;
+                }
+            }
+
+            // If still not found, look into the meta workspaces. Nevertheless, no recursion
+            var metaWorkspaces = Workspace?.MetaWorkspaces;
+            if (metaWorkspaces != null)
+            {
+                foreach (var metaWorkspace in metaWorkspaces)
+                {
+                    foreach (var metaExtent in metaWorkspace.extent.OfType<MofExtent>())
+                    {
+                        var element = metaExtent.TypeLookup.ToElement(type);
+                        if (!string.IsNullOrEmpty(element))
+                        {
+                            return element;
+                        }
+                    }
+                }
+            }
+
+            return null;
+
+        }
+
+        /// <summary>
         /// Converts the object to be set by the data provider. This is the inverse object to ConvertToMofObject. 
         /// An arbitrary object shall be stored into the database
         /// </summary>
@@ -197,8 +240,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             // Then, we have a simple dotnet type, that we try to convert. Let's hope, that it works
-            var asUriExtent = extent as IUriExtent;
-            if (asUriExtent == null)
+            if (!(extent is IUriExtent asUriExtent))
             {
                 throw new InvalidOperationException(
                     "This element was not created by a factory. So a setting by .Net Object is not possible");

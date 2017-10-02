@@ -70,10 +70,7 @@ namespace DatenMeister.Integration
             // Adds the name resolution  
             kernel.RegisterType<UmlNameResolution>().As<IUmlNameResolution>();
 
-            // Adds the complete .Net-Type handling
-            var dotNetTypeLookup = new DotNetTypeLookup();
-            kernel.RegisterInstance(dotNetTypeLookup).As<IDotNetTypeLookup>();
-
+            
             // Loading and storing the workspaces
             var workspaceLoadingConfiguration = new WorkspaceLoaderConfig
             {
@@ -147,7 +144,7 @@ namespace DatenMeister.Integration
                     mofFactory,
                     extentTypes.elements(),
                     fields,
-                    dotNetTypeLookup);
+                    extentTypes);
 
                 // Adds the views and their view logic
                 scope.Resolve<ViewLogic>().Integrate();

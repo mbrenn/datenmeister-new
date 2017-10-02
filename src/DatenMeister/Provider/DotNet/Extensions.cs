@@ -200,19 +200,18 @@ namespace DatenMeister.Provider.DotNet
         /// <summary>
         /// Generates the mof element out of the given type and adds it to the .Net Type Lookup
         /// </summary>
-        /// <param name="typeLookup">Type Lookup to be used</param>
         /// <param name="uml">Uml instance being used to create all necessary instances</param>
         /// <param name="extent">Extent to which the generated element will be added</param>
         /// <param name="dotNetType">And finally the .Net type that is converted and adde</param>
         /// <returns></returns>
-        public static IElement GenerateAndAdd(this IDotNetTypeLookup typeLookup, _UML uml, IExtent extent, Type dotNetType)
+        public static IElement CreateTypeSpecification(this MofUriExtent extent, _UML uml, Type dotNetType)
         {
             var factory = new MofFactory(extent);
             var dotNetTypeCreator = new DotNetTypeGenerator(factory, uml);
             var element = dotNetTypeCreator.CreateTypeFor(dotNetType);
             extent.elements().add(element);
             
-            typeLookup.Add(element, dotNetType);
+            extent.TypeLookup.Add(element, dotNetType);
             return element;
         }
 

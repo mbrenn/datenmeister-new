@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Implementation;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -9,8 +10,10 @@ namespace DatenMeister.Provider.DotNet
     /// DotNet types and MOF elements is performed, so the correct type
     /// is always created
     /// </summary>
-    public class DotNetTypeLookup : IDotNetTypeLookup
+    internal class DotNetTypeLookup : IDotNetTypeLookup
     {
+        private readonly MofExtent _extent;
+
         /// <summary>
         /// Defines a cache between all objects and their id 
         /// </summary>
@@ -20,8 +23,16 @@ namespace DatenMeister.Provider.DotNet
         private readonly Dictionary<string, Type> _elementsToTypes =
             new Dictionary<string, Type>();
 
+        /// <summary>
+        /// Stores a mapping between a .Net Type and the guid being used within the extent
+        /// </summary>
         private readonly Dictionary<Type, string> _typesToElememts = 
             new Dictionary<Type, string>();
+
+        public DotNetTypeLookup(MofExtent extent)
+        {
+            _extent = extent;
+        }
 
         /// <summary>
         /// Adds an association between type and element

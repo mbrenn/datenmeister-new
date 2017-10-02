@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -15,7 +16,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     {
         /// <summary>
         /// This type lookup can be used to convert the instances of the .Net types to real MOF meta classes. 
-        /// It is only used, if the data 
+        /// It is only used, if the data is directly set as a .Net object
         /// </summary>
         public IDotNetTypeLookup TypeLookup { get; }
 
@@ -30,6 +31,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IUriResolver Resolver { get; set; }
 
         /// <summary>
+        /// Stores a list of other extents that shall also be considered as meta extents
+        /// </summary>
+        private readonly List<IUriExtent> _metaExtents = new List<IUriExtent>();
+
+        /// <summary>
         /// Initializes a new instance of the Extent 
         /// </summary>
         /// <param name="provider">Provider being used for the extent</param>
@@ -38,14 +44,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             Provider = provider;
             Resolver = new ExtentResolver(this);
-            TypeLookup = typeLookup;
+            TypeLookup = typeLookup ?? new DotNetTypeLookup();
         }
 
         /// <inheritdoc />
         public bool @equals(object other)
         {
-            var otherAsExtent = other as MofExtent;
-            if (otherAsExtent != null)
+            if (other is MofExtent otherAsExtent)
             {
                 return Equals(otherAsExtent);
             }
@@ -87,6 +92,38 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IReflectiveSequence elements()
         {
             return new ExtentReflectiveSequence(this);
+        }
+
+        /// <summary>
+        /// Adds an extent as a meta extent, so it will also be used to retrieve the element
+        /// </summary>
+        /// <param name="extent">Extent to be added</param>
+        public void AddMetaExtent(IUriExtent extent)
+        {
+            lock (_metaExtents)
+            {
+                if (_metaExtents.Any(x => x.contextURI() == extent.contextURI()))
+                {
+                    // Already in 
+                    return;
+                }
+
+                _metaExtents.Add(extent);
+            }
+        }
+
+        /// <summary>
+        /// Gets the meta extents
+        /// </summary>
+        public IEnumerable<IUriExtent> MetaExtents
+        {
+            get
+            {
+                lock (_metaExtents)
+                {
+                    return _metaExtents.ToList();
+                }
+            }
         }
 
         /// <summary>
@@ -133,8 +170,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     }
 
                     var result = (MofElement) ObjectCopier.Copy(new MofFactory(extent), asMofObject);
-                    var containerAsElement = container as IElement;
-                    if (containerAsElement != null)
+                    if (container is IElement containerAsElement)
                     {
                         result.Container = containerAsElement;
                     }
@@ -163,7 +199,6 @@ namespace DatenMeister.Core.EMOF.Implementation
             // Then, we have a simple dotnet type, that we try to convert. Let's hope, that it works
             if (extent == null)
             {
-
                 throw new InvalidOperationException(
                     "This element was not created by a factory. So a setting by .Net Object is not possible");
             }

@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Reflection;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime;
 
@@ -33,11 +35,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Initializes a new instance of the DotNetSetter class
         /// </summary>
         /// <param name="extent">Extent being used as reference to find typeLookup and Resolver</param>
-        public DotNetSetter(IUriExtent extent)
+        public DotNetSetter(MofExtent extent)
         {
             _factory = new MofFactory(extent);
-            _typeLookup = ((MofExtent) extent).TypeLookup;
-            _resolver = ((MofExtent)extent).Resolver;
+            _typeLookup = extent.TypeLookup;
+            _resolver = extent.Resolver;
         }
 
         /// <summary>
@@ -47,7 +49,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">Value to be set</param>
         public static object Convert(MofExtent receiver, object value)
         {
-            return Convert((IUriExtent) receiver, value);
+            var setter = new DotNetSetter(receiver);
+            return setter.Convert(value);
         }
 
         /// <summary>
@@ -57,8 +60,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">Value to be set</param>
         public static object Convert(IUriExtent receiver, object value)
         {
-            var setter = new DotNetSetter(receiver);
-            return setter.Convert(value);
+            return Convert((MofExtent)receiver, value);
         }
 
         /// <summary>
@@ -85,14 +87,16 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             _visitedElements.Add(value);
 
+            // Gets the uri of the lookup up type
             var metaClassUri = _typeLookup?.ToElement(value.GetType());
+
+            // After having the uri, create the required element
             var createdElement = _factory.create(
-                metaClassUri == null ?
-                    null : 
-                    _resolver.Resolve(metaClassUri));
-                
+                metaClassUri == null ? null : _resolver.Resolve(metaClassUri));
+
             var type = value.GetType();
-            foreach (var reflectedProperty in type.GetProperties(BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public))
+            foreach (var reflectedProperty in type.GetProperties(
+                BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public))
             {
                 var innerValue = reflectedProperty.GetValue(value);
                 if (DotNetHelper.IsOfEnumeration(innerValue))

@@ -15,10 +15,5 @@
         /// Gets or sets a value indicating whether the data environment including all the metamodels shall be established
         /// </summary>
         public bool EstablishDataEnvironment { get; set; }
-
-        /// <summary>
-        /// Gets or sets the hooks being used for the integration
-        /// </summary>
-        public IIntegrationHooks Hooks { get; set; }
     }
 }

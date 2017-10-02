@@ -11,7 +11,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICanSetId
     {
-        /// <inheritdoc />
+        /// <inheritdoc cref="ICanSetId.Id" />
         public string Id
         {
             get => ProviderObject.Id;

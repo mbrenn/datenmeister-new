@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -47,7 +48,7 @@ namespace DatenMeister.Runtime.Workspaces
         {
             foreach (var workspace in _workspaceLogic.Workspaces)
             {
-                foreach (var extent in workspace.extent.OfType<IUriExtent>())
+                foreach (var extent in workspace.extent.OfType<MofExtent>())
                 {
                     var extentUriResolver = new ExtentResolver(extent);
                     var result = extentUriResolver.ResolveById(id);
@@ -66,5 +67,7 @@ namespace DatenMeister.Runtime.Workspaces
         {
             // Assumption is, that the given meta extent is already available in the workspace
         }
+
+        public IEnumerable<IUriExtent> MetaExtents => new IUriExtent[] { };
     }
 }

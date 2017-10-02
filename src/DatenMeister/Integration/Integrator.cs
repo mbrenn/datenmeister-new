@@ -12,7 +12,6 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -95,9 +94,6 @@ namespace DatenMeister.Integration
                 Provider.CSV.Integrate.Into(scope);
                 Provider.XMI.Integrate.Into(scope);
 
-                // Is used by .Net Provider to include the mappings for extent storages and factory types
-                _settings?.Hooks?.OnStartScope(scope);
-
                 // Load the default extents
                 // Performs the bootstrap
                 var paths =
@@ -154,8 +150,7 @@ namespace DatenMeister.Integration
                     dotNetTypeLookup);
 
                 // Adds the views and their view logic
-                var viewLogic = scope.Resolve<ViewLogic>();
-                viewLogic.Integrate();
+                scope.Resolve<ViewLogic>().Integrate();
 
                 
                 // Includes the extent for the helping extents
@@ -186,9 +181,6 @@ namespace DatenMeister.Integration
         {
             var workspaceLoader = scope.Resolve<WorkspaceLoader>();
             workspaceLoader.Load();
-
-            // Now start the plugins  
-            _settings?.Hooks?.BeforeLoadExtents(scope);
 
             // Loads all extents after all plugins were started  
             scope.Resolve<ExtentConfigurationLoader>().LoadAllExtents();

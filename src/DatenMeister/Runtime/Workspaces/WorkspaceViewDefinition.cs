@@ -2,22 +2,20 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
-using DatenMeister.Provider.InMemory;
 
 namespace DatenMeister.Runtime.Workspaces
 {
     /// <summary>
     /// Gets the workspace view
     /// </summary>
-    public class WorkspaceView
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class WorkspaceViewDefinition
     {
         private readonly ViewLogic _viewLogic;
-        private readonly WorkspaceUriResolver _uriResolver;
 
-        public WorkspaceView(ViewLogic viewLogic, WorkspaceUriResolver uriResolver)
+        public WorkspaceViewDefinition(ViewLogic viewLogic)
         {
             _viewLogic = viewLogic;
-            _uriResolver = uriResolver;
         }
 
         /// <summary>

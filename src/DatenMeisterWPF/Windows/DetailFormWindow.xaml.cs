@@ -24,7 +24,7 @@ namespace DatenMeisterWPF.Windows
                 formDefinition = viewFinder.FindView(element, null);
             }
 
-            DetailFormControl.UpdateContent(scope, element, formDefinition);
+            DetailFormControl.SetContent(scope, element, formDefinition);
             DetailFormControl.AddDefaultButtons();
         }
     }

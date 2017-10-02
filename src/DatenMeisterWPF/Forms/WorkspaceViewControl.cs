@@ -1,11 +1,8 @@
-﻿using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using Autofac;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.HelpingExtents;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Forms
@@ -18,7 +15,7 @@ namespace DatenMeisterWPF.Forms
         /// <param name="scope"></param>
         public void SetContent(IDatenMeisterScope scope)
         {
-            var workspaceView = scope.Resolve<WorkspaceView>();
+            var workspaceView = scope.Resolve<WorkspaceViewDefinition>();
 
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(scope);
             SetContent(scope, workspaceExtent.elements(), workspaceView.CreateForm());

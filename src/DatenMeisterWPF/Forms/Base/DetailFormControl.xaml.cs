@@ -31,19 +31,19 @@ namespace DatenMeisterWPF.Forms.Base
             InitializeComponent();
         }
 
-        public void UpdateContent(IDatenMeisterScope scope, IElement element, IElement formDefinition)
+        public void SetContent(IDatenMeisterScope scope, IElement element, IElement formDefinition)
         {
             _element = element;
             _formDefinition = formDefinition;
             _scope = scope;
 
-            UpdateContent();
+            SetContent();
         }
 
         /// <summary>
         /// Updates the content
         /// </summary>
-        public void UpdateContent()
+        public void SetContent()
         {
             _setActions.Clear();
             if (!(_formDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
@@ -81,7 +81,7 @@ namespace DatenMeisterWPF.Forms.Base
                     Grid.SetRow(contentBlock, n);
                     DataGrid.Children.Add(contentBlock);
 
-                    var valueText = _element.get(name).ToString();
+                    var valueText = _element?.get(name)?.ToString() ?? string.Empty;
                     contentBlock.Text = valueText;
 
                     _setActions.Add(
@@ -98,6 +98,9 @@ namespace DatenMeisterWPF.Forms.Base
             }
         }
 
+        /// <summary>
+        /// Adds the default cancel and save buttons
+        /// </summary>
         public void AddDefaultButtons()
         {
             AddGenericButton("Cancel", () =>

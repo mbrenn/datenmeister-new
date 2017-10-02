@@ -14,38 +14,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores the extent to which the resolver is allocated
         /// </summary>
-        private readonly IExtent _extent;
-
-        /// <summary>
-        /// Stores a list of other extents that shall also be considered as meta extents
-        /// </summary>
-        private readonly List<IUriExtent> _metaExtents = new List<IUriExtent>();
+        private readonly MofExtent _extent;
 
         /// <summary>
         /// Initializes a new instance of the UriResolver class.
         /// </summary>
         /// <param name="extent">Extent being used as a relative source for information</param>
-        public ExtentResolver(IExtent extent)
+        public ExtentResolver(MofExtent extent)
         {
             _extent = extent;
-        }
-
-        /// <summary>
-        /// Adds an extent as a meta extent, so it will also be used to retrieve the element
-        /// </summary>
-        /// <param name="extent">Extent to be added</param>
-        public void AddMetaExtent(IUriExtent extent)
-        {
-            lock (_metaExtents)
-            {
-                if (_metaExtents.Any(x => x.contextURI() == extent.contextURI()))
-                {
-                    // Already in 
-                    return;
-                }
-
-                _metaExtents.Add(extent);
-            }
         }
 
         /// <inheritdoc />
@@ -58,17 +35,15 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return result;
             }
 
-            lock (_metaExtents)
+            foreach (var metaExtent in _extent.MetaExtents)
             {
-                foreach (var metaExtent in _metaExtents)
+                var element = metaExtent.element(uri);
+                if (element != null)
                 {
-                    var element = metaExtent.element(uri);
-                    if (element != null)
-                    {
-                        return element;
-                    }
+                    return element;
                 }
             }
+
 
             return null;
         }

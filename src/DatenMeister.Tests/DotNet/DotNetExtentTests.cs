@@ -70,7 +70,7 @@ namespace DatenMeister.Tests.DotNet
             var typeExtent = DotNetExtentTests.Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
             var extent = new MofUriExtent(provider, "dm:///test", typeExtent.TypeLookup);
-            extent.Resolver.AddMetaExtent(typeExtent);
+            extent.AddMetaExtent(typeExtent);
             var value = new DotNetTests.TestClassWithList();
             var dotNetElement = extent.TypeLookup.CreateDotNetElement(extent, value);
 
@@ -108,7 +108,7 @@ namespace DatenMeister.Tests.DotNet
             var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
             var extent = new MofUriExtent(provider, "dm:///test", typeExtent.TypeLookup);
-            extent.Resolver.AddMetaExtent(typeExtent);
+            extent.AddMetaExtent(typeExtent);
             Assert.That(extent.elements(), Is.Not.Null);
             extent.elements().add(new DotNetTests.Person());
 

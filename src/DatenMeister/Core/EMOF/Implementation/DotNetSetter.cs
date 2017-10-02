@@ -1,16 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using System.Reflection;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
     /// <summary>
-    /// Support class, that is capable to set properties by using DotNet Objects
+    /// A supporting class, that converts a .Net Element to a MOF object.
     /// </summary>
     public class DotNetSetter
     {
@@ -33,7 +30,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Initializes a new instance of the DotNetSetter class
         /// </summary>
         /// <param name="extent">Extent being used as reference to find typeLookup and Resolver</param>
-        public DotNetSetter(MofUriExtent extent)
+        private DotNetSetter(MofUriExtent extent)
         {
             _factory = new MofFactory(extent);
             _extent = extent;
@@ -46,8 +43,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">Value to be set</param>
         public static object Convert(MofUriExtent receiver, object value)
         {
-            var setter = new DotNetSetter(receiver);
-            return setter.Convert(value);
+            return new DotNetSetter(receiver).Convert(value);
         }
 
         /// <summary>

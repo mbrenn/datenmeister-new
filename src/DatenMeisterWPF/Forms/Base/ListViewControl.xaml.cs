@@ -52,10 +52,10 @@ namespace DatenMeisterWPF.Forms.Base
             FormDefinition = formDefinition;
             Scope = scope;
 
-            SetContent();
+            UpdateContent();
         }
 
-        private void SetContent()
+        public void UpdateContent()
         {
             var umlNameResolve = Scope.Resolve<IUmlNameResolution>();
 
@@ -68,6 +68,8 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             DataGrid.Columns.Clear();
+
+            // Creates the column
             foreach (var field in fields.Cast<IElement>())
             {
                 var name = field.get(_FormAndFields._FieldData.name).ToString();
@@ -83,6 +85,7 @@ namespace DatenMeisterWPF.Forms.Base
                 DataGrid.Columns.Add(dataColumn);
             }
 
+            // Creates the rowns
             if (Items != null)
             {
                 foreach (var item in Items)
@@ -144,6 +147,12 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             DataGrid.ItemsSource = listItems;
+
+            // Creates the row button
+            foreach (var definition in _rowItemButtonDefinitions)
+            {
+                AddRowItemButton(definition);
+            }
         }
 
         /// <summary>
@@ -171,17 +180,24 @@ namespace DatenMeisterWPF.Forms.Base
                     var temporaryExtent = InMemoryProvider.TemporaryExtent;
                     var factory = new MofFactory(temporaryExtent);
                     FormDefinition = dlg.GetCurrentContentAsMof(factory);
-                    SetContent();
+                    UpdateContent();
                 };
 
                 dlg.ShowDialog();
             });
 
-            AddRowItemButton("Open", (x) =>
+            AddRowItemButton("Open", selectedElement =>
             {
-                var formControl = new DetailFormWindow();
-                formControl.Owner = Window.GetWindow(this);
-                formControl.UpdateContent(Scope, x as IElement, null);
+                if (selectedElement == null)
+                {
+                    return;
+                }
+
+                var formControl = new DetailFormWindow
+                {
+                    Owner = Window.GetWindow(this)
+                };
+                formControl.DetailFormControl.SetContent(Scope, selectedElement as IElement, null);
                 formControl.Show();
             });
         }
@@ -228,6 +244,8 @@ namespace DatenMeisterWPF.Forms.Base
             return button;
         }
 
+        private List<RowItemButtonDefinition> _rowItemButtonDefinitions;
+
         /// <summary>
         /// Adds a button for a row item
         /// </summary>
@@ -235,17 +253,37 @@ namespace DatenMeisterWPF.Forms.Base
         /// <param name="pressed">Called, if the is button pressed</param>
         public void AddRowItemButton(string name, Action<IObject> pressed)
         {
+            var definition = new RowItemButtonDefinition()
+            {
+                Name = name,
+                Pressed = pressed
+            };
+
+            AddRowItemButton(definition);
+        }
+
+        public void AddRowItemButton(RowItemButtonDefinition definition)
+        {
             var columnTemplate = FindResource("TemplateColumnButton") as DataTemplate;
 
             var dataColumn = new ClickedTemplateColumn
             {
-                Header = name,
+                Header = definition.Name,
                 CellTemplate = columnTemplate,
-                OnClick = pressed
+                OnClick = definition.Pressed
             };
-            
+
 
             DataGrid.Columns.Add(dataColumn);
+        }
+
+        /// <summary>
+        /// Defines the definition for the row item button
+        /// </summary>
+        public class RowItemButtonDefinition
+        {
+            public string Name { get; set; }
+            public Action<IObject> Pressed { get; set; }
         }
 
 

@@ -3,6 +3,7 @@ using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Provider.HelpingExtents;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeisterWPF.Dialogs;
 using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Forms
@@ -29,6 +30,8 @@ namespace DatenMeisterWPF.Forms
                 dlg.SetContent(scope);
                 dlg.Owner = Window.GetWindow(this);
                 dlg.Show();
+                dlg.Closed += (x, y) => UpdateContent();
+
             });
 
             AddItemButton("Open Workspace", (x) => { });

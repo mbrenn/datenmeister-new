@@ -25,11 +25,6 @@ namespace DatenMeisterWPF
             _scope = await Task.Run(
                 () => GiveMe.DatenMeister());
             MainControl.Content = null;
-
-            /*var workspaceControl = new WorkspaceViewControl();
-            workspaceControl.SetContent(datenMeister);
-            MainControl.Content = workspaceControl;*/
-
             
             var workspaceControl = new WorkspaceViewControl();
             workspaceControl.SetContent(_scope);

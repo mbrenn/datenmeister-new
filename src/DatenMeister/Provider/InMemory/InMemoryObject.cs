@@ -34,6 +34,7 @@ namespace DatenMeister.Provider.InMemory
         /// <summary>
         /// Initializes a new instance of the InMemoryObject.
         /// </summary>
+        /// <param name="provider">Provider being the host for the element</param>
         /// <param name="metaclassUri">Uri of the metaclass</param>
         public InMemoryObject(IProvider provider, string metaclassUri = null)
         {
@@ -42,7 +43,7 @@ namespace DatenMeister.Provider.InMemory
             MetaclassUri = metaclassUri;
         }
 
-        internal static void CheckValue(object value)
+        private static void CheckValue(object value)
         {
             if (value is MofReflectiveSequence || value is MofObject)
             {
@@ -59,8 +60,7 @@ namespace DatenMeister.Provider.InMemory
         /// <returns></returns>
         public object GetProperty(string property)
         {
-            object result;
-            if (_values.TryGetValue(property, out result))
+            if (_values.TryGetValue(property, out var result))
             {
                 return result;
             }

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -14,18 +15,6 @@ namespace DatenMeisterWPF.Windows
         public DetailFormWindow()
         {
             InitializeComponent();
-        }
-        
-        public void UpdateContent(IDatenMeisterScope scope, IElement element, IElement formDefinition)
-        {
-            if (formDefinition == null)
-            {
-                var viewFinder = scope.Resolve<IViewFinder>();
-                formDefinition = viewFinder.FindView(element, null);
-            }
-
-            DetailFormControl.SetContent(scope, element, formDefinition);
-            DetailFormControl.AddDefaultButtons();
         }
     }
 }

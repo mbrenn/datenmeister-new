@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core;
+﻿using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Filler;
 using DatenMeister.Provider.InMemory;
@@ -30,7 +31,7 @@ namespace DatenMeister.Tests.Core
             Assert.That(logic.GetWorkspaceOfExtent(typeExtent), Is.EqualTo(data.Types));
             Assert.That(logic.GetWorkspaceOfExtent(umlExtent), Is.EqualTo(data.Uml));
             Assert.That(logic.GetWorkspaceOfExtent(unAssignedExtent), Is.EqualTo(data.Data));
-            Assert.That(data.Data.MetaWorkspace, Is.EqualTo(data.Types));
+            Assert.That(data.Data.MetaWorkspaces.FirstOrDefault(), Is.EqualTo(data.Types));
         }
 
         [Test]

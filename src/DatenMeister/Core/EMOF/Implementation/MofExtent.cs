@@ -9,6 +9,7 @@ using DatenMeister.Provider;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -29,6 +30,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Gets or sets the resolver being used to resolve the uri
         /// </summary>
         public IUriResolver Resolver { get; set; }
+
+        /// <summary>
+        /// Gets or sets the workspace to which the extent is allocated
+        /// </summary>
+        public Workspace Workspace { get; set; }
 
         /// <summary>
         /// Stores a list of other extents that shall also be considered as meta extents

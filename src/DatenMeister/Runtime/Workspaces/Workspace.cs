@@ -21,14 +21,27 @@ namespace DatenMeister.Runtime.Workspaces
         private readonly List<ITag> _properties = new List<ITag>();
 
         /// <summary>
+        /// Stores a list of meta workspaces that are associated to the given workspace
+        /// The metaworkspaces are requested to figure out meta classes
+        /// </summary>
+        public List<Workspace> MetaWorkspaces { get; } = new List<Workspace>();
+
+        /// <summary>
+        /// Adds a meta workspace
+        /// </summary>
+        /// <param name="workspace">Workspace to be added as a meta workspace</param>
+        public void AddMetaWorkspace(Workspace workspace)
+        {
+            lock (MetaWorkspaces)
+            {
+                MetaWorkspaces.Add(workspace);
+            }
+        }
+
+        /// <summary>
         /// Gets a list the cache which stores the filled types
         /// </summary>
         internal List<object> FilledTypeCache { get; } = new List<object>();
-
-        /// <summary>
-        /// Gets or sets the meta workspace for the given
-        /// </summary>
-        public Workspace MetaWorkspace { get; set; }
 
         public string id { get; }
 
@@ -50,7 +63,7 @@ namespace DatenMeister.Runtime.Workspaces
             where TFiller : IFiller<TFilledType>, new()
             where TFilledType : class, new()
         {
-            lock (FilledTypeCache)
+            lock (SyncObject)
             {
                 var filledType = Get<TFilledType>();
                 if (filledType != null)
@@ -76,7 +89,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         public void ClearCache()
         {
-            lock (FilledTypeCache)
+            lock (SyncObject)
             {
                 FilledTypeCache.Clear();
             }
@@ -85,7 +98,7 @@ namespace DatenMeister.Runtime.Workspaces
         public TFilledType Get<TFilledType>()
             where TFilledType : class, new()
         {
-            lock (FilledTypeCache)
+            lock (SyncObject)
             {
                 // Looks into the cache for the filledtypes
                 foreach (var value in FilledTypeCache)
@@ -100,9 +113,33 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+
+        /// <summary>
+        /// Gets a property by querying all meta workspaces
+        /// </summary>
+        /// <typeparam name="TFilledType">Property to be queried</typeparam>
+        /// <returns>The property being queried</returns>
+        public TFilledType GetFromMetaWorkspace<TFilledType>()
+            where TFilledType : class, new()
+        {
+            lock (SyncObject)
+            {
+                foreach (var meta in MetaWorkspaces)
+                {
+                    var result = meta.Get<TFilledType>();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public void Set<TFilledType>(TFilledType value) where TFilledType : class, new()
         {
-            lock (FilledTypeCache)
+            lock (SyncObject)
             {
                 FilledTypeCache.Add(value);
             }

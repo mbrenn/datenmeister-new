@@ -558,7 +558,7 @@ namespace DatenMeister.Uml
                     bootStrapper.StrapUml(
                         primitiveInfrastructure: primitiveExtent,
                         umlInfrastructure: umlExtent,
-                        mofDataLayer: dataLayer.MetaWorkspace);
+                        mofDataLayer: dataLayer.MetaWorkspaces.FirstOrDefault());
                 }
 
                 dataLayer.Create<FillTheUML, _UML>();

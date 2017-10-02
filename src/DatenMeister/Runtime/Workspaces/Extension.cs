@@ -49,8 +49,7 @@ namespace DatenMeister.Runtime.Workspaces
             Workspace dataLayer)
             where TFilledType : class, new()
         {
-            var metaLayer = dataLayer.MetaWorkspace;
-            return metaLayer?.Get<TFilledType>();
+            return dataLayer.GetFromMetaWorkspace<TFilledType>();
         }
 
         /// <summary>
@@ -66,12 +65,8 @@ namespace DatenMeister.Runtime.Workspaces
             where TFilledType : class, new()
         {
             var dataLayer = logic.GetWorkspaceOfExtent(extent);
-            if (dataLayer == null)
-            {
-                return null;
-            }
+            return dataLayer.GetFromMetaWorkspace<TFilledType>();
 
-            return GetFromMetaLayer<TFilledType>(logic, dataLayer);
         }
 
         /// <summary>

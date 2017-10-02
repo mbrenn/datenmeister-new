@@ -50,7 +50,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return null;
             }
 
-            var result = CreatedByExtent?.Resolver.Resolve(uri);
+            var result = (CreatedByExtent as IUriResolver)?.Resolve(uri);
 
             if (result == null)
             {

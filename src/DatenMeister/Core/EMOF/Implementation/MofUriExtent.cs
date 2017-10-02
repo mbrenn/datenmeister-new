@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
+﻿using System.Linq;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
 using DatenMeister.Provider.DotNet;
@@ -9,10 +10,10 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// <summary>
     /// Implements the MOF interface for the uriextent
     /// </summary>
-    public class MofUriExtent : MofExtent, IUriExtent
+    public class MofUriExtent : MofExtent, IUriExtent, IUriResolver
     {
         private readonly string _uri;
-        private ExtentUrlNavigator<MofElement> _navigator;
+        private readonly ExtentUrlNavigator<MofElement> _navigator;
 
         /// <inheritdoc />
         public MofUriExtent(IProvider provider, string uri, IDotNetTypeLookup typeLookup = null) :
@@ -62,6 +63,58 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             return uri.Substring(pos + 1);
+        }
+
+
+
+        /// <inheritdoc />
+        public IElement Resolve(string uri)
+        {
+            var result = element(uri);
+            if (result != null)
+            {
+                return result;
+            }
+
+            // Now look into the explicit extents
+            foreach (var metaExtent in MetaExtents)
+            {
+                var element = metaExtent.element(uri);
+                if (element != null)
+                {
+                    return element;
+                }
+            }
+
+            // If still not found, look into the meta workspaces. Nevertheless, no recursion
+            var metaWorkspaces = Workspace?.MetaWorkspaces;
+            if (metaWorkspaces != null)
+            {
+                foreach (var metaWorkspace in metaWorkspaces)
+                {
+                    foreach (var metaExtent in metaWorkspace.extent.OfType<IUriExtent>())
+                    {
+                        var element = metaExtent.element(uri);
+                        if (element != null)
+                        {
+                            return element;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Resolves an object by just having the id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IElement ResolveById(string id)
+        {
+            var uri = contextURI() + "#" + id;
+            return element(uri);
         }
     }
 }

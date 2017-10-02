@@ -27,11 +27,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IProvider Provider { get; set; }
 
         /// <summary>
-        /// Gets or sets the resolver being used to resolve the uri
-        /// </summary>
-        public IUriResolver Resolver { get; set; }
-
-        /// <summary>
         /// Gets or sets the workspace to which the extent is allocated
         /// </summary>
         public Workspace Workspace { get; set; }
@@ -49,7 +44,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         public MofExtent(IProvider provider, IDotNetTypeLookup typeLookup = null)
         {
             Provider = provider;
-            Resolver = new ExtentResolver(this);
             TypeLookup = typeLookup ?? new DotNetTypeLookup();
         }
 
@@ -203,13 +197,14 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             // Then, we have a simple dotnet type, that we try to convert. Let's hope, that it works
-            if (extent == null)
+            var asUriExtent = extent as IUriExtent;
+            if (asUriExtent == null)
             {
                 throw new InvalidOperationException(
                     "This element was not created by a factory. So a setting by .Net Object is not possible");
             }
 
-            return ConvertForSetting(DotNetSetter.Convert(extent, value), extent, container);
+            return ConvertForSetting(DotNetSetter.Convert(asUriExtent, value), extent, container);
         }
 
         /// <summary>

@@ -216,7 +216,7 @@ namespace DatenMeister.Runtime
         {
             return ConvertToMofElement(
                 value,
-                new ExtentResolver((MofExtent) extent),
+                (MofUriExtent) extent,
                 new MofFactory(extent),
                 typeLookup);
         }

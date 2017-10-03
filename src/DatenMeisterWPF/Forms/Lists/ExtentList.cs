@@ -1,11 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.HelpingExtents;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Navigation;
@@ -14,7 +18,6 @@ namespace DatenMeisterWPF.Forms.Lists
 {
     public class ExtentList : ElementListViewControl
     {
-
         /// <summary>
         /// Shows the workspaces of the DatenMeister
         /// </summary>
@@ -55,6 +58,64 @@ namespace DatenMeisterWPF.Forms.Lists
 
                         return control;
                     });
+            });
+
+            AddGenericButton("Zip-Code Example", () =>
+            {
+                var extentManager = scope.Resolve<IExtentManager>();
+
+                var random = new Random();
+
+                // Finds the file and copies the file to the given location
+                var appBase = AppContext.BaseDirectory;
+
+                // Creates directory, if it does not exist
+                var directory = Path.Combine(appBase, "App_Data/Database");
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                string filename;
+                var tries = 0;
+                int randomNumber;
+                do // while File.Exists
+                {
+                    randomNumber = random.Next(int.MaxValue);
+                    filename = Path.Combine(appBase, "App_Data/Database", $"plz_{randomNumber}.csv");
+                    tries++;
+                    if (tries == 10000)
+                    {
+                        throw new InvalidOperationException("Did not find a unique name for zip extent");
+                    }
+                } while (File.Exists(filename));
+
+                var originalFilename = Path.Combine(
+                    appBase,
+                    "Examples",
+                    "plz.csv");
+                
+                File.Copy(originalFilename, filename);
+
+                var defaultConfiguration = new CSVExtentLoaderConfig
+                {
+                    ExtentUri = $"datenmeister:///zipcodes/{randomNumber}",
+                    Path = filename,
+                    Workspace = workspaceId,
+                    Settings =
+                    {
+                        HasHeader = false,
+                        Separator = '\t',
+                        Encoding = "UTF-8",
+                        Columns = new[] {"Id", "Zip", "PositionLong", "PositionLat", "CityName"}.ToList(),
+                        // Columns = new object[] { idProperty, zipProperty, positionLongProperty, positionLatProperty, citynameProperty }.ToList(),
+                        MetaclassUri = "dm:///types#DatenMeister.Apps.ZipCode.Model.ZipCode"
+                    }
+                };
+
+                extentManager.LoadExtent(defaultConfiguration, false);
+
+                UpdateContent();
             });
 
         }

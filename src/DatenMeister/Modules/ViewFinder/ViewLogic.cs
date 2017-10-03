@@ -10,7 +10,6 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.ViewFinder
 {
@@ -26,12 +25,10 @@ namespace DatenMeister.Modules.ViewFinder
         public const string UriViewExtent = "dm:///management/views";
 
         private readonly IWorkspaceLogic _workspaceLogic;
-        private readonly NamedElementMethods _namedElementMethods;
 
-        public ViewLogic(IWorkspaceLogic workspaceLogic, NamedElementMethods namedElementMethods)
+        public ViewLogic(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
-            _namedElementMethods = namedElementMethods;
         }
 
         /// <summary>

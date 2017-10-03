@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using System.Windows;
 using DatenMeister.Integration;
-using DatenMeister.Provider.HelpingExtents;
 using DatenMeisterWPF.Forms;
+using DatenMeisterWPF.Forms.Lists;
 
 namespace DatenMeisterWPF
 {
@@ -12,7 +12,6 @@ namespace DatenMeisterWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-
         private IDatenMeisterScope _scope;
         public MainWindow()
         {
@@ -26,7 +25,7 @@ namespace DatenMeisterWPF
                 () => GiveMe.DatenMeister());
             MainControl.Content = null;
             
-            var workspaceControl = new WorkspaceViewControl();
+            var workspaceControl = new WorkspaceList();
             workspaceControl.SetContent(_scope);
             MainControl.Content = workspaceControl;
         }

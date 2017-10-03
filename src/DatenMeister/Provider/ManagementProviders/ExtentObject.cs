@@ -1,7 +1,7 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 
-namespace DatenMeister.Provider.HelpingExtents
+namespace DatenMeister.Provider.ManagementProviders
 {
     public class ExtentObject : MappingProviderObject<IUriExtent>, IProviderObject
     {

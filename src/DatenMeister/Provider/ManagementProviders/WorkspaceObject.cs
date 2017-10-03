@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.HelpingExtents

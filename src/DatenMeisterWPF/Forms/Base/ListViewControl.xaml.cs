@@ -16,6 +16,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
+using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Forms.Base
@@ -198,12 +199,14 @@ namespace DatenMeisterWPF.Forms.Base
                     return;
                 }
 
-                var formControl = new DetailFormWindow
-                {
-                    Owner = Window.GetWindow(this)
-                };
-                formControl.DetailFormControl.SetContent(Scope, selectedElement as IElement, null);
-                formControl.Show();
+                Navigator.TheNavigator.NavigateTo(
+                    Window.GetWindow(this),
+                    () =>
+                    {
+                        var control = new DetailFormControl();
+                        control.SetContent(Scope, selectedElement as IElement, null);
+                        return control;
+                    });
             });
         }
 

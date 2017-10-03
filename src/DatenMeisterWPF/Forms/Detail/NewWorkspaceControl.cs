@@ -5,11 +5,11 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeisterWPF.Windows;
+using DatenMeisterWPF.Forms.Base;
 
-namespace DatenMeisterWPF.Dialogs
+namespace DatenMeisterWPF.Forms.Detail
 {
-    public class NewWorkspaceDialog : DetailFormWindow
+    public class NewWorkspaceControl : DetailFormControl
     {
         public void SetContent(IDatenMeisterScope scope)
         {
@@ -24,12 +24,12 @@ namespace DatenMeisterWPF.Dialogs
 
             var formElement = DotNetSetter.Convert(viewExtent, form) as IElement;
 
-            DetailFormControl.SetContentForNewObject(scope, formElement);
-            DetailFormControl.AddDefaultButtons("Create");
-            DetailFormControl.ElementSaved += (x, y) =>
+            SetContentForNewObject(scope, formElement);
+            AddDefaultButtons("Create");
+            ElementSaved += (x, y) =>
             {
-                var workspaceId = DetailFormControl.DetailElement.get("id").ToString();
-                var annotation = DetailFormControl.DetailElement.get("annotation").ToString();
+                var workspaceId = DetailElement.get("id").ToString();
+                var annotation = DetailElement.get("annotation").ToString();
 
                 var workspace = new Workspace(workspaceId, annotation);
                 var workspaceLogic = scope.Resolve<IWorkspaceLogic>();

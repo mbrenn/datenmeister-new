@@ -78,13 +78,20 @@
     <Compile Include="Forms\Base\DetailFormControl.xaml.cs">
       <DependentUpon>DetailFormControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Lists\ExtentList.cs" />
+    <Compile Include="Navigation\ControlNavigation.cs" />
+    <Compile Include="Navigation\IControlNavigation.cs" />
+    <Compile Include="Navigation\Navigator.cs" />
     <Compile Include="Windows\DetailFormWindow.xaml.cs">
       <DependentUpon>DetailFormWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\ItemXmlViewWindow.xaml.cs">
-      <DependentUpon>ItemXmlViewWindow.xaml</DependentUpon>
+    <Compile Include="Dialogs\ItemXmlViewDialog.xaml.cs">
+      <DependentUpon>ItemXmlViewDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\NewWorkspaceDialog.cs" />
+    <Compile Include="Forms\Detail\NewWorkspaceControl.cs" />
+    <Compile Include="Windows\ListFormWindow.xaml.cs">
+      <DependentUpon>ListFormWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Forms\Base\DetailFormControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -113,7 +120,7 @@
     <Compile Include="Forms\IntroScreen.xaml.cs">
       <DependentUpon>IntroScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\WorkspaceViewControl.cs" />
+    <Compile Include="Forms\Lists\WorkspaceList.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -126,7 +133,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\ItemXmlViewWindow.xaml">
+    <Page Include="Dialogs\ItemXmlViewDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ListFormWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

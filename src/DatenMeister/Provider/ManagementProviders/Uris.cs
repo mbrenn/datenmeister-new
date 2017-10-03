@@ -1,6 +1,6 @@
 ﻿namespace DatenMeister.Provider.HelpingExtents
 {
-    public class Uris
+    public static class Uris
     {
         /// <summary>
         /// Gets the uri of the extent which contains the workspaces

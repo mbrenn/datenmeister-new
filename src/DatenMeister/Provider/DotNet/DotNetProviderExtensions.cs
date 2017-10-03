@@ -25,8 +25,7 @@ namespace DatenMeister.Provider.DotNet
             object value,
             string id = null)
         {
-            var providerAsDotNet = extent.Provider as DotNetProvider;
-            if (providerAsDotNet == null)
+            if (!(extent.Provider is DotNetProvider providerAsDotNet))
             {
                 throw new InvalidOperationException("Given extent is not from DotNetProvider");
             }
@@ -141,8 +140,7 @@ namespace DatenMeister.Provider.DotNet
                 return element;
             }
 
-            var elementAsDotNetElement = element as DotNetProviderObject;
-            if (elementAsDotNetElement != null)
+            if (element is DotNetProviderObject elementAsDotNetElement)
             {
                 return elementAsDotNetElement.GetNativeValue();
             }

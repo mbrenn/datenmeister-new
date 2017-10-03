@@ -8,7 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Workspaces
 {
-    public static class Extension
+    public static class WorkspaceExtensions
     {
         public static IObject FindElementByUri(this Workspace workspace, string uri)
         {
@@ -93,11 +93,10 @@ namespace DatenMeister.Runtime.Workspaces
         public static bool AddExtentNoDuplicate(this Workspace workspace, IWorkspaceLogic workspaceLogic, IUriExtent extent) 
         {
             var contextUri = extent.contextURI();
-            var found = workspace.extent.FirstOrDefault(x =>
-            {
-                var uriExtent = x as IUriExtent;
-                return uriExtent != null && uriExtent.contextURI() == contextUri;
-            });
+
+            var found = workspace.extent.FirstOrDefault(
+                x => x is IUriExtent uriExtent 
+                && uriExtent.contextURI() == contextUri);
 
             if (found == null)
             {
@@ -120,11 +119,9 @@ namespace DatenMeister.Runtime.Workspaces
         {
             lock (workspace.SyncObject)
             {
-                var found = workspace.extent.FirstOrDefault(x =>
-                {
-                    var uriExtent = x as IUriExtent;
-                    return uriExtent != null && uriExtent.contextURI() == uri;
-                });
+                var found = workspace.extent.FirstOrDefault(
+                    x => x is IUriExtent uriExtent 
+                    && uriExtent.contextURI() == uri);
 
                 if (found != null)
                 {

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder.Helper;
-using DatenMeister.Provider.DotNet;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.ViewFinder
 {
@@ -21,15 +16,12 @@ namespace DatenMeister.Modules.ViewFinder
     public class ViewFinderImpl : IViewFinder
     {
         private readonly FormCreator _formCreator;
-        private readonly IDotNetTypeLookup _dotNetTypeLookup;
         private readonly ViewLogic _viewLogic;
 
         public ViewFinderImpl(
-            IDotNetTypeLookup dotNetTypeLookup,
             ViewLogic viewLogic, 
             FormCreator formCreator)
         {
-            _dotNetTypeLookup = dotNetTypeLookup;
             _viewLogic = viewLogic;
             _formCreator = formCreator;
         }
@@ -45,8 +37,9 @@ namespace DatenMeister.Modules.ViewFinder
         {
             if (viewUrl == "{All}")
             {
+                var viewExtent = _viewLogic.GetViewExtent();
                 var view = _formCreator.CreateForm(extent, FormCreator.CreationMode.All);
-                return DotNetHelper.ConvertToMofElement(view, _viewLogic.GetViewExtent(), _dotNetTypeLookup);
+                return DotNetHelper.ConvertToMofElement(view, _viewLogic.GetViewExtent());
                 //return _dotNetTypeLookup.CreateDotNetElement(InMemoryProvider.TemporaryExtent, view);
             }
 
@@ -78,7 +71,7 @@ namespace DatenMeister.Modules.ViewFinder
         public IElement CreateView(IReflectiveSequence sequence)
         {
             var form = _formCreator.CreateForm(sequence, FormCreator.CreationMode.All);
-            return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetViewExtent(), _dotNetTypeLookup);
+            return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetViewExtent());
         }
 
         /// <inheritdoc />
@@ -97,7 +90,7 @@ namespace DatenMeister.Modules.ViewFinder
                     value,
                     FormCreator.CreationMode.All);
 
-                return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetViewExtent(), _dotNetTypeLookup);
+                return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetViewExtent());
                 // return _dotNetTypeLookup.CreateDotNetElement(InMemoryProvider.TemporaryExtent, form);
             }
 

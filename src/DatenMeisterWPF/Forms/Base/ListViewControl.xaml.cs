@@ -38,6 +38,11 @@ namespace DatenMeisterWPF.Forms.Base
         
         private readonly IDictionary<ExpandoObject, IObject> _itemMapping = new Dictionary<ExpandoObject, IObject>();
 
+        /// <summary>
+        /// Stores the definitions for the row items
+        /// </summary>
+        private readonly List<RowItemButtonDefinition> _rowItemButtonDefinitions = new List<RowItemButtonDefinition>();
+
         public bool SupportNewItems
         {
             get => DataGrid.CanUserAddRows;
@@ -151,7 +156,7 @@ namespace DatenMeisterWPF.Forms.Base
             // Creates the row button
             foreach (var definition in _rowItemButtonDefinitions)
             {
-                AddRowItemButton(definition);
+                AddRowItemButton(definition, false);
             }
         }
 
@@ -244,8 +249,6 @@ namespace DatenMeisterWPF.Forms.Base
             return button;
         }
 
-        private List<RowItemButtonDefinition> _rowItemButtonDefinitions;
-
         /// <summary>
         /// Adds a button for a row item
         /// </summary>
@@ -253,7 +256,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <param name="pressed">Called, if the is button pressed</param>
         public void AddRowItemButton(string name, Action<IObject> pressed)
         {
-            var definition = new RowItemButtonDefinition()
+            var definition = new RowItemButtonDefinition
             {
                 Name = name,
                 Pressed = pressed
@@ -262,8 +265,13 @@ namespace DatenMeisterWPF.Forms.Base
             AddRowItemButton(definition);
         }
 
-        public void AddRowItemButton(RowItemButtonDefinition definition)
+        private void AddRowItemButton(RowItemButtonDefinition definition, bool addToList = true)
         {
+            if (addToList)
+            {
+                _rowItemButtonDefinitions.Add(definition);
+            }
+
             var columnTemplate = FindResource("TemplateColumnButton") as DataTemplate;
 
             var dataColumn = new ClickedTemplateColumn
@@ -272,8 +280,7 @@ namespace DatenMeisterWPF.Forms.Base
                 CellTemplate = columnTemplate,
                 OnClick = definition.Pressed
             };
-
-
+            
             DataGrid.Columns.Add(dataColumn);
         }
 

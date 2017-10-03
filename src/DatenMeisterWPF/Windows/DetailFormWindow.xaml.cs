@@ -1,9 +1,4 @@
-﻿using System;
-using System.Windows;
-using Autofac;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Modules.ViewFinder;
+﻿using System.Windows;
 
 namespace DatenMeisterWPF.Windows
 {

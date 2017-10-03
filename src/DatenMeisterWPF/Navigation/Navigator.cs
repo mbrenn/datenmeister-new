@@ -28,27 +28,40 @@ namespace DatenMeisterWPF.Navigation
         {
             var result = new ControlNavigation();
             var userControl = factoryMethod();
-            if (userControl is ListViewControl asListViewControl)
+            switch (userControl)
             {
-                var window = new ListFormWindow();
-
-                window.MainViewSet.Content = asListViewControl;
-                window.Show();
-
-                window.Closed += (x, y) => result.OnClosed();
-            }
-
-            if (userControl is DetailFormControl asDetailFormControl)
-            {
-                var window = new DetailFormWindow
+                case null:
+                    return null;
+                case ListViewControl asListViewControl:
                 {
-                    Owner = root
-                };
+                    var window = new ListFormWindow
+                    {
+                        Owner = root,
+                        MainViewSet =
+                        {
+                            Content = asListViewControl
+                        }
+                    };
 
-                window.MainContent.Content = asDetailFormControl;
-                window.Show();
+                    window.Show();
+                    window.Closed += (x, y) => result.OnClosed();
+                    break;
+                }
+                case DetailFormControl asDetailFormControl:
+                {
+                    var window = new DetailFormWindow
+                    {
+                        Owner = root,
+                        MainContent =
+                        {
+                            Content = asDetailFormControl
+                        }
+                    };
 
-                window.Closed += (x, y) => result.OnClosed();
+                    window.Show();
+                    window.Closed += (x, y) => result.OnClosed();
+                    break;
+                }
             }
 
             return result;

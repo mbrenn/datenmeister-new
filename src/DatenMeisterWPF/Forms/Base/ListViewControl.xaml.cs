@@ -109,11 +109,14 @@ namespace DatenMeisterWPF.Forms.Base
                         {
                             var result = new StringBuilder();
                             var valueAsList = DotNetHelper.AsEnumeration(value);
-                            var nr = string.Empty;
-                            foreach (var valueElement in valueAsList)
+                            if (valueAsList != null)
                             {
-                                result.Append(nr + umlNameResolve.GetName(valueElement));
-                                nr = "\r\n";
+                                var nr = string.Empty;
+                                foreach (var valueElement in valueAsList)
+                                {
+                                    result.Append(nr + umlNameResolve.GetName(valueElement));
+                                    nr = "\r\n";
+                                }
                             }
 
                             asDictionary.Add(name, result.ToString());
@@ -268,6 +271,12 @@ namespace DatenMeisterWPF.Forms.Base
             AddRowItemButton(definition);
         }
 
+        /// <summary>
+        /// Adds a button for a row item
+        /// </summary>
+        /// <param name="definition">Definition for the button</param>
+        /// <param name="addToList">True, if the buttons shall be added to the list of items. 
+        /// False, if the buttons are reiterated</param>
         private void AddRowItemButton(RowItemButtonDefinition definition, bool addToList = true)
         {
             if (addToList)
@@ -305,13 +314,7 @@ namespace DatenMeisterWPF.Forms.Base
             get
             {
                 var selectedItem = DataGrid.SelectedItem;
-                if (selectedItem == null)
-                {
-                    return null;
-                }
-
-                return _itemMapping[(ExpandoObject) selectedItem];
-
+                return selectedItem == null ? null : _itemMapping[(ExpandoObject) selectedItem];
             }
         }
 
@@ -333,7 +336,13 @@ namespace DatenMeisterWPF.Forms.Base
         /// <returns>The selected item of the button and the column</returns>
         private (IObject selectedItem, ClickedTemplateColumn column) GetObjectsFromEventRouting(RoutedEventArgs e)
         {
-            var expandoObject = (ExpandoObject) ((ContentPresenter) ((Button) e.Source).TemplatedParent).Content;
+            var content = ((ContentPresenter) ((Button) e.Source).TemplatedParent).Content;
+
+            if (!(content is ExpandoObject expandoObject))
+            {
+                return (null, null);
+            }
+
             var foundItem = _itemMapping[expandoObject];
 
             var button = (Button) e.Source;
@@ -343,12 +352,21 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
 
-        private void FrameworkElement_OnInitialized(object sender, RoutedEventArgs e)
+        private void RowButton_OnInitialized(object sender, RoutedEventArgs e)
         {
             var result = GetObjectsFromEventRouting(e);
             var button = (Button)e.Source;
-            button.Content = result.column.Header.ToString();
+
+            if (result.selectedItem == null)
+            {
+                button.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                button.Content = result.column.Header.ToString();
+            }
         }
+
         /// <inheritdoc />
         /// <summary>
         /// The template being used to click

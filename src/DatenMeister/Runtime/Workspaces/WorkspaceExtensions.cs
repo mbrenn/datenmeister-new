@@ -203,7 +203,23 @@ namespace DatenMeister.Runtime.Workspaces
                 .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == uri);
         }
 
-
+        /// <summary>
+        /// Finds the extent with the given uri in one of the workspaces in the database
+        /// </summary>
+        /// <param name="collection">Collection to be evaluated</param>
+        /// <param name="workspaceId">Id of the workspace to be added</param>
+        /// <param name="uri">Uri, which needs to be retrieved</param>
+        /// <returns>Found extent or null if not found</returns>
+        public static IExtent FindExtent(
+            this IWorkspaceLogic collection,
+            string workspaceId,
+            string uri)
+        {
+            return collection.Workspaces
+                .FirstOrDefault(x => x.id == workspaceId)
+                ?.extent
+                .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == uri);
+        }
 
         /// <summary>
         /// Finds the extent with the given uri in one of the workspaces in the database

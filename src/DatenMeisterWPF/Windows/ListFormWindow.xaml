@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DatenMeisterWPF.Windows"
         mc:Ignorable="d"
-        Title="Daten Meister" Height="300" Width="300">
+        Title="Der Datenmeister" Height="700" Width="1100"
+        WindowStartupLocation="CenterOwner">
     <Grid>
         <ContentControl x:Name="MainViewSet"></ContentControl>
     </Grid>

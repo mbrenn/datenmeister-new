@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DatenMeisterWPF"
         mc:Ignorable="d"
-        Title="Der DatenMeister" Height="600" Width="800" Initialized="Window_Initialized" Unloaded="Window_Unloaded">
+        Title="Der DatenMeister" Height="700" Width="1100" Initialized="Window_Initialized" Unloaded="Window_Unloaded"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <ContentControl x:Name="MainControl"></ContentControl>
         

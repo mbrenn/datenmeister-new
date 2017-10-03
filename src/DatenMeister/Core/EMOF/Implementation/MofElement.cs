@@ -11,7 +11,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICanSetId
     {
-        /// <inheritdoc />
+        /// <inheritdoc cref="ICanSetId.Id" />
         public string Id
         {
             get => ProviderObject.Id;
@@ -50,7 +50,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return null;
             }
 
-            var result = CreatedByExtent?.Resolver.Resolve(uri);
+            var result = (CreatedByExtent as IUriResolver)?.Resolve(uri);
 
             if (result == null)
             {

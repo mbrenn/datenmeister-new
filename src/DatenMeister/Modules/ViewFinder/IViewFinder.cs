@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
@@ -16,7 +17,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="extent">Value for whom the extent shall be created</param>
         /// <param name="viewUrl">Name of the view</param>
         /// <returns>Found view or null</returns>
-        IObject FindView(IUriExtent extent, string viewUrl);
+        IElement FindView(IUriExtent extent, string viewUrl);
 
         /// <summary>
         /// Finds the view for a specific object in a detail view
@@ -24,7 +25,15 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="value">Value for whom the object shall be created</param>
         /// <param name="viewname">Name of the view</param>
         /// <returns>Found view or null</returns>
-        IObject FindView(IObject value, string viewname);
+        IElement FindView(IObject value, string viewname);
+
+        /// <summary>
+        /// Creates an object for a reflective sequence by parsing each object and returning the formview
+        /// showing the properties and extents
+        /// </summary>
+        /// <param name="sequence">Sequence to be used</param>
+        /// <returns>Created form object</returns>
+        IElement CreateView(IReflectiveSequence sequence);
 
         /// <summary>
         /// Finds all views, which might be used for the given extent and item. 

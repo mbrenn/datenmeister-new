@@ -11,11 +11,9 @@
 
         public string PathToXmiFiles { get; set; } // = "App_Data";
 
-        public bool EstablishDataEnvironment { get; set; }
-
         /// <summary>
-        /// Gets or sets the hooks being used for the integration
+        /// Gets or sets a value indicating whether the data environment including all the metamodels shall be established
         /// </summary>
-        public IIntegrationHooks Hooks { get; set; }
+        public bool EstablishDataEnvironment { get; set; }
     }
 }

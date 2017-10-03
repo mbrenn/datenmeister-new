@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -10,7 +11,7 @@ using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider.DotNet
 {
-    public static class Extensions
+    public static class DotNetProviderExtensions
     {
         /// <summary>
         /// Creates a dot net element out of the given type lookup and the value
@@ -25,8 +26,7 @@ namespace DatenMeister.Provider.DotNet
             object value,
             string id = null)
         {
-            var providerAsDotNet = extent.Provider as DotNetProvider;
-            if (providerAsDotNet == null)
+            if (!(extent.Provider is DotNetProvider providerAsDotNet))
             {
                 throw new InvalidOperationException("Given extent is not from DotNetProvider");
             }
@@ -37,7 +37,7 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <summary>
-        /// Creates a DotNetProvider object out of the internal information
+        /// Creates a DotNetProvider object out of the internal information. It just creates DotNetProviderObject which contains the given element
         /// </summary>
         /// <param name="typeLookup"></param>
         /// <param name="provider"></param>
@@ -141,8 +141,7 @@ namespace DatenMeister.Provider.DotNet
                 return element;
             }
 
-            var elementAsDotNetElement = element as DotNetProviderObject;
-            if (elementAsDotNetElement != null)
+            if (element is DotNetProviderObject elementAsDotNetElement)
             {
                 return elementAsDotNetElement.GetNativeValue();
             }
@@ -176,14 +175,10 @@ namespace DatenMeister.Provider.DotNet
 
             if (DotNetHelper.IsEnumeration(resultType))
             {
-                var listResult = new List<object>();
                 var asEnumeration = (IEnumerable<object>) result;
-                foreach (var item in asEnumeration)
-                {
-                    listResult.Add(dotNetTypeLookup.CreateDotNetElementIfNecessary(item, provider));
-                }
 
-                return listResult;
+                return asEnumeration.Select(
+                    item => dotNetTypeLookup.CreateDotNetElementIfNecessary(item, provider)).ToList();
             }
 
             if (DotNetHelper.IsOfMofObject(result))
@@ -200,19 +195,18 @@ namespace DatenMeister.Provider.DotNet
         /// <summary>
         /// Generates the mof element out of the given type and adds it to the .Net Type Lookup
         /// </summary>
-        /// <param name="typeLookup">Type Lookup to be used</param>
         /// <param name="uml">Uml instance being used to create all necessary instances</param>
         /// <param name="extent">Extent to which the generated element will be added</param>
         /// <param name="dotNetType">And finally the .Net type that is converted and adde</param>
         /// <returns></returns>
-        public static IElement GenerateAndAdd(this IDotNetTypeLookup typeLookup, _UML uml, IExtent extent, Type dotNetType)
+        public static IElement CreateTypeSpecification(this MofUriExtent extent, _UML uml, Type dotNetType)
         {
             var factory = new MofFactory(extent);
             var dotNetTypeCreator = new DotNetTypeGenerator(factory, uml);
             var element = dotNetTypeCreator.CreateTypeFor(dotNetType);
             extent.elements().add(element);
             
-            typeLookup.Add(element, dotNetType);
+            extent.TypeLookup.Add(element, dotNetType);
             return element;
         }
 

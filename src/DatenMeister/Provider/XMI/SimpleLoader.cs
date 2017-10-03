@@ -23,11 +23,12 @@ namespace DatenMeister.Provider.XMI
         /// Defines a list of actions that will be performed after the loading has finished
         /// </summary>
         private readonly List<Action> _afterLoadActions = new List<Action>();
-        
+
 
         /// <summary>
         /// Loads the xmi from the embedded resources
         /// </summary>
+        /// <param name="factory">Factory being used to elements</param>
         /// <param name="extent">Extent being loaded</param>
         /// <param name="resourceName">Path to the resources</param>
         public void LoadFromEmbeddedResource(IFactory factory, IUriExtent extent, string resourceName)
@@ -83,6 +84,16 @@ namespace DatenMeister.Provider.XMI
         }
 
         /// <summary>
+        /// Loads the Xml from a text
+        /// </summary>
+        /// <param name="factory">Factory to be used</param>
+        /// <param name="element">Element being used</param>
+        public IObject LoadFromText(IFactory factory, XElement element)
+        {
+            return LoadElement(factory, element);
+        }
+
+        /// <summary>
         ///     Loads the specific element with a very simple loading algorithm
         /// </summary>
         /// <param name="factory">Factory being used to create instances</param>
@@ -107,8 +118,7 @@ namespace DatenMeister.Provider.XMI
                 {
                     _idToElement[xmiId] = resultingElement;
 
-                    var resultSetId = resultingElement as ICanSetId;
-                    if (resultSetId != null)
+                    if (resultingElement is ICanSetId resultSetId)
                     {
                         resultSetId.Id = xmiId;
                     }

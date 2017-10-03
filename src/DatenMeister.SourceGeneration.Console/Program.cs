@@ -50,7 +50,7 @@ namespace DatenMeister.SourceGeneration.Console
             
             File.Copy("./FormAndFields.filler.cs", "../../../DatenMeister/Models/Forms/FormAndFields.filler.cs", true);
             File.Copy("./FormAndFields.class.cs", "../../../DatenMeister/Models/Forms/FormAndFields.class.cs", true);
-            File.Copy("./FormAndFields.dotnet.cs", "../../../DatenMeister/Integration/Modules/FormAndFields.dotnet.cs", true);
+            File.Copy("./FormAndFields.dotnet.cs", "../../../DatenMeister/Models/Forms/FormAndFields.dotnet.cs", true);
             
             File.Copy("./ExcelModels.filler.cs", "../../../DatenMeister.Excel/Models/ExcelModels.filler.cs", true);
             File.Copy("./ExcelModels.class.cs", "../../../DatenMeister.Excel/Models/ExcelModels.class.cs", true);

@@ -30,8 +30,8 @@ namespace DatenMeister.Runtime.Extents
         public CreateableTypeResult GetCreatableTypes(IUriExtent extent)
         {
             var dataLayer = _workspaceLogic.GetWorkspaceOfExtent(extent);
-            var typeLayer = dataLayer.MetaWorkspace;
-            var umlLayer= typeLayer.MetaWorkspace;
+            var typeLayer = dataLayer.MetaWorkspaces.FirstOrDefault();
+            var umlLayer= typeLayer.MetaWorkspaces.FirstOrDefault();
 
             var uml = umlLayer.Get<_UML>();
             var classType = uml?.StructuredClassifiers.__Class;

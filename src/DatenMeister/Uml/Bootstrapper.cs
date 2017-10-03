@@ -558,7 +558,7 @@ namespace DatenMeister.Uml
                     bootStrapper.StrapUml(
                         primitiveInfrastructure: primitiveExtent,
                         umlInfrastructure: umlExtent,
-                        mofDataLayer: dataLayer.MetaWorkspace);
+                        mofDataLayer: dataLayer.MetaWorkspaces.FirstOrDefault());
                 }
 
                 dataLayer.Create<FillTheUML, _UML>();
@@ -593,7 +593,7 @@ namespace DatenMeister.Uml
             if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-            return  PerformFullBootstrap(workspaceLogic, dataLayer, mode, filePaths);
+            return PerformFullBootstrap(workspaceLogic, dataLayer, mode, filePaths);
         }
 
         /// <summary>

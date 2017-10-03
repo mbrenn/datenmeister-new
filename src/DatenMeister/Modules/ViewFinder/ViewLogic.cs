@@ -6,13 +6,10 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
-using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.ViewFinder
 {
@@ -28,12 +25,10 @@ namespace DatenMeister.Modules.ViewFinder
         public const string UriViewExtent = "dm:///management/views";
 
         private readonly IWorkspaceLogic _workspaceLogic;
-        private readonly NamedElementMethods _namedElementMethods;
 
-        public ViewLogic(IWorkspaceLogic workspaceLogic, NamedElementMethods namedElementMethods)
+        public ViewLogic(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
-            _namedElementMethods = namedElementMethods;
         }
 
         /// <summary>
@@ -94,7 +89,7 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
 
-        private IUriExtent GetViewExtent()
+        public IUriExtent GetViewExtent()
         {
             var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
 
@@ -210,7 +205,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns></returns>
         private _FormAndFields GetFormAndFieldInstance(IExtent viewExtent)
         {
-            return _workspaceLogic.GetWorkspaceOfExtent(viewExtent).MetaWorkspace.Get<_FormAndFields>();
+            return _workspaceLogic.GetWorkspaceOfExtent(viewExtent).GetFromMetaWorkspace<_FormAndFields>();
         }
     }
 }

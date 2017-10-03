@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Integration\Modules\**" />
+    <EmbeddedResource Remove="Integration\Modules\**" />
+    <None Remove="Integration\Modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="XmiFiles\MOF.xmi" />
     <None Remove="XmiFiles\PrimitiveTypes.xmi" />
     <None Remove="XmiFiles\UML.xmi" />
@@ -17,10 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.6.0" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
+    <PackageReference Include="Autofac" Version="4.6.1" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.4.0" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
-
 </Project>

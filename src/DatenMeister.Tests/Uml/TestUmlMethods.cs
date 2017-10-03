@@ -4,7 +4,6 @@ using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
 using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
-using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using NUnit.Framework;
@@ -18,14 +17,13 @@ namespace DatenMeister.Tests.Uml
         public void TestGeneralizedProperties()
         {
             var kernel = new ContainerBuilder();
-            kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
-            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
+            var builder = kernel.UseDatenMeister(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
                 var dataLayerLogic = scope.Resolve<WorkspaceLogic>();
 
                 // Gets the logic
-                var uml = dataLayerLogic.GetUml().Get<_UML>();
+                var uml = dataLayerLogic.GetUmlWorkspace().Get<_UML>();
                 var feature = uml.Classification.__Feature;
                 var properties = ClassifierMethods.GetPropertyNamesOfClassifier(feature).ToList();
 
@@ -42,15 +40,14 @@ namespace DatenMeister.Tests.Uml
         public void TestFullName()
         {
             var kernel = new ContainerBuilder();
-            kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
-            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
+            var builder = kernel.UseDatenMeister(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
                 var workspaceCollection = scope.Resolve<IWorkspaceLogic>();
                 var dataLayerLogic = scope.Resolve<WorkspaceLogic>();
 
                 // Gets the logic
-                var uml = dataLayerLogic.GetUml().Get<_UML>();
+                var uml = dataLayerLogic.GetUmlWorkspace().Get<_UML>();
                 var feature = uml.Classification.__Feature;
                 var namedElementMethods = scope.Resolve<NamedElementMethods>();
                 var fullName = namedElementMethods.GetFullName(feature);

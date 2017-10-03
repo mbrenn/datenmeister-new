@@ -88,7 +88,8 @@
         title?: string;
         name?: string;
         defaultValue?: any;
-        isEnumeration?: boolean;
+        isEnumeration?: 
+        ;
         isReadOnly?: boolean;
     }
 

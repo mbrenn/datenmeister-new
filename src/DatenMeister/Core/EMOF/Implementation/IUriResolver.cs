@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
+﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Core.EMOF.Implementation
@@ -16,9 +17,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         IElement Resolve(string uri);
 
         /// <summary>
-        /// Adds an extent as a meta extent, so it will also be used to retrieve the element
+        /// Resolves a certain element by id
         /// </summary>
-        /// <param name="extent">Extent to be added</param>
-        void AddMetaExtent(IUriExtent extent);
+        /// <param name="id">Path to be queried</param>
+        /// <returns>The found element for the id</returns>
+        IElement ResolveById(string id);
     }
 }

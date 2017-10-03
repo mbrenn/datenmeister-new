@@ -8,7 +8,6 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
-using DatenMeister.Provider.DotNet;
 
 namespace DatenMeister.Runtime
 {
@@ -57,6 +56,21 @@ namespace DatenMeister.Runtime
         public static bool IsEnumeration(Type type)
         {
             return type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type);
+        }
+
+        /// <summary>
+        /// Evaluates the given object and returns it as an enumeration, if it is an enumeration
+        /// </summary>
+        /// <param name="value">Value to be converted to an enumeration</param>
+        /// <returns>Enumeration of the value or null, if not an evaluation</returns>
+        public static IEnumerable<object> AsEnumeration(object value)
+        {
+            if (IsOfEnumeration(value))
+            {
+                return value as IEnumerable<object>;
+            }
+
+            return null;
         }
         
         /// <summary>
@@ -192,18 +206,15 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Value to be converted</param>
         /// <param name="extent">The extent being used to create and resolve the element</param>
-        /// <param name="typeLookup">The type lookup </param>
         /// <returns>The converted element</returns>
         public static IElement ConvertToMofElement(
             object value,
-            IUriExtent extent,
-            IDotNetTypeLookup typeLookup = null)
+            IUriExtent extent)
         {
             return ConvertToMofElement(
                 value,
-                new ExtentResolver((MofExtent) extent),
-                new MofFactory(extent),
-                typeLookup);
+                (MofUriExtent) extent,
+                new MofFactory(extent));
         }
 
 
@@ -211,15 +222,13 @@ namespace DatenMeister.Runtime
         /// Converts the given element to a mof element
         /// </summary>
         /// <param name="value">Value to be converted</param>
-        /// <param name="resolver">The resolver being used to figure out the </param>
+        /// <param name="extent">The extent being used to figure out the </param>
         /// <param name="factory">Factory being used to create the mof element</param>
-        /// <param name="typeLookup">The type lookup being used define the type</param>
         /// <returns>The converted element</returns>
         public static IElement ConvertToMofElement(
             object value,
-            IUriResolver resolver,
-            IFactory factory,
-            IDotNetTypeLookup typeLookup = null)
+            MofUriExtent extent,
+            IFactory factory)
         {
             if (value == null)
             {
@@ -229,11 +238,11 @@ namespace DatenMeister.Runtime
             // Creates the mof element for type
             IElement valueType = null;
 
-            var typeUri = typeLookup?.ToElement(value.GetType());
+            var typeUri = extent.GetMetaClassUri(value.GetType());
 
             if (!string.IsNullOrEmpty(typeUri))
             {
-                valueType = resolver.Resolve(typeUri);
+                valueType = extent.Resolve(typeUri);
             }
 
             var instanceValue = factory.create(valueType);
@@ -245,7 +254,7 @@ namespace DatenMeister.Runtime
                 var propertyValue = property.GetValue(value);
 
                 instanceValue.set(property.Name,
-                    ConvertPropertyValue(propertyValue, resolver, factory, typeLookup));
+                    ConvertPropertyValue(propertyValue, extent, factory));
             }
 
             return instanceValue;
@@ -255,11 +264,10 @@ namespace DatenMeister.Runtime
         /// Converts the given value to a property that can be directly added the mof element
         /// </summary>
         /// <param name="value">Value to be used</param>
-        /// <param name="resolver">Uriresolver being used to find references and/or meta classes</param>
+        /// <param name="extent">Extent being used to find references and/or meta classes</param>
         /// <param name="factory">Factory being used to create a new instance</param>
-        /// <param name="typeLookup">Dotnet Typelookup to convert the dotnet type to the correct meta class</param>
         /// <returns>The converted object that can directly be set. </returns>
-        private static object ConvertPropertyValue(object value, IUriResolver resolver, IFactory factory, IDotNetTypeLookup typeLookup)
+        private static object ConvertPropertyValue(object value, MofUriExtent extent, IFactory factory)
         {
             if (IsOfPrimitiveType(value))
             {
@@ -278,14 +286,14 @@ namespace DatenMeister.Runtime
                     }
                     else
                     {
-                        list.Add(ConvertToMofElement(listItem, resolver, factory, typeLookup));
+                        list.Add(ConvertToMofElement(listItem, extent, factory));
                     }
                 }
 
                 return list;
             }
 
-            return ConvertToMofElement(value, resolver, factory, typeLookup);
+            return ConvertToMofElement(value, extent, factory);
         }
     }
 }

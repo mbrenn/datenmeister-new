@@ -8,17 +8,11 @@ namespace DatenMeister.Runtime.Proxies
         /// <summary>
         ///     Stores the sequence
         /// </summary>
-        protected IReflectiveSequence Sequence
-        {
-            get
-            {
-                return Collection as IReflectiveSequence;
-            }
-        }
+        protected IReflectiveSequence Sequence => Collection as IReflectiveSequence;
 
-        public ProxyReflectiveSequence(IReflectiveSequence sequence) : base ( sequence)
+        public ProxyReflectiveSequence(IReflectiveSequence sequence) : base(sequence)
         {
-            
+
         }
 
         public virtual void add(int index, object value)
@@ -28,7 +22,7 @@ namespace DatenMeister.Runtime.Proxies
 
         public virtual object get(int index)
         {
-            return PublicizeElementFunc( Sequence.get(index));
+            return PublicizeElementFunc(Sequence.get(index));
         }
 
         public virtual void remove(int index)
@@ -38,7 +32,7 @@ namespace DatenMeister.Runtime.Proxies
 
         public virtual object set(int index, object value)
         {
-            return PublicizeElementFunc (Sequence.set(index, PrivatizeElementFunc(value)));
+            return PublicizeElementFunc(Sequence.set(index, PrivatizeElementFunc(value)));
         }
 
         IEnumerator IEnumerable.GetEnumerator()

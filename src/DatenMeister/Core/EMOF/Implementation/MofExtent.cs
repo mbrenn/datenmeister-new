@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -8,6 +9,7 @@ using DatenMeister.Provider;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -15,7 +17,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     {
         /// <summary>
         /// This type lookup can be used to convert the instances of the .Net types to real MOF meta classes. 
-        /// It is only used, if the data 
+        /// It is only used, if the data is directly set as a .Net object
         /// </summary>
         public IDotNetTypeLookup TypeLookup { get; }
 
@@ -25,27 +27,29 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IProvider Provider { get; set; }
 
         /// <summary>
-        /// Gets or sets the resolver being used to resolve the uri
+        /// Gets or sets the workspace to which the extent is allocated
         /// </summary>
-        public IUriResolver Resolver { get; set; }
+        public Workspace Workspace { get; set; }
+
+        /// <summary>
+        /// Stores a list of other extents that shall also be considered as meta extents
+        /// </summary>
+        private readonly List<IUriExtent> _metaExtents = new List<IUriExtent>();
 
         /// <summary>
         /// Initializes a new instance of the Extent 
         /// </summary>
         /// <param name="provider">Provider being used for the extent</param>
-        /// <param name="typeLookup">Type lookup being used</param>
-        public MofExtent(IProvider provider, IDotNetTypeLookup typeLookup = null)
+        public MofExtent(IProvider provider)
         {
             Provider = provider;
-            Resolver = new ExtentResolver(this);
-            TypeLookup = typeLookup;
+            TypeLookup = new DotNetTypeLookup(this);
         }
 
         /// <inheritdoc />
         public bool @equals(object other)
         {
-            var otherAsExtent = other as MofExtent;
-            if (otherAsExtent != null)
+            if (other is MofExtent otherAsExtent)
             {
                 return Equals(otherAsExtent);
             }
@@ -87,6 +91,82 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IReflectiveSequence elements()
         {
             return new ExtentReflectiveSequence(this);
+        }
+
+        /// <summary>
+        /// Adds an extent as a meta extent, so it will also be used to retrieve the element
+        /// </summary>
+        /// <param name="extent">Extent to be added</param>
+        public void AddMetaExtent(IUriExtent extent)
+        {
+            lock (_metaExtents)
+            {
+                if (_metaExtents.Any(x => x.contextURI() == extent.contextURI()))
+                {
+                    // Already in 
+                    return;
+                }
+
+                _metaExtents.Add(extent);
+            }
+        }
+
+        /// <summary>
+        /// Gets the meta extents
+        /// </summary>
+        public IEnumerable<IUriExtent> MetaExtents
+        {
+            get
+            {
+                lock (_metaExtents)
+                {
+                    return _metaExtents.ToList();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the uri of the metaclass by looking through current extent, meta extent and meta workspaces
+        /// </summary>
+        /// <param name="type">Type to be converted</param>
+        /// <returns>Retrieved meta class uri</returns>
+        public string GetMetaClassUri(Type type)
+        {
+            var result = TypeLookup.ToElement(type);
+            if (!string.IsNullOrEmpty(result))
+            {
+                return result;
+            }
+
+            // Now look into the explicit extents
+            foreach (var metaExtent in MetaExtents.OfType<MofExtent>())
+            {
+                var element = metaExtent.TypeLookup.ToElement(type);
+                if (!string.IsNullOrEmpty(element))
+                {
+                    return element;
+                }
+            }
+
+            // If still not found, look into the meta workspaces. Nevertheless, no recursion
+            var metaWorkspaces = Workspace?.MetaWorkspaces;
+            if (metaWorkspaces != null)
+            {
+                foreach (var metaWorkspace in metaWorkspaces)
+                {
+                    foreach (var metaExtent in metaWorkspace.extent.OfType<MofExtent>())
+                    {
+                        var element = metaExtent.TypeLookup.ToElement(type);
+                        if (!string.IsNullOrEmpty(element))
+                        {
+                            return element;
+                        }
+                    }
+                }
+            }
+
+            return null;
+
         }
 
         /// <summary>
@@ -133,8 +213,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     }
 
                     var result = (MofElement) ObjectCopier.Copy(new MofFactory(extent), asMofObject);
-                    var containerAsElement = container as IElement;
-                    if (containerAsElement != null)
+                    if (container is IElement containerAsElement)
                     {
                         result.Container = containerAsElement;
                     }
@@ -161,14 +240,13 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             // Then, we have a simple dotnet type, that we try to convert. Let's hope, that it works
-            if (extent == null)
+            if (!(extent is IUriExtent asUriExtent))
             {
-
                 throw new InvalidOperationException(
                     "This element was not created by a factory. So a setting by .Net Object is not possible");
             }
 
-            return ConvertForSetting(DotNetSetter.Convert(extent, value), extent, container);
+            return ConvertForSetting(DotNetSetter.Convert(asUriExtent, value), extent, container);
         }
 
         /// <summary>

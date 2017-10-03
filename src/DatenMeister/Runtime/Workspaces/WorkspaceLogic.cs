@@ -69,16 +69,17 @@ namespace DatenMeister.Runtime.Workspaces
                 result = GetWorkspaceOfExtent(found);
             }
 
-            // Otherwise check it by the dataextent
-            if (result != null)
+            lock (_fileData)
             {
-                lock (_fileData)
+                // Otherwise check it by the dataextent
+                if (result != null)
                 {
-                    result =_fileData.Workspaces.FirstOrDefault(x => x.extent.Cast<IUriExtent>().WithElement(value) != null);
+                    result = _fileData.Workspaces.FirstOrDefault(x =>
+                        x.extent.Cast<IUriExtent>().WithElement(value) != null);
                 }
-            }
 
-            return result ?? _fileData.Default;
+                return result ?? _fileData.Default;
+            }
         }
 
         public IEnumerable<IUriExtent> GetExtentsForWorkspace(Workspace dataLayer)
@@ -110,7 +111,10 @@ namespace DatenMeister.Runtime.Workspaces
 
         public Workspace GetDefaultWorkspace()
         {
-            return _fileData.Default;
+            lock (_fileData)
+            {
+                return _fileData.Default;
+            }
         }
 
         /// <summary>
@@ -133,9 +137,12 @@ namespace DatenMeister.Runtime.Workspaces
                 _fileData.Workspaces.Add(workspace);
 
                 // If no metaworkspace is given, define the one from the default one
-                if (workspace.MetaWorkspace == null)
+                if (workspace.MetaWorkspaces.Count == 0 && _fileData.Default?.MetaWorkspaces != null)
                 {
-                    workspace.MetaWorkspace = _fileData.Default?.MetaWorkspace;
+                    foreach (var innerWorkspace in _fileData.Default?.MetaWorkspaces)
+                    {
+                        workspace.AddMetaWorkspace(innerWorkspace);
+                    }
                 }
             }
         }
@@ -151,7 +158,16 @@ namespace DatenMeister.Runtime.Workspaces
         /// <summary>
         /// Gets an enumeration of all workspaces
         /// </summary>
-        public IEnumerable<Workspace> Workspaces => _fileData.Workspaces.ToList();
+        public IEnumerable<Workspace> Workspaces
+        {
+            get
+            {
+                lock (_fileData)
+                {
+                    return _fileData.Workspaces.ToList();
+                }
+            }
+        }
 
         /// <summary>
         /// Removes the workspace from the collection
@@ -177,17 +193,22 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="newExtent">The extent to be added</param>
         public void AddExtent(Workspace workspace, IUriExtent newExtent)
         {
+            var asMofExtent = (MofExtent) newExtent;
             if (newExtent == null) throw new ArgumentNullException(nameof(newExtent));
+            if (asMofExtent.Workspace != null)
+            {
+                throw new InvalidOperationException("The extent is already assigned to a workspace");
+            }
 
             lock (workspace.SyncObject)
             {
                 if (workspace.extent.Any(x => (x as IUriExtent)?.contextURI() == newExtent.contextURI()))
                 {
-                    throw new InvalidOperationException($"Extent with uri {newExtent.contextURI()} is already added");
+                    throw new InvalidOperationException($"Extent with uri {newExtent.contextURI()} is already added to the given workspace");
                 }
 
                 workspace.extent.Add(newExtent);
-                ((MofExtent) newExtent).Resolver = new WorkspaceUriResolver(this);
+                asMofExtent.Workspace = workspace;
             }
         }
 
@@ -212,12 +233,13 @@ namespace DatenMeister.Runtime.Workspaces
             logic.AddWorkspace(workspaceMof);
             logic.AddWorkspace(workspaceMgmt);
 
-            workspaceData.MetaWorkspace = workspaceTypes;
-            workspaceMgmt.MetaWorkspace = workspaceTypes;
-            workspaceTypes.MetaWorkspace = workspaceUml;
-            workspaceUml.MetaWorkspace = workspaceMof;
-            workspaceMof.MetaWorkspace = workspaceMof;
+            workspaceData.AddMetaWorkspace(workspaceTypes);
+            workspaceMgmt.AddMetaWorkspace(workspaceTypes);
+            workspaceTypes.AddMetaWorkspace(workspaceUml);
+            workspaceUml.AddMetaWorkspace(workspaceMof);
+            workspaceMof.AddMetaWorkspace(workspaceMof);
             logic.SetDefaultWorkspace(workspaceData);
+
             return workspace;
         }
 

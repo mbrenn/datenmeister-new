@@ -24,15 +24,5 @@ namespace DatenMeister.Integration
             scope.Resolve<WorkspaceLoader>().Store();
             scope.Resolve<ExtentConfigurationLoader>().StoreAllExtents();
         }
-
-        /// <summary>
-        /// Returns the extent that is used to store all types
-        /// </summary>
-        /// <param name="collection">Workspace collection to be queried</param>
-        /// <returns>The found uri extent or null</returns>
-        public static IUriExtent FindTypeExtent(this IWorkspaceLogic collection)
-        {
-            return collection.FindExtent(WorkspaceNames.UriInternalTypes) as IUriExtent;
-        }
     }
 }

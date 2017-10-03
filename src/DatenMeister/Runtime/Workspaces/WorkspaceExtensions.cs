@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Workspaces
 {
-    public static class Extension
+    public static class WorkspaceExtensions
     {
         public static IObject FindElementByUri(this Workspace workspace, string uri)
         {
@@ -47,8 +49,7 @@ namespace DatenMeister.Runtime.Workspaces
             Workspace dataLayer)
             where TFilledType : class, new()
         {
-            var metaLayer = dataLayer.MetaWorkspace;
-            return metaLayer?.Get<TFilledType>();
+            return dataLayer.GetFromMetaWorkspace<TFilledType>();
         }
 
         /// <summary>
@@ -64,12 +65,8 @@ namespace DatenMeister.Runtime.Workspaces
             where TFilledType : class, new()
         {
             var dataLayer = logic.GetWorkspaceOfExtent(extent);
-            if (dataLayer == null)
-            {
-                return null;
-            }
+            return dataLayer.GetFromMetaWorkspace<TFilledType>();
 
-            return GetFromMetaLayer<TFilledType>(logic, dataLayer);
         }
 
         /// <summary>
@@ -79,7 +76,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspace">The workspace being queried</param>
         /// <param name="uri">The uri of the extent that is looked for</param>
         /// <returns>The found extent or null, if not found</returns>
-        public static IUriExtent FindExtent(this Workspace workspace, string uri)
+        public static IUriExtent FindExtent(this IWorkspace workspace, string uri)
         {
             return (IUriExtent) workspace.extent.FirstOrDefault(x => (x as IUriExtent)?.contextURI() == uri);
         }
@@ -96,11 +93,10 @@ namespace DatenMeister.Runtime.Workspaces
         public static bool AddExtentNoDuplicate(this Workspace workspace, IWorkspaceLogic workspaceLogic, IUriExtent extent) 
         {
             var contextUri = extent.contextURI();
-            var found = workspace.extent.FirstOrDefault(x =>
-            {
-                var uriExtent = x as IUriExtent;
-                return uriExtent != null && uriExtent.contextURI() == contextUri;
-            });
+
+            var found = workspace.extent.FirstOrDefault(
+                x => x is IUriExtent uriExtent 
+                && uriExtent.contextURI() == contextUri);
 
             if (found == null)
             {
@@ -123,11 +119,9 @@ namespace DatenMeister.Runtime.Workspaces
         {
             lock (workspace.SyncObject)
             {
-                var found = workspace.extent.FirstOrDefault(x =>
-                {
-                    var uriExtent = x as IUriExtent;
-                    return uriExtent != null && uriExtent.contextURI() == uri;
-                });
+                var found = workspace.extent.FirstOrDefault(
+                    x => x is IUriExtent uriExtent 
+                    && uriExtent.contextURI() == uri);
 
                 if (found != null)
                 {
@@ -247,25 +241,47 @@ namespace DatenMeister.Runtime.Workspaces
         {
             return logic.GetWorkspace(WorkspaceNames.NameManagement);
         }
-        public static Workspace GetData(
+        public static Workspace GetDataWorkspace(
             this IWorkspaceLogic logic)
         {
             return logic.GetWorkspace(WorkspaceNames.NameData);
         }
 
-        public static Workspace GetTypes(
+        public static Workspace GetTypesWorkspace(
             this IWorkspaceLogic logic)
         {
             return logic.GetWorkspace(WorkspaceNames.NameTypes);
         }
 
-        public static Workspace GetUml(
+        /// <summary>
+        /// Gets the data 
+        /// </summary>
+        /// <param name="scope">Scope of dependency container</param>
+        /// <returns>The Uml instance being used</returns>
+        public static _UML GetUmlData(this ILifetimeScope scope)
+        {
+            var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
+            return GetUmlData(workspaceLogic);
+        }
+
+        /// <summary>
+        /// Gets the uml data from the workspace
+        /// </summary>
+        /// <param name="workspaceLogic">Workspace logic being used</param>
+        /// <returns>The UML Data</returns>
+        public static _UML GetUmlData(this IWorkspaceLogic workspaceLogic)
+        {
+            var uml = workspaceLogic.GetUmlWorkspace();
+            return uml.Get<_UML>();
+        }
+
+        public static Workspace GetUmlWorkspace(
             this IWorkspaceLogic logic)
         {
             return logic.GetWorkspace(WorkspaceNames.NameUml);
         }
 
-        public static Workspace GetMof(
+        public static Workspace GetMofWorkspace(
             this IWorkspaceLogic logic)
         {
             return logic.GetWorkspace(WorkspaceNames.NameMof);

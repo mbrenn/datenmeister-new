@@ -9,7 +9,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Integration.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Provider.XMI.ExtentStorage;
@@ -59,7 +58,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
 
             // Get the xml properties
             var providerObject = ((MofObject) xmlElement).ProviderObject;
-            var xmlNode = ((XmiProvider) providerObject).RootNode;
+            var xmlNode = ((XmiProviderObject) providerObject).XmlNode;
             Assert.That(xmlNode.Attribute("X")?.Value, Is.EqualTo("y"));
             Assert.That(xmlNode.Elements("Person").Count(), Is.EqualTo(1));
             Assert.That(xmlNode.Element("Person")?.Attribute("Name")?.Value, Is.EqualTo("Brenn"));
@@ -235,7 +234,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         {
             var kernel = new ContainerBuilder();
 
-            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
+            var builder = kernel.UseDatenMeister(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
                 var path = Path.Combine(
@@ -254,11 +253,11 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 };
 
                 // Creates the extent
-                var loader = scope.Resolve<IExtentStorageLoader>();
+                var loader = scope.Resolve<IExtentManager>();
                 var loadedExtent = loader.LoadExtent(storageConfiguration, true);
 
                 // Includes some data
-                var factory = new MofFactory(loadedExtent);
+                var factory = MofFactory.CreateByExtent(loadedExtent);
                 var createdElement = factory.create(null);
                 loadedExtent.elements().add(createdElement);
 
@@ -284,17 +283,17 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestWithMetaClass()
         {
             var kernel = new ContainerBuilder();
-            var builder = kernel.UseDatenMeisterDotNet(new IntegrationSettings());
+            var builder = kernel.UseDatenMeister(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
                 var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
-                var umlDataLayer = dataLayerLogic.GetUml();
+                var umlDataLayer = dataLayerLogic.GetUmlWorkspace();
                 var uml = umlDataLayer.Get<_UML>();
                 Assert.That(uml, Is.Not.Null);
 
                 var xmlProvider = new XmiProvider();
                 var extent = new MofUriExtent(xmlProvider, "dm:///test/");
-                dataLayerLogic.AddExtent(dataLayerLogic.GetTypes(), extent);
+                dataLayerLogic.AddExtent(dataLayerLogic.GetTypesWorkspace(), extent);
 
                 var factory = new MofFactory(extent);
                 var interfaceClass = uml.SimpleClassifiers.__Interface;

@@ -15,6 +15,8 @@ namespace DatenMeister.SourcecodeGenerator
         {
             uml = uml ?? new _UML(); // Verifies that a uml is existing
 
+            ////////////////////////////////////////
+            // First of all, create all Mof types, representing the objects under concern
             var extent = new MofUriExtent(new InMemoryProvider(), options.ExtentUrl);
             var factory = new MofFactory(extent);
 

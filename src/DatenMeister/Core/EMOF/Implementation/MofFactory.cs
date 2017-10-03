@@ -48,8 +48,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="provider">Provider object to be set</param>
         public MofFactory(IProvider provider)
         {
-            if (provider == null) throw new ArgumentNullException(nameof(provider));
-            _provider = provider;
+            _provider = provider ?? throw new ArgumentNullException(nameof(provider));
         }
 
         /// <summary>
@@ -58,7 +57,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">Value to be set</param>
         public MofFactory(IObject value)
         {
-            var asMofObject = ((MofObject) value);
+            var asMofObject = (MofObject) value;
             var extent = asMofObject.Extent;
             if (extent != null)
             {
@@ -104,7 +103,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                 if (extentAsMofUriExtent != null)
                 {
-                    _extent.Resolver.AddMetaExtent(extentAsMofUriExtent);
+                    _extent?.AddMetaExtent(extentAsMofUriExtent);
                 }
                 
                 uriMetaClass = ((MofUriExtent) elementAsMetaClass?.Extent)?.uri(metaClass);
@@ -141,6 +140,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         public string convertToString(IElement dataType, IObject value)
         {
             throw new NotImplementedException();
+        }
+
+
+        public static MofFactory CreateByExtent(IUriExtent loadedExtent)
+        {
+            return new MofFactory(loadedExtent);
         }
     }
 }

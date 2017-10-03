@@ -7,6 +7,7 @@ using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.UserManagement;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
@@ -69,12 +70,9 @@ namespace DatenMeister.Integration
             // Adds the name resolution  
             kernel.RegisterType<UmlNameResolution>().As<IUmlNameResolution>();
 
-            // Adds the complete .Net-Type handling
-            var dotNetTypeLookup = new DotNetTypeLookup();
-            kernel.RegisterInstance(dotNetTypeLookup).As<IDotNetTypeLookup>();
-
+            
             // Loading and storing the workspaces
-            var workspaceLoadingConfiguration = new WorkspaceLoaderConfig()
+            var workspaceLoadingConfiguration = new WorkspaceLoaderConfig
             {
                 Filepath = PathWorkspaces
             };
@@ -84,14 +82,14 @@ namespace DatenMeister.Integration
 
             kernel.RegisterType<ExtentConfigurationLoader>().As<ExtentConfigurationLoader>();
 
+            // Adds the view finder
+            kernel.RegisterType<ViewFinderImpl>().As<IViewFinder>();
+
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
                 Provider.CSV.Integrate.Into(scope);
                 Provider.XMI.Integrate.Into(scope);
-
-                // Is used by .Net Provider to include the mappings for extent storages and factory types
-                _settings?.Hooks?.OnStartScope(scope);
 
                 // Load the default extents
                 // Performs the bootstrap
@@ -131,7 +129,9 @@ namespace DatenMeister.Integration
                 Debug.WriteLine($" Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
-                var extentTypes = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriInternalTypes);
+                var extentTypes = new MofUriExtent(
+                    new InMemoryProvider(), 
+                    WorkspaceNames.UriInternalTypes);
                 var mofFactory = new MofFactory(extentTypes);
                 var typeWorkspace = workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
                 workspaceLogic.AddExtent(typeWorkspace, extentTypes);
@@ -144,15 +144,21 @@ namespace DatenMeister.Integration
                     mofFactory,
                     extentTypes.elements(),
                     fields,
-                    dotNetTypeLookup);
+                    extentTypes);
 
-                var viewLogic = scope.Resolve<ViewLogic>();
-                viewLogic.Integrate();
+                // Adds the views and their view logic
+                scope.Resolve<ViewLogic>().Integrate();
+
+                
+                // Includes the extent for the helping extents
+                Provider.HelpingExtents.ManagementProviderHelper.Initialize(workspaceLogic);
+
 
                 // Boots up the typical DatenMeister Environment  
                 if (_settings.EstablishDataEnvironment)
                 {
                     LoadsWorkspacesAndExtents(scope);
+                    scope.Resolve<UserLogic>().Initialize();
                 }
 
                 CreatesUserTypeExtent(scope);
@@ -172,9 +178,6 @@ namespace DatenMeister.Integration
         {
             var workspaceLoader = scope.Resolve<WorkspaceLoader>();
             workspaceLoader.Load();
-
-            // Now start the plugins  
-            _settings?.Hooks?.BeforeLoadExtents(scope);
 
             // Loads all extents after all plugins were started  
             scope.Resolve<ExtentConfigurationLoader>().LoadAllExtents();

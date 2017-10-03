@@ -1,0 +1,16 @@
+﻿<Window x:Class="DatenMeisterWPF.Windows.ItemXmlViewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DatenMeisterWPF.Windows"
+        mc:Ignorable="d"
+        Title="Xml of item window" Height="600" Width="1000">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="UpdateButton" Click="UpdateButton_OnClick" IsCancel="True">Update</Button>
+            <Button x:Name="CloseButton" Click="CloseButton_Click" IsCancel="True">Close</Button>
+        </StackPanel>
+        <TextBox x:Name="XmlTextField" Margin="10" AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
+    </DockPanel>
+</Window>

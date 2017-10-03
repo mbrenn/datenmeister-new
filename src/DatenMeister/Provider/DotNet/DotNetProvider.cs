@@ -27,21 +27,6 @@ namespace DatenMeister.Provider.DotNet
         public DotNetProvider(IDotNetTypeLookup typeLookup)
         {
             _typeLookup = typeLookup;
-
-            /*
-            if (typeLookup == null) throw new ArgumentNullException(nameof(typeLookup));
-            if (string.IsNullOrEmpty(contextUri))
-                throw new ArgumentException("Value cannot be null or empty.", nameof(contextUri));
-
-            _contextUri = contextUri;
-            // _navigator = new ExtentUrlNavigator<DotNetElement>(this);
-
-            // Creates the Reflective seqeunce
-            var reflectiveSequence =
-                typeLookup.CreateDotNetReflectiveSequence(new List<object>(), this);
-            _elements = new ReflectiveSequenceForExtent(
-                this, 
-                reflectiveSequence);*/
         }
 
         /// <inheritdoc />
@@ -77,8 +62,10 @@ namespace DatenMeister.Provider.DotNet
         {
             lock (_syncObject)
             {
-                var providerObject = valueAsObject as DotNetProviderObject;
-                if (providerObject == null) throw new ArgumentNullException(nameof(providerObject));
+                if (!(valueAsObject is DotNetProviderObject providerObject))
+                {
+                    throw new ArgumentNullException(nameof(providerObject));
+                }
 
                 if (index == -1)
                 {

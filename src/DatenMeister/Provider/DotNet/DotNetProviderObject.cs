@@ -110,7 +110,7 @@ namespace DatenMeister.Provider.DotNet
                 throw new InvalidOperationException($"Property not known '{property}'.");
             }
 
-            member.SetValue(_value, Extensions.ConvertToNative(value));
+            member.SetValue(_value, DotNetProviderExtensions.ConvertToNative(value));
         }
 
         public IList GetPropertyAsList(string property)
@@ -128,7 +128,7 @@ namespace DatenMeister.Provider.DotNet
                 list = GetPropertyAsList(property);
             }
 
-            return list.Add(Extensions.ConvertToNative(value)) != -1;
+            return list.Add(DotNetProviderExtensions.ConvertToNative(value)) != -1;
         }
 
         /// <inheritdoc />
@@ -141,7 +141,7 @@ namespace DatenMeister.Provider.DotNet
                 list = GetPropertyAsList(property);
             }
 
-            value = Extensions.ConvertToNative(value);
+            value = DotNetProviderExtensions.ConvertToNative(value);
 
             var result = list.Contains(value);
             list.Remove(value);

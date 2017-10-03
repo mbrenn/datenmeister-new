@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -10,7 +11,7 @@ using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider.DotNet
 {
-    public static class Extensions
+    public static class DotNetProviderExtensions
     {
         /// <summary>
         /// Creates a dot net element out of the given type lookup and the value
@@ -36,7 +37,7 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <summary>
-        /// Creates a DotNetProvider object out of the internal information
+        /// Creates a DotNetProvider object out of the internal information. It just creates DotNetProviderObject which contains the given element
         /// </summary>
         /// <param name="typeLookup"></param>
         /// <param name="provider"></param>
@@ -174,14 +175,10 @@ namespace DatenMeister.Provider.DotNet
 
             if (DotNetHelper.IsEnumeration(resultType))
             {
-                var listResult = new List<object>();
                 var asEnumeration = (IEnumerable<object>) result;
-                foreach (var item in asEnumeration)
-                {
-                    listResult.Add(dotNetTypeLookup.CreateDotNetElementIfNecessary(item, provider));
-                }
 
-                return listResult;
+                return asEnumeration.Select(
+                    item => dotNetTypeLookup.CreateDotNetElementIfNecessary(item, provider)).ToList();
             }
 
             if (DotNetHelper.IsOfMofObject(result))

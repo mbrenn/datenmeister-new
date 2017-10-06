@@ -5,19 +5,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Uml.Helper
 {
-    public class UmlNameResolution : IUmlNameResolution
+    public class UmlNameResolution
     {
-
-        /// <summary>
-        /// Gets the name of the given object
-        /// </summary>
-        /// <param name="element">Element whose name is requested</param>
-        /// <returns>The found name or null, if not found</returns>
-        string IUmlNameResolution.GetName(IObject element)
-        {
-            return GetName(element);
-        }
-
         /// <summary>
         /// Gets the name of the given object
         /// </summary>
@@ -55,15 +44,17 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public string GetName(object element)
+        public static string GetName(object element)
         {
             if (element == null)
             {
                 throw new ArgumentNullException(nameof(element));
             }
 
-            var asObject = element as IObject;
-            return asObject == null ? element.ToString() : GetName(asObject);
+            return 
+                !(element is IObject asObject) ?
+                    element.ToString() 
+                    : GetName(asObject);
         }
     }
 }

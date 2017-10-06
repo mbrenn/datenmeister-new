@@ -13,31 +13,24 @@ namespace DatenMeister.Uml.Helper
     /// <summary>
     /// Defines some helper methods for NamedElements
     /// </summary>
-    public class NamedElementMethods
+    public static class NamedElementMethods
     {
-        private readonly IUmlNameResolution _umlNameResolution;
-
-        public NamedElementMethods(IUmlNameResolution umlNameResolution)
-        {
-            _umlNameResolution = umlNameResolution;
-        }
-
         /// <summary>
         /// Gets the full path to the given element. It traverses through the container values of the
         /// objects and retrieves the partial names by 'name'.
         /// </summary>
         /// <param name="value">Value to be queried</param>
         /// <returns>Full name of the element</returns>
-        public string GetFullName(IElement value)
+        public static string GetFullName(IElement value)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             var current = value.container();
-            var result = _umlNameResolution.GetName(value);
+            var result = UmlNameResolution.GetName(value);
             var depth = 0;
 
             while (current != null)
             {
-                var currentName = _umlNameResolution.GetName(current);
+                var currentName = UmlNameResolution.GetName(current);
                 result = $"{currentName}::{result}";
                 current = current.container();
                 depth++;
@@ -58,7 +51,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="workspace">Workspace to be queried</param>
         /// <param name="fullName">Name of the element</param>
         /// <returns>Found element or null</returns>
-        public IElement GetByFullName(IWorkspace workspace, string fullName)
+        public static IElement GetByFullName(IWorkspace workspace, string fullName)
         {
             return workspace.extent
                 .Select(extent => GetByFullName(extent.elements(), fullName))
@@ -71,7 +64,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="extent">Extent to be queried</param>
         /// <param name="fullName">Name of the element</param>
         /// <returns>Found element or null</returns>
-        public IElement GetByFullName(IUriExtent extent, string fullName)
+        public static IElement GetByFullName(IUriExtent extent, string fullName)
         {
             return GetByFullName(extent.elements(), fullName);
         }
@@ -82,9 +75,10 @@ namespace DatenMeister.Uml.Helper
         /// <param name="collection">Collection to be queried, could also be an extent reflective collection</param>
         /// <param name="fullName">Fullname to be traversed, each element shall be separated by an ':'</param>
         /// <returns>The found element or null, if not found</returns>
-        public IElement GetByFullName(IReflectiveCollection collection, string fullName)
+        public static IElement GetByFullName(IReflectiveCollection collection, string fullName)
         {
-            var elementNames = fullName.Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries)
+            var elementNames = fullName
+                .Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim()).ToList();
 
             var current = (IEnumerable<object>) collection;
@@ -92,11 +86,12 @@ namespace DatenMeister.Uml.Helper
 
             foreach (var elementName in elementNames)
             {
+                found = null;
                 foreach (var currentValue in current
                     .Select(x => x as IElement)
                     .Where(x => x != null))
                 {
-                    var name = _umlNameResolution.GetName(currentValue);
+                    var name = UmlNameResolution.GetName(currentValue);
                     if (name == elementName)
                     {
                         // We found the element, now abort the search and look in its properties
@@ -122,7 +117,7 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="value">The value being queried</param>
         /// <returns>An enumeration</returns>
-        private IEnumerable<IElement> GetAllPropertyValues(IElement value)
+        private static IEnumerable<IElement> GetAllPropertyValues(IElement value)
         {
             if (!(value is IObjectAllProperties asProperties))
             {

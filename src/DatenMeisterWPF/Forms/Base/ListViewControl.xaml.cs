@@ -44,7 +44,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private readonly List<RowItemButtonDefinition> _rowItemButtonDefinitions = new List<RowItemButtonDefinition>();
 
-        public bool SupportNewItems
+        private bool SupportNewItems
         {
             get => DataGrid.CanUserAddRows;
             set => DataGrid.CanUserAddRows = value;
@@ -61,10 +61,12 @@ namespace DatenMeisterWPF.Forms.Base
             UpdateContent();
         }
 
+        /// <summary>
+        /// Updates the content
+        /// </summary>
         public void UpdateContent()
         {
-            var umlNameResolve = Scope.Resolve<IUmlNameResolution>();
-
+            //SupportNewItems = !DotNetHelper. FormDefinition.get("inhibitNewItems")
             var listItems = new List<ExpandoObject>();
             _itemMapping.Clear();
 
@@ -80,7 +82,7 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 var name = field.get(_FormAndFields._FieldData.name).ToString();
                 var title = field.get(_FormAndFields._FieldData.title);
-                var isEnumeration = ObjectHelper.IsTrue(field.get(_FormAndFields._FieldData.isEnumeration));
+                var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
                 var dataColumn = new DataGridTextColumn
                 {
                     Header = title,
@@ -102,7 +104,7 @@ namespace DatenMeisterWPF.Forms.Base
                     foreach (var field in fields.Cast<IElement>())
                     {
                         var name = field.get(_FormAndFields._FieldData.name).ToString();
-                        var isEnumeration = ObjectHelper.IsTrue(field.get(_FormAndFields._FieldData.isEnumeration));
+                        var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
                         var value = item.isSet(name) ? item.get(name) : null;
 
                         if (isEnumeration)
@@ -114,7 +116,7 @@ namespace DatenMeisterWPF.Forms.Base
                                 var nr = string.Empty;
                                 foreach (var valueElement in valueAsList)
                                 {
-                                    result.Append(nr + umlNameResolve.GetName(valueElement));
+                                    result.Append(nr + UmlNameResolution.GetName(valueElement));
                                     nr = "\r\n";
                                 }
                             }
@@ -202,7 +204,7 @@ namespace DatenMeisterWPF.Forms.Base
                     return;
                 }
 
-                Navigator.TheNavigator.NavigateToDetailView(
+                Navigator.TheNavigator.NavigateToElementDetailView(
                     Window.GetWindow(this),
                     Scope,
                     selectedElement as IElement);

@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeisterWPF.Forms.Base;
+using DatenMeisterWPF.Forms.Lists;
 using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Navigation
@@ -70,14 +71,34 @@ namespace DatenMeisterWPF.Navigation
         }
 
         /// <summary>
+        /// Navigates to an extent list
+        /// </summary>
+        /// <param name="window">Root window being used</param>
+        /// <param name="scope">Scope to be used</param>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <returns>The navigation being used to control the view</returns>
+        public IControlNavigation NavigateToExtentList(Window window, IDatenMeisterScope scope, string workspaceId)
+        {
+            return NavigateTo(
+                window,
+                () =>
+                {
+                    var dlg = new ExtentList();
+                    dlg.SetContent(scope, workspaceId);
+                    return dlg;
+                });
+        }
+
+        /// <summary>
         /// Navigates to the detail window
         /// </summary>
         /// <param name="window">Window which is the owner for the detail window</param>
         /// <param name="scope">Scope to be used</param>
         /// <param name="element">Element to be shown</param>
-        public void NavigateToDetailView(Window window, IDatenMeisterScope scope, IElement element)
+        /// <returns>The navigation being used to control the view</returns>
+        public IControlNavigation NavigateToElementDetailView(Window window, IDatenMeisterScope scope, IElement element)
         {
-            NavigateTo(
+            return NavigateTo(
                 window, () =>
                 {
                     var control = new DetailFormControl();

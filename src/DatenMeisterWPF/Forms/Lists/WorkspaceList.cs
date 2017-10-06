@@ -1,9 +1,7 @@
 ﻿using System.Windows;
-using Autofac;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.HelpingExtents;
-using DatenMeister.Provider.ManagementProviders;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Forms.Detail;
 using DatenMeisterWPF.Navigation;
 
@@ -15,27 +13,20 @@ namespace DatenMeisterWPF.Forms.Lists
         /// Shows the workspaces of the DatenMeister
         /// </summary>
         /// <param name="scope"></param>
-        public void SetContent(IDatenMeisterScope scope)
+        public void SetContent(IDatenMeisterScope scope, IElement formElement = null)
         {
-            var workspaceView = scope.Resolve<ViewDefinitions>();
-
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(scope);
-            SetContent(scope, workspaceExtent.elements(), workspaceView.GetWorkspaceListForm());
-            SupportNewItems = false;
+            SetContent(scope, workspaceExtent.elements(), formElement);
             AddDefaultButtons();
             AddRowItemButton("Extents", (workspace) =>
             {
-                var events = Navigator.TheNavigator.NavigateTo(
-                Window.GetWindow(this),
-                () =>
-                {
-                    var dlg = new ExtentList();
-                    dlg.SetContent(scope, workspace.get("id").ToString());
-                    return dlg;
-                });
+                var events = Navigator.TheNavigator.NavigateToExtentList(
+                    Window.GetWindow(this),
+                    scope,
+                    workspace.get("id").ToString());
+               
 
                 events.Closed += (x, y) => UpdateContent();
-
             });
 
 

@@ -68,9 +68,6 @@ namespace DatenMeister.Integration
             kernel.RegisterInstance(workspaceData).As<WorkspaceData>();
             kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
 
-            // Adds the name resolution  
-            kernel.RegisterType<UmlNameResolution>().As<IUmlNameResolution>();
-
             
             // Loading and storing the workspaces
             var workspaceLoadingConfiguration = new WorkspaceLoaderConfig

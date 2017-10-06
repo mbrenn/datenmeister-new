@@ -6,12 +6,13 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.HelpingExtents;
-using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
@@ -25,13 +26,15 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <param name="workspaceId">Id of the workspace whose extents shall be shown</param>
         public void SetContent(IDatenMeisterScope scope, string workspaceId)
         {
-            var viewDefinitions = scope.Resolve<ViewDefinitions>();
-
+            var viewExtent = scope.Resolve<ViewLogic>().GetViewExtent();
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(scope);
             var workspace = workspaceExtent.elements().WhenPropertyIs("id", workspaceId).FirstOrDefault() as IElement;
 
             var extents = workspace?.get("extents") as IReflectiveSequence;
-            SetContent(scope, extents, viewDefinitions.GetExtentListForm());
+            SetContent(
+                scope, 
+                extents, 
+                NamedElementMethods.GetByFullName(viewExtent, "Management::ExtentListView"));
 
             AddDefaultButtons();
             AddRowItemButton("Open Extent", extentElement =>
@@ -108,7 +111,6 @@ namespace DatenMeisterWPF.Forms.Lists
                         Separator = '\t',
                         Encoding = "UTF-8",
                         Columns = new[] {"Id", "Zip", "PositionLong", "PositionLat", "CityName"}.ToList(),
-                        // Columns = new object[] { idProperty, zipProperty, positionLongProperty, positionLatProperty, citynameProperty }.ToList(),
                         MetaclassUri = "dm:///types#DatenMeister.Apps.ZipCode.Model.ZipCode"
                     }
                 };

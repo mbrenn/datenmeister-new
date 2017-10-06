@@ -1,4 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Implementation;
+﻿using System.Collections.Generic;
+using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
@@ -26,10 +28,14 @@ namespace DatenMeister.Provider.ManagementProviders
         /// Creates a form object
         /// </summary>
         /// <returns>The created form</returns>
-        public IElement GetWorkspaceListForm()
+        private IElement GetWorkspaceListForm()
         {
             // Finds the forms
-            var form = new Form();
+            var form = new Form("WorkspaceListView")
+            {
+                inhibitNewItems = true
+            };
+
             form.fields.Add(
                 new TextFieldData("id", "Name"));
             form.fields.Add(
@@ -47,10 +53,14 @@ namespace DatenMeister.Provider.ManagementProviders
         /// Gets the view for the extent
         /// </summary>
         /// <returns>The created form</returns>
-        public IElement GetExtentListForm()
+        private IElement GetExtentListForm()
         {
             // Finds the forms
-            var form = new Form();
+            var form = new Form("ExtentListView")
+            {
+                inhibitNewItems = true
+            };
+
             form.fields.Add(
                 new TextFieldData("uri", "URI"));
             form.fields.Add(
@@ -64,11 +74,21 @@ namespace DatenMeister.Provider.ManagementProviders
         /// </summary>
         public void AddToViewDefinition()
         {
-            var workspaceListForm = GetWorkspaceListForm();
-            var extentListForm = GetExtentListForm();
+            var viewExtent = _viewLogic.GetViewExtent();
 
-            _viewLogic.Add(workspaceListForm);
-            _viewLogic.Add(extentListForm);
+            // Creates the package containing the views
+            var factory = new MofFactory(viewExtent);
+            var managementPackage = factory.create(null);
+            managementPackage.set("name", "Management");
+
+            var items = new List<IElement>
+            {
+                GetWorkspaceListForm(),
+                GetExtentListForm()
+            };
+            managementPackage.set(_UML._CommonStructure._Namespace.member, items);
+
+            viewExtent.elements().add(managementPackage);
         }
     }
 }

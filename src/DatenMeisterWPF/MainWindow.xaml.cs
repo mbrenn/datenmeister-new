@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
+using Autofac;
 using DatenMeister.Integration;
+using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms;
 using DatenMeisterWPF.Forms.Lists;
 
@@ -24,9 +27,15 @@ namespace DatenMeisterWPF
             _scope = await Task.Run(
                 () => GiveMe.DatenMeister());
             MainControl.Content = null;
-            
+
+            var viewLogic = _scope.Resolve<ViewLogic>();
+
+            var workspaceListView = NamedElementMethods.GetByFullName(
+                viewLogic.GetViewExtent(),
+                "Management::WorkspaceListView");
+
             var workspaceControl = new WorkspaceList();
-            workspaceControl.SetContent(_scope);
+            workspaceControl.SetContent(_scope, workspaceListView);
             MainControl.Content = workspaceControl;
         }
 

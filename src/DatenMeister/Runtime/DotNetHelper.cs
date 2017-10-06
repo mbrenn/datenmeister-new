@@ -171,6 +171,20 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
+        /// Is true
+        /// </summary>
+        /// <param name="value">Value to be checked</param>
+        /// <returns>True, if value indicates a true statement</returns>
+        public static bool AsBoolean(object value)
+        {
+            return value.Equals(true) ||
+                   value.Equals(1) ||
+                   value.Equals("true") ||
+                   value.Equals("TRUE") ||
+                   value is string && value.ToString().ToLower() == "true";
+        }
+
+        /// <summary>
         /// Returns true, if the given element is of type IReflectiveCollection or if it can implement this interface
         /// </summary>
         /// <param name="value">Value to be verified</param>

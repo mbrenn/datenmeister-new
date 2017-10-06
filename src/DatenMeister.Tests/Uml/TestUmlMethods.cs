@@ -49,15 +49,14 @@ namespace DatenMeister.Tests.Uml
                 // Gets the logic
                 var uml = dataLayerLogic.GetUmlWorkspace().Get<_UML>();
                 var feature = uml.Classification.__Feature;
-                var namedElementMethods = scope.Resolve<NamedElementMethods>();
-                var fullName = namedElementMethods.GetFullName(feature);
+                var fullName = NamedElementMethods.GetFullName(feature);
 
                 Assert.That(fullName, Is.Not.Null);
                 Assert.That(fullName, Is.EqualTo("UML::Classification::Feature"));
                 
                 var umlExtent = workspaceCollection.GetWorkspace(WorkspaceNames.NameUml).FindExtent(WorkspaceNames.UriUml);
                 // now the other way
-                var foundElement = namedElementMethods.GetByFullName(umlExtent.elements(), fullName);
+                var foundElement = NamedElementMethods.GetByFullName(umlExtent.elements(), fullName);
                 Assert.That(foundElement, Is.EqualTo(feature));
             }
         }

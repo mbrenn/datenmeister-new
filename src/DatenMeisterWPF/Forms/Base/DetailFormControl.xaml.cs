@@ -91,7 +91,7 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 var name = field.get(_FormAndFields._FieldData.name).ToString();
                 var title = field.get(_FormAndFields._FieldData.title).ToString();
-                var isEnumeration = ObjectHelper.IsTrue(field.get(_FormAndFields._FieldData.isEnumeration));
+                var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
                 var isReadOnly = field.get(_FormAndFields._FieldData.isReadOnly).ToString();
 
                 var row = new RowDefinition();
@@ -101,7 +101,7 @@ namespace DatenMeisterWPF.Forms.Base
                 var titleBlock = new TextBlock
                 {
                     Text = title,
-                    IsEnabled = !ObjectHelper.IsTrue(isReadOnly)
+                    IsEnabled = !DotNetHelper.AsBoolean(isReadOnly)
                 };
 
                 Grid.SetColumn(titleBlock, 0);

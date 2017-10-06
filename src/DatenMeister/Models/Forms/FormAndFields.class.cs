@@ -2,7 +2,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Provider.InMemory;
 
-// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0 created at 02.10.2017 14:38:23
+// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0 created at 06.10.2017 14:18:00
 namespace DatenMeister.Models.Forms
 {
     public class _FormAndFields
@@ -14,6 +14,9 @@ namespace DatenMeister.Models.Forms
 
             public static string @fields = "fields";
             public IElement _fields = null;
+
+            public static string @inhibitNewItems = "inhibitNewItems";
+            public IElement _inhibitNewItems = null;
 
             public static string @detailForm = "detailForm";
             public IElement _detailForm = null;

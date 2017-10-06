@@ -39,30 +39,24 @@ namespace DatenMeister.Web.Api
         /// </summary>
         private const int MaxItemAmount = 100;
         
-        private readonly IUmlNameResolution _resolution;
         private readonly IExtentManager _extentManager;
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentFunctions _extentFunctions;
         private readonly ILifetimeScope _diScope;
         private readonly IViewFinder _viewFinder;
-        private readonly NamedElementMethods _namedElementMethods;
 
         public ExtentController(
-            IUmlNameResolution resolution, 
             IExtentManager extentManager, 
             IWorkspaceLogic workspaceLogic, 
             ExtentFunctions extentFunctions,
             ILifetimeScope diScope,
-            IViewFinder viewFinder,
-            NamedElementMethods namedElementMethods)
+            IViewFinder viewFinder)
         {
-            _resolution = resolution;
             _extentManager = extentManager;
             _workspaceLogic = workspaceLogic;
             _extentFunctions = extentFunctions;
             _diScope = diScope;
             _viewFinder = viewFinder;
-            _namedElementMethods = namedElementMethods;
         }
 
         [Route("all")]
@@ -337,7 +331,7 @@ namespace DatenMeister.Web.Api
                     let typeExtent = type.GetUriExtentOf()
                     select new
                     {
-                        name = _resolution.GetName(type),
+                        name = UmlNameResolution.GetName(type),
                         uri = typeExtent.uri(type),
                         ext = typeExtent.contextURI(),
                         ws = _workspaceLogic.FindWorkspace(typeExtent)?.id
@@ -380,7 +374,7 @@ namespace DatenMeister.Web.Api
                     let typeExtent = viewType.GetUriExtentOf()
                     select new
                     {
-                        name = _resolution.GetName(viewType),
+                        name = UmlNameResolution.GetName(viewType),
                         uri = typeExtent.uri(viewType),
                         ext = typeExtent.contextURI(),
                         ws = _workspaceLogic.FindWorkspace(typeExtent)?.id
@@ -434,7 +428,7 @@ namespace DatenMeister.Web.Api
             IEnumerable<object> filteredItems = foundItems;
             var metaClasses = filteredItems.GetMetaClasses().Select(x => new ItemModel
             {
-                name = _resolution.GetName(x),
+                name = UmlNameResolution.GetName(x),
                 uri = x.GetUri()
             });
 
@@ -519,8 +513,8 @@ namespace DatenMeister.Web.Api
 
                 var metaClassModel = new ItemModel
                 {
-                    name = _resolution.GetName(metaClass),
-                    fullname = _namedElementMethods.GetFullName(metaClass),
+                    name = UmlNameResolution.GetName(metaClass),
+                    fullname = NamedElementMethods.GetFullName(metaClass),
                     uri = extentWithMetaClass?.uri(metaClass),
                     ext = extentWithMetaClass?.contextURI(),
                     ws = _workspaceLogic.Workspaces.FindWorkspace(extentWithMetaClass)?.id,
@@ -726,7 +720,7 @@ namespace DatenMeister.Web.Api
                 var property = field.get(_FormAndFields._FieldData.name).ToString();
                 var propertyValue = element.get(property);
 
-                if (ObjectHelper.IsTrue(field.get(_FormAndFields._FieldData.isEnumeration)))
+                if (DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration)))
                 {
                     // Checks if the given element ís an enumeration
                     if (DotNetHelper.IsOfEnumeration(propertyValue))
@@ -739,7 +733,7 @@ namespace DatenMeister.Web.Api
                             list.Add(new
                             {
                                 u = asElement?.GetUri(),
-                                v = listValue == null ? "null" : _resolution.GetName(listValue)
+                                v = listValue == null ? "null" : UmlNameResolution.GetName(listValue)
                             });
                         }
 
@@ -773,12 +767,12 @@ namespace DatenMeister.Web.Api
                 tempResult = new
                 {
                     u = asElement.GetUri(),
-                    v = _resolution.GetName(asElement)
+                    v = UmlNameResolution.GetName(asElement)
                 };
             }
             else
             {
-                tempResult = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
+                tempResult = propertyValue == null ? "null" : UmlNameResolution.GetName(propertyValue);
             }
             return tempResult;
         }

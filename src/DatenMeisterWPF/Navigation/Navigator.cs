@@ -1,8 +1,15 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Lists;
 using DatenMeisterWPF.Windows;
@@ -106,6 +113,43 @@ namespace DatenMeisterWPF.Navigation
                     control.AddDefaultButtons();
                     return control;
                 });
+        }
+
+        public IControlNavigation NavigateToNewXmiExtentDetailView(
+            Window window, 
+            IDatenMeisterScope scope,
+            string workspaceId)
+        {
+            var viewLogic = scope.Resolve<ViewLogic>();
+            return NavigateTo(
+                window,
+                () =>
+                {
+                    var newXmiDetailForm = NamedElementMethods.GetByFullName(
+                        viewLogic.GetViewExtent(),
+                        ViewDefinitions.PathNewXmiDetailForm);
+
+                    var control = new DetailFormControl();
+                    control.SetContent(scope, null, newXmiDetailForm);
+                    control.AddDefaultButtons("Create");
+                    control.ElementSaved += (x, y) =>
+                    {
+                        var configuration = new XmiStorageConfiguration();
+                        configuration.ExtentUri = control.DetailElement.isSet("uri")
+                            ? control.DetailElement.get("uri").ToString()
+                            : string.Empty;
+                        configuration.Path = control.DetailElement.isSet("filepath")
+                            ? control.DetailElement.get("filepath").ToString()
+                            : string.Empty;
+                        configuration.Workspace = workspaceId;
+
+                        var extentManager = scope.Resolve<IExtentManager>();
+                        extentManager.LoadExtent(configuration, true);
+                    };
+
+                    return control;
+                });
+
         }
     }
 }

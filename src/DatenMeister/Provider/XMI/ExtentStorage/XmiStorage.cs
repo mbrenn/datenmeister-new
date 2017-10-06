@@ -12,11 +12,8 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
     [ConfiguredBy(typeof(XmiStorageConfiguration))]
     public class XmiStorage : IExtentLoader
     {
-        private readonly IWorkspaceLogic _workspaceCollection;
-        
-        public XmiStorage(IWorkspaceLogic workspaceCollection)
+        public XmiStorage()
         {
-            _workspaceCollection = workspaceCollection ?? throw new ArgumentNullException(nameof(workspaceCollection));
         }
 
         public IProvider LoadExtent(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)
@@ -31,6 +28,9 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                     // We need to create an empty Xmi file... Not the best thing at the moment, but we try it. 
                     xmlDocument = new XDocument(
                         new XElement(XmiProvider.DefaultRootNodeName));
+
+                    // Try to create file, to verify that file access and other activities are given
+                    File.WriteAllText(xmiConfiguration.Path, string.Empty);
                 }
                 else
                 {
@@ -50,11 +50,9 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
 
         public void StoreExtent(IProvider extent, ExtentLoaderConfig configuration)
         {
-            var xmiConfiguration = configuration as XmiStorageConfiguration;
-            if (xmiConfiguration != null)
+            if (configuration is XmiStorageConfiguration xmiConfiguration)
             {
-                var xmlExtent = extent as XmiProvider;
-                if (xmlExtent == null)
+                if (!(extent is XmiProvider xmlExtent))
                 {
                     throw new InvalidOperationException("Only XmlUriExtents are supported");
                 }

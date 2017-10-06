@@ -61,7 +61,7 @@ namespace DatenMeisterWPF.Forms.Base
 
         public void SetContent(IDatenMeisterScope scope, IElement element, IElement formDefinition)
         {
-            DetailElement = element;
+            DetailElement = element ?? InMemoryObject.CreateEmpty();
             _formDefinition = formDefinition;
             _scope = scope;
 

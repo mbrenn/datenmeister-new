@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -70,6 +71,35 @@ namespace DatenMeister.Provider.ManagementProviders
         }
 
         /// <summary>
+        /// Gets the form data for the user where he can create a new Xmi extent
+        /// </summary>
+        /// <returns>The created form element</returns>
+        private IElement GetNewXmiExtentDetailForm()
+        {
+            // Finds the forms
+            var form = new Form("NewXmiDetailForm")
+            {
+                inhibitNewItems = true
+            };
+
+            form.fields.Add(
+                new TextFieldData("uri", "URI"));
+            form.fields.Add(
+                new TextFieldData("filepath", "Path to Xmi File"));
+
+            return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
+        }
+
+        /// <summary>
+        /// Stores the name of the package
+        /// </summary>
+        public const string PackageName = "Management";
+
+        public const string NewXmiDetailFormName = "NewXmiDetailForm";
+
+        public const string PathNewXmiDetailForm = PackageName + "::" + NewXmiDetailFormName;
+
+        /// <summary>
         /// Adds the views to the view logic
         /// </summary>
         public void AddToViewDefinition()
@@ -79,12 +109,13 @@ namespace DatenMeister.Provider.ManagementProviders
             // Creates the package containing the views
             var factory = new MofFactory(viewExtent);
             var managementPackage = factory.create(null);
-            managementPackage.set("name", "Management");
+            managementPackage.set("name", PackageName);
 
             var items = new List<IElement>
             {
                 GetWorkspaceListForm(),
-                GetExtentListForm()
+                GetExtentListForm(),
+                GetNewXmiExtentDetailForm()
             };
             managementPackage.set(_UML._CommonStructure._Namespace.member, items);
 

@@ -37,7 +37,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
                 Path = "data.xml"
             };
 
-            var xmiStorage = new XmiStorage(WorkspaceLogic.GetDefaultLogic());
+            var xmiStorage = new XmiStorage();
             xmiStorage.StoreExtent(extent.Provider, xmiStorageConfiguration);
 
             var otherExtent = new MofUriExtent(xmiStorage.LoadExtent(xmiStorageConfiguration), "dm:///tests/");

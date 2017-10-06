@@ -26,6 +26,7 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <param name="workspaceId">Id of the workspace whose extents shall be shown</param>
         public void SetContent(IDatenMeisterScope scope, string workspaceId)
         {
+            var window = Window.GetWindow(this);
             var viewExtent = scope.Resolve<ViewLogic>().GetViewExtent();
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(scope);
             var workspace = workspaceExtent.elements().WhenPropertyIs("id", workspaceId).FirstOrDefault() as IElement;
@@ -37,10 +38,20 @@ namespace DatenMeisterWPF.Forms.Lists
                 NamedElementMethods.GetByFullName(viewExtent, "Management::ExtentListView"));
 
             AddDefaultButtons();
+
+            AddGenericButton("New Xmi Extent", () =>
+            {
+                var events = Navigator.TheNavigator.NavigateToNewXmiExtentDetailView(
+                    window,
+                    scope,
+                    workspaceId);
+                events.Closed += (x, y) => UpdateContent();
+            });
+
             AddRowItemButton("Open Extent", extentElement =>
             {
                 Navigator.TheNavigator.NavigateTo(
-                    Window.GetWindow(this),
+                    window,
                     () =>
                     {
                         var workLogic = scope.Resolve<IWorkspaceLogic>();

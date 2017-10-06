@@ -15,7 +15,6 @@ namespace DatenMeisterWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        private IDatenMeisterScope _scope;
         public MainWindow()
         {
             InitializeComponent();
@@ -24,24 +23,19 @@ namespace DatenMeisterWPF
         private async void Window_Initialized(object sender, EventArgs e)
         {
             MainControl.Content = new IntroScreen();
-            _scope = await Task.Run(
+            App.Scope = await Task.Run(
                 () => GiveMe.DatenMeister());
             MainControl.Content = null;
 
-            var viewLogic = _scope.Resolve<ViewLogic>();
+            var viewLogic = App.Scope.Resolve<ViewLogic>();
 
             var workspaceListView = NamedElementMethods.GetByFullName(
                 viewLogic.GetViewExtent(),
                 "Management::WorkspaceListView");
 
             var workspaceControl = new WorkspaceList();
-            workspaceControl.SetContent(_scope, workspaceListView);
+            workspaceControl.SetContent(App.Scope, workspaceListView);
             MainControl.Content = workspaceControl;
-        }
-
-        private void Window_Unloaded(object sender, RoutedEventArgs e)
-        {
-            _scope?.UnuseDatenMeister();
         }
     }
 }

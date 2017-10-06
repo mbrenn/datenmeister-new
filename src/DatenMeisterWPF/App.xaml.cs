@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using DatenMeister.Integration;
 
 namespace DatenMeisterWPF
 {
@@ -13,5 +9,21 @@ namespace DatenMeisterWPF
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// Gets or sets the scope for the DatenMeister
+        /// </summary>
+        public static IDatenMeisterScope Scope { get; set; }
+
+        private void App_OnExit(object sender, ExitEventArgs e)
+        {
+            try
+            {
+                Scope?.UnuseDatenMeister();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.ToString());
+            }
+        }
     }
 }

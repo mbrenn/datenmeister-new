@@ -66,6 +66,8 @@ namespace DatenMeister.Provider.ManagementProviders
                 new TextFieldData("uri", "URI"));
             form.fields.Add(
                 new TextFieldData("count", "# of items"));
+            form.fields.Add(
+                new TextFieldData("type", "Provider-Type"));
 
             return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
         }

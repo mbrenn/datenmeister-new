@@ -1,4 +1,5 @@
 ﻿using System;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Provider.ManagementProviders
@@ -15,6 +16,11 @@ namespace DatenMeister.Provider.ManagementProviders
             AddMapping(
                 "count",
                 e => e.elements().size(),
+                (e, v) => throw new InvalidOperationException("Count cannot be set"));
+
+            AddMapping(
+                "type",
+                e => (e as MofExtent)?.Provider.GetType().Name,
                 (e, v) => throw new InvalidOperationException("Count cannot be set"));
         }
     }

@@ -11,6 +11,7 @@ using DatenMeister.Modules.UserManagement;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -148,7 +149,7 @@ namespace DatenMeister.Integration
 
                 // Adds the views and their view logic
                 scope.Resolve<ViewLogic>().Integrate();
-
+                scope.Resolve<ViewDefinitions>().AddToViewDefinition();
                 
                 // Includes the extent for the helping extents
                 Provider.HelpingExtents.ManagementProviderHelper.Initialize(workspaceLogic);
@@ -215,7 +216,7 @@ namespace DatenMeister.Integration
                 Debug.WriteLine($"Loaded the extent for user types, containing of {numberOfTypes} types");
             }
 
-            foundExtent.set(_FormAndFields._DefaultViewForExtentType.extentType, "Uml.Classes");
+            foundExtent.SetExtentType("Uml.Classes");
         }
     }
 }

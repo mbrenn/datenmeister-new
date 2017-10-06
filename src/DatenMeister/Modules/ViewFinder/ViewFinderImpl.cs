@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -48,9 +49,9 @@ namespace DatenMeister.Modules.ViewFinder
                 _viewLogic.GetViewByUrl(viewUrl);
             }
 
-            if (extent.isSet(_FormAndFields._DefaultViewForExtentType.extentType))
+            var extentType = extent.GetExtentType();
+            if (!string.IsNullOrEmpty(extentType))
             {
-                var extentType = extent.get(_FormAndFields._DefaultViewForExtentType.extentType).ToString();
                 var viewResult = _viewLogic.FindViewForExtentType(extentType, ViewType.List);
                 if (viewResult != null)
                 {

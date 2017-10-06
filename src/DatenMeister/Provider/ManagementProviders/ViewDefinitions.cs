@@ -58,5 +58,17 @@ namespace DatenMeister.Provider.ManagementProviders
 
             return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
         }
+
+        /// <summary>
+        /// Adds the views to the view logic
+        /// </summary>
+        public void AddToViewDefinition()
+        {
+            var workspaceListForm = GetWorkspaceListForm();
+            var extentListForm = GetExtentListForm();
+
+            _viewLogic.Add(workspaceListForm);
+            _viewLogic.Add(extentListForm);
+        }
     }
 }

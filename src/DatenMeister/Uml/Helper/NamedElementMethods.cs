@@ -124,8 +124,7 @@ namespace DatenMeister.Uml.Helper
         /// <returns>An enumeration</returns>
         private IEnumerable<IElement> GetAllPropertyValues(IElement value)
         {
-            var asProperties = value as IObjectAllProperties;
-            if (asProperties == null)
+            if (!(value is IObjectAllProperties asProperties))
             {
                 throw new ArgumentException("Value is not of type 'IObjectAllProperties'");
             }
@@ -148,8 +147,7 @@ namespace DatenMeister.Uml.Helper
                 var asEnumeration = (IEnumerable) propertyValue;
                 foreach (var innerValue in asEnumeration)
                 {
-                    var asElement = innerValue as IElement;
-                    if (asElement != null)
+                    if (innerValue is IElement asElement)
                     {
                         // and inner value is an IElement
                         yield return asElement;

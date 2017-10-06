@@ -202,14 +202,10 @@ namespace DatenMeisterWPF.Forms.Base
                     return;
                 }
 
-                Navigator.TheNavigator.NavigateTo(
+                Navigator.TheNavigator.NavigateToDetailView(
                     Window.GetWindow(this),
-                    () =>
-                    {
-                        var control = new DetailFormControl();
-                        control.SetContent(Scope, selectedElement as IElement, null);
-                        return control;
-                    });
+                    Scope,
+                    selectedElement as IElement);
             });
         }
 

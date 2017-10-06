@@ -3,7 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Provider.ManagementProviders
 {
-    public class ExtentObject : MappingProviderObject<IUriExtent>, IProviderObject
+    public class ExtentObject : MappingProviderObject<IUriExtent>
     {
         public ExtentObject(IProvider provider, IUriExtent uriExtent) : base(uriExtent, provider, uriExtent.contextURI())
         {

@@ -168,7 +168,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// Looks in the view extent and checks for all elements, where the type of the extent is fitting to the view
         /// </summary>
         /// <param name="extentType">Type of the extent</param>
-        /// <param name="list"></param>
+        /// <param name="type">Type of the view</param>
         /// <returns>The found view</returns>
         public IElement FindViewForExtentType(string extentType, ViewType type)
         {

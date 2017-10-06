@@ -66,7 +66,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public void UpdateContent()
         {
-            //SupportNewItems = !DotNetHelper. FormDefinition.get("inhibitNewItems")
+            SupportNewItems = !DotNetHelper.AsBoolean(FormDefinition.get(_FormAndFields._Form.inhibitNewItems));
+
             var listItems = new List<ExpandoObject>();
             _itemMapping.Clear();
 

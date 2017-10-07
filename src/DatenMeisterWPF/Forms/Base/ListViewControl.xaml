@@ -12,6 +12,7 @@
         </DataTemplate>
     </UserControl.Resources>
     <DockPanel>
+        <StackPanel Orientation="Horizontal" x:Name="Toolbar" DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="10" />
         <StackPanel Orientation="Horizontal" x:Name="ButtonBar" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10">
         </StackPanel>
         <DataGrid x:Name="DataGrid" Margin="10"/>

@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
-        <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
             <TextBlock x:Name="ItemLocation"></TextBlock>
         </StackPanel>
         <StackPanel Orientation="Horizontal" x:Name="ButtonBar" 

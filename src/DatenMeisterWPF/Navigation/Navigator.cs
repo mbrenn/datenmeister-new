@@ -8,7 +8,6 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Lists;
@@ -134,14 +133,16 @@ namespace DatenMeisterWPF.Navigation
                     control.AddDefaultButtons("Create");
                     control.ElementSaved += (x, y) =>
                     {
-                        var configuration = new XmiStorageConfiguration();
-                        configuration.ExtentUri = control.DetailElement.isSet("uri")
-                            ? control.DetailElement.get("uri").ToString()
-                            : string.Empty;
-                        configuration.Path = control.DetailElement.isSet("filepath")
-                            ? control.DetailElement.get("filepath").ToString()
-                            : string.Empty;
-                        configuration.Workspace = workspaceId;
+                        var configuration = new XmiStorageConfiguration
+                        {
+                            ExtentUri = control.DetailElement.isSet("uri")
+                                ? control.DetailElement.get("uri").ToString()
+                                : string.Empty,
+                            Path = control.DetailElement.isSet("filepath")
+                                ? control.DetailElement.get("filepath").ToString()
+                                : string.Empty,
+                            Workspace = workspaceId
+                        };
 
                         var extentManager = scope.Resolve<IExtentManager>();
                         extentManager.LoadExtent(configuration, true);

@@ -1,7 +1,9 @@
 ﻿using System.Windows;
+using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.HelpingExtents;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Forms.Detail;
 using DatenMeisterWPF.Navigation;
 
@@ -17,34 +19,45 @@ namespace DatenMeisterWPF.Forms.Lists
         {
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(scope);
             SetContent(scope, workspaceExtent.elements(), formElement);
+
             AddDefaultButtons();
-            AddRowItemButton("Show Extents", (workspace) =>
+            AddRowItemButton("Show Extents", ShowExtents);
+            AddRowItemButton("Delete Workspace", DeleteWorkspace);
+            AddGenericButton("New Workspace", NewWorkspace);
+            
+            void ShowExtents(IObject workspace)
             {
-                var events = Navigator.TheNavigator.NavigateToExtentList(
-                    Window.GetWindow(this),
-                    scope,
-                    workspace.get("id").ToString());
-               
+                var workspaceId = workspace.get("id").ToString();
+                var events = Navigator.TheNavigator.NavigateToExtentList(Window.GetWindow(this), scope, workspaceId);
+                
+                events.Closed += (x, y) => UpdateContent();
+            }
+
+            void NewWorkspace()
+            {
+                var events = Navigator.TheNavigator.NavigateTo(Window.GetWindow(this), () =>
+                {
+                    var dlg = new NewWorkspaceControl();
+                    dlg.SetContent(scope);
+                    return dlg;
+                });
 
                 events.Closed += (x, y) => UpdateContent();
-            });
+            }
 
-
-            AddGenericButton("New Workspace", () =>
+            void DeleteWorkspace(IObject workspace)
             {
-                var events = Navigator.TheNavigator.NavigateTo(
-                    Window.GetWindow(this),
-                    () =>
-                    {
-                        var dlg = new NewWorkspaceControl();
-                        dlg.SetContent(scope);
-                        return dlg;
-                    });
+                if (MessageBox.Show(
+                        "Are you sure to delete the workspace? All included extents will also be deleted.", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    var workspaceId = workspace.get("id").ToString();
 
-                events.Closed += (x, y) => UpdateContent();
-            });
+                    var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
+                    workspaceLogic.RemoveWorkspace(workspaceId);
 
-            AddItemButton("Open Workspace", (x) => { });
+                    UpdateContent();
+                }
+            }
         }
     }
 }

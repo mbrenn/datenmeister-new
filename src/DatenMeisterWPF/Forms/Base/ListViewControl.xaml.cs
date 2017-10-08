@@ -222,10 +222,11 @@ namespace DatenMeisterWPF.Forms.Base
                     return;
                 }
 
-                Navigator.TheNavigator.NavigateToElementDetailView(
+                var events = Navigator.TheNavigator.NavigateToElementDetailView(
                     Window.GetWindow(this),
                     Scope,
                     selectedElement as IElement);
+                events.Closed += (sender, args) => UpdateContent();
             });
         }
 

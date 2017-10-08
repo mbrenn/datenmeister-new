@@ -17,6 +17,27 @@ namespace DatenMeister.Provider.ManagementProviders
         private readonly ViewLogic _viewLogic;
 
         /// <summary>
+        /// Stores the name of the package
+        /// </summary>
+        public const string PackageName = "Management";
+
+        public const string NewWorkspaceForm = "NewWorkspaceForm";
+
+        public const string NewXmiDetailForm = "NewXmiDetailForm";
+
+        public const string WorkspaceListView = "WorkspaceListView";
+
+        public const string ExtentListView = "ExtentListView";
+
+        public const string PathNewXmiDetailForm = PackageName + "::" + NewXmiDetailForm;
+
+        public const string PathWorkspaceListView = PackageName + "::" + WorkspaceListView;
+
+        public const string PathExtentListView = PackageName + "::" + ExtentListView;
+
+        public const string PathNewWorkspaceForm = PackageName + "::" + NewWorkspaceForm;
+
+        /// <summary>
         /// Initializes a new instance of the ViewDefinitions class
         /// </summary>
         /// <param name="viewLogic">View logic being used to find View Extent</param>
@@ -26,25 +47,45 @@ namespace DatenMeister.Provider.ManagementProviders
         }
 
         /// <summary>
+        /// Gets the detail form to create a new workspace
+        /// </summary>
+        /// <returns></returns>
+        public IElement GetNewWorkspaceDetail()
+        {
+            var form = new Form(NewWorkspaceForm);
+            form.fields.Add(
+                new TextFieldData("id", "Name"));
+            form.fields.Add(
+                new TextFieldData("annotation", "Annotation"));
+
+
+            return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
+        }
+
+        /// <summary>
         /// Creates a form object
         /// </summary>
         /// <returns>The created form</returns>
         private IElement GetWorkspaceListForm()
         {
             // Finds the forms
-            var form = new Form("WorkspaceListView")
+            var form = new Form(WorkspaceListView)
             {
                 inhibitNewItems = true
             };
 
             form.fields.Add(
-                new TextFieldData("id", "Name"));
+                new TextFieldData("id", "Name")
+                {
+                    isReadOnly = true
+                });
             form.fields.Add(
                 new TextFieldData("annotation", "Annotation"));
             form.fields.Add(
                 new TextFieldData("extents", "Extents")
                 {
-                    isEnumeration = true
+                    isEnumeration = true,
+                    isReadOnly = true
                 });
 
             return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
@@ -57,7 +98,7 @@ namespace DatenMeister.Provider.ManagementProviders
         private IElement GetExtentListForm()
         {
             // Finds the forms
-            var form = new Form("ExtentListView")
+            var form = new Form(ExtentListView)
             {
                 inhibitNewItems = true
             };
@@ -65,9 +106,15 @@ namespace DatenMeister.Provider.ManagementProviders
             form.fields.Add(
                 new TextFieldData("uri", "URI"));
             form.fields.Add(
-                new TextFieldData("count", "# of items"));
+                new TextFieldData("count", "# of items")
+                {
+                    isReadOnly = true
+                });
             form.fields.Add(
-                new TextFieldData("type", "Provider-Type"));
+                new TextFieldData("type", "Provider-Type")
+                {
+                    isReadOnly = true
+                });
 
             return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
         }
@@ -79,7 +126,7 @@ namespace DatenMeister.Provider.ManagementProviders
         private IElement GetNewXmiExtentDetailForm()
         {
             // Finds the forms
-            var form = new Form("NewXmiDetailForm")
+            var form = new Form(NewXmiDetailForm)
             {
                 inhibitNewItems = true
             };
@@ -91,15 +138,6 @@ namespace DatenMeister.Provider.ManagementProviders
 
             return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
         }
-
-        /// <summary>
-        /// Stores the name of the package
-        /// </summary>
-        public const string PackageName = "Management";
-
-        public const string NewXmiDetailFormName = "NewXmiDetailForm";
-
-        public const string PathNewXmiDetailForm = PackageName + "::" + NewXmiDetailFormName;
 
         /// <summary>
         /// Adds the views to the view logic
@@ -117,7 +155,8 @@ namespace DatenMeister.Provider.ManagementProviders
             {
                 GetWorkspaceListForm(),
                 GetExtentListForm(),
-                GetNewXmiExtentDetailForm()
+                GetNewXmiExtentDetailForm(),
+                GetNewWorkspaceDetail()
             };
             managementPackage.set(_UML._CommonStructure._Namespace.member, items);
 

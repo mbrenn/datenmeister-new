@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -67,7 +68,14 @@ namespace DatenMeisterWPF.Forms.Base
 
             SetContent();
 
-            ItemLocation.Text = NamedElementMethods.GetFullName(element);
+            if (element != null)
+            {
+                var mofElement = (MofElement) element;
+                var uriExtent = mofElement.Extent as MofUriExtent;
+                ItemLocation.Text =
+                    $"URI Extent: {uriExtent?.contextURI()} || " +
+                    $"Items: {NamedElementMethods.GetFullName(element)}";
+            }
         }
 
         /// <summary>

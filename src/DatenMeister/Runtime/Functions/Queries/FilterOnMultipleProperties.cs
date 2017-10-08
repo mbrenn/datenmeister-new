@@ -31,12 +31,26 @@ namespace DatenMeister.Runtime.Functions.Queries
             foreach (var value in Collection)
             {
                 var valueAsObject = value as IObject;
+                if (valueAsObject == null)
+                {
+                    continue;
+                }
+
                 foreach (var property in properties)
                 {
-                    if (valueAsObject?.isSet(property) == true &&
-                        valueAsObject.get(property)
-                            ?.ToString()
-                            ?.IndexOf(_searchString, _comparison) >= 0)
+                    if (valueAsObject.isSet(property) == false)
+                    {
+                        continue;
+                    }
+
+                    var propertyAsText = valueAsObject.get(property);
+                    if (!DotNetHelper.IsOfPrimitiveType(propertyAsText))
+                    {
+                        continue;
+                    }
+
+
+                    if (propertyAsText.ToString()?.IndexOf(_searchString, _comparison) >= 0)
                     {
                         yield return valueAsObject;
                         break;

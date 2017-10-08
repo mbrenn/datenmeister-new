@@ -38,43 +38,39 @@ namespace DatenMeisterWPF.Forms.Lists
                 NamedElementMethods.GetByFullName(viewExtent, "Management::ExtentListView"));
 
             AddDefaultButtons();
+            AddGenericButton("New Xmi Extent", NewXmiExtent);
+            AddRowItemButton("Show Items", ShowItems);
+            AddGenericButton("Zip-Code Example", AddZipCodeExample);
 
-            AddGenericButton("New Xmi Extent", () =>
+
+            void NewXmiExtent()
             {
-                var events = Navigator.TheNavigator.NavigateToNewXmiExtentDetailView(
-                    window,
-                    scope,
-                    workspaceId);
+                var events = Navigator.TheNavigator.NavigateToNewXmiExtentDetailView(window, scope, workspaceId);
                 events.Closed += (x, y) => UpdateContent();
-            });
+            }
 
-            AddRowItemButton("Open Extent", extentElement =>
+            void ShowItems(IObject extentElement)
             {
-                Navigator.TheNavigator.NavigateTo(
-                    window,
-                    () =>
+                Navigator.TheNavigator.NavigateTo(window, () =>
+                {
+                    var workLogic = scope.Resolve<IWorkspaceLogic>();
+                    var uri = extentElement.get("uri").ToString();
+                    var extent = workLogic.FindExtent(workspaceId, uri);
+                    if (extent == null)
                     {
-                        var workLogic = scope.Resolve<IWorkspaceLogic>();
-                        var uri = extentElement.get("uri").ToString();
-                        var extent = workLogic.FindExtent(workspaceId, uri);
-                        if (extent == null)
-                        {
-                            return null;
-                        }
+                        return null;
+                    }
 
 
-                        var control = new ElementListViewControl();
-                        control.SetContent(
-                            scope,
-                            extent.elements(),
-                            null);
-                        control.AddDefaultButtons();
+                    var control = new ElementListViewControl();
+                    control.SetContent(scope, extent.elements(), null);
+                    control.AddDefaultButtons();
 
-                        return control;
-                    });
-            });
+                    return control;
+                });
+            }
 
-            AddGenericButton("Zip-Code Example", () =>
+            void AddZipCodeExample()
             {
                 var extentManager = scope.Resolve<IExtentManager>();
 
@@ -104,11 +100,8 @@ namespace DatenMeisterWPF.Forms.Lists
                     }
                 } while (File.Exists(filename));
 
-                var originalFilename = Path.Combine(
-                    appBase,
-                    "Examples",
-                    "plz.csv");
-                
+                var originalFilename = Path.Combine(appBase, "Examples", "plz.csv");
+
                 File.Copy(originalFilename, filename);
 
                 var defaultConfiguration = new CSVExtentLoaderConfig
@@ -129,7 +122,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 extentManager.LoadExtent(defaultConfiguration, false);
 
                 UpdateContent();
-            });
+            }
 
         }
     }

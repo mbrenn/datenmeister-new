@@ -18,7 +18,7 @@ namespace DatenMeisterWPF.Forms.Lists
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(scope);
             SetContent(scope, workspaceExtent.elements(), formElement);
             AddDefaultButtons();
-            AddRowItemButton("Extents", (workspace) =>
+            AddRowItemButton("Show Extents", (workspace) =>
             {
                 var events = Navigator.TheNavigator.NavigateToExtentList(
                     Window.GetWindow(this),

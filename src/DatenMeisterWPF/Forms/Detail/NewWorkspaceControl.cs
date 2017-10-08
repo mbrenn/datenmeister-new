@@ -4,7 +4,9 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base;
 
 namespace DatenMeisterWPF.Forms.Detail
@@ -16,16 +18,11 @@ namespace DatenMeisterWPF.Forms.Detail
             var viewLogic = scope.Resolve<ViewLogic>();
             var viewExtent = viewLogic.GetViewExtent();
 
-            var form = new Form();
-            form.fields.Add(
-                new TextFieldData("id", "Name"));
-            form.fields.Add(
-                new TextFieldData("annotation", "Annotation"));
-
-            var formElement = DotNetSetter.Convert(viewExtent, form) as IElement;
+            var formElement = NamedElementMethods.GetByFullName(viewExtent, ViewDefinitions.PathNewWorkspaceForm);
 
             SetContentForNewObject(scope, formElement);
             AddDefaultButtons("Create");
+
             ElementSaved += (x, y) =>
             {
                 var workspaceId = DetailElement.get("id").ToString();

@@ -11,6 +11,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Base
 {
@@ -157,6 +158,7 @@ namespace DatenMeisterWPF.Forms.Base
                         {
                             contentBlock.RowDefinitions.Add(new RowDefinition());
 
+                            // Creates the text
                             var innerTextBlock = new TextBlock
                             {
                                 Text = innerValue.ToString()
@@ -165,6 +167,25 @@ namespace DatenMeisterWPF.Forms.Base
                             Grid.SetColumn(innerTextBlock, 0);
 
                             contentBlock.Children.Add(innerTextBlock);
+
+                            // Creates the button
+                            if (innerValue is IElement asIElement)
+                            {
+                                var button = new Button
+                                {
+                                    Content = "Edit"
+                                };
+                                Grid.SetRow(button, inner);
+                                Grid.SetColumn(button, 1);
+
+                                button.Click += (sender, args) =>
+                                    Navigator.TheNavigator.NavigateToElementDetailView(
+                                        Window.GetWindow(this),
+                                        _scope,
+                                        asIElement);
+
+                                contentBlock.Children.Add(button);
+                            }
 
                             inner++;
                         }
@@ -234,7 +255,7 @@ namespace DatenMeisterWPF.Forms.Base
             return button;
         }
 
-        protected virtual void OnElementSaved()
+        protected void OnElementSaved()
         {
             ElementSaved?.Invoke(this, EventArgs.Empty);
         }

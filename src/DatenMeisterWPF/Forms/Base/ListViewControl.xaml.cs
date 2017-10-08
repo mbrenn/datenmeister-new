@@ -189,7 +189,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public void AddDefaultButtons()
         {
-            AddGenericButton("View Extent", () =>
+            void ViewExtent()
             {
                 var dlg = new ItemXmlViewWindow
                 {
@@ -197,9 +197,9 @@ namespace DatenMeisterWPF.Forms.Base
                 };
                 dlg.UpdateContent(Items);
                 dlg.ShowDialog();
-            });
+            }
 
-            AddGenericButton("View Config", () =>
+            void ViewConfig()
             {
                 var dlg = new ItemXmlViewWindow
                 {
@@ -217,21 +217,22 @@ namespace DatenMeisterWPF.Forms.Base
                 };
 
                 dlg.ShowDialog();
-            });
+            }
 
-            AddRowItemButton("Open", selectedElement =>
+            void Open(IObject selectedElement)
             {
                 if (selectedElement == null)
                 {
                     return;
                 }
 
-                var events = Navigator.TheNavigator.NavigateToElementDetailView(
-                    Window.GetWindow(this),
-                    Scope,
-                    selectedElement as IElement);
+                var events = Navigator.TheNavigator.NavigateToElementDetailView(Window.GetWindow(this), Scope, selectedElement as IElement);
                 events.Closed += (sender, args) => UpdateContent();
-            });
+            }
+
+            AddGenericButton("View Extent", ViewExtent);
+            AddGenericButton("View Config", ViewConfig);
+            AddRowItemButton("Open", Open);
         }
 
         /// <summary>

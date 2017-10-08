@@ -2,6 +2,7 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
+using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.ManagementProviders
@@ -15,11 +16,19 @@ namespace DatenMeister.Provider.ManagementProviders
         /// Initializes the ExtentHelper and creates the extent for the workspaces
         /// </summary>
         /// <param name="workspaceLogic">The workspace logic to be used</param>
-        public static void Initialize(IWorkspaceLogic workspaceLogic)
+        public static void Initialize(IWorkspaceLogic workspaceLogic, LocalTypeSupport localTypeSupport)
         {
             // Adds the extent containing the workpsaces
             workspaceLogic.GetManagementWorkspace().extent.Add(
                 new MofUriExtent(new ExtentOfWorkspaces(workspaceLogic), ExtentOfWorkspaces.WorkspaceUri));
+
+            localTypeSupport.AddLocalTypes(
+                "DatenMeister::Workspaces",
+                new[]
+                {
+                    typeof(Model.Workspace),
+                    typeof(Model.Extent)
+                });
         }
 
         /// <summary>

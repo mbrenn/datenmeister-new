@@ -7,6 +7,7 @@ using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserManagement;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.DotNet;
@@ -149,7 +150,9 @@ namespace DatenMeister.Integration
                 scope.Resolve<ViewDefinitions>().AddToViewDefinition();
                 
                 // Includes the extent for the helping extents
-                ManagementProviderHelper.Initialize(workspaceLogic);
+                ManagementProviderHelper.Initialize(
+                    workspaceLogic, 
+                    scope.Resolve<LocalTypeSupport>());
 
 
                 // Boots up the typical DatenMeister Environment  

@@ -6,7 +6,7 @@ namespace DatenMeister.Provider.ManagementProviders
 {
     public class ExtentObject : MappingProviderObject<IUriExtent>
     {
-        public ExtentObject(IProvider provider, IUriExtent uriExtent) : base(uriExtent, provider, uriExtent.contextURI(), MetaclassUri)
+        public ExtentObject(IProvider provider, IUriExtent uriExtent) : base(uriExtent, provider, uriExtent.contextURI(), MetaclassUriPath)
         {
             AddMapping(
                 "uri",
@@ -27,6 +27,6 @@ namespace DatenMeister.Provider.ManagementProviders
         /// <summary>
         /// Stores the uri to the metaclass
         /// </summary>
-        public const string MetaclassUri = ExtentOfWorkspaces.WorkspaceUri + "#Object";
+        public const string MetaclassUriPath = ExtentOfWorkspaces.WorkspaceUri + "#Object";
     }
 }

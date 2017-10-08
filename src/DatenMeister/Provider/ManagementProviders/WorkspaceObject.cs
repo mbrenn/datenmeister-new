@@ -12,7 +12,7 @@ namespace DatenMeister.Provider.ManagementProviders
         /// </summary>
         /// <param name="workspace">Workspace to be set</param>
         /// <param name="provider">The provider being set</param>
-        public WorkspaceObject(IProvider provider, Workspace workspace) : base (workspace, provider, workspace.id, MetaclassUri)
+        public WorkspaceObject(IProvider provider, Workspace workspace) : base (workspace, provider, workspace.id, MetaclassUriPath)
         {
             AddMapping(
                 "id",
@@ -33,6 +33,6 @@ namespace DatenMeister.Provider.ManagementProviders
         /// <summary>
         /// Stores the uri to the metaclass
         /// </summary>
-        public const string MetaclassUri = ExtentOfWorkspaces.WorkspaceUri + "#Workspace";
+        public const string MetaclassUriPath = ExtentOfWorkspaces.WorkspaceUri + "#Workspace";
     }
 }

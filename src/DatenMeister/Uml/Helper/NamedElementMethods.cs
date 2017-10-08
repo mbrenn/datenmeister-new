@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -149,6 +150,77 @@ namespace DatenMeister.Uml.Helper
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets or create the package structure and returns the last created element.
+        /// The elements will be interspaced by '::'
+        /// </summary>
+        /// <param name="rootElements">Elements which contain the root elements</param>
+        /// <param name="factory">Factory being used to create the subitems</param>
+        /// <param name="packagePath">Path of the package to be created</param>
+        /// <param name="nameProperty">The name property which contain the name for the element</param>
+        /// <param name="childProperty">The child property which contain the subelements</param>
+        /// <param name="metaClassPackage"></param>
+        public static IElement GetOrCreatePackageStructure(
+            IReflectiveSequence rootElements, 
+            IFactory factory,
+            string packagePath, 
+            string nameProperty,
+            string childProperty, 
+            string metaClassPackage)
+        {
+
+            var elementNames = packagePath
+                .Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => x.Trim()).ToList();
+
+            IElement found = null;
+
+            foreach (var elementName in elementNames)
+            {
+                // Looks for the element with the given name
+                IElement childElement = null;
+                foreach (var innerElement in rootElements.OfType<IElement>())
+                {
+                    if (innerElement.isSet(nameProperty))
+                    {
+                        continue;
+                    }
+
+                    if (innerElement.get(nameProperty).ToString() == elementName)
+                    {
+                        childElement = innerElement;
+                    }
+                }
+
+                // Creates the child element
+                if (childElement == null)
+                {
+                    childElement = factory.create(null);
+                    childElement.set(nameProperty, elementName);
+                    rootElements.add(childElement);
+                }
+
+                // Sets and finds the child property
+                IReflectiveSequence children = null;
+                if (childElement.isSet(childProperty))
+                {
+                    children = childElement.get(childProperty) as IReflectiveSequence;
+                }
+
+                if (children == null)
+                {
+                    childElement.set(childProperty, new List<object>());
+                    children = childElement.get(childProperty) as IReflectiveSequence;
+                }
+
+                rootElements = children;
+                found = childElement;
+
+            }
+
+            return found;
         }
     }
 }

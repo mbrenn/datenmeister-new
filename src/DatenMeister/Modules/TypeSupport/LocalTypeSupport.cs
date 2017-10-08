@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.TypeSupport
 {
@@ -23,19 +25,60 @@ namespace DatenMeister.Modules.TypeSupport
             _workspaceLogic = workspaceLogic;
         }
 
-        public IList<IElement> AddLocalType(IEnumerable<Type> types)
+        /// <summary>
+        /// Adds a local type in a certain package
+        /// </summary>
+        /// <param name="packageName"></param>
+        /// <param name="types"></param>
+        /// <returns></returns>
+        public IList<IElement> AddLocalTypes(string packageName, IEnumerable<Type> types)
+        {
+            var internalTypeExtent = GetInternalTypeExtent();
+            var rootElements = internalTypeExtent.elements();
+
+            var package = NamedElementMethods.GetOrCreatePackageStructure(
+                rootElements,
+                new MofFactory(internalTypeExtent),
+                packageName,
+                "name",
+                "children",
+                "Package");
+
+            package.set("children", new List<object>());
+            var children = (IReflectiveSequence) package.get("children");
+            return AddLocalTypes(children, types);
+        }
+
+        /// <summary>
+        /// Adds a local type 
+        /// </summary>
+        /// <param name="types">Type to be added</param>
+        /// <returns>List of created elements</returns>
+        public IList<IElement> AddLocalTypes(IEnumerable<Type> types)
+        {
+            var internalTypeExtent = GetInternalTypeExtent();
+            var rootElements = internalTypeExtent.elements();
+
+            return AddLocalTypes(rootElements, types);
+        }
+
+        /// <summary>
+        /// Adds types to the local types
+        /// </summary>
+        /// <param name="rootElements">Reflective sequence which will receive the new element</param>
+        /// <param name="types">Types to be added</param>
+        /// <returns>List of created elements</returns>
+        private IList<IElement> AddLocalTypes(IReflectiveSequence rootElements, IEnumerable<Type> types)
         {
             var result = new List<IElement>();
-            var internalTypeExtent = GetInternalTypeExtent();
-
             var generator = new DotNetTypeGenerator(
-                new MofFactory(internalTypeExtent),
+                new MofFactory(GetInternalTypeExtent()),
                 _workspaceLogic.GetUmlData());
 
             foreach (var type in types)
             {
                 var element = generator.CreateTypeFor(type);
-                internalTypeExtent.elements().add(element);
+                rootElements.add(element);
                 result.Add(element);
             }
 
@@ -46,9 +89,19 @@ namespace DatenMeister.Modules.TypeSupport
         /// Adds a local type to the default instance of the DatenMeister
         /// </summary>
         /// <param name="type">Type to be added</param>
-        public IElement AddLocalType(Type type)
+        public IElement AddLocalTypes(Type type)
         {
-            return AddLocalType(new[]{type}).First();
+            return AddLocalTypes(new[]{type}).First();
+        }
+
+        /// <summary>
+        /// Adds a local type to the default instance of the DatenMeister
+        /// </summary>
+        /// <param name="packageName">Name of the package</param>
+        /// <param name="type">Type to be added</param>
+        public IElement AddLocalTypes(string packageName, Type type)
+        {
+            return AddLocalTypes(packageName, new[] { type }).First();
         }
 
         public IElement GetMetaClassFor(Type type)

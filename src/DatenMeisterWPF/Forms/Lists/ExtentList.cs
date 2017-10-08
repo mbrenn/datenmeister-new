@@ -35,7 +35,7 @@ namespace DatenMeisterWPF.Forms.Lists
             SetContent(
                 scope, 
                 extents, 
-                NamedElementMethods.GetByFullName(viewExtent, "Management::ExtentListView"));
+                NamedElementMethods.GetByFullName(viewExtent, ViewDefinitions.PathExtentListView));
 
             AddDefaultButtons();
             AddGenericButton("New Xmi Extent", NewXmiExtent);

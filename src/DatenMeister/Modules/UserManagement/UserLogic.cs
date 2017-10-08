@@ -43,7 +43,7 @@ namespace DatenMeister.Modules.UserManagement
         /// </summary>
         public void Initialize()
         {
-            var types = _localTypeSupport.AddLocalType(
+            var types = _localTypeSupport.AddLocalTypes(
                 new[] {typeof(User), typeof(UserManagementSettings)}
             );
 

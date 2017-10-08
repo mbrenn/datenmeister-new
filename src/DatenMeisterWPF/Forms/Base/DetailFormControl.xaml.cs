@@ -96,6 +96,33 @@ namespace DatenMeisterWPF.Forms.Base
                 return;
             }
 
+            var n = CreateRows(fields);
+
+            // Sets the metaclass
+            var metaClassKey = new TextBlock
+            {
+                Text = "Metaclass: "
+            };
+
+            var metaClassValue = new TextBlock
+            {
+                Text = DetailElement.getMetaClass()?.ToString()
+            };
+
+            DataGrid.RowDefinitions.Add(new RowDefinition());
+            Grid.SetRow(metaClassKey, n);
+            Grid.SetRow(metaClassValue, n);
+            Grid.SetColumn(metaClassValue, 1);
+            DataGrid.Children.Add(metaClassKey);
+            DataGrid.Children.Add(metaClassValue);
+        }
+
+        /// <summary>
+        /// Creates the rows
+        /// </summary>
+        /// <param name="fields">Fields to be created</param>
+        private int CreateRows(IReflectiveCollection fields)
+        {
             var n = 0;
             foreach (var field in fields.Cast<IElement>())
             {
@@ -103,14 +130,13 @@ namespace DatenMeisterWPF.Forms.Base
                 var title = field.get(_FormAndFields._FieldData.title).ToString();
                 var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
                 var isReadOnly = field.get(_FormAndFields._FieldData.isReadOnly).ToString();
-
-                var row = new RowDefinition();
-                DataGrid.RowDefinitions.Add(row);
+                
+                DataGrid.RowDefinitions.Add(new RowDefinition());
 
                 // Sets the title block
                 var titleBlock = new TextBlock
                 {
-                    Text = title,
+                    Text = $"{title}: ",
                     IsEnabled = !DotNetHelper.AsBoolean(isReadOnly)
                 };
 
@@ -118,7 +144,7 @@ namespace DatenMeisterWPF.Forms.Base
                 Grid.SetRow(titleBlock, n);
                 DataGrid.Children.Add(titleBlock);
 
-                
+
                 /* Local functions for text and enumerations */
                 UIElement CreateForText()
                 {
@@ -126,7 +152,7 @@ namespace DatenMeisterWPF.Forms.Base
                     Grid.SetColumn(contentBlock, 1);
                     Grid.SetRow(contentBlock, n);
 
-                    string valueText = string.Empty;
+                    var valueText = string.Empty;
                     if (DetailElement?.isSet(name) == true)
                     {
                         valueText = DetailElement.get(name)?.ToString() ?? string.Empty;
@@ -205,13 +231,13 @@ namespace DatenMeisterWPF.Forms.Base
 
                 /* Now do your job */
                 DataGrid.Children.Add(
-                    isEnumeration ? 
-                        CreateForEnumeration() : 
-                        CreateForText());
-                
+                    isEnumeration ? CreateForEnumeration() : CreateForText());
+
                 // Content Block
                 n++;
             }
+
+            return n;
         }
 
         /// <summary>

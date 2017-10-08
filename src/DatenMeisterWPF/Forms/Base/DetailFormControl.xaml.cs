@@ -107,19 +107,19 @@ namespace DatenMeisterWPF.Forms.Base
                 Grid.SetColumn(titleBlock, 0);
                 Grid.SetRow(titleBlock, n);
                 DataGrid.Children.Add(titleBlock);
+
                 
-                // Content Block
-                if (!isEnumeration)
+                /* Local functions for text and enumerations */
+                UIElement CreateForText()
                 {
                     var contentBlock = new TextBox();
                     Grid.SetColumn(contentBlock, 1);
                     Grid.SetRow(contentBlock, n);
-                    DataGrid.Children.Add(contentBlock);
 
                     string valueText = string.Empty;
-                    if (DetailElement.isSet(name))
+                    if (DetailElement?.isSet(name) == true)
                     {
-                        valueText = DetailElement?.get(name)?.ToString() ?? string.Empty;
+                        valueText = DetailElement.get(name)?.ToString() ?? string.Empty;
                         contentBlock.Text = valueText;
                     }
 
@@ -131,8 +131,55 @@ namespace DatenMeisterWPF.Forms.Base
                                 DetailElement.set(name, contentBlock.Text);
                             }
                         });
+
+                    return contentBlock;
                 }
 
+                UIElement CreateForEnumeration()
+                {
+                    var contentBlock = new Grid();
+                    Grid.SetColumn(contentBlock, 1);
+                    Grid.SetRow(contentBlock, n);
+                    contentBlock.ColumnDefinitions.Add(new ColumnDefinition());
+                    contentBlock.ColumnDefinitions.Add(new ColumnDefinition());
+
+                    if (DetailElement?.isSet(name) == true)
+                    {
+                        var value = DetailElement.get(name);
+                        if (!DotNetHelper.IsOfEnumeration(value))
+                        {
+                            value = new[] {value};
+                        }
+
+                        var inner = 0;
+                        var valueAsEnumeration = (IEnumerable<object>) value;
+                        foreach (var innerValue in valueAsEnumeration)
+                        {
+                            contentBlock.RowDefinitions.Add(new RowDefinition());
+
+                            var innerTextBlock = new TextBlock
+                            {
+                                Text = innerValue.ToString()
+                            };
+                            Grid.SetRow(innerTextBlock, inner);
+                            Grid.SetColumn(innerTextBlock, 0);
+
+                            contentBlock.Children.Add(innerTextBlock);
+
+                            inner++;
+                        }
+                    }
+
+                    return contentBlock;
+                }
+
+                /* Now do your job */
+                DataGrid.Children.Add(
+                    isEnumeration ? 
+                        CreateForEnumeration() : 
+                        CreateForText());
+                
+                // Content Block
                 n++;
             }
         }

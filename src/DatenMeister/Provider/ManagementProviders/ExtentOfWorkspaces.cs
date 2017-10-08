@@ -2,13 +2,18 @@
 using System.Linq;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Provider.HelpingExtents
+namespace DatenMeister.Provider.ManagementProviders
 {
     /// <summary>
     /// Contains all workspaces in an extent like structure
     /// </summary>
     public class ExtentOfWorkspaces : IProvider
     {
+        /// <summary>
+        /// Gets the uri of the extent which contains the workspaces
+        /// </summary>
+        public const string WorkspaceUri = "datenmeister:///_internal/workspaces/";
+
         /// <summary>
         /// Initializes a new instance of the ExtentOfWorkspaces
         /// </summary>

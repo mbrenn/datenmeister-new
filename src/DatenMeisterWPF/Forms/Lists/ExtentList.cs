@@ -8,7 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.CSV.Runtime;
-using DatenMeister.Provider.HelpingExtents;
+using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;

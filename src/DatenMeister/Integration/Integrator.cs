@@ -149,7 +149,7 @@ namespace DatenMeister.Integration
                 scope.Resolve<ViewDefinitions>().AddToViewDefinition();
                 
                 // Includes the extent for the helping extents
-                Provider.HelpingExtents.ManagementProviderHelper.Initialize(workspaceLogic);
+                ManagementProviderHelper.Initialize(workspaceLogic);
 
 
                 // Boots up the typical DatenMeister Environment  

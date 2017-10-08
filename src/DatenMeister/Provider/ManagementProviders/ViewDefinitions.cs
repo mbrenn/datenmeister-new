@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;

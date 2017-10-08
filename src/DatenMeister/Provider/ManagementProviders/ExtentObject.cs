@@ -6,7 +6,7 @@ namespace DatenMeister.Provider.ManagementProviders
 {
     public class ExtentObject : MappingProviderObject<IUriExtent>
     {
-        public ExtentObject(IProvider provider, IUriExtent uriExtent) : base(uriExtent, provider, uriExtent.contextURI())
+        public ExtentObject(IProvider provider, IUriExtent uriExtent) : base(uriExtent, provider, uriExtent.contextURI(), MetaclassUri)
         {
             AddMapping(
                 "uri",
@@ -23,5 +23,10 @@ namespace DatenMeister.Provider.ManagementProviders
                 e => (e as MofExtent)?.Provider.GetType().Name,
                 (e, v) => throw new InvalidOperationException("Count cannot be set"));
         }
+
+        /// <summary>
+        /// Stores the uri to the metaclass
+        /// </summary>
+        public const string MetaclassUri = ExtentOfWorkspaces.WorkspaceUri + "#Object";
     }
 }

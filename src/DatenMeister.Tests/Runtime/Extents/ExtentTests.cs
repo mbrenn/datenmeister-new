@@ -3,7 +3,7 @@ using System.Linq;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Provider.HelpingExtents;
+using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             using (var scope = builder.BeginLifetimeScope())
             {
                 var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
-                var workspaceExtent = workspaceLogic.FindExtent(Uris.WorkspaceUri);
+                var workspaceExtent = workspaceLogic.FindExtent(ExtentOfWorkspaces.WorkspaceUri);
                 Assert.That(workspaceExtent, Is.Not.Null);
                 var asData = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameData);
                 var asManagement = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameManagement);

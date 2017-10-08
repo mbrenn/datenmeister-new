@@ -4,7 +4,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Provider.HelpingExtents
+namespace DatenMeister.Provider.ManagementProviders
 {
     /// <summary>
     /// Defines the static helper
@@ -19,7 +19,7 @@ namespace DatenMeister.Provider.HelpingExtents
         {
             // Adds the extent containing the workpsaces
             workspaceLogic.GetManagementWorkspace().extent.Add(
-                new MofUriExtent(new ExtentOfWorkspaces(workspaceLogic), Uris.WorkspaceUri));
+                new MofUriExtent(new ExtentOfWorkspaces(workspaceLogic), ExtentOfWorkspaces.WorkspaceUri));
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace DatenMeister.Provider.HelpingExtents
         public static IUriExtent GetExtentsForWorkspaces(IDatenMeisterScope scope)
         {
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
-            return workspaceLogic.GetManagementWorkspace().FindExtent(Uris.WorkspaceUri);
+            return workspaceLogic.GetManagementWorkspace().FindExtent(ExtentOfWorkspaces.WorkspaceUri);
         }
     }
 }

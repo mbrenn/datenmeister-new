@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Provider.HelpingExtents
+namespace DatenMeister.Provider.ManagementProviders
 {
-    public class WorkspaceObject : MappingProviderObject<Workspace>, IProviderObject
+    public class WorkspaceObject : MappingProviderObject<Workspace>
     {
         /// <summary>
         /// Initializes a new instance of the WorkspaceObject
         /// </summary>
         /// <param name="workspace">Workspace to be set</param>
         /// <param name="provider">The provider being set</param>
-        public WorkspaceObject(IProvider provider, Workspace workspace) : base (workspace, provider, workspace.id)
+        public WorkspaceObject(IProvider provider, Workspace workspace) : base (workspace, provider, workspace.id, MetaclassUri)
         {
             AddMapping(
                 "id",
@@ -32,5 +30,9 @@ namespace DatenMeister.Provider.HelpingExtents
                 (w, v) => throw new InvalidOperationException("Extent cannot be set"));
         }
 
+        /// <summary>
+        /// Stores the uri to the metaclass
+        /// </summary>
+        public const string MetaclassUri = ExtentOfWorkspaces.WorkspaceUri + "#Workspace";
     }
 }

@@ -2,7 +2,7 @@
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Provider.HelpingExtents;
+using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Forms.Detail;
 using DatenMeisterWPF.Navigation;

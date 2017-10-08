@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Xml.Linq;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI;
 
@@ -42,7 +43,7 @@ namespace DatenMeisterWPF.Windows
         /// Sets the content of the window by converting the given elements to an xml
         /// </summary>
         /// <param name="elements">Items to be shown</param>
-        public void UpdateContent(IEnumerable<IObject> elements)
+        public void UpdateContent(IReflectiveSequence elements)
         {
             var xmiConverter = new XmlConverter();
             var element = xmiConverter.ConvertToXml(elements);

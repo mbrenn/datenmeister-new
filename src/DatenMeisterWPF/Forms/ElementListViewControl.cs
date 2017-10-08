@@ -11,12 +11,12 @@ namespace DatenMeisterWPF.Forms
     public class ElementListViewControl : ListViewControl
     {
         /// <summary>
-        /// Shows the enumeration of the reflection
+        /// Shows the enumeration of the reflection. It also creates a view if required.
         /// </summary>
         /// <param name="scope">Scope to be used to retrieve additional objects</param>
         /// <param name="sequence">Sequence to be shown</param>
         /// <param name="formDefinition">Form to be shown</param>
-        public void SetContent(IDatenMeisterScope scope, IReflectiveSequence sequence, IElement formDefinition)
+        public new void SetContent(IDatenMeisterScope scope, IReflectiveSequence sequence, IElement formDefinition)
         {
             if (formDefinition == null)
             {
@@ -24,7 +24,7 @@ namespace DatenMeisterWPF.Forms
                 formDefinition = viewFinder.CreateView(sequence);
             }
 
-            SetContent(scope, sequence.Cast<IObject>(), formDefinition);
+            base.SetContent(scope, sequence, formDefinition);
         }
     }
 }

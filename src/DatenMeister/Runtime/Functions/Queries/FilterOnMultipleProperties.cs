@@ -33,13 +33,13 @@ namespace DatenMeister.Runtime.Functions.Queries
                 var valueAsObject = value as IObject;
                 foreach (var property in properties)
                 {
-                    if ((valueAsObject?.isSet(property) == true) &&
-                        (valueAsObject
-                            ?.get(property)
+                    if (valueAsObject?.isSet(property) == true &&
+                        valueAsObject.get(property)
                             ?.ToString()
-                            ?.IndexOf(_searchString, _comparison) >= 0))
+                            ?.IndexOf(_searchString, _comparison) >= 0)
                     {
                         yield return valueAsObject;
+                        break;
                     }
                 }
             }
@@ -53,10 +53,11 @@ namespace DatenMeister.Runtime.Functions.Queries
                 var valueAsObject = value as IObject;
                 foreach (var property in _properties)
                 {
-                    if ((valueAsObject?.isSet(property) == true) &&
-                        (valueAsObject.get(property)?.ToString()?.Contains(_searchString) == true))
+                    if (valueAsObject?.isSet(property) == true &&
+                        valueAsObject.get(property)?.ToString()?.Contains(_searchString) == true)
                     {
                         result++;
+                        break;
                     }
                 }
             }

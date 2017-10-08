@@ -15,6 +15,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
@@ -31,7 +32,7 @@ namespace DatenMeisterWPF.Forms.Base
             InitializeComponent();
         }
 
-        public IEnumerable<IObject> Items { get; set; }
+        public IReflectiveSequence Items { get; set; }
 
         public IElement FormDefinition { get; set; }
 
@@ -44,6 +45,11 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private readonly List<RowItemButtonDefinition> _rowItemButtonDefinitions = new List<RowItemButtonDefinition>();
 
+        /// <summary>
+        /// Defines the text being used for search
+        /// </summary>
+        private string _searchText;
+
         private bool SupportNewItems
         {
             get => DataGrid.CanUserAddRows;
@@ -52,7 +58,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Updates the content by going through the fields and items
         /// </summary>
-        public void SetContent(IDatenMeisterScope scope, IEnumerable<IObject> items, IElement formDefinition)
+        public void SetContent(IDatenMeisterScope scope, IReflectiveSequence items, IElement formDefinition)
         {
             Items = items;
             FormDefinition = formDefinition;
@@ -78,6 +84,8 @@ namespace DatenMeisterWPF.Forms.Base
 
             DataGrid.Columns.Clear();
 
+            var fieldNames = new List<string>();
+
             // Creates the column
             foreach (var field in fields.Cast<IElement>())
             {
@@ -92,12 +100,22 @@ namespace DatenMeisterWPF.Forms.Base
                 };
 
                 DataGrid.Columns.Add(dataColumn);
+
+                fieldNames.Add(name);
             }
 
             // Creates the rowns
             if (Items != null)
             {
-                foreach (var item in Items)
+                // Get the items and honor searching
+                var items = Items.OfType<IObject>();
+                if (!string.IsNullOrEmpty(_searchText))
+                {
+                    items = Items.WhenOneOfThePropertyContains(fieldNames, _searchText).OfType<IObject>();
+                }
+
+                // Go through the items and build up the list of elements
+                foreach (var item in items)
                 {
                     var itemObject = new ExpandoObject();
                     var asDictionary = (IDictionary<string, object>) itemObject;
@@ -376,6 +394,12 @@ namespace DatenMeisterWPF.Forms.Base
             /// Gets or sets the action being called when the user clicks on the button
             /// </summary>
             public Action<IObject> OnClick { get; set; }
+        }
+
+        private void SearchField_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            _searchText = SearchField.Text;
+            UpdateContent();
         }
     }
 }

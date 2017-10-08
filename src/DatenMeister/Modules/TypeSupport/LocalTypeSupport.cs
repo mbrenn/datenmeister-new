@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -20,6 +21,10 @@ namespace DatenMeister.Modules.TypeSupport
     {
         private readonly IWorkspaceLogic _workspaceLogic;
 
+        /// <summary>
+        /// Initializes a new instance of the LocalTypeSupport class
+        /// </summary>
+        /// <param name="workspaceLogic">Workspace logic which is required to find the given local type support storage</param>
         public LocalTypeSupport(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
@@ -41,11 +46,22 @@ namespace DatenMeister.Modules.TypeSupport
                 new MofFactory(internalTypeExtent),
                 packageName,
                 "name",
-                "children",
+                _UML._CommonStructure._Namespace.member,
                 "Package");
 
-            package.set("children", new List<object>());
-            var children = (IReflectiveSequence) package.get("children");
+            package.set(_UML._CommonStructure._Namespace.member, new List<object>());
+
+            IReflectiveSequence children;
+            if (package.isSet(_UML._CommonStructure._Namespace.member))
+            {
+                children = (IReflectiveSequence) package.get(_UML._CommonStructure._Namespace.member);
+            }
+            else
+            {
+                package.set(_UML._CommonStructure._Namespace.member, new List<object>());
+                children = (IReflectiveSequence) package.get(_UML._CommonStructure._Namespace.member);
+            }
+
             return AddLocalTypes(children, types);
         }
 
@@ -104,11 +120,55 @@ namespace DatenMeister.Modules.TypeSupport
             return AddLocalTypes(packageName, new[] { type }).First();
         }
 
+        /// <summary>
+        /// Gets the metaclass within the internal type and user-defined type extent
+        /// </summary>
+        /// <param name="type">Type to be defined</param>
+        /// <returns>The element of the meta class</returns>
         public IElement GetMetaClassFor(Type type)
         {
             var internalTypeExtent = GetInternalTypeExtent();
             var found = internalTypeExtent.element(internalTypeExtent.contextURI() + "#" + type.FullName);
-            return found;
+
+            if (found != null)
+            {
+                return found;
+            }
+
+            foreach (var extent in GetOtherTypeExtents())
+            {
+                found = extent.element(internalTypeExtent.contextURI() + "#" + type.FullName);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+
+            return null;
+        }
+
+        public IElement GetMetaClassFor(string fullName)
+        {
+            var internalTypeExtent = GetInternalTypeExtent();
+            var found = NamedElementMethods.GetByFullName(internalTypeExtent.elements(), fullName);
+
+            if (found != null)
+            {
+                return found;
+            }
+
+            foreach (var extent in GetOtherTypeExtents())
+            {
+
+                found = NamedElementMethods.GetByFullName(extent.elements(), fullName);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+
+            return null;
+
         }
 
         private IUriExtent GetInternalTypeExtent()
@@ -116,6 +176,20 @@ namespace DatenMeister.Modules.TypeSupport
             var workspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
             var internalTypeExtent = GetInternalTypeExtent(workspace);
             return internalTypeExtent;
+        }
+
+        /// <summary>
+        /// Gets all other type extents, except the internal type extent
+        /// </summary>
+        /// <returns>Enumeration of all other type extents</returns>
+        private IEnumerable<IUriExtent> GetOtherTypeExtents()
+        {
+            var workspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
+
+            return workspace.extent
+                .OfType<IUriExtent>()
+                .Where(x => x.contextURI() != WorkspaceNames.UriInternalTypes)
+                .ToList();
         }
 
         /// <summary>

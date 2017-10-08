@@ -10,8 +10,8 @@
         <StackPanel Orientation="Horizontal" x:Name="ButtonBar" 
                     DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10">
         </StackPanel>
-        <ScrollViewer VerticalContentAlignment="Top">
-            <Grid x:Name="DataGrid" Margin="10">
+        <ScrollViewer>
+            <Grid x:Name="DataGrid" Margin="10" VerticalAlignment="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition />

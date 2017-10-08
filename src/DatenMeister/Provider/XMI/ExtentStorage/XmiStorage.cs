@@ -5,17 +5,12 @@ using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.XMI.ExtentStorage
 {
     [ConfiguredBy(typeof(XmiStorageConfiguration))]
     public class XmiStorage : IExtentLoader
     {
-        public XmiStorage()
-        {
-        }
-
         public IProvider LoadExtent(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)
         {
             var xmiConfiguration = (XmiStorageConfiguration) configuration;

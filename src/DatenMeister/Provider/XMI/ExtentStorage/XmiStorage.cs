@@ -25,6 +25,13 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             {
                 if (createAlsoEmpty)
                 {
+                    // Creates directory if necessary
+                    var directoryPath = Path.GetDirectoryName(xmiConfiguration.Path);
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
+
                     // We need to create an empty Xmi file... Not the best thing at the moment, but we try it. 
                     xmlDocument = new XDocument(
                         new XElement(XmiProvider.DefaultRootNodeName));

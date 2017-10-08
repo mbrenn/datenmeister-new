@@ -11,6 +11,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Base
@@ -34,14 +35,12 @@ namespace DatenMeisterWPF.Forms.Base
         /// transferred from form display to element
         /// </summary>
         public event EventHandler ElementSaved;
-        
 
         /// <summary>
         /// Stores the list of actions that will be performed when the user clicks on set
         /// </summary>
         private readonly List<Action> _setActions= new List<Action>();
-
-
+        
         public DetailFormControl()
         {
             InitializeComponent();
@@ -67,6 +66,8 @@ namespace DatenMeisterWPF.Forms.Base
             _scope = scope;
 
             SetContent();
+
+            ItemLocation.Text = NamedElementMethods.GetFullName(element);
         }
 
         /// <summary>

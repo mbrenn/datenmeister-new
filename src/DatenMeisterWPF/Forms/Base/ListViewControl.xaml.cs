@@ -191,7 +191,10 @@ namespace DatenMeisterWPF.Forms.Base
         {
             AddGenericButton("View Extent", () =>
             {
-                var dlg = new ItemXmlViewWindow();
+                var dlg = new ItemXmlViewWindow
+                {
+                    Owner = Window.GetWindow(this)
+                };
                 dlg.UpdateContent(Items);
                 dlg.ShowDialog();
             });
@@ -200,7 +203,8 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 var dlg = new ItemXmlViewWindow
                 {
-                    SupportWriting = true
+                    SupportWriting = true,
+                    Owner = Window.GetWindow(this)
                 };
                 dlg.UpdateContent(FormDefinition);
 

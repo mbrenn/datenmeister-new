@@ -11,6 +11,8 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
+using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Base
 {
@@ -33,14 +35,12 @@ namespace DatenMeisterWPF.Forms.Base
         /// transferred from form display to element
         /// </summary>
         public event EventHandler ElementSaved;
-        
 
         /// <summary>
         /// Stores the list of actions that will be performed when the user clicks on set
         /// </summary>
         private readonly List<Action> _setActions= new List<Action>();
-
-
+        
         public DetailFormControl()
         {
             InitializeComponent();
@@ -66,6 +66,8 @@ namespace DatenMeisterWPF.Forms.Base
             _scope = scope;
 
             SetContent();
+
+            ItemLocation.Text = NamedElementMethods.GetFullName(element);
         }
 
         /// <summary>
@@ -107,19 +109,19 @@ namespace DatenMeisterWPF.Forms.Base
                 Grid.SetColumn(titleBlock, 0);
                 Grid.SetRow(titleBlock, n);
                 DataGrid.Children.Add(titleBlock);
+
                 
-                // Content Block
-                if (!isEnumeration)
+                /* Local functions for text and enumerations */
+                UIElement CreateForText()
                 {
                     var contentBlock = new TextBox();
                     Grid.SetColumn(contentBlock, 1);
                     Grid.SetRow(contentBlock, n);
-                    DataGrid.Children.Add(contentBlock);
 
                     string valueText = string.Empty;
-                    if (DetailElement.isSet(name))
+                    if (DetailElement?.isSet(name) == true)
                     {
-                        valueText = DetailElement?.get(name)?.ToString() ?? string.Empty;
+                        valueText = DetailElement.get(name)?.ToString() ?? string.Empty;
                         contentBlock.Text = valueText;
                     }
 
@@ -131,8 +133,75 @@ namespace DatenMeisterWPF.Forms.Base
                                 DetailElement.set(name, contentBlock.Text);
                             }
                         });
+
+                    return contentBlock;
                 }
 
+                UIElement CreateForEnumeration()
+                {
+                    var contentBlock = new Grid();
+                    Grid.SetColumn(contentBlock, 1);
+                    Grid.SetRow(contentBlock, n);
+                    contentBlock.ColumnDefinitions.Add(new ColumnDefinition());
+                    contentBlock.ColumnDefinitions.Add(new ColumnDefinition());
+
+                    if (DetailElement?.isSet(name) == true)
+                    {
+                        var value = DetailElement.get(name);
+                        if (!DotNetHelper.IsOfEnumeration(value))
+                        {
+                            value = new[] {value};
+                        }
+
+                        var inner = 0;
+                        var valueAsEnumeration = (IEnumerable<object>) value;
+                        foreach (var innerValue in valueAsEnumeration)
+                        {
+                            contentBlock.RowDefinitions.Add(new RowDefinition());
+
+                            // Creates the text
+                            var innerTextBlock = new TextBlock
+                            {
+                                Text = innerValue.ToString()
+                            };
+                            Grid.SetRow(innerTextBlock, inner);
+                            Grid.SetColumn(innerTextBlock, 0);
+
+                            contentBlock.Children.Add(innerTextBlock);
+
+                            // Creates the button
+                            if (innerValue is IElement asIElement)
+                            {
+                                var button = new Button
+                                {
+                                    Content = "Edit"
+                                };
+                                Grid.SetRow(button, inner);
+                                Grid.SetColumn(button, 1);
+
+                                button.Click += (sender, args) =>
+                                    Navigator.TheNavigator.NavigateToElementDetailView(
+                                        Window.GetWindow(this),
+                                        _scope,
+                                        asIElement);
+
+                                contentBlock.Children.Add(button);
+                            }
+
+                            inner++;
+                        }
+                    }
+
+                    return contentBlock;
+                }
+
+                /* Now do your job */
+                DataGrid.Children.Add(
+                    isEnumeration ? 
+                        CreateForEnumeration() : 
+                        CreateForText());
+                
+                // Content Block
                 n++;
             }
         }
@@ -187,7 +256,7 @@ namespace DatenMeisterWPF.Forms.Base
             return button;
         }
 
-        protected virtual void OnElementSaved()
+        protected void OnElementSaved()
         {
             ElementSaved?.Invoke(this, EventArgs.Empty);
         }

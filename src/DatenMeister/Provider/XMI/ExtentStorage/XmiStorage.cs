@@ -5,17 +5,12 @@ using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.XMI.ExtentStorage
 {
     [ConfiguredBy(typeof(XmiStorageConfiguration))]
     public class XmiStorage : IExtentLoader
     {
-        public XmiStorage()
-        {
-        }
-
         public IProvider LoadExtent(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)
         {
             var xmiConfiguration = (XmiStorageConfiguration) configuration;
@@ -25,6 +20,13 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             {
                 if (createAlsoEmpty)
                 {
+                    // Creates directory if necessary
+                    var directoryPath = Path.GetDirectoryName(xmiConfiguration.Path);
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
+
                     // We need to create an empty Xmi file... Not the best thing at the moment, but we try it. 
                     xmlDocument = new XDocument(
                         new XElement(XmiProvider.DefaultRootNodeName));

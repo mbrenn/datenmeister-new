@@ -151,7 +151,6 @@ namespace DatenMeisterWPF.Forms.Base
                     _itemMapping[itemObject] = item;
                     listItems.Add(itemObject);
 
-
                     // Adds the notification for the property
                     var noMessageBox = false;
                     (itemObject as INotifyPropertyChanged).PropertyChanged += (x, y) =>

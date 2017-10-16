@@ -28,6 +28,12 @@ namespace DatenMeister.Models.Forms
         /// </summary>
         public string detailForm { get; set; }
 
+        /// <summary>
+        /// Indicate whether the meta class shall not be shown in the form.
+        /// If the value is true, the detail form will not contain the metaclass
+        /// </summary>
+        public string hideMetaClass { get; set; }
+
         public Form()
         {
         }

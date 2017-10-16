@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-// Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0 created at 06.10.2017 14:18:00
+// Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0 created at 16.10.2017 22:07:59
 namespace DatenMeister.Models.Forms
 {
     public class FillTheFormAndFields : DatenMeister.Core.Filler.IFiller<_FormAndFields>
@@ -58,6 +58,10 @@ namespace DatenMeister.Models.Forms
                                 if(name == "detailForm") // Looking for property
                                 {
                                     tree.Form._detailForm = value;
+                                }
+                                if(name == "hideMetaClass") // Looking for property
+                                {
+                                    tree.Form._hideMetaClass = value;
                                 }
                             }
                         }

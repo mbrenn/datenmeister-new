@@ -99,22 +99,27 @@ namespace DatenMeisterWPF.Forms.Base
             var n = CreateRows(fields);
 
             // Sets the metaclass
-            var metaClassKey = new TextBlock
+            if (_formDefinition.isSet(_FormAndFields._Form.hideMetaClass) &&
+                DotNetHelper.AsBoolean(_formDefinition.get(_FormAndFields._Form.hideMetaClass)))
             {
-                Text = "Metaclass: "
-            };
+                var metaClassKey = new TextBlock
+                {
+                    Text = "Metaclass: "
+                };
 
-            var metaClassValue = new TextBlock
-            {
-                Text = DetailElement.getMetaClass()?.ToString()
-            };
+                var metaClassValue = new TextBlock
+                {
+                    Text = DetailElement.getMetaClass()?.ToString()
+                };
 
-            DataGrid.RowDefinitions.Add(new RowDefinition());
-            Grid.SetRow(metaClassKey, n);
-            Grid.SetRow(metaClassValue, n);
-            Grid.SetColumn(metaClassValue, 1);
-            DataGrid.Children.Add(metaClassKey);
-            DataGrid.Children.Add(metaClassValue);
+                DataGrid.RowDefinitions.Add(new RowDefinition());
+                Grid.SetRow(metaClassKey, n);
+                Grid.SetRow(metaClassValue, n);
+                Grid.SetColumn(metaClassValue, 1);
+                DataGrid.Children.Add(metaClassKey);
+                DataGrid.Children.Add(metaClassValue);
+                n++;
+            }
         }
 
         /// <summary>

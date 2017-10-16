@@ -177,11 +177,13 @@ namespace DatenMeister.Runtime
         /// <returns>True, if value indicates a true statement</returns>
         public static bool AsBoolean(object value)
         {
-            return value.Equals(true) ||
-                   value.Equals(1) ||
-                   value.Equals("true") ||
-                   value.Equals("TRUE") ||
-                   value is string && value.ToString().ToLower() == "true";
+            return value != null &&
+                   (
+                       value.Equals(true) ||
+                       value.Equals(1) ||
+                       value.Equals("true") ||
+                       value.Equals("TRUE") ||
+                       value is string && value.ToString().ToLower() == "true");
         }
 
         /// <summary>

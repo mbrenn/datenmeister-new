@@ -26,7 +26,6 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <param name="workspaceId">Id of the workspace whose extents shall be shown</param>
         public void SetContent(IDatenMeisterScope scope, string workspaceId)
         {
-            var window = Window.GetWindow(this);
             var viewExtent = scope.Resolve<ViewLogic>().GetViewExtent();
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(scope);
             var workspace = workspaceExtent.elements().WhenPropertyIs("id", workspaceId).FirstOrDefault() as IElement;
@@ -45,12 +44,14 @@ namespace DatenMeisterWPF.Forms.Lists
 
             void NewXmiExtent()
             {
+                var window = Window.GetWindow(this);
                 var events = Navigator.TheNavigator.NavigateToNewXmiExtentDetailView(window, scope, workspaceId);
                 events.Closed += (x, y) => UpdateContent();
             }
 
             void ShowItems(IObject extentElement)
             {
+                var window = Window.GetWindow(this);
                 Navigator.TheNavigator.NavigateTo(window, () =>
                 {
                     var workLogic = scope.Resolve<IWorkspaceLogic>();

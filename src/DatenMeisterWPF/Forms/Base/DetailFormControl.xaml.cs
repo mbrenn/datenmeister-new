@@ -144,7 +144,6 @@ namespace DatenMeisterWPF.Forms.Base
                 Grid.SetRow(titleBlock, n);
                 DataGrid.Children.Add(titleBlock);
 
-
                 /* Local functions for text and enumerations */
                 UIElement CreateForText()
                 {
@@ -157,6 +156,13 @@ namespace DatenMeisterWPF.Forms.Base
                     {
                         valueText = DetailElement.get(name)?.ToString() ?? string.Empty;
                         contentBlock.Text = valueText;
+                    }
+                    else
+                    {
+                        if (field.isSet(_FormAndFields._FieldData.defaultValue))
+                        {
+                            contentBlock.Text = field.get(_FormAndFields._FieldData.defaultValue).ToString();
+                        }
                     }
 
                     _setActions.Add(

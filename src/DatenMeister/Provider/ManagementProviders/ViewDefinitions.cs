@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -131,9 +132,16 @@ namespace DatenMeister.Provider.ManagementProviders
             };
 
             form.fields.Add(
-                new TextFieldData("uri", "URI"));
+                new TextFieldData("uri", "URI")
+                {
+                    defaultValue = "dm:///"
+                });
             form.fields.Add(
-                new TextFieldData("filepath", "Path to Xmi File"));
+                new TextFieldData("filepath", "Path to Xmi File")
+                {
+                    defaultValue =
+                        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments).Replace("\\", "/") + "/"
+                });
 
             return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
         }

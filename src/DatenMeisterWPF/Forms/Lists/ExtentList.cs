@@ -40,35 +40,25 @@ namespace DatenMeisterWPF.Forms.Lists
             AddGenericButton("New Xmi Extent", NewXmiExtent);
             AddRowItemButton("Show Items", ShowItems);
             AddGenericButton("Zip-Code Example", AddZipCodeExample);
-
-
+            
             void NewXmiExtent()
             {
                 var window = Window.GetWindow(this);
                 var events = Navigator.TheNavigator.NavigateToNewXmiExtentDetailView(window, scope, workspaceId);
                 events.Closed += (x, y) => UpdateContent();
             }
-
+            
             void ShowItems(IObject extentElement)
             {
                 var window = Window.GetWindow(this);
-                Navigator.TheNavigator.NavigateTo(window, () =>
-                {
-                    var workLogic = scope.Resolve<IWorkspaceLogic>();
-                    var uri = extentElement.get("uri").ToString();
-                    var extent = workLogic.FindExtent(workspaceId, uri);
-                    if (extent == null)
-                    {
-                        return null;
-                    }
+                var uri = extentElement.get("uri").ToString();
 
-
-                    var control = new ElementListViewControl();
-                    control.SetContent(scope, extent.elements(), null);
-                    control.AddDefaultButtons();
-
-                    return control;
-                });
+                var events = Navigator.TheNavigator.NavigateToItemsInExtent(
+                    window,
+                    scope,
+                    workspaceId,
+                    uri);
+                events.Closed += (x, y) => UpdateContent();
             }
 
             void AddZipCodeExample()

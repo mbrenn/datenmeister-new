@@ -29,6 +29,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public IElement DetailElement { get; private set; }
 
+        public bool AllowNewProperties { get; set; }
+
         private IDatenMeisterScope _scope;
 
         /// <summary>
@@ -78,6 +80,8 @@ namespace DatenMeisterWPF.Forms.Base
             }
         }
 
+        private int _fieldCount;
+
         /// <summary>
         /// Updates the content
         /// </summary>
@@ -96,7 +100,8 @@ namespace DatenMeisterWPF.Forms.Base
                 return;
             }
 
-            var n = CreateRows(fields);
+            _fieldCount = 0;
+            CreateRows(fields);
 
             // Sets the metaclass
             if (_formDefinition.isSet(_FormAndFields._Form.hideMetaClass) &&
@@ -113,12 +118,12 @@ namespace DatenMeisterWPF.Forms.Base
                 };
 
                 DataGrid.RowDefinitions.Add(new RowDefinition());
-                Grid.SetRow(metaClassKey, n);
-                Grid.SetRow(metaClassValue, n);
+                Grid.SetRow(metaClassKey, _fieldCount);
+                Grid.SetRow(metaClassValue, _fieldCount);
                 Grid.SetColumn(metaClassValue, 1);
                 DataGrid.Children.Add(metaClassKey);
                 DataGrid.Children.Add(metaClassValue);
-                n++;
+                _fieldCount++;
             }
         }
 
@@ -126,17 +131,14 @@ namespace DatenMeisterWPF.Forms.Base
         /// Creates the rows
         /// </summary>
         /// <param name="fields">Fields to be created</param>
-        private int CreateRows(IReflectiveCollection fields)
+        private void CreateRows(IReflectiveCollection fields)
         {
-            var n = 0;
             foreach (var field in fields.Cast<IElement>())
             {
                 var name = field.get(_FormAndFields._FieldData.name).ToString();
                 var title = field.get(_FormAndFields._FieldData.title).ToString();
                 var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
                 var isReadOnly = field.get(_FormAndFields._FieldData.isReadOnly).ToString();
-                
-                DataGrid.RowDefinitions.Add(new RowDefinition());
 
                 // Sets the title block
                 var titleBlock = new TextBlock
@@ -145,16 +147,11 @@ namespace DatenMeisterWPF.Forms.Base
                     IsEnabled = !DotNetHelper.AsBoolean(isReadOnly)
                 };
 
-                Grid.SetColumn(titleBlock, 0);
-                Grid.SetRow(titleBlock, n);
-                DataGrid.Children.Add(titleBlock);
 
                 /* Local functions for text and enumerations */
                 UIElement CreateForText()
                 {
                     var contentBlock = new TextBox();
-                    Grid.SetColumn(contentBlock, 1);
-                    Grid.SetRow(contentBlock, n);
 
                     var valueText = string.Empty;
                     if (DetailElement?.isSet(name) == true)
@@ -186,7 +183,7 @@ namespace DatenMeisterWPF.Forms.Base
                 {
                     var contentBlock = new Grid();
                     Grid.SetColumn(contentBlock, 1);
-                    Grid.SetRow(contentBlock, n);
+                    Grid.SetRow(contentBlock, _fieldCount);
                     contentBlock.ColumnDefinitions.Add(new ColumnDefinition());
                     contentBlock.ColumnDefinitions.Add(new ColumnDefinition());
 
@@ -209,8 +206,6 @@ namespace DatenMeisterWPF.Forms.Base
                             {
                                 Text = innerValue.ToString()
                             };
-                            Grid.SetRow(innerTextBlock, inner);
-                            Grid.SetColumn(innerTextBlock, 0);
 
                             contentBlock.Children.Add(innerTextBlock);
 
@@ -241,14 +236,30 @@ namespace DatenMeisterWPF.Forms.Base
                 }
 
                 /* Now do your job */
-                DataGrid.Children.Add(
-                    isEnumeration ? CreateForEnumeration() : CreateForText());
-
-                // Content Block
-                n++;
+                var item = isEnumeration ? CreateForEnumeration() : CreateForText();
+                CreateRowForFields(titleBlock, item);
             }
+        }
 
-            return n;
+        /// <summary>
+        /// Creates a new row in the detail view 
+        /// </summary>
+        /// <param name="propertyKey">UIElement for the left column</param>
+        /// <param name="propertyValue">UIElement for the right column</param>
+        private void CreateRowForFields(UIElement propertyKey, UIElement propertyValue)
+        {
+            DataGrid.RowDefinitions.Add(new RowDefinition());
+
+            Grid.SetColumn(propertyKey, 0);
+            Grid.SetRow(propertyKey, _fieldCount);
+
+            Grid.SetColumn(propertyValue, 1);
+            Grid.SetRow(propertyValue, _fieldCount);
+
+            DataGrid.Children.Add(propertyKey);
+            DataGrid.Children.Add(propertyValue);
+
+            _fieldCount++;
         }
 
         /// <summary>
@@ -256,6 +267,29 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public void AddDefaultButtons(string saveText = "Save")
         {
+            if (AllowNewProperties)
+            {
+                AddGenericButton("New Property", () =>
+                {
+                    var fieldKey = new TextBox();
+                    var fieldValue = new TextBox();
+
+                    _setActions.Add(() =>
+                    {
+                        var propertyKey = fieldKey.Text;
+                        var propertyValue = fieldValue.Text;
+
+                        if (!string.IsNullOrEmpty(propertyKey))
+                        {
+                            DetailElement.set(propertyKey, propertyValue);
+                        }
+                    });
+
+                    CreateRowForFields(fieldKey, fieldValue);
+                    fieldKey.Focus();
+                });
+            }
+
             AddGenericButton("Cancel", () =>
             {
                 var window = Window.GetWindow(this);

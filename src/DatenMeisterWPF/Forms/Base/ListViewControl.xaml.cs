@@ -68,6 +68,14 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
+        /// This method gets called, when a new item is added or an existing item was modified. 
+        /// Derivation of the class which have automatic creation of columns may include additional columns
+        /// </summary>
+        public virtual void RefreshViewDefinition()
+        {
+        }
+
+        /// <summary>
         /// Updates the content
         /// </summary>
         public void UpdateContent()
@@ -76,32 +84,11 @@ namespace DatenMeisterWPF.Forms.Base
 
             var listItems = new List<ExpandoObject>();
             _itemMapping.Clear();
-
-            if (!(FormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
+            
+            var (fieldNames, fields) = UpdateColumns();
+            if (fieldNames == null)
             {
                 return;
-            }
-
-            DataGrid.Columns.Clear();
-
-            var fieldNames = new List<string>();
-
-            // Creates the column
-            foreach (var field in fields.Cast<IElement>())
-            {
-                var name = field.get(_FormAndFields._FieldData.name).ToString();
-                var title = field.get(_FormAndFields._FieldData.title);
-                var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
-                var dataColumn = new DataGridTextColumn
-                {
-                    Header = title,
-                    Binding = new Binding(name),
-                    IsReadOnly = isEnumeration
-                };
-
-                DataGrid.Columns.Add(dataColumn);
-
-                fieldNames.Add(name);
             }
 
             // Creates the rowns
@@ -182,6 +169,37 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 AddRowItemButton(definition, false);
             }
+        }
+
+        private (List<string> names, IReflectiveCollection fields) UpdateColumns()
+        {
+            if (!(FormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
+            {
+                return (null,null);
+            }
+
+            DataGrid.Columns.Clear();
+
+            var fieldNames = new List<string>();
+
+            // Creates the column
+            foreach (var field in fields.Cast<IElement>())
+            {
+                var name = field.get(_FormAndFields._FieldData.name).ToString();
+                var title = field.get(_FormAndFields._FieldData.title);
+                var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
+                var dataColumn = new DataGridTextColumn
+                {
+                    Header = title,
+                    Binding = new Binding(name),
+                    IsReadOnly = isEnumeration
+                };
+
+                DataGrid.Columns.Add(dataColumn);
+
+                fieldNames.Add(name);
+            }
+            return (fieldNames, fields);
         }
 
         /// <summary>

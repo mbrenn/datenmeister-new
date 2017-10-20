@@ -8,7 +8,9 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeisterWPF.Forms;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Lists;
 using DatenMeisterWPF.Windows;
@@ -109,11 +111,19 @@ namespace DatenMeisterWPF.Navigation
                 {
                     var control = new DetailFormControl();
                     control.SetContent(scope, element, null);
+                    control.AllowNewProperties = true;
                     control.AddDefaultButtons();
                     return control;
                 });
         }
 
+        /// <summary>
+        /// Opens the dialog in which the user can create a new xmi extent
+        /// </summary>
+        /// <param name="window">Window being used as an owner</param>
+        /// <param name="scope">Scope of the Datenmeister</param>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <returns></returns>
         public IControlNavigation NavigateToNewXmiExtentDetailView(
             Window window, 
             IDatenMeisterScope scope,
@@ -151,6 +161,21 @@ namespace DatenMeisterWPF.Navigation
                     return control;
                 });
 
+        }
+
+        public IControlNavigation NavigateToItemsInExtent(
+            Window window,
+            IDatenMeisterScope scope,
+            string workspaceId,
+            string extentUrl)
+        {
+            return NavigateTo(window, () =>
+            {
+                var control = new ItemsInExtentList();
+                control.SetContent(scope, workspaceId, extentUrl);
+
+                return control;
+            });
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
@@ -80,9 +81,11 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public void UpdateContent()
         {
-            SupportNewItems = !DotNetHelper.AsBoolean(FormDefinition.get(_FormAndFields._Form.inhibitNewItems));
+            SupportNewItems = 
+                !DotNetHelper.AsBoolean(FormDefinition.get(_FormAndFields._Form.inhibitNewItems));
+            SupportNewItems = false; // TODO: Make new items working
 
-            var listItems = new List<ExpandoObject>();
+            var listItems = new ObservableCollection<ExpandoObject>();
             _itemMapping.Clear();
             
             var (fieldNames, fields) = UpdateColumns();
@@ -244,7 +247,10 @@ namespace DatenMeisterWPF.Forms.Base
                     return;
                 }
 
-                var events = Navigator.TheNavigator.NavigateToElementDetailView(Window.GetWindow(this), Scope, selectedElement as IElement);
+                var events = Navigator.TheNavigator.NavigateToElementDetailView(
+                    Window.GetWindow(this),
+                    Scope, 
+                    selectedElement as IElement);
                 events.Closed += (sender, args) => UpdateContent();
             }
 
@@ -374,7 +380,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         /// <param name="e">Event being called</param>
         /// <returns>The selected item of the button and the column</returns>
-        private (IObject selectedItem, ClickedTemplateColumn column) GetObjectsFromEventRouting(RoutedEventArgs e)
+        private (IObject selectedItem, ClickedTemplateColumn column) 
+            GetObjectsFromEventRouting(RoutedEventArgs e)
         {
             var content = ((ContentPresenter) ((Button) e.Source).TemplatedParent).Content;
 
@@ -383,15 +390,17 @@ namespace DatenMeisterWPF.Forms.Base
                 return (null, null);
             }
 
-            var foundItem = _itemMapping[expandoObject];
+            if (!_itemMapping.TryGetValue(expandoObject, out var foundItem))
+            {
+                return (null, null);
+            }
 
             var button = (Button) e.Source;
             var contentPresenter = (ContentPresenter) button.TemplatedParent;
             var column = (ClickedTemplateColumn) ((DataGridCell) contentPresenter.Parent).Column;
             return (foundItem, column);
         }
-
-
+        
         private void RowButton_OnInitialized(object sender, RoutedEventArgs e)
         {
             var result = GetObjectsFromEventRouting(e);

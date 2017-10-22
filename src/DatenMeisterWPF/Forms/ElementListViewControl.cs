@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using Autofac;
+﻿using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeisterWPF.Forms.Base;
 

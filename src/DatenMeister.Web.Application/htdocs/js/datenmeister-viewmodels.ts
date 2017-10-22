@@ -5,9 +5,7 @@ export class DataField implements DMCI.In.IFieldData {
     title: string;
     name: string;
     defaultValue: any;
-    isEnumeration: 
-    
-    ;
+    isEnumeration: boolean;
     isReadOnly: boolean;
 
     constructor(fieldType: string, title?: string, name?: string) {

@@ -45,6 +45,7 @@ namespace DatenMeisterWPF.Navigation
                     return null;
                 case ListViewControl asListViewControl:
                 {
+                        /*
                     var window = new ListFormWindow
                     {
                         Owner = root,
@@ -53,9 +54,10 @@ namespace DatenMeisterWPF.Navigation
                             Content = asListViewControl
                         }
                     };
-
-                    window.Show();
-                    window.Closed += (x, y) => result.OnClosed();
+                    */
+                    var mainWindow = (MainWindow) root;
+                    mainWindow.MainControl.Content = asListViewControl;
+                    mainWindow.Closed += (x, y) => result.OnClosed();
                     break;
                 }
                 case DetailFormControl asDetailFormControl:

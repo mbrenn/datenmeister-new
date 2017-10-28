@@ -40,8 +40,9 @@ namespace DatenMeisterWPF.Forms.Lists
                     var dlg = new NewWorkspaceControl();
                     dlg.SetContent(scope);
                     return dlg;
-                });
-
+                },
+                NavigationMode.Detail);
+                
                 events.Closed += (x, y) => UpdateContent();
             }
 

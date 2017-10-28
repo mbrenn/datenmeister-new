@@ -8,15 +8,19 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
-using DatenMeisterWPF.Forms;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Lists;
 using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Navigation
 {
+    public enum NavigationMode
+    {
+        List, 
+        Detail,
+        ForceNewWindow
+    }
     /// <summary>
     /// Defines the navigation method to allow a fluent navigation between instances
     /// </summary>
@@ -33,10 +37,22 @@ namespace DatenMeisterWPF.Navigation
         /// </summary>
         /// <param name="root">Root window to be used</param>
         /// <param name="factoryMethod">The factory method</param>
+        /// <param name="navigationMode">Defines the navigation mode</param>
         public IControlNavigation NavigateTo(
             Window root,
-            Func<UserControl> factoryMethod)
+            Func<UserControl> factoryMethod,
+            NavigationMode navigationMode)
         {
+            // Verifies if the given window supports the navigation. 
+            if (root is INavigateable navigateable)
+            {
+                var innerResult = navigateable.NavigateTo(factoryMethod, navigationMode);
+                if (innerResult != null)
+                {
+                    return innerResult;
+                }
+            }
+
             var result = new ControlNavigation();
             var userControl = factoryMethod();
             switch (userControl)
@@ -45,7 +61,6 @@ namespace DatenMeisterWPF.Navigation
                     return null;
                 case ListViewControl asListViewControl:
                 {
-                        /*
                     var window = new ListFormWindow
                     {
                         Owner = root,
@@ -54,10 +69,8 @@ namespace DatenMeisterWPF.Navigation
                             Content = asListViewControl
                         }
                     };
-                    */
-                    var mainWindow = (MainWindow) root;
-                    mainWindow.MainControl.Content = asListViewControl;
-                    mainWindow.Closed += (x, y) => result.OnClosed();
+
+                    window.Closed += (x, y) => result.OnClosed();
                     break;
                 }
                 case DetailFormControl asDetailFormControl:
@@ -96,7 +109,8 @@ namespace DatenMeisterWPF.Navigation
                     var dlg = new ExtentList();
                     dlg.SetContent(scope, workspaceId);
                     return dlg;
-                });
+                },
+                NavigationMode.List);
         }
 
         /// <summary>
@@ -116,7 +130,8 @@ namespace DatenMeisterWPF.Navigation
                     control.AllowNewProperties = true;
                     control.AddDefaultButtons();
                     return control;
-                });
+                },
+                NavigationMode.Detail);
         }
 
         /// <summary>
@@ -161,7 +176,8 @@ namespace DatenMeisterWPF.Navigation
                     };
 
                     return control;
-                });
+                },
+                NavigationMode.Detail);
 
         }
 
@@ -177,7 +193,8 @@ namespace DatenMeisterWPF.Navigation
                 control.SetContent(scope, workspaceId, extentUrl);
 
                 return control;
-            });
+            },
+            NavigationMode.List);
         }
     }
 }

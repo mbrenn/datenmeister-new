@@ -7,8 +7,13 @@
         mc:Ignorable="d"
         Title="Der DatenMeister" Height="700" Width="1100" Initialized="Window_Initialized"
         WindowStartupLocation="CenterScreen">
-    <Grid>
-        <ContentControl x:Name="MainControl"></ContentControl>
-        
-    </Grid>
+    <DockPanel>
+        <Ribbon DockPanel.Dock="Top" x:Name="ribbon">
+            
+        </Ribbon>
+        <Grid>
+            <ContentControl x:Name="MainControl"></ContentControl>
+        </Grid>
+    </DockPanel>
+
 </Window>

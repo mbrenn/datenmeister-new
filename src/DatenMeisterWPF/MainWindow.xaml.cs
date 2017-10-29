@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Ribbon;
 using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ViewFinder;
@@ -39,10 +41,14 @@ namespace DatenMeisterWPF
             MainControl.Content = workspaceControl;
         }
 
+        private List<RibbonTab> _ribbonTabs = new List<RibbonTab>();
+
         public IControlNavigation NavigateTo(
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
         {
+            _ribbonTabs.Clear();
+
             if (navigationMode == NavigationMode.List)
             {
                 var result = new ControlNavigation();
@@ -56,7 +62,18 @@ namespace DatenMeisterWPF
                 return result;
             }
 
+
             return null;
+        }
+
+        public void AddNavigationElement(string name, Action clickMethod, string imageName, string categoryName)
+        {
+            var tab = new RibbonTab()
+            {
+                Header = categoryName
+            };
+
+            ribbon.Items.Add(tab);
         }
     }
 }

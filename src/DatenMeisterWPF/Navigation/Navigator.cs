@@ -44,7 +44,7 @@ namespace DatenMeisterWPF.Navigation
             NavigationMode navigationMode)
         {
             // Verifies if the given window supports the navigation. 
-            if (root is INavigateable navigateable)
+            if (root is INavigationHost navigateable)
             {
                 var innerResult = navigateable.NavigateTo(factoryMethod, navigationMode);
                 if (innerResult != null)

@@ -16,7 +16,7 @@ namespace DatenMeisterWPF
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INavigateable
+    public partial class MainWindow : Window, INavigationHost
     {
         public MainWindow()
         {
@@ -39,15 +39,20 @@ namespace DatenMeisterWPF
             MainControl.Content = workspaceControl;
         }
 
-        public IControlNavigation NavigateTo(Func<UserControl> factoryMethod,
+        public IControlNavigation NavigateTo(
+            Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
         {
             if (navigationMode == NavigationMode.List)
             {
                 var result = new ControlNavigation();
                 var userControl = factoryMethod();
-                MainControl.Content = userControl;
+                if (userControl is INavigationGuest guest)
+                {
+                    guest.PrepareNavigation(this);
+                }
 
+                MainControl.Content = userControl;
                 return result;
             }
 

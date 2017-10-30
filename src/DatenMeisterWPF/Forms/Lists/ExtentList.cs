@@ -13,44 +13,36 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
     public class ExtentList : ElementListViewControl, INavigationGuest
     {
+        private string _workspaceId;
+
         /// <summary>
         /// Shows the workspaces of the DatenMeister
         /// </summary>
-        /// <param name="scope">Scope of the DatenMeister</param>
         /// <param name="workspaceId">Id of the workspace whose extents shall be shown</param>
-        public void SetContent(IDatenMeisterScope scope, string workspaceId)
+        public void SetContent(string workspaceId)
         {
-            var viewExtent = scope.Resolve<ViewLogic>().GetViewExtent();
-            var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(scope);
+            _workspaceId = workspaceId;
+            var viewExtent = App.Scope.Resolve<ViewLogic>().GetViewExtent();
+            var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);
             var workspace = workspaceExtent.elements().WhenPropertyIs("id", workspaceId).FirstOrDefault() as IElement;
 
             var extents = workspace?.get("extents") as IReflectiveSequence;
             SetContent(
-                scope, 
                 extents, 
                 NamedElementMethods.GetByFullName(viewExtent, ViewDefinitions.PathExtentListView));
 
             AddDefaultButtons();
-            AddGenericButton("New Xmi Extent", NewXmiExtent);
             AddRowItemButton("Show Items", ShowItems);
-            AddGenericButton("Zip-Code Example", AddZipCodeExample);
-            
-            void NewXmiExtent()
-            {
-                var window = Window.GetWindow(this);
-                var events = Navigator.TheNavigator.NavigateToNewXmiExtentDetailView(NavigationHost, workspaceId);
-                events.Closed += (x, y) => UpdateContent();
-            }
             
             void ShowItems(IObject extentElement)
             {
-                var window = Window.GetWindow(this);
                 var uri = extentElement.get("uri").ToString();
 
                 var events = Navigator.TheNavigator.NavigateToItemsInExtent(
@@ -60,9 +52,33 @@ namespace DatenMeisterWPF.Forms.Lists
                 events.Closed += (x, y) => UpdateContent();
             }
 
+        }
+
+        /// <summary>
+        /// Adds the navigation control elements in the host
+        /// </summary>
+        public new void PrepareNavigation()
+        {
+            NavigationHost.AddNavigationButton(
+                "Workspaces",
+                () => Navigator.TheNavigator.NavigateToWorkspaces(NavigationHost),
+                Icons.WorkspacesShow,
+                NavigationCategories.File);
+
+            NavigationHost.AddNavigationButton("New Xmi Extent", NewXmiExtent, null, NavigationCategories.File);
+            NavigationHost.AddNavigationButton("Zip-Code Example", AddZipCodeExample, null, NavigationCategories.File);
+
+            base.PrepareNavigation();
+
+            void NewXmiExtent()
+            {
+                var events = Navigator.TheNavigator.NavigateToNewXmiExtentDetailView(NavigationHost, _workspaceId);
+                events.Closed += (x, y) => UpdateContent();
+            }
+
             void AddZipCodeExample()
             {
-                var extentManager = scope.Resolve<IExtentManager>();
+                var extentManager = App.Scope.Resolve<IExtentManager>();
 
                 var random = new Random();
 
@@ -98,7 +114,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 {
                     ExtentUri = $"datenmeister:///zipcodes/{randomNumber}",
                     Path = filename,
-                    Workspace = workspaceId,
+                    Workspace = _workspaceId,
                     Settings =
                     {
                         HasHeader = false,
@@ -113,19 +129,6 @@ namespace DatenMeisterWPF.Forms.Lists
 
                 UpdateContent();
             }
-
-        }
-
-        /// <summary>
-        /// Adds the navigation control elements in the host
-        /// </summary>
-        public void PrepareNavigation()
-        {
-            NavigationHost.AddNavigationButton(
-                "Workspace",
-                () => Navigator.TheNavigator.NavigateToWorkspaces(NavigationHost),
-                null,
-                "Common");
         }
     }
 }

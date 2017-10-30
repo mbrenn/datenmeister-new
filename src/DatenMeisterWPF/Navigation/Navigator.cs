@@ -20,6 +20,18 @@ namespace DatenMeisterWPF.Navigation
         Detail,
         ForceNewWindow
     }
+
+    /// <summary>
+    /// Defines the possible categories for navigation
+    /// </summary>
+    public static class NavigationCategories
+    {
+        /// <summary>
+        /// Category for all global and file issues
+        /// </summary>
+        public static string File = "File";
+    }
+
     /// <summary>
     /// Defines the navigation method to allow a fluent navigation between instances
     /// </summary>
@@ -111,7 +123,7 @@ namespace DatenMeisterWPF.Navigation
                         ViewDefinitions.PathWorkspaceListView);
 
                     var workspaceControl = new WorkspaceList();
-                    workspaceControl.SetContent(App.Scope, workspaceListView);
+                    workspaceControl.SetContent(workspaceListView);
                     return workspaceControl;
                 },
                 NavigationMode.List);
@@ -130,7 +142,7 @@ namespace DatenMeisterWPF.Navigation
                 () =>
                 {
                     var dlg = new ExtentList();
-                    dlg.SetContent(App.Scope, workspaceId);
+                    dlg.SetContent(workspaceId);
                     return dlg;
                 },
                 NavigationMode.List);
@@ -148,7 +160,7 @@ namespace DatenMeisterWPF.Navigation
                 window, () =>
                 {
                     var control = new DetailFormControl();
-                    control.SetContent(App.Scope, element, null);
+                    control.SetContent(element, null);
                     control.AllowNewProperties = true;
                     control.AddDefaultButtons();
                     return control;
@@ -176,7 +188,7 @@ namespace DatenMeisterWPF.Navigation
                         ViewDefinitions.PathNewXmiDetailForm);
 
                     var control = new DetailFormControl();
-                    control.SetContent(App.Scope, null, newXmiDetailForm);
+                    control.SetContent(null, newXmiDetailForm);
                     control.AddDefaultButtons("Create");
                     control.ElementSaved += (x, y) =>
                     {

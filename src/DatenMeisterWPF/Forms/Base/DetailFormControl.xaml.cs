@@ -33,8 +33,6 @@ namespace DatenMeisterWPF.Forms.Base
 
         public bool AllowNewProperties { get; set; }
 
-        private IDatenMeisterScope _scope;
-
         /// <summary>
         /// This event handler is thrown, when the user clicks on 'Save' and after the properties are
         /// transferred from form display to element
@@ -56,19 +54,17 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         /// <param name="scope">Scope of DatenMeister</param>
         /// <param name="formDefinition">Form Definition being used</param>
-        public void SetContentForNewObject(IDatenMeisterScope scope, IElement formDefinition)
+        public void SetContentForNewObject(IElement formDefinition)
         {
             SetContent(
-                scope,
                 InMemoryObject.CreateEmpty(),
                 formDefinition);
         }
 
-        public void SetContent(IDatenMeisterScope scope, IElement element, IElement formDefinition)
+        public void SetContent(IElement element, IElement formDefinition)
         {
             DetailElement = element ?? InMemoryObject.CreateEmpty();
             _formDefinition = formDefinition;
-            _scope = scope;
 
             SetContent();
 
@@ -92,7 +88,7 @@ namespace DatenMeisterWPF.Forms.Base
             // Checks, if automatic view is required
             if (_formDefinition == null)
             {
-                var viewFinder = _scope.Resolve<IViewFinder>();
+                var viewFinder = App.Scope.Resolve<IViewFinder>();
                 _formDefinition = viewFinder.FindView(DetailElement, null);
             }
 
@@ -165,7 +161,7 @@ namespace DatenMeisterWPF.Forms.Base
                     {
                         if (field.isSet(_FormAndFields._FieldData.defaultValue))
                         {
-                            contentBlock.Text = field.get(_FormAndFields._FieldData.defaultValue).ToString();
+                            contentBlock.Text = field.get(_FormAndFields._FieldData.defaultValue)?.ToString() ?? string.Empty;
                         }
                     }
 

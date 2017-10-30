@@ -89,6 +89,9 @@
     <Compile Include="Navigation\ControlNavigation.cs" />
     <Compile Include="Navigation\IControlNavigation.cs" />
     <Compile Include="Navigation\Navigator.cs" />
+    <Compile Include="Windows\AboutDialog.xaml.cs">
+      <DependentUpon>AboutDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\DetailFormWindow.xaml.cs">
       <DependentUpon>DetailFormWindow.xaml</DependentUpon>
     </Compile>
@@ -135,6 +138,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\AboutDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\DetailFormWindow.xaml">
       <SubType>Designer</SubType>

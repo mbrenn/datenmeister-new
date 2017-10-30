@@ -20,7 +20,7 @@ namespace DatenMeisterWPF.Forms.Detail
 
             var formElement = NamedElementMethods.GetByFullName(viewExtent, ViewDefinitions.PathNewWorkspaceForm);
 
-            SetContentForNewObject(scope, formElement);
+            SetContentForNewObject(formElement);
             AddDefaultButtons("Create");
 
             ElementSaved += (x, y) =>

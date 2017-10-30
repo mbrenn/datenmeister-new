@@ -26,7 +26,7 @@ namespace DatenMeisterWPF.Forms.Base
     /// <summary>
     /// Interaktionslogik für ListViewControl.xaml
     /// </summary>
-    public partial class ListViewControl : UserControl
+    public partial class ListViewControl : UserControl, INavigationGuest
     {
         public ListViewControl()
         {
@@ -38,8 +38,6 @@ namespace DatenMeisterWPF.Forms.Base
         public IReflectiveSequence Items { get; set; }
 
         public IElement FormDefinition { get; set; }
-
-        public IDatenMeisterScope Scope { get; set; }
         
         private readonly IDictionary<ExpandoObject, IObject> _itemMapping = new Dictionary<ExpandoObject, IObject>();
 
@@ -61,11 +59,10 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Updates the content by going through the fields and items
         /// </summary>
-        public void SetContent(IDatenMeisterScope scope, IReflectiveSequence items, IElement formDefinition)
+        public void SetContent(IReflectiveSequence items, IElement formDefinition)
         {
             Items = items;
             FormDefinition = formDefinition;
-            Scope = scope;
 
             UpdateContent();
         }
@@ -212,35 +209,6 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public void AddDefaultButtons()
         {
-            void ViewExtent()
-            {
-                var dlg = new ItemXmlViewWindow
-                {
-                    Owner = Window.GetWindow(this)
-                };
-                dlg.UpdateContent(Items);
-                dlg.ShowDialog();
-            }
-
-            void ViewConfig()
-            {
-                var dlg = new ItemXmlViewWindow
-                {
-                    SupportWriting = true,
-                    Owner = Window.GetWindow(this)
-                };
-                dlg.UpdateContent(FormDefinition);
-
-                dlg.UpdateButtonPressed += (x, y) =>
-                {
-                    var temporaryExtent = InMemoryProvider.TemporaryExtent;
-                    var factory = new MofFactory(temporaryExtent);
-                    FormDefinition = dlg.GetCurrentContentAsMof(factory);
-                    UpdateContent();
-                };
-
-                dlg.ShowDialog();
-            }
 
             void Open(IObject selectedElement)
             {
@@ -255,8 +223,6 @@ namespace DatenMeisterWPF.Forms.Base
                 events.Closed += (sender, args) => UpdateContent();
             }
 
-            AddGenericButton("View Extent", ViewExtent);
-            AddGenericButton("View Config", ViewConfig);
             AddRowItemButton("Open", Open);
         }
 
@@ -433,6 +399,50 @@ namespace DatenMeisterWPF.Forms.Base
         {
             _searchText = SearchField.Text;
             UpdateContent();
+        }
+
+        public void PrepareNavigation()
+        {
+            void ViewExtent()
+            {
+                var dlg = new ItemXmlViewWindow
+                {
+                    Owner = Window.GetWindow(this)
+                };
+                dlg.UpdateContent(Items);
+                dlg.ShowDialog();
+            }
+
+            void ViewConfig()
+            {
+                var dlg = new ItemXmlViewWindow
+                {
+                    SupportWriting = true,
+                    Owner = Window.GetWindow(this)
+                };
+                dlg.UpdateContent(FormDefinition);
+
+                dlg.UpdateButtonPressed += (x, y) =>
+                {
+                    var temporaryExtent = InMemoryProvider.TemporaryExtent;
+                    var factory = new MofFactory(temporaryExtent);
+                    FormDefinition = dlg.GetCurrentContentAsMof(factory);
+                    UpdateContent();
+                };
+
+                dlg.ShowDialog();
+            }
+
+            NavigationHost.AddNavigationButton(
+                "View Extent", 
+                ViewExtent, 
+                null, 
+                NavigationCategories.File);
+            NavigationHost.AddNavigationButton(
+                "View Config", 
+                ViewConfig, 
+                null, 
+                NavigationCategories.File);
         }
     }
 }

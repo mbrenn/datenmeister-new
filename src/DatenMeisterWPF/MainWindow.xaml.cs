@@ -13,6 +13,7 @@ using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
+using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF
 {
@@ -66,14 +67,20 @@ namespace DatenMeisterWPF
 
         private List<RibbonTab> _ribbonTabs = new List<RibbonTab>();
 
+        /// <summary>
+        /// Called, if the host shall navigate to a certain control
+        /// </summary>
+        /// <param name="factoryMethod">Method being used to create the control</param>
+        /// <param name="navigationMode">Navigation mode defining whether to create a new window or something similar</param>
+        /// <returns>The navigation instance supporting events and other methods. </returns>
         public IControlNavigation NavigateTo(
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
         {
-            ClearRibbons();
-
+            // Only if navigation method is a list
             if (navigationMode == NavigationMode.List)
             {
+                ClearRibbons();
                 var result = new ControlNavigation();
                 var userControl = factoryMethod();
 
@@ -95,16 +102,35 @@ namespace DatenMeisterWPF
                     guest.PrepareNavigation();
                 }
 
+                FinalizeRibbons();
+
                 return result;
             }
 
             return null;
         }
 
+        /// <summary>
+        /// Clears the complete ribbon navigaton
+        /// </summary>
         private void ClearRibbons()
         {
             _ribbonTabs.Clear();
             ribbon.Items.Clear();
+        }
+
+        /// <summary>
+        /// After having received the ribbon requests, this method builds up the real navigation
+        /// </summary>
+        private void FinalizeRibbons()
+        {
+            AddNavigationButton("About",
+                () => new AboutDialog
+                {
+                    Owner = this
+                }.ShowDialog(),
+                "file-about",
+                NavigationCategories.File);
         }
 
         /// <summary>
@@ -115,7 +141,7 @@ namespace DatenMeisterWPF
             AddNavigationButton("Close", 
                 Close,
                 "file-exit",
-                "Common");
+                NavigationCategories.File);
         }
 
         /// <summary>
@@ -134,11 +160,10 @@ namespace DatenMeisterWPF
                 {
                     Header = categoryName
                 };
+
+                _ribbonTabs.Add(tab);
+                ribbon.Items.Add(tab);
             }
-
-            _ribbonTabs.Add(tab);
-
-            ribbon.Items.Add(tab);
 
             var category = new RibbonGroup();
             var button = new RibbonButton

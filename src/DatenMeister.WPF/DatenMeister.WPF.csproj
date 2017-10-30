@@ -43,6 +43,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modules\Icons.cs" />
     <Compile Include="Modules\IIconRepository.cs" />
     <Compile Include="Modules\StandardRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

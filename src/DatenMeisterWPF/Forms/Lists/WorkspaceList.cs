@@ -9,39 +9,25 @@ using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
-    public class WorkspaceList : ElementListViewControl
+    public class WorkspaceList : ElementListViewControl, INavigationGuest
     {
         /// <summary>
         /// Shows the workspaces of the DatenMeister
         /// </summary>
         /// <param name="scope"></param>
-        public void SetContent(IDatenMeisterScope scope, IElement formElement = null)
+        public void SetContent(IElement formElement = null)
         {
-            var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(scope);
-            SetContent(scope, workspaceExtent.elements(), formElement);
+            var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);
+            SetContent(workspaceExtent.elements(), formElement);
 
             AddDefaultButtons();
             AddRowItemButton("Show Extents", ShowExtents);
             AddRowItemButton("Delete Workspace", DeleteWorkspace);
-            AddGenericButton("New Workspace", NewWorkspace);
             
             void ShowExtents(IObject workspace)
             {
                 var workspaceId = workspace.get("id").ToString();
                 var events = Navigator.TheNavigator.NavigateToExtentList(NavigationHost, workspaceId);
-                
-                events.Closed += (x, y) => UpdateContent();
-            }
-
-            void NewWorkspace()
-            {
-                var events = Navigator.TheNavigator.NavigateTo(NavigationHost, () =>
-                {
-                    var dlg = new NewWorkspaceControl();
-                    dlg.SetContent(scope);
-                    return dlg;
-                },
-                NavigationMode.Detail);
                 
                 events.Closed += (x, y) => UpdateContent();
             }
@@ -53,12 +39,36 @@ namespace DatenMeisterWPF.Forms.Lists
                 {
                     var workspaceId = workspace.get("id").ToString();
 
-                    var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
+                    var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
                     workspaceLogic.RemoveWorkspace(workspaceId);
 
                     UpdateContent();
                 }
             }
+        }
+
+        public new void PrepareNavigation()
+        {
+            void NewWorkspace()
+            {
+                var events = Navigator.TheNavigator.NavigateTo(NavigationHost, () =>
+                    {
+                        var dlg = new NewWorkspaceControl();
+                        dlg.SetContent(App.Scope);
+                        return dlg;
+                    },
+                    NavigationMode.Detail);
+
+                events.Closed += (x, y) => UpdateContent();
+            }
+
+            NavigationHost.AddNavigationButton(
+                "Add Workspace",
+                NewWorkspace,
+                "workspaces-new",
+                NavigationCategories.File);
+
+            base.PrepareNavigation();
         }
     }
 }

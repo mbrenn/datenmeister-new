@@ -19,7 +19,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 return;
             }
 
-            SetContent(scope, extent.elements(), null);
+            SetContent(extent.elements(), null);
             AddGenericButton("New Item", () =>
             {
                 var mofFactory = new MofFactory(extent);

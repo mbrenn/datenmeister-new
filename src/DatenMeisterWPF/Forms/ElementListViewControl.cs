@@ -12,7 +12,6 @@ namespace DatenMeisterWPF.Forms
     {
         private IElement _originalformDefinition;
         private IReflectiveSequence _sequence;
-        private IDatenMeisterScope _scope;
 
         /// <summary>
         /// Shows the enumeration of the reflection. It also creates a view if required.
@@ -20,15 +19,14 @@ namespace DatenMeisterWPF.Forms
         /// <param name="scope">Scope to be used to retrieve additional objects</param>
         /// <param name="sequence">Sequence to be shown</param>
         /// <param name="formDefinition">Form to be shown</param>
-        public new void SetContent(IDatenMeisterScope scope, IReflectiveSequence sequence, IElement formDefinition)
+        public new void SetContent(IReflectiveSequence sequence, IElement formDefinition)
         {
             _originalformDefinition = formDefinition;
             _sequence = sequence;
-            _scope = scope;
 
             RefreshViewDefinition();
 
-            base.SetContent(scope, sequence, FormDefinition);
+            base.SetContent(sequence, FormDefinition);
         }
 
         /// <summary>
@@ -38,7 +36,7 @@ namespace DatenMeisterWPF.Forms
         {
             if (_originalformDefinition == null)
             {
-                var viewFinder = _scope.Resolve<IViewFinder>();
+                var viewFinder = App.Scope.Resolve<IViewFinder>();
                 FormDefinition = viewFinder.CreateView(_sequence);
             }
             else

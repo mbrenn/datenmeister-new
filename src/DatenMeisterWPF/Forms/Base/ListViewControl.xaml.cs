@@ -33,6 +33,8 @@ namespace DatenMeisterWPF.Forms.Base
             InitializeComponent();
         }
 
+        public INavigationHost NavigationHost;
+
         public IReflectiveSequence Items { get; set; }
 
         public IElement FormDefinition { get; set; }
@@ -248,8 +250,7 @@ namespace DatenMeisterWPF.Forms.Base
                 }
 
                 var events = Navigator.TheNavigator.NavigateToElementDetailView(
-                    Window.GetWindow(this),
-                    Scope, 
+                    NavigationHost, 
                     selectedElement as IElement);
                 events.Closed += (sender, args) => UpdateContent();
             }

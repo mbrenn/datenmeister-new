@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
@@ -39,7 +38,7 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="factoryMethod">The factory method</param>
         /// <param name="navigationMode">Defines the navigation mode</param>
         public IControlNavigation NavigateTo(
-            Window root,
+            INavigationHost root,
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
         {
@@ -63,7 +62,7 @@ namespace DatenMeisterWPF.Navigation
                 {
                     var window = new ListFormWindow
                     {
-                        Owner = root,
+                        Owner = root as Window,
                         MainViewSet =
                         {
                             Content = asListViewControl
@@ -77,7 +76,7 @@ namespace DatenMeisterWPF.Navigation
                 {
                     var window = new DetailFormWindow
                     {
-                        Owner = root,
+                        Owner = root as Window,
                         MainContent =
                         {
                             Content = asDetailFormControl
@@ -94,20 +93,44 @@ namespace DatenMeisterWPF.Navigation
         }
 
         /// <summary>
+        /// Navigates to the workspaces
+        /// </summary>
+        /// <param name="window">Windows to be used</param>
+        /// <returns>The navigation to control the view</returns>
+        public IControlNavigation NavigateToWorkspaces(INavigationHost window)
+        {
+            return NavigateTo(
+                window,
+                () =>
+                {
+
+                    var viewLogic = App.Scope.Resolve<ViewLogic>();
+
+                    var workspaceListView = NamedElementMethods.GetByFullName(
+                        viewLogic.GetViewExtent(),
+                        ViewDefinitions.PathWorkspaceListView);
+
+                    var workspaceControl = new WorkspaceList();
+                    workspaceControl.SetContent(App.Scope, workspaceListView);
+                    return workspaceControl;
+                },
+                NavigationMode.List);
+        }
+
+        /// <summary>
         /// Navigates to an extent list
         /// </summary>
         /// <param name="window">Root window being used</param>
-        /// <param name="scope">Scope to be used</param>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <returns>The navigation being used to control the view</returns>
-        public IControlNavigation NavigateToExtentList(Window window, IDatenMeisterScope scope, string workspaceId)
+        public IControlNavigation NavigateToExtentList(INavigationHost window, string workspaceId)
         {
             return NavigateTo(
                 window,
                 () =>
                 {
                     var dlg = new ExtentList();
-                    dlg.SetContent(scope, workspaceId);
+                    dlg.SetContent(App.Scope, workspaceId);
                     return dlg;
                 },
                 NavigationMode.List);
@@ -117,16 +140,15 @@ namespace DatenMeisterWPF.Navigation
         /// Navigates to the detail window
         /// </summary>
         /// <param name="window">Window which is the owner for the detail window</param>
-        /// <param name="scope">Scope to be used</param>
         /// <param name="element">Element to be shown</param>
         /// <returns>The navigation being used to control the view</returns>
-        public IControlNavigation NavigateToElementDetailView(Window window, IDatenMeisterScope scope, IElement element)
+        public IControlNavigation NavigateToElementDetailView(INavigationHost window, IElement element)
         {
             return NavigateTo(
                 window, () =>
                 {
                     var control = new DetailFormControl();
-                    control.SetContent(scope, element, null);
+                    control.SetContent(App.Scope, element, null);
                     control.AllowNewProperties = true;
                     control.AddDefaultButtons();
                     return control;
@@ -138,15 +160,13 @@ namespace DatenMeisterWPF.Navigation
         /// Opens the dialog in which the user can create a new xmi extent
         /// </summary>
         /// <param name="window">Window being used as an owner</param>
-        /// <param name="scope">Scope of the Datenmeister</param>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <returns></returns>
         public IControlNavigation NavigateToNewXmiExtentDetailView(
-            Window window, 
-            IDatenMeisterScope scope,
+            INavigationHost window,
             string workspaceId)
         {
-            var viewLogic = scope.Resolve<ViewLogic>();
+            var viewLogic = App.Scope.Resolve<ViewLogic>();
             return NavigateTo(
                 window,
                 () =>
@@ -156,7 +176,7 @@ namespace DatenMeisterWPF.Navigation
                         ViewDefinitions.PathNewXmiDetailForm);
 
                     var control = new DetailFormControl();
-                    control.SetContent(scope, null, newXmiDetailForm);
+                    control.SetContent(App.Scope, null, newXmiDetailForm);
                     control.AddDefaultButtons("Create");
                     control.ElementSaved += (x, y) =>
                     {
@@ -171,7 +191,7 @@ namespace DatenMeisterWPF.Navigation
                             Workspace = workspaceId
                         };
 
-                        var extentManager = scope.Resolve<IExtentManager>();
+                        var extentManager = App.Scope.Resolve<IExtentManager>();
                         extentManager.LoadExtent(configuration, true);
                     };
 
@@ -182,15 +202,14 @@ namespace DatenMeisterWPF.Navigation
         }
 
         public IControlNavigation NavigateToItemsInExtent(
-            Window window,
-            IDatenMeisterScope scope,
+            INavigationHost window,
             string workspaceId,
             string extentUrl)
         {
             return NavigateTo(window, () =>
             {
                 var control = new ItemsInExtentList();
-                control.SetContent(scope, workspaceId, extentUrl);
+                control.SetContent(App.Scope, workspaceId, extentUrl);
 
                 return control;
             },

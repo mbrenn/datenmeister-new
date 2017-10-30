@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icons.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
@@ -167,7 +170,9 @@
     <None Include="Examples\plz.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -181,10 +186,20 @@
       <Project>{9026f9a3-c366-43da-abad-8cc94a3e793f}</Project>
       <Name>DatenMeister.Excel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.WPF\DatenMeister.WPF.csproj">
+      <Project>{d4696df0-4fb2-494a-9541-6b993df77798}</Project>
+      <Name>DatenMeister.WPF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{fea57312-8d46-440e-989a-476b9281eef7}</Project>
       <Name>DatenMeister</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\icons\dialog-question.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

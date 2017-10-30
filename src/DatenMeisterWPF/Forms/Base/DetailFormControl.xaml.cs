@@ -24,6 +24,8 @@ namespace DatenMeisterWPF.Forms.Base
     {
         private IElement _formDefinition;
 
+        public INavigationHost NavigationHost { get; set; }
+
         /// <summary>
         /// Gets the detailled element, whose content is shown in the dialog
         /// </summary>
@@ -221,8 +223,7 @@ namespace DatenMeisterWPF.Forms.Base
 
                                 button.Click += (sender, args) =>
                                     Navigator.TheNavigator.NavigateToElementDetailView(
-                                        Window.GetWindow(this),
-                                        _scope,
+                                        NavigationHost,
                                         asIElement);
 
                                 contentBlock.Children.Add(button);

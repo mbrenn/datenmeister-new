@@ -16,7 +16,7 @@ namespace DatenMeister.Integration
         {
             if (settings == null)
             {
-                settings = new IntegrationSettings()
+                settings = new IntegrationSettings
                 {
                     EstablishDataEnvironment = true
                 };

@@ -17,7 +17,7 @@ using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
-    public class ExtentList : ElementListViewControl
+    public class ExtentList : ElementListViewControl, INavigationGuest
     {
         /// <summary>
         /// Shows the workspaces of the DatenMeister
@@ -44,7 +44,7 @@ namespace DatenMeisterWPF.Forms.Lists
             void NewXmiExtent()
             {
                 var window = Window.GetWindow(this);
-                var events = Navigator.TheNavigator.NavigateToNewXmiExtentDetailView(window, scope, workspaceId);
+                var events = Navigator.TheNavigator.NavigateToNewXmiExtentDetailView(NavigationHost, workspaceId);
                 events.Closed += (x, y) => UpdateContent();
             }
             
@@ -54,8 +54,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 var uri = extentElement.get("uri").ToString();
 
                 var events = Navigator.TheNavigator.NavigateToItemsInExtent(
-                    window,
-                    scope,
+                    NavigationHost,
                     workspaceId,
                     uri);
                 events.Closed += (x, y) => UpdateContent();
@@ -115,6 +114,18 @@ namespace DatenMeisterWPF.Forms.Lists
                 UpdateContent();
             }
 
+        }
+
+        /// <summary>
+        /// Adds the navigation control elements in the host
+        /// </summary>
+        public void PrepareNavigation()
+        {
+            NavigationHost.AddNavigationButton(
+                "Workspace",
+                () => Navigator.TheNavigator.NavigateToWorkspaces(NavigationHost),
+                null,
+                "Common");
         }
     }
 }

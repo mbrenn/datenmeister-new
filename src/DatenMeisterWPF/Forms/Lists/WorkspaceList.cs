@@ -28,14 +28,14 @@ namespace DatenMeisterWPF.Forms.Lists
             void ShowExtents(IObject workspace)
             {
                 var workspaceId = workspace.get("id").ToString();
-                var events = Navigator.TheNavigator.NavigateToExtentList(Window.GetWindow(this), scope, workspaceId);
+                var events = Navigator.TheNavigator.NavigateToExtentList(NavigationHost, workspaceId);
                 
                 events.Closed += (x, y) => UpdateContent();
             }
 
             void NewWorkspace()
             {
-                var events = Navigator.TheNavigator.NavigateTo(Window.GetWindow(this), () =>
+                var events = Navigator.TheNavigator.NavigateTo(NavigationHost, () =>
                 {
                     var dlg = new NewWorkspaceControl();
                     dlg.SetContent(scope);

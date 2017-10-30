@@ -25,7 +25,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 var mofFactory = new MofFactory(extent);
                 var newElement = mofFactory.create(null);
                 var elements = Navigator.TheNavigator.NavigateToElementDetailView(
-                    Window.GetWindow(this), scope, newElement);
+                    NavigationHost, newElement);
                 elements.Closed += (x, y) =>
                 {
                     extent.elements().add(newElement);

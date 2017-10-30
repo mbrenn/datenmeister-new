@@ -29,7 +29,7 @@ namespace DatenMeisterWPF
         /// <param name="clickMethod">Method that is called</param>
         /// <param name="imageName">Name of the image being shown</param>
         /// <param name="categoryName">Name of the category</param>
-        void AddNavigationElement(
+        void AddNavigationButton(
             string name,
             Action clickMethod,
             string imageName,

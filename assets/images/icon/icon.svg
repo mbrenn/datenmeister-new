@@ -13,11 +13,11 @@
    height="256"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.48.4 r9939"
    sodipodi:docname="icon.svg"
-   inkscape:export-filename="D:\Projekte\datenmeister-new\assets\icon\favicon.png"
-   inkscape:export-xdpi="22.5"
-   inkscape:export-ydpi="22.5">
+   inkscape:export-filename="C:\Projekte\datenmeister\assets\images\icon\icon48.png"
+   inkscape:export-xdpi="16.879999"
+   inkscape:export-ydpi="16.879999">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -28,14 +28,14 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="39.829136"
+     inkscape:cx="117.86485"
      inkscape:cy="132.89218"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
-     inkscape:window-x="1272"
+     inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:snap-global="true">
@@ -55,7 +55,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>

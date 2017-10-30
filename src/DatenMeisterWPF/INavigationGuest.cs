@@ -11,7 +11,6 @@
         /// Prepares the navigation of the host. The function is called by the navigation 
         /// host. 
         /// </summary>
-        /// <param name="navigationHost">Host being used for navigation </param>
-        void PrepareNavigation(INavigationHost navigationHost);
+        void PrepareNavigation();
     }
 }

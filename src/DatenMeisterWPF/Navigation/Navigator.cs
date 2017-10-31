@@ -7,6 +7,7 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Lists;
@@ -226,6 +227,28 @@ namespace DatenMeisterWPF.Navigation
                 return control;
             },
             NavigationMode.List);
+        }
+
+        public IControlNavigation SearchByUrl(INavigationHost window)
+        {
+            var dlg = new QueryElementDialog {Owner = window as Window};
+            if (dlg.ShowDialog() == true)
+            {
+                var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+                var element = workspaceLogic.FindItem(dlg.QueryUrl.Text);
+
+                if (element == null)
+                {
+                    MessageBox.Show("Item does not exist.");
+                    return null;
+                }
+
+                return NavigateToElementDetailView(
+                    window,
+                    element);
+            }
+
+            return null;
         }
     }
 }

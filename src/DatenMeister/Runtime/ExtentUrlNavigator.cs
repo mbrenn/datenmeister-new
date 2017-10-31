@@ -43,7 +43,7 @@ namespace DatenMeister.Runtime
 
             // Verifies that the extent is working
             if (posExtentEnd == -1
-                || uri.Substring(0, posHash) != _extent.contextURI())
+                || uri.Substring(0, posExtentEnd) != _extent.contextURI())
             {
                 return null;
             }

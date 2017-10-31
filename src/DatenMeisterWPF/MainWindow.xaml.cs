@@ -123,6 +123,12 @@ namespace DatenMeisterWPF
                 () => Navigator.TheNavigator.NavigateToWorkspaces(this),
                 Icons.WorkspacesShow,
                 NavigationCategories.File + ".Workspaces");
+
+            AddNavigationButton(
+                "Search",
+                () => Navigator.TheNavigator.SearchByUrl(this),
+                null,
+                NavigationCategories.File + ".Search");
         }
 
         /// <summary>

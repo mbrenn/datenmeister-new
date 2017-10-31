@@ -111,16 +111,22 @@ namespace DatenMeisterWPF
         }
 
         /// <summary>
-        /// Clears the complete ribbon navigaton
+        /// Clears the complete MainRibbon navigaton
         /// </summary>
         private void ClearRibbons()
         {
             _ribbonTabs.Clear();
-            ribbon.Items.Clear();
+            MainRibbon.Items.Clear();
+
+            AddNavigationButton(
+                "Workspaces",
+                () => Navigator.TheNavigator.NavigateToWorkspaces(this),
+                Icons.WorkspacesShow,
+                NavigationCategories.File + ".Workspaces");
         }
 
         /// <summary>
-        /// After having received the ribbon requests, this method builds up the real navigation
+        /// After having received the MainRibbon requests, this method builds up the real navigation
         /// </summary>
         private void FinalizeRibbons()
         {
@@ -150,7 +156,7 @@ namespace DatenMeisterWPF
         /// <param name="name">Name of the element</param>
         /// <param name="clickMethod">Method, that shall be called, when the user clicks on the item</param>
         /// <param name="imageName">Name of the image being allocated</param>
-        /// <param name="categoryName">Category of the ribbon to be added</param>
+        /// <param name="categoryName">Category of the MainRibbon to be added</param>
         public void AddNavigationButton(string name, Action clickMethod, string imageName, string categoryName)
         {
             string tabName, groupName;
@@ -175,7 +181,7 @@ namespace DatenMeisterWPF
                 };
 
                 _ribbonTabs.Add(tab);
-                ribbon.Items.Add(tab);
+                MainRibbon.Items.Add(tab);
             }
 
             
@@ -197,6 +203,11 @@ namespace DatenMeisterWPF
 
             button.Click += (x, y) => clickMethod();
             group.Items.Add(button);
+        }
+
+        private void Close_OnClick(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

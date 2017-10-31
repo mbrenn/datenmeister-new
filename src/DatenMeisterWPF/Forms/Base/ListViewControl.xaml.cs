@@ -8,11 +8,9 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -438,6 +436,7 @@ namespace DatenMeisterWPF.Forms.Base
                 ViewExtent, 
                 null, 
                 NavigationCategories.File + ".Views");
+
             NavigationHost.AddNavigationButton(
                 "View-Configuration", 
                 ViewConfig, 

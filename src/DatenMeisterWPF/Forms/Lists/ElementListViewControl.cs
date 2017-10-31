@@ -1,12 +1,10 @@
 ﻿using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeisterWPF.Forms.Base;
 
-namespace DatenMeisterWPF.Forms
+namespace DatenMeisterWPF.Forms.Lists
 {
     public class ElementListViewControl : ListViewControl
     {
@@ -16,7 +14,6 @@ namespace DatenMeisterWPF.Forms
         /// <summary>
         /// Shows the enumeration of the reflection. It also creates a view if required.
         /// </summary>
-        /// <param name="scope">Scope to be used to retrieve additional objects</param>
         /// <param name="sequence">Sequence to be shown</param>
         /// <param name="formDefinition">Form to be shown</param>
         public new void SetContent(IReflectiveSequence sequence, IElement formDefinition)

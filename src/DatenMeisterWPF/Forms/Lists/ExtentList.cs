@@ -60,12 +60,6 @@ namespace DatenMeisterWPF.Forms.Lists
         public new void PrepareNavigation()
         {
             NavigationHost.AddNavigationButton(
-                "Workspaces",
-                () => Navigator.TheNavigator.NavigateToWorkspaces(NavigationHost),
-                Icons.WorkspacesShow,
-                NavigationCategories.File + ".Workspaces");
-
-            NavigationHost.AddNavigationButton(
                 "New Xmi Extent", 
                 NewXmiExtent, 
                 null, 

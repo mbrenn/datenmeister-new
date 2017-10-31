@@ -7,7 +7,6 @@ using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
@@ -145,7 +144,6 @@ namespace DatenMeisterWPF.Forms.Base
                     IsEnabled = !DotNetHelper.AsBoolean(isReadOnly)
                 };
 
-
                 /* Local functions for text and enumerations */
                 UIElement CreateForText()
                 {
@@ -205,6 +203,8 @@ namespace DatenMeisterWPF.Forms.Base
                                 Text = innerValue.ToString()
                             };
 
+                            Grid.SetRow(innerTextBlock, inner);
+                            Grid.SetColumn(innerTextBlock, 0);
                             contentBlock.Children.Add(innerTextBlock);
 
                             // Creates the button

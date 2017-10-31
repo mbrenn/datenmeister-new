@@ -38,10 +38,8 @@ namespace DatenMeister.Modules.ViewFinder
         {
             if (viewUrl == "{All}")
             {
-                var viewExtent = _viewLogic.GetViewExtent();
                 var view = _formCreator.CreateForm(extent, FormCreator.CreationMode.All);
                 return DotNetHelper.ConvertToMofElement(view, _viewLogic.GetViewExtent());
-                //return _dotNetTypeLookup.CreateDotNetElement(InMemoryProvider.TemporaryExtent, view);
             }
 
             if (!string.IsNullOrEmpty(viewUrl))

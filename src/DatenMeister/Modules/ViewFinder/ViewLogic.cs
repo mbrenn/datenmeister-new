@@ -103,7 +103,7 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
         /// <summary>
-        /// Gets the view as given by the name of the view
+        /// Gets the view as given by the url of the view
         /// </summary>
         /// <param name="url">The Url to be queried</param>
         /// <returns>The found view or null if not found</returns>

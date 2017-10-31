@@ -8,8 +8,12 @@
         Title="Der DatenMeister" Height="700" Width="1100" Initialized="Window_Initialized"
         WindowStartupLocation="CenterScreen">
     <DockPanel>
-        <Ribbon DockPanel.Dock="Top" x:Name="ribbon">
-            
+        <Ribbon DockPanel.Dock="Top" x:Name="MainRibbon">
+            <Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu>
+                    <RibbonApplicationMenuItem Header="Close" Click="Close_OnClick" />
+                </RibbonApplicationMenu>
+            </Ribbon.ApplicationMenu>
         </Ribbon>
         <Grid>
             <ContentControl x:Name="MainControl"></ContentControl>

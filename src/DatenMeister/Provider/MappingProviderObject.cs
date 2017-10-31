@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Proxies;
 
 namespace DatenMeister.Provider
 {
@@ -43,7 +42,6 @@ namespace DatenMeister.Provider
                     getFunction, 
                     setFunction);
         }
-
         
         /// <summary>
         /// Gets a value indicating whether the property is set

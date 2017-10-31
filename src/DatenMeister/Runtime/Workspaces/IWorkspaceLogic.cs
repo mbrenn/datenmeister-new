@@ -11,8 +11,17 @@ namespace DatenMeister.Runtime.Workspaces
     {
         void AddWorkspace(Workspace workspace);
 
+        /// <summary>
+        /// Removes a workspace containing the id
+        /// </summary>
+        /// <param name="id">Id of the workspace</param>
         void RemoveWorkspace(string id);
 
+        /// <summary>
+        /// Gets the workspace with specific id
+        /// </summary>
+        /// <param name="id">Id of the workspace</param>
+        /// <returns>Found workspace or null, if not found</returns>
         Workspace GetWorkspace(string id);
 
         IEnumerable<Workspace> Workspaces { get; }

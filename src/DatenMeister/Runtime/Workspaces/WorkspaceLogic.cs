@@ -147,6 +147,11 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        /// <summary>
+        /// Gets the workspace by id
+        /// </summary>
+        /// <param name="id">Id of the workspace</param>
+        /// <returns>Found the workspace</returns>
         public Workspace GetWorkspace(string id)
         {
             lock (_fileData)

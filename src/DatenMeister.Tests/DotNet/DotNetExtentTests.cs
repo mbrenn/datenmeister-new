@@ -1,5 +1,4 @@
-﻿
-using System.Linq;
+﻿using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -17,7 +16,7 @@ namespace DatenMeister.Tests.DotNet
         [Test]
         public void TestValue()
         {
-            var typeExtent = DotNetExtentTests.Initialize();
+            var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
             var extent = new MofUriExtent(provider, "dm:///test");
             var value = new DotNetTests.TestClass();

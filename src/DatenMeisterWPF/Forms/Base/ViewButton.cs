@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace DatenMeisterWPF.Forms.Base
 {
-    public class ViewButton: Button
+    public class ViewButton : Button
     {
         public ViewButton()
         {

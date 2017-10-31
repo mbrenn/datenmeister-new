@@ -113,7 +113,6 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-
         /// <summary>
         /// Gets a property by querying all meta workspaces
         /// </summary>

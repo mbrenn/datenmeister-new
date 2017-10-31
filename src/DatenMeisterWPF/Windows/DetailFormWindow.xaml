@@ -7,6 +7,21 @@
         mc:Ignorable="d"
         Title="Der Datenmeister" Height="600" Width="1000"
         WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="10,2,10,2"></Setter>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="10,2,10,2"></Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="10,2,10,2"></Setter>
+        </Style>
+        <Style TargetType="Base:ViewButton">
+            <Setter Property="Margin" Value="4,2,4,2"></Setter>
+            <Setter Property="Padding" Value="10,2,10,2"></Setter>
+        </Style>
+    </Window.Resources>
     <DockPanel>
         <ContentControl x:Name="MainContent"></ContentControl>
     </DockPanel>

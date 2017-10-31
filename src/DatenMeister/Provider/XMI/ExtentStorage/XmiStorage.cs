@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Xml.Linq;
 using DatenMeister.Provider.XMI.EMOF;
@@ -20,19 +21,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             {
                 if (createAlsoEmpty)
                 {
-                    // Creates directory if necessary
-                    var directoryPath = Path.GetDirectoryName(xmiConfiguration.Path);
-                    if (!Directory.Exists(directoryPath))
-                    {
-                        Directory.CreateDirectory(directoryPath);
-                    }
-
-                    // We need to create an empty Xmi file... Not the best thing at the moment, but we try it. 
-                    xmlDocument = new XDocument(
-                        new XElement(XmiProvider.DefaultRootNodeName));
-
-                    // Try to create file, to verify that file access and other activities are given
-                    File.WriteAllText(xmiConfiguration.Path, string.Empty);
+                    xmlDocument = CreateEmptyXmiDocument(xmiConfiguration);
                 }
                 else
                 {
@@ -42,12 +31,41 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             }
             else
             {
-                xmlDocument = XDocument.Load(xmiConfiguration.Path);
+                try
+                {
+                    xmlDocument = XDocument.Load(xmiConfiguration.Path);
+                }
+                catch(Exception exc)
+                {
+                    Debug.WriteLine(exc.ToString());
+                    xmlDocument = CreateEmptyXmiDocument(xmiConfiguration);
+                }
             }
 
-            var result = new XmiProvider(xmlDocument);
+            return new XmiProvider(xmlDocument);
+        }
 
-            return result;
+        /// <summary>
+        /// Creates an empty Xmi document as given by the configuration
+        /// </summary>
+        /// <param name="xmiConfiguration">Xmi Configuration being used</param>
+        /// <returns>Found XDocument</returns>
+        private static XDocument CreateEmptyXmiDocument(XmiStorageConfiguration xmiConfiguration)
+        {
+            // Creates directory if necessary
+            var directoryPath = Path.GetDirectoryName(xmiConfiguration.Path);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            // We need to create an empty Xmi file... Not the best thing at the moment, but we try it. 
+            var xmlDocument = new XDocument(
+                new XElement(XmiProvider.DefaultRootNodeName));
+
+            // Try to create file, to verify that file access and other activities are given
+            File.WriteAllText(xmiConfiguration.Path, string.Empty);
+            return xmlDocument;
         }
 
         public void StoreExtent(IProvider extent, ExtentLoaderConfig configuration)

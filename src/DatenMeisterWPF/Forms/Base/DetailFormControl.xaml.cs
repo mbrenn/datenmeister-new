@@ -21,8 +21,14 @@ namespace DatenMeisterWPF.Forms.Base
     /// </summary>
     public partial class DetailFormControl : UserControl
     {
+        /// <summary>
+        /// Defines the form definition being used in the detail for
+        /// </summary>
         private IElement _formDefinition;
 
+        /// <summary>
+        /// Gets or sets the navigation host
+        /// </summary>
         public INavigationHost NavigationHost { get; set; }
 
         /// <summary>
@@ -30,6 +36,9 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public IElement DetailElement { get; private set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether new properities may be added by the user to the element
+        /// </summary>
         public bool AllowNewProperties { get; set; }
 
         /// <summary>
@@ -41,7 +50,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Stores the list of actions that will be performed when the user clicks on set
         /// </summary>
-        private readonly List<Action> _setActions= new List<Action>();
+        private readonly List<Action> _setActions = new List<Action>();
         
         public DetailFormControl()
         {
@@ -51,7 +60,6 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Sets the content for a new object
         /// </summary>
-        /// <param name="scope">Scope of DatenMeister</param>
         /// <param name="formDefinition">Form Definition being used</param>
         public void SetContentForNewObject(IElement formDefinition)
         {
@@ -66,15 +74,6 @@ namespace DatenMeisterWPF.Forms.Base
             _formDefinition = formDefinition;
 
             SetContent();
-
-            if (element != null)
-            {
-                var mofElement = (MofElement) element;
-                var uriExtent = mofElement.Extent as MofUriExtent;
-                ItemLocation.Text =
-                    $"URI Extent: {uriExtent?.contextURI()} || " +
-                    $"Items: {NamedElementMethods.GetFullName(element)}";
-            }
         }
 
         private int _fieldCount;
@@ -98,29 +97,26 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             _fieldCount = 0;
+
             CreateRows(fields);
 
-            // Sets the metaclass
-            if (_formDefinition.isSet(_FormAndFields._Form.hideMetaClass) &&
-                DotNetHelper.AsBoolean(_formDefinition.get(_FormAndFields._Form.hideMetaClass)))
+            if (DetailElement != null)
             {
-                var metaClassKey = new TextBlock
-                {
-                    Text = "Metaclass: "
-                };
+                var mofElement = (MofElement)DetailElement;
+                var uriExtent = mofElement.Extent as MofUriExtent;
 
-                var metaClassValue = new TextBlock
-                {
-                    Text = DetailElement.getMetaClass()?.ToString()
-                };
+                var uriExtentText = uriExtent?.contextURI() ?? string.Empty;
+                var fullName = NamedElementMethods.GetFullName(DetailElement);
+                CreateRowForField("Extent:", uriExtentText, true);
+                CreateRowForField("Full Name:", fullName, true);
+                CreateRowForField("Url:", $"{uriExtentText}?{fullName}", true);
 
-                DataGrid.RowDefinitions.Add(new RowDefinition());
-                Grid.SetRow(metaClassKey, _fieldCount);
-                Grid.SetRow(metaClassValue, _fieldCount);
-                Grid.SetColumn(metaClassValue, 1);
-                DataGrid.Children.Add(metaClassKey);
-                DataGrid.Children.Add(metaClassValue);
-                _fieldCount++;
+                // Sets the metaclass
+                if (_formDefinition.isSet(_FormAndFields._Form.hideMetaClass) &&
+                    DotNetHelper.AsBoolean(_formDefinition.get(_FormAndFields._Form.hideMetaClass)))
+                {
+                    CreateRowForField("Meta Class:", DetailElement.getMetaClass()?.ToString());
+                }
             }
         }
 
@@ -130,6 +126,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// <param name="fields">Fields to be created</param>
         private void CreateRows(IReflectiveCollection fields)
         {
+            if (fields == null) throw new ArgumentNullException(nameof(fields));
+
             foreach (var field in fields.Cast<IElement>())
             {
                 var name = field.get(_FormAndFields._FieldData.name).ToString();
@@ -210,10 +208,7 @@ namespace DatenMeisterWPF.Forms.Base
                             // Creates the button
                             if (innerValue is IElement asIElement)
                             {
-                                var button = new Button
-                                {
-                                    Content = "Edit"
-                                };
+                                var button = new Button {Content = "Edit"};
                                 Grid.SetRow(button, inner);
                                 Grid.SetColumn(button, 1);
 
@@ -234,8 +229,36 @@ namespace DatenMeisterWPF.Forms.Base
 
                 /* Now do your job */
                 var item = isEnumeration ? CreateForEnumeration() : CreateForText();
-                CreateRowForFields(titleBlock, item);
+                CreateRowForField(titleBlock, item);
             }
+        }
+
+        /// <summary>
+        /// Creates a row by having a text
+        /// </summary>
+        /// <param name="keyText">Text to be added</param>
+        /// <param name="valueText">Value to be added</param>
+        /// <param name="selectable">True, if the user can copy the content to the clipboard.</param>
+        private void CreateRowForField(string keyText, string valueText, bool selectable = false)
+        {
+            var valueTextBlock = new TextBlock {Text = valueText};
+
+            if (selectable)
+            {
+                valueTextBlock.ContextMenu = 
+                    new ContextMenu();
+
+                var copyToClipboardAdd = new MenuItem {Header = "Copy to Clipboard"};
+                valueTextBlock.ContextMenu.Items.Add(copyToClipboardAdd);
+                copyToClipboardAdd.Click += (x, y) =>
+                {
+                    Clipboard.SetText(valueText);
+                };
+            }
+
+            CreateRowForField(
+                new TextBlock {Text = keyText},
+                valueTextBlock);
         }
 
         /// <summary>
@@ -243,7 +266,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         /// <param name="propertyKey">UIElement for the left column</param>
         /// <param name="propertyValue">UIElement for the right column</param>
-        private void CreateRowForFields(UIElement propertyKey, UIElement propertyValue)
+        private void CreateRowForField(UIElement propertyKey, UIElement propertyValue)
         {
             DataGrid.RowDefinitions.Add(new RowDefinition());
 
@@ -282,7 +305,7 @@ namespace DatenMeisterWPF.Forms.Base
                         }
                     });
 
-                    CreateRowForFields(fieldKey, fieldValue);
+                    CreateRowForField(fieldKey, fieldValue);
                     fieldKey.Focus();
                 });
             }
@@ -303,7 +326,6 @@ namespace DatenMeisterWPF.Forms.Base
                     }
 
                     OnElementSaved();
-
                     Window.GetWindow(this)?.Close();
                 }
                 catch (Exception exc)
@@ -321,11 +343,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <returns>The created button</returns>
         public ViewButton AddGenericButton(string name, Action onPressed)
         {
-            var button = new ViewButton
-            {
-                Content = name
-
-            };
+            var button = new ViewButton {Content = name};
 
             button.Pressed += (x, y) => { onPressed(); };
             ButtonBar.Children.Add(button);

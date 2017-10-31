@@ -153,19 +153,42 @@ namespace DatenMeisterWPF
         /// <param name="categoryName">Category of the ribbon to be added</param>
         public void AddNavigationButton(string name, Action clickMethod, string imageName, string categoryName)
         {
-            var tab = _ribbonTabs.FirstOrDefault(x => x.Header?.ToString() == categoryName);
+            string tabName, groupName;
+            var indexOfSemicolon = categoryName.IndexOf('.');
+            if (indexOfSemicolon == -1)
+            {
+                tabName = categoryName;
+                groupName = "Standard";
+            }
+            else
+            {
+                tabName = categoryName.Substring(0, indexOfSemicolon);
+                groupName = categoryName.Substring(indexOfSemicolon + 1);
+            }
+
+            var tab = _ribbonTabs.FirstOrDefault(x => x.Header?.ToString() == tabName);
             if (tab == null)
             {
                 tab = new RibbonTab
                 {
-                    Header = categoryName
+                    Header = tabName
                 };
 
                 _ribbonTabs.Add(tab);
                 ribbon.Items.Add(tab);
             }
 
-            var category = new RibbonGroup();
+            
+            var group = tab.Items.OfType<RibbonGroup>().FirstOrDefault(x => x.Header.ToString() == groupName);
+            if (group == null)
+            {
+                group = new RibbonGroup
+                {
+                    Header = groupName
+                };
+                tab.Items.Add(group);
+            }
+
             var button = new RibbonButton
             {
                 Label = name,
@@ -173,8 +196,7 @@ namespace DatenMeisterWPF
             };
 
             button.Click += (x, y) => clickMethod();
-            category.Items.Add(button);
-            tab.Items.Add(category);
+            group.Items.Add(button);
         }
     }
 }

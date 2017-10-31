@@ -63,10 +63,19 @@ namespace DatenMeisterWPF.Forms.Lists
                 "Workspaces",
                 () => Navigator.TheNavigator.NavigateToWorkspaces(NavigationHost),
                 Icons.WorkspacesShow,
-                NavigationCategories.File);
+                NavigationCategories.File + ".Workspaces");
 
-            NavigationHost.AddNavigationButton("New Xmi Extent", NewXmiExtent, null, NavigationCategories.File);
-            NavigationHost.AddNavigationButton("Zip-Code Example", AddZipCodeExample, null, NavigationCategories.File);
+            NavigationHost.AddNavigationButton(
+                "New Xmi Extent", 
+                NewXmiExtent, 
+                null, 
+                NavigationCategories.File + ".Workspaces");
+
+            NavigationHost.AddNavigationButton(
+                "Zip-Code Example",
+                AddZipCodeExample,
+                null,
+                NavigationCategories.File + ".Workspaces");
 
             base.PrepareNavigation();
 

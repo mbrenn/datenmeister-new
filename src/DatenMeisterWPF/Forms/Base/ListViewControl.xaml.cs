@@ -434,15 +434,15 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             NavigationHost.AddNavigationButton(
-                "View Extent", 
+                "Extent as XMI", 
                 ViewExtent, 
                 null, 
-                NavigationCategories.File);
+                NavigationCategories.File + ".Views");
             NavigationHost.AddNavigationButton(
-                "View Config", 
+                "View-Configuration", 
                 ViewConfig, 
                 null, 
-                NavigationCategories.File);
+                NavigationCategories.File + ".Views");
         }
     }
 }

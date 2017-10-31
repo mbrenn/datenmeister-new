@@ -66,7 +66,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 "Add Workspace",
                 NewWorkspace,
                 "workspaces-new",
-                NavigationCategories.File);
+                NavigationCategories.File + "." + "Workspaces");
 
             base.PrepareNavigation();
         }

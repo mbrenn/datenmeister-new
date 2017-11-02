@@ -15,14 +15,17 @@ namespace DatenMeister.Modules.ViewFinder.Helper
     /// </summary>
     public class FormCreator
     {
-
+        /// <summary>
+        /// Stores the creation mode
+        /// </summary>
         [Flags]
         public enum CreationMode
         {
             ByMetaClass = 1,
             ByProperties = 2,
-            OnlyPropertiesIfNoMetaClass = 5,
-            All = ByMetaClass | ByProperties
+            OnlyPropertiesIfNoMetaClass = 4,
+            AddMetaClass = 8,
+            All = ByMetaClass | ByProperties | AddMetaClass
         }
 
         public Form CreateForm(IUriExtent extent, CreationMode creationMode)
@@ -38,6 +41,16 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 CreateForm(result, item, creationMode);
             }
 
+            for (var n = 0; n < result.fields.Count; n++)
+            {
+                var field = result.fields[n];
+                if (field is MetaClassElementFieldData)
+                {
+                    result.fields.RemoveAt(n);
+                    result.fields.Add(field);
+                }
+            }
+
             return result;
         }
 
@@ -48,7 +61,13 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             return result;
         }
 
-        private void CreateForm(Form result, object item, CreationMode creationMode)
+        /// <summary>
+        /// Creates the form out of the given element. 
+        /// </summary>
+        /// <param name="form">Form which will be extended by the given object</param>
+        /// <param name="item">Item being used</param>
+        /// <param name="creationMode">Creation mode for the form. Whether by metaclass or ByProperties</param>
+        private void CreateForm(Form form, object item, CreationMode creationMode)
         {
             // First phase: Get the properties by using the metaclass
             var asElement = item as IElement;
@@ -59,12 +78,11 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 && metaClass != null)
             {
                 var classifierMethods = ClassifierMethods.GetPropertiesOfClassifier(metaClass).Where(x=> x.isSet("name")).ToList();
-                foreach (var property in classifierMethods
-                    .OrderBy(x=>x.get("name").ToString()))
+                foreach (var property in classifierMethods.OrderBy(x=>x.get("name").ToString()))
                 {
                     wasInMetaClass = true;
                     var propertyName = property.get("name").ToString();
-                    var isAlreadyIn = result.fields.Any(x => x.name == propertyName);
+                    var isAlreadyIn = form.fields.Any(x => x.name == propertyName);
                     if (isAlreadyIn)
                     {
                         continue;
@@ -76,7 +94,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                         title = propertyName
                     };
 
-                    result.fields.Add(column);
+                    form.fields.Add(column);
                 }
             }
 
@@ -97,7 +115,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                 foreach (var property in properties)
                 {
-                    var column = result.fields.FirstOrDefault(x => x.name == property);
+                    var column = form.fields.FirstOrDefault(x => x.name == property);
                     if (column == null)
                     {
                         column = new TextFieldData
@@ -106,12 +124,20 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                             title = property
                         };
 
-                        result.fields.Add(column);
+                        form.fields.Add(column);
                     }
 
                     var value = ((IObject) item).get(property);
                     column.isEnumeration |= value is IEnumerable && !(value is string);
                 }
+
+            }
+
+            // Third phase: Add metaclass
+            var isMetaClass = creationMode.HasFlag(CreationMode.AddMetaClass);
+            if (isMetaClass && !form.fields.Any(x => x is MetaClassElementFieldData))
+            {
+                form.fields.Add(new MetaClassElementFieldData());
             }
         }
     }

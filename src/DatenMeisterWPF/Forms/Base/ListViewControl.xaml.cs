@@ -26,6 +26,11 @@ namespace DatenMeisterWPF.Forms.Base
     /// </summary>
     public partial class ListViewControl : UserControl, INavigationGuest
     {
+        /// <summary>
+        /// Defines the key for meta class fields
+        /// </summary>
+        private const string KeyMetaClass = "{72A17892-00C6-404E-A0B1-155AE8DB4AEC}";
+        
         public ListViewControl()
         {
             InitializeComponent();
@@ -79,9 +84,18 @@ namespace DatenMeisterWPF.Forms.Base
         /// <param name="element">Element being queried</param>
         /// <param name="field">Field being used for query</param>
         /// <returns>Returned element for the </returns>
-        public virtual object GetValueOfElement(IObject element, IElement field)
+        public object GetValueOfElement(IObject element, IElement field)
         {
-            var name = field.get(_FormAndFields._FieldData.name).ToString();
+            var fieldType = field.get(_FormAndFields._FieldData.fieldType).ToString();
+            if (fieldType == MetaClassElementFieldData.FieldType)
+            {
+                var elementAsElement = element as IElement;
+                var metaClass = elementAsElement?.getMetaClass();
+
+                return metaClass == null ? string.Empty : NamedElementMethods.GetFullName(elementAsElement.getMetaClass());
+            }
+
+            var name = field.get(_FormAndFields._FieldData.name)?.ToString();
             return element.isSet(name) ? element.get(name) : null;
         }
 
@@ -204,20 +218,34 @@ namespace DatenMeisterWPF.Forms.Base
             // Creates the column
             foreach (var field in fields.Cast<IElement>())
             {
-                var name = field.get(_FormAndFields._FieldData.name).ToString();
-                var title = field.get(_FormAndFields._FieldData.title);
-                var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
+                var name = field.get(_FormAndFields._FieldData.name)?.ToString() ?? string.Empty;
+                var title = field.get(_FormAndFields._FieldData.title)?.ToString() ?? string.Empty;
+                var fieldType = field.get(_FormAndFields._FieldData.fieldType).ToString();
+                bool isReadOnly;
+
+                if (fieldType == MetaClassElementFieldData.FieldType)
+                {
+                    title = "Metaclass";
+                    name = KeyMetaClass;
+                    isReadOnly = true;
+                }
+                else
+                {
+                    var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
+                    isReadOnly = isEnumeration;
+                }
+
                 var dataColumn = new DataGridTextColumn
                 {
                     Header = title,
                     Binding = new Binding(name),
-                    IsReadOnly = isEnumeration
+                    IsReadOnly = isReadOnly
                 };
 
                 DataGrid.Columns.Add(dataColumn);
-
                 fieldNames.Add(name);
             }
+
             return (fieldNames, fields);
         }
 

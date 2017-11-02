@@ -5,11 +5,16 @@
     /// </summary>
     public class MetaClassElementFieldData : FieldData
     {
-        public MetaClassElementFieldData() : base("metaclass")
+        /// <summary>
+        /// Defines the field type for the metaclass
+        /// </summary>
+        public const string FieldType = "metaclass";
+
+        public MetaClassElementFieldData() : base(FieldType)
         {
         }
 
-        public MetaClassElementFieldData(string name, string title) : base("metaclass", name, title)
+        public MetaClassElementFieldData(string name, string title) : base(FieldType, name, title)
         {
         }
     }

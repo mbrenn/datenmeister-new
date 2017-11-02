@@ -115,7 +115,10 @@ namespace DatenMeisterWPF.Forms.Base
                 if (_formDefinition.isSet(_FormAndFields._Form.hideMetaClass) &&
                     DotNetHelper.AsBoolean(_formDefinition.get(_FormAndFields._Form.hideMetaClass)))
                 {
-                    CreateRowForField("Meta Class:", DetailElement.getMetaClass()?.ToString());
+                    var metaClass = DetailElement.getMetaClass();
+                    CreateRowForField(
+                        "Meta Class:",
+                        metaClass == null ? string.Empty : NamedElementMethods.GetFullName(metaClass));
                 }
             }
         }

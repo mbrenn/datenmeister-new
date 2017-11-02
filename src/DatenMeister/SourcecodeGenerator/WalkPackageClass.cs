@@ -20,7 +20,10 @@ namespace DatenMeister.SourcecodeGenerator
         /// </summary>
         private readonly ISourceParser _parser;
 
-
+        /// <summary>
+        /// Initializates a new instance of the WalkPackageClass instance
+        /// </summary>
+        /// <param name="parser"></param>
         public WalkPackageClass(ISourceParser parser)
         {
             _parser = parser ?? new XmiSourceParser();
@@ -63,6 +66,7 @@ namespace DatenMeister.SourcecodeGenerator
         ///     Regards the given element as a package
         ///     and returns a full namespace for the package.
         /// </param>
+        /// <param name="stack">Current callstack</param>
         private void Walk(IObject element, CallStack stack)
         {
             if (_parser.IsPackage(element))
@@ -99,13 +103,13 @@ namespace DatenMeister.SourcecodeGenerator
         ///     Creates a C# source code. Not to be used for recursive
         ///     call since the namespace is just once created
         /// </summary>
-        /// <param name="element">
+        /// <param name="stack">
         ///     Regards the given element as a package
         ///     and returns a full namespace for the package.
         /// </param>
         private void StartNamespace(ref CallStack stack)
         {
-            Result.AppendLine($"{stack.Indentation}// Created by {GetType().FullName} Version {FactoryVersion} created at {DateTime.Now}");
+            Result.AppendLine($"{stack.Indentation}// Created by {GetType().FullName} Version {FactoryVersion}");
 
             // Check, if we have namespaces
             if (!string.IsNullOrEmpty(Namespace))

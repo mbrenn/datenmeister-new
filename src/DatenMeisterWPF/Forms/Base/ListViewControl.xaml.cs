@@ -74,6 +74,18 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
+        /// Gets the value of the element 
+        /// </summary>
+        /// <param name="element">Element being queried</param>
+        /// <param name="field">Field being used for query</param>
+        /// <returns>Returned element for the </returns>
+        public virtual object GetValueOfElement(IObject element, IElement field)
+        {
+            var name = field.get(_FormAndFields._FieldData.name).ToString();
+            return element.isSet(name) ? element.get(name) : null;
+        }
+
+        /// <summary>
         /// Updates the content
         /// </summary>
         public void UpdateContent()
@@ -107,11 +119,12 @@ namespace DatenMeisterWPF.Forms.Base
                     var itemObject = new ExpandoObject();
                     var asDictionary = (IDictionary<string, object>) itemObject;
 
+                    var n = 0;
                     foreach (var field in fields.Cast<IElement>())
                     {
-                        var name = field.get(_FormAndFields._FieldData.name).ToString();
+                        var columnName = fieldNames[n];
                         var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
-                        var value = item.isSet(name) ? item.get(name) : null;
+                        var value = GetValueOfElement(item, field);
 
                         if (isEnumeration)
                         {
@@ -127,12 +140,14 @@ namespace DatenMeisterWPF.Forms.Base
                                 }
                             }
 
-                            asDictionary.Add(name, result.ToString());
+                            asDictionary.Add(columnName, result.ToString());
                         }
                         else
                         {
-                            asDictionary.Add(name, value);
+                            asDictionary.Add(columnName, value);
                         }
+
+                        n++;
                     }
 
                     _itemMapping[itemObject] = item;
@@ -171,6 +186,10 @@ namespace DatenMeisterWPF.Forms.Base
             }
         }
 
+        /// <summary>
+        /// Updates the columns for the fields and returns the names and fields
+        /// </summary>
+        /// <returns>The tuple containing the names being used for the column and the fields being used.</returns>
         private (List<string> names, IReflectiveCollection fields) UpdateColumns()
         {
             if (!(FormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))

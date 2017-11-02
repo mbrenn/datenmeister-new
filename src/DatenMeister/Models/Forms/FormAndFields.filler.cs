@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-// Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0 created at 16.10.2017 22:07:59
+// Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
 namespace DatenMeister.Models.Forms
 {
     public class FillTheFormAndFields : DatenMeister.Core.Filler.IFiller<_FormAndFields>
@@ -303,6 +303,41 @@ namespace DatenMeister.Models.Forms
                                 if(name == "view") // Looking for property
                                 {
                                     tree.DefaultViewForExtentType._view = value;
+                                }
+                            }
+                        }
+                        if(name == "MetaClassElementFieldData") // Looking for class
+                        {
+                            tree.__MetaClassElementFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "fieldType") // Looking for property
+                                {
+                                    tree.MetaClassElementFieldData._fieldType = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.MetaClassElementFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.MetaClassElementFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.MetaClassElementFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.MetaClassElementFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.MetaClassElementFieldData._isReadOnly = value;
                                 }
                             }
                         }

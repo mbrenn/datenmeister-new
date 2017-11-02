@@ -15,7 +15,8 @@ namespace DatenMeister.Models.Forms
                 typeof(DropDownFieldData),
                 typeof(SubElementFieldData),
                 typeof(DefaultViewForMetaclass),
-                typeof(DefaultViewForExtentType)
+                typeof(DefaultViewForExtentType),
+                typeof(MetaClassElementFieldData)
             };
         }
     }

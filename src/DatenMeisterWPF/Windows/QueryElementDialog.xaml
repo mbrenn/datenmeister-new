@@ -9,16 +9,16 @@
         WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="10,2,10,2"></Setter>
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
         </Style>
         <Style TargetType="TextBlock">
-            <Setter Property="Margin" Value="10,2,10,2"></Setter>
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
         </Style>
         <Style TargetType="Button">
-            <Setter Property="Margin" Value="10,2,10,2"></Setter>
+            <Setter Property="Margin" Value="0,2,5,2"></Setter>
         </Style>
     </Window.Resources>
-    <Grid>
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />

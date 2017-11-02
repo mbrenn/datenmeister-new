@@ -10,5 +10,6 @@
         public static string WorkspacesShow = "workspaces-show";
         public static string WorkspacesNew = "workspaces-new";
         public static string WorkspacesDelete = "workspaces-delete";
+        public static string ExtentsShow = "extents-show";
     }
 }

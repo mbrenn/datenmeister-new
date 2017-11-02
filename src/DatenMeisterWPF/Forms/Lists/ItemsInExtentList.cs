@@ -3,14 +3,17 @@ using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
-    public class ItemsInExtentList : ElementListViewControl
+    public class ItemsInExtentList : ElementListViewControl, INavigationGuest
     {
+        private string _workspaceId;
         public void SetContent(IDatenMeisterScope scope, string workspaceId, string extentUrl)
         {
+            _workspaceId = workspaceId;
             var workLogic = scope.Resolve<IWorkspaceLogic>();
             var extent = workLogic.FindExtent(workspaceId, extentUrl);
             if (extent == null)
@@ -20,6 +23,7 @@ namespace DatenMeisterWPF.Forms.Lists
             }
 
             SetContent(extent.elements(), null);
+
             AddGenericButton("New Item", () =>
             {
                 var mofFactory = new MofFactory(extent);
@@ -37,5 +41,19 @@ namespace DatenMeisterWPF.Forms.Lists
             AddDefaultButtons();
         }
 
+        /// <summary>
+        /// Prepares the navigation of the host. The function is called by the navigation 
+        /// host. 
+        /// </summary>
+        public new void PrepareNavigation()
+        {
+            base.PrepareNavigation();
+
+            NavigationHost.AddNavigationButton(
+                "To Extent",
+                () => Navigator.TheNavigator.NavigateToExtentList(NavigationHost, _workspaceId),
+                Icons.ExtentsShow,
+                NavigationCategories.File + ".Workspaces");
+        }
     }
 }

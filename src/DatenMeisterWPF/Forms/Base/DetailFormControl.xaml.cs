@@ -133,6 +133,12 @@ namespace DatenMeisterWPF.Forms.Base
 
             foreach (var field in fields.Cast<IElement>())
             {
+                var fieldType = field.get(_FormAndFields._FieldData.fieldType)?.ToString();
+                if (fieldType == MetaClassElementFieldData.FieldType)
+                {
+                    continue;
+                }
+
                 var name = field.get(_FormAndFields._FieldData.name).ToString();
                 var title = field.get(_FormAndFields._FieldData.title).ToString();
                 var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));

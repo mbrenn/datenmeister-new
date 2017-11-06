@@ -6,6 +6,7 @@ using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Plugins;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserManagement;
@@ -68,7 +69,6 @@ namespace DatenMeister.Integration
             var workspaceData = WorkspaceLogic.InitDefault();
             kernel.RegisterInstance(workspaceData).As<WorkspaceData>();
             kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
-
             
             // Loading and storing the workspaces
             var workspaceLoadingConfiguration = new WorkspaceLoaderConfig
@@ -87,6 +87,7 @@ namespace DatenMeister.Integration
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
+
                 Provider.CSV.Integrate.Into(scope);
                 Provider.XMI.Integrate.Into(scope);
 
@@ -154,7 +155,6 @@ namespace DatenMeister.Integration
                     workspaceLogic, 
                     scope.Resolve<LocalTypeSupport>());
 
-
                 // Boots up the typical DatenMeister Environment  
                 if (_settings.EstablishDataEnvironment)
                 {
@@ -163,6 +163,9 @@ namespace DatenMeister.Integration
                 }
 
                 CreatesUserTypeExtent(scope);
+
+                // Finally loads the plugin
+                PluginManager.StartPlugins(scope);
             }
 
             watch.Stop();

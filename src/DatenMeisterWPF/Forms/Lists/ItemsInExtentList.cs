@@ -1,7 +1,10 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Navigation;
@@ -11,8 +14,20 @@ namespace DatenMeisterWPF.Forms.Lists
     public class ItemsInExtentList : ElementListViewControl, INavigationGuest
     {
         private string _workspaceId;
+        private IDatenMeisterScope _scope;
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Gets the enumeration of all views that may match to the shown items
+        /// </summary>
+        public override IEnumerable<IElement> GetFormsForView()
+        {
+            return _scope.Resolve<IViewFinder>().FindViews(null, null);
+        }
+
         public void SetContent(IDatenMeisterScope scope, string workspaceId, string extentUrl)
         {
+            _scope = scope;
             _workspaceId = workspaceId;
             var workLogic = scope.Resolve<IWorkspaceLogic>();
             var extent = workLogic.FindExtent(workspaceId, extentUrl);

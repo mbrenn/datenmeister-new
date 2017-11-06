@@ -79,6 +79,15 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
+        /// Defines the virtual method that is used to collect all possible views which can be selected by the user
+        /// </summary>
+        /// <returns>Found enumeration of view or null, if the class does not support the collection of views</returns>
+        public virtual IEnumerable<IElement> GetFormsForView()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Gets the value of the element 
         /// </summary>
         /// <param name="element">Element being queried</param>
@@ -198,7 +207,37 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 AddRowItemButton(definition, false);
             }
+
+            // Update view
+            var views = GetFormsForView();
+            if (views != null)
+            {
+                ViewList.Visibility = Visibility.Visible;
+                ViewList.ItemsSource = views.Select(x => new ViewInList(NamedElementMethods.GetFullName(x), x));
+            }
+            else
+            {
+                ViewList.Visibility = Visibility.Collapsed;
+            }
         }
+
+        public class ViewInList
+        {
+            private readonly string _name;
+            private readonly IElement _element;
+
+            public ViewInList(string name, IElement element)
+            {
+                _name = name;
+                _element = element;
+            }
+
+            public override string ToString()
+            {
+                return _name;
+            }
+        }
+
 
         /// <summary>
         /// Updates the columns for the fields and returns the names and fields

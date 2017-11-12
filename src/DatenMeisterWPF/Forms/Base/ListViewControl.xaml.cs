@@ -26,11 +26,6 @@ namespace DatenMeisterWPF.Forms.Base
     /// </summary>
     public partial class ListViewControl : UserControl, INavigationGuest
     {
-        /// <summary>
-        /// Defines the key for meta class fields
-        /// </summary>
-        private const string KeyMetaClass = "{72A17892-00C6-404E-A0B1-155AE8DB4AEC}";
-        
         public ListViewControl()
         {
             InitializeComponent();
@@ -54,6 +49,21 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private string _searchText;
 
+        /// <summary>
+        /// Gets the currently selected object
+        /// </summary>
+        private IObject SelectedItem
+        {
+            get
+            {
+                var selectedItem = DataGrid.SelectedItem;
+                return selectedItem == null ? null : _itemMapping[(ExpandoObject)selectedItem];
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the information whether new items can be added via the datagrid
+        /// </summary>
         private bool SupportNewItems
         {
             get => DataGrid.CanUserAddRows;
@@ -88,7 +98,7 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
-        /// Gets the value of the element 
+        /// Gets the value of the element by the field
         /// </summary>
         /// <param name="element">Element being queried</param>
         /// <param name="field">Field being used for query</param>
@@ -109,7 +119,7 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
-        /// Updates the content
+        /// Updates the content of the list by recreating the columns
         /// </summary>
         public void UpdateContent()
         {
@@ -120,6 +130,7 @@ namespace DatenMeisterWPF.Forms.Base
             var listItems = new ObservableCollection<ExpandoObject>();
             _itemMapping.Clear();
             
+            // Updates all columns and returns the fieldnames and fields
             var (fieldNames, fields) = UpdateColumns();
             if (fieldNames == null)
             {
@@ -221,24 +232,6 @@ namespace DatenMeisterWPF.Forms.Base
             }
         }
 
-        public class ViewInList
-        {
-            private readonly string _name;
-            private readonly IElement _element;
-
-            public ViewInList(string name, IElement element)
-            {
-                _name = name;
-                _element = element;
-            }
-
-            public override string ToString()
-            {
-                return _name;
-            }
-        }
-
-
         /// <summary>
         /// Updates the columns for the fields and returns the names and fields
         /// </summary>
@@ -265,7 +258,7 @@ namespace DatenMeisterWPF.Forms.Base
                 if (fieldType == MetaClassElementFieldData.FieldType)
                 {
                     title = "Metaclass";
-                    name = KeyMetaClass;
+                    name = string.Empty;
                     isReadOnly = true;
                 }
                 else
@@ -293,7 +286,6 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public void AddDefaultButtons()
         {
-
             void Open(IObject selectedElement)
             {
                 if (selectedElement == null)
@@ -394,28 +386,6 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
-        /// Defines the definition for the row item button
-        /// </summary>
-        public class RowItemButtonDefinition
-        {
-            public string Name { get; set; }
-            public Action<IObject> Pressed { get; set; }
-        }
-
-
-        /// <summary>
-        /// Gets the currently selected object
-        /// </summary>
-        private IObject SelectedItem
-        {
-            get
-            {
-                var selectedItem = DataGrid.SelectedItem;
-                return selectedItem == null ? null : _itemMapping[(ExpandoObject) selectedItem];
-            }
-        }
-
-        /// <summary>
         /// Called, if the user clicks on the button
         /// </summary>
         /// <param name="sender">Sender being used</param>
@@ -467,24 +437,15 @@ namespace DatenMeisterWPF.Forms.Base
             }
         }
 
-        /// <inheritdoc />
-        /// <summary>
-        /// The template being used to click
-        /// </summary>
-        private class ClickedTemplateColumn : DataGridTemplateColumn
-        {
-            /// <summary>
-            /// Gets or sets the action being called when the user clicks on the button
-            /// </summary>
-            public Action<IObject> OnClick { get; set; }
-        }
-
         private void SearchField_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             _searchText = SearchField.Text;
             UpdateContent();
         }
 
+        /// <summary>
+        /// Prepares the navigation and ribbons
+        /// </summary>
         public void PrepareNavigation()
         {
             void ViewExtent()
@@ -528,6 +489,70 @@ namespace DatenMeisterWPF.Forms.Base
                 ViewConfig, 
                 null, 
                 NavigationCategories.File + ".Views");
+        }
+
+        private void ViewList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!(ViewList.SelectedItem is ViewInList newForm))
+            {
+                return;
+            }
+
+            FormDefinition = newForm.Element;
+            UpdateContent();
+        }
+
+        /// <summary>
+        /// Defines the definition for the row item button
+        /// </summary>
+        public class RowItemButtonDefinition
+        {
+            public string Name { get; set; }
+            public Action<IObject> Pressed { get; set; }
+        }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// The template being used to click
+        /// </summary>
+        private class ClickedTemplateColumn : DataGridTemplateColumn
+        {
+            /// <summary>
+            /// Gets or sets the action being called when the user clicks on the button
+            /// </summary>
+            public Action<IObject> OnClick { get; set; }
+        }
+
+        /// <summary>
+        /// Defines the class for a view in list
+        /// </summary>
+        public class ViewInList
+        {
+            /// <summary>
+            /// Gets the name
+            /// </summary>
+            public string Name { get; }
+
+            /// <summary>
+            /// Gets the corresponding element
+            /// </summary>
+            public IElement Element { get; }
+
+            /// <summary>
+            /// Initializes a new instance of the new ViewInList class
+            /// </summary>
+            /// <param name="name"></param>
+            /// <param name="element"></param>
+            public ViewInList(string name, IElement element)
+            {
+                Name = name;
+                Element = element;
+            }
+
+            public override string ToString()
+            {
+                return Name;
+            }
         }
     }
 }

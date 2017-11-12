@@ -2,8 +2,10 @@
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Detail;
 using DatenMeisterWPF.Navigation;
 
@@ -14,12 +16,19 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <summary>
         /// Shows the workspaces of the DatenMeister
         /// </summary>
-        /// <param name="scope"></param>
-        public void SetContent(IElement formElement = null)
+        public void SetContent()
         {
+            // Finds the view
+            var viewLogic = App.Scope.Resolve<ViewLogic>();
+            var formElement = NamedElementMethods.GetByFullName(
+                viewLogic.GetViewExtent(),
+                ViewDefinitions.PathWorkspaceListView);
+
+            // Sets the workspaces
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);
             SetContent(workspaceExtent.elements(), formElement);
 
+            // Adds the buttons
             AddDefaultButtons();
             AddRowItemButton("Show Extents", ShowExtents);
             AddRowItemButton("Delete Workspace", DeleteWorkspace);

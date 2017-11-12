@@ -161,22 +161,20 @@ namespace DatenMeister.Uml.Helper
         /// <param name="packagePath">Path of the package to be created</param>
         /// <param name="nameProperty">The name property which contain the name for the element</param>
         /// <param name="childProperty">The child property which contain the subelements</param>
-        /// <param name="metaClassPackage"></param>
+        /// <param name="metaClass">The Metaclass being used to create the child packages</param>
         public static IElement GetOrCreatePackageStructure(
             IReflectiveSequence rootElements, 
             IFactory factory,
             string packagePath, 
             string nameProperty,
             string childProperty, 
-            string metaClassPackage)
+            IElement metaClass = null)
         {
-
             var elementNames = packagePath
                 .Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim()).ToList();
 
             IElement found = null;
-
             foreach (var elementName in elementNames)
             {
                 // Looks for the element with the given name
@@ -197,7 +195,7 @@ namespace DatenMeister.Uml.Helper
                 // Creates the child element
                 if (childElement == null)
                 {
-                    childElement = factory.create(null);
+                    childElement = factory.create(metaClass);
                     childElement.set(nameProperty, elementName);
                     rootElements.add(childElement);
                 }

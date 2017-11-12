@@ -34,5 +34,10 @@ namespace DatenMeisterWPF
             Action clickMethod,
             string imageName,
             string categoryName);
+
+        /// <summary>
+        /// Sets the focus of the navigation host, so user can click on it
+        /// </summary>
+        void SetFocus();
     }
 }

@@ -12,7 +12,7 @@
     </UserControl.Resources>
     <DockPanel>
         <StackPanel Orientation="Horizontal" x:Name="Toolbar" DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="10,0,10,0">
-            <ComboBox x:Name="ViewList"></ComboBox>
+            <ComboBox x:Name="ViewList" SelectionChanged="ViewList_OnSelectionChanged"></ComboBox>
             <TextBox x:Name="SearchField" Width="200" TextChanged="SearchField_OnTextChanged"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" x:Name="ButtonBar" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10">

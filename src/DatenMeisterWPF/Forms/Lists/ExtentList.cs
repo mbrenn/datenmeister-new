@@ -51,7 +51,6 @@ namespace DatenMeisterWPF.Forms.Lists
                     uri);
                 events.Closed += (x, y) => UpdateContent();
             }
-
         }
 
         /// <summary>

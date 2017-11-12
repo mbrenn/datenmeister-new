@@ -47,23 +47,20 @@ namespace DatenMeisterWPF.Navigation
         /// Performs a navigation from the current window to the given User Control.
         /// The user control is stored as an action method to allow
         /// </summary>
-        /// <param name="root">Root window to be used</param>
+        /// <param name="navigationHost">Root window to be used</param>
         /// <param name="factoryMethod">The factory method</param>
         /// <param name="navigationMode">Defines the navigation mode</param>
         public IControlNavigation NavigateTo(
-            INavigationHost root,
+            INavigationHost navigationHost,
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
         {
             // Verifies if the given window supports the navigation. 
-            if (root is INavigationHost navigateable)
-            {
-                var innerResult = navigateable.NavigateTo(factoryMethod, navigationMode);
+                var innerResult = navigationHost?.NavigateTo(factoryMethod, navigationMode);
                 if (innerResult != null)
                 {
                     return innerResult;
                 }
-            }
 
             var result = new ControlNavigation();
             var userControl = factoryMethod();
@@ -75,7 +72,7 @@ namespace DatenMeisterWPF.Navigation
                 {
                     var window = new ListFormWindow
                     {
-                        Owner = root as Window,
+                        Owner = navigationHost as Window,
                         MainViewSet =
                         {
                             Content = asListViewControl
@@ -89,15 +86,20 @@ namespace DatenMeisterWPF.Navigation
                 {
                     var window = new DetailFormWindow
                     {
-                        Owner = root as Window,
+                        Owner = navigationHost as Window,
                         MainContent =
                         {
                             Content = asDetailFormControl
                         }
                     };
 
+                    asDetailFormControl.NavigationHost = navigationHost;
                     window.Show();
-                    window.Closed += (x, y) => result.OnClosed();
+                    window.Closed += (x, y) =>
+                    {
+                        result.OnClosed();
+                        navigationHost?.SetFocus();
+                    };
                     break;
                 }
             }
@@ -116,15 +118,8 @@ namespace DatenMeisterWPF.Navigation
                 window,
                 () =>
                 {
-
-                    var viewLogic = App.Scope.Resolve<ViewLogic>();
-
-                    var workspaceListView = NamedElementMethods.GetByFullName(
-                        viewLogic.GetViewExtent(),
-                        ViewDefinitions.PathWorkspaceListView);
-
                     var workspaceControl = new WorkspaceList();
-                    workspaceControl.SetContent(workspaceListView);
+                    workspaceControl.SetContent();
                     return workspaceControl;
                 },
                 NavigationMode.List);

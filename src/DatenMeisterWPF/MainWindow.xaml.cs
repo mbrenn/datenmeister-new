@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,6 +30,8 @@ namespace DatenMeisterWPF
         {
             InitializeComponent();
         }
+
+        private readonly List<RibbonTab> _ribbonTabs = new List<RibbonTab>();
 
         private async void Window_Initialized(object sender, EventArgs e)
         {
@@ -64,8 +65,6 @@ namespace DatenMeisterWPF
                 _iconRepository = new StandardRepository();
             }
         }
-
-        private List<RibbonTab> _ribbonTabs = new List<RibbonTab>();
 
         /// <summary>
         /// Called, if the host shall navigate to a certain control
@@ -189,7 +188,6 @@ namespace DatenMeisterWPF
                 _ribbonTabs.Add(tab);
                 MainRibbon.Items.Add(tab);
             }
-
             
             var group = tab.Items.OfType<RibbonGroup>().FirstOrDefault(x => x.Header.ToString() == groupName);
             if (group == null)

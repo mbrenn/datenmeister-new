@@ -14,6 +14,9 @@ namespace DatenMeister.Provider.ManagementProviders
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ViewDefinitions
     {
+        /// <summary>
+        /// Stores the view logic
+        /// </summary>
         private readonly ViewLogic _viewLogic;
 
         /// <summary>

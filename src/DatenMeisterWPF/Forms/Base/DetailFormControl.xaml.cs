@@ -24,7 +24,12 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Defines the form definition being used in the detail for
         /// </summary>
-        private IElement _formDefinition;
+        private IElement _actualFormDefinition;
+
+        /// <summary>
+        /// Gets or sets the view definition
+        /// </summary>
+        public ViewDefinition ViewDefinition { get; set; }
 
         /// <summary>
         /// Gets or sets the navigation host
@@ -71,27 +76,50 @@ namespace DatenMeisterWPF.Forms.Base
         public void SetContent(IElement element, IElement formDefinition)
         {
             DetailElement = element ?? InMemoryObject.CreateEmpty();
-            _formDefinition = formDefinition;
 
-            SetContent();
+            ViewDefinition = new ViewDefinition(
+                null,
+                formDefinition,
+                formDefinition == null ? ViewDefinitionMode.Default : ViewDefinitionMode.Specific
+            );
+
+            RefreshViewDefinition();
+            UpdateContent();
         }
 
         private int _fieldCount;
 
         /// <summary>
-        /// Updates the content
+        /// This method gets called, when a new item is added or an existing item was modified. 
+        /// Derivation of the class which have automatic creation of columns may include additional columns
         /// </summary>
-        public void SetContent()
+        private void RefreshViewDefinition()
         {
-            // Checks, if automatic view is required
-            if (_formDefinition == null)
+            var viewFinder = App.Scope.Resolve<IViewFinder>();
+            if (ViewDefinition.Mode == ViewDefinitionMode.Default)
             {
-                var viewFinder = App.Scope.Resolve<IViewFinder>();
-                _formDefinition = viewFinder.FindView(DetailElement, null);
+                _actualFormDefinition = viewFinder.FindView((DetailElement as MofObject)?.Extent);
             }
 
+            if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties
+                || ViewDefinition.Mode == ViewDefinitionMode.Default && _actualFormDefinition == null)
+            {
+                _actualFormDefinition = viewFinder.CreateView(DetailElement);
+            }
+
+            if (ViewDefinition.Mode == ViewDefinitionMode.Specific)
+            {
+                _actualFormDefinition = ViewDefinition.Element;
+            }
+        }
+
+        /// <summary>
+        /// Updates the content
+        /// </summary>
+        private void UpdateContent()
+        {
             _setActions.Clear();
-            if (!(_formDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
+            if (!(_actualFormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
             {
                 return;
             }
@@ -113,8 +141,8 @@ namespace DatenMeisterWPF.Forms.Base
                 CreateRowForField("Url w/Fullname:", $"{uriExtentText}?{fullName}", true);
 
                 // Sets the metaclass
-                if (_formDefinition.isSet(_FormAndFields._Form.hideMetaClass) &&
-                    DotNetHelper.AsBoolean(_formDefinition.get(_FormAndFields._Form.hideMetaClass)))
+                if (_actualFormDefinition.isSet(_FormAndFields._Form.hideMetaClass) &&
+                    DotNetHelper.AsBoolean(_actualFormDefinition.get(_FormAndFields._Form.hideMetaClass)))
                 {
                     var metaClass = DetailElement.getMetaClass();
                     CreateRowForField(

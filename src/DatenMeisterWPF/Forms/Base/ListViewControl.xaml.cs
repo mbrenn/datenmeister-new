@@ -8,14 +8,17 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
 
@@ -30,12 +33,20 @@ namespace DatenMeisterWPF.Forms.Base
         {
             InitializeComponent();
         }
-
+        
         public INavigationHost NavigationHost;
 
         public IReflectiveSequence Items { get; set; }
 
-        public IElement FormDefinition { get; set; }
+        /// <summary>
+        /// Gets or sets the form definition that is actually used for the current view
+        /// </summary>
+        public IElement ActualFormDefinition { get; set; }
+
+        /// <summary>
+        /// Gets or sets the view Definition mode
+        /// </summary>
+        public ViewDefinition ViewDefinition { get; set; }
         
         private readonly IDictionary<ExpandoObject, IObject> _itemMapping = new Dictionary<ExpandoObject, IObject>();
 
@@ -69,13 +80,18 @@ namespace DatenMeisterWPF.Forms.Base
             get => DataGrid.CanUserAddRows;
             set => DataGrid.CanUserAddRows = value;
         }
+
         /// <summary>
         /// Updates the content by going through the fields and items
         /// </summary>
         public void SetContent(IReflectiveSequence items, IElement formDefinition)
         {
             Items = items;
-            FormDefinition = formDefinition;
+            ViewDefinition = new ViewDefinition(
+                null,
+                formDefinition,
+                formDefinition == null ? ViewDefinitionMode.Default : ViewDefinitionMode.Specific
+            );
 
             UpdateContent();
         }
@@ -84,8 +100,24 @@ namespace DatenMeisterWPF.Forms.Base
         /// This method gets called, when a new item is added or an existing item was modified. 
         /// Derivation of the class which have automatic creation of columns may include additional columns
         /// </summary>
-        public virtual void RefreshViewDefinition()
+        private void RefreshViewDefinition()
         {
+            var viewFinder = App.Scope.Resolve<IViewFinder>();
+            if (ViewDefinition.Mode == ViewDefinitionMode.Default)
+            {
+                ActualFormDefinition = viewFinder.FindView((Items as IHasExtent)?.Extent);
+            }
+
+            if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties
+                || ViewDefinition.Mode == ViewDefinitionMode.Default && ActualFormDefinition == null)
+            {
+                ActualFormDefinition = viewFinder.CreateView(Items);
+            }
+
+            if (ViewDefinition.Mode == ViewDefinitionMode.Specific)
+            {
+                ActualFormDefinition = ViewDefinition.Element;
+            }
         }
 
         /// <summary>
@@ -123,8 +155,10 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public void UpdateContent()
         {
+            RefreshViewDefinition();
+
             SupportNewItems = 
-                !DotNetHelper.AsBoolean(FormDefinition.get(_FormAndFields._Form.inhibitNewItems));
+                !DotNetHelper.AsBoolean(ActualFormDefinition.get(_FormAndFields._Form.inhibitNewItems));
             SupportNewItems = false; // TODO: Make new items working
 
             var listItems = new ObservableCollection<ExpandoObject>();
@@ -224,12 +258,29 @@ namespace DatenMeisterWPF.Forms.Base
             if (views != null)
             {
                 ViewList.Visibility = Visibility.Visible;
-                ViewList.ItemsSource = views.Select(x => new ViewInList(NamedElementMethods.GetFullName(x), x));
+                var list = new List<ViewDefinition>
+                {
+                    new ViewDefinition("Default", null, ViewDefinitionMode.Default),
+                    new ViewDefinition("All Properties", null, ViewDefinitionMode.Default)
+                };
+                list.AddRange(views.Select(x => new ViewDefinition(NamedElementMethods.GetFullName(x), x)));
+                ViewList.ItemsSource = list;
             }
             else
             {
                 ViewList.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void ViewList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!(ViewList.SelectedItem is ViewDefinition newForm))
+            {
+                return;
+            }
+
+            ViewDefinition = newForm;
+            UpdateContent();
         }
 
         /// <summary>
@@ -238,7 +289,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <returns>The tuple containing the names being used for the column and the fields being used.</returns>
         private (List<string> names, IReflectiveCollection fields) UpdateColumns()
         {
-            if (!(FormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
+            if (!(ActualFormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
             {
                 return (null,null);
             }
@@ -250,7 +301,7 @@ namespace DatenMeisterWPF.Forms.Base
             // Creates the column
             foreach (var field in fields.Cast<IElement>())
             {
-                var name = field.get(_FormAndFields._FieldData.name)?.ToString() ?? string.Empty;
+                var name = "_" + (field.get(_FormAndFields._FieldData.name)?.ToString() ?? string.Empty);
                 var title = field.get(_FormAndFields._FieldData.title)?.ToString() ?? string.Empty;
                 var fieldType = field.get(_FormAndFields._FieldData.fieldType).ToString();
                 bool isReadOnly;
@@ -258,7 +309,7 @@ namespace DatenMeisterWPF.Forms.Base
                 if (fieldType == MetaClassElementFieldData.FieldType)
                 {
                     title = "Metaclass";
-                    name = string.Empty;
+                    name = "Metaclass";
                     isReadOnly = true;
                 }
                 else
@@ -465,18 +516,24 @@ namespace DatenMeisterWPF.Forms.Base
                     SupportWriting = true,
                     Owner = Window.GetWindow(this)
                 };
-                dlg.UpdateContent(FormDefinition);
+                dlg.UpdateContent(ActualFormDefinition);
 
                 dlg.UpdateButtonPressed += (x, y) =>
                 {
                     var temporaryExtent = InMemoryProvider.TemporaryExtent;
                     var factory = new MofFactory(temporaryExtent);
-                    FormDefinition = dlg.GetCurrentContentAsMof(factory);
+                    ActualFormDefinition = dlg.GetCurrentContentAsMof(factory);
                     UpdateContent();
                 };
 
                 dlg.ShowDialog();
             }
+
+            NavigationHost.AddNavigationButton(
+                "Refresh",
+                UpdateContent,
+                Icons.Refresh,
+                NavigationCategories.File + ".Views");
 
             NavigationHost.AddNavigationButton(
                 "Extent as XMI", 
@@ -489,17 +546,6 @@ namespace DatenMeisterWPF.Forms.Base
                 ViewConfig, 
                 null, 
                 NavigationCategories.File + ".Views");
-        }
-
-        private void ViewList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!(ViewList.SelectedItem is ViewInList newForm))
-            {
-                return;
-            }
-
-            FormDefinition = newForm.Element;
-            UpdateContent();
         }
 
         /// <summary>
@@ -521,38 +567,6 @@ namespace DatenMeisterWPF.Forms.Base
             /// Gets or sets the action being called when the user clicks on the button
             /// </summary>
             public Action<IObject> OnClick { get; set; }
-        }
-
-        /// <summary>
-        /// Defines the class for a view in list
-        /// </summary>
-        public class ViewInList
-        {
-            /// <summary>
-            /// Gets the name
-            /// </summary>
-            public string Name { get; }
-
-            /// <summary>
-            /// Gets the corresponding element
-            /// </summary>
-            public IElement Element { get; }
-
-            /// <summary>
-            /// Initializes a new instance of the new ViewInList class
-            /// </summary>
-            /// <param name="name"></param>
-            /// <param name="element"></param>
-            public ViewInList(string name, IElement element)
-            {
-                Name = name;
-                Element = element;
-            }
-
-            public override string ToString()
-            {
-                return Name;
-            }
         }
     }
 }

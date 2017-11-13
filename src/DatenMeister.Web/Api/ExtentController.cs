@@ -411,7 +411,7 @@ namespace DatenMeister.Web.Api
             var totalItems = foundExtent.elements();
             var foundItems = totalItems;
             
-            var result = _viewFinder.FindView(foundExtent, view);
+            var result = _viewFinder.FindView(foundExtent);
             if (result == null)
             {
                 return Content(HttpStatusCode.NotFound.ToString(), "View Not Found");
@@ -498,7 +498,7 @@ namespace DatenMeister.Web.Api
                 return NotFound();
             }
 
-            var result = _viewFinder.FindView(foundElement, view);
+            var result = _viewFinder.FindView(foundElement);
             itemModel.c = DynamicConverter.ToDynamic(result, false);
             itemModel.v = ConvertToJson(foundElement, result);
             itemModel.layer = _workspaceLogic?.GetWorkspaceOfObject(foundElement)?.id;

@@ -11,7 +11,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// Implements a reflective sequence as given by the MOF specification. 
     /// The sequence needs to be correlated to a Mof Object
     /// </summary>
-    internal class MofReflectiveSequence : IReflectiveSequence, IHasExtent
+    public class MofReflectiveSequence : IReflectiveSequence, IHasExtent
     {
         private readonly string _property;
 

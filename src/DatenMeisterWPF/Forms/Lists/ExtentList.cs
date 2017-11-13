@@ -14,11 +14,12 @@ using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
+using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
-    public class ExtentList : ElementListViewControl, INavigationGuest
+    public class ExtentList : ListViewControl, INavigationGuest
     {
         private string _workspaceId;
 

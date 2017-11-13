@@ -19,6 +19,11 @@ namespace DatenMeister.Modules.ViewFinder
         private readonly FormCreator _formCreator;
         private readonly ViewLogic _viewLogic;
 
+        /// <summary>
+        /// Initializes a new instance of the ViewFinderImpl class
+        /// </summary>
+        /// <param name="viewLogic">View logic</param>
+        /// <param name="formCreator">Form Creator being used</param>
         public ViewFinderImpl(
             ViewLogic viewLogic, 
             FormCreator formCreator)
@@ -32,21 +37,9 @@ namespace DatenMeister.Modules.ViewFinder
         /// Finds the specific view by name
         /// </summary>
         /// <param name="extent">Extent to be shown</param>
-        /// <param name="viewUrl">Name of the view</param>
         /// <returns>The found view</returns>
-        public IElement FindView(IUriExtent extent, string viewUrl)
+        public IElement FindView(IUriExtent extent)
         {
-            if (viewUrl == "{All}")
-            {
-                var view = _formCreator.CreateForm(extent, FormCreator.CreationMode.All);
-                return DotNetHelper.ConvertToMofElement(view, _viewLogic.GetViewExtent());
-            }
-
-            if (!string.IsNullOrEmpty(viewUrl))
-            {
-                _viewLogic.GetViewByUrl(viewUrl);
-            }
-
             var extentType = extent.GetExtentType();
             if (!string.IsNullOrEmpty(extentType))
             {
@@ -58,7 +51,7 @@ namespace DatenMeister.Modules.ViewFinder
             }
 
             // Ok, find it by creating the properties
-            return FindView(extent, "{All}");
+            return null;
         }
 
         /// <summary>
@@ -73,34 +66,26 @@ namespace DatenMeister.Modules.ViewFinder
             return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetViewExtent());
         }
 
+        /// <summary>
+        /// Creates an object for an element by parsing the properties of the element
+        /// </summary>
+        /// <param name="element">Element to be used</param>
+        /// <returns>Created form object</returns>
+        public IElement CreateView(IObject element)
+        {
+            var form = _formCreator.CreateForm(element, FormCreator.CreationMode.All);
+            return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetViewExtent());
+        }
+
         /// <inheritdoc />
         /// <summary>
         /// Finds a specific view by the given value and the given viewname. 
         /// If the given viewname is empty or null, the default view will be returned
         /// </summary>
         /// <param name="value">Value whose view need to be created</param>
-        /// <param name="viewUrl">The view, that shall be done</param>
         /// <returns>The view itself</returns>
-        public IElement FindView(IObject value, string viewUrl)
+        public IElement FindView(IObject value)
         {
-            if (viewUrl == "{All}")
-            {
-                var form = _formCreator.CreateForm(
-                    value,
-                    FormCreator.CreationMode.All);
-
-                return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetViewExtent());
-            }
-
-            if (!string.IsNullOrEmpty(viewUrl))
-            {
-                var result =  _viewLogic.GetViewByUrl(viewUrl);
-                if (result != null)
-                {
-                    return (IElement) result;
-                }
-            }
-
             var valueAsElement = value as IElement;
             var metaClass = valueAsElement?.metaclass;
 
@@ -114,7 +99,7 @@ namespace DatenMeister.Modules.ViewFinder
                 }
             }
 
-            return FindView(value, "{All}");
+            return null;
         }
 
         /// <inheritdoc />

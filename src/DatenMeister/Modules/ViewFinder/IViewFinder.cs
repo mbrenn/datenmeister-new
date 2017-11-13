@@ -15,17 +15,15 @@ namespace DatenMeister.Modules.ViewFinder
         /// Finds the view for a specific extent in the list view
         /// </summary>
         /// <param name="extent">Value for whom the extent shall be created</param>
-        /// <param name="viewUrl">Name of the view</param>
         /// <returns>Found view or null</returns>
-        IElement FindView(IUriExtent extent, string viewUrl);
+        IElement FindView(IUriExtent extent);
 
         /// <summary>
         /// Finds the view for a specific object in a detail view
         /// </summary>
         /// <param name="value">Value for whom the object shall be created</param>
-        /// <param name="viewname">Name of the view</param>
         /// <returns>Found view or null</returns>
-        IElement FindView(IObject value, string viewname);
+        IElement FindView(IObject value);
 
         /// <summary>
         /// Creates an object for a reflective sequence by parsing each object and returning the formview
@@ -34,6 +32,13 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="sequence">Sequence to be used</param>
         /// <returns>Created form object</returns>
         IElement CreateView(IReflectiveSequence sequence);
+
+        /// <summary>
+        /// Creates an object for an element by parsing the properties of the element
+        /// </summary>
+        /// <param name="element">Element to be used</param>
+        /// <returns>Created form object</returns>
+        IElement CreateView(IObject element);
 
         /// <summary>
         /// Finds all views, which might be used for the given extent and item. 

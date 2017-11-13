@@ -11,5 +11,6 @@
         public static string WorkspacesNew = "workspaces-new";
         public static string WorkspacesDelete = "workspaces-delete";
         public static string ExtentsShow = "extents-show";
+        public static string Refresh = "refresh";
     }
 }

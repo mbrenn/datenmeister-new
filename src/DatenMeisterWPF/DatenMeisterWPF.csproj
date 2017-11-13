@@ -82,6 +82,8 @@
     <Compile Include="Forms\Base\DetailFormControl.xaml.cs">
       <DependentUpon>DetailFormControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Base\ViewDefinitionMode.cs" />
+    <Compile Include="Forms\Base\ViewDefinition.cs" />
     <Compile Include="Forms\Lists\ExtentList.cs" />
     <Compile Include="Forms\Lists\ItemsInExtentList.cs" />
     <Compile Include="INavigationGuest.cs" />
@@ -129,7 +131,6 @@
       <DependentUpon>ListViewControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Base\ViewButton.cs" />
-    <Compile Include="Forms\Lists\ElementListViewControl.cs" />
     <Compile Include="Forms\IntroScreen.xaml.cs">
       <DependentUpon>IntroScreen.xaml</DependentUpon>
     </Compile>

@@ -6,12 +6,13 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Detail;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
-    public class WorkspaceList : ElementListViewControl, INavigationGuest
+    public class WorkspaceList : ListViewControl, INavigationGuest
     {
         /// <summary>
         /// Shows the workspaces of the DatenMeister

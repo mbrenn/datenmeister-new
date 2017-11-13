@@ -209,6 +209,12 @@ namespace DatenMeisterWPF
             group.Items.Add(button);
         }
 
+        public void SetFocus()
+        {
+            Activate();
+            Focus();
+        }
+
         private void Close_OnClick(object sender, RoutedEventArgs e)
         {
             Close();

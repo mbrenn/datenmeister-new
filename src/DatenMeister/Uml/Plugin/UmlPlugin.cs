@@ -52,6 +52,7 @@ namespace DatenMeister.Uml.Plugin
                 WorkspaceNames.UriUml + "#Package",
                 ViewType.Detail,
                 umlPackageForm);
+
             _viewLogic.Add(packageView);
 
             var classExtentView = new DefaultViewForExtentType(

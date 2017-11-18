@@ -50,6 +50,11 @@ namespace DatenMeister.Provider.ManagementProviders
 
         public IProviderObject Get(string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                return null;
+            }
+
             var result = WorkspaceLogic.GetWorkspace(id);
             if (result == null)
             {

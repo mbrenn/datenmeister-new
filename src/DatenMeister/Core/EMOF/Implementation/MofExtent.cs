@@ -24,7 +24,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets or sets the provider for the given extent
         /// </summary>
-        public IProvider Provider { get; set; }
+        public IProvider Provider { get; }
 
         /// <summary>
         /// Gets or sets the workspace to which the extent is allocated
@@ -60,25 +60,26 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public object get(string property)
         {
-            return Provider.Get(null).GetProperty(property);
+            return Provider.Get(null)?.GetProperty(property);
         }
 
         /// <inheritdoc />
         public void set(string property, object value)
         {
-            Provider.Get(null).SetProperty(property, value);
+            var nullObject = Provider.Get(null) ?? throw new InvalidOperationException("Provider does not support setting of extent properties");
+            nullObject.SetProperty(property, value);
         }
 
         /// <inheritdoc />
         public bool isSet(string property)
         {
-            return Provider.Get(null).IsPropertySet(property);
+            return Provider.Get(null)?.IsPropertySet(property) ?? false;
         }
 
         /// <inheritdoc />
         public void unset(string property)
         {
-            Provider.Get(null).DeleteProperty(property);
+            Provider.Get(null)?.DeleteProperty(property);
         }
 
         /// <inheritdoc />
@@ -194,7 +195,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return null;
             }
 
-            if (DotNetHelper.IsOfPrimitiveType(value))
+            if (DotNetHelper.IsOfPrimitiveType(value) || DotNetHelper.IsOfEnum(value))
             {
                 return value;
             }

@@ -30,19 +30,19 @@ namespace DatenMeister.Runtime.Functions.Queries
         public static IEnumerable<IObject> GetDescendents(IObject element, IEnumerable<string> byFollowingProperties = null)
         {
             var inner = new AllDescendentsQuery();
-            return inner.GetDescendentsInternal(element, byFollowingProperties.ToList());
+            return inner.GetDescendentsInternal(element, byFollowingProperties?.ToList());
         }
 
         public static IEnumerable<IObject> GetDescendents(IExtent extent, IEnumerable<string> byFollowingProperties = null)
         {
             var inner = new AllDescendentsQuery();
-            return inner.GetDescendentsInternal(extent.elements(), byFollowingProperties.ToList());
+            return inner.GetDescendentsInternal(extent.elements(), byFollowingProperties?.ToList());
         }
 
         public static IEnumerable<IObject> GetDescendents(IEnumerable enumeration, IEnumerable<string> byFollowingProperties = null)
         {
             var inner = new AllDescendentsQuery();
-            return inner.GetDescendentsInternal(enumeration, byFollowingProperties.ToList());
+            return inner.GetDescendentsInternal(enumeration, byFollowingProperties?.ToList());
         }
 
         private IEnumerable<IObject> GetDescendentsInternal(IObject element, ICollection<string> byFollowingProperties)

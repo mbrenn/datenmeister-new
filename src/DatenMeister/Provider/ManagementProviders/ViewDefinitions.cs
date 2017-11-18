@@ -56,11 +56,9 @@ namespace DatenMeister.Provider.ManagementProviders
         public IElement GetNewWorkspaceDetail()
         {
             var form = new Form(NewWorkspaceForm);
-            form.fields.Add(
-                new TextFieldData("id", "Name"));
-            form.fields.Add(
+            form.AddFields(
+                new TextFieldData("id", "Name"),
                 new TextFieldData("annotation", "Annotation"));
-
 
             return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
         }
@@ -77,14 +75,12 @@ namespace DatenMeister.Provider.ManagementProviders
                 inhibitNewItems = true
             };
 
-            form.fields.Add(
+            form.AddFields(
                 new TextFieldData("id", "Name")
                 {
                     isReadOnly = true
-                });
-            form.fields.Add(
-                new TextFieldData("annotation", "Annotation"));
-            form.fields.Add(
+                },
+                new TextFieldData("annotation", "Annotation"),
                 new TextFieldData("extents", "Extents")
                 {
                     isEnumeration = true,
@@ -106,18 +102,17 @@ namespace DatenMeister.Provider.ManagementProviders
                 inhibitNewItems = true
             };
 
-            form.fields.Add(
-                new TextFieldData("uri", "URI"));
-            form.fields.Add(
+            form.AddFields(
+                new TextFieldData("uri", "URI"),
                 new TextFieldData("count", "# of items")
                 {
                     isReadOnly = true
-                });
-            form.fields.Add(
+                },
                 new TextFieldData("type", "Provider-Type")
                 {
                     isReadOnly = true
-                });
+                },
+                new TextFieldData("extentType", "Extent Type"));
 
             return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
         }
@@ -134,12 +129,11 @@ namespace DatenMeister.Provider.ManagementProviders
                 inhibitNewItems = true
             };
 
-            form.fields.Add(
+            form.AddFields(
                 new TextFieldData("uri", "URI")
                 {
                     defaultValue = "dm:///"
-                });
-            form.fields.Add(
+                },
                 new TextFieldData("filepath", "Path to Xmi File")
                 {
                     defaultValue =

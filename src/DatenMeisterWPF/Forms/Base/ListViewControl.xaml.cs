@@ -11,6 +11,7 @@ using System.Windows.Data;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
@@ -107,7 +108,7 @@ namespace DatenMeisterWPF.Forms.Base
             var viewFinder = App.Scope.Resolve<IViewFinder>();
             if (ViewDefinition.Mode == ViewDefinitionMode.Default)
             {
-                ActualFormDefinition = viewFinder.FindView((Items as IHasExtent)?.Extent);
+                ActualFormDefinition = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
             }
 
             if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties

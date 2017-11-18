@@ -62,7 +62,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value"></param>
         private object Convert(object value)
         {
-            if (DotNetHelper.IsOfPrimitiveType(value))
+            if (DotNetHelper.IsOfPrimitiveType(value) || DotNetHelper.IsOfEnum(value))
             {
                 return value;
             }

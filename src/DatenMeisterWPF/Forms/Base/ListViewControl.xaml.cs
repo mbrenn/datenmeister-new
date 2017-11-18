@@ -92,13 +92,15 @@ namespace DatenMeisterWPF.Forms.Base
                 formDefinition,
                 formDefinition == null ? ViewDefinitionMode.Default : ViewDefinitionMode.Specific
             );
-
+            
+            UpdateViewList();
             UpdateContent();
         }
 
         /// <summary>
         /// This method gets called, when a new item is added or an existing item was modified. 
-        /// Derivation of the class which have automatic creation of columns may include additional columns
+        /// Derivation of the class which have automatic creation of columns may include additional columns.
+        /// It loads the current view definition
         /// </summary>
         private void RefreshViewDefinition()
         {
@@ -165,8 +167,8 @@ namespace DatenMeisterWPF.Forms.Base
             _itemMapping.Clear();
             
             // Updates all columns and returns the fieldnames and fields
-            var (fieldNames, fields) = UpdateColumns();
-            if (fieldNames == null)
+            var (fieldDataNames, fields) = UpdateColumnDefinitions();
+            if (fieldDataNames == null)
             {
                 return;
             }
@@ -178,7 +180,8 @@ namespace DatenMeisterWPF.Forms.Base
                 var items = Items.OfType<IObject>();
                 if (!string.IsNullOrEmpty(_searchText))
                 {
-                    items = Items.WhenOneOfThePropertyContains(fieldNames, _searchText).OfType<IObject>();
+                    var columnNames = fields.OfType<IElement>().Select(x=>x.get("name")?.ToString()).Where(x=>x != null);
+                    items = Items.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
                 }
 
                 // Go through the items and build up the list of elements
@@ -190,7 +193,7 @@ namespace DatenMeisterWPF.Forms.Base
                     var n = 0;
                     foreach (var field in fields.Cast<IElement>())
                     {
-                        var columnName = fieldNames[n];
+                        var columnName = fieldDataNames[n];
                         var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
                         var value = GetValueOfElement(item, field);
 
@@ -252,9 +255,15 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 AddRowItemButton(definition, false);
             }
+        }
 
+        /// <summary>
+        /// This method gets called to update the views
+        /// </summary>
+        private void UpdateViewList()
+        {
             // Update view
-            var views = GetFormsForView();
+            var views = GetFormsForView()?.ToList();
             if (views != null)
             {
                 ViewList.Visibility = Visibility.Visible;
@@ -265,6 +274,19 @@ namespace DatenMeisterWPF.Forms.Base
                 };
                 list.AddRange(views.Select(x => new ViewDefinition(NamedElementMethods.GetFullName(x), x)));
                 ViewList.ItemsSource = list;
+
+                switch (ViewDefinition.Mode)
+                {
+                    case ViewDefinitionMode.AllProperties:
+                        ViewList.SelectedIndex = 1;
+                        break;
+                    case ViewDefinitionMode.Default:
+                        ViewList.SelectedIndex = 0;
+                        break;
+                    default:
+                        ViewList.SelectedIndex = 2 + views.IndexOf(ActualFormDefinition);
+                        break;
+                }
             }
             else
             {
@@ -287,7 +309,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// Updates the columns for the fields and returns the names and fields
         /// </summary>
         /// <returns>The tuple containing the names being used for the column and the fields being used.</returns>
-        private (List<string> names, IReflectiveCollection fields) UpdateColumns()
+        private (List<string> names, IReflectiveCollection fields) UpdateColumnDefinitions()
         {
             if (!(ActualFormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
             {

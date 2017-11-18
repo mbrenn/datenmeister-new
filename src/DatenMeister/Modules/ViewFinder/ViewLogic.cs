@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -122,7 +123,7 @@ namespace DatenMeister.Modules.ViewFinder
             var formAndFields = GetFormAndFieldInstance(viewExtent);
 
             return viewExtent.elements()
-                .GetAllDescendants()
+                .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member})
                 .WhenMetaClassIs(formAndFields.__Form);
         }
 

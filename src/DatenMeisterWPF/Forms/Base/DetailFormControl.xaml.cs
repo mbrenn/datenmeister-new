@@ -141,8 +141,7 @@ namespace DatenMeisterWPF.Forms.Base
                 CreateRowForField("Url w/Fullname:", $"{uriExtentText}?{fullName}", true);
 
                 // Sets the metaclass
-                if (_actualFormDefinition.isSet(_FormAndFields._Form.hideMetaClass) &&
-                    DotNetHelper.AsBoolean(_actualFormDefinition.get(_FormAndFields._Form.hideMetaClass)))
+                if (DotNetHelper.IsFalseOrNotSet(_actualFormDefinition, _FormAndFields._Form.hideMetaClass))
                 {
                     var metaClass = DetailElement.getMetaClass();
                     CreateRowForField(

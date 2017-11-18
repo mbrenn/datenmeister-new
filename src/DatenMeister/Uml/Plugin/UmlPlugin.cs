@@ -28,61 +28,37 @@ namespace DatenMeister.Uml.Plugin
         /// </summary>
         private void InitViews()
         {
+            // Creates the forms
+            var umlClassForm = new Form(
+                "Class",
+                new TextFieldData("name", "Classname"),
+                new SubElementFieldData("ownedAttribute", "Properties"),
+                new SubElementFieldData("attribute", "Properties"));
+            _viewLogic.Add(umlClassForm);
+
+            var umlPackageForm = new Form(
+                "Package",
+                new TextFieldData("name", "Classname"));
+            _viewLogic.Add(umlPackageForm);
+
+            // Creates the default mapping
             var classView = new DefaultViewForMetaclass(
                 WorkspaceNames.UriUml + "#Class",
                 ViewType.Detail,
-                new Form(
-                    "Class",
-                    new TextFieldData("name", "Classname"),
-                    new SubElementFieldData("ownedAttribute", "Properties"),
-                    new SubElementFieldData("attribute", "Properties")));
-            
-            AddForView(classView);
+                umlClassForm);
+            _viewLogic.Add(classView);
 
             var packageView = new DefaultViewForMetaclass(
                 WorkspaceNames.UriUml + "#Package",
                 ViewType.Detail,
-                new Form(
-                    "Package",
-                    new TextFieldData("name", "Classname")));
-
-            AddForView(packageView);
+                umlPackageForm);
+            _viewLogic.Add(packageView);
 
             var classExtentView = new DefaultViewForExtentType(
                 "Uml.Classes",
-                new Form(
-                    "Class",
-                    new TextFieldData("name", "Classname"),
-                    new SubElementFieldData("ownedAttribute", "Properties"),
-                    new SubElementFieldData("attribute", "Properties")));
+                umlClassForm);
 
-            AddForView(classExtentView);
-        }
-
-        /// <summary>
-        /// Adds a default view for as a detail and list item
-        /// </summary>
-        /// <param name="classView">Defaultview to be added</param>
-        private void AddForView(DefaultViewForMetaclass classView)
-        {
-            _viewLogic.Add(classView);
-            /*
-            var element = _typeLookup.CreateDotNetElement(classView);
-            _viewLogic.Add(element);
-            */
-        }
-
-        /// <summary>
-        /// Adds a default view for as a detail and list item
-        /// </summary>
-        /// <param name="classView">Defaultview to be added</param>
-        private void AddForView(DefaultViewForExtentType classView)
-        {
-            _viewLogic.Add(classView);
-            /*
-            var element = _typeLookup.CreateDotNetElement(classView);
-            _viewLogic.Add(element);
-            */
+            _viewLogic.Add(classExtentView);
         }
     }
 }

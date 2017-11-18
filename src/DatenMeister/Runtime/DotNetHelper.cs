@@ -187,6 +187,23 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
+        /// Gets whether the given property of the object is falser or not set. 
+        /// This method eases the verification whether we have an object
+        /// </summary>
+        /// <param name="value">Value to be verified</param>
+        /// <param name="property">Property to be queried</param>
+        /// <returns>true, if the given property is null or not set</returns>
+        public static bool IsFalseOrNotSet(IObject value, string property)
+        {
+            if (value.isSet(property))
+            {
+                return AsBoolean(value.get(property)) == false;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Returns true, if the given element is of type IReflectiveCollection or if it can implement this interface
         /// </summary>
         /// <param name="value">Value to be verified</param>

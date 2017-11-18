@@ -81,6 +81,19 @@ namespace DatenMeister.Runtime.Functions.Queries
         }
 
         /// <summary>
+        /// Gets all descendents of a reflective collection by opening all properties recursively
+        /// </summary>
+        /// <param name="collection">Collection to be evaluated</param>
+        /// <param name="byFollowingProperties">Columns that shall be followed. This prevents the following of properties</param>
+        /// <returns>A reflective collection, containing all items</returns>
+        public static IReflectiveCollection GetAllDescendants(
+            this IReflectiveCollection collection,
+            IEnumerable<string> byFollowingProperties)
+        {
+            return new TemporaryReflectiveCollection(AllDescendentsQuery.GetDescendents(collection, byFollowingProperties).Cast<object>().ToList());
+        }
+
+        /// <summary>
         /// Groups all properties by performing an aggregation
         /// </summary>
         /// <param name="collection">Collection to be aggregated</param>

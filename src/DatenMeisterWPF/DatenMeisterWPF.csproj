@@ -86,6 +86,7 @@
     <Compile Include="Forms\Base\ViewDefinition.cs" />
     <Compile Include="Forms\Lists\ExtentList.cs" />
     <Compile Include="Forms\Lists\ItemsInExtentList.cs" />
+    <Compile Include="Helper\ComboBoxEx.cs" />
     <Compile Include="INavigationGuest.cs" />
     <Compile Include="INavigationHost.cs" />
     <Compile Include="Navigation\ControlNavigation.cs" />

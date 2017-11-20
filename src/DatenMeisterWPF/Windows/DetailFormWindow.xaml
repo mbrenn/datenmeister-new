@@ -23,6 +23,8 @@
         </Style>
     </Window.Resources>
     <DockPanel>
+        <Ribbon DockPanel.Dock="Top" x:Name="MainRibbon">
+        </Ribbon>
         <ContentControl x:Name="MainContent"></ContentControl>
     </DockPanel>
 </Window>

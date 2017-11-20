@@ -19,8 +19,14 @@ namespace DatenMeisterWPF
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INavigationHost
+    public partial class MainWindow : Window, INavigationHost, IHasRibbon
     {
+        /// <summary>
+        /// Gets the ribbon
+        /// </summary>
+        /// <returns></returns>
+        public Ribbon GetRibbon() => MainRibbon;
+
         /// <summary>
         /// Stores the icon repository
         /// </summary>
@@ -108,6 +114,7 @@ namespace DatenMeisterWPF
 
             return null;
         }
+        
 
         /// <summary>
         /// Clears the complete MainRibbon navigaton

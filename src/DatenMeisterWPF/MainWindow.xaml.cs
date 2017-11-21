@@ -21,23 +21,20 @@ namespace DatenMeisterWPF
     /// </summary>
     public partial class MainWindow : Window, INavigationHost, IHasRibbon
     {
+        private readonly RibbonHelper RibbonHelper;
+
         /// <summary>
         /// Gets the ribbon
         /// </summary>
         /// <returns></returns>
         public Ribbon GetRibbon() => MainRibbon;
 
-        /// <summary>
-        /// Stores the icon repository
-        /// </summary>
-        private IIconRepository _iconRepository;
-
         public MainWindow()
         {
             InitializeComponent();
+            RibbonHelper = new RibbonHelper(this);
         }
 
-        private readonly List<RibbonTab> _ribbonTabs = new List<RibbonTab>();
 
         private async void Window_Initialized(object sender, EventArgs e)
         {
@@ -45,31 +42,9 @@ namespace DatenMeisterWPF
             App.Scope = await Task.Run(
                 () => GiveMe.DatenMeister());
 
-
-            LoadIconRepository();
+            RibbonHelper.LoadIconRepository();
 
             Navigator.TheNavigator.NavigateToWorkspaces(this);
-        }
-
-        /// <summary>
-        /// Loads the icon repository. 
-        /// If DatenMeister.Icons is existing, then the full and cool icons will be used. 
-        /// </summary>
-        private void LoadIconRepository()
-        {
-            if (File.Exists("DatenMeister.Icons.dll"))
-            {
-                var dllPath = Path.Combine(Environment.CurrentDirectory, "DatenMeister.Icons.dll");
-                var assembly = Assembly.LoadFile(dllPath);
-
-                var type = assembly.GetType("DatenMeister.Icons.NiceIconsRepository");
-                _iconRepository = Activator.CreateInstance(type) as IIconRepository;
-            }
-
-            if (_iconRepository == null)
-            {
-                _iconRepository = new StandardRepository();
-            }
         }
 
         /// <summary>
@@ -85,7 +60,20 @@ namespace DatenMeisterWPF
             // Only if navigation method is a list
             if (navigationMode == NavigationMode.List)
             {
-                ClearRibbons();
+                RibbonHelper.ClearRibbons();
+
+                RibbonHelper.AddNavigationButton(
+                    "Workspaces",
+                    () => Navigator.TheNavigator.NavigateToWorkspaces(this),
+                    Icons.WorkspacesShow,
+                    NavigationCategories.File + ".Workspaces");
+
+                RibbonHelper.AddNavigationButton(
+                    "Search",
+                    () => Navigator.TheNavigator.SearchByUrl(this),
+                    null,
+                    NavigationCategories.File + ".Search");
+
                 var result = new ControlNavigation();
                 var userControl = factoryMethod();
 
@@ -101,13 +89,13 @@ namespace DatenMeisterWPF
                         break;
                 }
 
-                PrepareDefaultNavigation();
+                RibbonHelper.PrepareDefaultNavigation();
                 if (userControl is INavigationGuest guest)
                 {
                     guest.PrepareNavigation();
                 }
 
-                FinalizeRibbons();
+                RibbonHelper.FinalizeRibbons();
 
                 return result;
             }
@@ -115,51 +103,15 @@ namespace DatenMeisterWPF
             return null;
         }
         
-
-        /// <summary>
-        /// Clears the complete MainRibbon navigaton
-        /// </summary>
-        private void ClearRibbons()
+        public void SetFocus()
         {
-            _ribbonTabs.Clear();
-            MainRibbon.Items.Clear();
-
-            AddNavigationButton(
-                "Workspaces",
-                () => Navigator.TheNavigator.NavigateToWorkspaces(this),
-                Icons.WorkspacesShow,
-                NavigationCategories.File + ".Workspaces");
-
-            AddNavigationButton(
-                "Search",
-                () => Navigator.TheNavigator.SearchByUrl(this),
-                null,
-                NavigationCategories.File + ".Search");
+            Activate();
+            Focus();
         }
 
-        /// <summary>
-        /// After having received the MainRibbon requests, this method builds up the real navigation
-        /// </summary>
-        private void FinalizeRibbons()
+        private void Close_OnClick(object sender, RoutedEventArgs e)
         {
-            AddNavigationButton("About",
-                () => new AboutDialog
-                {
-                    Owner = this
-                }.ShowDialog(),
-                "file-about",
-                NavigationCategories.File);
-        }
-
-        /// <summary>
-        /// Prepares the default navigation
-        /// </summary>
-        private void PrepareDefaultNavigation()
-        {
-            AddNavigationButton("Close", 
-                Close,
-                "file-exit",
-                NavigationCategories.File);
+            Close();
         }
 
         /// <summary>
@@ -171,60 +123,7 @@ namespace DatenMeisterWPF
         /// <param name="categoryName">Category of the MainRibbon to be added</param>
         public void AddNavigationButton(string name, Action clickMethod, string imageName, string categoryName)
         {
-            string tabName, groupName;
-            var indexOfSemicolon = categoryName.IndexOf('.');
-            if (indexOfSemicolon == -1)
-            {
-                tabName = categoryName;
-                groupName = "Standard";
-            }
-            else
-            {
-                tabName = categoryName.Substring(0, indexOfSemicolon);
-                groupName = categoryName.Substring(indexOfSemicolon + 1);
-            }
-
-            var tab = _ribbonTabs.FirstOrDefault(x => x.Header?.ToString() == tabName);
-            if (tab == null)
-            {
-                tab = new RibbonTab
-                {
-                    Header = tabName
-                };
-
-                _ribbonTabs.Add(tab);
-                MainRibbon.Items.Add(tab);
-            }
-            
-            var group = tab.Items.OfType<RibbonGroup>().FirstOrDefault(x => x.Header.ToString() == groupName);
-            if (group == null)
-            {
-                group = new RibbonGroup
-                {
-                    Header = groupName
-                };
-                tab.Items.Add(group);
-            }
-
-            var button = new RibbonButton
-            {
-                Label = name,
-                LargeImageSource = _iconRepository.GetIcon(imageName)
-            };
-
-            button.Click += (x, y) => clickMethod();
-            group.Items.Add(button);
-        }
-
-        public void SetFocus()
-        {
-            Activate();
-            Focus();
-        }
-
-        private void Close_OnClick(object sender, RoutedEventArgs e)
-        {
-            Close();
+            RibbonHelper.AddNavigationButton(name, clickMethod, imageName, categoryName);
         }
     }
 }

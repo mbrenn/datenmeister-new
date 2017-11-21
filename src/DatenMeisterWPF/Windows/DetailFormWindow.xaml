@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DatenMeisterWPF.Windows"
         mc:Ignorable="d"
         Title="Der Datenmeister" Height="600" Width="1000"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner" Loaded="DetailFormWindow_OnLoaded">
     <Window.Resources>
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="10,2,10,2"></Setter>

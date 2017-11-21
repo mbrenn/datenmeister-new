@@ -92,12 +92,14 @@
     <Compile Include="Navigation\ControlNavigation.cs" />
     <Compile Include="Navigation\IControlNavigation.cs" />
     <Compile Include="Navigation\Navigator.cs" />
+    <Compile Include="Windows\RibbonHelper.cs" />
     <Compile Include="Windows\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\DetailFormWindow.xaml.cs">
       <DependentUpon>DetailFormWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\IHasRibbon.cs" />
     <Compile Include="Windows\ItemXmlViewDialog.xaml.cs">
       <DependentUpon>ItemXmlViewDialog.xaml</DependentUpon>
     </Compile>

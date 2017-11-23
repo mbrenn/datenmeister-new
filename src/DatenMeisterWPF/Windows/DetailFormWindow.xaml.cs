@@ -2,8 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
-using DatenMeister.WPF.Modules;
-using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Windows
@@ -30,19 +28,6 @@ namespace DatenMeisterWPF.Windows
         private void DetailFormWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             RibbonHelper.ClearRibbons();
-
-            AddNavigationButton(
-                "Workspaces",
-                () => Navigator.TheNavigator.NavigateToWorkspaces(this),
-                Icons.WorkspacesShow,
-                NavigationCategories.File + ".Workspaces");
-
-            AddNavigationButton(
-                "Search",
-                () => Navigator.TheNavigator.SearchByUrl(this),
-                null,
-                NavigationCategories.File + ".Search");
-            
             RibbonHelper.PrepareDefaultNavigation();
             RibbonHelper.FinalizeRibbons();
         }
@@ -67,6 +52,11 @@ namespace DatenMeisterWPF.Windows
         public void SetFocus()
         {
             Focus();
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

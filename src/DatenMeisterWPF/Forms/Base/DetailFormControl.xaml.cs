@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -13,6 +15,7 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
+using DatenMeisterWPF.Forms.Detail.Fields;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Base
@@ -56,7 +59,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Stores the list of actions that will be performed when the user clicks on set
         /// </summary>
-        private readonly List<Action> _setActions = new List<Action>();
+        public List<Action> SetActions { get; }= new List<Action>();
         
         public DetailFormControl()
         {
@@ -119,7 +122,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private void UpdateContent()
         {
-            _setActions.Clear();
+            SetActions.Clear();
             if (!(_actualFormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
             {
                 return;
@@ -133,6 +136,8 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 var mofElement = (MofElement)DetailElement;
                 var uriExtent = mofElement.Extent as MofUriExtent;
+
+                CreateSeparator();
 
                 var uriExtentText = uriExtent?.contextURI() ?? string.Empty;
                 var fullName = NamedElementMethods.GetFullName(DetailElement);
@@ -167,10 +172,8 @@ namespace DatenMeisterWPF.Forms.Base
                 {
                     continue;
                 }
-
-                var name = field.get(_FormAndFields._FieldData.name).ToString();
+                
                 var title = field.get(_FormAndFields._FieldData.title).ToString();
-                var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
                 var isReadOnly = field.get(_FormAndFields._FieldData.isReadOnly).ToString();
 
                 // Sets the title block
@@ -180,94 +183,11 @@ namespace DatenMeisterWPF.Forms.Base
                     IsEnabled = !DotNetHelper.AsBoolean(isReadOnly)
                 };
 
-                /* Local functions for text and enumerations */
-                UIElement CreateForText()
-                {
-                    var contentBlock = new TextBox();
-
-                    var valueText = string.Empty;
-                    if (DetailElement?.isSet(name) == true)
-                    {
-                        valueText = DetailElement.get(name)?.ToString() ?? string.Empty;
-                        contentBlock.Text = valueText;
-                    }
-                    else
-                    {
-                        if (field.isSet(_FormAndFields._FieldData.defaultValue))
-                        {
-                            contentBlock.Text = field.get(_FormAndFields._FieldData.defaultValue)?.ToString() ?? string.Empty;
-                        }
-                    }
-
-                    _setActions.Add(
-                        () =>
-                        {
-                            if (valueText != contentBlock.Text)
-                            {
-                                DetailElement.set(name, contentBlock.Text);
-                            }
-                        });
-
-                    return contentBlock;
-                }
-
-                UIElement CreateForEnumeration()
-                {
-                    var contentBlock = new Grid();
-                    Grid.SetColumn(contentBlock, 1);
-                    Grid.SetRow(contentBlock, _fieldCount);
-                    contentBlock.ColumnDefinitions.Add(new ColumnDefinition());
-                    contentBlock.ColumnDefinitions.Add(new ColumnDefinition());
-
-                    if (DetailElement?.isSet(name) == true)
-                    {
-                        var value = DetailElement.get(name);
-                        if (!DotNetHelper.IsOfEnumeration(value))
-                        {
-                            value = new[] {value};
-                        }
-
-                        var inner = 0;
-                        var valueAsEnumeration = (IEnumerable<object>) value;
-                        foreach (var innerValue in valueAsEnumeration)
-                        {
-                            contentBlock.RowDefinitions.Add(new RowDefinition());
-
-                            // Creates the text
-                            var innerTextBlock = new TextBlock
-                            {
-                                Text = innerValue.ToString()
-                            };
-
-                            Grid.SetRow(innerTextBlock, inner);
-                            Grid.SetColumn(innerTextBlock, 0);
-                            contentBlock.Children.Add(innerTextBlock);
-
-                            // Creates the button
-                            if (innerValue is IElement asIElement)
-                            {
-                                var button = new Button {Content = "Edit"};
-                                Grid.SetRow(button, inner);
-                                Grid.SetColumn(button, 1);
-
-                                button.Click += (sender, args) =>
-                                    Navigator.TheNavigator.NavigateToElementDetailView(
-                                        NavigationHost,
-                                        asIElement);
-
-                                contentBlock.Children.Add(button);
-                            }
-
-                            inner++;
-                        }
-                    }
-
-                    return contentBlock;
-                }
-
-                /* Now do your job */
-                var item = isEnumeration ? CreateForEnumeration() : CreateForText();
-                CreateRowForField(titleBlock, item);
+                var contentBlock = FieldFactory.GetUIElementFor(DetailElement, field, this);
+                Grid.SetColumn(contentBlock, 1);
+                Grid.SetRow(contentBlock, _fieldCount);
+                
+                CreateRowForField(titleBlock, contentBlock);
             }
         }
 
@@ -320,6 +240,25 @@ namespace DatenMeisterWPF.Forms.Base
             _fieldCount++;
         }
 
+        private void CreateSeparator()
+        {
+            DataGrid.RowDefinitions.Add(new RowDefinition());
+            var line = new Line
+            {
+                Stretch = Stretch.Fill,
+                Stroke = Brushes.Gray,
+                StrokeThickness = 1.0,
+                Margin = new Thickness(0,10,0,10)
+            };
+
+            Grid.SetRow(line, _fieldCount);
+            Grid.SetColumnSpan(line, 2);
+
+            DataGrid.Children.Add(line);
+
+            _fieldCount++;
+        }
+
         /// <summary>
         /// Adds the default cancel and save buttons
         /// </summary>
@@ -332,7 +271,7 @@ namespace DatenMeisterWPF.Forms.Base
                     var fieldKey = new TextBox();
                     var fieldValue = new TextBox();
 
-                    _setActions.Add(() =>
+                    SetActions.Add(() =>
                     {
                         var propertyKey = fieldKey.Text;
                         var propertyValue = fieldValue.Text;
@@ -358,7 +297,7 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 try
                 {
-                    foreach (var action in _setActions)
+                    foreach (var action in SetActions)
                     {
                         action();
                     }

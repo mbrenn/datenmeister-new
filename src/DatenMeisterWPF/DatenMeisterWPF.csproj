@@ -84,6 +84,10 @@
     </Compile>
     <Compile Include="Forms\Base\ViewDefinitionMode.cs" />
     <Compile Include="Forms\Base\ViewDefinition.cs" />
+    <Compile Include="Forms\Detail\Fields\FieldFactory.cs" />
+    <Compile Include="Forms\Detail\Fields\IDetailField.cs" />
+    <Compile Include="Forms\Detail\Fields\ReadOnlyListField.cs" />
+    <Compile Include="Forms\Detail\Fields\TextboxField.cs" />
     <Compile Include="Forms\Lists\ExtentList.cs" />
     <Compile Include="Forms\Lists\ItemsInExtentList.cs" />
     <Compile Include="Helper\ComboBoxEx.cs" />

@@ -24,6 +24,11 @@
     </Window.Resources>
     <DockPanel>
         <Ribbon DockPanel.Dock="Top" x:Name="MainRibbon">
+            <Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu>
+                    <RibbonApplicationMenuItem Header="Close" Click="Close_Click" />
+                </RibbonApplicationMenu>
+            </Ribbon.ApplicationMenu>
         </Ribbon>
         <ContentControl x:Name="MainContent"></ContentControl>
     </DockPanel>

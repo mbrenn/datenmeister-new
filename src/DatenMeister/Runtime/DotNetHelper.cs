@@ -187,6 +187,31 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
+        /// Verifies whether the given element is true
+        /// </summary>
+        /// <param name="value">Value to be checked</param>
+        /// <returns>True, if element is true</returns>
+        public static bool IsTrue(object value) => AsBoolean(value);
+
+        /// <summary>
+        /// Verifies whether the given element is false
+        /// </summary>
+        /// <param name="value">Value to be checked</param>
+        /// <returns>True, if element is false</returns>
+        public static bool IsFalse(object value) => !AsBoolean(value);
+
+
+        /// <summary>
+        /// Gets whether the given property of the object is falser or not set. 
+        /// This method eases the verification whether we have an object
+        /// </summary>
+        /// <param name="value">Value to be verified</param>
+        /// <param name="property">Property to be queried</param>
+        /// <returns>true, if the given property is null or not set</returns>
+        public static bool IsTrue(IObject value, string property) 
+            => value.isSet(property) && AsBoolean(value.get(property));
+
+        /// <summary>
         /// Gets whether the given property of the object is falser or not set. 
         /// This method eases the verification whether we have an object
         /// </summary>

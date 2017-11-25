@@ -250,12 +250,6 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             DataGrid.ItemsSource = listItems;
-
-            // Creates the row button
-            foreach (var definition in _rowItemButtonDefinitions)
-            {
-                AddRowItemButton(definition, false);
-            }
         }
 
         /// <summary>
@@ -318,7 +312,6 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             DataGrid.Columns.Clear();
-
             var fieldNames = new List<string>();
 
             // Creates the column
@@ -351,6 +344,12 @@ namespace DatenMeisterWPF.Forms.Base
                 DataGrid.Columns.Add(dataColumn);
                 fieldNames.Add(name);
             }
+            
+            // Creates the row button
+            foreach (var definition in _rowItemButtonDefinitions)
+            {
+                AddRowItemButton(definition, false);
+            }
 
             return (fieldNames, fields);
         }
@@ -373,7 +372,7 @@ namespace DatenMeisterWPF.Forms.Base
                 events.Closed += (sender, args) => UpdateContent();
             }
 
-            AddRowItemButton("Open", Open);
+            AddRowItemButton("Open", Open, ButtonPosition.First);
         }
 
         /// <summary>
@@ -418,17 +417,25 @@ namespace DatenMeisterWPF.Forms.Base
             return button;
         }
 
+        public enum ButtonPosition
+        {
+            First,
+            Last
+        }
+
         /// <summary>
         /// Adds a button for a row item
         /// </summary>
         /// <param name="name">Name of the button</param>
         /// <param name="pressed">Called, if the is button pressed</param>
-        public void AddRowItemButton(string name, Action<IObject> pressed)
+        /// <param name="position">Position of the button to be used</param>
+        public void AddRowItemButton(string name, Action<IObject> pressed, ButtonPosition position = ButtonPosition.Last)
         {
             var definition = new RowItemButtonDefinition
             {
                 Name = name,
-                Pressed = pressed
+                Pressed = pressed,
+                Position = position
             };
 
             AddRowItemButton(definition);
@@ -438,6 +445,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// Adds a button for a row item
         /// </summary>
         /// <param name="definition">Definition for the button</param>
+        /// <param name="position">Position of the button to be used</param>
         /// <param name="addToList">True, if the buttons shall be added to the list of items. 
         /// False, if the buttons are reiterated</param>
         private void AddRowItemButton(RowItemButtonDefinition definition, bool addToList = true)
@@ -448,15 +456,21 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             var columnTemplate = FindResource("TemplateColumnButton") as DataTemplate;
-
             var dataColumn = new ClickedTemplateColumn
             {
                 Header = definition.Name,
                 CellTemplate = columnTemplate,
                 OnClick = definition.Pressed
             };
-            
-            DataGrid.Columns.Add(dataColumn);
+
+            if (definition.Position == ButtonPosition.First)
+            {
+                DataGrid.Columns.Insert(0, dataColumn);
+            }
+            else
+            {
+                DataGrid.Columns.Add(dataColumn);
+            }
         }
 
         /// <summary>
@@ -578,6 +592,7 @@ namespace DatenMeisterWPF.Forms.Base
         {
             public string Name { get; set; }
             public Action<IObject> Pressed { get; set; }
+            public ButtonPosition Position { get; set; }
         }
 
         /// <inheritdoc />

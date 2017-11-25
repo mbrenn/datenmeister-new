@@ -146,12 +146,17 @@ namespace DatenMeister.Modules.ViewFinder
             var metaClassUri = metaClass.GetUri();
             var typeAsString = type.ToString();
 
+            var allElements = viewExtent.elements().GetAllDescendants();
+            var allMetaClasses = allElements.OfType<IElement>().Select(x => x.getMetaClass());
+            var allMetaElements = allElements.WhenMetaClassIs(formAndFields.__DefaultViewForMetaclass);
+            var allMetaMetaClasses = allMetaElements.OfType<IElement>().Select(x => x.getMetaClass());
+
             foreach (
-                var element in viewExtent.elements().
+                var element in viewExtent.elements().GetAllDescendants().
                 WhenMetaClassIs(formAndFields.__DefaultViewForMetaclass).
                 Select(x => x as IElement))
             {
-                Debug.Assert(element != null, "element != null");
+                if (element == null) throw new ArgumentNullException("element != null");
 
                 var innerMetaClass = element.get(_FormAndFields._DefaultViewForMetaclass.metaclass);
                 var innerType = element.get(_FormAndFields._DefaultViewForMetaclass.viewType).ToString();
@@ -185,10 +190,9 @@ namespace DatenMeister.Modules.ViewFinder
                 WhenMetaClassIs(formAndFields.__DefaultViewForExtentType).
                 Select(x => x as IElement))
             {
-                Debug.Assert(element != null, "element != null");
+                if (element == null) throw new ArgumentNullException("element != null");
 
                 var innerExtentType = element.get(_FormAndFields._DefaultViewForExtentType.extentType);
-
                 if (innerExtentType.Equals(extentType))
                 {
                     return element.getFirstOrDefault(_FormAndFields._DefaultViewForMetaclass.view) as IElement;

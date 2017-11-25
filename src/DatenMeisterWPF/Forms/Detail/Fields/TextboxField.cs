@@ -37,6 +37,11 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 {
                     Text = valueText
                 };
+                
+                var copyToClipboardAdd = new MenuItem { Header = "Copy to Clipboard" };
+                contentBlock.ContextMenu = new ContextMenu();
+                contentBlock.ContextMenu.Items.Add(copyToClipboardAdd);
+                copyToClipboardAdd.Click += (x, y) => Clipboard.SetText(valueText);
 
                 return contentBlock;
             }

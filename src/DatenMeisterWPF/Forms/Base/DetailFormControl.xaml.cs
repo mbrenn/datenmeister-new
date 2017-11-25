@@ -8,7 +8,6 @@ using System.Windows.Shapes;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
@@ -16,7 +15,6 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Detail.Fields;
-using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Base
 {
@@ -152,7 +150,8 @@ namespace DatenMeisterWPF.Forms.Base
                     var metaClass = DetailElement.getMetaClass();
                     CreateRowForField(
                         "Meta Class:",
-                        metaClass == null ? string.Empty : NamedElementMethods.GetFullName(metaClass));
+                        metaClass == null ? string.Empty : NamedElementMethods.GetFullName(metaClass),
+                        true);
                 }
             }
         }
@@ -208,10 +207,7 @@ namespace DatenMeisterWPF.Forms.Base
 
                 var copyToClipboardAdd = new MenuItem {Header = "Copy to Clipboard"};
                 valueTextBlock.ContextMenu.Items.Add(copyToClipboardAdd);
-                copyToClipboardAdd.Click += (x, y) =>
-                {
-                    Clipboard.SetText(valueText);
-                };
+                copyToClipboardAdd.Click += (x, y) => Clipboard.SetText(valueText);
             }
 
             CreateRowForField(
@@ -243,16 +239,16 @@ namespace DatenMeisterWPF.Forms.Base
         private void CreateSeparator()
         {
             DataGrid.RowDefinitions.Add(new RowDefinition());
-            var line = new Line
+            var line = new Canvas
             {
-                Stretch = Stretch.Fill,
-                Stroke = Brushes.Gray,
-                StrokeThickness = 1.0,
+                Background = Brushes.DimGray,
+                Height = 1.0,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
                 Margin = new Thickness(0,10,0,10)
             };
 
             Grid.SetRow(line, _fieldCount);
-            Grid.SetColumnSpan(line, 2);
+            Grid.SetColumnSpan(line, 3);
 
             DataGrid.Children.Add(line);
 

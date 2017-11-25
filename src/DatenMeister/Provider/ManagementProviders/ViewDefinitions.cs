@@ -5,7 +5,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
-using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.ManagementProviders
 {
@@ -19,6 +19,11 @@ namespace DatenMeister.Provider.ManagementProviders
         /// Stores the view logic
         /// </summary>
         private readonly ViewLogic _viewLogic;
+
+        /// <summary>
+        /// Stores the view logic
+        /// </summary>
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
         /// Stores the name of the package
@@ -45,9 +50,11 @@ namespace DatenMeister.Provider.ManagementProviders
         /// Initializes a new instance of the ViewDefinitions class
         /// </summary>
         /// <param name="viewLogic">View logic being used to find View Extent</param>
-        public ViewDefinitions(ViewLogic viewLogic)
+        /// <param name="workspaceLogic">Logic of the workspace</param>
+        public ViewDefinitions(ViewLogic viewLogic, IWorkspaceLogic workspaceLogic)
         {
             _viewLogic = viewLogic;
+            _workspaceLogic = workspaceLogic;
         }
 
         /// <summary>
@@ -150,9 +157,10 @@ namespace DatenMeister.Provider.ManagementProviders
         public void AddToViewDefinition()
         {
             var viewExtent = _viewLogic.GetViewExtent();
+            var factory = viewExtent.GetFactory();
+            var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
 
             // Creates the package containing the views
-            var factory = new MofFactory(viewExtent);
             var managementPackage = factory.create(null);
             managementPackage.set("name", PackageName);
 
@@ -167,8 +175,7 @@ namespace DatenMeister.Provider.ManagementProviders
             };
             
             var workspaceFormDefaultView = 
-                _viewLogic.GetViewExtent().GetFactory().create(
-                    _FormAndFields.TheOne.__DefaultViewForMetaclass.metaclass);
+                factory.create(formAndFields.__DefaultViewForMetaclass);
             workspaceFormDefaultView.SetProperties(
                 new Dictionary<string, object>
                 {
@@ -177,11 +184,21 @@ namespace DatenMeister.Provider.ManagementProviders
                     [_FormAndFields._DefaultViewForMetaclass.viewType] = ViewType.Detail
                 }
             );
-
             items.Add(workspaceFormDefaultView);
 
-            managementPackage.set(_UML._CommonStructure._Namespace.member, items);
+            var extentFormDefaultView =
+                factory.create(formAndFields.__DefaultViewForMetaclass);
+            extentFormDefaultView.SetProperties(
+                new Dictionary<string, object>
+                {
+                    [_FormAndFields._DefaultViewForMetaclass.metaclass] = ExtentObject.MetaclassUriPath,
+                    [_FormAndFields._DefaultViewForMetaclass.view] = extentForm,
+                    [_FormAndFields._DefaultViewForMetaclass.viewType] = ViewType.Detail
+                }
+            );
+            items.Add(extentFormDefaultView);
 
+            managementPackage.set(_UML._CommonStructure._Namespace.member, items);
             viewExtent.elements().add(managementPackage);
         }
     }

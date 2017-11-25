@@ -1,8 +1,5 @@
 ﻿using Autofac;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
@@ -13,9 +10,9 @@ namespace DatenMeisterWPF.Forms.Detail
 {
     public class NewWorkspaceControl : DetailFormControl
     {
-        public void SetContent(IDatenMeisterScope scope)
+        public void SetContent()
         {
-            var viewLogic = scope.Resolve<ViewLogic>();
+            var viewLogic = App.Scope.Resolve<ViewLogic>();
             var viewExtent = viewLogic.GetViewExtent();
 
             var formElement = NamedElementMethods.GetByFullName(viewExtent, ViewDefinitions.PathNewWorkspaceForm);
@@ -29,7 +26,7 @@ namespace DatenMeisterWPF.Forms.Detail
                 var annotation = DetailElement.get("annotation").ToString();
 
                 var workspace = new Workspace(workspaceId, annotation);
-                var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
+                var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
                 workspaceLogic.AddWorkspace(workspace);
             };
         }

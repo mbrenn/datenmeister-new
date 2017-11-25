@@ -56,11 +56,11 @@ namespace DatenMeisterWPF.Navigation
             NavigationMode navigationMode)
         {
             // Verifies if the given window supports the navigation. 
-                var innerResult = navigationHost?.NavigateTo(factoryMethod, navigationMode);
-                if (innerResult != null)
-                {
-                    return innerResult;
-                }
+            var innerResult = navigationHost?.NavigateTo(factoryMethod, navigationMode);
+            if (innerResult != null)
+            {
+                return innerResult;
+            }
 
             var result = new ControlNavigation();
             var userControl = factoryMethod();
@@ -217,7 +217,7 @@ namespace DatenMeisterWPF.Navigation
             return NavigateTo(window, () =>
             {
                 var control = new ItemsInExtentList();
-                control.SetContent(App.Scope, workspaceId, extentUrl);
+                control.SetContent(workspaceId, extentUrl);
 
                 return control;
             },

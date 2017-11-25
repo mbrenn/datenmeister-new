@@ -4,7 +4,6 @@ using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules;
@@ -16,7 +15,6 @@ namespace DatenMeisterWPF.Forms.Lists
     public class ItemsInExtentList : ListViewControl, INavigationGuest
     {
         private string _workspaceId;
-        private IDatenMeisterScope _scope;
 
         /// <inheritdoc />
         /// <summary>
@@ -24,14 +22,13 @@ namespace DatenMeisterWPF.Forms.Lists
         /// </summary>
         public override IEnumerable<IElement> GetFormsForView()
         {
-            return _scope.Resolve<IViewFinder>().FindViews((Items as IHasExtent)?.Extent as IUriExtent, null);
+            return App.Scope.Resolve<IViewFinder>().FindViews((Items as IHasExtent)?.Extent as IUriExtent, null);
         }
 
-        public void SetContent(IDatenMeisterScope scope, string workspaceId, string extentUrl)
+        public void SetContent(string workspaceId, string extentUrl)
         {
-            _scope = scope;
             _workspaceId = workspaceId;
-            var workLogic = scope.Resolve<IWorkspaceLogic>();
+            var workLogic = App.Scope.Resolve<IWorkspaceLogic>();
             var extent = workLogic.FindExtent(workspaceId, extentUrl);
             if (extent == null)
             {

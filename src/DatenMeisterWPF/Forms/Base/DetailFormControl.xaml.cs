@@ -4,10 +4,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
@@ -26,7 +26,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Defines the form definition being used in the detail for
         /// </summary>
-        private IElement _actualFormDefinition;
+        private IElement ActualFormDefinition { get; set; }
 
         /// <summary>
         /// Gets or sets the view definition
@@ -53,6 +53,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// transferred from form display to element
         /// </summary>
         public event EventHandler ElementSaved;
+
+        private int _fieldCount;
 
         /// <summary>
         /// Stores the list of actions that will be performed when the user clicks on set
@@ -85,11 +87,65 @@ namespace DatenMeisterWPF.Forms.Base
                 formDefinition == null ? ViewDefinitionMode.Default : ViewDefinitionMode.Specific
             );
 
-            RefreshViewDefinition();
+            UpdateViewList();
             UpdateContent();
         }
 
-        private int _fieldCount;
+        /// <summary>
+        /// This method gets called to update the views
+        /// </summary>
+        private void UpdateViewList()
+        {
+            // Update view
+            var views = GetFormsForView()?.ToList();
+            if (views != null)
+            {
+                ViewList.Visibility = Visibility.Visible;
+                var list = new List<ViewDefinition>
+                {
+                    new ViewDefinition("Default", null, ViewDefinitionMode.Default),
+                    new ViewDefinition("All Properties", null, ViewDefinitionMode.Default)
+                };
+                list.AddRange(views.Select(x => new ViewDefinition(NamedElementMethods.GetFullName(x), x)));
+                ViewList.ItemsSource = list;
+
+                switch (ViewDefinition.Mode)
+                {
+                    case ViewDefinitionMode.AllProperties:
+                        ViewList.SelectedIndex = 1;
+                        break;
+                    case ViewDefinitionMode.Default:
+                        ViewList.SelectedIndex = 0;
+                        break;
+                    default:
+                        ViewList.SelectedIndex = 2 + views.IndexOf(ActualFormDefinition);
+                        break;
+                }
+            }
+            else
+            {
+                ViewList.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>
+        /// Gets the enumeration of all views that may match to the shown items
+        /// </summary>
+        public IEnumerable<IElement> GetFormsForView()
+        {
+            return App.Scope?.Resolve<IViewFinder>().FindViews((DetailElement as IHasExtent)?.Extent as IUriExtent, DetailElement);
+        }
+
+        private void ViewList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!(ViewList.SelectedItem is ViewDefinition newForm))
+            {
+                return;
+            }
+
+            ViewDefinition = newForm;
+            UpdateContent();
+        }
 
         /// <summary>
         /// This method gets called, when a new item is added or an existing item was modified. 
@@ -100,18 +156,18 @@ namespace DatenMeisterWPF.Forms.Base
             var viewFinder = App.Scope.Resolve<IViewFinder>();
             if (ViewDefinition.Mode == ViewDefinitionMode.Default)
             {
-                _actualFormDefinition = viewFinder.FindView(DetailElement);
+                ActualFormDefinition = viewFinder.FindView(DetailElement);
             }
 
             if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties
-                || ViewDefinition.Mode == ViewDefinitionMode.Default && _actualFormDefinition == null)
+                || ViewDefinition.Mode == ViewDefinitionMode.Default && ActualFormDefinition == null)
             {
-                _actualFormDefinition = viewFinder.CreateView(DetailElement);
+                ActualFormDefinition = viewFinder.CreateView(DetailElement);
             }
 
             if (ViewDefinition.Mode == ViewDefinitionMode.Specific)
             {
-                _actualFormDefinition = ViewDefinition.Element;
+                ActualFormDefinition = ViewDefinition.Element;
             }
         }
 
@@ -120,8 +176,11 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private void UpdateContent()
         {
+            RefreshViewDefinition();
+            
+            DataGrid.Children.Clear();
             SetActions.Clear();
-            if (!(_actualFormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
+            if (!(ActualFormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
             {
                 return;
             }
@@ -145,7 +204,7 @@ namespace DatenMeisterWPF.Forms.Base
                 CreateRowForField("Url w/Fullname:", $"{uriExtentText}?{fullName}", true);
 
                 // Sets the metaclass
-                if (DotNetHelper.IsFalseOrNotSet(_actualFormDefinition, _FormAndFields._Form.hideMetaClass))
+                if (DotNetHelper.IsFalseOrNotSet(ActualFormDefinition, _FormAndFields._Form.hideMetaClass))
                 {
                     var metaClass = DetailElement.getMetaClass();
                     CreateRowForField(

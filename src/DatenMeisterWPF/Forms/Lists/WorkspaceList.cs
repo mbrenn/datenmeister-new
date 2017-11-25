@@ -64,7 +64,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 var events = Navigator.TheNavigator.NavigateTo(NavigationHost, () =>
                     {
                         var dlg = new NewWorkspaceControl();
-                        dlg.SetContent(App.Scope);
+                        dlg.SetContent();
                         return dlg;
                     },
                     NavigationMode.Detail);

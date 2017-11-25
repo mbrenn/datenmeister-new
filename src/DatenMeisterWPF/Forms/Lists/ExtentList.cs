@@ -1,19 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
-using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
 

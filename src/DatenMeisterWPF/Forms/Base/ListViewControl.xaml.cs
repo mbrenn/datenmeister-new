@@ -181,7 +181,9 @@ namespace DatenMeisterWPF.Forms.Base
                 var items = Items.OfType<IObject>();
                 if (!string.IsNullOrEmpty(_searchText))
                 {
-                    var columnNames = fields.OfType<IElement>().Select(x=>x.get("name")?.ToString()).Where(x=>x != null);
+                    var columnNames = fields.OfType<IElement>()
+                        .Select(x => x.get("name")?.ToString())
+                        .Where(x => x != null);
                     items = Items.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
                 }
 

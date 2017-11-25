@@ -25,6 +25,11 @@ namespace DatenMeisterWPF.Forms.Lists
             return App.Scope.Resolve<IViewFinder>().FindViews((Items as IHasExtent)?.Extent as IUriExtent, null);
         }
 
+        /// <summary>
+        /// Sets the items of the given extent
+        /// </summary>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="extentUrl">Url of the extent to be used</param>
         public void SetContent(string workspaceId, string extentUrl)
         {
             _workspaceId = workspaceId;
@@ -52,6 +57,19 @@ namespace DatenMeisterWPF.Forms.Lists
             });
 
             AddDefaultButtons();
+
+            AddRowItemButton(
+                "Delete",
+                item =>
+                {
+                    if (MessageBox.Show(
+                            "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
+                        MessageBoxResult.Yes)
+                    {
+                        extent.elements().remove(item);
+                        SetContent(extent.elements(), null);
+                    }
+                });
         }
 
         /// <summary>

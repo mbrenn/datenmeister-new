@@ -11,16 +11,15 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserManagement;
 using DatenMeister.Modules.ViewFinder;
-using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
-using DatenMeister.Uml.Helper;
 using WorkspaceData = DatenMeister.Runtime.Workspaces.WorkspaceData;
 
 namespace DatenMeister.Integration
@@ -87,7 +86,6 @@ namespace DatenMeister.Integration
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
-
                 Provider.CSV.Integrate.Into(scope);
                 Provider.XMI.Integrate.Into(scope);
 
@@ -144,6 +142,16 @@ namespace DatenMeister.Integration
                     mofFactory,
                     extentTypes.elements(),
                     fields,
+                    extentTypes);
+
+                // Adds the module for managementprovider
+                var managementProvider = new _ManagementProvider();
+                typeWorkspace.Set(fields);
+                IntegrateManagementProvider.Assign(
+                    workspaceData.Uml.Get<_UML>(),
+                    mofFactory,
+                    extentTypes.elements(),
+                    managementProvider,
                     extentTypes);
 
                 // Adds the views and their view logic

@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.SourcecodeGenerator;
@@ -40,6 +41,18 @@ namespace DatenMeister.SourceGeneration.Console
                 });
             System.Console.WriteLine(" Done");
 
+            System.Console.Write("Create Sourcecode for Management Provider...");
+            SourceGenerator.GenerateSourceFor(
+                new SourceGeneratorOptions
+                {
+                    ExtentUrl = "dm:///DatenMeister/Types/ManagementProvider",
+                    Name = "ManagementProvider",
+                    Path = "./",
+                    Namespace = "DatenMeister.Provider.ManagementProviders.Model",
+                    Types = ManagementProviderModel.AllTypes
+                });
+            System.Console.WriteLine(" Done");
+
 #if !DEBUG
             File.Copy("../../primitivetypes.cs", "../../../DatenMeister/Core/Filler/primitivetypes.cs", true);
             File.Copy("../../FillThePrimitiveTypes.cs", "../../../DatenMeister/Core/Filler/FillThePrimitiveTypes.cs", true);
@@ -55,6 +68,10 @@ namespace DatenMeister.SourceGeneration.Console
             File.Copy("./ExcelModels.filler.cs", "../../../DatenMeister.Excel/Models/ExcelModels.filler.cs", true);
             File.Copy("./ExcelModels.class.cs", "../../../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
             File.Copy("./ExcelModels.dotnet.cs", "../../../DatenMeister.Excel/Models/ExcelModels.dotnet.cs", true);
+            
+            File.Copy("./ManagementProvider.filler.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.filler.cs", true);
+            File.Copy("./ManagementProvider.class.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.class.cs", true);
+            File.Copy("./ManagementProvider.dotnet.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.dotnet.cs", true);
 #endif
         }
 

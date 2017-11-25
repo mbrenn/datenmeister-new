@@ -6,9 +6,9 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 // Created by $DatenMeister.SourcecodeGenerator.DotNetIntegrationGenerator at $25.11.2017 17:19:36
 
-namespace DatenMeister.Excel
+namespace DatenMeister.Provider.ManagementProviders.Model
 {
-    public static class IntegrateExcelModels
+    public static class IntegrateManagementProvider
     {
         /// <summary>
         /// Assigns the types of form and fields by converting the 
@@ -20,21 +20,21 @@ namespace DatenMeister.Excel
         /// <param name="collection">Collection that shall be filled</param>
         /// <param name="filledStructure">The form and fields structure</param>
         /// <param name="extent">And finally extent to which the types shall be registered</param>
-        public static void Assign(_UML uml,IFactory factory, IReflectiveCollection collection, _ExcelModels filledStructure, MofUriExtent extent)
+        public static void Assign(_UML uml,IFactory factory, IReflectiveCollection collection, _ManagementProvider filledStructure, MofUriExtent extent)
         {
             var generator = new DotNetTypeGenerator(factory, uml);
             {
-                var type = typeof(DatenMeister.Excel.Models.Workbook);
+                var type = typeof(DatenMeister.Provider.ManagementProviders.Model.Extent);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__Workbook = typeAsElement;
+                filledStructure.__Extent = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Excel.Models.Table);
+                var type = typeof(DatenMeister.Provider.ManagementProviders.Model.Workspace);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__Table = typeAsElement;
+                filledStructure.__Workspace = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
         }

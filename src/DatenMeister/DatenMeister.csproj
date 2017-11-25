@@ -29,4 +29,8 @@
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\ManagementProvider\" />
+  </ItemGroup>
 </Project>

@@ -2,11 +2,17 @@
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Provider.ManagementProviders.Model;
 
 namespace DatenMeister.Provider.ManagementProviders
 {
     public class ExtentObject : MappingProviderObject<IUriExtent>
     {
+        static ExtentObject()
+        {
+            MetaclassUriPath = ((MofObjectShadow)_ManagementProvider.TheOne.__Extent).Uri;
+        }
+
         public ExtentObject(IProvider provider, IUriExtent uriExtent) : base(uriExtent, provider, uriExtent.contextURI(), MetaclassUriPath)
         {
             AddMapping(
@@ -33,6 +39,6 @@ namespace DatenMeister.Provider.ManagementProviders
         /// <summary>
         /// Stores the uri to the metaclass
         /// </summary>
-        public const string MetaclassUriPath = ExtentOfWorkspaces.WorkspaceUri + "#Object";
+        public static string MetaclassUriPath { get; }
     }
 }

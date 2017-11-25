@@ -32,7 +32,6 @@ namespace DatenMeister.Uml.Plugin
             var umlClassForm = new Form(
                 "Class",
                 new TextFieldData("name", "Classname"),
-                new SubElementFieldData("ownedAttribute", "Properties"),
                 new SubElementFieldData("attribute", "Properties"));
             _viewLogic.Add(umlClassForm);
 

@@ -19,7 +19,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             var name = fieldData.get(_FormAndFields._FieldData.name).ToString();
             var isReadOnly = DotNetHelper.IsTrue(fieldData,_FormAndFields._FieldData.isReadOnly);
             var valueText = string.Empty;
-            if (value?.isSet(name) == true)
+            if (value.isSet(name))
             {
                 valueText = value.get(name)?.ToString() ?? string.Empty;
             }

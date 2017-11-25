@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Provider.ManagementProviders.Model;
+using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Provider.ManagementProviders
 {
     public class WorkspaceObject : MappingProviderObject<Workspace>
     {
+        static WorkspaceObject()
+        {
+            MetaclassUriPath = ((MofObjectShadow) _ManagementProvider.TheOne.__Workspace).Uri;
+        }
+
         /// <summary>
         /// Initializes a new instance of the WorkspaceObject
         /// </summary>
@@ -33,6 +40,6 @@ namespace DatenMeister.Provider.ManagementProviders
         /// <summary>
         /// Stores the uri to the metaclass
         /// </summary>
-        public const string MetaclassUriPath = ExtentOfWorkspaces.WorkspaceUri + "#Workspace";
+        public static string MetaclassUriPath { get; }
     }
 }

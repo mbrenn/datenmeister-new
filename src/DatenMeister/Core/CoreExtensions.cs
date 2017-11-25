@@ -1,4 +1,7 @@
-﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
+﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Core
 {
@@ -26,5 +29,23 @@ namespace DatenMeister.Core
             return extent.isSet("__ExtentType") ? extent.get("__ExtentType").ToString() : string.Empty;
         }
 
+        /// <summary>
+        /// Gets the factory of the given extent
+        /// </summary>
+        /// <returns>The created factory</returns>
+        public static IFactory GetFactory(this IExtent extent) => new MofFactory(extent);
+
+        /// <summary>
+        /// Sets the properties of the value
+        /// </summary>
+        /// <param name="value">Object which will receive the values</param>
+        /// <param name="properties">Properties to be set</param>
+        public static void SetProperties(this IObject value, IDictionary<string, object> properties)
+        {
+            foreach (var pair in properties)
+            {
+                value.set(pair.Key, pair.Value);
+            }
+        }
     }
 }

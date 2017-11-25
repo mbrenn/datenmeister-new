@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Provider.ManagementProviders.Model;
 
 namespace DatenMeister.Provider.ManagementProviders
 {
@@ -22,7 +23,7 @@ namespace DatenMeister.Provider.ManagementProviders
         /// <summary>
         /// Stores the name of the package
         /// </summary>
-        public const string PackageName = "Management";
+        public const string PackageName = "ManagementProvider";
 
         public const string NewWorkspaceForm = "NewWorkspaceForm";
 
@@ -155,13 +156,30 @@ namespace DatenMeister.Provider.ManagementProviders
             var managementPackage = factory.create(null);
             managementPackage.set("name", PackageName);
 
+            var workspaceForm = GetWorkspaceListForm();
+            var extentForm = GetExtentListForm();
             var items = new List<IElement>
             {
-                GetWorkspaceListForm(),
-                GetExtentListForm(),
+                workspaceForm,
+                extentForm,
                 GetNewXmiExtentDetailForm(),
                 GetNewWorkspaceDetail()
             };
+            
+            var workspaceFormDefaultView = 
+                _viewLogic.GetViewExtent().GetFactory().create(
+                    _FormAndFields.TheOne.__DefaultViewForMetaclass.metaclass);
+            workspaceFormDefaultView.SetProperties(
+                new Dictionary<string, object>
+                {
+                    [_FormAndFields._DefaultViewForMetaclass.metaclass] = WorkspaceObject.MetaclassUriPath,
+                    [_FormAndFields._DefaultViewForMetaclass.view] = workspaceForm,
+                    [_FormAndFields._DefaultViewForMetaclass.viewType] = ViewType.Detail
+                }
+            );
+
+            items.Add(workspaceFormDefaultView);
+
             managementPackage.set(_UML._CommonStructure._Namespace.member, items);
 
             viewExtent.elements().add(managementPackage);

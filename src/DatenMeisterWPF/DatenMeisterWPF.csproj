@@ -88,6 +88,7 @@
     <Compile Include="Forms\Detail\Fields\FieldFactory.cs" />
     <Compile Include="Forms\Detail\Fields\IDetailField.cs" />
     <Compile Include="Forms\Detail\Fields\ReadOnlyListField.cs" />
+    <Compile Include="Forms\Detail\Fields\SubElementsField.cs" />
     <Compile Include="Forms\Detail\Fields\TextboxField.cs" />
     <Compile Include="Forms\Lists\ExtentList.cs" />
     <Compile Include="Forms\Lists\ItemsInExtentList.cs" />

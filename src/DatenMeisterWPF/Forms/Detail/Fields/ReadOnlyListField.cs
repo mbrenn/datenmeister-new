@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
@@ -34,10 +35,16 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     contentBlock.RowDefinitions.Add(new RowDefinition());
 
                     // Creates the text
-                    var innerTextBlock = new TextBlock
-                    {
-                        Text = innerValue.ToString()
-                    };
+                    var innerTextBlock = innerValue != null
+                        ? new TextBlock
+                        {
+                            Text = innerValue.ToString()
+                        }
+                        : new TextBlock
+                        {
+                            Text="null",
+                            FontStyle = FontStyles.Italic
+                        };
 
                     Grid.SetRow(innerTextBlock, inner);
                     Grid.SetColumn(innerTextBlock, 0);

@@ -6,7 +6,7 @@ using DatenMeisterWPF.Forms.Base;
 
 namespace DatenMeisterWPF.Forms.Detail.Fields
 {
-    public class FieldFactory
+    public static class FieldFactory
     {
         /// <summary>
         /// Creates a specific field by the reading out the field type
@@ -18,14 +18,19 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         {
             var fieldType = field.get(_FormAndFields._FieldData.fieldType)?.ToString();
             var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
-
-            if (isEnumeration)
+            switch (fieldType)
             {
-                return new ReadOnlyListField();
-            }
-            else
-            {
-                return new TextboxField();
+                case SubElementFieldData.FieldType:
+                    return new SubElementsField();
+                default:
+                    if (isEnumeration)
+                    {
+                        return new ReadOnlyListField();
+                    }
+                    else
+                    {
+                        return new TextboxField();
+                    }
             }
         }
 

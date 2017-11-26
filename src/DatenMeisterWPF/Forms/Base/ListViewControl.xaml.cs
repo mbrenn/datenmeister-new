@@ -161,7 +161,7 @@ namespace DatenMeisterWPF.Forms.Base
             RefreshViewDefinition();
 
             SupportNewItems = 
-                !DotNetHelper.AsBoolean(ActualFormDefinition.get(_FormAndFields._Form.inhibitNewItems));
+                !DotNetHelper.AsBoolean(ActualFormDefinition.getOrDefault(_FormAndFields._Form.inhibitNewItems));
             SupportNewItems = false; // TODO: Make new items working
 
             var listItems = new ObservableCollection<ExpandoObject>();
@@ -447,7 +447,6 @@ namespace DatenMeisterWPF.Forms.Base
         /// Adds a button for a row item
         /// </summary>
         /// <param name="definition">Definition for the button</param>
-        /// <param name="position">Position of the button to be used</param>
         /// <param name="addToList">True, if the buttons shall be added to the list of items. 
         /// False, if the buttons are reiterated</param>
         private void AddRowItemButton(RowItemButtonDefinition definition, bool addToList = true)

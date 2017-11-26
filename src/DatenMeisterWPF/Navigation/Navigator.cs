@@ -269,16 +269,16 @@ namespace DatenMeisterWPF.Navigation
             return NavigateTo(window,
                 () =>
                 {
-                    var newXmiDetailForm = NamedElementMethods.GetByFullName(
+                    var formPathToType = NamedElementMethods.GetByFullName(
                         viewLogic.GetViewExtent(),
-                        ViewDefinitions.PathNewXmiDetailForm);
+                        ViewDefinitions.PathFindTypeForm);
 
                     var element = InMemoryObject.CreateEmpty();
                     var items = extentFunctions.GetCreatableTypes(extent);
                     element.set("types", items.CreatableTypes);
 
                     var control = new DetailFormControl();
-                    control.SetContent(element, newXmiDetailForm);
+                    control.SetContent(element, formPathToType);
                     control.AddDefaultButtons("Create");
                     control.ElementSaved += (x, y) =>
                     {

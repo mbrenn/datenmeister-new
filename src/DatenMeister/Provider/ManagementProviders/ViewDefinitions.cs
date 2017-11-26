@@ -38,7 +38,11 @@ namespace DatenMeister.Provider.ManagementProviders
 
         public const string ExtentListView = "ExtentListView";
 
+        public const string FindTypeForm = "FindTypeForm";
+
         public const string PathNewXmiDetailForm = PackageName + "::" + NewXmiDetailForm;
+
+        public const string PathFindTypeForm = PackageName + "::" + FindTypeForm;
 
         public const string PathWorkspaceListView = PackageName + "::" + WorkspaceListView;
 
@@ -151,6 +155,19 @@ namespace DatenMeister.Provider.ManagementProviders
             return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
         }
 
+        private IElement GetFindTypeForm()
+        {
+            var form = new Form(FindTypeForm)
+            {
+                inhibitNewItems = true
+            };
+
+            form.AddFields(
+                new SubElementFieldData("types", "Type"));
+
+            return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
+        }
+
         /// <summary>
         /// Adds the views to the view logic
         /// </summary>
@@ -171,11 +188,12 @@ namespace DatenMeister.Provider.ManagementProviders
                 workspaceForm,
                 extentForm,
                 GetNewXmiExtentDetailForm(),
-                GetNewWorkspaceDetail()
+                GetNewWorkspaceDetail(),
+                GetFindTypeForm()
             };
             
-            var workspaceFormDefaultView = 
-                factory.create(formAndFields.__DefaultViewForMetaclass);
+
+            var workspaceFormDefaultView = factory.create(formAndFields.__DefaultViewForMetaclass);
             workspaceFormDefaultView.SetProperties(
                 new Dictionary<string, object>
                 {
@@ -186,8 +204,7 @@ namespace DatenMeister.Provider.ManagementProviders
             );
             items.Add(workspaceFormDefaultView);
 
-            var extentFormDefaultView =
-                factory.create(formAndFields.__DefaultViewForMetaclass);
+            var extentFormDefaultView = factory.create(formAndFields.__DefaultViewForMetaclass);
             extentFormDefaultView.SetProperties(
                 new Dictionary<string, object>
                 {

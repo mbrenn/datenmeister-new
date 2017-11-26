@@ -2,10 +2,14 @@
 using System.Windows;
 using System.Windows.Controls;
 using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -223,7 +227,12 @@ namespace DatenMeisterWPF.Navigation
             },
             NavigationMode.List);
         }
-
+        
+        /// <summary>
+        /// Opens the window in which the user can search for an item by a specific url
+        /// </summary>
+        /// <param name="window">Navigation host being used to open up the new dialog</param>
+        /// <returns>The control element that can be used to receive events from the dialog</returns>
         public IControlNavigation SearchByUrl(INavigationHost window)
         {
             var dlg = new QueryElementDialog {Owner = window as Window};
@@ -243,6 +252,42 @@ namespace DatenMeisterWPF.Navigation
                     element);
             }
 
+            return null;
+        }
+
+        /// <summary>
+        /// Creates a new item for the given extent being located in the workspace
+        /// </summary>
+        /// <param name="window">Navigation host being used to open up the new dialog</param>
+        /// <param name="workspace">Workspace to which the extent</param>
+        /// <param name="extent">Extent in which the element shall be added</param>
+        /// <returns>The control element that can be used to receive events from the dialog</returns>
+        public IControlNavigation NavigateToNewItem(INavigationHost window, IWorkspace workspace, IExtent extent)
+        {
+            var viewLogic = App.Scope.Resolve<ViewLogic>();
+            var extentFunctions = App.Scope.Resolve<ExtentFunctions>();
+            return NavigateTo(window,
+                () =>
+                {
+                    var newXmiDetailForm = NamedElementMethods.GetByFullName(
+                        viewLogic.GetViewExtent(),
+                        ViewDefinitions.PathNewXmiDetailForm);
+
+                    var element = InMemoryObject.CreateEmpty();
+                    var items = extentFunctions.GetCreatableTypes(extent);
+                    element.set("types", items.CreatableTypes);
+
+                    var control = new DetailFormControl();
+                    control.SetContent(element, newXmiDetailForm);
+                    control.AddDefaultButtons("Create");
+                    control.ElementSaved += (x, y) =>
+                    {
+                    };
+
+                    return control;
+                },
+                NavigationMode.Detail);
+            
             return null;
         }
     }

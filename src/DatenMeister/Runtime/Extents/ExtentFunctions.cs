@@ -27,7 +27,7 @@ namespace DatenMeister.Runtime.Extents
         /// </summary>
         /// <param name="extent">The extent into which a new instance shall be created</param>
         /// <returns>Enumeration of types</returns>
-        public CreateableTypeResult GetCreatableTypes(IUriExtent extent)
+        public CreateableTypeResult GetCreatableTypes(IExtent extent)
         {
             var dataLayer = _workspaceLogic.GetWorkspaceOfExtent(extent);
             var typeLayer = dataLayer.MetaWorkspaces.FirstOrDefault();

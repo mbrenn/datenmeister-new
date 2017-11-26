@@ -74,11 +74,11 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <typeparam name="T">Type of the workspace</typeparam>
         /// <param name="workspace">The workspace being queried</param>
-        /// <param name="uri">The uri of the extent that is looked for</param>
+        /// <param name="extentUri">The uri of the extent that is looked for</param>
         /// <returns>The found extent or null, if not found</returns>
-        public static IUriExtent FindExtent(this IWorkspace workspace, string uri)
+        public static IUriExtent FindExtent(this IWorkspace workspace, string extentUri)
         {
-            return (IUriExtent) workspace.extent.FirstOrDefault(x => (x as IUriExtent)?.contextURI() == uri);
+            return (IUriExtent) workspace.extent.FirstOrDefault(x => (x as IUriExtent)?.contextURI() == extentUri);
         }
 
         /// <summary>
@@ -192,15 +192,15 @@ namespace DatenMeister.Runtime.Workspaces
         /// Finds the extent with the given uri in one of the workspaces in the database
         /// </summary>
         /// <param name="collection">Collection to be evaluated</param>
-        /// <param name="uri">Uri, which needs to be retrieved</param>
+        /// <param name="extentUri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
         public static IExtent FindExtent(
             this IWorkspaceLogic collection,
-            string uri)
+            string extentUri)
         {
             return collection.Workspaces
                 .SelectMany(x => x.extent)
-                .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == uri);
+                .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == extentUri);
         }
 
         /// <summary>
@@ -208,18 +208,39 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <param name="collection">Collection to be evaluated</param>
         /// <param name="workspaceId">Id of the workspace to be added</param>
-        /// <param name="uri">Uri, which needs to be retrieved</param>
+        /// <param name="extentUri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
         public static IExtent FindExtent(
             this IWorkspaceLogic collection,
             string workspaceId,
-            string uri)
+            string extentUri)
         {
             return collection.Workspaces
                 .FirstOrDefault(x => x.id == workspaceId)
                 ?.extent
-                .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == uri);
+                .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == extentUri);
         }
+
+        /// <summary>
+        /// Finds the extent and workspace and returns it as a tuple
+        /// </summary>
+        /// <param name="collection">Collection to be used</param>
+        /// <param name="workspaceId">Id of the workspace being queried</param>
+        /// <param name="extentUri">Uri of the extent being used</param>
+        /// <returns>The tuple containing workspace and extent</returns>
+        public static void FindExtentAndWorkspace(
+            this IWorkspaceLogic collection,
+            string workspaceId,
+            string extentUri,
+            out IWorkspace workspace, 
+            out IExtent extent)
+        {
+            workspace = collection.Workspaces
+                .FirstOrDefault(x => x.id == workspaceId);
+            extent = workspace?.extent
+                .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == extentUri);
+        }
+
 
         /// <summary>
         /// Finds the extent with the given uri in one of the workspaces in the database

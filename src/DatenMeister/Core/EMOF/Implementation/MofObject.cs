@@ -191,7 +191,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     return valueAsUriReference;
                 }
                 
-                return (container.Extent as IUriResolver)?.Resolve(valueAsUriReference.Uri);
+                return (container.Extent as IUriResolver ?? container.CreatedByExtent as IUriResolver)?.Resolve(valueAsUriReference.Uri);
             }
 
             throw new NotImplementedException($"Type of {value.GetType()} currently not supported.");

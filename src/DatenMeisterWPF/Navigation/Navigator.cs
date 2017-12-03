@@ -273,7 +273,7 @@ namespace DatenMeisterWPF.Navigation
                         viewLogic.GetViewExtent(),
                         ViewDefinitions.PathFindTypeForm);
 
-                    var element = InMemoryObject.CreateEmpty();
+                    var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetViewExtent());
                     var items = extentFunctions.GetCreatableTypes(extent);
                     element.set("types", items.CreatableTypes);
 
@@ -287,8 +287,6 @@ namespace DatenMeisterWPF.Navigation
                     return control;
                 },
                 NavigationMode.Detail);
-            
-            return null;
         }
     }
 }

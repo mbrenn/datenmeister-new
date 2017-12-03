@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.Provider.InMemory
 {
@@ -17,7 +18,7 @@ namespace DatenMeister.Provider.InMemory
         /// Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the InMemoryObject
         /// </summary>
         /// <returns>The created object as MofObject</returns>
-        public static MofElement CreateEmpty()
+        public static MofElement CreateEmpty(IUriExtent uriExtent = null)
         {
             var inner = new InMemoryObject(InMemoryProvider.TemporaryProvider);
             return new MofElement(inner, null);

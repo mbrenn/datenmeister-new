@@ -374,7 +374,7 @@ namespace DatenMeisterWPF.Forms.Base
                 events.Closed += (sender, args) => UpdateContent();
             }
 
-            AddRowItemButton("Open", Open, ButtonPosition.First);
+            AddRowItemButton("Open", Open, ButtonPosition.Before);
         }
 
         /// <summary>
@@ -419,10 +419,13 @@ namespace DatenMeisterWPF.Forms.Base
             return button;
         }
 
+        /// <summary>
+        /// Defines the possible position of the row button compared to the data
+        /// </summary>
         public enum ButtonPosition
         {
-            First,
-            Last
+            Before,
+            After
         }
 
         /// <summary>
@@ -431,7 +434,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <param name="name">Name of the button</param>
         /// <param name="pressed">Called, if the is button pressed</param>
         /// <param name="position">Position of the button to be used</param>
-        public void AddRowItemButton(string name, Action<IObject> pressed, ButtonPosition position = ButtonPosition.Last)
+        public void AddRowItemButton(string name, Action<IObject> pressed, ButtonPosition position = ButtonPosition.After)
         {
             var definition = new RowItemButtonDefinition
             {
@@ -464,7 +467,7 @@ namespace DatenMeisterWPF.Forms.Base
                 OnClick = definition.Pressed
             };
 
-            if (definition.Position == ButtonPosition.First)
+            if (definition.Position == ButtonPosition.Before)
             {
                 DataGrid.Columns.Insert(0, dataColumn);
             }

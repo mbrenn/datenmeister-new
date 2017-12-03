@@ -1,4 +1,5 @@
 ﻿using System;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
 using DatenMeister.Provider.InMemory;
@@ -35,6 +36,27 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 CreatedByExtent = ((MofElement) container)?.CreatedByExtent;
             }
+        }
+
+        /// <summary>
+        /// Sets the referenced extent being used to resolve uris
+        /// </summary>
+        /// <param name="extent">Extent to be set as start for references</param>
+        /// <returns>The element itself for chaining</returns>
+        public MofElement SetReferencedExtent(MofExtent extent)
+        {
+            CreatedByExtent = extent;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the referenced extent being used to resolve uris
+        /// </summary>
+        /// <param name="extent">Extent to be set as start for references</param>
+        /// <returns>The element itself for chaining</returns>
+        public MofElement SetReferencedExtent(IUriExtent extent)
+        {
+            return SetReferencedExtent((MofExtent) extent);
         }
 
         /// <inheritdoc />

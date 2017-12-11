@@ -15,7 +15,7 @@ namespace DatenMeisterWPF.Forms.Detail
             var viewLogic = App.Scope.Resolve<ViewLogic>();
             var viewExtent = viewLogic.GetViewExtent();
 
-            var formElement = NamedElementMethods.GetByFullName(viewExtent, ViewDefinitions.PathNewWorkspaceForm);
+            var formElement = NamedElementMethods.GetByFullName(viewExtent, ManagementViewDefinitions.PathNewWorkspaceForm);
 
             SetContentForNewObject(formElement);
             AddDefaultButtons("Create");

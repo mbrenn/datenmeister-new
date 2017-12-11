@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 
 namespace DatenMeister.Core.EMOF.Implementation
@@ -63,6 +64,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         private object Convert(object value)
         {
             if (DotNetHelper.IsOfPrimitiveType(value) || DotNetHelper.IsOfEnum(value))
+            {
+                return value;
+            }
+
+            if (value is IObject)
             {
                 return value;
             }

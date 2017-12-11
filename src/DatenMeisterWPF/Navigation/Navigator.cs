@@ -3,12 +3,14 @@ using System.Windows;
 using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -187,7 +189,7 @@ namespace DatenMeisterWPF.Navigation
                 {
                     var newXmiDetailForm = NamedElementMethods.GetByFullName(
                         viewLogic.GetViewExtent(),
-                        ViewDefinitions.PathNewXmiDetailForm);
+                        ManagementViewDefinitions.PathNewXmiDetailForm);
 
                     var control = new DetailFormControl();
                     control.SetContent(null, newXmiDetailForm);
@@ -264,26 +266,29 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="workspace">Workspace to which the extent</param>
         /// <param name="extent">Extent in which the element shall be added</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public IControlNavigation NavigateToNewItem(INavigationHost window, IWorkspace workspace, IExtent extent)
+        public IControlNavigation NavigateToNewItem(INavigationHost window, IWorkspace workspace, IReflectiveCollection collection)
         {
             var viewLogic = App.Scope.Resolve<ViewLogic>();
+            var viewDefinitions = App.Scope.Resolve<ManagementViewDefinitions>();
             var extentFunctions = App.Scope.Resolve<ExtentFunctions>();
             return NavigateTo(window,
                 () =>
                 {
-                    var formPathToType = NamedElementMethods.GetByFullName(
-                        viewLogic.GetViewExtent(),
-                        ViewDefinitions.PathFindTypeForm);
-
                     var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetViewExtent());
-                    var items = extentFunctions.GetCreatableTypes(extent);
-                    element.set("types", items.CreatableTypes);
+                    var items = extentFunctions.GetCreatableTypes(collection);
+                    var formPathToType = viewDefinitions.GetFindTypeForm(items.CreatableTypes);
 
                     var control = new DetailFormControl();
                     control.SetContent(element, formPathToType);
                     control.AddDefaultButtons("Create");
                     control.ElementSaved += (x, y) =>
                     {
+                        if (control.DetailElement.getOrDefault("selectedType") is IElement metaClass)
+                        {
+                            var factory = new MofFactory(collection);
+                            var newElement = factory.create(metaClass);
+                            collection.add(newElement);
+                        }
                     };
 
                     return control;

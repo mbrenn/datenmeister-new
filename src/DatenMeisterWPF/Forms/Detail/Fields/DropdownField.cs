@@ -35,7 +35,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 }
             }
 
-            var dropDownValues = value.get(_FormAndFields._DropDownFieldData.values);
+            var dropDownValues = fieldData.getOrDefault(_FormAndFields._DropDownFieldData.values);
             if (dropDownValues == null)
             {
                 return new TextBlock
@@ -78,7 +78,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 {
                     if (propertyValue != combobox.SelectedValue)
                     {
-                        value.set(name, combobox.SelectedValue);
+                        value.set(name, (combobox.SelectedValue as ComboBoxItem)?.Tag);
                     }
                 });
 

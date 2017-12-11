@@ -33,7 +33,7 @@ namespace DatenMeisterWPF.Forms.Lists
             var extents = workspace?.get("extents") as IReflectiveSequence;
             SetContent(
                 extents, 
-                NamedElementMethods.GetByFullName(viewExtent, ViewDefinitions.PathExtentListView));
+                NamedElementMethods.GetByFullName(viewExtent, ManagementViewDefinitions.PathExtentListView));
 
             AddDefaultButtons();
             AddRowItemButton("Show Items", ShowItems);

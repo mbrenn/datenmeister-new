@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Provider.ManagementProviders
 {
@@ -13,7 +15,7 @@ namespace DatenMeister.Provider.ManagementProviders
     /// Gets the workspace view
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class ViewDefinitions
+    public class ManagementViewDefinitions
     {
         /// <summary>
         /// Stores the view logic
@@ -51,11 +53,11 @@ namespace DatenMeister.Provider.ManagementProviders
         public const string PathNewWorkspaceForm = PackageName + "::" + NewWorkspaceForm;
 
         /// <summary>
-        /// Initializes a new instance of the ViewDefinitions class
+        /// Initializes a new instance of the ManagementViewDefinitions class
         /// </summary>
         /// <param name="viewLogic">View logic being used to find View Extent</param>
         /// <param name="workspaceLogic">Logic of the workspace</param>
-        public ViewDefinitions(ViewLogic viewLogic, IWorkspaceLogic workspaceLogic)
+        public ManagementViewDefinitions(ViewLogic viewLogic, IWorkspaceLogic workspaceLogic)
         {
             _viewLogic = viewLogic;
             _workspaceLogic = workspaceLogic;
@@ -155,17 +157,32 @@ namespace DatenMeister.Provider.ManagementProviders
             return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
         }
 
-        private IElement GetFindTypeForm()
+        /// <summary>
+        /// Creates a form to create a new type. 
+        /// </summary>
+        /// <param name="types">Types to be added to the form</param>
+        /// <returns>The created type</returns>
+        public IElement GetFindTypeForm(IEnumerable<IElement> types = null)
         {
             var form = new Form(FindTypeForm)
             {
                 inhibitNewItems = true
             };
 
-            form.AddFields(
-                new SubElementFieldData("types", "Type"));
+            var typeField = new DropDownFieldData("selectedType", "Type");
+            if (types != null)
+            {
+                foreach (var type in types)
+                {
+                    typeField.AddValue(type, NamedElementMethods.GetFullName(type));
+                }
+            }
 
-            return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
+            typeField.values = typeField.values.OrderBy(x => x.name).ToList();
+            form.AddFields(typeField);
+
+            var createdForm = DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
+            return createdForm;
         }
 
         /// <summary>

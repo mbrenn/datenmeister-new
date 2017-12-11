@@ -22,6 +22,10 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             {
                 case SubElementFieldData.FieldType:
                     return new SubElementsField();
+                case DropDownFieldData.FieldType:
+                    return new DropdownField();
+                case DateTimeFieldData.FieldType:
+                    return new DateTimeField();
                 default:
                     if (isEnumeration)
                     {

@@ -156,7 +156,7 @@ namespace DatenMeister.Integration
 
                 // Adds the views and their view logic
                 scope.Resolve<ViewLogic>().Integrate();
-                scope.Resolve<ViewDefinitions>().AddToViewDefinition();
+                scope.Resolve<ManagementViewDefinitions>().AddToViewDefinition();
                 
                 // Includes the extent for the helping extents
                 ManagementProviderHelper.Initialize(

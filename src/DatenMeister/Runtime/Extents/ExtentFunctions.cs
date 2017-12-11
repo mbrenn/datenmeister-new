@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Functions.Queries;
@@ -19,6 +20,17 @@ namespace DatenMeister.Runtime.Extents
         public ExtentFunctions(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
+        }
+
+        /// <summary>
+        /// Gets an enumeration of creatable types for a given extent. 
+        /// It navigates to the meta extent and looks for all classes
+        /// </summary>
+        /// <param name="collection">The reflectivecollection into which a new instance shall be created</param>
+        /// <returns>Enumeration of types</returns>
+        public CreateableTypeResult GetCreatableTypes(IReflectiveCollection collection)
+        {
+            return GetCreatableTypes(((IHasExtent) collection).Extent);
         }
 
         /// <summary>

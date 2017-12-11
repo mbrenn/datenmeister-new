@@ -9,18 +9,25 @@ namespace DatenMeister.Models.Forms
         /// </summary>
         public IList<ValuePair> values { get; set; } = new List<ValuePair>();
 
-        public DropDownFieldData() : base("dropdown")
+        public const string FieldType = "dropdown";
+
+        public DropDownFieldData() : base(FieldType)
         {
         }
 
-        public DropDownFieldData(string name, string title) : base("dropdown", name, title)
+        public DropDownFieldData(string name, string title) : base(FieldType, name, title)
         {
             
         }
 
-        public void AddValue(object value, string name)
+        /// <summary>
+        /// Adds a specific value for the dropdown form
+        /// </summary>
+        /// <param name="value">Value to be added</param>
+        /// <param name="nameOfValue">Name of the item being shown to the user</param>
+        public void AddValue(object value, string nameOfValue)
         {
-            var pair = new ValuePair(value, name);
+            var pair = new ValuePair(value, nameOfValue);
 
             values.Add(pair);
         }

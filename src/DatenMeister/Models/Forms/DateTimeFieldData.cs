@@ -2,11 +2,15 @@
 {
     public class DateTimeFieldData : FieldData
     {
-        public DateTimeFieldData() : base ("datetime")
+        /// <summary>
+        /// Stores the fieldtype
+        /// </summary>
+        public const string FieldType = "datetime";
+        public DateTimeFieldData() : base (FieldType)
         {
         }
 
-        public DateTimeFieldData(string name, string title) : base("datetime", name, title)
+        public DateTimeFieldData(string name, string title) : base(FieldType, name, title)
         {
 
         }

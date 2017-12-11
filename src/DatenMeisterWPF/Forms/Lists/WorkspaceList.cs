@@ -23,7 +23,7 @@ namespace DatenMeisterWPF.Forms.Lists
             var viewLogic = App.Scope.Resolve<ViewLogic>();
             var formElement = NamedElementMethods.GetByFullName(
                 viewLogic.GetViewExtent(),
-                ViewDefinitions.PathWorkspaceListView);
+                ManagementViewDefinitions.PathWorkspaceListView);
 
             // Sets the workspaces
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);

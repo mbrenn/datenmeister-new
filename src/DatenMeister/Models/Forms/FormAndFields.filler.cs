@@ -238,6 +238,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.SubElementFieldData._metaClassUri = value;
                                 }
+                                if(name == "form") // Looking for property
+                                {
+                                    tree.SubElementFieldData._form = value;
+                                }
                                 if(name == "fieldType") // Looking for property
                                 {
                                     tree.SubElementFieldData._fieldType = value;

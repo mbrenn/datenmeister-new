@@ -59,7 +59,7 @@ namespace DatenMeisterWPF.Navigation
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
         {
-            // Verifies if the given window supports the navigation. 
+            // Verifies if the given window supports the navigation directly. 
             var innerResult = navigationHost?.NavigateTo(factoryMethod, navigationMode);
             if (innerResult != null)
             {
@@ -97,7 +97,7 @@ namespace DatenMeisterWPF.Navigation
                         }
                     };
 
-                    asDetailFormControl.NavigationHost = navigationHost;
+                    asDetailFormControl.NavigationHost = window;
                     window.Show();
                     window.Closed += (x, y) =>
                     {
@@ -107,6 +107,8 @@ namespace DatenMeisterWPF.Navigation
                     break;
                 }
             }
+
+            (userControl as INavigationGuest)?.PrepareNavigation();
 
             return result;
         }

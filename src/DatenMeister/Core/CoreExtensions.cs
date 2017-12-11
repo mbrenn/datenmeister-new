@@ -2,6 +2,7 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Core
 {
@@ -26,7 +27,7 @@ namespace DatenMeister.Core
         /// <param name="extent">Type of the extent to be set</param>
         public static string GetExtentType(this IExtent extent)
         {
-            return extent.isSet("__ExtentType") ? extent.get("__ExtentType").ToString() : string.Empty;
+            return extent?.getOrDefault("__ExtentType")?.ToString() ?? string.Empty;
         }
 
         /// <summary>

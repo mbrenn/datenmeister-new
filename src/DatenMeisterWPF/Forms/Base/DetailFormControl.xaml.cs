@@ -126,7 +126,7 @@ namespace DatenMeisterWPF.Forms.Base
                         ViewList.SelectedIndex = 0;
                         break;
                     default:
-                        ViewList.SelectedIndex = 2 + views.IndexOf(ActualFormDefinition);
+                        ViewList.SelectedIndex = 2 + views.IndexOf(ViewDefinition.Element);
                         break;
                 }
             }

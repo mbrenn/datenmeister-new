@@ -34,7 +34,7 @@ namespace DatenMeisterWPF.Windows
 
         public IControlNavigation NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>

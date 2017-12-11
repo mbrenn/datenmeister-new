@@ -149,6 +149,9 @@ namespace DatenMeister.Models.Forms
             public static string @metaClassUri = "metaClassUri";
             public IElement _metaClassUri = null;
 
+            public static string @form = "form";
+            public IElement _form = null;
+
             public static string @fieldType = "fieldType";
             public IElement _fieldType = null;
 

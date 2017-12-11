@@ -20,9 +20,10 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         {
             var name = fieldData.getOrDefault(_FormAndFields._FieldData.name).ToString();
             var valueOfElement = value.getOrDefault(name) as IReflectiveSequence;
-            
+            var form = fieldData.getOrDefault(_FormAndFields._SubElementFieldData.form) as IElement;
+
             var listViewControl = new ListViewControl();
-            listViewControl.SetContent(valueOfElement, fieldData);
+            listViewControl.SetContent(valueOfElement, form);
             return listViewControl;
         }
     }

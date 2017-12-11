@@ -4,7 +4,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
-// Created by $DatenMeister.SourcecodeGenerator.DotNetIntegrationGenerator at $11.12.2017 10:26:15
+// Created by $DatenMeister.SourcecodeGenerator.DotNetIntegrationGenerator
 
 namespace DatenMeister.Excel
 {

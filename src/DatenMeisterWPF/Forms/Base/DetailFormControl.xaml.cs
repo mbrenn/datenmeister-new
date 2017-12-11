@@ -15,13 +15,15 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Detail.Fields;
+using DatenMeisterWPF.Navigation;
+using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Forms.Base
 {
     /// <summary>
     /// Interaktionslogik für DetailFormControl.xaml
     /// </summary>
-    public partial class DetailFormControl : UserControl
+    public partial class DetailFormControl : UserControl, INavigationGuest
     {
         /// <summary>
         /// Defines the form definition being used in the detail for
@@ -98,8 +100,14 @@ namespace DatenMeisterWPF.Forms.Base
         {
             // Update view
             var views = GetFormsForView()?.ToList();
+
             if (views != null)
             {
+                if (ViewDefinition.Element != null && views?.IndexOf(ViewDefinition.Element) == -1)
+                {
+                    views.Add(ViewDefinition.Element);
+                }
+
                 ViewList.Visibility = Visibility.Visible;
                 var list = new List<ViewDefinition>
                 {
@@ -385,6 +393,38 @@ namespace DatenMeisterWPF.Forms.Base
         protected void OnElementSaved()
         {
             ElementSaved?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Called before the navigation is called
+        /// </summary>
+        public void PrepareNavigation()
+        {
+            void ViewConfig()
+            {
+                var dlg = new ItemXmlViewWindow
+                {
+                    SupportWriting = true,
+                    Owner = Window.GetWindow(this)
+                };
+                dlg.UpdateContent(ActualFormDefinition);
+
+                dlg.UpdateButtonPressed += (x, y) =>
+                {
+                    var temporaryExtent = InMemoryProvider.TemporaryExtent;
+                    var factory = new MofFactory(temporaryExtent);
+                    ActualFormDefinition = dlg.GetCurrentContentAsMof(factory);
+                    UpdateContent();
+                };
+
+                dlg.ShowDialog();
+            }
+
+            NavigationHost.AddNavigationButton(
+                "View-Configuration",
+                ViewConfig,
+                null,
+                NavigationCategories.File + ".Views");
         }
     }
 }

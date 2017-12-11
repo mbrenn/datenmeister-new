@@ -37,8 +37,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 {
                     Text = valueText
                 };
-                
-                var copyToClipboardAdd = new MenuItem { Header = "Copy to Clipboard" };
+
+                var copyToClipboardAdd = new MenuItem {Header = "Copy to Clipboard"};
                 contentBlock.ContextMenu = new ContextMenu();
                 contentBlock.ContextMenu.Items.Add(copyToClipboardAdd);
                 copyToClipboardAdd.Click += (x, y) => Clipboard.SetText(valueText);
@@ -53,15 +53,15 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 };
 
                 detailForm.SetActions.Add(
-                () =>
-                {
-                    if (valueText != contentBlock.Text)
+                    () =>
                     {
-                        value.set(name, contentBlock.Text);
-                    }
-                });
+                        if (valueText != contentBlock.Text)
+                        {
+                            value.set(name, contentBlock.Text);
+                        }
+                    });
 
-            return contentBlock;
+                return contentBlock;
             }
         }
     }

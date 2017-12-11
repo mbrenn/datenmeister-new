@@ -4,7 +4,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
-// Created by $DatenMeister.SourcecodeGenerator.DotNetIntegrationGenerator at $25.11.2017 17:19:36
+// Created by $DatenMeister.SourcecodeGenerator.DotNetIntegrationGenerator at $11.12.2017 10:26:15
 
 namespace DatenMeister.Models.Forms
 {
@@ -84,6 +84,13 @@ namespace DatenMeister.Models.Forms
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__MetaClassElementFieldData = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.DropDownFieldData.ValuePair);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ValuePair = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
         }

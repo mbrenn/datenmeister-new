@@ -226,6 +226,19 @@ namespace DatenMeister.Models.Forms
         public _MetaClassElementFieldData @MetaClassElementFieldData = new _MetaClassElementFieldData();
         public IElement @__MetaClassElementFieldData = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.MetaClassElementFieldData");
 
+        public class _ValuePair
+        {
+            public static string @value = "value";
+            public IElement _value = null;
+
+            public static string @name = "name";
+            public IElement _name = null;
+
+        }
+
+        public _ValuePair @ValuePair = new _ValuePair();
+        public IElement @__ValuePair = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DropDownFieldData%2BValuePair");
+
         public static _FormAndFields TheOne = new _FormAndFields();
 
     }

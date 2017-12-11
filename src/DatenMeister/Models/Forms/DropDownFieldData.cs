@@ -27,9 +27,9 @@ namespace DatenMeister.Models.Forms
 
         public class ValuePair
         {
-            public object value;
+            public object value { get; set; }
 
-            public string name;
+            public string name { get; set; }
 
             public ValuePair(object value, string name)
             {

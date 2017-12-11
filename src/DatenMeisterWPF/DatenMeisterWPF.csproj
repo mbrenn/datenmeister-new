@@ -85,6 +85,9 @@
     </Compile>
     <Compile Include="Forms\Base\ViewDefinitionMode.cs" />
     <Compile Include="Forms\Base\ViewDefinition.cs" />
+    <Compile Include="Forms\Detail\Fields\CheckboxField.cs" />
+    <Compile Include="Forms\Detail\Fields\DateTimeField.cs" />
+    <Compile Include="Forms\Detail\Fields\DropdownField.cs" />
     <Compile Include="Forms\Detail\Fields\FieldFactory.cs" />
     <Compile Include="Forms\Detail\Fields\IDetailField.cs" />
     <Compile Include="Forms\Detail\Fields\ReadOnlyListField.cs" />

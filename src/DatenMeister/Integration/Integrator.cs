@@ -127,12 +127,10 @@ namespace DatenMeister.Integration
                 Debug.WriteLine($" Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
-                var extentTypes = new MofUriExtent(
-                    new InMemoryProvider(), 
-                    WorkspaceNames.UriInternalTypes);
-                var mofFactory = new MofFactory(extentTypes);
-                var typeWorkspace = workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
-                workspaceLogic.AddExtent(typeWorkspace, extentTypes);
+                var localTypeSupport = scope.Resolve<LocalTypeSupport>();
+                var localTypeExtent = localTypeSupport.CreateInternalTypeExtent();
+                var typeWorkspace = workspaceLogic.GetTypesWorkspace();
+                var mofFactory = new MofFactory(localTypeExtent);
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();
@@ -140,9 +138,9 @@ namespace DatenMeister.Integration
                 IntegrateFormAndFields.Assign(
                     workspaceData.Uml.Get<_UML>(),
                     mofFactory,
-                    extentTypes.elements(),
+                    localTypeExtent.elements(),
                     fields,
-                    extentTypes);
+                    localTypeExtent);
 
                 // Adds the module for managementprovider
                 var managementProvider = new _ManagementProvider();
@@ -150,9 +148,9 @@ namespace DatenMeister.Integration
                 IntegrateManagementProvider.Assign(
                     workspaceData.Uml.Get<_UML>(),
                     mofFactory,
-                    extentTypes.elements(),
+                    localTypeExtent.elements(),
                     managementProvider,
-                    extentTypes);
+                    localTypeExtent);
 
                 // Adds the views and their view logic
                 scope.Resolve<ViewLogic>().Integrate();

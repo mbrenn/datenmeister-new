@@ -407,10 +407,9 @@ namespace DatenMeister.Uml
 
             foreach (var element in allElements.OfType<IObjectAllProperties>())
             {
-                var asElement = element as IElement;
-                if (asElement == null)
+                if (!(element is IElement asElement))
                 {
-                    throw new InvalidOperationException($"Given Element is not an element: {element.ToString()}");
+                    throw new InvalidOperationException($"Given Element is not an element: {element}");
                 }
 
                 var metaClass = asElement.getMetaClass();

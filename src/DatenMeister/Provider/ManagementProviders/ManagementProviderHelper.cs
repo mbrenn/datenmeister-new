@@ -22,7 +22,7 @@ namespace DatenMeister.Provider.ManagementProviders
             workspaceLogic.GetManagementWorkspace().extent.Add(
                 new MofUriExtent(new ExtentOfWorkspaces(workspaceLogic), ExtentOfWorkspaces.WorkspaceUri));
 
-            localTypeSupport.AddLocalTypes(
+            localTypeSupport.AddInternalTypes(
                 "DatenMeister::Workspaces",
                 new[]
                 {

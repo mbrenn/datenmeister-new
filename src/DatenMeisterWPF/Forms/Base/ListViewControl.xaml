@@ -14,7 +14,8 @@
     <DockPanel>
         <StackPanel Orientation="Horizontal" x:Name="Toolbar" DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="10,0,10,0">
             <helper:ComboBoxEx x:Name="ViewList" SelectionChanged="ViewList_OnSelectionChanged"></helper:ComboBoxEx>
-            <TextBox x:Name="SearchField" Width="200" TextChanged="SearchField_OnTextChanged"></TextBox>
+            <TextBlock Margin="5,2,5,0">🔍</TextBlock>
+            <TextBox x:Name="SearchField" Width="200" TextChanged="SearchField_OnTextChanged" Margin="0,2,0,2" ToolTip="Search"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" x:Name="ButtonBar" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10">
         </StackPanel>

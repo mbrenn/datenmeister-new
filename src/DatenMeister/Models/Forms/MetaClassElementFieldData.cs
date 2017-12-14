@@ -14,7 +14,7 @@
         {
         }
 
-        public MetaClassElementFieldData(string name, string title) : base(FieldType, name, title)
+        public MetaClassElementFieldData(string title) : base(FieldType, string.Empty, title)
         {
         }
     }

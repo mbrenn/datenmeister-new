@@ -110,8 +110,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>true, if object could be added</returns>
         private bool AddInternal(object value, int index)
         {
-            var valueAsObject = value as MofObject;
-            if (valueAsObject != null)
+            if (value is MofObject valueAsObject)
             {
                 if (valueAsObject.Extent == _extent || valueAsObject.Extent == null)
                 {

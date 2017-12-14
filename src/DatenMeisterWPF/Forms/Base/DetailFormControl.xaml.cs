@@ -43,7 +43,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Gets the detailled element, whose content is shown in the dialog
         /// </summary>
-        public IElement DetailElement { get; private set; }
+        public IObject DetailElement { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether new properities may be added by the user to the element
@@ -79,7 +79,7 @@ namespace DatenMeisterWPF.Forms.Base
                 formDefinition);
         }
 
-        public void SetContent(IElement element, IElement formDefinition)
+        public void SetContent(IObject element, IElement formDefinition)
         {
             DetailElement = element ?? InMemoryObject.CreateEmpty();
 
@@ -112,7 +112,7 @@ namespace DatenMeisterWPF.Forms.Base
                 var list = new List<ViewDefinition>
                 {
                     new ViewDefinition("Default", null, ViewDefinitionMode.Default),
-                    new ViewDefinition("All Properties", null, ViewDefinitionMode.Default)
+                    new ViewDefinition("All Properties", null, ViewDefinitionMode.AllProperties)
                 };
                 list.AddRange(views.Select(x => new ViewDefinition(NamedElementMethods.GetFullName(x), x)));
                 ViewList.ItemsSource = list;
@@ -214,7 +214,7 @@ namespace DatenMeisterWPF.Forms.Base
                 // Sets the metaclass
                 if (DotNetHelper.IsFalseOrNotSet(ActualFormDefinition, _FormAndFields._Form.hideMetaClass))
                 {
-                    var metaClass = DetailElement.getMetaClass();
+                    var metaClass = (DetailElement as IElement)?.getMetaClass();
                     CreateRowForField(
                         "Meta Class:",
                         metaClass == null ? string.Empty : NamedElementMethods.GetFullName(metaClass),

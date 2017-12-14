@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -42,7 +41,6 @@ namespace DatenMeister.Modules.ViewFinder
             var dotNetUriExtent = new MofUriExtent(new InMemoryProvider(), UriViewExtent);
             _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
         }
-
 
         /// <summary>
         /// Adds a view to the system

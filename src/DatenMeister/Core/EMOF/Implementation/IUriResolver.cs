@@ -14,7 +14,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="uri"></param>
         /// <returns></returns>
-        IElement Resolve(string uri);
+        IElement Resolve(string uri, ResolveType resolveType);
 
         /// <summary>
         /// Resolves a certain element by id
@@ -22,5 +22,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="id">Path to be queried</param>
         /// <returns>The found element for the id</returns>
         IElement ResolveById(string id);
+    }
+
+    public enum ResolveType
+    {
+        Default, 
+        OnlyMetaClasses
     }
 }

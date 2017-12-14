@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.Plugins;
+﻿using DatenMeister.Core;
+using DatenMeister.Core.Plugins;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Workspaces;
@@ -31,13 +32,15 @@ namespace DatenMeister.Uml.Plugin
             // Creates the forms
             var umlClassForm = new Form(
                 "Class",
-                new TextFieldData("name", "Classname"),
-                new SubElementFieldData("attribute", "Properties"));
+                new MetaClassElementFieldData("Metaclass"),
+                new TextFieldData(_UML._CommonStructure._NamedElement.name, "Classname"),
+                new SubElementFieldData(_UML._StructuredClassifiers._Class.ownedAttribute, "Properties"));
             _viewLogic.Add(umlClassForm);
 
             var umlPackageForm = new Form(
                 "Package",
-                new TextFieldData("name", "Classname"));
+                new TextFieldData(_UML._CommonStructure._NamedElement.name, "Classname"),
+                new SubElementFieldData(_UML._CommonStructure._Namespace.member, "Member"));
             _viewLogic.Add(umlPackageForm);
 
             // Creates the default mapping

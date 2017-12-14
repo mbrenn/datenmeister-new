@@ -11,4 +11,29 @@ namespace DatenMeisterWPF.Navigation
             Closed?.Invoke(this, EventArgs.Empty);
         }
     }
+
+    public class ControlNavigationNewItem : ControlNavigation, IControlNavigationNewItem
+    {
+        public ControlNavigationNewItem()
+        {
+            
+        }
+
+        public ControlNavigationNewItem(IControlNavigation subItem)
+        {
+            subItem.Closed += (x, y) => OnClosed();
+        }
+
+        public event EventHandler<NewItemEventArgs> NewItemCreated;
+
+        public virtual void OnNewItemCreated(NewItemEventArgs e)
+        {
+            NewItemCreated?.Invoke(this, e);
+        }
+
+        public void Attach(IControlNavigation subItem)
+        {
+            subItem.Closed += (x, y) => OnClosed();
+        }
+    }
 }

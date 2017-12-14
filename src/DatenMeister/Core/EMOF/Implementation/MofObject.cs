@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
@@ -132,10 +133,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public override int GetHashCode()
-        {
-            return ProviderObject?.GetHashCode() ?? base.GetHashCode();
-        }
+        // ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
+        public override int GetHashCode() => ProviderObject?.GetHashCode() ?? base.GetHashCode();
 
         /// <inheritdoc />
         public object get(string property)
@@ -191,7 +190,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     return valueAsUriReference;
                 }
                 
-                return (container.Extent as IUriResolver ?? container.CreatedByExtent as IUriResolver)?.Resolve(valueAsUriReference.Uri);
+                return (container.Extent as IUriResolver ?? container.CreatedByExtent as IUriResolver)?.Resolve(valueAsUriReference.Uri, ResolveType.Default);
             }
 
             throw new NotImplementedException($"Type of {value.GetType()} currently not supported.");

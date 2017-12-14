@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
@@ -65,12 +66,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
         
         /// <inheritdoc />
-        public IElement Resolve(string uri)
+        public IElement Resolve(string uri, ResolveType resolveType)
         {
-            var result = element(uri);
-            if (result != null)
+            if (resolveType != ResolveType.OnlyMetaClasses)
             {
-                return result;
+                var result = element(uri);
+                if (result != null)
+                {
+                    return result;
+                }
             }
 
             // Now look into the explicit extents
@@ -83,8 +87,29 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
             }
 
+            var resolve = ResolveByMetaWorkspaces(uri, Workspace);
+            return resolve;
+        }
+
+        /// <summary>
+        /// Resolves the the given uri by looking through each meta workspace of the workspace
+        /// </summary>
+        /// <param name="uri">Uri being retrieved</param>
+        /// <param name="workspace">Workspace whose meta workspaces were queried</param>
+        /// <param name="alreadyVisited">Set of all workspaces already being visited. This avoid unnecessary recursion and unlimited recursion</param>
+        /// <returns>Found element or null, if not found</returns>
+        private IElement ResolveByMetaWorkspaces(string uri, Runtime.Workspaces.Workspace workspace,
+            HashSet<Runtime.Workspaces.Workspace> alreadyVisited = null)
+        {
+            alreadyVisited = alreadyVisited ?? new HashSet<Runtime.Workspaces.Workspace>();
+            if (alreadyVisited.Contains(workspace))
+            {
+                return null;
+            }
+            alreadyVisited.Add(workspace);
+
             // If still not found, look into the meta workspaces. Nevertheless, no recursion
-            var metaWorkspaces = Workspace?.MetaWorkspaces;
+            var metaWorkspaces = workspace?.MetaWorkspaces;
             if (metaWorkspaces != null)
             {
                 foreach (var metaWorkspace in metaWorkspaces)
@@ -97,9 +122,15 @@ namespace DatenMeister.Core.EMOF.Implementation
                             return element;
                         }
                     }
+
+                    var elementByMeta = ResolveByMetaWorkspaces(uri, metaWorkspace, alreadyVisited);
+                    if (elementByMeta != null)
+                    {
+                        return elementByMeta;
+                    }
+
                 }
             }
-
             return null;
         }
 

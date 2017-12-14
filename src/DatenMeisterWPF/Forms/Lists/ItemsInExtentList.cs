@@ -45,7 +45,7 @@ namespace DatenMeisterWPF.Forms.Lists
 
             AddGenericButton("New Item", () =>
             {
-                var elements = Navigator.TheNavigator.NavigateToNewItem(NavigationHost, workspace, extent.elements());
+                var elements = Navigator.TheNavigator.NavigateToNewItem(NavigationHost, extent.elements());
                 elements.Closed += (x, y) =>
                 {
                     UpdateContent();

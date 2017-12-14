@@ -22,28 +22,33 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="value">Value to be queried</param>
         /// <returns>Full name of the element</returns>
-        public static string GetFullName(IElement value)
+        public static string GetFullName(IObject value)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
-            var current = value.container();
-            var result = UmlNameResolution.GetName(value);
-            var depth = 0;
-
-            while (current != null)
+            if ( value is IElement valueAsElement )
             {
-                var currentName = UmlNameResolution.GetName(current);
-                result = $"{currentName}::{result}";
-                current = current.container();
-                depth++;
+                var current = valueAsElement.container();
+                var result = UmlNameResolution.GetName(value);
+                var depth = 0;
 
-                if (depth > 1000)
+                while (current != null)
                 {
-                    throw new InvalidOperationException(
-                        $"The full name of the element {value} could not be retrieved due to an infinite loop. (Threshold is 1000)");
+                    var currentName = UmlNameResolution.GetName(current);
+                    result = $"{currentName}::{result}";
+                    current = current.container();
+                    depth++;
+
+                    if (depth > 1000)
+                    {
+                        throw new InvalidOperationException(
+                            $"The full name of the element {value} could not be retrieved due to an infinite loop. (Threshold is 1000)");
+                    }
                 }
+
+                return result;
             }
 
-            return result;
+            return UmlNameResolution.GetName(value);
         }
 
         /// <summary>

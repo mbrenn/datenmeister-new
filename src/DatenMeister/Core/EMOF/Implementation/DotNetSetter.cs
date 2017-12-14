@@ -91,7 +91,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             // After having the uri, create the required element
             var createdElement = _factory.create(
-                metaClassUri == null ? null : _extent.Resolve(metaClassUri));
+                metaClassUri == null ? null : _extent.Resolve(metaClassUri, ResolveType.OnlyMetaClasses));
 
             var type = value.GetType();
             foreach (var reflectedProperty in type.GetProperties(

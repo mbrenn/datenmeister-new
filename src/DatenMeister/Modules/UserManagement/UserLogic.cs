@@ -1,11 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Linq;
-using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Functions.Algorithm;
 using DatenMeister.Runtime.Functions.Queries;
@@ -43,7 +41,7 @@ namespace DatenMeister.Modules.UserManagement
         /// </summary>
         public void Initialize()
         {
-            var types = _localTypeSupport.AddLocalTypes(
+            var types = _localTypeSupport.AddInternalTypes(
                 new[] {typeof(User), typeof(UserManagementSettings)}
             );
 
@@ -54,8 +52,7 @@ namespace DatenMeister.Modules.UserManagement
                 ExtentUri,
                 ExtentName);
 
-            var settings = extent.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() as IElement;
-            if (settings == null)
+            if (!(extent.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() is IElement settings))
             {
                 // Create new settings
                 var factory = new MofFactory(extent);

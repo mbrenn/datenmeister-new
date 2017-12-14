@@ -14,7 +14,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         /// <param name="value">Value of the field being used</param>
         /// <param name="field">Field to be queried</param>
         /// <returns>Found field or exception if not found</returns>
-        public static IDetailField CreateField(IElement value, IElement field)
+        public static IDetailField CreateField(IObject value, IElement field)
         {
             var fieldType = field.get(_FormAndFields._FieldData.fieldType)?.ToString();
             var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
@@ -45,7 +45,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         /// <param name="field">Field to be queried</param>
         /// <param name="formControl">Form Control in which the UI Element will be hosted</param>
         /// <returns>The created element</returns>
-        public static UIElement GetUIElementFor(IElement value, IElement field, DetailFormControl formControl)
+        public static UIElement GetUIElementFor(IObject value, IElement field, DetailFormControl formControl)
         {
             return CreateField(value, field).CreateElement(value, field, formControl);
         }

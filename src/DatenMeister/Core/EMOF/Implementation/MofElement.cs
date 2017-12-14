@@ -72,7 +72,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return null;
             }
 
-            var result = (CreatedByExtent as IUriResolver)?.Resolve(uri);
+            var result = (CreatedByExtent as IUriResolver)?.Resolve(uri, ResolveType.OnlyMetaClasses);
             if (result == null)
             {
                 result = new MofObjectShadow(uri);

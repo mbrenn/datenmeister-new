@@ -12,7 +12,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 {
     public class ReadOnlyListField : IDetailField
     {
-        public UIElement CreateElement(IElement valueElement, IElement fieldData, DetailFormControl detailForm)
+        public UIElement CreateElement(IObject valueElement, IElement fieldData, DetailFormControl detailForm)
         {
             var contentBlock = new Grid();
             contentBlock.ColumnDefinitions.Add(new ColumnDefinition());

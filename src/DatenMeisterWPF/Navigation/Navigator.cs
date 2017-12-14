@@ -158,7 +158,7 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="window">Window which is the owner for the detail window</param>
         /// <param name="element">Element to be shown</param>
         /// <returns>The navigation being used to control the view</returns>
-        public IControlNavigation NavigateToElementDetailView(INavigationHost window, IElement element)
+        public IControlNavigation NavigateToElementDetailView(INavigationHost window, IObject element)
         {
             return NavigateTo(
                 window, () =>
@@ -263,19 +263,34 @@ namespace DatenMeisterWPF.Navigation
         /// Creates a new item for the given extent being located in the workspace
         /// </summary>
         /// <param name="window">Navigation host being used to open up the new dialog</param>
-        /// <param name="workspace">Workspace to which the extent</param>
-        /// <param name="extent">Extent in which the element shall be added</param>
+        /// <param name="collection">Extent in which the element shall be added</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public IControlNavigation NavigateToNewItem(INavigationHost window, IWorkspace workspace, IReflectiveCollection collection)
+        public IControlNavigation NavigateToNewItem(INavigationHost window, IReflectiveCollection collection)
+        {
+            var result = NavigateToNewItem(window, ((IHasExtent) collection).Extent);
+            result.NewItemCreated += (x, y) => collection.add(y.NewItem);
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a new item for the given extent being located in the workspace
+        /// </summary>
+        /// <param name="window">Navigation host being used to open up the new dialog</param>
+        /// <param name="host">Object to whose property, the new element will be added
+        /// </param>
+        /// <returns>The control element that can be used to receive events from the dialog</returns>
+        public IControlNavigationNewItem NavigateToNewItem(INavigationHost window, IExtent host)
         {
             var viewLogic = App.Scope.Resolve<ViewLogic>();
             var viewDefinitions = App.Scope.Resolve<ManagementViewDefinitions>();
             var extentFunctions = App.Scope.Resolve<ExtentFunctions>();
-            return NavigateTo(window,
+
+            var result = new ControlNavigationNewItem();
+            var navigationControl = NavigateTo(window,
                 () =>
                 {
                     var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetViewExtent());
-                    var items = extentFunctions.GetCreatableTypes(collection);
+                    var items = extentFunctions.GetCreatableTypes(host);
                     var formPathToType = viewDefinitions.GetFindTypeForm(items.CreatableTypes);
 
                     var control = new DetailFormControl();
@@ -285,15 +300,20 @@ namespace DatenMeisterWPF.Navigation
                     {
                         if (control.DetailElement.getOrDefault("selectedType") is IElement metaClass)
                         {
-                            var factory = new MofFactory(collection);
+                            var factory = new MofFactory(host);
                             var newElement = factory.create(metaClass);
-                            collection.add(newElement);
+                            result.OnNewItemCreated(new NewItemEventArgs(newElement));
+
+                            NavigateToElementDetailView(window, newElement);
                         }
                     };
 
                     return control;
                 },
                 NavigationMode.Detail);
+
+            result.Attach(navigationControl);
+            return result;
         }
     }
 }

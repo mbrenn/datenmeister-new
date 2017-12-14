@@ -59,7 +59,7 @@ namespace DatenMeister.Provider.DotNet
                 properties.Add(umlProperty);
             }
 
-            umlClass.set(_UML._Classification._Classifier.attribute, properties);
+            umlClass.set(_UML._StructuredClassifiers._StructuredClassifier.ownedAttribute, properties);
 
             return umlClass;
         }

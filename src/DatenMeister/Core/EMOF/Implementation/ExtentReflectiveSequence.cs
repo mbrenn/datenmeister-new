@@ -80,8 +80,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public bool remove(object value)
         {
-            var valueAsObject = value as MofObject;
-            if (valueAsObject != null)
+            if (value is MofObject valueAsObject)
             {
                 return _extent.Provider.DeleteElement(valueAsObject.ProviderObject.Id);
                 

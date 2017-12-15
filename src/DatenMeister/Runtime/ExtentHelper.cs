@@ -71,8 +71,7 @@ namespace DatenMeister.Runtime
             }
 
             // If the object knows the extent to which it belongs to, it will return it
-            var objectKnowsExtent = value as IHasExtent;
-            if (objectKnowsExtent != null)
+            if (value is IHasExtent objectKnowsExtent)
             {
                 var foundExtent = objectKnowsExtent.Extent as IUriExtent;
                 return extents.FirstOrDefault(x => x == foundExtent);

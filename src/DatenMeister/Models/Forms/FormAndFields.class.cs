@@ -15,6 +15,9 @@ namespace DatenMeister.Models.Forms
             public static string @fields = "fields";
             public IElement _fields = null;
 
+            public static string @fixView = "fixView";
+            public IElement _fixView = null;
+
             public static string @inhibitNewItems = "inhibitNewItems";
             public IElement _inhibitNewItems = null;
 
@@ -23,6 +26,9 @@ namespace DatenMeister.Models.Forms
 
             public static string @hideMetaClass = "hideMetaClass";
             public IElement _hideMetaClass = null;
+
+            public static string @minimizeDesign = "minimizeDesign";
+            public IElement _minimizeDesign = null;
 
         }
 

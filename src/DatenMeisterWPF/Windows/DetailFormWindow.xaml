@@ -32,6 +32,6 @@
                 </Ribbon.ApplicationMenu>
             </Ribbon>
         </StackPanel>
-        <ContentControl x:Name="MainContent"></ContentControl>
+        <ContentControl x:Name="MainContent" x:FieldModifier="private"></ContentControl>
     </DockPanel>
 </Window>

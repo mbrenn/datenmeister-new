@@ -51,6 +51,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.Form._fields = value;
                                 }
+                                if(name == "fixView") // Looking for property
+                                {
+                                    tree.Form._fixView = value;
+                                }
                                 if(name == "inhibitNewItems") // Looking for property
                                 {
                                     tree.Form._inhibitNewItems = value;
@@ -62,6 +66,10 @@ namespace DatenMeister.Models.Forms
                                 if(name == "hideMetaClass") // Looking for property
                                 {
                                     tree.Form._hideMetaClass = value;
+                                }
+                                if(name == "minimizeDesign") // Looking for property
+                                {
+                                    tree.Form._minimizeDesign = value;
                                 }
                             }
                         }

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
+using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Windows
@@ -47,6 +48,22 @@ namespace DatenMeisterWPF.Windows
         public void AddNavigationButton(string name, Action clickMethod, string imageName, string categoryName)
         {
             RibbonHelper.AddNavigationButton(name, clickMethod, imageName, categoryName);
+        }
+
+        /// <summary>
+        /// Sets the main content to be shown
+        /// </summary>
+        /// <param name="element">Element to be shown</param>
+        public void SetMainContent(UIElement element)
+        {
+            this.MainContent.Content = element;
+            if (element is DetailFormControl control)
+            {
+                if (control.IsDesignMinimized())
+                {
+                    MainRibbon.IsMinimized = true;
+                }
+            }
         }
 
         public void SetFocus()

@@ -18,6 +18,11 @@ namespace DatenMeister.Models.Forms
         public IList<FieldData> fields { get; set; } = new List<FieldData>();
 
         /// <summary>
+        /// Gets or sets a value indicating whether the user may manipulate the view
+        /// </summary>
+        public bool fixView { get; set; }
+
+        /// <summary>
         /// Gets or sets a value whether new values shall be allowed
         /// </summary>
         public bool inhibitNewItems { get; set; }
@@ -32,7 +37,12 @@ namespace DatenMeister.Models.Forms
         /// Indicate whether the meta class shall not be shown in the form.
         /// If the value is true, the detail form will not contain the metaclass
         /// </summary>
-        public string hideMetaClass { get; set; }
+        public bool hideMetaClass { get; set; }
+
+        /// <summary>
+        /// Minimizes the navigation and reduces the content of the ribbons.
+        /// </summary>
+        public bool minimizeDesign { get; set; }
 
         public Form()
         {

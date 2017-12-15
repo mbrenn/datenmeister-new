@@ -484,8 +484,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// <param name="e">Event arguments</param>
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            var result = GetObjectsFromEventRouting(e);
-            result.column.OnClick(result.selectedItem);
+            var (selectedItem, column) = GetObjectsFromEventRouting(e);
+            column.OnClick(selectedItem);
         }
 
         /// <summary>
@@ -516,16 +516,16 @@ namespace DatenMeisterWPF.Forms.Base
         
         private void RowButton_OnInitialized(object sender, RoutedEventArgs e)
         {
-            var result = GetObjectsFromEventRouting(e);
+            var (selectedItem, column) = GetObjectsFromEventRouting(e);
             var button = (Button)e.Source;
 
-            if (result.selectedItem == null)
+            if (selectedItem == null)
             {
                 button.Visibility = Visibility.Hidden;
             }
             else
             {
-                button.Content = result.column.Header.ToString();
+                button.Content = column.Header.ToString();
             }
         }
 

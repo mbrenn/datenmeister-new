@@ -50,6 +50,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public bool AllowNewProperties { get; set; }
 
+        private bool? _hideViewSelection;
+
         /// <summary>
         /// This event handler is thrown, when the user clicks on 'Save' and after the properties are
         /// transferred from form display to element
@@ -57,6 +59,15 @@ namespace DatenMeisterWPF.Forms.Base
         public event EventHandler ElementSaved;
 
         private int _fieldCount;
+
+        /// <summary>
+        /// Gets or sets the flag whether design shall be minimized
+        /// </summary>
+        /// <returns>true, if design shall be minimized</returns>
+        public bool IsDesignMinimized()
+        {
+            return DotNetHelper.IsTrue(ActualFormDefinition?.getOrDefault(_FormAndFields._Form.minimizeDesign));
+        }
 
         /// <summary>
         /// Stores the list of actions that will be performed when the user clicks on set
@@ -98,6 +109,9 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private void UpdateViewList()
         {
+            // Skip, if view selection shall be hidden
+            if (_hideViewSelection == true) return;
+
             // Update view
             var views = GetFormsForView()?.ToList();
 
@@ -177,6 +191,19 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 ActualFormDefinition = ViewDefinition.Element;
             }
+
+            if (_hideViewSelection == null)
+            {
+                if (DotNetHelper.IsTrue(ActualFormDefinition.getOrDefault(_FormAndFields._Form.fixView)))
+                {
+                    ViewList.Visibility = Visibility.Collapsed;
+                    _hideViewSelection = true;
+                }
+                else
+                {
+                    _hideViewSelection = false;
+                }
+            }
         }
 
         /// <summary>
@@ -202,23 +229,26 @@ namespace DatenMeisterWPF.Forms.Base
                 var mofElement = (MofElement)DetailElement;
                 var uriExtent = mofElement.Extent as MofUriExtent;
 
-                CreateSeparator();
-
-                var uriExtentText = uriExtent?.contextURI() ?? string.Empty;
-                var fullName = NamedElementMethods.GetFullName(DetailElement);
-                CreateRowForField("Extent:", uriExtentText, true);
-                CreateRowForField("Full Name:", fullName, true);
-                CreateRowForField("Url w/ ID:", mofElement.GetUri(), true);
-                CreateRowForField("Url w/Fullname:", $"{uriExtentText}?{fullName}", true);
-
-                // Sets the metaclass
-                if (DotNetHelper.IsFalseOrNotSet(ActualFormDefinition, _FormAndFields._Form.hideMetaClass))
+                if (!DotNetHelper.IsTrue(ActualFormDefinition.getOrDefault(_FormAndFields._Form.hideMetaClass)))
                 {
-                    var metaClass = (DetailElement as IElement)?.getMetaClass();
-                    CreateRowForField(
-                        "Meta Class:",
-                        metaClass == null ? string.Empty : NamedElementMethods.GetFullName(metaClass),
-                        true);
+                    CreateSeparator();
+
+                    var uriExtentText = uriExtent?.contextURI() ?? string.Empty;
+                    var fullName = NamedElementMethods.GetFullName(DetailElement);
+                    CreateRowForField("Extent:", uriExtentText, true);
+                    CreateRowForField("Full Name:", fullName, true);
+                    CreateRowForField("Url w/ ID:", mofElement.GetUri(), true);
+                    CreateRowForField("Url w/Fullname:", $"{uriExtentText}?{fullName}", true);
+
+                    // Sets the metaclass
+                    if (DotNetHelper.IsFalseOrNotSet(ActualFormDefinition, _FormAndFields._Form.hideMetaClass))
+                    {
+                        var metaClass = (DetailElement as IElement)?.getMetaClass();
+                        CreateRowForField(
+                            "Meta Class:",
+                            metaClass == null ? string.Empty : NamedElementMethods.GetFullName(metaClass),
+                            true);
+                    }
                 }
             }
         }

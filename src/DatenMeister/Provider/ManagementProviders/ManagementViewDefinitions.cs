@@ -166,7 +166,10 @@ namespace DatenMeister.Provider.ManagementProviders
         {
             var form = new Form(FindTypeForm)
             {
-                inhibitNewItems = true
+                inhibitNewItems = true,
+                fixView = true,
+                hideMetaClass = true,
+                minimizeDesign = true
             };
 
             var typeField = new DropDownFieldData("selectedType", "Type");
@@ -208,7 +211,6 @@ namespace DatenMeister.Provider.ManagementProviders
                 GetNewWorkspaceDetail(),
                 GetFindTypeForm()
             };
-            
 
             var workspaceFormDefaultView = factory.create(formAndFields.__DefaultViewForMetaclass);
             workspaceFormDefaultView.SetProperties(

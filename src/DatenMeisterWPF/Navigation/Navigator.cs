@@ -92,12 +92,9 @@ namespace DatenMeisterWPF.Navigation
                 {
                     var window = new DetailFormWindow
                     {
-                        Owner = navigationHost as Window,
-                        MainContent =
-                        {
-                            Content = asDetailFormControl
-                        }
+                        Owner = navigationHost as Window
                     };
+                    window.SetMainContent(asDetailFormControl);
 
                     asDetailFormControl.NavigationHost = window;
                     window.Show();
@@ -304,7 +301,8 @@ namespace DatenMeisterWPF.Navigation
                             var newElement = factory.create(metaClass);
                             result.OnNewItemCreated(new NewItemEventArgs(newElement));
 
-                            NavigateToElementDetailView(window, newElement);
+                            var detailControlView = NavigateToElementDetailView(window, newElement);
+                            detailControlView.Closed += (a, b) => result.OnClosed();
                         }
                     };
 

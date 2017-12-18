@@ -44,6 +44,16 @@ namespace DatenMeister.Models.Forms
         /// </summary>
         public bool minimizeDesign { get; set; }
 
+        /// <summary>
+        /// Gets or sets the default width in pixels for a standard 96dpi screen
+        /// </summary>
+        public int defaultWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default height in pixels for a standard 96 dpi screen
+        /// </summary>
+        public int defaultHeight { get; set; }
+
         public Form()
         {
         }

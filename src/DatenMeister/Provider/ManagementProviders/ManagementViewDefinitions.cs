@@ -169,7 +169,9 @@ namespace DatenMeister.Provider.ManagementProviders
                 inhibitNewItems = true,
                 fixView = true,
                 hideMetaClass = true,
-                minimizeDesign = true
+                minimizeDesign = true,
+                defaultHeight = 300,
+                defaultWidth = 500
             };
 
             var typeField = new DropDownFieldData("selectedType", "Type");

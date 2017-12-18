@@ -58,6 +58,14 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public event EventHandler ElementSaved;
 
+        /// <summary>
+        /// Gets the default size
+        /// </summary>
+        public Size DefaultSize => new Size(
+            DotNetHelper.AsDouble(ActualFormDefinition?.get(_FormAndFields._Form.defaultWidth)),
+            DotNetHelper.AsDouble(ActualFormDefinition?.get(_FormAndFields._Form.defaultHeight))
+        );
+
         private int _fieldCount;
 
         /// <summary>

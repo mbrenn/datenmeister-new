@@ -63,6 +63,18 @@ namespace DatenMeisterWPF.Windows
                 {
                     MainRibbon.IsMinimized = true;
                 }
+
+                var size = control.DefaultSize;
+                if (Math.Abs(size.Width) > 1E-7 && size.Height > 1E-7)
+                {
+                    var window = GetWindow(this);
+                    if (window != null)
+                    {
+                        window.Width = size.Width;
+                        window.Height = size.Height;
+                    }
+                }
+
             }
         }
 

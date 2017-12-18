@@ -30,6 +30,12 @@ namespace DatenMeister.Models.Forms
             public static string @minimizeDesign = "minimizeDesign";
             public IElement _minimizeDesign = null;
 
+            public static string @defaultWidth = "defaultWidth";
+            public IElement _defaultWidth = null;
+
+            public static string @defaultHeight = "defaultHeight";
+            public IElement _defaultHeight = null;
+
         }
 
         public _Form @Form = new _Form();

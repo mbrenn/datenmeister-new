@@ -187,6 +187,26 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
+        /// Converts the given element to double
+        /// </summary>
+        /// <param name="value">Value to be parsed</param>
+        /// <returns>Converted value</returns>
+        public static double AsDouble(object value)
+        {
+            switch (value)
+            {
+                case null:
+                    return 0.0;
+                case string valueAsString:
+                    return double.TryParse(valueAsString, NumberStyles.Any, CultureInfo.InvariantCulture, out var resultAsDouble)
+                        ? resultAsDouble
+                        : 0.0;
+            }
+
+            return Convert.ToDouble(value, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
         /// Verifies whether the given element is true
         /// </summary>
         /// <param name="value">Value to be checked</param>

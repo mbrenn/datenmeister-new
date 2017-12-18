@@ -71,6 +71,14 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.Form._minimizeDesign = value;
                                 }
+                                if(name == "defaultWidth") // Looking for property
+                                {
+                                    tree.Form._defaultWidth = value;
+                                }
+                                if(name == "defaultHeight") // Looking for property
+                                {
+                                    tree.Form._defaultHeight = value;
+                                }
                             }
                         }
                         if(name == "FieldData") // Looking for class

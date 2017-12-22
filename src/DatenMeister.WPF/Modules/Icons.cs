@@ -12,5 +12,6 @@
         public static string WorkspacesDelete = "workspaces-delete";
         public static string ExtentsShow = "extents-show";
         public static string Refresh = "refresh";
+        public static string ExportCSV = "export-csv";
     }
 }

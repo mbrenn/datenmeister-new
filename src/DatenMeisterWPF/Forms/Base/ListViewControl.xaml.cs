@@ -15,13 +15,17 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
+using Microsoft.Win32;
 
 namespace DatenMeisterWPF.Forms.Base
 {
@@ -570,6 +574,37 @@ namespace DatenMeisterWPF.Forms.Base
                 dlg.ShowDialog();
             }
 
+            void ExportToCSV()
+            {
+                try
+                {
+                    var dlg = new SaveFileDialog
+                    {
+                        DefaultExt = "csv",
+                        Filter = "CSV-Files|*.csv|All Files|*.*"
+                    };
+                    if (dlg.ShowDialog(Window.GetWindow(this)) == true)
+                    {
+                        var loader = new CSVLoader(App.Scope.Resolve<IWorkspaceLogic>());
+                        var memoryProvider = new InMemoryProvider();
+                        var temporary = new MofUriExtent(memoryProvider, "dm:///temp");
+                        var copier = new ExtentCopier(new MofFactory(temporary));
+                        copier.Copy(Items, temporary.elements());
+
+                        loader.Save(
+                            memoryProvider,
+                            dlg.FileName,
+                            new CSVSettings());
+
+                        MessageBox.Show($"CSV Export completed. \r\n{temporary.elements().Count()} Items exported.");
+                    }
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show($"Export failed\r\n{exc}");
+                }
+            }
+
             NavigationHost.AddNavigationButton(
                 "Refresh",
                 UpdateContent,
@@ -583,10 +618,16 @@ namespace DatenMeisterWPF.Forms.Base
                 NavigationCategories.File + ".Views");
 
             NavigationHost.AddNavigationButton(
-                "View-Configuration", 
+                "View Definition", 
                 ViewConfig, 
                 null, 
                 NavigationCategories.File + ".Views");
+
+            NavigationHost.AddNavigationButton(
+                "Export CSV",
+                ExportToCSV,
+                Icons.ExportCSV,
+                NavigationCategories.File + ".Export");
         }
 
         /// <summary>

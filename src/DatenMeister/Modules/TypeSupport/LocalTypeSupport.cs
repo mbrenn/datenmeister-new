@@ -66,7 +66,7 @@ namespace DatenMeister.Modules.TypeSupport
                 new MofFactory(internalTypeExtent),
                 packageName,
                 "name",
-                _UML._CommonStructure._Namespace.member,
+                _UML._Packages._Package.packagedElement,
                 _workspaceLogic.GetUmlData().Packages.__Package);
 
             package.set(_UML._CommonStructure._Namespace.member, new List<object>());

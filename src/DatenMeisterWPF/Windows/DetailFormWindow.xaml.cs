@@ -74,7 +74,6 @@ namespace DatenMeisterWPF.Windows
                         window.Height = size.Height;
                     }
                 }
-
             }
         }
 

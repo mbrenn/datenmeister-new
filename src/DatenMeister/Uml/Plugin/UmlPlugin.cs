@@ -36,11 +36,18 @@ namespace DatenMeister.Uml.Plugin
                 new TextFieldData(_UML._CommonStructure._NamedElement.name, "Classname"),
                 new SubElementFieldData(_UML._StructuredClassifiers._Class.ownedAttribute, "Properties"));
             _viewLogic.Add(umlClassForm);
+            
+            // Creates the forms
+            var umlPropertyForm = new Form(
+                "Property",
+                new MetaClassElementFieldData("Metaclass"),
+                new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name"));
+            _viewLogic.Add(umlPropertyForm);
 
             var umlPackageForm = new Form(
                 "Package",
                 new TextFieldData(_UML._CommonStructure._NamedElement.name, "Classname"),
-                new SubElementFieldData(_UML._CommonStructure._Namespace.member, "Member"));
+                new SubElementFieldData(_UML._Packages._Package.packagedElement, "Member"));
             _viewLogic.Add(umlPackageForm);
 
             // Creates the default mapping
@@ -54,8 +61,13 @@ namespace DatenMeister.Uml.Plugin
                 WorkspaceNames.UriUml + "#Package",
                 ViewType.Detail,
                 umlPackageForm);
-
             _viewLogic.Add(packageView);
+
+            var propertyView = new DefaultViewForMetaclass(
+                WorkspaceNames.UriUml + "#Property",
+                ViewType.Detail,
+                umlPackageForm);
+            _viewLogic.Add(propertyView);
 
             var classExtentView = new DefaultViewForExtentType(
                 "Uml.Classes",

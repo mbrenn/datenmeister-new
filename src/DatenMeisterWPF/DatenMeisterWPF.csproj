@@ -101,6 +101,9 @@
     <Compile Include="Navigation\ControlNavigation.cs" />
     <Compile Include="Navigation\IControlNavigation.cs" />
     <Compile Include="Navigation\Navigator.cs" />
+    <Compile Include="Windows\ExcelImportDefinitionDialog.xaml.cs">
+      <DependentUpon>ExcelImportDefinitionDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\RibbonHelper.cs" />
     <Compile Include="Windows\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
@@ -160,6 +163,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\DetailFormWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ExcelImportDefinitionDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -31,7 +31,6 @@ namespace DatenMeisterWPF
             RibbonHelper = new RibbonHelper(this);
         }
 
-
         private async void Window_Initialized(object sender, EventArgs e)
         {
             MainControl.Content = new IntroScreen();

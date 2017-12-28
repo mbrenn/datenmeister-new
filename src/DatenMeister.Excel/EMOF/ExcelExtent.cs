@@ -18,46 +18,6 @@ namespace DatenMeister.Excel.EMOF
         {
             _workbook = workbook;
             Settings = settings ?? new ExcelSettings();
-
-            /*// Maps the table to sheet item
-            var typeMapping = AddMappingForType<SheetItem, ISheet>(
-                models.__Table,
-                x => x.Value.SheetName,
-                x =>
-                {
-                    x.Settings = _settings;
-                });
-
-            typeMapping.AddProperty<SheetItem, string>(
-                "name",
-                x => x.Value.SheetName,
-                (x, value) =>
-                {
-                    throw new NotImplementedException();
-                });
-
-            typeMapping.AddProperty<SheetItem, IReflectiveSequence>(
-                "items",
-                x =>
-                {
-                    var collection = new MMReflectiveCollection(this);
-
-                    var n = x.RowOffset;
-                    while (true)
-                    {
-                        var cell = x.Value.GetRow(n)?.GetCell(x.ColumnOffset);
-                        if (string.IsNullOrEmpty(cell?.GetStringContent()))
-                        {
-                            break;
-                        }
-
-                        collection.add(new RowItem(x, n, null));
-                        n++;
-                    }
-
-                    return collection;
-                },
-                (x, value) => { throw new InvalidOperationException(); });*/
         }
 
         /// <inheritdoc />

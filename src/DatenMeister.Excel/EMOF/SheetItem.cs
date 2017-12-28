@@ -84,39 +84,31 @@ namespace DatenMeister.Excel.EMOF
         /// <inheritdoc />
         public object GetProperty(string property)
         {
-            if (property == "items")
+            switch (property)
             {
-                var collection = new List<object>();
+                case "items":
+                    var collection = new List<object>();
 
-                var n = RowOffset;
-                while (true)
-                {
-                    var cell = Sheet.GetRow(n)?.GetCell(ColumnOffset);
-                    if (string.IsNullOrEmpty(cell?.GetStringContent()))
+                    var n = RowOffset;
+                    while (true)
                     {
-                        break;
+                        var cell = Sheet.GetRow(n)?.GetCell(ColumnOffset);
+                        if (string.IsNullOrEmpty(cell?.GetStringContent()))
+                        {
+                            break;
+                        }
+
+                        collection.Add(new RowItem(this, n));
+                        n++;
                     }
 
-                    collection.Add(new RowItem(this, n));
-                    n++;
-                }
-
-                return collection;
-            }
-
-            if (property == "name")
-            {
-                return Sheet.SheetName;
-            }
-
-            if (property == "columnOffset")
-            {
-                return ColumnOffset;
-            }
-
-            if (property == "rowOffset")
-            {
-                return RowOffset;
+                    return collection;
+                case "name":
+                    return Sheet.SheetName;
+                case "columnOffset":
+                    return ColumnOffset;
+                case "rowOffset":
+                    return RowOffset;
             }
 
             throw new NotImplementedException();
@@ -161,7 +153,7 @@ namespace DatenMeister.Excel.EMOF
         /// <inheritdoc />
         public bool RemoveFromProperty(string property, object value)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />

@@ -10,6 +10,7 @@ using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
 
@@ -67,7 +68,19 @@ namespace DatenMeisterWPF.Forms.Lists
                 null,
                 NavigationCategories.File + ".Workspaces");
 
+            NavigationHost.AddNavigationButton(
+                "Import Excel",
+                ImportFromExcel,
+                Icons.ImportExcel,
+                NavigationCategories.File + ".Import");
+
             base.PrepareNavigation();
+
+            void ImportFromExcel()
+            {
+                ImportFromExcelNavigation.ImportFromExcel(NavigationHost);
+
+            }
 
             void NewXmiExtent()
             {

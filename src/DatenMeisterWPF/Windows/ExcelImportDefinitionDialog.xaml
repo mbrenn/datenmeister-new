@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DatenMeisterWPF.Windows"
-        mc:Ignorable="d"
-        Title="ExcelImportDefinitionDialog" Height="300" Width="533.232">
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner"
+        Title="ExcelImportDefinitionDialog" Height="600" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -13,7 +13,10 @@
         </Grid.ColumnDefinitions>
         <Border>
             <Grid>
-                <Grid.ColumnDefinitions></Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
             </Grid>
         </Border>
         <DataGrid x:Name="ExcelDataGrid" Grid.Column="1"></DataGrid>

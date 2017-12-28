@@ -100,6 +100,7 @@
     <Compile Include="INavigationHost.cs" />
     <Compile Include="Navigation\ControlNavigation.cs" />
     <Compile Include="Navigation\IControlNavigation.cs" />
+    <Compile Include="Navigation\ImportFromExcel.cs" />
     <Compile Include="Navigation\Navigator.cs" />
     <Compile Include="Windows\ExcelImportDefinitionDialog.xaml.cs">
       <DependentUpon>ExcelImportDefinitionDialog.xaml</DependentUpon>

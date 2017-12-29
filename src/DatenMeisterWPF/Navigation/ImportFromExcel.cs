@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Windows;
 using DatenMeisterWPF.Windows;
 using Microsoft.Win32;
 
@@ -20,6 +21,8 @@ namespace DatenMeisterWPF.Navigation
             if (fileDialog.ShowDialog() == true)
             {
                 var dlg = new ExcelImportDefinitionDialog();
+                dlg.PrepareFile(fileDialog.FileName);
+                dlg.Owner = host as Window;
                 dlg.ShowDialog();
             }
         }

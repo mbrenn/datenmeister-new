@@ -12,13 +12,42 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Border>
-            <Grid>
+            <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock>Excel-File:</TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="0">Sheet:</TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="0">Offset Rows:</TextBlock>
+                <TextBlock Grid.Row="3" Grid.Column="0">Offset Columns:</TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="0"># Rows:</TextBlock>
+                <TextBlock Grid.Row="5" Grid.Column="0"># Columns:</TextBlock>
+                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="txtFileName"></TextBlock>
+                <ComboBox Grid.Row="1" Grid.Column="1" x:Name="cboSheet" SelectionChanged="CboSheet_OnSelectionChanged"></ComboBox>
+                <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtOffsetRow" TextChanged="TxtOffsetRow_OnTextChanged">0</TextBox>
+                <TextBox Grid.Row="3" Grid.Column="1" x:Name="txtOffsetColumn" TextChanged="TxtOffsetRow_OnTextChanged">0</TextBox>
+                <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtCountRow" TextChanged="TxtOffsetRow_OnTextChanged">0</TextBox>
+                <TextBox Grid.Row="5" Grid.Column="1" x:Name="txtCountColumn" TextChanged="TxtOffsetRow_OnTextChanged">0</TextBox>
+                <CheckBox Grid.Row="6" Grid.Column="1" x:Name="chkHeaderRow" Click="ChkHeaderRow_OnClick">Has header row?</CheckBox>
+                <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <Button x:Name="btnCancel">Cancel</Button>
+                    <Button x:Name="btnImport">Import</Button>
+                </StackPanel>
+                
+                
             </Grid>
         </Border>
-        <DataGrid x:Name="ExcelDataGrid" Grid.Column="1"></DataGrid>
+        <DataGrid x:Name="dgrExcelDataGrid" Grid.Column="1"></DataGrid>
     </Grid>
 </Window>

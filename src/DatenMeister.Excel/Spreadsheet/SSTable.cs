@@ -12,6 +12,8 @@ namespace DatenMeister.Excel.Spreadsheet
             _sheet = sheet;
         }
 
+        public string Name => _sheet.SheetName;
+
         /// <summary>
         /// Gets the cell content at a specific position in the spreadsheet
         /// </summary>

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -14,8 +15,15 @@ namespace DatenMeister.Uml.Helper
     /// <summary>
     /// Defines some helper methods for NamedElements
     /// </summary>
-    public static class NamedElementMethods
+    public class NamedElementMethods
     {
+        private IWorkspaceLogic _workspaceLogic;
+
+        public NamedElementMethods(IWorkspaceLogic workspaceLogic)
+        {
+            _workspaceLogic = workspaceLogic;
+        }
+
         /// <summary>
         /// Gets the full path to the given element. It traverses through the container values of the
         /// objects and retrieves the partial names by 'name'.
@@ -158,17 +166,37 @@ namespace DatenMeister.Uml.Helper
         }
 
         /// <summary>
+        /// Gets or creates a package by following the path. 
+        /// </summary>
+        /// <param name="rootElements">Collection in which the package shall be created</param>
+        /// <param name="packagePath">Path to the package</param>
+        /// <returns>Found element</returns>
+        public IElement CreatePackage(
+            IReflectiveCollection rootElements,
+            string packagePath)
+        {
+            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(((IHasExtent) rootElements).Extent);
+            return GetOrCreatePackageStructure(
+                rootElements,
+                new MofFactory(rootElements),
+                packagePath,
+                _UML._CommonStructure._NamedElement.name,
+                _UML._Packages._Package.packagedElement,
+                uml.Packages.__Package);
+        }
+
+        /// <summary>
         /// Gets or create the package structure and returns the last created element.
         /// The elements will be interspaced by '::'
         /// </summary>
-        /// <param name="rootElements">Elements which contain the root elements</param>
+        /// <param name="rootElements">Elements which contain the root elements. Can be the extent itself</param>
         /// <param name="factory">Factory being used to create the subitems</param>
         /// <param name="packagePath">Path of the package to be created</param>
         /// <param name="nameProperty">The name property which contain the name for the element</param>
         /// <param name="childProperty">The child property which contain the subelements</param>
         /// <param name="metaClass">The Metaclass being used to create the child packages</param>
         public static IElement GetOrCreatePackageStructure(
-            IReflectiveSequence rootElements, 
+            IReflectiveCollection rootElements, 
             IFactory factory,
             string packagePath, 
             string nameProperty,

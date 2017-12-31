@@ -4,6 +4,9 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Copier
 {
+    /// <summary>
+    /// Supports the copying of an extent
+    /// </summary>
     public class ExtentCopier
     {
         private readonly IFactory _factory;

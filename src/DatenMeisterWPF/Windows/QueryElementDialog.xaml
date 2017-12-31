@@ -28,7 +28,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontWeight="Bold">Find the element by URL:</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontWeight="Bold">Find the targetElement by URL:</TextBlock>
         <TextBlock Grid.Column="0" Grid.Row="1">Item to be queried:</TextBlock>
         <TextBox Grid.Column="1" Grid.Row="1" x:Name="QueryUrl"></TextBox>
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">

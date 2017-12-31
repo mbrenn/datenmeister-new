@@ -39,7 +39,6 @@ namespace DatenMeister.Integration
 
             _pathWorkspaces = Path.Combine(GiveMe.DatabasePath, "workspaces.xml");
             _pathExtents = Path.Combine(GiveMe.DatabasePath, "extents.xml");
-            _pathUserTypes = Path.Combine(GiveMe.DatabasePath, "usertypes.xml");
         }
 
         public IContainer UseDatenMeister(ContainerBuilder kernel)
@@ -137,7 +136,7 @@ namespace DatenMeister.Integration
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var localTypeSupport = scope.Resolve<LocalTypeSupport>();
-                var localTypeExtent = localTypeSupport.CreateInternalTypeExtent();
+                var localTypeExtent = localTypeSupport.Initialize();
                 var typeWorkspace = workspaceLogic.GetTypesWorkspace();
                 var mofFactory = new MofFactory(localTypeExtent);
 
@@ -177,8 +176,6 @@ namespace DatenMeister.Integration
                     scope.Resolve<UserLogic>().Initialize();
                 }
 
-                CreatesUserTypeExtent(scope);
-
                 // Finally loads the plugin
                 PluginManager.StartPlugins(scope);
             }
@@ -200,41 +197,6 @@ namespace DatenMeister.Integration
 
             // Loads all extents after all plugins were started  
             scope.Resolve<ExtentConfigurationLoader>().LoadAllExtents();
-        }
-
-        /// <summary>
-        /// Creates the user type extent storing the types for the user. 
-        /// If the extent is already existing, debugs the number of found extents
-        /// </summary>
-        /// <param name="scope">Dependency injection container</param>
-        private void CreatesUserTypeExtent(ILifetimeScope scope)
-        {
-            var workspaceCollection = scope.Resolve<IWorkspaceLogic>();
-
-            // Creates the user types, if not existing
-            var foundExtent = workspaceCollection.FindExtent(WorkspaceNames.UriUserTypes);
-            if (foundExtent == null)
-            {
-                Debug.WriteLine("Creates the extent for the user types");
-                // Creates the extent for user types
-                var loader = scope.Resolve<ExtentManager>();
-                var storageConfiguration = new XmiStorageConfiguration
-                {
-                    ExtentUri = WorkspaceNames.UriUserTypes,
-                    Path = _pathUserTypes,
-                    Workspace = WorkspaceNames.NameTypes,
-                    DataLayer = "Types"
-                };
-
-                foundExtent = loader.LoadExtent(storageConfiguration, true);
-            }
-            else
-            {
-                var numberOfTypes = foundExtent.elements().Count();
-                Debug.WriteLine($"Loaded the extent for user types, containing of {numberOfTypes} types");
-            }
-
-            foundExtent.SetExtentType("Uml.Classes");
         }
     }
 }

@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
@@ -25,20 +32,26 @@ namespace DatenMeister.Modules.TypeSupport
         /// </summary>
         private readonly IWorkspaceLogic _workspaceLogic;
 
+        private readonly ExtentManager _extentManager;
+
+        private readonly NamedElementMethods _namedElementMethods;
+
         /// <summary>
         /// Initializes a new instance of the LocalTypeSupport class
         /// </summary>
         /// <param name="workspaceLogic">Workspace logic which is required to find the given local type support storage</param>
-        public LocalTypeSupport(IWorkspaceLogic workspaceLogic)
+        public LocalTypeSupport(IWorkspaceLogic workspaceLogic, ExtentManager extentManager, NamedElementMethods namedElementMethods)
         {
             _workspaceLogic = workspaceLogic;
+            _extentManager = extentManager;
+            _namedElementMethods = namedElementMethods;
         }
 
         /// <summary>
         /// Creates the extent being used to store the internal types
         /// </summary>
         /// <returns>The created uri contining the internal types</returns>
-        public MofUriExtent CreateInternalTypeExtent()
+        public MofUriExtent Initialize()
         {
             // Creates the workspace and extent for the types layer which are belonging to the types  
             var extentTypes = new MofUriExtent(
@@ -47,7 +60,50 @@ namespace DatenMeister.Modules.TypeSupport
             var typeWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
             extentTypes.SetExtentType("Uml.Classes");
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
+
+            var foundPackage = _namedElementMethods.CreatePackage(extentTypes.elements(), "Native Types");
+            CopyMethods.CopyToElementsProperty(
+                _workspaceLogic.GetUmlWorkspace().FindElementByUri("datenmeister:///_internal/xmi/primitivetypes?PrimitiveTypes").get(_UML._Packages._Package.packagedElement) as IReflectiveCollection, 
+                foundPackage, 
+                _UML._Packages._Package.packagedElement);
+
+            CreatesUserTypeExtent();
+
             return extentTypes;
+        }
+
+        /// <summary>
+        /// Creates the user type extent storing the types for the user. 
+        /// If the extent is already existing, debugs the number of found extents
+        /// </summary>
+        /// <param name="scope">Dependency injection container</param>
+        private void CreatesUserTypeExtent()
+        {
+            // Creates the user types, if not existing
+            var foundExtent = _workspaceLogic.FindExtent(WorkspaceNames.UriUserTypes);
+            if (foundExtent == null)
+            {
+                var pathUserTypes = Path.Combine(GiveMe.DatabasePath, "usertypes.xml");
+
+                Debug.WriteLine("Creates the extent for the user types");
+                // Creates the extent for user types
+                var storageConfiguration = new XmiStorageConfiguration
+                {
+                    ExtentUri = WorkspaceNames.UriUserTypes,
+                    Path = pathUserTypes,
+                    Workspace = WorkspaceNames.NameTypes,
+                    DataLayer = "Types"
+                };
+
+                foundExtent = _extentManager.LoadExtent(storageConfiguration, true);
+            }
+            else
+            {
+                var numberOfTypes = foundExtent.elements().Count();
+                Debug.WriteLine($"Loaded the extent for user types, containing of {numberOfTypes} types");
+            }
+
+            foundExtent.SetExtentType("Uml.Classes");
         }
 
         /// <summary>

@@ -43,16 +43,13 @@ namespace DatenMeister.Runtime.Copier
         {
             if (sourceElement == null) throw new ArgumentNullException(nameof(sourceElement));
             if (targetElement == null) throw new ArgumentNullException(nameof(targetElement));
-            var elementAsExt = sourceElement as IObjectAllProperties;
-            if (elementAsExt == null)
+            if (!(sourceElement is IObjectAllProperties elementAsExt))
             {
                 throw new ArgumentException($"{nameof(sourceElement)} is not of type IObjectAllProperties");
             }
 
             // Transfers the id
-            var sourceWithId = sourceElement as IHasId;
-            var targetCanSetId = targetElement as ICanSetId;
-            if (sourceWithId != null && targetCanSetId != null)
+            if (sourceElement is IHasId sourceWithId && targetElement is ICanSetId targetCanSetId)
             {
                 targetCanSetId.Id = sourceWithId.Id;
             }
@@ -74,15 +71,13 @@ namespace DatenMeister.Runtime.Copier
                 return null;
             }
 
-            var valueAsElement = value as IElement;
-            if (valueAsElement != null)
+            if (value is IElement valueAsElement)
             {
                 var copiedElement = Copy(valueAsElement);
                 return copiedElement;
             }
 
-            var valueAsCollection = value as IReflectiveCollection;
-            if (valueAsCollection != null)
+            if (value is IReflectiveCollection valueAsCollection)
             {
                 return valueAsCollection
                     .Select(innerValue => CopyValue(innerValue, containingElement));

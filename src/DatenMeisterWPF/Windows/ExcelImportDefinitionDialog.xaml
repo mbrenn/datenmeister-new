@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DatenMeisterWPF.Windows"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-        Title="ExcelImportDefinitionDialog" Height="600" Width="800">
+        Title="Der DatenMeister - Import Excel File" Height="600" Width="800" Initialized="Window_Initialized">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -36,18 +36,18 @@
                 <TextBlock Grid.Row="0" Grid.Column="1" x:Name="txtFileName"></TextBlock>
                 <ComboBox Grid.Row="1" Grid.Column="1" x:Name="cboSheet" SelectionChanged="CboSheet_OnSelectionChanged"></ComboBox>
                 <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtOffsetRow" TextChanged="TxtOffsetRow_OnTextChanged">0</TextBox>
-                <TextBox Grid.Row="3" Grid.Column="1" x:Name="txtOffsetColumn" TextChanged="TxtOffsetRow_OnTextChanged">0</TextBox>
-                <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtCountRow" TextChanged="TxtOffsetRow_OnTextChanged">0</TextBox>
-                <TextBox Grid.Row="5" Grid.Column="1" x:Name="txtCountColumn" TextChanged="TxtOffsetRow_OnTextChanged">0</TextBox>
-                <CheckBox Grid.Row="6" Grid.Column="1" x:Name="chkHeaderRow" Click="ChkHeaderRow_OnClick">Has header row?</CheckBox>
-                <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
-                    <Button x:Name="btnCancel">Cancel</Button>
-                    <Button x:Name="btnImport">Import</Button>
+                <TextBox Grid.Row="3" Grid.Column="1" x:Name="txtOffsetColumn" TextChanged="TxtOffsetColumn_OnTextChanged">0</TextBox>
+                <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtCountRow" TextChanged="TxtCountRow_OnTextChanged">0</TextBox>
+                <TextBox Grid.Row="5" Grid.Column="1" x:Name="txtCountColumn" TextChanged="TxtCountColumn_OnTextChanged">0</TextBox>
+                <CheckBox Grid.Row="6" Grid.Column="1" x:Name="chkHeaderRow" Click="ChkHeaderRow_OnClick" IsChecked="True">Has header row?</CheckBox>
+                <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                    <Button x:Name="btnCancel" Click="btnCancel_Click">Cancel</Button>
+                    <Button x:Name="btnImport" Click="btnImport_Click">Import</Button>
                 </StackPanel>
                 
                 
             </Grid>
         </Border>
-        <DataGrid x:Name="dgrExcelDataGrid" Grid.Column="1"></DataGrid>
+        <DataGrid x:Name="dgrExcelDataGrid" Grid.Column="1" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"></DataGrid>
     </Grid>
 </Window>

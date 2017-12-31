@@ -78,8 +78,8 @@ namespace DatenMeisterWPF.Forms.Lists
 
             void ImportFromExcel()
             {
-                ImportFromExcelNavigation.ImportFromExcel(NavigationHost);
-
+                ImportFromExcelNavigation.ImportFromExcel(NavigationHost, _workspaceId);
+                UpdateContent();
             }
 
             void NewXmiExtent()

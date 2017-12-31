@@ -1,4 +1,7 @@
-﻿using Autofac;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using Autofac;
 
 namespace DatenMeister.Integration
 {
@@ -27,5 +30,13 @@ namespace DatenMeister.Integration
 
             return new DatenMeisterScope(container.BeginLifetimeScope());
         }
+
+        /// <summary>
+        /// Gets the default database path
+        /// </summary>
+        public static string DatabasePath => 
+            Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "datenmeister/data");
     }
 }

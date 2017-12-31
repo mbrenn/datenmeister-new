@@ -11,7 +11,6 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserManagement;
 using DatenMeister.Modules.ViewFinder;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.XMI.ExtentStorage;
@@ -26,17 +25,21 @@ namespace DatenMeister.Integration
 {
     public class Integrator
     {
-        private const string PathWorkspaces = "App_Data/Database/workspaces.xml";
+        private readonly string _pathWorkspaces;
 
-        private const string PathExtents = "App_Data/Database/extents.xml";
+        private readonly string _pathExtents;
 
-        private const string PathUserTypes = "App_Data/Database/usertypes.xml";
+        private readonly string _pathUserTypes;
 
         private IntegrationSettings _settings;
 
         public Integrator(IntegrationSettings settings)
         {
             _settings = settings;
+
+            _pathWorkspaces = Path.Combine(GiveMe.DatabasePath, "workspaces.xml");
+            _pathExtents = Path.Combine(GiveMe.DatabasePath, "extents.xml");
+            _pathUserTypes = Path.Combine(GiveMe.DatabasePath, "usertypes.xml");
         }
 
         public IContainer UseDatenMeister(ContainerBuilder kernel)
@@ -49,6 +52,12 @@ namespace DatenMeister.Integration
 
             kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
+            // Creates the database path for the DatenMeister
+            if (!Directory.Exists(GiveMe.DatabasePath))
+            {
+                Directory.CreateDirectory(GiveMe.DatabasePath);
+            }
+
             var watch = new Stopwatch();
             watch.Start();
 
@@ -59,7 +68,7 @@ namespace DatenMeister.Integration
             // Defines the extent storage data  
             var extentStorageData = new ExtentStorageData
             {
-                FilePath = PathExtents
+                FilePath = _pathExtents
             };
             kernel.RegisterInstance(extentStorageData).As<ExtentStorageData>();
             kernel.RegisterType<ExtentManager>().As<IExtentManager>();
@@ -72,7 +81,7 @@ namespace DatenMeister.Integration
             // Loading and storing the workspaces
             var workspaceLoadingConfiguration = new WorkspaceLoaderConfig
             {
-                Filepath = PathWorkspaces
+                Filepath = _pathWorkspaces
             };
 
             kernel.RegisterInstance(workspaceLoadingConfiguration).As<WorkspaceLoaderConfig>();
@@ -198,7 +207,7 @@ namespace DatenMeister.Integration
         /// If the extent is already existing, debugs the number of found extents
         /// </summary>
         /// <param name="scope">Dependency injection container</param>
-        private static void CreatesUserTypeExtent(ILifetimeScope scope)
+        private void CreatesUserTypeExtent(ILifetimeScope scope)
         {
             var workspaceCollection = scope.Resolve<IWorkspaceLogic>();
 
@@ -212,7 +221,7 @@ namespace DatenMeister.Integration
                 var storageConfiguration = new XmiStorageConfiguration
                 {
                     ExtentUri = WorkspaceNames.UriUserTypes,
-                    Path = PathUserTypes,
+                    Path = _pathUserTypes,
                     Workspace = WorkspaceNames.NameTypes,
                     DataLayer = "Types"
                 };

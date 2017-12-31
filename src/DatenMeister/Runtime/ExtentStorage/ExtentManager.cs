@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -55,6 +57,15 @@ namespace DatenMeister.Runtime.ExtentStorage
             if (!Uri.IsWellFormedUriString(configuration.ExtentUri, UriKind.Absolute))
             {
                 throw new InvalidOperationException($"Uri is not well-formed: {configuration.ExtentUri}");
+            }
+
+            // Checks, if the given URL has a relative path
+            if (configuration is ExtentFileLoaderConfig fileConfiguration)
+            {
+                if (!Path.IsPathRooted(fileConfiguration.Path))
+                {
+                    fileConfiguration.Path = Path.Combine(GiveMe.DatabasePath, fileConfiguration.Path);
+                }
             }
 
             // Creates the extent storage, being capable to load or store an extent

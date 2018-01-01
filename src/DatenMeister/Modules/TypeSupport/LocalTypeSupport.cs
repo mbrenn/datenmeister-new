@@ -36,10 +36,16 @@ namespace DatenMeister.Modules.TypeSupport
 
         private readonly NamedElementMethods _namedElementMethods;
 
+        public IUriExtent InternalTypes { get; private set; }
+        
+        public IUriExtent UserTypeExtent { get; private set; }
+
         /// <summary>
         /// Initializes a new instance of the LocalTypeSupport class
         /// </summary>
         /// <param name="workspaceLogic">Workspace logic which is required to find the given local type support storage</param>
+        /// <param name="extentManager">Extent manager to be used</param>
+        /// <param name="namedElementMethods">Method for named elements</param>
         public LocalTypeSupport(IWorkspaceLogic workspaceLogic, ExtentManager extentManager, NamedElementMethods namedElementMethods)
         {
             _workspaceLogic = workspaceLogic;
@@ -51,7 +57,15 @@ namespace DatenMeister.Modules.TypeSupport
         /// Creates the extent being used to store the internal types
         /// </summary>
         /// <returns>The created uri contining the internal types</returns>
-        public MofUriExtent Initialize()
+        public void Initialize()
+        {
+            CreateInternalTypeExtent();
+
+            // Creates the extent for the user types which is permanantly stored on disk. The user is capable to create his own types
+            CreatesUserTypeExtent();
+        }
+
+        private void CreateInternalTypeExtent()
         {
             // Creates the workspace and extent for the types layer which are belonging to the types  
             var extentTypes = new MofUriExtent(
@@ -61,15 +75,16 @@ namespace DatenMeister.Modules.TypeSupport
             extentTypes.SetExtentType("Uml.Classes");
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
 
-            var foundPackage = _namedElementMethods.CreatePackage(extentTypes.elements(), "Native Types");
+            // Copies the Primitive Types to the internal types, so it is available for everybody. 
+            var foundPackage = _namedElementMethods.CreatePackage(extentTypes.elements(), "Primitive Types");
             CopyMethods.CopyToElementsProperty(
-                _workspaceLogic.GetUmlWorkspace().FindElementByUri("datenmeister:///_internal/xmi/primitivetypes?PrimitiveTypes").get(_UML._Packages._Package.packagedElement) as IReflectiveCollection, 
-                foundPackage, 
+                _workspaceLogic.GetUmlWorkspace()
+                    .FindElementByUri("datenmeister:///_internal/xmi/primitivetypes?PrimitiveTypes")
+                    .get(_UML._Packages._Package.packagedElement) as IReflectiveCollection,
+                foundPackage,
                 _UML._Packages._Package.packagedElement);
 
-            CreatesUserTypeExtent();
-
-            return extentTypes;
+            InternalTypes = extentTypes;
         }
 
         /// <summary>
@@ -104,6 +119,8 @@ namespace DatenMeister.Modules.TypeSupport
             }
 
             foundExtent.SetExtentType("Uml.Classes");
+
+            UserTypeExtent = (IUriExtent) foundExtent;
         }
 
         /// <summary>

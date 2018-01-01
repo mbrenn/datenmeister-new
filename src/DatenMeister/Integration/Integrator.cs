@@ -136,9 +136,9 @@ namespace DatenMeister.Integration
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var localTypeSupport = scope.Resolve<LocalTypeSupport>();
-                var localTypeExtent = localTypeSupport.Initialize();
+                localTypeSupport.Initialize();
                 var typeWorkspace = workspaceLogic.GetTypesWorkspace();
-                var mofFactory = new MofFactory(localTypeExtent);
+                var mofFactory = new MofFactory(localTypeSupport.InternalTypes);
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();
@@ -146,9 +146,9 @@ namespace DatenMeister.Integration
                 IntegrateFormAndFields.Assign(
                     workspaceData.Uml.Get<_UML>(),
                     mofFactory,
-                    localTypeExtent.elements(),
+                    localTypeSupport.InternalTypes.elements(),
                     fields,
-                    localTypeExtent);
+                    (MofUriExtent) localTypeSupport.InternalTypes);
 
                 // Adds the module for managementprovider
                 var managementProvider = new _ManagementProvider();
@@ -156,9 +156,9 @@ namespace DatenMeister.Integration
                 IntegrateManagementProvider.Assign(
                     workspaceData.Uml.Get<_UML>(),
                     mofFactory,
-                    localTypeExtent.elements(),
+                    localTypeSupport.InternalTypes.elements(),
                     managementProvider,
-                    localTypeExtent);
+                    (MofUriExtent) localTypeSupport.InternalTypes);
 
                 // Adds the views and their view logic
                 scope.Resolve<ViewLogic>().Integrate();

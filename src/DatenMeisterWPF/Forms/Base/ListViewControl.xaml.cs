@@ -210,11 +210,19 @@ namespace DatenMeisterWPF.Forms.Base
                             var valueAsList = DotNetHelper.AsEnumeration(value);
                             if (valueAsList != null)
                             {
+                                var elementCount = 0;
                                 var nr = string.Empty;
                                 foreach (var valueElement in valueAsList)
                                 {
                                     result.Append(nr + UmlNameResolution.GetName(valueElement));
                                     nr = "\r\n";
+
+                                    elementCount++;
+                                    if (elementCount > 10)
+                                    {
+                                        result.Append("\r\n... (more)");
+                                        break;
+                                    }
                                 }
                             }
 

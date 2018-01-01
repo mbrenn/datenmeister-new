@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <DataTemplate x:Key="TemplateColumnButton">
-            <Button Click="ButtonBase_OnClick" Loaded="RowButton_OnInitialized">Edit</Button>
+            <Button Click="ButtonBase_OnClick" Loaded="RowButton_OnInitialized" VerticalAlignment="Top">Edit</Button>
         </DataTemplate>
     </UserControl.Resources>
     <DockPanel>

@@ -61,11 +61,17 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     panel.Children.Clear();
                     CreatePanelElement(value, fieldData, detailForm, panel);
                 };
+
                 panel.Children.Add(button);
             }
             else
             {
-                var listViewControl = new ListViewControl();
+                var listViewControl = new ListViewControl
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    MaxHeight = 500
+                };
+                
                 listViewControl.AddRowItemButton(
                     "Open",
                     item => Navigator.TheNavigator.NavigateToElementDetailView(detailForm.NavigationHost, item),

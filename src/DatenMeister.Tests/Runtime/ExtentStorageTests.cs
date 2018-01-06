@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.CSV.Runtime;
@@ -15,7 +16,8 @@ namespace DatenMeister.Tests.Runtime
         public void TestExtentStorageLogic()
         {
             var csvFile = "eins 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
-            File.WriteAllText("data.txt", csvFile);
+            var fullPath = Path.Combine(Environment.CurrentDirectory, "data.txt");
+            File.WriteAllText(fullPath, csvFile);
             
             var mapper = new ManualConfigurationToExtentStorageMapper();
             mapper.AddMapping(typeof (CSVExtentLoaderConfig), scope => new CSVExtentLoader(null));

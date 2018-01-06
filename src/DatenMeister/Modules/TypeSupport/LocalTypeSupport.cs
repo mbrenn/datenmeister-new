@@ -76,7 +76,7 @@ namespace DatenMeister.Modules.TypeSupport
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
 
             // Copies the Primitive Types to the internal types, so it is available for everybody. 
-            var foundPackage = _namedElementMethods.CreatePackage(extentTypes.elements(), "Primitive Types");
+            var foundPackage = _namedElementMethods.CreatePackage(extentTypes.elements(), "PrimitiveTypes");
             CopyMethods.CopyToElementsProperty(
                 _workspaceLogic.GetUmlWorkspace()
                     .FindElementByUri("datenmeister:///_internal/xmi/primitivetypes?PrimitiveTypes")
@@ -91,7 +91,6 @@ namespace DatenMeister.Modules.TypeSupport
         /// Creates the user type extent storing the types for the user. 
         /// If the extent is already existing, debugs the number of found extents
         /// </summary>
-        /// <param name="scope">Dependency injection container</param>
         private void CreatesUserTypeExtent()
         {
             // Creates the user types, if not existing

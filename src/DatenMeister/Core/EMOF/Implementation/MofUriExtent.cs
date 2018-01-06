@@ -13,6 +13,12 @@ namespace DatenMeister.Core.EMOF.Implementation
     public class MofUriExtent : MofExtent, IUriExtent, IUriResolver
     {
         private readonly string _uri;
+
+        /// <summary>
+        /// Stores the list of alternative uris which are used to make the elements more available. 
+        /// </summary>
+        private List<string> _alternativeUris = new List<string>();
+
         private readonly ExtentUrlNavigator<MofElement> _navigator;
 
         /// <inheritdoc />

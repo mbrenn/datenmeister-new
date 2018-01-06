@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Tests.CSV;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime
@@ -16,7 +17,7 @@ namespace DatenMeister.Tests.Runtime
         public void TestExtentStorageLogic()
         {
             var csvFile = "eins 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
-            var fullPath = Path.Combine(Environment.CurrentDirectory, "data.txt");
+            var fullPath = Path.Combine(CSVExtentTests.PathForTemporaryDataFile);
             File.WriteAllText(fullPath, csvFile);
             
             var mapper = new ManualConfigurationToExtentStorageMapper();
@@ -46,8 +47,9 @@ namespace DatenMeister.Tests.Runtime
             ((IObject) csvExtent.elements().ElementAt(0)).set(configuration.Settings.Columns[0], "eens");
             logic.StoreAll();
 
-            var read = File.ReadAllText("data.txt");
+            var read = File.ReadAllText(CSVExtentTests.PathForTemporaryDataFile);
             Assert.That(read.Contains("eens"), Is.True);
+            File.Delete(CSVExtentTests.PathForTemporaryDataFile);
         }
     }
 }

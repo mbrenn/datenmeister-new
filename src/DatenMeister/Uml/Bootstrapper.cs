@@ -480,9 +480,11 @@ namespace DatenMeister.Uml
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
             var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriUml);
+            umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001");
             var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriMof);
-            
+            mofExtent.AddAlternativeUri("http://www.omg.org/spec/MOF/20131001");
             var primitiveExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypes); 
+            primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/PrimitiveTypes/20131001");
 
             if (!isSlim)
             {

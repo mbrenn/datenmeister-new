@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
@@ -126,7 +127,8 @@ namespace DatenMeister.Provider.ManagementProviders
                 {
                     isReadOnly = true
                 },
-                new TextFieldData("extentType", "Extent Type"));
+                new TextFieldData("extentType", "Extent Type"),
+                new SubElementFieldData(_ManagementProvider._Extent.alternativeUris, "Alternative URI"));
 
             return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
         }

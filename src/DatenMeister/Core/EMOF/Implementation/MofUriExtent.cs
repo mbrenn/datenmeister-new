@@ -17,8 +17,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores the list of alternative uris which are used to make the elements more available. 
         /// </summary>
-        private List<string> _alternativeUris = new List<string>();
+        private readonly List<string> _alternativeUris = new List<string>();
 
+        /// <summary>
+        /// Gets an enumeration of alternative uris
+        /// </summary>
+        public IEnumerable<string> AlternativeUris => _alternativeUris;
+
+        /// <summary>
+        /// Stores the navigator
+        /// </summary>
         private readonly ExtentUrlNavigator<MofElement> _navigator;
 
         /// <inheritdoc />
@@ -27,6 +35,18 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             _uri = uri;
             _navigator = new ExtentUrlNavigator<MofElement>(this);
+        }
+
+        /// <summary>
+        /// Adds an alternative uri to the extent. The elements of the extent can also be found by the other uris
+        /// </summary>
+        /// <param name="alternativeUri">Alternative Uri to be added</param>
+        public void AddAlternativeUri(string alternativeUri)
+        {
+            if (!_alternativeUris.Contains(alternativeUri))
+            {
+                _alternativeUris.Add(alternativeUri);
+            }
         }
 
         /// <inheritdoc />

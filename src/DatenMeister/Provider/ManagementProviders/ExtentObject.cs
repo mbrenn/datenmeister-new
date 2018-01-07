@@ -34,6 +34,11 @@ namespace DatenMeister.Provider.ManagementProviders
                 "extentType",
                 e => (e as MofExtent)?.GetExtentType(),
                 (e, v) => (e as MofExtent)?.SetExtentType(v?.ToString()));
+
+            AddMapping(
+                "alternativeUris",
+                e => (e as MofUriExtent)?.AlternativeUris,
+                (e, v) => throw new InvalidOperationException("alternativeUris cannot be set"));
         }
 
         /// <summary>

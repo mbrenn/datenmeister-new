@@ -12,5 +12,8 @@
         public const string UriPrimitiveTypes = "datenmeister:///_internal/xmi/primitivetypes";
         public const string UriInternalTypes = "datenmeister:///_internal/types/internal";
         public const string UriUserTypes = "datenmeister:///_internal/types/user";
+
+
+        public const string StandardUmlNamespace = "http://www.omg.org/spec/UML/20131001";
     }
 }

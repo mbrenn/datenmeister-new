@@ -18,6 +18,12 @@ namespace DatenMeister.Provider.ManagementProviders.Model
             public static string @type = "type";
             public IElement _type = null;
 
+            public static string @extentType = "extentType";
+            public IElement _extentType = null;
+
+            public static string @alternativeUris = "alternativeUris";
+            public IElement _alternativeUris = null;
+
         }
 
         public _Extent @Extent = new _Extent();

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Functions.Queries;
@@ -17,13 +19,18 @@ namespace DatenMeister.Runtime
     {
         private readonly Dictionary<string, IHasId> _cacheIds = new Dictionary<string, IHasId>();
 
-        private readonly IUriExtent _extent;
+        private readonly MofUriExtent _extent;
 
-        public ExtentUrlNavigator(IUriExtent extent)
+        public ExtentUrlNavigator(MofUriExtent extent)
         {
             _extent = extent;
         }
 
+        /// <summary>
+        /// Gets the sub element by the uri or null, if the extent does not contain the uri, null is returned
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
         public virtual T element(string uri)
         {
             // Check, if the element is in the cache and if yes, return it
@@ -40,10 +47,16 @@ namespace DatenMeister.Runtime
             var posQuestion = uri.IndexOf('?');
             var posHash = uri.IndexOf('#');
             var posExtentEnd = posQuestion == -1 ? posHash : posQuestion;
+            var context = posExtentEnd == -1 ? string.Empty : uri.Substring(0, posExtentEnd);
 
             // Verifies that the extent is working
-            if (posExtentEnd == -1
-                || uri.Substring(0, posExtentEnd) != _extent.contextURI())
+            if (string.IsNullOrEmpty(context)) 
+            {
+                return null;
+            }
+
+            // Verifies whether the context can be found in context uri or alternative Uris
+            if (context != _extent.contextURI() && !_extent.AlternativeUris.Contains(context))
             {
                 return null;
             }

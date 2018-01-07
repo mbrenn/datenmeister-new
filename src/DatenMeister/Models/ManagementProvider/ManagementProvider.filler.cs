@@ -55,6 +55,14 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                                 {
                                     tree.Extent._type = value;
                                 }
+                                if(name == "extentType") // Looking for property
+                                {
+                                    tree.Extent._extentType = value;
+                                }
+                                if(name == "alternativeUris") // Looking for property
+                                {
+                                    tree.Extent._alternativeUris = value;
+                                }
                             }
                         }
                         if(name == "Workspace") // Looking for class

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
@@ -78,7 +79,9 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>The found extent or null, if not found</returns>
         public static IUriExtent FindExtent(this IWorkspace workspace, string extentUri)
         {
-            return (IUriExtent) workspace.extent.FirstOrDefault(x => (x as IUriExtent)?.contextURI() == extentUri);
+            return (IUriExtent) workspace.extent.FirstOrDefault(
+                x => (x as IUriExtent)?.contextURI() == extentUri
+                     || (x as MofUriExtent)?.AlternativeUris.Contains(extentUri) == true);
         }
 
         /// <summary>

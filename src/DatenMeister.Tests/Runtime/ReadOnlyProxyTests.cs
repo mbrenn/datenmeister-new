@@ -7,6 +7,7 @@ using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Proxies.ReadOnly;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Tests.CSV;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime
@@ -43,7 +44,7 @@ namespace DatenMeister.Tests.Runtime
         private static IUriExtent CreateSimpleCsvExtent()
         {
             var csvFile = "eins 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
-            File.WriteAllText("data.txt", csvFile);
+            File.WriteAllText(CSVExtentTests.PathForTemporaryDataFile, csvFile);
 
             var mapper = new ManualConfigurationToExtentStorageMapper();
             mapper.AddMapping(typeof (CSVExtentLoaderConfig), scope => new CSVExtentLoader(null));
@@ -53,7 +54,7 @@ namespace DatenMeister.Tests.Runtime
             var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(workspaceData));
             var configuration = new CSVExtentLoaderConfig
             {
-                Path = "data.txt",
+                Path = CSVExtentTests.PathForTemporaryDataFile,
                 ExtentUri = "dm:///local/",
                 Settings =
                 {

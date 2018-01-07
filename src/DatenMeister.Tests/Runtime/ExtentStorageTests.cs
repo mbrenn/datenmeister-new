@@ -28,7 +28,7 @@ namespace DatenMeister.Tests.Runtime
             var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(dataLayers));
             var configuration = new CSVExtentLoaderConfig
             {
-                Path = "data.txt",
+                Path = CSVExtentTests.PathForTemporaryDataFile,
                 ExtentUri = "dm:///local/",
                 Settings =
                 {

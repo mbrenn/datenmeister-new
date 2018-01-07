@@ -29,7 +29,7 @@ namespace DatenMeister.Tests.CSV
 
             var storageConfiguration = new CSVExtentLoaderConfig
             {
-                Path = "data.txt",
+                Path = PathForTemporaryDataFile,
                 ExtentUri = "dm:///test",
                 Settings =
                 {
@@ -41,7 +41,6 @@ namespace DatenMeister.Tests.CSV
             var storage = new CSVExtentLoader(null);
             var provider = storage.LoadExtent(storageConfiguration, false);
             var extent = new MofUriExtent(provider, "dm:////test/");
-
             
             Assert.That(storageConfiguration.Settings.Columns.Count, Is.EqualTo(3));
             Assert.That(extent.elements().Count(), Is.EqualTo(4));

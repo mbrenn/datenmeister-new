@@ -2,6 +2,8 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.InMemory;
+using DatenMeister.Provider.XMI;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
@@ -48,6 +50,34 @@ namespace DatenMeister.Tests.Xmi.Runtime
             Assert.That((otherExtent.elements().ElementAt(2) as IObject)?.get("name"), Is.EqualTo("Martini"));
 
             File.Delete("data.xml");
+        }
+
+        [Test]
+        public void TestHrefAttributeLoading()
+        {
+            const string xmi1 = "<package xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\"><element xmi:id=\"test\" value=\"23\" /></package>";
+            const string xmi2 =
+                "<package xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\"><element xmi:id=\"other\" value=\"23\"><sub href=\"dm:///xmi1/#test\" /></element></package>";
+
+            var extent1 = new MofUriExtent(new InMemoryProvider(), "dm:///xmi1/");
+            var extent2 = new MofUriExtent(new InMemoryProvider(), "dm:///xmi2/");
+
+            var workspace = new Workspace("data");
+            var loader = new SimpleLoader(workspace);
+            workspace.AddExtent(extent1);
+            workspace.AddExtent(extent2);
+            loader.LoadFromText(new MofFactory(extent1), extent1, xmi1);
+            loader.LoadFromText(new MofFactory(extent2), extent2, xmi2);
+
+            // Verify correct addressing
+            var foundElement = extent1.element("dm:///xmi1/#test");
+            Assert.That(foundElement, Is.Not.Null);
+
+            // Now verify the full href loading
+            var otherElement = (extent2.elements().FirstOrDefault() as IElement)?.get("sub") as IElement;
+            Assert.That(otherElement, Is.Not.Null);
+            Assert.That(otherElement.get("value").ToString(), Is.EqualTo("23"));
+            Assert.That(otherElement, Is.EqualTo(foundElement));
         }
     }
 }

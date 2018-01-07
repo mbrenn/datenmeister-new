@@ -27,7 +27,7 @@ namespace DatenMeister.Provider.InMemory
         /// <summary>
         /// Stores the memory object for lacal information
         /// </summary>
-        private InMemoryObject _extentElement;
+        private readonly InMemoryObject _extentElement;
 
         public InMemoryProvider()
         {

@@ -45,7 +45,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <summary>
         /// Gets a list of extents
         /// </summary>
-        IList<IExtent> extent { get; }
+        IEnumerable<IExtent> extent { get; }
 
         /// <summary>
         /// Gets the id of the workspace

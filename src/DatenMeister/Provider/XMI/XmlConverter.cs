@@ -65,7 +65,7 @@ namespace DatenMeister.Provider.XMI
         public IObject ConvertFromXml(XElement element, IFactory factory)
         {
             var loader = new SimpleLoader();
-            return loader.LoadFromText(factory, element);
+            return loader.LoadFromXmlNode(factory, element);
         }
     }
 }

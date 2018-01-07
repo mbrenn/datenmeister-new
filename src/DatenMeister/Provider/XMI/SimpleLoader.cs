@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Xml.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -17,12 +18,25 @@ namespace DatenMeister.Provider.XMI
     /// </summary>
     public class SimpleLoader
     {
+        /// <summary>
+        /// Stores the uri resolver being used to figure out the href instances.
+        /// </summary>
+        private readonly IUriResolver _uriResolver;
         private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>();
 
         /// <summary>
         /// Defines a list of actions that will be performed after the loading has finished
         /// </summary>
         private readonly List<Action> _afterLoadActions = new List<Action>();
+
+        /// <summary>
+        /// Initializes a new instance of the 
+        /// </summary>
+        /// <param name="uriResolver"></param>
+        public SimpleLoader(IUriResolver uriResolver = null)
+        {
+            _uriResolver = uriResolver;
+        }
 
 
         /// <summary>
@@ -84,11 +98,23 @@ namespace DatenMeister.Provider.XMI
         }
 
         /// <summary>
+        /// Loads the document from a string. 
+        /// </summary>
+        /// <param name="factory">Factory being used to create the instance</param>
+        /// <param name="extent">Extent to which the elements will be added</param>
+        /// <param name="xmlText">Text to be addede</param>
+        public void LoadFromText(IFactory factory, IUriExtent extent, string xmlText)
+        {
+            var document = XDocument.Parse(xmlText);
+            LoadFromDocument(factory, extent, document);
+        }
+
+        /// <summary>
         /// Loads the Xml from a text
         /// </summary>
         /// <param name="factory">Factory to be used</param>
         /// <param name="element">Element being used</param>
-        public IObject LoadFromText(IFactory factory, XElement element)
+        public IObject LoadFromXmlNode(IFactory factory, XElement element)
         {
             return LoadElement(factory, element);
         }
@@ -140,6 +166,17 @@ namespace DatenMeister.Provider.XMI
                             resultingElement.set(subElement.Name.ToString(), referencedElement);
                         });
                     continue;
+                }
+
+                var attributeHref = subElement.Attribute("href");
+                if (attributeHref != null && _uriResolver != null)
+                {
+                    _afterLoadActions.Add(
+                        () =>
+                        {
+                            var referencedElement = _uriResolver?.Resolve(attributeHref.Value, ResolveType.Default);
+                            resultingElement.set(subElement.Name.ToString(), referencedElement);
+                        });
                 }
 
                 // Element is not a given element, so perform regular replacement of elements

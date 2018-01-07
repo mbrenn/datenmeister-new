@@ -120,20 +120,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>true, if the object can be deleted</returns>
         public static bool RemoveExtent(this Workspace workspace, string uri)
         {
-            lock (workspace.SyncObject)
-            {
-                var found = workspace.extent.FirstOrDefault(
-                    x => x is IUriExtent uriExtent 
-                    && uriExtent.contextURI() == uri);
-
-                if (found != null)
-                {
-                    workspace.extent.Remove(found);
-                    return true;
-                }
-            }
-
-            return false;
+            return workspace.RemoveExtent(uri);
         }
 
         /// <summary>

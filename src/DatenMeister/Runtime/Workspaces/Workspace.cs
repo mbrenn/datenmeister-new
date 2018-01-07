@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Extension;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -12,7 +14,7 @@ namespace DatenMeister.Runtime.Workspaces
     /// MOF Facility Object Lifecycle (MOFFOL)
     /// </summary>
     /// <typeparam name="T">Type of the extents being handled</typeparam>
-    public class Workspace : IWorkspace, IObject
+    public class Workspace : IWorkspace, IObject, IUriResolver
     {
         private readonly object _syncObject = new object();
 
@@ -47,7 +49,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         public string annotation { get; set; }
 
-        public IList<IExtent> extent => _extent;
+        public IEnumerable<IExtent> extent => _extent;
 
         public IEnumerable<ITag> properties => _properties;
 
@@ -93,6 +95,55 @@ namespace DatenMeister.Runtime.Workspaces
             {
                 FilledTypeCache.Clear();
             }
+        }
+
+
+        /// <summary>
+        /// Adds an extent to the workspace
+        /// </summary>
+        /// <param name="newExtent">The extent to be added</param>
+        public void AddExtent(IUriExtent newExtent)
+        {
+            var asMofExtent = (MofExtent)newExtent;
+            if (newExtent == null) throw new ArgumentNullException(nameof(newExtent));
+            if (asMofExtent.Workspace != null)
+            {
+                throw new InvalidOperationException("The extent is already assigned to a workspace");
+            }
+
+            lock (SyncObject)
+            {
+                if (extent.Any(x => (x as IUriExtent)?.contextURI() == newExtent.contextURI()))
+                {
+                    throw new InvalidOperationException($"Extent with uri {newExtent.contextURI()} is already added to the given workspace");
+                }
+
+                _extent.Add(newExtent);
+                asMofExtent.Workspace = this;
+            }
+        }
+
+        /// <summary>
+        /// Removes the extent with the given uri out of the database
+        /// </summary>
+        /// <param name="uri">Uri of the extent</param>
+        /// <returns>true, if the object can be deleted</returns>
+        public bool RemoveExtent(string uri)
+        {
+            lock (SyncObject)
+            {
+                var found = _extent.FirstOrDefault(
+                    x => x is IUriExtent uriExtent
+                         && uriExtent.contextURI() == uri);
+
+                if (found != null)
+                {
+                    _extent.Remove(found);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public TFilledType Get<TFilledType>()
@@ -179,6 +230,16 @@ namespace DatenMeister.Runtime.Workspaces
         public void unset(string property)
         {
             throw new NotImplementedException();
+        }
+
+        public IElement Resolve(string uri, ResolveType resolveType)
+        {
+            return _extent.Select(theExtent => (theExtent as IUriResolver)?.Resolve(uri, resolveType)).FirstOrDefault(found => found != null);
+        }
+
+        public IElement ResolveById(string id)
+        {
+            return _extent.Select(theExtent => (theExtent as IUriResolver)?.ResolveById(id)).FirstOrDefault(found => found != null);
         }
     }
 }

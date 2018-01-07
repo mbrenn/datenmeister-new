@@ -198,23 +198,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="newExtent">The extent to be added</param>
         public void AddExtent(Workspace workspace, IUriExtent newExtent)
         {
-            var asMofExtent = (MofExtent) newExtent;
-            if (newExtent == null) throw new ArgumentNullException(nameof(newExtent));
-            if (asMofExtent.Workspace != null)
-            {
-                throw new InvalidOperationException("The extent is already assigned to a workspace");
-            }
-
-            lock (workspace.SyncObject)
-            {
-                if (workspace.extent.Any(x => (x as IUriExtent)?.contextURI() == newExtent.contextURI()))
-                {
-                    throw new InvalidOperationException($"Extent with uri {newExtent.contextURI()} is already added to the given workspace");
-                }
-
-                workspace.extent.Add(newExtent);
-                asMofExtent.Workspace = workspace;
-            }
+            workspace.AddExtent(newExtent);
         }
 
         /// <summary>

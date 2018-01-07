@@ -19,7 +19,7 @@ namespace DatenMeister.Provider.ManagementProviders
         public static void Initialize(IWorkspaceLogic workspaceLogic, LocalTypeSupport localTypeSupport)
         {
             // Adds the extent containing the workpsaces
-            workspaceLogic.GetManagementWorkspace().extent.Add(
+            workspaceLogic.GetManagementWorkspace().AddExtent(
                 new MofUriExtent(new ExtentOfWorkspaces(workspaceLogic), ExtentOfWorkspaces.WorkspaceUri));
 
             localTypeSupport.AddInternalTypes(

@@ -101,6 +101,12 @@ namespace DatenMeister.Core.EMOF.Implementation
                 {
                     return result;
                 }
+
+                var workspaceResult = Workspace?.Resolve(uri, resolveType);
+                if (workspaceResult != null)
+                {
+                    return workspaceResult;
+                }
             }
 
             // Now look into the explicit extents

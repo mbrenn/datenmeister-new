@@ -97,7 +97,6 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-
         /// <summary>
         /// Adds an extent to the workspace
         /// </summary>
@@ -234,7 +233,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         public IElement Resolve(string uri, ResolveType resolveType)
         {
-            return _extent.Select(theExtent => (theExtent as IUriResolver)?.Resolve(uri, resolveType)).FirstOrDefault(found => found != null);
+            return _extent.Select(theExtent => (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace)).FirstOrDefault(found => found != null);
         }
 
         public IElement ResolveById(string id)

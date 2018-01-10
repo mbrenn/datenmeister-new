@@ -175,6 +175,10 @@ namespace DatenMeister.Provider.XMI
                         () =>
                         {
                             var referencedElement = _uriResolver?.Resolve(attributeHref.Value, ResolveType.Default);
+                            if (referencedElement == null)
+                            {
+                                throw new InvalidOperationException("Unknown href:" + attributeHref.Value);
+                            }
                             resultingElement.set(subElement.Name.ToString(), referencedElement);
                         });
                 }

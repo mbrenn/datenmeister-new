@@ -373,6 +373,11 @@ namespace DatenMeister.Uml
                 if (elementInstance.isSet("general"))
                 {
                     var general = elementInstance.getFirstOrDefault("general");
+                    if (general == null)
+                    {
+                        throw new InvalidOperationException(elementInstance.ToString());
+                    }
+
                     var generalAsString = general.ToString();
                     if (DotNetHelper.IsOfMofObject(general))
                     {
@@ -481,14 +486,24 @@ namespace DatenMeister.Uml
 
             var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriUml);
             umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001");
+            umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/UML.xmi");
             var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriMof);
             mofExtent.AddAlternativeUri("http://www.omg.org/spec/MOF/20131001");
             var primitiveExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypes); 
             primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/PrimitiveTypes/20131001");
+            primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/PrimitiveTypes.xmi");
+
+            // Assigns the extents to the datalayer
+            workspaceLogic.AddExtent(dataLayer, umlExtent);
+            workspaceLogic.AddExtent(dataLayer, primitiveExtent);
+            if (mode == BootstrapMode.Mof || mode == BootstrapMode.SlimMof)
+            {
+                workspaceLogic.AddExtent(dataLayer, mofExtent);
+            }
 
             if (!isSlim)
             {
-                var loader = new SimpleLoader();
+                var loader = new SimpleLoader(dataLayer);
                 if (paths == null || paths.LoadFromEmbeddedResources)
                 {
                     loader.LoadFromEmbeddedResource(new MofFactory(primitiveExtent),  primitiveExtent, "DatenMeister.XmiFiles.PrimitiveTypes.xmi");
@@ -508,14 +523,6 @@ namespace DatenMeister.Uml
                         loader.LoadFromFile(new MofFactory(mofExtent), mofExtent, paths.PathMof);
                     }
                 }
-            }
-
-            // Assigns the extents to the datalayer
-            workspaceLogic.AddExtent(dataLayer, umlExtent);
-            workspaceLogic.AddExtent(dataLayer, primitiveExtent);
-            if (mode == BootstrapMode.Mof || mode == BootstrapMode.SlimMof)
-            {
-                workspaceLogic.AddExtent(dataLayer, mofExtent);
             }
             
             var bootStrapper = new Bootstrapper(workspaceLogic);

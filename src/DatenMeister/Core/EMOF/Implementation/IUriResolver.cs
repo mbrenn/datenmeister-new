@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
@@ -24,9 +25,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         IElement ResolveById(string id);
     }
 
+    [Flags]
     public enum ResolveType
     {
-        Default, 
-        OnlyMetaClasses
+        Default = 1, 
+        OnlyMetaClasses = 2,
+        NoWorkspace = 4
     }
 }

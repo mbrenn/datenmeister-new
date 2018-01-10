@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -102,10 +103,13 @@ namespace DatenMeister.Core.EMOF.Implementation
                     return result;
                 }
 
-                var workspaceResult = Workspace?.Resolve(uri, resolveType);
-                if (workspaceResult != null)
+                if ((resolveType & ResolveType.NoWorkspace) == 0)
                 {
-                    return workspaceResult;
+                    var workspaceResult = Workspace?.Resolve(uri, resolveType);
+                    if (workspaceResult != null)
+                    {
+                        return workspaceResult;
+                    }
                 }
             }
 

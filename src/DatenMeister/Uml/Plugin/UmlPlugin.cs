@@ -72,7 +72,6 @@ namespace DatenMeister.Uml.Plugin
             var classExtentView = new DefaultViewForExtentType(
                 "Uml.Classes",
                 umlClassForm);
-
             _viewLogic.Add(classExtentView);
         }
     }

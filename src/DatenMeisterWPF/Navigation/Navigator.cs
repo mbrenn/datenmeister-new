@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using Autofac;
@@ -37,6 +38,8 @@ namespace DatenMeisterWPF.Navigation
         /// Category for all global and file issues
         /// </summary>
         public static string File = "File";
+
+        public static string Type = "Types";
     }
 
     /// <summary>
@@ -312,6 +315,14 @@ namespace DatenMeisterWPF.Navigation
 
             result.Attach(navigationControl);
             return result;
+        }
+
+        public IControlNavigation OpenExtent(INavigationHost navigationHost, string workspaceId, string extentUrl)
+        {
+            var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+            var uri = ExtentOfWorkspaces.WorkspaceUri + "#" + WebUtility.UrlEncode(extentUrl);
+            return NavigateToElementDetailView(navigationHost, workspaceLogic.FindItem(uri));
+
         }
     }
 }

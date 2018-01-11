@@ -16,6 +16,7 @@ namespace DatenMeister.Provider.ManagementProviders
         /// Initializes the ExtentHelper and creates the extent for the workspaces
         /// </summary>
         /// <param name="workspaceLogic">The workspace logic to be used</param>
+        /// <param name="localTypeSupport">Support for local types</param>
         public static void Initialize(IWorkspaceLogic workspaceLogic, LocalTypeSupport localTypeSupport)
         {
             // Adds the extent containing the workpsaces

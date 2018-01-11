@@ -41,6 +41,77 @@ namespace DatenMeister.Models.Forms
         public _Form @Form = new _Form();
         public IElement @__Form = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.Form");
 
+        public class _DetailForm
+        {
+            public static string @name = "name";
+            public IElement _name = null;
+
+            public static string @fields = "fields";
+            public IElement _fields = null;
+
+            public static string @fixView = "fixView";
+            public IElement _fixView = null;
+
+            public static string @inhibitNewItems = "inhibitNewItems";
+            public IElement _inhibitNewItems = null;
+
+            public static string @detailForm = "detailForm";
+            public IElement _detailForm = null;
+
+            public static string @hideMetaClass = "hideMetaClass";
+            public IElement _hideMetaClass = null;
+
+            public static string @minimizeDesign = "minimizeDesign";
+            public IElement _minimizeDesign = null;
+
+            public static string @defaultWidth = "defaultWidth";
+            public IElement _defaultWidth = null;
+
+            public static string @defaultHeight = "defaultHeight";
+            public IElement _defaultHeight = null;
+
+        }
+
+        public _DetailForm @DetailForm = new _DetailForm();
+        public IElement @__DetailForm = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DetailForm");
+
+        public class _ListForm
+        {
+            public static string @defaultTypesForNewElements = "defaultTypesForNewElements";
+            public IElement _defaultTypesForNewElements = null;
+
+            public static string @name = "name";
+            public IElement _name = null;
+
+            public static string @fields = "fields";
+            public IElement _fields = null;
+
+            public static string @fixView = "fixView";
+            public IElement _fixView = null;
+
+            public static string @inhibitNewItems = "inhibitNewItems";
+            public IElement _inhibitNewItems = null;
+
+            public static string @detailForm = "detailForm";
+            public IElement _detailForm = null;
+
+            public static string @hideMetaClass = "hideMetaClass";
+            public IElement _hideMetaClass = null;
+
+            public static string @minimizeDesign = "minimizeDesign";
+            public IElement _minimizeDesign = null;
+
+            public static string @defaultWidth = "defaultWidth";
+            public IElement _defaultWidth = null;
+
+            public static string @defaultHeight = "defaultHeight";
+            public IElement _defaultHeight = null;
+
+        }
+
+        public _ListForm @ListForm = new _ListForm();
+        public IElement @__ListForm = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ListForm");
+
         public class _FieldData
         {
             public static string @fieldType = "fieldType";

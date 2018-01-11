@@ -31,6 +31,20 @@ namespace DatenMeister.Models.Forms
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
+                var type = typeof(DatenMeister.Models.Forms.DetailForm);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__DetailForm = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.ListForm);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ListForm = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
                 var type = typeof(DatenMeister.Models.Forms.FieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);

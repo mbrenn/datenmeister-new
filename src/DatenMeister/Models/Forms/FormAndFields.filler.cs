@@ -81,6 +81,104 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
+                        if(name == "DetailForm") // Looking for class
+                        {
+                            tree.__DetailForm = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.DetailForm._name = value;
+                                }
+                                if(name == "fields") // Looking for property
+                                {
+                                    tree.DetailForm._fields = value;
+                                }
+                                if(name == "fixView") // Looking for property
+                                {
+                                    tree.DetailForm._fixView = value;
+                                }
+                                if(name == "inhibitNewItems") // Looking for property
+                                {
+                                    tree.DetailForm._inhibitNewItems = value;
+                                }
+                                if(name == "detailForm") // Looking for property
+                                {
+                                    tree.DetailForm._detailForm = value;
+                                }
+                                if(name == "hideMetaClass") // Looking for property
+                                {
+                                    tree.DetailForm._hideMetaClass = value;
+                                }
+                                if(name == "minimizeDesign") // Looking for property
+                                {
+                                    tree.DetailForm._minimizeDesign = value;
+                                }
+                                if(name == "defaultWidth") // Looking for property
+                                {
+                                    tree.DetailForm._defaultWidth = value;
+                                }
+                                if(name == "defaultHeight") // Looking for property
+                                {
+                                    tree.DetailForm._defaultHeight = value;
+                                }
+                            }
+                        }
+                        if(name == "ListForm") // Looking for class
+                        {
+                            tree.__ListForm = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "defaultTypesForNewElements") // Looking for property
+                                {
+                                    tree.ListForm._defaultTypesForNewElements = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.ListForm._name = value;
+                                }
+                                if(name == "fields") // Looking for property
+                                {
+                                    tree.ListForm._fields = value;
+                                }
+                                if(name == "fixView") // Looking for property
+                                {
+                                    tree.ListForm._fixView = value;
+                                }
+                                if(name == "inhibitNewItems") // Looking for property
+                                {
+                                    tree.ListForm._inhibitNewItems = value;
+                                }
+                                if(name == "detailForm") // Looking for property
+                                {
+                                    tree.ListForm._detailForm = value;
+                                }
+                                if(name == "hideMetaClass") // Looking for property
+                                {
+                                    tree.ListForm._hideMetaClass = value;
+                                }
+                                if(name == "minimizeDesign") // Looking for property
+                                {
+                                    tree.ListForm._minimizeDesign = value;
+                                }
+                                if(name == "defaultWidth") // Looking for property
+                                {
+                                    tree.ListForm._defaultWidth = value;
+                                }
+                                if(name == "defaultHeight") // Looking for property
+                                {
+                                    tree.ListForm._defaultHeight = value;
+                                }
+                            }
+                        }
                         if(name == "FieldData") // Looking for class
                         {
                             tree.__FieldData = value;

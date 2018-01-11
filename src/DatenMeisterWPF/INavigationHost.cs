@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
+using Autofac;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF

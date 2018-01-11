@@ -15,6 +15,7 @@ namespace DatenMeisterWPF.Forms.Lists
     public class ItemsInExtentList : ListViewControl, INavigationGuest
     {
         private string _workspaceId;
+        private string _extentUrl;
 
         /// <inheritdoc />
         /// <summary>
@@ -33,6 +34,7 @@ namespace DatenMeisterWPF.Forms.Lists
         public void SetContent(string workspaceId, string extentUrl)
         {
             _workspaceId = workspaceId;
+            _extentUrl = extentUrl;
             var workLogic = App.Scope.Resolve<IWorkspaceLogic>();
             workLogic.FindExtentAndWorkspace(workspaceId, extentUrl, out var workspace, out var extent);
             if (extent == null)
@@ -80,6 +82,12 @@ namespace DatenMeisterWPF.Forms.Lists
                 "To Extent",
                 () => Navigator.TheNavigator.NavigateToExtentList(NavigationHost, _workspaceId),
                 Icons.ExtentsShow,
+                NavigationCategories.File + ".Workspaces");
+
+            NavigationHost.AddNavigationButton(
+                "Extent Info",
+                () => Navigator.TheNavigator.OpenExtent(NavigationHost, _workspaceId, _extentUrl),
+                null,
                 NavigationCategories.File + ".Workspaces");
         }
     }

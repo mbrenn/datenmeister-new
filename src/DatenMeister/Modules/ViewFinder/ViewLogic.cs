@@ -122,7 +122,7 @@ namespace DatenMeister.Modules.ViewFinder
 
             return viewExtent.elements()
                 .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member})
-                .WhenMetaClassIs(formAndFields.__Form);
+                .WhenMetaClassIs(formAndFields.__Form, formAndFields.__DetailForm, formAndFields.__ListForm );
         }
 
         /// <summary>

@@ -6,6 +6,18 @@ namespace DatenMeister.Models.Forms
 {
     public class ListForm : Form
     {
+        public ListForm()
+        {
+        }
+
+        public ListForm(string name) : base(name)
+        {
+        }
+
+        public ListForm(string name, params FieldData[] fieldsToBeAdded) : base(name, fieldsToBeAdded)
+        {
+        }
+
         /// <summary>
         /// Stores an enumeration of default types that can be used for creation
         /// </summary>

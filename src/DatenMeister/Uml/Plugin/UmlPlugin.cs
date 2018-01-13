@@ -30,7 +30,7 @@ namespace DatenMeister.Uml.Plugin
         private void InitViews()
         {
             // Creates the forms
-            var umlClassForm = new Form(
+            var umlClassForm = new DetailForm(
                 "Class",
                 new MetaClassElementFieldData("Metaclass"),
                 new TextFieldData(_UML._CommonStructure._NamedElement.name, "Classname"),

@@ -317,12 +317,18 @@ namespace DatenMeisterWPF.Navigation
             return result;
         }
 
+        /// <summary>
+        /// Opens the extent as 
+        /// </summary>
+        /// <param name="navigationHost">Host for navigation being to be used</param>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="extentUrl">Url of the extent to be shown</param>
+        /// <returns>Navigation to be used</returns>
         public IControlNavigation OpenExtent(INavigationHost navigationHost, string workspaceId, string extentUrl)
         {
             var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
             var uri = ExtentOfWorkspaces.WorkspaceUri + "#" + WebUtility.UrlEncode(extentUrl);
             return NavigateToElementDetailView(navigationHost, workspaceLogic.FindItem(uri));
-
         }
     }
 }

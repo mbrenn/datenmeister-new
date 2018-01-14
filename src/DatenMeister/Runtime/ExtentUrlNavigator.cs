@@ -47,16 +47,18 @@ namespace DatenMeister.Runtime
             var posQuestion = uri.IndexOf('?');
             var posHash = uri.IndexOf('#');
             var posExtentEnd = posQuestion == -1 ? posHash : posQuestion;
-            var context = posExtentEnd == -1 ? string.Empty : uri.Substring(0, posExtentEnd);
+            var extentUri = posExtentEnd == -1 ? string.Empty : uri.Substring(0, posExtentEnd);
 
             // Verifies that the extent is working
-            if (string.IsNullOrEmpty(context)) 
+            if (string.IsNullOrEmpty(extentUri) && posExtentEnd != 0) 
             {
                 return null;
             }
 
             // Verifies whether the context can be found in context uri or alternative Uris
-            if (context != _extent.contextURI() && !_extent.AlternativeUris.Contains(context))
+            if (!string.IsNullOrEmpty(extentUri) &&
+                extentUri != _extent.contextURI() && 
+                !_extent.AlternativeUris.Contains(extentUri))
             {
                 return null;
             }
@@ -66,11 +68,9 @@ namespace DatenMeister.Runtime
             {
                 if (posHash != -1)
                 {
-                    var uriAsUri = new Uri(uri);
-
                     // Gets the fragment
-                    var fragment = uriAsUri.Fragment;
-                    if (string.IsNullOrEmpty(uriAsUri.Fragment))
+                    var fragment = uri.Substring(posHash + 1);
+                    if (string.IsNullOrEmpty(fragment))
                     {
                         Debug.WriteLine(
                             $"Uri does not contain a URI-Fragment defining the object being looked for. {nameof(uri)}");
@@ -79,7 +79,7 @@ namespace DatenMeister.Runtime
                     }
 
                     // Queries the object
-                    var queryObjectId = WebUtility.UrlDecode(fragment.Substring(1));
+                    var queryObjectId = WebUtility.UrlDecode(fragment);
 
                     // Now go through the list
                     foreach (var element in AllDescendentsQuery.GetDescendents(_extent))
@@ -109,7 +109,7 @@ namespace DatenMeister.Runtime
                 }
                 else
                 {
-                    throw new NotImplementedException("No Hash and no Question");
+                    throw new NotImplementedException("No hash and no question mark");
                 }
             }
             catch (UriFormatException exc)

@@ -181,6 +181,7 @@ namespace DatenMeister.Provider.XMI
                             }
                             resultingElement.set(subElement.Name.ToString(), referencedElement);
                         });
+                    continue;
                 }
 
                 // Element is not a given element, so perform regular replacement of elements

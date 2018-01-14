@@ -80,6 +80,7 @@
     <Compile Include="Xmi\EMOF\DataLayerTests.cs" />
     <Compile Include="Xmi\EMOF\XmlExtentTests.cs" />
     <Compile Include="Xmi\Runtime\StorageTests.cs" />
+    <Compile Include="Xmi\XmiMultipleReferencesTests.cs" />
     <Compile Include="Xmi\XmiTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,6 @@
-﻿using DatenMeister.Core;
+﻿using System.Collections.Generic;
+using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
@@ -14,9 +16,12 @@ namespace DatenMeister.Uml.Plugin
         /// </summary>
         private readonly ViewLogic _viewLogic;
 
-        public UmlPlugin(ViewLogic viewLogic)
+        private readonly IWorkspaceLogic _workspaceLogic;
+
+        public UmlPlugin(ViewLogic viewLogic, IWorkspaceLogic workspaceLogic)
         {
             _viewLogic = viewLogic;
+            _workspaceLogic = workspaceLogic;
         }
 
         public void Start()
@@ -28,13 +33,20 @@ namespace DatenMeister.Uml.Plugin
         /// Initializes the views for the given extent
         /// </summary>
         private void InitViews()
-        {
+        {  
+            var umlData = _workspaceLogic.GetUmlData();
             // Creates the forms
-            var umlClassForm = new DetailForm(
+            var umlClassForm = new ListForm(
                 "Class",
                 new MetaClassElementFieldData("Metaclass"),
                 new TextFieldData(_UML._CommonStructure._NamedElement.name, "Classname"),
                 new SubElementFieldData(_UML._StructuredClassifiers._Class.ownedAttribute, "Properties"));
+            umlClassForm.defaultTypesForNewElements = new[]
+            {
+                umlData.Packages.__Package,
+                umlData.StructuredClassifiers.__Class
+            };
+
             _viewLogic.Add(umlClassForm);
             
             // Creates the forms

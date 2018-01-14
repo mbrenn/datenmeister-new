@@ -92,6 +92,9 @@ namespace DatenMeister.Tests.Xmi
             {
                 Assert.That(xmlNode.Attribute("sub-ref"), Is.Not.Null);
             }
+
+            item1.set("value", 54);
+            Assert.That((item2.get("sub") as IElement)?.get("value")?.ToString(), Is.EqualTo("54"));
         }
     }
 }

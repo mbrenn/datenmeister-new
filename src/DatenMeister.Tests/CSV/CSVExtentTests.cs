@@ -25,7 +25,7 @@ namespace DatenMeister.Tests.CSV
         {
             var csvFile = "eins 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
             var csvOtherFile = "eens 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
-            File.WriteAllText("data.txt", PathForTemporaryDataFile);
+            File.WriteAllText(PathForTemporaryDataFile, csvFile);
 
             var storageConfiguration = new CSVExtentLoaderConfig
             {

@@ -35,6 +35,7 @@ namespace DatenMeister.Uml.Plugin
         private void InitViews()
         {  
             var umlData = _workspaceLogic.GetUmlData();
+
             // Creates the forms
             var umlClassForm = new ListForm(
                 "Class",

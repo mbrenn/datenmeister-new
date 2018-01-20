@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Copier
@@ -11,6 +12,14 @@ namespace DatenMeister.Runtime.Copier
     public class ObjectCopier
     {
         private readonly IFactory _factory;
+
+        /// <summary>
+        /// Stores the extent of the element to be copied. 
+        /// This information is used to check whether an element shall be copied or a reference
+        /// shall be used. Property values referencing to another extent are not copied... Instead uri 
+        /// references are copied
+        /// </summary>
+        private IExtent _sourceExtent;
 
         /// <summary>
         /// Initializes a new instance of the ObjectCopier. 
@@ -28,6 +37,9 @@ namespace DatenMeister.Runtime.Copier
         /// <returns>true, if element has been successfully copied</returns>
         public IElement Copy(IObject element)
         {
+            // Gets the source extent
+            _sourceExtent = (element as IHasExtent)?.Extent;
+
             var targetElement = _factory.create((element as IElement)?.getMetaClass());
             CopyProperties(element, targetElement);
 
@@ -73,8 +85,16 @@ namespace DatenMeister.Runtime.Copier
 
             if (value is IElement valueAsElement)
             {
-                var copiedElement = Copy(valueAsElement);
-                return copiedElement;
+                var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
+                if (propertyExtent == null || propertyExtent == _sourceExtent)
+                {
+                    return Copy(valueAsElement);
+                }
+                else
+                {
+                    // See above... Don't copy the elements which are references by another extent
+                    return value;
+                }
             }
 
             if (value is IReflectiveCollection valueAsCollection)

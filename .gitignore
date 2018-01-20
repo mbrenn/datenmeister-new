@@ -157,7 +157,6 @@ $RECYCLE.BIN/
 # Mac desktop service store files
 .DS_Store
 /src/.vs/config/applicationhost.config
-icons
 /src/DatenMeister.SourceGeneration.Console/uml.cs
 /src/DatenMeister.SourceGeneration.Console/primitivetypes.cs
 /src/DatenMeister.SourceGeneration.Console/mof.cs
@@ -172,3 +171,4 @@ project.lock.json
 *.js.map
 /src/DatenMeister.Web.Application/App_Data/Database
 /src/.vs
+/src/DatenMeister.Web.Application/htdocs/img/icons

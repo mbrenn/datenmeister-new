@@ -145,6 +145,16 @@ namespace DatenMeister.Tests.Xmi
 
             var retrievedItem1 = item2.get("sub") as IReflectiveCollection;
             Assert.That(retrievedItem1, Is.Not.Null);
+
+            var size = 0;
+            foreach (var subItem in retrievedItem1.OfType<IElement>())
+            {
+                size++;
+                Assert.That((subItem as IHasId)?.Id, Is.EqualTo("item" + size));
+                Assert.That((subItem as IHasExtent)?.Extent, Is.EqualTo(extent1));
+            }
+
+            Assert.That(size, Is.EqualTo(4));
         }
     }
 }

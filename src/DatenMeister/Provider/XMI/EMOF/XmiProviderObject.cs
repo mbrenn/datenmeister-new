@@ -14,6 +14,14 @@ namespace DatenMeister.Provider.XMI.EMOF
     /// </summary>
     public class XmiProviderObject : IProviderObject
     {
+        public static void VerifyForValidProperty(string property)
+        {
+            if (property == "href")
+            {
+                throw new InvalidOperationException("Attribute as 'href' is not allowed");
+            }
+        }
+
         public static readonly XName TypeAttribute = Namespaces.Xmi + "type";
 
         /// <summary>
@@ -135,6 +143,14 @@ namespace DatenMeister.Provider.XMI.EMOF
                 return new XElement(property, DotNetHelper.ToString(value));
             }
 
+            // A uri reference creates an href element
+            if (value is UriReference uriReference)
+            {
+                return new XElement(
+                    property, 
+                    new XAttribute("href", uriReference.Uri));
+            }
+
             throw new InvalidOperationException("Value is not an XmlObject or an IElement: " + value);
         }
 
@@ -154,14 +170,26 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public object GetProperty(string property)
         {
+            VerifyForValidProperty(property);
+
             var propertyAsString = ReturnObjectAsString(property);
+
             // Check, if there are subelements as the given value
             if (XmlNode.Elements(propertyAsString).Any())
             {
                 var list = new List<object>();
                 foreach (var element in XmlNode.Elements(propertyAsString))
                 {
-                    list.Add(new XmiProviderObject(element, (XmiProvider) Provider));
+                    var hrefAttribute = element.Attribute("href");
+                    if (hrefAttribute != null)
+                    {
+                        // Element is an href, so create a uri reference....
+                        list.Add(new UriReference(hrefAttribute.Value));
+                    }
+                    else
+                    {
+                        list.Add(new XmiProviderObject(element, (XmiProvider) Provider));
+                    }
                 }
 
                 return list;
@@ -210,6 +238,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public bool DeleteProperty(string property)
         {
+            VerifyForValidProperty(property);
+
             XmlNode.Attributes(property).FirstOrDefault()?.Remove();
             foreach (var x in XmlNode.Elements(property).ToList())
             {
@@ -222,6 +252,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public void SetProperty(string property, object value)
         {
+            VerifyForValidProperty(property);
+
             if (value == null)
             {
                 DeleteProperty(property);
@@ -255,6 +287,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public void EmptyListForProperty(string property)
         {
+            VerifyForValidProperty(property);
+
             XmlNode.Attribute(property)?.Remove();
             XmlNode.Elements(property).Remove();
         }
@@ -272,6 +306,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public bool AddToProperty(string property, object value, int index = -1)
         {
+            VerifyForValidProperty(property);
+
             if (index == GetSizeOfList(property) || index == -1)
             {
                 var valueAsXmlObject = ConvertValueAsXmlObject(property, value);
@@ -290,6 +326,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public bool RemoveFromProperty(string property, object value)
         {
+            VerifyForValidProperty(property);
+
             if (value is XmiProviderObject valueAsXmlElement)
             {
                 foreach (var subElement in XmlNode.Elements(property))

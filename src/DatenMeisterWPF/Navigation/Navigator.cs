@@ -214,7 +214,6 @@ namespace DatenMeisterWPF.Navigation
                     return control;
                 },
                 NavigationMode.Detail);
-
         }
 
         public IControlNavigation NavigateToItemsInExtent(
@@ -267,9 +266,7 @@ namespace DatenMeisterWPF.Navigation
         /// <returns>The control element that can be used to receive events from the dialog</returns>
         public IControlNavigation NavigateToNewItem(INavigationHost window, IReflectiveCollection collection)
         {
-            var result = NavigateToNewItem(window, ((IHasExtent) collection).Extent);
-            result.NewItemCreated += (x, y) => collection.add(y.NewItem);
-            return result;
+            return NavigateToNewItem(window, ((IHasExtent) collection).Extent);
         }
 
         /// <summary>
@@ -279,13 +276,13 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="host">Object to whose property, the new element will be added
         /// </param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public IControlNavigationNewItem NavigateToNewItem(INavigationHost window, IExtent host)
+        public IControlNavigation NavigateToNewItem(INavigationHost window, IExtent host)
         {
             var viewLogic = App.Scope.Resolve<ViewLogic>();
             var viewDefinitions = App.Scope.Resolve<ManagementViewDefinitions>();
             var extentFunctions = App.Scope.Resolve<ExtentFunctions>();
 
-            var result = new ControlNavigationNewItem();
+            var result = new ControlNavigation();
             var navigationControl = NavigateTo(window,
                 () =>
                 {
@@ -300,20 +297,38 @@ namespace DatenMeisterWPF.Navigation
                     {
                         if (control.DetailElement.getOrDefault("selectedType") is IElement metaClass)
                         {
-                            var factory = new MofFactory(host);
-                            var newElement = factory.create(metaClass);
-                            result.OnNewItemCreated(new NewItemEventArgs(newElement));
-
-                            var detailControlView = NavigateToElementDetailView(window, newElement);
-                            detailControlView.Closed += (a, b) => result.OnClosed();
+                            var detailResult = NavigateToNewItem(window, host.elements(), metaClass);
+                            detailResult.Closed += (a, b) => result.OnClosed();
                         }
                     };
 
                     return control;
                 },
                 NavigationMode.Detail);
+            
+            navigationControl.Closed += (x, y) => result.OnClosed();
+            return result;
+        }
 
-            result.Attach(navigationControl);
+        /// <summary>
+        /// Creates a new item for the given extent and reflective collection by metaclass 
+        /// </summary>
+        /// <param name="window">Navigation host of window</param>
+        /// <param name="collection">Collection to which the item will be added</param>
+        /// <param name="metaClass">Metaclass to be added</param>
+        /// <returns>The navigation being used for control</returns>
+        public IControlNavigation NavigateToNewItem(INavigationHost window, IReflectiveCollection collection,
+            IElement metaClass)
+        {
+            var result = new ControlNavigation();
+            var extent = (collection as IHasExtent)?.Extent;
+            var factory = new MofFactory(extent);
+            var newElement = factory.create(metaClass);
+
+            var detailControlView = NavigateToElementDetailView(window, newElement);
+            detailControlView.Closed += (a, b) => result.OnClosed();
+            collection.add(newElement);
+
             return result;
         }
 

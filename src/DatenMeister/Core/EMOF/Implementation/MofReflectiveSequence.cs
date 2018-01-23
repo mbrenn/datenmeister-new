@@ -87,9 +87,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public bool remove(object value)
         {
-            if (value is MofObject)
+            if (value is MofObject valueAsMofObject)
             {
-                var asProviderObject = (value as MofObject).ProviderObject;
+                var asProviderObject = valueAsMofObject.ProviderObject;
                 return MofObject.ProviderObject.RemoveFromProperty(_property, asProviderObject);
             }
             else

@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules;
@@ -47,6 +51,24 @@ namespace DatenMeisterWPF.Forms.Lists
 
             SetContent(_extent.elements(), null);
 
+            // First, sets the first buttons upon the priorities
+            if (ActualFormDefinition?.get(_FormAndFields._ListForm.defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
+            {
+                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
+                {
+                    var typeName = type.get(_UML._CommonStructure._NamedElement.name);
+                    AddGenericButton($"New {typeName}", () =>
+                    {
+                        var elements = Navigator.TheNavigator.NavigateToNewItem(NavigationHost, extent.elements(), type);
+                        elements.Closed += (x, y) =>
+                        {
+                            UpdateContent();
+                        };
+                    });
+                }
+            }
+
+            // Sets the button for the new item
             AddGenericButton("New Item", () =>
             {
                 var elements = Navigator.TheNavigator.NavigateToNewItem(NavigationHost, _extent.elements());
@@ -56,8 +78,10 @@ namespace DatenMeisterWPF.Forms.Lists
                 };
             });
 
+            // Adds the default button
             AddDefaultButtons();
 
+            // Allows the deletion of an item
             AddRowItemButton(
                 "Delete",
                 item =>

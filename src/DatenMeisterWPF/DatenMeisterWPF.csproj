@@ -83,6 +83,9 @@
     <Compile Include="Forms\Base\DetailFormControl.xaml.cs">
       <DependentUpon>DetailFormControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Base\ItemsTreeView.xaml.cs">
+      <DependentUpon>ItemsTreeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Base\ViewDefinitionMode.cs" />
     <Compile Include="Forms\Base\ViewDefinition.cs" />
     <Compile Include="Forms\Detail\Fields\CheckboxField.cs" />
@@ -124,6 +127,10 @@
       <DependentUpon>QueryElementDialog.xaml</DependentUpon>
     </Compile>
     <Page Include="Forms\Base\DetailFormControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Base\ItemsTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

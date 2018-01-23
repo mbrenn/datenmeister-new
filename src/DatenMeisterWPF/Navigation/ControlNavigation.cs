@@ -12,6 +12,7 @@ namespace DatenMeisterWPF.Navigation
         }
     }
 
+    [Obsolete]
     public class ControlNavigationNewItem : ControlNavigation, IControlNavigationNewItem
     {
         public ControlNavigationNewItem()

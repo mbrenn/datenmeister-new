@@ -17,6 +17,7 @@ namespace DatenMeisterWPF.Navigation
     /// <summary>
     /// This interface is created for every navigated element
     /// </summary>
+    [Obsolete]
     public interface IControlNavigationNewItem : IControlNavigation
     {
         /// <summary>

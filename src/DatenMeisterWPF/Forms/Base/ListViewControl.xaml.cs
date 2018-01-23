@@ -255,6 +255,7 @@ namespace DatenMeisterWPF.Forms.Base
                                 MessageBox.Show(exc.Message);
                             }
 
+                            // Sets flag, so no additional message box will be shown when the itemObject is updated, possibly, leading to a new exception. 
                             noMessageBox = true;
                             (itemObject as IDictionary<string, object>)[y.PropertyName] = item.get(y.PropertyName);
                             noMessageBox = false;

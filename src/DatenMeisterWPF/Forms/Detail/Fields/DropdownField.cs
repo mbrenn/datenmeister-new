@@ -15,7 +15,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
     /// </summary>
     public class DropdownField : IDetailField
     {
-        public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm)
+        public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
+            ref FieldFlags fieldFlags)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));

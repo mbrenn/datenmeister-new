@@ -10,7 +10,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 {
     public class TextboxField : IDetailField
     {
-        public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm)
+        public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
+            ref FieldFlags fieldFlags)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
@@ -60,6 +61,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                             value.set(name, contentBlock.Text);
                         }
                     });
+
+                fieldFlags = fieldFlags & ~FieldFlags.Focussed;
 
                 return contentBlock;
             }

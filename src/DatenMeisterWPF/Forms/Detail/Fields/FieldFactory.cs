@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
@@ -44,10 +45,18 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         /// <param name="value">Value of the field being used</param>
         /// <param name="field">Field to be queried</param>
         /// <param name="formControl">Form Control in which the UI Element will be hosted</param>
+        /// <param name="flags">Flags of the field dependent on the view. For example a flag that specifies
+        /// whether the element shall be focussed</param>
         /// <returns>The created element</returns>
-        public static UIElement GetUIElementFor(IObject value, IElement field, DetailFormControl formControl)
+        public static UIElement GetUIElementFor(IObject value, IElement field, DetailFormControl formControl, ref FieldFlags flags)
         {
-            return CreateField(value, field).CreateElement(value, field, formControl);
+            return CreateField(value, field).CreateElement(value, field, formControl, ref flags);
         }
+    }
+
+    [Flags]
+    public enum FieldFlags
+    {
+        Focussed = 0x01
     }
 }

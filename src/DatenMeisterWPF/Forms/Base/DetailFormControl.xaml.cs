@@ -269,6 +269,7 @@ namespace DatenMeisterWPF.Forms.Base
         {
             if (fields == null) throw new ArgumentNullException(nameof(fields));
 
+            var flags = FieldFlags.Focussed;
             foreach (var field in fields.Cast<IElement>())
             {
                 var fieldType = field.get(_FormAndFields._FieldData.fieldType)?.ToString();
@@ -286,12 +287,21 @@ namespace DatenMeisterWPF.Forms.Base
                     Text = $"{title}: ",
                     IsEnabled = !DotNetHelper.AsBoolean(isReadOnly)
                 };
-
-                var contentBlock = FieldFactory.GetUIElementFor(DetailElement, field, this);
+                
+                var oldFlags = flags;
+                var contentBlock =
+                    FieldFactory.GetUIElementFor(DetailElement, field, this, ref flags);
                 Grid.SetColumn(contentBlock, 1);
                 Grid.SetRow(contentBlock, _fieldCount);
-                
+
                 CreateRowForField(titleBlock, contentBlock);
+
+                
+                // Check, if element shall be focuseed
+                if ((oldFlags & FieldFlags.Focussed) != (flags & FieldFlags.Focussed))
+                {
+                    contentBlock.Focus();
+                }
             }
         }
 
@@ -392,7 +402,7 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 var window = Window.GetWindow(this);
                 window?.Close();
-            });
+            }).IsCancel = true;
 
             AddGenericButton(saveText, () =>
             {
@@ -410,7 +420,7 @@ namespace DatenMeisterWPF.Forms.Base
                 {
                     MessageBox.Show(exc.ToString());
                 }
-            });
+            }).IsDefault = true;
         }
 
         /// <summary>

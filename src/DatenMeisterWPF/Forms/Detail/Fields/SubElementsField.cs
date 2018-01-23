@@ -18,8 +18,10 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         /// <param name="value">Value to be shown</param>
         /// <param name="fieldData">Field of type</param>
         /// <param name="detailForm">Detail form control</param>
+        /// <param name="fieldFlags"></param>
         /// <returns>The created UI Element</returns>
-        public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm)
+        public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
+            ref FieldFlags fieldFlags)
         {
             var panel = new StackPanel
             {

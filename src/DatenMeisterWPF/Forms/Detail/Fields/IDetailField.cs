@@ -12,8 +12,9 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         /// <param name="value">Value to be used</param>
         /// <param name="fieldData">Field Data to be used</param>
         /// <param name="detailForm">Defines the navigation host being used to navigate through the elemnt</param>
+        /// <param name="fieldFlags"></param>
         /// <returns>Created UI Element</returns>
-        UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm);
+        UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, ref FieldFlags fieldFlags);
 
     }
 }

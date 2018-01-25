@@ -1,0 +1,174 @@
+﻿using System;
+using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Provider.InMemory;
+using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime;
+using DatenMeister.Runtime.Extents;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Uml.Helper;
+using DatenMeisterWPF.Forms.Base;
+using DatenMeisterWPF.Forms.Lists;
+
+namespace DatenMeisterWPF.Navigation
+{
+    public class NavigatorForItems
+    {
+        /// <summary>
+        /// Navigates to the detail window
+        /// </summary>
+        /// <param name="window">Window which is the owner for the detail window</param>
+        /// <param name="element">Element to be shown</param>
+        /// <returns>The navigation being used to control the view</returns>
+        public static IControlNavigation NavigateToElementDetailView(INavigationHost window, IObject element)
+        {
+            return window.NavigateTo(
+                () =>
+                {
+                    var control = new DetailFormControl();
+                    control.SetContent(element, null);
+                    control.AllowNewProperties = true;
+                    control.AddDefaultButtons();
+                    return control;
+                },
+                NavigationMode.Detail);
+        }
+
+        /// <summary>
+        /// Opens the dialog in which the user can create a new xmi extent
+        /// </summary>
+        /// <param name="window">Window being used as an owner</param>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <returns></returns>
+        public static IControlNavigation NavigateToNewXmiExtentDetailView(
+            INavigationHost window,
+            string workspaceId)
+        {
+            var viewLogic = App.Scope.Resolve<ViewLogic>();
+            return window.NavigateTo(
+                () =>
+                {
+                    var newXmiDetailForm = NamedElementMethods.GetByFullName(
+                        viewLogic.GetViewExtent(),
+                        ManagementViewDefinitions.PathNewXmiDetailForm);
+
+                    var control = new DetailFormControl();
+                    control.SetContent(null, newXmiDetailForm);
+                    control.AddDefaultButtons("Create");
+                    control.ElementSaved += (x, y) =>
+                    {
+                        var configuration = new XmiStorageConfiguration
+                        {
+                            ExtentUri = control.DetailElement.isSet("uri")
+                                ? control.DetailElement.get("uri").ToString()
+                                : String.Empty,
+                            Path = control.DetailElement.isSet("filepath")
+                                ? control.DetailElement.get("filepath").ToString()
+                                : String.Empty,
+                            Workspace = workspaceId
+                        };
+
+                        var extentManager = App.Scope.Resolve<IExtentManager>();
+                        extentManager.LoadExtent(configuration, true);
+                    };
+
+                    return control;
+                },
+                NavigationMode.Detail);
+        }
+
+        public static IControlNavigation NavigateToItemsInExtent(
+            INavigationHost window,
+            string workspaceId,
+            string extentUrl)
+        {
+            return window.NavigateTo(() =>
+                {
+                    var control = new ItemsInExtentList();
+                    control.SetContent(workspaceId, extentUrl);
+
+                    return control;
+                },
+                NavigationMode.List);
+        }
+
+        /// <summary>
+        /// Creates a new item for the given extent being located in the workspace
+        /// </summary>
+        /// <param name="window">Navigation host being used to open up the new dialog</param>
+        /// <param name="collection">Extent in which the element shall be added</param>
+        /// <returns>The control element that can be used to receive events from the dialog</returns>
+        public static IControlNavigation NavigateToNewItem(INavigationHost window, IReflectiveCollection collection)
+        {
+            return NavigateToNewItem(window, ((IHasExtent) collection).Extent);
+        }
+
+        /// <summary>
+        /// Creates a new item for the given extent being located in the workspace
+        /// </summary>
+        /// <param name="window">Navigation host being used to open up the new dialog</param>
+        /// <param name="host">Object to whose property, the new element will be added
+        /// </param>
+        /// <returns>The control element that can be used to receive events from the dialog</returns>
+        public static IControlNavigationNewItem NavigateToNewItem(INavigationHost window, IExtent host)
+        {
+            var viewLogic = App.Scope.Resolve<ViewLogic>();
+            var viewDefinitions = App.Scope.Resolve<ManagementViewDefinitions>();
+            var extentFunctions = App.Scope.Resolve<ExtentFunctions>();
+
+            var result = new ControlNavigationNewItem();
+            var navigationControl = window.NavigateTo(
+                () =>
+                {
+                    var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetViewExtent());
+                    var items = extentFunctions.GetCreatableTypes(host);
+                    var formPathToType = viewDefinitions.GetFindTypeForm(items.CreatableTypes);
+
+                    var control = new DetailFormControl();
+                    control.SetContent(element, formPathToType);
+                    control.AddDefaultButtons("Create");
+                    control.ElementSaved += (x, y) =>
+                    {
+                        if (control.DetailElement.getOrDefault("selectedType") is IElement metaClass)
+                        {
+                            var detailResult = NavigateToNewItem(window, host.elements(), metaClass);
+                            detailResult.Closed += (a, b) => result.OnClosed();
+                        }
+                    };
+
+                    return control;
+                },
+                NavigationMode.Detail);
+            
+            navigationControl.Closed += (x, y) => result.OnClosed();
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a new item for the given extent and reflective collection by metaclass 
+        /// </summary>
+        /// <param name="window">Navigation host of window</param>
+        /// <param name="collection">Collection to which the item will be added</param>
+        /// <param name="metaClass">Metaclass to be added</param>
+        /// <returns>The navigation being used for control</returns>
+        public static  IControlNavigation NavigateToNewItem(INavigationHost window, IReflectiveCollection collection,
+            IElement metaClass)
+        {
+            var result = new ControlNavigation();
+            var extent = (collection as IHasExtent)?.Extent;
+            var factory = new MofFactory(extent);
+            var newElement = factory.create(metaClass);
+
+            var detailControlView = NavigateToElementDetailView(window, newElement);
+            detailControlView.Closed += (a, b) => result.OnClosed();
+            collection.add(newElement);
+
+            return result;
+        }
+    }
+}

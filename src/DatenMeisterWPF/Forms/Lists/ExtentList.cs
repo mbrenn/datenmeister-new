@@ -43,7 +43,7 @@ namespace DatenMeisterWPF.Forms.Lists
             {
                 var uri = extentElement.get("uri").ToString();
 
-                var events = Navigator.NavigateToItemsInExtent(
+                var events = NavigatorForItems.NavigateToItemsInExtent(
                     NavigationHost,
                     workspaceId,
                     uri);
@@ -78,13 +78,13 @@ namespace DatenMeisterWPF.Forms.Lists
 
             void ImportFromExcel()
             {
-                ImportFromExcelNavigation.ImportFromExcel(NavigationHost, _workspaceId);
+                NavigatorForExcelHandling.ImportFromExcel(NavigationHost, _workspaceId);
                 UpdateContent();
             }
 
             void NewXmiExtent()
             {
-                var events = Navigator.NavigateToNewXmiExtentDetailView(NavigationHost, _workspaceId);
+                var events = NavigatorForItems.NavigateToNewXmiExtentDetailView(NavigationHost, _workspaceId);
                 events.Closed += (x, y) => UpdateContent();
             }
 

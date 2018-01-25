@@ -36,7 +36,7 @@ namespace DatenMeisterWPF.Forms.Lists
             void ShowExtents(IObject workspace)
             {
                 var workspaceId = workspace.get("id").ToString();
-                var events = Navigator.NavigateToExtentList(NavigationHost, workspaceId);
+                var events = NavigatorForExtents.NavigateToExtentList(NavigationHost, workspaceId);
                 
                 events.Closed += (x, y) => UpdateContent();
             }
@@ -73,7 +73,7 @@ namespace DatenMeisterWPF.Forms.Lists
 
             void JumpToTypeManager()
             {
-                Navigator.NavigateToItemsInExtent(
+                NavigatorForItems.NavigateToItemsInExtent(
                     NavigationHost,
                     WorkspaceNames.NameTypes,
                     WorkspaceNames.UriUserTypes);

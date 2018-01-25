@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
@@ -37,7 +36,7 @@ namespace DatenMeisterWPF.Forms.Lists
             void ShowExtents(IObject workspace)
             {
                 var workspaceId = workspace.get("id").ToString();
-                var events = Navigator.TheNavigator.NavigateToExtentList(NavigationHost, workspaceId);
+                var events = Navigator.NavigateToExtentList(NavigationHost, workspaceId);
                 
                 events.Closed += (x, y) => UpdateContent();
             }
@@ -61,7 +60,7 @@ namespace DatenMeisterWPF.Forms.Lists
         {
             void NewWorkspace()
             {
-                var events = Navigator.TheNavigator.NavigateTo(NavigationHost, () =>
+                var events = NavigationHost.NavigateTo(() =>
                     {
                         var dlg = new NewWorkspaceControl();
                         dlg.SetContent();
@@ -74,7 +73,7 @@ namespace DatenMeisterWPF.Forms.Lists
 
             void JumpToTypeManager()
             {
-                Navigator.TheNavigator.NavigateToItemsInExtent(
+                Navigator.NavigateToItemsInExtent(
                     NavigationHost,
                     WorkspaceNames.NameTypes,
                     WorkspaceNames.UriUserTypes);

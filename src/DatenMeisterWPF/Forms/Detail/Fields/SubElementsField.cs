@@ -76,7 +76,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 
                 listViewControl.AddRowItemButton(
                     "Open",
-                    item => Navigator.TheNavigator.NavigateToElementDetailView(detailForm.NavigationHost, item),
+                    item => Navigator.NavigateToElementDetailView(detailForm.NavigationHost, item),
                     ListViewControl.ButtonPosition.Before);
                 listViewControl.SetContent(valueOfElement, form);
                 panel.Children.Add(listViewControl);
@@ -86,7 +86,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             var createItemButton = new Button { Content = "Add item" };
             createItemButton.Click += (x, y) =>
             {
-                var result = Navigator.TheNavigator.NavigateToNewItem(detailForm.NavigationHost, ((IHasExtent) value).Extent);
+                var result = Navigator.NavigateToNewItem(detailForm.NavigationHost, ((IHasExtent) value).Extent);
                 result.NewItemCreated += (a, b) =>
                 {
                     if (value.getOrDefault(name) is IReflectiveCollection propertyCollection)

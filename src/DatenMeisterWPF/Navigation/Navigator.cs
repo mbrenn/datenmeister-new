@@ -45,32 +45,16 @@ namespace DatenMeisterWPF.Navigation
     /// <summary>
     /// Defines the navigation method to allow a fluent navigation between instances
     /// </summary>
-    public class Navigator
+    public static class Navigator
     {
         /// <summary>
-        /// Stores the navigation for the given application
+        /// Performs the default navigation by creating a new window
         /// </summary>
-        public static Navigator TheNavigator { get; } = new Navigator();
-
-        /// <summary>
-        /// Performs a navigation from the current window to the given User Control.
-        /// The user control is stored as an action method to allow
-        /// </summary>
-        /// <param name="navigationHost">Root window to be used</param>
-        /// <param name="factoryMethod">The factory method</param>
-        /// <param name="navigationMode">Defines the navigation mode</param>
-        public IControlNavigation NavigateTo(
-            INavigationHost navigationHost,
-            Func<UserControl> factoryMethod,
-            NavigationMode navigationMode)
+        /// <param name="parentWindow">Parent window to be used</param>
+        /// <param name="factoryMethod">Factory method to be used to create the usercontrol</param>
+        /// <returns>Creates a new window which can be used by the user. </returns>
+        public static IControlNavigation NavigateByCreatingAWindow(Window parentWindow, Func<UserControl> factoryMethod)
         {
-            // Verifies if the given window supports the navigation directly. 
-            var innerResult = navigationHost?.NavigateTo(factoryMethod, navigationMode);
-            if (innerResult != null)
-            {
-                return innerResult;
-            }
-
             var result = new ControlNavigation();
             var userControl = factoryMethod();
             switch (userControl)
@@ -81,7 +65,7 @@ namespace DatenMeisterWPF.Navigation
                 {
                     var window = new ListFormWindow
                     {
-                        Owner = navigationHost as Window,
+                        Owner = parentWindow,
                         MainViewSet =
                         {
                             Content = asListViewControl
@@ -95,7 +79,7 @@ namespace DatenMeisterWPF.Navigation
                 {
                     var window = new DetailFormWindow
                     {
-                        Owner = navigationHost as Window
+                        Owner = parentWindow
                     };
                     window.SetMainContent(asDetailFormControl);
 
@@ -104,7 +88,7 @@ namespace DatenMeisterWPF.Navigation
                     window.Closed += (x, y) =>
                     {
                         result.OnClosed();
-                        navigationHost?.SetFocus();
+                        parentWindow.Focus();
                     };
                     break;
                 }
@@ -120,10 +104,9 @@ namespace DatenMeisterWPF.Navigation
         /// </summary>
         /// <param name="window">Windows to be used</param>
         /// <returns>The navigation to control the view</returns>
-        public IControlNavigation NavigateToWorkspaces(INavigationHost window)
+        public static IControlNavigation NavigateToWorkspaces(INavigationHost window)
         {
-            return NavigateTo(
-                window,
+            return window.NavigateTo(
                 () =>
                 {
                     var workspaceControl = new WorkspaceList();
@@ -139,10 +122,9 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="window">Root window being used</param>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <returns>The navigation being used to control the view</returns>
-        public IControlNavigation NavigateToExtentList(INavigationHost window, string workspaceId)
+        public static IControlNavigation NavigateToExtentList(INavigationHost window, string workspaceId)
         {
-            return NavigateTo(
-                window,
+            return window.NavigateTo(
                 () =>
                 {
                     var dlg = new ExtentList();
@@ -158,10 +140,10 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="window">Window which is the owner for the detail window</param>
         /// <param name="element">Element to be shown</param>
         /// <returns>The navigation being used to control the view</returns>
-        public IControlNavigation NavigateToElementDetailView(INavigationHost window, IObject element)
+        public static IControlNavigation NavigateToElementDetailView(INavigationHost window, IObject element)
         {
-            return NavigateTo(
-                window, () =>
+            return window.NavigateTo(
+                () =>
                 {
                     var control = new DetailFormControl();
                     control.SetContent(element, null);
@@ -178,13 +160,12 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="window">Window being used as an owner</param>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <returns></returns>
-        public IControlNavigation NavigateToNewXmiExtentDetailView(
+        public static IControlNavigation NavigateToNewXmiExtentDetailView(
             INavigationHost window,
             string workspaceId)
         {
             var viewLogic = App.Scope.Resolve<ViewLogic>();
-            return NavigateTo(
-                window,
+            return window.NavigateTo(
                 () =>
                 {
                     var newXmiDetailForm = NamedElementMethods.GetByFullName(
@@ -216,12 +197,12 @@ namespace DatenMeisterWPF.Navigation
                 NavigationMode.Detail);
         }
 
-        public IControlNavigation NavigateToItemsInExtent(
+        public static IControlNavigation NavigateToItemsInExtent(
             INavigationHost window,
             string workspaceId,
             string extentUrl)
         {
-            return NavigateTo(window, () =>
+            return window.NavigateTo(() =>
             {
                 var control = new ItemsInExtentList();
                 control.SetContent(workspaceId, extentUrl);
@@ -236,7 +217,7 @@ namespace DatenMeisterWPF.Navigation
         /// </summary>
         /// <param name="window">Navigation host being used to open up the new dialog</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public IControlNavigation SearchByUrl(INavigationHost window)
+        public static IControlNavigation SearchByUrl(INavigationHost window)
         {
             var dlg = new QueryElementDialog {Owner = window as Window};
             if (dlg.ShowDialog() == true)
@@ -264,7 +245,7 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="window">Navigation host being used to open up the new dialog</param>
         /// <param name="collection">Extent in which the element shall be added</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public IControlNavigation NavigateToNewItem(INavigationHost window, IReflectiveCollection collection)
+        public static IControlNavigation NavigateToNewItem(INavigationHost window, IReflectiveCollection collection)
         {
             return NavigateToNewItem(window, ((IHasExtent) collection).Extent);
         }
@@ -276,14 +257,14 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="host">Object to whose property, the new element will be added
         /// </param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public IControlNavigation NavigateToNewItem(INavigationHost window, IExtent host)
+        public static IControlNavigationNewItem NavigateToNewItem(INavigationHost window, IExtent host)
         {
             var viewLogic = App.Scope.Resolve<ViewLogic>();
             var viewDefinitions = App.Scope.Resolve<ManagementViewDefinitions>();
             var extentFunctions = App.Scope.Resolve<ExtentFunctions>();
 
-            var result = new ControlNavigation();
-            var navigationControl = NavigateTo(window,
+            var result = new ControlNavigationNewItem();
+            var navigationControl = window.NavigateTo(
                 () =>
                 {
                     var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetViewExtent());
@@ -317,7 +298,7 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="collection">Collection to which the item will be added</param>
         /// <param name="metaClass">Metaclass to be added</param>
         /// <returns>The navigation being used for control</returns>
-        public IControlNavigation NavigateToNewItem(INavigationHost window, IReflectiveCollection collection,
+        public static  IControlNavigation NavigateToNewItem(INavigationHost window, IReflectiveCollection collection,
             IElement metaClass)
         {
             var result = new ControlNavigation();
@@ -339,7 +320,7 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="workspaceId">Id of the workspace</param>
         /// <param name="extentUrl">Url of the extent to be shown</param>
         /// <returns>Navigation to be used</returns>
-        public IControlNavigation OpenExtent(INavigationHost navigationHost, string workspaceId, string extentUrl)
+        public static IControlNavigation OpenExtent(INavigationHost navigationHost, string workspaceId, string extentUrl)
         {
             var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
             var uri = ExtentOfWorkspaces.WorkspaceUri + "#" + WebUtility.UrlEncode(extentUrl);

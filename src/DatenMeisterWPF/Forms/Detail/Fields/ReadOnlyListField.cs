@@ -59,7 +59,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                         Grid.SetColumn(button, 1);
 
                         button.Click += (sender, args) =>
-                            Navigator.NavigateToElementDetailView(
+                            NavigatorForItems.NavigateToElementDetailView(
                                 detailForm.NavigationHost,
                                 asIElement);
 

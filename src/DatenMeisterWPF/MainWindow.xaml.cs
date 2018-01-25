@@ -40,7 +40,7 @@ namespace DatenMeisterWPF
 
             _ribbonHelper.LoadIconRepository();
 
-            Navigator.NavigateToWorkspaces(this);
+            NavigatorForWorkspaces.NavigateToWorkspaces(this);
         }
 
         /// <summary>
@@ -60,13 +60,13 @@ namespace DatenMeisterWPF
 
                 _ribbonHelper.AddNavigationButton(
                     "Workspaces",
-                    () => Navigator.NavigateToWorkspaces(this),
+                    () => NavigatorForWorkspaces.NavigateToWorkspaces(this),
                     Icons.WorkspacesShow,
                     NavigationCategories.File + ".Workspaces");
 
                 _ribbonHelper.AddNavigationButton(
                     "Search",
-                    () => Navigator.SearchByUrl(this),
+                    () => NavigatorForDialogs.SearchByUrl(this),
                     null,
                     NavigationCategories.File + ".Search");
 

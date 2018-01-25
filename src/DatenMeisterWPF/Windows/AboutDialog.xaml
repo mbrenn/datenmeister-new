@@ -24,17 +24,19 @@
                 <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Margin="5">
                     Der DatenMeister - Unendliche Weiten (http://www.depon.net/)<LineBreak />
                     <LineBreak />
-                    Thanks to the OMG Community (http://www.omg.org) which is the base for the complete DatenMeister application. <LineBreak />
+                    Thanks for the Icons as courtesy of Axialis Software <Hyperlink NavigateUri="http://axialis.com" RequestNavigate="Hyperlink_OnRequestNavigate">http://axialis.com</Hyperlink>.<LineBreak />
                     <LineBreak />
-                    Thanks to NPOI (http://npoi.googlecode.com), which is used for Excel-Export and Import and is licensed under the Apache License, Version 2.0 (see below). <LineBreak />
+                    Thanks to the OMG Community (<Hyperlink NavigateUri="http://www.omg.org" RequestNavigate="Hyperlink_OnRequestNavigate">http://www.omg.org</Hyperlink>) which is the base for the complete DatenMeister application. <LineBreak />
                     <LineBreak />
-                    Thanks to NUnit (http://www.nunit.org), which is used for Software Unit-Testing during development.<LineBreak />
+                    Thanks to NPOI (<Hyperlink NavigateUri="http://npoi.googlecode.com" RequestNavigate="Hyperlink_OnRequestNavigate">http://npoi.googlecode.com</Hyperlink>>), which is used for Excel-Export and Import and is licensed under the Apache License, Version 2.0 (see below). <LineBreak />
                     <LineBreak />
-                    Thanks to Newtonsoft.Json (http://james.newtonking.com/json), which is used for Json Import and Export.<LineBreak />
+                    Thanks to NUnit (<Hyperlink NavigateUri="http://www.nunit.org" RequestNavigate="Hyperlink_OnRequestNavigate">http://www.nunit.org</Hyperlink>), which is used for Software Unit-Testing during development.<LineBreak />
+                    <LineBreak />
+                    Thanks to Newtonsoft.Json (<Hyperlink NavigateUri="http://james.newtonking.com/json" RequestNavigate="Hyperlink_OnRequestNavigate">http://james.newtonking.com/json</Hyperlink>), which is used for Json Import and Export.<LineBreak />
                     <!--<LineBreak />
                     Thanks to DotLiquid (http://dotliquidmarkup.org/), which is used for Html export und is licensed under the Apache License, Version 2.0.<LineBreak />-->
                     <LineBreak />
-                    Thanks to Gnome Icon Theme (http://ftp.gnome.org/pub/GNOME/sources/gnome-icon-theme/3.12/), which is used for the icons.
+                    Thanks to Gnome Icon Theme (<Hyperlink NavigateUri="http://ftp.gnome.org/pub/GNOME/sources/gnome-icon-theme/3.12/" RequestNavigate="Hyperlink_OnRequestNavigate">http://ftp.gnome.org/pub/GNOME/sources/gnome-icon-theme/3.12/</Hyperlink>), which is used for the icons.
                     <LineBreak />
                      ====================================================================<LineBreak />
                 Apache Licence, Version 2.0: <LineBreak />

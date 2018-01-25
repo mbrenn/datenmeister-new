@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -16,6 +15,7 @@ namespace DatenMeisterWPF.Navigation
         /// Performs the import from excel
         /// </summary>
         /// <param name="host">Host being used</param>
+        /// <param name="workspaceId">Id of the workspace into which the excel shall be imported</param>
         public static IControlNavigation ImportFromExcel(INavigationHost host, string workspaceId)
         {
             var result = new ControlNavigation();

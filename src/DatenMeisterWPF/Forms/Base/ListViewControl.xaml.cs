@@ -381,7 +381,7 @@ namespace DatenMeisterWPF.Forms.Base
                     return;
                 }
 
-                var events = Navigator.TheNavigator.NavigateToElementDetailView(
+                var events = Navigator.NavigateToElementDetailView(
                     NavigationHost, 
                     selectedElement as IElement);
                 events.Closed += (sender, args) => UpdateContent();

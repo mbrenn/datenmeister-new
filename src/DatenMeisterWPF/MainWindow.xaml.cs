@@ -17,8 +17,9 @@ namespace DatenMeisterWPF
     /// </summary>
     public partial class MainWindow : Window, INavigationHost, IHasRibbon
     {
-        private readonly RibbonHelper RibbonHelper;
+        private readonly RibbonHelper _ribbonHelper;
 
+        /// <inheritdoc />
         /// <summary>
         /// Gets the ribbon
         /// </summary>
@@ -28,7 +29,7 @@ namespace DatenMeisterWPF
         public MainWindow()
         {
             InitializeComponent();
-            RibbonHelper = new RibbonHelper(this);
+            _ribbonHelper = new RibbonHelper(this);
         }
 
         private async void Window_Initialized(object sender, EventArgs e)
@@ -37,7 +38,7 @@ namespace DatenMeisterWPF
             App.Scope = await Task.Run(
                 () => GiveMe.DatenMeister());
 
-            RibbonHelper.LoadIconRepository();
+            _ribbonHelper.LoadIconRepository();
 
             Navigator.NavigateToWorkspaces(this);
         }
@@ -55,15 +56,15 @@ namespace DatenMeisterWPF
             // Only if navigation method is a list
             if (navigationMode == NavigationMode.List)
             {
-                RibbonHelper.ClearRibbons();
+                _ribbonHelper.ClearRibbons();
 
-                RibbonHelper.AddNavigationButton(
+                _ribbonHelper.AddNavigationButton(
                     "Workspaces",
                     () => Navigator.NavigateToWorkspaces(this),
                     Icons.WorkspacesShow,
                     NavigationCategories.File + ".Workspaces");
 
-                RibbonHelper.AddNavigationButton(
+                _ribbonHelper.AddNavigationButton(
                     "Search",
                     () => Navigator.SearchByUrl(this),
                     null,
@@ -84,13 +85,13 @@ namespace DatenMeisterWPF
                         break;
                 }
 
-                RibbonHelper.PrepareDefaultNavigation();
+                _ribbonHelper.PrepareDefaultNavigation();
                 if (userControl is INavigationGuest guest)
                 {
                     guest.PrepareNavigation();
                 }
 
-                RibbonHelper.FinalizeRibbons();
+                _ribbonHelper.FinalizeRibbons();
 
                 return result;
             }
@@ -118,7 +119,7 @@ namespace DatenMeisterWPF
         /// <param name="categoryName">Category of the MainRibbon to be added</param>
         public void AddNavigationButton(string name, Action clickMethod, string imageName, string categoryName)
         {
-            RibbonHelper.AddNavigationButton(name, clickMethod, imageName, categoryName);
+            _ribbonHelper.AddNavigationButton(name, clickMethod, imageName, categoryName);
         }
     }
 }

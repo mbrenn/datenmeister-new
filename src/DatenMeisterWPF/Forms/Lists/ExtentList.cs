@@ -43,7 +43,7 @@ namespace DatenMeisterWPF.Forms.Lists
             {
                 var uri = extentElement.get("uri").ToString();
 
-                var events = Navigator.TheNavigator.NavigateToItemsInExtent(
+                var events = Navigator.NavigateToItemsInExtent(
                     NavigationHost,
                     workspaceId,
                     uri);
@@ -84,7 +84,7 @@ namespace DatenMeisterWPF.Forms.Lists
 
             void NewXmiExtent()
             {
-                var events = Navigator.TheNavigator.NavigateToNewXmiExtentDetailView(NavigationHost, _workspaceId);
+                var events = Navigator.NavigateToNewXmiExtentDetailView(NavigationHost, _workspaceId);
                 events.Closed += (x, y) => UpdateContent();
             }
 

@@ -39,7 +39,7 @@ namespace DatenMeisterWPF
 
             RibbonHelper.LoadIconRepository();
 
-            Navigator.TheNavigator.NavigateToWorkspaces(this);
+            Navigator.NavigateToWorkspaces(this);
         }
 
         /// <summary>
@@ -59,13 +59,13 @@ namespace DatenMeisterWPF
 
                 RibbonHelper.AddNavigationButton(
                     "Workspaces",
-                    () => Navigator.TheNavigator.NavigateToWorkspaces(this),
+                    () => Navigator.NavigateToWorkspaces(this),
                     Icons.WorkspacesShow,
                     NavigationCategories.File + ".Workspaces");
 
                 RibbonHelper.AddNavigationButton(
                     "Search",
-                    () => Navigator.TheNavigator.SearchByUrl(this),
+                    () => Navigator.SearchByUrl(this),
                     null,
                     NavigationCategories.File + ".Search");
 
@@ -95,7 +95,7 @@ namespace DatenMeisterWPF
                 return result;
             }
 
-            return null;
+            return Navigator.NavigateByCreatingAWindow(this, factoryMethod);
         }
         
         public void SetFocus()

@@ -11,8 +11,7 @@ namespace DatenMeisterWPF.Navigation
             Closed?.Invoke(this, EventArgs.Empty);
         }
     }
-
-    [Obsolete]
+    
     public class ControlNavigationNewItem : ControlNavigation, IControlNavigationNewItem
     {
         public ControlNavigationNewItem()

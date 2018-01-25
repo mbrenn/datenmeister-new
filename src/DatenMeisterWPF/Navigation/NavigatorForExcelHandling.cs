@@ -9,7 +9,7 @@ using Microsoft.Win32;
 
 namespace DatenMeisterWPF.Navigation
 {
-    public static class ImportFromExcelNavigation
+    public static class NavigatorForExcelHandling
     {
         /// <summary>
         /// Performs the import from excel

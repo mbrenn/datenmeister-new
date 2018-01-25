@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
+using System.Windows.Navigation;
 
 namespace DatenMeisterWPF.Windows
 {
@@ -10,6 +12,11 @@ namespace DatenMeisterWPF.Windows
         public AboutDialog()
         {
             InitializeComponent();
+        }
+
+        private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(e.Uri.ToString());
         }
     }
 }

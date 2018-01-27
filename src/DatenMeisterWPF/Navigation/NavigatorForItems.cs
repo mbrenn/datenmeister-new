@@ -100,22 +100,11 @@ namespace DatenMeisterWPF.Navigation
         /// <summary>
         /// Creates a new item for the given extent being located in the workspace
         /// </summary>
-        /// <param name="window">Navigation host being used to open up the new dialog</param>
-        /// <param name="collection">Extent in which the element shall be added</param>
-        /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public static IControlNavigation NavigateToNewItem(INavigationHost window, IReflectiveCollection collection)
-        {
-            return NavigateToNewItem(window, ((IHasExtent) collection).Extent);
-        }
-
-        /// <summary>
-        /// Creates a new item for the given extent being located in the workspace
-        /// </summary>
-        /// <param name="window">Navigation host being used to open up the new dialog</param>
-        /// <param name="host">Object to whose property, the new element will be added
+        /// <param name="window">Navigation extent being used to open up the new dialog</param>
+        /// <param name="extent">Object to whose property, the new element will be added
         /// </param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public static IControlNavigationNewItem NavigateToNewItem(INavigationHost window, IExtent host)
+        public static IControlNavigationNewItem NavigateToNewItemForExtent(INavigationHost window, IExtent extent)
         {
             var viewLogic = App.Scope.Resolve<ViewLogic>();
             var viewDefinitions = App.Scope.Resolve<ManagementViewDefinitions>();
@@ -126,7 +115,7 @@ namespace DatenMeisterWPF.Navigation
                 () =>
                 {
                     var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetViewExtent());
-                    var items = extentFunctions.GetCreatableTypes(host);
+                    var items = extentFunctions.GetCreatableTypes(extent);
                     var formPathToType = viewDefinitions.GetFindTypeForm(items.CreatableTypes);
 
                     var control = new DetailFormControl();
@@ -136,7 +125,8 @@ namespace DatenMeisterWPF.Navigation
                     {
                         if (control.DetailElement.getOrDefault("selectedType") is IElement metaClass)
                         {
-                            var detailResult = NavigateToNewItem(window, host.elements(), metaClass);
+                            var detailResult = NavigateToNewItemForExtent(window, extent.elements(), metaClass);
+                            detailResult.NewItemCreated += (a, b) => extent.elements().add(b.NewItem);
                             detailResult.Closed += (a, b) => result.OnClosed();
                         }
                     };
@@ -152,21 +142,26 @@ namespace DatenMeisterWPF.Navigation
         /// <summary>
         /// Creates a new item for the given extent and reflective collection by metaclass 
         /// </summary>
-        /// <param name="window">Navigation host of window</param>
+        /// <param name="window">Navigation extent of window</param>
         /// <param name="collection">Collection to which the item will be added</param>
         /// <param name="metaClass">Metaclass to be added</param>
         /// <returns>The navigation being used for control</returns>
-        public static  IControlNavigation NavigateToNewItem(INavigationHost window, IReflectiveCollection collection,
+        public static  IControlNavigationNewItem NavigateToNewItemForExtent(
+            INavigationHost window, 
+            IReflectiveCollection collection,
             IElement metaClass)
         {
-            var result = new ControlNavigation();
+            var result = new ControlNavigationNewItem();
             var extent = (collection as IHasExtent)?.Extent;
             var factory = new MofFactory(extent);
             var newElement = factory.create(metaClass);
 
             var detailControlView = NavigateToElementDetailView(window, newElement);
-            detailControlView.Closed += (a, b) => result.OnClosed();
-            collection.add(newElement);
+            detailControlView.Closed += (a, b) =>
+            {
+                result.OnNewItemCreated(new NewItemEventArgs(newElement));
+                result.OnClosed();
+            };
 
             return result;
         }

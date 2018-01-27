@@ -84,7 +84,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             var createItemButton = new Button { Content = "Add item" };
             createItemButton.Click += (x, y) =>
             {
-                var result = NavigatorForItems.NavigateToNewItem(detailForm.NavigationHost, ((IHasExtent) value).Extent);
+                var result = NavigatorForItems.NavigateToNewItemForExtent(detailForm.NavigationHost, ((IHasExtent) value).Extent);
                 result.NewItemCreated += (a, b) =>
                 {
                     if (value.getOrDefault(name) is IReflectiveCollection propertyCollection)

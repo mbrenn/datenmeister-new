@@ -7,6 +7,6 @@
              mc:Ignorable="d" Initialized="ItemsTreeView_OnInitialized" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            <TreeView x:Name="treeView"></TreeView>
+            <TreeView x:Name="treeView" MouseDoubleClick="treeView_MouseDoubleClick"></TreeView>
     </Grid>
 </UserControl>

@@ -16,6 +16,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
+using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Base
 {
@@ -143,10 +144,27 @@ namespace DatenMeisterWPF.Forms.Base
             return treeViewItem;
         }
 
-
         private void ItemsTreeView_OnInitialized(object sender, EventArgs e)
         {
             UpdateView();
+        }
+
+        private void OnItemSelected(object item)
+        {
+            if (item is IObject element)
+            {
+                ItemSelected?.Invoke(this, new ItemEventArgs(element));
+            }
+        }
+
+        public event EventHandler<ItemEventArgs> ItemSelected;
+
+        private void treeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (treeView.SelectedItem is TreeViewItem treeViewItem)
+            {
+                OnItemSelected(treeViewItem.Tag);
+            }
         }
     }
 }

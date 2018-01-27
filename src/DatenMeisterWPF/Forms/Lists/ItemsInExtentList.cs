@@ -101,6 +101,7 @@ namespace DatenMeisterWPF.Forms.Lists
                         var window = new TreeViewWindow();
                         window.SetDefaultProperties();
                         window.SetCollection(_extent.elements());
+                        window.ItemSelected += (x, y) => { MessageBox.Show(y.Item.ToString()); };
                         window.Show();
                     }
                 }, 

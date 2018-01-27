@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Windows
 {
@@ -20,6 +22,8 @@ namespace DatenMeisterWPF.Windows
     /// </summary>
     public partial class TreeViewWindow : Window
     {
+        public event EventHandler<ItemEventArgs> ItemSelected;
+
         public TreeViewWindow()
         {
             InitializeComponent();
@@ -33,7 +37,7 @@ namespace DatenMeisterWPF.Windows
         public void AddPropertyForChild(params string[] properties)
         {
             treeView.AddPropertyForChild(properties);
-        }
+        }°
 
         /// <summary>
         /// Sets the default properties for the view.
@@ -42,6 +46,20 @@ namespace DatenMeisterWPF.Windows
         public void SetDefaultProperties()
         {
             treeView.SetDefaultProperties();
+        }
+
+
+        private void OnItemSelected(object item)
+        {
+            if (item is IObject element)
+            {
+                ItemSelected?.Invoke(this, new ItemEventArgs(element));
+            }
+        }
+
+        private void TreeView_OnItemSelected(object sender, ItemEventArgs e)
+        {
+            OnItemSelected(e.Item);
         }
     }
 }

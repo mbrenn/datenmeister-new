@@ -40,7 +40,21 @@ namespace DatenMeisterWPF.Navigation
         /// Gets or sets the newly created item
         /// </summary>
         public IObject NewItem { get; set; }
+    }
 
+    public class ItemEventArgs : EventArgs
+    {        /// <summary>
+        /// Initializes a new instance of the NewItemEventArgs
+        /// </summary>
+        /// <param name="item"></param>
+        public ItemEventArgs(IObject item)
+        {
+            Item = item;
+        }
 
+        /// <summary>
+        /// Gets or sets the newly created item
+        /// </summary>
+        public IObject Item { get; set; }
     }
 }

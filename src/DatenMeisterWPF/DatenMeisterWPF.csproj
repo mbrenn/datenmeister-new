@@ -126,6 +126,9 @@
     <Compile Include="Windows\QueryElementDialog.xaml.cs">
       <DependentUpon>QueryElementDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\TreeViewWindow.xaml.cs">
+      <DependentUpon>TreeViewWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Forms\Base\DetailFormControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -187,6 +190,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\QueryElementDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\TreeViewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

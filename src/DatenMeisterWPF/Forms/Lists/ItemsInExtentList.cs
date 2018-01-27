@@ -9,6 +9,7 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
+using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
@@ -16,6 +17,7 @@ namespace DatenMeisterWPF.Forms.Lists
     {
         private string _workspaceId;
         private string _extentUrl;
+        private IExtent _extent;
 
         /// <inheritdoc />
         /// <summary>
@@ -36,18 +38,18 @@ namespace DatenMeisterWPF.Forms.Lists
             _workspaceId = workspaceId;
             _extentUrl = extentUrl;
             var workLogic = App.Scope.Resolve<IWorkspaceLogic>();
-            workLogic.FindExtentAndWorkspace(workspaceId, extentUrl, out var workspace, out var extent);
-            if (extent == null)
+            workLogic.FindExtentAndWorkspace(workspaceId, extentUrl, out var workspace, out _extent);
+            if (_extent == null)
             {
                 MessageBox.Show("The given workspace and extent was not found.");
                 return;
             }
 
-            SetContent(extent.elements(), null);
+            SetContent(_extent.elements(), null);
 
             AddGenericButton("New Item", () =>
             {
-                var elements = Navigator.TheNavigator.NavigateToNewItem(NavigationHost, extent.elements());
+                var elements = Navigator.TheNavigator.NavigateToNewItem(NavigationHost, _extent.elements());
                 elements.Closed += (x, y) =>
                 {
                     UpdateContent();
@@ -64,8 +66,8 @@ namespace DatenMeisterWPF.Forms.Lists
                             "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
                         MessageBoxResult.Yes)
                     {
-                        extent.elements().remove(item);
-                        SetContent(extent.elements(), null);
+                        _extent.elements().remove(item);
+                        SetContent(_extent.elements(), null);
                     }
                 });
         }
@@ -89,6 +91,21 @@ namespace DatenMeisterWPF.Forms.Lists
                 () => Navigator.TheNavigator.OpenExtent(NavigationHost, _workspaceId, _extentUrl),
                 null,
                 NavigationCategories.File + ".Workspaces");
+
+            NavigationHost.AddNavigationButton(
+                "ShowAsTree",
+                () =>
+                {
+                    if (_extent != null)
+                    {
+                        var window = new TreeViewWindow();
+                        window.SetDefaultProperties();
+                        window.SetCollection(_extent.elements());
+                        window.Show();
+                    }
+                }, 
+                null,
+                NavigationCategories.File + ".Views");
         }
     }
 }

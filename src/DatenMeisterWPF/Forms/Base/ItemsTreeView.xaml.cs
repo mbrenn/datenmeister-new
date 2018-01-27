@@ -12,8 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 
 namespace DatenMeisterWPF.Forms.Base
 {
@@ -24,10 +26,12 @@ namespace DatenMeisterWPF.Forms.Base
     {
         private IReflectiveCollection _itemsSource;
 
+        private HashSet<IObject> _alreadyVisited = new HashSet<IObject>();
+
         /// <summary>
         /// Stores the properties being used to retrieve the items
         /// </summary>
-        private List<string> _propertiesForChildren = new List<string>();
+        private readonly HashSet<string> _propertiesForChildren = new HashSet<string>();
 
         public ItemsTreeView()
         {
@@ -44,41 +48,101 @@ namespace DatenMeisterWPF.Forms.Base
             }
         }
 
+        /// <summary>
+        /// Adds a property as a child property.
+        /// </summary>
+        /// <param name="properties">Properties which shall be added reflecting a child property</param>
         public void AddPropertyForChild(params string[] properties)
         {
-            _propertiesForChildren.AddRange(properties);
-        }
-
-
-        private void UpdateView()
-        { 
-            if (!IsInitialized || ItemsSource == null)
+            foreach (var property in properties)
             {
-                // Save the time... 
-                return;
+                _propertiesForChildren.Add(property);
             }
 
-            foreach (var item in ItemsSource)
+            UpdateView();
+        }
+
+        /// <summary>
+        /// Sets the default properties for the view.
+        /// The default property is "packagedElement" as child package for Packages
+        /// </summary>
+        public void SetDefaultProperties()
+        {
+            _propertiesForChildren.Add(_UML._Packages._Package.packagedElement);
+            UpdateView();
+        }
+
+        /// <summary>
+        /// Updates the complete view of the item tree
+        /// </summary>
+        private void UpdateView()
+        {
+            lock (_alreadyVisited)
             {
-                var treeViewItem = new TreeViewItem();
-
-                treeViewItem.Header = item.ToString();
-
-                if (item is IObject itemAsObject)
+                if (!IsInitialized || ItemsSource == null)
                 {
-                    foreach (var property in _propertiesForChildren)
+                    // Save the time... 
+                    return;
+                }
+
+                var model = new List<TreeViewItem>();
+                foreach (var item in ItemsSource)
+                {
+                    var treeViewItem = CreateTreeViewItem(item);
+                    if (treeViewItem != null)
                     {
-                        if (itemAsObject.isSet(property))
+                        model.Add(treeViewItem);
+                    }
+                }
+
+                treeView.ItemsSource = model;
+            }
+        }
+
+        /// <summary>
+        /// Creates the treeview item for the given item. 
+        /// If thie item is an object and contains additional items within the properties, 
+        /// these subitems are also creates as TreeViewItemss
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        private TreeViewItem CreateTreeViewItem(object item)
+        {
+            if (_alreadyVisited.Contains(item))
+            {
+                return null;
+            }
+
+            var treeViewItem = new TreeViewItem
+            {
+                Header = item.ToString(),
+                Tag = item
+            };
+
+            if (item is IObject itemAsObject)
+            {
+                var childModels = new List<TreeViewItem>();
+                foreach (var property in _propertiesForChildren)
+                {
+                    if (itemAsObject.getOrDefault(property) is IReflectiveCollection childItems)
+                    {
+                        foreach (var childItem in childItems)
                         {
-                            var childItems = itemAsObject.get(property) as IReflectiveCollection;
+                            var childTreeViewItem = CreateTreeViewItem(childItem);
+                            if (childTreeViewItem != null)
+                            {
+                                childModels.Add(childTreeViewItem);
+                            }
                         }
                     }
                 }
 
-
+                treeViewItem.ItemsSource = childModels;
             }
-            throw new NotImplementedException();
+
+            return treeViewItem;
         }
+
 
         private void ItemsTreeView_OnInitialized(object sender, EventArgs e)
         {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
@@ -84,7 +85,9 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             var createItemButton = new Button { Content = "Add item" };
             createItemButton.Click += (x, y) =>
             {
-                var result = NavigatorForItems.NavigateToNewItemForExtent(detailForm.NavigationHost, ((IHasExtent) value).Extent);
+                var result = NavigatorForItems.NavigateToNewItem(
+                    detailForm.NavigationHost,
+                    (value as MofObject)?.CreatedByExtent);
                 result.NewItemCreated += (a, b) =>
                 {
                     if (value.getOrDefault(name) is IReflectiveCollection propertyCollection)

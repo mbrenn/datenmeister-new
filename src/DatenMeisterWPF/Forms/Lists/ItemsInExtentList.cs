@@ -40,7 +40,7 @@ namespace DatenMeisterWPF.Forms.Lists
             _workspaceId = workspaceId;
             _extentUrl = extentUrl;
             var workLogic = App.Scope.Resolve<IWorkspaceLogic>();
-            workLogic.FindExtentAndWorkspace(workspaceId, extentUrl, out var workspace, out var extent);
+            workLogic.FindExtentAndWorkspace(workspaceId, extentUrl, out var _, out var extent);
             if (extent == null)
             {
                 MessageBox.Show("The given workspace and extent was not found.");
@@ -58,7 +58,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     var typeName = type.get(_UML._CommonStructure._NamedElement.name);
                     AddGenericButton($"New {typeName}", () =>
                     {
-                        var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, extent.elements(), type);
+                        var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, extent, type);
                         elements.Closed += (x, y) =>
                         {
                             UpdateContent();

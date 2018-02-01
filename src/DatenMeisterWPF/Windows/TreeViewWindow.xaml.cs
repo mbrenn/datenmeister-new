@@ -37,7 +37,7 @@ namespace DatenMeisterWPF.Windows
         public void AddPropertyForChild(params string[] properties)
         {
             treeView.AddPropertyForChild(properties);
-        }°
+        }
 
         /// <summary>
         /// Sets the default properties for the view.

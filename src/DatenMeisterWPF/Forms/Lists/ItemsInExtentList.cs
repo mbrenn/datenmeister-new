@@ -59,7 +59,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     var typeName = type.get(_UML._CommonStructure._NamedElement.name);
                     AddGenericButton($"New {typeName}", () =>
                     {
-                        var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, extent, type);
+                        var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
                         elements.Closed += (x, y) =>
                         {
                             UpdateContent();
@@ -71,7 +71,7 @@ namespace DatenMeisterWPF.Forms.Lists
             // Sets the button for the new item
             AddGenericButton("New Item", () =>
             {
-                var elements = Navigator.TheNavigator.NavigateToNewItem(NavigationHost, _extent.elements());
+                var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
                 elements.Closed += (x, y) =>
                 {
                     UpdateContent();

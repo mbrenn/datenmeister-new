@@ -125,10 +125,9 @@ namespace DatenMeisterWPF.Navigation
                     {
                         if (control.DetailElement.getOrDefault("selectedType") is IElement metaClass)
                         {
-                            var detailResult = NavigateToNewItemForExtent(window, extent, metaClass);
+                            var detailResult = NavigateToCreateNewItem(window, extent, metaClass);
                             detailResult.NewItemCreated += (a, b) =>
                             {
-                                extent.elements().add(b.NewItem);
                                 result.OnNewItemCreated(b);
                             };
                             detailResult.Closed += (a, b) => result.OnClosed();
@@ -152,41 +151,30 @@ namespace DatenMeisterWPF.Navigation
         /// <returns>The control element that can be used to receive events from the dialog</returns>
         public static IControlNavigationNewItem NavigateToNewItemForExtent(INavigationHost window, IExtent extent)
         {
-            var viewLogic = App.Scope.Resolve<ViewLogic>();
-            var viewDefinitions = App.Scope.Resolve<ManagementViewDefinitions>();
-            var extentFunctions = App.Scope.Resolve<ExtentFunctions>();
+            var controlFunction = NavigateToNewItem(window, extent);
+            controlFunction.NewItemCreated += (x, y) => {
+                extent.elements().add(y.NewItem);
+            };
 
-            var result = new ControlNavigationNewItem();
-            var navigationControl = window.NavigateTo(
-                () =>
-                {
-                    var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetViewExtent());
-                    var items = extentFunctions.GetCreatableTypes(extent);
-                    var formPathToType = viewDefinitions.GetFindTypeForm(items.CreatableTypes);
+            return controlFunction;
+        }
 
-                    var control = new DetailFormControl();
-                    control.SetContent(element, formPathToType);
-                    control.AddDefaultButtons("Create");
-                    control.ElementSaved += (x, y) =>
-                    {
-                        if (control.DetailElement.getOrDefault("selectedType") is IElement metaClass)
-                        {
-                            var detailResult = NavigateToNewItemForExtent(window, extent, metaClass);
-                            detailResult.NewItemCreated += (a, b) =>
-                            {
-                                extent.elements().add(b.NewItem);
-                                result.OnNewItemCreated(b);
-                            };
-                            detailResult.Closed += (a, b) => result.OnClosed();
-                        }
-                    };
+        /// <summary>
+        /// Creates a new item for the given extent being located in the workspace
+        /// </summary>
+        /// <param name="window">Navigation extent being used to open up the new dialog</param>
+        /// <param name="extent">Object to whose property, the new element will be added
+        /// </param>
+        /// <param name="metaClass">Meta class whose instance will be created</param>
+        /// <returns>The control element that can be used to receive events from the dialog</returns>
+        public static IControlNavigationNewItem NavigateToNewItemForExtent(INavigationHost window, IExtent extent, IElement metaClass)
+        {
+            var controlFunction = NavigateToCreateNewItem(window, extent, metaClass);
+            controlFunction.NewItemCreated += (x, y) => {
+                extent.elements().add(y.NewItem);
+            };
 
-                    return control;
-                },
-                NavigationMode.Detail);
-            
-            navigationControl.Closed += (x, y) => result.OnClosed();
-            return result;
+            return controlFunction;
         }
 
         /// <summary>
@@ -196,7 +184,7 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="extent">Extent being used to create the item in a factory</param>
         /// <param name="metaClass">Metaclass to be added</param>
         /// <returns>The navigation being used for control</returns>
-        public static  IControlNavigationNewItem NavigateToNewItemForExtent(
+        public static  IControlNavigationNewItem NavigateToCreateNewItem(
             INavigationHost window, 
             IExtent extent,
             IElement metaClass)

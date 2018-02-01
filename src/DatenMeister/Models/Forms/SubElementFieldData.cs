@@ -40,5 +40,10 @@ namespace DatenMeister.Models.Forms
         {
             isEnumeration = true;
         }
+
+        /// <summary>
+        /// Stores an enumeration of default types that can be used for creation
+        /// </summary>
+        public IList<IElement> defaultTypesForNewElements { get; set; }
     }
 }

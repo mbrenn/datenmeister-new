@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -107,6 +109,36 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             };
 
             panel.Children.Add(createItemButton);
+
+            // Gets the buttons for specific types
+            if (fieldData?.get(_FormAndFields._SubElementFieldData.defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
+            {
+                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
+                {
+                    var typeName = type.get(_UML._CommonStructure._NamedElement.name);
+                    var button = new Button {Content =  $"New {typeName}"};
+                    button.Click += (a, b) =>
+                    {
+                        var elements = NavigatorForItems.NavigateToCreateNewItem(detailForm.NavigationHost, (value as MofObject)?.CreatedByExtent, type);
+                        elements.NewItemCreated += (x, y) =>
+                        {
+                            if (value.getOrDefault(name) is IReflectiveCollection propertyCollection)
+                            {
+                                propertyCollection.add(y.NewItem);
+                            }
+                            else
+                            {
+                                value.set(name, new List<object> { y.NewItem });
+                            }
+
+                            panel.Children.Clear();
+                            CreatePanelElement(value, fieldData, detailForm, panel);
+                        };
+                    };
+
+                    panel.Children.Add(button);
+                }
+            }
         }
     }
 }

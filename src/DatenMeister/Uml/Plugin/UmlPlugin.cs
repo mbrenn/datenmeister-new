@@ -40,27 +40,32 @@ namespace DatenMeister.Uml.Plugin
             var umlClassForm = new ListForm(
                 "Class",
                 new MetaClassElementFieldData("Metaclass"),
-                new TextFieldData(_UML._CommonStructure._NamedElement.name, "Classname"),
-                new SubElementFieldData(_UML._StructuredClassifiers._Class.ownedAttribute, "Properties"));
+                new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Class"),
+                new SubElementFieldData(_UML._StructuredClassifiers._Class.ownedAttribute, "Properties")
+                {
+                    defaultTypesForNewElements = new[]
+                    {
+                        umlData.Classification.__Property
+                    }
+                });
             umlClassForm.defaultTypesForNewElements = new[]
             {
                 umlData.Packages.__Package,
                 umlData.StructuredClassifiers.__Class
             };
-
             _viewLogic.Add(umlClassForm);
             
             // Creates the forms
             var umlPropertyForm = new Form(
                 "Property",
                 new MetaClassElementFieldData("Metaclass"),
-                new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name"));
+                new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Property"));
             _viewLogic.Add(umlPropertyForm);
 
             var umlPackageForm = new Form(
                 "Package",
-                new TextFieldData(_UML._CommonStructure._NamedElement.name, "Classname"),
-                new SubElementFieldData(_UML._Packages._Package.packagedElement, "Member"));
+                new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Package"),
+                new SubElementFieldData(_UML._Packages._Package.packagedElement, "Packaged Elements"));
             _viewLogic.Add(umlPackageForm);
 
             // Creates the default mapping
@@ -79,7 +84,7 @@ namespace DatenMeister.Uml.Plugin
             var propertyView = new DefaultViewForMetaclass(
                 WorkspaceNames.UriUml + "#Property",
                 ViewType.Detail,
-                umlPackageForm);
+                umlPropertyForm);
             _viewLogic.Add(propertyView);
 
             var classExtentView = new DefaultViewForExtentType(

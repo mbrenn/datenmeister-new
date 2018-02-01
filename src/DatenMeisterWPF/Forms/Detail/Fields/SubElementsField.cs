@@ -98,8 +98,12 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     {
                         value.set(name, new List<object> { b.NewItem });
                     }
+
+                    panel.Children.Clear();
+                    CreatePanelElement(value, fieldData, detailForm, panel);
                 };
             };
+
             panel.Children.Add(createItemButton);
         }
     }

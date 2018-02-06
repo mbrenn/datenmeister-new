@@ -78,7 +78,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 };
                 
                 listViewControl.AddRowItemButton(
-                    "Open",
+                    "Edit",
                     item => NavigatorForItems.NavigateToElementDetailView(detailForm.NavigationHost, item),
                     ListViewControl.ButtonPosition.Before);
                 listViewControl.SetContent(valueOfElement, form);

@@ -65,7 +65,14 @@ namespace DatenMeister.Uml.Plugin
             var umlPackageForm = new Form(
                 "Package",
                 new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Package"),
-                new SubElementFieldData(_UML._Packages._Package.packagedElement, "Packaged Elements"));
+                new SubElementFieldData(_UML._Packages._Package.packagedElement, "Packaged Elements")
+                {
+                    defaultTypesForNewElements = new[]
+                    {
+                        umlData.Packages.__Package,
+                        umlData.StructuredClassifiers.__Class
+                    }
+                });
             _viewLogic.Add(umlPackageForm);
 
             // Creates the default mapping

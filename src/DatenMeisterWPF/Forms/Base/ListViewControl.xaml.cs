@@ -387,7 +387,7 @@ namespace DatenMeisterWPF.Forms.Base
                 events.Closed += (sender, args) => UpdateContent();
             }
 
-            AddRowItemButton("Open", Open, ButtonPosition.Before);
+            AddRowItemButton("Edit", Open, ButtonPosition.Before);
         }
 
         /// <summary>

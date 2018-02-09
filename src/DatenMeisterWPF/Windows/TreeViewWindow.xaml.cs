@@ -20,9 +20,17 @@ namespace DatenMeisterWPF.Windows
     /// <summary>
     /// Interaktionslogik für TreeViewWindow.xaml
     /// </summary>
-    public partial class TreeViewWindow : Window
+    public partial class TreeViewWindow : Window, INavigationGuest
     {
+        /// <summary>
+        /// Called, if the user selected and double clicked an item
+        /// </summary>
         public event EventHandler<ItemEventArgs> ItemSelected;
+
+        /// <summary>
+        /// Gets or sets the navigation host
+        /// </summary>
+        public INavigationHost NavigationHost { get; set; }
 
         public TreeViewWindow()
         {
@@ -60,6 +68,11 @@ namespace DatenMeisterWPF.Windows
         private void TreeView_OnItemSelected(object sender, ItemEventArgs e)
         {
             OnItemSelected(e.Item);
+        }
+
+        public void PrepareNavigation()
+        {
+            
         }
     }
 }

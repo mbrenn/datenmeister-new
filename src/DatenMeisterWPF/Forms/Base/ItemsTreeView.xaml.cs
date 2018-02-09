@@ -144,6 +144,7 @@ namespace DatenMeisterWPF.Forms.Base
             return treeViewItem;
         }
 
+
         private void ItemsTreeView_OnInitialized(object sender, EventArgs e)
         {
             UpdateView();

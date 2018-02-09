@@ -8,6 +8,11 @@
     public interface INavigationGuest
     {
         /// <summary>
+        /// Defines the navigation host
+        /// </summary>
+        INavigationHost NavigationHost { get; set; }
+
+        /// <summary>
         /// Prepares the navigation of the host. The function is called by the navigation 
         /// host. 
         /// </summary>

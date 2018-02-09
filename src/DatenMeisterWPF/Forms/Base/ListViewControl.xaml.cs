@@ -39,7 +39,7 @@ namespace DatenMeisterWPF.Forms.Base
             InitializeComponent();
         }
         
-        public INavigationHost NavigationHost;
+        public INavigationHost NavigationHost { get; set; }
 
         public IReflectiveSequence Items { get; set; }
 

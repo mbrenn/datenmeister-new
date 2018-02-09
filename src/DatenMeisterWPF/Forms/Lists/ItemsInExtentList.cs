@@ -119,7 +119,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 NavigationCategories.File + ".Workspaces");
 
             NavigationHost.AddNavigationButton(
-                "ShowAsTree",
+                "Show as tree",
                 () =>
                 {
                     if (_extent != null)
@@ -127,7 +127,10 @@ namespace DatenMeisterWPF.Forms.Lists
                         var window = new TreeViewWindow();
                         window.SetDefaultProperties();
                         window.SetCollection(_extent.elements());
-                        window.ItemSelected += (x, y) => { MessageBox.Show(y.Item.ToString()); };
+                        window.ItemSelected += (x, y) =>
+                        {
+                            NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
+                        };
                         window.Show();
                     }
                 }, 

@@ -75,19 +75,10 @@ namespace DatenMeisterWPF
 
                 MainControl.Content = userControl;
 
-                switch (userControl)
-                {
-                    case DetailFormControl detailForm:
-                        detailForm.NavigationHost = this;
-                        break;
-                    case ListViewControl listForm:
-                        listForm.NavigationHost = this;
-                        break;
-                }
-
                 _ribbonHelper.PrepareDefaultNavigation();
                 if (userControl is INavigationGuest guest)
                 {
+                    guest.NavigationHost = this;
                     guest.PrepareNavigation();
                 }
 

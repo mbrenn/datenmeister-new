@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Uml.Helper
@@ -13,7 +14,7 @@ namespace DatenMeister.Uml.Helper
         /// Returns a list of all properties within the classifier. 
         /// Also properties from generalized classes need to be returned
         /// </summary>
-        /// <param name="classifier"></param>
+        /// <param name="classifier">Gets the properties and all properties from base classes</param>
         public static IEnumerable<IElement> GetPropertiesOfClassifier(IElement classifier)
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
@@ -39,6 +40,11 @@ namespace DatenMeister.Uml.Helper
             }
         }
 
+        /// <summary>
+        /// Gets all generalizations of the given elements
+        /// </summary>
+        /// <param name="classifier">Classifier, whose generalizations are requested</param>
+        /// <returns>Enumeration of elements</returns>
         public static IEnumerable<IElement> GetGeneralizations(IElement classifier)
         {
             var propertyGeneralization = _UML._Classification._Classifier.generalization;
@@ -52,8 +58,7 @@ namespace DatenMeister.Uml.Helper
                     var generalizations = classifier.get(propertyGeneralization) as IEnumerable;
                     foreach (var generalization in generalizations.Cast<IElement>())
                     {
-                        var general = generalization.get(propertyGeneral) as IElement;
-                        if (general == null)
+                        if (!(generalization.get(propertyGeneral) is IElement general))
                         {
                             throw new InvalidOperationException("Somehow I got a null.... Generalizations needs to be verified");
                         }
@@ -61,6 +66,19 @@ namespace DatenMeister.Uml.Helper
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets all specializations of the given element and the element itself
+        /// </summary>
+        /// <param name="extent">Extent being used to find all elements</param>
+        /// <param name="element">Element to be </param>
+        /// <returns></returns>
+        public static IEnumerable<IElement> GetSpecializations(IUriExtent extent, IElement element)
+        {
+            yield return element;
+
+            extent.
         }
 
         /// <summary>

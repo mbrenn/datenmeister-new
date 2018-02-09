@@ -5,7 +5,7 @@ using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Navigation
 {
-    public class NavigatorForDialogs
+    public static class NavigatorForDialogs
     {
         /// <summary>
         /// Opens the window in which the user can search for an item by a specific url

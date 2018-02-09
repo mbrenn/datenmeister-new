@@ -9,6 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
@@ -52,17 +53,15 @@ namespace DatenMeisterWPF.Forms.Lists
             SetContent(_extent.elements(), null);
 
             // First, sets the first buttons upon the priorities
-            if (ActualFormDefinition?.get(_FormAndFields._ListForm.defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
+            if (ActualFormDefinition?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements) 
+                is IReflectiveCollection defaultTypesForNewItems)
             {
                 foreach (var type in defaultTypesForNewItems.OfType<IElement>())
                 {
                     var typeName = type.get(_UML._CommonStructure._NamedElement.name);
                     AddGenericButton($"New {typeName}", () =>
                     {
-                        var elements = NavigatorForItems.NavigateToNewItemForCollection(
-                            NavigationHost, 
-                            _extent.elements(), 
-                            type);
+                        var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
                         elements.Closed += (x, y) =>
                         {
                             UpdateContent();

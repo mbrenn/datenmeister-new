@@ -356,6 +356,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.SubElementFieldData._form = value;
                                 }
+                                if(name == "defaultTypesForNewElements") // Looking for property
+                                {
+                                    tree.SubElementFieldData._defaultTypesForNewElements = value;
+                                }
                                 if(name == "fieldType") // Looking for property
                                 {
                                     tree.SubElementFieldData._fieldType = value;

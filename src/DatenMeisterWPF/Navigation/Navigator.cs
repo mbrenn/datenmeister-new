@@ -94,6 +94,10 @@ namespace DatenMeisterWPF.Navigation
                 }
             }
 
+            if (userControl is INavigationGuest guest)
+            {
+                guest.PrepareNavigation();
+            }
             (userControl as INavigationGuest)?.PrepareNavigation();
 
             return result;

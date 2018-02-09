@@ -59,7 +59,10 @@ namespace DatenMeisterWPF.Forms.Lists
                     var typeName = type.get(_UML._CommonStructure._NamedElement.name);
                     AddGenericButton($"New {typeName}", () =>
                     {
-                        var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, extent.elements(), type);
+                        var elements = NavigatorForItems.NavigateToNewItemForCollection(
+                            NavigationHost, 
+                            _extent.elements(), 
+                            type);
                         elements.Closed += (x, y) =>
                         {
                             UpdateContent();
@@ -71,7 +74,7 @@ namespace DatenMeisterWPF.Forms.Lists
             // Sets the button for the new item
             AddGenericButton("New Item", () =>
             {
-                var elements = Navigator.TheNavigator.NavigateToNewItem(NavigationHost, _extent.elements());
+                var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
                 elements.Closed += (x, y) =>
                 {
                     UpdateContent();
@@ -117,7 +120,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 NavigationCategories.File + ".Workspaces");
 
             NavigationHost.AddNavigationButton(
-                "ShowAsTree",
+                "Show as tree",
                 () =>
                 {
                     if (_extent != null)
@@ -125,7 +128,10 @@ namespace DatenMeisterWPF.Forms.Lists
                         var window = new TreeViewWindow();
                         window.SetDefaultProperties();
                         window.SetCollection(_extent.elements());
-                        window.ItemSelected += (x, y) => { MessageBox.Show(y.Item.ToString()); };
+                        window.ItemSelected += (x, y) =>
+                        {
+                            NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
+                        };
                         window.Show();
                     }
                 }, 

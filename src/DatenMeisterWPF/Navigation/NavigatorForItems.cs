@@ -125,8 +125,7 @@ namespace DatenMeisterWPF.Navigation
                     {
                         if (control.DetailElement.getOrDefault("selectedType") is IElement metaClass)
                         {
-                            var detailResult = NavigateToNewItemForExtent(window, extent.elements(), metaClass);
-                            detailResult.NewItemCreated += (a, b) => extent.elements().add(b.NewItem);
+                            var detailResult = NavigateToNewItemForCollection(window, extent.elements(), metaClass);
                             detailResult.Closed += (a, b) => result.OnClosed();
                         }
                     };
@@ -143,22 +142,22 @@ namespace DatenMeisterWPF.Navigation
         /// Creates a new item for the given extent and reflective collection by metaclass 
         /// </summary>
         /// <param name="window">Navigation extent of window</param>
-        /// <param name="collection">Collection to which the item will be added</param>
+        /// <param name="extent">Extent to which the item will be added</param>
         /// <param name="metaClass">Metaclass to be added</param>
         /// <returns>The navigation being used for control</returns>
-        public static  IControlNavigationNewItem NavigateToNewItemForExtent(
+        public static  IControlNavigationNewItem NavigateToNewItemForCollection(
             INavigationHost window, 
-            IReflectiveCollection collection,
+            IReflectiveCollection extent,
             IElement metaClass)
         {
             var result = new ControlNavigationNewItem();
-            var extent = (collection as IHasExtent)?.Extent;
             var factory = new MofFactory(extent);
             var newElement = factory.create(metaClass);
 
             var detailControlView = NavigateToElementDetailView(window, newElement);
             detailControlView.Closed += (a, b) =>
             {
+                extent.add(newElement);
                 result.OnNewItemCreated(new NewItemEventArgs(newElement));
                 result.OnClosed();
             };

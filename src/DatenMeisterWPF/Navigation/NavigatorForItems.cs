@@ -158,6 +158,7 @@ namespace DatenMeisterWPF.Navigation
                 var detailResult =
                     NavigateToCreateNewItem(window, extent, createableTypes.SelectedType);
                 detailResult.Closed += (a, b) => result.OnClosed();
+                detailResult.NewItemCreated += (a, b) => result.OnNewItemCreated(b);
             };
 
             createableTypes.NavigateToSelectCreateableType(window, extent);

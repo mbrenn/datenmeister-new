@@ -77,8 +77,6 @@ namespace DatenMeister.Uml.Helper
         public static IEnumerable<IElement> GetSpecializations(IUriExtent extent, IElement element)
         {
             yield return element;
-
-            extent.
         }
 
         /// <summary>

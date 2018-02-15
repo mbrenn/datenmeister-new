@@ -35,7 +35,7 @@ namespace DatenMeisterWPF.Windows
 
         public IControlNavigation NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode)
         {
-            return Navigator.NavigateByCreatingAWindow(this, factoryMethod);
+            return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
         }
 
         /// <summary>

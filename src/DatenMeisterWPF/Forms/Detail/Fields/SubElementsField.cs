@@ -89,7 +89,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             var createItemButton = new Button { Content = "Add item" };
             createItemButton.Click += (x, y) =>
             {
-                var result = NavigatorForItems.NavigateToNewItem(
+                var result = NavigatorForItems.NavigateToCreateNewItem(
                     detailForm.NavigationHost,
                     (value as MofObject)?.CreatedByExtent);
                 result.NewItemCreated += (a, b) =>

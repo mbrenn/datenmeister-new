@@ -87,7 +87,7 @@ namespace DatenMeisterWPF
                 return result;
             }
 
-            return Navigator.NavigateByCreatingAWindow(this, factoryMethod);
+            return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
         }
         
         public void SetFocus()

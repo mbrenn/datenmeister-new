@@ -1,31 +1,26 @@
 ﻿using System;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using Autofac;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Modules.ViewFinder;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.ManagementProviders;
-using DatenMeister.Provider.XMI.ExtentStorage;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Extents;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base;
-using DatenMeisterWPF.Forms.Lists;
 using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Navigation
 {
     public enum NavigationMode
     {
+        /// <summary>
+        /// Shows a list of items 
+        /// </summary>
         List, 
+
+        /// <summary>
+        /// Shows a detailled view of items
+        /// </summary>
         Detail,
+
+        /// <summary>
+        /// Forces a popup of the window which will be centered before hand. 
+        /// </summary>
         ForceNewWindow
     }
 
@@ -53,7 +48,7 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="parentWindow">Parent window to be used</param>
         /// <param name="factoryMethod">Factory method to be used to create the usercontrol</param>
         /// <returns>Creates a new window which can be used by the user. </returns>
-        public static IControlNavigation NavigateByCreatingAWindow(Window parentWindow, Func<UserControl> factoryMethod)
+        public static IControlNavigation NavigateByCreatingAWindow(Window parentWindow, Func<UserControl> factoryMethod, NavigationMode navigationMode)
         {
             var result = new ControlNavigation();
             var userControl = factoryMethod();
@@ -63,7 +58,7 @@ namespace DatenMeisterWPF.Navigation
                     return null;
                 case ListViewControl asListViewControl:
                 {
-                    var window = new ListFormWindow
+                    var listFormWindow = new ListFormWindow
                     {
                         Owner = parentWindow,
                         MainViewSet =
@@ -72,35 +67,71 @@ namespace DatenMeisterWPF.Navigation
                         }
                     };
 
-                    window.Closed += (x, y) => result.OnClosed();
+                    listFormWindow.Closed += (x, y) => result.OnClosed();
+
+                    SetPosition(listFormWindow, parentWindow, navigationMode);
                     break;
                 }
                 case DetailFormControl asDetailFormControl:
                 {
-                    var window = new DetailFormWindow
+                    var detailFormWindow = new DetailFormWindow
                     {
                         Owner = parentWindow
                     };
-                    window.SetMainContent(asDetailFormControl);
+                    detailFormWindow.SetMainContent(asDetailFormControl);
 
-                    asDetailFormControl.NavigationHost = window;
-                    window.Show();
-                    window.Closed += (x, y) =>
+                    asDetailFormControl.NavigationHost = detailFormWindow;
+                    detailFormWindow.Show();
+                    detailFormWindow.Closed += (x, y) =>
                     {
                         result.OnClosed();
                         parentWindow.Focus();
                     };
-                    break;
+
+                    SetPosition(detailFormWindow, parentWindow, navigationMode);
+                        break;
                 }
             }
-
+            
             if (userControl is INavigationGuest guest)
             {
                 guest.PrepareNavigation();
             }
+
             (userControl as INavigationGuest)?.PrepareNavigation();
 
             return result;
+        }
+
+        /// <summary>
+        /// Sets the position of the new window dependent on the position of the old window and the used navigation mode
+        /// </summary>
+        /// <param name="newWindow">New window whose position need to be defined</param>
+        /// <param name="parentWindow">The parent window, which is the source of creation</param>
+        /// <param name="navigationMode">The used navigation mode</param>
+        private static void SetPosition(Window newWindow, Window parentWindow, NavigationMode navigationMode)
+        {
+            if (parentWindow == null)
+            {
+                // No window, no cry
+                return;
+            }
+
+            // Defines the window position dependent on the parentwindow
+            if (navigationMode == NavigationMode.ForceNewWindow)
+            {
+                var deltaX = parentWindow.Width - newWindow.Width;
+                var deltaY = parentWindow.Height - newWindow.Height;
+
+                newWindow.Left = parentWindow.Left + deltaX / 2;
+                newWindow.Top = parentWindow.Top + deltaY / 2;
+            }
+            else
+            {
+                // Checks the position of the window
+                newWindow.Left = parentWindow.Left + 20;
+                newWindow.Top = parentWindow.Top + 20;
+            }
         }
     }
 }

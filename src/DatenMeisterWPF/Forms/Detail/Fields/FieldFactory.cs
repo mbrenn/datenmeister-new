@@ -27,6 +27,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     return new DropdownField();
                 case DateTimeFieldData.FieldType:
                     return new DateTimeField();
+                case ReferenceFieldData.FieldType:
+                    return new ReferenceField();
                 default:
                     if (isEnumeration)
                     {

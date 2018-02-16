@@ -85,31 +85,6 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 panel.Children.Add(listViewControl);
             }
 
-            // If user clicks on the button, an empty reflective collection is created
-            var createItemButton = new Button { Content = "Add item" };
-            createItemButton.Click += (x, y) =>
-            {
-                var result = NavigatorForItems.NavigateToCreateNewItem(
-                    detailForm.NavigationHost,
-                    (value as MofObject)?.CreatedByExtent);
-                result.NewItemCreated += (a, b) =>
-                {
-                    if (value.getOrDefault(name) is IReflectiveCollection propertyCollection)
-                    {
-                        propertyCollection.add(b.NewItem);
-                    }
-                    else
-                    {
-                        value.set(name, new List<object> { b.NewItem });
-                    }
-
-                    panel.Children.Clear();
-                    CreatePanelElement(value, fieldData, detailForm, panel);
-                };
-            };
-
-            panel.Children.Add(createItemButton);
-
             // Gets the buttons for specific types
             if (fieldData?.get(_FormAndFields._SubElementFieldData.defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
             {
@@ -139,6 +114,31 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     panel.Children.Add(button);
                 }
             }
+
+            // If user clicks on the button, an empty reflective collection is created
+            var createItemButton = new Button { Content = "Add item" };
+            createItemButton.Click += (x, y) =>
+            {
+                var result = NavigatorForItems.NavigateToCreateNewItem(
+                    detailForm.NavigationHost,
+                    (value as MofObject)?.CreatedByExtent);
+                result.NewItemCreated += (a, b) =>
+                {
+                    if (value.getOrDefault(name) is IReflectiveCollection propertyCollection)
+                    {
+                        propertyCollection.add(b.NewItem);
+                    }
+                    else
+                    {
+                        value.set(name, new List<object> { b.NewItem });
+                    }
+
+                    panel.Children.Clear();
+                    CreatePanelElement(value, fieldData, detailForm, panel);
+                };
+            };
+
+            panel.Children.Add(createItemButton);
         }
     }
 }

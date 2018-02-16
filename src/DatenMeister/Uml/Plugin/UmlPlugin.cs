@@ -59,7 +59,9 @@ namespace DatenMeister.Uml.Plugin
             var umlPropertyForm = new Form(
                 "Property",
                 new MetaClassElementFieldData("Metaclass"),
-                new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Property"));
+                new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Property"),
+                new ReferenceFieldData(_UML._CommonStructure._TypedElement.type, "Type of Property"));
+
             _viewLogic.Add(umlPropertyForm);
 
             var umlPackageForm = new Form(

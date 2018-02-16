@@ -339,6 +339,25 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
+                        if(name == "ValuePair") // Looking for class
+                        {
+                            tree.__ValuePair = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "value") // Looking for property
+                                {
+                                    tree.ValuePair._value = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.ValuePair._name = value;
+                                }
+                            }
+                        }
                         if(name == "SubElementFieldData") // Looking for class
                         {
                             tree.__SubElementFieldData = value;
@@ -463,22 +482,46 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
-                        if(name == "ValuePair") // Looking for class
+                        if(name == "ReferenceFieldData") // Looking for class
                         {
-                            tree.__ValuePair = value;
+                            tree.__ReferenceFieldData = value;
                             isSet = value.isSet("ownedAttribute");
                             collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
-                                if(name == "value") // Looking for property
+                                if(name == "defaultExtentUri") // Looking for property
                                 {
-                                    tree.ValuePair._value = value;
+                                    tree.ReferenceFieldData._defaultExtentUri = value;
+                                }
+                                if(name == "defaultWorkspace") // Looking for property
+                                {
+                                    tree.ReferenceFieldData._defaultWorkspace = value;
+                                }
+                                if(name == "fieldType") // Looking for property
+                                {
+                                    tree.ReferenceFieldData._fieldType = value;
                                 }
                                 if(name == "name") // Looking for property
                                 {
-                                    tree.ValuePair._name = value;
+                                    tree.ReferenceFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.ReferenceFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.ReferenceFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.ReferenceFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.ReferenceFieldData._isReadOnly = value;
                                 }
                             }
                         }

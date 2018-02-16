@@ -16,11 +16,12 @@ namespace DatenMeister.Models.Forms
                 typeof(TextFieldData),
                 typeof(DateTimeFieldData),
                 typeof(DropDownFieldData),
+                typeof(DropDownFieldData.ValuePair),
                 typeof(SubElementFieldData),
                 typeof(DefaultViewForMetaclass),
                 typeof(DefaultViewForExtentType),
                 typeof(MetaClassElementFieldData),
-                typeof(DropDownFieldData.ValuePair)
+                typeof(ReferenceFieldData)
             };
         }
     }

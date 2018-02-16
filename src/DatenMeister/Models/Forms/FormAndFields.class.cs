@@ -227,6 +227,19 @@ namespace DatenMeister.Models.Forms
         public _DropDownFieldData @DropDownFieldData = new _DropDownFieldData();
         public IElement @__DropDownFieldData = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DropDownFieldData");
 
+        public class _ValuePair
+        {
+            public static string @value = "value";
+            public IElement _value = null;
+
+            public static string @name = "name";
+            public IElement _name = null;
+
+        }
+
+        public _ValuePair @ValuePair = new _ValuePair();
+        public IElement @__ValuePair = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DropDownFieldData%2BValuePair");
+
         public class _SubElementFieldData
         {
             public static string @metaClassUri = "metaClassUri";
@@ -315,18 +328,36 @@ namespace DatenMeister.Models.Forms
         public _MetaClassElementFieldData @MetaClassElementFieldData = new _MetaClassElementFieldData();
         public IElement @__MetaClassElementFieldData = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.MetaClassElementFieldData");
 
-        public class _ValuePair
+        public class _ReferenceFieldData
         {
-            public static string @value = "value";
-            public IElement _value = null;
+            public static string @defaultExtentUri = "defaultExtentUri";
+            public IElement _defaultExtentUri = null;
+
+            public static string @defaultWorkspace = "defaultWorkspace";
+            public IElement _defaultWorkspace = null;
+
+            public static string @fieldType = "fieldType";
+            public IElement _fieldType = null;
 
             public static string @name = "name";
             public IElement _name = null;
 
+            public static string @title = "title";
+            public IElement _title = null;
+
+            public static string @isEnumeration = "isEnumeration";
+            public IElement _isEnumeration = null;
+
+            public static string @defaultValue = "defaultValue";
+            public IElement _defaultValue = null;
+
+            public static string @isReadOnly = "isReadOnly";
+            public IElement _isReadOnly = null;
+
         }
 
-        public _ValuePair @ValuePair = new _ValuePair();
-        public IElement @__ValuePair = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DropDownFieldData%2BValuePair");
+        public _ReferenceFieldData @ReferenceFieldData = new _ReferenceFieldData();
+        public IElement @__ReferenceFieldData = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ReferenceFieldData");
 
         public static _FormAndFields TheOne = new _FormAndFields();
 

@@ -49,6 +49,20 @@ namespace DatenMeisterWPF.Forms.Base
             }
         }
 
+        public IObject SelectedElement
+        {
+            get
+            {
+                if (treeView.SelectedItem is TreeViewItem treeViewItem)
+                {
+                    return treeViewItem.Tag as IObject;
+                }
+
+                return null;
+            }
+        }
+
+
         /// <summary>
         /// Adds a property as a child property.
         /// </summary>
@@ -80,9 +94,15 @@ namespace DatenMeisterWPF.Forms.Base
         {
             lock (_alreadyVisited)
             {
-                if (!IsInitialized || ItemsSource == null)
+                if (!IsInitialized)
                 {
                     // Save the time... 
+                    return;
+                }
+
+                if (ItemsSource == null)
+                {
+                    treeView.ItemsSource = null;
                     return;
                 }
 

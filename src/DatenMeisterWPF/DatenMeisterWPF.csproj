@@ -114,7 +114,9 @@
     <Compile Include="Windows\ExcelImportDefinitionDialog.xaml.cs">
       <DependentUpon>ExcelImportDefinitionDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\LocateElementDialog.cs" />
+    <Compile Include="Windows\LocateItemDialog.xaml.cs">
+      <DependentUpon>LocateItemDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\RibbonHelper.cs" />
     <Compile Include="Windows\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
@@ -193,6 +195,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ListFormWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\LocateItemDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

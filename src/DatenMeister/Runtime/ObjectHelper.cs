@@ -216,6 +216,12 @@ namespace DatenMeister.Runtime
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
+            // If the given object is already an extent... happy live
+            if (value is IExtent asExtent)
+            {
+                return asExtent;
+            }
+
             // If the object is contained by another object, query the contained objects 
             // because the extents will only be stored in the root elements
             var asElement = value as IElement;

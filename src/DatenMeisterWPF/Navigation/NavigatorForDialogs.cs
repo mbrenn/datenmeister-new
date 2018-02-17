@@ -34,9 +34,18 @@ namespace DatenMeisterWPF.Navigation
             return null;
         }
 
-        public static IControlNavigation Locate(MainWindow mainWindow)
+        public static IControlNavigation Locate(INavigationHost mainWindow)
         {
-            throw new System.NotImplementedException();
+            var dlg = new LocateItemDialog {WorkspaceLogic = App.Scope.Resolve<IWorkspaceLogic>()};
+            dlg.UpdatedWorkspaces();
+            if (dlg.ShowDialog() == true)
+            {
+                return NavigatorForItems.NavigateToElementDetailView(
+                    mainWindow,
+                    dlg.SelectedElement);
+            }
+
+            return null;
         }
     }
 }

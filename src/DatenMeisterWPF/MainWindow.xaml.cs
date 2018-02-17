@@ -65,8 +65,14 @@ namespace DatenMeisterWPF
                     NavigationCategories.File + ".Workspaces");
 
                 _ribbonHelper.AddNavigationButton(
-                    "Search",
+                    "Find by URL",
                     () => NavigatorForDialogs.SearchByUrl(this),
+                    null,
+                    NavigationCategories.File + ".Search");
+
+                _ribbonHelper.AddNavigationButton(
+                    "Locate",
+                    () => NavigatorForDialogs.Locate(this),
                     null,
                     NavigationCategories.File + ".Search");
 

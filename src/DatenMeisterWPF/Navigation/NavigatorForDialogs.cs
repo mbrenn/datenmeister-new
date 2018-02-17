@@ -33,5 +33,10 @@ namespace DatenMeisterWPF.Navigation
 
             return null;
         }
+
+        public static IControlNavigation Locate(MainWindow mainWindow)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

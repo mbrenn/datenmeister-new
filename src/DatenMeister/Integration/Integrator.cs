@@ -19,6 +19,7 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
+using DatenMeister.Uml.Helper;
 using WorkspaceData = DatenMeister.Runtime.Workspaces.WorkspaceData;
 
 namespace DatenMeister.Integration
@@ -139,6 +140,7 @@ namespace DatenMeister.Integration
                 localTypeSupport.Initialize();
                 var typeWorkspace = workspaceLogic.GetTypesWorkspace();
                 var mofFactory = new MofFactory(localTypeSupport.InternalTypes);
+                var namedElementMethods = scope.Resolve<NamedElementMethods>();
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();
@@ -146,7 +148,7 @@ namespace DatenMeister.Integration
                 IntegrateFormAndFields.Assign(
                     workspaceData.Uml.Get<_UML>(),
                     mofFactory,
-                    localTypeSupport.InternalTypes.elements(),
+                    namedElementMethods.GotoPackage(localTypeSupport.InternalTypes.elements(), "Forms"),
                     fields,
                     (MofUriExtent) localTypeSupport.InternalTypes);
 
@@ -156,7 +158,7 @@ namespace DatenMeister.Integration
                 IntegrateManagementProvider.Assign(
                     workspaceData.Uml.Get<_UML>(),
                     mofFactory,
-                    localTypeSupport.InternalTypes.elements(),
+                    namedElementMethods.GotoPackage(localTypeSupport.InternalTypes.elements(), "Management"),
                     managementProvider,
                     (MofUriExtent) localTypeSupport.InternalTypes);
 

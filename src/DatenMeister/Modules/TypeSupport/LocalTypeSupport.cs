@@ -76,7 +76,7 @@ namespace DatenMeister.Modules.TypeSupport
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
 
             // Copies the Primitive Types to the internal types, so it is available for everybody. 
-            var foundPackage = _namedElementMethods.CreatePackage(extentTypes.elements(), "PrimitiveTypes");
+            var foundPackage = _namedElementMethods.GetOrCreatePackageStructure(extentTypes.elements(), "PrimitiveTypes");
             CopyMethods.CopyToElementsProperty(
                 _workspaceLogic.GetUmlWorkspace()
                     .FindElementByUri("datenmeister:///_internal/xmi/primitivetypes?PrimitiveTypes")
@@ -161,11 +161,16 @@ namespace DatenMeister.Modules.TypeSupport
         /// Adds a local type 
         /// </summary>
         /// <param name="types">Type to be added</param>
+        /// <param name="packageName">Defines the package name to which the elements shall be created</param>
         /// <returns>List of created elements</returns>
-        public IList<IElement> AddInternalTypes(IEnumerable<Type> types)
+        public IList<IElement> AddInternalTypes(IEnumerable<Type> types, string packageName = null)
         {
             var internalTypeExtent = GetInternalTypeExtent();
-            var rootElements = internalTypeExtent.elements();
+            IReflectiveCollection rootElements = internalTypeExtent.elements();
+            if (packageName != null)
+            {
+                rootElements = _namedElementMethods.GotoPackage(rootElements, packageName);
+            }
 
             return AddInternalTypes(rootElements, types);
         }
@@ -176,7 +181,7 @@ namespace DatenMeister.Modules.TypeSupport
         /// <param name="rootElements">Reflective sequence which will receive the new element</param>
         /// <param name="types">Types to be added</param>
         /// <returns>List of created elements</returns>
-        private IList<IElement> AddInternalTypes(IReflectiveSequence rootElements, IEnumerable<Type> types)
+        private IList<IElement> AddInternalTypes(IReflectiveCollection rootElements, IEnumerable<Type> types)
         {
             var result = new List<IElement>();
             var generator = new DotNetTypeGenerator(

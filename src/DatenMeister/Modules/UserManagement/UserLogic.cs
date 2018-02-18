@@ -42,7 +42,8 @@ namespace DatenMeister.Modules.UserManagement
         public void Initialize()
         {
             var types = _localTypeSupport.AddInternalTypes(
-                new[] {typeof(User), typeof(UserManagementSettings)}
+                new[] {typeof(User), typeof(UserManagementSettings)},
+                "UserManagement"
             );
 
             var settingsMetaClass = _localTypeSupport.GetMetaClassFor(typeof(UserManagementSettings));

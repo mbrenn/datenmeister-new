@@ -49,7 +49,7 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine($"{stack.Indentation}/// <param name=\"extent\">And finally extent to which the types shall be registered</param>");
             Result.AppendLine(
                 $"{stack.Indentation}public static void Assign(" + 
-                "_UML uml,IFactory factory, IReflectiveCollection collection, " + 
+                "_UML uml, IFactory factory, IReflectiveCollection collection, " + 
                 $"_{packageName} filledStructure, MofUriExtent extent)");
             Result.AppendLine($"{stack.Indentation}{{");
 

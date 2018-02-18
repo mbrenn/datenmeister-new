@@ -7,10 +7,13 @@ using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
+    /// <summary>
+    /// Implements some helper methods to create extents
+    /// </summary>
     public class ExtentCreator
     {
-        private IWorkspaceLogic _workspaceLogic;
-        private ExtentManager _extentManager;
+        private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly ExtentManager _extentManager;
 
         public ExtentCreator(IWorkspaceLogic workspaceLogic, ExtentManager extentManager)
         {

@@ -8,6 +8,6 @@
         mc:Ignorable="d"
         Title="TreeViewWindow" Height="300" Width="300">
     <Grid>
-        <base:ItemsTreeView x:Name="treeView" ItemSelected="TreeView_OnItemSelected"></base:ItemsTreeView>
+        <base:ItemsTreeView x:Name="treeView" ItemDoubleClicked="TreeView_OnItemSelected"></base:ItemsTreeView>
     </Grid>
 </Window>

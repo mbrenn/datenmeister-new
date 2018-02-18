@@ -16,7 +16,7 @@
         <StackPanel Orientation="Vertical">
             <ComboBox x:Name="cboExtents" SelectionChanged="cboExtents_SelectionChanged"></ComboBox>
         </StackPanel>
-        <base:ItemsTreeView x:Name="items" Grid.Row="1"/>
+        <base:ItemsTreeView x:Name="items" Grid.Row="1" ItemDoubleClicked="Items_OnItemDoubleClicked"/>
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
             <Button Click="Open_Click">Open</Button>
             <Button Click="Cancel_Click">Cancel</Button>

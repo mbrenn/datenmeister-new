@@ -15,6 +15,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Windows
 {
@@ -86,6 +87,11 @@ namespace DatenMeisterWPF.Windows
 
         private void Open_Click(object sender, RoutedEventArgs e)
         {
+            AcceptAndCloseDialog();
+        }
+
+        private void AcceptAndCloseDialog()
+        {
             DialogResult = true;
             SelectedElement = items.SelectedElement;
             Close();
@@ -95,6 +101,14 @@ namespace DatenMeisterWPF.Windows
         {
             DialogResult = false;
             Close();
+        }
+
+        private void Items_OnItemDoubleClicked(object sender, ItemEventArgs e)
+        {
+            if (e.Item != null)
+            {
+                AcceptAndCloseDialog();
+            }
         }
     }
 }

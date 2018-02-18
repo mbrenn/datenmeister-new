@@ -27,7 +27,7 @@ namespace DatenMeisterWPF.Forms.Base
     {
         private IReflectiveCollection _itemsSource;
 
-        private HashSet<IObject> _alreadyVisited = new HashSet<IObject>();
+        private readonly HashSet<object> _alreadyVisited = new HashSet<object>();
 
         /// <summary>
         /// Stores the properties being used to retrieve the items
@@ -94,6 +94,8 @@ namespace DatenMeisterWPF.Forms.Base
         {
             lock (_alreadyVisited)
             {
+                _alreadyVisited.Clear();
+
                 if (!IsInitialized)
                 {
                     // Save the time... 
@@ -134,6 +136,8 @@ namespace DatenMeisterWPF.Forms.Base
                 return null;
             }
 
+            _alreadyVisited.Add(item);
+
             var treeViewItem = new TreeViewItem
             {
                 Header = item.ToString(),
@@ -170,21 +174,24 @@ namespace DatenMeisterWPF.Forms.Base
             UpdateView();
         }
 
-        private void OnItemSelected(object item)
+        private void OnItemDoubleClicked(object item)
         {
             if (item is IObject element)
             {
-                ItemSelected?.Invoke(this, new ItemEventArgs(element));
+                ItemDoubleClicked?.Invoke(this, new ItemEventArgs(element));
             }
         }
 
-        public event EventHandler<ItemEventArgs> ItemSelected;
+        /// <summary>
+        /// This event is called, when the user double clicks on an item 
+        /// </summary>
+        public event EventHandler<ItemEventArgs> ItemDoubleClicked;
 
         private void treeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (treeView.SelectedItem is TreeViewItem treeViewItem)
             {
-                OnItemSelected(treeViewItem.Tag);
+                OnItemDoubleClicked(treeViewItem.Tag);
             }
         }
     }

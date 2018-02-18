@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Linq;
+using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
@@ -34,8 +35,8 @@ namespace DatenMeisterWPF.Navigation
                 () =>
                 {
                     var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetViewExtent());
-                    var items = extentFunctions.GetCreatableTypes(extent);
-                    var formPathToType = viewDefinitions.GetFindTypeForm(items.CreatableTypes);
+                    var items = extentFunctions.GetCreatableTypes(extent).CreatableTypes;
+                    var formPathToType = viewDefinitions.GetFindTypeForm(items);
 
                     var control = new DetailFormControl();
                     control.SetContent(element, formPathToType);

@@ -164,7 +164,10 @@ namespace DatenMeister.Provider.XMI.EMOF
         public bool IsPropertySet(string property)
         {
             var propertyAsString = ReturnObjectAsString(property);
-            return XmlNode.Attribute(propertyAsString) != null || XmlNode.Elements(propertyAsString).Any();
+            var propertyAsReference = ConvertPropertyToReference(property);
+            return XmlNode.Attribute(propertyAsString) != null 
+                   || XmlNode.Attribute(propertyAsReference) != null
+                   || XmlNode.Elements(propertyAsString).Any();
         }
 
         /// <inheritdoc />

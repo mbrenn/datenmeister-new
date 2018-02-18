@@ -10,14 +10,18 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical">
+        <TextBlock Text="Select Extent:" />
+        <StackPanel Orientation="Vertical" Grid.Row="1">
             <ComboBox x:Name="cboExtents" SelectionChanged="cboExtents_SelectionChanged"></ComboBox>
         </StackPanel>
-        <base:ItemsTreeView x:Name="items" Grid.Row="1" ItemDoubleClicked="Items_OnItemDoubleClicked"/>
-        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+        <TextBlock Text="Select Item:" Grid.Row="2" />
+        <base:ItemsTreeView x:Name="items" Grid.Row="3" ItemDoubleClicked="Items_OnItemDoubleClicked"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Right">
             <Button Click="Open_Click">Open</Button>
             <Button Click="Cancel_Click">Cancel</Button>
         </StackPanel>

@@ -179,9 +179,13 @@ namespace DatenMeister.Provider.ManagementProviders
             var typeField = new DropDownFieldData("selectedType", "Type");
             if (types != null)
             {
-                foreach (var type in types)
+                foreach (var type in
+                    from type in types
+                    let fullName = NamedElementMethods.GetFullName(type)
+                    orderby fullName
+                    select new { type, fullName })
                 {
-                    typeField.AddValue(type, NamedElementMethods.GetFullName(type));
+                    typeField.AddValue(type.type, type.fullName);
                 }
             }
 

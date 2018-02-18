@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;

@@ -72,7 +72,7 @@ namespace DatenMeisterWPF
 
                 _ribbonHelper.AddNavigationButton(
                     "Locate",
-                    () => NavigatorForDialogs.Locate(this),
+                    () => NavigatorForDialogs.LocateAndOpen(this),
                     null,
                     NavigationCategories.File + ".Search");
 

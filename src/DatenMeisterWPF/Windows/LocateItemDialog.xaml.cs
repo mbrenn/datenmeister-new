@@ -33,6 +33,33 @@ namespace DatenMeisterWPF.Windows
 
         public IWorkspaceLogic WorkspaceLogic { get; set; }
 
+        /// <summary>
+        /// Stores the default extent being used by the user
+        /// </summary>
+        private IExtent _defaultExtent;
+
+        public IExtent DefaultExtent
+        {
+            get => _defaultExtent;
+            set
+            {
+                _defaultExtent = value;
+                if (cboExtents.ItemsSource == null)
+                {
+                    return;
+                }
+
+                foreach (var cboItem in cboExtents.ItemsSource)
+                {
+                    if ((cboItem as ComboBoxItem)?.Tag == value)
+                    {
+                        cboExtents.SelectedItem = cboItem;
+                        break;
+                    }
+                }
+            }
+        }
+
         public void UpdatedWorkspaces()
         {
             var workspaces = WorkspaceLogic.Workspaces;
@@ -42,23 +69,28 @@ namespace DatenMeisterWPF.Windows
 
             foreach (var workspace in workspaces)
             {
-                var cboIem = new ComboBoxItem
+                var cboItem = new ComboBoxItem
                 {
                     Content = workspace.id,
                     Tag = workspace
                 };
 
-                comboItems.Add(cboIem);
+                comboItems.Add(cboItem);
 
                 foreach (var extent in workspace.extent.OfType<IUriExtent>())
                 {
-                    var cboExtentIem = new ComboBoxItem
+                    var cboExtentItem = new ComboBoxItem
                     {
                         Content = $"- {extent.contextURI()}",
                         Tag = extent
                     };
 
-                    comboItems.Add(cboExtentIem);
+                    comboItems.Add(cboExtentItem);
+
+                    if (extent == _defaultExtent)
+                    {
+                        cboExtents.SelectedItem = cboExtentItem;
+                    }
                 }
             }
 

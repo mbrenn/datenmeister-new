@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using Autofac;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Windows;
 
@@ -34,7 +36,7 @@ namespace DatenMeisterWPF.Navigation
             return null;
         }
 
-        public static IControlNavigation Locate(INavigationHost mainWindow)
+        public static IControlNavigation LocateAndOpen(INavigationHost mainWindow)
         {
             var dlg = new LocateItemDialog {WorkspaceLogic = App.Scope.Resolve<IWorkspaceLogic>()};
             dlg.UpdatedWorkspaces();
@@ -43,6 +45,28 @@ namespace DatenMeisterWPF.Navigation
                 return NavigatorForItems.NavigateToElementDetailView(
                     mainWindow,
                     dlg.SelectedElement);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Locates a certain item
+        /// </summary>
+        /// <param name="mainWindow">Navigation host to be used</param>
+        /// <param name="defaultExtent">Extent that shall be opened per default</param>
+        /// <returns></returns>
+        public static IObject Locate(INavigationHost mainWindow, IExtent defaultExtent = null)
+        {
+            var dlg = new LocateItemDialog
+            {
+                WorkspaceLogic = App.Scope.Resolve<IWorkspaceLogic>(),
+                DefaultExtent = defaultExtent
+            };
+            dlg.UpdatedWorkspaces();
+            if (dlg.ShowDialog() == true)
+            {
+                return dlg.SelectedElement;
             }
 
             return null;

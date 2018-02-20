@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.ManagementProviders;
@@ -75,6 +76,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 var extentLoader = dm.Resolve<IExtentManager>();
                 var loadedExtent = extentLoader.LoadExtent(loaderConfig, true);
                 loadedExtent.set("test", "this is a test");
+                loadedExtent.SetExtentType("Happy Extent");
                 extentLoader.StoreExtent(loadedExtent);
 
                 dm.UnuseDatenMeister();
@@ -87,6 +89,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 Assert.That(foundExtent, Is.Not.Null);
 
                 Assert.That(foundExtent.get("test"), Is.EqualTo("this is a test"));
+                Assert.That(foundExtent.GetExtentType(), Is.EqualTo("Happy Extent"));
 
                 dm.UnuseDatenMeister();
             }

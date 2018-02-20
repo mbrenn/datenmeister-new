@@ -31,16 +31,20 @@ namespace DatenMeister.Runtime.ExtentStorage
         private readonly ILifetimeScope _diScope;
 
         private readonly IWorkspaceLogic _workspaceLogic;
-        
+
+        private readonly IntegrationSettings _integrationSettings;
+
         public ExtentManager(
             ExtentStorageData data, 
             IConfigurationToExtentStorageMapper map,
             ILifetimeScope diScope, 
-            IWorkspaceLogic workspaceLogic)
+            IWorkspaceLogic workspaceLogic,
+            IntegrationSettings integrationSettings)
         {
             _data = data ?? throw new ArgumentNullException(nameof(data));
             _map = map ?? throw new ArgumentNullException(nameof(map));
             _workspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
+            _integrationSettings = integrationSettings ?? throw new ArgumentNullException(nameof(integrationSettings));
             _diScope = diScope;
         }
 
@@ -64,7 +68,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             {
                 if (!Path.IsPathRooted(fileConfiguration.Path))
                 {
-                    fileConfiguration.Path = Path.Combine(GiveMe.DatabasePath, fileConfiguration.Path);
+                    fileConfiguration.Path = Path.Combine(_integrationSettings.DatabasePath, fileConfiguration.Path);
                 }
             }
 

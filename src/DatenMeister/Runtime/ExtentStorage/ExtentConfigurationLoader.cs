@@ -1,5 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+using DatenMeister.Core.EMOF.Exceptions;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
@@ -10,7 +18,7 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// In addition, it will also use the ExtentManager class to load the actual data
     /// of the extents
     /// </summary>
-    public class ExtentConfigurationLoader : ObjectFileStorage<ExtentLoaderConfigData>
+    public class ExtentConfigurationLoader
     {
         /// <summary>
         /// Gets the information about the loaded extents, 
@@ -46,7 +54,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// This method is called by the base class to support the loading if unknown extent types
         /// </summary>
         /// <returns>Array of additional types</returns>
-        public override Type[] GetAdditionalTypes()
+        private Type[] GetAdditionalTypes()
         {
             return ExtentStorageData.AdditionalTypes.ToArray();
         }
@@ -56,10 +64,11 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         public void LoadAllExtents()
         {
-            ExtentLoaderConfigData loaded = null;
+            List<Tuple<ExtentLoaderConfig, XElement>> loaded = null;
             try
             {
-                loaded = Load(ExtentStorageData.FilePath);
+                loaded = LoadConfiguration(ExtentStorageData.FilePath);
+                
             }
             catch (Exception exc)
             {
@@ -71,18 +80,106 @@ namespace DatenMeister.Runtime.ExtentStorage
                 return;
             }
 
-            foreach (var info in loaded.Extents)
+            foreach (var info in loaded)
             {
                 try
                 {
-                    ExtentManager.LoadExtent(info, false);
+                    var extent = ExtentManager.LoadExtent(info.Item1, false);
+                    if (info.Item2 != null)
+                    {
+                        ((MofExtent) extent).MetaXmiElement = info.Item2;
+                    }
                 }
                 catch (Exception exc)
                 {
-                    Debug.WriteLine($"Loading extent of {info.ExtentUri} failed: {exc.Message}");
+                    Debug.WriteLine($"Loading extent of {info.Item1.ExtentUri} failed: {exc.Message}");
                 }
-                
             }
+        }
+
+        /// <summary>
+        /// Loads the configuration of the extents and returns the configuation
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public List<Tuple<ExtentLoaderConfig, XElement>> LoadConfiguration(string path)
+        {
+            var loaded = new List<Tuple<ExtentLoaderConfig, XElement>>();
+            var document = XDocument.Load(path);
+            foreach (var xmlExtent in document.Elements("extents").Elements("extent"))
+            {
+                var xmlConfig = xmlExtent.Element("config");
+                var configType = xmlConfig.Attribute("configType").Value;
+
+                // Gets the type of the configuration in the white list to avoid any unwanted security issue
+                var found = GetAdditionalTypes().FirstOrDefault(x => x.FullName == configType);
+                if (found == null)
+                {
+                    throw new InvalidOperationException("Unknown configtype: " + configType);
+                }
+
+                xmlConfig.Name = found.Name; // We need to rename the element, so XmlSerializer can work with it
+                var serializer = new XmlSerializer(found);
+                var config = serializer.Deserialize(xmlConfig.CreateReader());
+
+
+                var xmlMeta = xmlExtent.Element("metadata");
+
+                loaded.Add(new Tuple<ExtentLoaderConfig, XElement>((ExtentLoaderConfig) config, xmlMeta));
+            }
+
+            return loaded;
+        }
+        
+        /// <summary>
+        /// Stores the configuration of the extents into the given file
+        /// </summary>
+        /// <param name="path">Path to be used to loaded the extent configuration</param>
+        public void StoreConfiguration(string path)
+        {
+            var document = new XDocument();
+            var rootNode = new XElement("extents");
+            document.Add(rootNode);
+
+            foreach (var extent in ExtentStorageData.LoadedExtents)
+            {
+                var xmlExtent = new XElement("extent");
+
+                // Stores the configuration
+                var xmlData = SerializeToXElement(extent.Configuration);
+                xmlData.Name = "config";
+                // Stores the .Net datatype to allow restore of the right element
+                xmlData.Add(new XAttribute("configType", extent.Configuration.GetType().FullName));
+                xmlExtent.Add(xmlData);
+
+                // Stores the metadata
+                var xmlMetaData = new XElement(((MofExtent) extent.Extent).MetaXmiElement)
+                {
+                    Name = "metadata"
+                };
+                xmlExtent.Add(xmlMetaData);
+
+                rootNode.Add(xmlExtent);
+            }
+
+            document.Save(path);
+        }
+
+        /// <summary>
+        /// Helper class to convert the given element into an Xml Element... Unfortunately, there is no direct way to create an Xml Element without using the XDocument
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
+        private static XElement SerializeToXElement(object o)
+        {
+            var doc = new XDocument();
+            using (var writer = doc.CreateWriter())
+            {
+                var serializer = new XmlSerializer(o.GetType());
+                serializer.Serialize(writer, o);
+            }
+
+            return doc.Root;
         }
 
         /// <summary>
@@ -92,15 +189,9 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             // Stores the extents themselves into the different database
             ExtentManager.StoreAll();
-
-            // Stores the information abotu the used extends
-            var toBeStored = new ExtentLoaderConfigData();
-            foreach (var loadedExtent in ExtentStorageData.LoadedExtents)
-            {
-                toBeStored.Extents.Add(loadedExtent.Configuration);
-            }
-
-            Save(ExtentStorageData.FilePath, toBeStored);
+            
+            //Save(ExtentStorageData.FilePath, toBeStored);
+            StoreConfiguration(ExtentStorageData.FilePath);
         }
     }
 }

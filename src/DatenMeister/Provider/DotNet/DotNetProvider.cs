@@ -113,5 +113,14 @@ namespace DatenMeister.Provider.DotNet
                 yield return element;
             }
         }
+
+        /// <summary>
+        /// Gets the capabilities of the provider
+        /// </summary>
+        /// <returns></returns>
+        public ProviderCapability GetCapabilities()
+        {
+            return 0;
+        }
     }
 }

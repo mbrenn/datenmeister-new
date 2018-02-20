@@ -15,5 +15,12 @@
         /// Gets or sets a value indicating whether the data environment including all the metamodels shall be established
         /// </summary>
         public bool EstablishDataEnvironment { get; set; }
+
+        public string DatabasePath { get; set; }
+
+        public IntegrationSettings()
+        {
+            DatabasePath = GiveMe.DefaultDatabasePath2;
+        }
     }
 }

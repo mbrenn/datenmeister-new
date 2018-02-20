@@ -9,7 +9,7 @@ namespace DatenMeister.Excel.EMOF
 {
     public class ExcelExtent : IProvider
     {
-        private readonly _ExcelModels models = new _ExcelModels();
+        private readonly _ExcelModels _models = new _ExcelModels();
 
         private readonly XSSFWorkbook _workbook;
         public ExcelSettings Settings { get; }
@@ -49,12 +49,6 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public IEnumerable<IProviderObject> GetAllObjects()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
         public void AddElement(IProviderObject valueAsObject, int index)
         {
             throw new NotImplementedException();
@@ -64,6 +58,15 @@ namespace DatenMeister.Excel.EMOF
         public void DeleteAllElements()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Gets the capabilities of the provider
+        /// </summary>
+        /// <returns></returns>
+        public ProviderCapability GetCapabilities()
+        {
+            return 0;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Autofac;
@@ -21,7 +22,8 @@ namespace DatenMeister.Integration
             {
                 settings = new IntegrationSettings
                 {
-                    EstablishDataEnvironment = true
+                    EstablishDataEnvironment = true,
+                    DatabasePath = DefaultDatabasePath2
                 };
             }
 
@@ -34,9 +36,28 @@ namespace DatenMeister.Integration
         /// <summary>
         /// Gets the default database path
         /// </summary>
-        public static string DatabasePath => 
+        public static string DefaultDatabasePath2 => 
             Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "datenmeister/data");
+
+        /// <summary>
+        /// Drops the datenmeister settings
+        /// </summary>
+        /// <param name="settings">Settings to be deleted</param>
+        public static void DropDatenMeisterStorage(IntegrationSettings settings)
+        {
+            if (!Directory.Exists(settings.DatabasePath))
+            {
+                // Directory does not exist. So remove it
+                return;
+            }
+
+            var path = settings.DatabasePath;
+            foreach (var files in Directory.EnumerateFiles(path))
+            {
+                File.Delete(files);
+            }
+        }
     }
 }

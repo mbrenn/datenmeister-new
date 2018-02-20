@@ -92,7 +92,19 @@ namespace DatenMeister.Provider.InMemory
         /// <inheritdoc />
         public IEnumerable<IProviderObject> GetRootObjects()
         {
-            return _elements;
+            lock (_elements)
+            {
+                return _elements.ToList();
+            }
+        }
+
+        /// <summary>
+        /// Gets the capabilities of the provider
+        /// </summary>
+        /// <returns></returns>
+        public ProviderCapability GetCapabilities()
+        {
+            return 0;
         }
     }
 }

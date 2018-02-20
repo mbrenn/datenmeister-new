@@ -3,6 +3,7 @@ using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Proxies.ReadOnly;
@@ -51,7 +52,7 @@ namespace DatenMeister.Tests.Runtime
             var workspaceData = WorkspaceLogic.InitDefault();
 
             var data = new ExtentStorageData();
-            var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(workspaceData));
+            var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(workspaceData), new IntegrationSettings());
             var configuration = new CSVExtentLoaderConfig
             {
                 Path = CSVExtentTests.PathForTemporaryDataFile,

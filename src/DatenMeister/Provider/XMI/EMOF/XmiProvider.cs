@@ -114,5 +114,14 @@ namespace DatenMeister.Provider.XMI.EMOF
                 yield return new XmiProviderObject(element, this);
             }
         }
+
+        /// <summary>
+        /// Gets the capabilities of the provider
+        /// </summary>
+        /// <returns></returns>
+        public ProviderCapability GetCapabilities()
+        {
+            return 0;
+        }
     }
 }

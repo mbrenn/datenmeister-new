@@ -1,7 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DatenMeister.Provider
 {
+    /// <summary>
+    /// Defines the flags self-describing the provider and its capabilities
+    /// </summary>
+    [Flags]
+    public enum ProviderCapability
+    {
+        /// <summary>
+        /// Will be set, if the provider is capable to store the information about possible meta information within the
+        /// extent itself. Is this flag is not set, the data will be stored by the extent itself and saved within the 
+        /// uri extent loading file
+        /// </summary>
+        StoreMetaDataInExtent = 0x01
+    }
+
+    /// <summary>
+    /// Defines the interface as required for the provider. 
+    /// </summary>
     public interface IProvider
     {
         /// <summary>
@@ -43,5 +61,11 @@ namespace DatenMeister.Provider
         /// </summary>
         /// <returns>All objects at root</returns>
         IEnumerable<IProviderObject> GetRootObjects();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        ProviderCapability GetCapabilities();
     }
 }

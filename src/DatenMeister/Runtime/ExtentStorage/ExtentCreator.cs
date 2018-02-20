@@ -43,14 +43,13 @@ namespace DatenMeister.Runtime.ExtentStorage
             var foundExtent = _workspaceLogic.FindExtent(uri);
             if (foundExtent == null)
             {
-                Debug.WriteLine("Creates the extent for the user types");
+                Debug.WriteLine("Creates the extent for the " + name);
                 // Creates the extent for user types
                 var storageConfiguration = new XmiStorageConfiguration
                 {
                     ExtentUri = uri,
-                    Path = Path.Combine("App_Data/Database", name + ".xml"),
-                    Workspace = workspace,
-                    DataLayer = "Types"
+                    Path = Path.Combine("extents/", name + ".xml"),
+                    Workspace = workspace
                 };
 
                 foundExtent = _extentManager.LoadExtent(storageConfiguration, true);

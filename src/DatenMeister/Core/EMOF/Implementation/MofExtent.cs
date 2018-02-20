@@ -2,11 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
 using DatenMeister.Provider.DotNet;
+using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
@@ -36,6 +38,17 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         private readonly List<IUriExtent> _metaExtents = new List<IUriExtent>();
 
+        public XElement MetaXmiElement
+        {
+            get => _metaInformation.XmlNode;
+            set =>  _metaInformation.XmlNode = value;
+        }
+
+        /// <summary>
+        /// Stores the xmi Provider object being used to store meta information
+        /// </summary>
+        private readonly XmiProviderObject _metaInformation;
+
         /// <summary>
         /// Initializes a new instance of the Extent 
         /// </summary>
@@ -44,6 +57,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             Provider = provider;
             TypeLookup = new DotNetTypeLookup(this);
+            _metaInformation = new XmiProviderObject(new XElement("meta"));
         }
 
         /// <inheritdoc />
@@ -60,26 +74,60 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public object get(string property)
         {
-            return Provider.Get(null)?.GetProperty(property);
+            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
+                ProviderCapability.StoreMetaDataInExtent)
+            {
+                return Provider.Get(null)?.GetProperty(property);
+            }
+            else
+            {
+                return _metaInformation.GetProperty(property);
+            }
         }
 
         /// <inheritdoc />
         public void set(string property, object value)
         {
-            var nullObject = Provider.Get(null) ?? throw new InvalidOperationException("Provider does not support setting of extent properties");
-            nullObject.SetProperty(property, value);
+            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
+                ProviderCapability.StoreMetaDataInExtent)
+            {
+                var nullObject = Provider.Get(null) ??
+                                 throw new InvalidOperationException(
+                                     "Provider does not support setting of extent properties");
+                nullObject.SetProperty(property, value);
+            }
+            else
+            {
+                _metaInformation.SetProperty(property, value);
+            }
         }
 
         /// <inheritdoc />
         public bool isSet(string property)
         {
-            return Provider.Get(null)?.IsPropertySet(property) ?? false;
+            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
+                ProviderCapability.StoreMetaDataInExtent)
+            {
+                return Provider.Get(null)?.IsPropertySet(property) ?? false;
+            }
+            else
+            {
+                return _metaInformation.IsPropertySet(property);
+            }
         }
 
         /// <inheritdoc />
         public void unset(string property)
         {
-            Provider.Get(null)?.DeleteProperty(property);
+            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
+                ProviderCapability.StoreMetaDataInExtent)
+            {
+                Provider.Get(null)?.DeleteProperty(property);
+            }
+            else
+            {
+                _metaInformation.DeleteProperty(property);
+            }
         }
 
         /// <inheritdoc />

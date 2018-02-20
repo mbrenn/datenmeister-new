@@ -57,12 +57,12 @@ namespace DatenMeister.Modules.TypeSupport
         /// Creates the extent being used to store the internal types
         /// </summary>
         /// <returns>The created uri contining the internal types</returns>
-        public void Initialize()
+        public void Initialize(string databasePath)
         {
             CreateInternalTypeExtent();
 
             // Creates the extent for the user types which is permanantly stored on disk. The user is capable to create his own types
-            CreatesUserTypeExtent();
+            CreatesUserTypeExtent(databasePath);
         }
 
         private void CreateInternalTypeExtent()
@@ -91,13 +91,13 @@ namespace DatenMeister.Modules.TypeSupport
         /// Creates the user type extent storing the types for the user. 
         /// If the extent is already existing, debugs the number of found extents
         /// </summary>
-        private void CreatesUserTypeExtent()
+        private void CreatesUserTypeExtent(string databasePath)
         {
             // Creates the user types, if not existing
             var foundExtent = _workspaceLogic.FindExtent(WorkspaceNames.UriUserTypes);
             if (foundExtent == null)
             {
-                var pathUserTypes = Path.Combine(GiveMe.DatabasePath, "usertypes.xml");
+                var pathUserTypes = Path.Combine(databasePath, "usertypes.xml");
 
                 Debug.WriteLine("Creates the extent for the user types");
                 // Creates the extent for user types
@@ -105,8 +105,7 @@ namespace DatenMeister.Modules.TypeSupport
                 {
                     ExtentUri = WorkspaceNames.UriUserTypes,
                     Path = pathUserTypes,
-                    Workspace = WorkspaceNames.NameTypes,
-                    DataLayer = "Types"
+                    Workspace = WorkspaceNames.NameTypes
                 };
 
                 foundExtent = _extentManager.LoadExtent(storageConfiguration, true);

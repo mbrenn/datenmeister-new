@@ -74,5 +74,14 @@ namespace DatenMeister.Provider.ManagementProviders
             var workspaces = WorkspaceLogic.Workspaces;
             return workspaces.Select(x => new WorkspaceObject(this, x));
         }
+
+        /// <summary>
+        /// Gets the capabilities of the provider
+        /// </summary>
+        /// <returns></returns>
+        public ProviderCapability GetCapabilities()
+        {
+            return 0;
+        }
     }
 }

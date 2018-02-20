@@ -63,7 +63,7 @@ namespace DatenMeister.Tests.Core
             var data = WorkspaceLogic.InitDefault();
             var dataLayerLogic = new WorkspaceLogic(data);
 
-            var strapper = Bootstrapper.PerformFullBootstrap(
+            Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic,
                 data.Uml,
                 BootstrapMode.Mof);

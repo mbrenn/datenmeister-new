@@ -38,8 +38,8 @@ namespace DatenMeister.Integration
         {
             _settings = settings;
 
-            _pathWorkspaces = Path.Combine(GiveMe.DatabasePath, "workspaces.xml");
-            _pathExtents = Path.Combine(GiveMe.DatabasePath, "extents.xml");
+            _pathWorkspaces = Path.Combine(settings.DatabasePath, "workspaces.xml");
+            _pathExtents = Path.Combine(settings.DatabasePath, "extents.xml");
         }
 
         public IContainer UseDatenMeister(ContainerBuilder kernel)
@@ -50,12 +50,13 @@ namespace DatenMeister.Integration
                 _settings = new IntegrationSettings();
             }
 
+            kernel.RegisterInstance(_settings).As<IntegrationSettings>();
             kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
             // Creates the database path for the DatenMeister
-            if (!Directory.Exists(GiveMe.DatabasePath))
+            if (!Directory.Exists(_settings.DatabasePath))
             {
-                Directory.CreateDirectory(GiveMe.DatabasePath);
+                Directory.CreateDirectory(_settings.DatabasePath);
             }
 
             var watch = new Stopwatch();
@@ -137,7 +138,7 @@ namespace DatenMeister.Integration
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var localTypeSupport = scope.Resolve<LocalTypeSupport>();
-                localTypeSupport.Initialize();
+                localTypeSupport.Initialize(_settings.DatabasePath);
                 var typeWorkspace = workspaceLogic.GetTypesWorkspace();
                 var mofFactory = new MofFactory(localTypeSupport.InternalTypes);
                 var namedElementMethods = scope.Resolve<NamedElementMethods>();

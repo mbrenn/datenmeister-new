@@ -107,7 +107,7 @@ namespace DatenMeisterWPF.Forms.Lists
             base.PrepareNavigation();
 
             NavigationHost.AddNavigationButton(
-                "To Extent",
+                "To Extents",
                 () => NavigatorForExtents.NavigateToExtentList(NavigationHost, _workspaceId),
                 Icons.ExtentsShow,
                 NavigationCategories.File + ".Workspaces");

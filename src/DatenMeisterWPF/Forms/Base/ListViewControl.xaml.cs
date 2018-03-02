@@ -280,7 +280,7 @@ namespace DatenMeisterWPF.Forms.Base
                 var list = new List<ViewDefinition>
                 {
                     new ViewDefinition("Default", null, ViewDefinitionMode.Default),
-                    new ViewDefinition("All Properties", null, ViewDefinitionMode.Default)
+                    new ViewDefinition("All Properties", null, ViewDefinitionMode.AllProperties)
                 };
                 list.AddRange(views.Select(x => new ViewDefinition(NamedElementMethods.GetFullName(x), x)));
                 ViewList.ItemsSource = list;

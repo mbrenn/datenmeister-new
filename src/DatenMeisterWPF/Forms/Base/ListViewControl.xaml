@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:helper="clr-namespace:DatenMeisterWPF.Helper"
+             xmlns:dm="clr-namespace:DatenMeisterWPF.Forms.Base"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -19,7 +20,16 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" x:Name="ButtonBar" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10">
         </StackPanel>
-        <DataGrid x:Name="DataGrid" Margin="10"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <dm:ItemsTreeView>
+
+            </dm:ItemsTreeView>
+            <DataGrid x:Name="DataGrid" Margin="10" Grid.Column="1"/>
+        </Grid>
 
     </DockPanel>
 </UserControl>

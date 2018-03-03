@@ -65,6 +65,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private string _searchText;
 
+        private List<IElement> packagingElements = new List<IElement>();
+
         /// <summary>
         /// Gets the currently selected object
         /// </summary>

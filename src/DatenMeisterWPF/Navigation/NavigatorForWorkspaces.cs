@@ -14,7 +14,7 @@ namespace DatenMeisterWPF.Navigation
             return window.NavigateTo(
                 () =>
                 {
-                    var workspaceControl = new WorkspaceList();
+                    var workspaceControl = new WorkspaceList {IsTreeVisible = true};
                     workspaceControl.SetContent();
                     return workspaceControl;
                 },

@@ -93,7 +93,7 @@ namespace DatenMeisterWPF.Navigation
         {
             return window.NavigateTo(() =>
                 {
-                    var control = new ItemsInExtentList();
+                    var control = new ItemsInExtentList {IsTreeVisible = true};
                     control.SetContent(workspaceId, extentUrl);
 
                     return control;

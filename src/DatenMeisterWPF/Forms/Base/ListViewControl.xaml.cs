@@ -38,6 +38,30 @@ namespace DatenMeisterWPF.Forms.Base
         {
             InitializeComponent();
         }
+
+        public static readonly DependencyProperty IsTreeVisibleProperty = DependencyProperty.Register(
+            "IsTreeVisible", typeof(bool), typeof(ListViewControl), 
+            new PropertyMetadata(default(bool), OnIsTreeVisibleChanged));
+
+        private static void OnIsTreeVisibleChanged(DependencyObject dependencyObject,
+            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            if (dependencyPropertyChangedEventArgs.NewValue is bool newValue)
+            {
+                var listViewControl = (ListViewControl) dependencyObject;
+                listViewControl.MainGrid.ColumnDefinitions[0].Width =
+                    new GridLength(newValue ? 50 : 0);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value whether the treeview shall be visible. 
+        /// </summary>
+        public bool IsTreeVisible
+        {
+            get => (bool) GetValue(IsTreeVisibleProperty);
+            set => SetValue(IsTreeVisibleProperty, value);
+        }
         
         public INavigationHost NavigationHost { get; set; }
 

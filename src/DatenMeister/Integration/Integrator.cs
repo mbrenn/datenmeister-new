@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
@@ -13,7 +12,6 @@ using DatenMeister.Modules.UserManagement;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -178,6 +176,9 @@ namespace DatenMeister.Integration
                     LoadsWorkspacesAndExtents(scope);
                     scope.Resolve<UserLogic>().Initialize();
                 }
+
+                // Performs the integration into the DatenMeister
+                Modules.ZipExample.Integrate.Into(scope);
 
                 // Finally loads the plugin
                 PluginManager.StartPlugins(scope);

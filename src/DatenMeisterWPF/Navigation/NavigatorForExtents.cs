@@ -19,7 +19,7 @@ namespace DatenMeisterWPF.Navigation
             return window.NavigateTo(
                 () =>
                 {
-                    var dlg = new ExtentList();
+                    var dlg = new ExtentList {IsTreeVisible = true};
                     dlg.SetContent(workspaceId);
                     return dlg;
                 },

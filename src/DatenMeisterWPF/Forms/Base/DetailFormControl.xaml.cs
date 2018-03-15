@@ -183,6 +183,24 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private void RefreshViewDefinition()
         {
+            UpdateActualViewDefinition();
+
+            if (_hideViewSelection == null)
+            {
+                if (DotNetHelper.IsTrue(ActualFormDefinition.getOrDefault(_FormAndFields._Form.fixView)))
+                {
+                    ViewList.Visibility = Visibility.Collapsed;
+                    _hideViewSelection = true;
+                }
+                else
+                {
+                    _hideViewSelection = false;
+                }
+            }
+        }
+
+        private void UpdateActualViewDefinition()
+        {
             var viewFinder = App.Scope.Resolve<IViewFinder>();
             if (ViewDefinition.Mode == ViewDefinitionMode.Default)
             {
@@ -198,19 +216,6 @@ namespace DatenMeisterWPF.Forms.Base
             if (ViewDefinition.Mode == ViewDefinitionMode.Specific)
             {
                 ActualFormDefinition = ViewDefinition.Element;
-            }
-
-            if (_hideViewSelection == null)
-            {
-                if (DotNetHelper.IsTrue(ActualFormDefinition.getOrDefault(_FormAndFields._Form.fixView)))
-                {
-                    ViewList.Visibility = Visibility.Collapsed;
-                    _hideViewSelection = true;
-                }
-                else
-                {
-                    _hideViewSelection = false;
-                }
             }
         }
 
@@ -232,6 +237,7 @@ namespace DatenMeisterWPF.Forms.Base
 
             CreateRows(fields);
 
+            // Adds metadata
             if (DetailElement != null)
             {
                 var mofElement = (MofElement)DetailElement;
@@ -295,7 +301,6 @@ namespace DatenMeisterWPF.Forms.Base
                 Grid.SetRow(contentBlock, _fieldCount);
 
                 CreateRowForField(titleBlock, contentBlock);
-
                 
                 // Check, if element shall be focuseed
                 if ((oldFlags & FieldFlags.Focussed) != (flags & FieldFlags.Focussed))
@@ -303,6 +308,8 @@ namespace DatenMeisterWPF.Forms.Base
                     contentBlock.Focus();
                 }
             }
+
+            // Creates additional rows for buttons with additional actions
         }
 
         /// <summary>
@@ -348,6 +355,23 @@ namespace DatenMeisterWPF.Forms.Base
             DataGrid.Children.Add(propertyKey);
             DataGrid.Children.Add(propertyValue);
 
+            _fieldCount++;
+        }
+
+        /// <summary>
+        /// Creates a new row in which the element is spanned through the complete
+        /// columns. 
+        /// </summary>
+        /// <param name="element">Element to be included</param>
+        private void CreateSpannedRow(UIElement element)
+        {
+            DataGrid.RowDefinitions.Add(new RowDefinition());
+
+            Grid.SetColumn(element, 0);
+            Grid.SetRow(element, _fieldCount);
+            Grid.SetColumnSpan(element, 3);
+
+            DataGrid.Children.Add(element);
             _fieldCount++;
         }
 

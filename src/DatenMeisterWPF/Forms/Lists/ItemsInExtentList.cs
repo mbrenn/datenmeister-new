@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows;
 using Autofac;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -107,7 +106,7 @@ namespace DatenMeisterWPF.Forms.Lists
             base.PrepareNavigation();
 
             NavigationHost.AddNavigationButton(
-                "To Extent",
+                "To Extents",
                 () => NavigatorForExtents.NavigateToExtentList(NavigationHost, _workspaceId),
                 Icons.ExtentsShow,
                 NavigationCategories.File + ".Workspaces");

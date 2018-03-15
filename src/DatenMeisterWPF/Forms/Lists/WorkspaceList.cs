@@ -78,9 +78,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     WorkspaceNames.NameTypes,
                     WorkspaceNames.UriUserTypes);
             }
-
-
-
+            
             NavigationHost.AddNavigationButton(
                 "Add Workspace",
                 NewWorkspace,

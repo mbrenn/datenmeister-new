@@ -38,6 +38,30 @@ namespace DatenMeisterWPF.Forms.Base
         {
             InitializeComponent();
         }
+
+        public static readonly DependencyProperty IsTreeVisibleProperty = DependencyProperty.Register(
+            "IsTreeVisible", typeof(bool), typeof(ListViewControl), 
+            new PropertyMetadata(default(bool), OnIsTreeVisibleChanged));
+
+        private static void OnIsTreeVisibleChanged(DependencyObject dependencyObject,
+            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            if (dependencyPropertyChangedEventArgs.NewValue is bool newValue)
+            {
+                var listViewControl = (ListViewControl) dependencyObject;
+                listViewControl.MainGrid.ColumnDefinitions[0].Width =
+                    new GridLength(newValue ? 50 : 0);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value whether the treeview shall be visible. 
+        /// </summary>
+        public bool IsTreeVisible
+        {
+            get => (bool) GetValue(IsTreeVisibleProperty);
+            set => SetValue(IsTreeVisibleProperty, value);
+        }
         
         public INavigationHost NavigationHost { get; set; }
 
@@ -64,6 +88,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// Defines the text being used for search
         /// </summary>
         private string _searchText;
+
+        private List<IElement> packagingElements = new List<IElement>();
 
         /// <summary>
         /// Gets the currently selected object
@@ -280,7 +306,7 @@ namespace DatenMeisterWPF.Forms.Base
                 var list = new List<ViewDefinition>
                 {
                     new ViewDefinition("Default", null, ViewDefinitionMode.Default),
-                    new ViewDefinition("All Properties", null, ViewDefinitionMode.Default)
+                    new ViewDefinition("All Properties", null, ViewDefinitionMode.AllProperties)
                 };
                 list.AddRange(views.Select(x => new ViewDefinition(NamedElementMethods.GetFullName(x), x)));
                 ViewList.ItemsSource = list;

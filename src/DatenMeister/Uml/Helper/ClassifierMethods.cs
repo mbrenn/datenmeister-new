@@ -89,5 +89,22 @@ namespace DatenMeister.Uml.Helper
         {
             return GetPropertiesOfClassifier(classifier).Select(x => x.get("name").ToString());
         }
+
+
+        /// <summary>
+        /// Gets or sets a valiue whether the given element is a derived type of the fullname.
+        /// </summary>
+        /// <param name="classifier">Classifier to be verified</param>
+        /// <param name="fullName">The full name given</param>
+        /// <returns>true, if the element is a derived type</returns>
+        public static bool IsDerivedTypeOf (IElement classifier, string fullName)
+        {
+            if (NamedElementMethods.GetFullName(classifier) == fullName)
+            {
+                return true;
+            }
+
+            return GetGeneralizations(classifier).Any(x => IsDerivedTypeOf(x, fullName));
+        }
     }
 }

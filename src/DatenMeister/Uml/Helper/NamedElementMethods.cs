@@ -17,6 +17,8 @@ namespace DatenMeister.Uml.Helper
     /// </summary>
     public class NamedElementMethods
     {
+        private const int MaxDepth            = 1000;
+
         private readonly IWorkspaceLogic _workspaceLogic;
 
         public NamedElementMethods(IWorkspaceLogic workspaceLogic)
@@ -32,28 +34,30 @@ namespace DatenMeister.Uml.Helper
         /// <returns>Full name of the element</returns>
         public static string GetFullName(IObject value)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            if ( value is IElement valueAsElement )
+            switch (value)
             {
-                var current = valueAsElement.container();
-                var result = UmlNameResolution.GetName(value);
-                var depth = 0;
+                case null:
+                    throw new ArgumentNullException(nameof(value));
+                case IElement valueAsElement:
+                    var current = valueAsElement.container();
+                    var result = UmlNameResolution.GetName(value);
+                    var depth = 0;
 
-                while (current != null)
-                {
-                    var currentName = UmlNameResolution.GetName(current);
-                    result = $"{currentName}::{result}";
-                    current = current.container();
-                    depth++;
-
-                    if (depth > 1000)
+                    while (current != null)
                     {
-                        throw new InvalidOperationException(
-                            $"The full name of the element {value} could not be retrieved due to an infinite loop. (Threshold is 1000)");
-                    }
-                }
+                        var currentName = UmlNameResolution.GetName(current);
+                        result = $"{currentName}::{result}";
+                        current = current.container();
+                        depth++;
 
-                return result;
+                        if (depth > MaxDepth)
+                        {
+                            throw new InvalidOperationException(
+                                $"The full name of the element {value} could not be retrieved due to an infinite loop. (Threshold is 1000)");
+                        }
+                    }
+
+                    return result;
             }
 
             return UmlNameResolution.GetName(value);
@@ -251,7 +255,7 @@ namespace DatenMeister.Uml.Helper
                     rootElements.add(childElement);
                 }
 
-                // Sets and finds the child property
+                // Sets and finds the child property by the given name
                 IReflectiveSequence children = null;
                 if (childElement.isSet(childProperty))
                 {
@@ -262,6 +266,12 @@ namespace DatenMeister.Uml.Helper
                 {
                     childElement.set(childProperty, new List<object>());
                     children = childElement.get(childProperty) as IReflectiveSequence;
+                    if (children == null)
+                    {
+                        // The given MofObject does not support setting and gettingof an empty list
+                        // We need to break through
+                        return null;
+                    }
                 }
 
                 rootElements = children;

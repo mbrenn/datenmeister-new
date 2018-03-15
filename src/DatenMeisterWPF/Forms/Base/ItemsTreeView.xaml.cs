@@ -174,24 +174,35 @@ namespace DatenMeisterWPF.Forms.Base
             UpdateView();
         }
 
-        private void OnItemDoubleClicked(object item)
+        private void OnItemChosen(object item)
         {
             if (item is IObject element)
             {
-                ItemDoubleClicked?.Invoke(this, new ItemEventArgs(element));
+                ItemChosen?.Invoke(this, new ItemEventArgs(element));
             }
         }
 
         /// <summary>
         /// This event is called, when the user double clicks on an item 
         /// </summary>
-        public event EventHandler<ItemEventArgs> ItemDoubleClicked;
+        public event EventHandler<ItemEventArgs> ItemChosen;
 
-        private void treeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void treeView_MouseDoubleClicked(object sender, MouseButtonEventArgs e)
         {
             if (treeView.SelectedItem is TreeViewItem treeViewItem)
             {
-                OnItemDoubleClicked(treeViewItem.Tag);
+                OnItemChosen(treeViewItem.Tag);
+            }
+        }
+
+        private void treeView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (treeView.SelectedItem is TreeViewItem treeViewItem)
+                {
+                    OnItemChosen(treeViewItem.Tag);
+                }
             }
         }
     }

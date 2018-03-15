@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -117,6 +118,17 @@ namespace DatenMeisterWPF
         public void AddNavigationButton(string name, Action clickMethod, string imageName, string categoryName)
         {
             _ribbonHelper.AddNavigationButton(name, clickMethod, imageName, categoryName);
+        }
+
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            if (MessageBox.Show(
+                    "Are you sure, that you would like to close Der DatenMeister",
+                    "Close DatenMeister?",
+                    MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

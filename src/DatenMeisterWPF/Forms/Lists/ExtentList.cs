@@ -1,11 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
-using DatenMeister.Provider.CSV.Runtime;
+using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
@@ -91,54 +89,7 @@ namespace DatenMeisterWPF.Forms.Lists
             void AddZipCodeExample()
             {
                 var extentManager = App.Scope.Resolve<IExtentManager>();
-
-                var random = new Random();
-
-                // Finds the file and copies the file to the given location
-                var appBase = AppContext.BaseDirectory;
-
-                // Creates directory, if it does not exist
-                var directory = Path.Combine(appBase, "App_Data/Database");
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
-
-                string filename;
-                var tries = 0;
-                int randomNumber;
-                do // while File.Exists
-                {
-                    randomNumber = random.Next(int.MaxValue);
-                    filename = Path.Combine(appBase, "App_Data/Database", $"plz_{randomNumber}.csv");
-                    tries++;
-                    if (tries == 10000)
-                    {
-                        throw new InvalidOperationException("Did not find a unique name for zip extent");
-                    }
-                } while (File.Exists(filename));
-
-                var originalFilename = Path.Combine(appBase, "Examples", "plz.csv");
-
-                File.Copy(originalFilename, filename);
-
-                var defaultConfiguration = new CSVExtentLoaderConfig
-                {
-                    ExtentUri = $"datenmeister:///zipcodes/{randomNumber}",
-                    Path = filename,
-                    Workspace = _workspaceId,
-                    Settings =
-                    {
-                        HasHeader = false,
-                        Separator = '\t',
-                        Encoding = "UTF-8",
-                        Columns = new[] {"Id", "Zip", "PositionLong", "PositionLat", "CityName"}.ToList(),
-                        MetaclassUri = "dm:///types#DatenMeister.Apps.ZipCode.Model.ZipCode"
-                    }
-                };
-
-                extentManager.LoadExtent(defaultConfiguration, false);
-
+                ZipExampleController.AddZipCodeExample(extentManager, _workspaceId);
                 UpdateContent();
             }
         }

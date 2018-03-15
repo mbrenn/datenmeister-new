@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DatenMeisterWPF.Windows"
         xmlns:base="clr-namespace:DatenMeisterWPF.Forms.Base"
         mc:Ignorable="d"
-        Title="LocateItemDialog" Height="800" Width="600">
+        Title="LocateItemDialog" Height="800" Width="600" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -20,7 +20,7 @@
             <ComboBox x:Name="cboExtents" SelectionChanged="cboExtents_SelectionChanged"></ComboBox>
         </StackPanel>
         <TextBlock Text="Select Item:" Grid.Row="2" />
-        <base:ItemsTreeView x:Name="items" Grid.Row="3" ItemDoubleClicked="Items_OnItemDoubleClicked"/>
+        <base:ItemsTreeView x:Name="items" Grid.Row="3" ItemChosen="Items_OnItemChosen"/>
         <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Right">
             <Button Click="Open_Click">Open</Button>
             <Button Click="Cancel_Click">Cancel</Button>

@@ -1,19 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Navigation;
 
@@ -26,6 +17,25 @@ namespace DatenMeisterWPF.Windows
     {
         public IObject SelectedElement { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the property, whether the window shall be shown as a toolbox
+        /// or as a dialog. 
+        /// If the window is set as a toolbox, it will not close upon request of 
+        /// user and it will automatically create a detail window in case of selection.
+        /// </summary>
+        public bool AsToolBox
+        {
+            get => _asToolBox;
+            set
+            {
+                _asToolBox = value;
+                if (_asToolBox)
+                {
+                    WindowStyle = WindowStyle.ToolWindow;
+                }
+            }
+        }
+
         public LocateItemDialog()
         {
             InitializeComponent();
@@ -37,6 +47,8 @@ namespace DatenMeisterWPF.Windows
         /// Stores the default extent being used by the user
         /// </summary>
         private IExtent _defaultExtent;
+
+        private bool _asToolBox;
 
         public IExtent DefaultExtent
         {
@@ -135,12 +147,31 @@ namespace DatenMeisterWPF.Windows
             Close();
         }
 
-        private void Items_OnItemDoubleClicked(object sender, ItemEventArgs e)
+        private void Items_OnItemChosen(object sender, ItemEventArgs e)
         {
             if (e.Item != null)
             {
-                AcceptAndCloseDialog();
+                if (AsToolBox)
+                {
+                    if (!(Owner is INavigationHost navigationHost))
+                    {
+                        throw new InvalidOperationException("Owner is not set or ist not a navigation host");
+                    }
+
+                    NavigatorForItems.NavigateToElementDetailView(
+                        navigationHost,
+                        e.Item);
+                }
+                else
+                {
+                    AcceptAndCloseDialog();
+                }
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdatedWorkspaces();
         }
     }
 }

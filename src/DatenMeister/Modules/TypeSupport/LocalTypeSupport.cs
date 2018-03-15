@@ -126,7 +126,7 @@ namespace DatenMeister.Modules.TypeSupport
         /// </summary>
         /// <param name="packageName"></param>
         /// <param name="types"></param>
-        /// <returns></returns>
+        /// <returns>Elements beng added to the external types</returns>
         public IList<IElement> AddInternalTypes(string packageName, IEnumerable<Type> types)
         {
             var internalTypeExtent = GetInternalTypeExtent();
@@ -140,17 +140,16 @@ namespace DatenMeister.Modules.TypeSupport
                 _UML._Packages._Package.packagedElement,
                 _workspaceLogic.GetUmlData().Packages.__Package);
 
-            package.set(_UML._CommonStructure._Namespace.member, new List<object>());
+            package.set(_UML._Packages._Package.packagedElement, new List<object>());
 
             IReflectiveSequence children;
-            if (package.isSet(_UML._CommonStructure._Namespace.member))
+            if (package.isSet(_UML._Packages._Package.packagedElement))
             {
-                children = (IReflectiveSequence) package.get(_UML._CommonStructure._Namespace.member);
+                children = (IReflectiveSequence) package.get(_UML._Packages._Package.packagedElement);
             }
             else
             {
-                package.set(_UML._CommonStructure._Namespace.member, new List<object>());
-                children = (IReflectiveSequence) package.get(_UML._CommonStructure._Namespace.member);
+                throw new InvalidOperationException("Extent does not support setting of empty lists");
             }
 
             return AddInternalTypes(children, types);
@@ -190,8 +189,8 @@ namespace DatenMeister.Modules.TypeSupport
             foreach (var type in types)
             {
                 var element = generator.CreateTypeFor(type);
-                rootElements.add(element);
-                result.Add(element);
+                rootElements.add(element); // Adds to the extent
+                result.Add(element); // Adds to the internal return list
             }
 
             return result;

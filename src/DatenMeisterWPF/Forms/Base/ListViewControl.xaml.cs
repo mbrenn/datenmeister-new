@@ -374,20 +374,18 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public void AddDefaultButtons()
         {
-            void Open(IObject selectedElement)
-            {
-                if (selectedElement == null)
-                {
-                    return;
-                }
+            AddRowItemButton("Edit", OpenSelectedElement, ButtonPosition.Before);
+        }
 
-                var events = NavigatorForItems.NavigateToElementDetailView(
-                    NavigationHost, 
-                    selectedElement as IElement);
-                events.Closed += (sender, args) => UpdateContent();
+        private void OpenSelectedElement(IObject selectedElement)
+        {
+            if (selectedElement == null)
+            {
+                return;
             }
 
-            AddRowItemButton("Edit", Open, ButtonPosition.Before);
+            var events = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
+            events.Closed += (sender, args) => UpdateContent();
         }
 
         /// <summary>
@@ -659,6 +657,24 @@ namespace DatenMeisterWPF.Forms.Base
             /// Gets or sets the action being called when the user clicks on the button
             /// </summary>
             public Action<IObject> OnClick { get; set; }
+        }
+
+        /// <summary>
+        /// Called, if the user performs a double click on the given item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (!(DataGrid.SelectedItem is ExpandoObject selectedItem))
+            {
+                return;
+            }
+
+            if (_itemMapping.TryGetValue(selectedItem, out var foundItem))
+            {
+                OpenSelectedElement(foundItem);
+            }
         }
     }
 }

@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:helper="clr-namespace:DatenMeisterWPF.Helper"
+             xmlns:wpf="clr-namespace:BurnSystems.WPF;assembly=BurnSystems.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -11,6 +12,7 @@
             <Button Click="ButtonBase_OnClick" Loaded="RowButton_OnInitialized" VerticalAlignment="Top">Edit</Button>
         </DataTemplate>
     </UserControl.Resources>
+
     <DockPanel>
         <StackPanel Orientation="Horizontal" x:Name="Toolbar" DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="10,0,10,0">
             <helper:ComboBoxEx x:Name="ViewList" SelectionChanged="ViewList_OnSelectionChanged"></helper:ComboBoxEx>
@@ -19,7 +21,15 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" x:Name="ButtonBar" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10">
         </StackPanel>
-        <DataGrid x:Name="DataGrid" Margin="10"/>
+        <DataGrid x:Name="DataGrid" Margin="10" MouseDoubleClick="DataGrid_MouseDoubleClick" />
 
     </DockPanel>
+    <!--<wpf:ResizeableSplitter>
+        <wpf:ResizeableSplitter.FirstElement>
+            <TextBlock>Text</TextBlock>
+        </wpf:ResizeableSplitter.FirstElement>
+        <wpf:ResizeableSplitter.SecondElement>
+
+        </wpf:ResizeableSplitter.SecondElement>
+    </wpf:ResizeableSplitter>-->
 </UserControl>

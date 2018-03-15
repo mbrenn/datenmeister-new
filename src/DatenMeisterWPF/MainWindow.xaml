@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DatenMeisterWPF"
         mc:Ignorable="d"
         Title="Der DatenMeister" Height="700" Width="1100" Initialized="Window_Initialized"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Closing="MainWindow_OnClosing">
     <DockPanel>
         <Ribbon DockPanel.Dock="Top" x:Name="MainRibbon">
             <Ribbon.ApplicationMenu>

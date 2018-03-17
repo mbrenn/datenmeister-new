@@ -22,7 +22,6 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" x:Name="ButtonBar" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10">
         </StackPanel>
-        <DataGrid x:Name="DataGrid" Margin="10" MouseDoubleClick="DataGrid_MouseDoubleClick"/>
         <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0" />
@@ -31,7 +30,7 @@
             <dm:ItemsTreeView>
 
             </dm:ItemsTreeView>
-            <DataGrid x:Name="DataGrid" Margin="10" Grid.Column="1"/>
+            <DataGrid x:Name="DataGrid" Margin="10" Grid.Column="1" MouseDoubleClick="DataGrid_MouseDoubleClick"/>
         </Grid>
 
     </DockPanel>

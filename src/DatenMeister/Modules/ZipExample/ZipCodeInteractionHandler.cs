@@ -2,18 +2,24 @@
 using System.Diagnostics;
 using System.Net;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 using DatenMeister.UserInteractions;
 
 namespace DatenMeister.Modules.ZipExample
 {
     public class ZipCodeInteractionHandler :  BaseElementInteractionHandler
     {
+        public ZipCodeInteractionHandler()
+        {
+                
+        }
+
         public override IEnumerable<IElementInteraction> GetInteractions(IObject element)
         {
             if (IsRelevant(element))
             {
-                var zipCode = element.get(nameof(ZipExampleController.ZipCodeModel.Zip))?.ToString();
-                var name = element.get(nameof(ZipExampleController.ZipCodeModel.CityName))?.ToString();
+                var zipCode = element.getOrDefault(nameof(ZipExampleController.ZipCodeModel.Zip))?.ToString();
+                var name = element.getOrDefault(nameof(ZipExampleController.ZipCodeModel.CityName))?.ToString();
 
                 if (string.IsNullOrEmpty(zipCode) || string.IsNullOrEmpty(name))
                 {

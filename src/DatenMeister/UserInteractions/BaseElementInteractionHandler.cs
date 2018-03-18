@@ -15,7 +15,7 @@ namespace DatenMeister.UserInteractions
         protected string OnlyElementsOfType { get; set; }
 
         /// <inheritdoc />
-        public abstract IEnumerable<IElementInteraction> GetInteractions(IElement element);
+        public abstract IEnumerable<IElementInteraction> GetInteractions(IObject element);
 
         /// <summary>
         /// Returns whether the given element is relevant for the given interaction handler.
@@ -24,11 +24,12 @@ namespace DatenMeister.UserInteractions
         /// </summary>
         /// <param name="element">Element to be checked</param>
         /// <returns>true, if relevant</returns>
-        protected bool IsRelevant(IElement element)
+        protected bool IsRelevant(IObject element)
         {
-            if (!string.IsNullOrEmpty(OnlyElementsOfType))
+            if (!string.IsNullOrEmpty(OnlyElementsOfType) && element is IElement elementAsElement)
             {
-                if (!ClassifierMethods.IsDerivedTypeOf(element, OnlyElementsOfType))
+                
+                if (!ClassifierMethods.IsDerivedTypeOf(elementAsElement, OnlyElementsOfType))
                 {
                     return false;
                 }

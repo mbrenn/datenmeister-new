@@ -13,6 +13,6 @@ namespace DatenMeister.UserInteractions
         /// </summary>
         /// <param name="element">Element on which the interactions can be performed</param>
         /// <returns>Enumeration of possible interactions</returns>
-        IEnumerable<IElementInteraction> GetInteractions(IElement element);
+        IEnumerable<IElementInteraction> GetInteractions(IObject element);
     }
 }

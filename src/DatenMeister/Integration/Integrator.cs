@@ -91,6 +91,8 @@ namespace DatenMeister.Integration
             // Adds the view finder
             kernel.RegisterType<ViewFinderImpl>().As<IViewFinder>();
 
+            Modules.ZipExample.Integrate.Into(kernel);
+
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {

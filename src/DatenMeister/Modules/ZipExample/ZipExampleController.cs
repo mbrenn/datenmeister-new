@@ -67,7 +67,7 @@ namespace DatenMeister.Modules.ZipExample
                     Separator = '\t',
                     Encoding = "UTF-8",
                     Columns = new[] {"Id", "Zip", "PositionLong", "PositionLat", "CityName"}.ToList(),
-                    MetaclassUri = $"{WorkspaceNames.UriInternalTypes}?Apps::ZipCode::ZipCode"
+                    MetaclassUri = $"{WorkspaceNames.UriInternalTypes}?Apps::ZipCodeModel::ZipCodeModel"
                 }
             };
 
@@ -80,12 +80,12 @@ namespace DatenMeister.Modules.ZipExample
         public void Initialize()
         {
             _localTypeSupport.AddInternalTypes(
-                "Apps::ZipCode",
-                typeof(ZipCode)
+                "Apps::ZipCodeModel",
+                typeof(ZipCodeModel)
             );
         }
 
-        public class ZipCode
+        public class ZipCodeModel
         {
             public int Id { get; set; }
             public int Zip { get; set; }

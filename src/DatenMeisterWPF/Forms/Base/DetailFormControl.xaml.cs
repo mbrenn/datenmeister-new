@@ -14,6 +14,7 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
+using DatenMeister.UserInteractions;
 using DatenMeisterWPF.Forms.Detail.Fields;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
@@ -49,7 +50,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// Gets or sets a value indicating whether new properities may be added by the user to the element
         /// </summary>
         public bool AllowNewProperties { get; set; }
-
+        
         private bool? _hideViewSelection;
 
         /// <summary>
@@ -309,7 +310,27 @@ namespace DatenMeisterWPF.Forms.Base
                 }
             }
 
+            var buttons = new List<Button>();
             // Creates additional rows for buttons with additional actions
+            var interactionHandlers = App.Scope.Resolve<IEnumerable<IElementInteractionsHandler>>();
+            foreach (var handler in interactionHandlers
+                .SelectMany(x => x.GetInteractions(DetailElement)))
+            {
+                var button = new Button {Content = handler.Name};
+                button.Click += (x, y) => handler.Execute(DetailElement, null);
+                buttons.Add(button);
+            }
+
+            if (buttons.Count > 0)
+            {
+                var panel = new StackPanel();
+                foreach (var button in buttons)
+                {
+                    panel.Children.Add(button);
+                }
+
+                CreateRowForField(new TextBlock{Text = "Actions:"}, panel);
+            }
         }
 
         /// <summary>

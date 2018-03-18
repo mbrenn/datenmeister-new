@@ -13,13 +13,14 @@ namespace DatenMeister.UserInteractions
         /// Initializes a new instance of the DefaultElementInteraction
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="action">Action to be sxecuted</param>
         public DefaultElementInteraction(string name, Action action)
         {
             _action = action;
             Name = name;
         }
 
-        public void Action(IElement element, IObject parameters)
+        public void Execute(IObject element, IObject parameters)
         {
             _action();
         }

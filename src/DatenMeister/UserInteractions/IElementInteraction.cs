@@ -17,6 +17,6 @@ namespace DatenMeister.UserInteractions
         /// </summary>
         /// <param name="element">Element on which the action shall be performed</param>
         /// <param name="parameters">Parameters of the action. Null, if there are now parameter</param>
-        void Action(IElement element, IObject parameters);
+        void Execute(IObject element, IObject parameters);
     }
 }

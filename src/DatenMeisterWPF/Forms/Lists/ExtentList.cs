@@ -55,9 +55,9 @@ namespace DatenMeisterWPF.Forms.Lists
         public new void PrepareNavigation()
         {
             NavigationHost.AddNavigationButton(
-                "New Xmi Extent", 
-                NewXmiExtent, 
-                null, 
+                "New Xmi Extent",
+                NewXmiExtent,
+                null,
                 NavigationCategories.File + ".Workspaces");
 
             NavigationHost.AddNavigationButton(
@@ -92,6 +92,16 @@ namespace DatenMeisterWPF.Forms.Lists
                 ZipExampleController.AddZipCodeExample(extentManager, _workspaceId);
                 UpdateContent();
             }
+        }
+
+        public override void OnMouseDoubleClick(IObject element)
+        {
+            var uri = element.get("uri").ToString();
+
+            var events = NavigatorForItems.NavigateToItemsInExtent(
+                NavigationHost,
+                _workspaceId,
+                uri);
         }
     }
 }

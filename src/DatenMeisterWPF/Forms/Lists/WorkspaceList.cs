@@ -94,5 +94,11 @@ namespace DatenMeisterWPF.Forms.Lists
 
             base.PrepareNavigation();
         }
+
+        public override void OnMouseDoubleClick(IObject element)
+        {
+            var workspaceId = element.get("id").ToString();
+            NavigatorForExtents.NavigateToExtentList(NavigationHost, workspaceId);
+        }
     }
 }

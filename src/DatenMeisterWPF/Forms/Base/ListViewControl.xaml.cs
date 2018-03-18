@@ -699,8 +699,13 @@ namespace DatenMeisterWPF.Forms.Base
 
             if (_itemMapping.TryGetValue(selectedItem, out var foundItem))
             {
-                OpenSelectedElement(foundItem);
+                OnMouseDoubleClick(foundItem);
             }
+        }
+
+        public virtual void OnMouseDoubleClick(IObject element)
+        {
+            OpenSelectedElement(element);
         }
     }
 }

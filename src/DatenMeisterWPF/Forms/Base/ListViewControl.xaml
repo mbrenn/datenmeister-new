@@ -25,12 +25,16 @@
         <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0" />
+                <ColumnDefinition Width="5"></ColumnDefinition>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <dm:ItemsTreeView>
+            <dm:ItemsTreeView Margin="10,0,10,0">
 
             </dm:ItemsTreeView>
-            <DataGrid x:Name="DataGrid" Margin="10" Grid.Column="1" MouseDoubleClick="DataGrid_MouseDoubleClick"/>
+            <GridSplitter Grid.Column="1" Width="5"  
+                          HorizontalAlignment="Stretch" 
+                          VerticalAlignment="Stretch"></GridSplitter>
+            <DataGrid x:Name="DataGrid" Margin="10,0,10,0" Grid.Column="2" MouseDoubleClick="DataGrid_MouseDoubleClick"/>
         </Grid>
 
     </DockPanel>

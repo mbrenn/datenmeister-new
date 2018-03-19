@@ -50,6 +50,9 @@ namespace DatenMeisterWPF.Windows
 
         private bool _asToolBox;
 
+        /// <summary>
+        /// Gets or sets the default extent which is preselected
+        /// </summary>
         public IExtent DefaultExtent
         {
             get => _defaultExtent;

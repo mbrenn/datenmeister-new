@@ -46,12 +46,17 @@ namespace DatenMeisterWPF.Forms.Base
         private static void OnIsTreeVisibleChanged(DependencyObject dependencyObject,
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            if (dependencyPropertyChangedEventArgs.NewValue is bool newValue)
-            {
-                var listViewControl = (ListViewControl) dependencyObject;
-                listViewControl.MainGrid.ColumnDefinitions[0].Width =
-                    new GridLength(newValue ? 50 : 0);
-            }
+            var listViewControl = (ListViewControl)dependencyObject;
+            listViewControl.UpdateTreeViewVisibility();
+        }
+
+        private void UpdateTreeViewVisibility()
+        {
+            var newValue = IsTreeVisible;
+            MainGrid.ColumnDefinitions[0].Width =
+                new GridLength(newValue ? Math.Round(ActualWidth / 4.0) : 0);
+            MainGrid.ColumnDefinitions[1].Width =
+                new GridLength(newValue ? 5 : 0);
         }
 
         /// <summary>
@@ -564,6 +569,8 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 button.Content = column.Header.ToString();
             }
+
+            UpdateTreeViewVisibility();
         }
 
         private void SearchField_OnTextChanged(object sender, TextChangedEventArgs e)

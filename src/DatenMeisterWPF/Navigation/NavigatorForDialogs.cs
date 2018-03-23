@@ -59,9 +59,9 @@ namespace DatenMeisterWPF.Navigation
             var dlg = new LocateItemDialog
             {
                 WorkspaceLogic = App.Scope.Resolve<IWorkspaceLogic>(),
-                DefaultExtent = defaultExtent
+                SelectedExtent = defaultExtent
             };
-            dlg.UpdatedWorkspaces();
+            dlg.UpdateWorkspaces();
             if (dlg.ShowDialog() == true)
             {
                 return dlg.SelectedElement;

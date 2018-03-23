@@ -12,16 +12,22 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Select Extent:" />
+        <TextBlock Text="Select Workspace:"  Grid.Row="0" />
         <StackPanel Orientation="Vertical" Grid.Row="1">
+            <ComboBox x:Name="cboWorkspace" SelectionChanged="cboWorkspace_SelectionChanged"></ComboBox>
+        </StackPanel>
+        <TextBlock Text="Select Extent:"  Grid.Row="2" />
+        <StackPanel Orientation="Vertical" Grid.Row="3">
             <ComboBox x:Name="cboExtents" SelectionChanged="cboExtents_SelectionChanged"></ComboBox>
         </StackPanel>
-        <TextBlock Text="Select Item:" Grid.Row="2" />
-        <base:ItemsTreeView x:Name="items" Grid.Row="3" ItemChosen="Items_OnItemChosen"/>
-        <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Right">
+        <TextBlock Text="Select Item:" Grid.Row="4" />
+        <base:ItemsTreeView x:Name="items" Grid.Row="5" ItemChosen="Items_OnItemChosen"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="6" HorizontalAlignment="Right">
             <Button Click="Open_Click">Open</Button>
             <Button Click="Cancel_Click">Cancel</Button>
         </StackPanel>

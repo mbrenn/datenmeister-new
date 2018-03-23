@@ -15,8 +15,6 @@ namespace DatenMeisterWPF.Windows
     /// </summary>
     public partial class LocateItemDialog : Window
     {
-        public IObject SelectedElement { get; private set; }
-
         /// <summary>
         /// Gets or sets the property, whether the window shall be shown as a toolbox
         /// or as a dialog. 
@@ -44,21 +42,53 @@ namespace DatenMeisterWPF.Windows
         public IWorkspaceLogic WorkspaceLogic { get; set; }
 
         /// <summary>
+        /// Stores the selected workspace being shown
+        /// </summary>
+        private IWorkspace _selectedWorkspace;
+
+        /// <summary>
         /// Stores the default extent being used by the user
         /// </summary>
-        private IExtent _defaultExtent;
+        private IExtent _selectedExtent;
 
         private bool _asToolBox;
+
+        public IObject SelectedElement { get; private set; }
 
         /// <summary>
         /// Gets or sets the default extent which is preselected
         /// </summary>
-        public IExtent DefaultExtent
+        public IWorkspace SelectedWorkspace
         {
-            get => _defaultExtent;
+            get => _selectedWorkspace;
             set
             {
-                _defaultExtent = value;
+                _selectedWorkspace = value;
+                if (cboWorkspace.ItemsSource == null)
+                {
+                    return;
+                }
+
+                foreach (var cboItem in cboWorkspace.ItemsSource)
+                {
+                    if ((cboItem as ComboBoxItem)?.Tag == value)
+                    {
+                        cboExtents.SelectedItem = cboItem;
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the default extent which is preselected
+        /// </summary>
+        public IExtent SelectedExtent
+        {
+            get => _selectedExtent;
+            set
+            {
+                _selectedExtent = value;
                 if (cboExtents.ItemsSource == null)
                 {
                     return;
@@ -75,12 +105,12 @@ namespace DatenMeisterWPF.Windows
             }
         }
 
-        public void UpdatedWorkspaces()
+        public void UpdateWorkspaces()
         {
             var workspaces = WorkspaceLogic.Workspaces;
             cboExtents.ItemsSource = null;
 
-            var comboItems = new List<object>();
+            var comboWorkspaces = new List<object>();
 
             foreach (var workspace in workspaces)
             {
@@ -90,26 +120,49 @@ namespace DatenMeisterWPF.Windows
                     Tag = workspace
                 };
 
-                comboItems.Add(cboItem);
+                comboWorkspaces.Add(cboItem);
+            }
 
-                foreach (var extent in workspace.extent.OfType<IUriExtent>())
+            cboWorkspace.ItemsSource = comboWorkspaces;
+        }
+
+        public void UpdateExtents()
+        {
+            if (_selectedWorkspace == null)
+            {
+                cboExtents.IsEnabled = false;
+            }
+            else
+            {
+                cboExtents.IsEnabled = true;
+
+                var comboItems = new List<object>();
+
+                foreach (var extent in _selectedWorkspace.extent.OfType<IUriExtent>())
                 {
                     var cboExtentItem = new ComboBoxItem
                     {
-                        Content = $"- {extent.contextURI()}",
+                        Content = extent.contextURI(),
                         Tag = extent
                     };
 
                     comboItems.Add(cboExtentItem);
 
-                    if (extent == _defaultExtent)
+                    if (extent == _selectedExtent)
                     {
                         cboExtents.SelectedItem = cboExtentItem;
                     }
                 }
+                cboExtents.ItemsSource = comboItems;
             }
 
-            cboExtents.ItemsSource = comboItems;
+            cboExtents.SelectedItem = null;
+        }
+
+        private void cboWorkspace_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _selectedWorkspace = (cboWorkspace.SelectedItem as ComboBoxItem)?.Tag as IWorkspace;
+            UpdateExtents();
         }
 
         private void cboExtents_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -121,12 +174,15 @@ namespace DatenMeisterWPF.Windows
                 {
                     case IWorkspace _:
                         items.ItemsSource = null;
+                        items.treeView.IsEnabled = false;
                         break;
                     case IExtent extent:
                         items.ItemsSource = extent.elements();
+                        items.treeView.IsEnabled = true;
                         break;
                     default:
                         items.ItemsSource = null;
+                        items.treeView.IsEnabled = false;
                         break;
                 }
             }
@@ -174,7 +230,8 @@ namespace DatenMeisterWPF.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            UpdatedWorkspaces();
+            UpdateWorkspaces();
+            UpdateExtents();
         }
     }
 }

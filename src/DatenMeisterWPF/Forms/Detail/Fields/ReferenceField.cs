@@ -56,6 +56,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             {
                 var selectedItem =  NavigatorForDialogs.Locate(
                     detailForm.NavigationHost,
+                    null /* workspace */,
                     (value as IHasExtent)?.Extent);
                 if (selectedItem != null)
                 {

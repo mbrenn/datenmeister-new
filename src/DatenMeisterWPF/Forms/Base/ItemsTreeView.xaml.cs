@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,11 @@ namespace DatenMeisterWPF.Forms.Base
         private IReflectiveCollection _itemsSource;
 
         private readonly HashSet<object> _alreadyVisited = new HashSet<object>();
+
+        /// <summary>
+        /// Defines the maximum items per level. This is used to reduce the amount of items
+        /// </summary>
+        private const int MaxItemsPerLevel = 100;
 
         /// <summary>
         /// Stores the properties being used to retrieve the items
@@ -92,35 +98,44 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private void UpdateView()
         {
+            Debug.WriteLine("E");
+            if (!IsInitialized)
+            {
+                // Save the time... 
+                return;
+            }
+
+            if (ItemsSource == null)
+            {
+                treeView.ItemsSource = null;
+                return;
+            }
+
+            var model = new List<TreeViewItem>();
+            
             lock (_alreadyVisited)
             {
+                var n = 0;
                 _alreadyVisited.Clear();
-
-                if (!IsInitialized)
-                {
-                    // Save the time... 
-                    return;
-                }
-
-                if (ItemsSource == null)
-                {
-                    treeView.ItemsSource = null;
-                    return;
-                }
-
-                var model = new List<TreeViewItem>();
                 foreach (var item in ItemsSource)
                 {
                     var treeViewItem = CreateTreeViewItem(item);
                     if (treeViewItem != null)
                     {
                         model.Add(treeViewItem);
+                        n++;
+                    }
+
+                    if (n >= MaxItemsPerLevel)
+                    {
+                        break;
                     }
                 }
 
                 treeView.ItemsSource = model;
             }
         }
+
 
         /// <summary>
         /// Creates the treeview item for the given item. 
@@ -146,6 +161,7 @@ namespace DatenMeisterWPF.Forms.Base
 
             if (item is IObject itemAsObject)
             {
+                var n = 0;
                 var childModels = new List<TreeViewItem>();
                 foreach (var property in _propertiesForChildren)
                 {
@@ -158,8 +174,14 @@ namespace DatenMeisterWPF.Forms.Base
                             {
                                 childModels.Add(childTreeViewItem);
                             }
+
+                            n++;
+
+                            if (n >= MaxItemsPerLevel) break;
                         }
                     }
+
+                    if (n >= MaxItemsPerLevel) break;
                 }
 
                 treeViewItem.ItemsSource = childModels;

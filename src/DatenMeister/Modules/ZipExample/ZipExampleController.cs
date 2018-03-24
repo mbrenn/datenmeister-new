@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.CSV.Runtime;
-using DatenMeister.Provider.XMI;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 
@@ -12,6 +12,7 @@ namespace DatenMeister.Modules.ZipExample
     /// <summary>
     /// Supports some methods for the example
     /// </summary>
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ZipExampleController
     {
         /// <summary>
@@ -66,12 +67,13 @@ namespace DatenMeister.Modules.ZipExample
                     HasHeader = false,
                     Separator = '\t',
                     Encoding = "UTF-8",
-                    Columns = new[] {"Id", "Zip", "PositionLong", "PositionLat", "CityName"}.ToList(),
+                    Columns = new[] {"id", "zip", "positionLong", "positionLat", "name"}.ToList(),
                     MetaclassUri = $"{WorkspaceNames.UriInternalTypes}?Apps::ZipCode::ZipCode"
                 }
             };
 
-            extentManager.LoadExtent(defaultConfiguration, false);
+            var loadedExtent = extentManager.LoadExtent(defaultConfiguration, false);
+            loadedExtent.SetExtentType("DatenMeister.Example.ZipCodes");
         }
 
         /// <summary>

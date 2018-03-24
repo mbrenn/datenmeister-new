@@ -74,7 +74,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 var listViewControl = new ListViewControl
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
-                    MaxHeight = 500
+                    MaxHeight = 500,
+                    NavigationHost = detailForm.NavigationHost
                 };
                 
                 listViewControl.AddRowItemButton(

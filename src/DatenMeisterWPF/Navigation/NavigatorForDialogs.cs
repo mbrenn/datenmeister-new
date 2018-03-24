@@ -79,7 +79,6 @@ namespace DatenMeisterWPF.Navigation
                     dlg.NavigateToExtent(extentWorkspace, defaultExtent);
                 }
             }
-            
 
             if (dlg.ShowDialog() == true)
             {

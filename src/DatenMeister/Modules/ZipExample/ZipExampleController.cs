@@ -67,7 +67,7 @@ namespace DatenMeister.Modules.ZipExample
                     HasHeader = false,
                     Separator = '\t',
                     Encoding = "UTF-8",
-                    Columns = new[] {"id", "zip", "positionLong", "positionLat", "name"}.ToList(),
+                    Columns = new[] {nameof(ZipCode.id), nameof(ZipCode.zip), nameof(ZipCode.positionLong), nameof(ZipCode.positionLat),nameof(ZipCode.name)}.ToList(),
                     MetaclassUri = $"{WorkspaceNames.UriInternalTypes}?Apps::ZipCode::ZipCode"
                 }
             };
@@ -89,11 +89,11 @@ namespace DatenMeister.Modules.ZipExample
 
         public class ZipCode
         {
-            public int Id { get; set; }
-            public int Zip { get; set; }
-            public double PositionLong { get; set; }
-            public double PositionLat { get; set; }
-            public string CityName { get; set; }
+            public int id { get; set; }
+            public int zip { get; set; }
+            public double positionLong { get; set; }
+            public double positionLat { get; set; }
+            public string name { get; set; }
         }
     }
 }

@@ -16,7 +16,20 @@ namespace DatenMeisterWPF.Forms.Lists
 {
     public class ExtentList : ListViewControl, INavigationGuest
     {
-        private string _workspaceId;
+        /// <summary>
+        /// Initializes a new instance of the ExtentList class
+        /// </summary>
+        public ExtentList()
+        {
+            Loaded += ExtentList_Loaded;
+        }
+
+        private void ExtentList_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            SetContent(WorkspaceId);
+        }
+
+        public string WorkspaceId { get; set; }
 
         /// <summary>
         /// Shows the workspaces of the DatenMeister
@@ -24,7 +37,7 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <param name="workspaceId">Id of the workspace whose extents shall be shown</param>
         public void SetContent(string workspaceId)
         {
-            _workspaceId = workspaceId;
+            WorkspaceId = workspaceId;
             var viewExtent = App.Scope.Resolve<ViewLogic>().GetViewExtent();
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);
             var workspace = workspaceExtent.elements().WhenPropertyIs("id", workspaceId).FirstOrDefault() as IElement;
@@ -76,20 +89,20 @@ namespace DatenMeisterWPF.Forms.Lists
 
             void ImportFromExcel()
             {
-                NavigatorForExcelHandling.ImportFromExcel(NavigationHost, _workspaceId);
+                NavigatorForExcelHandling.ImportFromExcel(NavigationHost, WorkspaceId);
                 UpdateContent();
             }
 
             void NewXmiExtent()
             {
-                var events = NavigatorForItems.NavigateToNewXmiExtentDetailView(NavigationHost, _workspaceId);
+                var events = NavigatorForItems.NavigateToNewXmiExtentDetailView(NavigationHost, WorkspaceId);
                 events.Closed += (x, y) => UpdateContent();
             }
 
             void AddZipCodeExample()
             {
                 var extentManager = App.Scope.Resolve<IExtentManager>();
-                ZipExampleController.AddZipCodeExample(extentManager, _workspaceId);
+                ZipExampleController.AddZipCodeExample(extentManager, WorkspaceId);
                 UpdateContent();
             }
         }
@@ -100,7 +113,7 @@ namespace DatenMeisterWPF.Forms.Lists
 
             var events = NavigatorForItems.NavigateToItemsInExtent(
                 NavigationHost,
-                _workspaceId,
+                WorkspaceId,
                 uri);
         }
     }

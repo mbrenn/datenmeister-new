@@ -68,8 +68,14 @@ namespace DatenMeisterWPF.Forms.Base
             set => SetValue(IsTreeVisibleProperty, value);
         }
         
+        /// <summary>
+        /// Gets or sets the host for the navigation
+        /// </summary>
         public INavigationHost NavigationHost { get; set; }
 
+        /// <summary>
+        /// Gets or sets the items to be shown
+        /// </summary>
         public IReflectiveSequence Items { get; set; }
 
         /// <summary>
@@ -94,7 +100,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private string _searchText;
 
-        private List<IElement> packagingElements = new List<IElement>();
+        private List<IElement> _packagingElements = new List<IElement>();
 
         /// <summary>
         /// Gets the currently selected object
@@ -193,6 +199,11 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public void UpdateContent()
         {
+            if (NavigationHost == null)
+            {
+                throw new InvalidOperationException("NOT ALLOWED");
+            }
+
             RefreshViewDefinition();
 
             SupportNewItems = 

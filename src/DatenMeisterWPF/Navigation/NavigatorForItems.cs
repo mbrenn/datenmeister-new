@@ -28,7 +28,7 @@ namespace DatenMeisterWPF.Navigation
                 () =>
                 {
                     var control = new DetailFormControl();
-                    control.SetContent(element, null);
+                    control.DetailElement = element;
                     control.AllowNewProperties = true;
                     control.AddDefaultButtons();
                     return control;
@@ -55,7 +55,7 @@ namespace DatenMeisterWPF.Navigation
                         ManagementViewDefinitions.PathNewXmiDetailForm);
 
                     var control = new DetailFormControl();
-                    control.SetContent(null, newXmiDetailForm);
+                    control.Form = newXmiDetailForm;
                     control.AddDefaultButtons("Create");
                     control.ElementSaved += (x, y) =>
                     {
@@ -91,13 +91,8 @@ namespace DatenMeisterWPF.Navigation
             string workspaceId,
             string extentUrl)
         {
-            return window.NavigateTo(() =>
-                {
-                    var control = new ItemsInExtentList {IsTreeVisible = true};
-                    control.SetContent(workspaceId, extentUrl);
-
-                    return control;
-                },
+            return window.NavigateTo(() => 
+                    new ItemsInExtentList {IsTreeVisible = true, WorkspaceId = workspaceId, ExtentUrl = extentUrl},
                 NavigationMode.List);
         }
 

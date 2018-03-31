@@ -26,10 +26,21 @@ namespace DatenMeisterWPF.Forms.Base
     /// </summary>
     public partial class DetailFormControl : UserControl, INavigationGuest
     {
+
+        /// <summary>
+        /// Gets the detailled element, whose content is shown in the dialog
+        /// </summary>
+        public IObject DetailElement { get; set; }
+
+        /// <summary>
+        /// Gets or sets the form definition being used as the overridden element
+        /// </summary>
+        public IElement Form { get; set; }
+
         /// <summary>
         /// Defines the form definition being used in the detail for
         /// </summary>
-        private IElement ActualFormDefinition { get; set; }
+        private IElement EffectiveForm { get; set; }
 
         /// <summary>
         /// Gets or sets the view definition
@@ -40,11 +51,6 @@ namespace DatenMeisterWPF.Forms.Base
         /// Gets or sets the navigation host
         /// </summary>
         public INavigationHost NavigationHost { get; set; }
-
-        /// <summary>
-        /// Gets the detailled element, whose content is shown in the dialog
-        /// </summary>
-        public IObject DetailElement { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether new properities may be added by the user to the element
@@ -63,8 +69,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// Gets the default size
         /// </summary>
         public Size DefaultSize => new Size(
-            DotNetHelper.AsDouble(ActualFormDefinition?.get(_FormAndFields._Form.defaultWidth)),
-            DotNetHelper.AsDouble(ActualFormDefinition?.get(_FormAndFields._Form.defaultHeight))
+            DotNetHelper.AsDouble(EffectiveForm?.get(_FormAndFields._Form.defaultWidth)),
+            DotNetHelper.AsDouble(EffectiveForm?.get(_FormAndFields._Form.defaultHeight))
         );
 
         private int _fieldCount;
@@ -75,7 +81,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <returns>true, if design shall be minimized</returns>
         public bool IsDesignMinimized()
         {
-            return DotNetHelper.IsTrue(ActualFormDefinition?.getOrDefault(_FormAndFields._Form.minimizeDesign));
+            return DotNetHelper.IsTrue(EffectiveForm?.getOrDefault(_FormAndFields._Form.minimizeDesign));
         }
 
         /// <summary>
@@ -86,6 +92,12 @@ namespace DatenMeisterWPF.Forms.Base
         public DetailFormControl()
         {
             InitializeComponent();
+            Loaded += DetailFormControl_Loaded;
+        }
+
+        private void DetailFormControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetContent(DetailElement, Form);
         }
 
         /// <summary>
@@ -188,7 +200,7 @@ namespace DatenMeisterWPF.Forms.Base
 
             if (_hideViewSelection == null)
             {
-                if (DotNetHelper.IsTrue(ActualFormDefinition.getOrDefault(_FormAndFields._Form.fixView)))
+                if (DotNetHelper.IsTrue(EffectiveForm.getOrDefault(_FormAndFields._Form.fixView)))
                 {
                     ViewList.Visibility = Visibility.Collapsed;
                     _hideViewSelection = true;
@@ -205,18 +217,18 @@ namespace DatenMeisterWPF.Forms.Base
             var viewFinder = App.Scope.Resolve<IViewFinder>();
             if (ViewDefinition.Mode == ViewDefinitionMode.Default)
             {
-                ActualFormDefinition = viewFinder.FindView(DetailElement);
+                EffectiveForm = viewFinder.FindView(DetailElement);
             }
 
             if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties
-                || ViewDefinition.Mode == ViewDefinitionMode.Default && ActualFormDefinition == null)
+                || ViewDefinition.Mode == ViewDefinitionMode.Default && EffectiveForm == null)
             {
-                ActualFormDefinition = viewFinder.CreateView(DetailElement);
+                EffectiveForm = viewFinder.CreateView(DetailElement);
             }
 
             if (ViewDefinition.Mode == ViewDefinitionMode.Specific)
             {
-                ActualFormDefinition = ViewDefinition.Element;
+                EffectiveForm = ViewDefinition.Element;
             }
         }
 
@@ -229,7 +241,7 @@ namespace DatenMeisterWPF.Forms.Base
             
             DataGrid.Children.Clear();
             SetActions.Clear();
-            if (!(ActualFormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
+            if (!(EffectiveForm?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
             {
                 return;
             }
@@ -244,7 +256,7 @@ namespace DatenMeisterWPF.Forms.Base
                 var mofElement = (MofElement)DetailElement;
                 var uriExtent = mofElement.Extent as MofUriExtent;
 
-                if (!DotNetHelper.IsTrue(ActualFormDefinition.getOrDefault(_FormAndFields._Form.hideMetaClass)))
+                if (!DotNetHelper.IsTrue(EffectiveForm.getOrDefault(_FormAndFields._Form.hideMetaClass)))
                 {
                     CreateSeparator();
 
@@ -256,7 +268,7 @@ namespace DatenMeisterWPF.Forms.Base
                     CreateRowForField("Url w/Fullname:", $"{uriExtentText}?{fullName}", true);
 
                     // Sets the metaclass
-                    if (DotNetHelper.IsFalseOrNotSet(ActualFormDefinition, _FormAndFields._Form.hideMetaClass))
+                    if (DotNetHelper.IsFalseOrNotSet(EffectiveForm, _FormAndFields._Form.hideMetaClass))
                     {
                         var metaClass = (DetailElement as IElement)?.getMetaClass();
                         CreateRowForField(
@@ -500,13 +512,13 @@ namespace DatenMeisterWPF.Forms.Base
                     SupportWriting = true,
                     Owner = Window.GetWindow(this)
                 };
-                dlg.UpdateContent(ActualFormDefinition);
+                dlg.UpdateContent(EffectiveForm);
 
                 dlg.UpdateButtonPressed += (x, y) =>
                 {
                     var temporaryExtent = InMemoryProvider.TemporaryExtent;
                     var factory = new MofFactory(temporaryExtent);
-                    ActualFormDefinition = dlg.GetCurrentContentAsMof(factory);
+                    EffectiveForm = dlg.GetCurrentContentAsMof(factory);
                     UpdateContent();
                 };
 

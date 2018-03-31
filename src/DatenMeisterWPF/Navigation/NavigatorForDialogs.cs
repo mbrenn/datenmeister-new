@@ -52,16 +52,34 @@ namespace DatenMeisterWPF.Navigation
         /// Locates a certain item
         /// </summary>
         /// <param name="mainWindow">Navigation host to be used</param>
+        /// <param name="workspace">Defines the workspace to which shall be navigated</param>
         /// <param name="defaultExtent">Extent that shall be opened per default</param>
         /// <returns></returns>
-        public static IObject Locate(INavigationHost mainWindow, IExtent defaultExtent = null)
+        public static IObject Locate(INavigationHost mainWindow, IWorkspace workspace = null, IExtent defaultExtent = null)
         {
             var dlg = new LocateItemDialog
             {
                 WorkspaceLogic = App.Scope.Resolve<IWorkspaceLogic>(),
-                DefaultExtent = defaultExtent
             };
-            dlg.UpdatedWorkspaces();
+
+            if (workspace != null && defaultExtent != null)
+            {
+                dlg.NavigateToExtent(workspace, defaultExtent);
+            }
+            else
+            {
+                if (workspace != null)
+                {
+                    dlg.NavigateToWorkspace(workspace);
+                }
+
+                if (defaultExtent != null)
+                {
+                    var extentWorkspace = App.Scope.Resolve<IWorkspaceLogic>().GetWorkspaceOfExtent(defaultExtent);
+                    dlg.NavigateToExtent(extentWorkspace, defaultExtent);
+                }
+            }
+
             if (dlg.ShowDialog() == true)
             {
                 return dlg.SelectedElement;

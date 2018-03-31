@@ -7,7 +7,6 @@ using System.Windows.Controls.Ribbon;
 using DatenMeister.Integration;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms;
-using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
 
@@ -97,6 +96,9 @@ namespace DatenMeisterWPF
             return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
         }
         
+        /// <summary>
+        /// Sets the focus
+        /// </summary>
         public void SetFocus()
         {
             Activate();

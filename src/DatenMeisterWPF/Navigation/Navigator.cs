@@ -50,6 +50,11 @@ namespace DatenMeisterWPF.Navigation
         /// <returns>Creates a new window which can be used by the user. </returns>
         public static IControlNavigation NavigateByCreatingAWindow(Window parentWindow, Func<UserControl> factoryMethod, NavigationMode navigationMode)
         {
+            if (parentWindow == null)
+            {
+                throw new InvalidOperationException("No parent window is not allowed");
+            }
+
             var result = new ControlNavigation();
             var userControl = factoryMethod();
             switch (userControl)
@@ -64,9 +69,10 @@ namespace DatenMeisterWPF.Navigation
                         MainViewSet =
                         {
                             Content = asListViewControl
-                        }
+                        },
                     };
 
+                    asListViewControl.NavigationHost = listFormWindow;
                     listFormWindow.Closed += (x, y) => result.OnClosed();
 
                     SetPosition(listFormWindow, parentWindow, navigationMode);
@@ -89,7 +95,7 @@ namespace DatenMeisterWPF.Navigation
                     };
 
                     SetPosition(detailFormWindow, parentWindow, navigationMode);
-                        break;
+                    break;
                 }
             }
             

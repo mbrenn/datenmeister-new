@@ -19,9 +19,20 @@ namespace DatenMeisterWPF.Forms.Lists
 {
     public class ItemsInExtentList : ListViewControl, INavigationGuest
     {
-        private string _workspaceId;
-        private string _extentUrl;
         private IExtent _extent;
+
+        public string WorkspaceId { get; set; }
+        public string ExtentUrl { get; set; }
+
+        public ItemsInExtentList()
+        {
+            Loaded += ItemsInExtentList_Loaded;
+        }
+
+        private void ItemsInExtentList_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetContent(WorkspaceId, ExtentUrl);
+        }
 
         /// <inheritdoc />
         /// <summary>
@@ -39,8 +50,8 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <param name="extentUrl">Url of the extent to be used</param>
         public void SetContent(string workspaceId, string extentUrl)
         {
-            _workspaceId = workspaceId;
-            _extentUrl = extentUrl;
+            WorkspaceId = workspaceId;
+            ExtentUrl = extentUrl;
             var workLogic = App.Scope.Resolve<IWorkspaceLogic>();
             workLogic.FindExtentAndWorkspace(workspaceId, extentUrl, out var workspace, out _extent);
             if (_extent == null)
@@ -107,13 +118,13 @@ namespace DatenMeisterWPF.Forms.Lists
 
             NavigationHost.AddNavigationButton(
                 "To Extents",
-                () => NavigatorForExtents.NavigateToExtentList(NavigationHost, _workspaceId),
+                () => NavigatorForExtents.NavigateToExtentList(NavigationHost, WorkspaceId),
                 Icons.ExtentsShow,
                 NavigationCategories.File + ".Workspaces");
 
             NavigationHost.AddNavigationButton(
                 "Extent Info",
-                () => NavigatorForExtents.OpenExtent(NavigationHost, _workspaceId, _extentUrl),
+                () => NavigatorForExtents.OpenExtent(NavigationHost, WorkspaceId, ExtentUrl),
                 null,
                 NavigationCategories.File + ".Workspaces");
 

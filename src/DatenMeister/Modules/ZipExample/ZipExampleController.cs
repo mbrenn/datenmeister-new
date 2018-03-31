@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.CSV.Runtime;
-using DatenMeister.Provider.XMI;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 
@@ -12,6 +12,7 @@ namespace DatenMeister.Modules.ZipExample
     /// <summary>
     /// Supports some methods for the example
     /// </summary>
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ZipExampleController
     {
         /// <summary>
@@ -66,12 +67,20 @@ namespace DatenMeister.Modules.ZipExample
                     HasHeader = false,
                     Separator = '\t',
                     Encoding = "UTF-8",
-                    Columns = new[] {"Id", "Zip", "PositionLong", "PositionLat", "CityName"}.ToList(),
+                    Columns = new[]
+                    {
+                        nameof(ZipCodeModel.id),
+                        nameof(ZipCodeModel.zip),
+                        nameof(ZipCodeModel.positionLong),
+                        nameof(ZipCodeModel.positionLat),
+                        nameof(ZipCodeModel.name)
+                    }.ToList(),
                     MetaclassUri = $"{WorkspaceNames.UriInternalTypes}?Apps::ZipCodeModel::ZipCodeModel"
                 }
             };
 
-            extentManager.LoadExtent(defaultConfiguration, false);
+            var loadedExtent = extentManager.LoadExtent(defaultConfiguration, false);
+            loadedExtent.SetExtentType("DatenMeister.Example.ZipCodes");
         }
 
         /// <summary>
@@ -87,11 +96,11 @@ namespace DatenMeister.Modules.ZipExample
 
         public class ZipCodeModel
         {
-            public int Id { get; set; }
-            public int Zip { get; set; }
-            public double PositionLong { get; set; }
-            public double PositionLat { get; set; }
-            public string CityName { get; set; }
+            public int id { get; set; }
+            public int zip { get; set; }
+            public double positionLong { get; set; }
+            public double positionLat { get; set; }
+            public string name { get; set; }
         }
     }
 }

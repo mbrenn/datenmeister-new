@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
@@ -13,6 +14,16 @@ namespace DatenMeisterWPF.Forms.Lists
 {
     public class WorkspaceList : ListViewControl, INavigationGuest
     {
+        public WorkspaceList()
+        {
+            Loaded += WorkspaceList_Loaded;
+        }
+
+        private void WorkspaceList_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetContent();
+        }
+
         /// <summary>
         /// Shows the workspaces of the DatenMeister
         /// </summary>
@@ -93,6 +104,12 @@ namespace DatenMeisterWPF.Forms.Lists
             );
 
             base.PrepareNavigation();
+        }
+
+        public override void OnMouseDoubleClick(IObject element)
+        {
+            var workspaceId = element.get("id").ToString();
+            NavigatorForExtents.NavigateToExtentList(NavigationHost, workspaceId);
         }
     }
 }

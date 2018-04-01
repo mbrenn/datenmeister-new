@@ -6,6 +6,7 @@ using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -65,13 +66,12 @@ namespace DatenMeister.Tests.Runtime.Extents
 
             GiveMe.DropDatenMeisterStorage(integrationSettings);
 
-            using (var dm = GiveMe.DatenMeister(integrationSettings))
+            using (var dm = CreateDatenMeister())
             {
                 if (File.Exists(path))
                 {
                     File.Delete(path);
                 }
-
 
                 var extentLoader = dm.Resolve<IExtentManager>();
                 var loadedExtent = extentLoader.LoadExtent(loaderConfig, true);
@@ -93,6 +93,42 @@ namespace DatenMeister.Tests.Runtime.Extents
 
                 dm.UnuseDatenMeister();
             }
+        }
+
+        [Test]
+        public void TestDefaultExtentType()
+        {
+            using (var dm = CreateDatenMeister())
+            {
+                var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
+                var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
+                var typesWorkspace = workspaceLogic.GetTypesWorkspace();
+                var zipCodeModel = typesWorkspace.FindElementByUri("datenmeister:///_internal/types/internal?Apps::ZipCodeModel");
+
+                var dataWorkspace = workspaceLogic.GetDataWorkspace();
+                
+                var zipExample = zipCodeExample.AddZipCodeExample(dataWorkspace);
+                var setDefaultTypePackage = zipExample.GetDefaultTypePackage();
+
+                Assert.That(setDefaultTypePackage, Is.Not.Null);
+                Assert.That(zipCodeModel, Is.Not.Null);
+
+                Assert.That(setDefaultTypePackage, Is.EqualTo(zipCodeModel));
+            }
+        }
+
+        public static IDatenMeisterScope CreateDatenMeister()
+        {
+            var currentDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "database");
+            var integrationSettings = new IntegrationSettings
+            {
+                DatabasePath = currentDirectory,
+                EstablishDataEnvironment = true
+            };
+
+            GiveMe.DropDatenMeisterStorage(integrationSettings);
+
+            return GiveMe.DatenMeister(integrationSettings);
         }
     }
 }

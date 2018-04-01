@@ -101,8 +101,8 @@ namespace DatenMeisterWPF.Forms.Lists
 
             void AddZipCodeExample()
             {
-                var extentManager = App.Scope.Resolve<IExtentManager>();
-                ZipExampleController.AddZipCodeExample(extentManager, WorkspaceId);
+                var zipCodeExampleManager = App.Scope.Resolve<ZipCodeExampleManager>();
+                zipCodeExampleManager.AddZipCodeExample(WorkspaceId);
                 UpdateContent();
             }
         }

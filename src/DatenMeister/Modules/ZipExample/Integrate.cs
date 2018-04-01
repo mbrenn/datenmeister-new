@@ -24,7 +24,7 @@ namespace DatenMeister.Modules.ZipExample
         /// <param name="scope">Scope to which the Zip Code shall be included</param>
         public static void Into(ILifetimeScope scope)
         {
-            var exampleController = scope.Resolve<ZipExampleController>();
+            var exampleController = scope.Resolve<ZipCodeExampleManager>();
             exampleController.Initialize();
         }
     }

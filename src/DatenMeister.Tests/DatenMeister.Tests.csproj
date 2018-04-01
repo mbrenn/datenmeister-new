@@ -85,6 +85,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Examples\plz.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Excel\Quadratzahlen.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

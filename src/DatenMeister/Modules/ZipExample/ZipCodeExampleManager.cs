@@ -2,6 +2,8 @@
 using System.IO;
 using System.Linq;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -13,19 +15,37 @@ namespace DatenMeister.Modules.ZipExample
     /// Supports some methods for the example
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class ZipExampleController
+    public class ZipCodeExampleManager
     {
         /// <summary>
         /// Gets or sets the instance for local type support
         /// </summary>
         private readonly LocalTypeSupport _localTypeSupport;
 
-        public ZipExampleController(LocalTypeSupport localTypeSupport)
+        private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly IExtentManager _extentManager;
+
+        public ZipCodeExampleManager(
+            LocalTypeSupport localTypeSupport, 
+            IWorkspaceLogic workspaceLogic, 
+            IExtentManager extentManager)
         {
             _localTypeSupport = localTypeSupport;
+            _workspaceLogic = workspaceLogic;
+            _extentManager = extentManager;
         }
 
-        public static void AddZipCodeExample(IExtentManager extentManager, string workspaceId)
+        /// <summary>
+        /// Adds a zipcode example 
+        /// </summary>
+        /// <param name="extentManager">Extent manager to be used</param>
+        /// <param name="workspace">Workspace to which the zipcode example shall be added</param>
+        public IUriExtent AddZipCodeExample(Workspace workspace)
+        {
+            return AddZipCodeExample(workspace.id);
+        }
+
+        public IUriExtent AddZipCodeExample(string workspaceId)
         {
             var random = new Random();
 
@@ -79,8 +99,15 @@ namespace DatenMeister.Modules.ZipExample
                 }
             };
 
-            var loadedExtent = extentManager.LoadExtent(defaultConfiguration, false);
+            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration, false);
             loadedExtent.SetExtentType("DatenMeister.Example.ZipCodes");
+
+            var zipCodeTypePackage =
+                _workspaceLogic.GetTypesWorkspace().FindElementByUri(
+                    "datenmeister:///_internal/types/internal?Apps::ZipCodeModel") as IElement;
+            loadedExtent.SetDefaultTypePackage(zipCodeTypePackage);
+
+            return loadedExtent;
         }
 
         /// <summary>
@@ -92,15 +119,6 @@ namespace DatenMeister.Modules.ZipExample
                 "Apps::ZipCodeModel",
                 typeof(ZipCodeModel)
             );
-        }
-
-        public class ZipCodeModel
-        {
-            public int id { get; set; }
-            public int zip { get; set; }
-            public double positionLong { get; set; }
-            public double positionLat { get; set; }
-            public string name { get; set; }
         }
     }
 }

@@ -11,6 +11,9 @@ namespace DatenMeister.Core
     /// </summary>
     public static class CoreExtensions
     {
+        private const string DatenmeisterDefaultTypePackage = "__DatenMeister.DefaultTypePackage";
+        private const string ExtentType = "__ExtentType";
+
         /// <summary>
         /// Sets the extent type
         /// </summary>
@@ -18,7 +21,7 @@ namespace DatenMeister.Core
         /// <param name="extentType">Type of the extent to be set</param>
         public static void SetExtentType(this IExtent extent, string extentType)
         {
-            extent.set("__ExtentType", extentType);
+            extent.set(ExtentType, extentType);
         }
 
         /// <summary>
@@ -27,7 +30,29 @@ namespace DatenMeister.Core
         /// <param name="extent">Type of the extent to be set</param>
         public static string GetExtentType(this IExtent extent)
         {
-            return extent?.getOrDefault("__ExtentType")?.ToString() ?? string.Empty;
+            return extent?.getOrDefault(ExtentType)?.ToString() ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Sets the default type package which is shown, when the user wants 
+        /// to create a new item
+        /// </summary>
+        /// <param name="extent">Extent shall get the default type package</param>
+        /// <param name="defaultTypePackage">The element which shall be considered as the 
+        /// default type package</param>
+        public static void SetDefaultTypePackage(this IExtent extent, IElement defaultTypePackage)
+        { 
+            extent.set(DatenmeisterDefaultTypePackage, defaultTypePackage);
+        }
+
+        /// <summary>
+        /// Gets the default type package
+        /// </summary>
+        /// <param name="extent">Extent to be used</param>
+        /// <returns>The found element</returns>
+        public static IElement GetDefaultTypePackage(this IExtent extent)
+        {
+            return extent?.getOrDefault(DatenmeisterDefaultTypePackage) as IElement;
         }
 
         /// <summary>

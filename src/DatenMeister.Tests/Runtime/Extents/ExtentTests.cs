@@ -117,6 +117,11 @@ namespace DatenMeister.Tests.Runtime.Extents
             }
         }
 
+        /// <summary>
+        /// Creastes a configured datenmeister instance by dropping the existing
+        /// database and creating a complete new one
+        /// </summary>
+        /// <returns>The Datenmeister scope which can be used</returns>
         public static IDatenMeisterScope CreateDatenMeister()
         {
             var currentDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "database");

@@ -38,16 +38,19 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         private readonly List<IUriExtent> _metaExtents = new List<IUriExtent>();
 
-        public XElement MetaXmiElement
-        {
-            get => _metaInformation.XmlNode;
-            set =>  _metaInformation.XmlNode = value;
-        }
+        public MofObject MetaXmiElement { get; set; }
 
         /// <summary>
-        /// Stores the xmi Provider object being used to store meta information
+        /// Gets or sets the xml Node of the meta element.
+        /// Only to be used by ExtentConfigurationLoader and other extent loaders
         /// </summary>
-        private readonly XmiProviderObject _metaInformation;
+        internal XElement MetaElementXmlNode
+        {
+            get => ((XmiProviderObject) (MetaXmiElement.ProviderObject)).XmlNode;
+            set => ((XmiProviderObject) (MetaXmiElement.ProviderObject)).XmlNode = value;
+        }
+
+        private XmiProvider _xmiProvider; 
 
         /// <summary>
         /// Initializes a new instance of the Extent 
@@ -55,9 +58,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="provider">Provider being used for the extent</param>
         public MofExtent(IProvider provider)
         {
+            _xmiProvider = new XmiProvider();
             Provider = provider;
             TypeLookup = new DotNetTypeLookup(this);
-            _metaInformation = new XmiProviderObject(new XElement("meta"));
+            MetaXmiElement = new MofObject(
+                new XmiProviderObject(new XElement("meta"), _xmiProvider),
+                    this);
         }
 
         /// <inheritdoc />
@@ -81,7 +87,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
             else
             {
-                return _metaInformation.GetProperty(property);
+                return MetaXmiElement.get(property);
             }
         }
 
@@ -98,7 +104,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
             else
             {
-                _metaInformation.SetProperty(property, value);
+                MetaXmiElement.set(property, value);
             }
         }
 
@@ -112,7 +118,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
             else
             {
-                return _metaInformation.IsPropertySet(property);
+                return MetaXmiElement.isSet(property);
             }
         }
 
@@ -126,7 +132,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
             else
             {
-                _metaInformation.DeleteProperty(property);
+                MetaXmiElement.unset(property);
             }
         }
 

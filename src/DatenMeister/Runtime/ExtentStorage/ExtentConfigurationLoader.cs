@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
@@ -87,7 +88,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     var extent = ExtentManager.LoadExtent(info.Item1, false);
                     if (info.Item2 != null)
                     {
-                        ((MofExtent) extent).MetaXmiElement = info.Item2;
+                        ((MofExtent) extent).MetaElementXmlNode = info.Item2;
                     }
                 }
                 catch (Exception exc)
@@ -153,7 +154,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 xmlExtent.Add(xmlData);
 
                 // Stores the metadata
-                var xmlMetaData = new XElement(((MofExtent) extent.Extent).MetaXmiElement)
+                var xmlMetaData = new XElement(((MofExtent) extent.Extent).MetaElementXmlNode)
                 {
                     Name = "metadata"
                 };

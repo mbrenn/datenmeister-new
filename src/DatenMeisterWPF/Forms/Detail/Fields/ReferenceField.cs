@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
+using DatenMeisterWPF.Controls;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
 
@@ -16,63 +17,78 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
     {
         public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, ref FieldFlags fieldFlags)
         {
-            var panel = new Grid
+            var isInline =
+                DotNetHelper.IsTrue(fieldData.getOrDefault(_FormAndFields._ReferenceFieldData.isSelectionInline));
+
+            if (isInline)
             {
-                ColumnDefinitions =
+                var control = new LocateElementControl
                 {
-                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Star)},
-                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)},
-                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)}
-                }
-            };
-
-            var fieldName = fieldData.get(_FormAndFields._FieldData.name).ToString();
-            var foundItem = value.getOrDefault(fieldName) as IElement;
-
-            var itemText = new TextBlock
+                    MinHeight = 400,
+                    MaxHeight = 400
+                };
+                return control;
+            }
+            else
             {
-                VerticalAlignment = VerticalAlignment.Center
-            };
-
-            UpdateTextOfTextBlock(foundItem, itemText);
-
-            var openButten = new Button {Content = "Open"};
-            openButten.Click += (sender, args) =>
-            {
-                if (!(value.getOrDefault(fieldName) is IElement itemToOpen))
+                var panel = new Grid
                 {
-                    MessageBox.Show("No item selected");
-                }
-                else
+                    ColumnDefinitions =
+                    {
+                        new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Star)},
+                        new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)},
+                        new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)}
+                    }
+                };
+
+                var fieldName = fieldData.get(_FormAndFields._FieldData.name).ToString();
+                var foundItem = value.getOrDefault(fieldName) as IElement;
+
+                var itemText = new TextBlock
                 {
-                    NavigatorForItems.NavigateToElementDetailView(
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                UpdateTextOfTextBlock(foundItem, itemText);
+
+                var openButten = new Button {Content = "Open"};
+                openButten.Click += (sender, args) =>
+                {
+                    if (!(value.getOrDefault(fieldName) is IElement itemToOpen))
+                    {
+                        MessageBox.Show("No item selected");
+                    }
+                    else
+                    {
+                        NavigatorForItems.NavigateToElementDetailView(
+                            detailForm.NavigationHost,
+                            itemToOpen);
+                    }
+                };
+
+                var selectButton = new Button {Content = "Select"};
+                selectButton.Click += (sender, args) =>
+                {
+                    // TODO: Select the one, of the currently referenced field
+                    var selectedItem = NavigatorForDialogs.Locate(
                         detailForm.NavigationHost,
-                        itemToOpen);
-                }
-            };
+                        null /* workspace */,
+                        (value as IHasExtent)?.Extent);
+                    if (selectedItem != null)
+                    {
+                        value.set(fieldName, selectedItem);
+                        UpdateTextOfTextBlock(selectedItem, itemText);
+                    }
+                };
 
-            var selectButton = new Button { Content = "Select" };
-            selectButton.Click += (sender, args) =>
-            {
-                // TODO: Select the one, of the currently referenced field
-                var selectedItem =  NavigatorForDialogs.Locate(
-                    detailForm.NavigationHost,
-                    null /* workspace */,
-                    (value as IHasExtent)?.Extent);
-                if (selectedItem != null)
-                {
-                    value.set(fieldName, selectedItem);
-                    UpdateTextOfTextBlock(selectedItem, itemText);
-                }
-            };
-
-            // Adds the ui elements
-            Grid.SetColumn(openButten, 1);
-            Grid.SetColumn(selectButton, 2);
-            panel.Children.Add(itemText);
-            panel.Children.Add(openButten);
-            panel.Children.Add(selectButton);
-            return panel;
+                // Adds the ui elements
+                Grid.SetColumn(openButten, 1);
+                Grid.SetColumn(selectButton, 2);
+                panel.Children.Add(itemText);
+                panel.Children.Add(openButten);
+                panel.Children.Add(selectButton);
+                return panel;
+            }
         }
 
         private static void UpdateTextOfTextBlock(IObject foundItem, TextBlock itemText)

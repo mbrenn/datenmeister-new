@@ -172,8 +172,8 @@ namespace DatenMeister.Provider.ManagementProviders
                 fixView = true,
                 hideMetaClass = true,
                 minimizeDesign = true,
-                defaultHeight = 300,
-                defaultWidth = 500
+                defaultHeight = 600,
+                defaultWidth = 700
             };
 
             var typeField = new DropDownFieldData("selectedType", "Type");
@@ -191,6 +191,10 @@ namespace DatenMeister.Provider.ManagementProviders
 
             typeField.values = typeField.values.OrderBy(x => x.name).ToList();
             form.AddFields(typeField);
+
+            var type2Field = new ReferenceFieldData("selectedType", "Type 2");
+            type2Field.isSelectionInline = true;
+            form.AddFields(type2Field);
 
             var createdForm = DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
             return createdForm;

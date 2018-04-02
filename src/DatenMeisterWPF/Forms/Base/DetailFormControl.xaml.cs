@@ -33,11 +33,6 @@ namespace DatenMeisterWPF.Forms.Base
         public IObject DetailElement { get; set; }
 
         /// <summary>
-        /// Gets or sets the form definition being used as the overridden element
-        /// </summary>
-        public IElement Form { get; set; }
-
-        /// <summary>
         /// Defines the form definition being used in the detail for
         /// </summary>
         private IElement EffectiveForm { get; set; }
@@ -97,7 +92,7 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void DetailFormControl_Loaded(object sender, RoutedEventArgs e)
         {
-            SetContent(DetailElement, Form);
+            SetContent(DetailElement, ViewDefinition?.Element);
         }
 
         /// <summary>

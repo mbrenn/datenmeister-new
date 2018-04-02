@@ -55,7 +55,7 @@ namespace DatenMeisterWPF.Navigation
                         ManagementViewDefinitions.PathNewXmiDetailForm);
 
                     var control = new DetailFormControl();
-                    control.Form = newXmiDetailForm;
+                    control.SetContent(null, newXmiDetailForm);
                     control.AddDefaultButtons("Create");
                     control.ElementSaved += (x, y) =>
                     {

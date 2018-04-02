@@ -80,6 +80,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\LocateElementControl.xaml.cs">
+      <DependentUpon>LocateElementControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Base\DetailFormControl.xaml.cs">
       <DependentUpon>DetailFormControl.xaml</DependentUpon>
     </Compile>
@@ -138,6 +141,10 @@
     <Compile Include="Windows\TreeViewWindow.xaml.cs">
       <DependentUpon>TreeViewWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\LocateElementControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Forms\Base\DetailFormControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

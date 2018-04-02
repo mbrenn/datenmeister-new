@@ -38,67 +38,7 @@ namespace DatenMeisterWPF.Windows
 
         public IWorkspaceLogic WorkspaceLogic { get; set; }
 
-        /// <summary>
-        /// Stores the selected workspace used by the user
-        /// </summary>
-        private IWorkspace _selectedWorkspace;
-
-        /// <summary>
-        /// Stores the default extent being used by the user
-        /// </summary>
-        private IExtent _selectedExtent;
-
-        public IObject SelectedElement { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the default extent which is preselected
-        /// </summary>
-        protected IWorkspace SelectedWorkspace
-        {
-            get => _selectedWorkspace;
-            set
-            {
-                _selectedWorkspace = value;
-                if (cboWorkspace.ItemsSource == null)
-                {
-                    return;
-                }
-
-                foreach (var cboItem in cboWorkspace.ItemsSource)
-                {
-                    if ((cboItem as ComboBoxItem)?.Tag == value)
-                    {
-                        cboExtents.SelectedItem = cboItem;
-                        break;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the default extent which is preselected
-        /// </summary>
-        protected IExtent SelectedExtent
-        {
-            get => _selectedExtent;
-            set
-            {
-                _selectedExtent = value;
-                if (cboExtents.ItemsSource == null)
-                {
-                    return;
-                }
-
-                foreach (var cboItem in cboExtents.ItemsSource)
-                {
-                    if ((cboItem as ComboBoxItem)?.Tag == value)
-                    {
-                        cboExtents.SelectedItem = cboItem;
-                        break;
-                    }
-                }
-            }
-        }
+        public IObject SelectedElement { get; set; }
 
         public LocateItemDialog()
         {
@@ -109,109 +49,18 @@ namespace DatenMeisterWPF.Windows
         /// Navigates to a specific workspace
         /// </summary>
         /// <param name="workspace">Workspace to be shown</param>
-        public void NavigateToWorkspace(IWorkspace workspace)
+        public void Select(IWorkspace workspace)
         {
-            SelectedWorkspace = workspace;
+            LocateElementControl.Select(workspace);
         }
 
         /// <summary>
         /// Navigates to a specific extent
         /// </summary>
-        /// <param name="workspace"></param>
         /// <param name="extent"></param>
-        public void NavigateToExtent(IWorkspace workspace, IExtent extent)
+        public void Select(IExtent extent)
         {
-            SelectedWorkspace = workspace;
-            SelectedExtent = extent;
-        }
-
-        /// <summary>
-        /// Updates the items for the workspace
-        /// </summary>
-        private void UpdateWorkspaces()
-        {
-            var workspaces = WorkspaceLogic.Workspaces;
-            cboExtents.ItemsSource = null;
-
-            var comboWorkspaces = new List<object>();
-
-            foreach (var workspace in workspaces)
-            {
-                var cboItem = new ComboBoxItem
-                {
-                    Content = workspace.id,
-                    Tag = workspace
-                };
-
-                comboWorkspaces.Add(cboItem);
-            }
-
-            cboWorkspace.ItemsSource = comboWorkspaces;
-        }
-
-        /// <summary>
-        /// Updates the items for all extents
-        /// </summary>
-        private void UpdateExtents()
-        {
-            if (_selectedWorkspace == null)
-            {
-                cboExtents.IsEnabled = false;
-            }
-            else
-            {
-                cboExtents.IsEnabled = true;
-
-                var comboItems = new List<object>();
-                foreach (var extent in _selectedWorkspace.extent.OfType<IUriExtent>())
-                {
-                    var cboExtentItem = new ComboBoxItem
-                    {
-                        Content = extent.contextURI(),
-                        Tag = extent
-                    };
-
-                    comboItems.Add(cboExtentItem);
-
-                    if (extent == _selectedExtent)
-                    {
-                        cboExtents.SelectedItem = cboExtentItem;
-                    }
-                }
-
-                cboExtents.ItemsSource = comboItems;
-            }
-
-            cboExtents.SelectedItem = null;
-        }
-
-        private void cboWorkspace_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            _selectedWorkspace = (cboWorkspace.SelectedItem as ComboBoxItem)?.Tag as IWorkspace;
-            UpdateExtents();
-        }
-
-        private void cboExtents_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            items.SetDefaultProperties();
-            if (cboExtents.SelectedItem is ComboBoxItem selected)
-            {
-                switch (selected.Tag)
-                {
-                    case IWorkspace _:
-                        items.ItemsSource = null;
-                        items.treeView.IsEnabled = false;
-                        break;
-                    case IExtent extent:
-                        items.ItemsSource = extent.elements();
-                        items.treeView.IsEnabled = true;
-                        break;
-                    default:
-                        items.ItemsSource = null;
-                        items.treeView.IsEnabled = false;
-                        break;
-                }
-            }
+            LocateElementControl.Select(extent);
         }
 
         private void Open_Click(object sender, RoutedEventArgs e)
@@ -222,7 +71,7 @@ namespace DatenMeisterWPF.Windows
         private void AcceptAndCloseDialog()
         {
             DialogResult = true;
-            SelectedElement = items.SelectedElement;
+            SelectedElement = LocateElementControl.SelectedElement;
             Close();
         }
 
@@ -252,12 +101,6 @@ namespace DatenMeisterWPF.Windows
                     AcceptAndCloseDialog();
                 }
             }
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            UpdateWorkspaces();
-            UpdateExtents();
         }
     }
 }

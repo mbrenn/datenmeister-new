@@ -54,6 +54,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             var selectButton = new Button { Content = "Select" };
             selectButton.Click += (sender, args) =>
             {
+                // TODO: Select the one, of the currently referenced field
                 var selectedItem =  NavigatorForDialogs.Locate(
                     detailForm.NavigationHost,
                     null /* workspace */,

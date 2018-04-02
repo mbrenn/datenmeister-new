@@ -64,19 +64,18 @@ namespace DatenMeisterWPF.Navigation
 
             if (workspace != null && defaultExtent != null)
             {
-                dlg.NavigateToExtent(workspace, defaultExtent);
+                dlg.Select(defaultExtent);
             }
             else
             {
                 if (workspace != null)
                 {
-                    dlg.NavigateToWorkspace(workspace);
+                    dlg.Select(workspace);
                 }
 
                 if (defaultExtent != null)
                 {
-                    var extentWorkspace = App.Scope.Resolve<IWorkspaceLogic>().GetWorkspaceOfExtent(defaultExtent);
-                    dlg.NavigateToExtent(extentWorkspace, defaultExtent);
+                    dlg.Select(defaultExtent);
                 }
             }
 

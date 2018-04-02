@@ -12,8 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Navigation;
 
@@ -31,11 +33,16 @@ namespace DatenMeisterWPF.Controls
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            UpdateWorkspaces();
-            UpdateExtents();
+
+            _workspaceLogic = App.Scope?.Resolve<IWorkspaceLogic>();
+            if (_workspaceLogic != null)
+            {
+                UpdateWorkspaces();
+                UpdateExtents();
+            }
         }
 
-        public IWorkspaceLogic WorkspaceLogic { get; set; }
+        private IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
         /// Stores the selected workspace used by the user
@@ -47,12 +54,15 @@ namespace DatenMeisterWPF.Controls
         /// </summary>
         private IExtent _selectedExtent;
 
-        public IObject SelectedElement { get; private set; }
+        public IObject SelectedElement
+        {
+            get => items.SelectedElement;
+        }
 
         /// <summary>
         /// Gets or sets the default extent which is preselected
         /// </summary>
-        protected IWorkspace SelectedWorkspace
+        private IWorkspace SelectedWorkspace
         {
             get => _selectedWorkspace;
             set
@@ -77,7 +87,7 @@ namespace DatenMeisterWPF.Controls
         /// <summary>
         /// Gets or sets the default extent which is preselected
         /// </summary>
-        protected IExtent SelectedExtent
+        private IExtent SelectedExtent
         {
             get => _selectedExtent;
             set
@@ -103,20 +113,28 @@ namespace DatenMeisterWPF.Controls
         /// Navigates to a specific workspace
         /// </summary>
         /// <param name="workspace">Workspace to be shown</param>
-        public void NavigateToWorkspace(IWorkspace workspace)
+        public void Select(IWorkspace workspace)
         {
             SelectedWorkspace = workspace;
         }
 
         /// <summary>
-        /// Navigates to a specific extent
+        /// Selects a specific extent as a predefined one
         /// </summary>
-        /// <param name="workspace"></param>
-        /// <param name="extent"></param>
-        public void NavigateToExtent(IWorkspace workspace, IExtent extent)
+        /// <param name="extent">Extent to be selected</param>
+        public void Select(IExtent extent)
         {
+            var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+            var workspace = workspaceLogic.FindWorkspace(extent);
             SelectedWorkspace = workspace;
             SelectedExtent = extent;
+        }
+
+        public void Select(IObject value)
+        {
+            var extent = value.GetExtentOf();
+            Select(extent);
+            items.SelectedElement = value;
         }
 
         /// <summary>
@@ -124,7 +142,7 @@ namespace DatenMeisterWPF.Controls
         /// </summary>
         private void UpdateWorkspaces()
         {
-            var workspaces = WorkspaceLogic.Workspaces;
+            var workspaces = _workspaceLogic.Workspaces;
             cboExtents.ItemsSource = null;
 
             var comboWorkspaces = new List<object>();

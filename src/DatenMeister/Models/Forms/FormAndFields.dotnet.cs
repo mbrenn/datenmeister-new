@@ -24,38 +24,10 @@ namespace DatenMeister.Models.Forms
         {
             var generator = new DotNetTypeGenerator(factory, uml);
             {
-                var type = typeof(DatenMeister.Models.Forms.Form);
+                var type = typeof(DatenMeister.Models.Forms.CheckboxFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__Form = typeAsElement;
-                extent.TypeLookup.Add(typeAsElement, type);
-            }
-            {
-                var type = typeof(DatenMeister.Models.Forms.DetailForm);
-                var typeAsElement = generator.CreateTypeFor(type);
-                collection.add(typeAsElement);
-                filledStructure.__DetailForm = typeAsElement;
-                extent.TypeLookup.Add(typeAsElement, type);
-            }
-            {
-                var type = typeof(DatenMeister.Models.Forms.ListForm);
-                var typeAsElement = generator.CreateTypeFor(type);
-                collection.add(typeAsElement);
-                filledStructure.__ListForm = typeAsElement;
-                extent.TypeLookup.Add(typeAsElement, type);
-            }
-            {
-                var type = typeof(DatenMeister.Models.Forms.FieldData);
-                var typeAsElement = generator.CreateTypeFor(type);
-                collection.add(typeAsElement);
-                filledStructure.__FieldData = typeAsElement;
-                extent.TypeLookup.Add(typeAsElement, type);
-            }
-            {
-                var type = typeof(DatenMeister.Models.Forms.TextFieldData);
-                var typeAsElement = generator.CreateTypeFor(type);
-                collection.add(typeAsElement);
-                filledStructure.__TextFieldData = typeAsElement;
+                filledStructure.__CheckboxFieldData = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
@@ -63,6 +35,27 @@ namespace DatenMeister.Models.Forms
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__DateTimeFieldData = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.DefaultViewForExtentType);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__DefaultViewForExtentType = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.DefaultViewForMetaclass);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__DefaultViewForMetaclass = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.DetailForm);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__DetailForm = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
@@ -80,24 +73,24 @@ namespace DatenMeister.Models.Forms
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.Forms.SubElementFieldData);
+                var type = typeof(DatenMeister.Models.Forms.FieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__SubElementFieldData = typeAsElement;
+                filledStructure.__FieldData = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.Forms.DefaultViewForMetaclass);
+                var type = typeof(DatenMeister.Models.Forms.Form);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__DefaultViewForMetaclass = typeAsElement;
+                filledStructure.__Form = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.Forms.DefaultViewForExtentType);
+                var type = typeof(DatenMeister.Models.Forms.ListForm);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__DefaultViewForExtentType = typeAsElement;
+                filledStructure.__ListForm = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
@@ -112,6 +105,20 @@ namespace DatenMeister.Models.Forms
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__ReferenceFieldData = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.SubElementFieldData);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__SubElementFieldData = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.TextFieldData);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__TextFieldData = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
         }

@@ -18,6 +18,11 @@
         }
 
         /// <summary>
+        /// Gets or sets the value whether the selection shall be performed inline
+        /// </summary>
+        public bool isSelectionInline { get; set; }
+
+        /// <summary>
         /// Gets or sets the default extent that shall be shown, when the user clicks on the selection field
         /// </summary>
         public string defaultExtentUri { get; set; }

@@ -34,189 +34,9 @@ namespace DatenMeister.Models.Forms
                     {
                         value = item0 as IElement;
                         name = GetNameOfElement(value);
-                        if(name == "Form") // Looking for class
+                        if(name == "CheckboxFieldData") // Looking for class
                         {
-                            tree.__Form = value;
-                            isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
-                            foreach (var item1 in collection)
-                            {
-                                value = item1 as IElement;
-                                name = GetNameOfElement(value);
-                                if(name == "name") // Looking for property
-                                {
-                                    tree.Form._name = value;
-                                }
-                                if(name == "fields") // Looking for property
-                                {
-                                    tree.Form._fields = value;
-                                }
-                                if(name == "fixView") // Looking for property
-                                {
-                                    tree.Form._fixView = value;
-                                }
-                                if(name == "inhibitNewItems") // Looking for property
-                                {
-                                    tree.Form._inhibitNewItems = value;
-                                }
-                                if(name == "detailForm") // Looking for property
-                                {
-                                    tree.Form._detailForm = value;
-                                }
-                                if(name == "hideMetaClass") // Looking for property
-                                {
-                                    tree.Form._hideMetaClass = value;
-                                }
-                                if(name == "minimizeDesign") // Looking for property
-                                {
-                                    tree.Form._minimizeDesign = value;
-                                }
-                                if(name == "defaultWidth") // Looking for property
-                                {
-                                    tree.Form._defaultWidth = value;
-                                }
-                                if(name == "defaultHeight") // Looking for property
-                                {
-                                    tree.Form._defaultHeight = value;
-                                }
-                            }
-                        }
-                        if(name == "DetailForm") // Looking for class
-                        {
-                            tree.__DetailForm = value;
-                            isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
-                            foreach (var item1 in collection)
-                            {
-                                value = item1 as IElement;
-                                name = GetNameOfElement(value);
-                                if(name == "name") // Looking for property
-                                {
-                                    tree.DetailForm._name = value;
-                                }
-                                if(name == "fields") // Looking for property
-                                {
-                                    tree.DetailForm._fields = value;
-                                }
-                                if(name == "fixView") // Looking for property
-                                {
-                                    tree.DetailForm._fixView = value;
-                                }
-                                if(name == "inhibitNewItems") // Looking for property
-                                {
-                                    tree.DetailForm._inhibitNewItems = value;
-                                }
-                                if(name == "detailForm") // Looking for property
-                                {
-                                    tree.DetailForm._detailForm = value;
-                                }
-                                if(name == "hideMetaClass") // Looking for property
-                                {
-                                    tree.DetailForm._hideMetaClass = value;
-                                }
-                                if(name == "minimizeDesign") // Looking for property
-                                {
-                                    tree.DetailForm._minimizeDesign = value;
-                                }
-                                if(name == "defaultWidth") // Looking for property
-                                {
-                                    tree.DetailForm._defaultWidth = value;
-                                }
-                                if(name == "defaultHeight") // Looking for property
-                                {
-                                    tree.DetailForm._defaultHeight = value;
-                                }
-                            }
-                        }
-                        if(name == "ListForm") // Looking for class
-                        {
-                            tree.__ListForm = value;
-                            isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
-                            foreach (var item1 in collection)
-                            {
-                                value = item1 as IElement;
-                                name = GetNameOfElement(value);
-                                if(name == "defaultTypesForNewElements") // Looking for property
-                                {
-                                    tree.ListForm._defaultTypesForNewElements = value;
-                                }
-                                if(name == "name") // Looking for property
-                                {
-                                    tree.ListForm._name = value;
-                                }
-                                if(name == "fields") // Looking for property
-                                {
-                                    tree.ListForm._fields = value;
-                                }
-                                if(name == "fixView") // Looking for property
-                                {
-                                    tree.ListForm._fixView = value;
-                                }
-                                if(name == "inhibitNewItems") // Looking for property
-                                {
-                                    tree.ListForm._inhibitNewItems = value;
-                                }
-                                if(name == "detailForm") // Looking for property
-                                {
-                                    tree.ListForm._detailForm = value;
-                                }
-                                if(name == "hideMetaClass") // Looking for property
-                                {
-                                    tree.ListForm._hideMetaClass = value;
-                                }
-                                if(name == "minimizeDesign") // Looking for property
-                                {
-                                    tree.ListForm._minimizeDesign = value;
-                                }
-                                if(name == "defaultWidth") // Looking for property
-                                {
-                                    tree.ListForm._defaultWidth = value;
-                                }
-                                if(name == "defaultHeight") // Looking for property
-                                {
-                                    tree.ListForm._defaultHeight = value;
-                                }
-                            }
-                        }
-                        if(name == "FieldData") // Looking for class
-                        {
-                            tree.__FieldData = value;
-                            isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
-                            foreach (var item1 in collection)
-                            {
-                                value = item1 as IElement;
-                                name = GetNameOfElement(value);
-                                if(name == "fieldType") // Looking for property
-                                {
-                                    tree.FieldData._fieldType = value;
-                                }
-                                if(name == "name") // Looking for property
-                                {
-                                    tree.FieldData._name = value;
-                                }
-                                if(name == "title") // Looking for property
-                                {
-                                    tree.FieldData._title = value;
-                                }
-                                if(name == "isEnumeration") // Looking for property
-                                {
-                                    tree.FieldData._isEnumeration = value;
-                                }
-                                if(name == "defaultValue") // Looking for property
-                                {
-                                    tree.FieldData._defaultValue = value;
-                                }
-                                if(name == "isReadOnly") // Looking for property
-                                {
-                                    tree.FieldData._isReadOnly = value;
-                                }
-                            }
-                        }
-                        if(name == "TextFieldData") // Looking for class
-                        {
-                            tree.__TextFieldData = value;
+                            tree.__CheckboxFieldData = value;
                             isSet = value.isSet("ownedAttribute");
                             collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
@@ -225,31 +45,31 @@ namespace DatenMeister.Models.Forms
                                 name = GetNameOfElement(value);
                                 if(name == "lineHeight") // Looking for property
                                 {
-                                    tree.TextFieldData._lineHeight = value;
+                                    tree.CheckboxFieldData._lineHeight = value;
                                 }
                                 if(name == "fieldType") // Looking for property
                                 {
-                                    tree.TextFieldData._fieldType = value;
+                                    tree.CheckboxFieldData._fieldType = value;
                                 }
                                 if(name == "name") // Looking for property
                                 {
-                                    tree.TextFieldData._name = value;
+                                    tree.CheckboxFieldData._name = value;
                                 }
                                 if(name == "title") // Looking for property
                                 {
-                                    tree.TextFieldData._title = value;
+                                    tree.CheckboxFieldData._title = value;
                                 }
                                 if(name == "isEnumeration") // Looking for property
                                 {
-                                    tree.TextFieldData._isEnumeration = value;
+                                    tree.CheckboxFieldData._isEnumeration = value;
                                 }
                                 if(name == "defaultValue") // Looking for property
                                 {
-                                    tree.TextFieldData._defaultValue = value;
+                                    tree.CheckboxFieldData._defaultValue = value;
                                 }
                                 if(name == "isReadOnly") // Looking for property
                                 {
-                                    tree.TextFieldData._isReadOnly = value;
+                                    tree.CheckboxFieldData._isReadOnly = value;
                                 }
                             }
                         }
@@ -297,6 +117,95 @@ namespace DatenMeister.Models.Forms
                                 if(name == "isReadOnly") // Looking for property
                                 {
                                     tree.DateTimeFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
+                        if(name == "DefaultViewForExtentType") // Looking for class
+                        {
+                            tree.__DefaultViewForExtentType = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "extentType") // Looking for property
+                                {
+                                    tree.DefaultViewForExtentType._extentType = value;
+                                }
+                                if(name == "view") // Looking for property
+                                {
+                                    tree.DefaultViewForExtentType._view = value;
+                                }
+                            }
+                        }
+                        if(name == "DefaultViewForMetaclass") // Looking for class
+                        {
+                            tree.__DefaultViewForMetaclass = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "viewType") // Looking for property
+                                {
+                                    tree.DefaultViewForMetaclass._viewType = value;
+                                }
+                                if(name == "metaclass") // Looking for property
+                                {
+                                    tree.DefaultViewForMetaclass._metaclass = value;
+                                }
+                                if(name == "view") // Looking for property
+                                {
+                                    tree.DefaultViewForMetaclass._view = value;
+                                }
+                            }
+                        }
+                        if(name == "DetailForm") // Looking for class
+                        {
+                            tree.__DetailForm = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.DetailForm._name = value;
+                                }
+                                if(name == "fields") // Looking for property
+                                {
+                                    tree.DetailForm._fields = value;
+                                }
+                                if(name == "fixView") // Looking for property
+                                {
+                                    tree.DetailForm._fixView = value;
+                                }
+                                if(name == "inhibitNewItems") // Looking for property
+                                {
+                                    tree.DetailForm._inhibitNewItems = value;
+                                }
+                                if(name == "detailForm") // Looking for property
+                                {
+                                    tree.DetailForm._detailForm = value;
+                                }
+                                if(name == "hideMetaClass") // Looking for property
+                                {
+                                    tree.DetailForm._hideMetaClass = value;
+                                }
+                                if(name == "minimizeDesign") // Looking for property
+                                {
+                                    tree.DetailForm._minimizeDesign = value;
+                                }
+                                if(name == "defaultWidth") // Looking for property
+                                {
+                                    tree.DetailForm._defaultWidth = value;
+                                }
+                                if(name == "defaultHeight") // Looking for property
+                                {
+                                    tree.DetailForm._defaultHeight = value;
                                 }
                             }
                         }
@@ -358,92 +267,136 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
-                        if(name == "SubElementFieldData") // Looking for class
+                        if(name == "FieldData") // Looking for class
                         {
-                            tree.__SubElementFieldData = value;
+                            tree.__FieldData = value;
                             isSet = value.isSet("ownedAttribute");
                             collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
-                                if(name == "metaClassUri") // Looking for property
-                                {
-                                    tree.SubElementFieldData._metaClassUri = value;
-                                }
-                                if(name == "form") // Looking for property
-                                {
-                                    tree.SubElementFieldData._form = value;
-                                }
-                                if(name == "defaultTypesForNewElements") // Looking for property
-                                {
-                                    tree.SubElementFieldData._defaultTypesForNewElements = value;
-                                }
                                 if(name == "fieldType") // Looking for property
                                 {
-                                    tree.SubElementFieldData._fieldType = value;
+                                    tree.FieldData._fieldType = value;
                                 }
                                 if(name == "name") // Looking for property
                                 {
-                                    tree.SubElementFieldData._name = value;
+                                    tree.FieldData._name = value;
                                 }
                                 if(name == "title") // Looking for property
                                 {
-                                    tree.SubElementFieldData._title = value;
+                                    tree.FieldData._title = value;
                                 }
                                 if(name == "isEnumeration") // Looking for property
                                 {
-                                    tree.SubElementFieldData._isEnumeration = value;
+                                    tree.FieldData._isEnumeration = value;
                                 }
                                 if(name == "defaultValue") // Looking for property
                                 {
-                                    tree.SubElementFieldData._defaultValue = value;
+                                    tree.FieldData._defaultValue = value;
                                 }
                                 if(name == "isReadOnly") // Looking for property
                                 {
-                                    tree.SubElementFieldData._isReadOnly = value;
+                                    tree.FieldData._isReadOnly = value;
                                 }
                             }
                         }
-                        if(name == "DefaultViewForMetaclass") // Looking for class
+                        if(name == "Form") // Looking for class
                         {
-                            tree.__DefaultViewForMetaclass = value;
+                            tree.__Form = value;
                             isSet = value.isSet("ownedAttribute");
                             collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
-                                if(name == "viewType") // Looking for property
+                                if(name == "name") // Looking for property
                                 {
-                                    tree.DefaultViewForMetaclass._viewType = value;
+                                    tree.Form._name = value;
                                 }
-                                if(name == "metaclass") // Looking for property
+                                if(name == "fields") // Looking for property
                                 {
-                                    tree.DefaultViewForMetaclass._metaclass = value;
+                                    tree.Form._fields = value;
                                 }
-                                if(name == "view") // Looking for property
+                                if(name == "fixView") // Looking for property
                                 {
-                                    tree.DefaultViewForMetaclass._view = value;
+                                    tree.Form._fixView = value;
+                                }
+                                if(name == "inhibitNewItems") // Looking for property
+                                {
+                                    tree.Form._inhibitNewItems = value;
+                                }
+                                if(name == "detailForm") // Looking for property
+                                {
+                                    tree.Form._detailForm = value;
+                                }
+                                if(name == "hideMetaClass") // Looking for property
+                                {
+                                    tree.Form._hideMetaClass = value;
+                                }
+                                if(name == "minimizeDesign") // Looking for property
+                                {
+                                    tree.Form._minimizeDesign = value;
+                                }
+                                if(name == "defaultWidth") // Looking for property
+                                {
+                                    tree.Form._defaultWidth = value;
+                                }
+                                if(name == "defaultHeight") // Looking for property
+                                {
+                                    tree.Form._defaultHeight = value;
                                 }
                             }
                         }
-                        if(name == "DefaultViewForExtentType") // Looking for class
+                        if(name == "ListForm") // Looking for class
                         {
-                            tree.__DefaultViewForExtentType = value;
+                            tree.__ListForm = value;
                             isSet = value.isSet("ownedAttribute");
                             collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
-                                if(name == "extentType") // Looking for property
+                                if(name == "defaultTypesForNewElements") // Looking for property
                                 {
-                                    tree.DefaultViewForExtentType._extentType = value;
+                                    tree.ListForm._defaultTypesForNewElements = value;
                                 }
-                                if(name == "view") // Looking for property
+                                if(name == "name") // Looking for property
                                 {
-                                    tree.DefaultViewForExtentType._view = value;
+                                    tree.ListForm._name = value;
+                                }
+                                if(name == "fields") // Looking for property
+                                {
+                                    tree.ListForm._fields = value;
+                                }
+                                if(name == "fixView") // Looking for property
+                                {
+                                    tree.ListForm._fixView = value;
+                                }
+                                if(name == "inhibitNewItems") // Looking for property
+                                {
+                                    tree.ListForm._inhibitNewItems = value;
+                                }
+                                if(name == "detailForm") // Looking for property
+                                {
+                                    tree.ListForm._detailForm = value;
+                                }
+                                if(name == "hideMetaClass") // Looking for property
+                                {
+                                    tree.ListForm._hideMetaClass = value;
+                                }
+                                if(name == "minimizeDesign") // Looking for property
+                                {
+                                    tree.ListForm._minimizeDesign = value;
+                                }
+                                if(name == "defaultWidth") // Looking for property
+                                {
+                                    tree.ListForm._defaultWidth = value;
+                                }
+                                if(name == "defaultHeight") // Looking for property
+                                {
+                                    tree.ListForm._defaultHeight = value;
                                 }
                             }
                         }
@@ -491,6 +444,10 @@ namespace DatenMeister.Models.Forms
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
+                                if(name == "isSelectionInline") // Looking for property
+                                {
+                                    tree.ReferenceFieldData._isSelectionInline = value;
+                                }
                                 if(name == "defaultExtentUri") // Looking for property
                                 {
                                     tree.ReferenceFieldData._defaultExtentUri = value;
@@ -522,6 +479,92 @@ namespace DatenMeister.Models.Forms
                                 if(name == "isReadOnly") // Looking for property
                                 {
                                     tree.ReferenceFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
+                        if(name == "SubElementFieldData") // Looking for class
+                        {
+                            tree.__SubElementFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "metaClassUri") // Looking for property
+                                {
+                                    tree.SubElementFieldData._metaClassUri = value;
+                                }
+                                if(name == "form") // Looking for property
+                                {
+                                    tree.SubElementFieldData._form = value;
+                                }
+                                if(name == "defaultTypesForNewElements") // Looking for property
+                                {
+                                    tree.SubElementFieldData._defaultTypesForNewElements = value;
+                                }
+                                if(name == "fieldType") // Looking for property
+                                {
+                                    tree.SubElementFieldData._fieldType = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.SubElementFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.SubElementFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.SubElementFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.SubElementFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.SubElementFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
+                        if(name == "TextFieldData") // Looking for class
+                        {
+                            tree.__TextFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "lineHeight") // Looking for property
+                                {
+                                    tree.TextFieldData._lineHeight = value;
+                                }
+                                if(name == "fieldType") // Looking for property
+                                {
+                                    tree.TextFieldData._fieldType = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.TextFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.TextFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.TextFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.TextFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.TextFieldData._isReadOnly = value;
                                 }
                             }
                         }

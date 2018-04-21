@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Autofac;
+using Autofac.Features.Metadata;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -32,8 +33,7 @@ namespace DatenMeisterWPF.Navigation
             var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
             var viewLogic = App.Scope.Resolve<ViewLogic>();
             var viewDefinitions = App.Scope.Resolve<ManagementViewDefinitions>();
-            //var extentFunctions = App.Scope.Resolve<ExtentFunctions>();
-            
+           
             return window.NavigateTo(
                 () =>
                 {
@@ -42,8 +42,20 @@ namespace DatenMeisterWPF.Navigation
                     IExtent metaExtent = null;
                     if (defaultTypePackage == null)
                     {
-                        metaWorkspace = workspaceLogic.GetTypesWorkspace();
-                        metaExtent = metaWorkspace.FindExtent(WorkspaceNames.UriUserTypes);
+                        // Selects the type workspace, if the current extent is in data workspace or some other workspace whose meta level is of type
+                        // Otherwise, select the first meta workspace and extent
+                        var typeWorkspace = workspaceLogic.GetTypesWorkspace();
+                        var workspace = workspaceLogic.GetWorkspaceOfExtent(extent);
+                        if (workspace?.MetaWorkspaces?.Contains(typeWorkspace) == true)
+                        {
+                            metaWorkspace = workspaceLogic.GetTypesWorkspace();
+                            metaExtent = metaWorkspace.FindExtent(WorkspaceNames.UriUserTypes);
+                        }
+                        else
+                        {
+                            metaWorkspace = workspace?.MetaWorkspaces?.FirstOrDefault();
+                            metaExtent = metaWorkspace?.extent?.FirstOrDefault();
+                        }
                     }
 
                     var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetViewExtent());

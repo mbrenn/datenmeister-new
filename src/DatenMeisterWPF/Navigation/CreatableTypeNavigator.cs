@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
@@ -7,6 +8,7 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Forms.Base;
 
 namespace DatenMeisterWPF.Navigation
@@ -27,16 +29,26 @@ namespace DatenMeisterWPF.Navigation
         /// <returns>The control navigation</returns>
         public IControlNavigation NavigateToSelectCreateableType(INavigationHost window, IExtent extent, string buttonName = "Create")
         {
+            var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
             var viewLogic = App.Scope.Resolve<ViewLogic>();
             var viewDefinitions = App.Scope.Resolve<ManagementViewDefinitions>();
-            var extentFunctions = App.Scope.Resolve<ExtentFunctions>();
+            //var extentFunctions = App.Scope.Resolve<ExtentFunctions>();
             
             return window.NavigateTo(
                 () =>
                 {
+                    var defaultTypePackage = extent.GetDefaultTypePackage();
+                    IWorkspace metaWorkspace = null;
+                    IExtent metaExtent = null;
+                    if (defaultTypePackage == null)
+                    {
+                        metaWorkspace = workspaceLogic.GetTypesWorkspace();
+                        metaExtent = metaWorkspace.FindExtent(WorkspaceNames.UriUserTypes);
+                    }
+
                     var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetViewExtent());
-                    var items = extentFunctions.GetCreatableTypes(extent).CreatableTypes;
-                    var formPathToType = viewDefinitions.GetFindTypeForm(items);
+                    //var items = extentFunctions.GetCreatableTypes(extent).CreatableTypes;
+                    var formPathToType = viewDefinitions.GetFindTypeForm(defaultTypePackage, metaWorkspace, metaExtent);
 
                     var control = new DetailFormControl();
                     control.SetContent(element, formPathToType);

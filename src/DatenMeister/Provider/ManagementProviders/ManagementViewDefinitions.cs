@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
@@ -162,9 +163,10 @@ namespace DatenMeister.Provider.ManagementProviders
         /// <summary>
         /// Creates a form to create a new type. 
         /// </summary>
+        /// <param name="preSelectedPackage">Package that shall be preselected</param>
         /// <param name="types">Types to be added to the form</param>
         /// <returns>The created type</returns>
-        public IElement GetFindTypeForm(IEnumerable<IElement> types = null)
+        public IElement GetFindTypeForm(IObject preSelectedPackage, IWorkspace workspace = null, IExtent extent = null)
         {
             var form = new Form(FindTypeForm)
             {
@@ -177,7 +179,7 @@ namespace DatenMeister.Provider.ManagementProviders
             };
 
             var typeField = new DropDownFieldData("selectedType", "Type");
-            if (types != null)
+            /*if (types != null)
             {
                 foreach (var type in
                     from type in types
@@ -190,10 +192,16 @@ namespace DatenMeister.Provider.ManagementProviders
             }
 
             typeField.values = typeField.values.OrderBy(x => x.name).ToList();
-            form.AddFields(typeField);
+            // form.AddFields(typeField);*/
 
-            var type2Field = new ReferenceFieldData("selectedType", "Type 2");
-            type2Field.isSelectionInline = true;
+            var type2Field = new ReferenceFieldData("selectedType", "Type")
+            {
+                isSelectionInline = true,
+                defaultValue = preSelectedPackage,
+                defaultWorkspace = workspace?.id,
+                defaultExtentUri = (extent as IUriExtent)?.contextURI()
+            };
+
             form.AddFields(type2Field);
 
             var createdForm = DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
@@ -208,6 +216,7 @@ namespace DatenMeister.Provider.ManagementProviders
             var viewExtent = _viewLogic.GetViewExtent();
             var factory = viewExtent.GetFactory();
             var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+            var package = _workspaceLogic.GetTypesWorkspace().extent.ElementAt(0).elements().ElementAt(0) as IObject;
 
             // Creates the package containing the views
             var managementPackage = factory.create(null);
@@ -221,7 +230,7 @@ namespace DatenMeister.Provider.ManagementProviders
                 extentForm,
                 GetNewXmiExtentDetailForm(),
                 GetNewWorkspaceDetail(),
-                GetFindTypeForm()
+                GetFindTypeForm(package)
             };
 
             var workspaceFormDefaultView = factory.create(formAndFields.__DefaultViewForMetaclass);

@@ -59,6 +59,24 @@ namespace DatenMeisterWPF.Controls
             get => items.SelectedElement;
         }
 
+        public static readonly DependencyProperty ShowWorkspaceSelectionProperty = DependencyProperty.Register(
+            "ShowWorkspaceSelection", typeof(bool), typeof(LocateElementControl), new PropertyMetadata(default(bool)));
+
+        public bool ShowWorkspaceSelection
+        {
+            get => (bool) GetValue(ShowWorkspaceSelectionProperty);
+            set => SetValue(ShowWorkspaceSelectionProperty, value);
+        }
+
+        public static readonly DependencyProperty ShowExtentSelectionProperty = DependencyProperty.Register(
+            "ShowExtentSelection", typeof(bool), typeof(LocateElementControl), new PropertyMetadata(default(bool)));
+
+        public bool ShowExtentSelection
+        {
+            get => (bool) GetValue(ShowExtentSelectionProperty);
+            set => SetValue(ShowExtentSelectionProperty, value);
+        }
+
         /// <summary>
         /// Gets or sets the default extent which is preselected
         /// </summary>
@@ -121,6 +139,17 @@ namespace DatenMeisterWPF.Controls
         /// <summary>
         /// Selects a specific extent as a predefined one
         /// </summary>
+        /// <param name="workspace">Workspace to be shown</param>
+        /// <param name="extent">Extent to be selected</param>
+        public void Select(IWorkspace workspace, IExtent extent)
+        {
+            SelectedWorkspace = workspace;
+            SelectedExtent = extent;
+        }
+
+        /// <summary>
+        /// Selects a specific extent as a predefined one
+        /// </summary>
         /// <param name="extent">Extent to be selected</param>
         public void Select(IExtent extent)
         {
@@ -147,6 +176,8 @@ namespace DatenMeisterWPF.Controls
 
             var comboWorkspaces = new List<object>();
 
+            var index = -1;
+            var n = 0;
             foreach (var workspace in workspaces)
             {
                 var cboItem = new ComboBoxItem
@@ -155,10 +186,25 @@ namespace DatenMeisterWPF.Controls
                     Tag = workspace
                 };
 
+                if (workspace == SelectedWorkspace)
+                {
+                    index = n;
+                }
+
                 comboWorkspaces.Add(cboItem);
+                n++;
             }
 
+            // Sets the selected workspace
             cboWorkspace.ItemsSource = comboWorkspaces;
+            if (index != -1)
+            {
+                cboWorkspace.SelectedIndex = index;
+            }
+            else
+            {
+                cboWorkspace.SelectedItem = null;
+            }
         }
 
         /// <summary>
@@ -169,12 +215,15 @@ namespace DatenMeisterWPF.Controls
             if (_selectedWorkspace == null)
             {
                 cboExtents.IsEnabled = false;
+                cboExtents.SelectedItem = null;
             }
             else
             {
                 cboExtents.IsEnabled = true;
 
                 var comboItems = new List<object>();
+                var index = -1;
+                var n = 0;
                 foreach (var extent in _selectedWorkspace.extent.OfType<IUriExtent>())
                 {
                     var cboExtentItem = new ComboBoxItem
@@ -187,14 +236,24 @@ namespace DatenMeisterWPF.Controls
 
                     if (extent == _selectedExtent)
                     {
-                        cboExtents.SelectedItem = cboExtentItem;
+                        index = n;
                     }
+
+                    n++;
                 }
 
                 cboExtents.ItemsSource = comboItems;
-            }
 
-            cboExtents.SelectedItem = null;
+                // Sets the selected workspace
+                if (index != -1)
+                {
+                    cboExtents.SelectedIndex = index;
+                }
+                else
+                {
+                    cboExtents.SelectedItem = null;
+                }
+            }
         }
 
         private void cboWorkspace_SelectionChanged(object sender, SelectionChangedEventArgs e)

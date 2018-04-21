@@ -32,5 +32,15 @@
         /// property is only evaluated in case of <see cref="defaultExtentUri">defaultExtentUri</see> is null or empty. 
         /// </summary>
         public string defaultWorkspace { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value whether the workspace selection shall be shown
+        /// </summary>
+        public bool showWorkspaceSelection { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value whether the extent selection shall be shown
+        /// </summary>
+        public bool showExtentSelection { get; set; }
     }
 }

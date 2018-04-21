@@ -1,8 +1,10 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Controls;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
@@ -20,13 +22,48 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             var isInline =
                 DotNetHelper.IsTrue(fieldData.getOrDefault(_FormAndFields._ReferenceFieldData.isSelectionInline));
 
+            // Checks, whether the reference shall be included as an inline selection
             if (isInline)
             {
+                // Defines the locate element control in which the user can select
+                // workspace, extent and element
                 var control = new LocateElementControl
                 {
                     MinHeight = 400,
                     MaxHeight = 400
                 };
+
+                if (fieldData.getOrDefault(_FormAndFields._ReferenceFieldData.defaultValue) is IElement element)
+                {
+                    control.Select(element);
+                }
+                else
+                {
+                    var workspace = fieldData.getOrDefault(_FormAndFields._ReferenceFieldData.defaultWorkspace)
+                        ?.ToString();
+                    var extent = fieldData.getOrDefault(_FormAndFields._ReferenceFieldData.defaultExtentUri)
+                        ?.ToString();
+
+                    if (!string.IsNullOrEmpty(workspace) && !string.IsNullOrEmpty(extent))
+                    {
+                        var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+                        workspaceLogic.RetrieveWorkspaceAndExtent(workspace, extent,  out var foundWorkspace, out var foundExtent);
+                        if (foundWorkspace != null && foundExtent != null)
+                        {
+                            control.Select(foundWorkspace, foundExtent);
+                        }
+                    }
+                    else if ( !string.IsNullOrEmpty(workspace))
+                    {
+                        var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+                        var foundWorkspace = workspaceLogic.GetWorkspace(workspace);
+                        if (foundWorkspace != null)
+                        {
+                            control.Select((IWorkspace) foundWorkspace);
+                        }
+                    }
+                }
+
                 return control;
             }
             else

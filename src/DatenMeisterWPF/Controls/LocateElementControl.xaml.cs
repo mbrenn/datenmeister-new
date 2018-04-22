@@ -29,7 +29,7 @@ namespace DatenMeisterWPF.Controls
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Control_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateWorkspaces();
             UpdateExtents();

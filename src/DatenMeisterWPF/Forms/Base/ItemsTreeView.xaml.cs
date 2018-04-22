@@ -40,6 +40,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private readonly HashSet<string> _propertiesForChildren = new HashSet<string>();
 
+        private Dictionary<IObject, TreeViewItem> _mappingItems = new Dictionary<IObject, TreeViewItem>();
+
         public ItemsTreeView()
         {
             InitializeComponent();
@@ -66,8 +68,14 @@ namespace DatenMeisterWPF.Forms.Base
 
                 return null;
             }
+            set
+            {
+                if (_mappingItems.TryGetValue(value, out var treeviewItem))
+                {
+                    treeviewItem.IsSelected = true;
+                }
+            }
         }
-
 
         /// <summary>
         /// Adds a property as a child property.
@@ -98,7 +106,6 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private void UpdateView()
         {
-            Debug.WriteLine("E");
             if (!IsInitialized)
             {
                 // Save the time... 
@@ -117,6 +124,7 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 var n = 0;
                 _alreadyVisited.Clear();
+                _mappingItems.Clear();
                 foreach (var item in ItemsSource)
                 {
                     var treeViewItem = CreateTreeViewItem(item);
@@ -161,6 +169,8 @@ namespace DatenMeisterWPF.Forms.Base
 
             if (item is IObject itemAsObject)
             {
+                _mappingItems[itemAsObject] = treeViewItem;
+
                 var n = 0;
                 var childModels = new List<TreeViewItem>();
                 foreach (var property in _propertiesForChildren)

@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using Autofac;
+using Autofac.Features.Metadata;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
@@ -7,6 +9,7 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Forms.Base;
 
 namespace DatenMeisterWPF.Navigation
@@ -27,16 +30,37 @@ namespace DatenMeisterWPF.Navigation
         /// <returns>The control navigation</returns>
         public IControlNavigation NavigateToSelectCreateableType(INavigationHost window, IExtent extent, string buttonName = "Create")
         {
+            var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
             var viewLogic = App.Scope.Resolve<ViewLogic>();
             var viewDefinitions = App.Scope.Resolve<ManagementViewDefinitions>();
-            var extentFunctions = App.Scope.Resolve<ExtentFunctions>();
-            
+           
             return window.NavigateTo(
                 () =>
                 {
+                    var defaultTypePackage = extent.GetDefaultTypePackage();
+                    IWorkspace metaWorkspace = null;
+                    IExtent metaExtent = null;
+                    if (defaultTypePackage == null)
+                    {
+                        // Selects the type workspace, if the current extent is in data workspace or some other workspace whose meta level is of type
+                        // Otherwise, select the first meta workspace and extent
+                        var typeWorkspace = workspaceLogic.GetTypesWorkspace();
+                        var workspace = workspaceLogic.GetWorkspaceOfExtent(extent);
+                        if (workspace?.MetaWorkspaces?.Contains(typeWorkspace) == true)
+                        {
+                            metaWorkspace = workspaceLogic.GetTypesWorkspace();
+                            metaExtent = metaWorkspace.FindExtent(WorkspaceNames.UriUserTypes);
+                        }
+                        else
+                        {
+                            metaWorkspace = workspace?.MetaWorkspaces?.FirstOrDefault();
+                            metaExtent = metaWorkspace?.extent?.FirstOrDefault();
+                        }
+                    }
+
                     var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetViewExtent());
-                    var items = extentFunctions.GetCreatableTypes(extent).CreatableTypes;
-                    var formPathToType = viewDefinitions.GetFindTypeForm(items);
+                    //var items = extentFunctions.GetCreatableTypes(extent).CreatableTypes;
+                    var formPathToType = viewDefinitions.GetFindTypeForm(defaultTypePackage, metaWorkspace, metaExtent);
 
                     var control = new DetailFormControl();
                     control.SetContent(element, formPathToType);

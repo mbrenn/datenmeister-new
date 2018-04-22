@@ -12,8 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Navigation;
 
@@ -31,11 +33,16 @@ namespace DatenMeisterWPF.Controls
 
         private void Control_Loaded(object sender, RoutedEventArgs e)
         {
-            UpdateWorkspaces();
-            UpdateExtents();
+
+            _workspaceLogic = App.Scope?.Resolve<IWorkspaceLogic>();
+            if (_workspaceLogic != null)
+            {
+                UpdateWorkspaces();
+                UpdateExtents();
+            }
         }
 
-        public IWorkspaceLogic WorkspaceLogic { get; set; }
+        private IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
         /// Stores the selected workspace used by the user
@@ -47,12 +54,33 @@ namespace DatenMeisterWPF.Controls
         /// </summary>
         private IExtent _selectedExtent;
 
-        public IObject SelectedElement { get; private set; }
+        public IObject SelectedElement
+        {
+            get => items.SelectedElement;
+        }
+
+        public static readonly DependencyProperty ShowWorkspaceSelectionProperty = DependencyProperty.Register(
+            "ShowWorkspaceSelection", typeof(bool), typeof(LocateElementControl), new PropertyMetadata(default(bool)));
+
+        public bool ShowWorkspaceSelection
+        {
+            get => (bool) GetValue(ShowWorkspaceSelectionProperty);
+            set => SetValue(ShowWorkspaceSelectionProperty, value);
+        }
+
+        public static readonly DependencyProperty ShowExtentSelectionProperty = DependencyProperty.Register(
+            "ShowExtentSelection", typeof(bool), typeof(LocateElementControl), new PropertyMetadata(default(bool)));
+
+        public bool ShowExtentSelection
+        {
+            get => (bool) GetValue(ShowExtentSelectionProperty);
+            set => SetValue(ShowExtentSelectionProperty, value);
+        }
 
         /// <summary>
         /// Gets or sets the default extent which is preselected
         /// </summary>
-        protected IWorkspace SelectedWorkspace
+        private IWorkspace SelectedWorkspace
         {
             get => _selectedWorkspace;
             set
@@ -77,7 +105,7 @@ namespace DatenMeisterWPF.Controls
         /// <summary>
         /// Gets or sets the default extent which is preselected
         /// </summary>
-        protected IExtent SelectedExtent
+        private IExtent SelectedExtent
         {
             get => _selectedExtent;
             set
@@ -103,20 +131,39 @@ namespace DatenMeisterWPF.Controls
         /// Navigates to a specific workspace
         /// </summary>
         /// <param name="workspace">Workspace to be shown</param>
-        public void NavigateToWorkspace(IWorkspace workspace)
+        public void Select(IWorkspace workspace)
         {
             SelectedWorkspace = workspace;
         }
 
         /// <summary>
-        /// Navigates to a specific extent
+        /// Selects a specific extent as a predefined one
         /// </summary>
-        /// <param name="workspace"></param>
-        /// <param name="extent"></param>
-        public void NavigateToExtent(IWorkspace workspace, IExtent extent)
+        /// <param name="workspace">Workspace to be shown</param>
+        /// <param name="extent">Extent to be selected</param>
+        public void Select(IWorkspace workspace, IExtent extent)
         {
             SelectedWorkspace = workspace;
             SelectedExtent = extent;
+        }
+
+        /// <summary>
+        /// Selects a specific extent as a predefined one
+        /// </summary>
+        /// <param name="extent">Extent to be selected</param>
+        public void Select(IExtent extent)
+        {
+            var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+            var workspace = workspaceLogic.FindWorkspace(extent);
+            SelectedWorkspace = workspace;
+            SelectedExtent = extent;
+        }
+
+        public void Select(IObject value)
+        {
+            var extent = value.GetExtentOf();
+            Select(extent);
+            items.SelectedElement = value;
         }
 
         /// <summary>
@@ -124,11 +171,13 @@ namespace DatenMeisterWPF.Controls
         /// </summary>
         private void UpdateWorkspaces()
         {
-            var workspaces = WorkspaceLogic.Workspaces;
+            var workspaces = _workspaceLogic.Workspaces;
             cboExtents.ItemsSource = null;
 
             var comboWorkspaces = new List<object>();
 
+            var index = -1;
+            var n = 0;
             foreach (var workspace in workspaces)
             {
                 var cboItem = new ComboBoxItem
@@ -137,10 +186,25 @@ namespace DatenMeisterWPF.Controls
                     Tag = workspace
                 };
 
+                if (workspace == SelectedWorkspace)
+                {
+                    index = n;
+                }
+
                 comboWorkspaces.Add(cboItem);
+                n++;
             }
 
+            // Sets the selected workspace
             cboWorkspace.ItemsSource = comboWorkspaces;
+            if (index != -1)
+            {
+                cboWorkspace.SelectedIndex = index;
+            }
+            else
+            {
+                cboWorkspace.SelectedItem = null;
+            }
         }
 
         /// <summary>
@@ -151,12 +215,15 @@ namespace DatenMeisterWPF.Controls
             if (_selectedWorkspace == null)
             {
                 cboExtents.IsEnabled = false;
+                cboExtents.SelectedItem = null;
             }
             else
             {
                 cboExtents.IsEnabled = true;
 
                 var comboItems = new List<object>();
+                var index = -1;
+                var n = 0;
                 foreach (var extent in _selectedWorkspace.extent.OfType<IUriExtent>())
                 {
                     var cboExtentItem = new ComboBoxItem
@@ -169,14 +236,24 @@ namespace DatenMeisterWPF.Controls
 
                     if (extent == _selectedExtent)
                     {
-                        cboExtents.SelectedItem = cboExtentItem;
+                        index = n;
                     }
+
+                    n++;
                 }
 
                 cboExtents.ItemsSource = comboItems;
-            }
 
-            cboExtents.SelectedItem = null;
+                // Sets the selected workspace
+                if (index != -1)
+                {
+                    cboExtents.SelectedIndex = index;
+                }
+                else
+                {
+                    cboExtents.SelectedItem = null;
+                }
+            }
         }
 
         private void cboWorkspace_SelectionChanged(object sender, SelectionChangedEventArgs e)

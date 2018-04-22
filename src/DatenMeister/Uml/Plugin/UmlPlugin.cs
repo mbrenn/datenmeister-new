@@ -35,12 +35,41 @@ namespace DatenMeister.Uml.Plugin
             var umlData = _workspaceLogic.GetUmlData();
 
             // Creates the forms
-            var umlClassForm = new ListForm(
-                "Class",
+            var umlExtentForm = new ListForm(
+                "Extent View for Classes",
                 new MetaClassElementFieldData("Metaclass"),
                 new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Class"),
                 new SubElementFieldData(_UML._StructuredClassifiers._Class.ownedAttribute, "Properties")
                 {
+                    defaultTypesForNewElements = new[]
+                    {
+                        umlData.Classification.__Property
+                    }
+                });
+            umlExtentForm.defaultTypesForNewElements = new[]
+            {
+                umlData.Packages.__Package,
+                umlData.StructuredClassifiers.__Class
+            };
+            _viewLogic.Add(umlExtentForm);
+
+            // Creates the forms
+            var umlPropertyForm = new Form(
+                "Property",
+                new MetaClassElementFieldData("Metaclass"),
+                new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Property"),
+                new ReferenceFieldData(_UML._CommonStructure._TypedElement.type, "Type of Property"));
+
+            _viewLogic.Add(umlPropertyForm);
+
+            // Creates the forms
+            var umlClassForm = new ListForm(
+                "Extent View for Classes",
+                new MetaClassElementFieldData("Metaclass"),
+                new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Class"),
+                new SubElementFieldData(_UML._StructuredClassifiers._Class.ownedAttribute, "Properties")
+                {
+                    form = umlPropertyForm,
                     defaultTypesForNewElements = new[]
                     {
                         umlData.Classification.__Property
@@ -52,15 +81,6 @@ namespace DatenMeister.Uml.Plugin
                 umlData.StructuredClassifiers.__Class
             };
             _viewLogic.Add(umlClassForm);
-            
-            // Creates the forms
-            var umlPropertyForm = new Form(
-                "Property",
-                new MetaClassElementFieldData("Metaclass"),
-                new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Property"),
-                new ReferenceFieldData(_UML._CommonStructure._TypedElement.type, "Type of Property"));
-
-            _viewLogic.Add(umlPropertyForm);
 
             var umlPackageForm = new Form(
                 "Package",
@@ -96,7 +116,7 @@ namespace DatenMeister.Uml.Plugin
 
             var classExtentView = new DefaultViewForExtentType(
                 "Uml.Classes",
-                umlClassForm);
+                umlExtentForm);
             _viewLogic.Add(classExtentView);
         }
     }

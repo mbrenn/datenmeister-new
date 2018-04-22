@@ -25,6 +25,6 @@
             <ComboBox x:Name="cboExtents" SelectionChanged="cboExtents_SelectionChanged"></ComboBox>
         </StackPanel>
         <TextBlock Text="Select Item:" Grid.Row="4" />
-        <base:ItemsTreeView x:Name="items" Grid.Row="5" ItemChosen="Items_OnItemChosen"/>
+        <base:ItemsTreeView x:Name="items" Grid.Row="5" />
     </Grid>
 </UserControl>

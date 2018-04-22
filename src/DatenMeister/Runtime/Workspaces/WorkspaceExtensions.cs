@@ -110,8 +110,6 @@ namespace DatenMeister.Runtime.Workspaces
             throw new InvalidOperationException($"Extent with uri {contextUri} is already existing");
         }
 
-
-
         /// <summary>
         /// Removes the extent with the given uri out of the database
         /// </summary>

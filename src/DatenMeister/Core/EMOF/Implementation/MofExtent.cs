@@ -50,6 +50,9 @@ namespace DatenMeister.Core.EMOF.Implementation
             set => ((XmiProviderObject) (MetaXmiElement.ProviderObject)).XmlNode = value;
         }
 
+        /// <summary>
+        /// Defines the internal Xmi Provider for the meta configuration
+        /// </summary>
         private XmiProvider _xmiProvider; 
 
         /// <summary>

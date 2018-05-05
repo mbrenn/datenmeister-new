@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
@@ -242,6 +240,11 @@ namespace DatenMeister.Modules.TypeSupport
             return null;
         }
 
+        /// <summary>
+        /// Gets a specific meta class by having the full name (Package.PackageB.Name)
+        /// </summary>
+        /// <param name="fullName">The full name, describing the parents and children</param>
+        /// <returns></returns>
         public IElement GetMetaClassFor(string fullName)
         {
             var internalTypeExtent = GetInternalTypeExtent();
@@ -254,7 +257,6 @@ namespace DatenMeister.Modules.TypeSupport
 
             foreach (var extent in GetOtherTypeExtents())
             {
-
                 found = NamedElementMethods.GetByFullName(extent.elements(), fullName);
                 if (found != null)
                 {

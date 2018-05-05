@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 using DatenMeister.Provider.XMI.Standards;
 using DatenMeister.Runtime;
@@ -15,16 +16,34 @@ namespace DatenMeister.Provider.XMI.EMOF
     public class XmiProviderObject : IProviderObject
     {
         /// <summary>
-        /// Checks whether the given property name is valid
+        /// Checks whether the given property name is valid. This conversion is used to store the data into the xml
         /// </summary>
         /// <param name="property"></param>
-        public static void VerifyForValidProperty(string property)
+        public static string NormalizePropertyName(string property)
         {
             if (property == "href")
             {
-                throw new InvalidOperationException("Attribute as 'href' is not allowed");
+                return "_href";
             }
+
+            return XmlConvert.EncodeLocalName(property);
         }
+
+        /// <summary>
+        /// Denormalizes the property names, so they can be stored into the xml. 
+        /// </summary>
+        /// <param name="property">Property being used</param>
+        /// <returns>The value is being sent to the provider</returns>
+        public static string DenormalizePropertyName(string property)
+        {
+            if (property == "_href")
+            {
+                return "href";
+            }
+
+            return XmlConvert.DecodeName(property);
+        }
+
 
         public static readonly XName TypeAttribute = Namespaces.Xmi + "type";
 
@@ -111,7 +130,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             }
 
             throw new InvalidOperationException(
-                $"Only strings as properties are supported at the moment. Type is: {value.GetType()}");
+                $"Only some types as properties are supported at the moment. Type is: {value.GetType()}");
         }
 
         /// <summary>
@@ -162,8 +181,11 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public bool IsPropertySet(string property)
         {
-            var propertyAsString = ReturnObjectAsString(property);
-            var propertyAsReference = ConvertPropertyToReference(property);
+            var normalizedPropertyName = NormalizePropertyName(property);
+
+            var propertyAsString = ReturnObjectAsString(normalizedPropertyName);
+            var propertyAsReference = ConvertPropertyToReference(normalizedPropertyName);
+
             return XmlNode.Attribute(propertyAsString) != null 
                    || XmlNode.Attribute(propertyAsReference) != null
                    || XmlNode.Elements(propertyAsString).Any();
@@ -172,9 +194,9 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public object GetProperty(string property)
         {
-            VerifyForValidProperty(property);
+            var normalizePropertyName = NormalizePropertyName(property);
 
-            var propertyAsString = ReturnObjectAsString(property);
+            var propertyAsString = ReturnObjectAsString(normalizePropertyName);
 
             // Check, if there are subelements as the given value
             if (XmlNode.Elements(propertyAsString).Any())
@@ -234,16 +256,16 @@ namespace DatenMeister.Provider.XMI.EMOF
                 result.Add(element.Name.ToString());
             }
 
-            return result.Distinct();
+            return result.Distinct().Select(DenormalizePropertyName);
         }
 
         /// <inheritdoc />
         public bool DeleteProperty(string property)
         {
-            VerifyForValidProperty(property);
+            var normalizePropertyName = NormalizePropertyName(property);
 
-            XmlNode.Attributes(property).FirstOrDefault()?.Remove();
-            foreach (var x in XmlNode.Elements(property).ToList())
+            XmlNode.Attributes(normalizePropertyName).FirstOrDefault()?.Remove();
+            foreach (var x in XmlNode.Elements(normalizePropertyName).ToList())
             {
                 x.Remove();
             }
@@ -254,7 +276,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public void SetProperty(string property, object value)
         {
-            VerifyForValidProperty(property);
+            var normalizePropertyName = NormalizePropertyName(property);
 
             if (value == null)
             {
@@ -262,7 +284,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                 return;
             }
 
-            var propertyAsString = ReturnObjectAsString(property);
+            var propertyAsString = ReturnObjectAsString(normalizePropertyName);
 
             if (value is UriReference uriReference)
             {
@@ -271,7 +293,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             else if (value is XmiProviderObject elementAsXml)
             {
                 // Includes the XmiProvider to the node. Will be added to the node
-                elementAsXml.XmlNode.Name = property;
+                elementAsXml.XmlNode.Name = normalizePropertyName;
                 XmlNode.Add(elementAsXml.XmlNode);
             }
             else
@@ -289,10 +311,10 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public void EmptyListForProperty(string property)
         {
-            VerifyForValidProperty(property);
+            var normalizePropertyName = NormalizePropertyName(property);
 
-            XmlNode.Attribute(property)?.Remove();
-            XmlNode.Elements(property).Remove();
+            XmlNode.Attribute(normalizePropertyName)?.Remove();
+            XmlNode.Elements(normalizePropertyName).Remove();
         }
 
         /// <summary>
@@ -308,17 +330,17 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public bool AddToProperty(string property, object value, int index = -1)
         {
-            VerifyForValidProperty(property);
+            var normalizePropertyName = NormalizePropertyName(property);
 
             if (index == GetSizeOfList(property) || index == -1)
             {
-                var valueAsXmlObject = ConvertValueAsXmlObject(property, value);
+                var valueAsXmlObject = ConvertValueAsXmlObject(normalizePropertyName, value);
                 XmlNode.Add(valueAsXmlObject);
             }
             else
             {
-                var valueAsXmlObject = ConvertValueAsXmlObject(property, value);
-                var addedBefore = XmlNode.Elements(property).ElementAt(index);
+                var valueAsXmlObject = ConvertValueAsXmlObject(normalizePropertyName, value);
+                var addedBefore = XmlNode.Elements(normalizePropertyName).ElementAt(index);
                 addedBefore.AddBeforeSelf(valueAsXmlObject);
             }
 
@@ -328,11 +350,11 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public bool RemoveFromProperty(string property, object value)
         {
-            VerifyForValidProperty(property);
+            var normalizePropertyName = NormalizePropertyName(property);
 
             if (value is XmiProviderObject valueAsXmlElement)
             {
-                foreach (var subElement in XmlNode.Elements(property))
+                foreach (var subElement in XmlNode.Elements(normalizePropertyName))
                 {
                     if (XmiId.Get(subElement) == XmiId.Get(valueAsXmlElement.XmlNode))
                     {
@@ -344,7 +366,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             else
             {
                 var valueAsString = ReturnObjectAsString(value);
-                foreach (var subElement in XmlNode.Elements(property))
+                foreach (var subElement in XmlNode.Elements(normalizePropertyName))
                 {
                     if (subElement.Value.Equals(valueAsString))
                     {

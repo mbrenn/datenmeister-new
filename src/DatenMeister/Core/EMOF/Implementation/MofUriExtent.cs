@@ -36,6 +36,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             _uri = uri;
             _navigator = new ExtentUrlNavigator<MofElement>(this);
+
+            if (provider is IHasUriResolver hasUriResolver)
+            {
+                hasUriResolver.UriResolver = this;
+            }
         }
 
         /// <summary>
@@ -134,7 +139,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="workspace">Workspace whose meta workspaces were queried</param>
         /// <param name="alreadyVisited">Set of all workspaces already being visited. This avoid unnecessary recursion and unlimited recursion</param>
         /// <returns>Found element or null, if not found</returns>
-        private IElement ResolveByMetaWorkspaces(string uri, Runtime.Workspaces.Workspace workspace,
+        private IElement ResolveByMetaWorkspaces(
+            string uri, 
+            Runtime.Workspaces.Workspace workspace,
             HashSet<Runtime.Workspaces.Workspace> alreadyVisited = null)
         {
             alreadyVisited = alreadyVisited ?? new HashSet<Runtime.Workspaces.Workspace>();
@@ -164,7 +171,6 @@ namespace DatenMeister.Core.EMOF.Implementation
                     {
                         return elementByMeta;
                     }
-
                 }
             }
             return null;

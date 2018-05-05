@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Provider.XMI.Standards;
 
 namespace DatenMeister.Provider.XMI.EMOF
@@ -9,7 +10,7 @@ namespace DatenMeister.Provider.XMI.EMOF
     /// <summary>
     /// Defines the provider for xml manipulation
     /// </summary>
-    public class XmiProvider : IProvider
+    public class XmiProvider : IProvider, IHasUriResolver
     {
         /// <summary>
         /// Defines the name of the element
@@ -26,7 +27,13 @@ namespace DatenMeister.Provider.XMI.EMOF
         public XElement RootNode => _rootNode;
 
         public XDocument Document => _document;
-        
+
+        /// <summary>
+        /// Gets or sets the uriresolver for this provider. Will be used to figure out information
+        /// about the meta classes
+        /// </summary>
+        public IUriResolver UriResolver { get; set; }
+
         public XmiProvider(/*string rootNodeName = DefaultRootNodeName*/)
         {
             var rootNodeName = DefaultRootNodeName;

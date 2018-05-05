@@ -18,7 +18,7 @@ namespace DatenMeister.Provider.XMI.EMOF
 
         public const string DefaultRootNodeName = "xmi";
 
-        public const string DefaultElementNodeName = "item";
+        private const string DefaultElementNodeName = "item";
 
         private readonly XDocument _document;
         private readonly XElement _rootNode;
@@ -102,7 +102,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// </summary>
         /// <param name="id">Id to be queried</param>
         /// <returns>The found element</returns>
-        public XElement FindById(string id)
+        private XElement FindById(string id)
         {
             return _rootNode.Descendants().FirstOrDefault(x => XmiId.Get(x) == id);
         }

@@ -14,6 +14,10 @@ namespace DatenMeister.Provider.XMI.EMOF
     /// </summary>
     public class XmiProviderObject : IProviderObject
     {
+        /// <summary>
+        /// Checks whether the given property name is valid
+        /// </summary>
+        /// <param name="property"></param>
         public static void VerifyForValidProperty(string property)
         {
             if (property == "href")
@@ -53,22 +57,6 @@ namespace DatenMeister.Provider.XMI.EMOF
         public IProvider Provider { get; }
 
         /// <summary>
-        /// Initializes a new instance of the XmlElement class. 
-        /// This method may only be used to store meta information into an extent
-        /// </summary>
-        /// <param name="node">Node the be used</param>
-        internal XmiProviderObject(XElement node)
-        {
-            XmlNode = node ?? throw new ArgumentNullException(nameof(node));
-
-            // Checks, if an id is given. if not. set it. 
-            if (!XmiId.HasId(node))
-            {
-                XmiId.Set(node, XmiId.CreateNew());
-            }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the XmlElement class.
         /// </summary>
         /// <param name="node">Node to be used</param>
@@ -83,11 +71,6 @@ namespace DatenMeister.Provider.XMI.EMOF
             {
                 XmiId.Set(node, XmiId.CreateNew());
             }
-        }
-
-        public override int GetHashCode()
-        {
-            return XmlNode.GetHashCode();
         }
 
         /// <summary>

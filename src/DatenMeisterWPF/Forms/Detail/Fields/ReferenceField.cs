@@ -17,10 +17,15 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
     /// </summary>
     public class ReferenceField : IDetailField
     {
-        public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, ref FieldFlags fieldFlags)
+        public UIElement CreateElement(
+            IObject value, 
+            IElement fieldData, 
+            DetailFormControl detailForm, 
+            ref FieldFlags fieldFlags)
         {
             var isInline =
                 DotNetHelper.IsTrue(fieldData.getOrDefault(_FormAndFields._ReferenceFieldData.isSelectionInline));
+            var name = fieldData.get(_FormAndFields._FieldData.name).ToString();
 
             // Checks, whether the reference shall be included as an inline selection
             if (isInline)
@@ -47,13 +52,17 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     if (!string.IsNullOrEmpty(workspace) && !string.IsNullOrEmpty(extent))
                     {
                         var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
-                        workspaceLogic.RetrieveWorkspaceAndExtent(workspace, extent,  out var foundWorkspace, out var foundExtent);
+                        workspaceLogic.RetrieveWorkspaceAndExtent(
+                            workspace, 
+                            extent, 
+                            out var foundWorkspace,
+                            out var foundExtent);
                         if (foundWorkspace != null && foundExtent != null)
                         {
                             control.Select(foundWorkspace, foundExtent);
                         }
                     }
-                    else if ( !string.IsNullOrEmpty(workspace))
+                    else if (!string.IsNullOrEmpty(workspace))
                     {
                         var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
                         var foundWorkspace = workspaceLogic.GetWorkspace(workspace);
@@ -63,6 +72,15 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                         }
                     }
                 }
+
+                detailForm.SetActions.Add(() =>
+                {
+                    var selectedElement = control.SelectedElement;
+                    if (selectedElement != null)
+                    {
+                        value.set(name,selectedElement);
+                    }
+                });
 
                 return control;
             }

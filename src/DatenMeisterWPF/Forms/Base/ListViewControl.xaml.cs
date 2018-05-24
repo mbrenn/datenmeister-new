@@ -39,11 +39,15 @@ namespace DatenMeisterWPF.Forms.Base
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Defines the property being used to indicate whether the tree containing the subelements is visible
+        /// </summary>
         public static readonly DependencyProperty IsTreeVisibleProperty = DependencyProperty.Register(
             "IsTreeVisible", typeof(bool), typeof(ListViewControl), 
             new PropertyMetadata(default(bool), OnIsTreeVisibleChanged));
 
-        private static void OnIsTreeVisibleChanged(DependencyObject dependencyObject,
+        private static void OnIsTreeVisibleChanged(
+            DependencyObject dependencyObject,
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
             var listViewControl = (ListViewControl)dependencyObject;
@@ -74,9 +78,16 @@ namespace DatenMeisterWPF.Forms.Base
         public INavigationHost NavigationHost { get; set; }
 
         /// <summary>
-        /// Gets or sets the items to be shown
+        /// Gets or sets the items to be shown. These items are shown also in the navigation view and will
+        /// not be modified, even if the user clicks on the navigation tree. 
         /// </summary>
         public IReflectiveSequence Items { get; set; }
+
+        /// <summary>
+        /// Gets or sets the items to be shown in the detail view. Usually, they are the same as the items.
+        /// If the user clicks on the navigation tree, a subview of the items may be shown
+        /// </summary>
+        private IReflectiveSequence DetailItems { get; set; }
 
         /// <summary>
         /// Gets or sets the form definition that is actually used for the current view
@@ -129,6 +140,7 @@ namespace DatenMeisterWPF.Forms.Base
         public void SetContent(IReflectiveSequence items, IElement formDefinition)
         {
             Items = items;
+            DetailItems = Items;
             ViewDefinition = new ViewDefinition(
                 null,
                 formDefinition,
@@ -137,6 +149,12 @@ namespace DatenMeisterWPF.Forms.Base
             
             UpdateViewList();
             UpdateContent();
+            UpdateTreeContent();
+        }
+
+        private void UpdateTreeContent()
+        {
+            NavigationTreeView.ItemsSource = Items;
         }
 
         /// <summary>
@@ -221,16 +239,16 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             // Creates the rowns
-            if (Items != null)
+            if (DetailItems != null)
             {
                 // Get the items and honor searching
-                var items = Items.OfType<IObject>();
+                var items = DetailItems.OfType<IObject>();
                 if (!string.IsNullOrEmpty(_searchText))
                 {
                     var columnNames = fields.OfType<IElement>()
                         .Select(x => x.get("name")?.ToString())
                         .Where(x => x != null);
-                    items = Items.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
+                    items = DetailItems.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
                 }
 
                 // Go through the items and build up the list of elements
@@ -601,7 +619,7 @@ namespace DatenMeisterWPF.Forms.Base
                 {
                     Owner = Window.GetWindow(this)
                 };
-                dlg.UpdateContent(Items);
+                dlg.UpdateContent(DetailItems);
                 dlg.ShowDialog();
             }
 
@@ -640,7 +658,7 @@ namespace DatenMeisterWPF.Forms.Base
                         var memoryProvider = new InMemoryProvider();
                         var temporary = new MofUriExtent(memoryProvider, "dm:///temp");
                         var copier = new ExtentCopier(new MofFactory(temporary));
-                        copier.Copy(Items, temporary.elements());
+                        copier.Copy(DetailItems, temporary.elements());
 
                         loader.Save(
                             memoryProvider,

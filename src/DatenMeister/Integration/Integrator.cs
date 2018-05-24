@@ -28,8 +28,6 @@ namespace DatenMeister.Integration
 
         private readonly string _pathExtents;
 
-        private readonly string _pathUserTypes;
-
         private IntegrationSettings _settings;
 
         public Integrator(IntegrationSettings settings)

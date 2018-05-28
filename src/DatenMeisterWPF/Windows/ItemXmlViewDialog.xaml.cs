@@ -43,7 +43,7 @@ namespace DatenMeisterWPF.Windows
         /// Sets the content of the window by converting the given elements to an xml
         /// </summary>
         /// <param name="elements">Items to be shown</param>
-        public void UpdateContent(IReflectiveSequence elements)
+        public void UpdateContent(IReflectiveCollection elements)
         {
             var xmiConverter = new XmlConverter();
             var element = xmiConverter.ConvertToXml(elements);

@@ -271,15 +271,15 @@ namespace DatenMeisterWPF.Controls
                 {
                     case IWorkspace _:
                         items.ItemsSource = null;
-                        items.treeView.IsEnabled = false;
+                        items.TreeView.IsEnabled = false;
                         break;
                     case IExtent extent:
                         items.ItemsSource = extent.elements();
-                        items.treeView.IsEnabled = true;
+                        items.TreeView.IsEnabled = true;
                         break;
                     default:
                         items.ItemsSource = null;
-                        items.treeView.IsEnabled = false;
+                        items.TreeView.IsEnabled = false;
                         break;
                 }
             }

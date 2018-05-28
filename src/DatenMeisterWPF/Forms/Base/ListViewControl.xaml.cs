@@ -81,13 +81,13 @@ namespace DatenMeisterWPF.Forms.Base
         /// Gets or sets the items to be shown. These items are shown also in the navigation view and will
         /// not be modified, even if the user clicks on the navigation tree. 
         /// </summary>
-        public IReflectiveSequence Items { get; set; }
+        public IReflectiveCollection Items { get; set; }
 
         /// <summary>
         /// Gets or sets the items to be shown in the detail view. Usually, they are the same as the items.
         /// If the user clicks on the navigation tree, a subview of the items may be shown
         /// </summary>
-        private IReflectiveSequence DetailItems { get; set; }
+        private IReflectiveCollection DetailItems { get; set; }
 
         /// <summary>
         /// Gets or sets the form definition that is actually used for the current view
@@ -154,6 +154,7 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void UpdateTreeContent()
         {
+            NavigationTreeView.SetDefaultProperties();
             NavigationTreeView.ItemsSource = Items;
         }
 
@@ -742,6 +743,20 @@ namespace DatenMeisterWPF.Forms.Base
         public virtual void OnMouseDoubleClick(IObject element)
         {
             OpenSelectedElement(element);
+        }
+
+        private void NavigationTreeView_OnItemChosen(object sender, ItemEventArgs e)
+        {
+            OpenSelectedElement(e.Item);
+        }
+
+        private void NavigationTreeView_OnItemSelected(object sender, ItemEventArgs e)
+        {
+            if (e.Item != null)
+            {
+                DetailItems = new PropertiesAsReflectiveCollection(e.Item);
+                UpdateContent();
+            }
         }
     }
 }

@@ -31,7 +31,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="sequence">Sequence to be used</param>
         /// <returns>Created form object</returns>
-        IElement CreateView(IReflectiveSequence sequence);
+        IElement CreateView(IReflectiveCollection sequence);
 
         /// <summary>
         /// Creates an object for an element by parsing the properties of the element

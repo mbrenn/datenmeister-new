@@ -96,19 +96,19 @@ namespace DatenMeister.Uml.Plugin
             _viewLogic.Add(umlPackageForm);
 
             // Creates the default mapping
-            var classView = new DefaultViewForMetaclass(
+            var classView = new DefaultDetailViewForMetaclass(
                 WorkspaceNames.UriUml + "#Class",
                 ViewType.Detail,
                 umlClassForm);
             _viewLogic.Add(classView);
 
-            var packageView = new DefaultViewForMetaclass(
+            var packageView = new DefaultDetailViewForMetaclass(
                 WorkspaceNames.UriUml + "#Package",
                 ViewType.Detail,
                 umlPackageForm);
             _viewLogic.Add(packageView);
 
-            var propertyView = new DefaultViewForMetaclass(
+            var propertyView = new DefaultDetailViewForMetaclass(
                 WorkspaceNames.UriUml + "#Property",
                 ViewType.Detail,
                 umlPropertyForm);

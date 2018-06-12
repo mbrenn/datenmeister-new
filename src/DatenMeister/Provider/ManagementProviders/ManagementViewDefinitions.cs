@@ -233,24 +233,24 @@ namespace DatenMeister.Provider.ManagementProviders
                 GetFindTypeForm(package)
             };
 
-            var workspaceFormDefaultView = factory.create(formAndFields.__DefaultViewForMetaclass);
+            var workspaceFormDefaultView = factory.create(formAndFields.__DefaultDetailViewForMetaclass);
             workspaceFormDefaultView.SetProperties(
                 new Dictionary<string, object>
                 {
-                    [_FormAndFields._DefaultViewForMetaclass.metaclass] = WorkspaceObject.MetaclassUriPath,
-                    [_FormAndFields._DefaultViewForMetaclass.view] = workspaceForm,
-                    [_FormAndFields._DefaultViewForMetaclass.viewType] = ViewType.Detail
+                    [_FormAndFields._DefaultDetailViewForMetaclass.metaclass] = WorkspaceObject.MetaclassUriPath,
+                    [_FormAndFields._DefaultDetailViewForMetaclass.view] = workspaceForm,
+                    [_FormAndFields._DefaultDetailViewForMetaclass.viewType] = ViewType.Detail
                 }
             );
             items.Add(workspaceFormDefaultView);
 
-            var extentFormDefaultView = factory.create(formAndFields.__DefaultViewForMetaclass);
+            var extentFormDefaultView = factory.create(formAndFields.__DefaultDetailViewForMetaclass);
             extentFormDefaultView.SetProperties(
                 new Dictionary<string, object>
                 {
-                    [_FormAndFields._DefaultViewForMetaclass.metaclass] = ExtentObject.MetaclassUriPath,
-                    [_FormAndFields._DefaultViewForMetaclass.view] = extentForm,
-                    [_FormAndFields._DefaultViewForMetaclass.viewType] = ViewType.Detail
+                    [_FormAndFields._DefaultDetailViewForMetaclass.metaclass] = ExtentObject.MetaclassUriPath,
+                    [_FormAndFields._DefaultDetailViewForMetaclass.view] = extentForm,
+                    [_FormAndFields._DefaultDetailViewForMetaclass.viewType] = ViewType.Detail
                 }
             );
             items.Add(extentFormDefaultView);

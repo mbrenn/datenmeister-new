@@ -45,10 +45,17 @@ namespace DatenMeister.Models.Forms
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.Forms.DefaultViewForMetaclass);
+                var type = typeof(DatenMeister.Models.Forms.DefaultDetailViewForMetaclass);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__DefaultViewForMetaclass = typeAsElement;
+                filledStructure.__DefaultDetailViewForMetaclass = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.DefaultListViewForMetaclass);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__DefaultListViewForMetaclass = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {

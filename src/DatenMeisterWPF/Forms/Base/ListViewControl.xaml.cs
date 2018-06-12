@@ -757,6 +757,12 @@ namespace DatenMeisterWPF.Forms.Base
                 DetailItems = new PropertiesAsReflectiveCollection(e.Item);
                 UpdateContent();
             }
+            else
+            {
+                // When user has selected the root element or no other item, all items are shown
+                DetailItems = Items;
+                UpdateContent();
+            }
         }
     }
 }

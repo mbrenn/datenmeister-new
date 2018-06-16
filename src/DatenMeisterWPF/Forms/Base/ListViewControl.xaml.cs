@@ -166,20 +166,46 @@ namespace DatenMeisterWPF.Forms.Base
         private void RefreshViewDefinition()
         {
             var viewFinder = App.Scope.Resolve<IViewFinder>();
-            if (ViewDefinition.Mode == ViewDefinitionMode.Default)
-            {
-                ActualFormDefinition = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
-            }
 
-            if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties
-                || ViewDefinition.Mode == ViewDefinitionMode.Default && ActualFormDefinition == null)
+            if (Items == DetailItems)
             {
-                ActualFormDefinition = viewFinder.CreateView(Items);
-            }
+                // Uses the default view. 
+                if (ViewDefinition.Mode == ViewDefinitionMode.Default)
+                {
+                    if (Items == DetailItems)
+                    {
+                        // Finds the view by the extent type
+                        ActualFormDefinition = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
+                    }
+                    else
+                    {
+                        //ActualFormDefinition = viewFinder.FindView(DetailItems as IReflectiveCollection);
+                    }
+                }
 
-            if (ViewDefinition.Mode == ViewDefinitionMode.Specific)
+                // Creates the view by creating the 'all Properties' view by parsing all the items
+                if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties
+                    || (ViewDefinition.Mode == ViewDefinitionMode.Default && ActualFormDefinition == null))
+                {
+                    ActualFormDefinition = viewFinder.CreateView(DetailItems);
+                }
+
+                // Used, when an external function requires a specific view mode
+                if (ViewDefinition.Mode == ViewDefinitionMode.Specific)
+                {
+                    ActualFormDefinition = ViewDefinition.Element;
+                }
+            }
+            else
             {
-                ActualFormDefinition = ViewDefinition.Element;
+                // User has selected a sub element. 
+                ActualFormDefinition =
+                    viewFinder.FindListViewFor((DetailItems as MofReflectiveSequence)?.MofObject);
+
+                if (ActualFormDefinition == null)
+                {
+                    ActualFormDefinition = viewFinder.CreateView(DetailItems);
+                }
             }
         }
 

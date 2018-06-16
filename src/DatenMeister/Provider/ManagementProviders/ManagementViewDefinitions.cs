@@ -178,22 +178,6 @@ namespace DatenMeister.Provider.ManagementProviders
                 defaultWidth = 700
             };
 
-            var typeField = new DropDownFieldData("selectedType", "Type");
-            /*if (types != null)
-            {
-                foreach (var type in
-                    from type in types
-                    let fullName = NamedElementMethods.GetFullName(type)
-                    orderby fullName
-                    select new { type, fullName })
-                {
-                    typeField.AddValue(type.type, type.fullName);
-                }
-            }
-
-            typeField.values = typeField.values.OrderBy(x => x.name).ToList();
-            // form.AddFields(typeField);*/
-
             var type2Field = new ReferenceFieldData("selectedType", "Type")
             {
                 isSelectionInline = true,
@@ -218,20 +202,12 @@ namespace DatenMeister.Provider.ManagementProviders
             var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
             var package = _workspaceLogic.GetTypesWorkspace().extent.ElementAt(0).elements().ElementAt(0) as IObject;
 
-            // Creates the package containing the views
+            // Creates the package for "ManagementProvider" containing the views
             var managementPackage = factory.create(null);
             managementPackage.set("name", PackageName);
 
             var workspaceForm = GetWorkspaceListForm();
             var extentForm = GetExtentListForm();
-            var items = new List<IElement>
-            {
-                workspaceForm,
-                extentForm,
-                GetNewXmiExtentDetailForm(),
-                GetNewWorkspaceDetail(),
-                GetFindTypeForm(package)
-            };
 
             var workspaceFormDefaultView = factory.create(formAndFields.__DefaultDetailViewForMetaclass);
             workspaceFormDefaultView.SetProperties(
@@ -242,7 +218,6 @@ namespace DatenMeister.Provider.ManagementProviders
                     [_FormAndFields._DefaultDetailViewForMetaclass.viewType] = ViewType.Detail
                 }
             );
-            items.Add(workspaceFormDefaultView);
 
             var extentFormDefaultView = factory.create(formAndFields.__DefaultDetailViewForMetaclass);
             extentFormDefaultView.SetProperties(
@@ -253,7 +228,28 @@ namespace DatenMeister.Provider.ManagementProviders
                     [_FormAndFields._DefaultDetailViewForMetaclass.viewType] = ViewType.Detail
                 }
             );
-            items.Add(extentFormDefaultView);
+
+            var extentListView = factory.create(formAndFields.__DefaultListViewForMetaclass);
+            extentListView.SetProperties(
+                new Dictionary<string, object>
+                {
+                    [_FormAndFields._DefaultDetailViewForMetaclass.metaclass] = WorkspaceObject.MetaclassUriPath,
+                    [_FormAndFields._DefaultDetailViewForMetaclass.view] = extentForm,
+                    [_FormAndFields._DefaultDetailViewForMetaclass.viewType] = ViewType.List
+                }
+            );
+
+            var items = new List<IElement>
+            {
+                workspaceForm,
+                extentForm,
+                GetNewXmiExtentDetailForm(),
+                GetNewWorkspaceDetail(),
+                GetFindTypeForm(package),
+                workspaceFormDefaultView,
+                extentFormDefaultView,
+                extentListView
+            };
 
             managementPackage.set(_UML._CommonStructure._Namespace.member, items);
             viewExtent.elements().add(managementPackage);

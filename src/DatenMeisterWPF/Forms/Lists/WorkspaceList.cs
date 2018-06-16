@@ -46,7 +46,12 @@ namespace DatenMeisterWPF.Forms.Lists
             
             void ShowExtents(IObject workspace)
             {
-                var workspaceId = workspace.get("id").ToString();
+                var workspaceId = workspace.get("id")?.ToString();
+                if (workspaceId == null)
+                {
+                    return;
+                }
+
                 var events = NavigatorForExtents.NavigateToExtentList(NavigationHost, workspaceId);
                 
                 events.Closed += (x, y) => UpdateContent();

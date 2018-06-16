@@ -33,7 +33,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             return CreateForm(extent.elements(), creationMode);
         }
 
-        public Form CreateForm(IReflectiveSequence elements, CreationMode creationMode)
+        public Form CreateForm(IReflectiveCollection elements, CreationMode creationMode)
         {
             var result = new Form();
             foreach (var item in elements)

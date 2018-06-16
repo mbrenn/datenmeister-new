@@ -200,6 +200,43 @@ namespace DatenMeister.Modules.ViewFinder
             return null;
         }
 
+
+        /// <summary>
+        /// Finds the view for the given item.
+        /// First, it looks for the specific instance
+        /// Second, it looks by the given type
+        /// </summary>
+        /// <param name="value">Value, whose view is currently is requested</param>
+        /// <returns>The found view or null, if not found</returns>
+        public IElement FindViewForValue(IObject value, ViewType list)
+        {
+
+            var viewExtent = GetViewExtent();
+            var formAndFields = GetFormAndFieldInstance(viewExtent);
+            var type = (value as IElement)?.metaclass;
+            if (type == null)
+            {
+                // Non-type items are totally irrelevant
+                return null;
+            }
+
+            foreach (
+                var element in viewExtent.elements().
+                    WhenMetaClassIs(formAndFields.__DefaultListViewForMetaclass).
+                    Select(x => x as IElement))
+            {
+                if (element == null) throw new NullReferenceException("element");
+
+                var innerExtentType = element.get(_FormAndFields._DefaultListViewForMetaclass.metaclass);
+                if (type== innerExtentType)
+                {
+                    return element.getFirstOrDefault(_FormAndFields._DefaultDetailViewForMetaclass.view) as IElement;
+                }
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Gets the form and field instance which contains the references to 
         /// the metaclasses

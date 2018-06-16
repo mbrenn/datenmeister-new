@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -24,6 +25,13 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="value">Value for whom the object shall be created</param>
         /// <returns>Found view or null</returns>
         IElement FindView(IObject value);
+
+        /// <summary>
+        /// Finds the list view of all sub elements of the given items
+        /// </summary>
+        /// <param name="value">Object, whose sub items shall be parsed</param>
+        /// <returns>Found view or null, if none found</returns>
+        IElement FindListViewFor(IObject value);
 
         /// <summary>
         /// Creates an object for a reflective sequence by parsing each object and returning the formview

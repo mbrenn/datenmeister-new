@@ -69,8 +69,17 @@ namespace DatenMeister.Models.Forms
         public _DateTimeFieldData @DateTimeFieldData = new _DateTimeFieldData();
         public IElement @__DateTimeFieldData = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DateTimeFieldData");
 
-        public class _DefaultViewForExtentType
+        public class _ViewAssociation
         {
+            public static string @viewType = "viewType";
+            public IElement _viewType = null;
+
+            public static string @metaclass = "metaclass";
+            public IElement _metaclass = null;
+
+            public static string @metaclassName = "metaclassName";
+            public IElement _metaclassName = null;
+
             public static string @extentType = "extentType";
             public IElement _extentType = null;
 
@@ -79,40 +88,8 @@ namespace DatenMeister.Models.Forms
 
         }
 
-        public _DefaultViewForExtentType @DefaultViewForExtentType = new _DefaultViewForExtentType();
-        public IElement @__DefaultViewForExtentType = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DefaultViewForExtentType");
-
-        public class _DefaultDetailViewForMetaclass
-        {
-            public static string @viewType = "viewType";
-            public IElement _viewType = null;
-
-            public static string @metaclass = "metaclass";
-            public IElement _metaclass = null;
-
-            public static string @view = "view";
-            public IElement _view = null;
-
-        }
-
-        public _DefaultDetailViewForMetaclass @DefaultDetailViewForMetaclass = new _DefaultDetailViewForMetaclass();
-        public IElement @__DefaultDetailViewForMetaclass = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DefaultDetailViewForMetaclass");
-
-        public class _DefaultListViewForMetaclass
-        {
-            public static string @viewType = "viewType";
-            public IElement _viewType = null;
-
-            public static string @metaclass = "metaclass";
-            public IElement _metaclass = null;
-
-            public static string @view = "view";
-            public IElement _view = null;
-
-        }
-
-        public _DefaultListViewForMetaclass @DefaultListViewForMetaclass = new _DefaultListViewForMetaclass();
-        public IElement @__DefaultListViewForMetaclass = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DefaultListViewForMetaclass");
+        public _ViewAssociation @ViewAssociation = new _ViewAssociation();
+        public IElement @__ViewAssociation = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewAssociation");
 
         public class _DetailForm
         {

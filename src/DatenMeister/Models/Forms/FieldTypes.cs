@@ -11,9 +11,7 @@ namespace DatenMeister.Models.Forms
             {
                 typeof(CheckboxFieldData),
                 typeof(DateTimeFieldData),
-                typeof(DefaultViewForExtentType),
-                typeof(DefaultDetailViewForMetaclass),
-                typeof(DefaultListViewForMetaclass),
+                typeof(ViewAssociation),
                 typeof(DetailForm),
                 typeof(DropDownFieldData),
                 typeof(DropDownFieldData.ValuePair),

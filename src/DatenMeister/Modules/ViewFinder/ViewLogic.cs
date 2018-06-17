@@ -68,25 +68,12 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="defaultView">Default view to be used</param>
         /// <param name="id">Id of the element that shall be created</param>
-        public void Add(DefaultDetailViewForMetaclass defaultView, string id = null)
+        public void Add(ViewAssociation defaultView, string id = null)
         {
             var viewExtent = GetViewExtent();
             var factory = new MofFactory(viewExtent);
             GetViewExtent().elements().add(factory.createFrom(defaultView, id));
         }
-
-        /// <summary>
-        /// Adds a default view for a certain meta class
-        /// </summary>
-        /// <param name="defaultView">Default view to be used</param>
-        /// <param name="id">Id of the element that shall be created</param>
-        public void Add(DefaultViewForExtentType defaultView, string id = null)
-        {
-            var viewExtent = GetViewExtent();
-            var factory = new MofFactory(viewExtent);
-            GetViewExtent().elements().add(factory.createFrom(defaultView, id));
-        }
-
 
         public IUriExtent GetViewExtent()
         {
@@ -146,22 +133,22 @@ namespace DatenMeister.Modules.ViewFinder
 
             var allElements = viewExtent.elements().GetAllDescendants();
             var allMetaClasses = allElements.OfType<IElement>().Select(x => x.getMetaClass());
-            var allMetaElements = allElements.WhenMetaClassIs(formAndFields.__DefaultDetailViewForMetaclass);
+            var allMetaElements = allElements.WhenMetaClassIs(formAndFields.__ViewAssociation);
             var allMetaMetaClasses = allMetaElements.OfType<IElement>().Select(x => x.getMetaClass());
 
             foreach (
                 var element in viewExtent.elements().GetAllDescendants().
-                WhenMetaClassIs(formAndFields.__DefaultDetailViewForMetaclass).
+                WhenMetaClassIs(formAndFields.__ViewAssociation).
                 Select(x => x as IElement))
             {
                 if (element == null) throw new ArgumentNullException("element != null");
 
-                var innerMetaClass = element.get(_FormAndFields._DefaultDetailViewForMetaclass.metaclass);
-                var innerType = element.get(_FormAndFields._DefaultDetailViewForMetaclass.viewType).ToString();
+                var innerMetaClass = element.get(_FormAndFields._ViewAssociation.metaclass);
+                var innerType = element.get(_FormAndFields._ViewAssociation.viewType).ToString();
 
                 if (innerMetaClass.Equals(metaClassUri) && innerType.Equals(typeAsString))
                 {
-                    return element.getFirstOrDefault(_FormAndFields._DefaultDetailViewForMetaclass.view) as IElement;
+                    return element.getFirstOrDefault(_FormAndFields._ViewAssociation.view) as IElement;
                 }
             }
 
@@ -185,15 +172,15 @@ namespace DatenMeister.Modules.ViewFinder
             var formAndFields = GetFormAndFieldInstance(viewExtent);
             foreach (
                 var element in viewExtent.elements().
-                WhenMetaClassIs(formAndFields.__DefaultViewForExtentType).
+                WhenMetaClassIs(formAndFields.__ViewAssociation).
                 Select(x => x as IElement))
             {
                 if (element == null) throw new ArgumentNullException("element != null");
 
-                var innerExtentType = element.get(_FormAndFields._DefaultViewForExtentType.extentType);
+                var innerExtentType = element.get(_FormAndFields._ViewAssociation.extentType);
                 if (innerExtentType.Equals(extentType))
                 {
-                    return element.getFirstOrDefault(_FormAndFields._DefaultDetailViewForMetaclass.view) as IElement;
+                    return element.getFirstOrDefault(_FormAndFields._ViewAssociation.view) as IElement;
                 }
             }
 
@@ -222,15 +209,15 @@ namespace DatenMeister.Modules.ViewFinder
 
             foreach (
                 var element in viewExtent.elements().
-                    WhenMetaClassIs(formAndFields.__DefaultListViewForMetaclass).
+                    WhenMetaClassIs(formAndFields.__ViewAssociation).
                     Select(x => x as IElement))
             {
                 if (element == null) throw new NullReferenceException("element");
 
-                var innerExtentType = element.get(_FormAndFields._DefaultListViewForMetaclass.metaclass);
+                var innerExtentType = element.get(_FormAndFields._ViewAssociation.metaclass);
                 if (type== innerExtentType)
                 {
-                    return element.getFirstOrDefault(_FormAndFields._DefaultDetailViewForMetaclass.view) as IElement;
+                    return element.getFirstOrDefault(_FormAndFields._ViewAssociation.view) as IElement;
                 }
             }
 

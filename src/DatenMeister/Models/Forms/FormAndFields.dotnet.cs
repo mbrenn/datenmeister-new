@@ -38,24 +38,10 @@ namespace DatenMeister.Models.Forms
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.Forms.DefaultViewForExtentType);
+                var type = typeof(DatenMeister.Models.Forms.ViewAssociation);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__DefaultViewForExtentType = typeAsElement;
-                extent.TypeLookup.Add(typeAsElement, type);
-            }
-            {
-                var type = typeof(DatenMeister.Models.Forms.DefaultDetailViewForMetaclass);
-                var typeAsElement = generator.CreateTypeFor(type);
-                collection.add(typeAsElement);
-                filledStructure.__DefaultDetailViewForMetaclass = typeAsElement;
-                extent.TypeLookup.Add(typeAsElement, type);
-            }
-            {
-                var type = typeof(DatenMeister.Models.Forms.DefaultListViewForMetaclass);
-                var typeAsElement = generator.CreateTypeFor(type);
-                collection.add(typeAsElement);
-                filledStructure.__DefaultListViewForMetaclass = typeAsElement;
+                filledStructure.__ViewAssociation = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {

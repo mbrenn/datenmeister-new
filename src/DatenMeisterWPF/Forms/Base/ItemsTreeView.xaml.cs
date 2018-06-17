@@ -1,18 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -29,6 +19,18 @@ namespace DatenMeisterWPF.Forms.Base
         private IReflectiveCollection _itemsSource;
 
         private readonly HashSet<object> _alreadyVisited = new HashSet<object>();
+
+        public static readonly DependencyProperty ShowRootProperty = DependencyProperty.Register(
+            "ShowRoot", typeof(bool), typeof(ItemsTreeView), new PropertyMetadata(default(bool)));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether a root element shall be introduced
+        /// </summary>
+        public bool ShowRoot
+        {
+            get => (bool) GetValue(ShowRootProperty);
+            set => SetValue(ShowRootProperty, value);
+        }
 
         /// <summary>
         /// Defines the maximum items per level. This is used to reduce the amount of items
@@ -61,7 +63,7 @@ namespace DatenMeisterWPF.Forms.Base
         {
             get
             {
-                if (treeView.SelectedItem is TreeViewItem treeViewItem)
+                if (TreeView.SelectedItem is TreeViewItem treeViewItem)
                 {
                     return treeViewItem.Tag as IObject;
                 }
@@ -114,11 +116,25 @@ namespace DatenMeisterWPF.Forms.Base
 
             if (ItemsSource == null)
             {
-                treeView.ItemsSource = null;
+                TreeView.ItemsSource = null;
                 return;
             }
 
             var model = new List<TreeViewItem>();
+
+            var container = TreeView as ItemsControl;
+            if (ShowRoot)
+            {
+                var rootItem = new TreeViewItem()
+                {
+                    Header = "Root",
+                    Tag = null
+                };
+                rootItem.IsExpanded = true;
+
+                container.ItemsSource = new[] {rootItem};
+                container = rootItem;
+            }
             
             lock (_alreadyVisited)
             {
@@ -140,7 +156,7 @@ namespace DatenMeisterWPF.Forms.Base
                     }
                 }
 
-                treeView.ItemsSource = model;
+                container.ItemsSource = model;
             }
         }
 
@@ -208,10 +224,12 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void OnItemChosen(object item)
         {
-            if (item is IObject element)
-            {
-                ItemChosen?.Invoke(this, new ItemEventArgs(element));
-            }
+            ItemChosen?.Invoke(this, new ItemEventArgs(item as IObject));
+        }
+
+        private void OnItemSelected(object item)
+        {
+            ItemSelected?.Invoke(this, new ItemEventArgs(item as IObject));
         }
 
         /// <summary>
@@ -219,9 +237,14 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public event EventHandler<ItemEventArgs> ItemChosen;
 
+        /// <summary>
+        /// This event is called, when the user double clicks on an item 
+        /// </summary>
+        public event EventHandler<ItemEventArgs> ItemSelected;
+
         private void treeView_MouseDoubleClicked(object sender, MouseButtonEventArgs e)
         {
-            if (treeView.SelectedItem is TreeViewItem treeViewItem)
+            if (TreeView.SelectedItem is TreeViewItem treeViewItem)
             {
                 OnItemChosen(treeViewItem.Tag);
             }
@@ -231,10 +254,18 @@ namespace DatenMeisterWPF.Forms.Base
         {
             if (e.Key == Key.Enter)
             {
-                if (treeView.SelectedItem is TreeViewItem treeViewItem)
+                if (TreeView.SelectedItem is TreeViewItem treeViewItem)
                 {
                     OnItemChosen(treeViewItem.Tag);
                 }
+            }
+        }
+
+        private void treeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (e.NewValue is TreeViewItem treeViewItem)
+            {
+                OnItemSelected(treeViewItem.Tag);
             }
         }
     }

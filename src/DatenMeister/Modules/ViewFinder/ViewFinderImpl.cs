@@ -55,12 +55,34 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
         /// <summary>
+        /// Finds the view for the given item.
+        /// First, it looks for the specific instance
+        /// Second, it looks by the given type
+        /// </summary>
+        /// <param name="value">Value, whose view is currently is requested</param>
+        /// <returns>The found view or null, if not found</returns>
+        public IElement FindListViewFor(IObject value)
+        {
+            if (value != null)
+            {
+                var viewResult = _viewLogic.FindViewForValue(value, ViewType.List);
+                if (viewResult != null)
+                {
+                    return viewResult;
+                }
+            }
+
+            // Ok, find it by creating the properties
+            return null;
+        }
+
+        /// <summary>
         /// Creates an object for a reflective sequence by parsing each object and returning the formview
         /// showing the properties and extents
         /// </summary>
         /// <param name="sequence">Sequence to be used</param>
         /// <returns>Created form object</returns>
-        public IElement CreateView(IReflectiveSequence sequence)
+        public IElement CreateView(IReflectiveCollection sequence)
         {
             var form = _formCreator.CreateForm(sequence, FormCreator.CreationMode.All);
             return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetViewExtent());

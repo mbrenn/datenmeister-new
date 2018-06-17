@@ -24,7 +24,7 @@ namespace DatenMeister.Runtime.Copier
             Copy(sourceSequence, targetSequence);
         }
 
-        public void Copy(IReflectiveSequence sourceSequence, IReflectiveSequence targetSequence)
+        public void Copy(IReflectiveCollection sourceSequence, IReflectiveCollection targetSequence)
         {
             var copier = new ObjectCopier(_factory);
             foreach (var element in sourceSequence)

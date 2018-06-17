@@ -82,7 +82,7 @@ namespace DatenMeister.Models.Forms
         public _DefaultViewForExtentType @DefaultViewForExtentType = new _DefaultViewForExtentType();
         public IElement @__DefaultViewForExtentType = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DefaultViewForExtentType");
 
-        public class _DefaultViewForMetaclass
+        public class _DefaultDetailViewForMetaclass
         {
             public static string @viewType = "viewType";
             public IElement _viewType = null;
@@ -95,8 +95,24 @@ namespace DatenMeister.Models.Forms
 
         }
 
-        public _DefaultViewForMetaclass @DefaultViewForMetaclass = new _DefaultViewForMetaclass();
-        public IElement @__DefaultViewForMetaclass = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DefaultViewForMetaclass");
+        public _DefaultDetailViewForMetaclass @DefaultDetailViewForMetaclass = new _DefaultDetailViewForMetaclass();
+        public IElement @__DefaultDetailViewForMetaclass = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DefaultDetailViewForMetaclass");
+
+        public class _DefaultListViewForMetaclass
+        {
+            public static string @viewType = "viewType";
+            public IElement _viewType = null;
+
+            public static string @metaclass = "metaclass";
+            public IElement _metaclass = null;
+
+            public static string @view = "view";
+            public IElement _view = null;
+
+        }
+
+        public _DefaultListViewForMetaclass @DefaultListViewForMetaclass = new _DefaultListViewForMetaclass();
+        public IElement @__DefaultListViewForMetaclass = new MofObjectShadow("dm:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DefaultListViewForMetaclass");
 
         public class _DetailForm
         {
@@ -304,6 +320,12 @@ namespace DatenMeister.Models.Forms
 
             public static string @defaultWorkspace = "defaultWorkspace";
             public IElement _defaultWorkspace = null;
+
+            public static string @showWorkspaceSelection = "showWorkspaceSelection";
+            public IElement _showWorkspaceSelection = null;
+
+            public static string @showExtentSelection = "showExtentSelection";
+            public IElement _showExtentSelection = null;
 
             public static string @fieldType = "fieldType";
             public IElement _fieldType = null;

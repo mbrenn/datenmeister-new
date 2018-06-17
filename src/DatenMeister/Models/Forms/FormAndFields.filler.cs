@@ -139,9 +139,9 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
-                        if(name == "DefaultViewForMetaclass") // Looking for class
+                        if(name == "DefaultDetailViewForMetaclass") // Looking for class
                         {
-                            tree.__DefaultViewForMetaclass = value;
+                            tree.__DefaultDetailViewForMetaclass = value;
                             isSet = value.isSet("ownedAttribute");
                             collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
@@ -150,15 +150,38 @@ namespace DatenMeister.Models.Forms
                                 name = GetNameOfElement(value);
                                 if(name == "viewType") // Looking for property
                                 {
-                                    tree.DefaultViewForMetaclass._viewType = value;
+                                    tree.DefaultDetailViewForMetaclass._viewType = value;
                                 }
                                 if(name == "metaclass") // Looking for property
                                 {
-                                    tree.DefaultViewForMetaclass._metaclass = value;
+                                    tree.DefaultDetailViewForMetaclass._metaclass = value;
                                 }
                                 if(name == "view") // Looking for property
                                 {
-                                    tree.DefaultViewForMetaclass._view = value;
+                                    tree.DefaultDetailViewForMetaclass._view = value;
+                                }
+                            }
+                        }
+                        if(name == "DefaultListViewForMetaclass") // Looking for class
+                        {
+                            tree.__DefaultListViewForMetaclass = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "viewType") // Looking for property
+                                {
+                                    tree.DefaultListViewForMetaclass._viewType = value;
+                                }
+                                if(name == "metaclass") // Looking for property
+                                {
+                                    tree.DefaultListViewForMetaclass._metaclass = value;
+                                }
+                                if(name == "view") // Looking for property
+                                {
+                                    tree.DefaultListViewForMetaclass._view = value;
                                 }
                             }
                         }
@@ -455,6 +478,14 @@ namespace DatenMeister.Models.Forms
                                 if(name == "defaultWorkspace") // Looking for property
                                 {
                                     tree.ReferenceFieldData._defaultWorkspace = value;
+                                }
+                                if(name == "showWorkspaceSelection") // Looking for property
+                                {
+                                    tree.ReferenceFieldData._showWorkspaceSelection = value;
+                                }
+                                if(name == "showExtentSelection") // Looking for property
+                                {
+                                    tree.ReferenceFieldData._showExtentSelection = value;
                                 }
                                 if(name == "fieldType") // Looking for property
                                 {

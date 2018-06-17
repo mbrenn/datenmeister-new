@@ -81,13 +81,13 @@ namespace DatenMeisterWPF.Forms.Base
         /// Gets or sets the items to be shown. These items are shown also in the navigation view and will
         /// not be modified, even if the user clicks on the navigation tree. 
         /// </summary>
-        public IReflectiveSequence Items { get; set; }
+        public IReflectiveCollection Items { get; set; }
 
         /// <summary>
         /// Gets or sets the items to be shown in the detail view. Usually, they are the same as the items.
         /// If the user clicks on the navigation tree, a subview of the items may be shown
         /// </summary>
-        private IReflectiveSequence DetailItems { get; set; }
+        private IReflectiveCollection DetailItems { get; set; }
 
         /// <summary>
         /// Gets or sets the form definition that is actually used for the current view
@@ -154,6 +154,7 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void UpdateTreeContent()
         {
+            NavigationTreeView.SetDefaultProperties();
             NavigationTreeView.ItemsSource = Items;
         }
 
@@ -165,20 +166,46 @@ namespace DatenMeisterWPF.Forms.Base
         private void RefreshViewDefinition()
         {
             var viewFinder = App.Scope.Resolve<IViewFinder>();
-            if (ViewDefinition.Mode == ViewDefinitionMode.Default)
-            {
-                ActualFormDefinition = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
-            }
 
-            if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties
-                || ViewDefinition.Mode == ViewDefinitionMode.Default && ActualFormDefinition == null)
+            if (Items == DetailItems)
             {
-                ActualFormDefinition = viewFinder.CreateView(Items);
-            }
+                // Uses the default view. 
+                if (ViewDefinition.Mode == ViewDefinitionMode.Default)
+                {
+                    if (Items == DetailItems)
+                    {
+                        // Finds the view by the extent type
+                        ActualFormDefinition = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
+                    }
+                    else
+                    {
+                        //ActualFormDefinition = viewFinder.FindView(DetailItems as IReflectiveCollection);
+                    }
+                }
 
-            if (ViewDefinition.Mode == ViewDefinitionMode.Specific)
+                // Creates the view by creating the 'all Properties' view by parsing all the items
+                if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties
+                    || (ViewDefinition.Mode == ViewDefinitionMode.Default && ActualFormDefinition == null))
+                {
+                    ActualFormDefinition = viewFinder.CreateView(DetailItems);
+                }
+
+                // Used, when an external function requires a specific view mode
+                if (ViewDefinition.Mode == ViewDefinitionMode.Specific)
+                {
+                    ActualFormDefinition = ViewDefinition.Element;
+                }
+            }
+            else
             {
-                ActualFormDefinition = ViewDefinition.Element;
+                // User has selected a sub element. 
+                ActualFormDefinition =
+                    viewFinder.FindListViewFor((DetailItems as MofReflectiveSequence)?.MofObject);
+
+                if (ActualFormDefinition == null)
+                {
+                    ActualFormDefinition = viewFinder.CreateView(DetailItems);
+                }
             }
         }
 
@@ -742,6 +769,26 @@ namespace DatenMeisterWPF.Forms.Base
         public virtual void OnMouseDoubleClick(IObject element)
         {
             OpenSelectedElement(element);
+        }
+
+        private void NavigationTreeView_OnItemChosen(object sender, ItemEventArgs e)
+        {
+            OpenSelectedElement(e.Item);
+        }
+
+        private void NavigationTreeView_OnItemSelected(object sender, ItemEventArgs e)
+        {
+            if (e.Item != null)
+            {
+                DetailItems = new PropertiesAsReflectiveCollection(e.Item);
+                UpdateContent();
+            }
+            else
+            {
+                // When user has selected the root element or no other item, all items are shown
+                DetailItems = Items;
+                UpdateContent();
+            }
         }
     }
 }

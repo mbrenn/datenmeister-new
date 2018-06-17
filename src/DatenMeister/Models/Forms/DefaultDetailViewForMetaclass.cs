@@ -3,7 +3,7 @@
     /// <summary>
     /// Performs an allocation between the view and a specific metaclass which supports the retrieval of default views. 
     /// </summary>
-    public class DefaultViewForMetaclass
+    public class DefaultDetailViewForMetaclass
     {
         public ViewType viewType { get; set; } 
 
@@ -11,17 +11,17 @@
         
         public Form view { get; set; }
 
-        public DefaultViewForMetaclass()
+        public DefaultDetailViewForMetaclass()
         {
         }
 
-        public DefaultViewForMetaclass(string metaClass, ViewType viewType)
+        public DefaultDetailViewForMetaclass(string metaClass, ViewType viewType)
         {
             this.metaclass = metaClass;
             this.viewType = viewType;
         }
 
-        public DefaultViewForMetaclass(string metaClass, ViewType viewType, Form form) : this(metaClass, viewType)
+        public DefaultDetailViewForMetaclass(string metaClass, ViewType viewType, Form form) : this(metaClass, viewType)
         {
             this.view = form;
         }

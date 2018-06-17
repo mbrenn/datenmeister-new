@@ -10,6 +10,7 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.ViewFinder
 {
@@ -126,33 +127,7 @@ namespace DatenMeister.Modules.ViewFinder
                 return null;
             }
 
-            var viewExtent = GetViewExtent();
-            var formAndFields = GetFormAndFieldInstance(viewExtent);
-            var metaClassUri = metaClass.GetUri();
-            var typeAsString = type.ToString();
-
-            var allElements = viewExtent.elements().GetAllDescendants();
-            var allMetaClasses = allElements.OfType<IElement>().Select(x => x.getMetaClass());
-            var allMetaElements = allElements.WhenMetaClassIs(formAndFields.__ViewAssociation);
-            var allMetaMetaClasses = allMetaElements.OfType<IElement>().Select(x => x.getMetaClass());
-
-            foreach (
-                var element in viewExtent.elements().GetAllDescendants().
-                WhenMetaClassIs(formAndFields.__ViewAssociation).
-                Select(x => x as IElement))
-            {
-                if (element == null) throw new ArgumentNullException("element != null");
-
-                var innerMetaClass = element.get(_FormAndFields._ViewAssociation.metaclass);
-                var innerType = element.get(_FormAndFields._ViewAssociation.viewType).ToString();
-
-                if (innerMetaClass.Equals(metaClassUri) && innerType.Equals(typeAsString))
-                {
-                    return element.getFirstOrDefault(_FormAndFields._ViewAssociation.view) as IElement;
-                }
-            }
-
-            return null;
+            return FindViewFor(type, null, UmlNameResolution.GetName(metaClass), metaClass);
         }
 
         /// <summary>
@@ -168,23 +143,7 @@ namespace DatenMeister.Modules.ViewFinder
                 return null;
             }
 
-            var viewExtent = GetViewExtent();
-            var formAndFields = GetFormAndFieldInstance(viewExtent);
-            foreach (
-                var element in viewExtent.elements().
-                WhenMetaClassIs(formAndFields.__ViewAssociation).
-                Select(x => x as IElement))
-            {
-                if (element == null) throw new ArgumentNullException("element != null");
-
-                var innerExtentType = element.get(_FormAndFields._ViewAssociation.extentType);
-                if (innerExtentType.Equals(extentType))
-                {
-                    return element.getFirstOrDefault(_FormAndFields._ViewAssociation.view) as IElement;
-                }
-            }
-
-            return null;
+            return FindViewFor(type, extentType, null, null);
         }
 
 
@@ -194,34 +153,104 @@ namespace DatenMeister.Modules.ViewFinder
         /// Second, it looks by the given type
         /// </summary>
         /// <param name="value">Value, whose view is currently is requested</param>
+        /// <param name="viewType">Type of the view being queried</param>
         /// <returns>The found view or null, if not found</returns>
-        public IElement FindViewForValue(IObject value, ViewType list)
+        public IElement FindViewForValue(IObject value, ViewType viewType)
         {
+            return FindViewFor((value as IElement)?.metaclass, viewType);
+        }
 
+        /// <summary>
+        /// Find st
+        /// </summary>
+        /// <param name="viewType">The view type to be found</param>
+        /// <param name="extentType">The extent type whose view is queried. May be null, if not relevant</param>
+        /// <param name="metaClassName">The uri of the metaclass whose view is queried. May be null, if not relevant</param>
+        /// <param name="metaClass">The element of the metaclass whose view is queried. May be null, if not relevant</param>
+        /// <returns>The found view or null, if not found</returns>
+        public IElement FindViewFor(
+            ViewType viewType,
+            string extentType,
+            string metaClassName,
+            IElement metaClass)
+        {
             var viewExtent = GetViewExtent();
             var formAndFields = GetFormAndFieldInstance(viewExtent);
-            var type = (value as IElement)?.metaclass;
-            if (type == null)
-            {
-                // Non-type items are totally irrelevant
-                return null;
-            }
+
+            var foundPoints = -1;
+            IElement foundView = null;
 
             foreach (
                 var element in viewExtent.elements().
                     WhenMetaClassIs(formAndFields.__ViewAssociation).
                     Select(x => x as IElement))
             {
+                var points = 0;
                 if (element == null) throw new NullReferenceException("element");
 
-                var innerExtentType = element.get(_FormAndFields._ViewAssociation.metaclass);
-                if (type== innerExtentType)
+                var innerExtentType = element.getOrDefault(_FormAndFields._ViewAssociation.extentType)?.ToString();
+                var innerMetaClass = element.getOrDefault(_FormAndFields._ViewAssociation.metaclass) as IElement;
+                var innerMetaClassName = element.getOrDefault(_FormAndFields._ViewAssociation.metaclassName)?.ToString();
+                var innerViewType = (ViewType) (element.getOrDefault(_FormAndFields._ViewAssociation.viewType) ?? ViewType.Detail);
+
+                var innerView = element.getOrDefault(_FormAndFields._ViewAssociation.view) as IElement;
+
+                var isMatching = true;
+
+                // Now go through each property and get the points
+                if (extentType != null && innerExtentType != null)
                 {
-                    return element.getFirstOrDefault(_FormAndFields._ViewAssociation.view) as IElement;
+                    if (extentType == innerExtentType)
+                    {
+                        points++;
+                    }
+                    else
+                    {
+                        isMatching = false;
+                    }
+                }
+
+                if (metaClassName != null && innerMetaClassName != null)
+                {
+                    if (metaClassName == innerMetaClassName)
+                    {
+                        points++;
+                    }
+                    else
+                    {
+                        isMatching = false;
+                    }
+                }
+
+                if (metaClass != null && innerMetaClass != null)
+                {
+                    if (metaClass == innerMetaClass)
+                    {
+                        points++;
+                    }
+                    else
+                    {
+                        isMatching = false;
+                    }
+                }
+
+                if (viewType != innerViewType)
+                {
+                    isMatching = false;
+                }
+                
+                // The matching view with the maximum points win
+                if (isMatching)
+                {
+                    if (points > foundPoints)
+                    {
+                        foundPoints = points;
+                        foundView = innerView;
+                    }
                 }
             }
 
-            return null;
+            return foundView;
         }
 
         /// <summary>

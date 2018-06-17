@@ -209,33 +209,33 @@ namespace DatenMeister.Provider.ManagementProviders
             var workspaceForm = GetWorkspaceListForm();
             var extentForm = GetExtentListForm();
 
-            var workspaceFormDefaultView = factory.create(formAndFields.__DefaultDetailViewForMetaclass);
+            var workspaceFormDefaultView = factory.create(formAndFields.__ViewAssociation);
             workspaceFormDefaultView.SetProperties(
                 new Dictionary<string, object>
                 {
-                    [_FormAndFields._DefaultDetailViewForMetaclass.metaclass] = WorkspaceObject.MetaclassUriPath,
-                    [_FormAndFields._DefaultDetailViewForMetaclass.view] = workspaceForm,
-                    [_FormAndFields._DefaultDetailViewForMetaclass.viewType] = ViewType.Detail
+                    [_FormAndFields._ViewAssociation.metaclass] = WorkspaceObject.MetaclassUriPath,
+                    [_FormAndFields._ViewAssociation.view] = workspaceForm,
+                    [_FormAndFields._ViewAssociation.viewType] = ViewType.Detail
                 }
             );
 
-            var extentFormDefaultView = factory.create(formAndFields.__DefaultDetailViewForMetaclass);
+            var extentFormDefaultView = factory.create(formAndFields.__ViewAssociation);
             extentFormDefaultView.SetProperties(
                 new Dictionary<string, object>
                 {
-                    [_FormAndFields._DefaultDetailViewForMetaclass.metaclass] = ExtentObject.MetaclassUriPath,
-                    [_FormAndFields._DefaultDetailViewForMetaclass.view] = extentForm,
-                    [_FormAndFields._DefaultDetailViewForMetaclass.viewType] = ViewType.Detail
+                    [_FormAndFields._ViewAssociation.metaclass] = ExtentObject.MetaclassUriPath,
+                    [_FormAndFields._ViewAssociation.view] = extentForm,
+                    [_FormAndFields._ViewAssociation.viewType] = ViewType.Detail
                 }
             );
 
-            var extentListView = factory.create(formAndFields.__DefaultListViewForMetaclass);
+            var extentListView = factory.create(formAndFields.__ViewAssociation);
             extentListView.SetProperties(
                 new Dictionary<string, object>
                 {
-                    [_FormAndFields._DefaultDetailViewForMetaclass.metaclass] = WorkspaceObject.MetaclassUriPath,
-                    [_FormAndFields._DefaultDetailViewForMetaclass.view] = extentForm,
-                    [_FormAndFields._DefaultDetailViewForMetaclass.viewType] = ViewType.List
+                    [_FormAndFields._ViewAssociation.metaclass] = WorkspaceObject.MetaclassUriPath,
+                    [_FormAndFields._ViewAssociation.view] = extentForm,
+                    [_FormAndFields._ViewAssociation.viewType] = ViewType.List
                 }
             );
 

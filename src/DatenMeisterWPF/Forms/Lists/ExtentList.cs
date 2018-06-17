@@ -40,7 +40,7 @@ namespace DatenMeisterWPF.Forms.Lists
             WorkspaceId = workspaceId;
             var viewExtent = App.Scope.Resolve<ViewLogic>().GetViewExtent();
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);
-            var workspace = workspaceExtent.elements().WhenPropertyIs("id", workspaceId).FirstOrDefault() as IElement;
+            var workspace = workspaceExtent.elements().WhenPropertyHasValue("id", workspaceId).FirstOrDefault() as IElement;
 
             var extents = workspace?.get("extents") as IReflectiveSequence;
             SetContent(

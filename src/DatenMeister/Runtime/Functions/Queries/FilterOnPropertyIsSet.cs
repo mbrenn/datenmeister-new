@@ -9,11 +9,11 @@ namespace DatenMeister.Runtime.Functions.Queries
     /// <summary>
     /// Performs a filtering on all properties
     /// </summary>
-    public class FilterOnPropertySet : ProxyReflectiveCollection
+    public class FilterOnPropertyIsSet : ProxyReflectiveCollection
     {
         private readonly string _property;
 
-        public FilterOnPropertySet(IReflectiveCollection collection, string property) : base(collection)
+        public FilterOnPropertyIsSet(IReflectiveCollection collection, string property) : base(collection)
         {
             _property = property;
         }
@@ -31,7 +31,7 @@ namespace DatenMeister.Runtime.Functions.Queries
 
         public override int size()
         {
-            return Collection.OfType<IObject>().Where(x => x.isSet(_property));
+            return Collection.OfType<IObject>().Count(x => x.isSet(_property));
         }
     }
 }

@@ -33,11 +33,18 @@ namespace DatenMeister.Runtime.Functions.Queries
             return new FilterOnMetaClass(collection, metaClass);
         }
 
-        public static IReflectiveCollection WhenMetaClassIs(
+        public static IReflectiveCollection WhenMetaClassIsOneOf(
             this IReflectiveCollection collection,
-            params IElement[] metaClass)
+            params IElement[] metaClasses)
         {
-            return new FilterOnMetaClass(collection, metaClass);
+            return new FilterOnMetaClass(collection, metaClasses);
+        }
+
+        public static IReflectiveCollection WhenPropertiyIsSet(
+            this IReflectiveCollection collection,
+            string property)
+        {
+            return new FilterOnPropertySet(collection, property);
         }
 
         public static IReflectiveCollection WhenPropertyIs(

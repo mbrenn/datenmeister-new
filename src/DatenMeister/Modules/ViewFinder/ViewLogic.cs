@@ -109,7 +109,7 @@ namespace DatenMeister.Modules.ViewFinder
 
             return viewExtent.elements()
                 .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member})
-                .WhenMetaClassIs(formAndFields.__Form, formAndFields.__DetailForm, formAndFields.__ListForm );
+                .WhenMetaClassIsOneOf(formAndFields.__Form, formAndFields.__DetailForm, formAndFields.__ListForm);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace DatenMeister.Modules.ViewFinder
             {
                 if (element == null) throw new ArgumentNullException("element != null");
 
-                var innerMetaClass = element.get(_FormAndFields._ViewAssociation.metaclass);
+                var innerMetaClass = element.get(_FormAndFields._ViewAssociation.metaclassName);
                 var innerType = element.get(_FormAndFields._ViewAssociation.viewType).ToString();
 
                 if (innerMetaClass.Equals(metaClassUri) && innerType.Equals(typeAsString))

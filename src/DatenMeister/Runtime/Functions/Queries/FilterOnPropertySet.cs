@@ -31,7 +31,7 @@ namespace DatenMeister.Runtime.Functions.Queries
 
         public override int size()
         {
-            return Collection.OfType<IObject>().Where(x => x.isSet(_property));
+            return Collection.OfType<IObject>().Count(x => x.isSet(_property));
         }
     }
 }

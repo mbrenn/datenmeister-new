@@ -86,26 +86,22 @@ namespace DatenMeister.Runtime.Proxies
         {
             PublicizeElementFunc = x =>
             {
-                var asElement = x as IElement;
-                if (asElement != null)
+                if (x is IElement asElement)
                 {
                     return publicizeElement(asElement);
                 }
 
-                var asObject = x as IObject;
-                return asObject != null ? publicizeObject(asObject) : x;
+                return x is IObject asObject ? publicizeObject(asObject) : x;
             };
 
             PrivatizeElementFunc = x =>
             {
-                var asElement = x as TElementType;
-                if (asElement != null)
+                if (x is TElementType asElement)
                 {
                     return privatizeElement(asElement);
                 }
 
-                var asObject = x as TObjectType;
-                return asObject != null ? privatizeObject(asObject) : x;
+                return x is TObjectType asObject ? privatizeObject(asObject) : x;
             };
 
             return this;

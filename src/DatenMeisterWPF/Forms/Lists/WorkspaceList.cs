@@ -24,6 +24,50 @@ namespace DatenMeisterWPF.Forms.Lists
             SetContent();
         }
 
+        protected override IElement RequestForm()
+        {
+            // Finds the view
+            var viewLogic = App.Scope.Resolve<ViewLogic>();
+            var formElement = NamedElementMethods.GetByFullName(
+                viewLogic.GetViewExtent(),
+                ManagementViewDefinitions.PathWorkspaceListView);
+
+            // Adds the buttons
+            AddDefaultButtons();
+            AddRowItemButton("Show Extents", ShowExtents);
+            AddRowItemButton("Delete Workspace", DeleteWorkspace);
+
+
+            void ShowExtents(IObject workspace)
+            {
+                var workspaceId = workspace.get("id")?.ToString();
+                if (workspaceId == null)
+                {
+                    return;
+                }
+
+                var events = NavigatorForExtents.NavigateToExtentList(NavigationHost, workspaceId);
+
+                events.Closed += (x, y) => UpdateContent();
+            }
+
+            void DeleteWorkspace(IObject workspace)
+            {
+                if (MessageBox.Show(
+                        "Are you sure to delete the workspace? All included extents will also be deleted.", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    var workspaceId = workspace.get("id").ToString();
+
+                    var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+                    workspaceLogic.RemoveWorkspace(workspaceId);
+
+                    UpdateContent();
+                }
+            }
+
+            return formElement;
+        }
+
         /// <summary>
         /// Shows the workspaces of the DatenMeister
         /// </summary>

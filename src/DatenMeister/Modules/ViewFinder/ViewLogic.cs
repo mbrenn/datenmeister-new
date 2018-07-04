@@ -127,7 +127,7 @@ namespace DatenMeister.Modules.ViewFinder
                 return null;
             }
 
-            return FindViewFor(type, null, UmlNameResolution.GetName(metaClass), metaClass);
+            return FindViewFor(type, null, NamedElementMethods.GetFullName(metaClass), metaClass);
         }
 
         /// <summary>

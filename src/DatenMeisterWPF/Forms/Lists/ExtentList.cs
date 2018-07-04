@@ -31,6 +31,31 @@ namespace DatenMeisterWPF.Forms.Lists
 
         public string WorkspaceId { get; set; }
 
+        protected override IElement RequestForm()
+        {
+            var viewExtent = App.Scope.Resolve<ViewLogic>().GetViewExtent();
+            var result = 
+                NamedElementMethods.GetByFullName(
+                    viewExtent, 
+                    ManagementViewDefinitions.PathExtentListView);
+            AddDefaultButtons();
+            AddRowItemButton("Show Items", ShowItems);
+
+
+            void ShowItems(IObject extentElement)
+            {
+                var uri = extentElement.get("uri").ToString();
+
+                var events = NavigatorForItems.NavigateToItemsInExtent(
+                    NavigationHost,
+                    WorkspaceId,
+                    uri);
+                events.Closed += (x, y) => UpdateContent();
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Shows the workspaces of the DatenMeister
         /// </summary>

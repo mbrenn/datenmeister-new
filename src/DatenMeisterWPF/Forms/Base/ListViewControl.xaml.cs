@@ -73,7 +73,8 @@ namespace DatenMeisterWPF.Forms.Base
         }
         
         /// <summary>
-        /// Gets or sets the host for the navigation
+        /// Gets or sets the host for the list view item. The navigation
+        /// host is used to set the ribbons and other navigational things
         /// </summary>
         public INavigationHost NavigationHost { get; set; }
 
@@ -81,23 +82,23 @@ namespace DatenMeisterWPF.Forms.Base
         /// Gets or sets the items to be shown. These items are shown also in the navigation view and will
         /// not be modified, even if the user clicks on the navigation tree. 
         /// </summary>
-        public IReflectiveCollection Items { get; set; }
+        protected IReflectiveCollection Items { get; set; }
 
         /// <summary>
         /// Gets or sets the items to be shown in the detail view. Usually, they are the same as the items.
         /// If the user clicks on the navigation tree, a subview of the items may be shown
         /// </summary>
-        private IReflectiveCollection DetailItems { get; set; }
+        protected IReflectiveCollection DetailItems { get; set; }
 
         /// <summary>
         /// Gets or sets the form definition that is actually used for the current view
         /// </summary>
-        public IElement ActualFormDefinition { get; set; }
+        protected IElement ActualFormDefinition { get; set; }
 
         /// <summary>
         /// Gets or sets the view Definition mode
         /// </summary>
-        public ViewDefinition ViewDefinition { get; set; }
+        protected ViewDefinition ViewDefinition { get; set; }
         
         private readonly IDictionary<ExpandoObject, IObject> _itemMapping = new Dictionary<ExpandoObject, IObject>();
 
@@ -161,7 +162,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// This method gets called, when a new item is added or an existing item was modified. 
         /// Derivation of the class which have automatic creation of columns may include additional columns.
-        /// It loads the current view definition
+        /// It loads the current view definition.
         /// </summary>
         private void RefreshViewDefinition()
         {
@@ -213,7 +214,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// Defines the virtual method that is used to collect all possible views which can be selected by the user
         /// </summary>
         /// <returns>Found enumeration of view or null, if the class does not support the collection of views</returns>
-        public virtual IEnumerable<IElement> GetFormsForView()
+        protected virtual IEnumerable<IElement> GetFormsForView()
         {
             return null;
         }
@@ -224,7 +225,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <param name="element">Element being queried</param>
         /// <param name="field">Field being used for query</param>
         /// <returns>Returned element for the </returns>
-        public object GetValueOfElement(IObject element, IElement field)
+        private object GetValueOfElement(IObject element, IElement field)
         {
             var fieldType = field.get(_FormAndFields._FieldData.fieldType).ToString();
             if (fieldType == MetaClassElementFieldData.FieldType)
@@ -240,7 +241,21 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
-        /// Updates the content of the list by recreating the columns
+        /// Requests the form for the currently selected element.
+        /// Per default, the form is created out of auto-generated columns depending on elements
+        /// </summary>
+        /// <returns></returns>
+        protected virtual IElement RequestForm()
+        {
+            var viewFinder = App.Scope.Resolve<IViewFinder>();
+            return viewFinder.CreateView(DetailItems);
+        }
+
+        /// <summary>
+        /// Updates the content of the list by recreating the columns and rows
+        /// of the items.
+        /// This method is called, when the used clicks on the left side or
+        /// an additional item was created/edited or removed. 
         /// </summary>
         public void UpdateContent()
         {
@@ -405,7 +420,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Updates the columns for the fields and returns the names and fields
         /// </summary>
-        /// <returns>The tuple containing the names being used for the column and the fields being used.</returns>
+        /// <returns>The tuple containing the names being used for the column
+        /// and the fields being used.</returns>
         private (List<string> names, IReflectiveCollection fields) UpdateColumnDefinitions()
         {
             if (!(ActualFormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
@@ -464,17 +480,6 @@ namespace DatenMeisterWPF.Forms.Base
             AddRowItemButton("Edit", OpenSelectedElement, ButtonPosition.Before);
         }
 
-        private void OpenSelectedElement(IObject selectedElement)
-        {
-            if (selectedElement == null)
-            {
-                return;
-            }
-
-            var events = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
-            events.Closed += (sender, args) => UpdateContent();
-        }
-
         /// <summary>
         /// Adds a button to the view
         /// </summary>
@@ -486,7 +491,7 @@ namespace DatenMeisterWPF.Forms.Base
             var button = new ViewButton
             {
                 Content = name
-               
+
             };
 
             button.Pressed += (x, y) => { onPressed(); };
@@ -518,33 +523,6 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
-        /// Defines the possible position of the row button compared to the data
-        /// </summary>
-        public enum ButtonPosition
-        {
-            Before,
-            After
-        }
-
-        /// <summary>
-        /// Adds a button for a row item
-        /// </summary>
-        /// <param name="name">Name of the button</param>
-        /// <param name="pressed">Called, if the is button pressed</param>
-        /// <param name="position">Position of the button to be used</param>
-        public void AddRowItemButton(string name, Action<IObject> pressed, ButtonPosition position = ButtonPosition.After)
-        {
-            var definition = new RowItemButtonDefinition
-            {
-                Name = name,
-                Pressed = pressed,
-                Position = position
-            };
-
-            AddRowItemButton(definition);
-        }
-
-        /// <summary>
         /// Adds a button for a row item
         /// </summary>
         /// <param name="definition">Definition for the button</param>
@@ -573,6 +551,44 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 DataGrid.Columns.Add(dataColumn);
             }
+        }
+
+        private void OpenSelectedElement(IObject selectedElement)
+        {
+            if (selectedElement == null)
+            {
+                return;
+            }
+
+            var events = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
+            events.Closed += (sender, args) => UpdateContent();
+        }
+
+        /// <summary>
+        /// Defines the possible position of the row button compared to the data
+        /// </summary>
+        public enum ButtonPosition
+        {
+            Before,
+            After
+        }
+
+        /// <summary>
+        /// Adds a button for a row item
+        /// </summary>
+        /// <param name="name">Name of the button</param>
+        /// <param name="pressed">Called, if the is button pressed</param>
+        /// <param name="position">Position of the button to be used</param>
+        public void AddRowItemButton(string name, Action<IObject> pressed, ButtonPosition position = ButtonPosition.After)
+        {
+            var definition = new RowItemButtonDefinition
+            {
+                Name = name,
+                Pressed = pressed,
+                Position = position
+            };
+
+            AddRowItemButton(definition);
         }
 
         /// <summary>
@@ -611,7 +627,12 @@ namespace DatenMeisterWPF.Forms.Base
             var column = (ClickedTemplateColumn) ((DataGridCell) contentPresenter.Parent).Column;
             return (foundItem, column);
         }
-        
+        /// <summary>
+        /// Called, when a rown button is initialized.
+        /// The method is called, when a row is created.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RowButton_OnInitialized(object sender, RoutedEventArgs e)
         {
             var (selectedItem, column) = GetObjectsFromEventRouting(e);
@@ -619,6 +640,7 @@ namespace DatenMeisterWPF.Forms.Base
 
             if (selectedItem == null)
             {
+                // It is a 'new item'-row which does not need a button
                 button.Visibility = Visibility.Hidden;
             }
             else

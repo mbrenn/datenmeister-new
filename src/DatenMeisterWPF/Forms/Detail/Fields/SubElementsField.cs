@@ -82,7 +82,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     "Edit",
                     item => NavigatorForItems.NavigateToElementDetailView(detailForm.NavigationHost, item),
                     ListViewControl.ButtonPosition.Before);
-                listViewControl.SetContent(valueOfElement, form);
+                listViewControl.SetFormDefinition(form);
+                listViewControl.SetContent(valueOfElement);
                 panel.Children.Add(listViewControl);
             }
 

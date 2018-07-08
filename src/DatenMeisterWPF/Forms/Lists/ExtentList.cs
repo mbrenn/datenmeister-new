@@ -63,28 +63,11 @@ namespace DatenMeisterWPF.Forms.Lists
         public void SetContent(string workspaceId)
         {
             WorkspaceId = workspaceId;
-            var viewExtent = App.Scope.Resolve<ViewLogic>().GetViewExtent();
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);
             var workspace = workspaceExtent.elements().WhenPropertyHasValue("id", workspaceId).FirstOrDefault() as IElement;
 
             var extents = workspace?.get("extents") as IReflectiveSequence;
-            SetContent(
-                extents, 
-                NamedElementMethods.GetByFullName(viewExtent, ManagementViewDefinitions.PathExtentListView));
-
-            AddDefaultButtons();
-            AddRowItemButton("Show Items", ShowItems);
-            
-            void ShowItems(IObject extentElement)
-            {
-                var uri = extentElement.get("uri").ToString();
-
-                var events = NavigatorForItems.NavigateToItemsInExtent(
-                    NavigationHost,
-                    workspaceId,
-                    uri);
-                events.Closed += (x, y) => UpdateContent();
-            }
+            SetContent(extents);
         }
 
         /// <summary>

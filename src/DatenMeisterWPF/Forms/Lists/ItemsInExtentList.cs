@@ -11,6 +11,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
@@ -47,6 +48,7 @@ namespace DatenMeisterWPF.Forms.Lists
         protected override IElement RequestForm()
         {
             var viewFinder = App.Scope.Resolve<IViewFinder>();
+            IElement result = null;
 
             if (Items == DetailItems)
             {
@@ -56,7 +58,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     if (Items == DetailItems)
                     {
                         // Finds the view by the extent type
-                        ActualFormDefinition = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
+                        result = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
                     }
                     else
                     {
@@ -66,53 +68,31 @@ namespace DatenMeisterWPF.Forms.Lists
 
                 // Creates the view by creating the 'all Properties' view by parsing all the items
                 if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties
-                    || (ViewDefinition.Mode == ViewDefinitionMode.Default && ActualFormDefinition == null))
+                    || (ViewDefinition.Mode == ViewDefinitionMode.Default && result == null))
                 {
-                    ActualFormDefinition = viewFinder.CreateView(DetailItems);
+                    result = viewFinder.CreateView(DetailItems);
                 }
 
                 // Used, when an external function requires a specific view mode
                 if (ViewDefinition.Mode == ViewDefinitionMode.Specific)
                 {
-                    ActualFormDefinition = ViewDefinition.Element;
+                    result = ViewDefinition.Element;
                 }
             }
             else
             {
                 // User has selected a sub element. 
-                ActualFormDefinition =
+                result =
                     viewFinder.FindListViewFor((DetailItems as MofReflectiveSequence)?.MofObject);
 
-                if (ActualFormDefinition == null)
+                if (result == null)
                 {
-                    ActualFormDefinition = viewFinder.CreateView(DetailItems);
+                    result = viewFinder.CreateView(DetailItems);
                 }
             }
 
-            return ActualFormDefinition;
-        }
-
-        /// <summary>
-        /// Sets the items of the given extent
-        /// </summary>
-        /// <param name="workspaceId">Id of the workspace</param>
-        /// <param name="extentUrl">Url of the extent to be used</param>
-        public void SetContent(string workspaceId, string extentUrl)
-        {
-            WorkspaceId = workspaceId;
-            ExtentUrl = extentUrl;
-            var workLogic = App.Scope.Resolve<IWorkspaceLogic>();
-            workLogic.FindExtentAndWorkspace(workspaceId, extentUrl, out var workspace, out _extent);
-            if (_extent == null)
-            {
-                MessageBox.Show("The given workspace and extent was not found.");
-                return;
-            }
-
-            SetContent(_extent.elements(), null);
-
-            // First, sets the first buttons upon the priorities
-            if (ActualFormDefinition?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements) 
+            // Sets the generic buttons to create the new types
+            if (result?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
                 is IReflectiveCollection defaultTypesForNewItems)
             {
                 foreach (var type in defaultTypesForNewItems.OfType<IElement>())
@@ -128,7 +108,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     });
                 }
             }
-
+            
             // Sets the button for the new item
             AddGenericButton("New Item", () =>
             {
@@ -152,9 +132,31 @@ namespace DatenMeisterWPF.Forms.Lists
                         MessageBoxResult.Yes)
                     {
                         _extent.elements().remove(item);
-                        SetContent(_extent.elements(), null);
+                        SetContent(_extent.elements());
                     }
                 });
+
+            return result;
+        }
+
+        /// <summary>
+        /// Sets the items of the given extent
+        /// </summary>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="extentUrl">Url of the extent to be used</param>
+        public void SetContent(string workspaceId, string extentUrl)
+        {
+            WorkspaceId = workspaceId;
+            ExtentUrl = extentUrl;
+            var workLogic = App.Scope.Resolve<IWorkspaceLogic>();
+            workLogic.FindExtentAndWorkspace(workspaceId, extentUrl, out var workspace, out _extent);
+            if (_extent == null)
+            {
+                MessageBox.Show("The given workspace and extent was not found.");
+                return;
+            }
+
+            SetContent(_extent.elements());
         }
 
         /// <summary>

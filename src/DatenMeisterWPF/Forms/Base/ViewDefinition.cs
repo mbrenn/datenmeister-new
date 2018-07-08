@@ -7,7 +7,7 @@ namespace DatenMeisterWPF.Forms.Base
     /// Defines the class for a view in list
     /// </summary>
     public class ViewDefinition
-    {
+    { 
         /// <summary>
         /// Gets or sets the type
         /// </summary>
@@ -34,6 +34,10 @@ namespace DatenMeisterWPF.Forms.Base
             Name = name;
             Element = element;
             Mode = mode;
+        }
+
+        public ViewDefinition(ViewDefinitionMode mode) : this (null, null, mode)
+        {   
         }
 
         /// <summary>

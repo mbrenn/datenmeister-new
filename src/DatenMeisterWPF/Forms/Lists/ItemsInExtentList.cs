@@ -47,49 +47,7 @@ namespace DatenMeisterWPF.Forms.Lists
 
         protected override IElement RequestForm()
         {
-            var viewFinder = App.Scope.Resolve<IViewFinder>();
-            IElement result = null;
-
-            if (Items == DetailItems)
-            {
-                // Uses the default view. 
-                if (ViewDefinition.Mode == ViewDefinitionMode.Default)
-                {
-                    if (Items == DetailItems)
-                    {
-                        // Finds the view by the extent type
-                        result = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
-                    }
-                    else
-                    {
-                        //ActualFormDefinition = viewFinder.FindView(DetailItems as IReflectiveCollection);
-                    }
-                }
-
-                // Creates the view by creating the 'all Properties' view by parsing all the items
-                if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties
-                    || (ViewDefinition.Mode == ViewDefinitionMode.Default && result == null))
-                {
-                    result = viewFinder.CreateView(DetailItems);
-                }
-
-                // Used, when an external function requires a specific view mode
-                if (ViewDefinition.Mode == ViewDefinitionMode.Specific)
-                {
-                    result = ViewDefinition.Element;
-                }
-            }
-            else
-            {
-                // User has selected a sub element. 
-                result =
-                    viewFinder.FindListViewFor((DetailItems as MofReflectiveSequence)?.MofObject);
-
-                if (result == null)
-                {
-                    result = viewFinder.CreateView(DetailItems);
-                }
-            }
+            var result = GetActualView();
 
             // Sets the generic buttons to create the new types
             if (result?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
@@ -135,6 +93,55 @@ namespace DatenMeisterWPF.Forms.Lists
                         SetContent(_extent.elements());
                     }
                 });
+
+            return result;
+        }
+
+        private IElement GetActualView()
+        {
+            var viewFinder = App.Scope.Resolve<IViewFinder>();
+            IElement result = null;
+
+            if (Items == DetailItems)
+            {
+                // Uses the default view. 
+                if (ViewDefinition.Mode == ViewDefinitionMode.Default)
+                {
+                    if (Items == DetailItems)
+                    {
+                        // Finds the view by the extent type
+                        result = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
+                    }
+                    else
+                    {
+                        //ActualFormDefinition = viewFinder.FindView(DetailItems as IReflectiveCollection);
+                    }
+                }
+
+                // Creates the view by creating the 'all Properties' view by parsing all the items
+                if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties
+                    || (ViewDefinition.Mode == ViewDefinitionMode.Default && result == null))
+                {
+                    result = viewFinder.CreateView(DetailItems);
+                }
+
+                // Used, when an external function requires a specific view mode
+                if (ViewDefinition.Mode == ViewDefinitionMode.Specific)
+                {
+                    result = ViewDefinition.Element;
+                }
+            }
+            else
+            {
+                // User has selected a sub element. 
+                result =
+                    viewFinder.FindListViewFor((DetailItems as MofReflectiveSequence)?.MofObject);
+
+                if (result == null)
+                {
+                    result = viewFinder.CreateView(DetailItems);
+                }
+            }
 
             return result;
         }

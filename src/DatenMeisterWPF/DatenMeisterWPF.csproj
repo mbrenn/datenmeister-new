@@ -102,6 +102,7 @@
     <Compile Include="Forms\Detail\Fields\TextboxField.cs" />
     <Compile Include="Forms\Lists\ExtentList.cs" />
     <Compile Include="Forms\Lists\ItemsInExtentList.cs" />
+    <Compile Include="Forms\Lists\ListRequests.cs" />
     <Compile Include="Helper\ComboBoxEx.cs" />
     <Compile Include="INavigationGuest.cs" />
     <Compile Include="INavigationHost.cs" />

@@ -45,7 +45,7 @@ namespace DatenMeister.SourceGeneration.Console
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
                 {
-                    ExtentUrl = "dm:///DatenMeister/Types/ManagementProvider",
+                    ExtentUrl = WorkspaceNames.UriInternalTypes,
                     Name = "ManagementProvider",
                     Path = "./",
                     Namespace = "DatenMeister.Provider.ManagementProviders.Model",

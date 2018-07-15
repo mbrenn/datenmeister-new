@@ -29,31 +29,17 @@ namespace DatenMeisterWPF.Forms.Lists
             SetContent(WorkspaceId);
         }
 
+        /// <summary>
+        /// Gets or sets the id to be shown in the workspace
+        /// </summary>
         public string WorkspaceId { get; set; }
 
         protected override IElement RequestFormOverride(IElement selectedForm)
         {
-            var viewExtent = App.Scope.Resolve<ViewLogic>().GetViewExtent();
-            var result = 
-                NamedElementMethods.GetByFullName(
-                    viewExtent, 
-                    ManagementViewDefinitions.PathExtentListView);
-            AddDefaultButtons();
-            AddRowItemButton("Show Items", ShowItems);
+            var workspaceId = WorkspaceId;
+            var listViewControl = this;
 
-
-            void ShowItems(IObject extentElement)
-            {
-                var uri = extentElement.get("uri").ToString();
-
-                var events = NavigatorForItems.NavigateToItemsInExtent(
-                    NavigationHost,
-                    WorkspaceId,
-                    uri);
-                events.Closed += (x, y) => UpdateContent();
-            }
-
-            return result;
+            return ListRequests.RequestFormForExtents(listViewControl, workspaceId);
         }
 
         /// <summary>

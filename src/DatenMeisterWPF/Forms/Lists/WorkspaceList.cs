@@ -26,45 +26,17 @@ namespace DatenMeisterWPF.Forms.Lists
 
         protected override IElement RequestFormOverride(IElement selectedForm)
         {
-            // Finds the view
-            var viewLogic = App.Scope.Resolve<ViewLogic>();
-            var formElement = NamedElementMethods.GetByFullName(
-                viewLogic.GetViewExtent(),
-                ManagementViewDefinitions.PathWorkspaceListView);
-
-            // Adds the buttons
-            AddDefaultButtons();
-            AddRowItemButton("Show Extents", ShowExtents);
-            AddRowItemButton("Delete Workspace", DeleteWorkspace);
-
-            void ShowExtents(IObject workspace)
+            var selectedItemMetaClass = (DetailItem as IElement)?.getMetaClass();
+            if (selectedItemMetaClass != null
+                && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
             {
-                var workspaceId = workspace.get("id")?.ToString();
-                if (workspaceId == null)
-                {
-                    return;
-                }
-
-                var events = NavigatorForExtents.NavigateToExtentList(NavigationHost, workspaceId);
-
-                events.Closed += (x, y) => UpdateContent();
+                return ListRequests.RequestFormForExtents(this, DetailItem.get("id")?.ToString());
             }
-
-            void DeleteWorkspace(IObject workspace)
+            else
             {
-                if (MessageBox.Show(
-                        "Are you sure to delete the workspace? All included extents will also be deleted.", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    var workspaceId = workspace.get("id").ToString();
 
-                    var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
-                    workspaceLogic.RemoveWorkspace(workspaceId);
-
-                    UpdateContent();
-                }
+                return ListRequests.RequestFormForWorkspaces(this);
             }
-
-            return formElement;
         }
 
         /// <summary>

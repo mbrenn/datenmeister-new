@@ -83,6 +83,11 @@ namespace DatenMeisterWPF.Forms.Base
         /// not be modified, even if the user clicks on the navigation tree. 
         /// </summary>
         protected IReflectiveCollection Items { get; set; }
+        
+        /// <summary>
+        /// Defines the item that the user currently has selected ont the object tree
+        /// </summary>
+        protected IObject DetailItem { get; set; }
 
         /// <summary>
         /// Gets or sets the items to be shown in the detail view. Usually, they are the same as the items.
@@ -791,6 +796,7 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void NavigationTreeView_OnItemSelected(object sender, ItemEventArgs e)
         {
+            DetailItem = e.Item;
             if (e.Item != null)
             {
                 DetailItems = new PropertiesAsReflectiveCollection(e.Item);

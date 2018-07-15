@@ -27,7 +27,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         }
 
         public _Extent @Extent = new _Extent();
-        public IElement @__Extent = new MofObjectShadow("dm:///DatenMeister/Types/ManagementProvider#DatenMeister.Provider.ManagementProviders.Model.Extent");
+        public IElement @__Extent = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.Extent");
 
         public class _Workspace
         {
@@ -40,7 +40,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         }
 
         public _Workspace @Workspace = new _Workspace();
-        public IElement @__Workspace = new MofObjectShadow("dm:///DatenMeister/Types/ManagementProvider#DatenMeister.Provider.ManagementProviders.Model.Workspace");
+        public IElement @__Workspace = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.Workspace");
 
         public static _ManagementProvider TheOne = new _ManagementProvider();
 

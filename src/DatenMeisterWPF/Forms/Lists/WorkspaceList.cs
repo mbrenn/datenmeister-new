@@ -24,7 +24,7 @@ namespace DatenMeisterWPF.Forms.Lists
             SetContent();
         }
 
-        protected override IElement RequestForm()
+        protected override IElement RequestFormOverride(IElement selectedForm)
         {
             // Finds the view
             var viewLogic = App.Scope.Resolve<ViewLogic>();

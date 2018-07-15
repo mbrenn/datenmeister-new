@@ -45,12 +45,29 @@ namespace DatenMeisterWPF.Forms.Lists
             return App.Scope.Resolve<IViewFinder>().FindViews((Items as IHasExtent)?.Extent as IUriExtent, null);
         }
 
-        protected override IElement RequestForm()
+        protected override IElement RequestFormOverride(IElement selectedForm)
         {
-            var result = GetActualView();
+            var viewFinder = App.Scope.Resolve<IViewFinder>();
+            
+            if (selectedForm == null)
+            {
+                // Nobody selected a form, so we can autocreate a new form
+                if (Items == DetailItems)
+                {
+                    // Finds the view by the extent type
+                    selectedForm = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
+
+                }
+                else
+                {
+                    // User has selected a sub element. 
+                    selectedForm =
+                        viewFinder.FindListViewFor((DetailItems as MofReflectiveSequence)?.MofObject);
+                }
+            }
 
             // Sets the generic buttons to create the new types
-            if (result?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
+            if (selectedForm?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
                 is IReflectiveCollection defaultTypesForNewItems)
             {
                 foreach (var type in defaultTypesForNewItems.OfType<IElement>())
@@ -94,56 +111,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     }
                 });
 
-            return result;
-        }
-
-        private IElement GetActualView()
-        {
-            var viewFinder = App.Scope.Resolve<IViewFinder>();
-            IElement result = null;
-
-            if (Items == DetailItems)
-            {
-                // Uses the default view. 
-                if (ViewDefinition.Mode == ViewDefinitionMode.Default)
-                {
-                    if (Items == DetailItems)
-                    {
-                        // Finds the view by the extent type
-                        result = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
-                    }
-                    else
-                    {
-                        //ActualFormDefinition = viewFinder.FindView(DetailItems as IReflectiveCollection);
-                    }
-                }
-
-                // Creates the view by creating the 'all Properties' view by parsing all the items
-                if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties
-                    || (ViewDefinition.Mode == ViewDefinitionMode.Default && result == null))
-                {
-                    result = viewFinder.CreateView(DetailItems);
-                }
-
-                // Used, when an external function requires a specific view mode
-                if (ViewDefinition.Mode == ViewDefinitionMode.Specific)
-                {
-                    result = ViewDefinition.Element;
-                }
-            }
-            else
-            {
-                // User has selected a sub element. 
-                result =
-                    viewFinder.FindListViewFor((DetailItems as MofReflectiveSequence)?.MofObject);
-
-                if (result == null)
-                {
-                    result = viewFinder.CreateView(DetailItems);
-                }
-            }
-
-            return result;
+            return selectedForm;
         }
 
         /// <summary>

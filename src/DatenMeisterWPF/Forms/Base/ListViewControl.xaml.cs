@@ -160,53 +160,42 @@ namespace DatenMeisterWPF.Forms.Base
         /// the derived classes will be asked to create or update the current view
         /// </summary>
         /// <returns></returns>
-        protected IElement GetActualView()
+        private IElement GetActualView()
         {
+            RemoveViewButtons();
             var viewFinder = App.Scope.Resolve<IViewFinder>();
             IElement result = null;
 
-            if (Items == DetailItems)
+            switch (ViewDefinition.Mode)
             {
-                // Uses the default view. 
-                if (ViewDefinition.Mode == ViewDefinitionMode.Default)
-                {
-                    if (Items == DetailItems)
-                    {
-                        // Finds the view by the extent type
-                        result = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
-                    }
-                    else
-                    {
-                        //ActualFormDefinition = viewFinder.FindView(DetailItems as IReflectiveCollection);
-                    }
-                }
-
-                // Creates the view by creating the 'all Properties' view by parsing all the items
-                if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties
-                    || (ViewDefinition.Mode == ViewDefinitionMode.Default && result == null))
-                {
-                    result = viewFinder.CreateView(DetailItems);
-                }
-
                 // Used, when an external function requires a specific view mode
-                if (ViewDefinition.Mode == ViewDefinitionMode.Specific)
-                {
+                case ViewDefinitionMode.Specific:
                     result = ViewDefinition.Element;
-                }
-            }
-            else
-            {
-                // User has selected a sub element. 
-                result =
-                    viewFinder.FindListViewFor((DetailItems as MofReflectiveSequence)?.MofObject);
-
-                if (result == null)
-                {
+                    break;
+                // Creates the view by creating the 'all Properties' view by parsing all the items
+                case ViewDefinitionMode.AllProperties:
+                case ViewDefinitionMode.Default:
                     result = viewFinder.CreateView(DetailItems);
-                }
+                    break;
             }
 
+            // Give the derived class a chance to update the view according to its own
+            // interests
+            result = RequestFormOverride(result);
+
+            if (result == null)
+            {
+                // Nothing was found... so, create your default list lsit. 
+                result = viewFinder.CreateView(DetailItems);
+            }
+            
             return result;
+        }
+
+        private void RemoveViewButtons()
+        {
+            ButtonBar.Children.Clear();
+            _rowItemButtonDefinitions.Clear();
         }
 
         private void UpdateTreeContent()
@@ -252,11 +241,9 @@ namespace DatenMeisterWPF.Forms.Base
         /// Per default, the form is created out of auto-generated columns depending on elements
         /// </summary>
         /// <returns></returns>
-        protected virtual IElement RequestForm()
+        protected virtual IElement RequestFormOverride(IElement selectedForm)
         {
-            var viewFinder = App.Scope.Resolve<IViewFinder>();
-            return viewFinder.CreateView(DetailItems);
-        }
+            return selectedForm;        }
 
         /// <summary>
         /// This method gets called to update the views
@@ -308,7 +295,7 @@ namespace DatenMeisterWPF.Forms.Base
                 throw new InvalidOperationException("NOT ALLOWED");
             }
 
-            CurrentFormDefinition = RequestForm();
+            CurrentFormDefinition = GetActualView();
 
             SupportNewItems =
                 !DotNetHelper.AsBoolean(CurrentFormDefinition.getOrDefault(_FormAndFields._Form.inhibitNewItems));

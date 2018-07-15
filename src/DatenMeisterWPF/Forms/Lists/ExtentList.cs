@@ -31,7 +31,7 @@ namespace DatenMeisterWPF.Forms.Lists
 
         public string WorkspaceId { get; set; }
 
-        protected override IElement RequestForm()
+        protected override IElement RequestFormOverride(IElement selectedForm)
         {
             var viewExtent = App.Scope.Resolve<ViewLogic>().GetViewExtent();
             var result = 

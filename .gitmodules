@@ -1,3 +1,6 @@
 [submodule "modules/burnsystems.wpf"]
 	path = modules/burnsystems.wpf
 	url = https://github.com/mbrenn/burnsystems.wpf.git
+[submodule "modules/DatenMeister.Icons"]
+	path = modules/DatenMeister.Icons
+	url = ssh://mbrenn@ratte-ubuntu/~/git/DatenMeister.Icons

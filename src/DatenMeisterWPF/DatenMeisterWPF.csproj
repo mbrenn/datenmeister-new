@@ -257,6 +257,10 @@
       <Project>{f052ce44-4f75-4a9a-b0f2-af7be3b880c2}</Project>
       <Name>BurnSystems.WPF</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\modules\DatenMeister.Icons\src\DatenMeister.Icons\DatenMeister.Icons.csproj">
+      <Project>{c2bc0e95-4d38-4584-b6a0-b08dec6de504}</Project>
+      <Name>DatenMeister.Icons</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj">
       <Project>{9026f9a3-c366-43da-abad-8cc94a3e793f}</Project>
       <Name>DatenMeister.Excel</Name>

@@ -177,7 +177,7 @@ namespace DatenMeister.Modules.ViewFinder
             var viewExtent = GetViewExtent();
             var formAndFields = GetFormAndFieldInstance(viewExtent);
 
-            var foundPoints = -1;
+            var foundPoints = 0;
             IElement foundView = null;
 
             foreach (

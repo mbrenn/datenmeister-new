@@ -26,7 +26,6 @@ namespace DatenMeisterWPF.Forms.Base
     /// </summary>
     public partial class DetailFormControl : UserControl, INavigationGuest
     {
-
         /// <summary>
         /// Gets the detailled element, whose content is shown in the dialog
         /// </summary>
@@ -118,6 +117,23 @@ namespace DatenMeisterWPF.Forms.Base
 
             UpdateViewList();
             UpdateContent();
+        }
+
+        /// <summary>
+        /// Sets the form being used for the detail element. 
+        /// </summary>
+        /// <param name="form">Form to be set</param>
+        public void SetForm(IElement form)
+        {
+            ViewDefinition = new ViewDefinition(
+                NamedElementMethods.GetFullName(form),
+                form, 
+                ViewDefinitionMode.Specific);
+
+            if (IsInitialized)
+            {
+                UpdateContent();
+            }
         }
 
         /// <summary>

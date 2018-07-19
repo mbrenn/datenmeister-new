@@ -27,9 +27,12 @@ namespace DatenMeisterWPF.Navigation
             return window.NavigateTo(
                 () =>
                 {
-                    var control = new DetailFormControl();
-                    control.DetailElement = element;
-                    control.AllowNewProperties = true;
+                    var control = new DetailFormControl
+                    {
+                        DetailElement = element,
+                        AllowNewProperties = true
+                    };
+
                     control.AddDefaultButtons();
                     return control;
                 },

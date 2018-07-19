@@ -32,7 +32,9 @@ namespace DatenMeisterWPF.Navigation
         {
             var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
             var uri = ExtentOfWorkspaces.WorkspaceUri + "#" + WebUtility.UrlEncode(extentUrl);
-            return NavigatorForItems.NavigateToElementDetailView(navigationHost, workspaceLogic.FindItem(uri));
+            return NavigatorForItems.NavigateToElementDetailView(
+                navigationHost, 
+                workspaceLogic.FindItem(uri));
         }
     }
 }

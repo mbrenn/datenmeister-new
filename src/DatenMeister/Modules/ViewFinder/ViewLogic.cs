@@ -189,9 +189,11 @@ namespace DatenMeister.Modules.ViewFinder
         public IReflectiveCollection GetAllViews()
         {
             var internalViewExtent = GetInternalViewExtent();
+            var userViewExtent = GetUserViewExtent();
             var formAndFields = GetFormAndFieldInstance(internalViewExtent);
 
             return internalViewExtent.elements()
+                    .Union(userViewExtent.elements())
                 .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member})
                 .WhenMetaClassIsOneOf(formAndFields.__Form, formAndFields.__DetailForm, formAndFields.__ListForm);
         }

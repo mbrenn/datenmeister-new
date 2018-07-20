@@ -27,5 +27,19 @@ namespace DatenMeister.Tests.Modules
 
             Assert.That(userViewExtent, Is.Not.Null);
         }
+
+        [Test]
+        public void TestGetAllViews()
+        {
+            var datenMeister = GiveMe.DatenMeister();
+            var viewLogic = datenMeister.Resolve<ViewLogic>();
+            var n = 0;
+            foreach (var view in viewLogic.GetAllViews())
+            {
+                n++;
+            }
+
+            Assert.That(n, Is.GreaterThan(0));
+        }
     }
 }

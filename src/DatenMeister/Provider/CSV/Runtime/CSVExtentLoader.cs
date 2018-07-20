@@ -37,7 +37,7 @@ namespace DatenMeister.Provider.CSV.Runtime
             else if (!createAlsoEmpty)
             {
                 throw new InvalidOperationException(
-                    $"File '{csvConfiguration.Path}' does not exist and empty extents is not given in argument {nameof(createAlsoEmpty)}");
+                    $"File '{csvConfiguration.Path}' does not exist and empty extents is not given in argument {nameof(createAlsoEmpty)}. Real Path: {Path.Combine(Environment.CurrentDirectory, csvConfiguration.Path)}");
             }
 
             return provider;

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 
@@ -17,7 +18,7 @@ namespace DatenMeister.Runtime.Functions.Queries
             _first = first;
             _second = second;
 
-            Values = first.Union(second);
+            Values = Enumerable.Union(first, second);
         }
     }
 }

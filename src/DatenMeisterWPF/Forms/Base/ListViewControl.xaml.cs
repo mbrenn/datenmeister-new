@@ -668,7 +668,7 @@ namespace DatenMeisterWPF.Forms.Base
                 dlg.ShowDialog();
             }
 
-            void ViewConfig()
+            void ShowFormDefinition()
             {
                 var dlg = new ItemXmlViewWindow
                 {
@@ -686,6 +686,18 @@ namespace DatenMeisterWPF.Forms.Base
                 };
 
                 dlg.ShowDialog();
+            }
+
+            void CopyForm()
+            {
+                var viewLogic = App.Scope.Resolve<ViewLogic>();
+                var target = viewLogic.GetUserViewExtent();
+                var copier = new ObjectCopier(new MofFactory(target));
+
+                var copiedForm = copier.Copy(CurrentFormDefinition);
+                target.elements().add(copiedForm);
+
+                NavigatorForItems.NavigateToElementDetailView(NavigationHost, copiedForm);
             }
 
             void ExportToCSV()
@@ -732,9 +744,15 @@ namespace DatenMeisterWPF.Forms.Base
                 NavigationCategories.File + ".Views");
 
             NavigationHost.AddNavigationButton(
-                "View Definition", 
-                ViewConfig, 
+                "Form Definition", 
+                ShowFormDefinition, 
                 null, 
+                NavigationCategories.File + ".Views");
+
+            NavigationHost.AddNavigationButton(
+                "Create Form",
+                CopyForm,
+                null,
                 NavigationCategories.File + ".Views");
 
             NavigationHost.AddNavigationButton(

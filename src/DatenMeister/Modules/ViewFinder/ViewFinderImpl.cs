@@ -133,7 +133,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns>Enumeration of objects</returns>
         public IEnumerable<IElement> FindViews(IUriExtent extent, IObject value)
         {
-            return _viewLogic.GetAllViews().Select(x => x as IElement);
+            return _viewLogic.GetAllForms().Select(x => x as IElement);
         }
     }
 }

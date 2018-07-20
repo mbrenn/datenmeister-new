@@ -34,7 +34,23 @@ namespace DatenMeister.Tests.Modules
             var datenMeister = GiveMe.DatenMeister();
             var viewLogic = datenMeister.Resolve<ViewLogic>();
             var n = 0;
-            foreach (var view in viewLogic.GetAllViews())
+
+            foreach (var _ in viewLogic.GetAllForms())
+            {
+                n++;
+            }
+
+            Assert.That(n, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void TestGetAllViewAssociations()
+        {
+            var datenMeister = GiveMe.DatenMeister();
+            var viewLogic = datenMeister.Resolve<ViewLogic>();
+            var n = 0;
+
+            foreach (var _ in viewLogic.GetAllViewAssociations())
             {
                 n++;
             }

@@ -186,7 +186,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// Gets all forms and returns them as an enumeration
         /// </summary>
         /// <returns>Enumeration of forms</returns>
-        public IReflectiveCollection GetAllViews()
+        public IReflectiveCollection GetAllForms()
         {
             var internalViewExtent = GetInternalViewExtent();
             var userViewExtent = GetUserViewExtent();
@@ -197,6 +197,23 @@ namespace DatenMeister.Modules.ViewFinder
                 .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member})
                 .WhenMetaClassIsOneOf(formAndFields.__Form, formAndFields.__DetailForm, formAndFields.__ListForm);
         }
+
+        /// <summary>
+        /// Gets all view associations and returns them as an enumeration
+        /// </summary>
+        /// <returns>Enumeration of assocations</returns>
+        public IReflectiveCollection GetAllViewAssociations()
+        {
+            var internalViewExtent = GetInternalViewExtent();
+            var userViewExtent = GetUserViewExtent();
+            var formAndFields = GetFormAndFieldInstance(internalViewExtent);
+
+            return internalViewExtent.elements()
+                .Union(userViewExtent.elements())
+                .GetAllDescendants(new[] { _UML._CommonStructure._Namespace.member })
+                .WhenMetaClassIsOneOf(formAndFields.__ViewAssociation);
+        }
+
 
         /// <summary>
         /// Finds the association view for the given element in the detail view
@@ -266,8 +283,7 @@ namespace DatenMeister.Modules.ViewFinder
             IElement foundView = null;
 
             foreach (
-                var element in viewExtent.elements().
-                    WhenMetaClassIs(formAndFields.__ViewAssociation).
+                var element in GetAllViewAssociations().
                     Select(x => x as IElement))
             {
                 var points = 0;

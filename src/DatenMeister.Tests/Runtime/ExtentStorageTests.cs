@@ -30,7 +30,7 @@ namespace DatenMeister.Tests.Runtime
             var configuration = new CSVExtentLoaderConfig
             {
                 Path = CSVExtentTests.PathForTemporaryDataFile,
-                ExtentUri = "dm:///local/",
+                ExtentUri = "datenmeister:///local/",
                 Settings =
                 {
                     HasHeader = false,

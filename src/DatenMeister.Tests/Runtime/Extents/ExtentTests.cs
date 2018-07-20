@@ -55,7 +55,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var loaderConfig = new XmiStorageConfiguration
             {
                 Path = path,
-                ExtentUri = "dm:///data",
+                ExtentUri = "datenmeister:///data",
                 Workspace = WorkspaceNames.NameData
             };
             var integrationSettings = new IntegrationSettings
@@ -85,7 +85,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             using (var dm = GiveMe.DatenMeister(integrationSettings))
             {
                 var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
-                var foundExtent = workspaceLogic.FindExtent("dm:///data");
+                var foundExtent = workspaceLogic.FindExtent("datenmeister:///data");
                 Assert.That(foundExtent, Is.Not.Null);
 
                 Assert.That(foundExtent.get("test"), Is.EqualTo("this is a test"));

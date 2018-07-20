@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.DotNet
 
             var typeExtent = DotNetExtentTests.Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "dm:///test");
+            var extent = new MofUriExtent(provider, "datenmeister:///test");
             extent.AddMetaExtent(typeExtent);
             var strapper = XmiTests.CreateUmlAndMofInstance(out mof, out uml);
             extent.AddMetaExtent(strapper.UmlInfrastructure);

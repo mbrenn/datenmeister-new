@@ -62,7 +62,7 @@ namespace DatenMeister.Web.Api
                     Encoding = "UTF-8",
                     Columns = new [] { "Id", "Zip", "PositionLong", "PositionLat", "CityName" }.ToList(),
                     // Columns = new object[] { idProperty, zipProperty, positionLongProperty, positionLatProperty, citynameProperty }.ToList(),
-                    MetaclassUri = "dm:///types#DatenMeister.Apps.ZipCode.Model.ZipCode"
+                    MetaclassUri = "datenmeister:///types#DatenMeister.Apps.ZipCode.Model.ZipCode"
                 }
             };
 

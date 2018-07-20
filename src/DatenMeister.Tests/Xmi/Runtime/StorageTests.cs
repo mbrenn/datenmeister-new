@@ -18,7 +18,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
         public void TestXmlStorage()
         {
             var xmlProvider = new XmiProvider();
-            var extent = new MofUriExtent(xmlProvider, "dm:///test/");
+            var extent = new MofUriExtent(xmlProvider, "datenmeister:///test/");
             var factory = new MofFactory(extent);
             var mofObject1 = factory.create(null);
             var mofObject2 = factory.create(null);
@@ -27,7 +27,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
             mofObject2.set("name", "Martina");
             mofObject3.set("name", "Martini");
             
-            Assert.That(extent.contextURI(), Is.EqualTo("dm:///test/"));
+            Assert.That(extent.contextURI(), Is.EqualTo("datenmeister:///test/"));
 
             extent.elements().add(mofObject1);
             extent.elements().add(mofObject2);
@@ -35,16 +35,16 @@ namespace DatenMeister.Tests.Xmi.Runtime
 
             var xmiStorageConfiguration = new XmiStorageConfiguration
             {
-                ExtentUri = "dm:///test/",
+                ExtentUri = "datenmeister:///test/",
                 Path = "data.xml"
             };
 
             var xmiStorage = new XmiStorage();
             xmiStorage.StoreExtent(extent.Provider, xmiStorageConfiguration);
 
-            var otherExtent = new MofUriExtent(xmiStorage.LoadExtent(xmiStorageConfiguration), "dm:///tests/");
+            var otherExtent = new MofUriExtent(xmiStorage.LoadExtent(xmiStorageConfiguration), "datenmeister:///tests/");
             Assert.That(otherExtent.elements().size(), Is.EqualTo(3));
-            Assert.That(otherExtent.contextURI(), Is.EqualTo("dm:///tests/"));
+            Assert.That(otherExtent.contextURI(), Is.EqualTo("datenmeister:///tests/"));
             Assert.That((otherExtent.elements().ElementAt(0) as IObject)?.get("name"), Is.EqualTo("Martin"));
             Assert.That((otherExtent.elements().ElementAt(1) as IObject)?.get("name"), Is.EqualTo("Martina"));
             Assert.That((otherExtent.elements().ElementAt(2) as IObject)?.get("name"), Is.EqualTo("Martini"));
@@ -57,10 +57,10 @@ namespace DatenMeister.Tests.Xmi.Runtime
         {
             const string xmi1 = "<package xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\"><element xmi:id=\"test\" value=\"23\" /></package>";
             const string xmi2 =
-                "<package xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\"><element xmi:id=\"other\" value=\"23\"><sub href=\"dm:///xmi1/#test\" /></element></package>";
+                "<package xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\"><element xmi:id=\"other\" value=\"23\"><sub href=\"datenmeister:///xmi1/#test\" /></element></package>";
 
-            var extent1 = new MofUriExtent(new InMemoryProvider(), "dm:///xmi1/");
-            var extent2 = new MofUriExtent(new InMemoryProvider(), "dm:///xmi2/");
+            var extent1 = new MofUriExtent(new InMemoryProvider(), "datenmeister:///xmi1/");
+            var extent2 = new MofUriExtent(new InMemoryProvider(), "datenmeister:///xmi2/");
 
             var workspace = new Workspace("data");
             var loader = new SimpleLoader(workspace);
@@ -70,7 +70,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
             loader.LoadFromText(new MofFactory(extent2), extent2, xmi2);
 
             // Verify correct addressing
-            var foundElement = extent1.element("dm:///xmi1/#test");
+            var foundElement = extent1.element("datenmeister:///xmi1/#test");
             Assert.That(foundElement, Is.Not.Null);
 
             // Now verify the full href loading

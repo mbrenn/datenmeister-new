@@ -12,12 +12,12 @@ namespace DatenMeister.Runtime
     {
         /// <summary>
         /// Creates a temporary uri for an extent. 
-        /// It starts with 'dm:///temp/' and finishes 
+        /// It starts with 'datenmeister:///temp/' and finishes 
         /// </summary>
         /// <returns>The created uri</returns>
         public static string CreateTemporaryExtentUri()
         {
-            return $"dm:///{Guid.NewGuid()}";
+            return $"datenmeister:///{Guid.NewGuid()}";
         }
         /// <summary>
         ///     Returns an enumeration of all columns that are within the given extent

@@ -21,7 +21,7 @@ namespace DatenMeister.SourceGeneration.Console
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
                 {
-                    ExtentUrl = "dm:///DatenMeister/Types/FormAndFields",
+                    ExtentUrl = "datenmeister:///DatenMeister/Types/FormAndFields",
                     Name = "FormAndFields",
                     Path = "./",
                     Namespace = "DatenMeister.Models.Forms",
@@ -33,7 +33,7 @@ namespace DatenMeister.SourceGeneration.Console
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
                 { 
-                    ExtentUrl = "dm:///DatenMeister/Types/Excel",
+                    ExtentUrl = "datenmeister:///DatenMeister/Types/Excel",
                     Name = "ExcelModels",
                     Path = "./",
                     Namespace = "DatenMeister.Excel",

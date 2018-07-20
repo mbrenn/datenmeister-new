@@ -15,7 +15,7 @@ namespace DatenMeister.Excel
         }
 
         public _Workbook @Workbook = new _Workbook();
-        public IElement @__Workbook = new MofObjectShadow("dm:///DatenMeister/Types/Excel#DatenMeister.Excel.Models.Workbook");
+        public IElement @__Workbook = new MofObjectShadow("datenmeister:///DatenMeister/Types/Excel#DatenMeister.Excel.Models.Workbook");
 
         public class _Table
         {
@@ -28,7 +28,7 @@ namespace DatenMeister.Excel
         }
 
         public _Table @Table = new _Table();
-        public IElement @__Table = new MofObjectShadow("dm:///DatenMeister/Types/Excel#DatenMeister.Excel.Models.Table");
+        public IElement @__Table = new MofObjectShadow("datenmeister:///DatenMeister/Types/Excel#DatenMeister.Excel.Models.Table");
 
         public static _ExcelModels TheOne = new _ExcelModels();
 

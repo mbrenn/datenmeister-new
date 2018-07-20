@@ -23,7 +23,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Defines the uri of the view to the view extents
         /// </summary>
-        public const string UriViewExtent = "dm:///management/views";
+        public const string UriViewExtent = "datenmeister:///management/views";
 
         private readonly IWorkspaceLogic _workspaceLogic;
 

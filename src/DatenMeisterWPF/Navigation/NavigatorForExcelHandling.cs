@@ -31,7 +31,7 @@ namespace DatenMeisterWPF.Navigation
                     var newguid = Guid.NewGuid();
                     var configuration = new XmiStorageConfiguration
                     {
-                        ExtentUri = "dm:///excelimport_" + newguid,
+                        ExtentUri = "datenmeister:///excelimport_" + newguid,
                         Path = newguid + ".xmi",
                         Workspace = workspaceId
                     };

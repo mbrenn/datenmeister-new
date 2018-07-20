@@ -149,7 +149,7 @@ namespace DatenMeister.Provider.ManagementProviders
             form.AddFields(
                 new TextFieldData("uri", "URI")
                 {
-                    defaultValue = "dm:///"
+                    defaultValue = "datenmeister:///"
                 },
                 new TextFieldData("filepath", "Path to Xmi File")
                 {

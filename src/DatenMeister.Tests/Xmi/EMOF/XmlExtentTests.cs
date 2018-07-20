@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
+using System.Reflection;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -15,6 +15,7 @@ using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Tests.CSV;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Xmi.EMOF
@@ -22,6 +23,15 @@ namespace DatenMeister.Tests.Xmi.EMOF
     [TestFixture]
     public class XmlExtentTests
     {
+        /// <summary>
+        /// Gets the path for the temporary datafile
+        /// </summary>
+        public static string PathForTemporaryDataFile =>
+            Path.Combine(
+                // ReSharper disable once AssignNullToNotNullAttribute
+                Path.GetDirectoryName(Assembly.GetAssembly(typeof(CSVExtentTests)).Location),
+                "data.txt");
+
         [Test]
         public void TestXmlMofObject()
         {
@@ -237,9 +247,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var builder = kernel.UseDatenMeister(new IntegrationSettings());
             using (var scope = builder.BeginLifetimeScope())
             {
-                var path = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    $"testing{new Random().Next(0, 100000)}.xml");
+                var path = PathForTemporaryDataFile;
                 if (File.Exists(path))
                 {
                     File.Delete(path);

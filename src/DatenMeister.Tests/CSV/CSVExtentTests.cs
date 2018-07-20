@@ -18,6 +18,7 @@ namespace DatenMeister.Tests.CSV
         /// </summary>
         public static string PathForTemporaryDataFile =>
             Path.Combine(
+                // ReSharper disable once AssignNullToNotNullAttribute
                 Path.GetDirectoryName(Assembly.GetAssembly(typeof(CSVExtentTests)).Location),
                 "data.txt");
 

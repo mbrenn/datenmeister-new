@@ -162,7 +162,7 @@ namespace DatenMeister.Integration
                     (MofUriExtent) localTypeSupport.InternalTypes);
 
                 // Adds the views and their view logic
-                scope.Resolve<ViewLogic>().Integrate();
+                scope.Resolve<ViewLogic>().Integrate(_settings.DatabasePath);
                 scope.Resolve<ManagementViewDefinitions>().AddToViewDefinition();
                 
                 // Includes the extent for the helping extents

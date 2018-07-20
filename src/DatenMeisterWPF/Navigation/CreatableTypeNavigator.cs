@@ -49,7 +49,7 @@ namespace DatenMeisterWPF.Navigation
                         if (workspace?.MetaWorkspaces?.Contains(typeWorkspace) == true)
                         {
                             metaWorkspace = workspaceLogic.GetTypesWorkspace();
-                            metaExtent = metaWorkspace.FindExtent(WorkspaceNames.UriUserTypes);
+                            metaExtent = metaWorkspace.FindExtent(WorkspaceNames.UriUserTypesExtent);
                         }
                         else
                         {
@@ -58,7 +58,7 @@ namespace DatenMeisterWPF.Navigation
                         }
                     }
 
-                    var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetViewExtent());
+                    var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetInternalViewExtent());
                     //var items = extentFunctions.GetCreatableTypes(extent).CreatableTypes;
                     var formPathToType = viewDefinitions.GetFindTypeForm(defaultTypePackage, metaWorkspace, metaExtent);
 

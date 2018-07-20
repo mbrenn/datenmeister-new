@@ -68,7 +68,7 @@ namespace DatenMeister.Modules.TypeSupport
             // Creates the workspace and extent for the types layer which are belonging to the types  
             var extentTypes = new MofUriExtent(
                 new InMemoryProvider(),
-                WorkspaceNames.UriInternalTypes);
+                WorkspaceNames.UriInternalTypesExtent);
             var typeWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
             extentTypes.SetExtentType("Uml.Classes");
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
@@ -92,7 +92,7 @@ namespace DatenMeister.Modules.TypeSupport
         private void CreatesUserTypeExtent(string databasePath)
         {
             // Creates the user types, if not existing
-            var foundExtent = _workspaceLogic.FindExtent(WorkspaceNames.UriUserTypes);
+            var foundExtent = _workspaceLogic.FindExtent(WorkspaceNames.UriUserTypesExtent);
             if (foundExtent == null)
             {
                 var pathUserTypes = Path.Combine(databasePath, "usertypes.xml");
@@ -101,7 +101,7 @@ namespace DatenMeister.Modules.TypeSupport
                 // Creates the extent for user types
                 var storageConfiguration = new XmiStorageConfiguration
                 {
-                    ExtentUri = WorkspaceNames.UriUserTypes,
+                    ExtentUri = WorkspaceNames.UriUserTypesExtent,
                     Path = pathUserTypes,
                     Workspace = WorkspaceNames.NameTypes
                 };
@@ -285,7 +285,7 @@ namespace DatenMeister.Modules.TypeSupport
 
             return workspace.extent
                 .OfType<IUriExtent>()
-                .Where(x => x.contextURI() != WorkspaceNames.UriInternalTypes)
+                .Where(x => x.contextURI() != WorkspaceNames.UriInternalTypesExtent)
                 .ToList();
         }
 
@@ -296,7 +296,7 @@ namespace DatenMeister.Modules.TypeSupport
         /// <returns></returns>
         public static IUriExtent GetInternalTypeExtent(IWorkspace workspace)
         {
-            return workspace.FindExtent(WorkspaceNames.UriInternalTypes);
+            return workspace.FindExtent(WorkspaceNames.UriInternalTypesExtent);
         }
     }
 }

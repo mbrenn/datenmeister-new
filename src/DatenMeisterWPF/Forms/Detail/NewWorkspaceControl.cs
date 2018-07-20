@@ -13,7 +13,7 @@ namespace DatenMeisterWPF.Forms.Detail
         public void SetContent()
         {
             var viewLogic = App.Scope.Resolve<ViewLogic>();
-            var viewExtent = viewLogic.GetViewExtent();
+            var viewExtent = viewLogic.GetInternalViewExtent();
 
             var formElement = NamedElementMethods.GetByFullName(viewExtent, ManagementViewDefinitions.PathNewWorkspaceForm);
 

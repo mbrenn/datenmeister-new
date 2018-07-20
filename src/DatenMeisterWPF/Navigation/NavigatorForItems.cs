@@ -54,7 +54,7 @@ namespace DatenMeisterWPF.Navigation
                 () =>
                 {
                     var newXmiDetailForm = NamedElementMethods.GetByFullName(
-                        viewLogic.GetViewExtent(),
+                        viewLogic.GetInternalViewExtent(),
                         ManagementViewDefinitions.PathNewXmiDetailForm);
 
                     var control = new DetailFormControl();

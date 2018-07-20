@@ -85,7 +85,7 @@ namespace DatenMeister.Modules.ViewFinder
         public IElement CreateView(IReflectiveCollection sequence)
         {
             var form = _formCreator.CreateForm(sequence, FormCreator.CreationMode.All);
-            return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetViewExtent());
+            return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetInternalViewExtent());
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace DatenMeister.Modules.ViewFinder
         public IElement CreateView(IObject element)
         {
             var form = _formCreator.CreateForm(element, FormCreator.CreationMode.All);
-            return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetViewExtent());
+            return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetInternalViewExtent());
         }
 
         /// <inheritdoc />

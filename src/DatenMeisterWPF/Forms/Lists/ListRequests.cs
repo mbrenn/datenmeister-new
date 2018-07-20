@@ -22,7 +22,7 @@ namespace DatenMeisterWPF.Forms.Lists
             // Finds the view
             var viewLogic = App.Scope.Resolve<ViewLogic>();
             var formElement = NamedElementMethods.GetByFullName(
-                viewLogic.GetViewExtent(),
+                viewLogic.GetInternalViewExtent(),
                 ManagementViewDefinitions.PathWorkspaceListView);
 
             // Adds the buttons
@@ -69,7 +69,7 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <returns>The created form</returns>
         internal static IElement RequestFormForExtents(ListViewControl listViewControl, string workspaceId)
         {
-            var viewExtent = App.Scope.Resolve<ViewLogic>().GetViewExtent();
+            var viewExtent = App.Scope.Resolve<ViewLogic>().GetInternalViewExtent();
             var result =
                 NamedElementMethods.GetByFullName(
                     viewExtent,

@@ -17,7 +17,7 @@ namespace DatenMeister.Tests.Uml
             {
                 var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
                 var umlWorkspace = workspaceLogic.GetUmlWorkspace();
-                var umlExtent = umlWorkspace.FindExtent(WorkspaceNames.UriUml);
+                var umlExtent = umlWorkspace.FindExtent(WorkspaceNames.UriUmlExtent);
                 var activityElement = umlExtent.element("http://www.omg.org/spec/UML/20131001#Activity");
                 Assert.That(activityElement, Is.Not.Null);
 

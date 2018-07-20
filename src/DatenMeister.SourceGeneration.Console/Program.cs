@@ -45,7 +45,7 @@ namespace DatenMeister.SourceGeneration.Console
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
                 {
-                    ExtentUrl = WorkspaceNames.UriInternalTypes,
+                    ExtentUrl = WorkspaceNames.UriInternalTypesExtent,
                     Name = "ManagementProvider",
                     Path = "./",
                     Namespace = "DatenMeister.Provider.ManagementProviders.Model",
@@ -77,9 +77,9 @@ namespace DatenMeister.SourceGeneration.Console
 
         private static void CreateSourceForUmlAndMof()
         {
-            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriUml);
-            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriMof);
-            var primitiveTypeExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypes);
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriUmlExtent);
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriMofExtent);
+            var primitiveTypeExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypesExtent);
 
             var loader = new SimpleLoader();
             loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, "data/UML.xmi");

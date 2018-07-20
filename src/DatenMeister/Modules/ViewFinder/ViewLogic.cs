@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -7,7 +9,9 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -23,24 +27,57 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Defines the uri of the view to the view extents
         /// </summary>
-        public const string UriViewExtent = "datenmeister:///management/views";
+        public const string UriInternalViewExtent = "datenmeister:///management/internal/views";
+
+
+        /// <summary>
+        /// Defines the uri of the user views
+        /// </summary>
+        public const string UriUserViewExtent = "datenmeister:///management/internal/user";
 
         private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly IExtentManager _extentManager;
 
-        public ViewLogic(IWorkspaceLogic workspaceLogic)
+        public ViewLogic(IWorkspaceLogic workspaceLogic, IExtentManager extentManager)
         {
             _workspaceLogic = workspaceLogic;
+            _extentManager = extentManager;
         }
 
         /// <summary>
         /// Integrates the the view logic into the workspace. 
         /// </summary>
-        public void Integrate()
+        public void Integrate(string databasePath)
         {
             var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
 
-            var dotNetUriExtent = new MofUriExtent(new InMemoryProvider(), UriViewExtent);
+            var dotNetUriExtent = new MofUriExtent(new InMemoryProvider(), UriInternalViewExtent);
             _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
+
+            // Creates the extent for user views
+            var foundExtent = _workspaceLogic.FindExtent(UriUserViewExtent);
+            if (foundExtent == null)
+            {
+                var pathUserTypes = Path.Combine(databasePath, "userviews.xml");
+
+                Debug.WriteLine("Creates the extent for the views");
+                // Creates the extent for user types
+                var storageConfiguration = new XmiStorageConfiguration
+                {
+                    ExtentUri = UriUserViewExtent,
+                    Path = pathUserTypes,
+                    Workspace = WorkspaceNames.NameManagement
+                };
+
+                foundExtent = _extentManager.LoadExtent(storageConfiguration, true);
+            }
+            else
+            {
+                var numberOfTypes = foundExtent.elements().Count();
+                Debug.WriteLine($"Loaded the extent for user types, containing of {numberOfTypes} types");
+            }
+
+            foundExtent.SetExtentType("DatenMeister.Views");
         }
 
         /// <summary>
@@ -49,7 +86,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="view">View to be added</param>
         public void Add(IObject view)
         {
-            GetViewExtent().elements().add(view);
+            GetInternalViewExtent().elements().add(view);
         }
 
         /// <summary>
@@ -59,9 +96,9 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="id">Id of the element that shall be created</param>
         public void Add(Form form, string id = null)
         {
-            var viewExtent = GetViewExtent();
+            var viewExtent = GetInternalViewExtent();
             var factory = new MofFactory(viewExtent);
-            GetViewExtent().elements().add(factory.createFrom(form, id));
+            GetInternalViewExtent().elements().add(factory.createFrom(form, id));
         }
 
         /// <summary>
@@ -71,16 +108,14 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="id">Id of the element that shall be created</param>
         public void Add(ViewAssociation defaultView, string id = null)
         {
-            var viewExtent = GetViewExtent();
+            var viewExtent = GetInternalViewExtent();
             var factory = new MofFactory(viewExtent);
-            GetViewExtent().elements().add(factory.createFrom(defaultView, id));
+            GetInternalViewExtent().elements().add(factory.createFrom(defaultView, id));
         }
 
-        public IUriExtent GetViewExtent()
+        public IUriExtent GetInternalViewExtent()
         {
-            var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
-
-            var foundExtent = mgmtWorkspace.FindExtent(UriViewExtent);
+            var foundExtent = _workspaceLogic.FindExtent(UriInternalViewExtent) as IUriExtent;
             if (foundExtent == null)
             {
                 throw new InvalidOperationException("The view extent is not found in the management");
@@ -90,13 +125,29 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
         /// <summary>
+        /// Gets the extent of the user
+        /// </summary>
+        /// <returns></returns>
+        public IUriExtent GetUserViewExtent()
+        {
+            var foundExtent = _workspaceLogic.FindExtent(UriInternalViewExtent) as IUriExtent;
+            if (foundExtent == null)
+            {
+                throw new InvalidOperationException("The view extent is not found in the management");
+            }
+
+            return foundExtent;
+
+        }
+
+        /// <summary>
         /// Gets the view as given by the url of the view
         /// </summary>
         /// <param name="url">The Url to be queried</param>
         /// <returns>The found view or null if not found</returns>
         public IObject GetViewByUrl(string url)
         {
-            return GetViewExtent().element(url);
+            return GetInternalViewExtent().element(url);
         }
 
         /// <summary>
@@ -105,7 +156,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns>Enumeration of forms</returns>
         public IReflectiveCollection GetAllViews()
         {
-            var viewExtent = GetViewExtent();
+            var viewExtent = GetInternalViewExtent();
             var formAndFields = GetFormAndFieldInstance(viewExtent);
 
             return viewExtent.elements()
@@ -174,7 +225,7 @@ namespace DatenMeister.Modules.ViewFinder
             string metaClassName,
             IElement metaClass)
         {
-            var viewExtent = GetViewExtent();
+            var viewExtent = GetInternalViewExtent();
             var formAndFields = GetFormAndFieldInstance(viewExtent);
 
             var foundPoints = 0;

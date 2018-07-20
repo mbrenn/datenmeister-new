@@ -95,7 +95,7 @@ namespace DatenMeister.Modules.ZipExample
                         nameof(ZipCodeModel.positionLat),
                         nameof(ZipCodeModel.name)
                     }.ToList(),
-                    MetaclassUri = $"{WorkspaceNames.UriInternalTypes}?Apps::ZipCodeModel::ZipCodeModel"
+                    MetaclassUri = $"{WorkspaceNames.UriInternalTypesExtent}?Apps::ZipCodeModel::ZipCodeModel"
                 }
             };
 

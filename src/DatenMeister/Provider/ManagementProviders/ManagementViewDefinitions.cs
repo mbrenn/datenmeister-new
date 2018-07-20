@@ -76,7 +76,7 @@ namespace DatenMeister.Provider.ManagementProviders
                 new TextFieldData("id", "Name"),
                 new TextFieldData("annotation", "Annotation"));
 
-            return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
+            return DotNetSetter.Convert(_viewLogic.GetInternalViewExtent(), form) as IElement;
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace DatenMeister.Provider.ManagementProviders
                     isReadOnly = true
                 });
 
-            return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
+            return DotNetSetter.Convert(_viewLogic.GetInternalViewExtent(), form) as IElement;
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace DatenMeister.Provider.ManagementProviders
                 new TextFieldData("extentType", "Extent Type"),
                 new SubElementFieldData(_ManagementProvider._Extent.alternativeUris, "Alternative URI"));
 
-            return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
+            return DotNetSetter.Convert(_viewLogic.GetInternalViewExtent(), form) as IElement;
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace DatenMeister.Provider.ManagementProviders
                         Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments).Replace("\\", "/") + "/"
                 });
 
-            return DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
+            return DotNetSetter.Convert(_viewLogic.GetInternalViewExtent(), form) as IElement;
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace DatenMeister.Provider.ManagementProviders
 
             form.AddFields(type2Field);
 
-            var createdForm = DotNetSetter.Convert(_viewLogic.GetViewExtent(), form) as IElement;
+            var createdForm = DotNetSetter.Convert(_viewLogic.GetInternalViewExtent(), form) as IElement;
             return createdForm;
         }
 
@@ -197,7 +197,7 @@ namespace DatenMeister.Provider.ManagementProviders
         /// </summary>
         public void AddToViewDefinition()
         {
-            var viewExtent = _viewLogic.GetViewExtent();
+            var viewExtent = _viewLogic.GetInternalViewExtent();
             var factory = viewExtent.GetFactory();
             var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
             var package = _workspaceLogic.GetTypesWorkspace().extent.ElementAt(0).elements().ElementAt(0) as IObject;

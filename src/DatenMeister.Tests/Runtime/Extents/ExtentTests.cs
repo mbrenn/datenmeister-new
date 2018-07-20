@@ -42,7 +42,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 var extents = (asMof.get("extents") as IEnumerable<object>)?.ToList();
                 Assert.That(extents, Is.Not.Null);
 
-                var mofExtent = extents.Cast<IElement>().First( x=> x.get("uri").ToString() == WorkspaceNames.UriMof);
+                var mofExtent = extents.Cast<IElement>().First( x=> x.get("uri").ToString() == WorkspaceNames.UriMofExtent);
                 Assert.That(mofExtent, Is.Not.Null);
             }
         }

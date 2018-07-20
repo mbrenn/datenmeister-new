@@ -17,7 +17,7 @@ namespace DatenMeister.Provider.ManagementProviders
         /// <summary>
         /// Gets the uri of the extent which contains the workspaces
         /// </summary>
-        public const string WorkspaceTypeUri = WorkspaceNames.UriInternalTypes;
+        public const string WorkspaceTypeUri = WorkspaceNames.UriInternalTypesExtent;
 
         /// <summary>
         /// Initializes a new instance of the ExtentOfWorkspaces

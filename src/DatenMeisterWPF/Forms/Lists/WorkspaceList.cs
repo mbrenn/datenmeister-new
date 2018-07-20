@@ -69,7 +69,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 NavigatorForItems.NavigateToItemsInExtent(
                     NavigationHost,
                     WorkspaceNames.NameTypes,
-                    WorkspaceNames.UriUserTypes);
+                    WorkspaceNames.UriUserTypesExtent);
             }
             
             NavigationHost.AddNavigationButton(

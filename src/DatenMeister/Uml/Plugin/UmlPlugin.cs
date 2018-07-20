@@ -100,7 +100,7 @@ namespace DatenMeister.Uml.Plugin
                 ViewType.Detail,
                 umlClassForm)
             {
-                metaclassName = WorkspaceNames.UriUml + "#Class",
+                metaclassName = WorkspaceNames.UriUmlExtent + "#Class",
             };
             _viewLogic.Add(classView);
 
@@ -108,7 +108,7 @@ namespace DatenMeister.Uml.Plugin
                 ViewType.Detail,
                 umlPackageForm)
             {
-                metaclassName = WorkspaceNames.UriUml + "#Package"
+                metaclassName = WorkspaceNames.UriUmlExtent + "#Package"
             };
             _viewLogic.Add(packageView);
 
@@ -116,7 +116,7 @@ namespace DatenMeister.Uml.Plugin
                 ViewType.Detail,
                 umlPropertyForm)
             {
-                metaclassName = WorkspaceNames.UriUml + "#Property"
+                metaclassName = WorkspaceNames.UriUmlExtent + "#Property"
             };
             _viewLogic.Add(propertyView);
 

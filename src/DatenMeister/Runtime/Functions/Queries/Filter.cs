@@ -157,5 +157,18 @@ namespace DatenMeister.Runtime.Functions.Queries
         {
             return new DistinctReflectiveCollection(collection, property);
         }
+
+        /// <summary>
+        /// Unionizes two reflective collections into one collection
+        /// </summary>
+        /// <param name="first">First collection</param>
+        /// <param name="second">Second collection</param>
+        /// <returns>The resulting union</returns>
+        public static IReflectiveCollection Union(
+            this IReflectiveCollection first,
+            IReflectiveCollection second)
+        {
+            return new UnionQuery(first, second);
+        }
     }
 }

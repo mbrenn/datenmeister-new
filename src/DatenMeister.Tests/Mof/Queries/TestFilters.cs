@@ -13,6 +13,32 @@ namespace DatenMeister.Tests.Mof.Queries
         private static string property2 = "Prop2";
 
         [Test]
+        public void TestUnion()
+        {
+            var first = new[]
+                {InMemoryObject.CreateEmpty(), InMemoryObject.CreateEmpty(), InMemoryObject.CreateEmpty()};
+            var second = new[]
+                {InMemoryObject.CreateEmpty(), InMemoryObject.CreateEmpty(), InMemoryObject.CreateEmpty()};
+
+            var firstReflection = new TemporaryReflectiveCollection(first);
+            var secondReflection = new TemporaryReflectiveCollection(second);
+
+            Assert.That(firstReflection.size(), Is.EqualTo(3));
+            Assert.That(secondReflection.size(), Is.EqualTo(3));
+
+            var union = firstReflection.Union(secondReflection);
+            Assert.That(union.size(), Is.EqualTo(6));
+
+            var list = union.ToList();
+            Assert.That(list[0], Is.EqualTo(first[0]));
+            Assert.That(list[1], Is.EqualTo(first[1]));
+            Assert.That(list[2], Is.EqualTo(first[2]));
+            Assert.That(list[3], Is.EqualTo(second[0]));
+            Assert.That(list[4], Is.EqualTo(second[1]));
+            Assert.That(list[5], Is.EqualTo(second[2]));
+        }
+
+        [Test]
         public void TestMultiplePropertyFilter()
         {
             var mofExtent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///");

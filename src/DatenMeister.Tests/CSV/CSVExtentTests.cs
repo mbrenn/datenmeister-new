@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.CSV.Runtime;
@@ -15,9 +16,9 @@ namespace DatenMeister.Tests.CSV
         /// <summary>
         /// Gets the path for the temporary datafile
         /// </summary>
-        public static string PathForTemporaryDataFile => 
+        public static string PathForTemporaryDataFile =>
             Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                Path.GetDirectoryName(Assembly.GetAssembly(typeof(CSVExtentTests)).Location),
                 "data.txt");
 
         [Test]

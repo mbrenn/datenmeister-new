@@ -31,7 +31,7 @@ namespace DatenMeister.Uml.Plugin
         /// Initializes the views for the given extent
         /// </summary>
         private void InitViews()
-        {  
+        {
             var umlData = _workspaceLogic.GetUmlData();
 
             // Creates the forms
@@ -51,7 +51,7 @@ namespace DatenMeister.Uml.Plugin
                 umlData.Packages.__Package,
                 umlData.StructuredClassifiers.__Class
             };
-            _viewLogic.Add(umlExtentForm);
+            _viewLogic.Add(ViewLocationType.Internal, umlExtentForm);
 
             // Creates the forms
             var umlPropertyForm = new Form(
@@ -60,7 +60,7 @@ namespace DatenMeister.Uml.Plugin
                 new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Property"),
                 new ReferenceFieldData(_UML._CommonStructure._TypedElement.type, "Type of Property"));
 
-            _viewLogic.Add(umlPropertyForm);
+            _viewLogic.Add(ViewLocationType.Internal, umlPropertyForm);
 
             // Creates the forms
             var umlClassForm = new ListForm(
@@ -80,7 +80,7 @@ namespace DatenMeister.Uml.Plugin
                 umlData.Packages.__Package,
                 umlData.StructuredClassifiers.__Class
             };
-            _viewLogic.Add(umlClassForm);
+            _viewLogic.Add(ViewLocationType.Internal, umlClassForm);
 
             var umlPackageForm = new Form(
                 "Package",
@@ -93,7 +93,7 @@ namespace DatenMeister.Uml.Plugin
                         umlData.StructuredClassifiers.__Class
                     }
                 });
-            _viewLogic.Add(umlPackageForm);
+            _viewLogic.Add(ViewLocationType.Internal, umlPackageForm);
 
             // Creates the default mapping
             var classView = new ViewAssociation(
@@ -102,7 +102,7 @@ namespace DatenMeister.Uml.Plugin
             {
                 metaclassName = WorkspaceNames.UriUmlExtent + "#Class",
             };
-            _viewLogic.Add(classView);
+            _viewLogic.Add(ViewLocationType.Internal, classView);
 
             var packageView = new ViewAssociation(
                 ViewType.Detail,
@@ -110,7 +110,7 @@ namespace DatenMeister.Uml.Plugin
             {
                 metaclassName = WorkspaceNames.UriUmlExtent + "#Package"
             };
-            _viewLogic.Add(packageView);
+            _viewLogic.Add(ViewLocationType.Internal, packageView);
 
             var propertyView = new ViewAssociation(
                 ViewType.Detail,
@@ -118,7 +118,7 @@ namespace DatenMeister.Uml.Plugin
             {
                 metaclassName = WorkspaceNames.UriUmlExtent + "#Property"
             };
-            _viewLogic.Add(propertyView);
+            _viewLogic.Add(ViewLocationType.Internal, propertyView);
 
             var classExtentView = new ViewAssociation(
                 ViewType.Detail,
@@ -126,7 +126,7 @@ namespace DatenMeister.Uml.Plugin
             {
                 extentType = "Uml.Classes",
             };
-            _viewLogic.Add(classExtentView);
+            _viewLogic.Add(ViewLocationType.Internal, classExtentView);
         }
     }
 }

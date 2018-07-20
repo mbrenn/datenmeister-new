@@ -83,36 +83,43 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Adds a view to the system
         /// </summary>
+        /// <param name="type">Location Type to which the element shall be added</param>
         /// <param name="view">View to be added</param>
-        public void Add(IObject view)
+        public void Add(ViewLocationType type, IObject view)
         {
-            GetInternalViewExtent().elements().add(view);
+            GetViewExtent(type).elements().add(view);
         }
 
         /// <summary>
         /// Adds the form
         /// </summary>
+        /// <param name="type">Location Type to which the element shall be added</param>
         /// <param name="form">Default view to be used</param>
         /// <param name="id">Id of the element that shall be created</param>
-        public void Add(Form form, string id = null)
+        public void Add(ViewLocationType type, Form form, string id = null)
         {
             var viewExtent = GetInternalViewExtent();
             var factory = new MofFactory(viewExtent);
-            GetInternalViewExtent().elements().add(factory.createFrom(form, id));
+            GetViewExtent(type).elements().add(factory.createFrom(form, id));
         }
 
         /// <summary>
         /// Adds a default view for a certain meta class
         /// </summary>
+        /// <param name="type">Location Type to which the element shall be added</param>
         /// <param name="defaultView">Default view to be used</param>
         /// <param name="id">Id of the element that shall be created</param>
-        public void Add(ViewAssociation defaultView, string id = null)
+        public void Add(ViewLocationType type, ViewAssociation defaultView, string id = null)
         {
             var viewExtent = GetInternalViewExtent();
             var factory = new MofFactory(viewExtent);
-            GetInternalViewExtent().elements().add(factory.createFrom(defaultView, id));
+            GetViewExtent(type).elements().add(factory.createFrom(defaultView, id));
         }
 
+        /// <summary>
+        /// Gets the internal view extent being empty at each start-up
+        /// </summary>
+        /// <returns></returns>
         public IUriExtent GetInternalViewExtent()
         {
             var foundExtent = _workspaceLogic.FindExtent(UriInternalViewExtent) as IUriExtent;
@@ -125,7 +132,7 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
         /// <summary>
-        /// Gets the extent of the user
+        /// Gets the extent of the user being stored on permanent storage
         /// </summary>
         /// <returns></returns>
         public IUriExtent GetUserViewExtent()
@@ -141,13 +148,38 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
         /// <summary>
+        /// Gets the view extent.. Whether the default internal or the default external
+        /// </summary>
+        /// <param name="locationType">Type of the location to be used</param>
+        /// <returns>The found extent of the given location</returns>
+        public IUriExtent GetViewExtent(ViewLocationType locationType)
+        {
+            switch (locationType)
+            {
+                case ViewLocationType.Internal:
+                    return GetInternalViewExtent();
+                case ViewLocationType.User:
+                    return GetUserViewExtent();
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(locationType), locationType, null);
+            }
+        }
+
+        /// <summary>
         /// Gets the view as given by the url of the view
         /// </summary>
         /// <param name="url">The Url to be queried</param>
         /// <returns>The found view or null if not found</returns>
         public IObject GetViewByUrl(string url)
         {
-            return GetInternalViewExtent().element(url);
+            if (url.StartsWith(UriUserViewExtent))
+            {
+                return GetUserViewExtent().element(url);
+            }
+            else
+            {
+                return GetInternalViewExtent().element(url);
+            }
         }
 
         /// <summary>
@@ -156,10 +188,10 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns>Enumeration of forms</returns>
         public IReflectiveCollection GetAllViews()
         {
-            var viewExtent = GetInternalViewExtent();
-            var formAndFields = GetFormAndFieldInstance(viewExtent);
+            var internalViewExtent = GetInternalViewExtent();
+            var formAndFields = GetFormAndFieldInstance(internalViewExtent);
 
-            return viewExtent.elements()
+            return internalViewExtent.elements()
                 .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member})
                 .WhenMetaClassIsOneOf(formAndFields.__Form, formAndFields.__DetailForm, formAndFields.__ListForm);
         }

@@ -36,6 +36,12 @@ namespace DatenMeister.Tests.Mof.Queries
             Assert.That(list[3], Is.EqualTo(second[0]));
             Assert.That(list[4], Is.EqualTo(second[1]));
             Assert.That(list[5], Is.EqualTo(second[2]));
+
+
+            union.clear();
+            Assert.That(union.size(), Is.EqualTo(0));
+            Assert.That(firstReflection.size(), Is.EqualTo(0));
+            Assert.That(secondReflection.size(), Is.EqualTo(0));
         }
 
         [Test]

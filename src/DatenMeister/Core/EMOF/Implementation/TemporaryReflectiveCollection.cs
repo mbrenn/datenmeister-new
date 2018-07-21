@@ -50,7 +50,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool add(object value)
+        public virtual bool add(object value)
         {
             CheckForReadOnly();
             (Values as IList<object>)?.Add(value);
@@ -58,28 +58,36 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool addAll(IReflectiveSequence value)
+        public virtual bool addAll(IReflectiveSequence value)
         {
             CheckForReadOnly();
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
-        public void clear()
+        public virtual void clear()
+        {
+            CheckForReadOnly();
+
+            if (Values.GetType().IsArray)
+            {
+                Values = new object[] { };
+            }
+            else
+            {
+                (Values as IList)?.Clear();
+            }
+        }
+
+        /// <inheritdoc />
+        public virtual bool remove(object value)
         {
             CheckForReadOnly();
             throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
-        public bool remove(object value)
-        {
-            CheckForReadOnly();
-            throw new System.NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public int size()
+        public virtual int size()
         {
             return Values.Count();
         }

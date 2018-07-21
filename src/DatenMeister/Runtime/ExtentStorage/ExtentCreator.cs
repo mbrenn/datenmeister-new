@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Integration;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 
@@ -14,11 +16,13 @@ namespace DatenMeister.Runtime.ExtentStorage
     {
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentManager _extentManager;
+        private readonly IntegrationSettings _integrationSettings;
 
-        public ExtentCreator(IWorkspaceLogic workspaceLogic, ExtentManager extentManager)
+        public ExtentCreator(IWorkspaceLogic workspaceLogic, ExtentManager extentManager, IntegrationSettings integrationSettings)
         {
             _workspaceLogic = workspaceLogic;
             _extentManager = extentManager;
+            _integrationSettings = integrationSettings;
         }
 
         /// <summary>
@@ -37,22 +41,29 @@ namespace DatenMeister.Runtime.ExtentStorage
             return creator.GetOrCreateXmiExtentInInternalDatabase(workspace, uri, name);
         }
 
-        public IUriExtent GetOrCreateXmiExtentInInternalDatabase(string workspace, string uri, string name)
+        public IUriExtent GetOrCreateXmiExtentInInternalDatabase(string workspace, string uri, string name, string extentType= null)
         { 
             // Creates the user types, if not existing
             var foundExtent = _workspaceLogic.FindExtent(uri);
             if (foundExtent == null)
             {
                 Debug.WriteLine("Creates the extent for the " + name);
+
                 // Creates the extent for user types
                 var storageConfiguration = new XmiStorageConfiguration
                 {
                     ExtentUri = uri,
-                    Path = Path.Combine("extents/", name + ".xml"),
+                    Path = Path.Combine(_integrationSettings.DatabasePath, Path.Combine("extents/", name + ".xml")),
                     Workspace = workspace
                 };
 
                 foundExtent = _extentManager.LoadExtent(storageConfiguration, true);
+
+                if (extentType != null)
+                {
+                    foundExtent.SetExtentType(extentType);
+                }
+
                 return (IUriExtent) foundExtent;
             }
 

@@ -30,9 +30,8 @@ namespace DatenMeister.Modules.TypeSupport
         /// </summary>
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        private readonly ExtentManager _extentManager;
-
         private readonly NamedElementMethods _namedElementMethods;
+        private readonly ExtentCreator _extentCreator;
 
         public IUriExtent InternalTypes { get; private set; }
         
@@ -42,25 +41,24 @@ namespace DatenMeister.Modules.TypeSupport
         /// Initializes a new instance of the LocalTypeSupport class
         /// </summary>
         /// <param name="workspaceLogic">Workspace logic which is required to find the given local type support storage</param>
-        /// <param name="extentManager">Extent manager to be used</param>
         /// <param name="namedElementMethods">Method for named elements</param>
-        public LocalTypeSupport(IWorkspaceLogic workspaceLogic, ExtentManager extentManager, NamedElementMethods namedElementMethods)
+        public LocalTypeSupport(IWorkspaceLogic workspaceLogic, NamedElementMethods namedElementMethods, ExtentCreator extentCreator)
         {
             _workspaceLogic = workspaceLogic;
-            _extentManager = extentManager;
             _namedElementMethods = namedElementMethods;
+            _extentCreator = extentCreator;
         }
 
         /// <summary>
         /// Creates the extent being used to store the internal types
         /// </summary>
         /// <returns>The created uri contining the internal types</returns>
-        public void Initialize(string databasePath)
+        public void Initialize()
         {
             CreateInternalTypeExtent();
 
             // Creates the extent for the user types which is permanantly stored on disk. The user is capable to create his own types
-            CreatesUserTypeExtent(databasePath);
+            CreatesUserTypeExtent();
         }
 
         private void CreateInternalTypeExtent()
@@ -89,32 +87,18 @@ namespace DatenMeister.Modules.TypeSupport
         /// Creates the user type extent storing the types for the user. 
         /// If the extent is already existing, debugs the number of found extents
         /// </summary>
-        private void CreatesUserTypeExtent(string databasePath)
+        private void CreatesUserTypeExtent()
         {
+            var foundExtent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
+                WorkspaceNames.NameTypes,
+                WorkspaceNames.UriUserTypesExtent,
+                "DatenMeister.Types_User",
+                "Uml.Classes"
+            );
+
             // Creates the user types, if not existing
-            var foundExtent = _workspaceLogic.FindExtent(WorkspaceNames.UriUserTypesExtent);
-            if (foundExtent == null)
-            {
-                var pathUserTypes = Path.Combine(databasePath, "usertypes.xml");
-
-                Debug.WriteLine("Creates the extent for the user types");
-                // Creates the extent for user types
-                var storageConfiguration = new XmiStorageConfiguration
-                {
-                    ExtentUri = WorkspaceNames.UriUserTypesExtent,
-                    Path = pathUserTypes,
-                    Workspace = WorkspaceNames.NameTypes
-                };
-
-                foundExtent = _extentManager.LoadExtent(storageConfiguration, true);
-            }
-            else
-            {
-                var numberOfTypes = foundExtent.elements().Count();
-                Debug.WriteLine($"Loaded the extent for user types, containing of {numberOfTypes} types");
-            }
-
-            foundExtent.SetExtentType("Uml.Classes");
+            var numberOfTypes = foundExtent.elements().Count();
+            Debug.WriteLine($"Loaded the extent for user types, containing of {numberOfTypes} types");
 
             UserTypeExtent = (IUriExtent) foundExtent;
         }

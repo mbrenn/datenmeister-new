@@ -11,6 +11,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
@@ -37,47 +38,31 @@ namespace DatenMeister.Modules.ViewFinder
 
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IExtentManager _extentManager;
+        private readonly ExtentCreator _extentCreator;
 
-        public ViewLogic(IWorkspaceLogic workspaceLogic, IExtentManager extentManager)
+        public ViewLogic(IWorkspaceLogic workspaceLogic, IExtentManager extentManager, ExtentCreator extentCreator)
         {
             _workspaceLogic = workspaceLogic;
             _extentManager = extentManager;
+            _extentCreator = extentCreator;
         }
 
         /// <summary>
         /// Integrates the the view logic into the workspace. 
         /// </summary>
-        public void Integrate(string databasePath)
+        public void Integrate()
         {
             var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
 
             var dotNetUriExtent = new MofUriExtent(new InMemoryProvider(), UriInternalViewExtent);
             _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
 
-            // Creates the extent for user views
-            var foundExtent = _workspaceLogic.FindExtent(UriUserViewExtent);
-            if (foundExtent == null)
-            {
-                var pathUserTypes = Path.Combine(databasePath, "userviews.xml");
-
-                Debug.WriteLine("Creates the extent for the views");
-                // Creates the extent for user types
-                var storageConfiguration = new XmiStorageConfiguration
-                {
-                    ExtentUri = UriUserViewExtent,
-                    Path = pathUserTypes,
-                    Workspace = WorkspaceNames.NameManagement
-                };
-
-                foundExtent = _extentManager.LoadExtent(storageConfiguration, true);
-            }
-            else
-            {
-                var numberOfTypes = foundExtent.elements().Count();
-                Debug.WriteLine($"Loaded the extent for user types, containing of {numberOfTypes} types");
-            }
-
-            foundExtent.SetExtentType("DatenMeister.Views");
+            _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
+                WorkspaceNames.NameManagement,
+                UriUserViewExtent,
+                "DatenMeister.Views_User",
+                "DatenMeister.Views"
+            );
         }
 
         /// <summary>

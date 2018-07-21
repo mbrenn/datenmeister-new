@@ -34,8 +34,8 @@ namespace DatenMeister.Integration
         {
             _settings = settings;
 
-            _pathWorkspaces = Path.Combine(settings.DatabasePath, "workspaces.xml");
-            _pathExtents = Path.Combine(settings.DatabasePath, "extents.xml");
+            _pathWorkspaces = Path.Combine(settings.DatabasePath, "DatenMeister.Workspaces.xml");
+            _pathExtents = Path.Combine(settings.DatabasePath, "DatenMeister.Extents.xml");
         }
 
         public IContainer UseDatenMeister(ContainerBuilder kernel)
@@ -136,7 +136,7 @@ namespace DatenMeister.Integration
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var localTypeSupport = scope.Resolve<LocalTypeSupport>();
-                localTypeSupport.Initialize(_settings.DatabasePath);
+                localTypeSupport.Initialize();
                 var typeWorkspace = workspaceLogic.GetTypesWorkspace();
                 var mofFactory = new MofFactory(localTypeSupport.InternalTypes);
                 var namedElementMethods = scope.Resolve<NamedElementMethods>();
@@ -162,7 +162,7 @@ namespace DatenMeister.Integration
                     (MofUriExtent) localTypeSupport.InternalTypes);
 
                 // Adds the views and their view logic
-                scope.Resolve<ViewLogic>().Integrate(_settings.DatabasePath);
+                scope.Resolve<ViewLogic>().Integrate();
                 scope.Resolve<ManagementViewDefinitions>().AddToViewDefinition();
                 
                 // Includes the extent for the helping extents

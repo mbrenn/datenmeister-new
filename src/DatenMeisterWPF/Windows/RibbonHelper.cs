@@ -101,6 +101,22 @@ namespace DatenMeisterWPF.Windows
             };
 
             button.Click += (x, y) => clickMethod();
+
+            // Check correct position for button... First, the buttons are shown, then the texts
+            if (imageName != null)
+            {
+                for (var n = 0; n < group.Items.Count; n++)
+                {
+                    if (group.Items[n] is RibbonButton existingButton
+                        && existingButton.LargeImageSource == null)
+                    {
+                        // Ok, we have a button, but the existing one does not have, so add the button at the given position
+                        group.Items.Insert(n, button);
+                        return;
+                    }
+                }
+            }
+
             @group.Items.Add(button);
         }
 

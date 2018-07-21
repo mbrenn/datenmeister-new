@@ -1,4 +1,7 @@
-﻿using DatenMeisterWPF.Forms.Lists;
+﻿using System.Diagnostics;
+using Autofac;
+using DatenMeister.Integration;
+using DatenMeisterWPF.Forms.Lists;
 
 namespace DatenMeisterWPF.Navigation
 {
@@ -18,6 +21,12 @@ namespace DatenMeisterWPF.Navigation
                     return workspaceControl;
                 },
                 NavigationMode.List);
+        }
+
+        public static void OpenFolder(INavigationHost window)
+        {
+            var integrationSettings = App.Scope.Resolve<IntegrationSettings>();
+            Process.Start(integrationSettings.DatabasePath);
         }
     }
 }

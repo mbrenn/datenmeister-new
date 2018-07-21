@@ -65,6 +65,12 @@ namespace DatenMeisterWPF
                     NavigationCategories.File + ".Workspaces");
 
                 _ribbonHelper.AddNavigationButton(
+                    "Open Folder",
+                    () => NavigatorForWorkspaces.OpenFolder(this),
+                    null,
+                    NavigationCategories.File + ".Workspaces");
+
+                _ribbonHelper.AddNavigationButton(
                     "Find by URL",
                     () => NavigatorForDialogs.SearchByUrl(this),
                     null,

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using Autofac;
@@ -10,6 +12,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
@@ -172,6 +176,29 @@ namespace DatenMeisterWPF.Forms.Lists
                 }, 
                 null,
                 NavigationCategories.File + ".Views");
+
+            NavigationHost.AddNavigationButton(
+                "Open Extent-Folder",
+                () =>
+                {
+                    var extentManager = App.Scope.Resolve<IExtentManager>();
+                    if (
+                        extentManager.GetLoadConfigurationFor(_extent as IUriExtent)
+                            is ExtentFileLoaderConfig loadConfiguration
+                        && loadConfiguration.Path != null)
+                    {
+                        // ReSharper disable once AssignNullToNotNullAttribute
+                        Process.Start(
+                            Path.GetDirectoryName(loadConfiguration.Path));
+                    }
+                    else
+                    {
+                        MessageBox.Show("Given extent is not file-driven (probably only in memory).");
+                    }
+                },
+                null,
+                NavigationCategories.File + ".Workspaces");
+
         }
     }
 }

@@ -126,6 +126,23 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
+        /// Gets the loading configuration for the given extent or null, if 
+        /// the extent does not contain a configuration
+        /// </summary>
+        /// <param name="extent">The extent whose configuration is retrieved</param>
+        /// <returns>The configuration</returns>
+        public ExtentLoaderConfig GetLoadConfigurationFor(IUriExtent extent)
+        {
+            ExtentStorageData.LoadedExtentInformation information;
+            lock (_data.LoadedExtents)
+            {
+                information = _data.LoadedExtents.FirstOrDefault(x => x.Extent == extent);
+            }
+
+            return information?.Configuration;
+        }
+
+        /// <summary>
         /// Stores the extent according to the used configuration during loading. 
         /// If loading was not performed, an exception is thrown. 
         /// </summary>

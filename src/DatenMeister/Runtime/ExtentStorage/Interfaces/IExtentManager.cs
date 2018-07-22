@@ -27,5 +27,13 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         void DetachExtent(IUriExtent extent);
 
         void StoreAll();
+
+        /// <summary>
+        /// Gets the loading configuration for the given extent or null, if 
+        /// the extent does not contain a configuration
+        /// </summary>
+        /// <param name="extent">The extent whose configuration is retrieved</param>
+        /// <returns>The configuration</returns>
+        ExtentLoaderConfig GetLoadConfigurationFor(IUriExtent extent);
     }
 }

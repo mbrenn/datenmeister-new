@@ -65,7 +65,7 @@ namespace DatenMeisterWPF
                     NavigationCategories.File + ".Workspaces");
 
                 _ribbonHelper.AddNavigationButton(
-                    "Open Folder",
+                    "Open Workspace-Folder",
                     () => NavigatorForWorkspaces.OpenFolder(this),
                     null,
                     NavigationCategories.File + ".Workspaces");

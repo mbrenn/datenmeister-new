@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -7,6 +8,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Base
@@ -125,12 +127,12 @@ namespace DatenMeisterWPF.Forms.Base
             var container = TreeView as ItemsControl;
             if (ShowRoot)
             {
-                var rootItem = new TreeViewItem()
+                var rootItem = new TreeViewItem
                 {
                     Header = "Root",
-                    Tag = null
+                    Tag = null,
+                    IsExpanded = true
                 };
-                rootItem.IsExpanded = true;
 
                 container.ItemsSource = new[] {rootItem};
                 container = rootItem;
@@ -266,6 +268,57 @@ namespace DatenMeisterWPF.Forms.Base
             if (e.NewValue is TreeViewItem treeViewItem)
             {
                 OnItemSelected(treeViewItem.Tag);
+            }
+        }
+
+        private void TreeView_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void CopyTreeToClipboard_OnClick(object sender, RoutedEventArgs e)
+        {
+            var result = new StringBuilder();
+
+            var currentText = "";
+            var items = _itemsSource;
+
+            _alreadyVisited.Clear();
+            VisitCopyTreeToClipboard(items, currentText, result);
+
+            Clipboard.SetText(result.ToString());
+        }
+
+        private void VisitCopyTreeToClipboard(IReflectiveCollection items, string currentText, StringBuilder result)
+        {
+            foreach (var item in items)
+            {
+                if (_alreadyVisited.Contains(item))
+                {
+                    continue;
+                }
+
+                _alreadyVisited.Add(item);
+
+                var itemAsObject = item as IObject;
+                var myName = currentText + UmlNameResolution.GetName(itemAsObject);
+                result.AppendLine(myName);
+
+                if (itemAsObject == null)
+                {
+                    continue;
+                }
+
+                foreach (var property in _propertiesForChildren)
+                {
+                    if (itemAsObject.getOrDefault(property) is IReflectiveCollection childItems)
+                    {
+                        VisitCopyTreeToClipboard(
+                            childItems, 
+                            myName + ".",
+                            result);
+                    }
+                }
             }
         }
     }

@@ -24,6 +24,11 @@ namespace DatenMeister.Modules.ZipExample
 
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IExtentManager _extentManager;
+        
+        /// <summary>
+        /// Stores the path for the packages
+        /// </summary>
+        public const string PackagePath = "Apps::ZipCode";
 
         public ZipCodeExampleManager(
             LocalTypeSupport localTypeSupport, 
@@ -38,7 +43,6 @@ namespace DatenMeister.Modules.ZipExample
         /// <summary>
         /// Adds a zipcode example 
         /// </summary>
-        /// <param name="extentManager">Extent manager to be used</param>
         /// <param name="workspace">Workspace to which the zipcode example shall be added</param>
         public IUriExtent AddZipCodeExample(Workspace workspace)
         {
@@ -95,7 +99,7 @@ namespace DatenMeister.Modules.ZipExample
                         nameof(ZipCodeModel.positionLat),
                         nameof(ZipCodeModel.name)
                     }.ToList(),
-                    MetaclassUri = $"{WorkspaceNames.UriInternalTypesExtent}?Apps::ZipCodeModel::ZipCodeModel"
+                    MetaclassUri = $"{WorkspaceNames.UriInternalTypesExtent}?" + PackagePath + "::ZipCodeModel"
                 }
             };
 
@@ -104,7 +108,7 @@ namespace DatenMeister.Modules.ZipExample
 
             var zipCodeTypePackage =
                 _workspaceLogic.GetTypesWorkspace().FindElementByUri(
-                    "datenmeister:///_internal/types/internal?Apps::ZipCodeModel") as IElement;
+                    "datenmeister:///_internal/types/internal?" + PackagePath) as IElement;
             loadedExtent.SetDefaultTypePackage(zipCodeTypePackage);
 
             return loadedExtent;
@@ -116,7 +120,7 @@ namespace DatenMeister.Modules.ZipExample
         public void Initialize()
         {
             _localTypeSupport.AddInternalTypes(
-                "Apps::ZipCodeModel",
+                PackagePath,
                 typeof(ZipCodeModel)
             );
         }

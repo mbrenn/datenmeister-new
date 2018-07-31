@@ -103,7 +103,9 @@ namespace DatenMeister.Tests.Runtime.Extents
                 var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
                 var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
                 var typesWorkspace = workspaceLogic.GetTypesWorkspace();
-                var zipCodeModel = typesWorkspace.FindElementByUri("datenmeister:///_internal/types/internal?Apps::ZipCodeModel");
+                var zipCodeModel =
+                    typesWorkspace.FindElementByUri("datenmeister:///_internal/types/internal?" +
+                                                    ZipCodeExampleManager.PackagePath);
 
                 var dataWorkspace = workspaceLogic.GetDataWorkspace();
                 

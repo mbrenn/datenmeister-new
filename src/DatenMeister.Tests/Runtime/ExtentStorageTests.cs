@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.CSV.Runtime;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Tests.CSV;
@@ -51,6 +53,44 @@ namespace DatenMeister.Tests.Runtime
             var read = File.ReadAllText(CSVExtentTests.PathForTemporaryDataFile);
             Assert.That(read.Contains("eens"), Is.True);
             File.Delete(CSVExtentTests.PathForTemporaryDataFile);
+        }
+
+        [Test]
+        public void TestConfigurationRetrieval()
+        {
+            var csvFile = "eins 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
+            var fullPath = Path.Combine(CSVExtentTests.PathForTemporaryDataFile);
+            File.WriteAllText(fullPath, csvFile);
+
+            var mapper = new ManualConfigurationToExtentStorageMapper();
+            mapper.AddMapping(typeof(CSVExtentLoaderConfig), scope => new CSVExtentLoader(null));
+            var dataLayers = WorkspaceLogic.InitDefault();
+
+            var data = new ExtentStorageData();
+            var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(dataLayers), new IntegrationSettings());
+            var configuration = new CSVExtentLoaderConfig
+            {
+                Path = CSVExtentTests.PathForTemporaryDataFile,
+                ExtentUri = "datenmeister:///local/",
+                Settings =
+                {
+                    HasHeader = false,
+                    Separator = ' '
+                }
+            };
+
+            var csvExtent = logic.LoadExtent(configuration);
+            Assert.That(csvExtent, Is.Not.Null);
+
+            var foundConfiguration = logic.GetLoadConfigurationFor(csvExtent);
+            Assert.That(foundConfiguration, Is.EqualTo(configuration));
+
+
+            foundConfiguration = logic.GetLoadConfigurationFor(null);
+            Assert.That(foundConfiguration, Is.Null);
+
+            foundConfiguration = logic.GetLoadConfigurationFor(new MofUriExtent(new InMemoryProvider(), "datenmeister:///temp"));
+            Assert.That(foundConfiguration, Is.Null);
         }
     }
 }

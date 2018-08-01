@@ -30,8 +30,8 @@ namespace DatenMeister.Modules.TypeSupport
         /// </summary>
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        private readonly NamedElementMethods _namedElementMethods;
         private readonly ExtentCreator _extentCreator;
+        private readonly PackageMethods _packageMethods;
 
         public IUriExtent InternalTypes { get; private set; }
         
@@ -41,12 +41,11 @@ namespace DatenMeister.Modules.TypeSupport
         /// Initializes a new instance of the LocalTypeSupport class
         /// </summary>
         /// <param name="workspaceLogic">Workspace logic which is required to find the given local type support storage</param>
-        /// <param name="namedElementMethods">Method for named elements</param>
-        public LocalTypeSupport(IWorkspaceLogic workspaceLogic, NamedElementMethods namedElementMethods, ExtentCreator extentCreator)
+        public LocalTypeSupport(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator, PackageMethods packageMethods)
         {
             _workspaceLogic = workspaceLogic;
-            _namedElementMethods = namedElementMethods;
             _extentCreator = extentCreator;
+            _packageMethods = packageMethods;
         }
 
         /// <summary>
@@ -72,7 +71,7 @@ namespace DatenMeister.Modules.TypeSupport
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
 
             // Copies the Primitive Types to the internal types, so it is available for everybody. 
-            var foundPackage = _namedElementMethods.GetOrCreatePackageStructure(extentTypes.elements(), "PrimitiveTypes");
+            var foundPackage = _packageMethods.GetOrCreatePackageStructure(extentTypes.elements(), "PrimitiveTypes");
             CopyMethods.CopyToElementsProperty(
                 _workspaceLogic.GetUmlWorkspace()
                     .FindElementByUri("datenmeister:///_internal/xmi/primitivetypes?PrimitiveTypes")
@@ -149,7 +148,7 @@ namespace DatenMeister.Modules.TypeSupport
             IReflectiveCollection rootElements = internalTypeExtent.elements();
             if (packageName != null)
             {
-                rootElements = _namedElementMethods.GotoPackage(rootElements, packageName);
+                rootElements = _packageMethods.GotoPackage(rootElements, packageName);
             }
 
             return AddInternalTypes(rootElements, types);

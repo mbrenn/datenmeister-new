@@ -32,17 +32,17 @@ namespace DatenMeister.Provider.ManagementProviders
         /// <summary>
         /// Stores the name of the package
         /// </summary>
-        public const string PackageName = "ManagementProvider";
+        public const string PackageName = "WorkspacesAndExtents";
 
-        public const string NewWorkspaceForm = "NewWorkspaceForm";
+        public const string NewWorkspaceForm = "Detail - New Workspace";
 
-        public const string NewXmiDetailForm = "NewXmiDetailForm";
+        public const string NewXmiDetailForm = "Detail - New Xmi Extent";
 
-        public const string WorkspaceListView = "WorkspaceListView";
+        public const string WorkspaceListView = "List - Workspaces";
 
-        public const string ExtentListView = "ExtentListView";
+        public const string ExtentListView = "List - Extents";
 
-        public const string FindTypeForm = "FindTypeForm";
+        public const string FindTypeForm = "Detail - Find Type";
 
         public const string PathNewXmiDetailForm = PackageName + "::" + NewXmiDetailForm;
 

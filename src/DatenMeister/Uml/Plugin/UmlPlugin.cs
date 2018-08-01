@@ -3,6 +3,7 @@ using DatenMeister.Core.Plugins;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Uml.Plugin
 {
@@ -15,11 +16,15 @@ namespace DatenMeister.Uml.Plugin
         private readonly ViewLogic _viewLogic;
 
         private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly PackageMethods _packageMethods;
 
-        public UmlPlugin(ViewLogic viewLogic, IWorkspaceLogic workspaceLogic)
+        public const string PackageName = "Uml";
+
+        public UmlPlugin(ViewLogic viewLogic, IWorkspaceLogic workspaceLogic, PackageMethods packageMethods)
         {
             _viewLogic = viewLogic;
             _workspaceLogic = workspaceLogic;
+            _packageMethods = packageMethods;
         }
 
         public void Start()
@@ -33,10 +38,14 @@ namespace DatenMeister.Uml.Plugin
         private void InitViews()
         {
             var umlData = _workspaceLogic.GetUmlData();
+            
+            var viewExtent = _viewLogic.GetInternalViewExtent();
+            _packageMethods.GetOrCreatePackageStructure(viewExtent.elements(), PackageName)
+            
 
             // Creates the forms
             var umlExtentForm = new ListForm(
-                "Extent View for Classes",
+                "List - Classes",
                 new MetaClassElementFieldData("Metaclass"),
                 new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Class"),
                 new SubElementFieldData(_UML._StructuredClassifiers._Class.ownedAttribute, "Properties")
@@ -51,11 +60,12 @@ namespace DatenMeister.Uml.Plugin
                 umlData.Packages.__Package,
                 umlData.StructuredClassifiers.__Class
             };
+
             _viewLogic.Add(ViewLocationType.Internal, umlExtentForm);
 
             // Creates the forms
             var umlPropertyForm = new Form(
-                "Property",
+                "Detail - Property",
                 new MetaClassElementFieldData("Metaclass"),
                 new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Property"),
                 new ReferenceFieldData(_UML._CommonStructure._TypedElement.type, "Type of Property"));
@@ -64,7 +74,7 @@ namespace DatenMeister.Uml.Plugin
 
             // Creates the forms
             var umlClassForm = new ListForm(
-                "Extent View for Classes",
+                "List - Classes",
                 new MetaClassElementFieldData("Metaclass"),
                 new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Class"),
                 new SubElementFieldData(_UML._StructuredClassifiers._Class.ownedAttribute, "Properties")
@@ -83,7 +93,7 @@ namespace DatenMeister.Uml.Plugin
             _viewLogic.Add(ViewLocationType.Internal, umlClassForm);
 
             var umlPackageForm = new Form(
-                "Package",
+                "Detail - Package",
                 new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Package"),
                 new SubElementFieldData(_UML._Packages._Package.packagedElement, "Packaged Elements")
                 {

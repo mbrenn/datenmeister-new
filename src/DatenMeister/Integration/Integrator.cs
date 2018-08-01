@@ -139,7 +139,7 @@ namespace DatenMeister.Integration
                 localTypeSupport.Initialize();
                 var typeWorkspace = workspaceLogic.GetTypesWorkspace();
                 var mofFactory = new MofFactory(localTypeSupport.InternalTypes);
-                var namedElementMethods = scope.Resolve<NamedElementMethods>();
+                var packageMethods = scope.Resolve<PackageMethods>();
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();
@@ -147,7 +147,7 @@ namespace DatenMeister.Integration
                 IntegrateFormAndFields.Assign(
                     workspaceData.Uml.Get<_UML>(),
                     mofFactory,
-                    namedElementMethods.GotoPackage(localTypeSupport.InternalTypes.elements(), "Forms"),
+                    packageMethods.GotoPackage(localTypeSupport.InternalTypes.elements(), "Forms"),
                     fields,
                     (MofUriExtent) localTypeSupport.InternalTypes);
 
@@ -157,7 +157,7 @@ namespace DatenMeister.Integration
                 IntegrateManagementProvider.Assign(
                     workspaceData.Uml.Get<_UML>(),
                     mofFactory,
-                    namedElementMethods.GotoPackage(localTypeSupport.InternalTypes.elements(), "Management"),
+                    packageMethods.GotoPackage(localTypeSupport.InternalTypes.elements(), "Management"),
                     managementProvider,
                     (MofUriExtent) localTypeSupport.InternalTypes);
 

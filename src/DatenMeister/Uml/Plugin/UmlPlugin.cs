@@ -40,7 +40,7 @@ namespace DatenMeister.Uml.Plugin
             var umlData = _workspaceLogic.GetUmlData();
             
             var viewExtent = _viewLogic.GetInternalViewExtent();
-            _packageMethods.GetOrCreatePackageStructure(viewExtent.elements(), PackageName)
+            _packageMethods.GetOrCreatePackageStructure(viewExtent.elements(), PackageName);
             
 
             // Creates the forms

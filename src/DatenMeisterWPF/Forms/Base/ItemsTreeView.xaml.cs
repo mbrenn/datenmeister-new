@@ -315,7 +315,7 @@ namespace DatenMeisterWPF.Forms.Base
                     {
                         VisitCopyTreeToClipboard(
                             childItems, 
-                            myName + ".",
+                            myName + "::",
                             result);
                     }
                 }

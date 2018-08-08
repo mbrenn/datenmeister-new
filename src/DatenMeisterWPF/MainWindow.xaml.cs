@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
+using Autofac;
 using DatenMeister.Integration;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms;
 using DatenMeisterWPF.Navigation;
@@ -39,8 +41,8 @@ namespace DatenMeisterWPF
                 () => GiveMe.DatenMeister());
 
             _ribbonHelper.LoadIconRepository();
-
-            NavigatorForWorkspaces.NavigateToWorkspaces(this);
+            
+            NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData);
         }
 
         /// <summary>

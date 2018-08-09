@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
 using DatenMeister.Integration;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms;
 using DatenMeisterWPF.Navigation;
@@ -57,6 +58,12 @@ namespace DatenMeisterWPF
             if (navigationMode == NavigationMode.List)
             {
                 _ribbonHelper.ClearRibbons();
+
+                _ribbonHelper.AddNavigationButton(
+                    "Home",
+                    () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
+                    Icons.FileHome,
+                    NavigationCategories.File + ".Workspaces");
 
                 _ribbonHelper.AddNavigationButton(
                     "Workspaces",

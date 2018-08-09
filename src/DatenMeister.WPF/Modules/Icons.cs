@@ -5,6 +5,7 @@
     /// </summary>
     public static class Icons
     {
+        public static string FileHome = "file-home";
         public static string FileAbout = "file-about";
         public static string FileExit = "file-exit";
         public static string WorkspacesShow = "workspaces-show";

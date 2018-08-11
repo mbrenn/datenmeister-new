@@ -14,6 +14,18 @@
         public const string UriUserTypesExtent = "datenmeister:///_internal/types/user";
 
 
+        /// <summary>
+        /// Defines the uri of the view to the view extents
+        /// </summary>
+        public const string UriInternalViewExtent = "datenmeister:///management/views/internal";
+
+
+        /// <summary>
+        /// Defines the uri of the user views
+        /// </summary>
+        public const string UriUserViewExtent = "datenmeister:///management/views/user";
+
+
         public const string StandardUmlNamespace = "http://www.omg.org/spec/UML/20131001";
     }
 }

@@ -94,6 +94,12 @@ namespace DatenMeisterWPF.Forms.Lists
                 null,
                 NavigationCategories.File + ".Workspaces");
 
+            NavigationHost.AddNavigationButton(
+                "Reset DatenMeister",
+                () => NavigatorForWorkspaces.ResetDatenMeister(NavigationHost),
+                null,
+                NavigationCategories.File + ".Workspaces");
+
             AddInfoLine(
                 new TextBlock
                 {

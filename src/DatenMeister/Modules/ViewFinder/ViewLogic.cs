@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -9,10 +7,8 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -27,13 +23,11 @@ namespace DatenMeister.Modules.ViewFinder
     {
 
         private readonly IWorkspaceLogic _workspaceLogic;
-        private readonly IExtentManager _extentManager;
         private readonly ExtentCreator _extentCreator;
 
-        public ViewLogic(IWorkspaceLogic workspaceLogic, IExtentManager extentManager, ExtentCreator extentCreator)
+        public ViewLogic(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator)
         {
             _workspaceLogic = workspaceLogic;
-            _extentManager = extentManager;
             _extentCreator = extentCreator;
         }
 
@@ -51,7 +45,7 @@ namespace DatenMeister.Modules.ViewFinder
 
             _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
                 WorkspaceNames.NameManagement,
-                WorkspaceNames.UriInternalViewExtent,
+                WorkspaceNames.UriUserViewExtent,
                 "DatenMeister.Views_User",
                 "DatenMeister.Views"
             );
@@ -99,8 +93,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns></returns>
         public IUriExtent GetInternalViewExtent()
         {
-            var foundExtent = _workspaceLogic.FindExtent(WorkspaceNames.UriInternalViewExtent) as IUriExtent;
-            if (foundExtent == null)
+            if (!(_workspaceLogic.FindExtent(WorkspaceNames.UriInternalViewExtent) is IUriExtent foundExtent))
             {
                 throw new InvalidOperationException("The view extent is not found in the management");
             }
@@ -114,8 +107,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns></returns>
         public IUriExtent GetUserViewExtent()
         {
-            var foundExtent = _workspaceLogic.FindExtent(WorkspaceNames.UriInternalViewExtent) as IUriExtent;
-            if (foundExtent == null)
+            if (!(_workspaceLogic.FindExtent(WorkspaceNames.UriInternalViewExtent) is IUriExtent foundExtent))
             {
                 throw new InvalidOperationException("The view extent is not found in the management");
             }

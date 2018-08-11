@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -99,6 +101,17 @@ namespace DatenMeisterWPF.Forms.Lists
                 zipCodeExampleManager.AddZipCodeExample(WorkspaceId);
                 UpdateContent();
             }
+
+            // Adds the information line
+            AddInfoLine(
+                new TextBlock
+                {
+                    Inlines =
+                    {
+                        new Bold {Inlines = {new Run("Workspace: ")}},
+                        new Run(WorkspaceId)
+                    }
+                });
         }
 
         public override void OnMouseDoubleClick(IObject element)

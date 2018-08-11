@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -173,7 +175,7 @@ namespace DatenMeisterWPF.Forms.Lists
                         };
                         window.Show();
                     }
-                }, 
+                },
                 null,
                 NavigationCategories.File + ".Views");
 
@@ -198,7 +200,16 @@ namespace DatenMeisterWPF.Forms.Lists
                 },
                 null,
                 NavigationCategories.File + ".Workspaces");
-
+            
+            AddInfoLine(
+                new TextBlock
+                {
+                    Inlines =
+                    {
+                        new Bold {Inlines = {new Run("Extent: ")}},
+                        new Run(ExtentUrl)
+                    }
+                });
         }
     }
 }

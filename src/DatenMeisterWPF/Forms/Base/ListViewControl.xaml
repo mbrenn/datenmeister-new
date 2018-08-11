@@ -7,7 +7,7 @@
              xmlns:dm="clr-namespace:DatenMeisterWPF.Forms.Base"
              xmlns:wpf="clr-namespace:BurnSystems.WPF;assembly=BurnSystems.WPF"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="800">
     <UserControl.Resources>
         <DataTemplate x:Key="TemplateColumnButton">
             <Button Click="ButtonBase_OnClick" Loaded="RowButton_OnInitialized" VerticalAlignment="Top">Edit</Button>
@@ -15,10 +15,14 @@
     </UserControl.Resources>
 
     <DockPanel>
-        <StackPanel Orientation="Horizontal" x:Name="Toolbar" DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="10,0,10,0">
-            <helper:ComboBoxEx x:Name="ViewList" SelectionChanged="ViewList_OnSelectionChanged"></helper:ComboBoxEx>
-            <TextBlock Margin="5,2,5,0">🔍</TextBlock>
-            <TextBox x:Name="SearchField" Width="200" TextChanged="SearchField_OnTextChanged" Margin="0,2,0,2" ToolTip="Search"></TextBox>
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Top" >
+            <StackPanel Orientation="Horizontal" x:Name="Toolbar" HorizontalAlignment="Right" Margin="10,0,10,0">
+                <helper:ComboBoxEx x:Name="ViewList" SelectionChanged="ViewList_OnSelectionChanged"></helper:ComboBoxEx>
+                <TextBlock Margin="5,2,5,0">🔍</TextBlock>
+                <TextBox x:Name="SearchField" Width="200" TextChanged="SearchField_OnTextChanged" Margin="0,2,0,2" ToolTip="Search"></TextBox>
+            </StackPanel>
+            <StackPanel x:Name="InfoLines" Margin="10,5,10,5">
+            </StackPanel>
         </StackPanel>
         <StackPanel Orientation="Horizontal" x:Name="ButtonBar" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10">
         </StackPanel>
@@ -28,13 +32,14 @@
                 <ColumnDefinition Width="5"></ColumnDefinition>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <dm:ItemsTreeView Margin="10,0,10,0" x:Name="NavigationTreeView" ItemChosen="NavigationTreeView_OnItemChosen" ItemSelected="NavigationTreeView_OnItemSelected" ShowRoot="True">
-
+            <dm:ItemsTreeView Grid.Row="0" Margin="10,0,10,0" x:Name="NavigationTreeView" 
+                              ItemChosen="NavigationTreeView_OnItemChosen" ItemSelected="NavigationTreeView_OnItemSelected" ShowRoot="True">
             </dm:ItemsTreeView>
-            <GridSplitter Grid.Column="1" Width="5"  
+            <GridSplitter Grid.Column="1" Width="5" Grid.Row="0"
                           HorizontalAlignment="Stretch" 
                           VerticalAlignment="Stretch"></GridSplitter>
-            <DataGrid x:Name="DataGrid" Margin="10,0,10,0" Grid.Column="2" MouseDoubleClick="DataGrid_MouseDoubleClick"/>
+            <DataGrid Grid.Row="0"
+                x:Name="DataGrid" Margin="10,0,10,0" Grid.Column="2" MouseDoubleClick="DataGrid_MouseDoubleClick"/>
         </Grid>
 
     </DockPanel>

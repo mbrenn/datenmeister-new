@@ -570,6 +570,23 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
+        /// Clears the infolines
+        /// </summary>
+        public void ClearInfoLines()
+        {
+            InfoLines.Children.Clear();
+        }
+
+        /// <summary>
+        /// Adds an infoline to the window
+        /// </summary>
+        /// <param name="element">Element to be added</param>
+        public void AddInfoLine(UIElement element)
+        {
+            InfoLines.Children.Add(element);
+        }
+
+        /// <summary>
         /// Adds a button for a row item
         /// </summary>
         /// <param name="name">Name of the button</param>
@@ -658,6 +675,9 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public void PrepareNavigation()
         {
+            // Clears the info lines
+            ClearInfoLines();
+
             void ViewExtent()
             {
                 var dlg = new ItemXmlViewWindow

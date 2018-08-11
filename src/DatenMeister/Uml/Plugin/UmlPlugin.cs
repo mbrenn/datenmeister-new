@@ -1,4 +1,6 @@
 ﻿using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
@@ -40,8 +42,7 @@ namespace DatenMeister.Uml.Plugin
             var umlData = _workspaceLogic.GetUmlData();
             
             var viewExtent = _viewLogic.GetInternalViewExtent();
-            _packageMethods.GetOrCreatePackageStructure(viewExtent.elements(), PackageName);
-            
+            var umlPackage = _packageMethods.GetOrCreatePackageStructure(viewExtent.elements(), PackageName);
 
             // Creates the forms
             var umlExtentForm = new ListForm(
@@ -61,7 +62,7 @@ namespace DatenMeister.Uml.Plugin
                 umlData.StructuredClassifiers.__Class
             };
 
-            _viewLogic.Add(ViewLocationType.Internal, umlExtentForm);
+            _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, umlExtentForm) as IElement);
 
             // Creates the forms
             var umlPropertyForm = new Form(
@@ -70,7 +71,7 @@ namespace DatenMeister.Uml.Plugin
                 new TextFieldData(_UML._CommonStructure._NamedElement.name, "Name of Property"),
                 new ReferenceFieldData(_UML._CommonStructure._TypedElement.type, "Type of Property"));
 
-            _viewLogic.Add(ViewLocationType.Internal, umlPropertyForm);
+            _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, umlPropertyForm) as IElement);
 
             // Creates the forms
             var umlClassForm = new ListForm(
@@ -90,7 +91,8 @@ namespace DatenMeister.Uml.Plugin
                 umlData.Packages.__Package,
                 umlData.StructuredClassifiers.__Class
             };
-            _viewLogic.Add(ViewLocationType.Internal, umlClassForm);
+
+            _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, umlClassForm) as IElement);
 
             var umlPackageForm = new Form(
                 "Detail - Package",
@@ -103,7 +105,8 @@ namespace DatenMeister.Uml.Plugin
                         umlData.StructuredClassifiers.__Class
                     }
                 });
-            _viewLogic.Add(ViewLocationType.Internal, umlPackageForm);
+
+            _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, umlPackageForm) as IElement);
 
             // Creates the default mapping
             var classView = new ViewAssociation(
@@ -112,7 +115,8 @@ namespace DatenMeister.Uml.Plugin
             {
                 metaclassName = WorkspaceNames.UriUmlExtent + "#Class",
             };
-            _viewLogic.Add(ViewLocationType.Internal, classView);
+
+            _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, classView) as IElement);
 
             var packageView = new ViewAssociation(
                 ViewType.Detail,
@@ -120,7 +124,8 @@ namespace DatenMeister.Uml.Plugin
             {
                 metaclassName = WorkspaceNames.UriUmlExtent + "#Package"
             };
-            _viewLogic.Add(ViewLocationType.Internal, packageView);
+
+            _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, packageView) as IElement);
 
             var propertyView = new ViewAssociation(
                 ViewType.Detail,
@@ -128,7 +133,7 @@ namespace DatenMeister.Uml.Plugin
             {
                 metaclassName = WorkspaceNames.UriUmlExtent + "#Property"
             };
-            _viewLogic.Add(ViewLocationType.Internal, propertyView);
+            _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, propertyView) as IElement);
 
             var classExtentView = new ViewAssociation(
                 ViewType.Detail,
@@ -136,8 +141,7 @@ namespace DatenMeister.Uml.Plugin
             {
                 extentType = "Uml.Classes",
             };
-
-            _viewLogic.Add(ViewLocationType.Internal, classExtentView);
+            _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, classExtentView) as IElement);
         }
     }
 }

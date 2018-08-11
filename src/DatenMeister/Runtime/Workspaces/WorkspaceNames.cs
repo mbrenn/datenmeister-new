@@ -10,6 +10,8 @@
         public const string UriUmlExtent = "datenmeister:///_internal/xmi/uml";
         public const string UriMofExtent = "datenmeister:///_internal/xmi/mof";
         public const string UriPrimitiveTypesExtent = "datenmeister:///_internal/xmi/primitivetypes";
+
+
         public const string UriInternalTypesExtent = "datenmeister:///_internal/types/internal";
         public const string UriUserTypesExtent = "datenmeister:///_internal/types/user";
 
@@ -18,7 +20,6 @@
         /// Defines the uri of the view to the view extents
         /// </summary>
         public const string UriInternalViewExtent = "datenmeister:///management/views/internal";
-
 
         /// <summary>
         /// Defines the uri of the user views

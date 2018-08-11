@@ -5,6 +5,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Uml.Helper
@@ -144,6 +145,12 @@ namespace DatenMeister.Uml.Helper
             }
 
             return found;
+        }
+
+        public void AddObjectToPackage(IElement package, IObject element)
+        {
+            var packagedElements = package.GetAsReflectiveCollection(_UML._Packages._Package.packagedElement);
+            packagedElements.add(element);
         }
     }
 }

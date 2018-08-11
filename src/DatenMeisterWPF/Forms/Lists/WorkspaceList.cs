@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
@@ -52,6 +54,7 @@ namespace DatenMeisterWPF.Forms.Lists
 
         public new void PrepareNavigation()
         {
+            base.PrepareNavigation();
             void NewWorkspace()
             {
                 var events = NavigationHost.NavigateTo(() =>
@@ -86,7 +89,14 @@ namespace DatenMeisterWPF.Forms.Lists
                 NavigationCategories.Type + "." + "Manager"
             );
 
-            base.PrepareNavigation();
+            AddInfoLine(
+                new TextBlock
+                {
+                    Inlines =
+                    {
+                        new Bold {Inlines = {new Run("All Workspaces")}}
+                    }
+                });
         }
 
         public override void OnMouseDoubleClick(IObject element)

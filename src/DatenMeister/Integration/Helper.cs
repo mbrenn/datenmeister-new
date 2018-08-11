@@ -4,6 +4,9 @@ using DatenMeister.Runtime.Workspaces.Data;
 
 namespace DatenMeister.Integration
 {
+    /// <summary>
+    /// Implements home helper classes
+    /// </summary>
     public static class Helper
     {
         public static IContainer UseDatenMeister(this ContainerBuilder kernel, IntegrationSettings settings)
@@ -11,7 +14,7 @@ namespace DatenMeister.Integration
             var integration = new Integrator(settings);
             return integration.UseDatenMeister(kernel);
         }
-
+        
         /// <summary>  
         /// Stores all data that needs to be stored persistant on the hard drive  
         /// This method is typically called at the end of the lifecycle of the applciation  
@@ -21,6 +24,7 @@ namespace DatenMeister.Integration
         {
             scope.Resolve<WorkspaceLoader>().Store();
             scope.Resolve<ExtentConfigurationLoader>().StoreAllExtents();
+            scope.Dispose();
         }
     }
 }

@@ -24,9 +24,23 @@ namespace DatenMeister.Integration
 {
     public class Integrator
     {
-        private readonly string _pathWorkspaces;
+        public string PathWorkspaces { get; }
+        public string PathExtents { get; }
 
-        private readonly string _pathExtents;
+        public static string GetPathToWorkspaces(IntegrationSettings settings)
+        {
+            return Path.Combine(settings.DatabasePath, "DatenMeister.Workspaces.xml");
+        }
+
+        /// <summary>
+        /// Calculates the path to the extents
+        /// </summary>
+        /// <param name="settings">Settings to be set</param>
+        /// <returns>The path</returns>
+        public static string GetPathToExtents(IntegrationSettings settings)
+        {
+            return Path.Combine(settings.DatabasePath, "DatenMeister.Extents.xml");
+        }
 
         private IntegrationSettings _settings;
 
@@ -34,8 +48,8 @@ namespace DatenMeister.Integration
         {
             _settings = settings;
 
-            _pathWorkspaces = Path.Combine(settings.DatabasePath, "DatenMeister.Workspaces.xml");
-            _pathExtents = Path.Combine(settings.DatabasePath, "DatenMeister.Extents.xml");
+            PathWorkspaces = GetPathToWorkspaces(settings);
+            PathExtents = GetPathToExtents(settings);
         }
 
         public IContainer UseDatenMeister(ContainerBuilder kernel)
@@ -65,7 +79,7 @@ namespace DatenMeister.Integration
             // Defines the extent storage data  
             var extentStorageData = new ExtentStorageData
             {
-                FilePath = _pathExtents
+                FilePath = PathExtents
             };
             kernel.RegisterInstance(extentStorageData).As<ExtentStorageData>();
             kernel.RegisterType<ExtentManager>().As<IExtentManager>();
@@ -78,7 +92,7 @@ namespace DatenMeister.Integration
             // Loading and storing the workspaces
             var workspaceLoadingConfiguration = new WorkspaceLoaderConfig
             {
-                Filepath = _pathWorkspaces
+                Filepath = PathWorkspaces
             };
 
             kernel.RegisterInstance(workspaceLoadingConfiguration).As<WorkspaceLoaderConfig>();

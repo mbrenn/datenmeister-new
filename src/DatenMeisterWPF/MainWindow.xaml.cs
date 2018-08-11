@@ -61,6 +61,12 @@ namespace DatenMeisterWPF
                 _ribbonHelper.ClearRibbons();
 
                 _ribbonHelper.AddNavigationButton(
+                    "Home",
+                    () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
+                    Icons.FileHome,
+                    NavigationCategories.File + ".Workspaces");
+
+                _ribbonHelper.AddNavigationButton(
                     "Workspaces",
                     () => NavigatorForWorkspaces.NavigateToWorkspaces(this),
                     Icons.WorkspacesShow,

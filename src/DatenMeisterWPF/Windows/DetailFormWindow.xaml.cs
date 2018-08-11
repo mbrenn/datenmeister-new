@@ -82,6 +82,12 @@ namespace DatenMeisterWPF.Windows
             Focus();
         }
 
+        /// <inheritdoc />
+        public Window GetWindow()
+        {
+            return this;
+        }
+
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             Close();

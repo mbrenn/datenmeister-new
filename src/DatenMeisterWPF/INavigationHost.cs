@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using DatenMeisterWPF.Navigation;
 
@@ -39,5 +40,11 @@ namespace DatenMeisterWPF
         /// Sets the focus of the navigation host, so user can click on it
         /// </summary>
         void SetFocus();
+
+        /// <summary>
+        /// Gets the window containing the host
+        /// </summary>
+        /// <returns></returns>
+        Window GetWindow();
     }
 }

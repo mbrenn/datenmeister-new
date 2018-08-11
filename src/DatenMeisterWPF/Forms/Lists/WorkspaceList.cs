@@ -37,7 +37,6 @@ namespace DatenMeisterWPF.Forms.Lists
             }
             else
             {
-
                 return ListRequests.RequestFormForWorkspaces(this);
             }
         }
@@ -89,13 +88,19 @@ namespace DatenMeisterWPF.Forms.Lists
                 NavigationCategories.Type + "." + "Manager"
             );
 
+            NavigationHost.AddNavigationButton(
+                "Open Workspace-Folder",
+                () => NavigatorForWorkspaces.OpenFolder(NavigationHost),
+                null,
+
+                NavigationCategories.File + ".Workspaces");
             AddInfoLine(
                 new TextBlock
                 {
                     Inlines =
                     {
-                        new Bold {Inlines = {new Run("All Workspaces")}}
                     }
+                        new Bold {Inlines = {new Run("All Workspaces")}}
                 });
         }
 

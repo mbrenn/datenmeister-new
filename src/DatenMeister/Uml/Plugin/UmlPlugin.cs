@@ -136,6 +136,7 @@ namespace DatenMeister.Uml.Plugin
             {
                 extentType = "Uml.Classes",
             };
+
             _viewLogic.Add(ViewLocationType.Internal, classExtentView);
         }
     }

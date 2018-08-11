@@ -43,5 +43,11 @@ namespace DatenMeisterWPF.Windows
         {
             throw new NotImplementedException();
         }
+
+        /// <inheritdoc />
+        public Window GetWindow()
+        {
+            return this;
+        }
     }
 }

@@ -165,6 +165,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     if (_extent != null)
                     {
                         var window = new TreeViewWindow();
+                        window.Owner = NavigationHost.GetWindow();
                         window.SetDefaultProperties();
                         window.SetCollection(_extent.elements());
                         window.ItemSelected += (x, y) =>

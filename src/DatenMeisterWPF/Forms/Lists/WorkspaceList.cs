@@ -35,7 +35,6 @@ namespace DatenMeisterWPF.Forms.Lists
             }
             else
             {
-
                 return ListRequests.RequestFormForWorkspaces(this);
             }
         }
@@ -85,6 +84,12 @@ namespace DatenMeisterWPF.Forms.Lists
                 string.Empty,
                 NavigationCategories.Type + "." + "Manager"
             );
+
+            NavigationHost.AddNavigationButton(
+                "Open Workspace-Folder",
+                () => NavigatorForWorkspaces.OpenFolder(NavigationHost),
+                null,
+                NavigationCategories.File + ".Workspaces");
 
             base.PrepareNavigation();
         }

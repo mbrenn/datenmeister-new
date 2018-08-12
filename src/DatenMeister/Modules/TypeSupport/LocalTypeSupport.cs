@@ -113,7 +113,7 @@ namespace DatenMeister.Modules.TypeSupport
             var internalTypeExtent = GetInternalTypeExtent();
             var rootElements = internalTypeExtent.elements();
 
-            var package = NamedElementMethods.GetOrCreatePackageStructure(
+            var package = PackageMethods.GetOrCreatePackageStructure(
                 rootElements,
                 new MofFactory(internalTypeExtent),
                 packageName,

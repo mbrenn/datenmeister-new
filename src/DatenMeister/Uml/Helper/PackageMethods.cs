@@ -82,9 +82,13 @@ namespace DatenMeister.Uml.Helper
                 .Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim()).ToList();
 
+            var id = "_package";
+
             IElement found = null;
             foreach (var elementName in elementNames)
             {
+                id += $"_{elementName}";
+
                 // Looks for the element with the given name
                 IElement childElement = null;
                 foreach (var innerElement in rootElements.OfType<IElement>())
@@ -105,6 +109,13 @@ namespace DatenMeister.Uml.Helper
                 {
                     childElement = factory.create(metaClass);
                     childElement.set(nameProperty, elementName);
+                    
+                    // Set ID, for the new element
+                    if (childElement is ICanSetId cansetId)
+                    {
+                        cansetId.Id = id;
+                    }
+
                     rootElements.add(childElement);
                 }
 

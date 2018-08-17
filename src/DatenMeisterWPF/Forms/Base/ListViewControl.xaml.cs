@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -37,7 +38,10 @@ namespace DatenMeisterWPF.Forms.Base
         public ListViewControl()
         {
             InitializeComponent();
+            //CopyCommand = new RelayCommand();
         }
+
+        public ICommand CopyCommand { get; set; }
 
         /// <summary>
         /// Defines the property being used to indicate whether the tree containing the subelements is visible
@@ -805,6 +809,33 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
+        /// Gets an enumeration of all selected items
+        /// </summary>
+        /// <returns>Enumeration of selected item</returns>
+        public IEnumerable<IObject> GetSelectedItems()
+        {
+            foreach (var item in DataGrid.SelectedItems)
+            {
+                if (item is ExpandoObject selectedItem)
+                {
+                    if (_itemMapping.TryGetValue(selectedItem, out var foundItem))
+                    {
+                        yield return foundItem;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// GEts the currently selected item 
+        /// </summary>
+        /// <returns>Item being selected</returns>
+        public IObject GetSelectedItem()
+        {
+            return GetSelectedItems().FirstOrDefault();
+        }
+
+        /// <summary>
         /// Called, if the user performs a double click on the given item
         /// </summary>
         /// <param name="sender"></param>
@@ -847,5 +878,32 @@ namespace DatenMeisterWPF.Forms.Base
                 UpdateContent();
             }
         }
+
+        private void DataGrid_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.C && (Keyboard.Modifiers & ModifierKeys.Control) != 0)
+            {
+                var builder = new StringBuilder();
+
+                var selectedItem = GetSelectedItem();
+                if (!(selectedItem is IObjectAllProperties allProperties))
+                {
+                    
+                    return ;
+                }
+
+                foreach (var property in allProperties.getPropertiesBeingSet())
+                {
+                    var value = DotNetHelper.AsString(
+                        selectedItem.getOrDefault(property));
+
+                    builder.AppendLine($"{property}: {value}");
+                }
+
+                Clipboard.SetText(builder.ToString());
+            }
+        }
+
+
     }
 }

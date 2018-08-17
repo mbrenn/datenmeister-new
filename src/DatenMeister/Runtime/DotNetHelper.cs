@@ -171,6 +171,26 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
+        /// Checks whether the given 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>true, if the element is a string</returns>
+        public static bool IsOfString(object value)
+        {
+            return value is string;
+        }
+
+        /// <summary>
+        /// Returns the value as a string
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <returns>The converted element</returns>
+        public static string AsString(object value)
+        {
+            return value.ToString();
+        }
+
+        /// <summary>
         /// Is true
         /// </summary>
         /// <param name="value">Value to be checked</param>

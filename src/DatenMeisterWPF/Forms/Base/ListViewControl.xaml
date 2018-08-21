@@ -39,9 +39,13 @@
                           HorizontalAlignment="Stretch" 
                           VerticalAlignment="Stretch"></GridSplitter>
             <DataGrid Grid.Row="0"
-                x:Name="DataGrid" Margin="10,0,10,0" Grid.Column="2" MouseDoubleClick="DataGrid_MouseDoubleClick">
+                x:Name="DataGrid" Margin="10,0,10,0" Grid.Column="2" MouseDoubleClick="DataGrid_MouseDoubleClick"
+                      KeyDown="DataGrid_OnKeyDown">
+                <DataGrid.CommandBindings>
+                    <CommandBinding Command="Copy" Executed="CommandBinding_OnExecuted" />
+                </DataGrid.CommandBindings>
                 <DataGrid.InputBindings>
-                    <KeyBinding Key="C" Modifiers="Control" Command="{Binding CopyCommand}"></KeyBinding>
+                    <KeyBinding Key="C" Modifiers="Control" Command="Copy" />
                 </DataGrid.InputBindings>
             </DataGrid>
         </Grid>

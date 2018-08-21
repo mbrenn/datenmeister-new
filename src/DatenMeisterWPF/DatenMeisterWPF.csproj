@@ -80,12 +80,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\CopyToClipboardCommand.cs" />
+    <Compile Include="Commands\DatenMeisterCommands.cs" />
     <Compile Include="Controls\LocateElementControl.xaml.cs">
       <DependentUpon>LocateElementControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Base\DetailFormControl.xaml.cs">
       <DependentUpon>DetailFormControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Base\IHasSelectedItems.cs" />
     <Compile Include="Forms\Base\ItemsTreeView.xaml.cs">
       <DependentUpon>ItemsTreeView.xaml</DependentUpon>
     </Compile>
@@ -280,5 +283,6 @@
   <ItemGroup>
     <Resource Include="assets\icons\dialog-question.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

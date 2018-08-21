@@ -24,6 +24,7 @@ using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
+using DatenMeisterWPF.Command;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
 using Microsoft.Win32;
@@ -33,12 +34,12 @@ namespace DatenMeisterWPF.Forms.Base
     /// <summary>
     /// Interaktionslogik für ListViewControl.xaml
     /// </summary>
-    public partial class ListViewControl : UserControl, INavigationGuest
+    public partial class ListViewControl : UserControl, INavigationGuest, IHasSelectedItems
     {
         public ListViewControl()
         {
             InitializeComponent();
-            //CopyCommand = new RelayCommand();
+            CopyCommand = new CopyToClipboardCommand(this);
         }
 
         public ICommand CopyCommand { get; set; }
@@ -120,18 +121,6 @@ namespace DatenMeisterWPF.Forms.Base
         protected ViewDefinition ViewDefinition;
 
         private List<IElement> _packagingElements = new List<IElement>();
-
-        /// <summary>
-        /// Gets the currently selected object
-        /// </summary>
-        private IObject SelectedItem
-        {
-            get
-            {
-                var selectedItem = DataGrid.SelectedItem;
-                return selectedItem == null ? null : _itemMapping[(ExpandoObject) selectedItem];
-            }
-        }
 
         /// <summary>
         /// Gets or sets the information whether new items can be added via the datagrid
@@ -532,7 +521,7 @@ namespace DatenMeisterWPF.Forms.Base
 
             button.Pressed += (x, y) =>
             {
-                var selectedItem = SelectedItem;
+                var selectedItem = GetSelectedItem();
                 onPressed(selectedItem);
             };
 
@@ -881,29 +870,16 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void DataGrid_OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.C && (Keyboard.Modifiers & ModifierKeys.Control) != 0)
+            if (e.Key == Key.C && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
-                var builder = new StringBuilder();
-
-                var selectedItem = GetSelectedItem();
-                if (!(selectedItem is IObjectAllProperties allProperties))
-                {
-                    
-                    return ;
-                }
-
-                foreach (var property in allProperties.getPropertiesBeingSet())
-                {
-                    var value = DotNetHelper.AsString(
-                        selectedItem.getOrDefault(property));
-
-                    builder.AppendLine($"{property}: {value}");
-                }
-
-                Clipboard.SetText(builder.ToString());
+                CopyCommand.Execute(null);
+                e.Handled = true;
             }
         }
 
-
+        private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            CopyCommand.Execute(null);
+        }
     }
 }

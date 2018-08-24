@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using System.Text;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -113,16 +114,6 @@ namespace DatenMeister.Runtime
             return value != null && IsEnum(value.GetType());
         }
 
-        internal static object ToString(object value)
-        {
-            if (value is double valueAsDouble)
-            {
-                return valueAsDouble.ToString(CultureInfo.InvariantCulture);
-            }
-
-            return value.ToString();
-        }
-
         /// <summary>
         /// Evaluates whether the given argument is a mof object
         /// </summary>
@@ -180,13 +171,40 @@ namespace DatenMeister.Runtime
             return value is string;
         }
 
-        /// <summary>
-        /// Returns the value as a string
-        /// </summary>
-        /// <param name="value">Value to be converted</param>
-        /// <returns>The converted element</returns>
         public static string AsString(object value)
         {
+            if (value == null)
+            {
+                return null;
+            }
+
+            if (value is double valueAsDouble)
+            {
+                return valueAsDouble.ToString(CultureInfo.InvariantCulture);
+            }
+
+            if (IsEnumeration(value.GetType()))
+            {
+                var enumeration = (IEnumerable) value;
+                var builder = new StringBuilder();
+                builder.Append("[");
+
+                var first = true;
+                foreach (var item in enumeration)
+                {
+                    if (!first)
+                    {
+                        builder.Append(",");
+                    }
+
+                    builder.Append(AsString(item));
+
+                    first = false;
+                }
+                builder.Append("]");
+                return builder.ToString();
+            }
+
             return value.ToString();
         }
 

@@ -158,7 +158,7 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             if (DotNetHelper.IsOfPrimitiveType(value))
             {
-                return new XElement(property, DotNetHelper.ToString(value));
+                return new XElement(property, DotNetHelper.AsString(value));
             }
 
             // A uri reference creates an href element

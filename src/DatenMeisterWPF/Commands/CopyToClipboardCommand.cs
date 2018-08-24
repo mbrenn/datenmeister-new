@@ -28,21 +28,38 @@ namespace DatenMeisterWPF.Command
         /// <param name="parameter"></param>
         public void Execute(object parameter)
         {
-            var selectedItem = listViewControl.GetSelectedItem();
-            var builder = new StringBuilder();
-            
-            if (!(selectedItem is IObjectAllProperties allProperties))
+            var selectedItems = listViewControl.GetSelectedItems();
+            if (selectedItems == null)
             {
-
-                return;
+                selectedItems = new[] {listViewControl.GetSelectedItem()};
             }
 
-            foreach (var property in allProperties.getPropertiesBeingSet())
+            var first = true;
+            var builder = new StringBuilder();
+            foreach (var selectedItem in selectedItems)
             {
-                var value = DotNetHelper.AsString(
-                    selectedItem.getOrDefault(property));
+                if (!first)
+                {
+                    builder.AppendLine();
+                    builder.AppendLine("------");
+                    builder.AppendLine();
+                }
 
-                builder.AppendLine($"{property}: {value}");
+                if (!(selectedItem is IObjectAllProperties allProperties))
+                {
+
+                    return;
+                }
+
+                foreach (var property in allProperties.getPropertiesBeingSet())
+                {
+                    var value = DotNetHelper.AsString(
+                        selectedItem.getOrDefault(property));
+
+                    builder.AppendLine($"{property}: {value}");
+                }
+
+                first = false;
             }
 
             Clipboard.SetText(builder.ToString());

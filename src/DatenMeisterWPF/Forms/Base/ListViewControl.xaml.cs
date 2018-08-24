@@ -744,6 +744,12 @@ namespace DatenMeisterWPF.Forms.Base
                 }
             }
 
+            void CopyContent()
+            {
+                var copyContent = new CopyToClipboardCommand(this);
+                copyContent.Execute(null);
+            }
+
             NavigationHost.AddNavigationButton(
                 "Refresh",
                 UpdateContent,
@@ -773,6 +779,12 @@ namespace DatenMeisterWPF.Forms.Base
                 ExportToCSV,
                 Icons.ExportCSV,
                 NavigationCategories.File + ".Export");
+
+            NavigationHost.AddNavigationButton(
+                "Copy",
+                CopyContent,
+                null,
+                NavigationCategories.File + ".Copy");
         }
 
         /// <summary>

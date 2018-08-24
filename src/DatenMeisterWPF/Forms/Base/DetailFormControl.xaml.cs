@@ -543,6 +543,18 @@ namespace DatenMeisterWPF.Forms.Base
                 ViewConfig,
                 null,
                 NavigationCategories.File + ".Views");
+
+            void CopyContent()
+            {
+                var copyContent = new CopyToClipboardCommand(this);
+                copyContent.Execute(null);
+            }
+
+            NavigationHost.AddNavigationButton(
+                "Copy",
+                CopyContent,
+                null,
+                NavigationCategories.File + ".Copy");
         }
 
         private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)

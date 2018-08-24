@@ -75,11 +75,20 @@ namespace DatenMeisterWPF.Windows
                     }
                 }
             }
+
+            Focus();
         }
 
         public void SetFocus()
         {
-            Focus();
+            if (MainContent == null)
+            {
+                Focus();
+            }
+            else
+            {
+                MainContent?.Focus();
+            }
         }
 
         /// <inheritdoc />

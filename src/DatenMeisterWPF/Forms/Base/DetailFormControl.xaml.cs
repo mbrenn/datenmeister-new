@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
@@ -15,6 +16,7 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeister.UserInteractions;
+using DatenMeisterWPF.Command;
 using DatenMeisterWPF.Forms.Detail.Fields;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
@@ -24,7 +26,7 @@ namespace DatenMeisterWPF.Forms.Base
     /// <summary>
     /// Interaktionslogik für DetailFormControl.xaml
     /// </summary>
-    public partial class DetailFormControl : UserControl, INavigationGuest
+    public partial class DetailFormControl : UserControl, INavigationGuest, IHasSelectedItems
     {
         /// <summary>
         /// Gets the detailled element, whose content is shown in the dialog
@@ -541,6 +543,21 @@ namespace DatenMeisterWPF.Forms.Base
                 ViewConfig,
                 null,
                 NavigationCategories.File + ".Views");
+        }
+
+        private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            new CopyToClipboardCommand(this).Execute(null);
+        }
+
+        public IObject GetSelectedItem()
+        {
+            return DetailElement;
+        }
+
+        public IEnumerable<IObject> GetSelectedItems()
+        {
+            yield return DetailElement;
         }
     }
 }

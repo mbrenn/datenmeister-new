@@ -7,6 +7,12 @@
              xmlns:helper="clr-namespace:DatenMeisterWPF.Helper"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.CommandBindings>
+        <CommandBinding Command="Copy" Executed="CommandBinding_OnExecuted" />
+    </UserControl.CommandBindings>
+    <UserControl.InputBindings>
+        <KeyBinding Key="C" Modifiers="Control" Command="Copy" />
+    </UserControl.InputBindings>
     <DockPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
             <helper:ComboBoxEx x:Name="ViewList" SelectionChanged="ViewList_OnSelectionChanged"></helper:ComboBoxEx>

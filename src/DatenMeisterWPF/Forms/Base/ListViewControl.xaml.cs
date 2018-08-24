@@ -868,15 +868,6 @@ namespace DatenMeisterWPF.Forms.Base
             }
         }
 
-        private void DataGrid_OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.C && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-                CopyCommand.Execute(null);
-                e.Handled = true;
-            }
-        }
-
         private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             CopyCommand.Execute(null);

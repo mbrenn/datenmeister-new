@@ -212,7 +212,7 @@ namespace DatenMeister.Provider.CSV
                     builder.Append(settings.Separator);
                 }
 
-                var cellValue = conversion(value).ToString();
+                var cellValue = DotNetHelper.AsString(conversion(value));
                 if (cellValue.Contains(settings.Separator))
                 {
                     cellValue = $"\"{cellValue.Replace("\"", "\"\"")}\"";

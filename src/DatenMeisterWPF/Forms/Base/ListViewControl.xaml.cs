@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -23,6 +24,7 @@ using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
+using DatenMeisterWPF.Command;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
 using Microsoft.Win32;
@@ -32,12 +34,15 @@ namespace DatenMeisterWPF.Forms.Base
     /// <summary>
     /// Interaktionslogik für ListViewControl.xaml
     /// </summary>
-    public partial class ListViewControl : UserControl, INavigationGuest
+    public partial class ListViewControl : UserControl, INavigationGuest, IHasSelectedItems
     {
         public ListViewControl()
         {
             InitializeComponent();
+            CopyCommand = new CopyToClipboardCommand(this);
         }
+
+        public ICommand CopyCommand { get; set; }
 
         /// <summary>
         /// Defines the property being used to indicate whether the tree containing the subelements is visible
@@ -116,18 +121,6 @@ namespace DatenMeisterWPF.Forms.Base
         protected ViewDefinition ViewDefinition;
 
         private List<IElement> _packagingElements = new List<IElement>();
-
-        /// <summary>
-        /// Gets the currently selected object
-        /// </summary>
-        private IObject SelectedItem
-        {
-            get
-            {
-                var selectedItem = DataGrid.SelectedItem;
-                return selectedItem == null ? null : _itemMapping[(ExpandoObject) selectedItem];
-            }
-        }
 
         /// <summary>
         /// Gets or sets the information whether new items can be added via the datagrid
@@ -528,7 +521,7 @@ namespace DatenMeisterWPF.Forms.Base
 
             button.Pressed += (x, y) =>
             {
-                var selectedItem = SelectedItem;
+                var selectedItem = GetSelectedItem();
                 onPressed(selectedItem);
             };
 
@@ -751,6 +744,12 @@ namespace DatenMeisterWPF.Forms.Base
                 }
             }
 
+            void CopyContent()
+            {
+                var copyContent = new CopyToClipboardCommand(this);
+                copyContent.Execute(null);
+            }
+
             NavigationHost.AddNavigationButton(
                 "Refresh",
                 UpdateContent,
@@ -780,6 +779,12 @@ namespace DatenMeisterWPF.Forms.Base
                 ExportToCSV,
                 Icons.ExportCSV,
                 NavigationCategories.File + ".Export");
+
+            NavigationHost.AddNavigationButton(
+                "Copy",
+                CopyContent,
+                null,
+                NavigationCategories.File + ".Copy");
         }
 
         /// <summary>
@@ -802,6 +807,33 @@ namespace DatenMeisterWPF.Forms.Base
             /// Gets or sets the action being called when the user clicks on the button
             /// </summary>
             public Action<IObject> OnClick { get; set; }
+        }
+
+        /// <summary>
+        /// Gets an enumeration of all selected items
+        /// </summary>
+        /// <returns>Enumeration of selected item</returns>
+        public IEnumerable<IObject> GetSelectedItems()
+        {
+            foreach (var item in DataGrid.SelectedItems)
+            {
+                if (item is ExpandoObject selectedItem)
+                {
+                    if (_itemMapping.TryGetValue(selectedItem, out var foundItem))
+                    {
+                        yield return foundItem;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// GEts the currently selected item 
+        /// </summary>
+        /// <returns>Item being selected</returns>
+        public IObject GetSelectedItem()
+        {
+            return GetSelectedItems().FirstOrDefault();
         }
 
         /// <summary>
@@ -846,6 +878,11 @@ namespace DatenMeisterWPF.Forms.Base
                 DetailItems = Items;
                 UpdateContent();
             }
+        }
+
+        private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            CopyCommand.Execute(null);
         }
     }
 }

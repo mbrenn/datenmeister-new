@@ -141,12 +141,8 @@ namespace DatenMeister.Uml.Plugin
             {
                 extentType = "Uml.Classes",
             };
-<<<<<<< HEAD
-            _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, classExtentView) as IElement);
-=======
 
-            _viewLogic.Add(ViewLocationType.Internal, classExtentView);
->>>>>>> views-for-typemanager
+            _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, classExtentView) as IElement);
         }
     }
 }

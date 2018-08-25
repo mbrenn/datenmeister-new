@@ -21,6 +21,7 @@
         /// </summary>
         public const string UriInternalViewExtent = "datenmeister:///management/views/internal";
 
+
         /// <summary>
         /// Defines the uri of the user views
         /// </summary>

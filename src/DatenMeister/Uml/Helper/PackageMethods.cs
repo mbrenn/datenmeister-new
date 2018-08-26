@@ -33,7 +33,7 @@ namespace DatenMeister.Uml.Helper
             IReflectiveCollection rootElements,
             string packagePath)
         {
-            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(((IHasExtent)rootElements).Extent);
+            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(((IHasExtent)rootElements).Extent, MetaRecursive.Recursively);
             return GetOrCreatePackageStructure(
                 rootElements,
                 new MofFactory(rootElements),

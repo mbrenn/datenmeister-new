@@ -103,6 +103,9 @@ namespace DatenMeister.Integration
             // Adds the view finder
             kernel.RegisterType<ViewFinderImpl>().As<IViewFinder>();
 
+            var pluginManager = new PluginManager();
+            kernel.RegisterInstance(pluginManager).As<PluginManager>();
+
             Modules.ZipExample.Integrate.Into(kernel);
 
             var builder = kernel.Build();
@@ -195,7 +198,7 @@ namespace DatenMeister.Integration
                 Modules.ZipExample.Integrate.Into(scope);
 
                 // Finally loads the plugin
-                PluginManager.StartPlugins(scope);
+                pluginManager.StartPlugins(scope);
             }
 
             watch.Stop();

@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSV\CSVExtentTests.cs" />
+    <Compile Include="DatenMeisterTests.cs" />
     <Compile Include="DotNet\DotNetExtentTests.cs" />
     <Compile Include="DotNet\DotNetTests.cs" />
     <Compile Include="Excel\ExcelTests.cs" />

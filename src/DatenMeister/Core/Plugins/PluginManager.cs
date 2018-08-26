@@ -7,8 +7,13 @@ using Autofac;
 
 namespace DatenMeister.Core.Plugins
 {
-    public static class PluginManager
+    public class PluginManager
     {
+        /// <summary>
+        /// Gets or sets va value indicating whtether at least one exception occured during the loading. 
+        /// </summary>
+        public bool NoExceptionDuringLoading { get; set; }
+
         public static void LoadAllAssembliesFromCurrentDirectory()
         {
             var directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -87,8 +92,9 @@ namespace DatenMeister.Core.Plugins
         /// Starts the plugins in all loaded assemblies by calling each class which has the implementation
         /// of the IDatenMeisterPlugin-Interface
         /// </summary>
-        /// <param name="kernel"></param>
-        public static void StartPlugins(ILifetimeScope kernel)
+        /// <param name="kernel">Dependency Kernel to be used</param>
+        /// <returns>true, if all plugins have been started without exception</returns>
+        public bool StartPlugins(ILifetimeScope kernel)
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -105,11 +111,20 @@ namespace DatenMeister.Core.Plugins
                         }
                         catch (Exception exc)
                         {
+
+                            NoExceptionDuringLoading = false;
                             Debug.WriteLine($"Failed plugin: {exc}");
+
+                            if (Debugger.IsAttached)
+                            {
+                                throw;
+                            }
                         }
                     }
                 }
             }
+
+            return NoExceptionDuringLoading;
         }
 
         /// <summary> 

@@ -9,6 +9,19 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Workspaces
 {
+    public enum MetaRecursive
+    {
+        /// <summary>
+        /// Indicates that only one meta extent shall be used to figure out whether a meta extent will be used
+        /// </summary>
+        JustOne, 
+
+        /// <summary>
+        /// Indicates that unlimited meta extents will be resolved to find the structure. 
+        /// </summary>
+        Recursively
+    }
+
     public static class WorkspaceExtensions
     {
         public static IObject FindElementByUri(this Workspace workspace, string uri)
@@ -47,10 +60,11 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>The instance of the type</returns>
         public static TFilledType GetFromMetaLayer<TFilledType>(
             this IWorkspaceLogic logic,
-            Workspace dataLayer)
+            Workspace dataLayer, 
+            MetaRecursive metaRecursive = MetaRecursive.JustOne)
             where TFilledType : class, new()
         {
-            return dataLayer.GetFromMetaWorkspace<TFilledType>();
+            return dataLayer.GetFromMetaWorkspace<TFilledType>(metaRecursive);
         }
 
         /// <summary>
@@ -62,11 +76,12 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>The instance of the type</returns>
         public static TFilledType GetFromMetaLayer<TFilledType>(
             this IWorkspaceLogic logic,
-            IExtent extent)
+            IExtent extent,
+            MetaRecursive metaRecursive = MetaRecursive.JustOne)
             where TFilledType : class, new()
         {
             var dataLayer = logic.GetWorkspaceOfExtent(extent);
-            return dataLayer.GetFromMetaWorkspace<TFilledType>();
+            return dataLayer.GetFromMetaWorkspace<TFilledType>(metaRecursive);
 
         }
 

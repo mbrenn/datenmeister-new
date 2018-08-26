@@ -168,17 +168,36 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <typeparam name="TFilledType">Property to be queried</typeparam>
         /// <returns>The property being queried</returns>
-        public TFilledType GetFromMetaWorkspace<TFilledType>()
+        public TFilledType GetFromMetaWorkspace<TFilledType>(MetaRecursive metaRecursive = MetaRecursive.JustOne)
             where TFilledType : class, new()
         {
             lock (SyncObject)
             {
-                foreach (var meta in MetaWorkspaces)
+                var open = new List<Workspace>(MetaWorkspaces);
+                var visited = new List<Workspace>();
+                while (open.Count > 0)
                 {
+                    var meta = open[0];
+                    open.RemoveAt(0);
+                    visited.Add(meta);
+
                     var result = meta.Get<TFilledType>();
                     if (result != null)
                     {
                         return result;
+                    }
+
+                    // Adds the meta workspaces of the meta workspace to the list to be analyzed
+                    if (metaRecursive == MetaRecursive.Recursively)
+                    {
+                        var newMetaWorkspaces = meta.MetaWorkspaces;
+                        foreach (var newMeta in newMetaWorkspaces)
+                        {
+                            if (!visited.Contains(newMeta))
+                            {
+                                open.Add(newMeta);
+                            }
+                        }
                     }
                 }
             }

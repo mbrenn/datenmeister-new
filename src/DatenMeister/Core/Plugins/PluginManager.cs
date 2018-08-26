@@ -104,20 +104,29 @@ namespace DatenMeister.Core.Plugins
                     // Checks, if one of the class implements the IDatenMeisterPlugin 
                     if (type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
                     {
-                        try
+                        if (Debugger.IsAttached)
                         {
+                            // When a debugger is attached, we are directly interested to figure out that an exception was thrown
                             Debug.WriteLine($"Starting plugin: {type.FullName}");
                             ((IDatenMeisterPlugin)kernel.Resolve(type)).Start();
                         }
-                        catch (Exception exc)
+                        else
                         {
-
-                            NoExceptionDuringLoading = false;
-                            Debug.WriteLine($"Failed plugin: {exc}");
-
-                            if (Debugger.IsAttached)
+                            try
                             {
-                                throw;
+                                Debug.WriteLine($"Starting plugin: {type.FullName}");
+                                ((IDatenMeisterPlugin) kernel.Resolve(type)).Start();
+                            }
+                            catch (Exception exc)
+                            {
+
+                                NoExceptionDuringLoading = false;
+                                Debug.WriteLine($"Failed plugin: {exc}");
+
+                                if (Debugger.IsAttached)
+                                {
+                                    throw;
+                                }
                             }
                         }
                     }

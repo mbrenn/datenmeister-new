@@ -22,6 +22,11 @@ namespace DatenMeisterWPF.Command
             return true;
         }
 
+        public void OnExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, null);
+        }
+
         /// <summary>
         /// Gets the currently selected element and copies it to the clipboard
         /// </summary>
@@ -65,6 +70,7 @@ namespace DatenMeisterWPF.Command
             Clipboard.SetText(builder.ToString());
         }
 
+        /// <summary>Tritt ein, wenn Änderungen auftreten, die sich auf die Ausführung des Befehls auswirken.</summary>
         public event EventHandler CanExecuteChanged;
     }
 }

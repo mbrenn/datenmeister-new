@@ -42,9 +42,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="receiver">Object which shall receive the dotnet value</param>
         /// <param name="value">Value to be set</param>
-        public static object Convert(MofUriExtent receiver, object value)
+        /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
+        public static object Convert(MofUriExtent receiver, object value, string requestedId = null)
         {
-            return new DotNetSetter(receiver).Convert(value);
+            return new DotNetSetter(receiver).Convert(value, requestedId);
         }
 
         /// <summary>
@@ -52,16 +53,18 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="receiver">Object which shall receive the dotnet value</param>
         /// <param name="value">Value to be set</param>
-        public static object Convert(IUriExtent receiver, object value)
+        /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
+        public static object Convert(IUriExtent receiver, object value, string requestedId = null)
         {
-            return Convert((MofUriExtent)receiver, value);
+            return Convert((MofUriExtent)receiver, value, requestedId);
         }
 
         /// <summary>
         /// Converts the given object and stores it into the receiver's method
         /// </summary>
         /// <param name="value"></param>
-        private object Convert(object value)
+        /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
+        private object Convert(object value, string requestedId = null)
         {
             if (DotNetHelper.IsOfPrimitiveType(value) || DotNetHelper.IsOfEnum(value))
             {
@@ -92,6 +95,10 @@ namespace DatenMeister.Core.EMOF.Implementation
             // After having the uri, create the required element
             var createdElement = _factory.create(
                 metaClassUri == null ? null : _extent.Resolve(metaClassUri, ResolveType.OnlyMetaClasses));
+            if (!string.IsNullOrEmpty(requestedId) && createdElement is ICanSetId canSetId)
+            {
+                canSetId.Id = requestedId;
+            }
 
             var type = value.GetType();
             foreach (var reflectedProperty in type.GetProperties(

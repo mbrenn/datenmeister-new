@@ -63,7 +63,7 @@ namespace DatenMeister.Uml.Plugin
             };
 
             _packageMethods.AddObjectToPackage(umlPackage,
-                DotNetSetter.Convert(viewExtent, umlListClassForm) as IElement);
+                DotNetSetter.Convert(viewExtent, umlListClassForm, "umlListClass") as IElement);
 
             // Creates the forms
             var umlDetailPropertyForm = new Form(
@@ -73,7 +73,7 @@ namespace DatenMeister.Uml.Plugin
                 new ReferenceFieldData(_UML._CommonStructure._TypedElement.type, "Type of Property"));
 
             _packageMethods.AddObjectToPackage(umlPackage,
-                DotNetSetter.Convert(viewExtent, umlDetailPropertyForm) as IElement);
+                DotNetSetter.Convert(viewExtent, umlDetailPropertyForm, "umlDetailProperty") as IElement);
 
             // Form for packages
             var umlListPackageForm = new Form(
@@ -89,7 +89,7 @@ namespace DatenMeister.Uml.Plugin
                 });
 
             _packageMethods.AddObjectToPackage(umlPackage,
-                DotNetSetter.Convert(viewExtent, umlListPackageForm) as IElement);
+                DotNetSetter.Convert(viewExtent, umlListPackageForm, "umlListPackage") as IElement);
 
             // Form for packages
             var umlDetailPackageForm = new Form(
@@ -105,7 +105,7 @@ namespace DatenMeister.Uml.Plugin
                 });
 
             _packageMethods.AddObjectToPackage(umlPackage,
-                DotNetSetter.Convert(viewExtent, umlDetailPackageForm) as IElement);
+                DotNetSetter.Convert(viewExtent, umlDetailPackageForm, "umlDetailPackage") as IElement);
 
             // Creates the default mappings
             var classView = new ViewAssociation(ViewType.Detail, umlListClassForm)

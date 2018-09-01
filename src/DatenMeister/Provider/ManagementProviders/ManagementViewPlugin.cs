@@ -11,9 +11,11 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.Uml.Plugin;
 
 namespace DatenMeister.Provider.ManagementProviders
 {
+    [PluginDependency(typeof(UmlPlugin))]
     public class ManagementViewPlugin : IDatenMeisterPlugin
     {
         private readonly ViewLogic _viewLogic;

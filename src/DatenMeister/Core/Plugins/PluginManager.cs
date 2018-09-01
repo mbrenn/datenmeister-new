@@ -114,40 +114,91 @@ namespace DatenMeister.Core.Plugins
                 }
             }
 
+            var lastCount = pluginList.Count;
             while (pluginList.Count != 0)
             {
-                var plugin = pluginList[0];
-
-                pluginList.Remove(plugin);
-
-                Debug.WriteLine($"Starting plugin: {plugin.GetType().FullName}");
-                if (Debugger.IsAttached)
+                // Go through the list and check which plugins can be loaded in current round
+                foreach (var plugin in pluginList.ToList())
                 {
-                    // When a debugger is attached, we are directly interested to figure out that an exception was thrown
-                    plugin.Start();
-                }
-                else
-                {
-                    try
+                    //
+                    // Checks whether the current plugin is dependent upon another non-loaded plugin
+                    var dependent = false;
+                    foreach (var dependencyType in GetPluginDependencies(plugin))
                     {
-                        plugin.Start();
-                    }
-                    catch (Exception exc)
-                    {
-
-                        NoExceptionDuringLoading = false;
-                        Debug.WriteLine($"Failed plugin: {exc}");
-
-                        if (Debugger.IsAttached)
+                        if (pluginList.Any(x => x.GetType() == dependencyType))
                         {
-                            throw;
+                            // The current plugin is dependent upon the current dependency
+                            dependent = true;
+                            break;
                         }
                     }
+
+                    if (dependent)
+                    {
+                        continue;
+                    }
+
+                    //
+                    // Now, start the plugin
+                    pluginList.Remove(plugin);
+
+                    Debug.WriteLine($"Starting plugin: {plugin.GetType().FullName}");
+                    if (Debugger.IsAttached)
+                    {
+                        // When a debugger is attached, we are directly interested to figure out that an exception was thrown
+                        plugin.Start();
+                    }
+                    else
+                    {
+                        try
+                        {
+                            plugin.Start();
+                        }
+                        catch (Exception exc)
+                        {
+
+                            NoExceptionDuringLoading = false;
+                            Debug.WriteLine($"Failed plugin: {exc}");
+
+                            if (Debugger.IsAttached)
+                            {
+                                throw;
+                            }
+                        }
+                    }
+                }
+
+                // Checks whether we have an endless loop in the plugin system
+                var currentCount = pluginList.Count;
+                if (currentCount == lastCount)
+                {
+                    throw new InvalidOperationException("Endless Loop in Plugin System");
                 }
             }
 
             return NoExceptionDuringLoading;
         }
+
+        /// <summary>
+        /// Gets the enumeration of Plugin Dependency Attributes upon the given plugin instance
+        /// </summary>
+        /// <param name="plugin">Instance which is queried</param>
+        /// <returns>The dependencies</returns>
+        private IEnumerable<PluginDependencyAttribute> GetPluginDependencyAttribute(IDatenMeisterPlugin plugin)
+        {
+            foreach (var attribute in plugin.GetType().GetCustomAttributes(typeof(PluginDependencyAttribute), false))
+            {
+                yield return (PluginDependencyAttribute) attribute;
+            }
+        }
+
+        /// <summary>
+        /// Gets the enumeration of Plugin Dependency Attributes upon the given plugin instance
+        /// </summary>
+        /// <param name="plugin">Instance which is queried</param>
+        /// <returns>The dependencies</returns>
+        private IEnumerable<Type> GetPluginDependencies(IDatenMeisterPlugin plugin) =>
+            GetPluginDependencyAttribute(plugin).Select(x => x.DependentType);
 
         /// <summary> 
         /// Gets true, if the given library is a dotnet library which  

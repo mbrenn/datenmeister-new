@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -96,6 +97,8 @@ namespace DatenMeister.Core.Plugins
         /// <returns>true, if all plugins have been started without exception</returns>
         public bool StartPlugins(ILifetimeScope kernel)
         {
+            var pluginList = new List<IDatenMeisterPlugin>();
+
             NoExceptionDuringLoading = true;
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -106,30 +109,38 @@ namespace DatenMeister.Core.Plugins
                     // Checks, if one of the class implements the IDatenMeisterPlugin 
                     if (type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
                     {
+                        pluginList.Add((IDatenMeisterPlugin) kernel.Resolve(type));
+                    }
+                }
+            }
+
+            while (pluginList.Count != 0)
+            {
+                var plugin = pluginList[0];
+
+                pluginList.Remove(plugin);
+
+                Debug.WriteLine($"Starting plugin: {plugin.GetType().FullName}");
+                if (Debugger.IsAttached)
+                {
+                    // When a debugger is attached, we are directly interested to figure out that an exception was thrown
+                    plugin.Start();
+                }
+                else
+                {
+                    try
+                    {
+                        plugin.Start();
+                    }
+                    catch (Exception exc)
+                    {
+
+                        NoExceptionDuringLoading = false;
+                        Debug.WriteLine($"Failed plugin: {exc}");
+
                         if (Debugger.IsAttached)
                         {
-                            // When a debugger is attached, we are directly interested to figure out that an exception was thrown
-                            Debug.WriteLine($"Starting plugin: {type.FullName}");
-                            ((IDatenMeisterPlugin)kernel.Resolve(type)).Start();
-                        }
-                        else
-                        {
-                            try
-                            {
-                                Debug.WriteLine($"Starting plugin: {type.FullName}");
-                                ((IDatenMeisterPlugin) kernel.Resolve(type)).Start();
-                            }
-                            catch (Exception exc)
-                            {
-
-                                NoExceptionDuringLoading = false;
-                                Debug.WriteLine($"Failed plugin: {exc}");
-
-                                if (Debugger.IsAttached)
-                                {
-                                    throw;
-                                }
-                            }
+                            throw;
                         }
                     }
                 }

@@ -29,6 +29,8 @@ namespace DatenMeister.Provider.ManagementProviders
         /// </summary>
         private readonly IWorkspaceLogic _workspaceLogic;
 
+        private readonly PackageMethods _packageMethods;
+
         /// <summary>
         /// Stores the name of the package
         /// </summary>
@@ -59,10 +61,11 @@ namespace DatenMeister.Provider.ManagementProviders
         /// </summary>
         /// <param name="viewLogic">View logic being used to find View Extent</param>
         /// <param name="workspaceLogic">Logic of the workspace</param>
-        public ManagementViewDefinitions(ViewLogic viewLogic, IWorkspaceLogic workspaceLogic)
+        public ManagementViewDefinitions(ViewLogic viewLogic, IWorkspaceLogic workspaceLogic, PackageMethods packageMethods)
         {
             _viewLogic = viewLogic;
             _workspaceLogic = workspaceLogic;
+            _packageMethods = packageMethods;
         }
 
         /// <summary>
@@ -203,8 +206,7 @@ namespace DatenMeister.Provider.ManagementProviders
             var package = _workspaceLogic.GetTypesWorkspace().extent.ElementAt(0).elements().ElementAt(0) as IObject;
 
             // Creates the package for "ManagementProvider" containing the views
-            var managementPackage = factory.create(null);
-            managementPackage.set("name", PackageName);
+            var umlPackage = _packageMethods.GetOrCreatePackageStructure(viewExtent.elements(), PackageName);
 
             var workspaceForm = GetWorkspaceListForm();
             var extentForm = GetExtentListForm();
@@ -250,9 +252,7 @@ namespace DatenMeister.Provider.ManagementProviders
                 extentFormDefaultView,
                 extentListView
             };
-
-            managementPackage.set(_UML._CommonStructure._Namespace.member, items);
-            viewExtent.elements().add(managementPackage);
+            _packageMethods.AddObjectsToPackage(umlPackage, items);
         }
     }
 }

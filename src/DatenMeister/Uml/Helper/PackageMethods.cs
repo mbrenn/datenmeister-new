@@ -147,10 +147,19 @@ namespace DatenMeister.Uml.Helper
             return found;
         }
 
-        public void AddObjectToPackage(IElement package, IObject element)
+        public void AddObjectToPackage(IElement package, object element)
         {
             var packagedElements = package.GetAsReflectiveCollection(_UML._Packages._Package.packagedElement);
             packagedElements.add(element);
+        }
+
+        public void AddObjectsToPackage(IElement package, IEnumerable<object> element)
+        {
+            var packagedElements = package.GetAsReflectiveCollection(_UML._Packages._Package.packagedElement);
+            foreach (var item in element)
+            {
+                packagedElements.add(item);
+            }
         }
     }
 }

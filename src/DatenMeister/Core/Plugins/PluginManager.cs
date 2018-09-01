@@ -96,6 +96,8 @@ namespace DatenMeister.Core.Plugins
         /// <returns>true, if all plugins have been started without exception</returns>
         public bool StartPlugins(ILifetimeScope kernel)
         {
+            NoExceptionDuringLoading = true;
+
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 // Go through all types and check, if the type has implemented the interface for the pluging 

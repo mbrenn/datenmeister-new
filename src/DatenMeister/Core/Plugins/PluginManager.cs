@@ -118,7 +118,7 @@ namespace DatenMeister.Core.Plugins
             while (pluginList.Count != 0)
             {
                 // Go through the list and check which plugins can be loaded in current round
-                foreach (var plugin in pluginList.ToList())
+                foreach (var plugin in pluginList.ToList().OrderBy(x=>x.GetType().FullName))
                 {
                     //
                     // Checks whether the current plugin is dependent upon another non-loaded plugin

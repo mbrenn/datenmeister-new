@@ -172,8 +172,9 @@ namespace DatenMeisterWPF.Forms.Base
                     break;
                 // Creates the view by creating the 'all Properties' view by parsing all the items
                 case ViewDefinitionMode.AllProperties:
-                case ViewDefinitionMode.Default:
                     result = viewFinder.CreateView(DetailItems);
+                    break;
+                case ViewDefinitionMode.Default:
                     break;
             }
 

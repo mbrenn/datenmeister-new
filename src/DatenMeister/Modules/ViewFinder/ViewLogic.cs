@@ -21,7 +21,10 @@ namespace DatenMeister.Modules.ViewFinder
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ViewLogic
     {
-
+        /// <summary>
+        /// Stores the type of the extent containing the views 
+        /// </summary>
+        public const string ViewExtentType = "DatenMeister.Views";
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentCreator _extentCreator;
 
@@ -40,14 +43,14 @@ namespace DatenMeister.Modules.ViewFinder
 
             // Creates the internal views for the DatenMeister
             var dotNetUriExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriInternalViewExtent);
-            dotNetUriExtent.SetExtentType("DatenMeister.Views");
+            dotNetUriExtent.SetExtentType(ViewExtentType);
             _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
 
             _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
                 WorkspaceNames.NameManagement,
                 WorkspaceNames.UriUserViewExtent,
                 "DatenMeister.Views_User",
-                "DatenMeister.Views"
+                ViewExtentType
             );
         }
 
@@ -178,7 +181,7 @@ namespace DatenMeister.Modules.ViewFinder
 
             return internalViewExtent.elements()
                 .Union(userViewExtent.elements())
-                .GetAllDescendants(new[] { _UML._CommonStructure._Namespace.member })
+                .GetAllDescendants(new[] { _UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement })
                 .WhenMetaClassIsOneOf(formAndFields.__ViewAssociation);
         }
 

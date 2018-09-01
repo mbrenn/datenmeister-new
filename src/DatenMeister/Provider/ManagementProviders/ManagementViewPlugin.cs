@@ -181,6 +181,16 @@ namespace DatenMeister.Provider.ManagementProviders
                 }
             );
 
+            var extentPackageView  = factory.create(formAndFields.__ViewAssociation);
+            extentPackageView.SetProperties(
+                new Dictionary<string, object>
+                {
+                    [_FormAndFields._ViewAssociation.extentType] = ViewLogic.ViewExtentType,
+                    [_FormAndFields._ViewAssociation.view] = viewExtent.element("#umlListPackage"),
+                    [_FormAndFields._ViewAssociation.viewType] = ViewType.List
+                });
+            
+
             var items = new List<IElement>
             {
                 workspaceForm,
@@ -189,7 +199,8 @@ namespace DatenMeister.Provider.ManagementProviders
                 GetNewWorkspaceDetail(),
                 workspaceFormDefaultView,
                 extentFormDefaultView,
-                extentListView
+                extentListView,
+                extentPackageView
             };
             _packageMethods.AddObjectsToPackage(umlPackage, items);
         }

@@ -128,7 +128,7 @@ namespace DatenMeister.Uml.Plugin
             };
             _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, propertyView) as IElement);
 
-            var classExtentView = new ViewAssociation(ViewType.Detail, umlListClassForm)
+            var classExtentView = new ViewAssociation(ViewType.List, umlListClassForm)
             {
                 extentType = "Uml.Classes",
             };

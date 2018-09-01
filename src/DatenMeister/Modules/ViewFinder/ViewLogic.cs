@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -21,6 +22,10 @@ namespace DatenMeister.Modules.ViewFinder
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ViewLogic
     {
+        /// <summary>
+        /// Stores a debug variable that can be used to extent the debugging of view retrieval process.
+        /// </summary>
+        private const bool ActivateDebuggingForViewRetrieval = true;
         /// <summary>
         /// Stores the type of the extent containing the views 
         /// </summary>
@@ -248,15 +253,17 @@ namespace DatenMeister.Modules.ViewFinder
             IElement metaClass)
         {
             var viewExtent = GetInternalViewExtent();
-            var formAndFields = GetFormAndFieldInstance(viewExtent);
 
             var foundPoints = 0;
             IElement foundView = null;
+            var viewAssociations = GetAllViewAssociations().Select(x=> x as IElement).ToList();
+            InternalDebug("---");
+            InternalDebug("# of ViewAssociations: " + viewAssociations.Count);
 
             foreach (
-                var element in GetAllViewAssociations().
-                    Select(x => x as IElement))
+                var element in viewAssociations)
             {
+                InternalDebug("-");
                 var points = 0;
                 if (element == null) throw new NullReferenceException("element");
 
@@ -266,7 +273,6 @@ namespace DatenMeister.Modules.ViewFinder
                 var innerViewType = (ViewType) (element.getOrDefault(_FormAndFields._ViewAssociation.viewType) ?? ViewType.Detail);
 
                 var innerView = element.getOrDefault(_FormAndFields._ViewAssociation.view) as IElement;
-
                 var isMatching = true;
 
                 // Now go through each property and get the points
@@ -274,10 +280,12 @@ namespace DatenMeister.Modules.ViewFinder
                 {
                     if (extentType == innerExtentType)
                     {
+                        InternalDebug("-- MATCH: ExtentType: " + extentType + ", ViewAssociation ExtentType: " + innerExtentType );
                         points++;
                     }
                     else
                     {
+                        InternalDebug("-- NO MATCH: ExtentType: " + extentType + ", ViewAssociation ExtentType: " + innerExtentType );
                         isMatching = false;
                     }
                 }
@@ -286,10 +294,12 @@ namespace DatenMeister.Modules.ViewFinder
                 {
                     if (metaClassName == innerMetaClassName)
                     {
+                        InternalDebug("-- MATCH: metaClassName: " + metaClassName + ", ViewAssociation innerMetaClassName: " + innerMetaClassName);
                         points++;
                     }
                     else
                     {
+                        InternalDebug("-- NO MATCH: metaClassName: " + metaClassName + ", ViewAssociation innerMetaClassName: " + innerMetaClassName);
                         isMatching = false;
                     }
                 }
@@ -298,18 +308,29 @@ namespace DatenMeister.Modules.ViewFinder
                 {
                     if (metaClass == innerMetaClass)
                     {
+                        InternalDebug("-- MATCH: metaClass: " + UmlNameResolution.GetName(metaClass) +
+                                      ", ViewAssociation innerMetaClass: " + UmlNameResolution.GetName(innerMetaClass));
                         points++;
                     }
                     else
                     {
+                        InternalDebug("-- NO MATCH: metaClass: " + UmlNameResolution.GetName(metaClass) +
+                                      ", ViewAssociation innerMetaClass: " + UmlNameResolution.GetName(innerMetaClass));
                         isMatching = false;
                     }
                 }
 
                 if (viewType != innerViewType)
                 {
+                    InternalDebug("-- NO MATCH: viewType: " + viewType + ", ViewAssociation viewType: " + innerViewType);
                     isMatching = false;
                 }
+                else
+                {
+                    InternalDebug("-- MATCH: viewType: " + viewType + ", ViewAssociation viewType: " + innerViewType);
+                }
+
+                InternalDebug("-- Points: " + points + ", Matched" + isMatching);
                 
                 // The matching view with the maximum points win
                 if (isMatching)
@@ -318,11 +339,28 @@ namespace DatenMeister.Modules.ViewFinder
                     {
                         foundPoints = points;
                         foundView = innerView;
+
+                        InternalDebug("-- Selected!");
                     }
                 }
             }
 
             return foundView;
+        }
+
+        /// <summary>
+        /// Writes the information to the debugger, if the ActivateDebuggingForViewRetrieval is configured as true
+        /// </summary>
+        /// <param name="s"></param>
+        private void InternalDebug(string s)
+        {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            if (ActivateDebuggingForViewRetrieval)
+#pragma warning disable 162
+            {
+                Debug.WriteLine(s);
+            }
+#pragma warning restore 162
         }
 
         /// <summary>

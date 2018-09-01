@@ -25,7 +25,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Stores a debug variable that can be used to extent the debugging of view retrieval process.
         /// </summary>
-        private const bool ActivateDebuggingForViewRetrieval = true;
+        private const bool ActivateDebuggingForViewRetrieval = false;
         /// <summary>
         /// Stores the type of the extent containing the views 
         /// </summary>
@@ -170,7 +170,7 @@ namespace DatenMeister.Modules.ViewFinder
 
             return internalViewExtent.elements()
                     .Union(userViewExtent.elements())
-                .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member})
+                .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement })
                 .WhenMetaClassIsOneOf(formAndFields.__Form, formAndFields.__DetailForm, formAndFields.__ListForm);
         }
 
@@ -252,8 +252,6 @@ namespace DatenMeister.Modules.ViewFinder
             string metaClassName,
             IElement metaClass)
         {
-            var viewExtent = GetInternalViewExtent();
-
             var foundPoints = 0;
             IElement foundView = null;
             var viewAssociations = GetAllViewAssociations().Select(x=> x as IElement).ToList();

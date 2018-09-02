@@ -32,11 +32,11 @@ using Microsoft.Win32;
 namespace DatenMeisterWPF.Forms.Base
 {
     /// <summary>
-    /// Interaktionslogik für ListViewControl.xaml
+    /// Interaktionslogik für ItemListViewControl.xaml
     /// </summary>
-    public partial class ListViewControl : UserControl, INavigationGuest, IHasSelectedItems
+    public partial class ItemListViewControl : UserControl, INavigationGuest, IHasSelectedItems
     {
-        public ListViewControl()
+        public ItemListViewControl()
         {
             InitializeComponent();
             CopyCommand = new CopyToClipboardCommand(this);
@@ -48,14 +48,14 @@ namespace DatenMeisterWPF.Forms.Base
         /// Defines the property being used to indicate whether the tree containing the subelements is visible
         /// </summary>
         public static readonly DependencyProperty IsTreeVisibleProperty = DependencyProperty.Register(
-            "IsTreeVisible", typeof(bool), typeof(ListViewControl),
+            "IsTreeVisible", typeof(bool), typeof(ItemListViewControl),
             new PropertyMetadata(default(bool), OnIsTreeVisibleChanged));
 
         private static void OnIsTreeVisibleChanged(
             DependencyObject dependencyObject,
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var listViewControl = (ListViewControl) dependencyObject;
+            var listViewControl = (ItemListViewControl) dependencyObject;
             listViewControl.UpdateTreeViewVisibility();
         }
 

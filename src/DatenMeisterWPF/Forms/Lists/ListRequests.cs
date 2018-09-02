@@ -17,7 +17,7 @@ namespace DatenMeisterWPF.Forms.Lists
         /// </summary>
         /// <param name="listViewControl">List view to which the item shall be added</param>
         /// <returns>Requested form</returns>
-        internal static IElement RequestFormForWorkspaces(ListViewControl listViewControl)
+        internal static IElement RequestFormForWorkspaces(ItemListViewControl listViewControl)
         {
             // Finds the view
             var viewLogic = App.Scope.Resolve<ViewLogic>();
@@ -67,7 +67,7 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <param name="listViewControl">The list view being used as host for the form</param>
         /// <param name="workspaceId">The Id of the workspace</param>
         /// <returns>The created form</returns>
-        internal static IElement RequestFormForExtents(ListViewControl listViewControl, string workspaceId)
+        internal static IElement RequestFormForExtents(ItemListViewControl listViewControl, string workspaceId)
         {
             var viewExtent = App.Scope.Resolve<ViewLogic>().GetInternalViewExtent();
             var result =

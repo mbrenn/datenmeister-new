@@ -16,7 +16,7 @@ using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
-    public class ExtentList : ListViewControl, INavigationGuest
+    public class ExtentList : ItemListViewControl, INavigationGuest
     {
         /// <summary>
         /// Initializes a new instance of the ExtentList class

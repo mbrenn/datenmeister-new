@@ -24,28 +24,28 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="DatenMeisterWPF.Forms.Base.ListViewControl">
+  <Class Name="DatenMeisterWPF.Forms.Base.ItemListViewControl">
     <Position X="0.5" Y="0.5" Width="3.5" />
     <NestedTypes>
-      <Enum Name="DatenMeisterWPF.Forms.Base.ListViewControl.ButtonPosition" Collapsed="true">
+      <Enum Name="DatenMeisterWPF.Forms.Base.ItemListViewControl.ButtonPosition" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>Forms\Base\ListViewControl.xaml.cs</NewMemberFileName>
+          <NewMemberFileName>Forms\Base\ItemListViewControl.xaml.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
-      <Class Name="DatenMeisterWPF.Forms.Base.ListViewControl.RowItemButtonDefinition" Collapsed="true">
+      <Class Name="DatenMeisterWPF.Forms.Base.ItemListViewControl.RowItemButtonDefinition" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>Forms\Base\ListViewControl.xaml.cs</NewMemberFileName>
+          <NewMemberFileName>Forms\Base\ItemListViewControl.xaml.cs</NewMemberFileName>
         </TypeIdentifier>
       </Class>
-      <Class Name="DatenMeisterWPF.Forms.Base.ListViewControl.ClickedTemplateColumn" Collapsed="true">
+      <Class Name="DatenMeisterWPF.Forms.Base.ItemListViewControl.ClickedTemplateColumn" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>Forms\Base\ListViewControl.xaml.cs</NewMemberFileName>
+          <NewMemberFileName>Forms\Base\ItemListViewControl.xaml.cs</NewMemberFileName>
         </TypeIdentifier>
       </Class>
     </NestedTypes>
     <TypeIdentifier>
       <HashCode>AKIAAQAAgAIAKsAEUICJAAAIIAAEaGkAoRAAkBICAQA=</HashCode>
-      <FileName>Forms\Base\ListViewControl.xaml.cs</FileName>
+      <FileName>Forms\Base\ItemListViewControl.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

@@ -15,7 +15,7 @@ using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
-    public class WorkspaceList : ListViewControl, INavigationGuest
+    public class WorkspaceList : ItemListViewControl, INavigationGuest
     {
         public WorkspaceList()
         {

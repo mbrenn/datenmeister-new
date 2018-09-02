@@ -71,7 +71,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             }
             else
             {
-                var listViewControl = new ListViewControl
+                var listViewControl = new ItemListViewControl
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     MaxHeight = 500,
@@ -81,7 +81,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 listViewControl.AddRowItemButton(
                     "Edit",
                     item => NavigatorForItems.NavigateToElementDetailView(detailForm.NavigationHost, item),
-                    ListViewControl.ButtonPosition.Before);
+                    ItemListViewControl.ButtonPosition.Before);
                 listViewControl.SetFormDefinition(form);
                 listViewControl.SetContent(valueOfElement);
                 panel.Children.Add(listViewControl);

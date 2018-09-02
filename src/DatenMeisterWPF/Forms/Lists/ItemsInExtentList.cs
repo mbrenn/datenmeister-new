@@ -25,7 +25,7 @@ using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
-    public class ItemsInExtentList : ListViewControl, INavigationGuest
+    public class ItemsInExtentList : ItemListViewControl, INavigationGuest
     {
         private IExtent _extent;
 

@@ -61,7 +61,7 @@ namespace DatenMeisterWPF.Navigation
             {
                 case null:
                     return null;
-                case ListViewControl asListViewControl:
+                case ItemListViewControl asListViewControl:
                 {
                     var listFormWindow = new ListFormWindow
                     {

@@ -4,19 +4,16 @@ using System.Windows.Documents;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
-    public class ExtentList : ItemListViewControl, INavigationGuest
+    public class ExtentList : ItemExplorerControl
     {
         /// <summary>
         /// Initializes a new instance of the ExtentList class
@@ -36,14 +33,6 @@ namespace DatenMeisterWPF.Forms.Lists
         /// </summary>
         public string WorkspaceId { get; set; }
 
-        protected override IElement RequestFormOverride(IElement selectedForm)
-        {
-            var workspaceId = WorkspaceId;
-            var listViewControl = this;
-
-            return ListRequests.RequestFormForExtents(listViewControl, workspaceId);
-        }
-
         /// <summary>
         /// Shows the workspaces of the DatenMeister
         /// </summary>
@@ -55,7 +44,12 @@ namespace DatenMeisterWPF.Forms.Lists
             var workspace = workspaceExtent.elements().WhenPropertyHasValue("id", workspaceId).FirstOrDefault() as IElement;
 
             var extents = workspace?.get("extents") as IReflectiveSequence;
-            SetContent(extents);
+
+            var uiElement = AddTab(
+                extents, 
+                new ViewDefinition("Workspaces", ListRequests.RequestFormForExtents()));
+
+            ListRequests.AddButtonsForExtents(uiElement.Control, workspaceId);
         }
 
         /// <summary>

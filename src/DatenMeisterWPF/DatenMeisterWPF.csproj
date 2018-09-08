@@ -89,12 +89,10 @@
       <DependentUpon>DetailFormControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Base\IHasSelectedItems.cs" />
-    <Compile Include="Forms\Base\ItemCollectionViewControl.xaml.cs">
-      <DependentUpon>ItemCollectionViewControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Base\ItemExplorerControl.xaml.cs">
       <DependentUpon>ItemExplorerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Base\ItemExplorerTab.cs" />
     <Compile Include="Forms\Base\ItemsTreeView.xaml.cs">
       <DependentUpon>ItemsTreeView.xaml</DependentUpon>
     </Compile>
@@ -156,10 +154,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Base\DetailFormControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\Base\ItemCollectionViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

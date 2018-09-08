@@ -3,10 +3,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using Autofac;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base;
@@ -15,7 +15,7 @@ using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
-    public class WorkspaceList : ItemListViewControl, INavigationGuest
+    public class WorkspaceList : ItemExplorerControl, INavigationGuest
     {
         public WorkspaceList()
         {
@@ -27,28 +27,34 @@ namespace DatenMeisterWPF.Forms.Lists
             SetContent();
         }
 
-        protected override IElement RequestFormOverride(IElement selectedForm)
-        {
-            var selectedItemMetaClass = (DetailItem as IElement)?.getMetaClass();
-            if (selectedItemMetaClass != null
-                && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
-            {
-                return ListRequests.RequestFormForExtents(this, DetailItem.get("id")?.ToString());
-            }
-            else
-            {
-                return ListRequests.RequestFormForWorkspaces(this);
-            }
-        }
-
         /// <summary>
         /// Shows the workspaces of the DatenMeister
         /// </summary>
         public void SetContent()
         {
+            IElement view;
+            var viewExtent = App.Scope.Resolve<ViewLogic>().GetInternalViewExtent();
+            
+            var selectedItemMetaClass = (SelectedPackage as IElement)?.getMetaClass();
+            Action<ItemExplorerTab> afterAction = null;
+            if (selectedItemMetaClass != null
+                && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
+            {
+                view = ListRequests.RequestFormForExtents();
+                afterAction = x => ListRequests.AddButtonsForExtents(x.Control, SelectedPackage.get("id")?.ToString());
+            }
+            else
+            {
+                view = ListRequests.RequestFormForWorkspaces();
+                afterAction = x => ListRequests.AddButtonsForWorkspaces(x.Control);
+            }
+
             // Sets the workspaces
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);
-            SetContent(workspaceExtent.elements());
+            var element = AddTab(
+                workspaceExtent.elements(),
+                new ViewDefinition("Workspaces", view));
+            afterAction(element);
         }
 
         public new void PrepareNavigation()

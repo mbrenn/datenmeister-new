@@ -34,7 +34,7 @@ namespace DatenMeisterWPF.Forms.Base
     /// <summary>
     /// Interaktionslogik für ItemListViewControl.xaml
     /// </summary>
-    public partial class ItemListViewControl : UserControl, INavigationGuest, IHasSelectedItems
+    public partial class ItemListViewControl : UserControl, IHasSelectedItems
     {
         public ItemListViewControl()
         {
@@ -43,39 +43,6 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         public ICommand CopyCommand { get; set; }
-
-        /// <summary>
-        /// Defines the property being used to indicate whether the tree containing the subelements is visible
-        /// </summary>
-        public static readonly DependencyProperty IsTreeVisibleProperty = DependencyProperty.Register(
-            "IsTreeVisible", typeof(bool), typeof(ItemListViewControl),
-            new PropertyMetadata(default(bool), OnIsTreeVisibleChanged));
-
-        private static void OnIsTreeVisibleChanged(
-            DependencyObject dependencyObject,
-            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            var listViewControl = (ItemListViewControl) dependencyObject;
-            listViewControl.UpdateTreeViewVisibility();
-        }
-
-        private void UpdateTreeViewVisibility()
-        {
-            var newValue = IsTreeVisible;
-            MainGrid.ColumnDefinitions[0].Width =
-                new GridLength(newValue ? Math.Round(ActualWidth / 4.0) : 0);
-            MainGrid.ColumnDefinitions[1].Width =
-                new GridLength(newValue ? 5 : 0);
-        }
-
-        /// <summary>
-        /// Gets or sets a value whether the treeview shall be visible. 
-        /// </summary>
-        public bool IsTreeVisible
-        {
-            get => (bool) GetValue(IsTreeVisibleProperty);
-            set => SetValue(IsTreeVisibleProperty, value);
-        }
 
         /// <summary>
         /// Gets or sets the host for the list view item. The navigation
@@ -88,17 +55,6 @@ namespace DatenMeisterWPF.Forms.Base
         /// not be modified, even if the user clicks on the navigation tree. 
         /// </summary>
         protected IReflectiveCollection Items { get; set; }
-        
-        /// <summary>
-        /// Defines the item that the user currently has selected ont the object tree
-        /// </summary>
-        protected IObject DetailItem { get; set; }
-
-        /// <summary>
-        /// Gets or sets the items to be shown in the detail view. Usually, they are the same as the items.
-        /// If the user clicks on the navigation tree, a subview of the items may be shown
-        /// </summary>
-        protected IReflectiveCollection DetailItems { get; set; }
 
         private readonly IDictionary<ExpandoObject, IObject> _itemMapping = new Dictionary<ExpandoObject, IObject>();
 
@@ -116,9 +72,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// Defines the current form definition of the window as provided by the
         /// derived method 'RequestForm'.
         /// </summary>
-        protected IElement CurrentFormDefinition;
-
-        protected ViewDefinition ViewDefinition;
+        public IElement CurrentFormDefinition { get; set; }
 
         private List<IElement> _packagingElements = new List<IElement>();
 
@@ -134,73 +88,17 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Updates the content by going through the fields and items
         /// </summary>
-        public void SetContent(IReflectiveSequence items)
+        public void SetContent(IReflectiveCollection items)
         {
             Items = items;
-            DetailItems = Items;
-            ViewDefinition = new ViewDefinition(ViewDefinitionMode.Default);
-
-            UpdateViewList();
-            UpdateContent();
-            UpdateTreeContent();
-        }
-
-        public void SetFormDefinition(IElement formDefinition)
-        {
-            ViewDefinition = new ViewDefinition(
-                null,
-                formDefinition,
-                ViewDefinitionMode.Specific);
-        }
-
-        /// <summary>
-        /// Gets the actual view of the form. If there is no overridden or specific view
-        /// the derived classes will be asked to create or update the current view
-        /// </summary>
-        /// <returns></returns>
-        private IElement GetActualView()
-        {
-            RemoveViewButtons();
-            var viewFinder = App.Scope.Resolve<IViewFinder>();
-            IElement result = null;
-
-            switch (ViewDefinition.Mode)
-            {
-                // Used, when an external function requires a specific view mode
-                case ViewDefinitionMode.Specific:
-                    result = ViewDefinition.Element;
-                    break;
-                // Creates the view by creating the 'all Properties' view by parsing all the items
-                case ViewDefinitionMode.AllProperties:
-                    result = viewFinder.CreateView(DetailItems);
-                    break;
-                case ViewDefinitionMode.Default:
-                    break;
-            }
-
-            // Give the derived class a chance to update the view according to its own
-            // interests
-            result = RequestFormOverride(result);
-
-            if (result == null)
-            {
-                // Nothing was found... so, create your default list lsit. 
-                result = viewFinder.CreateView(DetailItems);
-            }
             
-            return result;
+            UpdateContent();
         }
 
         private void RemoveViewButtons()
         {
             ButtonBar.Children.Clear();
             _rowItemButtonDefinitions.Clear();
-        }
-
-        private void UpdateTreeContent()
-        {
-            NavigationTreeView.SetDefaultProperties();
-            NavigationTreeView.ItemsSource = Items;
         }
 
         /// <summary>
@@ -236,52 +134,6 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
-        /// Requests the form for the currently selected element.
-        /// Per default, the form is created out of auto-generated columns depending on elements
-        /// </summary>
-        /// <returns></returns>
-        protected virtual IElement RequestFormOverride(IElement selectedForm)
-        {
-            return selectedForm;        }
-
-        /// <summary>
-        /// This method gets called to update the views
-        /// </summary>
-        private void UpdateViewList()
-        {
-            // Update view
-            var views = GetFormsForView()?.ToList();
-            if (views != null)
-            {
-                ViewList.Visibility = Visibility.Visible;
-                var list = new List<ViewDefinition>
-                {
-                    new ViewDefinition("Default", null, ViewDefinitionMode.Default),
-                    new ViewDefinition("All Properties", null, ViewDefinitionMode.AllProperties)
-                };
-                list.AddRange(views.Select(x => new ViewDefinition(NamedElementMethods.GetFullName(x), x)));
-                ViewList.ItemsSource = list;
-
-                switch (ViewDefinition.Mode)
-                {
-                    case ViewDefinitionMode.AllProperties:
-                        ViewList.SelectedIndex = 1;
-                        break;
-                    case ViewDefinitionMode.Default:
-                        ViewList.SelectedIndex = 0;
-                        break;
-                    default:
-                        ViewList.SelectedIndex = 2 + views.IndexOf(CurrentFormDefinition);
-                        break;
-                }
-            }
-            else
-            {
-                ViewList.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        /// <summary>
         /// Updates the content of the list by recreating the columns and rows
         /// of the items.
         /// This method is called, when the used clicks on the left side or
@@ -293,8 +145,6 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 throw new InvalidOperationException("NOT ALLOWED");
             }
-
-            CurrentFormDefinition = GetActualView();
 
             SupportNewItems =
                 !DotNetHelper.AsBoolean(CurrentFormDefinition.getOrDefault(_FormAndFields._Form.inhibitNewItems));
@@ -311,16 +161,16 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             // Creates the rowns
-            if (DetailItems != null)
+            if (Items != null)
             {
                 // Get the items and honor searching
-                var items = DetailItems.OfType<IObject>();
+                var items = Items.OfType<IObject>();
                 if (!string.IsNullOrEmpty(_searchText))
                 {
                     var columnNames = fields.OfType<IElement>()
                         .Select(x => x.get("name")?.ToString())
                         .Where(x => x != null);
-                    items = DetailItems.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
+                    items = Items.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
                 }
 
                 // Go through the items and build up the list of elements
@@ -397,17 +247,6 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             DataGrid.ItemsSource = listItems;
-        }
-
-        private void ViewList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!(ViewList.SelectedItem is ViewDefinition newForm))
-            {
-                return;
-            }
-
-            ViewDefinition = newForm;
-            UpdateContent();
         }
 
         /// <summary>
@@ -564,23 +403,6 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
-        /// Clears the infolines
-        /// </summary>
-        public void ClearInfoLines()
-        {
-            InfoLines.Children.Clear();
-        }
-
-        /// <summary>
-        /// Adds an infoline to the window
-        /// </summary>
-        /// <param name="element">Element to be added</param>
-        public void AddInfoLine(UIElement element)
-        {
-            InfoLines.Children.Add(element);
-        }
-
-        /// <summary>
         /// Adds a button for a row item
         /// </summary>
         /// <param name="name">Name of the button</param>
@@ -654,8 +476,6 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 button.Content = column.Header.ToString();
             }
-
-            UpdateTreeViewVisibility();
         }
 
         private void SearchField_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -670,15 +490,13 @@ namespace DatenMeisterWPF.Forms.Base
         public void PrepareNavigation()
         {
             // Clears the info lines
-            ClearInfoLines();
-
             void ViewExtent()
             {
                 var dlg = new ItemXmlViewWindow
                 {
                     Owner = Window.GetWindow(this)
                 };
-                dlg.UpdateContent(DetailItems);
+                dlg.UpdateContent(Items);
                 dlg.ShowDialog();
             }
 
@@ -729,7 +547,7 @@ namespace DatenMeisterWPF.Forms.Base
                         var memoryProvider = new InMemoryProvider();
                         var temporary = new MofUriExtent(memoryProvider, "datenmeister:///temp");
                         var copier = new ExtentCopier(new MofFactory(temporary));
-                        copier.Copy(DetailItems, temporary.elements());
+                        copier.Copy(Items, temporary.elements());
 
                         loader.Save(
                             memoryProvider,
@@ -850,34 +668,8 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             if (_itemMapping.TryGetValue(selectedItem, out var foundItem))
-            {
-                OnMouseDoubleClick(foundItem);
-            }
-        }
-
-        public virtual void OnMouseDoubleClick(IObject element)
-        {
-            NavigateToElement(element);
-        }
-
-        private void NavigationTreeView_OnItemChosen(object sender, ItemEventArgs e)
-        {
-            NavigateToElement(e.Item);
-        }
-
-        private void NavigationTreeView_OnItemSelected(object sender, ItemEventArgs e)
-        {
-            DetailItem = e.Item;
-            if (e.Item != null)
-            {
-                DetailItems = new PropertiesAsReflectiveCollection(e.Item);
-                UpdateContent();
-            }
-            else
-            {
-                // When user has selected the root element or no other item, all items are shown
-                DetailItems = Items;
-                UpdateContent();
+            {   
+                // OnMouseDoubleClick(foundItem);
             }
         }
 

@@ -17,7 +17,6 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
@@ -25,7 +24,7 @@ using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
-    public class ItemsInExtentList : ItemListViewControl, INavigationGuest
+    public class ItemsInExtentList : ItemExplorerControl, INavigationGuest
     {
         private IExtent _extent;
 
@@ -42,84 +41,6 @@ namespace DatenMeisterWPF.Forms.Lists
             SetContent(WorkspaceId, ExtentUrl);
         }
 
-        /// <inheritdoc />
-        /// <summary>
-        /// Gets the enumeration of all views that may match to the shown items
-        /// </summary>
-        protected override IEnumerable<IElement> GetFormsForView()
-        {
-            return App.Scope.Resolve<IViewFinder>().FindViews((Items as IHasExtent)?.Extent as IUriExtent, null);
-        }
-
-        protected override IElement RequestFormOverride(IElement selectedForm)
-        {
-            var viewFinder = App.Scope.Resolve<IViewFinder>();
-            
-            if (selectedForm == null)
-            {
-                // Nobody selected a form, so we can autocreate a new form
-                if (Items == DetailItems)
-                {
-                    // Finds the view by the extent type
-                    selectedForm = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
-
-                }
-                else
-                {
-                    // User has selected a sub element. 
-                    selectedForm =
-                        viewFinder.FindListViewFor((DetailItems as MofReflectiveSequence)?.MofObject);
-                }
-            }
-
-            // Sets the generic buttons to create the new types
-            if (selectedForm?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
-                is IReflectiveCollection defaultTypesForNewItems)
-            {
-                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
-                {
-                    var typeName = type.get(_UML._CommonStructure._NamedElement.name);
-                    AddGenericButton($"New {typeName}", () =>
-                    {
-                        var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
-                        elements.Closed += (x, y) =>
-                        {
-                            UpdateContent();
-                        };
-                    });
-                }
-            }
-            
-            // Sets the button for the new item
-            AddGenericButton("New Item", () =>
-            {
-                var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
-                elements.Closed += (x, y) =>
-                {
-                    UpdateContent();
-                };
-            });
-
-            // Adds the default button
-            AddDefaultButtons();
-
-            // Allows the deletion of an item
-            AddRowItemButton(
-                "Delete",
-                item =>
-                {
-                    if (MessageBox.Show(
-                            "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
-                        MessageBoxResult.Yes)
-                    {
-                        _extent.elements().remove(item);
-                        SetContent(_extent.elements());
-                    }
-                });
-
-            return selectedForm;
-        }
-
         /// <summary>
         /// Sets the items of the given extent
         /// </summary>
@@ -129,6 +50,21 @@ namespace DatenMeisterWPF.Forms.Lists
         {
             WorkspaceId = workspaceId;
             ExtentUrl = extentUrl;
+            var viewFinder = App.Scope.Resolve<IViewFinder>();
+
+            IElement view = null;
+                // Nobody selected a form, so we can autocreate a new form
+            if (Items == DetailItems)
+            {
+                // Finds the view by the extent type
+                view = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
+            }
+            else
+            {
+                // User has selected a sub element. 
+                view =
+                    viewFinder.FindListViewFor((DetailItems as MofReflectiveSequence)?.MofObject);
+            }
             var workLogic = App.Scope.Resolve<IWorkspaceLogic>();
             workLogic.FindExtentAndWorkspace(workspaceId, extentUrl, out var workspace, out _extent);
             if (_extent == null)
@@ -137,7 +73,56 @@ namespace DatenMeisterWPF.Forms.Lists
                 return;
             }
 
-            SetContent(_extent.elements());
+            var element = AddTab(
+                _extent.elements(),
+                new ViewDefinition(
+                    "Extent",
+                    view));
+            
+            // Sets the generic buttons to create the new types
+            if (view?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
+                is IReflectiveCollection defaultTypesForNewItems)
+            {
+                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
+                {
+                    var typeName = type.get(_UML._CommonStructure._NamedElement.name);
+                    element.Control.AddGenericButton($"New {typeName}", () =>
+                    {
+                        var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
+                        elements.Closed += (x, y) =>
+                        {
+                            UpdateContent();
+                        };
+                    });
+                }
+            }
+
+            // Sets the button for the new item
+            element.Control.AddGenericButton("New Item", () =>
+            {
+                var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
+                elements.Closed += (x, y) =>
+                {
+                    UpdateContent();
+                };
+            });
+
+            // Adds the default button
+            element.Control.AddDefaultButtons();
+
+            // Allows the deletion of an item
+            element.Control.AddRowItemButton(
+                "Delete",
+                item =>
+                {
+                    if (MessageBox.Show(
+                            "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
+                        MessageBoxResult.Yes)
+                    {
+                        _extent.elements().remove(item);
+                        element.Control.UpdateContent();
+                    }
+                });
         }
 
         /// <summary>

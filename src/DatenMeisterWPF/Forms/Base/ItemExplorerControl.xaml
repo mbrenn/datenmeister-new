@@ -6,7 +6,25 @@
              xmlns:local="clr-namespace:DatenMeisterWPF.Forms.Base"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+    <DockPanel>
+
+        <StackPanel DockPanel.Dock="Top" x:Name="InfoLines" Margin="10,5,10,5">
+        </StackPanel>
+
+        <Grid x:Name="MainGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0" />
+                <ColumnDefinition Width="5"></ColumnDefinition>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <local:ItemsTreeView Grid.Row="0" Margin="10,0,10,0" x:Name="NavigationTreeView" 
+                          ItemChosen="NavigationTreeView_OnItemChosen" ItemSelected="NavigationTreeView_OnItemSelected" ShowRoot="True">
+            </local:ItemsTreeView>
+            <GridSplitter Grid.Column="1" Width="5" Grid.Row="0"
+                      HorizontalAlignment="Stretch" 
+                      VerticalAlignment="Stretch"></GridSplitter>
+            <TabControl Grid.Column="2" x:Name="ItemTabControl"></TabControl>
+
+        </Grid>
+    </DockPanel>
 </UserControl>

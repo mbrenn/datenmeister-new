@@ -41,8 +41,9 @@ namespace DatenMeisterWPF
                 () => GiveMe.DatenMeister());
 
             _ribbonHelper.LoadIconRepository();
-            
-            NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData);
+
+            NavigatorForWorkspaces.NavigateToWorkspaces(this);
+            //NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData);
         }
 
         /// <summary>

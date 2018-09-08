@@ -17,7 +17,7 @@ namespace DatenMeisterWPF.Navigation
         public static IControlNavigation NavigateToExtentList(INavigationHost window, string workspaceId)
         {
             return window.NavigateTo(
-                () => new ExtentList {IsTreeVisible = true, WorkspaceId = workspaceId},
+                () => new ExtentList {WorkspaceId = workspaceId},
                 NavigationMode.List);
         }
 

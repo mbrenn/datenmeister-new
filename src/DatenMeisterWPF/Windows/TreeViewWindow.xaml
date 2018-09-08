@@ -8,6 +8,6 @@
         mc:Ignorable="d"
         Title="TreeViewWindow" Height="300" Width="300" WindowStartupLocation="CenterOwner">
     <Grid>
-        <base:ItemsTreeView x:Name="treeView" ItemChosen="TreeView_OnItemSelected"></base:ItemsTreeView>
+        <base:ItemsTreeView x:Name="ObjectTreeView" ItemChosen="TreeView_OnItemSelected"></base:ItemsTreeView>
     </Grid>
 </Window>

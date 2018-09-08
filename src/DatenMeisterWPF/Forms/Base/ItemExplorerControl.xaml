@@ -13,9 +13,9 @@
 
         <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0" />
+                <ColumnDefinition Width="20*" />
                 <ColumnDefinition Width="5"></ColumnDefinition>
-                <ColumnDefinition />
+                <ColumnDefinition Width="80*"/>
             </Grid.ColumnDefinitions>
             <local:ItemsTreeView Grid.Row="0" Margin="10,0,10,0" x:Name="NavigationTreeView" 
                           ItemChosen="NavigationTreeView_OnItemChosen" ItemSelected="NavigationTreeView_OnItemSelected" ShowRoot="True">

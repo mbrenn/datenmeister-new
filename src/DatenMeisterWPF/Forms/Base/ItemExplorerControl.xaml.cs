@@ -18,6 +18,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Base
@@ -53,39 +54,6 @@ namespace DatenMeisterWPF.Forms.Base
         {
             InitializeComponent();
             ItemTabControl.ItemsSource = Tabs;
-        }
-
-        /// <summary>
-        /// Defines the property being used to indicate whether the tree containing the subelements is visible
-        /// </summary>
-        public static readonly DependencyProperty IsTreeVisibleProperty = DependencyProperty.Register(
-            "IsTreeVisible", typeof(bool), typeof(ItemExplorerControl),
-            new PropertyMetadata(default(bool), OnIsTreeVisibleChanged));
-
-        private static void OnIsTreeVisibleChanged(
-            DependencyObject dependencyObject,
-            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            var listViewControl = (ItemExplorerControl)dependencyObject;
-            listViewControl.UpdateTreeViewVisibility();
-        }
-
-        private void UpdateTreeViewVisibility()
-        {
-            var newValue = IsTreeVisible;
-            MainGrid.ColumnDefinitions[0].Width =
-                new GridLength(newValue ? Math.Round(ActualWidth / 4.0) : 0);
-            MainGrid.ColumnDefinitions[1].Width =
-                new GridLength(newValue ? 5 : 0);
-        }
-
-        /// <summary>
-        /// Gets or sets a value whether the treeview shall be visible. 
-        /// </summary>
-        public bool IsTreeVisible
-        {
-            get => (bool)GetValue(IsTreeVisibleProperty);
-            set => SetValue(IsTreeVisibleProperty, value);
         }
 
         public INavigationHost NavigationHost { get; set; }
@@ -145,12 +113,19 @@ namespace DatenMeisterWPF.Forms.Base
             control.CurrentFormDefinition = result;
             var tabControl = new ItemExplorerTab
             {
-                Content = control
+                Content = control,
+                Header = UmlNameResolution.GetName(result)
             };
 
             control.SetContent(collection);
-
             Tabs.Add(tabControl);
+
+            // Selects the item, if none of the items are selected
+            if (ItemTabControl.SelectedItem == null)
+            {
+                ItemTabControl.SelectedItem = tabControl;
+            }
+
             
             return tabControl;
         }
@@ -181,6 +156,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public void UpdateContent()
         {
+            UpdateTreeContent();
+
             foreach (var tab in Tabs)
             {
                 tab.Control.UpdateContent();

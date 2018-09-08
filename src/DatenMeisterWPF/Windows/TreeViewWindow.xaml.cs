@@ -39,12 +39,12 @@ namespace DatenMeisterWPF.Windows
 
         public void SetCollection(IReflectiveCollection collection)
         {
-            treeView.ItemsSource = collection;
+            ObjectTreeView.ItemsSource = collection;
         }
 
         public void AddPropertyForChild(params string[] properties)
         {
-            treeView.AddPropertyForChild(properties);
+            ObjectTreeView.AddPropertyForChild(properties);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace DatenMeisterWPF.Windows
         /// </summary>
         public void SetDefaultProperties()
         {
-            treeView.SetDefaultProperties();
+            ObjectTreeView.SetDefaultProperties();
         }
 
 

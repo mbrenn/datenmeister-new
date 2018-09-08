@@ -22,11 +22,7 @@ namespace DatenMeisterWPF.Navigation
         public static IControlNavigation NavigateToWorkspaces(INavigationHost window)
         {
             return window.NavigateTo(
-                () =>
-                {
-                    var workspaceControl = new WorkspaceList {IsTreeVisible = true};
-                    return workspaceControl;
-                },
+                () => new WorkspaceList(),
                 NavigationMode.List);
         }
 

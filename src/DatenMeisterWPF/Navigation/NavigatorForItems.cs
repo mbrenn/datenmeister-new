@@ -95,7 +95,7 @@ namespace DatenMeisterWPF.Navigation
             string extentUrl)
         {
             return window.NavigateTo(() => 
-                    new ItemsInExtentList {IsTreeVisible = true, WorkspaceId = workspaceId, ExtentUrl = extentUrl},
+                    new ItemsInExtentList {WorkspaceId = workspaceId, ExtentUrl = extentUrl},
                 NavigationMode.List);
         }
 

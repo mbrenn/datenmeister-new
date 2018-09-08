@@ -48,7 +48,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// Gets or sets the items to be shown in the detail view. Usually, they are the same as the items.
         /// If the user clicks on the navigation tree, a subview of the items may be shown
         /// </summary>
-        protected IReflectiveCollection DetailItems { get; set; }
+        protected IReflectiveCollection SelectedItems { get; set; }
 
         public ItemExplorerControl()
         {
@@ -58,10 +58,33 @@ namespace DatenMeisterWPF.Forms.Base
 
         public INavigationHost NavigationHost { get; set; }
 
-        public void PrepareNavigation()
+        public void SetItems(IReflectiveCollection items)
+        {
+            Items = items;
+            UpdateTreeContent();
+            RecreateViews();
+        }
+
+        /// <summary>
+        /// Recreates all views
+        /// </summary>
+        protected void RecreateViews()
+        {
+            Tabs.Clear();
+            OnRecreateViews();
+        }
+
+        /// <summary>
+        /// This method will be called when the user has selected an item and the views need to be recreated
+        /// </summary>
+        protected virtual void OnRecreateViews()
         {
         }
 
+        public void PrepareNavigation()
+        {
+        }
+        
         /// <summary>
         /// Updates the tree content of the explorer view
         /// </summary>
@@ -69,6 +92,8 @@ namespace DatenMeisterWPF.Forms.Base
         {
             NavigationTreeView.SetDefaultProperties();
             NavigationTreeView.ItemsSource = Items;
+            SelectedPackage = null;
+            SelectedItems = Items;
         }
 
         public virtual void OnMouseDoubleClick(IObject element)
@@ -125,7 +150,6 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 ItemTabControl.SelectedItem = tabControl;
             }
-
             
             return tabControl;
         }
@@ -140,27 +164,14 @@ namespace DatenMeisterWPF.Forms.Base
             SelectedPackage = e.Item;
             if (e.Item != null)
             {
-                DetailItems = new PropertiesAsReflectiveCollection(e.Item);
-                UpdateContent();
+                SelectedItems = new PropertiesAsReflectiveCollection(e.Item);
+                RecreateViews();
             }
             else
             {
                 // When user has selected the root element or no other item, all items are shown
-                DetailItems = Items;
-                UpdateContent();
-            }
-        }
-
-        /// <summary>
-        /// Updates the content of all sub elements
-        /// </summary>
-        public void UpdateContent()
-        {
-            UpdateTreeContent();
-
-            foreach (var tab in Tabs)
-            {
-                tab.Control.UpdateContent();
+                SelectedItems = Items;
+                RecreateViews();
             }
         }
 
@@ -176,7 +187,7 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             var events = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
-            events.Closed += (sender, args) => UpdateContent();
+            events.Closed += (sender, args) => RecreateViews();
         }
 
         /// <summary>

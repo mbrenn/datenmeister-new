@@ -54,7 +54,7 @@ namespace DatenMeisterWPF.Forms.Lists
 
             IElement view = null;
                 // Nobody selected a form, so we can autocreate a new form
-            if (Items == DetailItems)
+            if (Items == SelectedItems)
             {
                 // Finds the view by the extent type
                 view = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
@@ -63,7 +63,7 @@ namespace DatenMeisterWPF.Forms.Lists
             {
                 // User has selected a sub element. 
                 view =
-                    viewFinder.FindListViewFor((DetailItems as MofReflectiveSequence)?.MofObject);
+                    viewFinder.FindListViewFor((SelectedItems as MofReflectiveSequence)?.MofObject);
             }
             var workLogic = App.Scope.Resolve<IWorkspaceLogic>();
             workLogic.FindExtentAndWorkspace(workspaceId, extentUrl, out var workspace, out _extent);
@@ -91,7 +91,7 @@ namespace DatenMeisterWPF.Forms.Lists
                         var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
                         elements.Closed += (x, y) =>
                         {
-                            UpdateContent();
+                            RecreateViews();
                         };
                     });
                 }
@@ -103,7 +103,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
                 elements.Closed += (x, y) =>
                 {
-                    UpdateContent();
+                    RecreateViews();
                 };
             });
 

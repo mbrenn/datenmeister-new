@@ -80,20 +80,20 @@ namespace DatenMeisterWPF.Forms.Lists
             void ImportFromExcel()
             {
                 NavigatorForExcelHandling.ImportFromExcel(NavigationHost, WorkspaceId);
-                UpdateContent();
+                RecreateViews();
             }
 
             void NewXmiExtent()
             {
                 var events = NavigatorForItems.NavigateToNewXmiExtentDetailView(NavigationHost, WorkspaceId);
-                events.Closed += (x, y) => UpdateContent();
+                events.Closed += (x, y) => RecreateViews();
             }
 
             void AddZipCodeExample()
             {
                 var zipCodeExampleManager = App.Scope.Resolve<ZipCodeExampleManager>();
                 zipCodeExampleManager.AddZipCodeExample(WorkspaceId);
-                UpdateContent();
+                RecreateViews();
             }
 
             // Adds the information line

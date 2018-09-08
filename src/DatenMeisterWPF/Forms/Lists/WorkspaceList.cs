@@ -24,19 +24,19 @@ namespace DatenMeisterWPF.Forms.Lists
 
         private void WorkspaceList_Loaded(object sender, RoutedEventArgs e)
         {
-            SetContent();
+            var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);
+            SetItems(workspaceExtent.elements());
         }
 
         /// <summary>
         /// Shows the workspaces of the DatenMeister
         /// </summary>
-        public void SetContent()
+        protected override void OnRecreateViews()
         {
             IElement view;
-            var viewExtent = App.Scope.Resolve<ViewLogic>().GetInternalViewExtent();
             
             var selectedItemMetaClass = (SelectedPackage as IElement)?.getMetaClass();
-            Action<ItemExplorerTab> afterAction = null;
+            Action<ItemExplorerTab> afterAction;
             if (selectedItemMetaClass != null
                 && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
             {
@@ -50,9 +50,8 @@ namespace DatenMeisterWPF.Forms.Lists
             }
 
             // Sets the workspaces
-            var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);
             var element = AddTab(
-                workspaceExtent.elements(),
+                SelectedItems,
                 new ViewDefinition("Workspaces", view));
             afterAction(element);
         }
@@ -70,7 +69,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     },
                     NavigationMode.Detail);
 
-                events.Closed += (x, y) => UpdateContent();
+                events.Closed += (x, y) => RecreateViews();
             }
 
             void JumpToTypeManager()

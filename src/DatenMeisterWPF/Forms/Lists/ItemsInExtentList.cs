@@ -113,7 +113,7 @@ namespace DatenMeisterWPF.Forms.Lists
             // Allows the deletion of an item
             element.Control.AddRowItemButton(
                 "Delete",
-                item =>
+                (guest, item) =>
                 {
                     if (MessageBox.Show(
                             "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==

@@ -2,14 +2,12 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using Autofac;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Forms.Detail;
 using DatenMeisterWPF.Navigation;
 
@@ -33,7 +31,7 @@ namespace DatenMeisterWPF.Forms.Lists
         /// </summary>
         protected override void OnRecreateViews()
         {
-            IElement view;
+            ViewDefinition view;
             
             var selectedItemMetaClass = (SelectedPackage as IElement)?.getMetaClass();
             Action<ItemExplorerTab> afterAction;
@@ -49,14 +47,20 @@ namespace DatenMeisterWPF.Forms.Lists
                 afterAction = x => ListRequests.AddButtonsForWorkspaces(x.Control);
             }
 
+            PrepareNavigation(view);
+
             // Sets the workspaces
             var element = AddTab(
                 SelectedItems,
-                new ViewDefinition("Workspaces", view));
+                view);
             afterAction(element);
         }
 
-        public new void PrepareNavigation()
+        /// <summary>
+        /// Prepares the navigation 
+        /// </summary>
+        /// <param name="viewDefinition">Definition of the view</param>
+        private void PrepareNavigation(ViewDefinition viewDefinition)
         {
             base.PrepareNavigation();
             void NewWorkspace()
@@ -79,40 +83,44 @@ namespace DatenMeisterWPF.Forms.Lists
                     WorkspaceNames.NameTypes,
                     WorkspaceNames.UriUserTypesExtent);
             }
-            
-            NavigationHost.AddNavigationButton(
-                "Add Workspace",
-                NewWorkspace,
-                "workspaces-new",
-                NavigationCategories.File + "." + "Workspaces");
 
-            NavigationHost.AddNavigationButton(
-                "Type Manager",
-                JumpToTypeManager,
-                string.Empty,
-                NavigationCategories.Type + "." + "Manager"
-            );
+            viewDefinition.ExtendedProperties.Add(
+                new RibbonButtonDefinition(
+                    "Add Workspace",
+                    NewWorkspace,
+                    "workspaces-new",
+                    NavigationCategories.File + "." + "Workspaces"));
 
-            NavigationHost.AddNavigationButton(
-                "Open Workspace-Folder",
-                () => NavigatorForWorkspaces.OpenFolder(NavigationHost),
-                null,
-                NavigationCategories.File + ".Workspaces");
+            viewDefinition.ExtendedProperties.Add(
+                new RibbonButtonDefinition(
+                    "Type Manager",
+                    JumpToTypeManager,
+                    string.Empty,
+                    NavigationCategories.Type + "." + "Manager"
+                ));
 
-            NavigationHost.AddNavigationButton(
-                "Reset DatenMeister",
-                () => NavigatorForWorkspaces.ResetDatenMeister(NavigationHost),
-                null,
-                NavigationCategories.File + ".Workspaces");
+            viewDefinition.ExtendedProperties.Add(
+                new RibbonButtonDefinition(
+                    "Open Workspace-Folder",
+                    () => NavigatorForWorkspaces.OpenFolder(NavigationHost),
+                    null,
+                    NavigationCategories.File + ".Workspaces"));
 
-            AddInfoLine(
-                new TextBlock
+            viewDefinition.ExtendedProperties.Add(
+                new RibbonButtonDefinition(
+                    "Reset DatenMeister",
+                    () => NavigatorForWorkspaces.ResetDatenMeister(NavigationHost),
+                    null,
+                    NavigationCategories.File + ".Workspaces"));
+
+            viewDefinition.ExtendedProperties.Add(
+                new InfoLineDefinition(() => new TextBlock
                 {
                     Inlines =
                     {
                         new Bold {Inlines = {new Run("All Workspaces")}}
                     }
-                });
+                }));
         }
 
         public override void OnMouseDoubleClick(IObject element)

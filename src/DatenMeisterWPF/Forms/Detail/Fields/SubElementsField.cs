@@ -80,7 +80,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 
                 listViewControl.AddRowItemButton(
                     "Edit",
-                    item => NavigatorForItems.NavigateToElementDetailView(detailForm.NavigationHost, item),
+                    (guest, item) => NavigatorForItems.NavigateToElementDetailView(detailForm.NavigationHost, item),
                     ItemListViewControl.ButtonPosition.Before);
                 listViewControl.CurrentFormDefinition =form;
                 listViewControl.SetContent(valueOfElement);

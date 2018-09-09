@@ -47,7 +47,7 @@ namespace DatenMeisterWPF.Forms.Lists
 
             var uiElement = AddTab(
                 extents, 
-                new ViewDefinition("Workspaces", ListRequests.RequestFormForExtents()));
+                ListRequests.RequestFormForExtents());
 
             ListRequests.AddButtonsForExtents(uiElement.Control, workspaceId);
         }

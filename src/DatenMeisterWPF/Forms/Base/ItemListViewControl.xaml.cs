@@ -25,6 +25,7 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Command;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
 using Microsoft.Win32;
@@ -34,7 +35,7 @@ namespace DatenMeisterWPF.Forms.Base
     /// <summary>
     /// Interaktionslogik für ItemListViewControl.xaml
     /// </summary>
-    public partial class ItemListViewControl : UserControl, IHasSelectedItems
+    public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavigationGuest
     {
         public ItemListViewControl()
         {
@@ -91,7 +92,6 @@ namespace DatenMeisterWPF.Forms.Base
         public void SetContent(IReflectiveCollection items)
         {
             Items = items;
-            
             UpdateContent();
         }
 
@@ -99,15 +99,6 @@ namespace DatenMeisterWPF.Forms.Base
         {
             ButtonBar.Children.Clear();
             _rowItemButtonDefinitions.Clear();
-        }
-
-        /// <summary>
-        /// Defines the virtual method that is used to collect all possible views which can be selected by the user
-        /// </summary>
-        /// <returns>Found enumeration of view or null, if the class does not support the collection of views</returns>
-        protected virtual IEnumerable<IElement> GetFormsForView()
-        {
-            return null;
         }
 
         /// <summary>
@@ -160,7 +151,7 @@ namespace DatenMeisterWPF.Forms.Base
                 return;
             }
 
-            // Creates the rowns
+            // Creates the rows
             if (Items != null)
             {
                 // Get the items and honor searching
@@ -303,7 +294,7 @@ namespace DatenMeisterWPF.Forms.Base
                 {
                     Header = definition.Name,
                     CellTemplate = columnTemplate,
-                    OnClick = definition.Pressed
+                    OnClick = definition.OnPressed
                 };
 
                 if (definition.Position == ButtonPosition.Before)
@@ -382,7 +373,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// Opens the selected element
         /// </summary>
         /// <param name="selectedElement">Selected element</param>
-        private void NavigateToElement(IObject selectedElement)
+        private void NavigateToElement(INavigationGuest guest, IObject selectedElement)
         { 
             if (selectedElement == null)
             {
@@ -408,14 +399,9 @@ namespace DatenMeisterWPF.Forms.Base
         /// <param name="name">Name of the button</param>
         /// <param name="pressed">Called, if the is button pressed</param>
         /// <param name="position">Position of the button to be used</param>
-        public void AddRowItemButton(string name, Action<IObject> pressed, ButtonPosition position = ButtonPosition.After)
+        public void AddRowItemButton(string name, Action<INavigationGuest, IObject> pressed, ButtonPosition position = ButtonPosition.After)
         {
-            var definition = new RowItemButtonDefinition
-            {
-                Name = name,
-                Pressed = pressed,
-                Position = position
-            };
+            var definition = new RowItemButtonDefinition(name, pressed, position);
 
             AddRowItemButton(definition);
         }
@@ -428,7 +414,7 @@ namespace DatenMeisterWPF.Forms.Base
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             var (selectedItem, column) = GetObjectsFromEventRouting(e);
-            column.OnClick(selectedItem);
+            column.OnClick(this, selectedItem);
         }
 
         /// <summary>
@@ -606,16 +592,6 @@ namespace DatenMeisterWPF.Forms.Base
                 NavigationCategories.File + ".Copy");
         }
 
-        /// <summary>
-        /// Defines the definition for the row item button
-        /// </summary>
-        public class RowItemButtonDefinition
-        {
-            public string Name { get; set; }
-            public Action<IObject> Pressed { get; set; }
-            public ButtonPosition Position { get; set; }
-        }
-
         /// <inheritdoc />
         /// <summary>
         /// The template being used to click
@@ -625,7 +601,7 @@ namespace DatenMeisterWPF.Forms.Base
             /// <summary>
             /// Gets or sets the action being called when the user clicks on the button
             /// </summary>
-            public Action<IObject> OnClick { get; set; }
+            public Action<INavigationGuest, IObject> OnClick { get; set; }
         }
 
         /// <summary>

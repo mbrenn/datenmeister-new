@@ -1,5 +1,6 @@
-﻿using System.Windows.Documents;
+﻿using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 
 namespace DatenMeisterWPF.Forms.Base
 {
@@ -35,6 +36,8 @@ namespace DatenMeisterWPF.Forms.Base
             Element = element;
             Mode = mode;
         }
+
+        public List<ViewExtension> ExtendedProperties { get; } = new List<ViewExtension>();
 
         public ViewDefinition(ViewDefinitionMode mode) : this (null, null, mode)
         {   

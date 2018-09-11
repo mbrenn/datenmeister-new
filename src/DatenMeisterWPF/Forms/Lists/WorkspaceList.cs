@@ -34,17 +34,15 @@ namespace DatenMeisterWPF.Forms.Lists
             ViewDefinition view;
             
             var selectedItemMetaClass = (SelectedPackage as IElement)?.getMetaClass();
-            Action<ItemExplorerTab> afterAction;
             if (selectedItemMetaClass != null
                 && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
             {
-                view = ListRequests.RequestFormForExtents();
-                afterAction = x => ListRequests.AddButtonsForExtents(x.Control, SelectedPackage.get("id")?.ToString());
+                var workspaceId = SelectedPackage.get("id")?.ToString();
+                view = ListRequests.RequestFormForExtents(workspaceId);
             }
             else
             {
                 view = ListRequests.RequestFormForWorkspaces();
-                afterAction = x => ListRequests.AddButtonsForWorkspaces(x.Control);
             }
 
             PrepareNavigation(view);
@@ -53,7 +51,6 @@ namespace DatenMeisterWPF.Forms.Lists
             var element = AddTab(
                 SelectedItems,
                 view);
-            afterAction(element);
         }
 
         /// <summary>
@@ -84,14 +81,14 @@ namespace DatenMeisterWPF.Forms.Lists
                     WorkspaceNames.UriUserTypesExtent);
             }
 
-            viewDefinition.ExtendedProperties.Add(
+            viewDefinition.ViewExtensions.Add(
                 new RibbonButtonDefinition(
                     "Add Workspace",
                     NewWorkspace,
                     "workspaces-new",
                     NavigationCategories.File + "." + "Workspaces"));
 
-            viewDefinition.ExtendedProperties.Add(
+            viewDefinition.ViewExtensions.Add(
                 new RibbonButtonDefinition(
                     "Type Manager",
                     JumpToTypeManager,
@@ -99,21 +96,21 @@ namespace DatenMeisterWPF.Forms.Lists
                     NavigationCategories.Type + "." + "Manager"
                 ));
 
-            viewDefinition.ExtendedProperties.Add(
+            viewDefinition.ViewExtensions.Add(
                 new RibbonButtonDefinition(
                     "Open Workspace-Folder",
                     () => NavigatorForWorkspaces.OpenFolder(NavigationHost),
                     null,
                     NavigationCategories.File + ".Workspaces"));
 
-            viewDefinition.ExtendedProperties.Add(
+            viewDefinition.ViewExtensions.Add(
                 new RibbonButtonDefinition(
                     "Reset DatenMeister",
                     () => NavigatorForWorkspaces.ResetDatenMeister(NavigationHost),
                     null,
                     NavigationCategories.File + ".Workspaces"));
 
-            viewDefinition.ExtendedProperties.Add(
+            viewDefinition.ViewExtensions.Add(
                 new InfoLineDefinition(() => new TextBlock
                 {
                     Inlines =

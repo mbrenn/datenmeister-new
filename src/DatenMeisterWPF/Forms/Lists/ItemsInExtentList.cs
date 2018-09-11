@@ -19,6 +19,7 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
 
@@ -73,12 +74,9 @@ namespace DatenMeisterWPF.Forms.Lists
                 return;
             }
 
-            var element = AddTab(
-                _extent.elements(),
-                new ViewDefinition(
-                    "Extent",
-                    view));
-            
+            var viewDefinition = new ViewDefinition("Extent",view);
+
+
             // Sets the generic buttons to create the new types
             if (view?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
                 is IReflectiveCollection defaultTypesForNewItems)
@@ -86,32 +84,26 @@ namespace DatenMeisterWPF.Forms.Lists
                 foreach (var type in defaultTypesForNewItems.OfType<IElement>())
                 {
                     var typeName = type.get(_UML._CommonStructure._NamedElement.name);
-                    element.Control.AddGenericButton($"New {typeName}", () =>
-                    {
-                        var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
-                        elements.Closed += (x, y) =>
+
+                    viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
+                        $"New {typeName}", () =>
                         {
-                            RecreateViews();
-                        };
-                    });
+                            var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
+                            elements.Closed += (x, y) => { RecreateViews(); };
+                        }));
                 }
             }
 
             // Sets the button for the new item
-            element.Control.AddGenericButton("New Item", () =>
-            {
-                var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
-                elements.Closed += (x, y) =>
+            viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
+                "New Item", () =>
                 {
-                    RecreateViews();
-                };
-            });
-
-            // Adds the default button
-            element.Control.AddDefaultButtons();
+                    var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
+                    elements.Closed += (x, y) => { RecreateViews(); };
+                }));
 
             // Allows the deletion of an item
-            element.Control.AddRowItemButton(
+            viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition(
                 "Delete",
                 (guest, item) =>
                 {
@@ -120,82 +112,92 @@ namespace DatenMeisterWPF.Forms.Lists
                         MessageBoxResult.Yes)
                     {
                         _extent.elements().remove(item);
-                        element.Control.UpdateContent();
+                        //element.Control.UpdateContent();
                     }
-                });
+                }));
+
+            PrepareNavigation(viewDefinition);
+
+
+            var element = AddTab(
+                _extent.elements(),
+                viewDefinition);
         }
 
         /// <summary>
         /// Prepares the navigation of the host. The function is called by the navigation 
         /// host. 
         /// </summary>
-        public new void PrepareNavigation()
+        public void PrepareNavigation(ViewDefinition viewDefinition)
         {
-            base.PrepareNavigation();
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "To Extents",
+                    () => NavigatorForExtents.NavigateToExtentList(NavigationHost, WorkspaceId),
+                    Icons.ExtentsShow,
+                    NavigationCategories.File + ".Workspaces"));
 
-            NavigationHost.AddNavigationButton(
-                "To Extents",
-                () => NavigatorForExtents.NavigateToExtentList(NavigationHost, WorkspaceId),
-                Icons.ExtentsShow,
-                NavigationCategories.File + ".Workspaces");
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Extent Info",
+                    () => NavigatorForExtents.OpenExtent(NavigationHost, WorkspaceId, ExtentUrl),
+                    null,
+                    NavigationCategories.File + ".Workspaces"));
 
-            NavigationHost.AddNavigationButton(
-                "Extent Info",
-                () => NavigatorForExtents.OpenExtent(NavigationHost, WorkspaceId, ExtentUrl),
-                null,
-                NavigationCategories.File + ".Workspaces");
-
-            NavigationHost.AddNavigationButton(
-                "Show as tree",
-                () =>
-                {
-                    if (_extent != null)
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Show as tree",
+                    () =>
                     {
-                        var window = new TreeViewWindow();
-                        window.Owner = NavigationHost.GetWindow();
-                        window.SetDefaultProperties();
-                        window.SetCollection(_extent.elements());
-                        window.ItemSelected += (x, y) =>
+                        if (_extent != null)
                         {
-                            NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
-                        };
-                        window.Show();
-                    }
-                },
-                null,
-                NavigationCategories.File + ".Views");
+                            var window = new TreeViewWindow();
+                            window.Owner = NavigationHost.GetWindow();
+                            window.SetDefaultProperties();
+                            window.SetCollection(_extent.elements());
+                            window.ItemSelected += (x, y) =>
+                            {
+                                NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
+                            };
+                            window.Show();
+                        }
+                    },
+                    null,
+                    NavigationCategories.File + ".Views"));
 
-            NavigationHost.AddNavigationButton(
-                "Open Extent-Folder",
-                () =>
-                {
-                    var extentManager = App.Scope.Resolve<IExtentManager>();
-                    if (
-                        extentManager.GetLoadConfigurationFor(_extent as IUriExtent)
-                            is ExtentFileLoaderConfig loadConfiguration
-                        && loadConfiguration.Path != null)
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Open Extent-Folder",
+                    () =>
                     {
-                        // ReSharper disable once AssignNullToNotNullAttribute
-                        Process.Start(
-                            Path.GetDirectoryName(loadConfiguration.Path));
-                    }
-                    else
+                        var extentManager = App.Scope.Resolve<IExtentManager>();
+                        if (
+                            extentManager.GetLoadConfigurationFor(_extent as IUriExtent)
+                                is ExtentFileLoaderConfig loadConfiguration
+                            && loadConfiguration.Path != null)
+                        {
+                            // ReSharper disable once AssignNullToNotNullAttribute
+                            Process.Start(
+                                Path.GetDirectoryName(loadConfiguration.Path));
+                        }
+                        else
+                        {
+                            MessageBox.Show("Given extent is not file-driven (probably only in memory).");
+                        }
+                    },
+                    null,
+                    NavigationCategories.File + ".Workspaces"));
+
+            viewDefinition.ViewExtensions.Add(
+                new InfoLineDefinition(() =>
+                    new TextBlock
                     {
-                        MessageBox.Show("Given extent is not file-driven (probably only in memory).");
-                    }
-                },
-                null,
-                NavigationCategories.File + ".Workspaces");
-            
-            AddInfoLine(
-                new TextBlock
-                {
-                    Inlines =
-                    {
-                        new Bold {Inlines = {new Run("Extent: ")}},
-                        new Run(ExtentUrl)
-                    }
-                });
+                        Inlines =
+                        {
+                            new Bold {Inlines = {new Run("Extent: ")}},
+                            new Run(ExtentUrl)
+                        }
+                    }));
         }
     }
 }

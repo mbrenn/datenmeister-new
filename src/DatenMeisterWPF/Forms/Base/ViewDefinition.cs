@@ -37,7 +37,7 @@ namespace DatenMeisterWPF.Forms.Base
             Mode = mode;
         }
 
-        public List<ViewExtension> ExtendedProperties { get; } = new List<ViewExtension>();
+        public List<ViewExtension> ViewExtensions { get; } = new List<ViewExtension>();
 
         public ViewDefinition(ViewDefinitionMode mode) : this (null, null, mode)
         {   

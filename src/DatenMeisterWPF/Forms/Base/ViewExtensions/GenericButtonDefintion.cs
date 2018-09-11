@@ -13,5 +13,10 @@ namespace DatenMeisterWPF.Forms.Base.ViewExtensions
         public string Name { get; }
 
         public Action OnPressed { get; }
+
+        public override string ToString()
+        {
+            return $"GenericButtonDefinition: {Name}";
+        }
     }
 }

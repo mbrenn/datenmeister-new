@@ -9,6 +9,7 @@ using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
@@ -40,42 +41,66 @@ namespace DatenMeisterWPF.Forms.Lists
         public void SetContent(string workspaceId)
         {
             WorkspaceId = workspaceId;
+        }
+
+        protected override void OnRecreateViews()
+        {
+            if (string.IsNullOrEmpty(WorkspaceId))
+            {
+                return;
+            }
+
+
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);
-            var workspace = workspaceExtent.elements().WhenPropertyHasValue("id", workspaceId).FirstOrDefault() as IElement;
+            var workspace =
+                workspaceExtent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() as IElement;
 
             var extents = workspace?.get("extents") as IReflectiveSequence;
 
-            var uiElement = AddTab(
-                extents, 
-                ListRequests.RequestFormForExtents());
+            var viewDefinition = ListRequests.RequestFormForExtents(WorkspaceId);
+            PrepareNavigation(viewDefinition);
 
-            ListRequests.AddButtonsForExtents(uiElement.Control, workspaceId);
+            var uiElement = AddTab(
+                extents,
+                viewDefinition);
         }
 
         /// <summary>
         /// Adds the navigation control elements in the host
         /// </summary>
-        public new void PrepareNavigation()
+        public void PrepareNavigation(ViewDefinition viewDefinition)
         {
-            NavigationHost.AddNavigationButton(
-                "New Xmi Extent",
-                NewXmiExtent,
-                null,
-                NavigationCategories.File + ".Workspaces");
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "New Xmi Extent",
+                    NewXmiExtent,
+                    null,
+                    NavigationCategories.File + ".Workspaces"));
 
-            NavigationHost.AddNavigationButton(
-                "Zip-Code Example",
-                AddZipCodeExample,
-                null,
-                NavigationCategories.File + ".Workspaces");
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Zip-Code Example",
+                    AddZipCodeExample,
+                    null,
+                    NavigationCategories.File + ".Workspaces"));
 
-            NavigationHost.AddNavigationButton(
-                "Import Excel",
-                ImportFromExcel,
-                Icons.ImportExcel,
-                NavigationCategories.File + ".Import");
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Import Excel",
+                    ImportFromExcel,
+                    Icons.ImportExcel,
+                    NavigationCategories.File + ".Import"));
 
-            base.PrepareNavigation();
+            viewDefinition.ViewExtensions.Add(
+                new InfoLineDefinition(() =>
+                    new TextBlock
+                    {
+                        Inlines =
+                        {
+                            new Bold {Inlines = {new Run("Workspace: ")}},
+                            new Run(WorkspaceId)
+                        }
+                    }));
 
             void ImportFromExcel()
             {
@@ -95,17 +120,6 @@ namespace DatenMeisterWPF.Forms.Lists
                 zipCodeExampleManager.AddZipCodeExample(WorkspaceId);
                 RecreateViews();
             }
-
-            // Adds the information line
-            AddInfoLine(
-                new TextBlock
-                {
-                    Inlines =
-                    {
-                        new Bold {Inlines = {new Run("Workspace: ")}},
-                        new Run(WorkspaceId)
-                    }
-                });
         }
 
         public override void OnMouseDoubleClick(IObject element)

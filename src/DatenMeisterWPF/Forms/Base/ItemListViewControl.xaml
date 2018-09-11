@@ -20,6 +20,8 @@
                 <TextBox x:Name="SearchField" Width="200" TextChanged="SearchField_OnTextChanged" Margin="0,2,0,2" ToolTip="Search"></TextBox>
             </StackPanel>
         </StackPanel>
+        <StackPanel DockPanel.Dock="Top" x:Name="InfoLines" Margin="10,5,10,5">
+        </StackPanel>
         <StackPanel Orientation="Horizontal" x:Name="ButtonBar" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10">
         </StackPanel>
         <Grid x:Name="MainGrid">
@@ -33,14 +35,5 @@
                 </DataGrid.InputBindings>
             </DataGrid>
         </Grid>
-
     </DockPanel>
-    <!--<wpf:ResizeableSplitter>
-        <wpf:ResizeableSplitter.FirstElement>
-            <TextBlock>Text</TextBlock>
-        </wpf:ResizeableSplitter.FirstElement>
-        <wpf:ResizeableSplitter.SecondElement>
-
-        </wpf:ResizeableSplitter.SecondElement>
-    </wpf:ResizeableSplitter>-->
 </UserControl>

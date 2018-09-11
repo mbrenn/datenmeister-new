@@ -34,5 +34,10 @@ namespace DatenMeisterWPF.Forms.Base.ViewExtensions
         /// Gets the name of category
         /// </summary>
         public string CategoryName { get; }
+
+        public override string ToString()
+        {
+            return $"RibbonButtonDefinition: {Name}";
+        }
     }
 }

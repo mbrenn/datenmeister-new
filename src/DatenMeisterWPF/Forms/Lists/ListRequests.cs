@@ -28,13 +28,12 @@ namespace DatenMeisterWPF.Forms.Lists
                 ManagementViewDefinitions.PathWorkspaceListView);
             var viewDefinition = new ViewDefinition("Workspaces", formElement);
 
-            viewDefinition.ExtendedProperties.Add(
+            viewDefinition.ViewExtensions.Add(
                 new RowItemButtonDefinition("Show Extents", ShowExtents));
-            viewDefinition.ExtendedProperties.Add(
+            viewDefinition.ViewExtensions.Add(
                 new RowItemButtonDefinition("Delete Workspace", DeleteWorkspace));
 
             return viewDefinition;
-
 
             void ShowExtents(INavigationGuest navigationHost, IObject workspace)
             {
@@ -66,22 +65,12 @@ namespace DatenMeisterWPF.Forms.Lists
         }
 
         /// <summary>
-        /// Adds the buttons for the workspace view
-        /// </summary>
-        /// <param name="listViewControl">The list view control</param>
-        internal static void AddButtonsForWorkspaces(ItemListViewControl listViewControl)
-        { 
-            // Adds the buttons
-            listViewControl.AddDefaultButtons();
-        }
-
-        /// <summary>
         /// Requests the form for extent elements
         /// </summary>
         /// <param name="listViewControl">The list view being used as host for the form</param>
         /// <param name="workspaceId">The Id of the workspace</param>
         /// <returns>The created form</returns>
-        internal static ViewDefinition RequestFormForExtents()
+        internal static ViewDefinition RequestFormForExtents(string workspaceId)
         {
             var viewExtent = App.Scope.Resolve<ViewLogic>().GetInternalViewExtent();
             var result =
@@ -89,21 +78,15 @@ namespace DatenMeisterWPF.Forms.Lists
                     viewExtent,
                     ManagementViewDefinitions.PathExtentListView);
 
-            return new ViewDefinition("Extents", result);
-        }
+            var viewDefinition = new ViewDefinition("Extents", result);
+            viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition("Show Items", ShowItems));
 
-        /// <summary>
-        /// Adds the buttons for extents
-        /// </summary>
-        /// <param name="listViewControl">The list view being used</param>
-        /// <param name="workspaceId">The workspace id being attached to</param>
-        internal static void AddButtonsForExtents(ItemListViewControl listViewControl, string workspaceId)
-        {
-            listViewControl.AddDefaultButtons();
-            listViewControl.AddRowItemButton("Show Items", ShowItems);
-
+            return viewDefinition;
+            
             void ShowItems(INavigationGuest navigationGuest, IObject extentElement)
             {
+                var listViewControl = navigationGuest as ItemListViewControl;
+
                 var uri = extentElement.get("uri").ToString();
 
                 var events = NavigatorForItems.NavigateToItemsInExtent(

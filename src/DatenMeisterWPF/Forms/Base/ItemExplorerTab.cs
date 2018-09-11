@@ -7,6 +7,16 @@ namespace DatenMeisterWPF.Forms.Base
     /// </summary>
     public class ItemExplorerTab : TabItem
     {
+        public ItemExplorerTab(ViewDefinition viewDefinition)
+        {
+            ViewDefinition = viewDefinition;
+        }
+
+        /// <summary>
+        /// Gets or sets the view definition being used for the tab
+        /// </summary>
+        public ViewDefinition ViewDefinition { get; set; }
+
         /// <summary>
         /// Gets or sets the control
         /// </summary>

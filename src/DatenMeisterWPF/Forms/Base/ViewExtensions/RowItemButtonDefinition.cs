@@ -17,6 +17,11 @@ namespace DatenMeisterWPF.Forms.Base.ViewExtensions
 
         public string Name { get;  }
         public Action<INavigationGuest, IObject> OnPressed { get; }
-        public ItemListViewControl.ButtonPosition Position { get;  }
+        public ItemListViewControl.ButtonPosition Position { get; }
+
+        public override string ToString()
+        {
+            return $"RowItemButtonDefinition: {Name}";
+        }
     }
 }

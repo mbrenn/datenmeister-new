@@ -12,7 +12,6 @@ using System.Windows.Input;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
@@ -75,7 +74,10 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public IElement CurrentFormDefinition { get; set; }
 
-        private List<IElement> _packagingElements = new List<IElement>();
+        /// <summary>
+        /// Gets or sets the view extensions
+        /// </summary>
+        public List<ViewExtension> ViewExtensions { get; private set; }
 
         /// <summary>
         /// Gets or sets the information whether new items can be added via the datagrid
@@ -89,9 +91,11 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Updates the content by going through the fields and items
         /// </summary>
-        public void SetContent(IReflectiveCollection items)
+        public void SetContent(IReflectiveCollection items, IElement formDefintion, List<ViewExtension> viewExtensions) 
         {
             Items = items;
+            CurrentFormDefinition = formDefintion;
+            ViewExtensions = viewExtensions;
             UpdateContent();
         }
 
@@ -246,7 +250,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <returns>The tuple containing the names being used for the column
         /// and the fields being used.</returns>
         private (List<string> names, IReflectiveCollection fields) UpdateColumnDefinitions()
-        {
+        {   
             if (!(CurrentFormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
             {
                 return (null, null);
@@ -287,23 +291,38 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             // Creates the row button
-            foreach (var definition in _rowItemButtonDefinitions)
+            foreach (var definition in ViewExtensions)
             {
-                var columnTemplate = FindResource("TemplateColumnButton") as DataTemplate;
-                var dataColumn = new ClickedTemplateColumn
+                switch (definition)
                 {
-                    Header = definition.Name,
-                    CellTemplate = columnTemplate,
-                    OnClick = definition.OnPressed
-                };
+                    case RowItemButtonDefinition rowButtonDefinition:
+                        var columnTemplate = FindResource("TemplateColumnButton") as DataTemplate;
+                        var dataColumn = new ClickedTemplateColumn
+                        {
+                            Header = rowButtonDefinition.Name,
+                            CellTemplate = columnTemplate,
+                            OnClick = rowButtonDefinition.OnPressed
+                        };
 
-                if (definition.Position == ButtonPosition.Before)
-                {
-                    DataGrid.Columns.Insert(0, dataColumn);
-                }
-                else
-                {
-                    DataGrid.Columns.Add(dataColumn);
+                        if (rowButtonDefinition.Position == ButtonPosition.Before)
+                        {
+                            DataGrid.Columns.Insert(0, dataColumn);
+                        }
+                        else
+                        {
+                            DataGrid.Columns.Add(dataColumn);
+                        }
+
+                        break;
+                    case GenericButtonDefintion genericButtonDefintion:
+                        AddGenericButton(genericButtonDefintion.Name, genericButtonDefintion.OnPressed);
+                        break;
+                    case ItemButtonDefinition itemButtonDefinition:
+                        AddItemButton(itemButtonDefinition.Name, itemButtonDefinition.OnPressed);
+                        break;
+                    case InfoLineDefinition lineDefinition:
+                        AddInfoLine(lineDefinition.InfolineFactory());
+                        break;
                 }
             }
 
@@ -652,6 +671,23 @@ namespace DatenMeisterWPF.Forms.Base
         private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             CopyCommand.Execute(null);
+        }
+
+        /// <summary>
+        /// Clears the infolines
+        /// </summary>
+        public void ClearInfoLines()
+        {
+            InfoLines.Children.Clear();
+        }
+
+        /// <summary>
+        /// Adds an infoline to the window
+        /// </summary>
+        /// <param name="element">Element to be added</param>
+        public void AddInfoLine(UIElement element)
+        {
+            InfoLines.Children.Add(element);
         }
     }
 }

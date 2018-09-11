@@ -15,5 +15,10 @@ namespace DatenMeisterWPF.Forms.Base.ViewExtensions
         /// Gets the factory for the infoline
         /// </summary>
         public Func<UIElement> InfolineFactory { get; }
+
+        public override string ToString()
+        {
+            return $"InfoLineDefinition";
+        }
     }
 }

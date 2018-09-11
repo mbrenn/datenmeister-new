@@ -108,9 +108,6 @@ namespace DatenMeisterWPF.Forms.Base
         /// <param name="viewDefinition">Form to be added</param>
         public ItemExplorerTab AddTab(IReflectiveCollection collection, ViewDefinition viewDefinition)
         {
-            var control = new ItemListViewControl();
-            control.NavigationHost = NavigationHost;
-
             // Gets the default view for the given tab
             var viewFinder = App.Scope.Resolve<IViewFinder>();
             IElement result = null;
@@ -128,21 +125,26 @@ namespace DatenMeisterWPF.Forms.Base
                 case ViewDefinitionMode.Default:
                     break;
             }
-            
+
             if (result == null)
             {
                 // Nothing was found... so, create your default list lsit. 
                 result = viewFinder.CreateView(Items);
             }
 
-            control.CurrentFormDefinition = result;
-            var tabControl = new ItemExplorerTab
+            // Creates the layoutcontrol for the given view
+            var control = new ItemListViewControl
+            {
+                NavigationHost = NavigationHost
+            };
+
+            var tabControl = new ItemExplorerTab(viewDefinition)
             {
                 Content = control,
                 Header = UmlNameResolution.GetName(result)
             };
 
-            control.SetContent(collection);
+            control.SetContent(collection, result, viewDefinition.ViewExtensions);
             Tabs.Add(tabControl);
 
             // Selects the item, if none of the items are selected
@@ -188,23 +190,6 @@ namespace DatenMeisterWPF.Forms.Base
 
             var events = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
             events.Closed += (sender, args) => RecreateViews();
-        }
-
-        /// <summary>
-        /// Clears the infolines
-        /// </summary>
-        public void ClearInfoLines()
-        {
-            InfoLines.Children.Clear();
-        }
-
-        /// <summary>
-        /// Adds an infoline to the window
-        /// </summary>
-        /// <param name="element">Element to be added</param>
-        public void AddInfoLine(UIElement element)
-        {
-            InfoLines.Children.Add(element);
         }
     }
 }

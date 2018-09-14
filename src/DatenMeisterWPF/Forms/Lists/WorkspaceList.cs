@@ -59,7 +59,6 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <param name="viewDefinition">Definition of the view</param>
         private void PrepareNavigation(ViewDefinition viewDefinition)
         {
-            base.PrepareNavigation();
             void NewWorkspace()
             {
                 var events = NavigationHost.NavigateTo(() =>

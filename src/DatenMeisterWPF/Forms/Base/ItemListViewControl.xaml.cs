@@ -59,11 +59,6 @@ namespace DatenMeisterWPF.Forms.Base
         private readonly IDictionary<ExpandoObject, IObject> _itemMapping = new Dictionary<ExpandoObject, IObject>();
 
         /// <summary>
-        /// Stores the definitions for the row items
-        /// </summary>
-        private readonly List<RowItemButtonDefinition> _rowItemButtonDefinitions = new List<RowItemButtonDefinition>();
-
-        /// <summary>
         /// Defines the text being used for search
         /// </summary>
         private string _searchText;
@@ -96,13 +91,8 @@ namespace DatenMeisterWPF.Forms.Base
             Items = items;
             CurrentFormDefinition = formDefintion;
             ViewExtensions = viewExtensions;
+            IncludeStandardExtensions();
             UpdateContent();
-        }
-
-        private void RemoveViewButtons()
-        {
-            ButtonBar.Children.Clear();
-            _rowItemButtonDefinitions.Clear();
         }
 
         /// <summary>
@@ -256,6 +246,7 @@ namespace DatenMeisterWPF.Forms.Base
                 return (null, null);
             }
 
+            ClearInfoLines();
             DataGrid.Columns.Clear();
             var fieldNames = new List<string>();
 
@@ -330,14 +321,6 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
-        /// Adds the default buttons
-        /// </summary>
-        public void AddDefaultButtons()
-        {
-            AddRowItemButton("Edit", NavigateToElement, ButtonPosition.Before);
-        }
-
-        /// <summary>
         /// Adds a button to the view
         /// </summary>
         /// <param name="name">Name of the button</param>
@@ -378,15 +361,6 @@ namespace DatenMeisterWPF.Forms.Base
             ButtonBar.Children.Add(button);
             return button;
         }
-
-        /// <summary>
-        /// Adds a button for a row item
-        /// </summary>
-        /// <param name="definition">Definition for the button</param>
-        private void AddRowItemButton(RowItemButtonDefinition definition)
-        {
-            _rowItemButtonDefinitions.Add(definition);
-        }
     
         /// <summary>
         /// Opens the selected element
@@ -410,19 +384,6 @@ namespace DatenMeisterWPF.Forms.Base
         {
             Before,
             After
-        }
-
-        /// <summary>
-        /// Adds a button for a row item
-        /// </summary>
-        /// <param name="name">Name of the button</param>
-        /// <param name="pressed">Called, if the is button pressed</param>
-        /// <param name="position">Position of the button to be used</param>
-        public void AddRowItemButton(string name, Action<INavigationGuest, IObject> pressed, ButtonPosition position = ButtonPosition.After)
-        {
-            var definition = new RowItemButtonDefinition(name, pressed, position);
-
-            AddRowItemButton(definition);
         }
 
         /// <summary>
@@ -489,10 +450,22 @@ namespace DatenMeisterWPF.Forms.Base
             UpdateContent();
         }
 
+        public void PrepareNavigation()
+        {
+            foreach (var ribbon in ViewExtensions.OfType<RibbonButtonDefinition>())
+            {
+                NavigationHost.AddNavigationButton(
+                    ribbon.Name,
+                    ribbon.OnPressed,
+                    ribbon.ImageName,
+                    ribbon.CategoryName);
+            }
+        }
+
         /// <summary>
         /// Prepares the navigation and ribbons
         /// </summary>
-        public void PrepareNavigation()
+        public void IncludeStandardExtensions()
         {
             // Clears the info lines
             void ViewExtent()
@@ -574,41 +547,51 @@ namespace DatenMeisterWPF.Forms.Base
                 copyContent.Execute(null);
             }
 
-            NavigationHost.AddNavigationButton(
-                "Refresh",
-                UpdateContent,
-                Icons.Refresh,
-                NavigationCategories.File + ".Views");
+            ViewExtensions.Add(
+                new RowItemButtonDefinition(
+                    "Edit", NavigateToElement, ButtonPosition.Before));
 
-            NavigationHost.AddNavigationButton(
-                "Extent as XMI", 
-                ViewExtent, 
-                null, 
-                NavigationCategories.File + ".Views");
+            ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Refresh",
+                    UpdateContent,
+                    Icons.Refresh,
+                    NavigationCategories.File + ".Views"));
 
-            NavigationHost.AddNavigationButton(
-                "Form Definition", 
-                ShowFormDefinition, 
-                null, 
-                NavigationCategories.File + ".Views");
+            ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Extent as XMI",
+                    ViewExtent,
+                    null,
+                    NavigationCategories.File + ".Views"));
 
-            NavigationHost.AddNavigationButton(
-                "Create Form",
-                CopyForm,
-                null,
-                NavigationCategories.File + ".Views");
+            ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Form Definition",
+                    ShowFormDefinition,
+                    null,
+                    NavigationCategories.File + ".Views"));
 
-            NavigationHost.AddNavigationButton(
-                "Export CSV",
-                ExportToCSV,
-                Icons.ExportCSV,
-                NavigationCategories.File + ".Export");
+            ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Create Form",
+                    CopyForm,
+                    null,
+                    NavigationCategories.File + ".Views"));
 
-            NavigationHost.AddNavigationButton(
-                "Copy",
-                CopyContent,
-                null,
-                NavigationCategories.File + ".Copy");
+            ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Export CSV",
+                    ExportToCSV,
+                    Icons.ExportCSV,
+                    NavigationCategories.File + ".Export"));
+
+            ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Copy",
+                    CopyContent,
+                    null,
+                    NavigationCategories.File + ".Copy"));
         }
 
         /// <inheritdoc />

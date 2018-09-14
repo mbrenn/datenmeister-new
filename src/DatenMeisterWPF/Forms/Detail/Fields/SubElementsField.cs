@@ -9,6 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeisterWPF.Forms.Base;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Detail.Fields
@@ -77,12 +78,15 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     MaxHeight = 500,
                     NavigationHost = detailForm.NavigationHost
                 };
-                
-                listViewControl.AddRowItemButton(
-                    "Edit",
-                    (guest, item) => NavigatorForItems.NavigateToElementDetailView(detailForm.NavigationHost, item),
-                    ItemListViewControl.ButtonPosition.Before);
-                listViewControl.SetContent(valueOfElement, form, null);
+
+                var viewExtensions = new List<ViewExtension>();
+                viewExtensions.Add(
+                    new RowItemButtonDefinition(
+                        "Edit",
+                        (guest, item) => NavigatorForItems.NavigateToElementDetailView(detailForm.NavigationHost, item),
+                        ItemListViewControl.ButtonPosition.Before));
+                listViewControl.SetContent(valueOfElement, form, viewExtensions);
+
                 panel.Children.Add(listViewControl);
             }
 

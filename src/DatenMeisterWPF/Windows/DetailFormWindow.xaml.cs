@@ -28,9 +28,7 @@ namespace DatenMeisterWPF.Windows
 
         private void DetailFormWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            RibbonHelper.ClearRibbons();
-            RibbonHelper.PrepareDefaultNavigation();
-            RibbonHelper.FinalizeRibbons();
+            RebuildNavigation();
         }
 
         public IControlNavigation NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode)
@@ -77,6 +75,18 @@ namespace DatenMeisterWPF.Windows
             }
 
             Focus();
+        }
+
+
+        /// <summary>
+        /// Rebuild the complete navigation
+        /// </summary>
+        public void RebuildNavigation()
+        {
+            RibbonHelper.ClearRibbons();
+            RibbonHelper.PrepareDefaultNavigation();
+            RibbonHelper.FinalizeRibbons();
+
         }
 
         public void SetFocus()

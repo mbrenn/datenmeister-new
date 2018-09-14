@@ -59,50 +59,58 @@ namespace DatenMeisterWPF
             // Only if navigation method is a list
             if (navigationMode == NavigationMode.List)
             {
-                _ribbonHelper.ClearRibbons();
 
-                _ribbonHelper.AddNavigationButton(
-                    "Home",
-                    () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
-                    Icons.FileHome,
-                    NavigationCategories.File + ".Workspaces");
-
-                _ribbonHelper.AddNavigationButton(
-                    "Workspaces",
-                    () => NavigatorForWorkspaces.NavigateToWorkspaces(this),
-                    Icons.WorkspacesShow,
-                    NavigationCategories.File + ".Workspaces");
-
-                _ribbonHelper.AddNavigationButton(
-                    "Find by URL",
-                    () => NavigatorForDialogs.SearchByUrl(this),
-                    null,
-                    NavigationCategories.File + ".Search");
-
-                _ribbonHelper.AddNavigationButton(
-                    "Locate",
-                    () => NavigatorForDialogs.LocateAndOpen(this),
-                    null,
-                    NavigationCategories.File + ".Search");
-
-                var result = new ControlNavigation();
                 var userControl = factoryMethod();
-
                 MainControl.Content = userControl;
 
-                _ribbonHelper.PrepareDefaultNavigation();
-                if (userControl is INavigationGuest guest)
-                {
-                    guest.NavigationHost = this;
-                    guest.PrepareNavigation();
-                }
+                RebuildNavigation();
 
-                _ribbonHelper.FinalizeRibbons();
-
+                var result = new ControlNavigation();
                 return result;
             }
 
             return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
+        }
+
+        /// <summary>
+        /// Rebuild the complete navigation
+        /// </summary>
+        public void RebuildNavigation()
+        {
+            _ribbonHelper.ClearRibbons();
+
+            _ribbonHelper.AddNavigationButton(
+                "Home",
+                () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
+                Icons.FileHome,
+                NavigationCategories.File + ".Workspaces");
+
+            _ribbonHelper.AddNavigationButton(
+                "Workspaces",
+                () => NavigatorForWorkspaces.NavigateToWorkspaces(this),
+                Icons.WorkspacesShow,
+                NavigationCategories.File + ".Workspaces");
+
+            _ribbonHelper.AddNavigationButton(
+                "Find by URL",
+                () => NavigatorForDialogs.SearchByUrl(this),
+                null,
+                NavigationCategories.File + ".Search");
+
+            _ribbonHelper.AddNavigationButton(
+                "Locate",
+                () => NavigatorForDialogs.LocateAndOpen(this),
+                null,
+                NavigationCategories.File + ".Search");
+
+            _ribbonHelper.PrepareDefaultNavigation();
+            if (MainControl.Content is INavigationGuest guest)
+            {
+                guest.NavigationHost = this;
+                guest.PrepareNavigation();
+            }
+
+            _ribbonHelper.FinalizeRibbons();
         }
         
         /// <summary>

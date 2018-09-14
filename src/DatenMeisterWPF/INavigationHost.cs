@@ -37,6 +37,13 @@ namespace DatenMeisterWPF
             string categoryName);
 
         /// <summary>
+        /// Called, when the navigation shall be rebuilt.
+        /// This method can be called by guests, when the ribbons or other
+        /// nav
+        /// </summary>
+        void RebuildNavigation();
+
+        /// <summary>
         /// Sets the focus of the navigation host, so user can click on it
         /// </summary>
         void SetFocus();

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Windows
@@ -70,9 +71,13 @@ namespace DatenMeisterWPF.Windows
             OnItemSelected(e.Item);
         }
 
-        public void PrepareNavigation()
+        /// <summary>
+        /// Prepares the navigation of the host. The function is called by the navigation 
+        /// host. 
+        /// </summary>
+        public IEnumerable<ViewExtension> GetViewExtensions()
         {
-            
+            return new ViewExtension[] { };
         }
     }
 }

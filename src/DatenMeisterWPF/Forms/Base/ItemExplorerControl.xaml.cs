@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Uml.Helper;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Base
@@ -58,6 +47,24 @@ namespace DatenMeisterWPF.Forms.Base
 
         public INavigationHost NavigationHost { get; set; }
 
+        /// <summary>
+        /// Gets the view extensions
+        /// </summary>
+        /// <returns>Gets the enumeration of the view extensions</returns>
+        public virtual IEnumerable<ViewExtension> GetViewExtensions()
+        {
+            var selectedTab = ItemTabControl.SelectedItem as ItemExplorerTab;
+            if (selectedTab?.ViewDefinition?.ViewExtensions == null)
+            {
+                yield break;
+            }
+            
+            foreach (var extension in selectedTab.ViewDefinition.ViewExtensions)
+            {
+                yield return extension;
+            }
+        }
+
         public void SetItems(IReflectiveCollection items)
         {
             Items = items;
@@ -78,10 +85,6 @@ namespace DatenMeisterWPF.Forms.Base
         /// This method will be called when the user has selected an item and the views need to be recreated
         /// </summary>
         protected virtual void OnRecreateViews()
-        {
-        }
-
-        public void PrepareNavigation()
         {
         }
         
@@ -151,8 +154,9 @@ namespace DatenMeisterWPF.Forms.Base
             if (ItemTabControl.SelectedItem == null)
             {
                 ItemTabControl.SelectedItem = tabControl;
+                NavigationHost.RebuildNavigation();
             }
-            
+
             return tabControl;
         }
 

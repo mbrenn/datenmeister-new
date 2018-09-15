@@ -449,12 +449,15 @@ namespace DatenMeisterWPF.Forms.Base
             _searchText = SearchField.Text;
             UpdateContent();
         }
-
-        public void PrepareNavigation()
+        /// <summary>
+        /// Prepares the navigation of the host. The function is called by the navigation 
+        /// host. 
+        /// </summary>
+        public IEnumerable<ViewExtension> GetViewExtensions()
         {
             foreach (var ribbon in ViewExtensions.OfType<RibbonButtonDefinition>())
             {
-                NavigationHost.AddNavigationButton(
+                yield return new RibbonButtonDefinition(
                     ribbon.Name,
                     ribbon.OnPressed,
                     ribbon.ImageName,

@@ -1,4 +1,8 @@
-﻿namespace DatenMeisterWPF
+﻿using System.Collections;
+using System.Collections.Generic;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
+
+namespace DatenMeisterWPF
 {
     /// <summary>
     /// Defines the interface for the given controls. 
@@ -16,6 +20,6 @@
         /// Prepares the navigation of the host. The function is called by the navigation 
         /// host. 
         /// </summary>
-        void PrepareNavigation();
+        IEnumerable<ViewExtension> GetViewExtensions();
     }
 }

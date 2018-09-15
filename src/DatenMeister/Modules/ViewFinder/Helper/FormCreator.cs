@@ -35,6 +35,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
         public Form CreateForm(IReflectiveCollection elements, CreationMode creationMode)
         {
+            if (elements == null) throw new ArgumentNullException(nameof(elements));
+
             var result = new Form();
             foreach (var item in elements)
             {

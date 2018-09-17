@@ -82,9 +82,8 @@ namespace DatenMeisterWPF
         /// </summary>
         public void RebuildNavigation()
         {
-            _ribbonHelper.ClearRibbons();
 
-            var viewExtensions = new List<ViewExtension>
+            IEnumerable<ViewExtension> viewExtensions = new List<ViewExtension>
             {
                 new RibbonButtonDefinition(
                     "Home",
@@ -108,24 +107,14 @@ namespace DatenMeisterWPF
                     NavigationCategories.File + ".Search")
             };
 
-            _ribbonHelper.PrepareDefaultNavigation();
+            viewExtensions = viewExtensions.Union(_ribbonHelper.GetDefaultNavigation());
             if (MainControl.Content is INavigationGuest guest)
             {
                 guest.NavigationHost = this;
-                viewExtensions.AddRange(guest.GetViewExtensions());
+                viewExtensions = viewExtensions.Union(guest.GetViewExtensions());
             }
 
-
-            foreach (var viewExtension in viewExtensions.OfType<RibbonButtonDefinition>())
-            {
-                _ribbonHelper.AddNavigationButton(
-                    viewExtension.Name,
-                    viewExtension.OnPressed,
-                    viewExtension.ImageName,
-                    viewExtension.CategoryName);
-            }
-
-            _ribbonHelper.FinalizeRibbons();
+            _ribbonHelper.EvaluateExtensions(viewExtensions);
         }
         
         /// <summary>

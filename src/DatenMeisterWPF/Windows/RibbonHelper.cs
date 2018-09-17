@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls.Ribbon;
 using DatenMeister.WPF.Modules;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Windows
@@ -146,11 +147,31 @@ namespace DatenMeisterWPF.Windows
         /// <summary>
         /// Prepares the default navigation
         /// </summary>
-        public void PrepareDefaultNavigation()
+        public IEnumerable<ViewExtension> GetDefaultNavigation()
         {
-            AddNavigationButton("Close", () => (_mainWindow as Window)?.Close(),
-                "file-exit",
-                NavigationCategories.File);
+            return new [] {
+                new RibbonButtonDefinition(
+                    "Close", 
+                    () => (_mainWindow as Window)?.Close(),
+                    "file-exit",
+                    NavigationCategories.File)
+            };
+        }
+
+        public void EvaluateExtensions(IEnumerable<ViewExtension> viewExtensions)
+        {
+            ClearRibbons();
+
+            foreach (var viewExtension in viewExtensions.OfType<RibbonButtonDefinition>())
+            {
+                AddNavigationButton(
+                    viewExtension.Name,
+                    viewExtension.OnPressed,
+                    viewExtension.ImageName,
+                    viewExtension.CategoryName);
+            }
+
+            FinalizeRibbons();
         }
     }
 }

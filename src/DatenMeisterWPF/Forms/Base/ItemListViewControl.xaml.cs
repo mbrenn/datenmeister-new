@@ -396,7 +396,7 @@ namespace DatenMeisterWPF.Forms.Base
             var (selectedItem, column) = GetObjectsFromEventRouting(e);
             column.OnClick(this, selectedItem);
         }
-
+        
         /// <summary>
         /// Gets the object and column from the button being clicked by the user
         /// </summary>

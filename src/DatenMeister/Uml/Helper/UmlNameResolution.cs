@@ -14,7 +14,7 @@ namespace DatenMeister.Uml.Helper
         /// <returns>The found name or null, if not found</returns>
         public static string GetName(IObject element)
         {
-            if(element == null)
+            if (element == null)
             {
                 return "null";
             }
@@ -25,18 +25,16 @@ namespace DatenMeister.Uml.Helper
             {
                 return element.get(_UML._CommonStructure._NamedElement.name).ToString();
             }
-            
-            if (element is IHasId elementAsHasId)
-            {
-                return elementAsHasId.Id;
-            }
 
-            if (element is MofObjectShadow shadowedObject)
+            switch (element)
             {
-                return shadowedObject.Uri;
+                case IHasId elementAsHasId:
+                    return elementAsHasId.Id;
+                case MofObjectShadow shadowedObject:
+                    return shadowedObject.Uri;
+                default:
+                    return element.ToString();
             }
-
-            return element.ToString();
         }
 
         /// <summary>

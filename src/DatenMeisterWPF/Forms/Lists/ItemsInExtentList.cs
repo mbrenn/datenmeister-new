@@ -39,7 +39,15 @@ namespace DatenMeisterWPF.Forms.Lists
 
         private void ItemsInExtentList_Loaded(object sender, RoutedEventArgs e)
         {
-            SetContent(WorkspaceId, ExtentUrl);
+            var workLogic = App.Scope.Resolve<IWorkspaceLogic>();
+            workLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out var workspace, out _extent);
+            if (_extent == null)
+            {
+                MessageBox.Show("The given workspace and extent was not found.");
+                return;
+            }
+
+            SetItems(_extent.elements());
         }
 
         /// <summary>
@@ -47,10 +55,8 @@ namespace DatenMeisterWPF.Forms.Lists
         /// </summary>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <param name="extentUrl">Url of the extent to be used</param>
-        public void SetContent(string workspaceId, string extentUrl)
+        protected override void OnRecreateViews()
         {
-            WorkspaceId = workspaceId;
-            ExtentUrl = extentUrl;
             var viewFinder = App.Scope.Resolve<IViewFinder>();
 
             IElement view = null;
@@ -66,16 +72,8 @@ namespace DatenMeisterWPF.Forms.Lists
                 view =
                     viewFinder.FindListViewFor((SelectedItems as MofReflectiveSequence)?.MofObject);
             }
-            var workLogic = App.Scope.Resolve<IWorkspaceLogic>();
-            workLogic.FindExtentAndWorkspace(workspaceId, extentUrl, out var workspace, out _extent);
-            if (_extent == null)
-            {
-                MessageBox.Show("The given workspace and extent was not found.");
-                return;
-            }
 
             var viewDefinition = new ViewDefinition("Extent",view);
-
 
             // Sets the generic buttons to create the new types
             if (view?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
@@ -118,9 +116,8 @@ namespace DatenMeisterWPF.Forms.Lists
 
             PrepareNavigation(viewDefinition);
 
-
             var element = AddTab(
-                _extent.elements(),
+                SelectedItems,
                 viewDefinition);
         }
 

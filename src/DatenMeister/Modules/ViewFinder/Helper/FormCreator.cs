@@ -37,7 +37,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         {
             if (elements == null) throw new ArgumentNullException(nameof(elements));
 
-            var result = new Form();
+            var result = new Form {name = "Items"};
             foreach (var item in elements)
             {
                 CreateForm(result, item, creationMode);
@@ -58,7 +58,9 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
         public Form CreateForm(object item, CreationMode creationMode)
         {
-            var result = new Form();
+            if (item == null) throw new ArgumentNullException(nameof(item));
+
+            var result = new Form {name = "Item"};
             CreateForm(result, item, creationMode);
             return result;
         }
@@ -71,6 +73,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <param name="creationMode">Creation mode for the form. Whether by metaclass or ByProperties</param>
         private void CreateForm(Form form, object item, CreationMode creationMode)
         {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+
             // First phase: Get the properties by using the metaclass
             var asElement = item as IElement;
             var metaClass = asElement?.metaclass;

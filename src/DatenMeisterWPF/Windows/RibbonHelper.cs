@@ -98,7 +98,7 @@ namespace DatenMeisterWPF.Windows
             var button = new RibbonButton
             {
                 Label = name,
-                LargeImageSource = IconRepository.GetIcon(imageName)
+                LargeImageSource = string.IsNullOrEmpty(imageName) ? null : IconRepository.GetIcon(imageName)
             };
 
             button.Click += (x, y) => clickMethod();

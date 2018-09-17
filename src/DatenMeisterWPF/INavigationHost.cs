@@ -24,19 +24,6 @@ namespace DatenMeisterWPF
             NavigationMode navigationMode);
 
         /// <summary>
-        /// Adds a navigation element being used by the control. 
-        /// </summary>
-        /// <param name="name">Name of the element being used and shown to the user</param>
-        /// <param name="clickMethod">Method that is called</param>
-        /// <param name="imageName">Name of the image being shown</param>
-        /// <param name="categoryName">Name of the category</param>
-        void AddNavigationButton(
-            string name,
-            Action clickMethod,
-            string imageName,
-            string categoryName);
-
-        /// <summary>
         /// Called, when the navigation shall be rebuilt.
         /// This method can be called by guests, when the ribbons or other
         /// nav

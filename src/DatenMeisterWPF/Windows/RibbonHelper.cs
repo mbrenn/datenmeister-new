@@ -22,6 +22,10 @@ namespace DatenMeisterWPF.Windows
 
         private readonly List<RibbonTab> _ribbonTabs = new List<RibbonTab>();
 
+        private Dictionary<RibbonButtonDefinition, RibbonButton> _buttons =
+            new Dictionary<RibbonButtonDefinition, RibbonButton>(
+                new RibbonButtonDefinition.Comparer());
+
         /// <summary>
         /// Loads the icon repository. 
         /// If DatenMeister.Icons is existing, then the full and cool icons will be used. 
@@ -54,12 +58,14 @@ namespace DatenMeisterWPF.Windows
         /// <summary>
         /// Adds a navigational element to the ribbons
         /// </summary>
-        /// <param name="name">Name of the element</param>
-        /// <param name="clickMethod">Method, that shall be called, when the user clicks on the item</param>
-        /// <param name="imageName">Name of the image being allocated</param>
-        /// <param name="categoryName">Category of the MainRibbon to be added</param>
-        public void AddNavigationButton(string name, Action clickMethod, string imageName, string categoryName)
+        /// <param name="definition">The definition to be used</param>
+        public void AddNavigationButton(RibbonButtonDefinition definition)
         {
+            var name = definition.Name;
+            var categoryName = definition.CategoryName;
+            var imageName = definition.ImageName;
+            var clickMethod = definition.OnPressed;
+
             string tabName, groupName;
             var indexOfSemicolon = categoryName.IndexOf('.');
             if (indexOfSemicolon == -1)
@@ -101,6 +107,8 @@ namespace DatenMeisterWPF.Windows
                 LargeImageSource = string.IsNullOrEmpty(imageName) ? null : IconRepository.GetIcon(imageName)
             };
 
+            _buttons[definition] = button;
+
             button.Click += (x, y) => clickMethod();
 
             // Check correct position for button... First, the buttons are shown, then the texts
@@ -135,13 +143,14 @@ namespace DatenMeisterWPF.Windows
         /// </summary>
         public void FinalizeRibbons()
         {
-            AddNavigationButton("About",
-                () => new AboutDialog
-                {
-                    Owner = _mainWindow as Window
-                }.ShowDialog(),
-                "file-about",
-                NavigationCategories.File);
+            AddNavigationButton(
+                new RibbonButtonDefinition("About",
+                    () => new AboutDialog
+                    {
+                        Owner = _mainWindow as Window
+                    }.ShowDialog(),
+                    "file-about",
+                    NavigationCategories.File));
         }
 
         /// <summary>
@@ -164,11 +173,7 @@ namespace DatenMeisterWPF.Windows
 
             foreach (var viewExtension in viewExtensions.OfType<RibbonButtonDefinition>())
             {
-                AddNavigationButton(
-                    viewExtension.Name,
-                    viewExtension.OnPressed,
-                    viewExtension.ImageName,
-                    viewExtension.CategoryName);
+                AddNavigationButton(viewExtension);
             }
 
             FinalizeRibbons();

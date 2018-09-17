@@ -131,18 +131,6 @@ namespace DatenMeisterWPF
             Close();
         }
 
-        /// <summary>
-        /// Adds a navigational element to the ribbons
-        /// </summary>
-        /// <param name="name">Name of the element</param>
-        /// <param name="clickMethod">Method, that shall be called, when the user clicks on the item</param>
-        /// <param name="imageName">Name of the image being allocated</param>
-        /// <param name="categoryName">Category of the MainRibbon to be added</param>
-        public void AddNavigationButton(string name, Action clickMethod, string imageName, string categoryName)
-        {
-            _ribbonHelper.AddNavigationButton(name, clickMethod, imageName, categoryName);
-        }
-
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
             if (MessageBox.Show(

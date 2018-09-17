@@ -166,9 +166,10 @@ namespace DatenMeisterWPF.Windows
         /// </summary>
         public IEnumerable<ViewExtension> GetDefaultNavigation()
         {
-            return new [] {
+            return new[]
+            {
                 new RibbonButtonDefinition(
-                    "Close", 
+                    "Close",
                     () => (_mainWindow as Window)?.Close(),
                     "file-exit",
                     NavigationCategories.File),
@@ -179,7 +180,7 @@ namespace DatenMeisterWPF.Windows
                     }.ShowDialog(),
                     "file-about",
                     NavigationCategories.File)
-        };
+            };
         }
 
         public void EvaluateExtensions(IEnumerable<ViewExtension> viewExtensions)
@@ -198,16 +199,18 @@ namespace DatenMeisterWPF.Windows
                     foundTuple.Button.Click -= foundTuple.ClickEvent;
                     foundTuple.ClickEvent = (x, y) => viewExtension.OnPressed();
                     foundTuple.Button.Click += foundTuple.ClickEvent;
-                    return;
                 }
-
-                AddNavigationButton(viewExtension);
+                else
+                {
+                    AddNavigationButton(viewExtension);
+                }
             }
 
             // Now, remove the buttons that are not needed anymore
             foreach (var obsolete in copiedList)
             {
                 ((RibbonGroup) obsolete.Button.Parent).Items.Remove(obsolete.Button);
+                _buttons.Remove(obsolete);
             }
         }
     }

@@ -40,6 +40,12 @@ namespace DatenMeister.Runtime.Functions.Queries
             return new FilterOnMetaClass(collection, metaClasses);
         }
 
+        public static IReflectiveCollection WhenMetaClassIsNotSet(
+            this IReflectiveCollection collection)
+        {
+            return new FilterOnMetaClassIsNotSet(collection);
+        }
+
         public static IReflectiveCollection WhenPropertiyIsSet(
             this IReflectiveCollection collection,
             string property)

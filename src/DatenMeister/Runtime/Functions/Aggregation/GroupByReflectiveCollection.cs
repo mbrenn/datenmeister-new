@@ -134,7 +134,6 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             foreach (var pair in aggregatedValues)
             {
                 var element = _mofFactory.create(null);
-
                 element.set(groupByColumn, pair.Key);
 
                 var n = 0;

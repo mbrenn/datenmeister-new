@@ -132,7 +132,8 @@ namespace DatenMeisterWPF.Forms.Base
             if (result == null)
             {
                 // Nothing was found... so, create your default list lsit. 
-                result = viewFinder.CreateView(Items);
+                result = viewFinder.CreateView(collection);
+                result.set("name", viewDefinition.Name);
             }
 
             // Creates the layoutcontrol for the given view

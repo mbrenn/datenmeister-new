@@ -16,7 +16,9 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
@@ -25,7 +27,7 @@ using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
-    public class ItemsInExtentList : ItemExplorerControl, INavigationGuest
+    public class ItemsInExtentList : ItemExplorerControl
     {
         private IExtent _extent;
 
@@ -53,72 +55,89 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <summary>
         /// Sets the items of the given extent
         /// </summary>
-        /// <param name="workspaceId">Id of the workspace</param>
-        /// <param name="extentUrl">Url of the extent to be used</param>
         protected override void OnRecreateViews()
         {
             var viewFinder = App.Scope.Resolve<IViewFinder>();
 
-            IElement view = null;
-                // Nobody selected a form, so we can autocreate a new form
-            if (Items == SelectedItems)
+            // Group by SelectedItems
+            var metaClasses = SelectedItems.Select(x => (x as IElement)?.getMetaClass()).Distinct();
+            foreach (var metaClass in metaClasses)
             {
-                // Finds the view by the extent type
-                view = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
-            }
-            else
-            {
-                // User has selected a sub element. 
-                view =
-                    viewFinder.FindListViewFor((SelectedItems as MofReflectiveSequence)?.MofObject);
-            }
-
-            var viewDefinition = new ViewDefinition("Extent",view);
-
-            // Sets the generic buttons to create the new types
-            if (view?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
-                is IReflectiveCollection defaultTypesForNewItems)
-            {
-                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
+                IReflectiveCollection tabItems;
+                if (metaClass == null)
                 {
-                    var typeName = type.get(_UML._CommonStructure._NamedElement.name);
-
-                    viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
-                        $"New {typeName}", () =>
-                        {
-                            var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
-                            elements.Closed += (x, y) => { RecreateViews(); };
-                        }));
+                    tabItems = SelectedItems.WhenMetaClassIsNotSet();
                 }
-            }
-
-            // Sets the button for the new item
-            viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
-                "New Item", () =>
+                else
                 {
-                    var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
-                    elements.Closed += (x, y) => { RecreateViews(); };
-                }));
+                    tabItems = SelectedItems.WhenMetaClassIsOneOf(metaClass);
+                }
 
-            // Allows the deletion of an item
-            viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition(
-                "Delete",
-                (guest, item) =>
+                IElement view = null;
+                // Nobody selected a form, so we can autocreate a new form
+                if (Items == SelectedItems)
                 {
-                    if (MessageBox.Show(
-                            "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
-                        MessageBoxResult.Yes)
+                    // Finds the view by the extent type
+                    view = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
+                }
+                else
+                {
+                    // User has selected a sub element. 
+                    view =
+                        viewFinder.FindListViewFor((tabItems as MofReflectiveSequence)?.MofObject)
+                        ?? viewFinder.CreateView(tabItems);
+                }
+
+                var className = metaClass == null ? "Items" : UmlNameResolution.GetName(metaClass);
+                view?.set("name", className);
+                var viewDefinition = new ViewDefinition(className, view);
+
+                // Sets the generic buttons to create the new types
+                if (view?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
+                    is IReflectiveCollection defaultTypesForNewItems)
+                {
+                    foreach (var type in defaultTypesForNewItems.OfType<IElement>())
                     {
-                        _extent.elements().remove(item);
-                        //element.Control.UpdateContent();
+                        var typeName = type.get(_UML._CommonStructure._NamedElement.name);
+
+                        viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
+                            $"New {typeName}", () =>
+                            {
+                                var elements =
+                                    NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
+                                elements.Closed += (x, y) => { RecreateViews(); };
+                            }));
                     }
-                }));
+                }
 
-            PrepareNavigation(viewDefinition);
+                // Sets the button for the new item
+                viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
+                    "New Item", () =>
+                    {
+                        var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
+                        elements.Closed += (x, y) => { RecreateViews(); };
+                    }));
 
-            var element = AddTab(
-                SelectedItems,
-                viewDefinition);
+                // Allows the deletion of an item
+                viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition(
+                    "Delete",
+                    (guest, item) =>
+                    {
+                        if (MessageBox.Show(
+                                "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
+                            MessageBoxResult.Yes)
+                        {
+                            _extent.elements().remove(item);
+                            //element.Control.UpdateContent();
+                        }
+                    }));
+
+                PrepareNavigation(viewDefinition);
+
+                var element = AddTab(
+                    tabItems,
+                    viewDefinition);
+            }
         }
 
         /// <summary>

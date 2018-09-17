@@ -638,7 +638,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (!(DataGrid.SelectedItem is ExpandoObject selectedItem))
             {

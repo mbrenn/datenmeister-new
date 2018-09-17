@@ -71,9 +71,7 @@ namespace DatenMeisterWPF.Windows
         /// </summary>
         public void RebuildNavigation()
         {
-            RibbonHelper.ClearRibbons();
             RibbonHelper.EvaluateExtensions(RibbonHelper.GetDefaultNavigation());
-            RibbonHelper.FinalizeRibbons();
         }
 
         public void SetFocus()

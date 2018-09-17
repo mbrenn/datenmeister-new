@@ -22,9 +22,26 @@ namespace DatenMeisterWPF.Windows
 
         private readonly List<RibbonTab> _ribbonTabs = new List<RibbonTab>();
 
-        private Dictionary<RibbonButtonDefinition, RibbonButton> _buttons =
-            new Dictionary<RibbonButtonDefinition, RibbonButton>(
-                new RibbonButtonDefinition.Comparer());
+        private List<RibbonHelperItem> _buttons =
+            new List<RibbonHelperItem>();
+
+        private class RibbonHelperItem
+        {
+            public RibbonButtonDefinition Definition { get; set; }
+
+            public RibbonButton Button { get; set; }
+
+            public RoutedEventHandler ClickEvent { get; set; }
+
+            /// <summary>
+            /// Converts the item to a string
+            /// </summary>
+            /// <returns></returns>
+            public override string ToString()
+            {
+                return $"HelperItem: {Definition}";
+            }
+        }
 
         /// <summary>
         /// Loads the icon repository. 
@@ -59,8 +76,9 @@ namespace DatenMeisterWPF.Windows
         /// Adds a navigational element to the ribbons
         /// </summary>
         /// <param name="definition">The definition to be used</param>
-        public void AddNavigationButton(RibbonButtonDefinition definition)
+        private void AddNavigationButton(RibbonButtonDefinition definition)
         {
+            // Ok, we have not found it, so create the button
             var name = definition.Name;
             var categoryName = definition.CategoryName;
             var imageName = definition.ImageName;
@@ -107,9 +125,14 @@ namespace DatenMeisterWPF.Windows
                 LargeImageSource = string.IsNullOrEmpty(imageName) ? null : IconRepository.GetIcon(imageName)
             };
 
-            _buttons[definition] = button;
-
-            button.Click += (x, y) => clickMethod();
+            var item = new RibbonHelperItem
+            {
+                Definition = definition,
+                Button = button,
+                ClickEvent = (x, y) => clickMethod()
+            };
+            _buttons.Add(item);
+            button.Click += item.ClickEvent;
 
             // Check correct position for button... First, the buttons are shown, then the texts
             if (imageName != null)
@@ -130,27 +153,12 @@ namespace DatenMeisterWPF.Windows
         }
 
         /// <summary>
-        /// Clears the complete MainRibbon navigaton
+        /// Clears the complete MainRibbon navigation
         /// </summary>
-        public void ClearRibbons()
+        private void ClearRibbons()
         {
             _ribbonTabs.Clear();
             _mainWindow.GetRibbon().Items.Clear();
-        }
-
-        /// <summary>
-        /// After having received the MainRibbon requests, this method builds up the real navigation
-        /// </summary>
-        public void FinalizeRibbons()
-        {
-            AddNavigationButton(
-                new RibbonButtonDefinition("About",
-                    () => new AboutDialog
-                    {
-                        Owner = _mainWindow as Window
-                    }.ShowDialog(),
-                    "file-about",
-                    NavigationCategories.File));
         }
 
         /// <summary>
@@ -163,20 +171,44 @@ namespace DatenMeisterWPF.Windows
                     "Close", 
                     () => (_mainWindow as Window)?.Close(),
                     "file-exit",
+                    NavigationCategories.File),
+                new RibbonButtonDefinition("About",
+                    () => new AboutDialog
+                    {
+                        Owner = _mainWindow as Window
+                    }.ShowDialog(),
+                    "file-about",
                     NavigationCategories.File)
-            };
+        };
         }
 
         public void EvaluateExtensions(IEnumerable<ViewExtension> viewExtensions)
         {
-            ClearRibbons();
+            var copiedList = _buttons.ToList();
 
             foreach (var viewExtension in viewExtensions.OfType<RibbonButtonDefinition>())
             {
+                // Check, navigation button is already given
+                var foundTuple = _buttons.Find(x => RibbonButtonDefinition.AreEqual(viewExtension, x.Definition));
+                if (foundTuple != null)
+                {
+                    copiedList.Remove(foundTuple);
+
+                    // Reorganizes the buttons
+                    foundTuple.Button.Click -= foundTuple.ClickEvent;
+                    foundTuple.ClickEvent = (x, y) => viewExtension.OnPressed();
+                    foundTuple.Button.Click += foundTuple.ClickEvent;
+                    return;
+                }
+
                 AddNavigationButton(viewExtension);
             }
 
-            FinalizeRibbons();
+            // Now, remove the buttons that are not needed anymore
+            foreach (var obsolete in copiedList)
+            {
+                ((RibbonGroup) obsolete.Button.Parent).Items.Remove(obsolete.Button);
+            }
         }
     }
 }

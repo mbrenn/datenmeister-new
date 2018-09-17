@@ -38,7 +38,7 @@ namespace DatenMeisterWPF.Forms.Base.ViewExtensions
 
         public override string ToString()
         {
-            return $"RibbonButtonDefinition: {Name}";
+            return $"{CategoryName}.{Name} [{ImageName}]";
         }
 
         /// <summary>

@@ -396,7 +396,7 @@ namespace DatenMeisterWPF.Forms.Base
             var (selectedItem, column) = GetObjectsFromEventRouting(e);
             column.OnClick(this, selectedItem);
         }
-
+        
         /// <summary>
         /// Gets the object and column from the button being clicked by the user
         /// </summary>
@@ -449,12 +449,15 @@ namespace DatenMeisterWPF.Forms.Base
             _searchText = SearchField.Text;
             UpdateContent();
         }
-
-        public void PrepareNavigation()
+        /// <summary>
+        /// Prepares the navigation of the host. The function is called by the navigation 
+        /// host. 
+        /// </summary>
+        public IEnumerable<ViewExtension> GetViewExtensions()
         {
             foreach (var ribbon in ViewExtensions.OfType<RibbonButtonDefinition>())
             {
-                NavigationHost.AddNavigationButton(
+                yield return new RibbonButtonDefinition(
                     ribbon.Name,
                     ribbon.OnPressed,
                     ribbon.ImageName,

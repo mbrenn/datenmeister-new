@@ -17,7 +17,6 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <summary>
         /// Requests the form for the workspace
         /// </summary>
-        /// <param name="listViewControl">List view to which the item shall be added</param>
         /// <returns>Requested form</returns>
         internal static ViewDefinition RequestFormForWorkspaces()
         {
@@ -67,7 +66,6 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <summary>
         /// Requests the form for extent elements
         /// </summary>
-        /// <param name="listViewControl">The list view being used as host for the form</param>
         /// <param name="workspaceId">The Id of the workspace</param>
         /// <returns>The created form</returns>
         internal static ViewDefinition RequestFormForExtents(string workspaceId)

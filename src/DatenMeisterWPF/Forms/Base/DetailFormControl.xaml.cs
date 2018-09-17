@@ -17,6 +17,7 @@ using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeister.UserInteractions;
 using DatenMeisterWPF.Command;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Forms.Detail.Fields;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
@@ -512,11 +513,11 @@ namespace DatenMeisterWPF.Forms.Base
         {
             ElementSaved?.Invoke(this, EventArgs.Empty);
         }
-
         /// <summary>
-        /// Called before the navigation is called
+        /// Prepares the navigation of the host. The function is called by the navigation 
+        /// host. 
         /// </summary>
-        public void PrepareNavigation()
+        public IEnumerable<ViewExtension> GetViewExtensions()
         {
             void ViewConfig()
             {
@@ -538,7 +539,7 @@ namespace DatenMeisterWPF.Forms.Base
                 dlg.ShowDialog();
             }
 
-            NavigationHost.AddNavigationButton(
+            yield return new RibbonButtonDefinition(
                 "View-Configuration",
                 ViewConfig,
                 null,
@@ -550,7 +551,7 @@ namespace DatenMeisterWPF.Forms.Base
                 copyContent.Execute(null);
             }
 
-            NavigationHost.AddNavigationButton(
+            yield return new RibbonButtonDefinition(
                 "Copy",
                 CopyContent,
                 null,

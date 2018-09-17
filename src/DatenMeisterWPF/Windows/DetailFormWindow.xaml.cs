@@ -28,26 +28,12 @@ namespace DatenMeisterWPF.Windows
 
         private void DetailFormWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            RibbonHelper.ClearRibbons();
-            RibbonHelper.PrepareDefaultNavigation();
-            RibbonHelper.FinalizeRibbons();
+            RebuildNavigation();
         }
 
         public IControlNavigation NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode)
         {
             return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
-        }
-
-        /// <summary>
-        /// Adds a navigational element to the ribbons
-        /// </summary>
-        /// <param name="name">Name of the element</param>
-        /// <param name="clickMethod">Method, that shall be called, when the user clicks on the item</param>
-        /// <param name="imageName">Name of the image being allocated</param>
-        /// <param name="categoryName">Category of the MainRibbon to be added</param>
-        public void AddNavigationButton(string name, Action clickMethod, string imageName, string categoryName)
-        {
-            RibbonHelper.AddNavigationButton(name, clickMethod, imageName, categoryName);
         }
 
         /// <summary>
@@ -77,6 +63,15 @@ namespace DatenMeisterWPF.Windows
             }
 
             Focus();
+        }
+
+
+        /// <summary>
+        /// Rebuild the complete navigation
+        /// </summary>
+        public void RebuildNavigation()
+        {
+            RibbonHelper.EvaluateExtensions(RibbonHelper.GetDefaultNavigation());
         }
 
         public void SetFocus()

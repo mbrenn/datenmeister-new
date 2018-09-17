@@ -41,27 +41,26 @@ namespace DatenMeisterWPF.Forms.Lists
         public void SetContent(string workspaceId)
         {
             WorkspaceId = workspaceId;
-        }
-
-        protected override void OnRecreateViews()
-        {
-            if (string.IsNullOrEmpty(WorkspaceId))
-            {
-                return;
-            }
-
-
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);
             var workspace =
                 workspaceExtent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() as IElement;
 
             var extents = workspace?.get("extents") as IReflectiveSequence;
+            SetItems(extents);
+        }
+
+        protected override void OnRecreateViews()
+        {
+            if (SelectedItems == null)
+            {
+                return;
+            }
 
             var viewDefinition = ListRequests.RequestFormForExtents(WorkspaceId);
             PrepareNavigation(viewDefinition);
 
             var uiElement = AddTab(
-                extents,
+                SelectedItems,
                 viewDefinition);
         }
 

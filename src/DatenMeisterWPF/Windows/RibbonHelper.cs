@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls.Ribbon;
 using DatenMeister.WPF.Modules;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Windows
@@ -20,6 +21,27 @@ namespace DatenMeisterWPF.Windows
         private static IIconRepository IconRepository { get; set; }
 
         private readonly List<RibbonTab> _ribbonTabs = new List<RibbonTab>();
+
+        private List<RibbonHelperItem> _buttons =
+            new List<RibbonHelperItem>();
+
+        private class RibbonHelperItem
+        {
+            public RibbonButtonDefinition Definition { get; set; }
+
+            public RibbonButton Button { get; set; }
+
+            public RoutedEventHandler ClickEvent { get; set; }
+
+            /// <summary>
+            /// Converts the item to a string
+            /// </summary>
+            /// <returns></returns>
+            public override string ToString()
+            {
+                return $"HelperItem: {Definition}";
+            }
+        }
 
         /// <summary>
         /// Loads the icon repository. 
@@ -53,12 +75,15 @@ namespace DatenMeisterWPF.Windows
         /// <summary>
         /// Adds a navigational element to the ribbons
         /// </summary>
-        /// <param name="name">Name of the element</param>
-        /// <param name="clickMethod">Method, that shall be called, when the user clicks on the item</param>
-        /// <param name="imageName">Name of the image being allocated</param>
-        /// <param name="categoryName">Category of the MainRibbon to be added</param>
-        public void AddNavigationButton(string name, Action clickMethod, string imageName, string categoryName)
+        /// <param name="definition">The definition to be used</param>
+        private void AddNavigationButton(RibbonButtonDefinition definition)
         {
+            // Ok, we have not found it, so create the button
+            var name = definition.Name;
+            var categoryName = definition.CategoryName;
+            var imageName = definition.ImageName;
+            var clickMethod = definition.OnPressed;
+
             string tabName, groupName;
             var indexOfSemicolon = categoryName.IndexOf('.');
             if (indexOfSemicolon == -1)
@@ -97,10 +122,17 @@ namespace DatenMeisterWPF.Windows
             var button = new RibbonButton
             {
                 Label = name,
-                LargeImageSource = IconRepository.GetIcon(imageName)
+                LargeImageSource = string.IsNullOrEmpty(imageName) ? null : IconRepository.GetIcon(imageName)
             };
 
-            button.Click += (x, y) => clickMethod();
+            var item = new RibbonHelperItem
+            {
+                Definition = definition,
+                Button = button,
+                ClickEvent = (x, y) => clickMethod()
+            };
+            _buttons.Add(item);
+            button.Click += item.ClickEvent;
 
             // Check correct position for button... First, the buttons are shown, then the texts
             if (imageName != null)
@@ -121,36 +153,62 @@ namespace DatenMeisterWPF.Windows
         }
 
         /// <summary>
-        /// Clears the complete MainRibbon navigaton
+        /// Clears the complete MainRibbon navigation
         /// </summary>
-        public void ClearRibbons()
+        private void ClearRibbons()
         {
             _ribbonTabs.Clear();
             _mainWindow.GetRibbon().Items.Clear();
         }
 
         /// <summary>
-        /// After having received the MainRibbon requests, this method builds up the real navigation
-        /// </summary>
-        public void FinalizeRibbons()
-        {
-            AddNavigationButton("About",
-                () => new AboutDialog
-                {
-                    Owner = _mainWindow as Window
-                }.ShowDialog(),
-                "file-about",
-                NavigationCategories.File);
-        }
-
-        /// <summary>
         /// Prepares the default navigation
         /// </summary>
-        public void PrepareDefaultNavigation()
+        public IEnumerable<ViewExtension> GetDefaultNavigation()
         {
-            AddNavigationButton("Close", () => (_mainWindow as Window)?.Close(),
-                "file-exit",
-                NavigationCategories.File);
+            return new [] {
+                new RibbonButtonDefinition(
+                    "Close", 
+                    () => (_mainWindow as Window)?.Close(),
+                    "file-exit",
+                    NavigationCategories.File),
+                new RibbonButtonDefinition("About",
+                    () => new AboutDialog
+                    {
+                        Owner = _mainWindow as Window
+                    }.ShowDialog(),
+                    "file-about",
+                    NavigationCategories.File)
+        };
+        }
+
+        public void EvaluateExtensions(IEnumerable<ViewExtension> viewExtensions)
+        {
+            var copiedList = _buttons.ToList();
+
+            foreach (var viewExtension in viewExtensions.OfType<RibbonButtonDefinition>())
+            {
+                // Check, navigation button is already given
+                var foundTuple = _buttons.Find(x => RibbonButtonDefinition.AreEqual(viewExtension, x.Definition));
+                if (foundTuple != null)
+                {
+                    copiedList.Remove(foundTuple);
+
+                    // Reorganizes the buttons
+                    foundTuple.Button.Click -= foundTuple.ClickEvent;
+                    foundTuple.ClickEvent = (x, y) => viewExtension.OnPressed();
+                    foundTuple.Button.Click += foundTuple.ClickEvent;
+                    return;
+                }
+
+                AddNavigationButton(viewExtension);
+            }
+
+            // Now, remove the buttons that are not needed anymore
+            foreach (var obsolete in copiedList)
+            {
+                ((RibbonGroup) obsolete.Button.Parent).Items.Remove(obsolete.Button);
+            }
         }
     }
 }

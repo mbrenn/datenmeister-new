@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +11,7 @@ using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
 
@@ -59,50 +62,59 @@ namespace DatenMeisterWPF
             // Only if navigation method is a list
             if (navigationMode == NavigationMode.List)
             {
-                _ribbonHelper.ClearRibbons();
-
-                _ribbonHelper.AddNavigationButton(
-                    "Home",
-                    () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
-                    Icons.FileHome,
-                    NavigationCategories.File + ".Workspaces");
-
-                _ribbonHelper.AddNavigationButton(
-                    "Workspaces",
-                    () => NavigatorForWorkspaces.NavigateToWorkspaces(this),
-                    Icons.WorkspacesShow,
-                    NavigationCategories.File + ".Workspaces");
-
-                _ribbonHelper.AddNavigationButton(
-                    "Find by URL",
-                    () => NavigatorForDialogs.SearchByUrl(this),
-                    null,
-                    NavigationCategories.File + ".Search");
-
-                _ribbonHelper.AddNavigationButton(
-                    "Locate",
-                    () => NavigatorForDialogs.LocateAndOpen(this),
-                    null,
-                    NavigationCategories.File + ".Search");
-
-                var result = new ControlNavigation();
                 var userControl = factoryMethod();
+                if (userControl is INavigationGuest navigationGuest)
+                {
+                    navigationGuest.NavigationHost = this;
+                }
 
                 MainControl.Content = userControl;
 
-                _ribbonHelper.PrepareDefaultNavigation();
-                if (userControl is INavigationGuest guest)
-                {
-                    guest.NavigationHost = this;
-                    guest.PrepareNavigation();
-                }
-
-                _ribbonHelper.FinalizeRibbons();
-
+                var result = new ControlNavigation();
                 return result;
             }
 
             return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
+        }
+
+        /// <summary>
+        /// Rebuild the complete navigation
+        /// </summary>
+        public void RebuildNavigation()
+        {
+
+            IEnumerable<ViewExtension> viewExtensions = new List<ViewExtension>
+            {
+                new RibbonButtonDefinition(
+                    "Home",
+                    () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
+                    Icons.FileHome,
+                    NavigationCategories.File + ".Workspaces"),
+                new RibbonButtonDefinition(
+                    "Workspaces",
+                    () => NavigatorForWorkspaces.NavigateToWorkspaces(this),
+                    Icons.WorkspacesShow,
+                    NavigationCategories.File + ".Workspaces"),
+                new RibbonButtonDefinition(
+                    "Find by URL",
+                    () => NavigatorForDialogs.SearchByUrl(this),
+                    null,
+                    NavigationCategories.File + ".Search"),
+                new RibbonButtonDefinition(
+                    "Locate",
+                    () => NavigatorForDialogs.LocateAndOpen(this),
+                    null,
+                    NavigationCategories.File + ".Search")
+            };
+
+            viewExtensions = viewExtensions.Union(_ribbonHelper.GetDefaultNavigation());
+            if (MainControl.Content is INavigationGuest guest)
+            {
+                guest.NavigationHost = this;
+                viewExtensions = viewExtensions.Union(guest.GetViewExtensions());
+            }
+
+            _ribbonHelper.EvaluateExtensions(viewExtensions);
         }
         
         /// <summary>
@@ -117,18 +129,6 @@ namespace DatenMeisterWPF
         private void Close_OnClick(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        /// <summary>
-        /// Adds a navigational element to the ribbons
-        /// </summary>
-        /// <param name="name">Name of the element</param>
-        /// <param name="clickMethod">Method, that shall be called, when the user clicks on the item</param>
-        /// <param name="imageName">Name of the image being allocated</param>
-        /// <param name="categoryName">Category of the MainRibbon to be added</param>
-        public void AddNavigationButton(string name, Action clickMethod, string imageName, string categoryName)
-        {
-            _ribbonHelper.AddNavigationButton(name, clickMethod, imageName, categoryName);
         }
 
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)

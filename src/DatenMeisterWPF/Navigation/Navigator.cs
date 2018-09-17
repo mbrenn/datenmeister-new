@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using DatenMeisterWPF.Forms.Base;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Navigation
@@ -101,7 +103,7 @@ namespace DatenMeisterWPF.Navigation
             
             if (userControl is INavigationGuest guest)
             {
-                guest.PrepareNavigation();
+                var viewExtensions = guest.GetViewExtensions();
             }
 
             return result;

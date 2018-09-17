@@ -20,9 +20,7 @@ namespace DatenMeisterWPF.Windows
         /// </summary>
         private static IIconRepository IconRepository { get; set; }
 
-        private readonly List<RibbonTab> _ribbonTabs = new List<RibbonTab>();
-
-        private List<RibbonHelperItem> _buttons =
+        private readonly List<RibbonHelperItem> _buttons =
             new List<RibbonHelperItem>();
 
         private class RibbonHelperItem
@@ -97,7 +95,7 @@ namespace DatenMeisterWPF.Windows
                 groupName = categoryName.Substring(indexOfSemicolon + 1);
             }
 
-            var tab = _ribbonTabs.FirstOrDefault(x => x.Header?.ToString() == tabName);
+            var tab = _mainWindow.GetRibbon().Items.OfType<RibbonTab>().FirstOrDefault(x => x.Header?.ToString() == tabName);
             if (tab == null)
             {
                 tab = new RibbonTab
@@ -105,7 +103,6 @@ namespace DatenMeisterWPF.Windows
                     Header = tabName
                 };
 
-                _ribbonTabs.Add(tab);
                 _mainWindow.GetRibbon().Items.Add(tab);
             }
             
@@ -150,15 +147,6 @@ namespace DatenMeisterWPF.Windows
             }
 
             @group.Items.Add(button);
-        }
-
-        /// <summary>
-        /// Clears the complete MainRibbon navigation
-        /// </summary>
-        private void ClearRibbons()
-        {
-            _ribbonTabs.Clear();
-            _mainWindow.GetRibbon().Items.Clear();
         }
 
         /// <summary>
@@ -209,8 +197,21 @@ namespace DatenMeisterWPF.Windows
             // Now, remove the buttons that are not needed anymore
             foreach (var obsolete in copiedList)
             {
-                ((RibbonGroup) obsolete.Button.Parent).Items.Remove(obsolete.Button);
+                var group = (RibbonGroup) obsolete.Button.Parent;
+                group.Items.Remove(obsolete.Button);
                 _buttons.Remove(obsolete);
+
+                // Removes the groups and tabs if necessary
+                if (group.Items.Count == 0)
+                {
+                    var tab = (RibbonTab) group.Parent;
+                    tab.Items.Remove(group);
+
+                    if (tab.Items.Count == 0)
+                    {
+                        ((Ribbon) tab.Parent).Items.Remove(tab);
+                    }
+                }
             }
         }
     }

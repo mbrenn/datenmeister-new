@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
-using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules;

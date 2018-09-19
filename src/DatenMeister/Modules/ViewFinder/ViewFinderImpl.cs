@@ -37,13 +37,14 @@ namespace DatenMeister.Modules.ViewFinder
         /// Finds the specific view by name
         /// </summary>
         /// <param name="extent">Extent to be shown</param>
+        /// <param name="metaClass">Meta class of the elements that are shown in the current list</param>
         /// <returns>The found view</returns>
-        public IElement FindView(IUriExtent extent)
+        public IElement FindView(IUriExtent extent, IElement metaClass)
         {
             var extentType = extent.GetExtentType();
-            if (!string.IsNullOrEmpty(extentType))
+            if ((!string.IsNullOrEmpty(extentType)) || (metaClass != null))
             {
-                var viewResult = _viewLogic.FindViewForExtentType(extentType, ViewType.List);
+                var viewResult = _viewLogic.FindViewForExtentType(extentType, metaClass, ViewType.List);
                 if (viewResult != null)
                 {
                     return viewResult;
@@ -59,10 +60,20 @@ namespace DatenMeister.Modules.ViewFinder
         /// First, it looks for the specific instance
         /// Second, it looks by the given type
         /// </summary>
-        /// <param name="value">Value, whose view is currently is requested</param>
+        /// <param name="value">Value, whose view is currently is requested as a list</param>
+        /// <param name="metaClass">Meta class of the elements that are shown in the current list</param>
         /// <returns>The found view or null, if not found</returns>
-        public IElement FindListViewFor(IObject value)
+        public IElement FindListViewFor(IObject value, IElement metaClass)
         {
+            if (metaClass != null)
+            {
+                var viewResult = _viewLogic.FindViewFor(metaClass, ViewType.List);
+                if (viewResult != null)
+                {
+                    return viewResult;
+                }
+            }
+
             if (value != null)
             {
                 var viewResult = _viewLogic.FindViewForValue(value, ViewType.List);

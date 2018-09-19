@@ -16,8 +16,9 @@ namespace DatenMeister.Modules.ViewFinder
         /// Finds the view for a specific extent in the list view
         /// </summary>
         /// <param name="extent">Value for whom the extent shall be created</param>
+        /// <param name="metaClass">Meta class of the elements that are shown in the current list</param>
         /// <returns>Found view or null</returns>
-        IElement FindView(IUriExtent extent);
+        IElement FindView(IUriExtent extent, IElement metaClass = null);
 
         /// <summary>
         /// Finds the view for a specific object in a detail view
@@ -30,8 +31,9 @@ namespace DatenMeister.Modules.ViewFinder
         /// Finds the list view of all sub elements of the given items
         /// </summary>
         /// <param name="value">Object, whose sub items shall be parsed</param>
+        /// <param name="metaClass">Meta class of the elements that are shown in the current list</param>
         /// <returns>Found view or null, if none found</returns>
-        IElement FindListViewFor(IObject value);
+        IElement FindListViewFor(IObject value, IElement metaClass = null);
 
         /// <summary>
         /// Creates an object for a reflective sequence by parsing each object and returning the formview

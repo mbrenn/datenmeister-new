@@ -5,7 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Uml.Helper
 {
-    public class UmlNameResolution
+    public static class UmlNameResolution
     {
         /// <summary>
         /// Gets the name of the given object

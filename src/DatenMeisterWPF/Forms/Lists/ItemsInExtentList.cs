@@ -78,13 +78,13 @@ namespace DatenMeisterWPF.Forms.Lists
                 if (Items == SelectedItems)
                 {
                     // Finds the view by the extent type
-                    view = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent);
+                    view = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent, metaClass);
                 }
                 else
                 {
                     // User has selected a sub element. 
                     view =
-                        viewFinder.FindListViewFor((tabItems as MofReflectiveSequence)?.MofObject)
+                        viewFinder.FindListViewFor((tabItems as MofReflectiveSequence)?.MofObject, metaClass)
                         ?? viewFinder.CreateView(tabItems);
                 }
 

@@ -25,18 +25,20 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Stores a debug variable that can be used to extent the debugging of view retrieval process.
         /// </summary>
-        private const bool ActivateDebuggingForViewRetrieval = false;
+        private const bool ActivateDebuggingForViewRetrieval = true;
         /// <summary>
         /// Stores the type of the extent containing the views 
         /// </summary>
         public const string ViewExtentType = "DatenMeister.Views";
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentCreator _extentCreator;
+        private readonly NamedElementMethods _namedElementMethods;
 
-        public ViewLogic(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator)
+        public ViewLogic(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator, NamedElementMethods namedElementMethods)
         {
             _workspaceLogic = workspaceLogic;
             _extentCreator = extentCreator;
+            _namedElementMethods = namedElementMethods;
         }
 
         /// <summary>
@@ -212,16 +214,21 @@ namespace DatenMeister.Modules.ViewFinder
         /// Looks in the view extent and checks for all elements, where the type of the extent is fitting to the view
         /// </summary>
         /// <param name="extentType">Type of the extent</param>
+        /// <param name="metaClass">Metaclass of the elements being shown</param>
         /// <param name="type">Type of the view</param>
         /// <returns>The found view</returns>
-        public IElement FindViewForExtentType(string extentType, ViewType type)
+        public IElement FindViewForExtentType(string extentType, IElement metaClass, ViewType type)
         {
-            if (string.IsNullOrEmpty(extentType))
+            if (string.IsNullOrEmpty(extentType) && metaClass == null)
             {
                 return null;
             }
 
-            return FindViewFor(type, extentType, null, null);
+            return FindViewFor(
+                type, 
+                extentType, 
+                metaClass == null ? null : NamedElementMethods.GetFullName(metaClass),
+                metaClass);
         }
 
 

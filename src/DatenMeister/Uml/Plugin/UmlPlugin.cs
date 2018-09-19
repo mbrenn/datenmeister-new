@@ -19,14 +19,16 @@ namespace DatenMeister.Uml.Plugin
 
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly PackageMethods _packageMethods;
+        private readonly NamedElementMethods _namedElementMethods;
 
         public const string PackageName = "Uml";
 
-        public UmlPlugin(ViewLogic viewLogic, IWorkspaceLogic workspaceLogic, PackageMethods packageMethods)
+        public UmlPlugin(ViewLogic viewLogic, IWorkspaceLogic workspaceLogic, PackageMethods packageMethods, NamedElementMethods namedElementMethods)
         {
             _viewLogic = viewLogic;
             _workspaceLogic = workspaceLogic;
             _packageMethods = packageMethods;
+            _namedElementMethods = namedElementMethods;
         }
 
         public void Start()
@@ -112,14 +114,12 @@ namespace DatenMeister.Uml.Plugin
             {
                 metaclassName = WorkspaceNames.UriUmlExtent + "#Class",
             };
-
             _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, classView) as IElement);
 
             var packageView = new ViewAssociation(ViewType.Detail, umlDetailPackageForm)
             {
                 metaclassName = WorkspaceNames.UriUmlExtent + "#Package"
             };
-
             _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, packageView) as IElement);
 
             var propertyView = new ViewAssociation(ViewType.Detail, umlDetailPropertyForm)
@@ -132,9 +132,31 @@ namespace DatenMeister.Uml.Plugin
             {
                 extentType = "Uml.Classes",
             };
-
             _packageMethods.AddObjectToPackage(umlPackage,
                 DotNetSetter.Convert(viewExtent, classExtentView) as IElement);
+
+
+
+            var packageListView = new ViewAssociation(ViewType.List, umlDetailPackageForm)
+            {
+                //metaclass = umlData.Packages.__Package,
+                metaclassName = NamedElementMethods.GetFullName(umlData.Packages.__Package)
+            };
+            _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, packageListView) as IElement);
+
+            var classListView = new ViewAssociation(ViewType.List, umlListClassForm)
+            {
+                //metaclass = umlData.StructuredClassifiers.__Class,
+                metaclassName = NamedElementMethods.GetFullName(umlData.StructuredClassifiers.__Class)
+            };
+            _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, classListView) as IElement);
+
+            var propertyListView = new ViewAssociation(ViewType.List, umlDetailPropertyForm)
+            {
+                //metaclass = umlData.Classification.__Property,
+                metaclassName = NamedElementMethods.GetFullName(umlData.Classification.__Property)
+            };
+            _packageMethods.AddObjectToPackage(umlPackage, DotNetSetter.Convert(viewExtent, propertyListView) as IElement);
         }
     }
 }

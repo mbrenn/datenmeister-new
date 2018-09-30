@@ -109,8 +109,8 @@ namespace DatenMeister.Runtime.ExtentStorage
             var document = XDocument.Load(path);
             foreach (var xmlExtent in document.Elements("extents").Elements("extent"))
             {
-                var xmlConfig = xmlExtent.Element("config");
-                var configType = xmlConfig.Attribute("configType").Value;
+                var xmlConfig = xmlExtent.Element("config") ?? throw new InvalidOperationException("extents::extent::config Xml node not found");
+                var configType = xmlConfig.Attribute("configType")?.Value ?? throw new InvalidOperationException("configType not found");
 
                 // Gets the type of the configuration in the white list to avoid any unwanted security issue
                 var found = GetAdditionalTypes().FirstOrDefault(x => x.FullName == configType);
@@ -122,7 +122,6 @@ namespace DatenMeister.Runtime.ExtentStorage
                 xmlConfig.Name = found.Name; // We need to rename the element, so XmlSerializer can work with it
                 var serializer = new XmlSerializer(found);
                 var config = serializer.Deserialize(xmlConfig.CreateReader());
-
 
                 var xmlMeta = xmlExtent.Element("metadata");
 

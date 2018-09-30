@@ -15,8 +15,8 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// </summary>
         /// <param name="typeConfiguration">Type of the configuration</param>
         /// <param name="factoryExtentStorage">The function which creates the corresponsing extent to the function</param>
-        void AddMapping(Type typeConfiguration, Func<ILifetimeScope, IExtentLoader> factoryExtentStorage);
+        void AddMapping(Type typeConfiguration, Func<ILifetimeScope, IProviderLoader> factoryExtentStorage);
 
-        IExtentLoader CreateFor(ILifetimeScope scope, ExtentLoaderConfig configuration);
+        IProviderLoader CreateFor(ILifetimeScope scope, ExtentLoaderConfig configuration);
     }
 }

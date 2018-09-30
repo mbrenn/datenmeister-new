@@ -18,7 +18,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Stores the types being used for the mapping
         /// </summary>
-        private readonly Dictionary<Type, Func<ILifetimeScope, IExtentLoader>> _mapping = new Dictionary<Type, Func<ILifetimeScope, IExtentLoader>>();
+        private readonly Dictionary<Type, Func<ILifetimeScope, IProviderLoader>> _mapping = new Dictionary<Type, Func<ILifetimeScope, IProviderLoader>>();
 
         /// <summary>
         /// Checks, if a mapping for the given configuration type exists which configures a specific extet loader
@@ -36,17 +36,17 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="typeExtentStorage">Type of the Extent</param>
         public void AddMapping(Type typeConfiguration, Type typeExtentStorage)
         {
-            _mapping[typeConfiguration] = scope => scope.Resolve(typeExtentStorage) as IExtentLoader;
+            _mapping[typeConfiguration] = scope => scope.Resolve(typeExtentStorage) as IProviderLoader;
         }
 
-        public void AddMapping(Type typeConfiguration, Func<ILifetimeScope, IExtentLoader> factoryExtentStorage)
+        public void AddMapping(Type typeConfiguration, Func<ILifetimeScope, IProviderLoader> factoryExtentStorage)
         {
             _mapping[typeConfiguration] = factoryExtentStorage;
         }
 
-        public IExtentLoader CreateFor(ILifetimeScope scope, ExtentLoaderConfig configuration)
+        public IProviderLoader CreateFor(ILifetimeScope scope, ExtentLoaderConfig configuration)
         {
-            if (!_mapping.TryGetValue(configuration.GetType(), out Func<ILifetimeScope, IExtentLoader> foundType))
+            if (!_mapping.TryGetValue(configuration.GetType(), out Func<ILifetimeScope, IProviderLoader> foundType))
             {
                 throw new InvalidOperationException("ExtentStorage for the given type was not found");
             }
@@ -62,7 +62,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 if (customAttribute is ConfiguredByAttribute configuredByAttribute)
                 {
                     map.AddMapping(configuredByAttribute.ConfigurationType,
-                        scope => (IExtentLoader) scope.Resolve(type));
+                        scope => (IProviderLoader) scope.Resolve(type));
 
                     Debug.WriteLine(
                         $"Extent loader '{configuredByAttribute.ConfigurationType.Name}' configures '{type.Name}'");

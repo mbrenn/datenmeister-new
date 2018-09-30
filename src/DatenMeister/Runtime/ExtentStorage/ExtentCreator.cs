@@ -41,8 +41,12 @@ namespace DatenMeister.Runtime.ExtentStorage
             return creator.GetOrCreateXmiExtentInInternalDatabase(workspace, uri, name);
         }
 
-        public IUriExtent GetOrCreateXmiExtentInInternalDatabase(string workspace, string uri, string name, string extentType= null)
-        { 
+        public IUriExtent GetOrCreateXmiExtentInInternalDatabase(
+            string workspace,
+            string uri,
+            string name,
+            string extentType = null)
+        {
             // Creates the user types, if not existing
             var foundExtent = _workspaceLogic.FindExtent(uri);
             if (foundExtent == null)
@@ -69,6 +73,5 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             return (IUriExtent) foundExtent;
         }
-
     }
 }

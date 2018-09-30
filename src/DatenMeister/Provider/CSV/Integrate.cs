@@ -15,7 +15,7 @@ namespace DatenMeister.Provider.CSV
         public static void Into(ILifetimeScope scope)
         {
             var storageMap = scope.Resolve<IConfigurationToExtentStorageMapper>();
-            ManualConfigurationToExtentStorageMapper.MapExtentLoaderType(storageMap, typeof(CSVExtentLoader));
+            ManualConfigurationToExtentStorageMapper.MapExtentLoaderType(storageMap, typeof(CsvProviderLoader));
 
             var data = scope.Resolve<ExtentStorageData>();
             data.AdditionalTypes.Add(typeof(CSVExtentLoaderConfig));

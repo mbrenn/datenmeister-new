@@ -63,7 +63,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 throw new InvalidOperationException($"Uri is not well-formed: {configuration.ExtentUri}");
             }
 
-            // Checks, if the given URL has a relative path
+            // Checks, if the given URL has a relative path and transforms the path to an absolute path
             if (configuration is ExtentFileLoaderConfig fileConfiguration)
             {
                 if (!Path.IsPathRooted(fileConfiguration.Path))
@@ -72,19 +72,19 @@ namespace DatenMeister.Runtime.ExtentStorage
                 }
             }
 
-            // Creates the extent storage, being capable to load or store an extent
-            var extentStorage = _map.CreateFor(_diScope, configuration);
+            // Creates the extent loader, being capable to load or store an extent
+            var extentLoader = _map.CreateFor(_diScope, configuration);
         
             // Loads the extent
-            var loadedExtent = extentStorage.LoadExtent(configuration, createAlsoEmpty);
+            var loadedProvider = extentLoader.LoadProvider(configuration, createAlsoEmpty);
             Debug.WriteLine($"Loading extent: {configuration}");
 
-            if (loadedExtent == null)
+            if (loadedProvider == null)
             {
                 throw new InvalidOperationException("Extent for configuration could not be loaded");
             }
 
-            var uriExtent = new MofUriExtent(loadedExtent, configuration.ExtentUri);
+            var uriExtent = new MofUriExtent(loadedProvider, configuration.ExtentUri);
             AddToWorkspaceIfPossible(configuration, uriExtent);
 
             // Stores the information into the data container
@@ -163,7 +163,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             Debug.WriteLine($"Writing extent: {information.Configuration}");
 
             var extentStorage = _map.CreateFor(_diScope, information.Configuration);
-            extentStorage.StoreExtent(((MofUriExtent) information.Extent).Provider, information.Configuration);
+            extentStorage.StoreProvider(((MofUriExtent) information.Extent).Provider, information.Configuration);
         }
 
         /// <summary>

@@ -13,16 +13,16 @@ namespace DatenMeister.Provider.CSV.Runtime
     /// </summary>
     [ConfiguredBy(typeof(CSVExtentLoaderConfig))]
     // ReSharper disable once InconsistentNaming
-    public class CSVExtentLoader : IExtentLoader
+    public class CsvProviderLoader : IProviderLoader
     {
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        public CSVExtentLoader(IWorkspaceLogic workspaceLogic)
+        public CsvProviderLoader(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
         }
 
-        public IProvider LoadExtent(ExtentLoaderConfig configuration, bool createAlsoEmpty)
+        public IProvider LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty)
         {
             var csvConfiguration = (CSVExtentLoaderConfig) configuration;
             var dataProvider = new CSVLoader(_workspaceLogic);
@@ -43,7 +43,7 @@ namespace DatenMeister.Provider.CSV.Runtime
             return provider;
         }
 
-        public void StoreExtent(IProvider extent, ExtentLoaderConfig configuration)
+        public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)
         {
             var csvConfiguration = (CSVExtentLoaderConfig) configuration;
 

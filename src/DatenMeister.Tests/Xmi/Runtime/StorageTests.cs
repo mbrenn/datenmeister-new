@@ -40,9 +40,9 @@ namespace DatenMeister.Tests.Xmi.Runtime
             };
 
             var xmiStorage = new XmiStorage();
-            xmiStorage.StoreExtent(extent.Provider, xmiStorageConfiguration);
+            xmiStorage.StoreProvider(extent.Provider, xmiStorageConfiguration);
 
-            var otherExtent = new MofUriExtent(xmiStorage.LoadExtent(xmiStorageConfiguration), "datenmeister:///tests/");
+            var otherExtent = new MofUriExtent(xmiStorage.LoadProvider(xmiStorageConfiguration), "datenmeister:///tests/");
             Assert.That(otherExtent.elements().size(), Is.EqualTo(3));
             Assert.That(otherExtent.contextURI(), Is.EqualTo("datenmeister:///tests/"));
             Assert.That((otherExtent.elements().ElementAt(0) as IObject)?.get("name"), Is.EqualTo("Martin"));

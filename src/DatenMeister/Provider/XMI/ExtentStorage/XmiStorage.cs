@@ -10,9 +10,9 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 namespace DatenMeister.Provider.XMI.ExtentStorage
 {
     [ConfiguredBy(typeof(XmiStorageConfiguration))]
-    public class XmiStorage : IExtentLoader
+    public class XmiStorage : IProviderLoader
     {
-        public IProvider LoadExtent(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)
+        public IProvider LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)
         {
             var xmiConfiguration = (XmiStorageConfiguration) configuration;
 
@@ -68,7 +68,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             return xmlDocument;
         }
 
-        public void StoreExtent(IProvider extent, ExtentLoaderConfig configuration)
+        public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)
         {
             if (configuration is XmiStorageConfiguration xmiConfiguration)
             {

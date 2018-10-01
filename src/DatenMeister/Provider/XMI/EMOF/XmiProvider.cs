@@ -168,7 +168,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <returns></returns>
         public ProviderCapability GetCapabilities()
         {
-            return 0;
+            return ProviderCapability.StoreMetaDataInExtent;
         }
     }
 }

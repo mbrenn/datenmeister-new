@@ -86,7 +86,10 @@ namespace DatenMeister.Core.EMOF.Implementation
             if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
                 ProviderCapability.StoreMetaDataInExtent)
             {
-                return Provider.Get(null)?.GetProperty(property);
+                var nullObject = Provider.Get(null) ??
+                                 throw new InvalidOperationException(
+                                     "Provider does not support setting of extent properties");
+                return nullObject.GetProperty(property);
             }
             else
             {

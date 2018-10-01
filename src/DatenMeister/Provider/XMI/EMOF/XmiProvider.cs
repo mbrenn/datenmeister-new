@@ -28,8 +28,12 @@ namespace DatenMeister.Provider.XMI.EMOF
 
         public XDocument Document => _document;
 
+        private static readonly XNamespace extentNamespace = "http://datenmeister.net/";
+
+        private static readonly XName xmlMetaName = extentNamespace + "meta";
+
         /// <summary>
-        /// Gets or sets the uriresolver for this provider. Will be used to figure out information
+        /// Gets or sets the uri resolver for this provider. Will be used to figure out information
         /// about the meta classes
         /// </summary>
         public IUriResolver UriResolver { get; set; }
@@ -53,6 +57,22 @@ namespace DatenMeister.Provider.XMI.EMOF
             {
                 throw new InvalidOperationException($"The given document does not have a root node called {rootNodeName}.");
             }
+        }
+
+        /// <summary>
+        /// Gets the meta node. If the meta node does not exist, create the meta node
+        /// </summary>
+        /// <returns>The returned meta node</returns>
+        private XElement GetMetaNode()
+        {
+            var metaNode = _rootNode.Element(xmlMetaName);
+            if (metaNode == null)
+            {
+                metaNode = new XElement(xmlMetaName);
+                _rootNode.AddFirst(metaNode);
+            }
+
+            return metaNode;
         }
 
         /// <inheritdoc />
@@ -89,7 +109,22 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public void DeleteAllElements()
         {
-            _rootNode.RemoveAll();
+            var found = new List<XElement>();
+
+            foreach (var node in _rootNode.Elements())
+            {
+                if (node.Name.Namespace == extentNamespace)
+                {
+                    continue;
+                }
+
+                found.Add(node);
+            }
+
+            foreach (var node in found)
+            {
+                node.Remove();
+            }
         }
 
         /// <inheritdoc />
@@ -97,7 +132,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             if (id == null)
             {
-                return new XmiProviderObject(_rootNode, this);
+                return new XmiProviderObject(GetMetaNode(), this);
             }
 
             var result = FindById(id);
@@ -118,6 +153,11 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             foreach (var element in _rootNode.Elements())
             {
+                if (element.Name.Namespace == extentNamespace)
+                {
+                    continue;
+                }
+
                 yield return new XmiProviderObject(element, this);
             }
         }

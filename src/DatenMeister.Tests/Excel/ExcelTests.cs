@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.Excel
         {
             var dm = GiveMe.DatenMeister();
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var excelExtent = dm.LoadExcel("d:///excel", Path.Combine (currentDirectory, "Excel/Quadratzahlen.xlsx"));
+            var excelExtent = dm.LoadExcel("d:///excel", Path.Combine(currentDirectory, "Excel/Quadratzahlen.xlsx"));
 
             Console.WriteLine(excelExtent.ToString());
             foreach (var sheet in excelExtent.GetRootObjects())
@@ -43,7 +43,6 @@ namespace DatenMeister.Tests.Excel
 
                 Assert.That(((IEnumerable<object>)sheet.GetProperty("items")).Count(), Is.GreaterThan(10));
             }
-
         }
     }
 }

@@ -23,7 +23,7 @@ namespace DatenMeister.Integration
                 settings = new IntegrationSettings
                 {
                     EstablishDataEnvironment = true,
-                    DatabasePath = DefaultDatabasePath2
+                    DatabasePath = DefaultDatabasePath
                 };
             }
 
@@ -36,7 +36,7 @@ namespace DatenMeister.Integration
         /// <summary>
         /// Gets the default database path
         /// </summary>
-        public static string DefaultDatabasePath2 => 
+        public static string DefaultDatabasePath => 
             Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "datenmeister/data");

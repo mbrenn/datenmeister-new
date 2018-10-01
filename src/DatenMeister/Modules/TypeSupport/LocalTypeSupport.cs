@@ -56,7 +56,7 @@ namespace DatenMeister.Modules.TypeSupport
         {
             CreateInternalTypeExtent();
 
-            // Creates the extent for the user types which is permanantly stored on disk. The user is capable to create his own types
+            // Creates the extent for the user types which is permanently stored on disk. The user is capable to create his own types
             CreatesUserTypeExtent();
         }
 

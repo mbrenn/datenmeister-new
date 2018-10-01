@@ -7,6 +7,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ZipExample;
+using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -50,23 +51,15 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public void TestMetaDataInExtent()
         {
-            var currentDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "database");
-            var path = Path.Combine(currentDirectory, "test.xmi");
+            var path = "./test.xmi";
             var loaderConfig = new XmiStorageConfiguration
             {
                 Path = path,
                 ExtentUri = "datenmeister:///data",
                 Workspace = WorkspaceNames.NameData
             };
-            var integrationSettings = new IntegrationSettings
-            {
-                DatabasePath = currentDirectory,
-                EstablishDataEnvironment = true
-            };
-
-            GiveMe.DropDatenMeisterStorage(integrationSettings);
-
-            using (var dm = CreateDatenMeister())
+            
+            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
                 if (File.Exists(path))
                 {
@@ -82,7 +75,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 dm.UnuseDatenMeister();
             }
 
-            using (var dm = GiveMe.DatenMeister(integrationSettings))
+            using (var dm = DatenMeisterTests.GetDatenMeisterScope(dropDatabase: false))
             {
                 var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
                 var foundExtent = workspaceLogic.FindExtent("datenmeister:///data");
@@ -98,7 +91,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public void TestDefaultExtentType()
         {
-            using (var dm = CreateDatenMeister())
+            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
                 var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
                 var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
@@ -108,7 +101,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                                                     ZipCodeExampleManager.PackagePath);
 
                 var dataWorkspace = workspaceLogic.GetDataWorkspace();
-                
+
                 var zipExample = zipCodeExample.AddZipCodeExample(dataWorkspace);
                 var setDefaultTypePackage = zipExample.GetDefaultTypePackage();
 
@@ -119,23 +112,49 @@ namespace DatenMeister.Tests.Runtime.Extents
             }
         }
 
-        /// <summary>
-        /// Creastes a configured datenmeister instance by dropping the existing
-        /// database and creating a complete new one
-        /// </summary>
-        /// <returns>The Datenmeister scope which can be used</returns>
-        public static IDatenMeisterScope CreateDatenMeister()
+        [Test]
+        public void TestStoringOfExtentTypes()
         {
-            var currentDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "database");
-            var integrationSettings = new IntegrationSettings
+            const string csvExtentUri = "dm:///csvtest";
+            const string xmiExtentUri = "dm:///moftest";
+
+            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
-                DatabasePath = currentDirectory,
-                EstablishDataEnvironment = true
-            };
+                var extentManager = dm.Resolve<IExtentManager>();
+                var csvExtent = extentManager.LoadExtent(
+                    new CSVExtentLoaderConfig
+                    {
+                        Path = "./test.csv",
+                        ExtentUri = csvExtentUri
+                    }, true);
 
-            GiveMe.DropDatenMeisterStorage(integrationSettings);
+                var mofExtent = extentManager.LoadExtent(
+                    new XmiStorageConfiguration
+                    {
+                        Path = "./test.xmi",
+                        ExtentUri = xmiExtentUri
+                    }, true);
 
-            return GiveMe.DatenMeister(integrationSettings);
+                csvExtent.SetExtentType("CSVExtent");
+                mofExtent.SetExtentType("XMIExtent");
+
+                dm.UnuseDatenMeister();
+            }
+
+            using (var dm = DatenMeisterTests.GetDatenMeisterScope(false))
+            {
+                var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
+                var csvExtent = workspaceLogic.FindExtent(csvExtentUri);
+                var xmiExtent = workspaceLogic.FindExtent(xmiExtentUri);
+
+                Assert.That(csvExtent, Is.Not.Null);
+                Assert.That(xmiExtent, Is.Not.Null);
+
+                Assert.That(csvExtent.GetExtentType(), Is.EqualTo("CSVExtent"));
+                Assert.That(xmiExtent.GetExtentType(), Is.EqualTo("XMIExtent"));
+                
+                dm.UnuseDatenMeister();
+            }
         }
     }
 }

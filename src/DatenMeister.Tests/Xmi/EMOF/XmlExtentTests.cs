@@ -13,6 +13,7 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Tests.CSV;
@@ -155,7 +156,6 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public void TestXmlExtent()
         {
-
             var xmlProvider = new XmiProvider();
             var extent = new MofUriExtent(xmlProvider, "datenmeister:///test/");
             var factory = new MofFactory(extent);
@@ -317,6 +317,32 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 Assert.That(retrievedElement.metaclass, Is.Not.Null);
                 var foundMetaClass = retrievedElement.metaclass;
                 Assert.That(foundMetaClass.Equals(interfaceClass), Is.True);
+            }
+        }
+
+        [Test]
+        public void TestRemoveAllElements()
+        {
+            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
+            {
+                var creator = dm.Resolve<ExtentCreator>();
+                var xmi = creator.GetOrCreateXmiExtentInInternalDatabase(
+                    null, "dm:///test", "Name");
+
+                var factory = new MofFactory(xmi);
+                var first = factory.create(null);
+                var second = factory.create(null);
+
+                xmi.elements().add(first);
+                xmi.elements().add(second);
+                xmi.SetExtentType("Test");
+                Assert.That(xmi.elements().Count(), Is.EqualTo(2));
+                Assert.That(xmi.GetExtentType(), Is.EqualTo("Test"));
+
+                xmi.elements().clear();
+
+                Assert.That(xmi.elements().Count(), Is.EqualTo(0));
+                Assert.That(xmi.GetExtentType(), Is.EqualTo("Test"));
             }
         }
     }

@@ -171,7 +171,8 @@ namespace DatenMeister.Provider.CSV
             {
                 // Column headers given by number by asking each object about the number of properties and
                 // then use the maximum value of the elements. This assumes that every element has the same type
-                columns = extent.GetRootObjects().ElementAtOrDefault(0)?.GetProperties()?.ToList();
+                // If no value can be retrieved, the already set columns will be retrieved, which is an empty list
+                columns = extent.GetRootObjects().ElementAtOrDefault(0)?.GetProperties()?.ToList() ?? columns;
             }
             // Writes the header
             if (settings.HasHeader)

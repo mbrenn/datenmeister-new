@@ -4,10 +4,12 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.CSV.Runtime;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -155,6 +157,18 @@ namespace DatenMeister.Tests.Runtime.Extents
                 
                 dm.UnuseDatenMeister();
             }
+        }
+
+        [Test]
+        public static void TestAlternativeUris()
+        {
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///a");
+            mofExtent.AlternativeUris.Add("dm:///test");
+            mofExtent.AlternativeUris.Add("dm:///test2");
+
+            Assert.That(mofExtent.AlternativeUris.Count, Is.EqualTo(2));
+            Assert.That(mofExtent.AlternativeUris.Contains("dm:///test"), Is.True);
+            Assert.That(mofExtent.AlternativeUris.Contains("dm:///test2"), Is.True);
         }
     }
 }

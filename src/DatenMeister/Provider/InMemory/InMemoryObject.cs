@@ -153,7 +153,9 @@ namespace DatenMeister.Provider.InMemory
             if (result == null)
             {
                 result = new List<object>();
+                _values[property] = result;
             }
+
             return result;
         }
 

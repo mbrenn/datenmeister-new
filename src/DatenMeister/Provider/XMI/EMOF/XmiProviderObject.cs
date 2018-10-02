@@ -212,7 +212,14 @@ namespace DatenMeister.Provider.XMI.EMOF
                     }
                     else
                     {
-                        list.Add(new XmiProviderObject(element, (XmiProvider) Provider));
+                        if (!element.HasAttributes && !element.HasElements)
+                        {
+                            list.Add(element.Value);
+                        }
+                        else
+                        {
+                            list.Add(new XmiProviderObject(element, (XmiProvider) Provider));
+                        }
                     }
                 }
 

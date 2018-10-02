@@ -28,9 +28,9 @@ namespace DatenMeister.Provider.XMI.EMOF
 
         public XDocument Document => _document;
 
-        private static readonly XNamespace extentNamespace = "http://datenmeister.net/";
+        private static readonly XNamespace xDatenMeisterNamespace = "http://datenmeister.net/";
 
-        private static readonly XName xmlMetaName = extentNamespace + "meta";
+        private static readonly XName xMetaXmlNodeName = xDatenMeisterNamespace + "meta";
 
         /// <summary>
         /// Gets or sets the uri resolver for this provider. Will be used to figure out information
@@ -65,10 +65,10 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <returns>The returned meta node</returns>
         private XElement GetMetaNode()
         {
-            var metaNode = _rootNode.Element(xmlMetaName);
+            var metaNode = _rootNode.Element(xMetaXmlNodeName);
             if (metaNode == null)
             {
-                metaNode = new XElement(xmlMetaName);
+                metaNode = new XElement(xMetaXmlNodeName);
                 _rootNode.AddFirst(metaNode);
             }
 
@@ -113,7 +113,7 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             foreach (var node in _rootNode.Elements())
             {
-                if (node.Name.Namespace == extentNamespace)
+                if (node.Name.Namespace == xDatenMeisterNamespace)
                 {
                     continue;
                 }
@@ -153,7 +153,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             foreach (var element in _rootNode.Elements())
             {
-                if (element.Name.Namespace == extentNamespace)
+                if (element.Name.Namespace == xDatenMeisterNamespace)
                 {
                     continue;
                 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>Enumerable which was retrieved</returns>
         private IEnumerable<object> GetPropertyAsEnumerable()
         {
-            return (IEnumerable<object>) MofObject.ProviderObject.GetProperty(_property);
+            if (MofObject.ProviderObject.IsPropertySet(_property))
+            {
+                return (IEnumerable<object>) MofObject.ProviderObject.GetProperty(_property);
+            }
+
+            return Array.Empty<object>();
         }
 
         /// <inheritdoc />

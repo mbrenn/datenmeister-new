@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Proxies;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -13,28 +15,43 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class MofUriExtent : MofExtent, IUriExtent, IUriResolver
     {
-        private readonly string _uri;
-
-        /// <summary>
-        /// Stores the list of alternative uris which are used to make the elements more available. 
-        /// </summary>
-        private readonly List<string> _alternativeUris = new List<string>();
-
         /// <summary>
         /// Gets an enumeration of alternative uris
         /// </summary>
-        public IEnumerable<string> AlternativeUris => _alternativeUris;
+        public IList<string> AlternativeUris
+        {
+            get => new ReflectiveList<string>(new MofReflectiveSequence(GetMetaObject(), "__alternativeUrls"));
+            set => set("__alternativeUrls", value);
+        }
 
         /// <summary>
         /// Stores the navigator
         /// </summary>
         private readonly ExtentUrlNavigator<MofElement> _navigator;
 
+        /// <summary>
+        /// Gets or sets the uri of the extent
+        /// </summary>
+        private string UriOfExtent {
+            get
+            {
+                var uri = isSet("__uri") ? get("__uri") : null;
+                if (uri == null)
+                {
+                    return string.Empty;
+                }
+
+                return uri.ToString();
+            }
+
+            set => set("__uri", value);
+        }
+
         /// <inheritdoc />
         public MofUriExtent(IProvider provider, string uri) :
             base(provider)
         {
-            _uri = uri;
+            UriOfExtent = uri;
             _navigator = new ExtentUrlNavigator<MofElement>(this);
 
             if (provider is IHasUriResolver hasUriResolver)
@@ -49,16 +66,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="alternativeUri">Alternative Uri to be added</param>
         public void AddAlternativeUri(string alternativeUri)
         {
-            if (!_alternativeUris.Contains(alternativeUri))
+            if (!AlternativeUris.Contains(alternativeUri))
             {
-                _alternativeUris.Add(alternativeUri);
+                AlternativeUris.Add(alternativeUri);
             }
         }
 
         /// <inheritdoc />
         public string contextURI()
         {
-            return _uri;
+            return UriOfExtent;
         }
 
         /// <inheritdoc />

@@ -38,6 +38,31 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         private readonly List<IUriExtent> _metaExtents = new List<IUriExtent>();
 
+        /// <summary>
+        /// Gets the meta object representing the meta object. Setting, querying a list or getting
+        /// is supported by this object
+        /// </summary>
+        /// <returns>The returned value representing the meta object</returns>
+        protected MofObject GetMetaObject()
+        {
+            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
+                ProviderCapability.StoreMetaDataInExtent)
+            {
+                var nullObject = Provider.Get(null) ??
+                                 throw new InvalidOperationException(
+                                     "Provider does not support setting of extent properties");
+
+                return new MofObject(nullObject, this);
+            }
+            else
+            {
+                return MetaXmiElement;
+            }
+        }
+
+        /// <summary>
+        /// Gets the meta element for xmi data
+        /// </summary>
         public MofObject MetaXmiElement { get; set; }
 
         /// <summary>
@@ -51,21 +76,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Defines the internal Xmi Provider for the meta configuration
-        /// </summary>
-        private XmiProvider _xmiProvider; 
-
-        /// <summary>
         /// Initializes a new instance of the Extent 
         /// </summary>
         /// <param name="provider">Provider being used for the extent</param>
         public MofExtent(IProvider provider)
         {
-            _xmiProvider = new XmiProvider();
+            var xmiProvider = new XmiProvider();
             Provider = provider;
             TypeLookup = new DotNetTypeLookup(this);
             MetaXmiElement = new MofObject(
-                new XmiProviderObject(new XElement("meta"), _xmiProvider),
+                new XmiProviderObject(new XElement("meta"), xmiProvider),
                     this);
         }
 

@@ -32,6 +32,8 @@ namespace DatenMeister.Uml.Helper
                     return elementAsHasId.Id;
                 case MofObjectShadow shadowedObject:
                     return shadowedObject.Uri;
+                case MofObject _:
+                    return "MofObject";
                 default:
                     return element.ToString();
             }

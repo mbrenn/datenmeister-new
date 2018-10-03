@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
@@ -24,6 +26,7 @@ using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
+using Microsoft.Win32;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
@@ -163,46 +166,24 @@ namespace DatenMeisterWPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(
                 new RibbonButtonDefinition(
                     "Show as tree",
-                    () =>
-                    {
-                        if (_extent != null)
-                        {
-                            var window = new TreeViewWindow();
-                            window.Owner = NavigationHost.GetWindow();
-                            window.SetDefaultProperties();
-                            window.SetCollection(_extent.elements());
-                            window.ItemSelected += (x, y) =>
-                            {
-                                NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
-                            };
-                            window.Show();
-                        }
-                    },
+                    ShowAsTree,
                     null,
                     NavigationCategories.File + ".Views"));
 
             viewDefinition.ViewExtensions.Add(
                 new RibbonButtonDefinition(
-                    "Open Extent-Folder",
-                    () =>
-                    {
-                        var extentManager = App.Scope.Resolve<IExtentManager>();
-                        if (
-                            extentManager.GetLoadConfigurationFor(_extent as IUriExtent)
-                                is ExtentFileLoaderConfig loadConfiguration
-                            && loadConfiguration.Path != null)
-                        {
-                            // ReSharper disable once AssignNullToNotNullAttribute
-                            Process.Start(
-                                Path.GetDirectoryName(loadConfiguration.Path));
-                        }
-                        else
-                        {
-                            MessageBox.Show("Given extent is not file-driven (probably only in memory).");
-                        }
-                    },
+                    "Export as Xmi",
+                    ExportAsXmi,
                     null,
                     NavigationCategories.File + ".Workspaces"));
+
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Open Extent-Folder",
+                    OpenExtentFolder,
+                    null,
+                    NavigationCategories.File + ".Workspaces"));
+
 
             viewDefinition.ViewExtensions.Add(
                 new InfoLineDefinition(() =>
@@ -214,6 +195,55 @@ namespace DatenMeisterWPF.Forms.Lists
                             new Run(ExtentUrl)
                         }
                     }));
+
+            void ExportAsXmi()
+            {
+                var dialog = new SaveFileDialog();
+                dialog.Filter = "Xmi-File (*.xmi)|*.xmi|Xml-Files (*.xml)|*.xml|All Files (*.*)|*.*";
+                dialog.AddExtension = true;
+                dialog.RestoreDirectory = true;
+                if (dialog.ShowDialog() == true)
+                {
+                    var filename = dialog.FileName;
+                    try
+                    {
+                        ExtentExport.ExportToFile(_extent, filename);
+                        MessageBox.Show("Extent exported.");
+                        // ReSharper disable once AssignNullToNotNullAttribute
+                        Process.Start(Path.GetDirectoryName(filename));
+                    }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show(exc.Message);
+                    }
+                }
+            }
+
+            void OpenExtentFolder()
+            {
+                var extentManager = App.Scope.Resolve<IExtentManager>();
+                if (extentManager.GetLoadConfigurationFor(_extent as IUriExtent) is ExtentFileLoaderConfig loadConfiguration && loadConfiguration.Path != null)
+                {
+                    // ReSharper disable once AssignNullToNotNullAttribute
+                    Process.Start(Path.GetDirectoryName(loadConfiguration.Path));
+                }
+                else
+                {
+                    MessageBox.Show("Given extent is not file-driven (probably only in memory).");
+                }
+            }
+
+            void ShowAsTree()
+            {
+                if (_extent != null)
+                {
+                    var window = new TreeViewWindow {Owner = NavigationHost.GetWindow()};
+                    window.SetDefaultProperties();
+                    window.SetCollection(_extent.elements());
+                    window.ItemSelected += (x, y) => { NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item); };
+                    window.Show();
+                }
+            }
         }
     }
 }

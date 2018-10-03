@@ -43,7 +43,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// is supported by this object
         /// </summary>
         /// <returns>The returned value representing the meta object</returns>
-        protected MofObject GetMetaObject()
+        public MofObject GetMetaObject()
         {
             if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
                 ProviderCapability.StoreMetaDataInExtent)
@@ -67,9 +67,10 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <summary>
         /// Gets or sets the xml Node of the meta element.
-        /// Only to be used by ExtentConfigurationLoader and other extent loaders
+        /// Only to be used by ExtentConfigurationLoader and other extent loaders.
+        /// This method shall only be called, if the underlying provider does not support storage of metadata
         /// </summary>
-        internal XElement MetaElementXmlNode
+        public XElement LocalMetaElementXmlNode
         {
             get => ((XmiProviderObject) (MetaXmiElement.ProviderObject)).XmlNode;
             set => ((XmiProviderObject) (MetaXmiElement.ProviderObject)).XmlNode = value;

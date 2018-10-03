@@ -11,6 +11,9 @@ namespace DatenMeister.Runtime.Copier
     /// </summary>
     public class ObjectCopier
     {
+        /// <summary>
+        /// Contains the factory method
+        /// </summary>
         private readonly IFactory _factory;
 
         /// <summary>
@@ -51,7 +54,7 @@ namespace DatenMeister.Runtime.Copier
         /// </summary>
         /// <param name="sourceElement">Source element which is verified</param>
         /// <param name="targetElement">Target element which is verified</param>
-        private void CopyProperties(IObject sourceElement, IObject targetElement)
+        public void CopyProperties(IObject sourceElement, IObject targetElement)
         {
             if (sourceElement == null) throw new ArgumentNullException(nameof(sourceElement));
             if (targetElement == null) throw new ArgumentNullException(nameof(targetElement));

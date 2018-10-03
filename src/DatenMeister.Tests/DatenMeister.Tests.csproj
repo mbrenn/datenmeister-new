@@ -71,6 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\CopierTests.cs" />
     <Compile Include="Runtime\ExtentStorageTests.cs" />
+    <Compile Include="Runtime\Extents\ExtentExportTests.cs" />
     <Compile Include="Runtime\Extents\ExtentTests.cs" />
     <Compile Include="Runtime\Functions\AggregationTests.cs" />
     <Compile Include="Runtime\ReadOnlyProxyTests.cs" />

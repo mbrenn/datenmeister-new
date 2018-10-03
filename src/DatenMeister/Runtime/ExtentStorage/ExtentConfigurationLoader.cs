@@ -88,7 +88,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     var extent = ExtentManager.LoadExtent(info.Item1, false);
                     if (info.Item2 != null)
                     {
-                        ((MofExtent) extent).MetaElementXmlNode = info.Item2;
+                        ((MofExtent) extent).LocalMetaElementXmlNode = info.Item2;
                     }
                 }
                 catch (Exception exc)
@@ -153,7 +153,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 xmlExtent.Add(xmlData);
 
                 // Stores the metadata
-                var xmlMetaData = new XElement(((MofExtent) extent.Extent).MetaElementXmlNode)
+                var xmlMetaData = new XElement(((MofExtent) extent.Extent).LocalMetaElementXmlNode)
                 {
                     Name = "metadata"
                 };

@@ -49,7 +49,8 @@ namespace DatenMeister.Provider.XMI.EMOF
 
         public XmiProvider(XDocument document/*, string rootNodeName = DefaultRootNodeName*/)
         {
-            var rootNodeName = DefaultRootNodeName;
+            var rootNodeName = document.Elements().First().Name;
+
             _document = document;
             _rootNode = _document.Element(rootNodeName);
 

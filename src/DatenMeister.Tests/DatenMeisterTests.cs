@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Autofac;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Integration;
@@ -17,7 +18,7 @@ namespace DatenMeister.Tests
         public static IDatenMeisterScope GetDatenMeisterScope(bool dropDatabase = true)
         {
             var path = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 "testing/datenmeister/data");
             var integrationSettings = new IntegrationSettings()
             {

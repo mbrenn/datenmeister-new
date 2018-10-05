@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
+# Blend for Visual Studio 15
 VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister", "DatenMeister\DatenMeister.csproj", "{FEA57312-8D46-440E-989A-476B9281EEF7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister", "DatenMeister\DatenMeister.csproj", "{FEA57312-8D46-440E-989A-476B9281EEF7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Web", "DatenMeister.Web\DatenMeister.Web.csproj", "{800E015A-C331-4048-BE37-088A3EEC608C}"
 EndProject

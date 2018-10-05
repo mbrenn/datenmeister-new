@@ -24,6 +24,7 @@ using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
+using DatenMeisterWPF.Forms.Specific;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
 using Microsoft.Win32;
@@ -198,10 +199,12 @@ namespace DatenMeisterWPF.Forms.Lists
 
             void ExportAsXmi()
             {
-                var dialog = new SaveFileDialog();
-                dialog.Filter = "Xmi-File (*.xmi)|*.xmi|Xml-Files (*.xml)|*.xml|All Files (*.*)|*.*";
-                dialog.AddExtension = true;
-                dialog.RestoreDirectory = true;
+                var dialog = new SaveFileDialog
+                {
+                    Filter = "Xmi-File (*.xmi)|*.xmi|Xml-Files (*.xml)|*.xml|All Files (*.*)|*.*",
+                    AddExtension = true,
+                    RestoreDirectory = true
+                };
                 if (dialog.ShowDialog() == true)
                 {
                     var filename = dialog.FileName;
@@ -217,6 +220,15 @@ namespace DatenMeisterWPF.Forms.Lists
                         MessageBox.Show(exc.Message);
                     }
                 }
+            }
+
+            void ImportFromXmi()
+            {
+                var dlg = new ImportExtentDlg();
+                dlg.Owner = Window.GetWindow(this)?.Owner;
+                dlg.Show();
+
+                
             }
 
             void OpenExtentFolder()

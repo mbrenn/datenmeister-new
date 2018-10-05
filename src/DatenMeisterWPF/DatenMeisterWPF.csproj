@@ -116,6 +116,9 @@
     <Compile Include="Forms\Lists\ExtentList.cs" />
     <Compile Include="Forms\Lists\ItemsInExtentList.cs" />
     <Compile Include="Forms\Lists\ListRequests.cs" />
+    <Compile Include="Forms\Specific\ImportExtentDlg.xaml.cs">
+      <DependentUpon>ImportExtentDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helper\ComboBoxEx.cs" />
     <Compile Include="INavigationGuest.cs" />
     <Compile Include="INavigationHost.cs" />
@@ -176,6 +179,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\IntroScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Forms\Specific\ImportExtentDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

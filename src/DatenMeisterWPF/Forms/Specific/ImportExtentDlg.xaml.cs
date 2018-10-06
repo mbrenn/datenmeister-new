@@ -33,8 +33,8 @@ namespace DatenMeisterWPF.Forms.Specific
         private void OK_Click(object sender, RoutedEventArgs e)
         {
             ExportCommand.set("fileToBeImported", fileToBeImported.Text);
-            ExportCommand.set("newExtentName", newExtentName.Text);
-            ExportCommand.set("targetFilename", targetFilename.Text);
+            ExportCommand.set("newExtentName", fileToBeImported.Text);
+            ExportCommand.set("fileToBeImported", fileToBeImported.Text);
 
         }
     }

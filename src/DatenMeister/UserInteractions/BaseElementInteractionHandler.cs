@@ -28,7 +28,6 @@ namespace DatenMeister.UserInteractions
         {
             if (!string.IsNullOrEmpty(OnlyElementsOfType) && element is IElement elementAsElement)
             {
-                
                 if (!ClassifierMethods.IsDerivedTypeOf(elementAsElement, OnlyElementsOfType))
                 {
                     return false;

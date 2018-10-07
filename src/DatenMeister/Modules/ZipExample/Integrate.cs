@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using DatenMeister.Integration;
+using DatenMeister.Modules.TypeSupport;
 using DatenMeister.UserInteractions;
 
 namespace DatenMeister.Modules.ZipExample
@@ -16,6 +17,8 @@ namespace DatenMeister.Modules.ZipExample
         public static void Into(ContainerBuilder builder)
         {
             builder.RegisterType<ZipCodeInteractionHandler>().As<IElementInteractionsHandler>();
+            builder.RegisterType<ZipCodeExampleManager>().As<ZipCodeExampleManager>();
+            builder.RegisterType<ZipCodeModel>().As<ZipCodeModel>().SingleInstance();
         }
 
         /// <summary>
@@ -24,8 +27,13 @@ namespace DatenMeister.Modules.ZipExample
         /// <param name="scope">Scope to which the Zip Code shall be included</param>
         public static void Into(ILifetimeScope scope)
         {
-            var exampleController = scope.Resolve<ZipCodeExampleManager>();
-            exampleController.Initialize();
+            var localTypeSupport = scope.Resolve<LocalTypeSupport>();
+            var zipCodeType = localTypeSupport.AddInternalType(ZipCodeModel.PackagePath,
+                typeof(ZipCode)
+            );
+
+            var zipCodeModel = scope.Resolve<ZipCodeModel>();
+            zipCodeModel.ZipCode = zipCodeType;
         }
     }
 }

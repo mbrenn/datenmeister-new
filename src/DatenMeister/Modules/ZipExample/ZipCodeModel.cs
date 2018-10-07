@@ -1,11 +1,17 @@
-﻿namespace DatenMeister.Modules.ZipExample
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+
+namespace DatenMeister.Modules.ZipExample
 {
     public class ZipCodeModel
     {
-        public int id { get; set; }
-        public int zip { get; set; }
-        public double positionLong { get; set; }
-        public double positionLat { get; set; }
-        public string name { get; set; }
+        /// <summary>
+        /// Stores the path for the packages
+        /// </summary>
+        public const string PackagePath = "Apps::ZipCode";
+
+        /// <summary>
+        /// Gets or sets the type for the zipcode
+        /// </summary>
+        public IElement ZipCode { get; set; }
     }
 }

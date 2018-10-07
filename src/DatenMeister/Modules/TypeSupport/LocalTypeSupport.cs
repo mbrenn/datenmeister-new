@@ -191,7 +191,7 @@ namespace DatenMeister.Modules.TypeSupport
         /// </summary>
         /// <param name="packageName">Name of the package</param>
         /// <param name="type">Type to be added</param>
-        public IElement AddInternalTypes(string packageName, Type type)
+        public IElement AddInternalType(string packageName, Type type)
         {
             return AddInternalTypes(packageName, new[] { type }).First();
         }

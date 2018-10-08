@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Modules.ZipExample
 {
@@ -13,5 +14,7 @@ namespace DatenMeister.Modules.ZipExample
         /// Gets or sets the type for the zipcode
         /// </summary>
         public IElement ZipCode { get; set; }
+
+        public string ZipCodeUri => ZipCode?.GetUri();
     }
 }

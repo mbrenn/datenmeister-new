@@ -19,13 +19,16 @@ namespace DatenMeister.Modules.ZipExample
     {
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IExtentManager _extentManager;
+        private readonly ZipCodeModel _zipCodeModel;
 
         public ZipCodeExampleManager(
             IWorkspaceLogic workspaceLogic, 
-            IExtentManager extentManager)
+            IExtentManager extentManager,
+            ZipCodeModel zipCodeModel)
         {
             _workspaceLogic = workspaceLogic;
             _extentManager = extentManager;
+            _zipCodeModel = zipCodeModel;
         }
 
         /// <summary>
@@ -87,7 +90,7 @@ namespace DatenMeister.Modules.ZipExample
                         nameof(ZipCode.positionLat),
                         nameof(ZipCode.name)
                     }.ToList(),
-                    MetaclassUri = $"{WorkspaceNames.UriInternalTypesExtent}?" + ZipCodeModel.PackagePath + "::ZipCode"
+                    MetaclassUri = _zipCodeModel.ZipCodeUri
                 }
             };
 

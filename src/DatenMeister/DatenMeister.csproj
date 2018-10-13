@@ -13,11 +13,13 @@
     <None Remove="Integration\Modules\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Modules\ZipExample\zip_type_definition.xmi" />
     <None Remove="XmiFiles\MOF.xmi" />
     <None Remove="XmiFiles\PrimitiveTypes.xmi" />
     <None Remove="XmiFiles\UML.xmi" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Modules\ZipExample\zip_type_definition.xmi" />
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
     <EmbeddedResource Include="XmiFiles\UML.xmi" />

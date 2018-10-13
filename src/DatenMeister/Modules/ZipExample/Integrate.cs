@@ -1,4 +1,7 @@
-﻿using Autofac;
+﻿using System.IO;
+using System.Reflection;
+using Autofac;
+using DatenMeister.DotNet;
 using DatenMeister.Integration;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.UserInteractions;
@@ -32,7 +35,19 @@ namespace DatenMeister.Modules.ZipExample
                 typeof(ZipCode)
             );
 
-            var zipCodeModel = scope.Resolve<ZipCodeModel>();
+            // Load Resource, if possible:
+            using (var stream = typeof(Integrate).Assembly.GetManifestResourceStream("DatenMeister.Modules.ZipExample.zip_type_definition.xmi"))
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    var packageDefinition = reader.ReadToEnd();
+                }
+            }
+
+            var zipPackage = ResourceHelper.LoadElementFromResource(
+                typeof(Integrate), "DatenMeister.Modules.ZipExample.zip_type_definition.xmi");
+
+                var zipCodeModel = scope.Resolve<ZipCodeModel>();
             zipCodeModel.ZipCode = zipCodeType;
         }
     }

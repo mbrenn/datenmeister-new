@@ -4,6 +4,7 @@ using Autofac;
 using DatenMeister.DotNet;
 using DatenMeister.Integration;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Uml.Helper;
 using DatenMeister.UserInteractions;
 
 namespace DatenMeister.Modules.ZipExample
@@ -31,24 +32,21 @@ namespace DatenMeister.Modules.ZipExample
         public static void Into(ILifetimeScope scope)
         {
             var localTypeSupport = scope.Resolve<LocalTypeSupport>();
-            var zipCodeType = localTypeSupport.AddInternalType(ZipCodeModel.PackagePath,
+            /*var zipCodeType = localTypeSupport.AddInternalType(ZipCodeModel.PackagePath,
                 typeof(ZipCode)
-            );
+            );*/
 
-            // Load Resource, if possible:
-            using (var stream = typeof(Integrate).Assembly.GetManifestResourceStream("DatenMeister.Modules.ZipExample.zip_type_definition.xmi"))
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    var packageDefinition = reader.ReadToEnd();
-                }
-            }
-
+            // Load Resource 
             var zipPackage = ResourceHelper.LoadElementFromResource(
                 typeof(Integrate), "DatenMeister.Modules.ZipExample.zip_type_definition.xmi");
 
-                var zipCodeModel = scope.Resolve<ZipCodeModel>();
-            zipCodeModel.ZipCode = zipCodeType;
+            var packageMethods = scope.Resolve<PackageMethods>();
+            packageMethods.ImportPackage(
+                zipPackage, localTypeSupport.InternalTypes.elements(), "Apps::ZipCode");
+
+            var zipCodeModel = scope.Resolve<ZipCodeModel>();
+            zipCodeModel.ZipCode = localTypeSupport.InternalTypes.element(
+                "#DatenMeister.Modules.ZipExample.ZipCode");
         }
     }
 }

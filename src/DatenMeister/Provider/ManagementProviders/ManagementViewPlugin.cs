@@ -202,7 +202,7 @@ namespace DatenMeister.Provider.ManagementProviders
                 extentListView,
                 extentPackageView
             };
-            _packageMethods.AddObjectsToPackage(umlPackage, items);
+            PackageMethods.AddObjectsToPackage(umlPackage, items);
         }
     }
 }

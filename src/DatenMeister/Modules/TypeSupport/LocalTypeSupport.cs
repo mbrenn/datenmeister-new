@@ -33,9 +33,9 @@ namespace DatenMeister.Modules.TypeSupport
         private readonly ExtentCreator _extentCreator;
         private readonly PackageMethods _packageMethods;
 
-        public IUriExtent InternalTypes { get; private set; }
-        
-        public IUriExtent UserTypeExtent { get; private set; }
+        public IUriExtent InternalTypes => GetInternalTypeExtent();
+
+        public IUriExtent UserTypeExtent => GetUserTypeExtent(); 
 
         /// <summary>
         /// Initializes a new instance of the LocalTypeSupport class
@@ -78,8 +78,6 @@ namespace DatenMeister.Modules.TypeSupport
                     .get(_UML._Packages._Package.packagedElement) as IReflectiveCollection,
                 foundPackage,
                 _UML._Packages._Package.packagedElement);
-
-            InternalTypes = extentTypes;
         }
 
         /// <summary>
@@ -98,8 +96,6 @@ namespace DatenMeister.Modules.TypeSupport
             // Creates the user types, if not existing
             var numberOfTypes = foundExtent.elements().Count();
             Debug.WriteLine($"Loaded the extent for user types, containing of {numberOfTypes} types");
-
-            UserTypeExtent = (IUriExtent) foundExtent;
         }
 
         /// <summary>
@@ -191,7 +187,7 @@ namespace DatenMeister.Modules.TypeSupport
         /// </summary>
         /// <param name="packageName">Name of the package</param>
         /// <param name="type">Type to be added</param>
-        public IElement AddInternalTypes(string packageName, Type type)
+        public IElement AddInternalType(string packageName, Type type)
         {
             return AddInternalTypes(packageName, new[] { type }).First();
         }
@@ -258,6 +254,13 @@ namespace DatenMeister.Modules.TypeSupport
             return internalTypeExtent;
         }
 
+        private IUriExtent GetUserTypeExtent()
+        {
+            var workspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
+            var internalTypeExtent = GetUserTypeExtent(workspace);
+            return internalTypeExtent;
+        }
+
         /// <summary>
         /// Gets all other type extents, except the internal type extent being located in the workspace of types
         /// </summary>
@@ -280,6 +283,16 @@ namespace DatenMeister.Modules.TypeSupport
         public static IUriExtent GetInternalTypeExtent(IWorkspace workspace)
         {
             return workspace.FindExtent(WorkspaceNames.UriInternalTypesExtent);
+        }
+
+        /// <summary>
+        /// Gets the extent containing the 
+        /// </summary>
+        /// <param name="workspace"></param>
+        /// <returns></returns>
+        public static IUriExtent GetUserTypeExtent(IWorkspace workspace)
+        {
+            return workspace.FindExtent(WorkspaceNames.UriUserTypesExtent);
         }
     }
 }

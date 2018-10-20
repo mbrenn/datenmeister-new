@@ -67,7 +67,7 @@ namespace DatenMeisterWPF.Windows
         /// Sets the content of the window to convert the element to an xml
         /// </summary>
         /// <param name="item">Item to be shown</param>
-        public void UpdateContent(IElement item)
+        public void UpdateContent(IObject item)
         {
             if (item == null)
             {

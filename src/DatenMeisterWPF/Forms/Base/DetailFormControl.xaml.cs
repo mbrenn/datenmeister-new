@@ -519,6 +519,29 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
+
+            yield return new RibbonButtonDefinition(
+                "View-Configuration",
+                ViewConfig,
+                null,
+                NavigationCategories.File + ".Views");
+
+            yield return new RibbonButtonDefinition(
+                "Copy",
+                CopyContent,
+                null,
+                NavigationCategories.File + ".Copy");
+
+
+            if (DetailElement != null)
+            {
+                yield return new RibbonButtonDefinition(
+                    "Show as Xmi",
+                    ShowAsXmi,
+                    null,
+                    NavigationCategories.File);
+            }
+
             void ViewConfig()
             {
                 var dlg = new ItemXmlViewWindow
@@ -539,23 +562,18 @@ namespace DatenMeisterWPF.Forms.Base
                 dlg.ShowDialog();
             }
 
-            yield return new RibbonButtonDefinition(
-                "View-Configuration",
-                ViewConfig,
-                null,
-                NavigationCategories.File + ".Views");
-
             void CopyContent()
             {
                 var copyContent = new CopyToClipboardCommand(this);
                 copyContent.Execute(null);
             }
 
-            yield return new RibbonButtonDefinition(
-                "Copy",
-                CopyContent,
-                null,
-                NavigationCategories.File + ".Copy");
+            void ShowAsXmi()
+            {
+                var itemXmlView = new ItemXmlViewWindow();
+                itemXmlView.UpdateContent(DetailElement);
+                itemXmlView.Show();
+            }
         }
 
         private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)

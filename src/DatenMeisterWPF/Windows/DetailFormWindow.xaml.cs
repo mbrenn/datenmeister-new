@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
 using DatenMeisterWPF.Forms.Base;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Windows
@@ -65,13 +68,19 @@ namespace DatenMeisterWPF.Windows
             Focus();
         }
 
-
         /// <summary>
         /// Rebuild the complete navigation
         /// </summary>
         public void RebuildNavigation()
         {
-            RibbonHelper.EvaluateExtensions(RibbonHelper.GetDefaultNavigation());
+            var extensions = RibbonHelper.GetDefaultNavigation();
+            var otherExtensions = (MainContent?.Content as DetailFormControl)?.GetViewExtensions();
+            if (otherExtensions != null)
+            {
+                extensions = extensions.Union(otherExtensions);
+            }
+
+            RibbonHelper.EvaluateExtensions(extensions);
         }
 
         public void SetFocus()

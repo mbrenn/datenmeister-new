@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
+using Microsoft.Win32;
 
 namespace DatenMeisterWPF.Forms.Specific
 {
@@ -36,6 +37,35 @@ namespace DatenMeisterWPF.Forms.Specific
             ExportCommand.set("newExtentName", fileToBeImported.Text);
             ExportCommand.set("fileToBeImported", fileToBeImported.Text);
 
+        }
+
+        private void SourceImportPathClick(object sender, RoutedEventArgs e)
+        {
+            fileToBeImported.Text = SelectFileNameByUser();
+        }
+
+        private void TargetImportPathClick(object sender, RoutedEventArgs e)
+        {
+            targetFilename.Text = SelectFileNameByUser();
+        }
+
+        private static string SelectFileNameByUser()
+        {
+            string resultingFilename;
+            var dlg = new OpenFileDialog
+            {
+                Filter = "Xmi-Files (*.xmi)|*.xmi|All Files (*.*)|*.*", RestoreDirectory = true
+            };
+            if (dlg.ShowDialog() == true)
+            {
+                resultingFilename = dlg.FileName;
+            }
+            else
+            {
+                resultingFilename = string.Empty;
+            }
+
+            return resultingFilename;
         }
     }
 }

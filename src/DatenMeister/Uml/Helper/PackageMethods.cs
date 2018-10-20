@@ -4,8 +4,10 @@ using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Uml.Helper
@@ -147,18 +149,70 @@ namespace DatenMeister.Uml.Helper
             return found;
         }
 
-        public void AddObjectToPackage(IElement package, object element)
+        /// <summary>
+        /// Adds an object to a package
+        /// </summary>
+        /// <param name="package">Package to which the elements shall be added</param>
+        /// <param name="element">Element to be added</param>
+        public static void AddObjectToPackage(IElement package, object element)
         {
             var packagedElements = package.GetAsReflectiveCollection(_UML._Packages._Package.packagedElement);
             packagedElements.add(element);
         }
 
-        public void AddObjectsToPackage(IElement package, IEnumerable<object> element)
+        /// <summary>
+        /// Adds the element of the elements to the package
+        /// </summary>
+        /// <param name="package">Package to be set</param>
+        /// <param name="elements">Elements to be added</param>
+        public static void AddObjectsToPackage(IElement package, IEnumerable<object> elements)
         {
             var packagedElements = package.GetAsReflectiveCollection(_UML._Packages._Package.packagedElement);
-            foreach (var item in element)
+            foreach (var item in elements)
             {
                 packagedElements.add(item);
+            }
+        }
+
+        /// <summary>
+        /// Gets the packages elements of the package
+        /// </summary>
+        /// <param name="package">Package to be evaluated</param>
+        /// <returns>ReflectiveCollection containing the packaged elements</returns>
+        public static IReflectiveCollection GetPackagedObjects(IObject package)
+        {
+            return package.GetAsReflectiveCollection(_UML._Packages._Package.packagedElement);
+        }
+
+        /// <summary>
+        /// Imports a set of element into the the target package by creating the additional
+        /// subpackage structure as given in <c>packagePath</c>
+        /// </summary>
+        /// <param name="sourcePackage">Package containing the source element</param>
+        /// <param name="target">Target of the reflective sequence in which the sub packages will be
+        /// added. </param>
+        /// <param name="packagePath">Path of the package that is relevant to the intended target.</param>
+        public void ImportPackage(IObject sourcePackage, IReflectiveSequence target, string packagePath)
+        {
+            var targetPackage = GetOrCreatePackageStructure(target, packagePath);
+
+            // We got the package, import the elements
+            ImportPackage(sourcePackage, targetPackage);
+        }
+
+        /// <summary>
+        /// Imports the package according the Uml rules (Ok, not now, but at sometime at one day).
+        /// At the moment, it is a very simple rule to copy each element into the other branch
+        /// </summary>
+        /// <param name="sourcePackage">Source package containing the elements to be imported</param>
+        /// <param name="targetPackage">Target package receiving the elements</param>
+        public static void ImportPackage(IObject sourcePackage, IElement targetPackage)
+        {
+            var objectCopier = new ObjectCopier(new MofFactory(targetPackage.GetExtentOf()));
+            foreach (var subElement in GetPackagedObjects(sourcePackage).OfType<IObject>())
+            {
+                var copiedObject = objectCopier.Copy(subElement);
+                AddObjectToPackage(targetPackage, copiedObject);
             }
         }
     }

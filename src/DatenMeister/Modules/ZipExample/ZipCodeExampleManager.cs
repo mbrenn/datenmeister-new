@@ -17,27 +17,18 @@ namespace DatenMeister.Modules.ZipExample
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ZipCodeExampleManager
     {
-        /// <summary>
-        /// Gets or sets the instance for local type support
-        /// </summary>
-        private readonly LocalTypeSupport _localTypeSupport;
-
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IExtentManager _extentManager;
-        
-        /// <summary>
-        /// Stores the path for the packages
-        /// </summary>
-        public const string PackagePath = "Apps::ZipCode";
+        private readonly ZipCodeModel _zipCodeModel;
 
         public ZipCodeExampleManager(
-            LocalTypeSupport localTypeSupport, 
             IWorkspaceLogic workspaceLogic, 
-            IExtentManager extentManager)
+            IExtentManager extentManager,
+            ZipCodeModel zipCodeModel)
         {
-            _localTypeSupport = localTypeSupport;
             _workspaceLogic = workspaceLogic;
             _extentManager = extentManager;
+            _zipCodeModel = zipCodeModel;
         }
 
         /// <summary>
@@ -93,13 +84,13 @@ namespace DatenMeister.Modules.ZipExample
                     Encoding = "UTF-8",
                     Columns = new[]
                     {
-                        nameof(ZipCodeModel.id),
-                        nameof(ZipCodeModel.zip),
-                        nameof(ZipCodeModel.positionLong),
-                        nameof(ZipCodeModel.positionLat),
-                        nameof(ZipCodeModel.name)
+                        nameof(ZipCode.id),
+                        nameof(ZipCode.zip),
+                        nameof(ZipCode.positionLong),
+                        nameof(ZipCode.positionLat),
+                        nameof(ZipCode.name)
                     }.ToList(),
-                    MetaclassUri = $"{WorkspaceNames.UriInternalTypesExtent}?" + PackagePath + "::ZipCodeModel"
+                    MetaclassUri = _zipCodeModel.ZipCodeUri
                 }
             };
 
@@ -108,21 +99,10 @@ namespace DatenMeister.Modules.ZipExample
 
             var zipCodeTypePackage =
                 _workspaceLogic.GetTypesWorkspace().FindElementByUri(
-                    "datenmeister:///_internal/types/internal?" + PackagePath) as IElement;
+                    "datenmeister:///_internal/types/internal?" + ZipCodeModel.PackagePath) as IElement;
             loadedExtent.SetDefaultTypePackage(zipCodeTypePackage);
 
             return loadedExtent;
-        }
-
-        /// <summary>
-        /// Performs the initialization for the zipcode class
-        /// </summary>
-        public void Initialize()
-        {
-            _localTypeSupport.AddInternalTypes(
-                PackagePath,
-                typeof(ZipCodeModel)
-            );
         }
     }
 }

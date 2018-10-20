@@ -40,6 +40,7 @@ namespace DatenMeister.Provider.XMI.Standards
         {
             return Guid.NewGuid().ToString();
         }
+
         /// <summary>
         /// Gets the id of a certain Xml Element
         /// </summary>

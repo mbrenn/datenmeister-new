@@ -11,9 +11,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Provider.XMI.ExtentStorage;
 using Microsoft.Win32;
 
 namespace DatenMeisterWPF.Forms.Specific
@@ -41,7 +44,27 @@ namespace DatenMeisterWPF.Forms.Specific
 
         private void SourceImportPathClick(object sender, RoutedEventArgs e)
         {
-            fileToBeImported.Text = SelectFileNameByUser();
+            sourceFilename.Text = SelectFileNameByUser();
+
+            // Checks, if the newExtentUri is empty... If yes, try to get the name of the extent
+            if (string.IsNullOrEmpty(newExtentUri.Text))
+            {
+                try
+                {
+                    var loader = new XmiStorage();
+                    var provider = loader.LoadProvider(new XmiStorageConfiguration()
+                    {
+                        Path = sourceFilename.Text
+                    });
+                    
+                    var extent = new MofUriExtent(provider);
+                    newExtentUri.Text = extent.contextURI();
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.Message);
+                }
+            }
         }
 
         private void TargetImportPathClick(object sender, RoutedEventArgs e)

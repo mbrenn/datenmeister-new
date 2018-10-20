@@ -48,16 +48,23 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public MofUriExtent(IProvider provider, string uri) :
+        public MofUriExtent(IProvider provider) :
             base(provider)
         {
-            UriOfExtent = uri;
             _navigator = new ExtentUrlNavigator<MofElement>(this);
 
             if (provider is IHasUriResolver hasUriResolver)
             {
                 hasUriResolver.UriResolver = this;
             }
+        }
+
+
+        /// <inheritdoc />
+        public MofUriExtent(IProvider provider, string uri) :
+            this(provider)
+        {
+            UriOfExtent = uri;
         }
 
         /// <summary>

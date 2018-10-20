@@ -12,6 +12,7 @@ namespace DatenMeister.Core
     public static class CoreExtensions
     {
         private const string DatenmeisterDefaultTypePackage = "__DatenMeister.DefaultTypePackage";
+
         private const string ExtentType = "__ExtentType";
 
         /// <summary>

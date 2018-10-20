@@ -14,7 +14,8 @@ using DatenMeister.Runtime.Workspaces;
 namespace DatenMeister.Provider.XMI
 {
     /// <summary>
-    /// Includes a simple XMI loader which is attribute and element driven
+    /// Includes a simple XMI loader which is attribute and element driven.
+    /// By loading an xmi file, the attributes and extents are directly stored into an existing Extent. 
     /// </summary>
     public class SimpleLoader
     {

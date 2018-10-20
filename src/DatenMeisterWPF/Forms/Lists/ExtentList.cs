@@ -133,7 +133,7 @@ namespace DatenMeisterWPF.Forms.Lists
             {
                 var dlg = new ImportExtentDlg
                 {
-                    Owner = Window.GetWindow(this)?.Owner
+                    Owner = NavigationHost.GetWindow()
                 };
 
                 dlg.Show();

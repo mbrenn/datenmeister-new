@@ -176,7 +176,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     "Export as Xmi",
                     ExportAsXmi,
                     null,
-                    NavigationCategories.File + ".Workspaces"));
+                    NavigationCategories.File + ".Export"));
 
             viewDefinition.ViewExtensions.Add(
                 new RibbonButtonDefinition(
@@ -211,7 +211,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     try
                     {
                         ExtentExport.ExportToFile(_extent, filename);
-                        MessageBox.Show("Extent exported.");
+                        MessageBox.Show($"Extent exported with {_extent.elements().Count()} root elements.");
                         // ReSharper disable once AssignNullToNotNullAttribute
                         Process.Start(Path.GetDirectoryName(filename));
                     }

@@ -56,8 +56,7 @@ namespace DatenMeister.Runtime.Copier
         /// <returns>Exported Extent</returns>
         private static MofExtent ExportToXmiExtent(IExtent extent)
         {
-            var xmiExtent = new MofExtent(
-                new XmiProvider());
+            var xmiExtent = new MofExtent(new XmiProvider());
 
             // Copies the meta data
             var metaObject = ((MofExtent) extent).GetMetaObject();

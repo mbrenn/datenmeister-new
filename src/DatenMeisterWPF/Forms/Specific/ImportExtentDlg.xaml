@@ -15,21 +15,35 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock>File, to be imported:</TextBlock>
+        <TextBlock>Source file path: </TextBlock>
         <DockPanel Grid.Row="0" Grid.Column="1">
             <Button DockPanel.Dock="Right">Select File...</Button>
             <TextBox x:Name="fileToBeImported"></TextBox>
         </DockPanel>
-        <TextBlock Grid.Row="1" Grid.Column="0">New extent name:</TextBlock>
-        <TextBox Grid.Row="1" Grid.Column="1" x:Name="newExtentName"></TextBox>
+        <TextBlock Grid.Row="1" Grid.Column="0">New extent Uri:</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0">Target file path:</TextBlock>
+        <TextBox Grid.Row="1" Grid.Column="1" x:Name="newExtentUri"></TextBox>
         <DockPanel Grid.Row="0" Grid.Column="1">
-            <Button DockPanel.Dock="Right">Select File...</Button>
+            <Button DockPanel.Dock="Right" Click="SourceImportPathClick">Select File...</Button>
+            <TextBox x:Name="sourceFilename"></TextBox>
+        </DockPanel>
+        <DockPanel Grid.Row="2" Grid.Column="1">
+            <Button DockPanel.Dock="Right" Click="TargetImportPathClick">Select File...</Button>
             <TextBox x:Name="targetFilename"></TextBox>
         </DockPanel>
-        <StackPanel HorizontalAlignment="Right" Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+        <TextBlock Grid.Row="5" Grid.Column="1" TextWrapping="Wrap">
+            1) Select the file to be imported
+            <LineBreak />
+            2) Select the uri of the new extent (will be prefilled by the information of the import file)
+            <LineBreak />
+            3) Select the target file path. If source file path and target file path are the same, the import will be executed inline without copying. 
+        </TextBlock>
+        <StackPanel HorizontalAlignment="Right" Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
             <Button IsCancel="True">Cancel</Button>
             <Button IsDefault="True" Click="OK_Click">OK</Button>
         </StackPanel>

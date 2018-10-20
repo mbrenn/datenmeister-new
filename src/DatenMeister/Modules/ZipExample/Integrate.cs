@@ -32,9 +32,6 @@ namespace DatenMeister.Modules.ZipExample
         public static void Into(ILifetimeScope scope)
         {
             var localTypeSupport = scope.Resolve<LocalTypeSupport>();
-            /*var zipCodeType = localTypeSupport.AddInternalType(ZipCodeModel.PackagePath,
-                typeof(ZipCode)
-            );*/
 
             // Load Resource 
             var zipPackage = ResourceHelper.LoadElementFromResource(

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -123,6 +124,57 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             return createdElement;
+        }
+
+        /// <summary>
+        /// Converts the given MOF Object into a .Net Object
+        /// </summary>
+        /// <typeparam name="T">Type of the object to be returned</typeparam>
+        /// <param name="value">Value to be converted</param>
+        /// <returns>The converted object</returns>
+        public static T ConvertToDotNetObject<T>(IObject value)
+        {
+            return (T) ConvertToDotNetObject(value, typeof(T));
+        }
+
+        /// <summary>
+        /// Converts the given MOF Object into a .Net Object
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <param name="type">Type of the element to be converted</param>
+        /// <returns>The converted object</returns>
+        public static object ConvertToDotNetObject(IObject value, Type type)
+        {
+            var result = Activator.CreateInstance(type);
+            foreach (var reflectedProperty in type.GetProperties(
+                BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public))
+            {
+                if (value.isSet(reflectedProperty.Name))
+                {
+                    var propertyValue = value.get(reflectedProperty.Name);
+                    if (reflectedProperty.PropertyType == typeof(string))
+                    {
+                        reflectedProperty.SetValue(result, propertyValue.ToString());
+                    }
+
+                    if (reflectedProperty.PropertyType == typeof(int))
+                    {
+                        reflectedProperty.SetValue(result, DotNetHelper.AsInteger(propertyValue));
+                    }
+
+                    if (reflectedProperty.PropertyType == typeof(double))
+                    {
+                        reflectedProperty.SetValue(result, DotNetHelper.AsDouble(propertyValue));
+                    }
+
+                    if (reflectedProperty.PropertyType == typeof(bool))
+                    {
+                        reflectedProperty.SetValue(result, DotNetHelper.AsBoolean(propertyValue));
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

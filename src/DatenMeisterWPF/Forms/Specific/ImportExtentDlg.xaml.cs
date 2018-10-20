@@ -17,6 +17,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime.Extents;
 using Microsoft.Win32;
 
 namespace DatenMeisterWPF.Forms.Specific
@@ -26,27 +27,33 @@ namespace DatenMeisterWPF.Forms.Specific
     /// </summary>
     public partial class ImportExtentDlg : Window
     {
-        public IObject ExportCommand { get; set; }
+        public IObject ImportCommand { get; set; }
+
+        /// <summary>
+        /// Gets or sets the workspace id of the workspace that shall import the new extent
+        /// </summary>
+        public string Workspace { get; set; }
 
         public ImportExtentDlg()
         {
             InitializeComponent();
-            ExportCommand = InMemoryObject.CreateEmpty();
         }
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            ExportCommand.set("fileToBeImported", fileToBeImported.Text);
-            ExportCommand.set("newExtentName", fileToBeImported.Text);
-            ExportCommand.set("fileToBeImported", fileToBeImported.Text);
-
+            ImportCommand = InMemoryObject.CreateEmpty();
+            ImportCommand.set(nameof(ImportSettings.fileToBeImported), sourceFilename.Text);
+            ImportCommand.set(nameof(ImportSettings.newExtentUri), newExtentUri.Text);
+            ImportCommand.set(nameof(ImportSettings.fileToBeExported), targetFilename.Text);
+            ImportCommand.set(nameof(ImportSettings.Workspace), Workspace);
+            Close();
         }
 
         private void SourceImportPathClick(object sender, RoutedEventArgs e)
         {
             sourceFilename.Text = SelectFileNameByUser();
 
-            // Checks, if the newExtentUri is empty... If yes, try to get the name of the extent
+            // Checks, if the newExtentUri is empty... If yes, try to get the name of the extent and prefills it
             if (string.IsNullOrEmpty(newExtentUri.Text))
             {
                 try

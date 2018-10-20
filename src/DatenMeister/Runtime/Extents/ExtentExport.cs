@@ -9,7 +9,7 @@ namespace DatenMeister.Runtime.Copier
     /// <summary>
     /// Performs an export of an extent to an xmi structure which then ca be stored to disc
     /// </summary>
-    public class ExtentExport
+    public static class ExtentExport
     {
         /// <summary>
         /// Exports the given extent to a file and stores it permanently on the disc

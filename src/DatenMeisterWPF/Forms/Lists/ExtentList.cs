@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
@@ -133,7 +134,18 @@ namespace DatenMeisterWPF.Forms.Lists
             {
                 var dlg = new ImportExtentDlg
                 {
-                    Owner = NavigationHost.GetWindow()
+                    Owner = NavigationHost.GetWindow(),
+                    Workspace = WorkspaceId
+                };
+
+                dlg.Closed += (x, y) =>
+                {
+                    if (dlg.ImportCommand != null)
+                    {
+                        var extentImport = App.Scope.Resolve<ExtentImport>();
+                        extentImport.ImportExtent(dlg.ImportCommand);
+                        RecreateViews();
+                    }
                 };
 
                 dlg.Show();

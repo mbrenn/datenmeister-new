@@ -21,7 +21,6 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public void TestExport()
         {
-            var export = new ExtentExport();
             var exportedText = ExtentExport.ExportToString(GetExampleExtent());
             Assert.That(exportedText.Contains("dm:///test"));
             Assert.That(exportedText.Contains("DatenMeister Yeahaa"));

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using Autofac;
@@ -10,6 +11,7 @@ using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
+using DatenMeisterWPF.Forms.Specific;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
@@ -91,6 +93,13 @@ namespace DatenMeisterWPF.Forms.Lists
                     NavigationCategories.File + ".Import"));
 
             viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Import from XMI",
+                    ImportFromXmi,
+                    Icons.ImportExcel,
+                    NavigationCategories.File + ".Import"));
+
+            viewDefinition.ViewExtensions.Add(
                 new InfoLineDefinition(() =>
                     new TextBlock
                     {
@@ -118,6 +127,16 @@ namespace DatenMeisterWPF.Forms.Lists
                 var zipCodeExampleManager = App.Scope.Resolve<ZipCodeExampleManager>();
                 zipCodeExampleManager.AddZipCodeExample(WorkspaceId);
                 RecreateViews();
+            }
+
+            void ImportFromXmi()
+            {
+                var dlg = new ImportExtentDlg
+                {
+                    Owner = Window.GetWindow(this)?.Owner
+                };
+
+                dlg.Show();
             }
         }
 

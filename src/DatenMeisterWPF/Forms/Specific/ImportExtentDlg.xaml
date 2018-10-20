@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DatenMeisterWPF.Forms.Specific"
         mc:Ignorable="d"
-        Title="Import Extent" Height="250" Width="500">
+        Title="Import Extent" Height="250" Width="500" WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>

@@ -222,15 +222,6 @@ namespace DatenMeisterWPF.Forms.Lists
                 }
             }
 
-            void ImportFromXmi()
-            {
-                var dlg = new ImportExtentDlg();
-                dlg.Owner = Window.GetWindow(this)?.Owner;
-                dlg.Show();
-
-                
-            }
-
             void OpenExtentFolder()
             {
                 var extentManager = App.Scope.Resolve<IExtentManager>();

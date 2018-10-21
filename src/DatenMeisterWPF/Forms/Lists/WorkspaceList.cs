@@ -38,7 +38,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
             {
                 var workspaceId = SelectedPackage.get("id")?.ToString();
-                view = ListRequests.RequestFormForExtents(workspaceId);
+                view = ListRequests.RequestFormForExtents(this, workspaceId);
             }
             else
             {

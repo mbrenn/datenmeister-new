@@ -20,7 +20,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Stores the information about the active tab controls
         /// </summary>
-        protected ObservableCollection<ItemExplorerTab> Tabs = new ObservableCollection<ItemExplorerTab>();
+        protected readonly ObservableCollection<ItemExplorerTab> Tabs = new ObservableCollection<ItemExplorerTab>();
 
         /// <summary>
         /// Gets or sets the items to be shown. These items are shown also in the navigation view and will
@@ -75,7 +75,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Recreates all views
         /// </summary>
-        protected void RecreateViews()
+        public void RecreateViews()
         {
             Tabs.Clear();
             OnRecreateViews();

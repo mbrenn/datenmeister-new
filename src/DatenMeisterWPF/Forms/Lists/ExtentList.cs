@@ -59,7 +59,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 return;
             }
 
-            var viewDefinition = ListRequests.RequestFormForExtents(WorkspaceId);
+            var viewDefinition = ListRequests.RequestFormForExtents(this, WorkspaceId);
             PrepareNavigation(viewDefinition);
 
             var uiElement = AddTab(
@@ -72,84 +72,6 @@ namespace DatenMeisterWPF.Forms.Lists
         /// </summary>
         public void PrepareNavigation(ViewDefinition viewDefinition)
         {
-            viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
-                    "New Xmi Extent",
-                    NewXmiExtent,
-                    null,
-                    NavigationCategories.File + ".Workspaces"));
-
-            viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
-                    "Zip-Code Example",
-                    AddZipCodeExample,
-                    null,
-                    NavigationCategories.File + ".Workspaces"));
-
-            viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
-                    "Import Excel",
-                    ImportFromExcel,
-                    Icons.ImportExcel,
-                    NavigationCategories.File + ".Import"));
-
-            viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
-                    "Import from XMI",
-                    ImportFromXmi,
-                    Icons.ImportExcel,
-                    NavigationCategories.File + ".Import"));
-
-            viewDefinition.ViewExtensions.Add(
-                new InfoLineDefinition(() =>
-                    new TextBlock
-                    {
-                        Inlines =
-                        {
-                            new Bold {Inlines = {new Run("Workspace: ")}},
-                            new Run(WorkspaceId)
-                        }
-                    }));
-
-            void ImportFromExcel()
-            {
-                NavigatorForExcelHandling.ImportFromExcel(NavigationHost, WorkspaceId);
-                RecreateViews();
-            }
-
-            void NewXmiExtent()
-            {
-                var events = NavigatorForItems.NavigateToNewXmiExtentDetailView(NavigationHost, WorkspaceId);
-                events.Closed += (x, y) => RecreateViews();
-            }
-
-            void AddZipCodeExample()
-            {
-                var zipCodeExampleManager = App.Scope.Resolve<ZipCodeExampleManager>();
-                zipCodeExampleManager.AddZipCodeExample(WorkspaceId);
-                RecreateViews();
-            }
-
-            void ImportFromXmi()
-            {
-                var dlg = new ImportExtentDlg
-                {
-                    Owner = NavigationHost.GetWindow(),
-                    Workspace = WorkspaceId
-                };
-
-                dlg.Closed += (x, y) =>
-                {
-                    if (dlg.ImportCommand != null)
-                    {
-                        var extentImport = App.Scope.Resolve<ExtentImport>();
-                        extentImport.ImportExtent(dlg.ImportCommand);
-                        RecreateViews();
-                    }
-                };
-
-                dlg.Show();
-            }
         }
 
         public override void OnMouseDoubleClick(IObject element)

@@ -1,13 +1,19 @@
 ﻿using System.Runtime.Remoting.Messaging;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
+using DatenMeisterWPF.Forms.Specific;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
@@ -68,7 +74,7 @@ namespace DatenMeisterWPF.Forms.Lists
         /// </summary>
         /// <param name="workspaceId">The Id of the workspace</param>
         /// <returns>The created form</returns>
-        internal static ViewDefinition RequestFormForExtents(string workspaceId)
+        internal static ViewDefinition RequestFormForExtents(ItemExplorerControl control, string workspaceId)
         {
             var viewExtent = App.Scope.Resolve<ViewLogic>().GetInternalViewExtent();
             var result =
@@ -78,6 +84,85 @@ namespace DatenMeisterWPF.Forms.Lists
 
             var viewDefinition = new ViewDefinition("Extents", result);
             viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition("Show Items", ShowItems));
+
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "New Xmi Extent",
+                    NewXmiExtent,
+                    null,
+                    NavigationCategories.File + ".Workspaces"));
+
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Zip-Code Example",
+                    AddZipCodeExample,
+                    null,
+                    NavigationCategories.File + ".Workspaces"));
+
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Import Excel",
+                    ImportFromExcel,
+                    Icons.ImportExcel,
+                    NavigationCategories.File + ".Import"));
+
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Import from XMI",
+                    ImportFromXmi,
+                    Icons.ImportExcel,
+                    NavigationCategories.File + ".Import"));
+
+            viewDefinition.ViewExtensions.Add(
+                new InfoLineDefinition(() =>
+                    new TextBlock
+                    {
+                        Inlines =
+                        {
+                            new Bold {Inlines = {new Run("Workspace: ")}},
+                            new Run(workspaceId)
+                        }
+                    }));
+
+            void ImportFromExcel()
+            {
+                NavigatorForExcelHandling.ImportFromExcel(control.NavigationHost, workspaceId);
+                control.RecreateViews();
+            }
+
+            void NewXmiExtent()
+            {
+                var events = NavigatorForItems.NavigateToNewXmiExtentDetailView(control.NavigationHost, workspaceId);
+                events.Closed += (x, y) => control.RecreateViews();
+            }
+
+            void AddZipCodeExample()
+            {
+                var zipCodeExampleManager = App.Scope.Resolve<ZipCodeExampleManager>();
+                zipCodeExampleManager.AddZipCodeExample(workspaceId);
+                control.RecreateViews();
+            }
+
+            void ImportFromXmi()
+            {
+                var dlg = new ImportExtentDlg
+                {
+                    Owner = control.NavigationHost.GetWindow(),
+                    Workspace = workspaceId
+                };
+
+                dlg.Closed += (x, y) =>
+                {
+                    if (dlg.ImportCommand != null)
+                    {
+                        var extentImport = App.Scope.Resolve<ExtentImport>();
+                        extentImport.ImportExtent(dlg.ImportCommand);
+                        control.RecreateViews();
+                    }
+                };
+
+                dlg.Show();
+            }
 
             return viewDefinition;
             

@@ -132,7 +132,8 @@ namespace DatenMeisterWPF.Forms.Lists
 
             void DeleteExtent(INavigationGuest guest, IObject element)
             {
-                if ( MessageBox.Show("Are you sure, you would like to delete the extent?", "Delete Extent", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Are you sure, you would like to delete the extent?", "Delete Extent",
+                        MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     var extentManager = App.Scope.Resolve<ExtentManager>();
                     var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
@@ -140,27 +141,27 @@ namespace DatenMeisterWPF.Forms.Lists
                     var extentToBeDeleted =
                         workspaceLogic.FindExtent(workspaceId, DotNetHelper.AsString(element.get("uri")));
                     extentManager.DeleteExtent(extentToBeDeleted);
-                    control.RecreateViews();
+                    control.UpdateAllViews();
                 }
             }
 
             void ImportFromExcel()
             {
                 NavigatorForExcelHandling.ImportFromExcel(control.NavigationHost, workspaceId);
-                control.RecreateViews();
+                control.UpdateAllViews();
             }
 
             void NewXmiExtent()
             {
                 var events = NavigatorForItems.NavigateToNewXmiExtentDetailView(control.NavigationHost, workspaceId);
-                events.Closed += (x, y) => control.RecreateViews();
+                events.Closed += (x, y) => control.UpdateAllViews();
             }
 
             void AddZipCodeExample()
             {
                 var zipCodeExampleManager = App.Scope.Resolve<ZipCodeExampleManager>();
                 zipCodeExampleManager.AddZipCodeExample(workspaceId);
-                control.RecreateViews();
+                control.UpdateAllViews();
             }
 
             void ImportFromXmi()
@@ -177,7 +178,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     {
                         var extentImport = App.Scope.Resolve<ExtentImport>();
                         extentImport.ImportExtent(dlg.ImportCommand);
-                        control.RecreateViews();
+                        control.UpdateAllViews();
                     }
                 };
 

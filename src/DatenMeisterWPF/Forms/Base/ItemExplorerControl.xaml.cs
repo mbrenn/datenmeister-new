@@ -73,9 +73,18 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
+        /// This method shall be called, when the content of the shown information has changed and all views shall be updated
+        /// </summary>
+        public void UpdateAllViews()
+        { 
+            UpdateTreeContent();
+            RecreateViews();
+        }
+
+        /// <summary>
         /// Recreates all views
         /// </summary>
-        public void RecreateViews()
+        protected void RecreateViews()
         {
             Tabs.Clear();
             OnRecreateViews();

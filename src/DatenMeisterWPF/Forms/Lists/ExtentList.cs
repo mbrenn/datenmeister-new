@@ -70,7 +70,7 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <summary>
         /// Adds the navigation control elements in the host
         /// </summary>
-        public void PrepareNavigation(ViewDefinition viewDefinition)
+        private void PrepareNavigation(ViewDefinition viewDefinition)
         {
         }
 

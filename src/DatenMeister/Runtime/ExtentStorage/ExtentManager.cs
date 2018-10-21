@@ -147,7 +147,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// If loading was not performed, an exception is thrown. 
         /// </summary>
         /// <param name="extent">Extent to be stored</param>
-        public void StoreExtent(IUriExtent extent)
+        public void StoreExtent(IExtent extent)
         {
             ExtentStorageData.LoadedExtentInformation information;
             lock (_data.LoadedExtents)
@@ -170,7 +170,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// Detaches the extent by removing it from the database of loaded extents
         /// </summary>
         /// <param name="extent"></param>
-        public void DetachExtent(IUriExtent extent)
+        public void DetachExtent(IExtent extent)
         {
             lock (_data.LoadedExtents)
             {
@@ -180,6 +180,24 @@ namespace DatenMeister.Runtime.ExtentStorage
                     _data.LoadedExtents.Remove(information);
                     Debug.WriteLine($"Detaching extent: {information.Configuration}");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Deletes the extent from the extent manager but also from the internal database of loading information. 
+        /// </summary>
+        /// <param name="extent">Extent to be removed</param>
+        public void DeleteExtent(IExtent extent)
+        {
+            lock (_data.LoadedExtents)
+            {
+                var workspace = _workspaceLogic.GetWorkspaceOfExtent(extent);
+
+                // Removes the loading information of the extent
+                DetachExtent(extent);
+                
+                // Removes the extent from the workspace
+                workspace.RemoveExtent(extent);
             }
         }
 

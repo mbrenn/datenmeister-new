@@ -18,13 +18,19 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// If loading was not performed, an exception is thrown. 
         /// </summary>
         /// <param name="extent"></param>
-        void StoreExtent(IUriExtent extent);
+        void StoreExtent(IExtent extent);
 
         /// <summary>
         /// Detaches a specific extent in a way that is not known to the storage loader anymore
         /// </summary>
         /// <param name="extent">Extent to be detached</param>
-        void DetachExtent(IUriExtent extent);
+        void DetachExtent(IExtent extent);
+
+        /// <summary>
+        /// Deletes the extent from the extent manager and also workspace. The extent manager will 
+        /// </summary>
+        /// <param name="extent">Extent to be deleted</param>
+        void DeleteExtent(IExtent extent);
 
         void StoreAll();
 

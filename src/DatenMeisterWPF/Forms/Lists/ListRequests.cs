@@ -7,7 +7,9 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
@@ -114,6 +116,9 @@ namespace DatenMeisterWPF.Forms.Lists
                     NavigationCategories.File + ".Import"));
 
             viewDefinition.ViewExtensions.Add(
+                new RowItemButtonDefinition("Delete", DeleteExtent));
+
+            viewDefinition.ViewExtensions.Add(
                 new InfoLineDefinition(() =>
                     new TextBlock
                     {
@@ -123,6 +128,21 @@ namespace DatenMeisterWPF.Forms.Lists
                             new Run(workspaceId)
                         }
                     }));
+
+
+            void DeleteExtent(INavigationGuest guest, IObject element)
+            {
+                if ( MessageBox.Show("Are you sure, you would like to delete the extent?", "Delete Extent", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    var extentManager = App.Scope.Resolve<ExtentManager>();
+                    var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+
+                    var extentToBeDeleted =
+                        workspaceLogic.FindExtent(workspaceId, DotNetHelper.AsString(element.get("uri")));
+                    extentManager.DeleteExtent(extentToBeDeleted);
+                    control.RecreateViews();
+                }
+            }
 
             void ImportFromExcel()
             {

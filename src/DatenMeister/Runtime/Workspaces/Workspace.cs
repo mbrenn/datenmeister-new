@@ -145,6 +145,19 @@ namespace DatenMeister.Runtime.Workspaces
             return false;
         }
 
+        /// <summary>
+        /// Removes the extent from the workspace 
+        /// </summary>
+        /// <param name="extentForRemoval">Extent to be removed</param>
+        /// <returns>true, if the extent could be removed</returns>
+        public bool RemoveExtent(IExtent extentForRemoval)
+        {
+            lock (SyncObject)
+            {
+                return _extent.Remove(extentForRemoval);
+            }
+        }
+
         public TFilledType Get<TFilledType>()
             where TFilledType : class, new()
         {

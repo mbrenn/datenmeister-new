@@ -29,6 +29,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             return _mapping.ContainsKey(typeConfiguration);
         }
+
         /// <summary>
         /// Adds the mapping by defining the type of the configuration object and the corresponding ExtentStorageLoader
         /// </summary>

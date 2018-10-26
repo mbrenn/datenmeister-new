@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
@@ -151,6 +148,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         public void CreateStorageTypeDefinitions()
         {
+            if (_diScope == null) throw new InvalidOperationException("diScope == null");
+
             lock (_data.LoadedExtents)
             {
                 _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(_data.AdditionalTypes, "DatenMeister::ExtentLoaderConfig");

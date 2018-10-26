@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;

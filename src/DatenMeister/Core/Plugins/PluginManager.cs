@@ -101,6 +101,8 @@ namespace DatenMeister.Core.Plugins
 
             NoExceptionDuringLoading = true;
 
+            LoadAssembliesFromFolder(".");
+
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 // Go through all types and check, if the type has implemented the interface for the pluging 

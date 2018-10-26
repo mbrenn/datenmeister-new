@@ -159,13 +159,13 @@ namespace DatenMeister.Excel.EMOF
             {
                 var firstPart = SheetItem.Sheet.SheetName;
                 string secondPart;
-                if (string.IsNullOrEmpty(SheetItem.ExcelProvider.Settings.IdColumn))
+                if (string.IsNullOrEmpty(SheetItem.ExcelProvider.Settings.idColumnName))
                 {
                     secondPart = Row.ToString();
                 }
                 else
                 {
-                    secondPart = GetProperty(SheetItem.ExcelProvider.Settings.IdColumn).ToString();
+                    secondPart = GetProperty(SheetItem.ExcelProvider.Settings.idColumnName).ToString();
                 }
 
                 return $"{firstPart}.{secondPart}";

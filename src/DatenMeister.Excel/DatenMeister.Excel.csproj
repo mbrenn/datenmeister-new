@@ -59,13 +59,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EMOF\ExcelDataProvider.cs" />
-    <Compile Include="EMOF\ExcelExtent.cs" />
-    <Compile Include="EMOF\ExcelSettings.cs" />
+    <Compile Include="EMOF\ExcelProvider.cs" />
     <Compile Include="EMOF\RowItem.cs" />
     <Compile Include="EMOF\SheetItem.cs" />
+    <Compile Include="Helper\ExcelExtentSettings.cs" />
     <Compile Include="Helper\ExcelImporter.cs" />
+    <Compile Include="Helper\ExcelReferenceSettings.cs" />
+    <Compile Include="Helper\ExcelSettings.cs" />
     <Compile Include="Helper\ExcelImportSettings.cs" />
     <Compile Include="Helper\Extensions.cs" />
+    <Compile Include="Integration\ExcelPlugin.cs" />
     <Compile Include="Integration\Integration.Excel.cs" />
     <Compile Include="Models\ExcelModels.class.cs" />
     <Compile Include="Models\ExcelModels.cs" />

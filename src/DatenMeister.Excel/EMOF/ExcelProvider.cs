@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Excel.Helper;
 using DatenMeister.Provider;
-using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
 namespace DatenMeister.Excel.EMOF
 {
-    public class ExcelExtent : IProvider
+    public class ExcelProvider : IProvider
     {
         private readonly _ExcelModels _models = new _ExcelModels();
 
         private readonly XSSFWorkbook _workbook;
-        public ExcelSettings Settings { get; }
+        public ExcelExtentSettings Settings { get; }
 
-        public ExcelExtent(XSSFWorkbook workbook, ExcelSettings settings)
+        public ExcelProvider(XSSFWorkbook workbook, ExcelExtentSettings settings)
         {
             _workbook = workbook;
-            Settings = settings ?? new ExcelSettings();
+            Settings = settings ?? new ExcelExtentSettings();
         }
 
         /// <inheritdoc />

@@ -3,7 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Excel.Helper
 {
-    public class ExcelImportSettings : ExcelSettings
+    public class ExcelReferenceSettings : ExcelSettings
     {
     }
 }

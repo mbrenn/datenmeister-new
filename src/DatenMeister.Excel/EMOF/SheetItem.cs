@@ -21,7 +21,7 @@ namespace DatenMeister.Excel.EMOF
         /// <summary>
         /// Gets the provider as a typed instance
         /// </summary>
-        public ExcelExtent ExcelProvider => (ExcelExtent)Provider;
+        public ExcelProvider ExcelProvider => (ExcelProvider)Provider;
 
         /// <summary>
         /// Gets or sets the columns and their names
@@ -42,11 +42,11 @@ namespace DatenMeister.Excel.EMOF
         /// <summary>
         /// Initializes a new instance of the SheetItem
         /// </summary>
-        /// <param name="extent">Extent to which the item belongs</param>
+        /// <param name="provider">Extent to which the item belongs</param>
         /// <param name="sheet">The sheet that is used for access</param>
-        public SheetItem(ExcelExtent extent, ISheet sheet)
+        public SheetItem(ExcelProvider provider, ISheet sheet)
         {
-            Provider = extent;
+            Provider = provider;
             Sheet = sheet;
 
             InitializeData();

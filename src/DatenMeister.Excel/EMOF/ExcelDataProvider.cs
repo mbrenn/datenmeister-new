@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using DatenMeister.Excel.Helper;
 using NPOI.XSSF.UserModel;
 
 namespace DatenMeister.Excel.EMOF
@@ -8,18 +9,17 @@ namespace DatenMeister.Excel.EMOF
         /// <summary>
         /// Loads an excel file and returns
         /// </summary>
-        /// <param name="url">Url of the extent to be loeded</param>
         /// <param name="excelPath"></param>
-        public ExcelExtent LoadExtent(string url, string excelPath, ExcelSettings settings = null)
+        public ExcelProvider LoadProvider(ExcelExtentSettings settings = null)
         {
-            settings = settings ?? new ExcelSettings();
-            if (!File.Exists(excelPath))
+            settings = settings ?? new ExcelExtentSettings();
+            if (!File.Exists(settings.filePath))
             {
-                throw new IOException($"File not found: {excelPath}");
+                throw new IOException($"File not found: {settings.filePath}");
             }
 
-            var workbook = new XSSFWorkbook(excelPath);
-            return new ExcelExtent(workbook, settings);
+            var workbook = new XSSFWorkbook(settings.filePath);
+            return new ExcelProvider(workbook, settings);
         }
     }
 }

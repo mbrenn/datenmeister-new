@@ -1,15 +1,27 @@
 ﻿using DatenMeister.Excel.EMOF;
+using DatenMeister.Excel.Helper;
 using DatenMeister.Integration;
 
 namespace DatenMeister.Excel.Integration
 {
     public static class Integration
     {
-        public static ExcelExtent LoadExcel(this IDatenMeisterScope container, string url, string path, ExcelSettings settings = null)
+        public static ExcelProvider LoadExcel(this IDatenMeisterScope container, string url, ExcelExtentSettings settings = null)
         {
-            settings = settings ?? new ExcelSettings();
+            settings = settings ?? new ExcelExtentSettings();
             var dataProvider = new ExcelDataProvider();
-            return dataProvider.LoadExtent(url, path, settings);
+            return dataProvider.LoadProvider(settings);
+        }
+
+        public static ExcelProvider LoadExcel(this IDatenMeisterScope container, string url, string filePath)
+        {
+            var settings = new ExcelExtentSettings
+            {
+                filePath = filePath
+            };
+
+            var dataProvider = new ExcelDataProvider();
+            return dataProvider.LoadProvider(settings);
         }
     }
 }

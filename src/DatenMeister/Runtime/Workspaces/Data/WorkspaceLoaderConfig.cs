@@ -8,6 +8,6 @@
         /// <summary>
         /// Sets the file path being used to store the workspaces
         /// </summary>
-        public string Filepath { get; set; }
+        public string filepath { get; set; }
     }
 }

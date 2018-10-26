@@ -21,22 +21,22 @@ namespace DatenMeister.Runtime.Workspaces
 
         public Workspace Data
         {
-            get { return Workspaces.FirstOrDefault(x => x.id == Runtime.Workspaces.WorkspaceNames.NameData); }
+            get { return Workspaces.FirstOrDefault(x => x.id == WorkspaceNames.NameData); }
         }
 
         public Workspace Types
         {
-            get { return Workspaces.FirstOrDefault(x => x.id == Runtime.Workspaces.WorkspaceNames.NameTypes); }
+            get { return Workspaces.FirstOrDefault(x => x.id == WorkspaceNames.NameTypes); }
         }
 
         public Workspace Uml
         {
-            get { return Workspaces.FirstOrDefault(x => x.id == Runtime.Workspaces.WorkspaceNames.NameUml); }
+            get { return Workspaces.FirstOrDefault(x => x.id == WorkspaceNames.NameUml); }
         }
 
         public Workspace Mof
         {
-            get { return Workspaces.FirstOrDefault(x => x.id == Runtime.Workspaces.WorkspaceNames.NameMof); }
+            get { return Workspaces.FirstOrDefault(x => x.id == WorkspaceNames.NameMof); }
         }
 
 

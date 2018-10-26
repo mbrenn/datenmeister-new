@@ -34,7 +34,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
         {
             try
             {
-                var workspaceData = Load(Config.Filepath);
+                var workspaceData = Load(Config.filepath);
 
                 if (workspaceData == null)
                 {
@@ -43,17 +43,17 @@ namespace DatenMeister.Runtime.Workspaces.Data
                 }
 
             
-                foreach (var workspaceInfo in workspaceData.Workspaces)
+                foreach (var workspaceInfo in workspaceData.workspaces)
                 {
-                    var foundWorkspace = WorkspaceLogic.GetWorkspace(workspaceInfo.Id);
+                    var foundWorkspace = WorkspaceLogic.GetWorkspace(workspaceInfo.id);
                     if (foundWorkspace != null)
                     {
                         // Already exists, update annoptation
-                        foundWorkspace.annotation = workspaceInfo.Annotation;
+                        foundWorkspace.annotation = workspaceInfo.annotation;
                         continue;
                     }
 
-                    var workspace = new Workspace(workspaceInfo.Id, workspaceInfo.Annotation);
+                    var workspace = new Workspace(workspaceInfo.id, workspaceInfo.annotation);
                     WorkspaceLogic.AddWorkspace(workspace);
                 }
 
@@ -75,14 +75,14 @@ namespace DatenMeister.Runtime.Workspaces.Data
             var workSpaceData = new WorkspaceFileData();
             foreach (var workSpace in WorkspaceLogic.Workspaces)
             {
-                workSpaceData.Workspaces.Add(new WorkspaceInfo
+                workSpaceData.workspaces.Add(new WorkspaceInfo
                 {
-                    Id = workSpace.id,
-                    Annotation = workSpace.annotation
+                    id = workSpace.id,
+                    annotation = workSpace.annotation
                 });
             }
 
-            Save(Config.Filepath, workSpaceData);
+            Save(Config.filepath, workSpaceData);
         }
     }
 }

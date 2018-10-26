@@ -199,7 +199,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     var propertyValue = value.get(reflectedProperty.Name);
                     if (reflectedProperty.PropertyType == typeof(string))
                     {
-                        reflectedProperty.SetValue(result, propertyValue.ToString());
+                        reflectedProperty.SetValue(result, DotNetHelper.AsString(propertyValue));
                     }
 
                     if (reflectedProperty.PropertyType == typeof(int))

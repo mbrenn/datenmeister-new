@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Autofac;
+using DatenMeister.Integration;
 
 namespace DatenMeister.Core.Plugins
 {
@@ -101,18 +102,28 @@ namespace DatenMeister.Core.Plugins
 
             NoExceptionDuringLoading = true;
 
-            LoadAssembliesFromFolder(".");
+            LoadAssembliesFromFolder(Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location));
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                // Go through all types and check, if the type has implemented the interface for the pluging 
-                foreach (var type in assembly.GetTypes())
+                try
                 {
-                    // Checks, if one of the class implements the IDatenMeisterPlugin 
-                    if (type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
+
+                    // Go through all types and check, if the type has implemented the interface for the pluging 
+                    foreach (var type in assembly.GetTypes())
                     {
-                        pluginList.Add((IDatenMeisterPlugin) kernel.Resolve(type));
+                        // Checks, if one of the class implements the IDatenMeisterPlugin 
+                        if (type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
+                        {
+                            pluginList.Add((IDatenMeisterPlugin)kernel.Resolve(type));
+                        }
                     }
+                }
+                catch (ReflectionTypeLoadException e)
+                {
+                    Debug.WriteLine($"Exception during assembly loading of {assembly.FullName} [{assembly.Location}]: {e.Message}");
+                    
+                    Console.WriteLine($"Exception during assembly loading of {assembly.FullName}: {e.Message}");
                 }
             }
 

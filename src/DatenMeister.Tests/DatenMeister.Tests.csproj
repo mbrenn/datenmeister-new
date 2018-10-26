@@ -110,10 +110,6 @@
       <Project>{9026f9a3-c366-43da-abad-8cc94a3e793f}</Project>
       <Name>DatenMeister.Excel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Web\DatenMeister.Web.csproj">
-      <Project>{800e015a-c331-4048-be37-088a3eec608c}</Project>
-      <Name>DatenMeister.Web</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
       <Project>{fea57312-8d46-440e-989a-476b9281eef7}</Project>
       <Name>DatenMeister</Name>

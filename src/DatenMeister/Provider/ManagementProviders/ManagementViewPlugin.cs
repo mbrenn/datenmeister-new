@@ -64,7 +64,7 @@ namespace DatenMeister.Provider.ManagementProviders
                     isReadOnly = true
                 });
 
-            return DotNetSetter.Convert(_viewLogic.GetInternalViewExtent(), form) as IElement;
+            return DotNetConverter.Convert(_viewLogic.GetInternalViewExtent(), form) as IElement;
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace DatenMeister.Provider.ManagementProviders
                 new TextFieldData("extentType", "Extent Type"),
                 new SubElementFieldData(_ManagementProvider._Extent.alternativeUris, "Alternative URI"));
 
-            return DotNetSetter.Convert(_viewLogic.GetInternalViewExtent(), form) as IElement;
+            return DotNetConverter.Convert(_viewLogic.GetInternalViewExtent(), form) as IElement;
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace DatenMeister.Provider.ManagementProviders
                 new TextFieldData("id", "Name"),
                 new TextFieldData("annotation", "Annotation"));
 
-            return DotNetSetter.Convert(_viewLogic.GetInternalViewExtent(), form) as IElement;
+            return DotNetConverter.Convert(_viewLogic.GetInternalViewExtent(), form) as IElement;
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace DatenMeister.Provider.ManagementProviders
                         Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments).Replace("\\", "/") + "/"
                 });
 
-            return DotNetSetter.Convert(_viewLogic.GetInternalViewExtent(), form) as IElement;
+            return DotNetConverter.Convert(_viewLogic.GetInternalViewExtent(), form) as IElement;
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Filler;
+using DatenMeister.Excel.Helper;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Tests.Xmi;
@@ -59,6 +60,37 @@ namespace DatenMeister.Tests.DotNet
             public string Name { get; set; }
             public string Prename { get; set; }
             public PersonWithParent Parent { get; set; }
+        }
+
+        [Test]
+        public void TestDotNetConversion()
+        {
+            var settings = new ExcelImportSettings
+            {
+                countColumns = 1,
+                countRows = 5,
+                offsetColumn = 3,
+                offsetRow = 5,
+                filePath = "c:\\",
+                fixColumnCount = true,
+                fixRowCount = false,
+                hasHeader = true,
+                sheetName = "Yes"
+            };
+
+            var asMof = DotNetConverter.ConvertFromDotNetObject(settings);
+
+            var copy = DotNetConverter.ConvertToDotNetObject<ExcelImportSettings>(asMof);
+
+            Assert.That(copy.countColumns, Is.EqualTo(1));
+            Assert.That(copy.countRows, Is.EqualTo(5));
+            Assert.That(copy.offsetColumn, Is.EqualTo(3));
+            Assert.That(copy.offsetRow, Is.EqualTo(5));
+            Assert.That(copy.filePath, Is.EqualTo("c:\\"));
+            Assert.That(copy.fixColumnCount, Is.EqualTo(true));
+            Assert.That(copy.fixRowCount, Is.EqualTo(false));
+            Assert.That(copy.hasHeader, Is.EqualTo(true));
+            Assert.That(copy.sheetName, Is.EqualTo("Yes"));
         }
     }
 }

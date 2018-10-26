@@ -328,7 +328,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     "This element was not created by a factory. So a setting by .Net Object is not possible");
             }
 
-            return ConvertForSetting(DotNetSetter.Convert(asUriExtent, value), extent, container);
+            return ConvertForSetting(DotNetConverter.Convert(asUriExtent, value), extent, container);
         }
 
         /// <summary>

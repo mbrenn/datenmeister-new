@@ -39,10 +39,12 @@
                 <TextBox Grid.Row="3" Grid.Column="1" x:Name="txtOffsetColumn" TextChanged="TxtOffsetColumn_OnTextChanged">0</TextBox>
                 <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtCountRow" TextChanged="TxtCountRow_OnTextChanged">0</TextBox>
                 <TextBox Grid.Row="5" Grid.Column="1" x:Name="txtCountColumn" TextChanged="TxtCountColumn_OnTextChanged">0</TextBox>
-                <CheckBox Grid.Row="6" Grid.Column="1" x:Name="chkHeaderRow" Click="ChkHeaderRow_OnClick" IsChecked="True">Has header row?</CheckBox>
+                <CheckBox Grid.Row="6" Grid.Column="1" x:Name="chkAutoCount" Click="chkAutoCount_OnClick" IsChecked="True">Calculate row/column count</CheckBox>
+                <CheckBox Grid.Row="7" Grid.Column="1" x:Name="chkHeaderRow" Click="ChkHeaderRow_OnClick" IsChecked="True">Has header row?</CheckBox>
                 <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                     <Button x:Name="btnCancel" Click="btnCancel_Click">Cancel</Button>
-                    <Button x:Name="btnImport" Click="btnImport_Click">Import</Button>
+                    <Button x:Name="btnImportReference" Click="btnImportReference_Click">Import as Reference</Button>
+                    <Button x:Name="btnImport" Click="btnImport_Click">Import as Copy</Button>
                 </StackPanel>
                 
                 

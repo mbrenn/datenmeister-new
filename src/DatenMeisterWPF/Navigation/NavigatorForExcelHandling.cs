@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -16,7 +17,7 @@ namespace DatenMeisterWPF.Navigation
         /// </summary>
         /// <param name="host">Host being used</param>
         /// <param name="workspaceId">Id of the workspace into which the excel shall be imported</param>
-        public static IControlNavigation ImportFromExcel(INavigationHost host, string workspaceId)
+        public static async Task<IControlNavigation> ImportFromExcel(INavigationHost host, string workspaceId)
         {
             var result = new ControlNavigation();
             var fileDialog = new OpenFileDialog
@@ -26,13 +27,14 @@ namespace DatenMeisterWPF.Navigation
 
             if (fileDialog.ShowDialog() == true)
             {
+                var newGUID = Guid.NewGuid();
+
                 var factory = new Func<IReflectiveCollection>(() =>
                 {
-                    var newguid = Guid.NewGuid();
                     var configuration = new XmiStorageConfiguration
                     {
-                        ExtentUri = "datenmeister:///excelimport_" + newguid,
-                        Path = newguid + ".xmi",
+                        ExtentUri = "datenmeister:///excelimport_" + newGUID,
+                        Path = newGUID + ".xmi",
                         Workspace = workspaceId
                     };
 
@@ -41,7 +43,11 @@ namespace DatenMeisterWPF.Navigation
                 });
 
                 var dlg = new ExcelImportDefinitionDialog();
-                dlg.PrepareFile(fileDialog.FileName, factory);
+                var importer = await dlg.PrepareFile(fileDialog.FileName, factory);
+                importer.Settings.workspaceId = workspaceId;
+                importer.Settings.extentUri = "datenmeister:///excelimport_" + newGUID;
+                importer.Settings.extentPath = newGUID + ".xmi";
+                
                 dlg.Owner = host as Window;
                 if (dlg.ShowDialog() == true)
                 {

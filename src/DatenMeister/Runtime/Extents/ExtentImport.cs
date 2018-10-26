@@ -20,7 +20,7 @@ namespace DatenMeister.Runtime.Copier
 
         public IUriExtent ImportExtent(IObject mofImportSettings)
         {
-            var importSettings = DotNetSetter.ConvertToDotNetObject<ImportSettings>(mofImportSettings);
+            var importSettings = DotNetConverter.ConvertToDotNetObject<ImportSettings>(mofImportSettings);
 
             if (importSettings.fileToBeImported != importSettings.fileToBeExported)
             {

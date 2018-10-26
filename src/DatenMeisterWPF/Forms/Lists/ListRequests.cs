@@ -129,7 +129,6 @@ namespace DatenMeisterWPF.Forms.Lists
                         }
                     }));
 
-
             void DeleteExtent(INavigationGuest guest, IObject element)
             {
                 if (MessageBox.Show("Are you sure, you would like to delete the extent?", "Delete Extent",

@@ -5,6 +5,7 @@ using System.Text;
 using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.InMemory
 {

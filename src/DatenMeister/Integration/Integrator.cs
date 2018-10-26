@@ -198,6 +198,10 @@ namespace DatenMeister.Integration
 
                 // Finally loads the plugin
                 pluginManager.StartPlugins(scope);
+
+                // After the plugins are loaded, check the extent storage types and create the corresponding internal management types
+                var extentManager = scope.Resolve<IExtentManager>();
+                extentManager.CreateStorageTypeDefinitions();
             }
 
             watch.Stop();

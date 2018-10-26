@@ -41,5 +41,10 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// <param name="extent">The extent whose configuration is retrieved</param>
         /// <returns>The configuration</returns>
         ExtentLoaderConfig GetLoadConfigurationFor(IUriExtent extent);
+
+        /// <summary>
+        /// Creates the storage type definitions as defined within the storage types
+        /// </summary>
+        void CreateStorageTypeDefinitions();
     }
 }

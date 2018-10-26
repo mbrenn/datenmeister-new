@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
+using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
@@ -140,6 +143,26 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
 
             return information?.Configuration;
+        }
+
+        /// <summary>
+        /// Creates the storage type definitions
+        /// </summary>
+        public void CreateStorageTypeDefinitions()
+        {
+            lock (_data.LoadedExtents)
+            {
+                var additionalTypes = _data.AdditionalTypes;
+                var managementWorkspace = _workspaceLogic.GetTypesWorkspace();
+
+                var internalTypeExtent = managementWorkspace.FindExtent(WorkspaceNames.UriInternalTypesExtent);
+                var packageHelper = new PackageMethods(_workspaceLogic);
+                var package = packageHelper.GetOrCreatePackageStructure(internalTypeExtent.elements(), "DatenMeister::ExtentLoaderConfig");
+
+                var generator =
+                    new DotNetTypeGenerator(new MofFactory(internalTypeExtent), _workspaceLogic.GetUmlData());
+                PackageMethods.AddObjectsToPackage(package, generator.CreateTypesFor(additionalTypes));
+            }
         }
 
         /// <summary>

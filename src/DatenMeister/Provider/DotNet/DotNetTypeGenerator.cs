@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.DotNet
@@ -27,6 +28,15 @@ namespace DatenMeister.Provider.DotNet
         {
             _factoryForTypes = factoryForTypes ?? throw new ArgumentNullException(nameof(factoryForTypes));
             _umlHost = umlHost ?? throw new ArgumentNullException(nameof(umlHost));
+        }
+
+        public IEnumerable<IElement> CreateTypesFor(IEnumerable<Type> types)
+        {
+            foreach (var type in types)
+            {
+                var element = CreateTypeFor(type);
+                yield return element;
+            }
         }
 
         /// <summary>

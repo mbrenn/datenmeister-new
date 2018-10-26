@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Workspaces;
@@ -101,6 +102,21 @@ namespace DatenMeisterWPF.Windows
                     AcceptAndCloseDialog();
                 }
             }
+        }
+
+        public void SelectWorkspace(string workspaceId)
+        {
+            LocateElementControl.SelectWorkspace(workspaceId);
+        }
+
+        public void SelectExtent(string extentUri)
+        {
+            LocateElementControl.SelectExtent(extentUri);
+        }
+
+        public void SetAsRoot(IReflectiveCollection package)
+        {
+            LocateElementControl.SetAsRoot(package);
         }
     }
 }

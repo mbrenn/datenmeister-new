@@ -25,6 +25,8 @@ namespace DatenMeister.Runtime.ExtentStorage
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ExtentManager : IExtentManager
     {
+        public const string PackagePathTypesExtentLoaderConfig = "DatenMeister::ExtentLoaderConfig";
+
         private readonly ExtentStorageData _data;
 
         /// <summary>
@@ -153,7 +155,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             lock (_data.LoadedExtents)
             {
-                _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(_data.AdditionalTypes, "DatenMeister::ExtentLoaderConfig");
+                _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(_data.AdditionalTypes, PackagePathTypesExtentLoaderConfig);
             }
         }
 

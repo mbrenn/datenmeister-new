@@ -49,7 +49,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             _map = map ?? throw new ArgumentNullException(nameof(map));
             _workspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
             _integrationSettings = integrationSettings ?? throw new ArgumentNullException(nameof(integrationSettings));
-            _diScope = diScope ?? throw new ArgumentNullException(nameof(diScope));
+            _diScope = diScope;
         }
 
         /// <summary>

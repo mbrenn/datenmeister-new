@@ -8,6 +8,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
+using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -48,7 +49,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             _map = map ?? throw new ArgumentNullException(nameof(map));
             _workspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
             _integrationSettings = integrationSettings ?? throw new ArgumentNullException(nameof(integrationSettings));
-            _diScope = diScope;
+            _diScope = diScope ?? throw new ArgumentNullException(nameof(diScope));
         }
 
         /// <summary>
@@ -152,16 +153,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             lock (_data.LoadedExtents)
             {
-                var additionalTypes = _data.AdditionalTypes;
-                var managementWorkspace = _workspaceLogic.GetTypesWorkspace();
-
-                var internalTypeExtent = managementWorkspace.FindExtent(WorkspaceNames.UriInternalTypesExtent);
-                var packageHelper = new PackageMethods(_workspaceLogic);
-                var package = packageHelper.GetOrCreatePackageStructure(internalTypeExtent.elements(), "DatenMeister::ExtentLoaderConfig");
-
-                var generator =
-                    new DotNetTypeGenerator(new MofFactory(internalTypeExtent), _workspaceLogic.GetUmlData());
-                PackageMethods.AddObjectsToPackage(package, generator.CreateTypesFor(additionalTypes));
+                _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(_data.AdditionalTypes, "DatenMeister::ExtentLoaderConfig");
             }
         }
 

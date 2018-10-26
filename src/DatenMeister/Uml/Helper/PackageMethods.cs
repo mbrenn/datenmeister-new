@@ -96,7 +96,7 @@ namespace DatenMeister.Uml.Helper
                 IElement childElement = null;
                 foreach (var innerElement in rootElements.OfType<IElement>())
                 {
-                    if (innerElement.isSet(nameProperty))
+                    if (!innerElement.isSet(nameProperty))
                     {
                         continue;
                     }
@@ -131,19 +131,12 @@ namespace DatenMeister.Uml.Helper
 
                 if (children == null)
                 {
-                    childElement.set(childProperty, new List<object>());
-                    children = childElement.get(childProperty) as IReflectiveSequence;
-                    if (children == null)
-                    {
-                        // The given MofObject does not support setting and gettingof an empty list
-                        // We need to break through
-                        return null;
-                    }
+                    childElement.set(childProperty, Array.Empty<object>());
+                    children = new MofReflectiveSequence((MofObject) childElement, childProperty);
                 }
 
                 rootElements = children;
                 found = childElement;
-
             }
 
             return found;

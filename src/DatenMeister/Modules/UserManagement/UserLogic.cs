@@ -43,7 +43,7 @@ namespace DatenMeister.Modules.UserManagement
         {
             var types = _localTypeSupport.AddInternalTypes(
                 new[] {typeof(User), typeof(UserManagementSettings)},
-                "UserManagement"
+                "DatenMeister::UserManagement"
             );
 
             var settingsMetaClass = _localTypeSupport.GetMetaClassFor(typeof(UserManagementSettings));

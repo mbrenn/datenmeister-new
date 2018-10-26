@@ -164,7 +164,7 @@ namespace DatenMeister.Integration
                 IntegrateFormAndFields.Assign(
                     workspaceData.Uml.Get<_UML>(),
                     mofFactory,
-                    packageMethods.GotoPackage(localTypeSupport.InternalTypes.elements(), "Forms"),
+                    packageMethods.GotoPackage(localTypeSupport.InternalTypes.elements(), "DatenMeister::Forms"),
                     fields,
                     (MofUriExtent) localTypeSupport.InternalTypes);
 
@@ -174,7 +174,7 @@ namespace DatenMeister.Integration
                 IntegrateManagementProvider.Assign(
                     workspaceData.Uml.Get<_UML>(),
                     mofFactory,
-                    packageMethods.GotoPackage(localTypeSupport.InternalTypes.elements(), "Management"),
+                    packageMethods.GotoPackage(localTypeSupport.InternalTypes.elements(), "DatenMeister::Management"),
                     managementProvider,
                     (MofUriExtent) localTypeSupport.InternalTypes);
 
@@ -183,8 +183,7 @@ namespace DatenMeister.Integration
                 
                 // Includes the extent for the helping extents
                 ManagementProviderHelper.Initialize(
-                    workspaceLogic, 
-                    scope.Resolve<LocalTypeSupport>());
+                    workspaceLogic);
 
                 // Boots up the typical DatenMeister Environment  
                 if (_settings.EstablishDataEnvironment)

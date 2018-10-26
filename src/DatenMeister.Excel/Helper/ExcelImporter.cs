@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Annotations;
 using DatenMeister.Excel.Spreadsheet;
+using DatenMeister.Integration;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Excel.Helper
 {
@@ -18,11 +22,6 @@ namespace DatenMeister.Excel.Helper
         public ExcelImportSettings Settings { get; set; }
 
         private SSDocument _excelDocument;
-
-        /// <summary>
-        /// Gets or sets the selected sheet
-        /// </summary>
-        public string SelectedSheet { get; set; }
 
         public ExcelImporter([NotNull] ExcelImportSettings settings)
         {
@@ -36,6 +35,7 @@ namespace DatenMeister.Excel.Helper
         public void LoadExcel()
         {
             _excelDocument = SSDocument.LoadFromFile(Settings.filePath);
+            Settings.sheetName = _excelDocument.Tables.FirstOrDefault()?.Name;
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace DatenMeister.Excel.Helper
         /// <returns></returns>
         private SsTable GetSheet(string sheet)
         {
-            if (sheet == null)
+            if (sheet == null || !IsExcelLoaded)
             {
                 return null;
             }
@@ -63,7 +63,12 @@ namespace DatenMeister.Excel.Helper
 
         private SsTable GetSelectedSheet()
         {
-            return GetSheet(SelectedSheet);
+            if (IsExcelLoaded)
+            {
+                return GetSheet(Settings.sheetName);
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -82,19 +87,109 @@ namespace DatenMeister.Excel.Helper
         public string GetCellContent(int row, int column)
         {
             var foundSheet = GetSelectedSheet();
-            return foundSheet?.GetCellContent(row + Settings.offsetRow, column + Settings.offsetColumn);
+            return foundSheet?.GetCellContent(
+                row + Settings.offsetRow + (Settings.hasHeader ? 1 : 0),
+                column + Settings.offsetColumn);
+        }
+
+        /// <summary>
+        /// Gets the column names
+        /// </summary>
+        /// <returns>List of Columns</returns>
+        public List<string> GetColumnNames()
+        {
+            var selectedSheet = GetSelectedSheet();
+
+            if (selectedSheet == null) return null;
+            // Get Header Rows
+            var columnNames = new List<string>();
+            var columnCount = GuessColumnCount();
+            if (!Settings.hasHeader)
+            {
+                for (var c = 0; c < columnCount; c++)
+                {
+                    columnNames.Add("_" + c);
+                }
+            }
+            else
+            {
+                for (var c = 0; c < columnCount; c++)
+                {
+                    var columnName = selectedSheet.GetCellContent(Settings.offsetRow, c + Settings.offsetColumn);
+                    if (string.IsNullOrEmpty(columnName) || columnNames.Contains(columnName))
+                    {
+                        columnNames.Add(null);
+                    }
+                    else
+                    {
+                        columnNames.Add(columnName);
+                    }
+                }
+            }
+            return columnNames;
+        }
+
+        public int GuessRowCount()
+        {
+            var hasHeaderRows = Settings.hasHeader;
+            var foundSheet = GetSelectedSheet();
+            if (foundSheet == null) return -1;
+            if (Settings.fixRowCount) return Settings.countRows;
+
+            var offsetRow = hasHeaderRows ? Settings.offsetRow + 1 : Settings.offsetRow;
+            var n = 0;
+            while (true)
+            {
+                var content = foundSheet.GetCellContent(offsetRow + n, Settings.offsetColumn);
+                if (string.IsNullOrEmpty(content))
+                {
+                    break;
+                }
+
+                n++;
+            }
+
+            Settings.countRows = n;
+            return n;
+        }
+
+        /// <summary>
+        /// Guesses the number of columns
+        /// </summary>
+        public int GuessColumnCount()
+        {
+
+            var foundSheet = GetSelectedSheet();
+            if (foundSheet == null) return -1;
+
+            if (Settings.fixColumnCount) return Settings.countColumns;
+
+
+            var n = 0;
+            while (true)
+            {
+                var content = foundSheet.GetCellContent(Settings.offsetRow, Settings.offsetColumn + n);
+                if (string.IsNullOrEmpty(content))
+                {
+                    break;
+                }
+
+                n++;
+            }
+
+            Settings.countColumns = n;
+            return n;
         }
 
         /// <summary>
         /// Performs the import of the excel into the extent
         /// </summary>
+        /// <param name="scope">The datenmeister scope to be used</param>
         /// <param name="importSettings">Settings to be used to be imported</param>
-        /// <param name="extentFactory"></param>
         /// <returns></returns>
-        public static IReflectiveCollection ImportExcelAsCopy(IObject importSettings, Func<IReflectiveCollection> extentFactory)
+        public static IUriExtent ImportExcelAsCopy(IDatenMeisterScope scope, IObject importSettings)
         {
             var settings = DotNetConverter.ConvertToDotNetObject<ExcelImportSettings>(importSettings);
-
 
             var configuration = new XmiStorageConfiguration
             {
@@ -103,15 +198,15 @@ namespace DatenMeister.Excel.Helper
                 Workspace = settings.workspaceId
             };
 
-            var excelImporter = new ExcelImporter(settings)
-            {
-                SelectedSheet = settings.sheetName,
-            };
+            var excelImporter = new ExcelImporter(settings);
 
             excelImporter.LoadExcel();
 
             // Gets the columns names
-            var extent = extentFactory();
+
+            var extentManager = scope.Resolve<IExtentManager>();
+            var extent = extentManager.LoadExtent(configuration, true);
+
             var factory = new MofFactory(extent);
 
             var columnNames = excelImporter.GetColumnNames();
@@ -130,90 +225,15 @@ namespace DatenMeister.Excel.Helper
                     item.set(columnName, excelImporter.GetCellContent(r, c));
                 }
 
-                extent.add(item);
+                extent.elements().add(item);
             }
 
             return extent;
         }
 
-        /// <summary>
-        /// Gets the column names
-        /// </summary>
-        /// <returns>List of Columns</returns>
-        public List<string> GetColumnNames()
+        public static void ImportExcelAsReference(IDatenMeisterScope scope, IObject getConfigurationObject)
         {
-            // Get Header Rows
-            var columnNames = new List<string>();
-            var columnCount = GuessColumnCount();
-            if (!Settings.hasHeader)
-            {
-                for (var c = 0; c < columnCount; c++)
-                {
-                    columnNames.Add("_" + c);
-                }
-            }
-            else
-            {
-                for (var c = 0; c < columnCount; c++)
-                {
-                    var columnName = GetSelectedSheet().GetCellContent(Settings.offsetRow, c + Settings.offsetColumn);
-                    if (string.IsNullOrEmpty(columnName) || columnNames.Contains(columnName))
-                    {
-                        columnNames.Add(null);
-                    }
-                    else
-                    {
-                        columnNames.Add(columnName);
-                    }
-                }
-            }
-            return columnNames;
-        }
-
-        public int GuessRowCount()
-        {
-            if (Settings.countRows != -1) return Settings.countRows;
-
-            var hasHeaderRows = Settings.hasHeader;
-            var foundSheet = GetSelectedSheet();
-
-            var offsetRow = hasHeaderRows ? Settings.offsetRow + 1 : Settings.offsetRow;
-            var n = 0;
-            while (true)
-            {
-                var content = foundSheet.GetCellContent(offsetRow + n, Settings.offsetColumn);
-                if (string.IsNullOrEmpty(content))
-                {
-                    break;
-                }
-
-                n++;
-            }
-
-            return n;
-        }
-
-        /// <summary>
-        /// Guesses the number of columns
-        /// </summary>
-        public int GuessColumnCount()
-        {
-            if (Settings.countColumns != -1) return Settings.countColumns;
-
-            var foundSheet = GetSelectedSheet();
-            var n = 0;
-            while (true)
-            {
-                var content = foundSheet.GetCellContent(Settings.offsetRow, Settings.offsetColumn + n);
-                if (string.IsNullOrEmpty(content))
-                {
-                    break;
-                }
-
-                n++;
-            }
-
-            return n;
+            throw new NotImplementedException();
         }
     }
 }

@@ -15,6 +15,12 @@ using Path = System.IO.Path;
 
 namespace DatenMeisterWPF.Windows
 {
+    public enum ExcelImportType
+    {
+        AsCopy, 
+        AsReference
+    }
+
     /// <summary>
     /// Interaktionslogik für ExcelImportDefinitionDialog.xaml
     /// </summary>
@@ -23,6 +29,8 @@ namespace DatenMeisterWPF.Windows
         private ExcelImporter _importer;
 
         private Func<IReflectiveCollection> _extentFactory;
+
+        public ExcelImportType ImportType { get; set; } = ExcelImportType.AsCopy;
 
         public ExcelImportDefinitionDialog()
         {
@@ -34,9 +42,8 @@ namespace DatenMeisterWPF.Windows
         /// </summary>
         /// <param name="filePath">Excel file to be loaded</param>
         /// <param name="extentFactory">Extent factory being used to create/find the extent, when user clicks on 'import'</param>
-        public async Task<ExcelImporter> PrepareFile(string filePath, Func<IReflectiveCollection> extentFactory)
+        public async Task<ExcelImporter> LoadFile(string filePath)
         {
-            _extentFactory = extentFactory;
             txtFileName.Text = Path.GetFileName(filePath);
 
             _importer = new ExcelImporter(
@@ -62,7 +69,7 @@ namespace DatenMeisterWPF.Windows
         /// </summary>
         private void UpdateDataPreview()
         {
-            if (!IsInitialized || _importer?.Settings == null || !_importer.IsExcelLoaded) return;
+            if (IsExcelNotLoaded()) return;
 
             // Gets the columns names
             var columnNames = _importer.GetColumnNames();
@@ -104,17 +111,46 @@ namespace DatenMeisterWPF.Windows
             dgrExcelDataGrid.ItemsSource = items;
         }
 
+        private bool IsExcelNotLoaded()
+        {
+            return !IsInitialized || _importer?.Settings == null || !_importer.IsExcelLoaded;
+        }
+
+        [Flags]
+        private enum ContentRange
+        {
+            None = 0,
+            Rows = 1, 
+            Columns = 1 << 1,
+        }
+
+        private void GuessContentRange(ContentRange rangeTypes)
+        {
+            if (rangeTypes.HasFlag(ContentRange.Rows))
+            {
+                txtCountRow.Text = _importer.GuessRowCount().ToString();
+            }
+
+            if (rangeTypes.HasFlag(ContentRange.Columns))
+            {
+                txtCountColumn.Text = _importer.GuessColumnCount().ToString();
+            }
+        }
+
         private void CboSheet_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (IsExcelNotLoaded()) return;
+
             txtOffsetRow.Text = "0";
             txtOffsetColumn.Text = "0";
-            _importer.GuessRowCount();
-            _importer.GuessColumnCount();
+            GuessContentRange(ContentRange.Columns| ContentRange.Rows);
             UpdateDataPreview();
         }
 
         private void TxtOffsetRow_OnTextChanged(object sender, TextChangedEventArgs e)
         {
+            if (IsExcelNotLoaded()) return;
+
             _importer.Settings.offsetRow = DotNetHelper.AsInteger(txtOffsetRow.Text);
             _importer.GuessRowCount();
             UpdateDataPreview();
@@ -122,6 +158,8 @@ namespace DatenMeisterWPF.Windows
 
         private void TxtOffsetColumn_OnTextChanged(object sender, TextChangedEventArgs e)
         {
+            if (IsExcelNotLoaded()) return;
+
             _importer.Settings.offsetColumn = DotNetHelper.AsInteger(txtOffsetColumn.Text);
             _importer.GuessColumnCount();
             UpdateDataPreview();
@@ -139,18 +177,28 @@ namespace DatenMeisterWPF.Windows
 
         private void ChkHeaderRow_OnClick(object sender, RoutedEventArgs e)
         {
+            if (IsExcelNotLoaded()) return;
+
+            _importer.Settings.hasHeader = chkHeaderRow.IsChecked == true;
             _importer.GuessRowCount();
             UpdateDataPreview();
         }
 
         private void chkAutoCount_OnClick(object sender, RoutedEventArgs e)
         {
+            if (IsExcelNotLoaded()) return;
+
+            _importer.Settings.fixRowCount = chkAutoCount.IsChecked == false;
+            _importer.Settings.fixColumnCount = chkAutoCount.IsChecked == false;
+
             _importer.GuessColumnCount();
             _importer.GuessRowCount();
         }
 
         private void Window_Initialized(object sender, EventArgs e)
         {
+            if (IsExcelNotLoaded()) return;
+
             _importer.GuessColumnCount();
             _importer.GuessRowCount();
             UpdateDataPreview();
@@ -158,17 +206,22 @@ namespace DatenMeisterWPF.Windows
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
             Close();
         }
 
         private void btnImport_Click(object sender, RoutedEventArgs e)
         {
-            ImportIntoGivenExtent();
+            ImportType = ExcelImportType.AsCopy;
+            DialogResult = true;
+            Close();
         }
 
         private void btnImportReference_Click(object sender, RoutedEventArgs e)
         {
-            ImportIntoGivenExtent();
+            ImportType = ExcelImportType.AsReference;
+            DialogResult = true;
+            Close();
         }
 
         /// <summary>
@@ -177,15 +230,7 @@ namespace DatenMeisterWPF.Windows
         /// <returns>The configuration object describing the elements</returns>
         public IObject GetConfigurationObject()
         {
-            return DotNetConverter.ConvertFromDotNetObject(_importer.Settings.GetSettingsAsMofObject());
-        }
-
-        /// <summary>
-        /// Performs the import into the extent
-        /// </summary>
-        private void ImportIntoGivenExtent()
-        {
-            ExcelImporter.ImportExcelAsCopy(GetConfigurationObject(), _extentFactory);
+            return _importer.Settings.GetSettingsAsMofObject();
         }
     }
 }

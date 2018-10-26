@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
-using Autofac;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Provider.XMI.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Excel.Helper;
 using DatenMeisterWPF.Windows;
 using Microsoft.Win32;
 
@@ -27,30 +24,27 @@ namespace DatenMeisterWPF.Navigation
 
             if (fileDialog.ShowDialog() == true)
             {
-                var newGUID = Guid.NewGuid();
-
-                var factory = new Func<IReflectiveCollection>(() =>
-                {
-                    var configuration = new XmiStorageConfiguration
-                    {
-                        ExtentUri = "datenmeister:///excelimport_" + newGUID,
-                        Path = newGUID + ".xmi",
-                        Workspace = workspaceId
-                    };
-
-                    var extentManager = App.Scope.Resolve<IExtentManager>();
-                    return extentManager.LoadExtent(configuration, true).elements();
-                });
-
+                var newGuid = Guid.NewGuid();
                 var dlg = new ExcelImportDefinitionDialog();
-                var importer = await dlg.PrepareFile(fileDialog.FileName, factory);
+
+                var importer = await dlg.LoadFile(fileDialog.FileName);
                 importer.Settings.workspaceId = workspaceId;
-                importer.Settings.extentUri = "datenmeister:///excelimport_" + newGUID;
-                importer.Settings.extentPath = newGUID + ".xmi";
-                
+                importer.Settings.extentUri = "datenmeister:///excelimport_" + newGuid;
+                importer.Settings.extentPath = newGuid + ".xmi";
+
                 dlg.Owner = host as Window;
                 if (dlg.ShowDialog() == true)
                 {
+                    switch (dlg.ImportType)
+                    {
+                        case ExcelImportType.AsCopy:
+                            ExcelImporter.ImportExcelAsCopy(App.Scope, dlg.GetConfigurationObject());
+                            break;
+                        case ExcelImportType.AsReference:
+                            ExcelImporter.ImportExcelAsReference(App.Scope, dlg.GetConfigurationObject());
+                            break;
+                    }
+
                     result.OnClosed();
                 }
             }

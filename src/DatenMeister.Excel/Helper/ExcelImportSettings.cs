@@ -13,7 +13,7 @@ namespace DatenMeister.Excel.Helper
         public int offsetColumn { get; set; }
         public int countRows { get; set; }
         public int countColumns { get; set; }
-        public bool hasHeader { get; set; }
+        public bool hasHeader { get; set; } = true;
 
         public string workspaceId { get; set; }
         public string extentUri { get; set; }

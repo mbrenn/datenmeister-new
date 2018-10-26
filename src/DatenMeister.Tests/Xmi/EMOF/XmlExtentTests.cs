@@ -255,9 +255,9 @@ namespace DatenMeister.Tests.Xmi.EMOF
 
                 var storageConfiguration = new XmiStorageConfiguration
                 {
-                    ExtentUri = "datenmeister:///test",
+                    extentUri = "datenmeister:///test",
                     Path = path,
-                    Workspace = "Data"
+                    workspaceId = "Data"
                 };
 
                 // Creates the extent
@@ -279,7 +279,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 loader.DetachExtent(loadedExtent);
 
                 // Reloads it
-                storageConfiguration.ExtentUri = "datenmeister:///test_new";
+                storageConfiguration.extentUri = "datenmeister:///test_new";
 
                 var newExtent = loader.LoadExtent(storageConfiguration, false);
                 Assert.That(newExtent.elements().size(), Is.EqualTo(1));

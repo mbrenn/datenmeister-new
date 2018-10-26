@@ -193,9 +193,9 @@ namespace DatenMeister.Excel.Helper
 
             var configuration = new XmiStorageConfiguration
             {
-                ExtentUri = settings.extentUri,
+                extentUri = settings.extentUri,
                 Path = settings.extentPath,
-                Workspace = settings.workspaceId
+                workspaceId = settings.workspaceId
             };
 
             var excelImporter = new ExcelImporter(settings);

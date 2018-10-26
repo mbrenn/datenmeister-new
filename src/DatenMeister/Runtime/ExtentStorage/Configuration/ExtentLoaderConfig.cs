@@ -9,11 +9,11 @@
         /// <summary>
         /// Gets or sets the extent uri
         /// </summary>
-        public string ExtentUri { get; set; }
+        public string extentUri { get; set; }
 
         /// <summary>
         /// Gets ors sets the workspace in which the data will be loaded
         /// </summary>
-        public string Workspace { get; set; }
+        public string workspaceId { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Excel.EMOF;
 using DatenMeister.Excel.Helper;
+using DatenMeister.Excel.ProviderLoader;
 using DatenMeister.Integration;
 
 namespace DatenMeister.Excel.Integration
@@ -9,8 +10,7 @@ namespace DatenMeister.Excel.Integration
         public static ExcelProvider LoadExcel(this IDatenMeisterScope container, string url, ExcelExtentSettings settings = null)
         {
             settings = settings ?? new ExcelExtentSettings();
-            var dataProvider = new ExcelDataProvider();
-            return dataProvider.LoadProvider(settings);
+            return ExcelFileProviderLoader.LoadProvider(settings);
         }
 
         public static ExcelProvider LoadExcel(this IDatenMeisterScope container, string url, string filePath)
@@ -19,9 +19,8 @@ namespace DatenMeister.Excel.Integration
             {
                 filePath = filePath
             };
-
-            var dataProvider = new ExcelDataProvider();
-            return dataProvider.LoadProvider(settings);
+            
+            return ExcelFileProviderLoader.LoadProvider(settings);
         }
     }
 }

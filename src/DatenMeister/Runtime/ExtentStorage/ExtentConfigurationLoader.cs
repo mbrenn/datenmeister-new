@@ -93,7 +93,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 }
                 catch (Exception exc)
                 {
-                    Debug.WriteLine($"Loading extent of {info.Item1.ExtentUri} failed: {exc.Message}");
+                    Debug.WriteLine($"Loading extent of {info.Item1.extentUri} failed: {exc.Message}");
                 }
             }
         }

@@ -58,9 +58,9 @@ namespace DatenMeister.Runtime.ExtentStorage
         public IUriExtent LoadExtent(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)
         {
             // Check, if the extent url is a real uri
-            if (!Uri.IsWellFormedUriString(configuration.ExtentUri, UriKind.Absolute))
+            if (!Uri.IsWellFormedUriString(configuration.extentUri, UriKind.Absolute))
             {
-                throw new InvalidOperationException($"Uri is not well-formed: {configuration.ExtentUri}");
+                throw new InvalidOperationException($"Uri is not well-formed: {configuration.extentUri}");
             }
 
             // Checks, if the given URL has a relative path and transforms the path to an absolute path
@@ -84,7 +84,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 throw new InvalidOperationException("Extent for configuration could not be loaded");
             }
 
-            var uriExtent = new MofUriExtent(loadedProvider, configuration.ExtentUri);
+            var uriExtent = new MofUriExtent(loadedProvider, configuration.extentUri);
             AddToWorkspaceIfPossible(configuration, uriExtent);
 
             // Stores the information into the data container
@@ -112,13 +112,13 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             if (_workspaceLogic != null)
             {
-                var workspace = string.IsNullOrEmpty(configuration.Workspace)
+                var workspace = string.IsNullOrEmpty(configuration.workspaceId)
                     ? _workspaceLogic.GetDefaultWorkspace()
-                    : _workspaceLogic.GetWorkspace(configuration.Workspace);
+                    : _workspaceLogic.GetWorkspace(configuration.workspaceId);
 
                 if (workspace == null)
                 {
-                    throw new InvalidOperationException($"Workspace {configuration.Workspace} not found");
+                    throw new InvalidOperationException($"Workspace {configuration.workspaceId} not found");
                 }
 
                 workspace.AddExtentNoDuplicate(_workspaceLogic, loadedExtent);

@@ -32,7 +32,7 @@ namespace DatenMeister.Tests.CSV
             var storageConfiguration = new CSVExtentLoaderConfig
             {
                 Path = PathForTemporaryDataFile,
-                ExtentUri = "datenmeister:///test",
+                extentUri = "datenmeister:///test",
                 Settings =
                 {
                     HasHeader = false,

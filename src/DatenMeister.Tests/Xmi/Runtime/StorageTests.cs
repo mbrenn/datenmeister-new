@@ -35,7 +35,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
 
             var xmiStorageConfiguration = new XmiStorageConfiguration
             {
-                ExtentUri = "datenmeister:///test/",
+                extentUri = "datenmeister:///test/",
                 Path = "data.xml"
             };
 

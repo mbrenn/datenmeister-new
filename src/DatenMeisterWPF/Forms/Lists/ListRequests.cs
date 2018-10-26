@@ -144,9 +144,9 @@ namespace DatenMeisterWPF.Forms.Lists
                 }
             }
 
-            void ImportFromExcel()
+            async void ImportFromExcel()
             {
-                NavigatorForExcelHandling.ImportFromExcel(control.NavigationHost, workspaceId);
+                await NavigatorForExcelHandling.ImportFromExcel(control.NavigationHost, workspaceId);
                 control.UpdateAllViews();
             }
 

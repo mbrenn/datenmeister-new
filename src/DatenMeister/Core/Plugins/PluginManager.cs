@@ -108,7 +108,6 @@ namespace DatenMeister.Core.Plugins
             {
                 try
                 {
-
                     // Go through all types and check, if the type has implemented the interface for the pluging 
                     foreach (var type in assembly.GetTypes())
                     {
@@ -121,9 +120,7 @@ namespace DatenMeister.Core.Plugins
                 }
                 catch (ReflectionTypeLoadException e)
                 {
-                    Debug.WriteLine($"Exception during assembly loading of {assembly.FullName} [{assembly.Location}]: {e.Message}");
-                    
-                    Console.WriteLine($"Exception during assembly loading of {assembly.FullName}: {e.Message}");
+                    Debug.WriteLine($"PluginLoader: Exception during assembly loading of {assembly.FullName} [{assembly.Location}]: {e.Message}");
                 }
             }
 

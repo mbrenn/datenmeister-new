@@ -56,7 +56,7 @@ namespace DatenMeister.Tests.Runtime
             var configuration = new CSVExtentLoaderConfig
             {
                 Path = CSVExtentTests.PathForTemporaryDataFile,
-                ExtentUri = "datenmeister:///local/",
+                extentUri = "datenmeister:///local/",
                 Settings =
                 {
                     HasHeader = false,

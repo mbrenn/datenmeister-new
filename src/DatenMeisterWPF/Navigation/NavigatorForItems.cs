@@ -64,13 +64,13 @@ namespace DatenMeisterWPF.Navigation
                     {
                         var configuration = new XmiStorageConfiguration
                         {
-                            ExtentUri = control.DetailElement.isSet("uri")
+                            extentUri = control.DetailElement.isSet("uri")
                                 ? control.DetailElement.get("uri").ToString()
                                 : String.Empty,
                             Path = control.DetailElement.isSet("filepath")
                                 ? control.DetailElement.get("filepath").ToString()
                                 : String.Empty,
-                            Workspace = workspaceId
+                            workspaceId = workspaceId
                         };
 
                         var extentManager = App.Scope.Resolve<IExtentManager>();

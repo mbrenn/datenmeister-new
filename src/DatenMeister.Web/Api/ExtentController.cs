@@ -225,18 +225,18 @@ namespace DatenMeister.Web.Api
                 case "xmi":
                     configuration = new XmiStorageConfiguration
                     {
-                        ExtentUri = model.contextUri,
+                        extentUri = model.contextUri,
                         Path = filename,
-                        Workspace = model.workspace
+                        workspaceId = model.workspace
                     };
 
                     break;
                 case "csv":
                     var csvExtentData = new CSVExtentLoaderConfig
                     {
-                        ExtentUri = model.contextUri,
+                        extentUri = model.contextUri,
                         Path = filename,
-                        Workspace = model.workspace,
+                        workspaceId = model.workspace,
                         Settings = new CSVSettings()
                     };
 

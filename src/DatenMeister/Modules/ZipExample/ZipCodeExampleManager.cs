@@ -74,9 +74,9 @@ namespace DatenMeister.Modules.ZipExample
 
             var defaultConfiguration = new CSVExtentLoaderConfig
             {
-                ExtentUri = $"datenmeister:///zipcodes/{randomNumber}",
+                extentUri = $"datenmeister:///zipcodes/{randomNumber}",
                 Path = filename,
-                Workspace = workspaceId,
+                workspaceId = workspaceId,
                 Settings =
                 {
                     HasHeader = false,

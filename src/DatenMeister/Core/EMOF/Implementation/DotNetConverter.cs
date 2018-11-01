@@ -192,6 +192,28 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
+        /// Converts the given element to a real .Net Object by using the associated extents
+        /// </summary>
+        /// <param name="element">Element to be converted</param>
+        /// <returns>The converted .Net Type</returns>
+        public static object ConvertToDotNetObject(IElement element)
+        {
+            var mofElement = (MofElement) element;
+            var metaClassUri = mofElement.metaclass.GetUri();
+
+            var type = mofElement.CreatedByExtent.ResolveDotNetType(metaClassUri, ResolveType.Default);
+
+            if (type == null)
+            {
+                throw new InvalidOperationException(
+                    $"Unknown metaclass {NamedElementMethods.GetName(element.metaclass)}");
+            }
+
+            return ConvertToDotNetObject(element, type);
+
+        }
+
+        /// <summary>
         /// Converts the given MOF Object into a .Net Object
         /// </summary>
         /// <typeparam name="T">Type of the object to be returned</typeparam>

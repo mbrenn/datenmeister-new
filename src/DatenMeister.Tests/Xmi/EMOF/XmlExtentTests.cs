@@ -256,7 +256,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 var storageConfiguration = new XmiStorageConfiguration
                 {
                     extentUri = "datenmeister:///test",
-                    Path = path,
+                    filePath = path,
                     workspaceId = "Data"
                 };
 

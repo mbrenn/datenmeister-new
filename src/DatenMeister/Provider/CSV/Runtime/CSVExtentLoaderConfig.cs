@@ -11,7 +11,7 @@ namespace DatenMeister.Provider.CSV.Runtime
         {
             if (Settings != null)
             {
-                return $"CSVExtentLoaderConfig: {extentUri}, {Path}";
+                return $"CSVExtentLoaderConfig: {extentUri}, {filePath}";
             }
 
             return base.ToString();

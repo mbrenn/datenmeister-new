@@ -226,7 +226,7 @@ namespace DatenMeister.Web.Api
                     configuration = new XmiStorageConfiguration
                     {
                         extentUri = model.contextUri,
-                        Path = filename,
+                        filePath = filename,
                         workspaceId = model.workspace
                     };
 
@@ -235,7 +235,7 @@ namespace DatenMeister.Web.Api
                     var csvExtentData = new CSVExtentLoaderConfig
                     {
                         extentUri = model.contextUri,
-                        Path = filename,
+                        filePath = filename,
                         workspaceId = model.workspace,
                         Settings = new CSVSettings()
                     };

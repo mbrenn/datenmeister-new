@@ -53,7 +53,7 @@ namespace DatenMeister.Web.Api
             var defaultConfiguration = new CSVExtentLoaderConfig
             {
                 extentUri = $"datenmeister:///zipcodes/{randomNumber}",
-                Path = filename,
+                filePath = filename,
                 workspaceId = workspace.ws,
                 Settings =
                 {

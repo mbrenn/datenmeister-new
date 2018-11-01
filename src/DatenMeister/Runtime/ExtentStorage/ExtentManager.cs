@@ -69,9 +69,9 @@ namespace DatenMeister.Runtime.ExtentStorage
             // Checks, if the given URL has a relative path and transforms the path to an absolute path
             if (configuration is ExtentFileLoaderConfig fileConfiguration)
             {
-                if (!Path.IsPathRooted(fileConfiguration.Path))
+                if (!Path.IsPathRooted(fileConfiguration.filePath))
                 {
-                    fileConfiguration.Path = Path.Combine(_integrationSettings.DatabasePath, fileConfiguration.Path);
+                    fileConfiguration.filePath = Path.Combine(_integrationSettings.DatabasePath, fileConfiguration.filePath);
                 }
             }
 

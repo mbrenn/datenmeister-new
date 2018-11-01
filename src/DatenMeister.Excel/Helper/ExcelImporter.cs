@@ -194,7 +194,7 @@ namespace DatenMeister.Excel.Helper
             var configuration = new XmiStorageConfiguration
             {
                 extentUri = settings.extentUri,
-                Path = settings.extentPath,
+                filePath = settings.extentPath,
                 workspaceId = settings.workspaceId
             };
 

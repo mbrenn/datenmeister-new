@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -9,7 +10,10 @@ namespace DatenMeister.Provider.DotNet
     /// </summary>
     public class DotNetProvider : IProvider
     {
-        private readonly IDotNetTypeLookup _typeLookup;
+        /// <summary>
+        /// Gets the type lookup
+        /// </summary>
+        internal IDotNetTypeLookup TypeLookup { get; }
 
         private readonly object _syncObject = new object();
         
@@ -21,13 +25,8 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="typeLookup">Looked up type</param>
         public DotNetProvider(IDotNetTypeLookup typeLookup)
         {
-            _typeLookup = typeLookup;
+            TypeLookup = typeLookup;
         }
-
-        /// <summary>
-        /// Gets the type lookup
-        /// </summary>
-        internal IDotNetTypeLookup TypeLookup => _typeLookup;
 
         /// <inheritdoc />
         public IProviderObject CreateElement(string metaClassUri)
@@ -39,7 +38,7 @@ namespace DatenMeister.Provider.DotNet
                     throw new InvalidOperationException(".Net-Provider requires a meta class");
                 }
 
-                var type = _typeLookup.ToType(metaClassUri);
+                var type = TypeLookup.ToType(metaClassUri);
                 if (type == null)
                 {
                     throw new InvalidOperationException("No metaclass with uri '" + metaClassUri + "' is known");

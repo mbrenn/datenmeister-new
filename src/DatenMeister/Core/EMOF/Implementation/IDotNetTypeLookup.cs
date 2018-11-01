@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DatenMeister.Provider.DotNet
+namespace DatenMeister.Core.EMOF.Implementation
 {
     /// <summary>
     /// Defines a lookup from MOF element to dotnet type and vice

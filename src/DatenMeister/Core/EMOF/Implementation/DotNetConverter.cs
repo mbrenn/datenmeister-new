@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
@@ -174,10 +173,22 @@ namespace DatenMeister.Core.EMOF.Implementation
             return ConvertFromDotNetObject(InMemoryProvider.TemporaryExtent, value, metaclass, requestedId);
         }
 
+        /// <summary>
+        /// Converts the MOF element to a .Net element by using the explicit DotNet Type Lookup
+        /// </summary>
+        /// <param name="element">MOF element to be converted</param>
+        /// <param name="lookup">Lookup table to find the .Net type of the MOF element</param>
+        /// <returns></returns>
         public static object ConvertToDotNetObject(IElement element, IDotNetTypeLookup lookup)
         {
-            throw new InvalidOperationException();
-            //lookup.ToType(NamedElementMethods.GetName(element.metaclass()));
+            var type = lookup.ToType(element.metaclass.GetUri());
+            if (type == null)
+            {
+                throw new InvalidOperationException(
+                    $"Unknown metaclass {NamedElementMethods.GetName(element.metaclass)}");
+            }
+
+            return ConvertToDotNetObject(element, type);
         }
 
         /// <summary>

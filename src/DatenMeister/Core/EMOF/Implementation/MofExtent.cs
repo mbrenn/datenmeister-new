@@ -72,8 +72,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         public XElement LocalMetaElementXmlNode
         {
-            get => ((XmiProviderObject) (MetaXmiElement.ProviderObject)).XmlNode;
-            set => ((XmiProviderObject) (MetaXmiElement.ProviderObject)).XmlNode = value;
+            get => ((XmiProviderObject) MetaXmiElement.ProviderObject).XmlNode;
+            set => ((XmiProviderObject) MetaXmiElement.ProviderObject).XmlNode = value;
         }
 
         /// <summary>

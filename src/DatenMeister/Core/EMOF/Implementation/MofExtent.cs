@@ -84,7 +84,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             var xmiProvider = new XmiProvider();
             Provider = provider;
-            TypeLookup = new DotNetTypeLookup(this);
+            TypeLookup = new DotNetTypeLookup();
             MetaXmiElement = new MofObject(
                 new XmiProviderObject(new XElement("meta"), xmiProvider),
                     this);

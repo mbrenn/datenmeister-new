@@ -154,7 +154,7 @@ namespace DatenMeisterWPF.Forms.Base
             var tabControl = new ItemExplorerTab(viewDefinition)
             {
                 Content = control,
-                Header = UmlNameResolution.GetName(result)
+                Header = NamedElementMethods.GetName(result)
             };
 
             control.SetContent(collection, result, viewDefinition.ViewExtensions);

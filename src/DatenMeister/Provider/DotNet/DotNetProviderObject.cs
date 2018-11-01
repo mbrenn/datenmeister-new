@@ -66,7 +66,7 @@ namespace DatenMeister.Provider.DotNet
         public object GetProperty(string property)
         {
             var result = GetValueOfProperty(property);
-            return Provider.TypeLookup.CreateDotNetElementIfNecessary(result, Provider as DotNetProvider);
+            return Provider.CreateDotNetElementIfNecessary(result);
         }
 
         private object GetValueOfProperty(string property)

@@ -235,7 +235,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public override string ToString()
         {
-            return UmlNameResolution.GetName(this);
+            return NamedElementMethods.GetName(this);
         }
 
         public IObject CreatedBy(MofExtent extent)

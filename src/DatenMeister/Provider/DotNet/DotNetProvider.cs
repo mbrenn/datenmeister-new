@@ -45,16 +45,9 @@ namespace DatenMeister.Provider.DotNet
                     throw new InvalidOperationException("No metaclass with uri '" + metaClassUri + "' is known");
                 }
 
-                return CreateElementOfType(metaClassUri, type);
+                var result = Activator.CreateInstance(type);
+                return new DotNetProviderObject(this, result, metaClassUri);
             }
-        }
-
-        private DotNetProviderObject CreateElementOfType(string metaClassUri, Type type)
-        {
-            var result = Activator.CreateInstance(type);
-            var providerObject = new DotNetProviderObject(this, result, metaClassUri);
-
-            return providerObject;
         }
 
         /// <inheritdoc />

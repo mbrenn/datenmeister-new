@@ -92,7 +92,7 @@ namespace DatenMeisterWPF.Forms.Lists
                         ?? viewFinder.CreateView(tabItems);
                 }
 
-                var className = metaClass == null ? "Items" : UmlNameResolution.GetName(metaClass);
+                var className = metaClass == null ? "Items" : NamedElementMethods.GetName(metaClass);
                 view?.set("name", className);
                 var viewDefinition = new ViewDefinition(className, view);
 

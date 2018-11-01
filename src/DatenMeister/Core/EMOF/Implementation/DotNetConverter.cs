@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -45,7 +47,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="value"></param>
         /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
-        private object Convert(object value, string requestedId = null)
+        private object ConvertToMofIfNotPrimitive(object value, string requestedId = null)
         {
             if (DotNetHelper.IsOfPrimitiveType(value) || DotNetHelper.IsOfEnum(value))
             {
@@ -74,7 +76,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             var metaClassUri = _extent?.GetMetaClassUri(value.GetType());
             var metaClass = metaClassUri == null ? null : _extent.Resolve(metaClassUri, ResolveType.OnlyMetaClasses);
 
-            return ConvertDotNetObject(value, metaClass, requestedId);
+            return ConvertToMofObject(value, metaClass, requestedId);
         }
 
         /// <summary>
@@ -84,7 +86,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="metaClass">Metaclass being used to create the element</param>
         /// <param name="requestedId">Id of the element that shall be put</param>
         /// <returns>The converted element as a MofObject</returns>
-        private IObject ConvertDotNetObject(object value, IElement metaClass = null, string requestedId = null)
+        private IObject ConvertToMofObject(object value, IElement metaClass = null, string requestedId = null)
         {
             // After having the uri, create the required element
             var createdElement = _factory.create(metaClass);
@@ -104,14 +106,14 @@ namespace DatenMeister.Core.EMOF.Implementation
                     var enumeration = (IEnumerable)innerValue;
                     foreach (var innerElementValue in enumeration)
                     {
-                        list.Add(Convert(innerElementValue));
+                        list.Add(ConvertToMofIfNotPrimitive(innerElementValue));
                     }
 
                     createdElement.set(reflectedProperty.Name, list);
                 }
                 else
                 {
-                    createdElement.set(reflectedProperty.Name, Convert(innerValue));
+                    createdElement.set(reflectedProperty.Name, ConvertToMofIfNotPrimitive(innerValue));
                 }
             }
 
@@ -124,9 +126,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="receiver">Object which shall receive the dotnet value</param>
         /// <param name="value">Value to be set</param>
         /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
-        public static object Convert(MofUriExtent receiver, object value, string requestedId = null)
+        public static object ConvertToMofObject(MofUriExtent receiver, object value, string requestedId = null)
         {
-            return new DotNetConverter(receiver).Convert(value, requestedId);
+            return new DotNetConverter(receiver).ConvertToMofIfNotPrimitive(value, requestedId);
         }
 
         /// <summary>
@@ -135,9 +137,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="receiver">Object which shall receive the dotnet value</param>
         /// <param name="value">Value to be set</param>
         /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
-        public static object Convert(IUriExtent receiver, object value, string requestedId = null)
+        public static object ConvertToMofObject(IUriExtent receiver, object value, string requestedId = null)
         {
-            return Convert((MofUriExtent)receiver, value, requestedId);
+            return ConvertToMofObject((MofUriExtent)receiver, value, requestedId);
         }
 
         /// <summary>
@@ -154,7 +156,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             IElement metaclass = null,
             string requestedId = null)
         {
-            return new DotNetConverter((MofUriExtent)receiver).ConvertDotNetObject(value, metaclass, requestedId);
+            return new DotNetConverter((MofUriExtent)receiver).ConvertToMofObject(value, metaclass, requestedId);
         }
 
         /// <summary>
@@ -170,6 +172,12 @@ namespace DatenMeister.Core.EMOF.Implementation
             string requestedId = null)
         {
             return ConvertFromDotNetObject(InMemoryProvider.TemporaryExtent, value, metaclass, requestedId);
+        }
+
+        public static object ConvertToDotNetObject(IElement element, IDotNetTypeLookup lookup)
+        {
+            throw new InvalidOperationException();
+            //lookup.ToType(NamedElementMethods.GetName(element.metaclass()));
         }
 
         /// <summary>

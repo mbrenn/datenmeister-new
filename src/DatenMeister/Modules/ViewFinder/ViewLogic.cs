@@ -314,14 +314,14 @@ namespace DatenMeister.Modules.ViewFinder
                 {
                     if (metaClass == innerMetaClass)
                     {
-                        InternalDebug("-- MATCH: metaClass: " + UmlNameResolution.GetName(metaClass) +
-                                      ", ViewAssociation innerMetaClass: " + UmlNameResolution.GetName(innerMetaClass));
+                        InternalDebug("-- MATCH: metaClass: " + NamedElementMethods.GetName(metaClass) +
+                                      ", ViewAssociation innerMetaClass: " + NamedElementMethods.GetName(innerMetaClass));
                         points++;
                     }
                     else
                     {
-                        InternalDebug("-- NO MATCH: metaClass: " + UmlNameResolution.GetName(metaClass) +
-                                      ", ViewAssociation innerMetaClass: " + UmlNameResolution.GetName(innerMetaClass));
+                        InternalDebug("-- NO MATCH: metaClass: " + NamedElementMethods.GetName(metaClass) +
+                                      ", ViewAssociation innerMetaClass: " + NamedElementMethods.GetName(innerMetaClass));
                         isMatching = false;
                     }
                 }

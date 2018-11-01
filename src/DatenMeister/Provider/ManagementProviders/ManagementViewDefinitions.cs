@@ -69,7 +69,7 @@ namespace DatenMeister.Provider.ManagementProviders
 
             form.AddFields(type2Field);
 
-            var createdForm = DotNetConverter.Convert(_viewLogic.GetInternalViewExtent(), form) as IElement;
+            var createdForm = DotNetConverter.ConvertToMofObject(_viewLogic.GetInternalViewExtent(), form) as IElement;
             return createdForm;
         }
     }

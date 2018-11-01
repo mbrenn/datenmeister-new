@@ -10,17 +10,18 @@ using DatenMeister.Runtime;
 namespace DatenMeister.Core.EMOF.Implementation
 {
     /// <summary>
-    /// A supporting class, that converts a .Net Element to a MOF object.
+    /// A supporting class, that converts a .Net Element to a MOF object or a MOF object to a .Net Object
     /// </summary>
     public class DotNetConverter
     {
         /// <summary>
-        /// Stores the MOF Factory
+        /// Stores the MOF Factory being used to create the MOF object. This is dependent upon the extent. 
         /// </summary>
         private readonly MofFactory _factory;
 
         /// <summary>
-        /// Stores a list of already visited elements, so a recursion is avoided
+        /// Stores a list of already visited elements, so a recursion is avoided, when a conversion from .Net Object to Mof Object is executed.
+        /// This also assumes that the converter is not re-entrant
         /// </summary>
         private readonly HashSet<object> _visitedElements = new HashSet<object>();
 
@@ -37,60 +38,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             _factory = new MofFactory(extent);
             _extent = extent;
-        }
-
-        /// <summary>
-        /// Sets the given object into the MofObject. 
-        /// </summary>
-        /// <param name="receiver">Object which shall receive the dotnet value</param>
-        /// <param name="value">Value to be set</param>
-        /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
-        public static object Convert(MofUriExtent receiver, object value, string requestedId = null)
-        {
-            return new DotNetConverter(receiver).Convert(value, requestedId);
-        }
-
-        /// <summary>
-        /// Sets the given object into the MofObject. 
-        /// </summary>
-        /// <param name="receiver">Object which shall receive the dotnet value</param>
-        /// <param name="value">Value to be set</param>
-        /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
-        public static object Convert(IUriExtent receiver, object value, string requestedId = null)
-        {
-            return Convert((MofUriExtent)receiver, value, requestedId);
-        }
-
-        /// <summary>
-        /// Converts the given .Net Object in value to a MofObject
-        /// </summary>
-        /// <param name="receiver">Extent being used to receive the newly created object</param>
-        /// <param name="value">Value to be converted</param>
-        /// <param name="metaClass">Metaclass being used to create the element</param>
-        /// <param name="requestedId">Id of the element that shall be put</param>
-        /// <returns>The converted element as a MofObject</returns>
-        public static IObject ConvertFromDotNetObject(
-            IUriExtent receiver, 
-            object value,
-            IElement metaclass = null,
-            string requestedId = null)
-        {
-            return new DotNetConverter((MofUriExtent)receiver).ConvertDotNetObject(value, metaclass, requestedId);
-        }
-
-        /// <summary>
-        /// Converts the given .Net Object in value to a MofObject. The intermediate InMemory Extent is used. 
-        /// </summary>
-        /// <param name="value">Value to be converted</param>
-        /// <param name="metaClass">Metaclass being used to create the element</param>
-        /// <param name="requestedId">Id of the element that shall be put</param>
-        /// <returns>The converted element as a MofObject</returns>
-        public static IObject ConvertFromDotNetObject(
-            object value,
-            IElement metaclass = null,
-            string requestedId = null)
-        {
-            return ConvertFromDotNetObject(InMemoryProvider.TemporaryExtent, value, metaclass, requestedId);
         }
 
         /// <summary>
@@ -154,7 +101,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 if (DotNetHelper.IsOfEnumeration(innerValue))
                 {
                     var list = new List<object>();
-                    var enumeration = (IEnumerable) innerValue;
+                    var enumeration = (IEnumerable)innerValue;
                     foreach (var innerElementValue in enumeration)
                     {
                         list.Add(Convert(innerElementValue));
@@ -169,6 +116,60 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             return createdElement;
+        }
+
+        /// <summary>
+        /// Sets the given object into the MofObject. 
+        /// </summary>
+        /// <param name="receiver">Object which shall receive the dotnet value</param>
+        /// <param name="value">Value to be set</param>
+        /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
+        public static object Convert(MofUriExtent receiver, object value, string requestedId = null)
+        {
+            return new DotNetConverter(receiver).Convert(value, requestedId);
+        }
+
+        /// <summary>
+        /// Sets the given object into the MofObject. 
+        /// </summary>
+        /// <param name="receiver">Object which shall receive the dotnet value</param>
+        /// <param name="value">Value to be set</param>
+        /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
+        public static object Convert(IUriExtent receiver, object value, string requestedId = null)
+        {
+            return Convert((MofUriExtent)receiver, value, requestedId);
+        }
+
+        /// <summary>
+        /// Converts the given .Net Object in value to a MofObject
+        /// </summary>
+        /// <param name="receiver">Extent being used to receive the newly created object</param>
+        /// <param name="value">Value to be converted</param>
+        /// <param name="metaclass">Metaclass being used to create the element</param>
+        /// <param name="requestedId">Id of the element that shall be put</param>
+        /// <returns>The converted element as a MofObject</returns>
+        public static IObject ConvertFromDotNetObject(
+            IUriExtent receiver, 
+            object value,
+            IElement metaclass = null,
+            string requestedId = null)
+        {
+            return new DotNetConverter((MofUriExtent)receiver).ConvertDotNetObject(value, metaclass, requestedId);
+        }
+
+        /// <summary>
+        /// Converts the given .Net Object in value to a MofObject. The intermediate InMemory Extent is used. 
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <param name="metaClass">Metaclass being used to create the element</param>
+        /// <param name="requestedId">Id of the element that shall be put</param>
+        /// <returns>The converted element as a MofObject</returns>
+        public static IObject ConvertFromDotNetObject(
+            object value,
+            IElement metaclass = null,
+            string requestedId = null)
+        {
+            return ConvertFromDotNetObject(InMemoryProvider.TemporaryExtent, value, metaclass, requestedId);
         }
 
         /// <summary>

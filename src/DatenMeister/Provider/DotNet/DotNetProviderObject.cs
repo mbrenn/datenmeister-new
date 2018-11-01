@@ -40,17 +40,16 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="typeLookup">Typelookup to be used to create element</param>
         /// <param name="value">Value to be set</param>
         /// <param name="metaClassUri">metaclass to be set to the object</param>
-        public DotNetProviderObject(DotNetProvider provider, IDotNetTypeLookup typeLookup, object value, string metaClassUri)
+        public DotNetProviderObject(DotNetProvider provider, object value, string metaClassUri)
         {
             Provider = provider ?? throw new ArgumentNullException(nameof(provider));
-            _typeLookup = typeLookup ?? throw new ArgumentNullException(nameof(typeLookup));
             _value = value ?? throw new ArgumentNullException(nameof(value));
             MetaclassUri = metaClassUri ?? throw new ArgumentNullException(nameof(metaClassUri));
             _type = value.GetType();
 
-            Id = typeLookup.GetId(value);
+            Id = provider.TypeLookup.GetId(value);
         }
-
+        /*
         public DotNetProviderObject(DotNetProvider dotNetProvider, IDotNetTypeLookup typeLookup, object value)
         {
             Provider = dotNetProvider ?? throw new ArgumentNullException(nameof(dotNetProvider));
@@ -59,7 +58,7 @@ namespace DatenMeister.Provider.DotNet
             _type = value.GetType();
 
             MetaclassUri = typeLookup.ToElement(_type);
-        }
+        }*/
 
         /// <inheritdoc />
         public bool IsPropertySet(string property)

@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ZipExample;
@@ -216,7 +217,18 @@ namespace DatenMeisterWPF.Forms.Lists
                 var packageMethods = App.Scope.Resolve<PackageMethods>();
                 var package = packageMethods.GotoPackage(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
                 dlg.SetAsRoot(package);
-                dlg.ShowDialog();
+                if (dlg.ShowDialog() != true) return;
+                if (!(dlg.SelectedElement is IElement selectedExtentType)) return;
+
+                var factory = new MofFactory(extent);
+                var createdElement = factory.create(selectedExtentType);
+                
+                var detailControl = NavigatorForItems.NavigateToElementDetailView(control.NavigationHost, createdElement);
+                detailControl.Closed += (x, y) =>
+                {
+                    
+                };
+
 
 
             }

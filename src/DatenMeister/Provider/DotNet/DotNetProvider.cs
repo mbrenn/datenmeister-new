@@ -16,11 +16,6 @@ namespace DatenMeister.Provider.DotNet
         private readonly List<DotNetProviderObject> _elements = new List<DotNetProviderObject>();
 
         /// <summary>
-        /// Stores the object that stores the properties
-        /// </summary>
-        //private readonly InMemoryObject _innerObject = new InMemoryObject();
-
-        /// <summary>
         /// Initializes a new instance of the DotNetExtent class
         /// </summary>
         /// <param name="typeLookup">Looked up type</param>
@@ -28,6 +23,11 @@ namespace DatenMeister.Provider.DotNet
         {
             _typeLookup = typeLookup;
         }
+
+        /// <summary>
+        /// Gets the type lookup
+        /// </summary>
+        internal IDotNetTypeLookup TypeLookup => _typeLookup;
 
         /// <inheritdoc />
         public IProviderObject CreateElement(string metaClassUri)
@@ -52,7 +52,7 @@ namespace DatenMeister.Provider.DotNet
         private DotNetProviderObject CreateElementOfType(string metaClassUri, Type type)
         {
             var result = Activator.CreateInstance(type);
-            var providerObject = new DotNetProviderObject(this, _typeLookup, result, metaClassUri);
+            var providerObject = new DotNetProviderObject(this, result, metaClassUri);
 
             return providerObject;
         }

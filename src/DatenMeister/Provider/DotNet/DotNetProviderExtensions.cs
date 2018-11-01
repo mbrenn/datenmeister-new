@@ -14,15 +14,13 @@ namespace DatenMeister.Provider.DotNet
     public static class DotNetProviderExtensions
     {
         /// <summary>
-        /// Creates a dot net element out of the given type lookup and the value
+        /// Creates a Mof Element reflecting the .Net Element out of the given extent. 
         /// </summary>
-        /// <param name="typeLookup">Type lookup being used</param>
         /// <param name="value">Value to be converted</param>
         /// <param name="extent">Defines the extent being associated to the DotNetElement</param>
         /// <param name="id">If set, the id will be set to the given element</param>
-        public static IElement CreateDotNetElement(
-            this IDotNetTypeLookup typeLookup,
-            MofUriExtent extent,
+        public static IElement CreateDotNetMofElement(
+            this MofUriExtent extent,
             object value,
             string id = null)
         {
@@ -31,7 +29,7 @@ namespace DatenMeister.Provider.DotNet
                 throw new InvalidOperationException("Given extent is not from DotNetProvider");
             }
 
-            var result = CreateDotNetProviderObject(typeLookup, providerAsDotNet, value, id);
+            var result = CreateDotNetProviderObject(providerAsDotNet, value, id);
 
             return new MofElement(result, extent);
         }
@@ -45,8 +43,7 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="id"></param>
         /// <returns></returns>
         private static DotNetProviderObject CreateDotNetProviderObject(
-            this IDotNetTypeLookup typeLookup,
-            DotNetProvider provider,
+            this DotNetProvider provider,
             object value,
             string id = null)
         {
@@ -55,14 +52,14 @@ namespace DatenMeister.Provider.DotNet
                 throw new ArgumentNullException(nameof(value));
             }
 
-            var metaclass = typeLookup.ToElement(value.GetType());
+            var metaclass = provider.TypeLookup.ToElement(value.GetType());
             if (metaclass == null)
             {
                 throw new InvalidOperationException(
                     $"The type '{value.GetType().FullName}' is not known to the DotNetTypeLookup");
             }
 
-            var result = new DotNetProviderObject(provider, typeLookup, value, metaclass);
+            var result = new DotNetProviderObject(provider, value, metaclass);
             if (!string.IsNullOrEmpty(id))
             {
                 result.Id = id;
@@ -187,7 +184,7 @@ namespace DatenMeister.Provider.DotNet
                 return result;
             }
             
-            var dotNetResult = dotNetTypeLookup.CreateDotNetProviderObject(provider, result);
+            var dotNetResult = provider.CreateDotNetProviderObject(result);
 
             return dotNetResult;
         }

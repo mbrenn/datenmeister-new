@@ -26,7 +26,7 @@ namespace DatenMeister.Provider.DotNet
         /// <summary>
         /// Stores a mapping between a .Net Type and the guid being used within the extent
         /// </summary>
-        private readonly Dictionary<Type, string> _typesToElememts = 
+        private readonly Dictionary<Type, string> _typesToElements = 
             new Dictionary<Type, string>();
 
         public DotNetTypeLookup(MofExtent extent)
@@ -42,17 +42,18 @@ namespace DatenMeister.Provider.DotNet
         public void Add(string element, Type type)
         {
             if (_elementsToTypes.ContainsKey(element)
-                || _typesToElememts.ContainsKey(type))
+                || _typesToElements.ContainsKey(type))
             {
                 throw new InvalidOperationException("Type or element was already associated");
             }
+
             _elementsToTypes[element] = type;
-            _typesToElememts[type] = element;
+            _typesToElements[type] = element;
         }
 
         public string ToElement(Type type)
         {
-            _typesToElememts.TryGetValue(type, out var result);
+            _typesToElements.TryGetValue(type, out var result);
             return result;
         }
 

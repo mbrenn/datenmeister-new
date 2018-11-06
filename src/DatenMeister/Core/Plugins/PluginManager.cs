@@ -5,12 +5,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Autofac;
+using BurnSystems.Logging;
 using DatenMeister.Integration;
 
 namespace DatenMeister.Core.Plugins
 {
     public class PluginManager
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(PluginManager));
+
         /// <summary>
         /// Gets or sets va value indicating whtether at least one exception occured during the loading. 
         /// </summary>
@@ -48,7 +51,7 @@ namespace DatenMeister.Core.Plugins
                 if (AppDomain.CurrentDomain.GetAssemblies().All(a => !string.Equals(a.GetName().Name, name.Name, StringComparison.CurrentCultureIgnoreCase)))
                 {
                     var innerAssembly = Assembly.Load(name);
-                    Debug.WriteLine($"Loaded (2): {innerAssembly}");
+                    Logger.Info($"Loaded (2): {innerAssembly}");
                     LoadReferencedAssembly(innerAssembly);
                 }
             }
@@ -75,18 +78,18 @@ namespace DatenMeister.Core.Plugins
                         try
                         {
                             var assembly = Assembly.LoadFile(Path.Combine(path, file));
-                            Debug.WriteLine($"Loaded (1): {assembly.GetName().Name}, {assembly.GetName().Version}");
+                            Logger.Info($"Loaded (1): {assembly.GetName().Name}, {assembly.GetName().Version}");
                         }
                         catch (Exception e)
                         {
-                            Debug.WriteLine($"Loading of assembly {file} failed: {e}");
+                            Logger.Error($"Loading of assembly {file} failed: {e}");
                         }
                     }
                 }
             }
             else
             {
-                Debug.WriteLine($"Directory does not exist: {path}");
+                Logger.Warn($"Directory does not exist: {path}");
             }
         }
 
@@ -125,7 +128,7 @@ namespace DatenMeister.Core.Plugins
                 }
                 catch (ReflectionTypeLoadException e)
                 {
-                    Debug.WriteLine($"PluginLoader: Exception during assembly loading of {assembly.FullName} [{assembly.Location}]: {e.Message}");
+                    Logger.Error($"PluginLoader: Exception during assembly loading of {assembly.FullName} [{assembly.Location}]: {e.Message}");
                 }
             }
 
@@ -157,7 +160,7 @@ namespace DatenMeister.Core.Plugins
                     // Now, start the plugin
                     pluginList.Remove(plugin);
 
-                    Debug.WriteLine($"Starting plugin: {plugin.GetType().FullName}");
+                    Logger.Info($"Starting plugin: {plugin.GetType().FullName}");
                     if (Debugger.IsAttached)
                     {
                         // When a debugger is attached, we are directly interested to figure out that an exception was thrown
@@ -173,7 +176,7 @@ namespace DatenMeister.Core.Plugins
                         {
 
                             NoExceptionDuringLoading = false;
-                            Debug.WriteLine($"Failed plugin: {exc}");
+                            Logger.Error($"Failed plugin: {exc}");
 
                             if (Debugger.IsAttached)
                             {
@@ -187,6 +190,7 @@ namespace DatenMeister.Core.Plugins
                 var currentCount = pluginList.Count;
                 if (currentCount == lastCount)
                 {
+                    Logger.Fatal("Endless Loop in Plugin System");
                     throw new InvalidOperationException("Endless Loop in Plugin System");
                 }
             }

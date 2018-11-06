@@ -24,22 +24,28 @@ namespace DatenMeisterWPF.Command
         /// </summary>
         public void Execute()
         {
-            var dataObject = Clipboard.GetDataObject();
-            if (dataObject == null)
-            {
-                MessageBox.Show("Clipboard empty");
-                return;
-            }
-
-            var dataAsXmi = dataObject.GetData("XMI")?.ToString();
-            if (dataAsXmi == null)
-            {
-                MessageBox.Show("No XMI");
-                return;
-            }
-
             try
             {
+                // Gets the information by clipboard
+                string dataAsXmi;
+                var dataObject = Clipboard.GetDataObject();
+                if (dataObject == null)
+                {
+                    dataAsXmi = Clipboard.GetText();
+                }
+                else
+                {
+                    dataAsXmi =
+                        dataObject.GetData("XMI")?.ToString() ?? dataObject.GetData(DataFormats.Text)?.ToString();
+                }
+
+                if (dataAsXmi == null)
+                {
+                    MessageBox.Show("No XMI");
+                    return;
+                }
+
+                // Now parses the xml
                 var document = XDocument.Parse(dataAsXmi);
                 if (document.Root?.Name == "item") // Just one item
                 {
@@ -60,8 +66,6 @@ namespace DatenMeisterWPF.Command
                     Logger.Info($"Unknown document type: {document.Root?.Name}");
                     MessageBox.Show($"Unknown document type: {document.Root?.Name}");
                 }
-
-                MessageBox.Show(document.ToString());
             }
             catch (Exception exc)
             {

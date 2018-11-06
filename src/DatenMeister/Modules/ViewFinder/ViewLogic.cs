@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -22,6 +23,8 @@ namespace DatenMeister.Modules.ViewFinder
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ViewLogic
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(ViewLogic));
+
         /// <summary>
         /// Stores a debug variable that can be used to extent the debugging of view retrieval process.
         /// </summary>
@@ -364,7 +367,7 @@ namespace DatenMeister.Modules.ViewFinder
             if (ActivateDebuggingForViewRetrieval)
 #pragma warning disable 162
             {
-                Debug.WriteLine(s);
+                Logger.Trace(s);
             }
 #pragma warning restore 162
         }

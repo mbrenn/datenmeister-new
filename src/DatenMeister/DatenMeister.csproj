@@ -34,4 +34,7 @@
   <ItemGroup>
     <Folder Include="Models\ManagementProvider\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\modules\BurnSystems.Logging\src\BurnSystems.Logging\BurnSystems.Logging.csproj" />
+  </ItemGroup>
 </Project>

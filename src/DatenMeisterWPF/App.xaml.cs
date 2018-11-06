@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows;
+using BurnSystems.Logging;
+using BurnSystems.Logging.Provider;
 using DatenMeister.Integration;
 
 namespace DatenMeisterWPF
@@ -24,6 +26,14 @@ namespace DatenMeisterWPF
             {
                 MessageBox.Show(exc.ToString());
             }
+
+            TheLog.Info("Exiting DatenMeister WPF");
+        }
+
+        private void App_OnStartup(object sender, StartupEventArgs e)
+        {
+            TheLog.AddProvider(new DebugProvider(), LogLevel.Trace);
+            TheLog.Info("Starting DatenMeister WPF");
         }
     }
 }

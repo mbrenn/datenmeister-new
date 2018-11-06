@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using Autofac;
 using Autofac.Features.ResolveAnything;
+using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Plugins;
@@ -26,6 +27,8 @@ namespace DatenMeister.Integration
     {
         public string PathWorkspaces { get; }
         public string PathExtents { get; }
+
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(Integrator));
 
         public static string GetPathToWorkspaces(IntegrationSettings settings)
         {
@@ -56,7 +59,7 @@ namespace DatenMeister.Integration
         {
             if (_settings == null)
             {
-                Debug.WriteLine("No integration settings were given. Loading the default values.");
+                Logger.Info("No integration settings were given. Loading the default values.");
                 _settings = new IntegrationSettings();
             }
 
@@ -134,7 +137,7 @@ namespace DatenMeister.Integration
 
                 var umlWatch = new Stopwatch();
                 umlWatch.Start();
-                Debug.Write("Bootstrapping MOF and UML...");
+                Logger.Debug("Bootstrapping MOF and UML...");
                 Bootstrapper.PerformFullBootstrap(
                     paths,
                     workspaceLogic.GetWorkspace(WorkspaceNames.NameMof),
@@ -149,7 +152,7 @@ namespace DatenMeister.Integration
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml);
                 umlWatch.Stop();
 
-                Debug.WriteLine($" Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
+                Logger.Debug($" Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var localTypeSupport = scope.Resolve<LocalTypeSupport>();
@@ -204,7 +207,7 @@ namespace DatenMeister.Integration
             }
 
             watch.Stop();
-            Debug.WriteLine($"Elapsed time for bootstrap: {watch.Elapsed}");
+            Logger.Debug($"Elapsed time for bootstrap: {watch.Elapsed}");
 
             return builder;
         }

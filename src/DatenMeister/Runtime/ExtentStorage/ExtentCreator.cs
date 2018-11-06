@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using Autofac;
+using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
@@ -14,6 +15,7 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// </summary>
     public class ExtentCreator
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentCreator));
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentManager _extentManager;
         private readonly IntegrationSettings _integrationSettings;
@@ -51,7 +53,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             var foundExtent = _workspaceLogic.FindExtent(uri);
             if (foundExtent == null)
             {
-                Debug.WriteLine("Creates the extent for the " + name);
+                Logger.Debug("Creates the extent for the " + name);
 
                 // Creates the extent for user types
                 var storageConfiguration = new XmiStorageConfiguration

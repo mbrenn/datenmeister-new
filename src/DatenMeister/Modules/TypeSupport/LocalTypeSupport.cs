@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -25,6 +26,8 @@ namespace DatenMeister.Modules.TypeSupport
     // ReSharper disable once ClassNeverInstantiated.Global
     public class LocalTypeSupport
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(LocalTypeSupport));
+
         /// <summary>
         /// Stores the workspace logic being used
         /// </summary>
@@ -95,7 +98,7 @@ namespace DatenMeister.Modules.TypeSupport
 
             // Creates the user types, if not existing
             var numberOfTypes = foundExtent.elements().Count();
-            Debug.WriteLine($"Loaded the extent for user types, containing of {numberOfTypes} types");
+            Logger.Debug($"Loaded the extent for user types, containing of {numberOfTypes} types");
         }
 
         /// <summary>

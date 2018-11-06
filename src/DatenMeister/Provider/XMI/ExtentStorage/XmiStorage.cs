@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Xml.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
@@ -12,6 +13,8 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
     [ConfiguredBy(typeof(XmiStorageConfiguration))]
     public class XmiStorage : IProviderLoader
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiStorage));
+
         public IProvider LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)
         {
             var xmiConfiguration = (XmiStorageConfiguration) configuration;
@@ -37,7 +40,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 }
                 catch(Exception exc)
                 {
-                    Debug.WriteLine(exc.ToString());
+                    Logger.Warn(exc.ToString());
                     xmlDocument = CreateEmptyXmiDocument(xmiConfiguration);
                 }
             }

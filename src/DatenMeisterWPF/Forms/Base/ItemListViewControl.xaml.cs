@@ -547,6 +547,12 @@ namespace DatenMeisterWPF.Forms.Base
                 copyContent.Execute(CopyType.Default);
             }
 
+            void CopyContentAsXmi()
+            {
+                var copyContent = new CopyToClipboardCommand(this);
+                copyContent.Execute(CopyType.AsXmi);
+            }
+
             ViewExtensions.Add(
                 new RowItemButtonDefinition(
                     "Edit", NavigateToElement, ButtonPosition.Before));
@@ -592,6 +598,13 @@ namespace DatenMeisterWPF.Forms.Base
                     CopyContent,
                     null,
                     NavigationCategories.File + ".Copy"));
+
+            ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Copy as XMI",
+                    CopyContentAsXmi,
+                    null,
+                    NavigationCategories.File + ".Copy"));
         }
 
         /// <inheritdoc />
@@ -612,7 +625,14 @@ namespace DatenMeisterWPF.Forms.Base
         /// <returns>Enumeration of selected item</returns>
         public IEnumerable<IObject> GetSelectedItems()
         {
-            foreach (var item in DataGrid.SelectedItems)
+            var selectedItems = DataGrid.SelectedItems;
+            if (selectedItems.Count == 0)
+            {
+                // If no item is selected, get all items
+                selectedItems = DataGrid.Items;
+            }
+
+            foreach (var item in selectedItems)
             {
                 if (item is ExpandoObject selectedItem)
                 {

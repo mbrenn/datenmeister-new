@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -24,7 +23,6 @@ using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Forms.Specific;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
 using Microsoft.Win32;
@@ -35,18 +33,18 @@ namespace DatenMeisterWPF.Forms.Lists
     {
         private IExtent _extent;
 
-        public string WorkspaceId { get; set; }
-        public string ExtentUrl { get; set; }
-
-        /// <summary>
-        /// Gets or sets a flag whether, all items shall be shown in one tab. 
-        /// </summary>
-        public bool ShowAllItemsInOneTab { get; set; }
-
         public ItemsInExtentList()
         {
             Loaded += ItemsInExtentList_Loaded;
         }
+
+        public string WorkspaceId { get; set; }
+        public string ExtentUrl { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a flag whether, all items shall be shown in one tab.
+        /// </summary>
+        public bool ShowAllItemsInOneTab { get; set; }
 
         private void ItemsInExtentList_Loaded(object sender, RoutedEventArgs e)
         {
@@ -62,7 +60,7 @@ namespace DatenMeisterWPF.Forms.Lists
         }
 
         /// <summary>
-        /// Sets the items of the given extent
+        ///     Sets the items of the given extent
         /// </summary>
         protected override void OnRecreateViews()
         {
@@ -92,7 +90,7 @@ namespace DatenMeisterWPF.Forms.Lists
         }
 
         /// <summary>
-        /// Creates the tab for the given items and the metaclass that shell be shown
+        ///     Creates the tab for the given items and the metaclass that shell be shown
         /// </summary>
         /// <param name="tabItems">Items for the tab</param>
         /// <param name="metaClass">Meta class of the items</param>
@@ -112,7 +110,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 view =
                     viewFinder.FindListViewFor(
                         (tabItems as MofReflectiveSequence)?.MofObject, metaClass)
-                            ?? viewFinder.CreateView(tabItems);
+                    ?? viewFinder.CreateView(tabItems);
             }
 
             var className = metaClass == null ? "Items" : NamedElementMethods.GetName(metaClass);
@@ -168,8 +166,8 @@ namespace DatenMeisterWPF.Forms.Lists
         }
 
         /// <summary>
-        /// Prepares the navigation of the host. The function is called by the navigation 
-        /// host. 
+        ///     Prepares the navigation of the host. The function is called by the navigation
+        ///     host.
         /// </summary>
         public void PrepareNavigation(ViewDefinition viewDefinition)
         {
@@ -248,7 +246,8 @@ namespace DatenMeisterWPF.Forms.Lists
             void OpenExtentFolder()
             {
                 var extentManager = App.Scope.Resolve<IExtentManager>();
-                if (extentManager.GetLoadConfigurationFor(_extent as IUriExtent) is ExtentFileLoaderConfig loadConfiguration && loadConfiguration.filePath != null)
+                if (extentManager.GetLoadConfigurationFor(_extent as IUriExtent) is ExtentFileLoaderConfig
+                        loadConfiguration && loadConfiguration.filePath != null)
                 {
                     // ReSharper disable once AssignNullToNotNullAttribute
                     Process.Start(Path.GetDirectoryName(loadConfiguration.filePath));
@@ -266,7 +265,10 @@ namespace DatenMeisterWPF.Forms.Lists
                     var window = new TreeViewWindow {Owner = NavigationHost.GetWindow()};
                     window.SetDefaultProperties();
                     window.SetCollection(_extent.elements());
-                    window.ItemSelected += (x, y) => { NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item); };
+                    window.ItemSelected += (x, y) =>
+                    {
+                        NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
+                    };
                     window.Show();
                 }
             }

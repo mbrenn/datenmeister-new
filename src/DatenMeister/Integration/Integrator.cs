@@ -157,7 +157,6 @@ namespace DatenMeister.Integration
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var localTypeSupport = scope.Resolve<LocalTypeSupport>();
-                localTypeSupport.Initialize();
                 var typeWorkspace = workspaceLogic.GetTypesWorkspace();
                 var mofFactory = new MofFactory(localTypeSupport.InternalTypes);
                 var packageMethods = scope.Resolve<PackageMethods>();
@@ -182,12 +181,8 @@ namespace DatenMeister.Integration
                     managementProvider,
                     (MofUriExtent) localTypeSupport.InternalTypes);
 
-                // Adds the views and their view logic
-                scope.Resolve<ViewLogic>().Integrate();
-                
                 // Includes the extent for the helping extents
-                ManagementProviderHelper.Initialize(
-                    workspaceLogic);
+                ManagementProviderHelper.Initialize(workspaceLogic);
 
                 // Boots up the typical DatenMeister Environment  
                 if (_settings.EstablishDataEnvironment)

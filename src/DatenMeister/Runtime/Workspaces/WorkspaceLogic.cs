@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -12,6 +13,8 @@ namespace DatenMeister.Runtime.Workspaces
     /// </summary>
     public class WorkspaceLogic : IWorkspaceLogic
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(WorkspaceLogic));
+
         private readonly WorkspaceData _fileData;
 
         /// <summary>
@@ -134,6 +137,7 @@ namespace DatenMeister.Runtime.Workspaces
                     throw new InvalidOperationException("id is already known");
                 }
 
+                Logger.Debug($"Adding workspace {workspace.id}");
                 _fileData.Workspaces.Add(workspace);
 
                 // If no metaworkspace is given, define the one from the default one

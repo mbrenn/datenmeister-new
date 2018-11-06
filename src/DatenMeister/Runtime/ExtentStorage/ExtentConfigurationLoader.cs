@@ -116,7 +116,8 @@ namespace DatenMeister.Runtime.ExtentStorage
                 var found = GetAdditionalTypes().FirstOrDefault(x => x.FullName == configType);
                 if (found == null)
                 {
-                    throw new InvalidOperationException("Unknown configtype: " + configType);
+                    Logger.Fatal($"Unknown Configuration Type: {configType}");
+                    throw new InvalidOperationException("Unknown Configuration Type: " + configType);
                 }
 
                 xmlConfig.Name = found.Name; // We need to rename the element, so XmlSerializer can work with it

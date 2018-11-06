@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Plugins;
 using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -21,7 +22,8 @@ namespace DatenMeister.Modules.ViewFinder
     /// Defines the access to the view logic and abstracts the access to the view extent
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class ViewLogic
+    [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterInitialization)]
+    public class ViewLogic : IDatenMeisterPlugin
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ViewLogic));
 
@@ -48,21 +50,28 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Integrates the the view logic into the workspace. 
         /// </summary>
-        public void Integrate()
+        public void Start(PluginLoadingPosition position)
         {
             var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
 
-            // Creates the internal views for the DatenMeister
-            var dotNetUriExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriInternalViewExtent);
-            dotNetUriExtent.SetExtentType(ViewExtentType);
-            _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
-
-            _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
-                WorkspaceNames.NameManagement,
-                WorkspaceNames.UriUserViewExtent,
-                "DatenMeister.Views_User",
-                ViewExtentType
-            );
+            switch (position)
+            {
+                case PluginLoadingPosition.AfterBootstrapping:
+                    // Creates the internal views for the DatenMeister
+                    var dotNetUriExtent =
+                        new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriInternalViewExtent);
+                    dotNetUriExtent.SetExtentType(ViewExtentType);
+                    _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
+                    break;
+                case PluginLoadingPosition.AfterInitialization:
+                    _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
+                        WorkspaceNames.NameManagement,
+                        WorkspaceNames.UriUserViewExtent,
+                        "DatenMeister.Views_User",
+                        ViewExtentType
+                    );
+                    break;
+            }
         }
 
         /// <summary>

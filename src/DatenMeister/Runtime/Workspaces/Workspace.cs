@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Extension;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -16,6 +17,8 @@ namespace DatenMeister.Runtime.Workspaces
     /// <typeparam name="T">Type of the extents being handled</typeparam>
     public class Workspace : IWorkspace, IObject, IUriResolver
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(Workspace));
+
         private readonly object _syncObject = new object();
 
         private readonly List<IExtent> _extent = new List<IExtent>();
@@ -107,6 +110,7 @@ namespace DatenMeister.Runtime.Workspaces
             if (newExtent == null) throw new ArgumentNullException(nameof(newExtent));
             if (asMofExtent.Workspace != null)
             {
+                Logger.Fatal($"The extent is already assigned to a workspace: {newExtent.contextURI()}");
                 throw new InvalidOperationException("The extent is already assigned to a workspace");
             }
 
@@ -114,9 +118,11 @@ namespace DatenMeister.Runtime.Workspaces
             {
                 if (extent.Any(x => (x as IUriExtent)?.contextURI() == newExtent.contextURI()))
                 {
+                    Logger.Fatal($"Extent with uri {newExtent.contextURI()} is already added to the given workspace");
                     throw new InvalidOperationException($"Extent with uri {newExtent.contextURI()} is already added to the given workspace");
                 }
 
+                Logger.Debug($"Added extent to workspace: {newExtent.contextURI()} --> {id}");
                 _extent.Add(newExtent);
                 asMofExtent.Workspace = this;
             }

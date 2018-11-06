@@ -66,12 +66,17 @@ namespace DatenMeister.Core.Plugins
 
             if (Directory.Exists(path))
             {
-
                 var files = Directory.GetFiles(path)
                     .Where(x => Path.GetExtension(x).ToLower() == ".dll");
                 foreach (var file in files)
                 {
                     var filenameWithoutExtension = Path.GetFileNameWithoutExtension(file).ToLower();
+                    if (IsDotNetLibrary(filenameWithoutExtension))
+                    {
+                        // Skip .Net Library
+                        continue;
+                    }
+
                     if (AppDomain.CurrentDomain.GetAssemblies().All(
                         x => x.GetName().Name.ToLower() != filenameWithoutExtension))
                     {
@@ -113,18 +118,11 @@ namespace DatenMeister.Core.Plugins
                 try
                 {
                     // Go through all types and check, if the type has implemented the interface for the pluging 
-                    foreach (var type in assembly.GetTypes())
-                    {
-                        // Checks, if one of the class implements the IDatenMeisterPlugin 
-                        if (type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
-                        {
-                            // Check, if the plugin is in the correct Plugin Loading Position
-                            if (GetPluginEntry(type).HasFlag(loadingPosition))
-                            {
-                                pluginList.Add((IDatenMeisterPlugin) kernel.Resolve(type));
-                            }
-                        }
-                    }
+                    pluginList.AddRange(
+                        assembly.GetTypes()
+                            .Where(type => type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
+                            .Where(type => GetPluginEntry(type).HasFlag(loadingPosition))
+                            .Select(type => (IDatenMeisterPlugin) kernel.Resolve(type)));
                 }
                 catch (ReflectionTypeLoadException e)
                 {
@@ -160,7 +158,7 @@ namespace DatenMeister.Core.Plugins
                     // Now, start the plugin
                     pluginList.Remove(plugin);
 
-                    Logger.Info($"Starting plugin: {plugin.GetType().FullName}");
+                    Logger.Info($"Starting plugin [{loadingPosition}]: {plugin.GetType().FullName}");
                     if (Debugger.IsAttached)
                     {
                         // When a debugger is attached, we are directly interested to figure out that an exception was thrown
@@ -248,9 +246,22 @@ namespace DatenMeister.Core.Plugins
         /// <returns></returns> 
         private static bool IsDotNetLibrary(AssemblyName assemblyName)
         {
-            return assemblyName.FullName.StartsWith("Microsoft") ||
-                   assemblyName.FullName.StartsWith("mscorlib") ||
-                   assemblyName.FullName.StartsWith("System");
+            return assemblyName.FullName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
+                   assemblyName.FullName.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
+                   assemblyName.FullName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary> 
+        /// Gets true, if the given library is a dotnet library which  
+        /// starts with System, Microsoft or mscorlib.   
+        /// </summary> 
+        /// <param name="assemblyName">Name of the assembly</param> 
+        /// <returns>true, if the given library is a .Net Library</returns> 
+        private static bool IsDotNetLibrary(string assemblyName)
+        {
+            return assemblyName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
+                   assemblyName.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
+                   assemblyName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

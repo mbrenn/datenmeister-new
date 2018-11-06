@@ -231,7 +231,7 @@ namespace DatenMeisterWPF.Forms.Base
             var viewFinder = App.Scope.Resolve<IViewFinder>();
             if (ViewDefinition.Mode == ViewDefinitionMode.Default)
             {
-                EffectiveForm = viewFinder.FindView(DetailElement);
+                EffectiveForm = viewFinder.FindDetailView(DetailElement);
             }
 
             if (ViewDefinition.Mode == ViewDefinitionMode.AllProperties

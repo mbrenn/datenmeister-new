@@ -38,6 +38,11 @@ namespace DatenMeisterWPF.Forms.Lists
         public string WorkspaceId { get; set; }
         public string ExtentUrl { get; set; }
 
+        /// <summary>
+        /// Gets or sets a flag whether, all items shall be shown in one tab. 
+        /// </summary>
+        public bool ShowAllItemsInOneTab { get; set; }
+
         public ItemsInExtentList()
         {
             Loaded += ItemsInExtentList_Loaded;
@@ -61,87 +66,105 @@ namespace DatenMeisterWPF.Forms.Lists
         /// </summary>
         protected override void OnRecreateViews()
         {
-            var viewFinder = App.Scope.Resolve<IViewFinder>();
-
             // Group by SelectedItems
-            var metaClasses = SelectedItems.Select(x => (x as IElement)?.getMetaClass()).Distinct();
-            foreach (var metaClass in metaClasses)
+            var metaClasses = SelectedItems.Select(x => (x as IElement)?.getMetaClass()).Distinct().ToList();
+            if (metaClasses.Count == 0 || ShowAllItemsInOneTab)
             {
-                IReflectiveCollection tabItems;
-                if (metaClass == null)
-                {
-                    tabItems = SelectedItems.WhenMetaClassIsNotSet();
-                }
-                else
-                {
-                    tabItems = SelectedItems.WhenMetaClassIsOneOf(metaClass);
-                }
-
-                IElement view = null;
-                // Nobody selected a form, so we can autocreate a new form
-                if (Items == SelectedItems)
-                {
-                    // Finds the view by the extent type
-                    view = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent, metaClass);
-                }
-                else
-                {
-                    // User has selected a sub element. 
-                    view =
-                        viewFinder.FindListViewFor((tabItems as MofReflectiveSequence)?.MofObject, metaClass)
-                        ?? viewFinder.CreateView(tabItems);
-                }
-
-                var className = metaClass == null ? "Items" : NamedElementMethods.GetName(metaClass);
-                view?.set("name", className);
-                var viewDefinition = new ViewDefinition(className, view);
-
-                // Sets the generic buttons to create the new types
-                if (view?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
-                    is IReflectiveCollection defaultTypesForNewItems)
-                {
-                    foreach (var type in defaultTypesForNewItems.OfType<IElement>())
-                    {
-                        var typeName = type.get(_UML._CommonStructure._NamedElement.name);
-
-                        viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
-                            $"New {typeName}", () =>
-                            {
-                                var elements =
-                                    NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
-                                elements.Closed += (x, y) => { RecreateViews(); };
-                            }));
-                    }
-                }
-
-                // Sets the button for the new item
-                viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
-                    "New Item", () =>
-                    {
-                        var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
-                        elements.Closed += (x, y) => { RecreateViews(); };
-                    }));
-
-                // Allows the deletion of an item
-                viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition(
-                    "Delete",
-                    (guest, item) =>
-                    {
-                        if (MessageBox.Show(
-                                "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
-                            MessageBoxResult.Yes)
-                        {
-                            _extent.elements().remove(item);
-                            //element.Control.UpdateContent();
-                        }
-                    }));
-
-                PrepareNavigation(viewDefinition);
-
-                var element = AddTab(
-                    tabItems,
-                    viewDefinition);
+                CreateTabForItems(SelectedItems, null);
             }
+            else
+            {
+                foreach (var metaClass in metaClasses)
+                {
+                    IReflectiveCollection tabItems;
+                    if (metaClass == null)
+                    {
+                        tabItems = SelectedItems.WhenMetaClassIsNotSet();
+                    }
+                    else
+                    {
+                        tabItems = SelectedItems.WhenMetaClassIsOneOf(metaClass);
+                    }
+
+                    CreateTabForItems(tabItems, metaClass);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates the tab for the given items and the metaclass that shell be shown
+        /// </summary>
+        /// <param name="tabItems">Items for the tab</param>
+        /// <param name="metaClass">Meta class of the items</param>
+        private void CreateTabForItems(IReflectiveCollection tabItems, IElement metaClass)
+        {
+            var viewFinder = App.Scope.Resolve<IViewFinder>();
+            IElement view;
+
+            if (Items == SelectedItems)
+            {
+                // Finds the view by the extent type
+                view = viewFinder.FindListView((Items as IHasExtent)?.Extent as IUriExtent, metaClass);
+            }
+            else
+            {
+                // User has selected a sub element and its children shall be shown
+                view =
+                    viewFinder.FindListViewFor(
+                        (tabItems as MofReflectiveSequence)?.MofObject, metaClass)
+                            ?? viewFinder.CreateView(tabItems);
+            }
+
+            var className = metaClass == null ? "Items" : NamedElementMethods.GetName(metaClass);
+            view?.set("name", className);
+
+            var viewDefinition = new ViewDefinition(className, view);
+
+            // Sets the generic buttons to create the new types
+            if (view?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
+                is IReflectiveCollection defaultTypesForNewItems)
+            {
+                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
+                {
+                    var typeName = type.get(_UML._CommonStructure._NamedElement.name);
+
+                    viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
+                        $"New {typeName}", () =>
+                        {
+                            var elements =
+                                NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
+                            elements.Closed += (x, y) => { RecreateViews(); };
+                        }));
+                }
+            }
+
+            // Sets the button for the new item
+            viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
+                "New Item", () =>
+                {
+                    var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
+                    elements.Closed += (x, y) => { RecreateViews(); };
+                }));
+
+            // Allows the deletion of an item
+            viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition(
+                "Delete",
+                (guest, item) =>
+                {
+                    if (MessageBox.Show(
+                            "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
+                        MessageBoxResult.Yes)
+                    {
+                        _extent.elements().remove(item);
+                        //element.Control.UpdateContent();
+                    }
+                }));
+
+            PrepareNavigation(viewDefinition);
+
+            var element = AddTab(
+                tabItems,
+                viewDefinition);
         }
 
         /// <summary>

@@ -39,7 +39,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="extent">Extent to be shown</param>
         /// <param name="metaClass">Meta class of the elements that are shown in the current list</param>
         /// <returns>The found view</returns>
-        public IElement FindView(IUriExtent extent, IElement metaClass)
+        public IElement FindListView(IUriExtent extent, IElement metaClass)
         {
             var extentType = extent.GetExtentType();
             if ((!string.IsNullOrEmpty(extentType)) || (metaClass != null))
@@ -117,7 +117,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="value">Value whose view need to be created</param>
         /// <returns>The view itself</returns>
-        public IElement FindView(IObject value)
+        public IElement FindDetailView(IObject value)
         {
             var valueAsElement = value as IElement;
             var metaClass = valueAsElement?.metaclass;

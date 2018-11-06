@@ -24,7 +24,7 @@
     </Window.Resources>
     <DockPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top" >
-            <Ribbon x:Name="MainRibbon" IsMinimized="True">
+            <Ribbon x:Name="MainRibbon" IsMinimized="False">
                 <Ribbon.ApplicationMenu>
                     <RibbonApplicationMenu>
                         <RibbonApplicationMenuItem Header="Close" Click="Close_Click" />

@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
+﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
@@ -25,6 +26,17 @@ namespace DatenMeister.Runtime.Copier
         }
 
         public void Copy(IReflectiveCollection sourceSequence, IReflectiveCollection targetSequence)
+        {
+            var copier = new ObjectCopier(_factory);
+            foreach (var element in sourceSequence)
+            {
+                var elementAsElement = element as IElement;
+                var copiedElement = copier.Copy(elementAsElement);
+                targetSequence.add(copiedElement);
+            }
+        }
+
+        public void Copy(IEnumerable<object> sourceSequence, IReflectiveCollection targetSequence)
         {
             var copier = new ObjectCopier(_factory);
             foreach (var element in sourceSequence)

@@ -532,6 +532,12 @@ namespace DatenMeisterWPF.Forms.Base
                 null,
                 NavigationCategories.File + ".Copy");
 
+            yield return new RibbonButtonDefinition(
+                "Paste",
+                PasteContent,
+                null,
+                NavigationCategories.File + ".Copy");
+
 
             if (DetailElement != null)
             {
@@ -566,6 +572,13 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 var copyContent = new CopyToClipboardCommand(this);
                 copyContent.Execute(null);
+            }
+
+            void PasteContent()
+            {
+                var pasteContent = new PasteToClipboardCommand(DetailElement);
+                pasteContent.Execute();
+                UpdateContent();
             }
 
             void ShowAsXmi()

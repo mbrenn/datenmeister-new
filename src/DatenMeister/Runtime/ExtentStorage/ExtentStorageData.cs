@@ -18,7 +18,12 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Stores a list of additional types that are used to load the extent configuration.
         /// </summary>
-        public List<Type> AdditionalTypes { get; } = new List<Type>();
+        private List<Type> AdditionalTypes { get; } = new List<Type>();
+
+        public List<Type> GetAdditionalTypes()
+        {
+            return AdditionalTypes;
+        }
 
         /// <summary>
         /// Gets or sets the path in which the extent loading info is stored

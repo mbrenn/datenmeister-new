@@ -181,7 +181,7 @@ namespace DatenMeisterWPF.Forms.Base
                                 var nr = string.Empty;
                                 foreach (var valueElement in valueAsList)
                                 {
-                                    result.Append(nr + UmlNameResolution.GetName(valueElement));
+                                    result.Append(nr + NamedElementMethods.GetName(valueElement));
                                     nr = "\r\n";
 
                                     elementCount++;

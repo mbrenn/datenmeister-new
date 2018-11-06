@@ -1,18 +1,9 @@
 ﻿using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
-using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Forms.Specific;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists

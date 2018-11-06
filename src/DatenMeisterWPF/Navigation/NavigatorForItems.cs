@@ -67,7 +67,7 @@ namespace DatenMeisterWPF.Navigation
                             extentUri = control.DetailElement.isSet("uri")
                                 ? control.DetailElement.get("uri").ToString()
                                 : String.Empty,
-                            Path = control.DetailElement.isSet("filepath")
+                            filePath = control.DetailElement.isSet("filepath")
                                 ? control.DetailElement.get("filepath").ToString()
                                 : String.Empty,
                             workspaceId = workspaceId

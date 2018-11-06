@@ -12,6 +12,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
@@ -162,8 +163,9 @@ namespace DatenMeister.Modules.TypeSupport
         private IList<IElement> AddInternalTypes(IReflectiveCollection rootElements, IEnumerable<Type> types)
         {
             var result = new List<IElement>();
+            var internalTypeExtent = (MofExtent) GetInternalTypeExtent();
             var generator = new DotNetTypeGenerator(
-                new MofFactory(GetInternalTypeExtent()),
+                new MofFactory(internalTypeExtent),
                 _workspaceLogic.GetUmlData());
 
             foreach (var type in types)
@@ -171,6 +173,8 @@ namespace DatenMeister.Modules.TypeSupport
                 var element = generator.CreateTypeFor(type);
                 rootElements.add(element); // Adds to the extent
                 result.Add(element); // Adds to the internal return list
+
+                internalTypeExtent.TypeLookup.Add(element.GetUri(), type);
             }
 
             return result;

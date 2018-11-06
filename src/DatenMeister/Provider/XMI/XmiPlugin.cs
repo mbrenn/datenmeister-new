@@ -1,6 +1,8 @@
 ﻿using DatenMeister.Core.Plugins;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Provider.XMI
 {
@@ -9,18 +11,24 @@ namespace DatenMeister.Provider.XMI
     /// </summary>
     // ReSharper disable once UnusedMember.Global
     // ReSharper disable once InconsistentNaming
+    [PluginLoading(PluginLoadingPosition.BeforeBootstrapping)]
     public class XmiPlugin : IDatenMeisterPlugin
     {
-        private readonly ExtentConfigurationLoader _extentLoader;
+        private readonly IExtentManager _extentManager;
+        private readonly IConfigurationToExtentStorageMapper _storageMapper;
 
-        public XmiPlugin(ExtentConfigurationLoader extentLoader)
+        public XmiPlugin(IExtentManager extentManager, IConfigurationToExtentStorageMapper storageMapper)
         {
-            _extentLoader = extentLoader;
+            _extentManager = extentManager;
+            _storageMapper = storageMapper;
         }
 
-        public void Start()
+        public void Start(PluginLoadingPosition position)
         {
-            _extentLoader.AddAdditionalType(typeof(XmiStorageConfiguration));
+            ManualConfigurationToExtentStorageMapper.MapExtentLoaderType(_storageMapper, typeof(XmiStorage));
+            
+            _extentManager.AddAdditionalType(typeof(ExtentLoaderConfig));
+            _extentManager.AddAdditionalType(typeof(XmiStorageConfiguration));
         }
     }
 }

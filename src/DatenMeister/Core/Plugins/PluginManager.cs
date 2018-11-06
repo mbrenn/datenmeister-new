@@ -95,8 +95,9 @@ namespace DatenMeister.Core.Plugins
         /// of the IDatenMeisterPlugin-Interface
         /// </summary>
         /// <param name="kernel">Dependency Kernel to be used</param>
+        /// <param name="loadingPosition">Defines the plugin position currently used</param>
         /// <returns>true, if all plugins have been started without exception</returns>
-        public bool StartPlugins(ILifetimeScope kernel)
+        public bool StartPlugins(ILifetimeScope kernel, PluginLoadingPosition loadingPosition)
         {
             var pluginList = new List<IDatenMeisterPlugin>();
 
@@ -114,7 +115,11 @@ namespace DatenMeister.Core.Plugins
                         // Checks, if one of the class implements the IDatenMeisterPlugin 
                         if (type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
                         {
-                            pluginList.Add((IDatenMeisterPlugin)kernel.Resolve(type));
+                            // Check, if the plugin is in the correct Plugin Loading Position
+                            if (GetPluginEntry(type).HasFlag(loadingPosition))
+                            {
+                                pluginList.Add((IDatenMeisterPlugin) kernel.Resolve(type));
+                            }
                         }
                     }
                 }
@@ -156,13 +161,13 @@ namespace DatenMeister.Core.Plugins
                     if (Debugger.IsAttached)
                     {
                         // When a debugger is attached, we are directly interested to figure out that an exception was thrown
-                        plugin.Start();
+                        plugin.Start(loadingPosition);
                     }
                     else
                     {
                         try
                         {
-                            plugin.Start();
+                            plugin.Start(loadingPosition);
                         }
                         catch (Exception exc)
                         {
@@ -205,10 +210,31 @@ namespace DatenMeister.Core.Plugins
         /// <summary>
         /// Gets the enumeration of Plugin Dependency Attributes upon the given plugin instance
         /// </summary>
+        /// <param name="type">Instance which is queried</param>
+        /// <returns>The dependencies</returns>
+        private PluginLoadingAttribute GetPluginLoadingAttribute(Type type)
+        {
+            foreach (var attribute in type.GetCustomAttributes(typeof(PluginLoadingAttribute), false))
+            {
+                return (PluginLoadingAttribute)attribute;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the enumeration of Plugin Dependency Attributes upon the given plugin instance
+        /// </summary>
         /// <param name="plugin">Instance which is queried</param>
         /// <returns>The dependencies</returns>
         private IEnumerable<Type> GetPluginDependencies(IDatenMeisterPlugin plugin) =>
             GetPluginDependencyAttribute(plugin).Select(x => x.DependentType);
+
+        private PluginLoadingPosition GetPluginEntry(Type plugin)
+        {
+            var attribute = GetPluginLoadingAttribute(plugin);
+            return attribute?.PluginLoadingPosition ?? PluginLoadingPosition.AfterInitialization;
+        }
 
         /// <summary> 
         /// Gets true, if the given library is a dotnet library which  

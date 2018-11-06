@@ -92,7 +92,7 @@ namespace DatenMeisterWPF.Forms.Lists
                         ?? viewFinder.CreateView(tabItems);
                 }
 
-                var className = metaClass == null ? "Items" : UmlNameResolution.GetName(metaClass);
+                var className = metaClass == null ? "Items" : NamedElementMethods.GetName(metaClass);
                 view?.set("name", className);
                 var viewDefinition = new ViewDefinition(className, view);
 
@@ -225,10 +225,10 @@ namespace DatenMeisterWPF.Forms.Lists
             void OpenExtentFolder()
             {
                 var extentManager = App.Scope.Resolve<IExtentManager>();
-                if (extentManager.GetLoadConfigurationFor(_extent as IUriExtent) is ExtentFileLoaderConfig loadConfiguration && loadConfiguration.Path != null)
+                if (extentManager.GetLoadConfigurationFor(_extent as IUriExtent) is ExtentFileLoaderConfig loadConfiguration && loadConfiguration.filePath != null)
                 {
                     // ReSharper disable once AssignNullToNotNullAttribute
-                    Process.Start(Path.GetDirectoryName(loadConfiguration.Path));
+                    Process.Start(Path.GetDirectoryName(loadConfiguration.filePath));
                 }
                 else
                 {

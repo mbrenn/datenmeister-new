@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ZipExample;
@@ -17,6 +18,7 @@ using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Forms.Specific;
 using DatenMeisterWPF.Navigation;
+using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
@@ -116,6 +118,13 @@ namespace DatenMeisterWPF.Forms.Lists
                     NavigationCategories.File + ".Import"));
 
             viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Load Extent",
+                    LoadExtent,
+                    Icons.ImportExcel,
+                    NavigationCategories.File + ".Extent"));
+
+            viewDefinition.ViewExtensions.Add(
                 new RowItemButtonDefinition("Delete", DeleteExtent));
 
             viewDefinition.ViewExtensions.Add(
@@ -197,6 +206,31 @@ namespace DatenMeisterWPF.Forms.Lists
                     workspaceId,
                     uri);
                 events.Closed += (x, y) => listViewControl.UpdateContent();
+            }
+
+            void LoadExtent()
+            {
+                var dlg = new LocateItemDialog();
+                var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+                var extent = workspaceLogic.FindExtent(WorkspaceNames.NameTypes, WorkspaceNames.UriInternalTypesExtent);
+
+                var packageMethods = App.Scope.Resolve<PackageMethods>();
+                var package = packageMethods.GotoPackage(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
+                dlg.SetAsRoot(package);
+                if (dlg.ShowDialog() != true) return;
+                if (!(dlg.SelectedElement is IElement selectedExtentType)) return;
+
+                var factory = new MofFactory(extent);
+                var createdElement = factory.create(selectedExtentType);
+                
+                var detailControl = NavigatorForItems.NavigateToElementDetailView(control.NavigationHost, createdElement);
+                detailControl.Closed += (x, y) =>
+                {
+                    
+                };
+
+
+
             }
         }
     }

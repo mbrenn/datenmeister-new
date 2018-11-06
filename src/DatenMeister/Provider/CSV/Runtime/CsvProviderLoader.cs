@@ -29,15 +29,15 @@ namespace DatenMeister.Provider.CSV.Runtime
 
             var provider = new InMemoryProvider();
 
-            var doesFileExist = File.Exists(csvConfiguration.Path);
+            var doesFileExist = File.Exists(csvConfiguration.filePath);
             if (doesFileExist)
             {
-                dataProvider.Load(provider, csvConfiguration.Path, csvConfiguration.Settings);
+                dataProvider.Load(provider, csvConfiguration.filePath, csvConfiguration.Settings);
             }
             else if (!createAlsoEmpty)
             {
                 throw new InvalidOperationException(
-                    $"File '{csvConfiguration.Path}' does not exist and empty extents is not given in argument {nameof(createAlsoEmpty)}. Real Path: {Path.Combine(Environment.CurrentDirectory, csvConfiguration.Path)}");
+                    $"File '{csvConfiguration.filePath}' does not exist and empty extents is not given in argument {nameof(createAlsoEmpty)}. Real Path: {Path.Combine(Environment.CurrentDirectory, csvConfiguration.filePath)}");
             }
 
             return provider;
@@ -48,7 +48,7 @@ namespace DatenMeister.Provider.CSV.Runtime
             var csvConfiguration = (CSVExtentLoaderConfig) configuration;
 
             var provider = new CSVLoader(_workspaceLogic);
-            provider.Save(extent, csvConfiguration.Path, csvConfiguration.Settings);
+            provider.Save(extent, csvConfiguration.filePath, csvConfiguration.Settings);
         }
     }
 }

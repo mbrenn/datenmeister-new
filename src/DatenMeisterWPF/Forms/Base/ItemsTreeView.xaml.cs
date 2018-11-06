@@ -301,7 +301,7 @@ namespace DatenMeisterWPF.Forms.Base
                 _alreadyVisited.Add(item);
 
                 var itemAsObject = item as IObject;
-                var myName = currentText + UmlNameResolution.GetName(itemAsObject);
+                var myName = currentText + NamedElementMethods.GetName(itemAsObject);
                 result.AppendLine(myName);
 
                 if (itemAsObject == null)

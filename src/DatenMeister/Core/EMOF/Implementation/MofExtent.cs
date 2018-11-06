@@ -72,8 +72,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         public XElement LocalMetaElementXmlNode
         {
-            get => ((XmiProviderObject) (MetaXmiElement.ProviderObject)).XmlNode;
-            set => ((XmiProviderObject) (MetaXmiElement.ProviderObject)).XmlNode = value;
+            get => ((XmiProviderObject) MetaXmiElement.ProviderObject).XmlNode;
+            set => ((XmiProviderObject) MetaXmiElement.ProviderObject).XmlNode = value;
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             var xmiProvider = new XmiProvider();
             Provider = provider;
-            TypeLookup = new DotNetTypeLookup(this);
+            TypeLookup = new DotNetTypeLookup();
             MetaXmiElement = new MofObject(
                 new XmiProviderObject(new XElement("meta"), xmiProvider),
                     this);
@@ -208,6 +208,83 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
+        /// Resolves the DotNetType by navigating through the current and the meta instances. 
+        /// </summary>
+        /// <param name="metaclassUri">Uri class to be retrieved</param>
+        /// <param name="resolveType">The resolveing strategy</param>
+        /// <returns></returns>
+        public Type ResolveDotNetType(string metaclassUri, ResolveType resolveType)
+        {
+            if (resolveType != ResolveType.OnlyMetaClasses)
+            {
+                var result = TypeLookup.ToType(metaclassUri);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            // Now look into the explicit extents
+            foreach (var metaExtent in MetaExtents.Cast<MofUriExtent>())
+            {
+                var element = metaExtent.TypeLookup.ToType(metaclassUri);
+                if (element != null)
+                {
+                    return element;
+                }
+            }
+
+            var resolve = ResolveDotNetTypeByMetaWorkspaces(metaclassUri, Workspace);
+            return resolve;
+        }
+
+        /// <summary>
+        /// Resolves the the given uri by looking through each meta workspace of the workspace
+        /// </summary>
+        /// <param name="uri">Uri being retrieved</param>
+        /// <param name="workspace">Workspace whose meta workspaces were queried</param>
+        /// <param name="alreadyVisited">Set of all workspaces already being visited. This avoid unnecessary recursion and unlimited recursion</param>
+        /// <returns>Found element or null, if not found</returns>
+        private Type ResolveDotNetTypeByMetaWorkspaces(
+            string metaclassUri,
+            Workspace workspace,
+            HashSet<Workspace> alreadyVisited = null)
+        {
+            alreadyVisited = alreadyVisited ?? new HashSet<Runtime.Workspaces.Workspace>();
+            if (alreadyVisited.Contains(workspace))
+            {
+                return null;
+            }
+
+            alreadyVisited.Add(workspace);
+
+            // If still not found, look into the meta workspaces. Nevertheless, no recursion
+            var metaWorkspaces = workspace?.MetaWorkspaces;
+            if (metaWorkspaces != null)
+            {
+                foreach (var metaWorkspace in metaWorkspaces)
+                {
+                    foreach (var metaExtent in metaWorkspace.extent.OfType<MofUriExtent>())
+                    {
+                        var element = metaExtent.TypeLookup.ToType(metaclassUri);
+                        if (element != null)
+                        {
+                            return element;
+                        }
+                    }
+
+                    var elementByMeta = ResolveDotNetTypeByMetaWorkspaces(metaclassUri, metaWorkspace, alreadyVisited);
+                    if (elementByMeta != null)
+                    {
+                        return elementByMeta;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Gets the uri of the metaclass by looking through current extent, meta extent and meta workspaces
         /// </summary>
         /// <param name="type">Type to be converted</param>
@@ -328,7 +405,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     "This element was not created by a factory. So a setting by .Net Object is not possible");
             }
 
-            return ConvertForSetting(DotNetConverter.Convert(asUriExtent, value), extent, container);
+            return ConvertForSetting(DotNetConverter.ConvertToMofObject(asUriExtent, value), extent, container);
         }
 
         /// <summary>

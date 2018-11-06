@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DatenMeister.Provider.DotNet
+namespace DatenMeister.Core.EMOF.Implementation
 {
     /// <summary>
     /// Defines a lookup from MOF element to dotnet type and vice
@@ -13,9 +13,9 @@ namespace DatenMeister.Provider.DotNet
         /// <summary>
         /// Adds an association between type and element
         /// </summary>
-        /// <param name="elementUri">Uri of the metaclass to be added</param>
+        /// <param name="metaclassUri">Uri of the metaclass to be added</param>
         /// <param name="type">Type to be added</param>
-        void Add(string elementUri, Type type);
+        void Add(string metaclassUri, Type type);
 
         /// <summary>
         /// Converts the element to a string, containing the type
@@ -27,9 +27,9 @@ namespace DatenMeister.Provider.DotNet
         /// <summary>
         /// Finds the element by the uri and converts the element to a real .Net Type
         /// </summary>
-        /// <param name="elementUri">Uri of the element to be converted</param>
+        /// <param name="metaclassUri">Uri of the element to be converted</param>
         /// <returns>Converted element</returns>
-        Type ToType(string elementUri);
+        Type ToType(string metaclassUri);
 
         /// <summary>
         /// Gets the id of a certain element. The method is used to support the caching

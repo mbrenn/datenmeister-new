@@ -114,8 +114,7 @@ namespace DatenMeister.Integration
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
-                Provider.CSV.Integrate.Into(scope);
-                Provider.XMI.Integrate.Into(scope);
+                pluginManager.StartPlugins(scope, PluginLoadingPosition.BeforeBootstrapping);
 
                 // Load the default extents
                 // Performs the bootstrap
@@ -153,6 +152,8 @@ namespace DatenMeister.Integration
                 umlWatch.Stop();
 
                 Logger.Debug($" Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
+
+                pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterBootstrapping);
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var localTypeSupport = scope.Resolve<LocalTypeSupport>();
@@ -199,7 +200,7 @@ namespace DatenMeister.Integration
                 Modules.ZipExample.Integrate.Into(scope);
 
                 // Finally loads the plugin
-                pluginManager.StartPlugins(scope);
+                pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterInitialization);
 
                 // After the plugins are loaded, check the extent storage types and create the corresponding internal management types
                 var extentManager = scope.Resolve<IExtentManager>();

@@ -8,8 +8,6 @@ namespace DatenMeister.Provider.DotNet
 {
     public class DotNetProviderObject : IProviderObject
     {
-        private readonly IDotNetTypeLookup _typeLookup;
-
         private readonly object _value;
 
         /// <summary>
@@ -18,7 +16,15 @@ namespace DatenMeister.Provider.DotNet
         /// <returns></returns>
         public object GetNativeValue() => _value;
 
-        public IProvider Provider { get; }
+        /// <summary>
+        /// Gets the provider as DotNetProvider object
+        /// </summary>
+        public DotNetProvider Provider { get; }
+
+        /// <summary>
+        /// Gets the provider for the interface
+        /// </summary>
+        IProvider IProviderObject.Provider => Provider;
 
         /// <summary>
         /// Stores the type of the value
@@ -40,25 +46,14 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="typeLookup">Typelookup to be used to create element</param>
         /// <param name="value">Value to be set</param>
         /// <param name="metaClassUri">metaclass to be set to the object</param>
-        public DotNetProviderObject(DotNetProvider provider, IDotNetTypeLookup typeLookup, object value, string metaClassUri)
+        public DotNetProviderObject(DotNetProvider provider, object value, string metaClassUri)
         {
             Provider = provider ?? throw new ArgumentNullException(nameof(provider));
-            _typeLookup = typeLookup ?? throw new ArgumentNullException(nameof(typeLookup));
             _value = value ?? throw new ArgumentNullException(nameof(value));
             MetaclassUri = metaClassUri ?? throw new ArgumentNullException(nameof(metaClassUri));
             _type = value.GetType();
 
-            Id = typeLookup.GetId(value);
-        }
-
-        public DotNetProviderObject(DotNetProvider dotNetProvider, IDotNetTypeLookup typeLookup, object value)
-        {
-            Provider = dotNetProvider ?? throw new ArgumentNullException(nameof(dotNetProvider));
-            _typeLookup = typeLookup ?? throw new ArgumentNullException(nameof(typeLookup));
-            _value = value;
-            _type = value.GetType();
-
-            MetaclassUri = typeLookup.ToElement(_type);
+            Id = provider.TypeLookup.GetId(value);
         }
 
         /// <inheritdoc />
@@ -71,7 +66,7 @@ namespace DatenMeister.Provider.DotNet
         public object GetProperty(string property)
         {
             var result = GetValueOfProperty(property);
-            return _typeLookup.CreateDotNetElementIfNecessary(result, Provider as DotNetProvider);
+            return Provider.CreateDotNetElementIfNecessary(result);
         }
 
         private object GetValueOfProperty(string property)

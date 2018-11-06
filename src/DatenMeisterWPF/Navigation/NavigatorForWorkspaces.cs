@@ -68,7 +68,7 @@ namespace DatenMeisterWPF.Navigation
                         continue;
                     }
 
-                    var extentStoragePath = loadConfiguration.Path;
+                    var extentStoragePath = loadConfiguration.filePath;
                     files.Add(extentStoragePath);
                 }
             }

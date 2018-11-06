@@ -120,7 +120,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             return uri.Substring(pos + 1);
         }
-        
+
         /// <inheritdoc />
         public IElement Resolve(string uri, ResolveType resolveType)
         {

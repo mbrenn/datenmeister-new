@@ -5,24 +5,25 @@ using DatenMeister.Excel.Helper;
 using DatenMeister.Integration;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Excel.Integration
 {
 
     public class ExcelPlugin : IDatenMeisterPlugin
     {
-        private readonly ExtentStorageData _storageData;
+        private readonly IExtentManager _extentManager;
 
-        public ExcelPlugin(ExtentStorageData storageData)
+        public ExcelPlugin(IExtentManager extentManager)
         {
-            _storageData = storageData;
+            _extentManager = extentManager;
         }
 
-        public void Start()
+        public void Start(PluginLoadingPosition loadingPosition)
         {
-            _storageData.AdditionalTypes.Add(typeof(ExcelReferenceSettings));
-            _storageData.AdditionalTypes.Add(typeof(ExcelImportSettings));
-            _storageData.AdditionalTypes.Add(typeof(ExcelExtentSettings));
+            _extentManager.AddAdditionalType(typeof(ExcelReferenceSettings));
+            _extentManager.AddAdditionalType(typeof(ExcelImportSettings));
+            _extentManager.AddAdditionalType(typeof(ExcelExtentSettings));
         }
     }
 }

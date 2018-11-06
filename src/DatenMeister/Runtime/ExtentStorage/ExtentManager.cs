@@ -52,6 +52,23 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
+        /// Adds an extent configuration type to the extent manager
+        /// </summary>
+        /// <param name="type"></param>
+        public void AddAdditionalType(Type type)
+        {
+            lock (_data)
+            {
+                if (_data.GetAdditionalTypes().Contains(type))
+                {
+                    throw new InvalidOperationException($"Type {type.FullName} is already included");
+                }
+
+                _data.GetAdditionalTypes().Add(type);
+            }
+        }
+
+        /// <summary>
         /// Loads the extent by using the extent storage by using the configuration and finding
         /// the correct storage engine 
         /// </summary>
@@ -154,7 +171,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             lock (_data.LoadedExtents)
             {
-                _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(_data.AdditionalTypes, PackagePathTypesExtentLoaderConfig);
+                _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(_data.GetAdditionalTypes(), PackagePathTypesExtentLoaderConfig);
             }
         }
 

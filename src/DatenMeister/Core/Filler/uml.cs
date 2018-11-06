@@ -940,7 +940,7 @@ namespace DatenMeister.Core
         {
             public class _ConnectionPointReference
             {
-                public static string @entry = "entry";
+                public static string @entry = "loadingPosition";
                 public IElement _entry = null;
 
                 public static string @exit = "exit";
@@ -1055,7 +1055,7 @@ namespace DatenMeister.Core
                 public static string @doActivity = "doActivity";
                 public IElement _doActivity = null;
 
-                public static string @entry = "entry";
+                public static string @entry = "loadingPosition";
                 public IElement _entry = null;
 
                 public static string @exit = "exit";

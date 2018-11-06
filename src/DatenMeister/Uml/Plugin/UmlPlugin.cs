@@ -31,7 +31,7 @@ namespace DatenMeister.Uml.Plugin
             _namedElementMethods = namedElementMethods;
         }
 
-        public void Start()
+        public void Start(PluginLoadingPosition position)
         {
             InitViews();
         }

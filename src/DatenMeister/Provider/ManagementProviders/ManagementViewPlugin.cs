@@ -35,7 +35,7 @@ namespace DatenMeister.Provider.ManagementProviders
             _packageMethods = packageMethods;
         }
 
-        public void Start()
+        public void Start(PluginLoadingPosition position)
         {
             AddToViewDefinition();
         }

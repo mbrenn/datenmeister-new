@@ -533,6 +533,12 @@ namespace DatenMeisterWPF.Forms.Base
                 NavigationCategories.File + ".Copy");
 
             yield return new RibbonButtonDefinition(
+                "Copy as XMI",
+                CopyContentAsXmi,
+                null,
+                NavigationCategories.File + ".Copy");
+
+            yield return new RibbonButtonDefinition(
                 "Paste",
                 PasteContent,
                 null,
@@ -571,7 +577,13 @@ namespace DatenMeisterWPF.Forms.Base
             void CopyContent()
             {
                 var copyContent = new CopyToClipboardCommand(this);
-                copyContent.Execute(null);
+                copyContent.Execute(CopyType.Default);
+            }
+
+            void CopyContentAsXmi()
+            {
+                var copyContent = new CopyToClipboardCommand(this);
+                copyContent.Execute(CopyType.AsXmi);
             }
 
             void PasteContent()
@@ -591,7 +603,7 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            new CopyToClipboardCommand(this).Execute(null);
+            new CopyToClipboardCommand(this).Execute(CopyType.Default);
         }
 
         public IObject GetSelectedItem()

@@ -39,10 +39,7 @@ namespace DatenMeisterWPF.Forms.Base
         public ItemListViewControl()
         {
             InitializeComponent();
-            CopyCommand = new CopyToClipboardCommand(this);
         }
-
-        public ICommand CopyCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the host for the list view item. The navigation
@@ -547,7 +544,7 @@ namespace DatenMeisterWPF.Forms.Base
             void CopyContent()
             {
                 var copyContent = new CopyToClipboardCommand(this);
-                copyContent.Execute(null);
+                copyContent.Execute(CopyType.Default);
             }
 
             ViewExtensions.Add(
@@ -656,7 +653,8 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            CopyCommand.Execute(null);
+            var copyContent = new CopyToClipboardCommand(this);
+            copyContent.Execute(CopyType.Default);
         }
 
         /// <summary>

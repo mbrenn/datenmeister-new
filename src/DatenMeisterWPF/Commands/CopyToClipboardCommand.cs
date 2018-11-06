@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Text;
 using System.Windows;
-using System.Windows.Input;
-using System.Xml.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -14,38 +12,46 @@ using DatenMeisterWPF.Forms.Base;
 
 namespace DatenMeisterWPF.Command
 {
-    public class CopyToClipboardCommand : ICommand
+    /// <summary>
+    ///     The enumeration defines the format of the copying
+    /// </summary>
+    public enum CopyType
+    {
+        /// <summary>
+        ///     Copies as text
+        /// </summary>
+        Default,
+
+        /// <summary>
+        ///     Copies as text
+        /// </summary>
+        AsText,
+
+        /// <summary>
+        ///     Copies as Xmi
+        /// </summary>
+        AsXmi
+    }
+
+    public class CopyToClipboardCommand
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(CopyToClipboardCommand));
 
-        private IHasSelectedItems listViewControl;
+        private readonly IHasSelectedItems listViewControl;
 
         public CopyToClipboardCommand(IHasSelectedItems listViewControl)
         {
             this.listViewControl = listViewControl;
         }
 
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public void OnExecuteChanged()
-        {
-            CanExecuteChanged?.Invoke(this, null);
-        }
-
         /// <summary>
-        /// Gets the currently selected element and copies it to the clipboard
+        ///     Gets the currently selected element and copies it to the clipboard
         /// </summary>
-        /// <param name="parameter"></param>
-        public void Execute(object parameter)
+        /// <param name="copyType">The type of the format to be copied to clipboard</param>
+        public void Execute(CopyType copyType)
         {
             var selectedItems = listViewControl.GetSelectedItems();
-            if (selectedItems == null)
-            {
-                selectedItems = new[] {listViewControl.GetSelectedItem()};
-            }
+            if (selectedItems == null) selectedItems = new[] {listViewControl.GetSelectedItem()};
 
             selectedItems = selectedItems.ToList();
 
@@ -61,11 +67,7 @@ namespace DatenMeisterWPF.Command
                     builder.AppendLine();
                 }
 
-                if (!(selectedItem is IObjectAllProperties allProperties))
-                {
-
-                    return;
-                }
+                if (!(selectedItem is IObjectAllProperties allProperties)) return;
 
                 foreach (var property in allProperties.getPropertiesBeingSet())
                 {
@@ -84,7 +86,7 @@ namespace DatenMeisterWPF.Command
             if (selectedList.Count == 1)
             {
                 var result = ObjectCopier.Copy(new MofFactory(tempExtent), selectedList.First());
-                xmlResult = ((XmiProviderObject)((MofObject) result).ProviderObject).XmlNode.ToString();
+                xmlResult = ((XmiProviderObject) ((MofObject) result).ProviderObject).XmlNode.ToString();
             }
             else
             {
@@ -92,14 +94,26 @@ namespace DatenMeisterWPF.Command
                 extentCopier.Copy(selectedList, tempExtent.elements());
                 xmlResult = xmiProvider.Document.ToString();
             }
-
-            var dataObject = new DataObject();
-            dataObject.SetText(builder.ToString());
-            dataObject.SetData("XMI", xmlResult);
-
+            
             try
             {
-                Clipboard.SetDataObject(dataObject);
+                switch (copyType)
+                {
+                    case CopyType.Default:
+                        var dataObject = new DataObject();
+                        dataObject.SetText(builder.ToString());
+                        dataObject.SetData("XMI", xmlResult);
+                        Clipboard.SetDataObject(dataObject);
+                        break;
+                    case CopyType.AsText:
+                        Clipboard.SetText(builder.ToString());
+                        break;
+                    case CopyType.AsXmi:
+                        Clipboard.SetText(xmlResult);
+                        break;
+                    default:
+                        goto case CopyType.Default;
+                }
             }
             catch (Exception exc)
             {
@@ -107,10 +121,5 @@ namespace DatenMeisterWPF.Command
                 MessageBox.Show($"Copy to clipboard failed: {exc}");
             }
         }
-
-        /// <summary>
-        /// Tritt ein, wenn Änderungen auftreten, die sich auf die Ausführung des Befehls auswirken.
-        /// </summary>
-        public event EventHandler CanExecuteChanged;
     }
 }

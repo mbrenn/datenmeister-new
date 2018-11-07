@@ -54,11 +54,11 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 };
 
                 detailForm.SetActions.Add(
-                    () =>
+                    detailElement =>
                     {
                         if (valueText != contentBlock.Text)
                         {
-                            value.set(name, contentBlock.Text);
+                            detailElement.set(name, contentBlock.Text);
                         }
                     });
 

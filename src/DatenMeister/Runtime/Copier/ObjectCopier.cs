@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -109,7 +110,6 @@ namespace DatenMeister.Runtime.Copier
             return value;
         }
 
-
         /// <summary>
         /// Copies the given element by using the factory
         /// </summary>
@@ -120,6 +120,18 @@ namespace DatenMeister.Runtime.Copier
         {
             var copier = new ObjectCopier(factory);
             return copier.Copy(element);
+        }
+
+        /// <summary>
+        /// Copies the given element by using the factory
+        /// </summary>
+        /// <param name="factory">Factory to be used to create the element</param>
+        /// <param name="element">Element to be copied</param>
+        /// <returns>The created element that will be copied</returns>
+        public static void CopyPropertiesStatic(IObject source, IObject target)
+        {
+            var copier = new ObjectCopier(new MofFactory(target));
+            copier.CopyProperties(source, target);
         }
     }
 }

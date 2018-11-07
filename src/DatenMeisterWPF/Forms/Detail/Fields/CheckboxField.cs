@@ -39,11 +39,11 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             };
 
             detailForm.SetActions.Add(
-                () =>
+                element =>
                 {
                     if (propertyValue != box.IsChecked)
                     {
-                        value.set(name, box.IsChecked);
+                        element.set(name, box.IsChecked);
                     }
                 });
 

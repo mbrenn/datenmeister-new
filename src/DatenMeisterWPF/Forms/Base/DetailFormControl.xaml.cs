@@ -14,6 +14,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Uml.Helper;
 using DatenMeister.UserInteractions;
 using DatenMeisterWPF.Command;
@@ -50,7 +51,7 @@ namespace DatenMeisterWPF.Forms.Base
         public INavigationHost NavigationHost { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether new properities may be added by the user to the element
+        /// Gets or sets a value indicating whether new properties may be added by the user to the element
         /// </summary>
         public bool AllowNewProperties { get; set; }
         
@@ -84,7 +85,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Stores the list of actions that will be performed when the user clicks on set
         /// </summary>
-        public List<Action> SetActions { get; }= new List<Action>();
+        public List<Action<IObject>> SetActions { get; }= new List<Action<IObject>>();
         
         public DetailFormControl()
         {
@@ -337,6 +338,7 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             var buttons = new List<Button>();
+
             // Creates additional rows for buttons with additional actions
             var interactionHandlers = App.Scope.Resolve<IEnumerable<IElementInteractionsHandler>>();
             foreach (var handler in interactionHandlers
@@ -453,14 +455,14 @@ namespace DatenMeisterWPF.Forms.Base
                     var fieldKey = new TextBox();
                     var fieldValue = new TextBox();
 
-                    SetActions.Add(() =>
+                    SetActions.Add(element =>
                     {
                         var propertyKey = fieldKey.Text;
                         var propertyValue = fieldValue.Text;
 
                         if (!string.IsNullOrEmpty(propertyKey))
                         {
-                            DetailElement.set(propertyKey, propertyValue);
+                            element.set(propertyKey, propertyValue);
                         }
                     });
 
@@ -479,10 +481,7 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 try
                 {
-                    foreach (var action in SetActions)
-                    {
-                        action();
-                    }
+                    StoreDialogContentIntoElement(DetailElement);
 
                     OnElementSaved();
                     Window.GetWindow(this)?.Close();
@@ -492,6 +491,24 @@ namespace DatenMeisterWPF.Forms.Base
                     MessageBox.Show(exc.ToString());
                 }
             }).IsDefault = true;
+        }
+
+        /// <summary>
+        /// Takes the input that the user has currently into the dialog and stores these changes into the given element. 
+        /// </summary>
+        /// <param name="element">Element in which the content of the element shall be stored</param>
+        private void StoreDialogContentIntoElement(IObject element)
+        {
+            if (!Equals(element, DetailElement))
+            {
+                // Copy all data from DetailElement to element to also have the non-shown properties in the mirror object
+                ObjectCopier.CopyPropertiesStatic(DetailElement, element);
+            }
+
+            foreach (var action in SetActions)
+            {
+                action(element);
+            }
         }
 
         /// <summary>
@@ -513,6 +530,7 @@ namespace DatenMeisterWPF.Forms.Base
         {
             ElementSaved?.Invoke(this, EventArgs.Empty);
         }
+
         /// <summary>
         /// Prepares the navigation of the host. The function is called by the navigation 
         /// host. 
@@ -576,13 +594,19 @@ namespace DatenMeisterWPF.Forms.Base
 
             void CopyContent()
             {
-                var copyContent = new CopyToClipboardCommand(this);
+                var inMemory = InMemoryObject.CreateEmpty();
+                StoreDialogContentIntoElement(inMemory);
+
+                var copyContent = new CopyToClipboardCommand(inMemory);
                 copyContent.Execute(CopyType.Default);
             }
 
             void CopyContentAsXmi()
             {
-                var copyContent = new CopyToClipboardCommand(this);
+                var inMemory = InMemoryObject.CreateEmpty();
+                StoreDialogContentIntoElement(inMemory);
+
+                var copyContent = new CopyToClipboardCommand(inMemory);
                 copyContent.Execute(CopyType.AsXmi);
             }
 

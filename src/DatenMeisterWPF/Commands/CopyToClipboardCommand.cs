@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -35,13 +37,19 @@ namespace DatenMeisterWPF.Command
 
     public class CopyToClipboardCommand
     {
+        private readonly IObject _selectedItem;
         private static readonly ClassLogger Logger = new ClassLogger(typeof(CopyToClipboardCommand));
 
-        private readonly IHasSelectedItems listViewControl;
+        private readonly IHasSelectedItems _listViewControl;
+
+        public CopyToClipboardCommand(IObject selectedItem)
+        {
+            _selectedItem = selectedItem;
+        }
 
         public CopyToClipboardCommand(IHasSelectedItems listViewControl)
         {
-            this.listViewControl = listViewControl;
+            _listViewControl = listViewControl;
         }
 
         /// <summary>
@@ -50,10 +58,18 @@ namespace DatenMeisterWPF.Command
         /// <param name="copyType">The type of the format to be copied to clipboard</param>
         public void Execute(CopyType copyType)
         {
-            var selectedItems = listViewControl.GetSelectedItems();
-            if (selectedItems == null) selectedItems = new[] {listViewControl.GetSelectedItem()};
+            IEnumerable<IObject> selectedItems;
 
-            selectedItems = selectedItems.ToList();
+            // Checks, whether we can retrieve the selected item directly or if we need to use the IHasSelectedItems interface
+            if (_selectedItem != null)
+            {
+                selectedItems = new[] {_selectedItem};
+            }
+            else
+            {
+                selectedItems = _listViewControl.GetSelectedItems() ?? new[] {_listViewControl.GetSelectedItem()};
+                selectedItems = selectedItems.ToList();
+            }
 
             var first = true;
             var builder = new StringBuilder();

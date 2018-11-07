@@ -83,7 +83,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             // Check, if the extent url is a real uri
             if (!Uri.IsWellFormedUriString(configuration.extentUri, UriKind.Absolute))
             {
-                throw new InvalidOperationException($"Uri is not well-formed: {configuration.extentUri}");
+                throw new InvalidOperationException($"Uri of Extent is not well-formed: {configuration.extentUri}");
             }
 
             // Checks, if the given URL has a relative path and transforms the path to an absolute path

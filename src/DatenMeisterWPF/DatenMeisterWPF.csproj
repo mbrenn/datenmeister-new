@@ -279,13 +279,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\modules\BurnSystems.Logging\src\BurnSystems.Logging\BurnSystems.Logging.csproj">
-      <Project>{8e8d12dc-c9b7-486e-b49b-de27ede31117}</Project>
-      <Name>BurnSystems.Logging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\modules\burnsystems.wpf\src\BurnSystems.WPF\BurnSystems.WPF.csproj">
       <Project>{f052ce44-4f75-4a9a-b0f2-af7be3b880c2}</Project>
       <Name>BurnSystems.WPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj">
+      <Project>{1b5763e6-b595-4aa4-8b83-640715cc2fb1}</Project>
+      <Name>BurnSystems</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\modules\DatenMeister.Icons\src\DatenMeister.Icons\DatenMeister.Icons.csproj">
       <Project>{c2bc0e95-4d38-4584-b6a0-b08dec6de504}</Project>

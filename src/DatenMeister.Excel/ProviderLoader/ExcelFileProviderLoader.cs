@@ -39,12 +39,12 @@ namespace DatenMeister.Excel.ProviderLoader
             _scope = (IDatenMeisterScope) scope;
         }
 
-        public IProvider LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty)
+        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty)
         {
             var excelFile = (ExcelExtentSettings) configuration;
             var excelProvider = LoadProvider(excelFile);
 
-            return excelProvider;
+            return new LoadedProviderInfo(excelProvider);
         }
 
         public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)

@@ -27,10 +27,11 @@ namespace DatenMeisterWPF.Navigation
                 var newGuid = Guid.NewGuid();
                 var dlg = new ExcelImportDefinitionDialog();
 
-                var importer = await dlg.LoadFile(fileDialog.FileName);
-                importer.Settings.workspaceId = workspaceId;
-                importer.Settings.extentUri = "datenmeister:///excelimport_" + newGuid;
-                importer.Settings.extentPath = newGuid + ".xmi";
+                await dlg.LoadFile(fileDialog.FileName);
+
+                dlg.ExcelSettings.workspaceId = workspaceId;
+                dlg.ExcelSettings.extentUri = "datenmeister:///excelimport_" + newGuid;
+                dlg.ExcelSettings.extentPath = newGuid + ".xmi";
 
                 dlg.Owner = host as Window;
                 if (dlg.ShowDialog() == true)
@@ -38,10 +39,10 @@ namespace DatenMeisterWPF.Navigation
                     switch (dlg.ImportType)
                     {
                         case ExcelImportType.AsCopy:
-                            ExcelImporter.ImportExcelAsCopy(App.Scope, dlg.GetConfigurationObject());
+                            ExcelImporter.ImportExcelExtentAsCopy(App.Scope, dlg.GetConfigurationObject());
                             break;
                         case ExcelImportType.AsReference:
-                            ExcelImporter.ImportExcelAsReference(App.Scope, dlg.GetConfigurationObject());
+                            ExcelImporter.ImportExcelExtentAsReference(App.Scope, dlg.GetConfigurationObject());
                             break;
                     }
 

@@ -22,7 +22,7 @@ namespace DatenMeister.Provider.CSV.Runtime
             _workspaceLogic = workspaceLogic;
         }
 
-        public IProvider LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty)
+        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty)
         {
             var csvConfiguration = (CSVExtentLoaderConfig) configuration;
             var dataProvider = new CSVLoader(_workspaceLogic);
@@ -40,7 +40,7 @@ namespace DatenMeister.Provider.CSV.Runtime
                     $"File '{csvConfiguration.filePath}' does not exist and empty extents is not given in argument {nameof(createAlsoEmpty)}. Real Path: {Path.Combine(Environment.CurrentDirectory, csvConfiguration.filePath)}");
             }
 
-            return provider;
+            return new LoadedProviderInfo(provider);
         }
 
         public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)

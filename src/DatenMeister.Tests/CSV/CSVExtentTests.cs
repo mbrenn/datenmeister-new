@@ -42,13 +42,13 @@ namespace DatenMeister.Tests.CSV
 
             var storage = new CsvProviderLoader(null);
             var provider = storage.LoadProvider(storageConfiguration, false);
-            var extent = new MofUriExtent(provider, "datenmeister:////test/");
+            var extent = new MofUriExtent(provider.Provider, "datenmeister:////test/");
             
             Assert.That(storageConfiguration.Settings.Columns.Count, Is.EqualTo(3));
             Assert.That(extent.elements().Count(), Is.EqualTo(4));
 
             // Stores the csv file
-            storage.StoreProvider(provider, storageConfiguration);
+            storage.StoreProvider(provider.Provider, storageConfiguration);
             var readCsvFile = File.ReadAllText(PathForTemporaryDataFile);
 
             Assert.That(readCsvFile, Is.EqualTo(csvFile));
@@ -56,7 +56,7 @@ namespace DatenMeister.Tests.CSV
             var firstElement = extent.elements().ElementAt(0) as IObject;
             Assert.That(firstElement, Is.Not.Null);
             firstElement.set(storageConfiguration.Settings.Columns[0], "eens");
-            storage.StoreProvider(provider, storageConfiguration);
+            storage.StoreProvider(provider.Provider, storageConfiguration);
             readCsvFile = File.ReadAllText(PathForTemporaryDataFile);
             Assert.That(readCsvFile, Is.EqualTo(csvOtherFile));
 

@@ -78,6 +78,8 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProviderLoader\ExcelFileProviderLoader.cs" />
+    <Compile Include="ProviderLoader\ExcelImportLoader.cs" />
+    <Compile Include="ProviderLoader\ExcelReferenceLoader.cs" />
     <Compile Include="Spreadsheet\SSCell.cs" />
     <Compile Include="Spreadsheet\SSDocument.cs" />
     <Compile Include="Spreadsheet\SSTable.cs" />

@@ -30,6 +30,8 @@ namespace DatenMeisterWPF.Windows
 
         public ExcelImportType ImportType { get; set; } = ExcelImportType.AsCopy;
 
+        public ExcelImportSettings ExcelSettings => _importer.Settings as ExcelImportSettings;
+
         public ExcelImportDefinitionDialog()
         {
             InitializeComponent();

@@ -99,7 +99,10 @@ namespace DatenMeister.Runtime.ExtentStorage
             var extentLoader = _map.CreateFor(_diScope, configuration);
         
             // Loads the extent
-            var loadedProvider = extentLoader.LoadProvider(configuration, createAlsoEmpty);
+            var loadedProviderInfo = extentLoader.LoadProvider(configuration, createAlsoEmpty);
+            var loadedProvider = loadedProviderInfo?.Provider;
+            configuration = loadedProviderInfo?.UsedConfig ?? configuration; // Updates the configuration, if it needs to be updated
+
             Logger.Info($"Loading extent: {configuration}");
 
             if (loadedProvider == null)

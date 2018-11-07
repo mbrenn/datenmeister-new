@@ -64,7 +64,7 @@ namespace DatenMeisterWPF.Forms.Specific
                         filePath = sourceFilename.Text
                     });
                     
-                    var extent = new MofUriExtent(provider);
+                    var extent = new MofUriExtent(provider.Provider);
                     newExtentUri.Text = extent.contextURI();
                 }
                 catch (Exception exc)

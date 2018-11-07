@@ -15,7 +15,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiStorage));
 
-        public IProvider LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)
+        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)
         {
             var xmiConfiguration = (XmiStorageConfiguration) configuration;
 
@@ -45,7 +45,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 }
             }
 
-            return new XmiProvider(xmlDocument);
+            return new LoadedProviderInfo(new XmiProvider(xmlDocument));
         }
 
         /// <summary>

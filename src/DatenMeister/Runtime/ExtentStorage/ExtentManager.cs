@@ -23,6 +23,8 @@ namespace DatenMeister.Runtime.ExtentStorage
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ExtentManager : IExtentManager
     {
+        public const string PackagePathTypesExtentLoaderConfig = "DatenMeister::ExtentLoaderConfig";
+
         private readonly ExtentStorageData _data;
 
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentManager));
@@ -53,6 +55,23 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
+        /// Adds an extent configuration type to the extent manager
+        /// </summary>
+        /// <param name="type"></param>
+        public void AddAdditionalType(Type type)
+        {
+            lock (_data)
+            {
+                if (_data.GetAdditionalTypes().Contains(type))
+                {
+                    throw new InvalidOperationException($"Type {type.FullName} is already included");
+                }
+
+                _data.GetAdditionalTypes().Add(type);
+            }
+        }
+
+        /// <summary>
         /// Loads the extent by using the extent storage by using the configuration and finding
         /// the correct storage engine 
         /// </summary>
@@ -64,15 +83,15 @@ namespace DatenMeister.Runtime.ExtentStorage
             // Check, if the extent url is a real uri
             if (!Uri.IsWellFormedUriString(configuration.extentUri, UriKind.Absolute))
             {
-                throw new InvalidOperationException($"Uri is not well-formed: {configuration.extentUri}");
+                throw new InvalidOperationException($"Uri of Extent is not well-formed: {configuration.extentUri}");
             }
 
             // Checks, if the given URL has a relative path and transforms the path to an absolute path
             if (configuration is ExtentFileLoaderConfig fileConfiguration)
             {
-                if (!Path.IsPathRooted(fileConfiguration.Path))
+                if (!Path.IsPathRooted(fileConfiguration.filePath))
                 {
-                    fileConfiguration.Path = Path.Combine(_integrationSettings.DatabasePath, fileConfiguration.Path);
+                    fileConfiguration.filePath = Path.Combine(_integrationSettings.DatabasePath, fileConfiguration.filePath);
                 }
             }
 
@@ -155,7 +174,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             lock (_data.LoadedExtents)
             {
-                _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(_data.AdditionalTypes, "DatenMeister::ExtentLoaderConfig");
+                _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(_data.GetAdditionalTypes(), PackagePathTypesExtentLoaderConfig);
             }
         }
 

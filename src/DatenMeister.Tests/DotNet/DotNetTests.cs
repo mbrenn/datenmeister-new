@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
+using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Filler;
 using DatenMeister.Excel.Helper;
+using DatenMeister.Integration;
+using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Tests.Xmi;
 using NUnit.Framework;
 
@@ -91,6 +97,33 @@ namespace DatenMeister.Tests.DotNet
             Assert.That(copy.fixRowCount, Is.EqualTo(false));
             Assert.That(copy.hasHeader, Is.EqualTo(true));
             Assert.That(copy.sheetName, Is.EqualTo("Yes"));
+        }
+
+        [Test]
+        public void TestDotNetConversionWithoutExplicitType()
+        {
+            var datenMeister = GiveMe.DatenMeister();
+            var workspaceLogic = datenMeister.Resolve<IWorkspaceLogic>();
+
+            var provider = new InMemoryProvider();
+            var extent = new MofUriExtent(provider, "datenmeister:///test");
+            workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
+
+            var csvLoaderType = workspaceLogic.FindItem(
+                "datenmeister:///_internal/types/internal#DatenMeister.Provider.XMI.ExtentStorage.XmiStorageConfiguration");
+
+            Assert.That(csvLoaderType, Is.Not.Null);
+            var memoryObject = new MofFactory(extent).create(csvLoaderType);
+            memoryObject.set(nameof(XmiStorageConfiguration.workspaceId), "TEST");
+            memoryObject.set(nameof(XmiStorageConfiguration.filePath), "path");
+            memoryObject.set(nameof(XmiStorageConfiguration.extentUri), "dm:///");
+
+            var asDotNetType = DotNetConverter.ConvertToDotNetObject(memoryObject);
+            Assert.That(asDotNetType, Is.TypeOf<XmiStorageConfiguration>());
+            var typed = (XmiStorageConfiguration) asDotNetType;
+            Assert.That(typed.workspaceId, Is.EqualTo("TEST"));
+            Assert.That(typed.filePath, Is.EqualTo("path"));
+            Assert.That(typed.extentUri, Is.EqualTo("dm:///"));
         }
     }
 }

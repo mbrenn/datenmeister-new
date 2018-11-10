@@ -113,16 +113,9 @@ namespace DatenMeister.SourcecodeGenerator
 
             var nameAsObject = propertyObject.get("name");
             var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
-            if (name != null)
-            {
-                Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
-                Result.AppendLine($"{stack.Indentation}public IElement _{name} = null;");
-                Result.AppendLine();
-            }
-            else
-            {
-                Debug.WriteLine($"Found unknown property: {propertyObject}");
-            }
+            Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
+            Result.AppendLine($"{stack.Indentation}public IElement _{name} = null;");
+            Result.AppendLine();
         }
     }
 }

@@ -61,7 +61,7 @@ namespace DatenMeisterWPF.Forms.Specific
                     var loader = new XmiStorage();
                     var provider = loader.LoadProvider(new XmiStorageConfiguration()
                     {
-                        Path = sourceFilename.Text
+                        filePath = sourceFilename.Text
                     });
                     
                     var extent = new MofUriExtent(provider);

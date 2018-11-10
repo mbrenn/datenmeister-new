@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
@@ -50,7 +47,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="type"></param>
         public void AddAdditionalType(Type type)
         {
-            ExtentStorageData.AdditionalTypes.Add(type);
+            ExtentManager.AddAdditionalType(type);
         }
 
         /// <summary>
@@ -60,7 +57,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <returns>Array of additional types</returns>
         private Type[] GetAdditionalTypes()
         {
-            return ExtentStorageData.AdditionalTypes.ToArray();
+            return ExtentStorageData.GetAdditionalTypes().ToArray();
         }
 
         /// <summary>
@@ -119,7 +116,8 @@ namespace DatenMeister.Runtime.ExtentStorage
                 var found = GetAdditionalTypes().FirstOrDefault(x => x.FullName == configType);
                 if (found == null)
                 {
-                    throw new InvalidOperationException("Unknown configtype: " + configType);
+                    Logger.Fatal($"Unknown Configuration Type: {configType}");
+                    throw new InvalidOperationException("Unknown Configuration Type: " + configType);
                 }
 
                 xmlConfig.Name = found.Name; // We need to rename the element, so XmlSerializer can work with it

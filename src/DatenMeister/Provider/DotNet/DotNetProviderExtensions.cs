@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 
@@ -14,15 +11,13 @@ namespace DatenMeister.Provider.DotNet
     public static class DotNetProviderExtensions
     {
         /// <summary>
-        /// Creates a dot net element out of the given type lookup and the value
+        /// Creates a Mof Element reflecting the .Net Element out of the given extent. 
         /// </summary>
-        /// <param name="typeLookup">Type lookup being used</param>
         /// <param name="value">Value to be converted</param>
         /// <param name="extent">Defines the extent being associated to the DotNetElement</param>
         /// <param name="id">If set, the id will be set to the given element</param>
-        public static IElement CreateDotNetElement(
-            this IDotNetTypeLookup typeLookup,
-            MofUriExtent extent,
+        public static IElement CreateDotNetMofElement(
+            this MofUriExtent extent,
             object value,
             string id = null)
         {
@@ -31,7 +26,7 @@ namespace DatenMeister.Provider.DotNet
                 throw new InvalidOperationException("Given extent is not from DotNetProvider");
             }
 
-            var result = CreateDotNetProviderObject(typeLookup, providerAsDotNet, value, id);
+            var result = CreateDotNetProviderObject(providerAsDotNet, value, id);
 
             return new MofElement(result, extent);
         }
@@ -45,8 +40,7 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="id"></param>
         /// <returns></returns>
         private static DotNetProviderObject CreateDotNetProviderObject(
-            this IDotNetTypeLookup typeLookup,
-            DotNetProvider provider,
+            this DotNetProvider provider,
             object value,
             string id = null)
         {
@@ -55,14 +49,14 @@ namespace DatenMeister.Provider.DotNet
                 throw new ArgumentNullException(nameof(value));
             }
 
-            var metaclass = typeLookup.ToElement(value.GetType());
+            var metaclass = provider.TypeLookup.ToElement(value.GetType());
             if (metaclass == null)
             {
                 throw new InvalidOperationException(
                     $"The type '{value.GetType().FullName}' is not known to the DotNetTypeLookup");
             }
 
-            var result = new DotNetProviderObject(provider, typeLookup, value, metaclass);
+            var result = new DotNetProviderObject(provider, value, metaclass);
             if (!string.IsNullOrEmpty(id))
             {
                 result.Id = id;
@@ -70,64 +64,6 @@ namespace DatenMeister.Provider.DotNet
 
             return result;
         }
-
-        /// <summary>
-        /// Creates a .net reflective sequence
-        /// </summary>
-        /// <param name="lookup">The dotnet lookup to be used</param>
-        /// <param name="list">The list to be parsed</param>
-        /// <param name="container">Stores the container for the given element</param>
-        /// <returns>The created reflective sequence working on the given list</returns>
-        public static IReflectiveSequence CreateDotNetReflectiveSequence(
-            this IDotNetTypeLookup lookup, 
-            object list,
-            DotNetProviderObject container)
-        {
-            throw new NotImplementedException();
-            /*
-            if (list == null)
-            {
-                throw new ArgumentNullException(nameof(list));
-            }
-
-            var type = list.GetType();
-
-            // Finds the interface type
-            var interfaceType =
-                type
-                    .GetInterfaces()
-                    .FirstOrDefault(x => x.IsConstructedGenericType && x.GetGenericTypeDefinition() == typeof(IList<>));
-
-            if (interfaceType == null)
-            {
-                throw new InvalidOperationException($"list is not of Type IList<T>. It is of type: {list.GetType()}");
-            }
-
-            var genericParameter = interfaceType.GenericTypeArguments[0];
-            var dotNetReflectiveSequenceType = typeof(DotNetReflectiveSequence<>).MakeGenericType(genericParameter);
-
-            var constructorInfo = dotNetReflectiveSequenceType.GetConstructor(new[] {type, typeof(IDotNetTypeLookup), typeof(DotNetElement)});
-            return constructorInfo.Invoke(new[] {list, lookup, container}) as IReflectiveSequence;*/
-        }
-
-        /// <summary>
-        /// Creates a .net reflective sequence
-        /// </summary>
-        /// <param name="lookup">The dotnet lookup to be used</param>
-        /// <param name="list">The list to be parsed</param>
-        /// <param name="extent">Stores the extent for the given element</param>
-        /// <returns>The created reflective sequence working on the given list</returns>
-        public static IReflectiveSequence CreateDotNetReflectiveSequence(
-            this IDotNetTypeLookup lookup,
-            object list)
-        {
-            throw new NotImplementedException();
-            /*
-            var result = CreateDotNetReflectiveSequence(lookup, list, (DotNetElement) null);
-            ((IDotNetReflectiveSequence)result).SetExtent(extent);
-            return result;*/
-        }
-
         /// <summary>
         /// Converts the given element to a .Net native object, which means that it
         /// unwraps an DotNetElement element to its abstracted value
@@ -155,11 +91,11 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="dotNetTypeLookup">The .NetType Lookup being used</param>
         /// <param name="result">Value to be converted</param>
+        /// <param name="provider">The provider being used to convert the .Net Value as MofElement</param>
         /// <returns>The converted or non-converted type</returns>
         public static object CreateDotNetElementIfNecessary(
-            this IDotNetTypeLookup dotNetTypeLookup, 
-            object result,
-            DotNetProvider provider)
+            this DotNetProvider provider,
+            object result)
         {
             if (result == null)
             {
@@ -177,8 +113,7 @@ namespace DatenMeister.Provider.DotNet
             {
                 var asEnumeration = (IEnumerable<object>) result;
 
-                return asEnumeration.Select(
-                    item => dotNetTypeLookup.CreateDotNetElementIfNecessary(item, provider)).ToList();
+                return asEnumeration.Select(provider.CreateDotNetElementIfNecessary).ToList();
             }
 
             if (DotNetHelper.IsOfMofObject(result))
@@ -187,7 +122,7 @@ namespace DatenMeister.Provider.DotNet
                 return result;
             }
             
-            var dotNetResult = dotNetTypeLookup.CreateDotNetProviderObject(provider, result);
+            var dotNetResult = provider.CreateDotNetProviderObject(result);
 
             return dotNetResult;
         }
@@ -198,7 +133,7 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="uml">Uml instance being used to create all necessary instances</param>
         /// <param name="extent">Extent to which the generated element will be added</param>
         /// <param name="dotNetType">And finally the .Net type that is converted and adde</param>
-        /// <returns></returns>
+        /// <returns>The created type specification</returns>
         public static IElement CreateTypeSpecification(this MofUriExtent extent, _UML uml, Type dotNetType)
         {
             var factory = new MofFactory(extent);

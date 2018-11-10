@@ -226,7 +226,7 @@ namespace DatenMeister.Web.Api
                     configuration = new XmiStorageConfiguration
                     {
                         extentUri = model.contextUri,
-                        Path = filename,
+                        filePath = filename,
                         workspaceId = model.workspace
                     };
 
@@ -235,7 +235,7 @@ namespace DatenMeister.Web.Api
                     var csvExtentData = new CSVExtentLoaderConfig
                     {
                         extentUri = model.contextUri,
-                        Path = filename,
+                        filePath = filename,
                         workspaceId = model.workspace,
                         Settings = new CSVSettings()
                     };
@@ -331,7 +331,7 @@ namespace DatenMeister.Web.Api
                     let typeExtent = type.GetUriExtentOf()
                     select new
                     {
-                        name = UmlNameResolution.GetName(type),
+                        name = NamedElementMethods.GetName(type),
                         uri = typeExtent.uri(type),
                         ext = typeExtent.contextURI(),
                         ws = _workspaceLogic.FindWorkspace(typeExtent)?.id
@@ -374,7 +374,7 @@ namespace DatenMeister.Web.Api
                     let typeExtent = viewType.GetUriExtentOf()
                     select new
                     {
-                        name = UmlNameResolution.GetName(viewType),
+                        name = NamedElementMethods.GetName(viewType),
                         uri = typeExtent.uri(viewType),
                         ext = typeExtent.contextURI(),
                         ws = _workspaceLogic.FindWorkspace(typeExtent)?.id
@@ -411,7 +411,7 @@ namespace DatenMeister.Web.Api
             var totalItems = foundExtent.elements();
             var foundItems = totalItems;
             
-            var result = _viewFinder.FindView(foundExtent);
+            var result = _viewFinder.FindListView(foundExtent);
             if (result == null)
             {
                 return Content(HttpStatusCode.NotFound.ToString(), "View Not Found");
@@ -428,7 +428,7 @@ namespace DatenMeister.Web.Api
             IEnumerable<object> filteredItems = foundItems;
             var metaClasses = filteredItems.GetMetaClasses().Select(x => new ItemModel
             {
-                name = UmlNameResolution.GetName(x),
+                name = NamedElementMethods.GetName(x),
                 uri = x.GetUri()
             });
 
@@ -498,7 +498,7 @@ namespace DatenMeister.Web.Api
                 return NotFound();
             }
 
-            var result = _viewFinder.FindView(foundElement);
+            var result = _viewFinder.FindDetailView(foundElement);
             itemModel.c = DynamicConverter.ToDynamic(result, false);
             itemModel.v = ConvertToJson(foundElement, result);
             itemModel.layer = _workspaceLogic?.GetWorkspaceOfObject(foundElement)?.id;
@@ -513,7 +513,7 @@ namespace DatenMeister.Web.Api
 
                 var metaClassModel = new ItemModel
                 {
-                    name = UmlNameResolution.GetName(metaClass),
+                    name = NamedElementMethods.GetName(metaClass),
                     fullname = NamedElementMethods.GetFullName(metaClass),
                     uri = extentWithMetaClass?.uri(metaClass),
                     ext = extentWithMetaClass?.contextURI(),
@@ -733,7 +733,7 @@ namespace DatenMeister.Web.Api
                             list.Add(new
                             {
                                 u = asElement?.GetUri(),
-                                v = listValue == null ? "null" : UmlNameResolution.GetName(listValue)
+                                v = listValue == null ? "null" : NamedElementMethods.GetName(listValue)
                             });
                         }
 
@@ -767,12 +767,12 @@ namespace DatenMeister.Web.Api
                 tempResult = new
                 {
                     u = asElement.GetUri(),
-                    v = UmlNameResolution.GetName(asElement)
+                    v = NamedElementMethods.GetName(asElement)
                 };
             }
             else
             {
-                tempResult = propertyValue == null ? "null" : UmlNameResolution.GetName(propertyValue);
+                tempResult = propertyValue == null ? "null" : NamedElementMethods.GetName(propertyValue);
             }
             return tempResult;
         }

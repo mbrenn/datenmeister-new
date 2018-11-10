@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -24,7 +23,6 @@ using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Forms.Specific;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
 using Microsoft.Win32;
@@ -35,13 +33,18 @@ namespace DatenMeisterWPF.Forms.Lists
     {
         private IExtent _extent;
 
-        public string WorkspaceId { get; set; }
-        public string ExtentUrl { get; set; }
-
         public ItemsInExtentList()
         {
             Loaded += ItemsInExtentList_Loaded;
         }
+
+        public string WorkspaceId { get; set; }
+        public string ExtentUrl { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a flag whether, all items shall be shown in one tab.
+        /// </summary>
+        public bool ShowAllItemsInOneTab { get; set; }
 
         private void ItemsInExtentList_Loaded(object sender, RoutedEventArgs e)
         {
@@ -57,96 +60,114 @@ namespace DatenMeisterWPF.Forms.Lists
         }
 
         /// <summary>
-        /// Sets the items of the given extent
+        ///     Sets the items of the given extent
         /// </summary>
         protected override void OnRecreateViews()
         {
-            var viewFinder = App.Scope.Resolve<IViewFinder>();
-
             // Group by SelectedItems
-            var metaClasses = SelectedItems.Select(x => (x as IElement)?.getMetaClass()).Distinct();
-            foreach (var metaClass in metaClasses)
+            var metaClasses = SelectedItems.Select(x => (x as IElement)?.getMetaClass()).Distinct().ToList();
+            if (metaClasses.Count == 0 || ShowAllItemsInOneTab)
             {
-                IReflectiveCollection tabItems;
-                if (metaClass == null)
+                CreateTabForItems(SelectedItems, null);
+            }
+            else
+            {
+                foreach (var metaClass in metaClasses)
                 {
-                    tabItems = SelectedItems.WhenMetaClassIsNotSet();
-                }
-                else
-                {
-                    tabItems = SelectedItems.WhenMetaClassIsOneOf(metaClass);
-                }
-
-                IElement view = null;
-                // Nobody selected a form, so we can autocreate a new form
-                if (Items == SelectedItems)
-                {
-                    // Finds the view by the extent type
-                    view = viewFinder.FindView((Items as IHasExtent)?.Extent as IUriExtent, metaClass);
-                }
-                else
-                {
-                    // User has selected a sub element. 
-                    view =
-                        viewFinder.FindListViewFor((tabItems as MofReflectiveSequence)?.MofObject, metaClass)
-                        ?? viewFinder.CreateView(tabItems);
-                }
-
-                var className = metaClass == null ? "Items" : UmlNameResolution.GetName(metaClass);
-                view?.set("name", className);
-                var viewDefinition = new ViewDefinition(className, view);
-
-                // Sets the generic buttons to create the new types
-                if (view?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
-                    is IReflectiveCollection defaultTypesForNewItems)
-                {
-                    foreach (var type in defaultTypesForNewItems.OfType<IElement>())
+                    IReflectiveCollection tabItems;
+                    if (metaClass == null)
                     {
-                        var typeName = type.get(_UML._CommonStructure._NamedElement.name);
-
-                        viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
-                            $"New {typeName}", () =>
-                            {
-                                var elements =
-                                    NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
-                                elements.Closed += (x, y) => { RecreateViews(); };
-                            }));
+                        tabItems = SelectedItems.WhenMetaClassIsNotSet();
                     }
+                    else
+                    {
+                        tabItems = SelectedItems.WhenMetaClassIsOneOf(metaClass);
+                    }
+
+                    CreateTabForItems(tabItems, metaClass);
                 }
-
-                // Sets the button for the new item
-                viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
-                    "New Item", () =>
-                    {
-                        var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
-                        elements.Closed += (x, y) => { RecreateViews(); };
-                    }));
-
-                // Allows the deletion of an item
-                viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition(
-                    "Delete",
-                    (guest, item) =>
-                    {
-                        if (MessageBox.Show(
-                                "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
-                            MessageBoxResult.Yes)
-                        {
-                            _extent.elements().remove(item);
-                            //element.Control.UpdateContent();
-                        }
-                    }));
-
-                PrepareNavigation(viewDefinition);
-
-                var element = AddTab(
-                    tabItems,
-                    viewDefinition);
             }
         }
 
         /// <summary>
-        /// Prepares the navigation of the host. The function is called by the navigation 
-        /// host. 
+        ///     Creates the tab for the given items and the metaclass that shell be shown
+        /// </summary>
+        /// <param name="tabItems">Items for the tab</param>
+        /// <param name="metaClass">Meta class of the items</param>
+        private void CreateTabForItems(IReflectiveCollection tabItems, IElement metaClass)
+        {
+            var viewFinder = App.Scope.Resolve<IViewFinder>();
+            IElement view;
+
+            if (Items == SelectedItems)
+            {
+                // Finds the view by the extent type
+                view = viewFinder.FindListView((Items as IHasExtent)?.Extent as IUriExtent, metaClass);
+            }
+            else
+            {
+                // User has selected a sub element and its children shall be shown
+                view =
+                    viewFinder.FindListViewFor(
+                        (tabItems as MofReflectiveSequence)?.MofObject, metaClass)
+                    ?? viewFinder.CreateView(tabItems);
+            }
+
+            var className = metaClass == null ? "Items" : NamedElementMethods.GetName(metaClass);
+            view?.set("name", className);
+
+            var viewDefinition = new ViewDefinition(className, view);
+
+            // Sets the generic buttons to create the new types
+            if (view?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
+                is IReflectiveCollection defaultTypesForNewItems)
+            {
+                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
+                {
+                    var typeName = type.get(_UML._CommonStructure._NamedElement.name);
+
+                    viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
+                        $"New {typeName}", () =>
+                        {
+                            var elements =
+                                NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
+                            elements.Closed += (x, y) => { RecreateViews(); };
+                        }));
+                }
+            }
+
+            // Sets the button for the new item
+            viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
+                "New Item", () =>
+                {
+                    var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
+                    elements.Closed += (x, y) => { RecreateViews(); };
+                }));
+
+            // Allows the deletion of an item
+            viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition(
+                "Delete",
+                (guest, item) =>
+                {
+                    if (MessageBox.Show(
+                            "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
+                        MessageBoxResult.Yes)
+                    {
+                        _extent.elements().remove(item);
+                        //element.Control.UpdateContent();
+                    }
+                }));
+
+            PrepareNavigation(viewDefinition);
+
+            var element = AddTab(
+                tabItems,
+                viewDefinition);
+        }
+
+        /// <summary>
+        ///     Prepares the navigation of the host. The function is called by the navigation
+        ///     host.
         /// </summary>
         public void PrepareNavigation(ViewDefinition viewDefinition)
         {
@@ -225,10 +246,11 @@ namespace DatenMeisterWPF.Forms.Lists
             void OpenExtentFolder()
             {
                 var extentManager = App.Scope.Resolve<IExtentManager>();
-                if (extentManager.GetLoadConfigurationFor(_extent as IUriExtent) is ExtentFileLoaderConfig loadConfiguration && loadConfiguration.Path != null)
+                if (extentManager.GetLoadConfigurationFor(_extent as IUriExtent) is ExtentFileLoaderConfig
+                        loadConfiguration && loadConfiguration.filePath != null)
                 {
                     // ReSharper disable once AssignNullToNotNullAttribute
-                    Process.Start(Path.GetDirectoryName(loadConfiguration.Path));
+                    Process.Start(Path.GetDirectoryName(loadConfiguration.filePath));
                 }
                 else
                 {
@@ -243,7 +265,10 @@ namespace DatenMeisterWPF.Forms.Lists
                     var window = new TreeViewWindow {Owner = NavigationHost.GetWindow()};
                     window.SetDefaultProperties();
                     window.SetCollection(_extent.elements());
-                    window.ItemSelected += (x, y) => { NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item); };
+                    window.ItemSelected += (x, y) =>
+                    {
+                        NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
+                    };
                     window.Show();
                 }
             }

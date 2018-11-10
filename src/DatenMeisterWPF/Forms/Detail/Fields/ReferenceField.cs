@@ -73,12 +73,12 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     }
                 }
 
-                detailForm.SetActions.Add(() =>
+                detailForm.SetActions.Add(detailElement =>
                 {
                     var selectedElement = control.SelectedElement;
                     if (selectedElement != null)
                     {
-                        value.set(name,selectedElement);
+                        detailElement.set(name,selectedElement);
                     }
                 });
 

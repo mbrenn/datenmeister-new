@@ -13,6 +13,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -80,6 +81,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\PasteToClipboardCommand.cs" />
     <Compile Include="Commands\CopyToClipboardCommand.cs" />
     <Compile Include="Commands\DatenMeisterCommands.cs" />
     <Compile Include="Controls\LocateElementControl.xaml.cs">
@@ -287,6 +289,10 @@
     <ProjectReference Include="..\..\modules\burnsystems.wpf\src\BurnSystems.WPF\BurnSystems.WPF.csproj">
       <Project>{f052ce44-4f75-4a9a-b0f2-af7be3b880c2}</Project>
       <Name>BurnSystems.WPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj">
+      <Project>{1b5763e6-b595-4aa4-8b83-640715cc2fb1}</Project>
+      <Name>BurnSystems</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\modules\DatenMeister.Icons\src\DatenMeister.Icons\DatenMeister.Icons.csproj">
       <Project>{c2bc0e95-4d38-4584-b6a0-b08dec6de504}</Project>

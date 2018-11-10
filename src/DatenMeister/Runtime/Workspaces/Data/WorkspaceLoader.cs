@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using BurnSystems.Logging;
 
 namespace DatenMeister.Runtime.Workspaces.Data
 {
     public class WorkspaceLoader : ObjectFileStorage<WorkspaceFileData>
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(WorkspaceLoader));
+
         /// <summary>
         /// Stores the configuration of the workspace loader
         /// </summary>
@@ -48,7 +51,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
                     var foundWorkspace = WorkspaceLogic.GetWorkspace(workspaceInfo.id);
                     if (foundWorkspace != null)
                     {
-                        // Already exists, update annoptation
+                        // Already exists, update annotation
                         foundWorkspace.annotation = workspaceInfo.annotation;
                         continue;
                     }
@@ -61,7 +64,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"Loading of workspaces failed: {e}");
+                Logger.Error($"Loading of workspaces failed: {e}");
                 return null;
             }
         }

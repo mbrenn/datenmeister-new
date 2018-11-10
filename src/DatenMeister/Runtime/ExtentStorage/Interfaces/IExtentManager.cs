@@ -1,10 +1,13 @@
-﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
+﻿using System;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 
 namespace DatenMeister.Runtime.ExtentStorage.Interfaces
 {
     public interface IExtentManager
     {
+        void AddAdditionalType(Type type);
+
         /// <summary>
         /// Loads the extent by using the extent storage
         /// </summary>

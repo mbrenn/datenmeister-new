@@ -39,10 +39,7 @@ namespace DatenMeisterWPF.Forms.Base
         public ItemListViewControl()
         {
             InitializeComponent();
-            CopyCommand = new CopyToClipboardCommand(this);
         }
-
-        public ICommand CopyCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the host for the list view item. The navigation
@@ -181,7 +178,7 @@ namespace DatenMeisterWPF.Forms.Base
                                 var nr = string.Empty;
                                 foreach (var valueElement in valueAsList)
                                 {
-                                    result.Append(nr + UmlNameResolution.GetName(valueElement));
+                                    result.Append(nr + NamedElementMethods.GetName(valueElement));
                                     nr = "\r\n";
 
                                     elementCount++;
@@ -549,7 +546,13 @@ namespace DatenMeisterWPF.Forms.Base
             void CopyContent()
             {
                 var copyContent = new CopyToClipboardCommand(this);
-                copyContent.Execute(null);
+                copyContent.Execute(CopyType.Default);
+            }
+
+            void CopyContentAsXmi()
+            {
+                var copyContent = new CopyToClipboardCommand(this);
+                copyContent.Execute(CopyType.AsXmi);
             }
 
             ViewExtensions.Add(
@@ -597,6 +600,13 @@ namespace DatenMeisterWPF.Forms.Base
                     CopyContent,
                     null,
                     NavigationCategories.File + ".Copy"));
+
+            ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Copy as XMI",
+                    CopyContentAsXmi,
+                    null,
+                    NavigationCategories.File + ".Copy"));
         }
 
         /// <inheritdoc />
@@ -617,7 +627,14 @@ namespace DatenMeisterWPF.Forms.Base
         /// <returns>Enumeration of selected item</returns>
         public IEnumerable<IObject> GetSelectedItems()
         {
-            foreach (var item in DataGrid.SelectedItems)
+            var selectedItems = DataGrid.SelectedItems;
+            if (selectedItems.Count == 0)
+            {
+                // If no item is selected, get all items
+                selectedItems = DataGrid.Items;
+            }
+
+            foreach (var item in selectedItems)
             {
                 if (item is ExpandoObject selectedItem)
                 {
@@ -658,7 +675,8 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            CopyCommand.Execute(null);
+            var copyContent = new CopyToClipboardCommand(this);
+            copyContent.Execute(CopyType.Default);
         }
 
         /// <summary>

@@ -20,7 +20,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             var xmiConfiguration = (XmiStorageConfiguration) configuration;
 
             XDocument xmlDocument;
-            if (!File.Exists(xmiConfiguration.Path))
+            if (!File.Exists(xmiConfiguration.filePath))
             {
                 if (createAlsoEmpty)
                 {
@@ -29,14 +29,14 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 else
                 {
                     throw new InvalidOperationException(
-                        $"File not found: {xmiConfiguration.Path}");
+                        $"File not found: {xmiConfiguration.filePath}");
                 }
             }
             else
             {
                 try
                 {
-                    xmlDocument = XDocument.Load(xmiConfiguration.Path);
+                    xmlDocument = XDocument.Load(xmiConfiguration.filePath);
                 }
                 catch(Exception exc)
                 {
@@ -56,7 +56,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
         private static XDocument CreateEmptyXmiDocument(XmiStorageConfiguration xmiConfiguration)
         {
             // Creates directory if necessary
-            var directoryPath = Path.GetDirectoryName(xmiConfiguration.Path);
+            var directoryPath = Path.GetDirectoryName(xmiConfiguration.filePath);
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
@@ -67,7 +67,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 new XElement(XmiProvider.DefaultRootNodeName));
 
             // Try to create file, to verify that file access and other activities are given
-            File.WriteAllText(xmiConfiguration.Path, string.Empty);
+            File.WriteAllText(xmiConfiguration.filePath, string.Empty);
             return xmlDocument;
         }
 
@@ -81,13 +81,13 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 }
 
                 // Deletes existing file
-                if (File.Exists(xmiConfiguration.Path))
+                if (File.Exists(xmiConfiguration.filePath))
                 {
-                    File.Delete(xmiConfiguration.Path);
+                    File.Delete(xmiConfiguration.filePath);
                 }
 
                 // Loads existing file
-                using (var fileStream = File.OpenWrite(xmiConfiguration.Path))
+                using (var fileStream = File.OpenWrite(xmiConfiguration.filePath))
                 {
                     xmlExtent.Document.Save(fileStream);
                 }

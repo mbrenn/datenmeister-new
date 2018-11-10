@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
@@ -32,7 +33,14 @@ namespace DatenMeisterWPF
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
+            var path = Path.Combine(Path.GetDirectoryName(typeof(App).Assembly.Location), "log.txt");
+#if DEBUG
             TheLog.AddProvider(new DebugProvider(), LogLevel.Trace);
+            TheLog.AddProvider(new FileProvider(path, true), LogLevel.Trace);
+#else
+            TheLog.AddProvider(new DebugProvider());
+            TheLog.AddProvider(new FileProvider(path, true));
+#endif
             TheLog.Info("Starting DatenMeister WPF");
         }
     }

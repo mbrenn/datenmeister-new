@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Autofac;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Controls
 {
@@ -29,12 +19,12 @@ namespace DatenMeisterWPF.Controls
         public LocateElementControl()
         {
             InitializeComponent();
+
+            _workspaceLogic = App.Scope?.Resolve<IWorkspaceLogic>();
         }
 
         private void Control_Loaded(object sender, RoutedEventArgs e)
         {
-
-            _workspaceLogic = App.Scope?.Resolve<IWorkspaceLogic>();
             if (_workspaceLogic != null)
             {
                 UpdateWorkspaces();
@@ -153,8 +143,7 @@ namespace DatenMeisterWPF.Controls
         /// <param name="extent">Extent to be selected</param>
         public void Select(IExtent extent)
         {
-            var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
-            var workspace = workspaceLogic.FindWorkspace(extent);
+            var workspace = _workspaceLogic.FindWorkspace(extent);
             SelectedWorkspace = workspace;
             SelectedExtent = extent;
         }
@@ -283,6 +272,29 @@ namespace DatenMeisterWPF.Controls
                         break;
                 }
             }
+        }
+
+        public void SelectWorkspace(string workspaceId)
+        {
+            Select((IWorkspace) _workspaceLogic.GetWorkspace(workspaceId));
+        }
+
+        public void SelectExtent(string extentUri)
+        {
+            Select(SelectedWorkspace.FindExtent(extentUri));
+        }
+
+        /// <summary>
+        /// Sets the given reflection as the root objects. 
+        /// </summary>
+        /// <param name="collection">Collection to be shown.</param>
+        /// <param name="showOnlyObject">true, if the workspace and extent options are hidden and cannot be selected by the user</param>
+        public void SetAsRoot(IReflectiveCollection collection, bool showOnlyObject = true)
+        {
+            ShowWorkspaceSelection = !showOnlyObject;
+            ShowExtentSelection = !showOnlyObject;
+
+            items.ItemsSource = collection;
         }
     }
 }

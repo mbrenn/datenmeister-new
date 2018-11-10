@@ -9,9 +9,11 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Plugins;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
@@ -24,7 +26,8 @@ namespace DatenMeister.Modules.TypeSupport
     /// of the DatenMeister and will not be stored into 
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class LocalTypeSupport
+    [PluginLoading(PluginLoadingPosition.AfterBootstrapping|PluginLoadingPosition.AfterInitialization)]
+    public class LocalTypeSupport : IDatenMeisterPlugin
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(LocalTypeSupport));
 
@@ -54,13 +57,19 @@ namespace DatenMeister.Modules.TypeSupport
         /// <summary>
         /// Creates the extent being used to store the internal types
         /// </summary>
-        /// <returns>The created uri contining the internal types</returns>
-        public void Initialize()
+        /// <returns>The created uri containing the internal types</returns>
+        public void Start(PluginLoadingPosition position)
         {
-            CreateInternalTypeExtent();
-
-            // Creates the extent for the user types which is permanently stored on disk. The user is capable to create his own types
-            CreatesUserTypeExtent();
+            switch (position)
+            {
+                case PluginLoadingPosition.AfterBootstrapping:
+                    CreateInternalTypeExtent();
+                    break;
+                case PluginLoadingPosition.AfterInitialization:
+                    // Creates the extent for the user types which is permanently stored on disk. The user is capable to create his own types
+                    CreatesUserTypeExtent();
+                    break;
+            }
         }
 
         private void CreateInternalTypeExtent()
@@ -162,8 +171,9 @@ namespace DatenMeister.Modules.TypeSupport
         private IList<IElement> AddInternalTypes(IReflectiveCollection rootElements, IEnumerable<Type> types)
         {
             var result = new List<IElement>();
+            var internalTypeExtent = (MofExtent) GetInternalTypeExtent();
             var generator = new DotNetTypeGenerator(
-                new MofFactory(GetInternalTypeExtent()),
+                new MofFactory(internalTypeExtent),
                 _workspaceLogic.GetUmlData());
 
             foreach (var type in types)
@@ -171,6 +181,8 @@ namespace DatenMeister.Modules.TypeSupport
                 var element = generator.CreateTypeFor(type);
                 rootElements.add(element); // Adds to the extent
                 result.Add(element); // Adds to the internal return list
+
+                internalTypeExtent.TypeLookup.Add(element.GetUri(), type);
             }
 
             return result;

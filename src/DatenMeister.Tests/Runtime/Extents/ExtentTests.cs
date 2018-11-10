@@ -56,7 +56,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var path = "./test.xmi";
             var loaderConfig = new XmiStorageConfiguration
             {
-                Path = path,
+                filePath = path,
                 extentUri = "datenmeister:///data",
                 workspaceId = WorkspaceNames.NameData
             };
@@ -126,14 +126,14 @@ namespace DatenMeister.Tests.Runtime.Extents
                 var csvExtent = extentManager.LoadExtent(
                     new CSVExtentLoaderConfig
                     {
-                        Path = "./test.csv",
+                        filePath = "./test.csv",
                         extentUri = csvExtentUri
                     }, true);
 
                 var mofExtent = extentManager.LoadExtent(
                     new XmiStorageConfiguration
                     {
-                        Path = "./test.xmi",
+                        filePath = "./test.xmi",
                         extentUri = xmiExtentUri
                     }, true);
 

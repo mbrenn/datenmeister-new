@@ -1,8 +1,11 @@
-﻿using System.Runtime.Remoting.Messaging;
+﻿using System;
+using System.Runtime.Remoting.Messaging;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using Autofac;
+using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ZipExample;
@@ -10,6 +13,8 @@ using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
@@ -17,11 +22,14 @@ using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Forms.Specific;
 using DatenMeisterWPF.Navigation;
+using DatenMeisterWPF.Windows;
 
 namespace DatenMeisterWPF.Forms.Lists
 {
-    public class ListRequests
+    public static class ListRequests
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(ListRequests));
+
         /// <summary>
         /// Requests the form for the workspace
         /// </summary>
@@ -116,6 +124,13 @@ namespace DatenMeisterWPF.Forms.Lists
                     NavigationCategories.File + ".Import"));
 
             viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Load Extent",
+                    LoadExtent,
+                    Icons.ImportExcel,
+                    NavigationCategories.File + ".Extent"));
+
+            viewDefinition.ViewExtensions.Add(
                 new RowItemButtonDefinition("Delete", DeleteExtent));
 
             viewDefinition.ViewExtensions.Add(
@@ -197,6 +212,48 @@ namespace DatenMeisterWPF.Forms.Lists
                     workspaceId,
                     uri);
                 events.Closed += (x, y) => listViewControl.UpdateContent();
+            }
+
+            void LoadExtent()
+            {
+                // Let user select the type of the extent
+                var dlg = new LocateItemDialog();
+                var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+                var extent = workspaceLogic.FindExtent(WorkspaceNames.NameTypes, WorkspaceNames.UriInternalTypesExtent);
+
+                var packageMethods = App.Scope.Resolve<PackageMethods>();
+                var package = packageMethods.GotoPackage(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
+                dlg.SetAsRoot(package);
+                if (dlg.ShowDialog() != true) return;
+                if (!(dlg.SelectedElement is IElement selectedExtentType)) return;
+
+                // Create the item
+                var factory = new MofFactory(extent);
+                var createdElement = factory.create(selectedExtentType);
+                
+                // Let user fill out the configuration of the extent
+                var detailControl = NavigatorForItems.NavigateToElementDetailView(control.NavigationHost, createdElement);
+                detailControl.Closed += (x, y) =>
+                {
+                    // Now, we got the item extent... 
+                    var extentManager = App.Scope.Resolve<IExtentManager>();
+
+                    // Convert back to instance
+                    var extentLoaderConfig = DotNetConverter.ConvertToDotNetObject(createdElement) as ExtentLoaderConfig;
+
+                    try
+                    {
+                        var loadedExtent = extentManager.LoadExtent(extentLoaderConfig, true);
+                        Logger.Info($"User created extent via general dialog: {loadedExtent.contextURI()}");
+                    }
+                    catch (Exception exc)
+                    {
+                        Logger.Warn($"User failed to create extent via general dialog: {exc.Message}");
+                        MessageBox.Show(exc.Message);
+                    }
+
+                    control.UpdateAllViews();
+                };
             }
         }
     }

@@ -18,14 +18,14 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="extent">Value for whom the extent shall be created</param>
         /// <param name="metaClass">Meta class of the elements that are shown in the current list</param>
         /// <returns>Found view or null</returns>
-        IElement FindView(IUriExtent extent, IElement metaClass = null);
+        IElement FindListView(IUriExtent extent, IElement metaClass = null);
 
         /// <summary>
         /// Finds the view for a specific object in a detail view
         /// </summary>
         /// <param name="value">Value for whom the object shall be created</param>
         /// <returns>Found view or null</returns>
-        IElement FindView(IObject value);
+        IElement FindDetailView(IObject value);
 
         /// <summary>
         /// Finds the list view of all sub elements of the given items

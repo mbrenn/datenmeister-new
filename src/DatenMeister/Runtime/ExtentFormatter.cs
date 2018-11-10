@@ -82,11 +82,11 @@ namespace DatenMeister.Runtime
             {
                 var mofElement = (MofElement)parsedValue;
                 _builder.AppendLine(
-                    $"{_currentIndent}Element '{UmlNameResolution.GetName(mofObject)}' [#{mofElement.Id}] of type: {UmlNameResolution.GetName(mofElement.getMetaClass())}");
+                    $"{_currentIndent}Element '{NamedElementMethods.GetName(mofObject)}' [#{mofElement.Id}] of type: {NamedElementMethods.GetName(mofElement.getMetaClass())}");
             }
             else
             {
-                _builder.AppendLine($"{_currentIndent}Object '{UmlNameResolution.GetName(mofObject)}'");
+                _builder.AppendLine($"{_currentIndent}Object '{NamedElementMethods.GetName(mofObject)}'");
             }
 
             IncreaseIndentation();

@@ -50,7 +50,7 @@ namespace DatenMeister.Models.Forms
 
             if (metaclass != null)
             {
-                builder.Append($" - MetaClass: {UmlNameResolution.GetName(metaclass)}");
+                builder.Append($" - MetaClass: {NamedElementMethods.GetName(metaclass)}");
             }
 
             return $"View for: {viewType} - {metaclassName}";

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -17,6 +18,8 @@ namespace DatenMeister.Runtime
     /// <typeparam name="T">Type of the elements that are abstracted</typeparam>
     public class ExtentUrlNavigator<T> where T : class, IElement, IHasId
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentUrlNavigator<T>));
+
         private readonly Dictionary<string, IHasId> _cacheIds = new Dictionary<string, IHasId>();
 
         private readonly MofUriExtent _extent;
@@ -72,7 +75,7 @@ namespace DatenMeister.Runtime
                     var fragment = uri.Substring(posHash + 1);
                     if (string.IsNullOrEmpty(fragment))
                     {
-                        Debug.WriteLine(
+                        Logger.Info(
                             $"Uri does not contain a URI-Fragment defining the object being looked for. {nameof(uri)}");
 
                         return null;
@@ -95,7 +98,7 @@ namespace DatenMeister.Runtime
                     // According to MOF Specification, return null, if not found
                     return null;
                 }
-                else if (posQuestion != -1)
+                if (posQuestion != -1)
                 {
                     var fullName = uri.Substring(posQuestion + 1);
                     var found = NamedElementMethods.GetByFullName(_extent, fullName);
@@ -107,14 +110,14 @@ namespace DatenMeister.Runtime
 
                     return null;
                 }
-                else
-                {
-                    throw new NotImplementedException("No hash and no question mark");
-                }
+
+                Logger.Fatal("No hash and no question mark");
+                throw new NotImplementedException("No hash and no question mark");
+
             }
             catch (UriFormatException exc)
             {
-                Debug.WriteLine(
+                Logger.Error(
                     $"Exception while parsing URI {nameof(uri)}: {exc.Message}");
 
                 return null;

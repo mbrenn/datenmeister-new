@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -13,6 +14,8 @@ namespace DatenMeister.Web.Api
     [Route("api/datenmeister/example")]
     public class ExampleController : Controller
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(ExampleController));
+
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IExtentManager _loader;
 
@@ -53,7 +56,7 @@ namespace DatenMeister.Web.Api
             var defaultConfiguration = new CSVExtentLoaderConfig
             {
                 extentUri = $"datenmeister:///zipcodes/{randomNumber}",
-                Path = filename,
+                filePath = filename,
                 workspaceId = workspace.ws,
                 Settings =
                 {
@@ -68,7 +71,7 @@ namespace DatenMeister.Web.Api
 
             _loader.LoadExtent(defaultConfiguration, false);
 
-            Debug.WriteLine("Zip codes loaded");
+            Logger.Info("Zip codes loaded");
         }
     }
 }

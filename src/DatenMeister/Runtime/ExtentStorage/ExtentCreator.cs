@@ -59,7 +59,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 var storageConfiguration = new XmiStorageConfiguration
                 {
                     extentUri = uri,
-                    Path = Path.Combine(_integrationSettings.DatabasePath, Path.Combine("extents/", name + ".xml")),
+                    filePath = Path.Combine(_integrationSettings.DatabasePath, Path.Combine("extents/", name + ".xml")),
                     workspaceId = workspace
                 };
 

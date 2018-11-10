@@ -51,7 +51,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             if (!_mapping.TryGetValue(configuration.GetType(), out Func<ILifetimeScope, IProviderLoader> foundType))
             {
-                throw new InvalidOperationException("ExtentStorage for the given type was not found");
+                throw new InvalidOperationException($"ExtentStorage for the given type was not found:  {configuration.GetType().FullName}");
             }
             
             return foundType(scope);

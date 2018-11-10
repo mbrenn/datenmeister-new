@@ -5,12 +5,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Autofac;
+using BurnSystems.Logging;
 using DatenMeister.Integration;
 
 namespace DatenMeister.Core.Plugins
 {
     public class PluginManager
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(PluginManager));
+
         /// <summary>
         /// Gets or sets va value indicating whtether at least one exception occured during the loading. 
         /// </summary>
@@ -48,7 +51,7 @@ namespace DatenMeister.Core.Plugins
                 if (AppDomain.CurrentDomain.GetAssemblies().All(a => !string.Equals(a.GetName().Name, name.Name, StringComparison.CurrentCultureIgnoreCase)))
                 {
                     var innerAssembly = Assembly.Load(name);
-                    Debug.WriteLine($"Loaded (2): {innerAssembly}");
+                    Logger.Info($"Loaded (2): {innerAssembly}");
                     LoadReferencedAssembly(innerAssembly);
                 }
             }
@@ -63,30 +66,35 @@ namespace DatenMeister.Core.Plugins
 
             if (Directory.Exists(path))
             {
-
                 var files = Directory.GetFiles(path)
                     .Where(x => Path.GetExtension(x).ToLower() == ".dll");
                 foreach (var file in files)
                 {
                     var filenameWithoutExtension = Path.GetFileNameWithoutExtension(file).ToLower();
+                    if (IsDotNetLibrary(filenameWithoutExtension))
+                    {
+                        // Skip .Net Library
+                        continue;
+                    }
+
                     if (AppDomain.CurrentDomain.GetAssemblies().All(
                         x => x.GetName().Name.ToLower() != filenameWithoutExtension))
                     {
                         try
                         {
                             var assembly = Assembly.LoadFile(Path.Combine(path, file));
-                            Debug.WriteLine($"Loaded (1): {assembly.GetName().Name}, {assembly.GetName().Version}");
+                            Logger.Info($"Loaded (1): {assembly.GetName().Name}, {assembly.GetName().Version}");
                         }
                         catch (Exception e)
                         {
-                            Debug.WriteLine($"Loading of assembly {file} failed: {e}");
+                            Logger.Error($"Loading of assembly {file} failed: {e}");
                         }
                     }
                 }
             }
             else
             {
-                Debug.WriteLine($"Directory does not exist: {path}");
+                Logger.Warn($"Directory does not exist: {path}");
             }
         }
 
@@ -95,8 +103,9 @@ namespace DatenMeister.Core.Plugins
         /// of the IDatenMeisterPlugin-Interface
         /// </summary>
         /// <param name="kernel">Dependency Kernel to be used</param>
+        /// <param name="loadingPosition">Defines the plugin position currently used</param>
         /// <returns>true, if all plugins have been started without exception</returns>
-        public bool StartPlugins(ILifetimeScope kernel)
+        public bool StartPlugins(ILifetimeScope kernel, PluginLoadingPosition loadingPosition)
         {
             var pluginList = new List<IDatenMeisterPlugin>();
 
@@ -109,18 +118,15 @@ namespace DatenMeister.Core.Plugins
                 try
                 {
                     // Go through all types and check, if the type has implemented the interface for the pluging 
-                    foreach (var type in assembly.GetTypes())
-                    {
-                        // Checks, if one of the class implements the IDatenMeisterPlugin 
-                        if (type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
-                        {
-                            pluginList.Add((IDatenMeisterPlugin)kernel.Resolve(type));
-                        }
-                    }
+                    pluginList.AddRange(
+                        assembly.GetTypes()
+                            .Where(type => type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
+                            .Where(type => GetPluginEntry(type).HasFlag(loadingPosition))
+                            .Select(type => (IDatenMeisterPlugin) kernel.Resolve(type)));
                 }
                 catch (ReflectionTypeLoadException e)
                 {
-                    Debug.WriteLine($"PluginLoader: Exception during assembly loading of {assembly.FullName} [{assembly.Location}]: {e.Message}");
+                    Logger.Error($"PluginLoader: Exception during assembly loading of {assembly.FullName} [{assembly.Location}]: {e.Message}");
                 }
             }
 
@@ -152,23 +158,23 @@ namespace DatenMeister.Core.Plugins
                     // Now, start the plugin
                     pluginList.Remove(plugin);
 
-                    Debug.WriteLine($"Starting plugin: {plugin.GetType().FullName}");
+                    Logger.Info($"Starting plugin [{loadingPosition}]: {plugin.GetType().FullName}");
                     if (Debugger.IsAttached)
                     {
                         // When a debugger is attached, we are directly interested to figure out that an exception was thrown
-                        plugin.Start();
+                        plugin.Start(loadingPosition);
                     }
                     else
                     {
                         try
                         {
-                            plugin.Start();
+                            plugin.Start(loadingPosition);
                         }
                         catch (Exception exc)
                         {
 
                             NoExceptionDuringLoading = false;
-                            Debug.WriteLine($"Failed plugin: {exc}");
+                            Logger.Error($"Failed plugin: {exc}");
 
                             if (Debugger.IsAttached)
                             {
@@ -182,6 +188,7 @@ namespace DatenMeister.Core.Plugins
                 var currentCount = pluginList.Count;
                 if (currentCount == lastCount)
                 {
+                    Logger.Fatal("Endless Loop in Plugin System");
                     throw new InvalidOperationException("Endless Loop in Plugin System");
                 }
             }
@@ -205,10 +212,31 @@ namespace DatenMeister.Core.Plugins
         /// <summary>
         /// Gets the enumeration of Plugin Dependency Attributes upon the given plugin instance
         /// </summary>
+        /// <param name="type">Instance which is queried</param>
+        /// <returns>The dependencies</returns>
+        private PluginLoadingAttribute GetPluginLoadingAttribute(Type type)
+        {
+            foreach (var attribute in type.GetCustomAttributes(typeof(PluginLoadingAttribute), false))
+            {
+                return (PluginLoadingAttribute)attribute;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the enumeration of Plugin Dependency Attributes upon the given plugin instance
+        /// </summary>
         /// <param name="plugin">Instance which is queried</param>
         /// <returns>The dependencies</returns>
         private IEnumerable<Type> GetPluginDependencies(IDatenMeisterPlugin plugin) =>
             GetPluginDependencyAttribute(plugin).Select(x => x.DependentType);
+
+        private PluginLoadingPosition GetPluginEntry(Type plugin)
+        {
+            var attribute = GetPluginLoadingAttribute(plugin);
+            return attribute?.PluginLoadingPosition ?? PluginLoadingPosition.AfterInitialization;
+        }
 
         /// <summary> 
         /// Gets true, if the given library is a dotnet library which  
@@ -218,9 +246,22 @@ namespace DatenMeister.Core.Plugins
         /// <returns></returns> 
         private static bool IsDotNetLibrary(AssemblyName assemblyName)
         {
-            return assemblyName.FullName.StartsWith("Microsoft") ||
-                   assemblyName.FullName.StartsWith("mscorlib") ||
-                   assemblyName.FullName.StartsWith("System");
+            return assemblyName.FullName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
+                   assemblyName.FullName.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
+                   assemblyName.FullName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary> 
+        /// Gets true, if the given library is a dotnet library which  
+        /// starts with System, Microsoft or mscorlib.   
+        /// </summary> 
+        /// <param name="assemblyName">Name of the assembly</param> 
+        /// <returns>true, if the given library is a .Net Library</returns> 
+        private static bool IsDotNetLibrary(string assemblyName)
+        {
+            return assemblyName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
+                   assemblyName.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
+                   assemblyName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

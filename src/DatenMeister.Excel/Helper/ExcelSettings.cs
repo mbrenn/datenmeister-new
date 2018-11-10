@@ -1,9 +1,10 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
 
 namespace DatenMeister.Excel.Helper
 {
-    public class ExcelSettings
+    public class ExcelSettings : ExtentLoaderConfig
     {
         public bool fixRowCount { get; set; }
         public bool fixColumnCount { get; set; }
@@ -15,10 +16,6 @@ namespace DatenMeister.Excel.Helper
         public int countColumns { get; set; }
         public bool hasHeader { get; set; } = true;
         public string idColumnName { get; set; }
-
-        public string workspaceId { get; set; }
-        public string extentUri { get; set; }
-        public string extentPath { get; set; }
 
         /// <summary>
         /// Gets the settings as a mof object

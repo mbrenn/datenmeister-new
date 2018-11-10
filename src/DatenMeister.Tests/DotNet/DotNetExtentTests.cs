@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.DotNet
             var provider = new DotNetProvider(typeExtent.TypeLookup);
             var extent = new MofUriExtent(provider, "datenmeister:///test");
             var value = new DotNetTests.TestClass();
-            var dotNetElement = typeExtent.TypeLookup.CreateDotNetElement(extent, value);
+            var dotNetElement = extent.CreateDotNetMofElement(value);
 
             Assert.That(dotNetElement.get("Title"), Is.Null);
             Assert.That(dotNetElement.get("Number"), Is.Not.Null);
@@ -40,7 +40,7 @@ namespace DatenMeister.Tests.DotNet
             var provider = new DotNetProvider(extent.TypeLookup);
             var dotNetExtent = new MofUriExtent(provider, "datenmeister:///");
             var value = new DotNetTests.TestClassWithList();
-            var dotNetElement = extent.TypeLookup.CreateDotNetElement(dotNetExtent, value);
+            var dotNetElement = dotNetExtent.CreateDotNetMofElement(value);
 
             var result = dotNetElement.get("Authors");
             Assert.That(result, Is.Not.Null);
@@ -71,7 +71,7 @@ namespace DatenMeister.Tests.DotNet
             var extent = new MofUriExtent(provider, "datenmeister:///test");
             extent.AddMetaExtent(typeExtent);
             var value = new DotNetTests.TestClassWithList();
-            var dotNetElement = typeExtent.TypeLookup.CreateDotNetElement(extent, value);
+            var dotNetElement = extent.CreateDotNetMofElement(value);
 
             var persons = dotNetElement.get("Persons");
             Assert.That(persons, Is.Not.Null);
@@ -155,7 +155,7 @@ namespace DatenMeister.Tests.DotNet
                 Parent = parent
             };
 
-            var personAsElement = typeExtent.TypeLookup.CreateDotNetElement(extent, child);
+            var personAsElement = extent.CreateDotNetMofElement(child);
             extent.elements().add(personAsElement);
 
             var element = extent.elements().ElementAt(0).AsIObject();
@@ -198,7 +198,7 @@ namespace DatenMeister.Tests.DotNet
             parent.Persons.Add(child1);
             parent.Persons.Add(child2);
 
-            var personAsElement = typeExtent.TypeLookup.CreateDotNetElement(extent, parent);
+            var personAsElement = extent.CreateDotNetMofElement(parent);
             extent.elements().add(personAsElement);
 
             var element = extent.elements().ElementAt(0).AsIObject();

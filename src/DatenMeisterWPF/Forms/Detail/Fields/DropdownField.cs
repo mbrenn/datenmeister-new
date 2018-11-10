@@ -75,11 +75,11 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             combobox.SelectedValue = selectedBoxItem;
 
             detailForm.SetActions.Add(
-                () =>
+                element =>
                 {
                     if (propertyValue != combobox.SelectedValue)
                     {
-                        value.set(name, (combobox.SelectedValue as ComboBoxItem)?.Tag);
+                        element.set(name, (combobox.SelectedValue as ComboBoxItem)?.Tag);
                     }
                 });
 

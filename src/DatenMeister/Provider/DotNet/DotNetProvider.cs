@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -9,16 +10,14 @@ namespace DatenMeister.Provider.DotNet
     /// </summary>
     public class DotNetProvider : IProvider
     {
-        private readonly IDotNetTypeLookup _typeLookup;
+        /// <summary>
+        /// Gets the type lookup
+        /// </summary>
+        internal IDotNetTypeLookup TypeLookup { get; }
 
         private readonly object _syncObject = new object();
         
         private readonly List<DotNetProviderObject> _elements = new List<DotNetProviderObject>();
-
-        /// <summary>
-        /// Stores the object that stores the properties
-        /// </summary>
-        //private readonly InMemoryObject _innerObject = new InMemoryObject();
 
         /// <summary>
         /// Initializes a new instance of the DotNetExtent class
@@ -26,7 +25,7 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="typeLookup">Looked up type</param>
         public DotNetProvider(IDotNetTypeLookup typeLookup)
         {
-            _typeLookup = typeLookup;
+            TypeLookup = typeLookup;
         }
 
         /// <inheritdoc />
@@ -39,22 +38,15 @@ namespace DatenMeister.Provider.DotNet
                     throw new InvalidOperationException(".Net-Provider requires a meta class");
                 }
 
-                var type = _typeLookup.ToType(metaClassUri);
+                var type = TypeLookup.ToType(metaClassUri);
                 if (type == null)
                 {
                     throw new InvalidOperationException("No metaclass with uri '" + metaClassUri + "' is known");
                 }
 
-                return CreateElementOfType(metaClassUri, type);
+                var result = Activator.CreateInstance(type);
+                return new DotNetProviderObject(this, result, metaClassUri);
             }
-        }
-
-        private DotNetProviderObject CreateElementOfType(string metaClassUri, Type type)
-        {
-            var result = Activator.CreateInstance(type);
-            var providerObject = new DotNetProviderObject(this, _typeLookup, result, metaClassUri);
-
-            return providerObject;
         }
 
         /// <inheritdoc />

@@ -28,8 +28,6 @@ namespace DatenMeisterWPF.Windows
     {
         private ExcelImporter _importer;
 
-        private Func<IReflectiveCollection> _extentFactory;
-
         public ExcelImportType ImportType { get; set; } = ExcelImportType.AsCopy;
 
         public ExcelImportDefinitionDialog()

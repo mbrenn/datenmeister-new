@@ -19,13 +19,6 @@ namespace DatenMeister.Uml.Helper
     {
         private const int MaxDepth            = 1000;
 
-        private readonly IWorkspaceLogic _workspaceLogic;
-
-        public NamedElementMethods(IWorkspaceLogic workspaceLogic)
-        {
-            _workspaceLogic = workspaceLogic;
-        }
-
         /// <summary>
         /// Gets the full path to the given element. It traverses through the container values of the
         /// objects and retrieves the partial names by 'name'.
@@ -40,12 +33,12 @@ namespace DatenMeister.Uml.Helper
                     throw new ArgumentNullException(nameof(value));
                 case IElement valueAsElement:
                     var current = valueAsElement.container();
-                    var result = UmlNameResolution.GetName(value);
+                    var result = GetName(value);
                     var depth = 0;
 
                     while (current != null)
                     {
-                        var currentName = UmlNameResolution.GetName(current);
+                        var currentName = GetName(current);
                         result = $"{currentName}::{result}";
                         current = current.container();
                         depth++;
@@ -60,7 +53,7 @@ namespace DatenMeister.Uml.Helper
                     return result;
             }
 
-            return UmlNameResolution.GetName(value);
+            return GetName(value);
         }
 
         /// <summary>
@@ -109,7 +102,7 @@ namespace DatenMeister.Uml.Helper
                     .Select(x => x as IElement)
                     .Where(x => x != null))
                 {
-                    var name = UmlNameResolution.GetName(currentValue);
+                    var name = GetName(currentValue);
                     if (name == elementName)
                     {
                         // We found the element, now abort the search and look in its properties
@@ -167,6 +160,55 @@ namespace DatenMeister.Uml.Helper
                     }
                 }
             }
+        }
+        /// <summary>
+        /// Gets the name of the given object
+        /// </summary>
+        /// <param name="element">Element whose name is requested</param>
+        /// <returns>The found name or null, if not found</returns>
+        public static string GetName(IObject element)
+        {
+            if (element == null)
+            {
+                return "null";
+            }
+
+            // If the element is not uml induced or the property is empty, check by
+            // the default "name" property
+            if (element.isSet(_UML._CommonStructure._NamedElement.name))
+            {
+                return element.get(_UML._CommonStructure._NamedElement.name).ToString();
+            }
+
+            switch (element)
+            {
+                case IHasId elementAsHasId:
+                    return elementAsHasId.Id;
+                case MofObjectShadow shadowedObject:
+                    return shadowedObject.Uri;
+                case MofObject _:
+                    return "MofObject";
+                default:
+                    return element.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Gets the name of the given object
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public static string GetName(object element)
+        {
+            if (element == null)
+            {
+                throw new ArgumentNullException(nameof(element));
+            }
+
+            return
+                !(element is IObject asObject) ?
+                    element.ToString()
+                    : GetName(asObject);
         }
     }
 }

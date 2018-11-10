@@ -9,6 +9,6 @@
         /// <summary>
         /// Starts the plugin
         /// </summary>
-        void Start();
+        void Start(PluginLoadingPosition position);
     }
 }

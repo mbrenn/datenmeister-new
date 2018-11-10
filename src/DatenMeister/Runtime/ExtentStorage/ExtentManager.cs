@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Autofac;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
@@ -23,6 +24,8 @@ namespace DatenMeister.Runtime.ExtentStorage
     public class ExtentManager : IExtentManager
     {
         private readonly ExtentStorageData _data;
+
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentManager));
 
         /// <summary>
         /// Stores the mapping between configuration types and storage provider
@@ -78,7 +81,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         
             // Loads the extent
             var loadedProvider = extentLoader.LoadProvider(configuration, createAlsoEmpty);
-            Debug.WriteLine($"Loading extent: {configuration}");
+            Logger.Info($"Loading extent: {configuration}");
 
             if (loadedProvider == null)
             {
@@ -174,7 +177,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 throw new InvalidOperationException($"The extent '{extent}' was not loaded by this instance");
             }
 
-            Debug.WriteLine($"Writing extent: {information.Configuration}");
+            Logger.Info($"Writing extent: {information.Configuration}");
 
             var extentStorage = _map.CreateFor(_diScope, information.Configuration);
             extentStorage.StoreProvider(((MofUriExtent) information.Extent).Provider, information.Configuration);
@@ -192,7 +195,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 if (information != null)
                 {
                     _data.LoadedExtents.Remove(information);
-                    Debug.WriteLine($"Detaching extent: {information.Configuration}");
+                    Logger.Info($"Detaching extent: {information.Configuration}");
                 }
             }
         }
@@ -217,7 +220,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         public void StoreAll()
         {
-            Debug.WriteLine("Writing all extents");
+            Logger.Info("Writing all extents");
 
             List<ExtentStorageData.LoadedExtentInformation> copy;
             lock (_data.LoadedExtents)

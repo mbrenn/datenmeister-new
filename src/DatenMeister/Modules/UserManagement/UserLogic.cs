@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -16,6 +17,7 @@ namespace DatenMeister.Modules.UserManagement
     /// </summary>
     public class UserLogic
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(UserLogic));
         /// <summary>
         /// Defines the default extent for the users
         /// </summary>
@@ -60,11 +62,11 @@ namespace DatenMeister.Modules.UserManagement
                 var element = factory.create(types[1]);
                 element.set(nameof(UserManagementSettings.Salt), RandomFunctions.GetRandomAlphanumericString(16));
                 extent.elements().add(element);
-                Debug.WriteLine("UserLogic - Created Salt...");
+                Logger.Info("UserLogic - Created Salt...");
             }
             else
             {
-                Debug.WriteLine("UserLogic - Salt is existing");
+                Logger.Debug("UserLogic - Salt is existing");
             }
         }
 

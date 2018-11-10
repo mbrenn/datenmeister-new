@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using Autofac;
+using BurnSystems.Logging;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
@@ -14,6 +15,7 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// </summary>
     public class ManualConfigurationToExtentStorageMapper : IConfigurationToExtentStorageMapper
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(ManualConfigurationToExtentStorageMapper));
 
         /// <summary>
         /// Stores the types being used for the mapping
@@ -65,7 +67,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     map.AddMapping(configuredByAttribute.ConfigurationType,
                         scope => (IProviderLoader) scope.Resolve(type));
 
-                    Debug.WriteLine(
+                    Logger.Trace(
                         $"Extent loader '{configuredByAttribute.ConfigurationType.Name}' configures '{type.Name}'");
                 }
             }

@@ -4,3 +4,7 @@
 [submodule "modules/DatenMeister.Icons"]
 	path = modules/DatenMeister.Icons
 	url = ssh://mbrenn@ratte-ubuntu/~/git/DatenMeister.Icons
+[submodule "modules/BurnSystems.Logging"]
+	path = modules/BurnSystems.Logging
+	url = https://github.com/mbrenn/BurnSystems.Logging
+	branch = master

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Provider.XMI.EMOF;
@@ -21,6 +22,8 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// </summary>
     public class ExtentConfigurationLoader
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentConfigurationLoader));
+
         /// <summary>
         /// Gets the information about the loaded extents, 
         /// and filepath where to look after
@@ -73,7 +76,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
             catch (Exception exc)
             {
-                Debug.WriteLine("Exception during loading of Extents: " + exc.Message);
+                Logger.Warn("Exception during loading of Extents: " + exc.Message);
             }
 
             if (loaded == null)
@@ -93,7 +96,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 }
                 catch (Exception exc)
                 {
-                    Debug.WriteLine($"Loading extent of {info.Item1.extentUri} failed: {exc.Message}");
+                    Logger.Warn($"Loading extent of {info.Item1.extentUri} failed: {exc.Message}");
                 }
             }
         }

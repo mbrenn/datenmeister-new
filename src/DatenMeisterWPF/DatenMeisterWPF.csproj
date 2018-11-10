@@ -137,6 +137,9 @@
     <Compile Include="Windows\LocateItemDialog.xaml.cs">
       <DependentUpon>LocateItemDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\LogWindow.xaml.cs">
+      <DependentUpon>LogWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\RibbonHelper.cs" />
     <Compile Include="Windows\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
@@ -234,6 +237,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\LogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\QueryElementDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -277,10 +284,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\modules\BurnSystems.Logging\src\BurnSystems.Logging\BurnSystems.Logging.csproj">
-      <Project>{8e8d12dc-c9b7-486e-b49b-de27ede31117}</Project>
-      <Name>BurnSystems.Logging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\modules\burnsystems.wpf\src\BurnSystems.WPF\BurnSystems.WPF.csproj">
       <Project>{f052ce44-4f75-4a9a-b0f2-af7be3b880c2}</Project>
       <Name>BurnSystems.WPF</Name>

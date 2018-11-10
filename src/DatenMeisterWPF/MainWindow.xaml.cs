@@ -106,7 +106,7 @@ namespace DatenMeisterWPF
                     NavigationCategories.File + ".Search"),
                 new RibbonButtonDefinition(
                     "Open Log",
-                    () => NavigatorForDialogs.LocateAndOpen(this),
+                    OpenLog,
                     null,
                     NavigationCategories.File + ".Search")
             };

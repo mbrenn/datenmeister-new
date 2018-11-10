@@ -5,15 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DatenMeisterWPF.Windows"
         mc:Ignorable="d"
-        Title="LogWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="LogWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen" Loaded="LogWindow_OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBox x:Name="LogText"  IsReadOnly="True">
+        <TextBox x:Name="LogText" IsReadOnly="True" 
+                 VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                 FontFamily="Consolas">
 
         </TextBox>
-        <Button Grid.Row="1" HorizontalAlignment="Right" IsDefault="True" IsCancel="True">Close</Button>
+        <Button Grid.Row="1" HorizontalAlignment="Right" IsDefault="True" IsCancel="True" Click="Close_Click">Close</Button>
     </Grid>
 </Window>

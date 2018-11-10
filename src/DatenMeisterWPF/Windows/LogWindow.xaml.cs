@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using BurnSystems.Logging.Provider;
 
 namespace DatenMeisterWPF.Windows
 {
@@ -22,6 +12,22 @@ namespace DatenMeisterWPF.Windows
         public LogWindow()
         {
             InitializeComponent();
+        }
+
+        private void LogWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var builder = new StringBuilder();
+            foreach (var message in InMemoryDatabaseProvider.TheOne.Messages)
+            {
+                builder.AppendLine(message.ToString());
+            }
+
+            LogText.Text = builder.ToString();
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

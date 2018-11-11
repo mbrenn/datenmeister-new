@@ -203,7 +203,7 @@ namespace DatenMeisterWPF.Forms.Lists
             
             void ShowItems(INavigationGuest navigationGuest, IObject extentElement)
             {
-                var listViewControl = navigationGuest as ItemListViewControl;
+                var listViewControl = (ItemListViewControl) navigationGuest;
 
                 var uri = extentElement.get("uri").ToString();
 

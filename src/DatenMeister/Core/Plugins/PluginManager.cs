@@ -99,6 +99,26 @@ namespace DatenMeister.Core.Plugins
         }
 
         /// <summary>
+        /// Gets all types of the loaded assemblies, having a certain attribute type
+        /// </summary>
+        /// <param name="attributeType">Attribute Type being queried</param>
+        /// <returns>Enumeration of Types containing the attribute</returns>
+        public static IEnumerable<KeyValuePair<Type, T>> GetTypesOfAssemblies<T>() where T : Attribute
+        {
+            foreach ( var type in AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly => assembly.GetTypes()))
+            {
+                var found = type.GetCustomAttributes(typeof(T)).FirstOrDefault() as T;
+                if (found == null)
+                {
+                    continue;
+                }
+
+                yield return new KeyValuePair<Type, T>(type, found);
+            }
+        }
+
+        /// <summary>
         /// Starts the plugins in all loaded assemblies by calling each class which has the implementation
         /// of the IDatenMeisterPlugin-Interface
         /// </summary>

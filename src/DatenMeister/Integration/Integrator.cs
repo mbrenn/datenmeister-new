@@ -76,7 +76,7 @@ namespace DatenMeister.Integration
             watch.Start();
 
             // Finds the loader for a certain extent type  
-            var storageMap = new ManualConfigurationToExtentStorageMapper();
+            var storageMap = new ConfigurationToExtentStorageMapper();
             kernel.RegisterInstance(storageMap).As<IConfigurationToExtentStorageMapper>();
 
             // Defines the extent storage data  
@@ -154,6 +154,9 @@ namespace DatenMeister.Integration
                 Logger.Info($" Bootstrapping Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
 
                 pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterBootstrapping);
+
+                // Now goes through all classes and add the configuration support
+                storageMap.LoadAllExtentStorageConfigurationsFromAssembly();
 
                 // Creates the workspace and extent for the types layer which are belonging to the types  
                 var localTypeSupport = scope.Resolve<LocalTypeSupport>();

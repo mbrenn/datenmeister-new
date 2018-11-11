@@ -18,5 +18,12 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         void AddMapping(Type typeConfiguration, Func<ILifetimeScope, IProviderLoader> factoryExtentStorage);
 
         IProviderLoader CreateFor(ILifetimeScope scope, ExtentLoaderConfig configuration);
+
+        /// <summary>
+        /// Checks, if there is already a handler for the given configuration type
+        /// </summary>
+        /// <param name="typeConfiguration">Type of the configuration</param>
+        /// <returns>True, if the mapper is already included</returns>
+        bool ContainsConfigurationFor(Type typeConfiguration);
     }
 }

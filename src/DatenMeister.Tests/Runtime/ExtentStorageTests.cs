@@ -23,7 +23,7 @@ namespace DatenMeister.Tests.Runtime
             var fullPath = Path.Combine(CSVExtentTests.PathForTemporaryDataFile);
             File.WriteAllText(fullPath, csvFile);
             
-            var mapper = new ManualConfigurationToExtentStorageMapper();
+            var mapper = new ConfigurationToExtentStorageMapper();
             mapper.AddMapping(typeof (CSVExtentLoaderConfig), scope => new CsvProviderLoader(null));
             var dataLayers = WorkspaceLogic.InitDefault();
 
@@ -62,7 +62,7 @@ namespace DatenMeister.Tests.Runtime
             var fullPath = Path.Combine(CSVExtentTests.PathForTemporaryDataFile);
             File.WriteAllText(fullPath, csvFile);
 
-            var mapper = new ManualConfigurationToExtentStorageMapper();
+            var mapper = new ConfigurationToExtentStorageMapper();
             mapper.AddMapping(typeof(CSVExtentLoaderConfig), scope => new CsvProviderLoader(null));
             var dataLayers = WorkspaceLogic.InitDefault();
 

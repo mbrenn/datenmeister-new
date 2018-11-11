@@ -25,7 +25,7 @@ namespace DatenMeister.Provider.XMI
 
         public void Start(PluginLoadingPosition position)
         {
-            ManualConfigurationToExtentStorageMapper.MapExtentLoaderType(_storageMapper, typeof(XmiStorage));
+            AttributeLoaderForExtentStorage.MapExtentLoaderType(_storageMapper, typeof(XmiStorage));
             
             _extentManager.AddAdditionalType(typeof(ExtentLoaderConfig));
             _extentManager.AddAdditionalType(typeof(XmiStorageConfiguration));

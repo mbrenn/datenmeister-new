@@ -26,7 +26,7 @@ namespace DatenMeister.Provider.CSV
         {
             _extentLoader.AddAdditionalType(typeof(CSVExtentLoaderConfig));
 
-            ManualConfigurationToExtentStorageMapper.MapExtentLoaderType(_configurationToExtentStorageMapper, typeof(CsvProviderLoader));
+            AttributeLoaderForExtentStorage.MapExtentLoaderType(_configurationToExtentStorageMapper, typeof(CsvProviderLoader));
         }
     }
 }

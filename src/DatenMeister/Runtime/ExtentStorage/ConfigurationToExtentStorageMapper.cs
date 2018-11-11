@@ -13,9 +13,9 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// Maps the extent storage type to a configuration type which is used by the logic to find out the best type
     /// which can be used to satisfy a load request. 
     /// </summary>
-    public class ManualConfigurationToExtentStorageMapper : IConfigurationToExtentStorageMapper
+    public class ConfigurationToExtentStorageMapper : IConfigurationToExtentStorageMapper
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(ManualConfigurationToExtentStorageMapper));
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(ConfigurationToExtentStorageMapper));
 
         /// <summary>
         /// Stores the types being used for the mapping
@@ -57,20 +57,9 @@ namespace DatenMeister.Runtime.ExtentStorage
             return foundType(scope);
         }
 
-        public static void MapExtentLoaderType(IConfigurationToExtentStorageMapper map, Type type)
+        public bool ContainsConfigurationFor(Type typeConfiguration)
         {
-            foreach (
-                var customAttribute in type.GetTypeInfo().GetCustomAttributes(typeof(ConfiguredByAttribute), false))
-            {
-                if (customAttribute is ConfiguredByAttribute configuredByAttribute)
-                {
-                    map.AddMapping(configuredByAttribute.ConfigurationType,
-                        scope => (IProviderLoader) scope.Resolve(type));
-
-                    Logger.Trace(
-                        $"Extent loader '{configuredByAttribute.ConfigurationType.Name}' configures '{type.Name}'");
-                }
-            }
+            return _mapping.ContainsKey(typeConfiguration);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using DatenMeister.Excel.Helper;
-using DatenMeister.Integration;
 using DatenMeister.Provider;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
@@ -11,13 +10,6 @@ namespace DatenMeister.Excel.ProviderLoader
     [ConfiguredBy(typeof(ExcelReferenceSettings))]
     public class ExcelReferenceLoader : IProviderLoader
     {
-        private readonly IDatenMeisterScope _scope;
-
-        public ExcelReferenceLoader(IDatenMeisterScope scope)
-        {
-            _scope = scope;
-        }
-
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty)
         {
             if (!(configuration is ExcelReferenceSettings excelReferenceSettings))
@@ -31,7 +23,7 @@ namespace DatenMeister.Excel.ProviderLoader
 
         public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)
         {
-            throw new System.NotImplementedException();
+            // Nothing to store, since the Excel Reference Provider is just a read-only thing
         }
     }
 }

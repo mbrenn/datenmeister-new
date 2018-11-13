@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Runtime.ExtentStorage.Configuration;

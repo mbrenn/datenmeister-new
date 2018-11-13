@@ -26,6 +26,7 @@ namespace DatenMeister.Integration
     public class Integrator
     {
         public string PathWorkspaces { get; }
+
         public string PathExtents { get; }
 
         private static readonly ClassLogger Logger = new ClassLogger(typeof(Integrator));
@@ -187,10 +188,14 @@ namespace DatenMeister.Integration
                 // Includes the extent for the helping extents
                 ManagementProviderHelper.Initialize(workspaceLogic);
 
-                // Boots up the typical DatenMeister Environment  
+                // Boots up the typical DatenMeister Environment by loading the data
                 if (_settings.EstablishDataEnvironment)
                 {
-                    LoadsWorkspacesAndExtents(scope);
+                    var workspaceLoader = scope.Resolve<WorkspaceLoader>();
+                    workspaceLoader.Load();
+
+                    // Loads all extents after all plugins were started  
+                    scope.Resolve<ExtentConfigurationLoader>().LoadAllExtents();
                     scope.Resolve<UserLogic>().Initialize();
                 }
 
@@ -209,19 +214,6 @@ namespace DatenMeister.Integration
             Logger.Debug($"Elapsed time for bootstrap: {watch.Elapsed}");
 
             return builder;
-        }
-
-        /// <summary>
-        /// Loads the workspaces from memory and the extents according to the files.
-        /// </summary>
-        /// <param name="scope">Dependency injection container</param>
-        private void LoadsWorkspacesAndExtents(ILifetimeScope scope)
-        {
-            var workspaceLoader = scope.Resolve<WorkspaceLoader>();
-            workspaceLoader.Load();
-
-            // Loads all extents after all plugins were started  
-            scope.Resolve<ExtentConfigurationLoader>().LoadAllExtents();
         }
     }
 }

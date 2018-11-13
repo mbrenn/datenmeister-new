@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Autofac;
@@ -252,7 +251,14 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             foreach (var info in copy)
             {
-                StoreExtent(info.Extent);
+                try
+                {
+                    StoreExtent(info.Extent);
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error($"Error during storing of extent: {info.Configuration.extentUri}: {exc.Message}");
+                }
             }
         }
     }

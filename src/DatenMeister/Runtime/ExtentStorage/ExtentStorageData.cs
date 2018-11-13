@@ -11,6 +11,11 @@ namespace DatenMeister.Runtime.ExtentStorage
     public class ExtentStorageData
     {
         /// <summary>
+        /// Gets or sets the information whether the loading has failed
+        /// </summary>
+        public bool FailedLoading { get; set; }
+
+        /// <summary>
         /// Stores the loaded extents including the configuration of the storage for the extent
         /// </summary>
         internal List<LoadedExtentInformation> LoadedExtents { get; } = new List<LoadedExtentInformation>();

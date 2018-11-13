@@ -81,21 +81,49 @@ namespace DatenMeister.Runtime.ExtentStorage
                 return;
             }
 
-            foreach (var info in loaded)
+            var failedExtents = new List<string>();
+            foreach (var (extentLoaderConfig, xElement) in loaded)
             {
                 try
                 {
-                    var extent = ExtentManager.LoadExtent(info.Item1, false);
-                    if (info.Item2 != null)
+                    var extent = ExtentManager.LoadExtent(extentLoaderConfig, false);
+                    if (xElement != null)
                     {
-                        ((MofExtent) extent).LocalMetaElementXmlNode = info.Item2;
+                        ((MofExtent) extent).LocalMetaElementXmlNode = xElement;
                     }
                 }
                 catch (Exception exc)
                 {
-                    Logger.Warn($"Loading extent of {info.Item1.extentUri} failed: {exc.Message}");
+                    Logger.Warn($"Loading extent of {extentLoaderConfig.extentUri} failed: {exc.Message}");
+                    failedExtents.Add(extentLoaderConfig.extentUri);
                 }
             }
+
+            // If one of the extents failed, the exception will be thrown
+            if (failedExtents.Count > 0 || ExtentStorageData.FailedLoading)
+            {
+                Logger.Warn("Storing of extents is disabled due to failed loading");
+                ExtentStorageData.FailedLoading = true;
+                throw new LoadingExtentsFailedException(failedExtents);
+            }
+        }
+
+        /// <summary>
+        /// Stores all extents and the catalogue of the extents
+        /// </summary>
+        public void StoreAllExtents()
+        {
+            // Stores the extents themselves into the different database
+            ExtentManager.StoreAll();
+
+            // Skip saving, if loading has failed
+            if (ExtentStorageData.FailedLoading)
+            {
+                Logger.Warn("No extents are stored due to the failure during loading. This prevents unwanted data loss due to a missing extent.");
+            }
+
+            //Save(ExtentStorageData.FilePath, toBeStored);
+            StoreConfiguration(ExtentStorageData.FilePath);
         }
 
         /// <summary>
@@ -117,7 +145,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 if (found == null)
                 {
                     Logger.Fatal($"Unknown Configuration Type: {configType}");
-                    throw new InvalidOperationException("Unknown Configuration Type: " + configType);
+                    ExtentStorageData.FailedLoading = true;
                 }
 
                 xmlConfig.Name = found.Name; // We need to rename the element, so XmlSerializer can work with it
@@ -181,18 +209,6 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
 
             return doc.Root;
-        }
-
-        /// <summary>
-        /// Stores all extents and the catalogue of the extents
-        /// </summary>
-        public void StoreAllExtents()
-        {
-            // Stores the extents themselves into the different database
-            ExtentManager.StoreAll();
-            
-            //Save(ExtentStorageData.FilePath, toBeStored);
-            StoreConfiguration(ExtentStorageData.FilePath);
         }
     }
 }

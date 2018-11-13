@@ -292,7 +292,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             lock (_extentStorageData.LoadedExtents)
             {
-                if (!_extentStorageData.FailedLoading)
+                if (_extentStorageData.FailedLoading)
                 {
                     Logger.Warn("Storing of extents is disabled due to failed loading");
                     return;

@@ -106,6 +106,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj">
+      <Project>{1B5763E6-B595-4AA4-8B83-640715CC2FB1}</Project>
+      <Name>BurnSystems</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj">
       <Project>{9026f9a3-c366-43da-abad-8cc94a3e793f}</Project>
       <Name>DatenMeister.Excel</Name>

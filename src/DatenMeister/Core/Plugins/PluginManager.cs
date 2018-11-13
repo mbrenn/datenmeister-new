@@ -105,16 +105,31 @@ namespace DatenMeister.Core.Plugins
         /// <returns>Enumeration of Types containing the attribute</returns>
         public static IEnumerable<KeyValuePair<Type, T>> GetTypesOfAssemblies<T>() where T : Attribute
         {
-            foreach ( var type in AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes()))
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                var found = type.GetCustomAttributes(typeof(T)).FirstOrDefault() as T;
-                if (found == null)
+                var types = new List<KeyValuePair<Type, T>>();
+                try
                 {
-                    continue;
+                    foreach (var type in assembly.GetTypes())
+                    {
+                        var found = type.GetCustomAttributes(typeof(T)).FirstOrDefault() as T;
+                        if (found == null)
+                        {
+                            continue;
+                        }
+
+                        types.Add(new KeyValuePair<Type, T>(type, found));
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.Warn($"Error occured during Enumeration of Types in Assembly: {assembly.FullName}: {e.Message}");
                 }
 
-                yield return new KeyValuePair<Type, T>(type, found);
+                foreach (var type in types)
+                {
+                    yield return type;
+                }
             }
         }
 

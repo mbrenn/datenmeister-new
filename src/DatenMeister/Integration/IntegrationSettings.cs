@@ -18,6 +18,11 @@
 
         public string DatabasePath { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the loading of an extent may fail without interrupting the complete initialization of the DatenMeister
+        /// </summary>
+        public bool AllowNoFailOfLoading { get; set; }
+
         public IntegrationSettings()
         {
             DatabasePath = GiveMe.DefaultDatabasePath;

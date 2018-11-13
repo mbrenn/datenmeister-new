@@ -13,9 +13,8 @@
         </Grid.RowDefinitions>
         <TextBox x:Name="LogText" IsReadOnly="True" 
                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
-                 FontFamily="Consolas">
-
+                 FontFamily="Consolas" Padding="5" Margin="5">
         </TextBox>
-        <Button Grid.Row="1" HorizontalAlignment="Right" IsDefault="True" IsCancel="True" Click="Close_Click">Close</Button>
+        <Button Grid.Row="1" HorizontalAlignment="Right" IsDefault="True" IsCancel="True" Click="Close_Click" Margin="5">Close</Button>
     </Grid>
 </Window>

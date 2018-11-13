@@ -37,9 +37,11 @@ namespace DatenMeisterWPF
 #if DEBUG
             TheLog.AddProvider(new DebugProvider(), LogLevel.Trace);
             TheLog.AddProvider(new FileProvider(path, true), LogLevel.Trace);
+            TheLog.AddProvider(InMemoryDatabaseProvider.TheOne, LogLevel.Trace);
 #else
             TheLog.AddProvider(new DebugProvider());
             TheLog.AddProvider(new FileProvider(path, true));
+            TheLog.AddProvider(InMemoryDatabaseProvider.TheOne);
 #endif
             TheLog.Info("Starting DatenMeister WPF");
         }

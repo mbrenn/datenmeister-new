@@ -103,6 +103,11 @@ namespace DatenMeisterWPF
                     "Locate",
                     () => NavigatorForDialogs.LocateAndOpen(this),
                     null,
+                    NavigationCategories.File + ".Search"),
+                new RibbonButtonDefinition(
+                    "Open Log",
+                    OpenLog,
+                    null,
                     NavigationCategories.File + ".Search")
             };
 
@@ -114,6 +119,13 @@ namespace DatenMeisterWPF
             }
 
             _ribbonHelper.EvaluateExtensions(viewExtensions);
+
+
+            void OpenLog()
+            {
+                var wnd = new LogWindow {Owner = this};
+                wnd.Show();
+            }
         }
         
         /// <summary>

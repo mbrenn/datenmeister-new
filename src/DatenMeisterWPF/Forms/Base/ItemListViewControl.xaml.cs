@@ -245,6 +245,8 @@ namespace DatenMeisterWPF.Forms.Base
 
             ClearInfoLines();
             DataGrid.Columns.Clear();
+            ButtonBar.Children.Clear();
+
             var fieldNames = new List<string>();
 
             // Creates the column
@@ -302,8 +304,8 @@ namespace DatenMeisterWPF.Forms.Base
                         }
 
                         break;
-                    case GenericButtonDefintion genericButtonDefintion:
-                        AddGenericButton(genericButtonDefintion.Name, genericButtonDefintion.OnPressed);
+                    case GenericButtonDefintion genericButtonDefinition:
+                        AddGenericButton(genericButtonDefinition.Name, genericButtonDefinition.OnPressed);
                         break;
                     case ItemButtonDefinition itemButtonDefinition:
                         AddItemButton(itemButtonDefinition.Name, itemButtonDefinition.OnPressed);

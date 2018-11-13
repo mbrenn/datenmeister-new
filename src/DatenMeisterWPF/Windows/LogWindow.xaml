@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DatenMeisterWPF.Windows"
         mc:Ignorable="d"
-        Title="LogWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen" Loaded="LogWindow_OnLoaded">
+        Title="DatenMeister Log" Height="600" Width="1200" WindowStartupLocation="CenterScreen" Loaded="LogWindow_OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />

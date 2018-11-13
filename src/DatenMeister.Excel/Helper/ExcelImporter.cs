@@ -226,6 +226,9 @@ namespace DatenMeister.Excel.Helper
             excelImporter.LoadExcel();
 
             var columnNames = excelImporter.GetColumnNames();
+            if (!settings.fixColumnCount) excelImporter.GuessRowCount();
+            if (!settings.fixRowCount) excelImporter.GuessColumnCount();
+
             for (var r = 0; r < settings.countRows; r++)
             {
                 var item = factory.create(null);

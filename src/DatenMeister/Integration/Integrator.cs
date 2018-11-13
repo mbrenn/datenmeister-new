@@ -195,7 +195,8 @@ namespace DatenMeister.Integration
                     workspaceLoader.Load();
 
                     // Loads all extents after all plugins were started  
-                    scope.Resolve<ExtentConfigurationLoader>().LoadAllExtents();
+                    scope.Resolve<ExtentConfigurationLoader>().GetConfigurationFromFile();
+                    scope.Resolve<IExtentManager>().LoadAllExtents();
                     scope.Resolve<UserLogic>().Initialize();
                 }
 

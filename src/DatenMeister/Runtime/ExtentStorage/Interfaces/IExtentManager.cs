@@ -35,7 +35,15 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// <param name="extent">Extent to be deleted</param>
         void DeleteExtent(IExtent extent);
 
-        void StoreAll();
+        /// <summary>
+        /// Loads all extents
+        /// </summary>
+        void LoadAllExtents();
+
+        /// <summary>
+        /// Stores all extents according configuration
+        /// </summary>
+        void StoreAllExtents();
 
         /// <summary>
         /// Gets the loading configuration for the given extent or null, if 

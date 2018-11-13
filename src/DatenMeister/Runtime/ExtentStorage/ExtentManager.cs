@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -239,7 +240,63 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
         }
 
-        public void StoreAll()
+
+        /// <summary>
+        /// Loads all extents
+        /// </summary>
+        public void LoadAllExtents()
+        {
+            lock (_data.LoadedExtents)
+            { 
+                var configurationLoader = new ExtentConfigurationLoader(_data, this);
+                List<Tuple<ExtentLoaderConfig, XElement>> loaded = null;
+                try
+                {
+                    loaded = configurationLoader.GetConfigurationFromFile();
+
+                }
+                catch (Exception exc)
+                {
+                    Logger.Warn("Exception during loading of Extents: " + exc.Message);
+                }
+
+                if (loaded == null)
+                {
+                    return;
+                }
+
+                var failedExtents = new List<string>();
+                foreach (var (extentLoaderConfig, xElement) in loaded)
+                {
+                    try
+                    {
+                        var extent = LoadExtent(extentLoaderConfig, false);
+                        if (xElement != null)
+                        {
+                            ((MofExtent) extent).LocalMetaElementXmlNode = xElement;
+                        }
+                    }
+                    catch (Exception exc)
+                    {
+                        Logger.Warn($"Loading extent of {extentLoaderConfig.extentUri} failed: {exc.Message}");
+                        failedExtents.Add(extentLoaderConfig.extentUri);
+                    }
+                }
+
+                // If one of the extents failed, the exception will be thrown
+                if (failedExtents.Count > 0 || _data.FailedLoading)
+                {
+                    Logger.Warn("Storing of extents is disabled due to failed loading");
+                    _data.FailedLoading = true;
+                    throw new LoadingExtentsFailedException(failedExtents);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Stores all extents 
+        /// </summary>
+        public void StoreAllExtents()
         {
             Logger.Info("Writing all extents");
 
@@ -259,6 +316,12 @@ namespace DatenMeister.Runtime.ExtentStorage
                 {
                     Logger.Error($"Error during storing of extent: {info.Configuration.extentUri}: {exc.Message}");
                 }
+            }
+            
+            // Skip saving, if loading has failed
+            if (_data.FailedLoading)
+            {
+                Logger.Warn("No extents are stored due to the failure during loading. This prevents unwanted data loss due to a missing extent.");
             }
         }
     }

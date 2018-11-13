@@ -61,80 +61,16 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
-        /// Loads all extents
-        /// </summary>
-        public void LoadAllExtents()
-        {
-            List<Tuple<ExtentLoaderConfig, XElement>> loaded = null;
-            try
-            {
-                loaded = LoadConfiguration(ExtentStorageData.FilePath);
-                
-            }
-            catch (Exception exc)
-            {
-                Logger.Warn("Exception during loading of Extents: " + exc.Message);
-            }
-
-            if (loaded == null)
-            {
-                return;
-            }
-
-            var failedExtents = new List<string>();
-            foreach (var (extentLoaderConfig, xElement) in loaded)
-            {
-                try
-                {
-                    var extent = ExtentManager.LoadExtent(extentLoaderConfig, false);
-                    if (xElement != null)
-                    {
-                        ((MofExtent) extent).LocalMetaElementXmlNode = xElement;
-                    }
-                }
-                catch (Exception exc)
-                {
-                    Logger.Warn($"Loading extent of {extentLoaderConfig.extentUri} failed: {exc.Message}");
-                    failedExtents.Add(extentLoaderConfig.extentUri);
-                }
-            }
-
-            // If one of the extents failed, the exception will be thrown
-            if (failedExtents.Count > 0 || ExtentStorageData.FailedLoading)
-            {
-                Logger.Warn("Storing of extents is disabled due to failed loading");
-                ExtentStorageData.FailedLoading = true;
-                throw new LoadingExtentsFailedException(failedExtents);
-            }
-        }
-
-        /// <summary>
-        /// Stores all extents and the catalogue of the extents
-        /// </summary>
-        public void StoreAllExtents()
-        {
-            // Stores the extents themselves into the different database
-            ExtentManager.StoreAll();
-
-            // Skip saving, if loading has failed
-            if (ExtentStorageData.FailedLoading)
-            {
-                Logger.Warn("No extents are stored due to the failure during loading. This prevents unwanted data loss due to a missing extent.");
-            }
-
-            //Save(ExtentStorageData.FilePath, toBeStored);
-            StoreConfiguration(ExtentStorageData.FilePath);
-        }
-
-        /// <summary>
-        /// Loads the configuration of the extents and returns the configuation
+        /// Loads the configuration of the extents and returns the configuration
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public List<Tuple<ExtentLoaderConfig, XElement>> LoadConfiguration(string path)
+        public List<Tuple<ExtentLoaderConfig, XElement>> GetConfigurationFromFile()
         {
+            var path = ExtentStorageData.FilePath;
             var loaded = new List<Tuple<ExtentLoaderConfig, XElement>>();
             var document = XDocument.Load(path);
+
             foreach (var xmlExtent in document.Elements("extents").Elements("extent"))
             {
                 var xmlConfig = xmlExtent.Element("config") ?? throw new InvalidOperationException("extents::extent::config Xml node not found");
@@ -146,6 +82,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 {
                     Logger.Fatal($"Unknown Configuration Type: {configType}");
                     ExtentStorageData.FailedLoading = true;
+                    continue;
                 }
 
                 xmlConfig.Name = found.Name; // We need to rename the element, so XmlSerializer can work with it
@@ -164,8 +101,9 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// Stores the configuration of the extents into the given file
         /// </summary>
         /// <param name="path">Path to be used to loaded the extent configuration</param>
-        public void StoreConfiguration(string path)
+        public void StoreConfiguration()
         {
+            var path = ExtentStorageData.FilePath;
             var document = new XDocument();
             var rootNode = new XElement("extents");
             document.Add(rootNode);

@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces.Data;
 
 namespace DatenMeister.Integration
@@ -23,7 +24,8 @@ namespace DatenMeister.Integration
         public static void UnuseDatenMeister(this ILifetimeScope scope)
         {
             scope.Resolve<WorkspaceLoader>().Store();
-            scope.Resolve<ExtentConfigurationLoader>().StoreAllExtents();
+            scope.Resolve<IExtentManager>().StoreAllExtents();
+            scope.Resolve<ExtentConfigurationLoader>().StoreConfiguration();
             scope.Dispose();
         }
     }

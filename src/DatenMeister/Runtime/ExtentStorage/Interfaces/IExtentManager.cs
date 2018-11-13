@@ -6,8 +6,6 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
 {
     public interface IExtentManager
     {
-        void AddAdditionalType(Type type);
-
         /// <summary>
         /// Loads the extent by using the extent storage
         /// </summary>

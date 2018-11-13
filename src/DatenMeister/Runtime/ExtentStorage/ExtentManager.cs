@@ -25,7 +25,7 @@ namespace DatenMeister.Runtime.ExtentStorage
     {
         public const string PackagePathTypesExtentLoaderConfig = "DatenMeister::ExtentLoaderConfig";
 
-        private readonly ExtentStorageData _data;
+        private readonly ExtentStorageData _extentStorageData;
 
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentManager));
 
@@ -47,28 +47,11 @@ namespace DatenMeister.Runtime.ExtentStorage
             IWorkspaceLogic workspaceLogic,
             IntegrationSettings integrationSettings)
         {
-            _data = data ?? throw new ArgumentNullException(nameof(data));
+            _extentStorageData = data ?? throw new ArgumentNullException(nameof(data));
             _map = map ?? throw new ArgumentNullException(nameof(map));
             _workspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
             _integrationSettings = integrationSettings ?? throw new ArgumentNullException(nameof(integrationSettings));
             _diScope = diScope;
-        }
-
-        /// <summary>
-        /// Adds an extent configuration type to the extent manager
-        /// </summary>
-        /// <param name="type"></param>
-        public void AddAdditionalType(Type type)
-        {
-            lock (_data)
-            {
-                if (_data.GetAdditionalTypes().Contains(type))
-                {
-                    throw new InvalidOperationException($"Type {type.FullName} is already included");
-                }
-
-                _data.GetAdditionalTypes().Add(type);
-            }
         }
 
         /// <summary>
@@ -120,9 +103,9 @@ namespace DatenMeister.Runtime.ExtentStorage
                 Extent = uriExtent
             };
 
-            lock (_data.LoadedExtents)
+            lock (_extentStorageData.LoadedExtents)
             {
-                _data.LoadedExtents.Add(info);
+                _extentStorageData.LoadedExtents.Add(info);
             }
 
             return uriExtent;
@@ -160,9 +143,9 @@ namespace DatenMeister.Runtime.ExtentStorage
         public ExtentLoaderConfig GetLoadConfigurationFor(IUriExtent extent)
         {
             ExtentStorageData.LoadedExtentInformation information;
-            lock (_data.LoadedExtents)
+            lock (_extentStorageData.LoadedExtents)
             {
-                information = _data.LoadedExtents.FirstOrDefault(x => x.Extent == extent);
+                information = _extentStorageData.LoadedExtents.FirstOrDefault(x => x.Extent == extent);
             }
 
             return information?.Configuration;
@@ -175,9 +158,9 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             if (_diScope == null) throw new InvalidOperationException("diScope == null");
 
-            lock (_data.LoadedExtents)
+            lock (_extentStorageData.LoadedExtents)
             {
-                _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(_data.GetAdditionalTypes(), PackagePathTypesExtentLoaderConfig);
+                _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(_map.ConfigurationTypes, PackagePathTypesExtentLoaderConfig);
             }
         }
 
@@ -189,9 +172,9 @@ namespace DatenMeister.Runtime.ExtentStorage
         public void StoreExtent(IExtent extent)
         {
             ExtentStorageData.LoadedExtentInformation information;
-            lock (_data.LoadedExtents)
+            lock (_extentStorageData.LoadedExtents)
             {
-                information = _data.LoadedExtents.FirstOrDefault(x => x.Extent == extent);
+                information = _extentStorageData.LoadedExtents.FirstOrDefault(x => x.Extent == extent);
             }
 
             if (information == null)
@@ -211,12 +194,12 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="extent"></param>
         public void DetachExtent(IExtent extent)
         {
-            lock (_data.LoadedExtents)
+            lock (_extentStorageData.LoadedExtents)
             {
-                var information = _data.LoadedExtents.FirstOrDefault(x => x.Extent == extent);
+                var information = _extentStorageData.LoadedExtents.FirstOrDefault(x => x.Extent == extent);
                 if (information != null)
                 {
-                    _data.LoadedExtents.Remove(information);
+                    _extentStorageData.LoadedExtents.Remove(information);
                     Logger.Info($"Detaching extent: {information.Configuration}");
                 }
             }
@@ -228,7 +211,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="extent">Extent to be removed</param>
         public void DeleteExtent(IExtent extent)
         {
-            lock (_data.LoadedExtents)
+            lock (_extentStorageData.LoadedExtents)
             {
                 var workspace = _workspaceLogic.GetWorkspaceOfExtent(extent);
 
@@ -246,9 +229,9 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         public void LoadAllExtents()
         {
-            lock (_data.LoadedExtents)
+            lock (_extentStorageData.LoadedExtents)
             { 
-                var configurationLoader = new ExtentConfigurationLoader(_data, this);
+                var configurationLoader = new ExtentConfigurationLoader(_extentStorageData, this, _map);
                 List<Tuple<ExtentLoaderConfig, XElement>> loaded = null;
                 try
                 {
@@ -284,10 +267,10 @@ namespace DatenMeister.Runtime.ExtentStorage
                 }
 
                 // If one of the extents failed, the exception will be thrown
-                if (failedExtents.Count > 0 || _data.FailedLoading)
+                if (failedExtents.Count > 0 || _extentStorageData.FailedLoading)
                 {
                     Logger.Warn("Storing of extents is disabled due to failed loading");
-                    _data.FailedLoading = true;
+                    _extentStorageData.FailedLoading = true;
                     throw new LoadingExtentsFailedException(failedExtents);
                 }
             }
@@ -298,12 +281,18 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         public void StoreAllExtents()
         {
-            Logger.Info("Writing all extents");
-
             List<ExtentStorageData.LoadedExtentInformation> copy;
-            lock (_data.LoadedExtents)
+
+            lock (_extentStorageData.LoadedExtents)
             {
-                copy = _data.LoadedExtents.ToList();
+                if (!_extentStorageData.FailedLoading)
+                {
+                    Logger.Warn("Storing of extents is disabled due to failed loading");
+                    return;
+                }
+
+                Logger.Info("Writing all extents");
+                copy = _extentStorageData.LoadedExtents.ToList();
             }
 
             foreach (var info in copy)
@@ -316,12 +305,6 @@ namespace DatenMeister.Runtime.ExtentStorage
                 {
                     Logger.Error($"Error during storing of extent: {info.Configuration.extentUri}: {exc.Message}");
                 }
-            }
-            
-            // Skip saving, if loading has failed
-            if (_data.FailedLoading)
-            {
-                Logger.Warn("No extents are stored due to the failure during loading. This prevents unwanted data loss due to a missing extent.");
             }
         }
     }

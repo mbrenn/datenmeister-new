@@ -196,7 +196,15 @@ namespace DatenMeister.Integration
 
                     // Loads all extents after all plugins were started  
                     scope.Resolve<ExtentConfigurationLoader>().GetConfigurationFromFile();
-                    scope.Resolve<IExtentManager>().LoadAllExtents();
+                    try
+                    {
+                        scope.Resolve<IExtentManager>().LoadAllExtents();
+                    }
+                    catch (LoadingExtentsFailedException)
+                    {
+                        Logger.Info("Failure of loading extents will lead to a read-only application");
+                    }
+
                     scope.Resolve<UserLogic>().Initialize();
                 }
 

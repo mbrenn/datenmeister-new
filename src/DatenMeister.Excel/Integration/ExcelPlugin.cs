@@ -21,9 +21,7 @@ namespace DatenMeister.Excel.Integration
 
         public void Start(PluginLoadingPosition loadingPosition)
         {
-            _extentManager.AddAdditionalType(typeof(ExcelReferenceSettings));
-            _extentManager.AddAdditionalType(typeof(ExcelImportSettings));
-            _extentManager.AddAdditionalType(typeof(ExcelExtentSettings));
+
         }
     }
 }

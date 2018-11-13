@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Autofac;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 
@@ -25,5 +26,10 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// <param name="typeConfiguration">Type of the configuration</param>
         /// <returns>True, if the mapper is already included</returns>
         bool ContainsConfigurationFor(Type typeConfiguration);
+
+        /// <summary>
+        /// Gets an enumeration of configurations
+        /// </summary>
+        IEnumerable<Type> ConfigurationTypes { get; }
     }
 }

@@ -13,20 +13,16 @@ namespace DatenMeister.Provider.CSV
     [PluginLoading(PluginLoadingPosition.BeforeBootstrapping)]
     public class CSVPlugin : IDatenMeisterPlugin
     {
-        private readonly ExtentConfigurationLoader _extentLoader;
         private readonly IConfigurationToExtentStorageMapper _configurationToExtentStorageMapper;
 
-        public CSVPlugin(ExtentConfigurationLoader extentLoader, IConfigurationToExtentStorageMapper configurationToExtentStorageMapper)
+        public CSVPlugin(IConfigurationToExtentStorageMapper configurationToExtentStorageMapper)
         {
-            _extentLoader = extentLoader;
             _configurationToExtentStorageMapper = configurationToExtentStorageMapper;
         }
 
         public void Start(PluginLoadingPosition position)
         {
-            _extentLoader.AddAdditionalType(typeof(CSVExtentLoaderConfig));
-
-            AttributeLoaderForExtentStorage.MapExtentLoaderType(_configurationToExtentStorageMapper, typeof(CsvProviderLoader));
+            _configurationToExtentStorageMapper.MapExtentLoaderType(typeof(CsvProviderLoader));
         }
     }
 }

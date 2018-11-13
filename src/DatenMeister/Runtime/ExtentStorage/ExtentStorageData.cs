@@ -21,16 +21,6 @@ namespace DatenMeister.Runtime.ExtentStorage
         internal List<LoadedExtentInformation> LoadedExtents { get; } = new List<LoadedExtentInformation>();
 
         /// <summary>
-        /// Stores a list of additional types that are used to load the extent configuration.
-        /// </summary>
-        private List<Type> AdditionalTypes { get; } = new List<Type>();
-
-        public List<Type> GetAdditionalTypes()
-        {
-            return AdditionalTypes;
-        }
-
-        /// <summary>
         /// Gets or sets the path in which the extent loading info is stored
         /// </summary>
         public string FilePath { get; set; }

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
+using Autofac;
 using DatenMeister.Integration;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms;
@@ -46,6 +48,15 @@ namespace DatenMeisterWPF
 
             //NavigatorForWorkspaces.NavigateToWorkspaces(this);
             NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData);
+
+            if (App.Scope.Resolve<ExtentStorageData>().FailedLoading)
+            {
+                MessageBox.Show("An exception occured during the loading of the events. \r\n" +
+                                "This will lead to a read-only instance of DatenMeister. All changes will be lost. \r\n" +
+                                "To resolve the issue, verify the log and fix the 'DatenMeister.Extents.xml'.", "Error during start-up of DatenMeister", 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Warning);
+            }
         }
 
         /// <summary>

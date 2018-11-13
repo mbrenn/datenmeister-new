@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using BurnSystems.Logging;
-using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -19,6 +17,11 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// </summary>
     public class ExtentConfigurationLoader
     {
+        /// <summary>
+        /// Stores the mapper instance being used to find the allowed types
+        /// </summary>
+        private readonly IConfigurationToExtentStorageMapper _mapper;
+
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentConfigurationLoader));
 
         /// <summary>
@@ -34,30 +37,12 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         public ExtentConfigurationLoader(
             ExtentStorageData extentStorageData,
-            IExtentManager extentManager)
+            IExtentManager extentManager,
+            IConfigurationToExtentStorageMapper mapper)
         {
+            _mapper = mapper;
             ExtentManager = extentManager;
             ExtentStorageData = extentStorageData;
-        }
-
-        /// <summary>
-        /// Adds a type for the serialization of the configuration file since the 
-        /// ExtentLoaderConfig instances might be derived
-        /// </summary>
-        /// <param name="type"></param>
-        public void AddAdditionalType(Type type)
-        {
-            ExtentManager.AddAdditionalType(type);
-        }
-
-        /// <summary>
-        /// Gets the additional types for the xml parsing. 
-        /// This method is called by the base class to support the loading if unknown extent types
-        /// </summary>
-        /// <returns>Array of additional types</returns>
-        private Type[] GetAdditionalTypes()
-        {
-            return ExtentStorageData.GetAdditionalTypes().ToArray();
         }
 
         /// <summary>
@@ -77,7 +62,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 var configType = xmlConfig.Attribute("configType")?.Value ?? throw new InvalidOperationException("configType not found");
 
                 // Gets the type of the configuration in the white list to avoid any unwanted security issue
-                var found = GetAdditionalTypes().FirstOrDefault(x => x.FullName == configType);
+                var found = _mapper.ConfigurationTypes.FirstOrDefault(x => x.FullName == configType);
                 if (found == null)
                 {
                     Logger.Fatal($"Unknown Configuration Type: {configType}");
@@ -102,7 +87,14 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         /// <param name="path">Path to be used to loaded the extent configuration</param>
         public void StoreConfiguration()
-        {
+        {                // Skip saving, if loading has failed
+            if (ExtentStorageData.FailedLoading)
+            {
+                Logger.Warn(
+                    "No extents are stored due to the failure during loading. This prevents unwanted data loss due to a missing extent.");
+                return;
+            }
+
             var path = ExtentStorageData.FilePath;
             var document = new XDocument();
             var rootNode = new XElement("extents");

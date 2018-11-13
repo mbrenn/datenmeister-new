@@ -218,6 +218,12 @@ namespace DatenMeister.Runtime.Workspaces
             string workspaceId,
             string extentUri)
         {
+            if (string.IsNullOrEmpty(workspaceId))
+            {
+                // If the workspace is empty return it itself
+                workspaceId = collection.GetDefaultWorkspace().id;
+            }
+
             return collection.Workspaces
                 .FirstOrDefault(x => x.id == workspaceId)
                 ?.extent

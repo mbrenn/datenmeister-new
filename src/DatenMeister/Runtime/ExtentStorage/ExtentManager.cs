@@ -83,6 +83,13 @@ namespace DatenMeister.Runtime.ExtentStorage
         
             // Loads the extent
             var loadedProviderInfo = extentLoader.LoadProvider(configuration, createAlsoEmpty);
+
+            // If the extent is already added (for example, the provider loader calls itself LoadExtent due to an indirection), then the resulting event extent will 
+            if (loadedProviderInfo.IsExtentAlreadyAddedToWorkspace)
+            {
+                return (IUriExtent) _workspaceLogic.FindExtent(loadedProviderInfo.UsedConfig.workspaceId, loadedProviderInfo.UsedConfig.extentUri);
+            }
+
             var loadedProvider = loadedProviderInfo?.Provider;
             configuration = loadedProviderInfo?.UsedConfig ?? configuration; // Updates the configuration, if it needs to be updated
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Annotations;
@@ -181,109 +180,6 @@ namespace DatenMeister.Excel.Helper
 
             Settings.countColumns = n;
             return n;
-        }
-
-        /// <summary>
-        /// Performs the import of the excel into the extent
-        /// </summary>
-        /// <param name="scope">The datenmeister scope to be used</param>
-        /// <param name="importSettings">Settings to be used to be imported</param>
-        /// <returns></returns>
-        public static IUriExtent ImportExcelAsCopy(IDatenMeisterScope scope, IObject importSettings)
-        {
-            var settings = DotNetConverter.ConvertToDotNetObject<ExcelImportSettings>(importSettings);
-            return ImportExcelAsCopy(scope, settings);
-        }
-
-        private static IUriExtent ImportExcelAsCopy(IDatenMeisterScope scope, ExcelImportSettings settings)
-        {
-            var configuration = new XmiStorageConfiguration
-            {
-                extentUri = settings.extentUri,
-                filePath = settings.extentPath,
-                workspaceId = settings.workspaceId
-            };
-
-            // Gets the columns names
-
-            var extentManager = scope.Resolve<IExtentManager>();
-            var extent = extentManager.LoadExtent(configuration, true);
-
-            return ImportExcelIntoExtent(settings, extent);
-        }
-
-        /// <summary>
-        /// Gets the import settings and exports the elements into the extent.
-        /// </summary>
-        /// <param name="settings">Settings of the excel import</param>
-        /// <param name="extent">Extent into which the elements shall be stored</param>
-        /// <returns></returns>
-        private static IUriExtent ImportExcelIntoExtent(ExcelSettings settings, IUriExtent extent)
-        {
-            var factory = new MofFactory(extent);
-
-            var excelImporter = new ExcelImporter(settings);
-            excelImporter.LoadExcel();
-
-            var columnNames = excelImporter.GetColumnNames();
-            if (!settings.fixColumnCount) excelImporter.GuessRowCount();
-            if (!settings.fixRowCount) excelImporter.GuessColumnCount();
-
-            for (var r = 0; r < settings.countRows; r++)
-            {
-                var item = factory.create(null);
-                for (var c = 0; c < settings.countColumns; c++)
-                {
-                    var columnName = columnNames[c];
-                    if (columnName == null)
-                    {
-                        // Skip not set columns
-                        continue;
-                    }
-
-                    item.set(columnName, excelImporter.GetCellContent(r, c));
-                }
-
-                extent.elements().add(item);
-            }
-
-            return extent;
-        }
-
-        /// <summary>
-        /// Gets the provider as in memory provider with the content of the excel table
-        /// </summary>
-        /// <param name="importSettings">Settings of ExcelSettings to be used</param>
-        /// <returns>The created provider</returns>
-        public static IProvider GetProviderForExcelAsReference(IObject importSettings)
-        {
-            var settings = DotNetConverter.ConvertToDotNetObject<ExcelReferenceSettings>(importSettings);
-            return GetProviderForExcelAsReference(settings);
-        }
-
-        /// <summary>
-        /// Gets the provider as in memory provider with the content of the excel table
-        /// </summary>
-        /// <param name="importSettings">Settings of ExcelSettings to be used</param>
-        /// <returns>The created provider</returns>
-        public static IProvider GetProviderForExcelAsReference(ExcelReferenceSettings importSettings)
-        {
-            var memoryProvider = new InMemoryProvider();
-            var tempExtent = new MofUriExtent(memoryProvider);
-
-            ImportExcelIntoExtent(importSettings, tempExtent);
-
-            return memoryProvider;
-        }
-
-        public static void ImportExcelExtentAsReference(IDatenMeisterScope scope, IObject getConfigurationObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void ImportExcelExtentAsCopy(IDatenMeisterScope scope, IObject getConfigurationObject)
-        {
-            throw new NotImplementedException();
         }
     }
 }

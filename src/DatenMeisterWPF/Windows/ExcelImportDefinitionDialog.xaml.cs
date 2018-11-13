@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Helper;
 using DatenMeister.Runtime;

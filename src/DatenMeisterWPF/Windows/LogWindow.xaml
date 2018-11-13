@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DatenMeisterWPF.Windows"
         mc:Ignorable="d"
-        Title="LogWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen" Loaded="LogWindow_OnLoaded">
+        Title="DatenMeister Log" Height="600" Width="1200" WindowStartupLocation="CenterScreen" Loaded="LogWindow_OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -13,9 +13,8 @@
         </Grid.RowDefinitions>
         <TextBox x:Name="LogText" IsReadOnly="True" 
                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
-                 FontFamily="Consolas">
-
+                 FontFamily="Consolas" Padding="5" Margin="5">
         </TextBox>
-        <Button Grid.Row="1" HorizontalAlignment="Right" IsDefault="True" IsCancel="True" Click="Close_Click">Close</Button>
+        <Button Grid.Row="1" HorizontalAlignment="Right" IsDefault="True" IsCancel="True" Click="Close_Click" Margin="5">Close</Button>
     </Grid>
 </Window>

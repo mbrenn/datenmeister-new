@@ -7,7 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel>
-
         <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20*" />
@@ -21,7 +20,6 @@
                       HorizontalAlignment="Stretch" 
                       VerticalAlignment="Stretch"></GridSplitter>
             <TabControl Grid.Column="2" x:Name="ItemTabControl"></TabControl>
-
         </Grid>
     </DockPanel>
 </UserControl>

@@ -29,7 +29,7 @@ namespace DatenMeisterWPF.Forms.Base
         protected IReflectiveCollection Items { get; set; }
 
         /// <summary>
-        /// Defines the item that the user currently has selected ont the object tree
+        /// Defines the item that the user currently has selected on the object tree
         /// </summary>
         protected IObject SelectedPackage{ get; set; }
 

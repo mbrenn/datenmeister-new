@@ -156,7 +156,7 @@ namespace DatenMeister.Modules.TypeSupport
             IReflectiveCollection rootElements = internalTypeExtent.elements();
             if (packageName != null)
             {
-                rootElements = _packageMethods.GotoPackage(rootElements, packageName);
+                rootElements = _packageMethods.GetPackagedObjects(rootElements, packageName);
             }
 
             return AddInternalTypes(rootElements, types);

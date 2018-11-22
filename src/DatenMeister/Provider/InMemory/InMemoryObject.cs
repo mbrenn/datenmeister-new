@@ -37,6 +37,17 @@ namespace DatenMeister.Provider.InMemory
         }
 
         /// <summary>
+        /// Creates an empty element with the given type
+        /// </summary>
+        /// <param name="type">Type of the element to be created</param>
+        /// <returns>Returned element to be created</returns>
+        public static IObject CreateEmpty(IElement type)
+        {
+            var mofFactory = new MofFactory(InMemoryProvider.TemporaryExtent);
+            return mofFactory.create(type);
+        }
+
+        /// <summary>
         ///     Stores the values direct within the memory
         /// </summary>
         private readonly Dictionary<string, object> _values = new Dictionary<string, object>();

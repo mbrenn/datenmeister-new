@@ -222,7 +222,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 var extent = workspaceLogic.FindExtent(WorkspaceNames.NameTypes, WorkspaceNames.UriInternalTypesExtent);
 
                 var packageMethods = App.Scope.Resolve<PackageMethods>();
-                var package = packageMethods.GotoPackage(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
+                var package = packageMethods.GetPackagedObjects(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
                 dlg.SetAsRoot(package);
                 if (dlg.ShowDialog() != true) return;
                 if (!(dlg.SelectedElement is IElement selectedExtentType)) return;

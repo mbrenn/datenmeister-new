@@ -51,7 +51,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
         /// <returns>Found element</returns>
-        public IReflectiveCollection GotoPackage(
+        public IReflectiveCollection GetPackagedObjects(
             IReflectiveCollection rootElements,
             string packagePath)
         {

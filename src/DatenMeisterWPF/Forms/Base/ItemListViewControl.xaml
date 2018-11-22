@@ -17,6 +17,7 @@
     <DockPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top" >
             <StackPanel Orientation="Horizontal" x:Name="Toolbar" HorizontalAlignment="Right" Margin="10,0,10,0">
+                <Button x:Name="FastViewFilter" Click="FastViewFilter_OnClick">⊕</Button>
                 <TextBox x:Name="SearchField" Width="200" TextChanged="SearchField_OnTextChanged" Margin="0,2,0,2" ToolTip="Search"></TextBox>
             </StackPanel>
         </StackPanel>

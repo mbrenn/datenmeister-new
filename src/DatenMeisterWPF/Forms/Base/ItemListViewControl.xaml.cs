@@ -360,10 +360,11 @@ namespace DatenMeisterWPF.Forms.Base
             ButtonBar.Children.Add(button);
             return button;
         }
-    
+
         /// <summary>
         /// Opens the selected element
         /// </summary>
+        /// <param name="guest">The Guest element to be queried</param>
         /// <param name="selectedElement">Selected element</param>
         private void NavigateToElement(INavigationGuest guest, IObject selectedElement)
         { 
@@ -694,6 +695,46 @@ namespace DatenMeisterWPF.Forms.Base
         public void AddInfoLine(UIElement element)
         {
             InfoLines.Children.Add(element);
+        }
+
+        private void FastViewFilter_OnClick(object sender, RoutedEventArgs e)
+        {
+            var fastViewFilter = App.Scope.Resolve<FastViewFilterLogic>();
+            var menu = new ContextMenu();
+            var list = new List<object>();
+
+            foreach (var filter in fastViewFilter.FastViewFilters.OfType<IElement>())
+            {
+                var item = new MenuItem
+                {
+                    Name = NamedElementMethods.GetName(filter),
+                    Header = NamedElementMethods.GetName(filter)
+                };
+
+                item.Click += (x, y) =>
+                {
+                    var subItem = InMemoryObject.CreateEmpty(filter);
+
+                    var events = NavigatorForItems.NavigateToElementDetailView(NavigationHost, subItem);
+                    events.Closed += (a, b) => AddFastFilter(subItem);
+                };
+
+                list.Add(item);
+            }
+
+            menu.ItemsSource = list;
+
+            FastViewFilter.ContextMenu = menu;
+            FastViewFilter.ContextMenu.IsOpen = true;
+        }
+
+        /// <summary>
+        /// Adds a fast filter to the current view
+        /// </summary>
+        /// <param name="fastFilter">Fast filter to be stored</param>
+        private void AddFastFilter(IObject fastFilter)
+        {
+            MessageBox.Show("X");
         }
     }
 }

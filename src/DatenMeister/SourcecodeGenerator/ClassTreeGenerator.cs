@@ -103,9 +103,8 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine();
             Result.AppendLine($"{stack.Indentation}public _{name} @{name} = new _{name}();");
             Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement.GetUri()}\");");
-            Result.AppendLine(); 
+            Result.AppendLine();
         }
-
 
         protected override void WalkProperty(IObject propertyObject, CallStack stack)
         {
@@ -116,6 +115,43 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
             Result.AppendLine($"{stack.Indentation}public IElement _{name} = null;");
             Result.AppendLine();
+        }
+
+        /// <summary>
+        ///     Parses the packages
+        /// </summary>
+        /// <param name="enumInstance">The class that shall be retrieved</param>
+        protected override void WalkEnum(IObject enumInstance, CallStack stack)
+        {
+            var asElement = enumInstance as IElement;
+            var name = GetNameOfElement(enumInstance);
+
+            Result.AppendLine($"{stack.Indentation}public enum _{name}");
+            Result.AppendLine($"{stack.Indentation}{{");
+
+            base.WalkEnum(enumInstance, stack);
+
+            Result.AppendLine();
+            Result.AppendLine($"{stack.Indentation}}}");
+            Result.AppendLine();
+
+            Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement.GetUri()}\");");
+            Result.AppendLine();
+        }
+
+        protected override void WalkEnumLiteral(IObject enumLiteralObject, CallStack stack, bool first)
+        {
+            if (!first)
+            {
+                Result.AppendLine(",");
+            }
+
+            base.WalkEnumLiteral(enumLiteralObject, stack, first);
+
+            var nameAsObject = enumLiteralObject.get("name");
+
+            var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
+            Result.Append($"{stack.Indentation}\"{name}\"");
         }
     }
 }

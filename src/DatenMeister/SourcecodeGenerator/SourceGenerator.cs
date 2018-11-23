@@ -31,7 +31,10 @@ namespace DatenMeister.SourcecodeGenerator
             foreach (var type in options.Types)
             {
                 var typeObject = dotNetProvider.CreateTypeFor(type);
-                elements.Add(typeObject);
+                if (typeObject != null)
+                {
+                    elements.Add(typeObject);
+                }
             }
 
             // And adds the converted elements to package and the package to the temporary MOF Extent

@@ -11,6 +11,7 @@ namespace DatenMeister.Models.FastViewFilter
         public static IEnumerable<Type> Types =>
             new[]
             {
+                typeof(ComparisonType),
                 typeof(PropertyComparisonFilter),
                 typeof(PropertyContainsFilter)
             };

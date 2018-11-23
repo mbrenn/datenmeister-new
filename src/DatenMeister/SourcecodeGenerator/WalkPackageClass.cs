@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.UmlBootstrap;
+using DatenMeister.Runtime;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator
@@ -77,6 +81,11 @@ namespace DatenMeister.SourcecodeGenerator
             if (_parser.IsClass(element))
             {
                 WalkClass(element, stack);
+            }
+
+            if (_parser.IsEnum(element))
+            {
+                WalkEnum(element, stack);
             }
         }
 
@@ -180,6 +189,11 @@ namespace DatenMeister.SourcecodeGenerator
                 {
                     WalkClass(subElement, innerStack);
                 }
+
+                if (_parser.IsEnum(subElement) )
+                {
+                    WalkEnum(subElement, innerStack);
+                }
             }
         }
 
@@ -205,6 +219,40 @@ namespace DatenMeister.SourcecodeGenerator
         }
 
         protected virtual void WalkProperty(IObject classInstance, CallStack stack)
+        {
+        }
+
+
+        /// <summary>
+        /// Walks the enumeration
+        /// </summary>
+        /// <param name="enumInstance">Enumeration to be walked</param>
+        /// <param name="stack">Stack being used</param>
+        protected virtual void WalkEnum(IObject enumInstance, CallStack stack)
+        {
+            var innerStack = new CallStack(stack);
+            var name = GetNameOfElement(enumInstance);
+            innerStack.Fullname += $".{name}";
+
+            // Needs to be updated
+            var first = true;
+            foreach (var enumLiteral in enumInstance.GetAsEnumerable(_UML._SimpleClassifiers._Enumeration.ownedLiteral).OfType<IElement>())
+            {
+                if (_parser.IsEnumLiteral(enumLiteral))
+                {
+                    WalkEnumLiteral(enumLiteral, innerStack, first);
+                    first = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Walks the enumeration literal
+        /// </summary>
+        /// <param name="enumLiteral">Enumeration Literal to be walked</param>
+        /// <param name="innerStack">Stack being used</param>
+        /// <param name="first">True, if this is the first element</param>
+        protected virtual void WalkEnumLiteral(IObject enumLiteral, CallStack innerStack, bool first)
         {
         }
 

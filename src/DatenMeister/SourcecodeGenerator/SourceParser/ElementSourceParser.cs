@@ -26,6 +26,18 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
             return asElement?.getMetaClass()?.equals(_uml.StructuredClassifiers.__Class) == true;
         }
 
+        public bool IsEnum(IObject element)
+        {
+            var asElement = element as IElement;
+            return asElement?.getMetaClass()?.equals(_uml.SimpleClassifiers.__Enumeration) == true;
+        }
+
+        public bool IsEnumLiteral(IObject element)
+        {
+            var asElement = element as IElement;
+            return asElement?.getMetaClass()?.equals(_uml.SimpleClassifiers.__EnumerationLiteral) == true;
+        }
+
         public bool IsProperty(IObject element)
         {
             var asElement = element as IElement;

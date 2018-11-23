@@ -34,7 +34,10 @@ namespace DatenMeister.Provider.DotNet
             foreach (var type in types)
             {
                 var element = CreateTypeFor(type);
-                yield return element;
+                if (element != null)
+                {
+                    yield return element;
+                }
             }
         }
 
@@ -45,32 +48,60 @@ namespace DatenMeister.Provider.DotNet
         /// <returns>The created meta class</returns>
         public IElement CreateTypeFor(Type type)
         {
-            var umlClass = _factoryForTypes.create(_umlHost.StructuredClassifiers.__Class);
-            if (umlClass is ICanSetId umlClassAsSet)
+            if (type.IsClass)
             {
-                umlClassAsSet.Id = type.FullName;
-            }
-
-            umlClass.set(_UML._CommonStructure._NamedElement.name, type.Name);
-
-            var properties = new List<IObject>();
-
-            foreach (var property in type.GetProperties())
-            {
-                var umlProperty = _factoryForTypes.create(_umlHost.Classification.__Property);
-                if (umlProperty is MofElement propertyAsElement)
+                var umlClass = _factoryForTypes.create(_umlHost.StructuredClassifiers.__Class);
+                if (umlClass is ICanSetId umlClassAsSet)
                 {
-                    propertyAsElement.Container = umlClass;
+                    umlClassAsSet.Id = type.FullName;
                 }
-                
-                umlProperty.set(_UML._CommonStructure._NamedElement.name, property.Name);
-                
-                properties.Add(umlProperty);
+
+                umlClass.set(_UML._CommonStructure._NamedElement.name, type.Name);
+
+                var properties = new List<IObject>();
+
+                foreach (var property in type.GetProperties())
+                {
+                    var umlProperty = _factoryForTypes.create(_umlHost.Classification.__Property);
+                    if (umlProperty is MofElement propertyAsElement)
+                    {
+                        propertyAsElement.Container = umlClass;
+                    }
+
+                    umlProperty.set(_UML._CommonStructure._NamedElement.name, property.Name);
+
+                    properties.Add(umlProperty);
+                }
+
+                umlClass.set(_UML._StructuredClassifiers._StructuredClassifier.ownedAttribute, properties);
+
+                return umlClass;
             }
 
-            umlClass.set(_UML._StructuredClassifiers._StructuredClassifier.ownedAttribute, properties);
+            if (type.IsEnum)
+            {
+                var enumClass = _factoryForTypes.create(_umlHost.SimpleClassifiers.__Enumeration);
+                if (enumClass is ICanSetId umlClassAsSet)
+                {
+                    umlClassAsSet.Id = type.FullName;
+                }
 
-            return umlClass;
+                enumClass.set(_UML._CommonStructure._NamedElement.name, type.Name);
+
+                var enumValues = new List<IObject>();
+                foreach (var enumValue in type.GetEnumValues())
+                {
+                    var enumValueClass = _factoryForTypes.create(_umlHost.SimpleClassifiers.__EnumerationLiteral);
+                    enumValueClass.set(_UML._CommonStructure._NamedElement.name, enumValue.ToString());
+
+                    enumValues.Add(enumValueClass);
+                }
+
+                enumClass.set(_UML._SimpleClassifiers._Enumeration.ownedLiteral, enumValues);
+                return enumClass;
+            }
+
+            return null;
         }
     }
 }

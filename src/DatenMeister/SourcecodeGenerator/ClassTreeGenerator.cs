@@ -121,12 +121,13 @@ namespace DatenMeister.SourcecodeGenerator
         ///     Parses the packages
         /// </summary>
         /// <param name="enumInstance">The class that shall be retrieved</param>
+        /// <param name="stack">Stack being used</param>
         protected override void WalkEnum(IObject enumInstance, CallStack stack)
         {
             var asElement = enumInstance as IElement;
             var name = GetNameOfElement(enumInstance);
 
-            Result.AppendLine($"{stack.Indentation}public enum _{name}");
+            Result.AppendLine($"{stack.Indentation}public static class _{name}");
             Result.AppendLine($"{stack.Indentation}{{");
 
             base.WalkEnum(enumInstance, stack);
@@ -139,19 +140,17 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine();
         }
 
-        protected override void WalkEnumLiteral(IObject enumLiteralObject, CallStack stack, bool first)
+        protected override void WalkEnumLiteral(IObject enumLiteralObject, CallStack stack)
         {
-            if (!first)
-            {
-                Result.AppendLine(",");
-            }
-
-            base.WalkEnumLiteral(enumLiteralObject, stack, first);
+            var asElement = enumLiteralObject as IElement;
+            base.WalkEnumLiteral(enumLiteralObject, stack);
 
             var nameAsObject = enumLiteralObject.get("name");
 
             var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
-            Result.Append($"{stack.Indentation}\"{name}\"");
+            Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
+
+            Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement.GetUri()}\");");
         }
     }
 }

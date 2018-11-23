@@ -240,7 +240,7 @@ namespace DatenMeister.SourcecodeGenerator
             {
                 if (_parser.IsEnumLiteral(enumLiteral))
                 {
-                    WalkEnumLiteral(enumLiteral, innerStack, first);
+                    WalkEnumLiteral(enumLiteral, innerStack);
                     first = false;
                 }
             }
@@ -251,8 +251,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// </summary>
         /// <param name="enumLiteral">Enumeration Literal to be walked</param>
         /// <param name="innerStack">Stack being used</param>
-        /// <param name="first">True, if this is the first element</param>
-        protected virtual void WalkEnumLiteral(IObject enumLiteral, CallStack innerStack, bool first)
+        protected virtual void WalkEnumLiteral(IObject enumLiteral, CallStack innerStack)
         {
         }
 

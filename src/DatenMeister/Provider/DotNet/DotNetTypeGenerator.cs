@@ -92,6 +92,11 @@ namespace DatenMeister.Provider.DotNet
                 foreach (var enumValue in type.GetEnumValues())
                 {
                     var enumValueClass = _factoryForTypes.create(_umlHost.SimpleClassifiers.__EnumerationLiteral);
+                    if (enumValueClass is ICanSetId umlValueClassAsSet)
+                    {
+                        umlValueClassAsSet.Id = $"{type.FullName}-{enumValue}";
+                    }
+
                     enumValueClass.set(_UML._CommonStructure._NamedElement.name, enumValue.ToString());
 
                     enumValues.Add(enumValueClass);

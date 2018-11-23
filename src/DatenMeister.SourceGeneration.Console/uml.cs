@@ -360,12 +360,17 @@ namespace DatenMeister.Core
             public _Variable @Variable = new _Variable();
             public IElement @__Variable = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Variable");
 
-            public enum _ObjectNodeOrderingKind
+            public static class _ObjectNodeOrderingKind
             {
-                "unordered",
-                "ordered",
-                "LIFO",
-                "FIFO"
+                public static string @unordered = "unordered";
+                public IElement @__unordered = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ObjectNodeOrderingKind-unordered");
+                public static string @ordered = "ordered";
+                public IElement @__ordered = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ObjectNodeOrderingKind-ordered");
+                public static string @LIFO = "LIFO";
+                public IElement @__LIFO = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ObjectNodeOrderingKind-LIFO");
+                public static string @FIFO = "FIFO";
+                public IElement @__FIFO = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ObjectNodeOrderingKind-FIFO");
+
             }
 
             public IElement @__ObjectNodeOrderingKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ObjectNodeOrderingKind");
@@ -942,10 +947,13 @@ namespace DatenMeister.Core
             public _StructuredClassifier @StructuredClassifier = new _StructuredClassifier();
             public IElement @__StructuredClassifier = new MofObjectShadow("datenmeister:///_internal/xmi/uml#StructuredClassifier");
 
-            public enum _ConnectorKind
+            public static class _ConnectorKind
             {
-                "assembly",
-                "delegation"
+                public static string @assembly = "assembly";
+                public IElement @__assembly = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ConnectorKind-assembly");
+                public static string @delegation = "delegation";
+                public IElement @__delegation = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ConnectorKind-delegation");
+
             }
 
             public IElement @__ConnectorKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ConnectorKind");
@@ -1180,27 +1188,42 @@ namespace DatenMeister.Core
             public _Vertex @Vertex = new _Vertex();
             public IElement @__Vertex = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Vertex");
 
-            public enum _PseudostateKind
+            public static class _PseudostateKind
             {
-                "initial",
-                "deepHistory",
-                "shallowHistory",
-                "join",
-                "fork",
-                "junction",
-                "choice",
-                "entryPoint",
-                "exitPoint",
-                "terminate"
+                public static string @initial = "initial";
+                public IElement @__initial = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-initial");
+                public static string @deepHistory = "deepHistory";
+                public IElement @__deepHistory = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-deepHistory");
+                public static string @shallowHistory = "shallowHistory";
+                public IElement @__shallowHistory = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-shallowHistory");
+                public static string @join = "join";
+                public IElement @__join = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-join");
+                public static string @fork = "fork";
+                public IElement @__fork = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-fork");
+                public static string @junction = "junction";
+                public IElement @__junction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-junction");
+                public static string @choice = "choice";
+                public IElement @__choice = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-choice");
+                public static string @entryPoint = "entryPoint";
+                public IElement @__entryPoint = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-entryPoint");
+                public static string @exitPoint = "exitPoint";
+                public IElement @__exitPoint = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-exitPoint");
+                public static string @terminate = "terminate";
+                public IElement @__terminate = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-terminate");
+
             }
 
             public IElement @__PseudostateKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind");
 
-            public enum _TransitionKind
+            public static class _TransitionKind
             {
-                "internal",
-                "local",
-                "external"
+                public static string @internal = "internal";
+                public IElement @__internal = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TransitionKind-internal");
+                public static string @local = "local";
+                public IElement @__local = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TransitionKind-local");
+                public static string @external = "external";
+                public IElement @__external = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TransitionKind-external");
+
             }
 
             public IElement @__TransitionKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TransitionKind");
@@ -1782,42 +1805,67 @@ namespace DatenMeister.Core
             public _StateInvariant @StateInvariant = new _StateInvariant();
             public IElement @__StateInvariant = new MofObjectShadow("datenmeister:///_internal/xmi/uml#StateInvariant");
 
-            public enum _InteractionOperatorKind
+            public static class _InteractionOperatorKind
             {
-                "seq",
-                "alt",
-                "opt",
-                "break",
-                "par",
-                "strict",
-                "loop",
-                "critical",
-                "neg",
-                "assert",
-                "ignore",
-                "consider"
+                public static string @seq = "seq";
+                public IElement @__seq = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-seq");
+                public static string @alt = "alt";
+                public IElement @__alt = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-alt");
+                public static string @opt = "opt";
+                public IElement @__opt = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-opt");
+                public static string @break = "break";
+                public IElement @__break = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-break");
+                public static string @par = "par";
+                public IElement @__par = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-par");
+                public static string @strict = "strict";
+                public IElement @__strict = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-strict");
+                public static string @loop = "loop";
+                public IElement @__loop = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-loop");
+                public static string @critical = "critical";
+                public IElement @__critical = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-critical");
+                public static string @neg = "neg";
+                public IElement @__neg = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-neg");
+                public static string @assert = "assert";
+                public IElement @__assert = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-assert");
+                public static string @ignore = "ignore";
+                public IElement @__ignore = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-ignore");
+                public static string @consider = "consider";
+                public IElement @__consider = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-consider");
+
             }
 
             public IElement @__InteractionOperatorKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind");
 
-            public enum _MessageKind
+            public static class _MessageKind
             {
-                "complete",
-                "lost",
-                "found",
-                "unknown"
+                public static string @complete = "complete";
+                public IElement @__complete = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageKind-complete");
+                public static string @lost = "lost";
+                public IElement @__lost = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageKind-lost");
+                public static string @found = "found";
+                public IElement @__found = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageKind-found");
+                public static string @unknown = "unknown";
+                public IElement @__unknown = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageKind-unknown");
+
             }
 
             public IElement @__MessageKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageKind");
 
-            public enum _MessageSort
+            public static class _MessageSort
             {
-                "synchCall",
-                "asynchCall",
-                "asynchSignal",
-                "createMessage",
-                "deleteMessage",
-                "reply"
+                public static string @synchCall = "synchCall";
+                public IElement @__synchCall = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort-synchCall");
+                public static string @asynchCall = "asynchCall";
+                public IElement @__asynchCall = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort-asynchCall");
+                public static string @asynchSignal = "asynchSignal";
+                public IElement @__asynchSignal = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort-asynchSignal");
+                public static string @createMessage = "createMessage";
+                public IElement @__createMessage = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort-createMessage");
+                public static string @deleteMessage = "deleteMessage";
+                public IElement @__deleteMessage = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort-deleteMessage");
+                public static string @reply = "reply";
+                public IElement @__reply = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort-reply");
+
             }
 
             public IElement @__MessageSort = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort");
@@ -2337,12 +2385,17 @@ namespace DatenMeister.Core
             public _Usage @Usage = new _Usage();
             public IElement @__Usage = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Usage");
 
-            public enum _VisibilityKind
+            public static class _VisibilityKind
             {
-                "public",
-                "private",
-                "protected",
-                "package"
+                public static string @public = "public";
+                public IElement @__public = new MofObjectShadow("datenmeister:///_internal/xmi/uml#VisibilityKind-public");
+                public static string @private = "private";
+                public IElement @__private = new MofObjectShadow("datenmeister:///_internal/xmi/uml#VisibilityKind-private");
+                public static string @protected = "protected";
+                public IElement @__protected = new MofObjectShadow("datenmeister:///_internal/xmi/uml#VisibilityKind-protected");
+                public static string @package = "package";
+                public IElement @__package = new MofObjectShadow("datenmeister:///_internal/xmi/uml#VisibilityKind-package");
+
             }
 
             public IElement @__VisibilityKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#VisibilityKind");
@@ -2895,40 +2948,58 @@ namespace DatenMeister.Core
             public _StructuralFeature @StructuralFeature = new _StructuralFeature();
             public IElement @__StructuralFeature = new MofObjectShadow("datenmeister:///_internal/xmi/uml#StructuralFeature");
 
-            public enum _AggregationKind
+            public static class _AggregationKind
             {
-                "none",
-                "shared",
-                "composite"
+                public static string @none = "none";
+                public IElement @__none = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AggregationKind-none");
+                public static string @shared = "shared";
+                public IElement @__shared = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AggregationKind-shared");
+                public static string @composite = "composite";
+                public IElement @__composite = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AggregationKind-composite");
+
             }
 
             public IElement @__AggregationKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AggregationKind");
 
-            public enum _CallConcurrencyKind
+            public static class _CallConcurrencyKind
             {
-                "sequential",
-                "guarded",
-                "concurrent"
+                public static string @sequential = "sequential";
+                public IElement @__sequential = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CallConcurrencyKind-sequential");
+                public static string @guarded = "guarded";
+                public IElement @__guarded = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CallConcurrencyKind-guarded");
+                public static string @concurrent = "concurrent";
+                public IElement @__concurrent = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CallConcurrencyKind-concurrent");
+
             }
 
             public IElement @__CallConcurrencyKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CallConcurrencyKind");
 
-            public enum _ParameterDirectionKind
+            public static class _ParameterDirectionKind
             {
-                "in",
-                "inout",
-                "out",
-                "return"
+                public static string @in = "in";
+                public IElement @__in = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterDirectionKind-in");
+                public static string @inout = "inout";
+                public IElement @__inout = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterDirectionKind-inout");
+                public static string @out = "out";
+                public IElement @__out = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterDirectionKind-out");
+                public static string @return = "return";
+                public IElement @__return = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterDirectionKind-return");
+
             }
 
             public IElement @__ParameterDirectionKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterDirectionKind");
 
-            public enum _ParameterEffectKind
+            public static class _ParameterEffectKind
             {
-                "create",
-                "read",
-                "update",
-                "delete"
+                public static string @create = "create";
+                public IElement @__create = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterEffectKind-create");
+                public static string @read = "read";
+                public IElement @__read = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterEffectKind-read");
+                public static string @update = "update";
+                public IElement @__update = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterEffectKind-update");
+                public static string @delete = "delete";
+                public IElement @__delete = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterEffectKind-delete");
+
             }
 
             public IElement @__ParameterEffectKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterEffectKind");
@@ -2992,11 +3063,15 @@ namespace DatenMeister.Core
             public _WriteVariableAction @WriteVariableAction = new _WriteVariableAction();
             public IElement @__WriteVariableAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#WriteVariableAction");
 
-            public enum _ExpansionKind
+            public static class _ExpansionKind
             {
-                "parallel",
-                "iterative",
-                "stream"
+                public static string @parallel = "parallel";
+                public IElement @__parallel = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExpansionKind-parallel");
+                public static string @iterative = "iterative";
+                public IElement @__iterative = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExpansionKind-iterative");
+                public static string @stream = "stream";
+                public IElement @__stream = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExpansionKind-stream");
+
             }
 
             public IElement @__ExpansionKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExpansionKind");

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
@@ -15,6 +16,11 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class DotNetConverter
     {
+        /// <summary>
+        /// Defines the logger
+        /// </summary>
+        public static readonly ClassLogger Logger = new ClassLogger(typeof(DotNetConverter));
+
         /// <summary>
         /// Stores the MOF Factory being used to create the MOF object. This is dependent upon the extent. 
         /// </summary>
@@ -243,20 +249,26 @@ namespace DatenMeister.Core.EMOF.Implementation
                     {
                         reflectedProperty.SetValue(result, DotNetHelper.AsString(propertyValue));
                     }
-
-                    if (reflectedProperty.PropertyType == typeof(int))
+                    else if (reflectedProperty.PropertyType == typeof(int))
                     {
                         reflectedProperty.SetValue(result, DotNetHelper.AsInteger(propertyValue));
                     }
-
-                    if (reflectedProperty.PropertyType == typeof(double))
+                    else if (reflectedProperty.PropertyType == typeof(double))
                     {
                         reflectedProperty.SetValue(result, DotNetHelper.AsDouble(propertyValue));
                     }
-
-                    if (reflectedProperty.PropertyType == typeof(bool))
+                    else if (reflectedProperty.PropertyType == typeof(bool))
                     {
                         reflectedProperty.SetValue(result, DotNetHelper.AsBoolean(propertyValue));
+                    }
+                    else if(reflectedProperty.PropertyType.IsEnum)
+                    {
+                        if ( propertyValue?.GetType() == reflectedProperty.PropertyType )
+                        reflectedProperty.SetValue(result, propertyValue);
+                    }
+                    else
+                    {
+                        Logger.Error($"Unknown type for Property: {reflectedProperty.Name}: {reflectedProperty.PropertyType}");
                     }
                 }
             }

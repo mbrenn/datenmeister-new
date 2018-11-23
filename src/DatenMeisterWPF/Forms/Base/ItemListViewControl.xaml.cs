@@ -734,7 +734,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <param name="fastFilter">Fast filter to be stored</param>
         private void AddFastFilter(IObject fastFilter)
         {
-            MessageBox.Show("X");
+            
         }
     }
 }

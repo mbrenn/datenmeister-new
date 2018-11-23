@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.FastFilter
+namespace DatenMeister.Modules.FastViewFilter
 {
     public class PropertyComparison : IFastFilter
     {

@@ -3,8 +3,9 @@ using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Provider.XMI.EMOF;
+using DatenMeister.Runtime.Copier;
 
-namespace DatenMeister.Runtime.Copier
+namespace DatenMeister.Runtime.Extents
 {
     /// <summary>
     /// Performs an export of an extent to an xmi structure which then ca be stored to disc

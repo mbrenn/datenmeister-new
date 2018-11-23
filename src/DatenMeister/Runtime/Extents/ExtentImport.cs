@@ -3,11 +3,9 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.ExtentStorage;
-using DatenMeister.Runtime.Extents;
-
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
-namespace DatenMeister.Runtime.Copier
+namespace DatenMeister.Runtime.Extents
 {
     public class ExtentImport
     {

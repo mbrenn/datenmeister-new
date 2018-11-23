@@ -2,7 +2,7 @@
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Runtime;
 
-namespace DatenMeister.Modules.FastFilter
+namespace DatenMeister.Modules.FastViewFilter
 {
     public class PropertyContains : IFastFilter
     {

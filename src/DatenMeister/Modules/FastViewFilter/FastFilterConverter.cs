@@ -1,7 +1,7 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.FastViewFilter;
 
-namespace DatenMeister.Modules.FastFilter
+namespace DatenMeister.Modules.FastViewFilter
 {
     /// <summary>
     /// Performs the conversion of the fast filter instances to the filter themselves

@@ -12,6 +12,7 @@ using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;

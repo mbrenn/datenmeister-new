@@ -119,7 +119,7 @@ namespace DatenMeisterWPF.Forms.Lists
             var viewDefinition = new ViewDefinition(className, view);
 
             // Sets the generic buttons to create the new types
-            if (view?.getOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
+            if (view?.GetOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
                 is IReflectiveCollection defaultTypesForNewItems)
             {
                 foreach (var type in defaultTypesForNewItems.OfType<IElement>())

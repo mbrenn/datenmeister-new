@@ -88,7 +88,7 @@ namespace DatenMeisterWPF.Command
                 foreach (var property in allProperties.getPropertiesBeingSet())
                 {
                     var value = DotNetHelper.AsString(
-                        selectedItem.getOrDefault(property));
+                        selectedItem.GetOrDefault(property));
 
                     builder.AppendLine($"{property}: {value}");
                 }

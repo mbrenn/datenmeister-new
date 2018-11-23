@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DatenMeister.Models.FastViewFilter
 {
-    public static class FastViewFilters
+    public partial class FastViewFilters
     {
         /// <summary>
         /// Gets the types regarding fast view filters

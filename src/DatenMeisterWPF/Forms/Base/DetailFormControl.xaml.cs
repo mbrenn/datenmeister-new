@@ -79,7 +79,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <returns>true, if design shall be minimized</returns>
         public bool IsDesignMinimized()
         {
-            return DotNetHelper.IsTrue(EffectiveForm?.getOrDefault(_FormAndFields._Form.minimizeDesign));
+            return DotNetHelper.IsTrue(EffectiveForm?.GetOrDefault(_FormAndFields._Form.minimizeDesign));
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace DatenMeisterWPF.Forms.Base
 
             if (_hideViewSelection == null)
             {
-                if (DotNetHelper.IsTrue(EffectiveForm.getOrDefault(_FormAndFields._Form.fixView)))
+                if (DotNetHelper.IsTrue(EffectiveForm.GetOrDefault(_FormAndFields._Form.fixView)))
                 {
                     ViewList.Visibility = Visibility.Collapsed;
                     _hideViewSelection = true;
@@ -271,7 +271,7 @@ namespace DatenMeisterWPF.Forms.Base
                 var mofElement = (MofElement)DetailElement;
                 var uriExtent = mofElement.Extent as MofUriExtent;
 
-                if (!DotNetHelper.IsTrue(EffectiveForm.getOrDefault(_FormAndFields._Form.hideMetaClass)))
+                if (!DotNetHelper.IsTrue(EffectiveForm.GetOrDefault(_FormAndFields._Form.hideMetaClass)))
                 {
                     CreateSeparator();
 

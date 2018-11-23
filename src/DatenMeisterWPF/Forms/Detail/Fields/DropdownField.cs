@@ -36,7 +36,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 }
             }
 
-            var dropDownValues = fieldData.getOrDefault(_FormAndFields._DropDownFieldData.values);
+            var dropDownValues = fieldData.GetOrDefault(_FormAndFields._DropDownFieldData.values);
             if (dropDownValues == null)
             {
                 return new TextBlock
@@ -51,8 +51,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 
             foreach (var itemPair in DotNetHelper.AsEnumeration(dropDownValues).Select(x=> x as IElement))
             {
-                var nameOfItem = itemPair.getOrDefault(_FormAndFields._ValuePair.name);
-                var valueOfItem = itemPair.getOrDefault(_FormAndFields._ValuePair.value);
+                var nameOfItem = itemPair.GetOrDefault(_FormAndFields._ValuePair.name);
+                var valueOfItem = itemPair.GetOrDefault(_FormAndFields._ValuePair.value);
 
                 if (nameOfItem != null && valueOfItem != null)
                 {

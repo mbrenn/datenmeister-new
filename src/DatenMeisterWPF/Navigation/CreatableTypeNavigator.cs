@@ -67,7 +67,7 @@ namespace DatenMeisterWPF.Navigation
                     control.AddDefaultButtons(buttonName);
                     control.ElementSaved += (x, y) =>
                     {
-                        if (control.DetailElement.getOrDefault("selectedType") is IElement metaClass)
+                        if (control.DetailElement.GetOrDefault("selectedType") is IElement metaClass)
                         {
                             SelectedType = metaClass;
                         }

@@ -12,6 +12,11 @@
     public class PropertyComparisonFilter
     {
         /// <summary>
+        /// Gets or sets the property being filtered
+        /// </summary>
+        public string Property { get; set; }
+
+        /// <summary>
         /// Gets or sets the comparison type
         /// </summary>
         public ComparisonType ComparisonType { get; set; }    

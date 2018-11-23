@@ -24,7 +24,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             ref FieldFlags fieldFlags)
         {
             var isInline =
-                DotNetHelper.IsTrue(fieldData.getOrDefault(_FormAndFields._ReferenceFieldData.isSelectionInline));
+                DotNetHelper.IsTrue(fieldData.GetOrDefault(_FormAndFields._ReferenceFieldData.isSelectionInline));
             var name = fieldData.get(_FormAndFields._FieldData.name).ToString();
 
             // Checks, whether the reference shall be included as an inline selection
@@ -38,15 +38,15 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     MaxHeight = 400
                 };
 
-                if (fieldData.getOrDefault(_FormAndFields._ReferenceFieldData.defaultValue) is IElement element)
+                if (fieldData.GetOrDefault(_FormAndFields._ReferenceFieldData.defaultValue) is IElement element)
                 {
                     control.Select(element);
                 }
                 else
                 {
-                    var workspace = fieldData.getOrDefault(_FormAndFields._ReferenceFieldData.defaultWorkspace)
+                    var workspace = fieldData.GetOrDefault(_FormAndFields._ReferenceFieldData.defaultWorkspace)
                         ?.ToString();
-                    var extent = fieldData.getOrDefault(_FormAndFields._ReferenceFieldData.defaultExtentUri)
+                    var extent = fieldData.GetOrDefault(_FormAndFields._ReferenceFieldData.defaultExtentUri)
                         ?.ToString();
 
                     if (!string.IsNullOrEmpty(workspace) && !string.IsNullOrEmpty(extent))
@@ -97,7 +97,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 };
 
                 var fieldName = fieldData.get(_FormAndFields._FieldData.name).ToString();
-                var foundItem = value.getOrDefault(fieldName) as IElement;
+                var foundItem = value.GetOrDefault(fieldName) as IElement;
 
                 var itemText = new TextBlock
                 {
@@ -109,7 +109,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 var openButten = new Button {Content = "Open"};
                 openButten.Click += (sender, args) =>
                 {
-                    if (!(value.getOrDefault(fieldName) is IElement itemToOpen))
+                    if (!(value.GetOrDefault(fieldName) is IElement itemToOpen))
                     {
                         MessageBox.Show("No item selected");
                     }

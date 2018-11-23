@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Models;
+using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.Model;
@@ -51,6 +52,18 @@ namespace DatenMeister.SourceGeneration.Console
                     Namespace = "DatenMeister.Provider.ManagementProviders.Model",
                     Types = ManagementProviderModel.AllTypes
                 });
+
+            System.Console.Write("Create Sourcecode for Fast Filter...");
+            SourceGenerator.GenerateSourceFor(
+                new SourceGeneratorOptions
+                {
+                    ExtentUrl = WorkspaceNames.UriInternalTypesExtent,
+                    Name = "FastViewFilters",
+                    Path = "./",
+                    Namespace = "DatenMeister.Models.FastViewFilter",
+                    Types = FastViewFilters.Types
+                });
+
             System.Console.WriteLine(" Done");
 
 #if !DEBUG
@@ -72,6 +85,10 @@ namespace DatenMeister.SourceGeneration.Console
             File.Copy("./ManagementProvider.filler.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.filler.cs", true);
             File.Copy("./ManagementProvider.class.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.class.cs", true);
             File.Copy("./ManagementProvider.dotnet.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.dotnet.cs", true);
+            
+            File.Copy("./FastViewFilters.filler.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.filler.cs", true);
+            File.Copy("./FastViewFilters.class.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.class.cs", true);
+            File.Copy("./FastViewFilters.dotnet.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.dotnet.cs", true);
 #endif
         }
 

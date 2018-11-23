@@ -46,9 +46,9 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         /// <param name="panel"></param>
         private void CreatePanelElement(IObject value, IElement fieldData, DetailFormControl detailForm, StackPanel panel)
         {
-            var name = fieldData.getOrDefault(_FormAndFields._FieldData.name).ToString();
-            var valueOfElement = value.getOrDefault(name) as IReflectiveSequence;
-            var form = fieldData.getOrDefault(_FormAndFields._SubElementFieldData.form) as IElement;
+            var name = fieldData.GetOrDefault(_FormAndFields._FieldData.name).ToString();
+            var valueOfElement = value.GetOrDefault(name) as IReflectiveSequence;
+            var form = fieldData.GetOrDefault(_FormAndFields._SubElementFieldData.form) as IElement;
 
             if (valueOfElement == null)
             {
@@ -102,7 +102,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                         var elements = NavigatorForItems.NavigateToCreateNewItem(detailForm.NavigationHost, (value as MofObject)?.CreatedByExtent, type);
                         elements.NewItemCreated += (x, y) =>
                         {
-                            if (value.getOrDefault(name) is IReflectiveCollection propertyCollection)
+                            if (value.GetOrDefault(name) is IReflectiveCollection propertyCollection)
                             {
                                 propertyCollection.add(y.NewItem);
                             }
@@ -129,7 +129,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     (value as MofObject)?.CreatedByExtent);
                 result.NewItemCreated += (a, b) =>
                 {
-                    if (value.getOrDefault(name) is IReflectiveCollection propertyCollection)
+                    if (value.GetOrDefault(name) is IReflectiveCollection propertyCollection)
                     {
                         propertyCollection.add(b.NewItem);
                     }

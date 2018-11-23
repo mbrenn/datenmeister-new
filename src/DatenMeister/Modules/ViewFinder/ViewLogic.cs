@@ -297,12 +297,12 @@ namespace DatenMeister.Modules.ViewFinder
                 var points = 0;
                 if (element == null) throw new NullReferenceException("element");
 
-                var innerExtentType = element.getOrDefault(_FormAndFields._ViewAssociation.extentType)?.ToString();
-                var innerMetaClass = element.getOrDefault(_FormAndFields._ViewAssociation.metaclass) as IElement;
-                var innerMetaClassName = element.getOrDefault(_FormAndFields._ViewAssociation.metaclassName)?.ToString();
-                var innerViewType = (ViewType) (element.getOrDefault(_FormAndFields._ViewAssociation.viewType) ?? ViewType.Detail);
+                var innerExtentType = element.GetOrDefault(_FormAndFields._ViewAssociation.extentType)?.ToString();
+                var innerMetaClass = element.GetOrDefault(_FormAndFields._ViewAssociation.metaclass) as IElement;
+                var innerMetaClassName = element.GetOrDefault(_FormAndFields._ViewAssociation.metaclassName)?.ToString();
+                var innerViewType = (ViewType) (element.GetOrDefault(_FormAndFields._ViewAssociation.viewType) ?? ViewType.Detail);
 
-                var innerView = element.getOrDefault(_FormAndFields._ViewAssociation.view) as IElement;
+                var innerView = element.GetOrDefault(_FormAndFields._ViewAssociation.view) as IElement;
                 var isMatching = true;
 
                 // Now go through each property and get the points

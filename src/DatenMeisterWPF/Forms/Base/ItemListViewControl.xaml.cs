@@ -129,7 +129,7 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             SupportNewItems =
-                !DotNetHelper.AsBoolean(CurrentFormDefinition.getOrDefault(_FormAndFields._Form.inhibitNewItems));
+                !DotNetHelper.AsBoolean(CurrentFormDefinition.GetOrDefault(_FormAndFields._Form.inhibitNewItems));
             SupportNewItems = false; // TODO: Make new items working
 
             var listItems = new ObservableCollection<ExpandoObject>();
@@ -734,7 +734,10 @@ namespace DatenMeisterWPF.Forms.Base
         /// <param name="fastFilter">Fast filter to be stored</param>
         private void AddFastFilter(IObject fastFilter)
         {
-            
+            CurrentFormDefinition.AddListItem(_FormAndFields._ListForm.fastViewFilters, fastFilter);
+            UpdateContent();
         }
+
+        private IReflectiveSequence GetFastFilters() => CurrentFormDefinition.GetAsReflectiveSequence(_FormAndFields._ListForm.fastViewFilters);
     }
 }

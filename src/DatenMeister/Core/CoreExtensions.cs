@@ -31,7 +31,7 @@ namespace DatenMeister.Core
         /// <param name="extent">Type of the extent to be set</param>
         public static string GetExtentType(this IExtent extent)
         {
-            return extent?.getOrDefault(ExtentType)?.ToString() ?? string.Empty;
+            return extent?.GetOrDefault(ExtentType)?.ToString() ?? string.Empty;
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace DatenMeister.Core
         /// <returns>The found element</returns>
         public static IElement GetDefaultTypePackage(this IExtent extent)
         {
-            return extent?.getOrDefault(DatenmeisterDefaultTypePackage) as IElement;
+            return extent?.GetOrDefault(DatenmeisterDefaultTypePackage) as IElement;
         }
 
         /// <summary>

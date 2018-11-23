@@ -230,6 +230,9 @@ namespace DatenMeister.Models.Forms
             public static string @defaultTypesForNewElements = "defaultTypesForNewElements";
             public IElement _defaultTypesForNewElements = null;
 
+            public static string @fastViewFilters = "fastViewFilters";
+            public IElement _fastViewFilters = null;
+
             public static string @name = "name";
             public IElement _name = null;
 

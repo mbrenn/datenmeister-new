@@ -39,7 +39,7 @@ namespace DatenMeister.Provider
 
                 foreach (var property in properties)
                 {
-                    var value = asObject.getOrDefault(property);
+                    var value = asObject.GetOrDefault(property);
                     if (value == null)
                     {
                         continue;
@@ -73,7 +73,7 @@ namespace DatenMeister.Provider
 
                 foreach (var property in properties)
                 {
-                    var value = asObject.getOrDefault(property);
+                    var value = asObject.GetOrDefault(property);
                     Output(value?.ToString() ?? string.Empty, columnWidth[property]);
                 }
 

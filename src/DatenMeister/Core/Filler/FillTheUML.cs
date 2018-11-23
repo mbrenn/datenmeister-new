@@ -1406,7 +1406,7 @@ namespace DatenMeister.Core.Filler
                                     {
                                         value = item2 as IElement;
                                         name = GetNameOfElement(value);
-                                        if(name == "loadingPosition") // Looking for property
+                                        if(name == "entry") // Looking for property
                                         {
                                             tree.StateMachines.ConnectionPointReference._entry = value;
                                         }
@@ -1571,7 +1571,7 @@ namespace DatenMeister.Core.Filler
                                         {
                                             tree.StateMachines.State._doActivity = value;
                                         }
-                                        if(name == "loadingPosition") // Looking for property
+                                        if(name == "entry") // Looking for property
                                         {
                                             tree.StateMachines.State._entry = value;
                                         }

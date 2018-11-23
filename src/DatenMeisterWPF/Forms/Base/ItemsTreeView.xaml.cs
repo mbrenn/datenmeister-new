@@ -193,7 +193,7 @@ namespace DatenMeisterWPF.Forms.Base
                 var childModels = new List<TreeViewItem>();
                 foreach (var property in _propertiesForChildren)
                 {
-                    if (itemAsObject.getOrDefault(property) is IReflectiveCollection childItems)
+                    if (itemAsObject.GetOrDefault(property) is IReflectiveCollection childItems)
                     {
                         foreach (var childItem in childItems)
                         {
@@ -311,7 +311,7 @@ namespace DatenMeisterWPF.Forms.Base
 
                 foreach (var property in _propertiesForChildren)
                 {
-                    if (itemAsObject.getOrDefault(property) is IReflectiveCollection childItems)
+                    if (itemAsObject.GetOrDefault(property) is IReflectiveCollection childItems)
                     {
                         VisitCopyTreeToClipboard(
                             childItems, 

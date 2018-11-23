@@ -18,7 +18,7 @@ namespace DatenMeister.Runtime
         /// <param name="value">Object being queried</param>
         /// <param name="property">Property of the object</param>
         /// <returns>The value of the object or null, if not existing</returns>
-        public static object getOrDefault(this IObject value, string property)
+        public static object GetOrDefault(this IObject value, string property)
         {
             if (value.isSet(property))
             {
@@ -27,6 +27,7 @@ namespace DatenMeister.Runtime
 
             return null;
         }
+
         /// <summary>
         /// Gets the value of a property if the property is set and is not an enumeration. 
         /// If the property is an enumeration, the first element will be returned
@@ -35,7 +36,7 @@ namespace DatenMeister.Runtime
         /// <param name="value">Object being queried</param>
         /// <param name="property">Property of the object</param>
         /// <returns>The value of the object or null, if not existing</returns>
-        public static object getFirstOrDefault(this IObject value, string property)
+        public static object GetFirstOrDefault(this IObject value, string property)
         {
             if (value.isSet(property))
             {
@@ -50,6 +51,19 @@ namespace DatenMeister.Runtime
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Adds a list item to the reflective sequence of the given value.
+        /// If the given property is not already a reflective sequence, it will become to one
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="property"></param>
+        /// <param name="toBeAdded"></param>
+        public static void AddListItem(this IObject value, string property, object toBeAdded)
+        {
+            var reflection = new MofReflectiveSequence(value as MofObject,  property);
+            reflection.add(toBeAdded);
         }
 
         public static Dictionary<object, object> AsDictionary(

@@ -351,6 +351,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ListForm._defaultTypesForNewElements = value;
                                 }
+                                if(name == "fastViewFilters") // Looking for property
+                                {
+                                    tree.ListForm._fastViewFilters = value;
+                                }
                                 if(name == "name") // Looking for property
                                 {
                                     tree.ListForm._name = value;

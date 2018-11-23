@@ -127,7 +127,7 @@ namespace DatenMeister.SourcecodeGenerator
             var asElement = enumInstance as IElement;
             var name = GetNameOfElement(enumInstance);
 
-            Result.AppendLine($"{stack.Indentation}public static class _{name}");
+            Result.AppendLine($"{stack.Indentation}public class _{name}");
             Result.AppendLine($"{stack.Indentation}{{");
 
             base.WalkEnum(enumInstance, stack);

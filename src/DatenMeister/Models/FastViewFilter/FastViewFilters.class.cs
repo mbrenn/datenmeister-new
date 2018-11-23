@@ -7,6 +7,23 @@ namespace DatenMeister.Models.FastViewFilter
 {
     public class _FastViewFilters
     {
+        public class _ComparisonType
+        {
+            public static string @Equal = "Equal";
+            public IElement @__Equal = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.FastViewFilter.ComparisonType-Equal");
+            public static string @GreaterThan = "GreaterThan";
+            public IElement @__GreaterThan = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.FastViewFilter.ComparisonType-GreaterThan");
+            public static string @LighterThan = "LighterThan";
+            public IElement @__LighterThan = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.FastViewFilter.ComparisonType-LighterThan");
+            public static string @GreaterOrEqualThan = "GreaterOrEqualThan";
+            public IElement @__GreaterOrEqualThan = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.FastViewFilter.ComparisonType-GreaterOrEqualThan");
+            public static string @LighterOrEqualThan = "LighterOrEqualThan";
+            public IElement @__LighterOrEqualThan = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.FastViewFilter.ComparisonType-LighterOrEqualThan");
+
+        }
+
+        public IElement @__ComparisonType = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.FastViewFilter.ComparisonType");
+
         public class _PropertyComparisonFilter
         {
             public static string @Property = "Property";

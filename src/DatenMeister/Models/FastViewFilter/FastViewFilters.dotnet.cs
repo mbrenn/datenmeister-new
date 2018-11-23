@@ -24,6 +24,13 @@ namespace DatenMeister.Models.FastViewFilter
         {
             var generator = new DotNetTypeGenerator(factory, uml);
             {
+                var type = typeof(DatenMeister.Models.FastViewFilter.ComparisonType);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ComparisonType = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
                 var type = typeof(DatenMeister.Models.FastViewFilter.PropertyComparisonFilter);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);

@@ -235,13 +235,11 @@ namespace DatenMeister.SourcecodeGenerator
             innerStack.Fullname += $".{name}";
 
             // Needs to be updated
-            var first = true;
             foreach (var enumLiteral in enumInstance.GetAsEnumerable(_UML._SimpleClassifiers._Enumeration.ownedLiteral).OfType<IElement>())
             {
                 if (_parser.IsEnumLiteral(enumLiteral))
                 {
                     WalkEnumLiteral(enumLiteral, innerStack);
-                    first = false;
                 }
             }
         }

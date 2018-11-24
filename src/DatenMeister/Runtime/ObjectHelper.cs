@@ -98,6 +98,19 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
+        /// Sets the properties of the value
+        /// </summary>
+        /// <param name="value">Object which will receive the values</param>
+        /// <param name="properties">Properties to be set</param>
+        public static void SetProperties(this IObject value, IDictionary<string, object> properties)
+        {
+            foreach (var pair in properties)
+            {
+                value.set(pair.Key, pair.Value);
+            }
+        }
+
+        /// <summary>
         /// Gets a certain property value as a reflective collection. 
         /// If the value is not a reflective collection, an exception is thrown
         /// </summary>

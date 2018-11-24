@@ -12,6 +12,7 @@ using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;

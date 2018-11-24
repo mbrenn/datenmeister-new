@@ -76,8 +76,8 @@ namespace DatenMeister.SourcecodeGenerator
             var dotNetGenerator = new DotNetIntegrationGenerator();
             dotNetGenerator.Create(options.Namespace, options.Name, options.Types);
 
-            var pathOfDotNetIngegration = GetPath(options, ".dotnet.cs");
-            File.WriteAllText(pathOfDotNetIngegration, dotNetGenerator.Result.ToString());
+            var pathOfDotNetIntegration = GetPath(options, ".dotnet.cs");
+            File.WriteAllText(pathOfDotNetIntegration, dotNetGenerator.Result.ToString());
         }
 
         /// <summary>

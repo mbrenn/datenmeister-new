@@ -373,6 +373,7 @@ namespace DatenMeister.Core
 
             }
 
+            public _ObjectNodeOrderingKind @ObjectNodeOrderingKind = new _ObjectNodeOrderingKind();
             public IElement @__ObjectNodeOrderingKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ObjectNodeOrderingKind");
 
         }
@@ -956,6 +957,7 @@ namespace DatenMeister.Core
 
             }
 
+            public _ConnectorKind @ConnectorKind = new _ConnectorKind();
             public IElement @__ConnectorKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ConnectorKind");
 
         }
@@ -1213,6 +1215,7 @@ namespace DatenMeister.Core
 
             }
 
+            public _PseudostateKind @PseudostateKind = new _PseudostateKind();
             public IElement @__PseudostateKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind");
 
             public class _TransitionKind
@@ -1226,6 +1229,7 @@ namespace DatenMeister.Core
 
             }
 
+            public _TransitionKind @TransitionKind = new _TransitionKind();
             public IElement @__TransitionKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TransitionKind");
 
         }
@@ -1834,6 +1838,7 @@ namespace DatenMeister.Core
 
             }
 
+            public _InteractionOperatorKind @InteractionOperatorKind = new _InteractionOperatorKind();
             public IElement @__InteractionOperatorKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind");
 
             public class _MessageKind
@@ -1849,6 +1854,7 @@ namespace DatenMeister.Core
 
             }
 
+            public _MessageKind @MessageKind = new _MessageKind();
             public IElement @__MessageKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageKind");
 
             public class _MessageSort
@@ -1868,6 +1874,7 @@ namespace DatenMeister.Core
 
             }
 
+            public _MessageSort @MessageSort = new _MessageSort();
             public IElement @__MessageSort = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort");
 
         }
@@ -2398,6 +2405,7 @@ namespace DatenMeister.Core
 
             }
 
+            public _VisibilityKind @VisibilityKind = new _VisibilityKind();
             public IElement @__VisibilityKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#VisibilityKind");
 
         }
@@ -2959,6 +2967,7 @@ namespace DatenMeister.Core
 
             }
 
+            public _AggregationKind @AggregationKind = new _AggregationKind();
             public IElement @__AggregationKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AggregationKind");
 
             public class _CallConcurrencyKind
@@ -2972,6 +2981,7 @@ namespace DatenMeister.Core
 
             }
 
+            public _CallConcurrencyKind @CallConcurrencyKind = new _CallConcurrencyKind();
             public IElement @__CallConcurrencyKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CallConcurrencyKind");
 
             public class _ParameterDirectionKind
@@ -2987,6 +2997,7 @@ namespace DatenMeister.Core
 
             }
 
+            public _ParameterDirectionKind @ParameterDirectionKind = new _ParameterDirectionKind();
             public IElement @__ParameterDirectionKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterDirectionKind");
 
             public class _ParameterEffectKind
@@ -3002,6 +3013,7 @@ namespace DatenMeister.Core
 
             }
 
+            public _ParameterEffectKind @ParameterEffectKind = new _ParameterEffectKind();
             public IElement @__ParameterEffectKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterEffectKind");
 
         }
@@ -3074,6 +3086,7 @@ namespace DatenMeister.Core
 
             }
 
+            public _ExpansionKind @ExpansionKind = new _ExpansionKind();
             public IElement @__ExpansionKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExpansionKind");
 
             public class _AcceptCallAction

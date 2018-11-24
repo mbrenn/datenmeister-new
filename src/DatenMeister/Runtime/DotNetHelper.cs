@@ -431,5 +431,15 @@ namespace DatenMeister.Runtime
 
             return ConvertToMofElement(value, extent, factory);
         }
+
+        /// <summary>
+        /// Checks whether the value is of MofShadow
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <returns>true, if the value is of type MofShadow</returns>
+        public static bool IsOfMofShadow(object value)
+        {
+            return value is MofObjectShadow;
+        }
     }
 }

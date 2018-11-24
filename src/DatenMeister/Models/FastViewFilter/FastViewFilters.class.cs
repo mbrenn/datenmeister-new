@@ -22,6 +22,7 @@ namespace DatenMeister.Models.FastViewFilter
 
         }
 
+        public _ComparisonType @ComparisonType = new _ComparisonType();
         public IElement @__ComparisonType = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.FastViewFilter.ComparisonType");
 
         public class _PropertyComparisonFilter

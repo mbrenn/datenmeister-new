@@ -358,6 +358,19 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return value;
             }
 
+            if (DotNetHelper.IsOfMofShadow(value))
+            {
+                var asMofObjectShadow = (MofObjectShadow) value;
+
+                // It is a reference
+                var reference = new UriReference
+                {
+                    Uri = asMofObjectShadow.Uri
+                };
+
+                return reference;
+            }
+
             if (DotNetHelper.IsOfMofObject(value))
             {
                 var asMofObject = (MofObject) value;

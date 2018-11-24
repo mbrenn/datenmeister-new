@@ -263,8 +263,22 @@ namespace DatenMeister.Core.EMOF.Implementation
                     }
                     else if(reflectedProperty.PropertyType.IsEnum)
                     {
-                        if ( propertyValue?.GetType() == reflectedProperty.PropertyType )
-                        reflectedProperty.SetValue(result, propertyValue);
+                        var propertyValueType = propertyValue?.GetType();
+                        if (propertyValueType == reflectedProperty.PropertyType)
+                        {
+                            reflectedProperty.SetValue(result, propertyValue);
+                        }
+                        else if (propertyValue is string propertyValueAsString)
+                        {
+                            reflectedProperty.SetValue(result, Enum.Parse(reflectedProperty.PropertyType, propertyValueAsString));
+                        }
+                        else if (propertyValue is IObject propertyObject)
+                        {
+                            // Get Enumeration Instance
+                            // _extent.Resolve(propertyObject)
+
+                            Console.Write(propertyObject.ToString());
+                        }
                     }
                     else
                     {

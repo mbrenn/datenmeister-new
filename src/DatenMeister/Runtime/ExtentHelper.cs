@@ -1,16 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime.Functions.Queries;
 
 namespace DatenMeister.Runtime
 {
     public static class ExtentHelper
     {
+        /// <summary>
+        /// Defines the logger
+        /// </summary>
+        public static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentHelper));
+
         private const string DatenmeisterDefaultTypePackage = "__DatenMeister.DefaultTypePackage";
 
         private const string ExtentType = "__ExtentType";
@@ -54,6 +61,28 @@ namespace DatenMeister.Runtime
         public static IElement GetDefaultTypePackage(this IExtent extent)
         {
             return extent?.GetOrDefault(DatenmeisterDefaultTypePackage) as IElement;
+        }
+
+        public static IElement Resolve(this IExtent extent, IElement element)
+        {
+            if (!(extent is MofUriExtent mofUriExtent))
+            {
+                Logger.Error("Given extent is not of type MofUriExtent");
+                return null;
+            }
+
+            if (element is MofElement)
+            {
+                return element;
+            }
+
+            if (element is MofObjectShadow shadow)
+            {
+                return mofUriExtent.Resolve(shadow.Uri, ResolveType.Default);
+            }
+
+            Logger.Error($"Given element is not of type MofElement or MofObjectShadow: {element?.ToString() ?? "'null'"}");
+            return null;
         }
 
         /// <summary>

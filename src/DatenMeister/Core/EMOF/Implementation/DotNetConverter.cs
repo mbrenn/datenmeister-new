@@ -235,6 +235,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="value">Value to be converted</param>
         /// <param name="type">Type of the element to be converted</param>
+        /// <param name="converter">Defines the converter instance</param>
         /// <returns>The converted object</returns>
         public static object ConvertToDotNetObject(IObject value, Type type)
         {
@@ -272,12 +273,17 @@ namespace DatenMeister.Core.EMOF.Implementation
                         {
                             reflectedProperty.SetValue(result, Enum.Parse(reflectedProperty.PropertyType, propertyValueAsString));
                         }
-                        else if (propertyValue is IObject propertyObject)
+                        else if (propertyValue is IElement propertyObject && value is MofObject mofObject)
                         {
                             // Get Enumeration Instance
-                            // _extent.Resolve(propertyObject)
+                            var resolvedElement = mofObject.CreatedByExtent.Resolve(propertyObject);
+                            if (resolvedElement == null)
+                            {
+                                return null;
+                            }
 
-                            Console.Write(propertyObject.ToString());
+                            var name = NamedElementMethods.GetName(resolvedElement);
+                            reflectedProperty.SetValue(result, Enum.Parse(reflectedProperty.PropertyType, name));
                         }
                     }
                     else

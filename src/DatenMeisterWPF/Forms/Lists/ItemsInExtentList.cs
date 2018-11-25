@@ -126,7 +126,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 {
                     var typeName = type.get(_UML._CommonStructure._NamedElement.name);
 
-                    viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
+                    viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
                         $"New {typeName}", () =>
                         {
                             var elements =
@@ -137,7 +137,7 @@ namespace DatenMeisterWPF.Forms.Lists
             }
 
             // Sets the button for the new item
-            viewDefinition.ViewExtensions.Add(new GenericButtonDefintion(
+            viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
                 "New Item", () =>
                 {
                     var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);

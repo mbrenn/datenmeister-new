@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +10,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
+using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Base
@@ -24,6 +26,11 @@ namespace DatenMeisterWPF.Forms.Base
 
         public static readonly DependencyProperty ShowRootProperty = DependencyProperty.Register(
             "ShowRoot", typeof(bool), typeof(ItemsTreeView), new PropertyMetadata(default(bool)));
+
+        /// <summary>
+        /// Gets a list of the viewextension for the tree view
+        /// </summary>
+        public List<ViewExtension> ViewExtensions { get; } = new List<ViewExtension>(); 
 
         /// <summary>
         /// Gets or sets a value indicating whether a root element shall be introduced
@@ -49,6 +56,8 @@ namespace DatenMeisterWPF.Forms.Base
         public ItemsTreeView()
         {
             InitializeComponent();
+
+
         }
 
         public IReflectiveCollection ItemsSource
@@ -122,6 +131,15 @@ namespace DatenMeisterWPF.Forms.Base
                 return;
             }
 
+            // Add default view extension
+            ViewExtensions.Add(new TreeViewItemCommandDefinition
+            {
+                Text = "Copy Tree to Clipboard",
+                Action = _ => CopyTreeToClipboard_OnClick()
+            });
+
+            SetMenuItemsForContextMenu();
+
             var model = new List<TreeViewItem>();
 
             var container = TreeView as ItemsControl;
@@ -160,6 +178,21 @@ namespace DatenMeisterWPF.Forms.Base
 
                 container.ItemsSource = model;
             }
+        }
+
+        private void SetMenuItemsForContextMenu()
+        {
+            var menuItems = new List<MenuItem>();
+            foreach (var extension in ViewExtensions.OfType<TreeViewItemCommandDefinition>())
+            {
+                var menuItem = new MenuItem
+                {
+                    Header = extension.Text
+                };
+                menuItem.Click += (x, y) => extension.Action(SelectedElement);
+            }
+
+            ItemContextMenu.ItemsSource = menuItems;
         }
 
 
@@ -276,7 +309,7 @@ namespace DatenMeisterWPF.Forms.Base
 
         }
 
-        private void CopyTreeToClipboard_OnClick(object sender, RoutedEventArgs e)
+        private void CopyTreeToClipboard_OnClick()
         {
             var result = new StringBuilder();
 

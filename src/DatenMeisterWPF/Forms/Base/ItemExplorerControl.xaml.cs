@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -102,6 +103,11 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private void UpdateTreeContent()
         {
+            foreach (var extension in GetViewExtensions().OfType<TreeViewItemCommandDefinition>())
+            {
+                NavigationTreeView.ViewExtensions.Add(extension);
+            }
+
             NavigationTreeView.SetDefaultProperties();
             NavigationTreeView.ItemsSource = Items;
             SelectedPackage = null;

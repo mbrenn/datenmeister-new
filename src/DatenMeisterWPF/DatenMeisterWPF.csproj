@@ -100,11 +100,12 @@
     </Compile>
     <Compile Include="Forms\Base\ViewDefinitionMode.cs" />
     <Compile Include="Forms\Base\ViewDefinition.cs" />
-    <Compile Include="Forms\Base\ViewExtensions\GenericButtonDefintion.cs" />
+    <Compile Include="Forms\Base\ViewExtensions\GenericButtonDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\InfoLineDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\ItemButtonDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\RibbonButtonDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\RowItemButtonDefinition.cs" />
+    <Compile Include="Forms\Base\ViewExtensions\TreeViewItemCommandDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\ViewExtension.cs" />
     <Compile Include="Forms\Detail\Fields\CheckboxField.cs" />
     <Compile Include="Forms\Detail\Fields\DateTimeField.cs" />

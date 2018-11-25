@@ -304,7 +304,7 @@ namespace DatenMeisterWPF.Forms.Base
                         }
 
                         break;
-                    case GenericButtonDefintion genericButtonDefinition:
+                    case GenericButtonDefinition genericButtonDefinition:
                         AddGenericButton(genericButtonDefinition.Name, genericButtonDefinition.OnPressed);
                         break;
                     case ItemButtonDefinition itemButtonDefinition:

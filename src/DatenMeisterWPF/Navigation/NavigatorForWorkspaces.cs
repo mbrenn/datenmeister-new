@@ -8,6 +8,7 @@ using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeisterWPF.Forms.Detail;
 using DatenMeisterWPF.Forms.Lists;
 
 namespace DatenMeisterWPF.Navigation
@@ -30,6 +31,17 @@ namespace DatenMeisterWPF.Navigation
         {
             var integrationSettings = App.Scope.Resolve<IntegrationSettings>();
             Process.Start(integrationSettings.DatabasePath);
+        }
+
+        public static IControlNavigation CreateNewWorkspace(INavigationHost navigationHost)
+        {
+            return navigationHost.NavigateTo(() =>
+                {
+                    var dlg = new NewWorkspaceControl();
+                    dlg.SetContent();
+                    return dlg;
+                },
+                NavigationMode.Detail);
         }
 
         /// <summary>

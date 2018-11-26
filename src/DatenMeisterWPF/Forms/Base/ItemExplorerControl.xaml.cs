@@ -103,11 +103,6 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private void UpdateTreeContent()
         {
-            foreach (var extension in GetViewExtensions().OfType<TreeViewItemCommandDefinition>())
-            {
-                NavigationTreeView.ViewExtensions.Add(extension);
-            }
-
             NavigationTreeView.SetDefaultProperties();
             NavigationTreeView.ItemsSource = Items;
             SelectedPackage = null;
@@ -210,6 +205,16 @@ namespace DatenMeisterWPF.Forms.Base
 
             var events = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
             events.Closed += (sender, args) => RecreateViews();
+        }
+
+        private void ItemTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            NavigationTreeView.ViewExtensions.Clear();
+            foreach (var extension in GetViewExtensions().OfType<TreeViewItemCommandDefinition>())
+            {
+                NavigationTreeView.ViewExtensions.Add(extension);
+            }
+
         }
     }
 }

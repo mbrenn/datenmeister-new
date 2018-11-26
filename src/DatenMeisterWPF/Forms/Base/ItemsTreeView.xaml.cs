@@ -131,13 +131,6 @@ namespace DatenMeisterWPF.Forms.Base
                 return;
             }
 
-            // Add default view extension
-            ViewExtensions.Add(new TreeViewItemCommandDefinition
-            {
-                Text = "Copy Tree to Clipboard",
-                Action = _ => CopyTreeToClipboard_OnClick()
-            });
-
             SetMenuItemsForContextMenu();
 
             var model = new List<TreeViewItem>();
@@ -180,6 +173,9 @@ namespace DatenMeisterWPF.Forms.Base
             }
         }
 
+        /// <summary>
+        /// Sets the menu items for the context menu
+        /// </summary>
         private void SetMenuItemsForContextMenu()
         {
             var menuItems = new List<MenuItem>();
@@ -190,6 +186,8 @@ namespace DatenMeisterWPF.Forms.Base
                     Header = extension.Text
                 };
                 menuItem.Click += (x, y) => extension.Action(SelectedElement);
+
+                menuItems.Add(menuItem);
             }
 
             ItemContextMenu.ItemsSource = menuItems;
@@ -353,6 +351,21 @@ namespace DatenMeisterWPF.Forms.Base
                     }
                 }
             }
+        }
+
+        private void TreeView_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            if (ViewExtensions.OfType<TreeViewItemCommandDefinition>().All(x => x.Text != "Copy Tree to Clipboard"))
+            {
+                // Add default view extension
+                ViewExtensions.Add(new TreeViewItemCommandDefinition
+                {
+                    Text = "Copy Tree to Clipboard",
+                    Action = _ => CopyTreeToClipboard_OnClick()
+                });
+            }
+
+            SetMenuItemsForContextMenu();
         }
     }
 }

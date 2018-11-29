@@ -10,10 +10,13 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Autofac;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.FastViewFilter;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.InMemory;
@@ -36,8 +39,11 @@ namespace DatenMeisterWPF.Forms.Base
     /// </summary>
     public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavigationGuest
     {
+        private static readonly ILogger Logger = new ClassLogger(typeof(ItemListViewControl));
+
         public ItemListViewControl()
         {
+            _fastViewFilter = App.Scope.Resolve<FastViewFilterLogic>();
             InitializeComponent();
         }
 
@@ -59,6 +65,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// Defines the text being used for search
         /// </summary>
         private string _searchText;
+
+        private FastViewFilterLogic _fastViewFilter;
 
         /// <summary>
         /// Defines the current form definition of the window as provided by the
@@ -153,6 +161,17 @@ namespace DatenMeisterWPF.Forms.Base
                         .Select(x => x.get("name")?.ToString())
                         .Where(x => x != null);
                     items = Items.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
+                }
+
+                foreach (var fastfilter in GetFastFilters())
+                {
+                    var converter = FastViewFilterConverter.Convert(fastfilter);
+                    if (converter == null)
+                    {
+                        Logger.Warn("FastViewFilter is not known: " + fastfilter);
+                        continue;
+                    }
+                    items = items.Where(x => converter.IsFiltered(x));
                 }
 
                 // Go through the items and build up the list of elements
@@ -699,11 +718,10 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void FastViewFilter_OnClick(object sender, RoutedEventArgs e)
         {
-            var fastViewFilter = App.Scope.Resolve<FastViewFilterLogic>();
             var menu = new ContextMenu();
             var list = new List<object>();
 
-            foreach (var filter in fastViewFilter.FastViewFilters.OfType<IElement>())
+            foreach (var filter in _fastViewFilter.FastViewFilters.OfType<IElement>())
             {
                 var item = new MenuItem
                 {
@@ -734,10 +752,10 @@ namespace DatenMeisterWPF.Forms.Base
         /// <param name="fastFilter">Fast filter to be stored</param>
         private void AddFastFilter(IObject fastFilter)
         {
-            CurrentFormDefinition.AddListItem(_FormAndFields._ListForm.fastViewFilters, fastFilter);
+            CurrentFormDefinition.AddCollectionItem(_FormAndFields._ListForm.fastViewFilters, fastFilter);
             UpdateContent();
         }
 
-        private IReflectiveSequence GetFastFilters() => CurrentFormDefinition.GetAsReflectiveSequence(_FormAndFields._ListForm.fastViewFilters);
+        private IEnumerable<IElement> GetFastFilters() => CurrentFormDefinition.ForceAsEnumerable(_FormAndFields._ListForm.fastViewFilters).OfType<IElement>();
     }
 }

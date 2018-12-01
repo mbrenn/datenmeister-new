@@ -100,6 +100,11 @@ namespace DatenMeisterWPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition("Show Items", ShowItems));
 
             viewDefinition.ViewExtensions.Add(
+                new TreeViewItemCommandDefinition(
+                    "New Extent",
+                    (x) => { LoadExtent(); }));
+
+            viewDefinition.ViewExtensions.Add(
                 new RibbonButtonDefinition(
                     "New Xmi Extent",
                     NewXmiExtent,

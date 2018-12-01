@@ -1,8 +1,9 @@
-﻿using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Proxies;
 using NUnit.Framework;
 
@@ -131,6 +132,27 @@ namespace DatenMeister.Tests.Mof.Core
 
             otherMofElement.set("Test", innerMofElement);
             Assert.That(((IHasExtent)otherMofElement.get("Test")).Extent, Is.SameAs(uriExtent));
+        }
+
+        [Test]
+        public void TestGetGenerics()
+        {
+            var value = InMemoryObject.CreateEmpty();
+            value.set("nr", 42);
+            value.set("string", "ABC");
+            value.set("collection", new object[] {43, 2, 321, 231});
+            var otherValue = InMemoryObject.CreateEmpty();
+            otherValue.set("name", "Martin");
+
+            value.set("mof", otherValue);
+
+            Assert.That(value.getOrDefault<string>("nr"), Is.EqualTo("42"));
+            Assert.That(value.getOrDefault<int>("nr"), Is.EqualTo(42));
+            Assert.That(value.getOrDefault<string>("string"), Is.EqualTo("ABC"));
+            Assert.That(value.getOrDefault<IReflectiveCollection>("collection").Count(), Is.EqualTo(4));
+            Assert.That(value.getOrDefault<IReflectiveCollection>("collection").ElementAt(2), Is.EqualTo(321));
+            Assert.That(value.getOrDefault<IObject>("mof").get<string>("name"), Is.EqualTo("Martin"));
+            Assert.That(value.getOrDefault<IElement>("mof").get<string>("name"), Is.EqualTo("Martin"));
         }
 
         [Test]

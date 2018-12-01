@@ -94,11 +94,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                         continue;
                     }
 
-                    var column = new TextFieldData
-                    {
-                        name = propertyName,
-                        title = propertyName
-                    };
+                    var column = GetFieldForProperty(property);
 
                     form.fields.Add(column);
                 }
@@ -145,6 +141,24 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             {
                 form.fields.Add(new MetaClassElementFieldData());
             }
+        }
+
+        /// <summary>
+        /// Gets the field data, depending upon the given property
+        /// </summary>
+        /// <param name="property">Property which is requesting a field</param>
+        /// <returns>The field data</returns>
+        public FieldData GetFieldForProperty(IElement property)
+        {
+            var propertyName = property.get("name").ToString();
+
+            var column = new TextFieldData
+            {
+                name = propertyName,
+                title = propertyName
+            };
+
+            return column;
         }
     }
 }

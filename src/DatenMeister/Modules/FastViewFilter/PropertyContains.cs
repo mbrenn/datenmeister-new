@@ -20,15 +20,15 @@ namespace DatenMeister.Modules.FastViewFilter
         /// <returns></returns>
         public bool IsFiltered(IObject value)
         {
-            var filterValue = DotNetHelper.AsString(_fastFilter.get(_FastViewFilters._PropertyContainsFilter.Value));
-            if (filterValue == null)
+            var filterValue = _fastFilter.getOrDefault<string>(_FastViewFilters._PropertyContainsFilter.Value);
+            var propertyName = _fastFilter.getOrDefault<string>(_FastViewFilters._PropertyContainsFilter.Property);
+
+            if (filterValue == null || propertyName == null)
             {
                 return true;
             }
 
-            var propertyName = DotNetHelper.AsString(_fastFilter.get(_FastViewFilters._PropertyContainsFilter.Property));
-
-            var propertyValue = DotNetHelper.AsString(value.GetOrDefault(propertyName));
+            var propertyValue = value.getOrDefault<string>(propertyName);
             var result = propertyValue?.Contains(filterValue);
             return result == null || result == true;
         }

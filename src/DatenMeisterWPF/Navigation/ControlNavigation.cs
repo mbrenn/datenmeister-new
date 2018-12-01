@@ -2,38 +2,25 @@
 
 namespace DatenMeisterWPF.Navigation
 {
-    public class ControlNavigation : IControlNavigation
+    public class ControlNavigation : IControlNavigation, IControlNavigationSaveItem, IControlNavigationNewItem
     {
         public event EventHandler Closed;
-
-        public virtual void OnClosed()
-        {
-            Closed?.Invoke(this, EventArgs.Empty);
-        }
-    }
-    
-    public class ControlNavigationNewItem : ControlNavigation, IControlNavigationNewItem
-    {
-        public ControlNavigationNewItem()
-        {
-            
-        }
-
-        public ControlNavigationNewItem(IControlNavigation subItem)
-        {
-            subItem.Closed += (x, y) => OnClosed();
-        }
-
+        public event EventHandler<ItemEventArgs> Saved;
         public event EventHandler<NewItemEventArgs> NewItemCreated;
+
+        public virtual void OnSaved(ItemEventArgs e)
+        {
+            Saved?.Invoke(this, e);
+        }
 
         public virtual void OnNewItemCreated(NewItemEventArgs e)
         {
             NewItemCreated?.Invoke(this, e);
         }
 
-        public void Attach(IControlNavigation subItem)
+        public virtual void OnClosed()
         {
-            subItem.Closed += (x, y) => OnClosed();
+            Closed?.Invoke(this, EventArgs.Empty);
         }
     }
 }

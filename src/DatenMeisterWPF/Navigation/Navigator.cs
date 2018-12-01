@@ -87,7 +87,6 @@ namespace DatenMeisterWPF.Navigation
                         Owner = parentWindow
                     };
                     detailFormWindow.SetMainContent(asDetailFormControl);
-
                     asDetailFormControl.NavigationHost = detailFormWindow;
                     detailFormWindow.Show();
                     detailFormWindow.Closed += (x, y) =>
@@ -95,6 +94,7 @@ namespace DatenMeisterWPF.Navigation
                         result.OnClosed();
                         parentWindow.Focus();
                     };
+                    detailFormWindow.Saved += (x, y) => { result.OnSaved(y); };
 
                     SetPosition(detailFormWindow, parentWindow, navigationMode);
                     break;

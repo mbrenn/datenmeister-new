@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
 
@@ -13,6 +14,12 @@ namespace DatenMeisterWPF.Windows
     /// </summary>
     public partial class DetailFormWindow : Window, IHasRibbon, INavigationHost
     {
+        /// <summary>
+        /// Defines the event that will be thrown, when the user has clicked upon 'save' in the inner form.
+        /// This event has to be invoked by the child elements. 
+        /// </summary>
+        public event EventHandler<ItemEventArgs> Saved;
+
         public DetailFormWindow()
         {
             InitializeComponent();
@@ -95,6 +102,11 @@ namespace DatenMeisterWPF.Windows
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        public void OnSaved(IObject detailElement)
+        {
+            Saved?.Invoke(this, new ItemEventArgs(detailElement));
         }
     }
 }

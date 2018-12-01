@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -15,6 +16,11 @@ namespace DatenMeister.Modules.ViewFinder.Helper
     /// </summary>
     public class FormCreator
     {
+        /// <summary>
+        /// Defines the logger
+        /// </summary>
+        private static readonly ILogger Logger = new ClassLogger(typeof(FormCreator));
+
         /// <summary>
         /// Stores the creation mode
         /// </summary>
@@ -150,6 +156,14 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <returns>The field data</returns>
         public FieldData GetFieldForProperty(IElement property)
         {
+            var propertyType = PropertyHelper.GetPropertyType(property);
+
+            if (propertyType != null)
+            {
+                // Check, if correct property
+                Logger.Trace(propertyType.ToString());
+            }
+
             var propertyName = property.get("name").ToString();
 
             var column = new TextFieldData

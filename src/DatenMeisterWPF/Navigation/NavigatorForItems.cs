@@ -22,9 +22,9 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="window">Window which is the owner for the detail window</param>
         /// <param name="element">Element to be shown</param>
         /// <returns>The navigation being used to control the view</returns>
-        public static IControlNavigation NavigateToElementDetailView(INavigationHost window, IObject element)
+        public static IControlNavigationSaveItem NavigateToElementDetailView(INavigationHost window, IObject element)
         {
-            return window.NavigateTo(
+            return  (IControlNavigationSaveItem) window.NavigateTo(
                 () =>
                 {
                     var control = new DetailFormControl
@@ -108,7 +108,7 @@ namespace DatenMeisterWPF.Navigation
         /// <returns>The control element that can be used to receive events from the dialog</returns>
         public static IControlNavigationNewItem NavigateToNewItemForExtent(INavigationHost window, IExtent extent)
         {
-            var result = new ControlNavigationNewItem();
+            var result = new ControlNavigation();
 
             var createableTypes = new CreatableTypeNavigator();
             createableTypes.Closed += (x, y) =>
@@ -149,7 +149,7 @@ namespace DatenMeisterWPF.Navigation
         /// <returns>The control element that can be used to receive events from the dialog</returns>
         public static IControlNavigationNewItem NavigateToCreateNewItem(INavigationHost window, IExtent extent)
         {
-            var result = new ControlNavigationNewItem();
+            var result = new ControlNavigation();
             var createableTypes = new CreatableTypeNavigator();
             createableTypes.Closed += (x, y) =>
             {
@@ -174,7 +174,7 @@ namespace DatenMeisterWPF.Navigation
         /// <returns>The control element that can be used to receive events from the dialog</returns>
         public static IControlNavigationNewItem NavigateToCreateNewItem(INavigationHost window, IExtent extent, IElement metaclass)
         {
-            var result = new ControlNavigationNewItem();
+            var result = new ControlNavigation();
             var factory = new MofFactory(extent);
             var newElement = factory.create(metaclass);
 
@@ -200,7 +200,7 @@ namespace DatenMeisterWPF.Navigation
             IReflectiveCollection collection,
             IElement metaClass)
         {
-            var result = new ControlNavigationNewItem();
+            var result = new ControlNavigation();
             var factory = new MofFactory(collection);
             var newElement = factory.create(metaClass);
 

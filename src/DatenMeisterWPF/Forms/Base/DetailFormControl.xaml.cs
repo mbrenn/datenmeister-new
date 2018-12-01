@@ -474,7 +474,11 @@ namespace DatenMeisterWPF.Forms.Base
             AddGenericButton("Cancel", () =>
             {
                 var window = Window.GetWindow(this);
-                window?.Close();
+                if (window != null)
+                {
+                    window.Close();
+                }
+                
             }).IsCancel = true;
 
             AddGenericButton(saveText, () =>
@@ -484,7 +488,16 @@ namespace DatenMeisterWPF.Forms.Base
                     StoreDialogContentIntoElement(DetailElement);
 
                     OnElementSaved();
-                    Window.GetWindow(this)?.Close();
+                    var window = Window.GetWindow(this);
+                    if (window != null)
+                    {
+                        window.Close();
+                    }
+
+                    if (window is DetailFormWindow detailFormWindow)
+                    {
+                        detailFormWindow.OnSaved(DetailElement);
+                    }
                 }
                 catch (Exception exc)
                 {

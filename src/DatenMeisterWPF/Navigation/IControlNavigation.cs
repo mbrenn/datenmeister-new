@@ -15,6 +15,17 @@ namespace DatenMeisterWPF.Navigation
     }
 
     /// <summary>
+    /// This interface is created for elements containing a save button.
+    /// </summary>
+    public interface IControlNavigationSaveItem : IControlNavigation
+    {
+        /// <summary>
+        /// This event will be called, when the user has clicked upon the 'save' button and has not discarded the element
+        /// </summary>
+        event EventHandler<ItemEventArgs> Saved;
+    }
+
+    /// <summary>
     /// This interface is created for every navigated element
     /// </summary>
     public interface IControlNavigationNewItem : IControlNavigation

@@ -734,7 +734,10 @@ namespace DatenMeisterWPF.Forms.Base
                     var subItem = InMemoryObject.CreateEmpty(filter);
 
                     var events = NavigatorForItems.NavigateToElementDetailView(NavigationHost, subItem);
-                    events.Closed += (a, b) => AddFastFilter(subItem);
+                    events.Saved += (a, b) =>
+                    {
+                        AddFastFilter(subItem);
+                    };
                 };
 
                 list.Add(item);

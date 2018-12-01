@@ -18,6 +18,12 @@ namespace DatenMeister.Modules.FastViewFilter
         public bool IsFiltered(IObject value)
         {
             var filterObject = DotNetConverter.ConvertToDotNetObject<PropertyComparisonFilter>(_filterObject);
+            if (filterObject.Property == null)
+            {
+                // To avoid exceptions
+                return true;
+            }
+
             var propertyValue = DotNetHelper.AsString(value.GetOrDefault(filterObject.Property));
 
             switch (filterObject.ComparisonType)

@@ -23,7 +23,7 @@ namespace DatenMeister.Tests.Runtime
                 workSpaceCollection,
                 new WorkspaceLoaderConfig
                 {
-                    filepath = "data/workspaces.xml"
+                    filepath = DatenMeisterTests.GetPathForTemporaryStorage("workspaces.xml")
                 });
             workspaceLoader.Load();
 
@@ -112,7 +112,7 @@ namespace DatenMeister.Tests.Runtime
                 workSpaceCollection,
                 new WorkspaceLoaderConfig
                 {
-                    filepath = "data/workspaces.xml"
+                    filepath = DatenMeisterTests.GetPathForTemporaryStorage("workspaces.xml")
                 });
             return workspaceLoader;
         }

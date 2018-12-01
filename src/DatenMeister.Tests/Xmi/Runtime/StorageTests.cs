@@ -36,7 +36,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
             var xmiStorageConfiguration = new XmiStorageConfiguration
             {
                 extentUri = "datenmeister:///test/",
-                filePath = "data.xml"
+                filePath = DatenMeisterTests.GetPathForTemporaryStorage("data.xml")
             };
 
             var xmiStorage = new XmiStorage();

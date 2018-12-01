@@ -13,6 +13,19 @@ namespace DatenMeister.Tests
     [TestFixture]
     public class DatenMeisterTests
     {
+        public static string GetPathForTemporaryStorage(string fileName)
+        {
+            var path = Path.Combine(
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                "testing/datenmeister/data"); 
+            if ( !Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            return Path.Combine(path, fileName);
+        }
+
         /// <summary>
         /// Gets the DatenMeister Scope for the testing
         /// </summary>

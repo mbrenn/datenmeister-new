@@ -103,6 +103,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
+        /// Sets the metaclas by directly setting the uri
+        /// </summary>
+        /// <param name="metaClassUri">Uri to be set</param>
+        public void SetMetaClass(string metaClassUri)
+        {
+            ProviderObject.MetaclassUri = metaClassUri;
+        }
+
+        /// <summary>
         /// Sets the extent by which the element was created
         /// </summary>
         /// <param name="extent">Extent being used to define the the creator</param>

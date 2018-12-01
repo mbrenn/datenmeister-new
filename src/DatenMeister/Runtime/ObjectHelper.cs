@@ -12,6 +12,78 @@ namespace DatenMeister.Runtime
     public static class ObjectHelper
     {
         /// <summary>
+        /// Gets the typed value of the property. 
+        /// </summary>
+        /// <typeparam name="T">Type of the property</typeparam>
+        /// <param name="value">MOF Object being queried</param>
+        /// <param name="property">Property being queried in the <c>value</c></param>
+        /// <returns>The content of the element or default(T) if not nknown</returns>
+        public static T get<T>(this IObject value, string property)
+        {
+            if (typeof(T) == typeof(string))
+            {
+                return (T)(object)DotNetHelper.AsString(value.get(property));
+            }
+
+            if (typeof(T) == typeof(int))
+            {
+                return (T)(object)DotNetHelper.AsInteger(value.get(property));
+            }
+
+            if (typeof(T) == typeof(double))
+            {
+                return (T)(object)DotNetHelper.AsDouble(value.get(property));
+            }
+
+            if (typeof(T) == typeof(bool))
+            {
+                return (T)(object)DotNetHelper.AsBoolean(value.get(property));
+            }
+
+            if (typeof(T) == typeof(IObject))
+            {
+                return (T)(value.get(property) as IObject);
+            }
+
+            if ( typeof(T) == typeof(IElement))
+            {
+                return (T)(value.get(property) as IElement);
+            }
+
+            if (typeof(T) == typeof(IReflectiveCollection))
+            {
+                return (T) (object) new MofReflectiveSequence((MofObject) value, property);
+            }
+
+            if (typeof(T) == typeof(IReflectiveSequence))
+            {
+                return (T)(object)new MofReflectiveSequence((MofObject)value, property);
+            }
+
+            throw new InvalidOperationException($"{typeof(T).FullName} is not handled by get");
+        }
+
+        public static T? getOrNull<T>(this IObject value, string property) where T : struct
+        {
+            if (!value.isSet(property))
+            {
+                return null;
+            }
+
+            return get<T>(value, property);
+        }
+
+        public static T getOrDefault<T>(this IObject value, string property) 
+        {
+            if (!value.isSet(property))
+            {
+                return default(T);
+            }
+
+            return get<T>(value, property);
+        }
+
+        /// <summary>
         /// Gets the value of a property if the property is set. 
         /// If the property is no set, then null will be returned
         /// </summary>

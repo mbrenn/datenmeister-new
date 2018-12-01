@@ -22,8 +22,8 @@ namespace DatenMeister.Provider.InMemory
         /// <returns>The created object as MofObject</returns>
         public static MofElement CreateEmpty(IExtent uriExtent = null)
         {
-            var inner = new InMemoryObject(InMemoryProvider.TemporaryProvider);
-            return new MofElement(inner, (MofExtent) uriExtent);
+            var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
+            return factory.create(null) as MofElement;
         }
 
         /// <summary>
@@ -32,8 +32,10 @@ namespace DatenMeister.Provider.InMemory
         /// <returns>The created object as MofObject</returns>
         public static MofElement CreateEmpty(string metaClass, IExtent uriExtent = null)
         {
-            var inner = new InMemoryObject(InMemoryProvider.TemporaryProvider, metaClass);
-            return new MofElement(inner, (MofExtent)uriExtent);
+            var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
+            var element = factory.create(null) as MofElement;
+            element.SetMetaClass(metaClass);
+            return element;
         }
 
         /// <summary>

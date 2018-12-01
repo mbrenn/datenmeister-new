@@ -22,7 +22,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         /// <param name="extent">And finally extent to which the types shall be registered</param>
         public static void Assign(_UML uml, IFactory factory, IReflectiveCollection collection, _ManagementProvider filledStructure, MofUriExtent extent)
         {
-            var generator = new DotNetTypeGenerator(factory, uml);
+            var generator = new DotNetTypeGenerator(factory, uml, extent);
             {
                 var type = typeof(DatenMeister.Provider.ManagementProviders.Model.Extent);
                 var typeAsElement = generator.CreateTypeFor(type);

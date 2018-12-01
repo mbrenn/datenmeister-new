@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 
@@ -23,7 +24,8 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="factoryForTypes">The factory being used to create the instances for
         /// class, properties and other MOF elements</param>
         /// <param name="umlHost">The UML reference storing the metaclass for class, properties, etc. </param>
-        public DotNetTypeGenerator(IFactory factoryForTypes, _UML umlHost)
+        /// <param name="targetExtent">Stores the extent into which the elements will be added</param>
+        public DotNetTypeGenerator(IFactory factoryForTypes, _UML umlHost, IUriExtent targetExtent = null)
         {
             _factoryForTypes = factoryForTypes ?? throw new ArgumentNullException(nameof(factoryForTypes));
             _umlHost = umlHost ?? throw new ArgumentNullException(nameof(umlHost));
@@ -69,6 +71,11 @@ namespace DatenMeister.Provider.DotNet
                     }
 
                     umlProperty.set(_UML._CommonStructure._NamedElement.name, property.Name);
+                    // Ok, now we start to set the types... it will be fun
+                    if (property.PropertyType == typeof(string))
+                    {
+                        //umlProperty.set(_UML._CommonStructure._TypedElement.type, _primitiveTypes.__String);
+                    }
 
                     properties.Add(umlProperty);
                 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -15,6 +16,7 @@ namespace DatenMeister.SourcecodeGenerator
         public static void GenerateSourceFor(SourceGeneratorOptions options, _UML uml = null)
         {
             uml = uml ?? new _UML(); // Verifies that a uml is existing
+            var primitiveTypes = new _PrimitiveTypes();
 
             ////////////////////////////////////////
             // First of all, create all Mof types, representing the objects under concern

@@ -54,7 +54,7 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine($"{stack.Indentation}{{");
 
             stack = stack.Next;
-            Result.AppendLine($"{stack.Indentation}var generator = new DotNetTypeGenerator(factory, uml);");
+            Result.AppendLine($"{stack.Indentation}var generator = new DotNetTypeGenerator(factory, uml, extent);");
 
             foreach (var type in types)
             {

@@ -83,8 +83,14 @@ namespace DatenMeister.Modules.TypeSupport
             extentTypes.SetExtentType("Uml.Classes");
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
 
-            // Copies the Primitive Types to the internal types, so it is available for everybody. 
-            var foundPackage = _packageMethods.GetOrCreatePackageStructure(extentTypes.elements(), "PrimitiveTypes");
+            // Copies the Primitive Types to the internal types, so it is available for everybody, we will create a new extent for this
+            
+            var primitiveTypes = new MofUriExtent(
+                new InMemoryProvider(),
+                WorkspaceNames.UriPrimitiveTypesExtent);
+            var foundPackage = _packageMethods.GetOrCreatePackageStructure(primitiveTypes.elements(), "PrimitiveTypes");
+            _workspaceLogic.AddExtent(typeWorkspace, primitiveTypes);
+            
             CopyMethods.CopyToElementsProperty(
                 _workspaceLogic.GetUmlWorkspace()
                     .FindElementByUri("datenmeister:///_internal/xmi/primitivetypes?PrimitiveTypes")

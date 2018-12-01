@@ -2,10 +2,13 @@
 using System.Collections;
 using System.Linq;
 using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.ViewFinder.Helper
@@ -171,6 +174,19 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 name = propertyName,
                 title = propertyName
             };
+
+            if (propertyType != null)
+            {
+                var uriResolver = propertyType.GetUriResolver();
+                var stringType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String",
+                    ResolveType.Default);
+                var integerType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer",
+                    ResolveType.Default);
+                if (propertyType?.@equals(integerType) == true)
+                {
+                    column.width = 10;
+                }
+            }
 
             return column;
         }

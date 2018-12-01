@@ -19,6 +19,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 
             var name = fieldData.get(_FormAndFields._FieldData.name).ToString();
             var isReadOnly = DotNetHelper.IsTrue(fieldData,_FormAndFields._FieldData.isReadOnly);
+            var width = fieldData.getOrDefault<int>(_FormAndFields._FieldData.width);
+
             var valueText = string.Empty;
             if (value.isSet(name))
             {
@@ -52,6 +54,12 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 {
                     Text = valueText
                 };
+
+                if (width > 0)
+                {
+                    contentBlock.Width = 10 * width;
+                    contentBlock.HorizontalAlignment = HorizontalAlignment.Left;
+                }
 
                 detailForm.SetActions.Add(
                     detailElement =>

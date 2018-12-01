@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Core.EMOF.Implementation
@@ -28,8 +26,22 @@ namespace DatenMeister.Core.EMOF.Implementation
     [Flags]
     public enum ResolveType
     {
+        /// <summary>
+        /// Default resolving process in which all extents in current workspace but also meta workspaces are resolved
+        /// </summary>
         Default = 1, 
+        /// <summary>
+        /// Resolving in which the current workspace will not be looked. Usefull to look for meta classes
+        /// </summary>
         OnlyMetaClasses = 2,
-        NoWorkspace = 4
+        /// <summary>
+        /// Resolving in which the current extent is resolved solely
+        /// </summary>
+        NoWorkspace = 4,
+
+        /// <summary>
+        /// Performs the resolving process only in the current workspace
+        /// </summary>
+        NoMetaWorkspaces = 8
     }
 }

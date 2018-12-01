@@ -142,18 +142,21 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
             }
 
-            // Now look into the explicit extents
-            foreach (var metaExtent in MetaExtents)
+            if ((resolveType & (ResolveType.NoWorkspace | ResolveType.NoMetaWorkspaces)) == 0 )
             {
-                var element = metaExtent.element(uri);
-                if (element != null)
+                // Now look into the explicit extents, if no specific constaint is given
+                foreach (var metaExtent in MetaExtents)
                 {
-                    return element;
+                    var element = metaExtent.element(uri);
+                    if (element != null)
+                    {
+                        return element;
+                    }
                 }
-            }
 
-            var resolve = ResolveByMetaWorkspaces(uri, Workspace);
-            return resolve;
+                return ResolveByMetaWorkspaces(uri, Workspace);
+            }
+            return null;
         }
 
         /// <summary>

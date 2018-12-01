@@ -28,5 +28,11 @@
 
 
         public const string StandardUmlNamespace = "http://www.omg.org/spec/UML/20131001";
+        public const string StandardUmlNamespaceAlternative = "http://www.omg.org/spec/UML/20131001/UML.xmi";
+
+
+        public const string StandardPrimitiveTypeNamespace = "http://www.omg.org/spec/PrimitiveTypes/20131001";
+        public const string StandardPrimitiveTypeNamespaceAlternative = "http://www.omg.org/spec/UML/20131001/PrimitiveTypes.xmi";
     }
 }
+ 

@@ -186,6 +186,7 @@ namespace DatenMeister.Models.Forms
             public static string @isReadOnly = "isReadOnly";
             public IElement _isReadOnly = null;
 
+            public static string width { get; private set; } = "width";
         }
 
         public _FieldData @FieldData = new _FieldData();

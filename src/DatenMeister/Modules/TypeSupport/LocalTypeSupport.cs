@@ -88,6 +88,9 @@ namespace DatenMeister.Modules.TypeSupport
             var primitiveTypes = new MofUriExtent(
                 new InMemoryProvider(),
                 WorkspaceNames.UriPrimitiveTypesExtent);
+            primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespace);
+            primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespaceAlternative);
+
             var foundPackage = _packageMethods.GetOrCreatePackageStructure(primitiveTypes.elements(), "PrimitiveTypes");
             _workspaceLogic.AddExtent(typeWorkspace, primitiveTypes);
             

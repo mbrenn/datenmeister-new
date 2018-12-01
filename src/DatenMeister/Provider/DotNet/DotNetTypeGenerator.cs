@@ -4,6 +4,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -17,6 +18,10 @@ namespace DatenMeister.Provider.DotNet
 
         private readonly _UML _umlHost;
 
+        private readonly IUriExtent _targetExtent;
+
+        public IUriResolver UriResolver => _targetExtent as IUriResolver;
+
         /// <summary>
         /// Initializes a new instance of the DotNetTypeGenerator class
         /// </summary>
@@ -28,6 +33,7 @@ namespace DatenMeister.Provider.DotNet
         {
             _factoryForTypes = factoryForTypes ?? throw new ArgumentNullException(nameof(factoryForTypes));
             _umlHost = umlHost ?? throw new ArgumentNullException(nameof(umlHost));
+            _targetExtent = targetExtent;
         }
 
         public IEnumerable<IElement> CreateTypesFor(IEnumerable<Type> types)
@@ -70,10 +76,30 @@ namespace DatenMeister.Provider.DotNet
                     }
 
                     umlProperty.set(_UML._CommonStructure._NamedElement.name, property.Name);
+
                     // Ok, now we start to set the types... it will be fun
-                    if (property.PropertyType == typeof(string))
+                    if (UriResolver != null)
                     {
-                        //umlProperty.set(_UML._CommonStructure._TypedElement.type, _primitiveTypes.__String);
+                        if (property.PropertyType == typeof(string))
+                        {
+                            var stringType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String", ResolveType.NoMetaWorkspaces);
+                            umlProperty.set(_UML._CommonStructure._TypedElement.type, stringType);
+                        }
+                        else if (property.PropertyType == typeof(int))
+                        {
+                            var integerType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer", ResolveType.NoMetaWorkspaces);
+                            umlProperty.set(_UML._CommonStructure._TypedElement.type, integerType);
+                        }
+                        else if (property.PropertyType == typeof(bool))
+                        {
+                            var booleanType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Boolean", ResolveType.NoMetaWorkspaces);
+                            umlProperty.set(_UML._CommonStructure._TypedElement.type, booleanType);
+                        }
+                        else if (property.PropertyType == typeof(double))
+                        {
+                            var realType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real", ResolveType.NoMetaWorkspaces);
+                            umlProperty.set(_UML._CommonStructure._TypedElement.type, realType);
+                        }
                     }
 
                     properties.Add(umlProperty);

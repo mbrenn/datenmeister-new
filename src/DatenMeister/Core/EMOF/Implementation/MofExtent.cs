@@ -7,7 +7,6 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
-using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -15,7 +14,7 @@ using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
-    public class MofExtent : IExtent
+    public class MofExtent : IExtent, IHasWorkspace
     {
         /// <summary>
         /// This type lookup can be used to convert the instances of the .Net types to real MOF meta classes. 
@@ -32,6 +31,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Gets or sets the workspace to which the extent is allocated
         /// </summary>
         public Workspace Workspace { get; set; }
+        
+        /// <summary>
+        /// Gets the workspace via the interface
+        /// </summary>
+        IWorkspace IHasWorkspace.Workspace => Workspace;
 
         /// <summary>
         /// Stores a list of other extents that shall also be considered as meta extents
@@ -206,6 +210,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
             }
         }
+
+        
 
         /// <summary>
         /// Resolves the DotNetType by navigating through the current and the meta instances. 

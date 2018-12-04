@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -442,6 +441,11 @@ namespace DatenMeister.Runtime
         public static IUriResolver GetUriResolver(this IObject element)
         {
             return (element as MofObject)?.Extent as IUriResolver;
+        }
+
+        public static IUriResolver GetUriResolver(this IExtent element)
+        {
+            return element as IUriResolver;
         }
     }
 }

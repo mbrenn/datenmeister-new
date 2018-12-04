@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -52,6 +54,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 CreateForm(result, item, creationMode);
             }
 
+            // Move the metaclass to the end of the field
             for (var n = 0; n < result.fields.Count; n++)
             {
                 var field = result.fields[n];
@@ -169,23 +172,53 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             var propertyName = property.get("name").ToString();
 
+            if (propertyType == null)
+            {
+                var columnNoPropertyType = new TextFieldData
+                {
+                    name = propertyName,
+                    title = propertyName
+                };
+
+                return columnNoPropertyType;
+            }
+
+            // Checks, if the property is an enumeration. 
+            if (propertyType.metaclass != null)
+            {
+                var umlTypeExtent = propertyType.metaclass.GetUriExtentOf();
+                var uml = umlTypeExtent.GetWorkspace().Get<_UML>();
+
+                if (propertyType.metaclass.@equals(uml.SimpleClassifiers.__Enumeration))
+                {
+                    var comboBox = new DropDownFieldData(propertyName, propertyName);
+                    var values = EnumerationHelper.GetEnumValues(propertyType);
+                    comboBox.values = values.Select(x => new DropDownFieldData.ValuePair(x, x)).ToList();
+                    return comboBox;
+                }
+
+
+
+            }
+
+            // Checks, if the property is a field data
             var column = new TextFieldData
             {
                 name = propertyName,
                 title = propertyName
             };
 
-            if (propertyType != null)
+            // Check, if field property is an enumeration
+            var uriResolver = propertyType.GetUriResolver();
+            var stringType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String",
+                ResolveType.Default);
+            var integerType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer",
+                ResolveType.Default);
+
+            // If propertyType is an integer, the field can be smaller
+            if (propertyType?.@equals(integerType) == true)
             {
-                var uriResolver = propertyType.GetUriResolver();
-                var stringType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String",
-                    ResolveType.Default);
-                var integerType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer",
-                    ResolveType.Default);
-                if (propertyType?.@equals(integerType) == true)
-                {
-                    column.width = 10;
-                }
+                column.width = 10;
             }
 
             return column;

@@ -183,7 +183,7 @@ namespace DatenMeister.Modules.TypeSupport
             var result = new List<IElement>();
             var internalTypeExtent = (MofExtent) GetInternalTypeExtent();
             var generator = new DotNetTypeGenerator(
-                new MofFactory(internalTypeExtent),
+                internalTypeExtent,
                 _workspaceLogic.GetUmlData());
 
             foreach (var type in types)

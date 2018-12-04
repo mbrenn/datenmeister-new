@@ -4,6 +4,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.DotNet
@@ -18,7 +19,7 @@ namespace DatenMeister.Provider.DotNet
 
         private readonly _UML _umlHost;
 
-        private readonly IUriExtent _targetExtent;
+        private readonly IExtent _targetExtent;
 
         public IUriResolver UriResolver => _targetExtent as IUriResolver;
 
@@ -35,6 +36,22 @@ namespace DatenMeister.Provider.DotNet
             _umlHost = umlHost ?? throw new ArgumentNullException(nameof(umlHost));
             _targetExtent = targetExtent;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the DotNetTypeGenerator class
+        /// </summary>
+        /// <param name="factoryForTypes">The factory being used to create the instances for
+        /// class, properties and other MOF elements</param>
+        /// <param name="umlHost">The UML reference storing the metaclass for class, properties, etc. </param>
+        /// <param name="targetExtent">Stores the extent into which the elements will be added</param>
+        public DotNetTypeGenerator(IExtent targetExtent, _UML umlHost)
+        {
+            _targetExtent = targetExtent ?? throw new ArgumentNullException(nameof(targetExtent));
+            _factoryForTypes = new MofFactory(_targetExtent);
+            _umlHost = umlHost ?? throw new ArgumentNullException(nameof(umlHost));
+            
+        }
+
 
         public IEnumerable<IElement> CreateTypesFor(IEnumerable<Type> types)
         {
@@ -99,6 +116,15 @@ namespace DatenMeister.Provider.DotNet
                         {
                             var realType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real", ResolveType.NoMetaWorkspaces);
                             umlProperty.set(_UML._CommonStructure._TypedElement.type, realType);
+                        }
+                        else if( property.PropertyType.IsEnum)
+                        {
+                            var typeUri = (_targetExtent as MofExtent)?.TypeLookup.ToElement(property.PropertyType);
+                            if (typeUri != null)
+                            {
+                                var enumType = UriResolver.Resolve(typeUri, ResolveType.NoMetaWorkspaces);
+                                umlProperty.set(_UML._CommonStructure._TypedElement.type, enumType);
+                            }
                         }
                     }
 

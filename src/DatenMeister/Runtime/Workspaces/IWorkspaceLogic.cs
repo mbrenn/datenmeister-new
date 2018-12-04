@@ -24,6 +24,9 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>Found workspace or null, if not found</returns>
         Workspace GetWorkspace(string id);
 
+        /// <summary>
+        /// Gets the workspaces of the workspace logic
+        /// </summary>
         IEnumerable<Workspace> Workspaces { get; }
 
         /// <summary>

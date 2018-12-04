@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime
 {
@@ -92,14 +93,12 @@ namespace DatenMeister.Runtime
         public static IFactory GetFactory(this IExtent extent) => new MofFactory(extent);
 
         /// <summary>
-        /// Creates a temporary uri for an extent. 
-        /// It starts with 'datenmeister:///temp/' and finishes 
+        /// Gets the workspace of the certain extent if extent implements IHasWorkspace and workspace is correctly set
         /// </summary>
-        /// <returns>The created uri</returns>
-        public static string CreateTemporaryExtentUri()
-        {
-            return $"datenmeister:///{Guid.NewGuid()}";
-        }
+        /// <param name="extent">Extent to be queried</param>
+        /// <returns>The workspace correlated to the extent</returns>
+        public static IWorkspace GetWorkspace(this IExtent extent) => (extent as IHasWorkspace)?.Workspace;
+
         /// <summary>
         ///     Returns an enumeration of all columns that are within the given extent
         /// </summary>

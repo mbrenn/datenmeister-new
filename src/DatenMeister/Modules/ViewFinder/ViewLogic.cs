@@ -6,7 +6,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;

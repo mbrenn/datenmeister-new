@@ -17,7 +17,14 @@
     <DockPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top" >
             <StackPanel Orientation="Horizontal" x:Name="Toolbar" HorizontalAlignment="Right" Margin="10,0,10,0">
-                <Button x:Name="FastViewFilter" Click="FastViewFilter_OnClick">⊕</Button>
+                <StackPanel Orientation="Horizontal" x:Name="FastViewFilterPanel"/>
+                <Button x:Name="FastViewFilter" Click="FastViewFilter_OnClick" HorizontalAlignment="Center">
+                    <Path Stroke="Black" Data="M 0,0 L 4,0 2.8,2 2.8,4 1.2,4 1.2,2 Z" StrokeLineJoin="Round" Margin="3" StrokeThickness="0.4">
+                        <Path.LayoutTransform>
+                            <ScaleTransform ScaleX="3" ScaleY="3" />
+                        </Path.LayoutTransform>
+                    </Path>
+                </Button>
                 <TextBox x:Name="SearchField" Width="200" TextChanged="SearchField_OnTextChanged" Margin="0,2,0,2" ToolTip="Search"></TextBox>
             </StackPanel>
         </StackPanel>

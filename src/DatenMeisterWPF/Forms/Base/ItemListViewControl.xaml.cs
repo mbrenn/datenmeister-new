@@ -66,7 +66,10 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private string _searchText;
 
-        private FastViewFilterLogic _fastViewFilter;
+        /// <summary>
+        /// Defines the logic for the fastview filters
+        /// </summary>
+        private readonly FastViewFilterLogic _fastViewFilter;
 
         /// <summary>
         /// Defines the current form definition of the window as provided by the
@@ -718,15 +721,18 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void FastViewFilter_OnClick(object sender, RoutedEventArgs e)
         {
+            var translator = new FastViewFilterTranslator(App.Scope.Resolve<IWorkspaceLogic>());
             var menu = new ContextMenu();
             var list = new List<object>();
 
+
             foreach (var filter in _fastViewFilter.FastViewFilters.OfType<IElement>())
             {
+                var filterName = translator.TranslateType(filter);
+
                 var item = new MenuItem
                 {
-                    Name = NamedElementMethods.GetName(filter),
-                    Header = NamedElementMethods.GetName(filter)
+                    Header = filterName
                 };
 
                 item.Click += (x, y) =>
@@ -738,11 +744,17 @@ namespace DatenMeisterWPF.Forms.Base
                         subItem,
                         (d) => { d.ViewDefined += (a, b) =>
                         {
+                            // Remove the field with property
                             var fields = b.View.get<IReflectiveSequence>(_FormAndFields._Form.fields);
-                            var propertyField = QueryHelper.GetChildWithProperty(b.View, _FormAndFields._Form.fields,
-                                _FormAndFields._FieldData.name, nameof(PropertyComparisonFilter.Property));
-                            fields.remove(propertyField);
+                            var propertyField = QueryHelper.GetChildWithProperty(fields,
+                                _FormAndFields._FieldData.name, 
+                                nameof(PropertyComparisonFilter.Property));
+                            if (propertyField != null)
+                            {
+                                fields.remove(propertyField);
+                            }
 
+                            // Now, create the replacement
                             var formAndFields = App.Scope.Resolve<IWorkspaceLogic>().GetTypesWorkspace().Get<_FormAndFields>();
                             var factory = new MofFactory(b.View);
                             var element = factory.create(formAndFields.__DropDownFieldData);
@@ -765,13 +777,12 @@ namespace DatenMeisterWPF.Forms.Base
                                 pair.set(_FormAndFields._ValuePair.name, field.get<string>(_FormAndFields._FieldData.title));
                                 pair.set(_FormAndFields._ValuePair.value, field.get<string>(_FormAndFields._FieldData.name));
                                 pairs.Add(pair);
-
                             }
 
                             element.set(_FormAndFields._DropDownFieldData.values, pairs);
                             fields.add(0, element);
+                        }; });
 
-                        }; }); // TODO: Inject the properties
                     events.Saved += (a, b) =>
                     {
                         AddFastFilter(subItem);
@@ -794,7 +805,34 @@ namespace DatenMeisterWPF.Forms.Base
         private void AddFastFilter(IObject fastFilter)
         {
             CurrentFormDefinition.AddCollectionItem(_FormAndFields._ListForm.fastViewFilters, fastFilter);
+            UpdateFastFilterTexts();
             UpdateContent();
+        }
+
+        private void UpdateFastFilterTexts()
+        {
+            FastViewFilterPanel.Children.Clear();
+            var fastFilters =
+                CurrentFormDefinition.get<IReflectiveCollection>(_FormAndFields._ListForm.fastViewFilters);
+
+            foreach (var filter in fastFilters.OfType<IElement>())
+            {
+                var translator = new FastViewFilterTranslator(App.Scope.Resolve<IWorkspaceLogic>());
+
+                var text = new TextBlock
+                {
+                    Text = translator.TranslateFilter(filter)
+                };
+
+                text.MouseDown += (x, y) =>
+                {
+                    fastFilters.remove(filter);
+                    UpdateFastFilterTexts();
+                    UpdateContent();
+                };
+
+                FastViewFilterPanel.Children.Add(text);
+            }
         }
 
         private IEnumerable<IElement> GetFastFilters() => CurrentFormDefinition.ForceAsEnumerable(_FormAndFields._ListForm.fastViewFilters).OfType<IElement>();

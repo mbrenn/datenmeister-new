@@ -51,5 +51,12 @@ namespace DatenMeister.Runtime.Workspaces
         /// Gets the id of the workspace
         /// </summary>
         string id { get; }
+
+        /// <summary>
+        /// Gets a property by querying all meta workspaces
+        /// </summary>
+        /// <typeparam name="TFilledType">Property to be queried</typeparam>
+        /// <returns>The property being queried</returns>
+        TFilledType GetFromMetaWorkspace<TFilledType>(MetaRecursive metaRecursive = MetaRecursive.JustOne) where TFilledType : class, new();
     }
 }

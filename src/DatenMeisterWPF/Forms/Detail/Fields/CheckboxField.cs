@@ -17,18 +17,18 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
-            var name = fieldData.get(_FormAndFields._FieldData.name).ToString();
-            var isReadOnly = DotNetHelper.IsTrue(fieldData, _FormAndFields._FieldData.isReadOnly);
+            var name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
             bool? propertyValue = null;
             if (value.isSet(name))
             {
-                propertyValue = DotNetHelper.AsBoolean(value.get(name));
+                propertyValue = value.getOrDefault<bool>(name);
             }
             else
             {
                 if (fieldData.isSet(_FormAndFields._FieldData.defaultValue))
                 {
-                    propertyValue = DotNetHelper.AsBoolean(fieldData.get(_FormAndFields._FieldData.defaultValue));
+                    propertyValue = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.defaultValue);
                 }
             }
 

@@ -21,8 +21,12 @@ namespace DatenMeisterWPF.Navigation
         /// </summary>
         /// <param name="window">Window which is the owner for the detail window</param>
         /// <param name="element">Element to be shown</param>
+        /// <param name="afterCreated">This method will be called after the instance of DetailFormControl was created. It can be used to hook upon event in DetailFormControl</param>
         /// <returns>The navigation being used to control the view</returns>
-        public static IControlNavigationSaveItem NavigateToElementDetailView(INavigationHost window, IObject element)
+        public static IControlNavigationSaveItem NavigateToElementDetailView(
+            INavigationHost window, 
+            IObject element,
+            Action<DetailFormControl> afterCreated = null)
         {
             return  (IControlNavigationSaveItem) window.NavigateTo(
                 () =>
@@ -32,6 +36,9 @@ namespace DatenMeisterWPF.Navigation
                         DetailElement = element,
                         AllowNewProperties = true
                     };
+
+                    // calls the hook, so event handling can be introduced
+                    afterCreated?.Invoke(control);
 
                     control.AddDefaultButtons();
                     return control;

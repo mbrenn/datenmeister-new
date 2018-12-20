@@ -51,14 +51,14 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 
             foreach (var itemPair in DotNetHelper.AsEnumeration(dropDownValues).Select(x=> x as IElement))
             {
-                var nameOfItem = itemPair.GetOrDefault(_FormAndFields._ValuePair.name);
+                var nameOfItem = itemPair.getOrDefault<string>(_FormAndFields._ValuePair.name);
                 var valueOfItem = itemPair.GetOrDefault(_FormAndFields._ValuePair.value);
 
                 if (nameOfItem != null && valueOfItem != null)
                 {
                     var comboBoxItem = new ComboBoxItem
                     {
-                        Content = nameOfItem.ToString(),
+                        Content = nameOfItem,
                         Tag = valueOfItem
                     };
 

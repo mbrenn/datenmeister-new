@@ -733,7 +733,45 @@ namespace DatenMeisterWPF.Forms.Base
                 {
                     var subItem = InMemoryObject.CreateEmpty(filter);
 
-                    var events = NavigatorForItems.NavigateToElementDetailView(NavigationHost, subItem);
+                    var events = NavigatorForItems.NavigateToElementDetailView(
+                        NavigationHost, 
+                        subItem,
+                        (d) => { d.ViewDefined += (a, b) =>
+                        {
+                            var fields = b.View.get<IReflectiveSequence>(_FormAndFields._Form.fields);
+                            var propertyField = QueryHelper.GetChildWithProperty(b.View, _FormAndFields._Form.fields,
+                                _FormAndFields._FieldData.name, nameof(PropertyComparisonFilter.Property));
+                            fields.remove(propertyField);
+
+                            var formAndFields = App.Scope.Resolve<IWorkspaceLogic>().GetTypesWorkspace().Get<_FormAndFields>();
+                            var factory = new MofFactory(b.View);
+                            var element = factory.create(formAndFields.__DropDownFieldData);
+                            element.set(_FormAndFields._DropDownFieldData.name,nameof(PropertyComparisonFilter.Property));
+                            element.set(_FormAndFields._DropDownFieldData.title, nameof(PropertyComparisonFilter.Property));
+                            element.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
+
+                            var pairs = new List<IObject>();
+                            foreach (var field in 
+                                CurrentFormDefinition.get<IReflectiveCollection>(_FormAndFields._ListForm.fields)
+                                    .OfType<IObject>())
+                            {
+                                if (!field.isSet(_FormAndFields._FieldData.name))
+                                {
+                                    continue;
+                                }
+
+                                var pair = factory.create(formAndFields.__ValuePair);
+                                
+                                pair.set(_FormAndFields._ValuePair.name, field.get<string>(_FormAndFields._FieldData.title));
+                                pair.set(_FormAndFields._ValuePair.value, field.get<string>(_FormAndFields._FieldData.name));
+                                pairs.Add(pair);
+
+                            }
+
+                            element.set(_FormAndFields._DropDownFieldData.values, pairs);
+                            fields.add(0, element);
+
+                        }; }); // TODO: Inject the properties
                     events.Saved += (a, b) =>
                     {
                         AddFastFilter(subItem);

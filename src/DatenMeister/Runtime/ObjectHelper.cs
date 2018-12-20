@@ -315,7 +315,7 @@ namespace DatenMeister.Runtime
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
-            // If the given object is already an extent... happy live
+            // If the given object is already an extent... happy life
             if (value is IExtent asExtent)
             {
                 return asExtent;

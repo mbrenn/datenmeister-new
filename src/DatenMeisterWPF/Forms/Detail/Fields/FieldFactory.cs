@@ -18,7 +18,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         public static IDetailField CreateField(IObject value, IElement field)
         {
             var fieldType = field.get(_FormAndFields._FieldData.fieldType)?.ToString();
-            var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
+            var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
             switch (fieldType)
             {
                 case SubElementFieldData.FieldType:

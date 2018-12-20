@@ -57,13 +57,18 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">Value to be set</param>
         public MofFactory(IObject value)
         {
-            var asMofObject = (MofObject) value;
+            var asMofObject = value as MofObject ?? throw new ArgumentException("value is null or not of Type MofObject");
             var extent = asMofObject.Extent;
             if (extent != null)
             {
                 // First, try the correct way via the extent.
                 _extent = extent;
                 _provider = extent.Provider;
+            }
+            else if (asMofObject.CreatedByExtent != null)
+            {
+                _extent = asMofObject.CreatedByExtent;
+                _provider = _extent.Provider;
             }
             else
             {

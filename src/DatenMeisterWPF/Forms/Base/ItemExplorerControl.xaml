@@ -19,7 +19,7 @@
             <GridSplitter Grid.Column="1" Width="5" Grid.Row="0"
                       HorizontalAlignment="Stretch" 
                       VerticalAlignment="Stretch"></GridSplitter>
-            <TabControl Grid.Column="2" x:Name="ItemTabControl"></TabControl>
+            <TabControl Grid.Column="2" x:Name="ItemTabControl" SelectionChanged="ItemTabControl_SelectionChanged"></TabControl>
         </Grid>
     </DockPanel>
 </UserControl>

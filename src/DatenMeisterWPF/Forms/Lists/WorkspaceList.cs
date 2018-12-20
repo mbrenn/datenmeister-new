@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -8,7 +7,6 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Forms.Detail;
 using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Lists
@@ -42,7 +40,7 @@ namespace DatenMeisterWPF.Forms.Lists
             }
             else
             {
-                view = ListRequests.RequestFormForWorkspaces();
+                view = ListRequests.RequestFormForWorkspaces(NavigationHost);
             }
 
             PrepareNavigation(view);
@@ -61,13 +59,7 @@ namespace DatenMeisterWPF.Forms.Lists
         {
             void NewWorkspace()
             {
-                var events = NavigationHost.NavigateTo(() =>
-                    {
-                        var dlg = new NewWorkspaceControl();
-                        dlg.SetContent();
-                        return dlg;
-                    },
-                    NavigationMode.Detail);
+                var events = NavigatorForWorkspaces.CreateNewWorkspace(NavigationHost);
 
                 events.Closed += (x, y) => RecreateViews();
             }

@@ -2,9 +2,9 @@
 
 namespace DatenMeisterWPF.Forms.Base.ViewExtensions
 {
-    public class GenericButtonDefintion : ViewExtension
+    public class GenericButtonDefinition : ViewExtension
     {
-        public GenericButtonDefintion(string name, Action onPressed)
+        public GenericButtonDefinition(string name, Action onPressed)
         {
             Name = name;
             OnPressed = onPressed;

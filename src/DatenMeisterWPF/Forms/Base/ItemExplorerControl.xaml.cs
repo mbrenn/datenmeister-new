@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -204,6 +205,16 @@ namespace DatenMeisterWPF.Forms.Base
 
             var events = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
             events.Closed += (sender, args) => RecreateViews();
+        }
+
+        private void ItemTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            NavigationTreeView.ViewExtensions.Clear();
+            foreach (var extension in GetViewExtensions().OfType<TreeViewItemCommandDefinition>())
+            {
+                NavigationTreeView.ViewExtensions.Add(extension);
+            }
+
         }
     }
 }

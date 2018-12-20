@@ -7,12 +7,9 @@
              mc:Ignorable="d" Initialized="ItemsTreeView_OnInitialized" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            <TreeView x:Name="TreeView" MouseDoubleClick="treeView_MouseDoubleClicked" KeyDown="treeView_KeyDown" SelectedItemChanged="treeView_SelectedItemChanged" MouseRightButtonDown="TreeView_MouseRightButtonDown"
-                      >
+            <TreeView x:Name="TreeView" MouseDoubleClick="treeView_MouseDoubleClicked" KeyDown="treeView_KeyDown" SelectedItemChanged="treeView_SelectedItemChanged" MouseRightButtonDown="TreeView_MouseRightButtonDown" ContextMenuOpening="TreeView_ContextMenuOpening">
                 <TreeView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Copy Tree to Clipboard" Click="CopyTreeToClipboard_OnClick"></MenuItem>
-                    </ContextMenu>
+                <ContextMenu x:Name="ItemContextMenu"></ContextMenu>
                 </TreeView.ContextMenu>
             </TreeView>
     </Grid>

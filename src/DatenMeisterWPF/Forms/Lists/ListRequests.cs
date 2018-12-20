@@ -35,7 +35,7 @@ namespace DatenMeisterWPF.Forms.Lists
         /// Requests the form for the workspace
         /// </summary>
         /// <returns>Requested form</returns>
-        internal static ViewDefinition RequestFormForWorkspaces()
+        internal static ViewDefinition RequestFormForWorkspaces(INavigationHost navigationHost)
         {
             // Finds the view
             var viewLogic = App.Scope.Resolve<ViewLogic>();
@@ -48,10 +48,14 @@ namespace DatenMeisterWPF.Forms.Lists
                 new RowItemButtonDefinition("Show Extents", ShowExtents));
             viewDefinition.ViewExtensions.Add(
                 new RowItemButtonDefinition("Delete Workspace", DeleteWorkspace));
+            viewDefinition.ViewExtensions.Add(
+                new TreeViewItemCommandDefinition(
+                    "New Workspace",
+                    (x) => { NavigatorForWorkspaces.CreateNewWorkspace(navigationHost); }));
 
             return viewDefinition;
 
-            void ShowExtents(INavigationGuest navigationHost, IObject workspace)
+            void ShowExtents(INavigationGuest navigationGuest, IObject workspace)
             {
                 var workspaceId = workspace.get("id")?.ToString();
                 if (workspaceId == null)
@@ -59,12 +63,12 @@ namespace DatenMeisterWPF.Forms.Lists
                     return;
                 }
 
-                var events = NavigatorForExtents.NavigateToExtentList(navigationHost.NavigationHost, workspaceId);
+                var events = NavigatorForExtents.NavigateToExtentList(navigationGuest.NavigationHost, workspaceId);
 
-                events.Closed += (x, y) => (navigationHost as ItemListViewControl)?.UpdateContent();
+                events.Closed += (x, y) => (navigationGuest as ItemListViewControl)?.UpdateContent();
             }
 
-            void DeleteWorkspace(INavigationGuest navigationHost, IObject workspace)
+            void DeleteWorkspace(INavigationGuest navigationGuest, IObject workspace)
             {
                 if (MessageBox.Show(
                         "Are you sure to delete the workspace? All included extents will also be deleted.", "Confirmation",
@@ -75,7 +79,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
                     workspaceLogic.RemoveWorkspace(workspaceId);
 
-                    (navigationHost as ItemListViewControl)?.UpdateContent();
+                    (navigationGuest as ItemListViewControl)?.UpdateContent();
                 }
             }
         }
@@ -95,6 +99,11 @@ namespace DatenMeisterWPF.Forms.Lists
 
             var viewDefinition = new ViewDefinition("Extents", result);
             viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition("Show Items", ShowItems));
+
+            viewDefinition.ViewExtensions.Add(
+                new TreeViewItemCommandDefinition(
+                    "New Extent",
+                    (x) => { LoadExtent(); }));
 
             viewDefinition.ViewExtensions.Add(
                 new RibbonButtonDefinition(

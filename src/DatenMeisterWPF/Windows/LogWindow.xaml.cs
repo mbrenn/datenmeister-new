@@ -2,6 +2,7 @@
 using System.Windows;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
+using DatenMeister.Excel.Annotations;
 
 namespace DatenMeisterWPF.Windows
 {
@@ -41,6 +42,12 @@ namespace DatenMeisterWPF.Windows
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void Copy_To_Clipboard_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(LogText.Text);
+            MessageBox.Show("Text copied to clipboard");
         }
     }
 }

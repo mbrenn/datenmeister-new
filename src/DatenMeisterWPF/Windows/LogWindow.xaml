@@ -15,6 +15,9 @@
                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                  FontFamily="Consolas" Padding="5" Margin="5">
         </TextBox>
-        <Button Grid.Row="1" HorizontalAlignment="Right" IsDefault="True" IsCancel="True" Click="Close_Click" Margin="5">Close</Button>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Click="Copy_To_Clipboard_Click" Margin="5">Copy to Clipboard</Button>
+            <Button IsDefault="True" IsCancel="True" Click="Close_Click" Margin="5">Close</Button>
+        </StackPanel>
     </Grid>
 </Window>

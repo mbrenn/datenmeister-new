@@ -8,9 +8,11 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Lists;
+using DatenMeisterWPF.Modules.TypeManager;
 
 namespace DatenMeisterWPF.Navigation
 {

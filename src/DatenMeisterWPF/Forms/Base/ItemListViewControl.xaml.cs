@@ -28,6 +28,7 @@ using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Command;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
+using DatenMeisterWPF.Modules.TypeManager;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
 using Microsoft.Win32;
@@ -578,6 +579,11 @@ namespace DatenMeisterWPF.Forms.Base
                 copyContent.Execute(CopyType.AsXmi);
             }
 
+            void JumpToTypeManager()
+            {
+                TypeManagerListView.NavigateToTypeManager(this.NavigationHost);
+            }
+
             ViewExtensions.Add(
                 new RowItemButtonDefinition(
                     "Edit", NavigateToElement, ButtonPosition.Before));
@@ -630,6 +636,14 @@ namespace DatenMeisterWPF.Forms.Base
                     CopyContentAsXmi,
                     null,
                     NavigationCategories.File + ".Copy"));
+            
+            ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Type Manager",
+                    JumpToTypeManager,
+                    string.Empty,
+                    NavigationCategories.Type + "." + "Manager"
+                ));
         }
 
         /// <inheritdoc />

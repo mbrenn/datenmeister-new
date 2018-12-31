@@ -64,28 +64,12 @@ namespace DatenMeisterWPF.Forms.Lists
                 events.Closed += (x, y) => RecreateViews();
             }
 
-            void JumpToTypeManager()
-            {
-                NavigatorForItems.NavigateToItemsInExtent(
-                    NavigationHost,
-                    WorkspaceNames.NameTypes,
-                    WorkspaceNames.UriUserTypesExtent);
-            }
-
             viewDefinition.ViewExtensions.Add(
                 new RibbonButtonDefinition(
                     "Add Workspace",
                     NewWorkspace,
                     "workspaces-new",
                     NavigationCategories.File + "." + "Workspaces"));
-
-            viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
-                    "Type Manager",
-                    JumpToTypeManager,
-                    string.Empty,
-                    NavigationCategories.Type + "." + "Manager"
-                ));
 
             viewDefinition.ViewExtensions.Add(
                 new RibbonButtonDefinition(

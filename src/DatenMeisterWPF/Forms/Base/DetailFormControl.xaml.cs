@@ -60,6 +60,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public bool AllowNewProperties { get; set; }
 
+        public IElement AttachedElement { get; private set; }
+
         /// <summary>
         ///     Gets the default size
         /// </summary>
@@ -68,10 +70,9 @@ namespace DatenMeisterWPF.Forms.Base
             DotNetHelper.AsDouble(EffectiveForm?.get(_FormAndFields._Form.defaultHeight))
         );
 
-        /// <summary>
-        ///     Stores the list of actions that will be performed when the user clicks on set
-        /// </summary>
-        public List<Action<IObject>> SetActions { get; } = new List<Action<IObject>>();
+        public List<IDetailField> ItemFields { get; } = new List<IDetailField>();
+
+        public List<IDetailField> AttachedItemFields { get; } = new List<IDetailField>();
 
         public IObject GetSelectedItem()
         {
@@ -117,7 +118,6 @@ namespace DatenMeisterWPF.Forms.Base
                 PasteContent,
                 null,
                 NavigationCategories.File + ".Copy");
-
 
             if (DetailElement != null)
             {
@@ -196,7 +196,6 @@ namespace DatenMeisterWPF.Forms.Base
             return DotNetHelper.IsTrue(EffectiveForm?.GetOrDefault(_FormAndFields._Form.minimizeDesign));
         }
 
-
         /// <summary>
         ///     This event is called, when the view for the detail view is defined
         ///     While handling the event, the view itself may be changed
@@ -209,10 +208,14 @@ namespace DatenMeisterWPF.Forms.Base
             LoadingCompleted?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// This event is called, after the Loaded event has been executed.
+        /// This includes the creation and evaluation of forms and the filling out of content
+        /// </summary>
         public event EventHandler LoadingCompleted;
 
         /// <summary>
-        ///     Sets the content for a new object
+        ///     Sets the content for a completely new object
         /// </summary>
         /// <param name="formDefinition">Form Definition being used</param>
         public void SetContentForNewObject(IElement formDefinition)
@@ -222,6 +225,12 @@ namespace DatenMeisterWPF.Forms.Base
                 formDefinition);
         }
 
+        /// <summary>
+        /// Sets the content by setting a form definition and the object itself.
+        /// The form definition may be null, so a form will be automatically created. 
+        /// </summary>
+        /// <param name="element">Element to be shown. If null, then a new element will be created.</param>
+        /// <param name="formDefinition">The form definition. If null, then the form will be automatically created </param>
         public void SetContent(IObject element, IElement formDefinition)
         {
             DetailElement = element ?? InMemoryObject.CreateEmpty();
@@ -232,6 +241,7 @@ namespace DatenMeisterWPF.Forms.Base
                 formDefinition == null ? ViewDefinitionMode.Default : ViewDefinitionMode.Specific
             );
 
+            AttachedElement = InMemoryObject.CreateEmpty();
             UpdateViewList();
             UpdateContent();
         }
@@ -277,6 +287,7 @@ namespace DatenMeisterWPF.Forms.Base
                     new ViewDefinition("Default", null, ViewDefinitionMode.Default),
                     new ViewDefinition("All Properties", null, ViewDefinitionMode.AllProperties)
                 };
+
                 list.AddRange(views.Select(x => new ViewDefinition(NamedElementMethods.GetFullName(x), x)));
                 ViewList.ItemsSource = list;
 
@@ -371,7 +382,9 @@ namespace DatenMeisterWPF.Forms.Base
             RefreshViewDefinition();
 
             DataGrid.Children.Clear();
-            SetActions.Clear();
+            AttachedItemFields.Clear();
+            ItemFields.Clear();
+
             if (!(EffectiveForm?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
             {
                 return;
@@ -385,7 +398,7 @@ namespace DatenMeisterWPF.Forms.Base
             if (DetailElement != null)
             {
                 var mofElement = (MofElement) DetailElement;
-                var uriExtent = mofElement.Extent as MofUriExtent;
+                var uriExtent = DetailElement.GetUriExtentOf();
 
                 if (!DotNetHelper.IsTrue(EffectiveForm.GetOrDefault(_FormAndFields._Form.hideMetaClass)))
                 {
@@ -439,14 +452,16 @@ namespace DatenMeisterWPF.Forms.Base
                 };
 
                 var oldFlags = flags;
-                var contentBlock =
+                var (detailElement, contentBlock) =
                     FieldFactory.GetUIElementFor(DetailElement, field, this, ref flags);
+                ItemFields.Add(detailElement);
+
                 Grid.SetColumn(contentBlock, 1);
                 Grid.SetRow(contentBlock, _fieldCount);
 
                 CreateRowForField(titleBlock, contentBlock);
 
-                // Check, if element shall be focuseed
+                // Check, if element shall be focused
                 if ((oldFlags & FieldFlags.Focussed) != (flags & FieldFlags.Focussed))
                 {
                     contentBlock.Focus();
@@ -569,20 +584,17 @@ namespace DatenMeisterWPF.Forms.Base
                 AddGenericButton("New Property", () =>
                 {
                     var fieldKey = new TextBox();
-                    var fieldValue = new TextBox();
+                    var fieldValue = new TextboxField();
+                    var flags = FieldFlags.Zero;
 
-                    SetActions.Add(element =>
-                    {
-                        var propertyKey = fieldKey.Text;
-                        var propertyValue = fieldValue.Text;
+                    var fieldUIElement = fieldValue.CreateElement(
+                        DetailElement,
+                        null,
+                        this, 
+                        ref flags);
+                    ItemFields.Add(fieldValue);
 
-                        if (!string.IsNullOrEmpty(propertyKey))
-                        {
-                            element.set(propertyKey, propertyValue);
-                        }
-                    });
-
-                    CreateRowForField(fieldKey, fieldValue);
+                    CreateRowForField(fieldKey, fieldUIElement);
                     fieldKey.Focus();
                 });
             }
@@ -601,10 +613,7 @@ namespace DatenMeisterWPF.Forms.Base
 
                     OnElementSaved();
                     var window = Window.GetWindow(this);
-                    if (window != null)
-                    {
-                        window.Close();
-                    }
+                    window?.Close();
 
                     if (window is DetailFormWindow detailFormWindow)
                     {
@@ -630,9 +639,14 @@ namespace DatenMeisterWPF.Forms.Base
                 ObjectCopier.CopyPropertiesStatic(DetailElement, element);
             }
 
-            foreach (var action in SetActions)
+            foreach (var field in ItemFields)
             {
-                action(element);
+                field.CallSetAction(element);
+            }
+
+            foreach (var field in AttachedItemFields)
+            {
+                field.CallSetAction(AttachedElement);
             }
         }
 
@@ -656,11 +670,6 @@ namespace DatenMeisterWPF.Forms.Base
             ElementSaved?.Invoke(this, EventArgs.Empty);
         }
 
-        private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            new CopyToClipboardCommand(this).Execute(CopyType.Default);
-        }
-
         public void OnViewDefined()
         {
             OnViewDefined(new ViewEventArgs(EffectiveForm));
@@ -669,6 +678,11 @@ namespace DatenMeisterWPF.Forms.Base
         protected virtual void OnViewDefined(ViewEventArgs e)
         {
             ViewDefined?.Invoke(this, e);
+        }
+
+        private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            new CopyToClipboardCommand(this).Execute(CopyType.Default);
         }
 
         public class ViewEventArgs : EventArgs

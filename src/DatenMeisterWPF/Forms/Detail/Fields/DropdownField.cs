@@ -85,5 +85,10 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 
             return combobox;
         }
+
+        public void CallSetAction(IObject element)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

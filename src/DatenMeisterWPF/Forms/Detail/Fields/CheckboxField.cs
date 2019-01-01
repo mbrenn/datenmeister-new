@@ -49,5 +49,10 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 
             return box;
         }
+
+        public void CallSetAction(IObject element)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

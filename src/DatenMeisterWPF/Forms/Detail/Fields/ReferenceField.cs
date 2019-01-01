@@ -146,6 +146,11 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             }
         }
 
+        public void CallSetAction(IObject element)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private static void UpdateTextOfTextBlock(IObject foundItem, TextBlock itemText)
         {
             if (foundItem == null)

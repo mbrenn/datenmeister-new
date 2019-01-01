@@ -37,6 +37,11 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             return panel;
         }
 
+        public void CallSetAction(IObject element)
+        {
+            throw new System.NotImplementedException();
+        }
+
         /// <summary>
         /// Creates the content for the panel element dependent on the item and its values
         /// </summary>

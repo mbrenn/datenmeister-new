@@ -48,7 +48,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         ///     Defines the form definition being used in the detail for
         /// </summary>
-        private IElement EffectiveForm { get; set; }
+        public IElement EffectiveForm { get; private set; }
 
         /// <summary>
         ///     Gets or sets the view definition
@@ -206,7 +206,10 @@ namespace DatenMeisterWPF.Forms.Base
         private void DetailFormControl_Loaded(object sender, RoutedEventArgs e)
         {
             SetContent(DetailElement, ViewDefinition?.Element);
+            LoadingCompleted?.Invoke(this, EventArgs.Empty);
         }
+
+        public event EventHandler LoadingCompleted;
 
         /// <summary>
         ///     Sets the content for a new object

@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Runtime
 {
@@ -20,6 +21,8 @@ namespace DatenMeister.Runtime
         /// <returns>The content of the element or default(T) if not nknown</returns>
         public static T get<T>(this IObject value, string property)
         {
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
             if (typeof(T) == typeof(string))
             {
                 return (T)(object)DotNetHelper.AsString(value.get(property));
@@ -446,6 +449,28 @@ namespace DatenMeister.Runtime
         public static IUriResolver GetUriResolver(this IExtent element)
         {
             return element as IUriResolver;
+        }
+
+        /// <summary>
+        /// Gets all possible properties of the given element.
+        /// If the element has a metaclass (or some other Classifier), the properties
+        /// of the metaclass. Otherwise, the set properties will be returned
+        /// </summary>
+        /// <param name="value">Element, whose properties will be queried</param>
+        /// <returns>Enumeration of properties</returns>
+        public static IEnumerable<string> GetPropertyNames(IObject value)
+        {
+            switch (value)
+            {
+                case IElement element when element.metaclass != null:
+                    return ClassifierMethods.GetPropertyNamesOfClassifier(element);
+
+                case IObjectAllProperties knowsProperties:
+                    return knowsProperties.getPropertiesBeingSet();
+
+                default:
+                    return Array.Empty<string>();
+            }
         }
     }
 }

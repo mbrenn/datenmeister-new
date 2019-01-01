@@ -169,7 +169,7 @@ namespace DatenMeisterWPF.Forms.Lists
                         NavigationHost,
                         _extent,
                         type);
-                elements.Closed += (x, y) => { RecreateViews(); };
+                elements.NewItemCreated += (x, y) => { RecreateViews(); };
             }
             else
             {
@@ -178,7 +178,7 @@ namespace DatenMeisterWPF.Forms.Lists
                         NavigationHost,
                         SelectedPackage,
                         type);
-                elements.Closed += (x, y) => { RecreateViews(); };
+                elements.NewItemCreated += (x, y) => { RecreateViews(); };
             }
         }
 

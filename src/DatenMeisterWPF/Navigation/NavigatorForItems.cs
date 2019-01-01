@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -123,6 +124,7 @@ namespace DatenMeisterWPF.Navigation
         {
             var detailResult =
                 NavigateToNewItemForCollection(window, extent.elements(), metaclass);
+
             return detailResult;
         }
 
@@ -140,34 +142,68 @@ namespace DatenMeisterWPF.Navigation
             IElement metaclass)
         {
             var result = new ControlNavigation();
-            var factory = new MofFactory(element);
-            var newElement = factory.create(metaclass);
-
-            // Creates the dialog
-            var detailControlView = NavigateToElementDetailView(
-                window, 
-                newElement,
-                (form) =>
-                {
-                    // Gets the view definition
-                    var fields =
-                        form.ViewDefinition.Element
-                            .get<IReflectiveSequence>(_FormAndFields._Form.fields);
-                    var formFactory = new MofFactory(fields);
-
-                    var dropField = formFactory.Create<_FormAndFields>(f => f.__DropDownFieldData);
-                    dropField.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
-                    fields.add(0, dropField);
-                });
-
-            detailControlView.Closed += (a, b) =>
+            if (metaclass == null)
             {
-                // Adds the element to the dialog
-                // collection.add(newElement);
-                result.OnNewItemCreated(new NewItemEventArgs(newElement));
-                result.OnClosed();
-            };
-            
+                var createableTypes = new CreatableTypeNavigator();
+                createableTypes.Closed += (x, y) =>
+                {
+                    CreateElementItself(createableTypes.SelectedType);
+                };
+
+                createableTypes.NavigateToSelectCreateableType(window, element.GetExtentOf());
+            }
+            else
+            {
+                CreateElementItself(metaclass);
+            }
+
+            void CreateElementItself(IElement selectedMetaclass)
+            {
+                var factory = new MofFactory(element);
+                var newElement = factory.create(selectedMetaclass);
+
+                // Creates the dialog
+                var detailControlView = NavigateToElementDetailView(
+                    window,
+                    newElement,
+                    (form) =>
+                    {
+                        form.ViewDefined += (x, y) =>
+                        {
+                            // Gets the view definition
+                            var fields = y.View
+                                    .get<IReflectiveSequence>(_FormAndFields._Form.fields);
+                            var formFactory = new MofFactory(fields);
+
+                            var dropField = formFactory.Create<_FormAndFields>(f => f.__DropDownFieldData);
+                            dropField.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
+                            dropField.set(_FormAndFields._DropDownFieldData.name, "ParentProperty");
+                            dropField.set(_FormAndFields._DropDownFieldData.title, "Parent Property");
+
+                            var list = new List<object>();
+                            var properties = ObjectHelper.GetPropertyNames(element);
+                            foreach (var property in properties)
+                            {
+                                var valuePair = formFactory.Create<_FormAndFields>(f => f.__ValuePair);
+                                valuePair.set(_FormAndFields._ValuePair.name, property);
+                                valuePair.set(_FormAndFields._ValuePair.value, property);
+                                list.Add(valuePair);
+                            }
+
+                            dropField.set(_FormAndFields._DropDownFieldData.values, list);
+
+                            fields.add(0, dropField);
+                        };
+                    });
+
+                detailControlView.Saved += (a, b) =>
+                {
+                    // Adds the element to the dialog
+                    // collection.add(newElement);
+                    result.OnNewItemCreated(new NewItemEventArgs(newElement));
+                    result.OnClosed();
+                };
+            }
 
             return result;
         }
@@ -207,7 +243,6 @@ namespace DatenMeisterWPF.Navigation
             void CreateElementItself(IElement selectedMetaClass)
             {
                 var newElement = factory.create(selectedMetaClass);
-
                 var detailControlView = NavigateToElementDetailView(window, newElement);
                 detailControlView.Closed += (a, b) =>
                 {
@@ -254,7 +289,7 @@ namespace DatenMeisterWPF.Navigation
                 var newElement = factory.create(selectedMetaClass);
 
                 var detailControlView = NavigateToElementDetailView(window, newElement);
-                detailControlView.Closed += (a, b) =>
+                detailControlView.Saved += (a, b) =>
                 {
                     collection.add(newElement);
                     result.OnNewItemCreated(new NewItemEventArgs(newElement));

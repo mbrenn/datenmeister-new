@@ -35,6 +35,12 @@ namespace DatenMeisterWPF.Forms.Base
         protected IObject SelectedPackage{ get; set; }
 
         /// <summary>
+        /// Gets a value indicating whether the user has selected an extent within the
+        /// treeview. 
+        /// </summary>
+        public bool IsExtentSelectedInTreeview { get; private set; }
+
+        /// <summary>
         /// Gets or sets the items to be shown in the detail view. Usually, they are the same as the items.
         /// If the user clicks on the navigation tree, a subview of the items may be shown
         /// </summary>
@@ -106,6 +112,7 @@ namespace DatenMeisterWPF.Forms.Base
             NavigationTreeView.SetDefaultProperties();
             NavigationTreeView.ItemsSource = Items;
             SelectedPackage = null;
+            IsExtentSelectedInTreeview = true;
             SelectedItems = Items;
         }
 
@@ -182,12 +189,14 @@ namespace DatenMeisterWPF.Forms.Base
             if (e.Item != null)
             {
                 SelectedItems = new PropertiesAsReflectiveCollection(e.Item);
+                IsExtentSelectedInTreeview = false;
                 RecreateViews();
             }
             else
             {
                 // When user has selected the root element or no other item, all items are shown
                 SelectedItems = Items;
+                IsExtentSelectedInTreeview = true;
                 RecreateViews();
             }
         }

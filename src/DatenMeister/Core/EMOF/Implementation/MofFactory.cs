@@ -23,6 +23,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         private readonly MofExtent _extent;
 
         /// <summary>
+        /// Gets the Mof Extent being connected to the factory
+        /// </summary>
+        public MofExtent Extent => _extent;
+
+        /// <summary>
         /// Initializes a new instance of the Factory
         /// </summary>
         /// <param name="extent"></param>

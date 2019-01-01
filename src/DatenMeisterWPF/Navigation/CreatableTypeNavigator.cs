@@ -28,7 +28,10 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="extent">Extent to whom the type shall be created</param>
         /// <param name="buttonName">Name of the button</param>
         /// <returns>The control navigation</returns>
-        public IControlNavigation NavigateToSelectCreateableType(INavigationHost window, IExtent extent, string buttonName = "Create")
+        public IControlNavigation NavigateToSelectCreateableType(
+            INavigationHost window,
+            IExtent extent,
+            string buttonName = "Create")
         {
             var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
             var viewLogic = App.Scope.Resolve<ViewLogic>();

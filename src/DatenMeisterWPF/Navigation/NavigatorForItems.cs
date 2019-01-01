@@ -4,9 +4,11 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base;
@@ -28,7 +30,7 @@ namespace DatenMeisterWPF.Navigation
             IObject element,
             Action<DetailFormControl> afterCreated = null)
         {
-            return  (IControlNavigationSaveItem) window.NavigateTo(
+            return (IControlNavigationSaveItem) window.NavigateTo(
                 () =>
                 {
                     var control = new DetailFormControl
@@ -112,33 +114,12 @@ namespace DatenMeisterWPF.Navigation
         /// <param name="window">Navigation extent being used to open up the new dialog</param>
         /// <param name="extent">Object to whose property, the new element will be added
         /// </param>
-        /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public static IControlNavigationNewItem NavigateToNewItemForExtent(INavigationHost window, IExtent extent)
-        {
-            var result = new ControlNavigation();
-
-            var createableTypes = new CreatableTypeNavigator();
-            createableTypes.Closed += (x, y) =>
-            {
-                var detailResult =
-                    NavigateToNewItemForCollection(window, extent.elements(), createableTypes.SelectedType);
-                detailResult.Closed += (a, b) => result.OnClosed();
-            };
-
-            createableTypes.NavigateToSelectCreateableType(window, extent);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Creates a new item for the given extent being located in the workspace
-        /// </summary>
-        /// <param name="window">Navigation extent being used to open up the new dialog</param>
-        /// <param name="extent">Object to whose property, the new element will be added
-        /// </param>
         /// <param name="metaclass">Metaclass, whose instance will be created</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public static IControlNavigationNewItem NavigateToNewItemForExtent(INavigationHost window, IExtent extent, IElement metaclass)
+        public static IControlNavigationNewItem NavigateToNewItemForExtent(
+            INavigationHost window,
+            IExtent extent, 
+            IElement metaclass)
         {
             var detailResult =
                 NavigateToNewItemForCollection(window, extent.elements(), metaclass);
@@ -146,27 +127,47 @@ namespace DatenMeisterWPF.Navigation
         }
 
         /// <summary>
-        /// Creates a new item for the given extent being located in the workspace. 
-        /// On first step, the user will be asked to select the metaclass to be created. 
-        /// On a second step, he can modify the content
+        /// Creates a new item for the given extent being located in the workspace
         /// </summary>
         /// <param name="window">Navigation extent being used to open up the new dialog</param>
-        /// <param name="extent">Object to whose property, the new element will be added
+        /// <param name="element">The item to which one of the properties will be aded
         /// </param>
+        /// <param name="metaclass">Metaclass, whose instance will be created</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public static IControlNavigationNewItem NavigateToCreateNewItem(INavigationHost window, IExtent extent)
+        public static IControlNavigationNewItem NavigateToNewItemForItem(
+            INavigationHost window, 
+            IObject element, 
+            IElement metaclass)
         {
             var result = new ControlNavigation();
-            var createableTypes = new CreatableTypeNavigator();
-            createableTypes.Closed += (x, y) =>
-            {
-                var detailResult =
-                    NavigateToCreateNewItem(window, extent, createableTypes.SelectedType);
-                detailResult.Closed += (a, b) => result.OnClosed();
-                detailResult.NewItemCreated += (a, b) => result.OnNewItemCreated(b);
-            };
+            var factory = new MofFactory(element);
+            var newElement = factory.create(metaclass);
 
-            createableTypes.NavigateToSelectCreateableType(window, extent);
+            // Creates the dialog
+            var detailControlView = NavigateToElementDetailView(
+                window, 
+                newElement,
+                (form) =>
+                {
+                    // Gets the view definition
+                    var fields =
+                        form.ViewDefinition.Element
+                            .get<IReflectiveSequence>(_FormAndFields._Form.fields);
+                    var formFactory = new MofFactory(fields);
+
+                    var dropField = formFactory.Create<_FormAndFields>(f => f.__DropDownFieldData);
+                    dropField.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
+                    fields.add(0, dropField);
+                });
+
+            detailControlView.Closed += (a, b) =>
+            {
+                // Adds the element to the dialog
+                // collection.add(newElement);
+                result.OnNewItemCreated(new NewItemEventArgs(newElement));
+                result.OnClosed();
+            };
+            
 
             return result;
         }
@@ -179,18 +180,41 @@ namespace DatenMeisterWPF.Navigation
         /// </param>
         /// <param name="metaclass">Metaclass, whose instance will be created</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public static IControlNavigationNewItem NavigateToCreateNewItem(INavigationHost window, IExtent extent, IElement metaclass)
+        public static IControlNavigationNewItem NavigateToCreateNewItem(
+            INavigationHost window, 
+            IExtent extent, 
+            IElement metaclass)
         {
             var result = new ControlNavigation();
             var factory = new MofFactory(extent);
-            var newElement = factory.create(metaclass);
 
-            var detailControlView = NavigateToElementDetailView(window, newElement);
-            detailControlView.Closed += (a, b) =>
+            if (metaclass == null)
             {
-                result.OnNewItemCreated(new NewItemEventArgs(newElement));
-                result.OnClosed();
-            };
+                var createableTypes = new CreatableTypeNavigator();
+                createableTypes.Closed += (x, y) =>
+                {
+                   CreateElementItself(createableTypes.SelectedType);
+                };
+
+                createableTypes.NavigateToSelectCreateableType(window, extent);
+            }
+            else
+            {
+                CreateElementItself(metaclass);
+            }
+
+            // Defines the class itself that is used to create the elements
+            void CreateElementItself(IElement selectedMetaClass)
+            {
+                var newElement = factory.create(selectedMetaClass);
+
+                var detailControlView = NavigateToElementDetailView(window, newElement);
+                detailControlView.Closed += (a, b) =>
+                {
+                    result.OnNewItemCreated(new NewItemEventArgs(newElement));
+                    result.OnClosed();
+                };
+            }
 
             return result;
         }
@@ -205,19 +229,38 @@ namespace DatenMeisterWPF.Navigation
         public static  IControlNavigationNewItem NavigateToNewItemForCollection(
             INavigationHost window, 
             IReflectiveCollection collection,
-            IElement metaClass)
+            IElement metaclass)
         {
             var result = new ControlNavigation();
             var factory = new MofFactory(collection);
-            var newElement = factory.create(metaClass);
 
-            var detailControlView = NavigateToElementDetailView(window, newElement);
-            detailControlView.Closed += (a, b) =>
+            if (metaclass == null)
             {
-                collection.add(newElement);
-                result.OnNewItemCreated(new NewItemEventArgs(newElement));
-                result.OnClosed();
-            };
+                var createableTypes = new CreatableTypeNavigator();
+                createableTypes.Closed += (x, y) =>
+                {
+                    CreateElementItself(createableTypes.SelectedType);
+                };
+
+                createableTypes.NavigateToSelectCreateableType(window, collection.GetAssociatedExtent());
+            }
+            else
+            {
+                CreateElementItself(metaclass);
+            }
+
+            void CreateElementItself(IElement selectedMetaClass)
+            {
+                var newElement = factory.create(selectedMetaClass);
+
+                var detailControlView = NavigateToElementDetailView(window, newElement);
+                detailControlView.Closed += (a, b) =>
+                {
+                    collection.add(newElement);
+                    result.OnNewItemCreated(new NewItemEventArgs(newElement));
+                    result.OnClosed();
+                };
+            }
 
             return result;
         }

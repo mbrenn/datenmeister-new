@@ -143,6 +143,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public IExtent Extent => MofObject.Extent;
+        public IExtent Extent => MofObject.Extent ?? MofObject.CreatedByExtent;
     }
 }

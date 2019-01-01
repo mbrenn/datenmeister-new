@@ -39,6 +39,7 @@ namespace DatenMeisterWPF.Forms.Lists
         }
 
         public string WorkspaceId { get; set; }
+
         public string ExtentUrl { get; set; }
 
         /// <summary>
@@ -127,12 +128,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     var typeName = type.get(_UML._CommonStructure._NamedElement.name);
 
                     viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
-                        $"New {typeName}", () =>
-                        {
-                            var elements =
-                                NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
-                            elements.Closed += (x, y) => { RecreateViews(); };
-                        }));
+                        $"New {typeName}", () => { CreateNewElementByUser(type); }));
                 }
             }
 
@@ -140,8 +136,7 @@ namespace DatenMeisterWPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
                 "New Item", () =>
                 {
-                    var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
-                    elements.Closed += (x, y) => { RecreateViews(); };
+                    CreateNewElementByUser(null);
                 }));
 
             // Allows the deletion of an item
@@ -163,6 +158,28 @@ namespace DatenMeisterWPF.Forms.Lists
             var element = AddTab(
                 tabItems,
                 viewDefinition);
+        }
+
+        private void CreateNewElementByUser(IElement type)
+        {
+            if (IsExtentSelectedInTreeview)
+            {
+                var elements =
+                    NavigatorForItems.NavigateToNewItemForExtent(
+                        NavigationHost,
+                        _extent,
+                        type);
+                elements.Closed += (x, y) => { RecreateViews(); };
+            }
+            else
+            {
+                var elements =
+                    NavigatorForItems.NavigateToNewItemForItem(
+                        NavigationHost,
+                        SelectedPackage,
+                        type);
+                elements.Closed += (x, y) => { RecreateViews(); };
+            }
         }
 
         /// <summary>

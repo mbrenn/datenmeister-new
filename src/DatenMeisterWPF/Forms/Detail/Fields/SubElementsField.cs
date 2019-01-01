@@ -6,7 +6,6 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeisterWPF.Forms.Base;
@@ -127,7 +126,9 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             {
                 var result = NavigatorForItems.NavigateToCreateNewItem(
                     detailForm.NavigationHost,
-                    (value as MofObject)?.CreatedByExtent);
+                    (value as MofObject)?.CreatedByExtent,
+                    null);
+
                 result.NewItemCreated += (a, b) =>
                 {
                     if (value.GetOrDefault(name) is IReflectiveCollection propertyCollection)

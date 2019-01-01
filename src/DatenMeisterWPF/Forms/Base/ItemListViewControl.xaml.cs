@@ -167,6 +167,7 @@ namespace DatenMeisterWPF.Forms.Base
                     items = Items.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
                 }
 
+                // Goes through the fast filters and filters the items 
                 foreach (var fastfilter in GetFastFilters())
                 {
                     var converter = FastViewFilterConverter.Convert(fastfilter);
@@ -472,6 +473,7 @@ namespace DatenMeisterWPF.Forms.Base
             _searchText = SearchField.Text;
             UpdateContent();
         }
+
         /// <summary>
         /// Prepares the navigation of the host. The function is called by the navigation 
         /// host. 

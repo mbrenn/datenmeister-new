@@ -19,7 +19,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             contentBlock.ColumnDefinitions.Add(new ColumnDefinition());
             contentBlock.ColumnDefinitions.Add(new ColumnDefinition());
 
-            var name = fieldData.get(_FormAndFields._FieldData.name).ToString();
+            var name = fieldData.get<string>(_FormAndFields._FieldData.name);
 
             if (valueElement?.isSet(name) == true)
             {

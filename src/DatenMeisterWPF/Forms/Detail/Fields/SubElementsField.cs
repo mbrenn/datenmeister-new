@@ -2,11 +2,14 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Runtime;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
@@ -39,7 +42,6 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 
         public void CallSetAction(IObject element)
         {
-            throw new System.NotImplementedException();
         }
 
         /// <summary>
@@ -51,9 +53,9 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         /// <param name="panel"></param>
         private void CreatePanelElement(IObject value, IElement fieldData, DetailFormControl detailForm, StackPanel panel)
         {
-            var name = fieldData.GetOrDefault(_FormAndFields._FieldData.name).ToString();
-            var valueOfElement = value.GetOrDefault(name) as IReflectiveSequence;
-            var form = fieldData.GetOrDefault(_FormAndFields._SubElementFieldData.form) as IElement;
+            var name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
+            var valueOfElement = value.getOrDefault<IReflectiveCollection>(name);
+            var form = fieldData.getOrDefault<IElement>(_FormAndFields._SubElementFieldData.form);
 
             if (valueOfElement == null)
             {
@@ -83,6 +85,14 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     MaxHeight = 500,
                     NavigationHost = detailForm.NavigationHost
                 };
+
+                // Checks, whether a form is given
+                if (form == null)
+                {
+                    // otherwise, we have to automatically create a form
+                    var formFinder = App.Scope.Resolve<IViewFinder>();
+                    form = formFinder.CreateView(valueOfElement);
+                }
 
                 var viewExtensions = new List<ViewExtension>();
                 viewExtensions.Add(

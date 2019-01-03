@@ -10,6 +10,10 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 {
     public class TextboxField : IDetailField
     {
+        private string _name;
+        private TextBox _contentBlock;
+        private string _valueText;
+
         public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
             ref FieldFlags fieldFlags)
         {
@@ -17,20 +21,20 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
-            var name = fieldData.get(_FormAndFields._FieldData.name).ToString();
-            var isReadOnly = DotNetHelper.IsTrue(fieldData,_FormAndFields._FieldData.isReadOnly);
+            _name = fieldData.get(_FormAndFields._FieldData.name).ToString();
+            var isReadOnly = fieldData.get<bool>(_FormAndFields._FieldData.isReadOnly);
             var width = fieldData.getOrDefault<int>(_FormAndFields._FieldData.width);
 
-            var valueText = string.Empty;
-            if (value.isSet(name))
+            _valueText = string.Empty;
+            if (value.isSet(_name))
             {
-                valueText = value.get(name)?.ToString() ?? string.Empty;
+                _valueText = value.getOrDefault<string>(_name) ?? string.Empty;
             }
             else
             {
                 if (fieldData.isSet(_FormAndFields._FieldData.defaultValue))
                 {
-                    valueText = fieldData.get(_FormAndFields._FieldData.defaultValue)?.ToString() ?? string.Empty;
+                    _valueText = fieldData.get(_FormAndFields._FieldData.defaultValue)?.ToString() ?? string.Empty;
                 }
             }
 
@@ -38,47 +42,41 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             {
                 var contentBlock = new TextBlock
                 {
-                    Text = valueText
+                    Text = _valueText
                 };
 
                 var copyToClipboardAdd = new MenuItem {Header = "Copy to Clipboard"};
                 contentBlock.ContextMenu = new ContextMenu();
                 contentBlock.ContextMenu.Items.Add(copyToClipboardAdd);
-                copyToClipboardAdd.Click += (x, y) => Clipboard.SetText(valueText);
+                copyToClipboardAdd.Click += (x, y) => Clipboard.SetText(_valueText);
 
                 return contentBlock;
             }
             else
             {
-                var contentBlock = new TextBox
+                _contentBlock = new TextBox
                 {
-                    Text = valueText
+                    Text = _valueText
                 };
 
                 if (width > 0)
                 {
-                    contentBlock.Width = 10 * width;
-                    contentBlock.HorizontalAlignment = HorizontalAlignment.Left;
+                    _contentBlock.Width = 10 * width;
+                    _contentBlock.HorizontalAlignment = HorizontalAlignment.Left;
                 }
-
-                detailForm.SetActions.Add(
-                    detailElement =>
-                    {
-                        if (valueText != contentBlock.Text)
-                        {
-                            detailElement.set(name, contentBlock.Text);
-                        }
-                    });
 
                 fieldFlags = fieldFlags & ~FieldFlags.Focussed;
 
-                return contentBlock;
+                return _contentBlock;
             }
         }
 
         public void CallSetAction(IObject element)
         {
-            throw new NotImplementedException();
+            if (_contentBlock != null && _valueText != _contentBlock.Text)
+            {
+                element.set(_name, _contentBlock.Text);
+            }
         }
     }
 }

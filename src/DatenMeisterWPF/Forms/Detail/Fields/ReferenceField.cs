@@ -17,22 +17,24 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
     /// </summary>
     public class ReferenceField : IDetailField
     {
+        private string _name;
+        private LocateElementControl _control;
+
         public UIElement CreateElement(
             IObject value, 
             IElement fieldData, 
             DetailFormControl detailForm, 
             ref FieldFlags fieldFlags)
         {
-            var isInline =
-                DotNetHelper.IsTrue(fieldData.GetOrDefault(_FormAndFields._ReferenceFieldData.isSelectionInline));
-            var name = fieldData.get(_FormAndFields._FieldData.name).ToString();
+            var isInline = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isSelectionInline);
+            _name = fieldData.get<string>(_FormAndFields._FieldData.name);
 
             // Checks, whether the reference shall be included as an inline selection
             if (isInline)
             {
                 // Defines the locate element control in which the user can select
                 // workspace, extent and element
-                var control = new LocateElementControl
+                _control = new LocateElementControl
                 {
                     MinHeight = 400,
                     MaxHeight = 400
@@ -40,7 +42,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 
                 if (fieldData.GetOrDefault(_FormAndFields._ReferenceFieldData.defaultValue) is IElement element)
                 {
-                    control.Select(element);
+                    _control.Select(element);
                 }
                 else
                 {
@@ -59,7 +61,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                             out var foundExtent);
                         if (foundWorkspace != null && foundExtent != null)
                         {
-                            control.Select(foundWorkspace, foundExtent);
+                            _control.Select(foundWorkspace, foundExtent);
                         }
                     }
                     else if (!string.IsNullOrEmpty(workspace))
@@ -68,21 +70,12 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                         var foundWorkspace = workspaceLogic.GetWorkspace(workspace);
                         if (foundWorkspace != null)
                         {
-                            control.Select((IWorkspace) foundWorkspace);
+                            _control.Select((IWorkspace) foundWorkspace);
                         }
                     }
                 }
 
-                detailForm.SetActions.Add(detailElement =>
-                {
-                    var selectedElement = control.SelectedElement;
-                    if (selectedElement != null)
-                    {
-                        detailElement.set(name,selectedElement);
-                    }
-                });
-
-                return control;
+                return _control;
             }
             else
             {
@@ -148,7 +141,11 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 
         public void CallSetAction(IObject element)
         {
-            throw new System.NotImplementedException();
+            var selectedElement = _control?.SelectedElement;
+            if (selectedElement != null)
+            {
+                element.set(_name, selectedElement);
+            }
         }
 
         private static void UpdateTextOfTextBlock(IObject foundItem, TextBlock itemText)

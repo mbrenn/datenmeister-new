@@ -140,7 +140,7 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             SupportNewItems =
-                !DotNetHelper.AsBoolean(CurrentFormDefinition.GetOrDefault(_FormAndFields._Form.inhibitNewItems));
+                !CurrentFormDefinition.getOrDefault<bool>(_FormAndFields._Form.inhibitNewItems);
             SupportNewItems = false; // TODO: Make new items working
 
             var listItems = new ObservableCollection<ExpandoObject>();
@@ -174,6 +174,7 @@ namespace DatenMeisterWPF.Forms.Base
                         Logger.Warn("FastViewFilter is not known: " + fastfilter);
                         continue;
                     }
+
                     items = items.Where(x => converter.IsFiltered(x));
                 }
 

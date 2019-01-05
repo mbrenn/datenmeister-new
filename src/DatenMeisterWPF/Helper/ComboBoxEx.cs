@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
@@ -23,7 +24,18 @@ namespace DatenMeisterWPF.Helper
             Loaded += ComboBoxEx_Loaded;
         }
 
+        protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
+        {
+            base.OnItemsSourceChanged(oldValue, newValue);
+            UpdateWidth();
+        }
+
         private void ComboBoxEx_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateWidth();
+        }
+
+        private void UpdateWidth()
         {
             if (Items.Count > 0)
             {
@@ -31,7 +43,11 @@ namespace DatenMeisterWPF.Helper
                 var content = popup?.Child as FrameworkElement;
                 content?.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 MinHeight = (content?.DesiredSize.Height ?? 0) / Items.Count;
-                MinWidth = (content?.DesiredSize.Width) ?? 0;
+                MinWidth = ((content?.DesiredSize.Width) ?? 0);
+
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                // Ok, to have exact value because 0.0 is used by purpose (?? 0, see above)
+                MinWidth = MinWidth == 0 ? 0 : MinWidth + 20;
                 SelectedIndex = _selected;
             }
         }

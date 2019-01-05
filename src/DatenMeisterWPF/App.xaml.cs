@@ -34,14 +34,13 @@ namespace DatenMeisterWPF
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
             var path = Path.Combine(Path.GetDirectoryName(typeof(App).Assembly.Location), "log.txt");
-#if DEBUG
             TheLog.AddProvider(new DebugProvider(), LogLevel.Trace);
             TheLog.AddProvider(new FileProvider(path, true), LogLevel.Trace);
             TheLog.AddProvider(InMemoryDatabaseProvider.TheOne, LogLevel.Trace);
+#if DEBUG
+            TheLog.FilterThreshold = LogLevel.Trace;
 #else
-            TheLog.AddProvider(new DebugProvider());
-            TheLog.AddProvider(new FileProvider(path, true));
-            TheLog.AddProvider(InMemoryDatabaseProvider.TheOne);
+            TheLog.FilterThreshold = LogLevel.Info;
 #endif
             TheLog.Info("Starting DatenMeister WPF");
         }

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Windows;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
@@ -14,6 +15,9 @@ namespace DatenMeisterWPF.Windows
         public LogWindow()
         {
             InitializeComponent();
+
+            SelectedLogLevels.ItemsSource = Enum.GetNames(typeof(LogLevel));
+            SelectedLogLevels.SelectedValue = TheLog.FilterThreshold.ToString();
         }
 
         private void LogWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -48,6 +52,16 @@ namespace DatenMeisterWPF.Windows
         {
             Clipboard.SetText(LogText.Text);
             MessageBox.Show("Text copied to clipboard");
+        }
+
+        private void SelectedLogLevels_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            var selectedValue = SelectedLogLevels.SelectedValue?.ToString();
+            if (!string.IsNullOrEmpty(selectedValue))
+            {
+                TheLog.FilterThreshold =
+                    (LogLevel) Enum.Parse(typeof(LogLevel), selectedValue);
+            }
         }
     }
 }

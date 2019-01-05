@@ -15,9 +15,15 @@
                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                  FontFamily="Consolas" Padding="5" Margin="5">
         </TextBox>
-        <StackPanel Grid.Row="1" HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Click="Copy_To_Clipboard_Click" Margin="5">Copy to Clipboard</Button>
-            <Button IsDefault="True" IsCancel="True" Click="Close_Click" Margin="5">Close</Button>
-        </StackPanel>
+        <DockPanel Grid.Row="1">
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center">Logging filter-level: </TextBlock>
+                <ComboBox x:Name="SelectedLogLevels" DockPanel.Dock="Left" Margin="10,0,10,0" SelectionChanged="SelectedLogLevels_SelectionChanged"></ComboBox>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Click="Copy_To_Clipboard_Click" Margin="5">Copy to Clipboard</Button>
+                <Button IsDefault="True" IsCancel="True" Click="Close_Click" Margin="5">Close</Button>
+            </StackPanel>
+        </DockPanel>
     </Grid>
 </Window>

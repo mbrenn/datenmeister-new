@@ -90,8 +90,8 @@ namespace DatenMeister.Runtime.ExtentStorage
                 return (IUriExtent) _workspaceLogic.FindExtent(loadedProviderInfo.UsedConfig.workspaceId, loadedProviderInfo.UsedConfig.extentUri);
             }
 
-            var loadedProvider = loadedProviderInfo?.Provider;
-            configuration = loadedProviderInfo?.UsedConfig ?? configuration; // Updates the configuration, if it needs to be updated
+            var loadedProvider = loadedProviderInfo.Provider;
+            configuration = loadedProviderInfo.UsedConfig ?? configuration; // Updates the configuration, if it needs to be updated
 
             Logger.Info($"Loading extent: {configuration}");
 

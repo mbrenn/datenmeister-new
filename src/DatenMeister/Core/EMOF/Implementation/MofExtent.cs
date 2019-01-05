@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
@@ -41,6 +42,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Stores a list of other extents that shall also be considered as meta extents
         /// </summary>
         private readonly List<IUriExtent> _metaExtents = new List<IUriExtent>();
+
+        /// <summary>
+        /// Gets or sets the change event manager for the objects within
+        /// </summary>
+        internal ChangeEventManager ChangeEventManager { get; set; }
 
         /// <summary>
         /// Gets the meta object representing the meta object. Setting, querying a list or getting
@@ -84,8 +90,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Initializes a new instance of the Extent 
         /// </summary>
         /// <param name="provider">Provider being used for the extent</param>
-        public MofExtent(IProvider provider)
+        public MofExtent(IProvider provider, ChangeEventManager changeEventManager = null)
         {
+            ChangeEventManager = changeEventManager;
+
             var xmiProvider = new XmiProvider();
             Provider = provider;
             TypeLookup = new DotNetTypeLookup();

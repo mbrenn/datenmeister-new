@@ -75,6 +75,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void clear()
         {
             _extent.Provider.DeleteAllElements();
+            _extent?.ChangeEventManager?.SendChangeEvent(_extent);
         }
 
         /// <inheritdoc />
@@ -82,8 +83,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             if (value is MofObject valueAsObject)
             {
-                return _extent.Provider.DeleteElement(valueAsObject.ProviderObject.Id);
-                
+                var result = _extent.Provider.DeleteElement(valueAsObject.ProviderObject.Id);
+
+                _extent?.ChangeEventManager?.SendChangeEvent(_extent);
+                return result;
             }
 
             throw new NotImplementedException("Only the deletion of values are supported");
@@ -115,6 +118,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                 {
                     _extent.Provider.AddElement(valueAsObject.ProviderObject, index);
                     valueAsObject.Extent = _extent;
+
+                    _extent?.ChangeEventManager?.SendChangeEvent(_extent);
                     return true;
                 }
 
@@ -128,6 +133,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             _extent.Provider.AddElement((IProviderObject) _extent.ConvertForSetting(value), index);
+
+            _extent?.ChangeEventManager?.SendChangeEvent(_extent);
             return true;
         }
 
@@ -141,6 +148,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void remove(int index)
         {
             remove(_extent.Provider.GetRootObjects().ElementAt(index));
+            _extent?.ChangeEventManager?.SendChangeEvent(_extent);
         }
 
         /// <inheritdoc />
@@ -155,6 +163,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             var result = get(index);
             remove(index);
             set(index, value);
+            _extent?.ChangeEventManager?.SendChangeEvent(_extent);
 
             return result;
         }

@@ -5,6 +5,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.ChangeEvents;
 
 namespace DatenMeister.Runtime.Workspaces
 {
@@ -16,14 +17,18 @@ namespace DatenMeister.Runtime.Workspaces
         private static readonly ClassLogger Logger = new ClassLogger(typeof(WorkspaceLogic));
 
         private readonly WorkspaceData _fileData;
+        private readonly ChangeEventManager _changeEventManager;
 
         /// <summary>
         /// Initializes a new instance of the WorkspaceLogic
         /// </summary>
         /// <param name="fileData"></param>
-        public WorkspaceLogic(WorkspaceData fileData)
+        /// <param name="changeEventManager">Change Event Manager being used to propagate changes of extents
+        /// and workspaces</param>
+        public WorkspaceLogic(WorkspaceData fileData, ChangeEventManager changeEventManager = null)
         {
             _fileData = fileData;
+            _changeEventManager = changeEventManager;
         }
 
         /// <summary>
@@ -65,8 +70,7 @@ namespace DatenMeister.Runtime.Workspaces
 
             Workspace result = null;
             // If the object knows the extent to which it belongs to, it will return it
-            var objectKnowsExtent = value as IHasExtent;
-            if (objectKnowsExtent != null)
+            if (value is IHasExtent objectKnowsExtent)
             {
                 var found = objectKnowsExtent.Extent;
                 result = GetWorkspaceOfExtent(found);
@@ -74,7 +78,7 @@ namespace DatenMeister.Runtime.Workspaces
 
             lock (_fileData)
             {
-                // Otherwise check it by the dataextent
+                // Otherwise check it by the data extent
                 if (result != null)
                 {
                     result = _fileData.Workspaces.FirstOrDefault(x =>
@@ -149,6 +153,8 @@ namespace DatenMeister.Runtime.Workspaces
                     }
                 }
             }
+
+            _changeEventManager?.SendChangeEvent((IWorkspace) workspace);
         }
 
         /// <summary>
@@ -184,15 +190,18 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="id">Id of the workspace to be deleted</param>
         public void RemoveWorkspace(string id)
         {
+            Workspace workspaceToBeDeleted;
             lock (_fileData)
             {
-                var workspaceToBeDeleted = GetWorkspace(id);
+                workspaceToBeDeleted = GetWorkspace(id);
 
                 if (workspaceToBeDeleted != null)
                 {
                     _fileData.Workspaces.Remove(workspaceToBeDeleted);
                 }
             }
+
+            _changeEventManager?.SendChangeEvent((IWorkspace) workspaceToBeDeleted);
         }
 
         /// <summary>
@@ -203,6 +212,13 @@ namespace DatenMeister.Runtime.Workspaces
         public void AddExtent(Workspace workspace, IUriExtent newExtent)
         {
             workspace.AddExtent(newExtent);
+            if (newExtent is MofExtent mofExtent 
+                && mofExtent.ChangeEventManager != _changeEventManager)
+            {
+                mofExtent.ChangeEventManager = _changeEventManager;
+            }
+
+            _changeEventManager?.SendChangeEvent(newExtent);
         }
 
         /// <summary>

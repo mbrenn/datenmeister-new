@@ -435,7 +435,7 @@ namespace DatenMeisterWPF.Forms.Base
             var flags = FieldFlags.Focussed;
             foreach (var field in fields.Cast<IElement>())
             {
-                var fieldType = field.get(_FormAndFields._FieldData.fieldType)?.ToString();
+                var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
                 if (fieldType == MetaClassElementFieldData.FieldType)
                 {
                     continue;
@@ -625,7 +625,7 @@ namespace DatenMeisterWPF.Forms.Base
 
                     if (window is DetailFormWindow detailFormWindow)
                     {
-                        detailFormWindow.OnSaved(DetailElement);
+                        detailFormWindow.OnSaved(DetailElement, AttachedElement);
                     }
                 }
                 catch (Exception exc)

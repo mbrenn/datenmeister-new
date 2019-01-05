@@ -11,7 +11,7 @@ namespace DatenMeisterWPF.Navigation
         /// <summary>
         /// Called, when the user closes the form or has finished the application
         /// </summary>
-        event EventHandler Closed;
+        event EventHandler Closed; 
     }
 
     /// <summary>
@@ -58,14 +58,21 @@ namespace DatenMeisterWPF.Navigation
         /// Initializes a new instance of the NewItemEventArgs
         /// </summary>
         /// <param name="item"></param>
-        public ItemEventArgs(IObject item)
+        /// <param name="attachedItem">The attached item for additional properties</param>
+        public ItemEventArgs(IObject item, IObject attachedItem = null)
         {
             Item = item;
+            AttachedItem = attachedItem;
         }
 
         /// <summary>
         /// Gets or sets the newly created item
         /// </summary>
         public IObject Item { get; set; }
+
+        /// <summary>
+        /// Gets or sets the attached item to the dialog
+        /// </summary>
+        public IObject AttachedItem { get; set; }
     }
 }

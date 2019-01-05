@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -70,7 +71,7 @@ namespace DatenMeisterWPF.Navigation
                     var control = new DetailFormControl();
                     control.SetContent(null, newXmiDetailForm);
                     control.AddDefaultButtons("Create");
-                    control.ElementSaved += (x, y) =>
+                    control.ElementSaved += (x, y) => 
                     {
                         var configuration = new XmiStorageConfiguration
                         {
@@ -179,6 +180,7 @@ namespace DatenMeisterWPF.Navigation
                             dropField.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
                             dropField.set(_FormAndFields._DropDownFieldData.name, "ParentProperty");
                             dropField.set(_FormAndFields._DropDownFieldData.title, "Parent Property");
+                            dropField.set(_FormAndFields._DropDownFieldData.isAttached, true);
 
                             var list = new List<object>();
                             var properties = ObjectHelper.GetPropertyNames(element);
@@ -197,6 +199,9 @@ namespace DatenMeisterWPF.Navigation
 
                 detailControlView.Saved += (a, b) =>
                 {
+                    var selectedProperty = b.AttachedItem.getOrDefault<string>("ParentProperty");
+                    element.AddCollectionItem(selectedProperty, b.Item);
+
                     // Adds the element to the dialog
                     // collection.add(newElement);
                     result.OnNewItemCreated(new NewItemEventArgs(newElement));

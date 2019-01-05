@@ -13,6 +13,12 @@
             this.title = title;
         }
         
+        /// <summary>
+        /// Gets or sets a value indicating whether the field is attached to an attache object or
+        /// whether the field will be attached to the detail element
+        /// </summary>
+        public bool isAttached { get; set; }
+
         public string fieldType { get; set; }
 
         public string name { get; set; }

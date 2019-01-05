@@ -10,6 +10,10 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 {
     public class CheckboxField : IDetailField
     {
+        private bool? _propertyValue;
+        private string _name;
+        private CheckBox _checkbox;
+
         public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
             ref FieldFlags fieldFlags)
         {
@@ -17,37 +21,36 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
-            var name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
+            _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
             var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
-            bool? propertyValue = null;
-            if (value.isSet(name))
+            _propertyValue = null;
+            if (value.isSet(_name))
             {
-                propertyValue = value.getOrDefault<bool>(name);
+                _propertyValue = value.getOrDefault<bool>(_name);
             }
             else
             {
                 if (fieldData.isSet(_FormAndFields._FieldData.defaultValue))
                 {
-                    propertyValue = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.defaultValue);
+                    _propertyValue = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.defaultValue);
                 }
             }
 
-            var box = new CheckBox
+            _checkbox = new CheckBox
             {
-                IsChecked = propertyValue,
+                IsChecked = _propertyValue,
                 IsEnabled = isReadOnly
             };
 
-            detailForm.SetActions.Add(
-                element =>
-                {
-                    if (propertyValue != box.IsChecked)
-                    {
-                        element.set(name, box.IsChecked);
-                    }
-                });
+            return _checkbox;
+        }
 
-            return box;
+        public void CallSetAction(IObject element)
+        {
+            if (_checkbox != null && _propertyValue != _checkbox.IsChecked)
+            {
+                element.set(_name, _checkbox.IsChecked);
+            }
         }
     }
 }

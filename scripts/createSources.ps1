@@ -26,8 +26,9 @@ $msBuild = Find-MsBuild
 
 $project = "datenmeister-new.sln"
 $parameter = "/p:Configuration=Release"
+$switches = "-nologo"
 
-& $msBuild $project $parameter
+& $msBuild $switches -v:m $parameter $project
 
 cd ..
 

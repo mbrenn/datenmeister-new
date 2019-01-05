@@ -104,9 +104,11 @@ namespace DatenMeisterWPF.Windows
             Close();
         }
 
-        public void OnSaved(IObject detailElement)
+        public void OnSaved(IObject detailElement, IObject attachedElement)
         {
-            Saved?.Invoke(this, new ItemEventArgs(detailElement));
+            Saved?.Invoke(this, new ItemEventArgs(
+                detailElement, 
+                attachedElement));
         }
     }
 }

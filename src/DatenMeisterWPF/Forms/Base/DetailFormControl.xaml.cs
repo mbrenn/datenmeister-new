@@ -41,7 +41,7 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
-        ///     Gets the detailled element, whose content is shown in the dialog
+        ///     Gets the detailed element, whose content is shown in the dialog
         /// </summary>
         public IObject DetailElement { get; set; }
 
@@ -454,7 +454,15 @@ namespace DatenMeisterWPF.Forms.Base
                 var oldFlags = flags;
                 var (detailElement, contentBlock) =
                     FieldFactory.GetUIElementFor(DetailElement, field, this, ref flags);
-                ItemFields.Add(detailElement);
+
+                if (field.getOrNull<bool>(_FormAndFields._FieldData.isAttached) == true)
+                {
+                    AttachedItemFields.Add(detailElement);
+                }
+                else
+                {
+                    ItemFields.Add(detailElement);
+                }
 
                 Grid.SetColumn(contentBlock, 1);
                 Grid.SetRow(contentBlock, _fieldCount);

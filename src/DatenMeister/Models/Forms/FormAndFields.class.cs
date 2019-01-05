@@ -12,6 +12,9 @@ namespace DatenMeister.Models.Forms
             public static string @lineHeight = "lineHeight";
             public IElement _lineHeight = null;
 
+            public static string @isAttached = "isAttached";
+            public IElement _isAttached = null;
+
             public static string @fieldType = "fieldType";
             public IElement _fieldType = null;
 
@@ -45,6 +48,9 @@ namespace DatenMeister.Models.Forms
 
             public static string @showOffsetButtons = "showOffsetButtons";
             public IElement _showOffsetButtons = null;
+
+            public static string @isAttached = "isAttached";
+            public IElement _isAttached = null;
 
             public static string @fieldType = "fieldType";
             public IElement _fieldType = null;
@@ -130,6 +136,9 @@ namespace DatenMeister.Models.Forms
             public static string @values = "values";
             public IElement _values = null;
 
+            public static string @isAttached = "isAttached";
+            public IElement _isAttached = null;
+
             public static string @fieldType = "fieldType";
             public IElement _fieldType = null;
 
@@ -168,6 +177,9 @@ namespace DatenMeister.Models.Forms
 
         public class _FieldData
         {
+            public static string @isAttached = "isAttached";
+            public IElement _isAttached = null;
+
             public static string @fieldType = "fieldType";
             public IElement _fieldType = null;
 
@@ -186,7 +198,6 @@ namespace DatenMeister.Models.Forms
             public static string @isReadOnly = "isReadOnly";
             public IElement _isReadOnly = null;
 
-            public static string width { get; private set; } = "width";
         }
 
         public _FieldData @FieldData = new _FieldData();
@@ -268,6 +279,9 @@ namespace DatenMeister.Models.Forms
 
         public class _MetaClassElementFieldData
         {
+            public static string @isAttached = "isAttached";
+            public IElement _isAttached = null;
+
             public static string @fieldType = "fieldType";
             public IElement _fieldType = null;
 
@@ -308,6 +322,9 @@ namespace DatenMeister.Models.Forms
             public static string @showExtentSelection = "showExtentSelection";
             public IElement _showExtentSelection = null;
 
+            public static string @isAttached = "isAttached";
+            public IElement _isAttached = null;
+
             public static string @fieldType = "fieldType";
             public IElement _fieldType = null;
 
@@ -342,6 +359,9 @@ namespace DatenMeister.Models.Forms
             public static string @defaultTypesForNewElements = "defaultTypesForNewElements";
             public IElement _defaultTypesForNewElements = null;
 
+            public static string @isAttached = "isAttached";
+            public IElement _isAttached = null;
+
             public static string @fieldType = "fieldType";
             public IElement _fieldType = null;
 
@@ -369,6 +389,12 @@ namespace DatenMeister.Models.Forms
         {
             public static string @lineHeight = "lineHeight";
             public IElement _lineHeight = null;
+
+            public static string @width = "width";
+            public IElement _width = null;
+
+            public static string @isAttached = "isAttached";
+            public IElement _isAttached = null;
 
             public static string @fieldType = "fieldType";
             public IElement _fieldType = null;

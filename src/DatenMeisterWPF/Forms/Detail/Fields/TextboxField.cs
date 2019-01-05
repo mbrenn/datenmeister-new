@@ -23,7 +23,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 
             _name = fieldData.get(_FormAndFields._FieldData.name).ToString();
             var isReadOnly = fieldData.get<bool>(_FormAndFields._FieldData.isReadOnly);
-            var width = fieldData.getOrDefault<int>(_FormAndFields._FieldData.width);
+            var width = fieldData.getOrDefault<int>(_FormAndFields._TextFieldData.width);
 
             _valueText = string.Empty;
             if (value.isSet(_name))

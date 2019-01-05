@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DatenMeisterWPF.Windows"
+        xmlns:helper="clr-namespace:DatenMeisterWPF.Helper"
         mc:Ignorable="d"
         Title="DatenMeister Log" Height="600" Width="1200" WindowStartupLocation="CenterScreen" Loaded="LogWindow_OnLoaded">
     <Grid>
@@ -15,6 +16,15 @@
                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                  FontFamily="Consolas" Padding="5" Margin="5">
         </TextBox>
-        <Button Grid.Row="1" HorizontalAlignment="Right" IsDefault="True" IsCancel="True" Click="Close_Click" Margin="5">Close</Button>
+        <DockPanel Grid.Row="1">
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal" Margin="5">
+                <TextBlock VerticalAlignment="Center">Logging filter-level: </TextBlock>
+                <helper:ComboBoxEx x:Name="SelectedLogLevels" DockPanel.Dock="Left" Margin="10,0,10,0" SelectionChanged="SelectedLogLevels_SelectionChanged"></helper:ComboBoxEx>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Click="Copy_To_Clipboard_Click" Margin="5">Copy to Clipboard</Button>
+                <Button IsDefault="True" IsCancel="True" Click="Close_Click" Margin="5">Close</Button>
+            </StackPanel>
+        </DockPanel>
     </Grid>
 </Window>

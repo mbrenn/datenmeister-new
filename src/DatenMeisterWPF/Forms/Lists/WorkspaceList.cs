@@ -27,7 +27,10 @@ namespace DatenMeisterWPF.Forms.Lists
             SetItems(workspaceExtent.elements());
 
             var eventManager = App.Scope.Resolve<ChangeEventManager>();
-            eventManager.RegisterFor(workspaceExtent, (x,y) => Tabs.FirstOrDefault()?.Control.UpdateContent());
+            eventManager.RegisterFor(workspaceExtent, (x,y) =>
+            {
+                Tabs.FirstOrDefault()?.Control.UpdateContent();
+            });
         }
 
         /// <summary>

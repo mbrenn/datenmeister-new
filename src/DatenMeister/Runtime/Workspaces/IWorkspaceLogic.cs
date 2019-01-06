@@ -58,5 +58,11 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspace">Workspace to which the extent shall be added</param>
         /// <param name="newExtent">The extent to be added</param>
         void AddExtent(Workspace workspace, IUriExtent newExtent);
+
+        /// <summary>
+        /// Sends an event for a workspace change
+        /// </summary>
+        /// <param name="workspace">The workspace that has been changed</param>
+        void SendEventForWorkspaceChange(Workspace workspace);
     }
 }

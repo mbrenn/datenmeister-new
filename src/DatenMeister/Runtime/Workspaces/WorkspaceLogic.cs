@@ -165,7 +165,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <summary>
         /// Sends an event for a workspace change
         /// </summary>
-        /// <param name="workspace">The workspace that has been changed</param>
+        /// <param name="workspace">The workspace that has been changed.</param>
         public void SendEventForWorkspaceChange(Workspace workspace)
         {
             if (workspace != null)

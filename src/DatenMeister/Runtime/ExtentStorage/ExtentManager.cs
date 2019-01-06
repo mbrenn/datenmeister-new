@@ -227,6 +227,8 @@ namespace DatenMeister.Runtime.ExtentStorage
                 
                 // Removes the extent from the workspace
                 workspace.RemoveExtent(extent);
+
+                _workspaceLogic.SendEventForWorkspaceChange(workspace);
             }
         }
 

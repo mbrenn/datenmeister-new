@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeisterWPF.Forms.Base;
@@ -41,6 +43,13 @@ namespace DatenMeisterWPF.Forms.Lists
 
             var extents = workspace?.get("extents") as IReflectiveSequence;
             SetItems(extents);
+
+            // Registers upon events
+            var eventManager = App.Scope.Resolve<ChangeEventManager>();
+            EventHandle = eventManager.RegisterFor(workspaceExtent, (x, y) =>
+            {
+                Tabs.FirstOrDefault()?.Control.UpdateContent();
+            });
         }
 
         protected override void OnRecreateViews()

@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Uml.Helper;
@@ -22,6 +23,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// Stores the information about the active tab controls
         /// </summary>
         protected readonly ObservableCollection<ItemExplorerTab> Tabs = new ObservableCollection<ItemExplorerTab>();
+
+        private EventHandle _eventHandle;
 
         /// <summary>
         /// Gets or sets the items to be shown. These items are shown also in the navigation view and will
@@ -45,6 +48,23 @@ namespace DatenMeisterWPF.Forms.Base
         /// If the user clicks on the navigation tree, a subview of the items may be shown
         /// </summary>
         protected IReflectiveCollection SelectedItems { get; set; }
+
+        /// <summary>
+        /// Gets or sets the eventhandle for the content of the control
+        /// </summary>
+        public EventHandle EventHandle
+        {
+            get => _eventHandle;
+            set
+            {
+                if (_eventHandle != null)
+                {
+                    App.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
+                }
+
+                _eventHandle = value;
+            }
+        }
 
         public ItemExplorerControl()
         {

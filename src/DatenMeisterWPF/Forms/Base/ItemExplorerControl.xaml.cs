@@ -17,7 +17,7 @@ namespace DatenMeisterWPF.Forms.Base
     /// <summary>
     /// Interaktionslogik für ItemBrowser.xaml
     /// </summary>
-    public partial class ItemExplorerControl : UserControl, INavigationGuest
+    public partial class ItemExplorerControl : UserControl, INavigationGuest, ICanUnregister
     {
         /// <summary>
         /// Stores the information about the active tab controls
@@ -100,9 +100,21 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
-        /// This method shall be called, when the content of the shown information has changed and all views shall be updated
+        /// Updates all views
         /// </summary>
         public void UpdateAllViews()
+        {
+            UpdateTreeContent();
+            foreach (var tab in Tabs)
+            {
+                tab.Control.UpdateContent();
+            }
+        }
+
+        /// <summary>
+        /// This method shall be called, when the content of the shown information has changed and all views shall be updated
+        /// </summary>
+        public void RecreateAllViews()
         { 
             UpdateTreeContent();
             RecreateViews();
@@ -242,6 +254,14 @@ namespace DatenMeisterWPF.Forms.Base
             foreach (var extension in GetViewExtensions().OfType<TreeViewItemCommandDefinition>())
             {
                 NavigationTreeView.ViewExtensions.Add(extension);
+            }
+        }
+
+        public void Unregister()
+        {
+            if (_eventHandle != null)
+            {
+                App.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
             }
         }
     }

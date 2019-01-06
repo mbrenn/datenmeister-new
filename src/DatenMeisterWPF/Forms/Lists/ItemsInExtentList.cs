@@ -60,7 +60,10 @@ namespace DatenMeisterWPF.Forms.Lists
 
             EventHandle = App.Scope.Resolve<ChangeEventManager>().RegisterFor(
                 _extent,
-                (x,y) => UpdateAllViews());
+                (x,y) =>
+                {
+                    UpdateAllViews();
+                });
 
             SetItems(_extent.elements());
         }
@@ -159,7 +162,7 @@ namespace DatenMeisterWPF.Forms.Lists
 
             PrepareNavigation(viewDefinition);
 
-            var element = AddTab(
+            AddTab(
                 tabItems,
                 viewDefinition);
         }
@@ -168,7 +171,6 @@ namespace DatenMeisterWPF.Forms.Lists
         {
             if (IsExtentSelectedInTreeview)
             {
-                var elements =
                     NavigatorForItems.NavigateToNewItemForExtent(
                         NavigationHost,
                         _extent,
@@ -176,7 +178,6 @@ namespace DatenMeisterWPF.Forms.Lists
             }
             else
             {
-                var elements =
                     NavigatorForItems.NavigateToNewItemForItem(
                         NavigationHost,
                         SelectedPackage,

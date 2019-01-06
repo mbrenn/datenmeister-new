@@ -62,7 +62,7 @@ namespace DatenMeisterWPF.Forms.Lists
             var viewDefinition = ListRequests.RequestFormForExtents(this, WorkspaceId);
             PrepareNavigation(viewDefinition);
 
-            var uiElement = AddTab(
+            AddTab(
                 SelectedItems,
                 viewDefinition);
         }
@@ -78,7 +78,7 @@ namespace DatenMeisterWPF.Forms.Lists
         {
             var uri = element.get("uri").ToString();
 
-            var events = NavigatorForItems.NavigateToItemsInExtent(
+            NavigatorForItems.NavigateToItemsInExtent(
                 NavigationHost,
                 WorkspaceId,
                 uri);

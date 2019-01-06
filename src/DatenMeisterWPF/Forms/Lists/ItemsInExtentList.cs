@@ -203,17 +203,17 @@ namespace DatenMeisterWPF.Forms.Lists
         {
             if (IsExtentSelectedInTreeview)
             {
-                    NavigatorForItems.NavigateToNewItemForExtent(
-                        NavigationHost,
-                        _extent,
-                        type);
+                NavigatorForItems.NavigateToNewItemForExtent(
+                    NavigationHost,
+                    _extent,
+                    type);
             }
             else
             {
-                    NavigatorForItems.NavigateToNewItemForItem(
-                        NavigationHost,
-                        SelectedPackage,
-                        type);
+                NavigatorForItems.NavigateToNewItemForItem(
+                    NavigationHost,
+                    SelectedPackage,
+                    type);
             }
         }
 

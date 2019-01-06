@@ -55,7 +55,7 @@ namespace DatenMeisterWPF.Forms.Lists
             PrepareNavigation(view);
 
             // Sets the workspaces
-            var element = AddTab(
+            AddTab(
                 SelectedItems,
                 view);
         }

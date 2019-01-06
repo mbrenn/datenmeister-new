@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ChangeEvents;
+using DatenMeister.Provider.ManagementProviders;
 
 namespace DatenMeister.Runtime.Workspaces
 {
@@ -116,6 +117,10 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        /// <summary>
+        /// Gets the default workspace
+        /// </summary>
+        /// <returns>The default workspace</returns>
         public Workspace GetDefaultWorkspace()
         {
             lock (_fileData)
@@ -154,7 +159,21 @@ namespace DatenMeister.Runtime.Workspaces
                 }
             }
 
-            _changeEventManager?.SendChangeEvent((IWorkspace) workspace);
+            SendEventForWorkspaceChange(workspace);
+        }
+
+        /// <summary>
+        /// Sends an event for a workspace change
+        /// </summary>
+        /// <param name="workspace">The workspace that has been changed</param>
+        public void SendEventForWorkspaceChange(Workspace workspace)
+        {
+            if (workspace != null)
+            {
+                _changeEventManager?.SendChangeEvent((IWorkspace) workspace);
+            }
+
+            _changeEventManager?.SendChangeEvent(this.GetManagementWorkspace().FindExtent(ExtentOfWorkspaces.WorkspaceUri));
         }
 
         /// <summary>
@@ -201,7 +220,7 @@ namespace DatenMeister.Runtime.Workspaces
                 }
             }
 
-            _changeEventManager?.SendChangeEvent((IWorkspace) workspaceToBeDeleted);
+            SendEventForWorkspaceChange(workspaceToBeDeleted);
         }
 
         /// <summary>
@@ -218,7 +237,7 @@ namespace DatenMeister.Runtime.Workspaces
                 mofExtent.ChangeEventManager = _changeEventManager;
             }
 
-            _changeEventManager?.SendChangeEvent(newExtent);
+            SendEventForWorkspaceChange(workspace);
         }
 
         /// <summary>

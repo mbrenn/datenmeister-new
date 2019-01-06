@@ -271,6 +271,9 @@ namespace DatenMeisterWPF.Forms.Base
             // Skip, if view selection shall be hidden
             if (_hideViewSelection == true) return;
 
+            // If a specific viewdefinition is set, no view selection will shown.
+            if (ViewDefinition.Mode == ViewDefinitionMode.Specific) return;
+
             // Update view
             var views = GetFormsForView()?.ToList();
 

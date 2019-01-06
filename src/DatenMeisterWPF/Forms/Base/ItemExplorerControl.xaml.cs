@@ -223,7 +223,6 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 NavigationTreeView.ViewExtensions.Add(extension);
             }
-
         }
     }
 }

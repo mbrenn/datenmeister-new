@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.Forms;
+using DatenMeister.Runtime;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
 
@@ -80,16 +82,26 @@ namespace DatenMeisterWPF.Windows
         public void SetMainContent(UIElement element)
         {
             MainContent.Content = element;
+            RebuildNavigation();
             if (element is DetailFormControl control)
             {
                 if (control.IsDesignMinimized())
                 {
                     Dispatcher.InvokeAsync(() =>
                     {
+
+                        var width = control.EffectiveForm.getOrDefault<double>(_FormAndFields._Form.defaultWidth);
+                        var height = control.EffectiveForm.getOrDefault<double>(_FormAndFields._Form.defaultWidth);
+                        if (width <= 0 && height <= 0)
+                        {
+                            width = 1000;
+                            height = 1000;
+                        }
+
                         MainRibbon.IsMinimized = true;
-                        control.DataGrid.Measure(new Size(1000, 1000));
+                        control.DataGrid.Measure(new Size(width, height));
                         Width = Math.Ceiling(control.DataGrid.DesiredSize.Width) + 50;
-                        Height = Math.Ceiling(control.DataGrid.DesiredSize.Height) + 100;
+                        Height = Math.Ceiling(control.DataGrid.DesiredSize.Height) + 150;
                         Top = (Owner?.Top ?? 0) + 100;
                         Left = (Owner?.Left ?? 0) + 100;
                     });

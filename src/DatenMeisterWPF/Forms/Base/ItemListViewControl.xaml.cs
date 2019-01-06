@@ -396,8 +396,7 @@ namespace DatenMeisterWPF.Forms.Base
                 return;
             }
 
-            var events = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
-            events.Closed += (sender, args) => UpdateContent();
+            NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
         }
 
         /// <summary>
@@ -472,6 +471,7 @@ namespace DatenMeisterWPF.Forms.Base
             _searchText = SearchField.Text;
             UpdateContent();
         }
+
         /// <summary>
         /// Prepares the navigation of the host. The function is called by the navigation 
         /// host. 
@@ -518,7 +518,6 @@ namespace DatenMeisterWPF.Forms.Base
                     var temporaryExtent = InMemoryProvider.TemporaryExtent;
                     var factory = new MofFactory(temporaryExtent);
                     CurrentFormDefinition = dlg.GetCurrentContentAsMof(factory);
-                    UpdateContent();
                 };
 
                 dlg.ShowDialog();
@@ -725,7 +724,6 @@ namespace DatenMeisterWPF.Forms.Base
             var translator = new FastViewFilterTranslator(App.Scope.Resolve<IWorkspaceLogic>());
             var menu = new ContextMenu();
             var list = new List<object>();
-
 
             foreach (var filter in _fastViewFilter.FastViewFilters.OfType<IElement>())
             {

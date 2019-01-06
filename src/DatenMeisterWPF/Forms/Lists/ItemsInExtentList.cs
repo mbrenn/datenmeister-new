@@ -12,6 +12,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
@@ -56,6 +57,10 @@ namespace DatenMeisterWPF.Forms.Lists
                 MessageBox.Show("The given workspace and extent was not found.");
                 return;
             }
+
+            EventHandle = App.Scope.Resolve<ChangeEventManager>().RegisterFor(
+                _extent,
+                (x,y) => UpdateAllViews());
 
             SetItems(_extent.elements());
         }
@@ -149,7 +154,6 @@ namespace DatenMeisterWPF.Forms.Lists
                         MessageBoxResult.Yes)
                     {
                         _extent.elements().remove(item);
-                        //element.Control.UpdateContent();
                     }
                 }));
 
@@ -169,7 +173,6 @@ namespace DatenMeisterWPF.Forms.Lists
                         NavigationHost,
                         _extent,
                         type);
-                elements.NewItemCreated += (x, y) => { RecreateViews(); };
             }
             else
             {
@@ -178,7 +181,6 @@ namespace DatenMeisterWPF.Forms.Lists
                         NavigationHost,
                         SelectedPackage,
                         type);
-                elements.NewItemCreated += (x, y) => { RecreateViews(); };
             }
         }
 

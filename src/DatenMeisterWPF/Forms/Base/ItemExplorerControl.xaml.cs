@@ -100,9 +100,9 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
-        /// Updates all views
+        /// Updates all views without recreating the items. 
         /// </summary>
-        public void UpdateAllViews()
+        public virtual void UpdateAllViews()
         {
             UpdateTreeContent();
             foreach (var tab in Tabs)
@@ -139,7 +139,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Updates the tree content of the explorer view
         /// </summary>
-        private void UpdateTreeContent()
+        protected void UpdateTreeContent()
         {
             NavigationTreeView.SetDefaultProperties();
             NavigationTreeView.ItemsSource = Items;
@@ -244,8 +244,7 @@ namespace DatenMeisterWPF.Forms.Base
                 return;
             }
 
-            var events = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
-            events.Closed += (sender, args) => RecreateViews();
+            NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
         }
 
         private void ItemTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -262,6 +261,7 @@ namespace DatenMeisterWPF.Forms.Base
             if (_eventHandle != null)
             {
                 App.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
+                _eventHandle = null;
             }
         }
     }

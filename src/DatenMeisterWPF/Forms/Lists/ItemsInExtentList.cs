@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -69,6 +70,11 @@ namespace DatenMeisterWPF.Forms.Lists
         }
 
         /// <summary>
+        /// Stores the metaclasses currently shown
+        /// </summary>
+        private List<IElement> _metaClasses = new List<IElement>();
+
+        /// <summary>
         ///     Sets the items of the given extent
         /// </summary>
         protected override void OnRecreateViews()
@@ -83,19 +89,45 @@ namespace DatenMeisterWPF.Forms.Lists
             {
                 foreach (var metaClass in metaClasses)
                 {
-                    IReflectiveCollection tabItems;
-                    if (metaClass == null)
-                    {
-                        tabItems = SelectedItems.WhenMetaClassIsNotSet();
-                    }
-                    else
-                    {
-                        tabItems = SelectedItems.WhenMetaClassIsOneOf(metaClass);
-                    }
-
-                    CreateTabForItems(tabItems, metaClass);
+                    CreateTabForMetaclass(metaClass);
                 }
             }
+        }
+
+        private void CreateTabForMetaclass(IElement metaClass)
+        {
+            IReflectiveCollection tabItems;
+            if (metaClass == null)
+            {
+                tabItems = SelectedItems.WhenMetaClassIsNotSet();
+            }
+            else
+            {
+                tabItems = SelectedItems.WhenMetaClassIsOneOf(metaClass);
+            }
+
+            CreateTabForItems(tabItems, metaClass);
+            _metaClasses.Add(metaClass);
+        }
+
+        /// <summary>
+        /// Updates all views without regenerating the tabulators, which are already set
+        /// </summary>
+        public override void UpdateAllViews()
+        {
+            base.UpdateAllViews();
+            if (ShowAllItemsInOneTab)
+            {
+                return;
+            }
+
+            // Goes through the metaclasses and gets the one, that are not already in a tab
+            var metaClasses = SelectedItems.Select(x => (x as IElement)?.getMetaClass()).Distinct().ToList();
+            foreach (var metaClass in metaClasses.Where(x=> !_metaClasses.Contains(x)).ToArray())
+            {
+                CreateTabForMetaclass(metaClass);
+            }
+
         }
 
         /// <summary>

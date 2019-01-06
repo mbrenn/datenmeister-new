@@ -99,11 +99,6 @@ namespace DatenMeisterWPF.Navigation
                     break;
                 }
             }
-            
-            if (userControl is INavigationGuest guest)
-            {
-                var viewExtensions = guest.GetViewExtensions();
-            }
 
             return result;
         }

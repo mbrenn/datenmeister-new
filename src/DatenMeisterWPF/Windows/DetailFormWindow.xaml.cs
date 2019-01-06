@@ -82,7 +82,6 @@ namespace DatenMeisterWPF.Windows
         public void SetMainContent(UIElement element)
         {
             MainContent.Content = element;
-            RebuildNavigation();
             if (element is DetailFormControl control)
             {
                 if (control.IsDesignMinimized())

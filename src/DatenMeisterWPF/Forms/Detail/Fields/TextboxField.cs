@@ -64,6 +64,11 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     _contentBlock.Width = 10 * width;
                     _contentBlock.HorizontalAlignment = HorizontalAlignment.Left;
                 }
+                else
+                {
+                    _contentBlock.Width = 300;
+                    _contentBlock.HorizontalAlignment = HorizontalAlignment.Left;
+                }
 
                 fieldFlags = fieldFlags & ~FieldFlags.Focussed;
 

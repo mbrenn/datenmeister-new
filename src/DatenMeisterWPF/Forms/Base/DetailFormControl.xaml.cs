@@ -193,7 +193,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <returns>true, if design shall be minimized</returns>
         public bool IsDesignMinimized()
         {
-            return DotNetHelper.IsTrue(EffectiveForm?.GetOrDefault(_FormAndFields._Form.minimizeDesign));
+            return EffectiveForm?.getOrDefault<bool>(_FormAndFields._Form.minimizeDesign) == true;
         }
 
         /// <summary>
@@ -393,6 +393,12 @@ namespace DatenMeisterWPF.Forms.Base
                 return;
             }
 
+            var isMinimized = EffectiveForm.getOrDefault<bool>(_FormAndFields._Form.minimizeDesign);
+            if (isMinimized)
+            {
+                ViewList.Visibility = Visibility.Collapsed;
+            }
+
             _fieldCount = 0;
 
             CreateRows(fields);
@@ -403,7 +409,9 @@ namespace DatenMeisterWPF.Forms.Base
                 var mofElement = (MofElement) DetailElement;
                 var uriExtent = DetailElement.GetUriExtentOf();
 
-                if (!DotNetHelper.IsTrue(EffectiveForm.GetOrDefault(_FormAndFields._Form.hideMetaClass)))
+                var hideMetaClass = EffectiveForm.getOrDefault<bool>(_FormAndFields._Form.hideMetaClass);
+
+                if (!hideMetaClass && !isMinimized)
                 {
                     CreateSeparator();
 

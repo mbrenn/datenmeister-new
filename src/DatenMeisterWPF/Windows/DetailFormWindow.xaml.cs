@@ -82,7 +82,18 @@ namespace DatenMeisterWPF.Windows
             MainContent.Content = element;
             if (element is DetailFormControl control)
             {
-                if (control.IsDesignMinimized()) MainRibbon.IsMinimized = true;
+                if (control.IsDesignMinimized())
+                {
+                    Dispatcher.InvokeAsync(() =>
+                    {
+                        MainRibbon.IsMinimized = true;
+                        control.DataGrid.Measure(new Size(1000, 1000));
+                        Width = Math.Ceiling(control.DataGrid.DesiredSize.Width) + 50;
+                        Height = Math.Ceiling(control.DataGrid.DesiredSize.Height) + 100;
+                        Top = (Owner?.Top ?? 0) + 100;
+                        Left = (Owner?.Left ?? 0) + 100;
+                    });
+                }
 
                 var size = control.DefaultSize;
                 if (Math.Abs(size.Width) > 1E-7 && size.Height > 1E-7)

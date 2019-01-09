@@ -16,5 +16,12 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         /// <returns>Created UI Element</returns>
         UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, ref FieldFlags fieldFlags);
 
+        /// <summary>
+        /// This instance will be called, when the setting shall be performed upon the given element.
+        /// This may be different as the one as specified in CreateElement
+        /// </summary>
+        /// <param name="element"> Element to be set</param>
+        void CallSetAction(IObject element);
+
     }
 }

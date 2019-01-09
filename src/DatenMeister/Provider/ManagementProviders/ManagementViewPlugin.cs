@@ -102,7 +102,11 @@ namespace DatenMeister.Provider.ManagementProviders
         /// <returns></returns>
         public IElement GetNewWorkspaceDetail()
         {
-            var form = new Form(ManagementViewDefinitions.NewWorkspaceForm);
+            var form = new DetailForm(ManagementViewDefinitions.NewWorkspaceForm)
+            {
+                minimizeDesign = true
+            };
+
             form.AddFields(
                 new TextFieldData("id", "Name"),
                 new TextFieldData("annotation", "Annotation"));
@@ -117,9 +121,10 @@ namespace DatenMeister.Provider.ManagementProviders
         private IElement GetNewXmiExtentDetailForm()
         {
             // Finds the forms
-            var form = new Form(ManagementViewDefinitions.NewXmiDetailForm)
+            var form = new DetailForm(ManagementViewDefinitions.NewXmiDetailForm)
             {
-                inhibitNewItems = true
+                inhibitNewItems = true,
+                minimizeDesign = true
             };
 
             form.AddFields(
@@ -203,6 +208,7 @@ namespace DatenMeister.Provider.ManagementProviders
                 extentListView,
                 extentPackageView
             };
+
             PackageMethods.AddObjectsToPackage(umlPackage, items);
         }
     }

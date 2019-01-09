@@ -211,6 +211,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 ProviderObject.SetProperty(property, MofExtent.ConvertForSetting(this, value));
             }
+
+            _extent?.ChangeEventManager?.SendChangeEvent(this);
         }
 
         /// <inheritdoc />
@@ -223,6 +225,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void unset(string property)
         {
             ProviderObject.DeleteProperty(property);
+
+            _extent?.ChangeEventManager?.SendChangeEvent(this);
         }
 
         /// <inheritdoc />

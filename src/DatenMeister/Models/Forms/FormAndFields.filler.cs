@@ -47,6 +47,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.CheckboxFieldData._lineHeight = value;
                                 }
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.CheckboxFieldData._isAttached = value;
+                                }
                                 if(name == "fieldType") // Looking for property
                                 {
                                     tree.CheckboxFieldData._fieldType = value;
@@ -93,6 +97,10 @@ namespace DatenMeister.Models.Forms
                                 if(name == "showOffsetButtons") // Looking for property
                                 {
                                     tree.DateTimeFieldData._showOffsetButtons = value;
+                                }
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.DateTimeFieldData._isAttached = value;
                                 }
                                 if(name == "fieldType") // Looking for property
                                 {
@@ -211,6 +219,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.DropDownFieldData._values = value;
                                 }
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.DropDownFieldData._isAttached = value;
+                                }
                                 if(name == "fieldType") // Looking for property
                                 {
                                     tree.DropDownFieldData._fieldType = value;
@@ -265,6 +277,10 @@ namespace DatenMeister.Models.Forms
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.FieldData._isAttached = value;
+                                }
                                 if(name == "fieldType") // Looking for property
                                 {
                                     tree.FieldData._fieldType = value;
@@ -402,6 +418,10 @@ namespace DatenMeister.Models.Forms
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.MetaClassElementFieldData._isAttached = value;
+                                }
                                 if(name == "fieldType") // Looking for property
                                 {
                                     tree.MetaClassElementFieldData._fieldType = value;
@@ -457,6 +477,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ReferenceFieldData._showExtentSelection = value;
                                 }
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.ReferenceFieldData._isAttached = value;
+                                }
                                 if(name == "fieldType") // Looking for property
                                 {
                                     tree.ReferenceFieldData._fieldType = value;
@@ -504,6 +528,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.SubElementFieldData._defaultTypesForNewElements = value;
                                 }
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.SubElementFieldData._isAttached = value;
+                                }
                                 if(name == "fieldType") // Looking for property
                                 {
                                     tree.SubElementFieldData._fieldType = value;
@@ -542,6 +570,14 @@ namespace DatenMeister.Models.Forms
                                 if(name == "lineHeight") // Looking for property
                                 {
                                     tree.TextFieldData._lineHeight = value;
+                                }
+                                if(name == "width") // Looking for property
+                                {
+                                    tree.TextFieldData._width = value;
+                                }
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.TextFieldData._isAttached = value;
                                 }
                                 if(name == "fieldType") // Looking for property
                                 {

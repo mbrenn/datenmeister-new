@@ -141,7 +141,7 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             SupportNewItems =
-                !DotNetHelper.AsBoolean(CurrentFormDefinition.GetOrDefault(_FormAndFields._Form.inhibitNewItems));
+                !CurrentFormDefinition.getOrDefault<bool>(_FormAndFields._Form.inhibitNewItems);
             SupportNewItems = false; // TODO: Make new items working
 
             var listItems = new ObservableCollection<ExpandoObject>();
@@ -176,6 +176,7 @@ namespace DatenMeisterWPF.Forms.Base
                         Logger.Warn("FastViewFilter is not known: " + fastfilter);
                         continue;
                     }
+
                     items = items.Where(x => converter.IsFiltered(x));
                 }
 
@@ -397,8 +398,7 @@ namespace DatenMeisterWPF.Forms.Base
                 return;
             }
 
-            var events = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
-            events.Closed += (sender, args) => UpdateContent();
+            NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
         }
 
         /// <summary>
@@ -520,7 +520,6 @@ namespace DatenMeisterWPF.Forms.Base
                     var temporaryExtent = InMemoryProvider.TemporaryExtent;
                     var factory = new MofFactory(temporaryExtent);
                     CurrentFormDefinition = dlg.GetCurrentContentAsMof(factory);
-                    UpdateContent();
                 };
 
                 dlg.ShowDialog();
@@ -740,7 +739,6 @@ namespace DatenMeisterWPF.Forms.Base
             var translator = new FastViewFilterTranslator(App.Scope.Resolve<IWorkspaceLogic>());
             var menu = new ContextMenu();
             var list = new List<object>();
-
 
             foreach (var filter in _fastViewFilter.FastViewFilters.OfType<IElement>())
             {

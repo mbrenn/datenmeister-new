@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Remoting.Messaging;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -11,7 +10,6 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
@@ -29,6 +27,9 @@ namespace DatenMeisterWPF.Forms.Lists
 {
     public static class ListRequests
     {
+        /// <summary>
+        /// Defines the logger for the class
+        /// </summary>
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ListRequests));
 
         /// <summary>
@@ -63,9 +64,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     return;
                 }
 
-                var events = NavigatorForExtents.NavigateToExtentList(navigationGuest.NavigationHost, workspaceId);
-
-                events.Closed += (x, y) => (navigationGuest as ItemListViewControl)?.UpdateContent();
+                NavigatorForExtents.NavigateToExtentList(navigationGuest.NavigationHost, workspaceId);
             }
 
             void DeleteWorkspace(INavigationGuest navigationGuest, IObject workspace)
@@ -78,8 +77,6 @@ namespace DatenMeisterWPF.Forms.Lists
 
                     var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
                     workspaceLogic.RemoveWorkspace(workspaceId);
-
-                    (navigationGuest as ItemListViewControl)?.UpdateContent();
                 }
             }
         }
@@ -165,27 +162,23 @@ namespace DatenMeisterWPF.Forms.Lists
                     var extentToBeDeleted =
                         workspaceLogic.FindExtent(workspaceId, DotNetHelper.AsString(element.get("uri")));
                     extentManager.DeleteExtent(extentToBeDeleted);
-                    control.UpdateAllViews();
                 }
             }
 
             async void ImportFromExcel()
             {
                 await NavigatorForExcelHandling.ImportFromExcel(control.NavigationHost, workspaceId);
-                control.UpdateAllViews();
             }
 
             void NewXmiExtent()
             {
-                var events = NavigatorForItems.NavigateToNewXmiExtentDetailView(control.NavigationHost, workspaceId);
-                events.Closed += (x, y) => control.UpdateAllViews();
+                NavigatorForItems.NavigateToNewXmiExtentDetailView(control.NavigationHost, workspaceId);
             }
 
             void AddZipCodeExample()
             {
                 var zipCodeExampleManager = App.Scope.Resolve<ZipCodeExampleManager>();
                 zipCodeExampleManager.AddZipCodeExample(workspaceId);
-                control.UpdateAllViews();
             }
 
             void ImportFromXmi()
@@ -202,7 +195,6 @@ namespace DatenMeisterWPF.Forms.Lists
                     {
                         var extentImport = App.Scope.Resolve<ExtentImport>();
                         extentImport.ImportExtent(dlg.ImportCommand);
-                        control.UpdateAllViews();
                     }
                 };
 
@@ -217,11 +209,10 @@ namespace DatenMeisterWPF.Forms.Lists
 
                 var uri = extentElement.get("uri").ToString();
 
-                var events = NavigatorForItems.NavigateToItemsInExtent(
+                NavigatorForItems.NavigateToItemsInExtent(
                     listViewControl.NavigationHost,
                     workspaceId,
                     uri);
-                events.Closed += (x, y) => listViewControl.UpdateContent();
             }
 
             void LoadExtent()
@@ -261,8 +252,6 @@ namespace DatenMeisterWPF.Forms.Lists
                         Logger.Warn($"User failed to create extent via general dialog: {exc.Message}");
                         MessageBox.Show(exc.Message);
                     }
-
-                    control.UpdateAllViews();
                 };
             }
         }

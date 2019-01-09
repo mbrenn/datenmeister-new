@@ -29,6 +29,7 @@ namespace DatenMeisterWPF.Forms.Detail
                 var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
                 workspaceLogic.AddWorkspace(workspace);
             };
+
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Proxies;
@@ -46,8 +47,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public MofUriExtent(IProvider provider) :
-            base(provider)
+        public MofUriExtent(IProvider provider, ChangeEventManager changeEventManager = null) :
+            base(provider, changeEventManager)
         {
             _navigator = new ExtentUrlNavigator<MofElement>(this);
 
@@ -59,8 +60,8 @@ namespace DatenMeister.Core.EMOF.Implementation
 
 
         /// <inheritdoc />
-        public MofUriExtent(IProvider provider, string uri) :
-            this(provider)
+        public MofUriExtent(IProvider provider, string uri, ChangeEventManager changeEventManager = null) :
+            this(provider, changeEventManager)
         {
             UriOfExtent = uri;
         }

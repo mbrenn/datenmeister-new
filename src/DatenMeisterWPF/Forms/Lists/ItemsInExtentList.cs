@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,6 +13,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
@@ -39,6 +41,7 @@ namespace DatenMeisterWPF.Forms.Lists
         }
 
         public string WorkspaceId { get; set; }
+
         public string ExtentUrl { get; set; }
 
         /// <summary>
@@ -56,8 +59,20 @@ namespace DatenMeisterWPF.Forms.Lists
                 return;
             }
 
+            EventHandle = App.Scope.Resolve<ChangeEventManager>().RegisterFor(
+                _extent,
+                (x,y) =>
+                {
+                    UpdateAllViews();
+                });
+
             SetItems(_extent.elements());
         }
+
+        /// <summary>
+        /// Stores the metaclasses currently shown
+        /// </summary>
+        private List<IElement> _metaClasses = new List<IElement>();
 
         /// <summary>
         ///     Sets the items of the given extent
@@ -74,19 +89,45 @@ namespace DatenMeisterWPF.Forms.Lists
             {
                 foreach (var metaClass in metaClasses)
                 {
-                    IReflectiveCollection tabItems;
-                    if (metaClass == null)
-                    {
-                        tabItems = SelectedItems.WhenMetaClassIsNotSet();
-                    }
-                    else
-                    {
-                        tabItems = SelectedItems.WhenMetaClassIsOneOf(metaClass);
-                    }
-
-                    CreateTabForItems(tabItems, metaClass);
+                    CreateTabForMetaclass(metaClass);
                 }
             }
+        }
+
+        private void CreateTabForMetaclass(IElement metaClass)
+        {
+            IReflectiveCollection tabItems;
+            if (metaClass == null)
+            {
+                tabItems = SelectedItems.WhenMetaClassIsNotSet();
+            }
+            else
+            {
+                tabItems = SelectedItems.WhenMetaClassIsOneOf(metaClass);
+            }
+
+            CreateTabForItems(tabItems, metaClass);
+            _metaClasses.Add(metaClass);
+        }
+
+        /// <summary>
+        /// Updates all views without regenerating the tabulators, which are already set
+        /// </summary>
+        public override void UpdateAllViews()
+        {
+            base.UpdateAllViews();
+            if (ShowAllItemsInOneTab)
+            {
+                return;
+            }
+
+            // Goes through the metaclasses and gets the one, that are not already in a tab
+            var metaClasses = SelectedItems.Select(x => (x as IElement)?.getMetaClass()).Distinct().ToList();
+            foreach (var metaClass in metaClasses.Where(x=> !_metaClasses.Contains(x)).ToArray())
+            {
+                CreateTabForMetaclass(metaClass);
+            }
+
         }
 
         /// <summary>
@@ -127,12 +168,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     var typeName = type.get(_UML._CommonStructure._NamedElement.name);
 
                     viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
-                        $"New {typeName}", () =>
-                        {
-                            var elements =
-                                NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent, type);
-                            elements.Closed += (x, y) => { RecreateViews(); };
-                        }));
+                        $"New {typeName}", () => { CreateNewElementByUser(type); }));
                 }
             }
 
@@ -140,8 +176,7 @@ namespace DatenMeisterWPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
                 "New Item", () =>
                 {
-                    var elements = NavigatorForItems.NavigateToNewItemForExtent(NavigationHost, _extent);
-                    elements.Closed += (x, y) => { RecreateViews(); };
+                    CreateNewElementByUser(null);
                 }));
 
             // Allows the deletion of an item
@@ -154,15 +189,32 @@ namespace DatenMeisterWPF.Forms.Lists
                         MessageBoxResult.Yes)
                     {
                         _extent.elements().remove(item);
-                        //element.Control.UpdateContent();
                     }
                 }));
 
             PrepareNavigation(viewDefinition);
 
-            var element = AddTab(
+            AddTab(
                 tabItems,
                 viewDefinition);
+        }
+
+        private void CreateNewElementByUser(IElement type)
+        {
+            if (IsExtentSelectedInTreeview)
+            {
+                NavigatorForItems.NavigateToNewItemForExtent(
+                    NavigationHost,
+                    _extent,
+                    type);
+            }
+            else
+            {
+                NavigatorForItems.NavigateToNewItemForItem(
+                    NavigationHost,
+                    SelectedPackage,
+                    type);
+            }
         }
 
         /// <summary>

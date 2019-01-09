@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Uml.Helper;
@@ -16,12 +17,14 @@ namespace DatenMeisterWPF.Forms.Base
     /// <summary>
     /// Interaktionslogik für ItemBrowser.xaml
     /// </summary>
-    public partial class ItemExplorerControl : UserControl, INavigationGuest
+    public partial class ItemExplorerControl : UserControl, INavigationGuest, ICanUnregister
     {
         /// <summary>
         /// Stores the information about the active tab controls
         /// </summary>
         protected readonly ObservableCollection<ItemExplorerTab> Tabs = new ObservableCollection<ItemExplorerTab>();
+
+        private EventHandle _eventHandle;
 
         /// <summary>
         /// Gets or sets the items to be shown. These items are shown also in the navigation view and will
@@ -35,10 +38,33 @@ namespace DatenMeisterWPF.Forms.Base
         protected IObject SelectedPackage{ get; set; }
 
         /// <summary>
+        /// Gets a value indicating whether the user has selected an extent within the
+        /// treeview. 
+        /// </summary>
+        public bool IsExtentSelectedInTreeview { get; private set; }
+
+        /// <summary>
         /// Gets or sets the items to be shown in the detail view. Usually, they are the same as the items.
         /// If the user clicks on the navigation tree, a subview of the items may be shown
         /// </summary>
         protected IReflectiveCollection SelectedItems { get; set; }
+
+        /// <summary>
+        /// Gets or sets the eventhandle for the content of the control
+        /// </summary>
+        public EventHandle EventHandle
+        {
+            get => _eventHandle;
+            set
+            {
+                if (_eventHandle != null)
+                {
+                    App.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
+                }
+
+                _eventHandle = value;
+            }
+        }
 
         public ItemExplorerControl()
         {
@@ -74,9 +100,21 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
+        /// Updates all views without recreating the items. 
+        /// </summary>
+        public virtual void UpdateAllViews()
+        {
+            UpdateTreeContent();
+            foreach (var tab in Tabs)
+            {
+                tab.Control.UpdateContent();
+            }
+        }
+
+        /// <summary>
         /// This method shall be called, when the content of the shown information has changed and all views shall be updated
         /// </summary>
-        public void UpdateAllViews()
+        public void RecreateAllViews()
         { 
             UpdateTreeContent();
             RecreateViews();
@@ -101,11 +139,12 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Updates the tree content of the explorer view
         /// </summary>
-        private void UpdateTreeContent()
+        protected void UpdateTreeContent()
         {
             NavigationTreeView.SetDefaultProperties();
             NavigationTreeView.ItemsSource = Items;
             SelectedPackage = null;
+            IsExtentSelectedInTreeview = true;
             SelectedItems = Items;
         }
 
@@ -182,12 +221,14 @@ namespace DatenMeisterWPF.Forms.Base
             if (e.Item != null)
             {
                 SelectedItems = new PropertiesAsReflectiveCollection(e.Item);
+                IsExtentSelectedInTreeview = false;
                 RecreateViews();
             }
             else
             {
                 // When user has selected the root element or no other item, all items are shown
                 SelectedItems = Items;
+                IsExtentSelectedInTreeview = true;
                 RecreateViews();
             }
         }
@@ -203,8 +244,7 @@ namespace DatenMeisterWPF.Forms.Base
                 return;
             }
 
-            var events = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
-            events.Closed += (sender, args) => RecreateViews();
+            NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
         }
 
         private void ItemTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -214,7 +254,15 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 NavigationTreeView.ViewExtensions.Add(extension);
             }
+        }
 
+        public void Unregister()
+        {
+            if (_eventHandle != null)
+            {
+                App.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
+                _eventHandle = null;
+            }
         }
     }
 }

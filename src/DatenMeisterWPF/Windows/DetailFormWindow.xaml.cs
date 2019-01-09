@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.Forms;
+using DatenMeister.Runtime;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
 
@@ -82,7 +84,27 @@ namespace DatenMeisterWPF.Windows
             MainContent.Content = element;
             if (element is DetailFormControl control)
             {
-                if (control.IsDesignMinimized()) MainRibbon.IsMinimized = true;
+                if (control.IsDesignMinimized())
+                {
+                    Dispatcher.InvokeAsync(() =>
+                    {
+
+                        var width = control.EffectiveForm.getOrDefault<double>(_FormAndFields._Form.defaultWidth);
+                        var height = control.EffectiveForm.getOrDefault<double>(_FormAndFields._Form.defaultWidth);
+                        if (width <= 0 && height <= 0)
+                        {
+                            width = 1000;
+                            height = 1000;
+                        }
+
+                        MainRibbon.IsMinimized = true;
+                        control.DataGrid.Measure(new Size(width, height));
+                        Width = Math.Ceiling(control.DataGrid.DesiredSize.Width) + 50;
+                        Height = Math.Ceiling(control.DataGrid.DesiredSize.Height) + 150;
+                        Top = (Owner?.Top ?? 0) + 100;
+                        Left = (Owner?.Left ?? 0) + 100;
+                    });
+                }
 
                 var size = control.DefaultSize;
                 if (Math.Abs(size.Width) > 1E-7 && size.Height > 1E-7)
@@ -104,9 +126,11 @@ namespace DatenMeisterWPF.Windows
             Close();
         }
 
-        public void OnSaved(IObject detailElement)
+        public void OnSaved(IObject detailElement, IObject attachedElement)
         {
-            Saved?.Invoke(this, new ItemEventArgs(detailElement));
+            Saved?.Invoke(this, new ItemEventArgs(
+                detailElement, 
+                attachedElement));
         }
     }
 }

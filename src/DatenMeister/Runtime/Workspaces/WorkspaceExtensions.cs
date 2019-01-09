@@ -58,6 +58,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <typeparam name="TFilledType">Type that is queried</typeparam>
         /// <param name="logic">The logic being used fby this method</param>
         /// <param name="dataLayer">The datalayer that is requested</param>
+        /// <param name="metaRecursive">Defines the flags which define which meta levels shall be recursed</param>
         /// <returns>The instance of the type</returns>
         public static TFilledType GetFromMetaLayer<TFilledType>(
             this IWorkspaceLogic logic,
@@ -74,6 +75,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <typeparam name="TFilledType">Type that is queried</typeparam>
         /// <param name="logic">The logic being used fby this method</param>
         /// <param name="extent">The extent that is requested</param>
+        /// <param name="metaRecursive">Defines the flags which define which meta levels shall be recursed</param>
         /// <returns>The instance of the type</returns>
         public static TFilledType GetFromMetaLayer<TFilledType>(
             this IWorkspaceLogic logic,

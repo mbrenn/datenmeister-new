@@ -16,5 +16,10 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 
             throw new System.NotImplementedException();
         }
+
+        public void CallSetAction(IObject element)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

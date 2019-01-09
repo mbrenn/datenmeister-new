@@ -1,7 +1,10 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -22,6 +25,12 @@ namespace DatenMeisterWPF.Forms.Lists
         {
             var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);
             SetItems(workspaceExtent.elements());
+
+            var eventManager = App.Scope.Resolve<ChangeEventManager>();
+            EventHandle = eventManager.RegisterFor(workspaceExtent, (x,y) =>
+            {
+                Tabs.FirstOrDefault()?.Control.UpdateContent();
+            });
         }
 
         /// <summary>
@@ -46,7 +55,7 @@ namespace DatenMeisterWPF.Forms.Lists
             PrepareNavigation(view);
 
             // Sets the workspaces
-            var element = AddTab(
+            AddTab(
                 SelectedItems,
                 view);
         }
@@ -59,9 +68,7 @@ namespace DatenMeisterWPF.Forms.Lists
         {
             void NewWorkspace()
             {
-                var events = NavigatorForWorkspaces.CreateNewWorkspace(NavigationHost);
-
-                events.Closed += (x, y) => RecreateViews();
+                NavigatorForWorkspaces.CreateNewWorkspace(NavigationHost);
             }
 
             viewDefinition.ViewExtensions.Add(

@@ -29,6 +29,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     return new DateTimeField();
                 case ReferenceFieldData.FieldType:
                     return new ReferenceField();
+                case CheckboxFieldData.FieldType:
+                    return new CheckboxField();
                 default:
                     if (isEnumeration)
                     {
@@ -50,15 +52,20 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         /// <param name="flags">Flags of the field dependent on the view. For example a flag that specifies
         /// whether the element shall be focussed</param>
         /// <returns>The created element</returns>
-        public static UIElement GetUIElementFor(IObject value, IElement field, DetailFormControl formControl, ref FieldFlags flags)
+        public static (IDetailField detailField, UIElement element) 
+            GetUIElementFor(IObject value, IElement field, DetailFormControl formControl, ref FieldFlags flags)
         {
-            return CreateField(value, field).CreateElement(value, field, formControl, ref flags);
+            var fieldElement = CreateField(value, field);
+            var element = fieldElement.CreateElement(value, field, formControl, ref flags);
+
+            return (fieldElement, element);
         }
     }
 
     [Flags]
     public enum FieldFlags
     {
+        Zero = 0x00,
         Focussed = 0x01
     }
 }

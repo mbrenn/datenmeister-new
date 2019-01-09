@@ -187,7 +187,8 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <typeparam name="TFilledType">Property to be queried</typeparam>
         /// <returns>The property being queried</returns>
-        public TFilledType GetFromMetaWorkspace<TFilledType>(MetaRecursive metaRecursive = MetaRecursive.JustOne)
+        public TFilledType GetFromMetaWorkspace<TFilledType>(
+            MetaRecursive metaRecursive = MetaRecursive.JustOne)
             where TFilledType : class, new()
         {
             lock (SyncObject)

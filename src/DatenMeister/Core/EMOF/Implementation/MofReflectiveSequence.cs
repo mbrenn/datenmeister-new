@@ -61,7 +61,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         public bool add(object value)
         {
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
-            return MofObject.ProviderObject.AddToProperty(_property, valueToBeAdded);
+            var result =  MofObject.ProviderObject.AddToProperty(_property, valueToBeAdded);
+
+            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+
+            return result;
         }
 
         /// <inheritdoc />
@@ -88,20 +92,26 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void clear()
         {
             MofObject.ProviderObject.EmptyListForProperty(_property);
+
+            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
         }
 
         /// <inheritdoc />
         public bool remove(object value)
         {
+            bool result;
             if (value is MofObject valueAsMofObject)
             {
                 var asProviderObject = valueAsMofObject.ProviderObject;
-                return MofObject.ProviderObject.RemoveFromProperty(_property, asProviderObject);
+                result = MofObject.ProviderObject.RemoveFromProperty(_property, asProviderObject);
             }
             else
             {
-                return MofObject.ProviderObject.RemoveFromProperty(_property, value);
+                result = MofObject.ProviderObject.RemoveFromProperty(_property, value);
             }
+
+            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+            return result;
         }
 
         /// <inheritdoc />
@@ -115,6 +125,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
             MofObject.ProviderObject.AddToProperty(_property, valueToBeAdded, index);
+
+            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
         }
 
         /// <inheritdoc />
@@ -130,6 +142,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             MofObject.ProviderObject.RemoveFromProperty(
                 _property,
                 ((IEnumerable<object>) MofObject.ProviderObject.GetProperty(_property)).ElementAt(index));
+
+            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
         }
 
         /// <inheritdoc />
@@ -139,10 +153,13 @@ namespace DatenMeister.Core.EMOF.Implementation
             MofObject.ProviderObject.RemoveFromProperty(_property, valueToBeRemoved);
             add(index, value);
 
-            return MofObject.ConvertToMofObject(MofObject, _property, valueToBeRemoved);
+            var result = MofObject.ConvertToMofObject(MofObject, _property, valueToBeRemoved);
+
+            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+            return result;
         }
 
         /// <inheritdoc />
-        public IExtent Extent => MofObject.Extent;
+        public IExtent Extent => MofObject.Extent ?? MofObject.CreatedByExtent;
     }
 }

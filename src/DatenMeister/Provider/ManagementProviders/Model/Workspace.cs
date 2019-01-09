@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.ManagementProviders.Model
 {
@@ -10,7 +9,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         public IEnumerable<Extent> extents;
 
         /// <summary>
-        /// Conversts the given workspace to a string with id and annotation
+        /// Converts the given workspace to a string with id and annotation
         /// </summary>
         /// <returns></returns>
         public override string ToString()

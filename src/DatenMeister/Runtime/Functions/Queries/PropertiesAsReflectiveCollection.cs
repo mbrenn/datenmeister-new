@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Functions.Queries
 {
-    public class PropertiesAsReflectiveCollection : IReflectiveCollection
+    public class PropertiesAsReflectiveCollection : IReflectiveCollection, IHasExtent
     {
         private readonly IObject _detailElement;
 
@@ -26,8 +27,8 @@ namespace DatenMeister.Runtime.Functions.Queries
                         continue;
                     }
 
-                    var valueAsCollection = _detailElement.get(property) as IReflectiveCollection;
-                    if (valueAsCollection == null)
+                    if (!(_detailElement.get(property) 
+                        is IReflectiveCollection valueAsCollection))
                     {
                         continue;
                     }
@@ -69,5 +70,10 @@ namespace DatenMeister.Runtime.Functions.Queries
         {
             return this.Count();
         }
+
+        /// <summary>
+        /// Gets the extent associated to the parent extent
+        /// </summary>
+        public IExtent Extent => (_detailElement as IHasExtent)?.Extent;
     }
 }

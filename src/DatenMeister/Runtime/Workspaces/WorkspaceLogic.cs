@@ -5,6 +5,8 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.ChangeEvents;
+using DatenMeister.Provider.ManagementProviders;
 
 namespace DatenMeister.Runtime.Workspaces
 {
@@ -16,14 +18,18 @@ namespace DatenMeister.Runtime.Workspaces
         private static readonly ClassLogger Logger = new ClassLogger(typeof(WorkspaceLogic));
 
         private readonly WorkspaceData _fileData;
+        private readonly ChangeEventManager _changeEventManager;
 
         /// <summary>
         /// Initializes a new instance of the WorkspaceLogic
         /// </summary>
         /// <param name="fileData"></param>
-        public WorkspaceLogic(WorkspaceData fileData)
+        /// <param name="changeEventManager">Change Event Manager being used to propagate changes of extents
+        /// and workspaces</param>
+        public WorkspaceLogic(WorkspaceData fileData, ChangeEventManager changeEventManager = null)
         {
             _fileData = fileData;
+            _changeEventManager = changeEventManager;
         }
 
         /// <summary>
@@ -65,8 +71,7 @@ namespace DatenMeister.Runtime.Workspaces
 
             Workspace result = null;
             // If the object knows the extent to which it belongs to, it will return it
-            var objectKnowsExtent = value as IHasExtent;
-            if (objectKnowsExtent != null)
+            if (value is IHasExtent objectKnowsExtent)
             {
                 var found = objectKnowsExtent.Extent;
                 result = GetWorkspaceOfExtent(found);
@@ -74,7 +79,7 @@ namespace DatenMeister.Runtime.Workspaces
 
             lock (_fileData)
             {
-                // Otherwise check it by the dataextent
+                // Otherwise check it by the data extent
                 if (result != null)
                 {
                     result = _fileData.Workspaces.FirstOrDefault(x =>
@@ -112,6 +117,10 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        /// <summary>
+        /// Gets the default workspace
+        /// </summary>
+        /// <returns>The default workspace</returns>
         public Workspace GetDefaultWorkspace()
         {
             lock (_fileData)
@@ -149,6 +158,22 @@ namespace DatenMeister.Runtime.Workspaces
                     }
                 }
             }
+
+            SendEventForWorkspaceChange(workspace);
+        }
+
+        /// <summary>
+        /// Sends an event for a workspace change
+        /// </summary>
+        /// <param name="workspace">The workspace that has been changed.</param>
+        public void SendEventForWorkspaceChange(Workspace workspace)
+        {
+            if (workspace != null)
+            {
+                _changeEventManager?.SendChangeEvent((IWorkspace) workspace);
+            }
+
+            _changeEventManager?.SendChangeEvent(this.GetManagementWorkspace().FindExtent(ExtentOfWorkspaces.WorkspaceUri));
         }
 
         /// <summary>
@@ -184,15 +209,18 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="id">Id of the workspace to be deleted</param>
         public void RemoveWorkspace(string id)
         {
+            Workspace workspaceToBeDeleted;
             lock (_fileData)
             {
-                var workspaceToBeDeleted = GetWorkspace(id);
+                workspaceToBeDeleted = GetWorkspace(id);
 
                 if (workspaceToBeDeleted != null)
                 {
                     _fileData.Workspaces.Remove(workspaceToBeDeleted);
                 }
             }
+
+            SendEventForWorkspaceChange(workspaceToBeDeleted);
         }
 
         /// <summary>
@@ -203,6 +231,13 @@ namespace DatenMeister.Runtime.Workspaces
         public void AddExtent(Workspace workspace, IUriExtent newExtent)
         {
             workspace.AddExtent(newExtent);
+            if (newExtent is MofExtent mofExtent 
+                && mofExtent.ChangeEventManager != _changeEventManager)
+            {
+                mofExtent.ChangeEventManager = _changeEventManager;
+            }
+
+            SendEventForWorkspaceChange(workspace);
         }
 
         /// <summary>

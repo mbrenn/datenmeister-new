@@ -21,11 +21,11 @@
                     DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10">
         </StackPanel>
         <ScrollViewer>
-            <Grid x:Name="DataGrid" Margin="10" VerticalAlignment="Top">
+            <Grid x:Name="DataGrid" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="60*"/>
-                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
             </Grid>
         </ScrollViewer>

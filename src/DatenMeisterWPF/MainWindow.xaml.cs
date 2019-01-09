@@ -12,6 +12,7 @@ using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules;
 using DatenMeisterWPF.Forms;
+using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 using DatenMeisterWPF.Windows;
@@ -78,6 +79,12 @@ namespace DatenMeisterWPF
                     navigationGuest.NavigationHost = this;
                 }
 
+                // Unregisters the currently created element
+                if (MainControl.Content is ICanUnregister canUnregister)
+                {
+                    canUnregister.Unregister();
+                }
+
                 MainControl.Content = userControl;
 
                 var result = new ControlNavigation();
@@ -92,7 +99,6 @@ namespace DatenMeisterWPF
         /// </summary>
         public void RebuildNavigation()
         {
-
             IEnumerable<ViewExtension> viewExtensions = new List<ViewExtension>
             {
                 new RibbonButtonDefinition(
@@ -155,6 +161,12 @@ namespace DatenMeisterWPF
 
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
+            // Unregisters the currently created element
+            if (MainControl.Content is ICanUnregister canUnregister)
+            {
+                canUnregister.Unregister();
+            }
+
             if (MessageBox.Show(
                     "Are you sure, that you would like to close Der DatenMeister",
                     "Close DatenMeister?",

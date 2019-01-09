@@ -100,6 +100,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             ProviderObject.MetaclassUri = ((MofUriExtent) mofElement.Extent).uri(metaClass);
+
+            Extent?.ChangeEventManager?.SendChangeEvent(this);
         }
 
         /// <summary>
@@ -109,6 +111,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void SetMetaClass(string metaClassUri)
         {
             ProviderObject.MetaclassUri = metaClassUri;
+            Extent?.ChangeEventManager?.SendChangeEvent(this);
         }
 
         /// <summary>

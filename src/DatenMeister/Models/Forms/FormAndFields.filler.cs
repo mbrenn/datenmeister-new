@@ -605,6 +605,21 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
+                        if(name == "SeparatorLineFieldData") // Looking for class
+                        {
+                            tree.__SeparatorLineFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "Height") // Looking for property
+                                {
+                                    tree.SeparatorLineFieldData._Height = value;
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -17,29 +17,69 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         /// <returns>Found field or exception if not found</returns>
         public static IDetailField CreateField(IObject value, IElement field)
         {
-            var fieldType = field.get(_FormAndFields._FieldData.fieldType)?.ToString();
+            var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
             var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
-            switch (fieldType)
+            if (fieldType != null)
             {
-                case SubElementFieldData.FieldType:
-                    return new SubElementsField();
-                case DropDownFieldData.FieldType:
-                    return new DropdownField();
-                case DateTimeFieldData.FieldType:
-                    return new DateTimeField();
-                case ReferenceFieldData.FieldType:
-                    return new ReferenceField();
-                case CheckboxFieldData.FieldType:
-                    return new CheckboxField();
-                default:
-                    if (isEnumeration)
-                    {
-                        return new ReadOnlyListField();
-                    }
-                    else
-                    {
+                switch (fieldType)
+                {
+                    case SubElementFieldData.FieldType:
+                        return new SubElementsField();
+                    case DropDownFieldData.FieldType:
+                        return new DropdownField();
+                    case DateTimeFieldData.FieldType:
+                        return new DateTimeField();
+                    case ReferenceFieldData.FieldType:
+                        return new ReferenceField();
+                    case CheckboxFieldData.FieldType:
+                        return new CheckboxField();
+                    default:
+                        if (isEnumeration)
+                        {
+                            return new ReadOnlyListField();
+                        }
+                        else
+                        {
+                            return new TextboxField();
+                        }
+                }
+            }
+            else
+            {
+                // Get by field type
+                var metaClass = (value as IElement)?.getMetaClass();
+                if (metaClass == null)
+                {
+                    throw new ArgumentException("value does not have metaclass and no field type", nameof(value));
+                }
+
+                var id = (metaClass as IHasId)?.Id;
+                switch (id)
+                {
+                    case "DatenMeister.Models.Forms.SeparatorLineFieldData":
+                        return new SeparatorLineField();
+                    case "DatenMeister.Models.Forms.SubElementFieldData":
+                        return new SubElementsField();
+                    case "DatenMeister.Models.Forms.DropDownFieldData":
+                        return  new DropdownField();
+                    case "DatenMeister.Models.Forms.DateTimeFieldData":
+                        return new DateTimeField();
+                    case "DatenMeister.Models.Forms.ReferenceFieldData":
+                        return new ReferenceField();
+                    case "DatenMeister.Models.Forms.CheckboxFieldData":
+                        return new CheckboxField();
+                    case "DatenMeister.Models.Forms.TextboxFieldData":
                         return new TextboxField();
-                    }
+                    default:
+                        if (isEnumeration)
+                        {
+                            return new ReadOnlyListField();
+                        }
+                        else
+                        {
+                            return new TextboxField();
+                        }
+                }
             }
         }
 

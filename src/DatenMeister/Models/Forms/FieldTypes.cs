@@ -21,7 +21,8 @@ namespace DatenMeister.Models.Forms
                 typeof(MetaClassElementFieldData),
                 typeof(ReferenceFieldData),
                 typeof(SubElementFieldData),
-                typeof(TextFieldData)
+                typeof(TextFieldData),
+                typeof(SeparatorLineFieldData)
             };
         }
     }

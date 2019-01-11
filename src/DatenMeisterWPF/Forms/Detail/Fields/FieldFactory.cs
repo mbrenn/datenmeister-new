@@ -47,7 +47,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             else
             {
                 // Get by field type
-                var metaClass = (value as IElement)?.getMetaClass();
+                var metaClass = field?.getMetaClass();
                 if (metaClass == null)
                 {
                     throw new ArgumentException("value does not have metaclass and no field type", nameof(value));

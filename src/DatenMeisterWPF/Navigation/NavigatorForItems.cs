@@ -177,7 +177,7 @@ namespace DatenMeisterWPF.Navigation
                             var formFactory = new MofFactory(fields);
 
                             var dropField = formFactory.Create<_FormAndFields>(f => f.__DropDownFieldData);
-                            dropField.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
+                            //dropField.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
                             dropField.set(_FormAndFields._DropDownFieldData.name, "ParentProperty");
                             dropField.set(_FormAndFields._DropDownFieldData.title, "Parent Property");
                             dropField.set(_FormAndFields._DropDownFieldData.isAttached, true);

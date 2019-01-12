@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using BurnSystems.Logging;
 using DatenMeister.Core;
@@ -186,6 +188,10 @@ namespace DatenMeister.Provider.DotNet
                     var enumType = UriResolver.Resolve(typeUri, ResolveType.NoMetaWorkspaces);
                     umlProperty.set(_UML._CommonStructure._TypedElement.type, enumType);
                 }
+                else
+                {
+                    umlProperty.set(_UML._CommonStructure._TypedElement.type, new MofObjectShadow($"#{property.FullName}"));
+                }
             }
             else
             {
@@ -208,7 +214,7 @@ namespace DatenMeister.Provider.DotNet
                     }
                     else
                     {
-                        umlProperty.set(_UML._CommonStructure._TypedElement.type, new MofObjectShadow($"#{propertyType.FullName}"));
+                        umlProperty.set(_UML._CommonStructure._TypedElement.type, new MofObjectShadow($"#{WebUtility.UrlEncode(propertyType.FullName)}"));
                     }
                 }
             }

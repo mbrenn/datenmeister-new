@@ -297,6 +297,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private void UpdateViewList()
         {
+            // Nobody likes the view list anymore
+            return;
             // Skip, if view selection shall be hidden
             if (_hideViewSelection == true) return;
 

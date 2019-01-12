@@ -125,8 +125,8 @@
       <DependentUpon>ImportExtentDlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helper\ComboBoxEx.cs" />
-    <Compile Include="INavigationGuest.cs" />
-    <Compile Include="INavigationHost.cs" />
+    <Compile Include="Navigation\INavigationGuest.cs" />
+    <Compile Include="Navigation\INavigationHost.cs" />
     <Compile Include="Navigation\ControlNavigation.cs" />
     <Compile Include="Navigation\CreatableTypeNavigator.cs" />
     <Compile Include="Navigation\IControlNavigation.cs" />

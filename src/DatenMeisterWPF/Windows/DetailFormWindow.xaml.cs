@@ -1,13 +1,14 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
 
@@ -105,6 +106,12 @@ namespace DatenMeisterWPF.Windows
                         window.Width = size.Width;
                         window.Height = size.Height;
                     }
+                }
+
+                var name = NamedElementMethods.GetName(control.DetailElement);
+                if (!string.IsNullOrEmpty(name))
+                {
+                    Title = $"Edit element: {name}";
                 }
             }
 

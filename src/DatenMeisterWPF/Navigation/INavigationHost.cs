@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using DatenMeisterWPF.Navigation;
 
-namespace DatenMeisterWPF
+namespace DatenMeisterWPF.Navigation
 {
     /// <summary>
     /// Defines the navigation host

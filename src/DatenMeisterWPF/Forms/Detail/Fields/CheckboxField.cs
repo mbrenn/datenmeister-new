@@ -15,7 +15,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         private CheckBox _checkbox;
 
         public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
-            ref FieldFlags fieldFlags)
+            FieldParameter fieldFlags)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
@@ -42,6 +42,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 IsEnabled = isReadOnly
             };
 
+            fieldFlags.CanBeFocussed = true;
             return _checkbox;
         }
 

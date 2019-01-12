@@ -26,8 +26,11 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         /// <param name="detailForm">Detail form control</param>
         /// <param name="fieldFlags"></param>
         /// <returns>The created UI Element</returns>
-        public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
-            ref FieldFlags fieldFlags)
+        public UIElement CreateElement(
+            IObject value, 
+            IElement fieldData, 
+            DetailFormControl detailForm,
+            FieldParameter fieldFlags)
         {
             var panel = new StackPanel
             {
@@ -35,6 +38,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             };
             
             CreatePanelElement(value, fieldData, detailForm, panel);
+
+            fieldFlags.CanBeFocussed = true;
 
             return panel;
         }

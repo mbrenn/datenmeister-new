@@ -15,7 +15,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         private string _valueText;
 
         public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
-            ref FieldFlags fieldFlags)
+            FieldParameter fieldFlags)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
@@ -70,7 +70,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     _contentBlock.HorizontalAlignment = HorizontalAlignment.Left;
                 }
 
-                fieldFlags = fieldFlags & ~FieldFlags.Focussed;
+                fieldFlags.CanBeFocussed = true;
 
                 return _contentBlock;
             }

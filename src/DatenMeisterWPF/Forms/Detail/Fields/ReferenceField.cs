@@ -23,8 +23,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         public UIElement CreateElement(
             IObject value, 
             IElement fieldData, 
-            DetailFormControl detailForm, 
-            ref FieldFlags fieldFlags)
+            DetailFormControl detailForm,
+            FieldParameter fieldFlags)
         {
             var isInline = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isSelectionInline);
             _name = fieldData.get<string>(_FormAndFields._FieldData.name);
@@ -75,6 +75,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     }
                 }
 
+                fieldFlags.CanBeFocussed = true;
                 return _control;
             }
             else
@@ -135,6 +136,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 panel.Children.Add(itemText);
                 panel.Children.Add(openButten);
                 panel.Children.Add(selectButton);
+
+                fieldFlags.CanBeFocussed = true;
                 return panel;
             }
         }

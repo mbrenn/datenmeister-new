@@ -93,19 +93,24 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         /// whether the element shall be focussed</param>
         /// <returns>The created element</returns>
         public static (IDetailField detailField, UIElement element) 
-            GetUIElementFor(IObject value, IElement field, DetailFormControl formControl, ref FieldFlags flags)
+            GetUIElementFor(IObject value, IElement field, DetailFormControl formControl, FieldParameter flags)
         {
             var fieldElement = CreateField(value, field);
-            var element = fieldElement.CreateElement(value, field, formControl, ref flags);
+            var element = fieldElement.CreateElement(value, field, formControl, flags);
 
             return (fieldElement, element);
         }
     }
 
-    [Flags]
-    public enum FieldFlags
+    /// <summary>
+    /// Defines possible field parameter for the creation
+    /// </summary>
+    public class FieldParameter
     {
-        Zero = 0x00,
-        Focussed = 0x01
+        /// <summary>
+        /// Defines whether the current field could be focussed.
+        /// That flag shall be erased by the detail control, if the flag is not focussed
+        /// </summary>
+        public bool CanBeFocussed { get; set; }
     }
 }

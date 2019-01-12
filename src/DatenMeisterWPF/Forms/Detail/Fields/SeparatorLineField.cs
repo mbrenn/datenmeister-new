@@ -6,7 +6,11 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 {
     public class SeparatorLineField : IDetailField
     {
-        public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, ref FieldFlags fieldFlags)
+        public UIElement CreateElement(
+            IObject value, 
+            IElement fieldData, 
+            DetailFormControl detailForm, 
+            FieldParameter fieldFlags)
         {
             throw new System.NotImplementedException();
         }

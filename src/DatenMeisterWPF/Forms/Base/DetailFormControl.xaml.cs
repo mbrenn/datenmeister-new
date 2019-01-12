@@ -443,7 +443,8 @@ namespace DatenMeisterWPF.Forms.Base
         {
             if (fields == null) throw new ArgumentNullException(nameof(fields));
 
-            var flags = FieldFlags.Focussed;
+            var flags = new FieldParameter();
+            var anyFocussed = false;
             foreach (var field in fields.Cast<IElement>())
             {
                 var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
@@ -461,10 +462,9 @@ namespace DatenMeisterWPF.Forms.Base
                     Text = $"{title}: ",
                     IsEnabled = !isReadOnly
                 };
-
-                var oldFlags = flags;
+                
                 var (detailElement, contentBlock) =
-                    FieldFactory.GetUIElementFor(DetailElement, field, this, ref flags);
+                    FieldFactory.GetUIElementFor(DetailElement, field, this, flags);
 
                 if (field.getOrNull<bool>(_FormAndFields._FieldData.isAttached) == true)
                 {
@@ -481,9 +481,10 @@ namespace DatenMeisterWPF.Forms.Base
                 CreateRowForField(titleBlock, contentBlock);
 
                 // Check, if element shall be focused
-                if ((oldFlags & FieldFlags.Focussed) != (flags & FieldFlags.Focussed))
+                if (!anyFocussed && flags.CanBeFocussed)
                 {
                     contentBlock.Focus();
+                    anyFocussed = true;
                 }
             }
 
@@ -604,13 +605,13 @@ namespace DatenMeisterWPF.Forms.Base
                 {
                     var fieldKey = new TextBox();
                     var fieldValue = new TextboxField();
-                    var flags = FieldFlags.Zero;
+                    var flags = new FieldParameter();
 
                     var fieldUIElement = fieldValue.CreateElement(
                         DetailElement,
                         null,
                         this, 
-                        ref flags);
+                        flags);
                     ItemFields.Add(fieldValue);
 
                     CreateRowForField(fieldKey, fieldUIElement);

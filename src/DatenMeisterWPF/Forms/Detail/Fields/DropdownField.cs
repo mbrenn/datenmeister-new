@@ -23,7 +23,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         private object _propertyValue;
 
         public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
-            ref FieldFlags fieldFlags)
+            FieldParameter fieldFlags)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
@@ -80,7 +80,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 
             _comboBox.ItemsSource = items;
             _comboBox.SelectedValue = selectedBoxItem;
-            
+
+            fieldFlags.CanBeFocussed = true;
             return _comboBox;
         }
 

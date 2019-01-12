@@ -37,7 +37,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 _control = new LocateElementControl
                 {
                     MinHeight = 400,
-                    MaxHeight = 400
+                    MaxHeight = 400,
+                    MinWidth = 600
                 };
 
                 if (fieldData.GetOrDefault(_FormAndFields._ReferenceFieldData.defaultValue) is IElement element)

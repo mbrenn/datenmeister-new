@@ -66,6 +66,7 @@ namespace DatenMeisterWPF.Navigation
                     var formPathToType = viewDefinitions.GetFindTypeForm(defaultTypePackage, metaWorkspace, metaExtent);
 
                     var control = new DetailFormControl();
+                    control.Title = "Select Type";
                     control.SetContent(element, formPathToType);
                     control.AddDefaultButtons(buttonName);
                     control.ElementSaved += (x, y) =>

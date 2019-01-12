@@ -297,10 +297,10 @@ namespace DatenMeister.Modules.ViewFinder
                 var points = 0;
                 if (element == null) throw new NullReferenceException("element");
 
-                var innerExtentType = element.GetOrDefault(_FormAndFields._ViewAssociation.extentType)?.ToString();
-                var innerMetaClass = element.GetOrDefault(_FormAndFields._ViewAssociation.metaclass) as IElement;
-                var innerMetaClassName = element.GetOrDefault(_FormAndFields._ViewAssociation.metaclassName)?.ToString();
-                var innerViewType = (ViewType) (element.GetOrDefault(_FormAndFields._ViewAssociation.viewType) ?? ViewType.Detail);
+                var innerExtentType = element.getOrDefault<string>(_FormAndFields._ViewAssociation.extentType);
+                var innerMetaClass = element.getOrDefault<IElement>(_FormAndFields._ViewAssociation.metaclass);
+                var innerMetaClassName = element.getOrDefault<string>(_FormAndFields._ViewAssociation.metaclassName);
+                var innerViewType = element.getOrNull<ViewType>(_FormAndFields._ViewAssociation.viewType) ?? ViewType.Detail;
 
                 var innerView = element.GetOrDefault(_FormAndFields._ViewAssociation.view) as IElement;
                 var isMatching = true;

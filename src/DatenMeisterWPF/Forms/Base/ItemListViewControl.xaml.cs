@@ -134,11 +134,6 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public void UpdateContent()
         {
-            if (NavigationHost == null)
-            {
-                throw new InvalidOperationException("NOT ALLOWED");
-            }
-
             SupportNewItems =
                 !CurrentFormDefinition.getOrDefault<bool>(_FormAndFields._Form.inhibitNewItems);
             SupportNewItems = false; // TODO: Make new items working
@@ -743,6 +738,8 @@ namespace DatenMeisterWPF.Forms.Base
                         subItem,
                         (d) => { d.ViewDefined += (a, b) =>
                         {
+                            b.View.set(_FormAndFields._Form.minimizeDesign, true);
+
                             // Remove the field with property
                             var fields = b.View.get<IReflectiveSequence>(_FormAndFields._Form.fields);
                             var propertyField = QueryHelper.GetChildWithProperty(fields,

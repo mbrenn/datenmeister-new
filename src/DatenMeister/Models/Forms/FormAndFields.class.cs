@@ -429,6 +429,18 @@ namespace DatenMeister.Models.Forms
         public _SeparatorLineFieldData @SeparatorLineFieldData = new _SeparatorLineFieldData();
         public IElement @__SeparatorLineFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.SeparatorLineFieldData");
 
+        public class _ViewType
+        {
+            public static string @Detail = "Detail";
+            public IElement @__Detail = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType-Detail");
+            public static string @List = "List";
+            public IElement @__List = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType-List");
+
+        }
+
+        public _ViewType @ViewType = new _ViewType();
+        public IElement @__ViewType = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType");
+
         public static _FormAndFields TheOne = new _FormAndFields();
 
     }

@@ -155,8 +155,6 @@ namespace DatenMeisterWPF.Forms.Lists
             }
 
             var className = metaClass == null ? "Items" : NamedElementMethods.GetName(metaClass);
-            view?.set("name", className);
-
             var viewDefinition = new ViewDefinition(className, view);
 
             // Sets the generic buttons to create the new types

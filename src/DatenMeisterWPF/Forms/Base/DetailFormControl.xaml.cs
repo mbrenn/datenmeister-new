@@ -28,11 +28,17 @@ namespace DatenMeisterWPF.Forms.Base
     /// <summary>
     ///     Interaktionslogik für DetailFormControl.xaml
     /// </summary>
-    public partial class DetailFormControl : UserControl, INavigationGuest, IHasSelectedItems
+    public partial class DetailFormControl : UserControl, INavigationGuest, IHasSelectedItems, IHasTitle
     {
         private int _fieldCount;
 
         private bool? _hideViewSelection;
+
+        /// <summary>
+        /// Stores the title of the form control. If not overridden, a default
+        /// title will be created
+        /// </summary>
+        private string _internalTitle;
 
         public DetailFormControl()
         {
@@ -43,7 +49,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         ///     Gets the detailed element, whose content is shown in the dialog
         /// </summary>
-        public IObject DetailElement { get; set; }
+        public IObject DetailElement { get; private set; }
 
         /// <summary>
         ///     Defines the form definition being used in the detail for
@@ -88,6 +94,30 @@ namespace DatenMeisterWPF.Forms.Base
         ///     Gets or sets the navigation host
         /// </summary>
         public INavigationHost NavigationHost { get; set; }
+
+        /// <summary>
+        /// Gets the title for the control
+        /// </summary>
+        public string Title
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_internalTitle))
+                {
+                    return _internalTitle;
+                }
+
+                if (DetailElement == null)
+                {
+                    return "New item";
+                }
+
+                return $"Edit Item: {NamedElementMethods.GetName(DetailElement)}";
+
+            }
+
+            set => _internalTitle = value;
+        }
 
         /// <summary>
         ///     Prepares the navigation of the host. The function is called by the navigation
@@ -204,7 +234,6 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void DetailFormControl_Loaded(object sender, RoutedEventArgs e)
         {
-            SetContent(DetailElement, ViewDefinition?.Element);
             LoadingCompleted?.Invoke(this, EventArgs.Empty);
         }
 
@@ -243,7 +272,6 @@ namespace DatenMeisterWPF.Forms.Base
 
             AttachedElement = InMemoryObject.CreateEmpty();
             UpdateViewList();
-            UpdateContent();
         }
 
         /// <summary>
@@ -268,6 +296,8 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         private void UpdateViewList()
         {
+            // Nobody likes the view list anymore
+            return;
             // Skip, if view selection shall be hidden
             if (_hideViewSelection == true) return;
 
@@ -380,7 +410,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         ///     Updates the content
         /// </summary>
-        private void UpdateContent()
+        public void UpdateContent()
         {
             RefreshViewDefinition();
 
@@ -459,7 +489,6 @@ namespace DatenMeisterWPF.Forms.Base
 
                 if (!flags.IsSpanned)
                 {
-
                     var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
                     var isReadOnly = field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
 

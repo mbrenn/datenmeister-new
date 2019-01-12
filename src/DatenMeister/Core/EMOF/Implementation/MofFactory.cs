@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 
 namespace DatenMeister.Core.EMOF.Implementation
@@ -156,6 +157,42 @@ namespace DatenMeister.Core.EMOF.Implementation
         public static MofFactory CreateByExtent(IUriExtent loadedExtent)
         {
             return new MofFactory(loadedExtent);
+        }
+
+        /// <summary>
+        /// Creates an element within the same extent as the given
+        /// element 'value' and finds the metaclass via
+        /// the metaclass finder. 
+        /// </summary>
+        /// <typeparam name="TFilledType">Type filler being used to find the element</typeparam>
+        /// <param name="value">Value which is used to find the associated extent</param>
+        /// <param name="metaClassFinder">The function to derive the metaclass out of the filler</param>
+        /// <returns>Created element</returns>
+        public static IElement CreateElementFor<TFilledType>(
+            IObject value, 
+            Func<TFilledType, IElement> metaClassFinder)
+            where TFilledType : class, new()
+        {
+            var factory = new MofFactory(value);
+            return factory.Create(metaClassFinder);
+        }
+
+        /// <summary>
+        /// Creates an element within the same extent as the given
+        /// element 'value' and finds the metaclass via
+        /// the metaclass finder. 
+        /// </summary>
+        /// <typeparam name="TFilledType">Type filler being used to find the element</typeparam>
+        /// <param name="value">Extent being used for the factory</param>
+        /// <param name="metaClassFinder">The function to derive the metaclass out of the filler</param>
+        /// <returns>Created element</returns>
+        public static IElement CreateElementFor<TFilledType>(
+            IExtent value,
+            Func<TFilledType, IElement> metaClassFinder)
+            where TFilledType : class, new()
+        {
+            var factory = new MofFactory(value);
+            return factory.Create(metaClassFinder);
         }
     }
 }

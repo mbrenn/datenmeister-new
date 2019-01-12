@@ -70,8 +70,10 @@ namespace DatenMeisterWPF.Navigation
                         viewLogic.GetInternalViewExtent(),
                         ManagementViewDefinitions.PathNewXmiDetailForm);
 
-                    var control = new DetailFormControl();
-                    control.Title = "Create new XMI extent";
+                    var control = new DetailFormControl
+                    {
+                        Title = "Create new XMI extent"
+                    };
                     control.SetContent(null, newXmiDetailForm);
                     control.AddDefaultButtons("Create");
                     control.ElementSaved += (x, y) => 

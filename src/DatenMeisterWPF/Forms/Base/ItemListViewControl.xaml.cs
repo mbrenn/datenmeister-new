@@ -134,11 +134,6 @@ namespace DatenMeisterWPF.Forms.Base
         /// </summary>
         public void UpdateContent()
         {
-            if (NavigationHost == null)
-            {
-                throw new InvalidOperationException("NOT ALLOWED");
-            }
-
             SupportNewItems =
                 !CurrentFormDefinition.getOrDefault<bool>(_FormAndFields._Form.inhibitNewItems);
             SupportNewItems = false; // TODO: Make new items working

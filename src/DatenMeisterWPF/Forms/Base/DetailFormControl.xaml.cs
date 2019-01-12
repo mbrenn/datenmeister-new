@@ -272,7 +272,6 @@ namespace DatenMeisterWPF.Forms.Base
 
             AttachedElement = InMemoryObject.CreateEmpty();
             UpdateViewList();
-            UpdateContent();
         }
 
         /// <summary>
@@ -411,7 +410,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         ///     Updates the content
         /// </summary>
-        private void UpdateContent()
+        public void UpdateContent()
         {
             RefreshViewDefinition();
 
@@ -490,7 +489,6 @@ namespace DatenMeisterWPF.Forms.Base
 
                 if (!flags.IsSpanned)
                 {
-
                     var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
                     var isReadOnly = field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
 

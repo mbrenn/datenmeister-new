@@ -163,9 +163,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <returns>The field data</returns>
         public FieldData GetFieldForProperty(IElement property)
         {
-
-
-
             var propertyType = PropertyHelper.GetPropertyType(property);
 
             if (propertyType != null)
@@ -195,6 +192,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 ResolveType.Default);
             var booleanType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Boolean",
                 ResolveType.Default);
+            var realType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real",
+                ResolveType.Default);
 
             // Checks, if the property is an enumeration. 
             if (propertyType.metaclass != null)
@@ -214,6 +213,20 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 {
                     var checkbox = new CheckboxFieldData(propertyName, propertyName);
                     return checkbox;
+                }
+
+                if (!propertyType.@equals(stringType) && !propertyType.@equals(integerType) && !propertyType.@equals(realType))
+                {
+                    if (property.getOrDefault<int>(_UML._CommonStructure._MultiplicityElement.upper) > 1)
+                    {
+                        var elements = new SubElementFieldData(propertyName, propertyName);
+                        return elements;
+                    }
+                    else
+                    {
+                        var reference = new ReferenceFieldData(propertyName, propertyName);
+                        return reference;
+                    }
                 }
             }
 

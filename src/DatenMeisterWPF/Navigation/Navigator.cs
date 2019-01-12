@@ -94,7 +94,10 @@ namespace DatenMeisterWPF.Navigation
                         parentWindow.Focus();
                     };
                     detailFormWindow.Saved += (x, y) => { result.OnSaved(y); };
+
+                    asDetailFormControl.UpdateContent();
                     SetPosition(detailFormWindow, parentWindow, navigationMode);
+
                     detailFormWindow.Show();
                     break;
                 }

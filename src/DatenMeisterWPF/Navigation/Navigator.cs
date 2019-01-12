@@ -118,7 +118,7 @@ namespace DatenMeisterWPF.Navigation
             }
 
             // Defines the window position dependent on the parentwindow
-            if (navigationMode == NavigationMode.ForceNewWindow)
+            /*if (navigationMode == NavigationMode.ForceNewWindow)
             {
                 var deltaX = parentWindow.Width - newWindow.Width;
                 var deltaY = parentWindow.Height - newWindow.Height;
@@ -131,6 +131,11 @@ namespace DatenMeisterWPF.Navigation
                 // Checks the position of the window
                 newWindow.Left = parentWindow.Left + 20;
                 newWindow.Top = parentWindow.Top + 20;
+            }*/
+
+            if (newWindow is DetailFormWindow detailFormWindow)
+            {
+                detailFormWindow.SwitchToMinimumSize();
             }
         }
     }

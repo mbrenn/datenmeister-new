@@ -137,7 +137,6 @@ namespace DatenMeisterWPF
 
             _ribbonHelper.EvaluateExtensions(viewExtensions);
 
-
             void OpenLog()
             {
                 var wnd = new LogWindow {Owner = this};

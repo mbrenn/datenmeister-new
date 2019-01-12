@@ -86,24 +86,7 @@ namespace DatenMeisterWPF.Windows
             {
                 if (control.IsDesignMinimized())
                 {
-                    Dispatcher.InvokeAsync(() =>
-                    {
-
-                        var width = control.EffectiveForm.getOrDefault<double>(_FormAndFields._Form.defaultWidth);
-                        var height = control.EffectiveForm.getOrDefault<double>(_FormAndFields._Form.defaultWidth);
-                        if (width <= 0 && height <= 0)
-                        {
-                            width = 1000;
-                            height = 1000;
-                        }
-
-                        MainRibbon.IsMinimized = true;
-                        control.DataGrid.Measure(new Size(width, height));
-                        Width = Math.Ceiling(control.DataGrid.DesiredSize.Width) + 50;
-                        Height = Math.Ceiling(control.DataGrid.DesiredSize.Height) + 150;
-                        Top = (Owner?.Top ?? 0) + 100;
-                        Left = (Owner?.Left ?? 0) + 100;
-                    });
+                    SwitchToMinimumSize();
                 }
 
                 var size = control.DefaultSize;
@@ -119,6 +102,37 @@ namespace DatenMeisterWPF.Windows
             }
 
             Focus();
+        }
+
+        /// <summary>
+        /// Takes the content of the window and resizes the window
+        /// to the detail form elements. 
+        /// </summary>
+        public void SwitchToMinimumSize()
+        {
+            var control = MainContent.Content as DetailFormControl;
+            if (control == null)
+            {
+                return;
+            }
+
+            Dispatcher.InvokeAsync(() =>
+            {
+                var width = control.EffectiveForm.getOrDefault<double>(_FormAndFields._Form.defaultWidth);
+                var height = control.EffectiveForm.getOrDefault<double>(_FormAndFields._Form.defaultWidth);
+                if (width <= 0 && height <= 0)
+                {
+                    width = 1000;
+                    height = 1000;
+                }
+
+                MainRibbon.IsMinimized = true;
+                control.DataGrid.Measure(new Size(width, height));
+                Width = Math.Ceiling(control.DataGrid.DesiredSize.Width) + 50;
+                Height = Math.Ceiling(control.DataGrid.DesiredSize.Height) + 150;
+                Top = (Owner?.Top ?? 0) + 100;
+                Left = (Owner?.Left ?? 0) + 100;
+            });
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)

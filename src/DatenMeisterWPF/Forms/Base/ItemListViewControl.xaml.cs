@@ -743,6 +743,8 @@ namespace DatenMeisterWPF.Forms.Base
                         subItem,
                         (d) => { d.ViewDefined += (a, b) =>
                         {
+                            b.View.set(_FormAndFields._Form.minimizeDesign, true);
+
                             // Remove the field with property
                             var fields = b.View.get<IReflectiveSequence>(_FormAndFields._Form.fields);
                             var propertyField = QueryHelper.GetChildWithProperty(fields,

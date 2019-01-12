@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -15,6 +18,11 @@ namespace DatenMeister.Provider.DotNet
     /// </summary>
     public class DotNetTypeGenerator
     {
+        /// <summary>
+        /// Stores the logger
+        /// </summary>
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(DotNetTypeGenerator));
+
         private readonly IFactory _factoryForTypes;
 
         private readonly _UML _umlHost;
@@ -97,35 +105,7 @@ namespace DatenMeister.Provider.DotNet
                     // Ok, now we start to set the types... it will be fun
                     if (UriResolver != null)
                     {
-                        if (property.PropertyType == typeof(string))
-                        {
-                            var stringType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String", ResolveType.NoMetaWorkspaces);
-                            umlProperty.set(_UML._CommonStructure._TypedElement.type, stringType);
-                        }
-                        else if (property.PropertyType == typeof(int))
-                        {
-                            var integerType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer", ResolveType.NoMetaWorkspaces);
-                            umlProperty.set(_UML._CommonStructure._TypedElement.type, integerType);
-                        }
-                        else if (property.PropertyType == typeof(bool))
-                        {
-                            var booleanType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Boolean", ResolveType.NoMetaWorkspaces);
-                            umlProperty.set(_UML._CommonStructure._TypedElement.type, booleanType);
-                        }
-                        else if (property.PropertyType == typeof(double))
-                        {
-                            var realType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real", ResolveType.NoMetaWorkspaces);
-                            umlProperty.set(_UML._CommonStructure._TypedElement.type, realType);
-                        }
-                        else if( property.PropertyType.IsEnum)
-                        {
-                            var typeUri = (_targetExtent as MofExtent)?.TypeLookup.ToElement(property.PropertyType);
-                            if (typeUri != null)
-                            {
-                                var enumType = UriResolver.Resolve(typeUri, ResolveType.NoMetaWorkspaces);
-                                umlProperty.set(_UML._CommonStructure._TypedElement.type, enumType);
-                            }
-                        }
+                        SetProperty(property.PropertyType, umlProperty);
                     }
 
                     properties.Add(umlProperty);
@@ -165,6 +145,117 @@ namespace DatenMeister.Provider.DotNet
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Sets the type information for the given property, depending on the property information. 
+        /// </summary>
+        /// <param name="property">Property that is evaluated</param>
+        /// <param name="umlProperty">Property which will have the property type stored according UML</param>
+        private void SetProperty(Type property, IElement umlProperty)
+        {
+            if (property == typeof(string))
+            {
+                var stringType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String",
+                    ResolveType.NoMetaWorkspaces);
+                umlProperty.set(_UML._CommonStructure._TypedElement.type, stringType);
+            }
+            else if (property == typeof(int))
+            {
+                var integerType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer",
+                    ResolveType.NoMetaWorkspaces);
+                umlProperty.set(_UML._CommonStructure._TypedElement.type, integerType);
+            }
+            else if (property == typeof(bool))
+            {
+                var booleanType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Boolean",
+                    ResolveType.NoMetaWorkspaces);
+                umlProperty.set(_UML._CommonStructure._TypedElement.type, booleanType);
+            }
+            else if (property == typeof(double))
+            {
+                var realType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real",
+                    ResolveType.NoMetaWorkspaces);
+                umlProperty.set(_UML._CommonStructure._TypedElement.type, realType);
+            }
+            else if (property.IsEnum)
+            {
+                var typeUri = (_targetExtent as MofExtent)?.TypeLookup.ToElement(property);
+                if (typeUri != null)
+                {
+                    var enumType = UriResolver.Resolve(typeUri, ResolveType.NoMetaWorkspaces);
+                    umlProperty.set(_UML._CommonStructure._TypedElement.type, enumType);
+                }
+            }
+            else
+            {
+                // Ok... new type
+                // If type is enumeration, get the original type
+                var propertyType = GetAnyElementType(property);
+                if (propertyType != property)
+                {
+                    SetProperty(propertyType, umlProperty);
+                    umlProperty.set(_UML._CommonStructure._MultiplicityElement.upper, 2);
+                }
+                else
+                {
+                    var propertyMofType = ((MofExtent) _targetExtent).TypeLookup.ToElement(propertyType);
+
+                    if (propertyMofType != null)
+                    {
+                        var enumType = UriResolver.Resolve(propertyMofType, ResolveType.NoMetaWorkspaces);
+                        umlProperty.set(_UML._CommonStructure._TypedElement.type, enumType);
+                    }
+                    else
+                    {
+                        umlProperty.set(_UML._CommonStructure._TypedElement.type, new MofObjectShadow($"#{propertyType.FullName}"));
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the type of the enumeration, if the type is an enumeration.
+        /// Otherwise the type itself will be returned
+        /// </summary>
+        /// <param name="originalType"></param>
+        /// <returns></returns>
+        public static Type GetAnyElementType(Type originalType)
+        {
+            var type = originalType;
+            // Short-circuit for Array types
+            if (typeof(Array).IsAssignableFrom(type))
+            {
+                return type.GetElementType();
+            }
+
+            while (true)
+            {
+                // Type is IEnumerable<T>
+                if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                {
+                    return type.GetGenericArguments().First();
+                }
+
+                // Type implements/extends IEnumerable<T>
+                var elementType = (from subType in type.GetInterfaces()
+                    let retType = GetAnyElementType(subType)
+                    where retType != subType
+                    select retType).FirstOrDefault();
+
+                if (elementType != null)
+                {
+                    return elementType;
+                }
+
+                if (type.BaseType == null)
+                {
+                    // Ok, we found nothing... return the original one
+                    return originalType;
+                }
+
+                type = type.BaseType;
+            }
         }
     }
 }

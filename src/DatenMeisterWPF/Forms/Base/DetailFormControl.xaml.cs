@@ -28,11 +28,17 @@ namespace DatenMeisterWPF.Forms.Base
     /// <summary>
     ///     Interaktionslogik für DetailFormControl.xaml
     /// </summary>
-    public partial class DetailFormControl : UserControl, INavigationGuest, IHasSelectedItems
+    public partial class DetailFormControl : UserControl, INavigationGuest, IHasSelectedItems, IHasTitle
     {
         private int _fieldCount;
 
         private bool? _hideViewSelection;
+
+        /// <summary>
+        /// Stores the title of the form control. If not overridden, a default
+        /// title will be created
+        /// </summary>
+        private string _internalTitle;
 
         public DetailFormControl()
         {
@@ -88,6 +94,30 @@ namespace DatenMeisterWPF.Forms.Base
         ///     Gets or sets the navigation host
         /// </summary>
         public INavigationHost NavigationHost { get; set; }
+
+        /// <summary>
+        /// Gets the title for the control
+        /// </summary>
+        public string Title
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_internalTitle))
+                {
+                    return _internalTitle;
+                }
+
+                if (DetailElement == null)
+                {
+                    return "New item";
+                }
+
+                return $"Edit Item: {NamedElementMethods.GetName(DetailElement)}";
+
+            }
+
+            set => _internalTitle = value;
+        }
 
         /// <summary>
         ///     Prepares the navigation of the host. The function is called by the navigation

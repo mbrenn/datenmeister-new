@@ -29,14 +29,16 @@ namespace DatenMeisterWPF.Navigation
         public static IControlNavigationSaveItem NavigateToElementDetailView(
             INavigationHost window, 
             IObject element,
-            Action<DetailFormControl> afterCreated = null)
+            Action<DetailFormControl> afterCreated = null,
+            string title = null)
         {
             return (IControlNavigationSaveItem) window.NavigateTo(
                 () =>
                 {
                     var control = new DetailFormControl
                     {
-                        AllowNewProperties = true
+                        AllowNewProperties = true,
+                        Title = title
                     };
 
                     control.SetContent(element, null);
@@ -69,6 +71,7 @@ namespace DatenMeisterWPF.Navigation
                         ManagementViewDefinitions.PathNewXmiDetailForm);
 
                     var control = new DetailFormControl();
+                    control.Title = "Create new XMI extent";
                     control.SetContent(null, newXmiDetailForm);
                     control.AddDefaultButtons("Create");
                     control.ElementSaved += (x, y) => 
@@ -199,7 +202,8 @@ namespace DatenMeisterWPF.Navigation
                             var lineField = formFactory.Create<_FormAndFields>(f => f.__SeparatorLineFieldData);
                             fields.add(1, lineField);
                         };
-                    });
+                    },
+                    "New Item");
 
                 detailControlView.Saved += (a, b) =>
                 {
@@ -251,7 +255,7 @@ namespace DatenMeisterWPF.Navigation
             void CreateElementItself(IElement selectedMetaClass)
             {
                 var newElement = factory.create(selectedMetaClass);
-                var detailControlView = NavigateToElementDetailView(window, newElement);
+                var detailControlView = NavigateToElementDetailView(window, newElement, title: "New Item");
                 detailControlView.Closed += (a, b) =>
                 {
                     result.OnNewItemCreated(new NewItemEventArgs(newElement));
@@ -296,7 +300,7 @@ namespace DatenMeisterWPF.Navigation
             {
                 var newElement = factory.create(selectedMetaClass);
 
-                var detailControlView = NavigateToElementDetailView(window, newElement);
+                var detailControlView = NavigateToElementDetailView(window, newElement, title: "New Item");
                 detailControlView.Saved += (a, b) =>
                 {
                     collection.add(newElement);

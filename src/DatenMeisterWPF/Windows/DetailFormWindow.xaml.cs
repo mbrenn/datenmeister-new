@@ -66,9 +66,13 @@ namespace DatenMeisterWPF.Windows
         public void SetFocus()
         {
             if (MainContent == null)
+            {
                 Focus();
+            }
             else
+            {
                 MainContent?.Focus();
+            }
         }
 
         /// <inheritdoc />
@@ -113,6 +117,11 @@ namespace DatenMeisterWPF.Windows
                 {
                     Title = $"Edit element: {name}";
                 }
+            }
+
+            if (element is IHasTitle title)
+            {
+                Title = title.Title;
             }
 
             Focus();

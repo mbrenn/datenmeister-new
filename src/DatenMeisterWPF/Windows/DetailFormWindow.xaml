@@ -17,6 +17,9 @@
         <Style TargetType="ComboBox">
             <Setter Property="Margin" Value="10,2,10,2"></Setter>
         </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="10,2,10,2"></Setter>
+        </Style>
         <Style TargetType="Button">
             <Setter Property="Margin" Value="10,2,10,2"></Setter>
         </Style>

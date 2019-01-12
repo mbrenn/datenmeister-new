@@ -43,7 +43,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         ///     Gets the detailed element, whose content is shown in the dialog
         /// </summary>
-        public IObject DetailElement { get; set; }
+        public IObject DetailElement { get; private set; }
 
         /// <summary>
         ///     Defines the form definition being used in the detail for
@@ -204,7 +204,6 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void DetailFormControl_Loaded(object sender, RoutedEventArgs e)
         {
-            SetContent(DetailElement, ViewDefinition?.Element);
             LoadingCompleted?.Invoke(this, EventArgs.Empty);
         }
 

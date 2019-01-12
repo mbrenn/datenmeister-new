@@ -36,9 +36,10 @@ namespace DatenMeisterWPF.Navigation
                 {
                     var control = new DetailFormControl
                     {
-                        DetailElement = element,
                         AllowNewProperties = true
                     };
+
+                    control.SetContent(element, null);
 
                     // calls the hook, so event handling can be introduced
                     afterCreated?.Invoke(control);

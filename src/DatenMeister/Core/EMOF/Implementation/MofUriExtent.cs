@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ChangeEvents;
@@ -14,6 +15,11 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class MofUriExtent : MofExtent, IUriExtent, IUriResolver
     {
+        /// <summary>
+        /// Defines a possible logger
+        /// </summary>
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(MofUriExtent));
+
         /// <summary>
         /// Gets an enumeration of alternative uris
         /// </summary>
@@ -121,7 +127,18 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public IElement Resolve(string uri, ResolveType resolveType)
+        public IElement Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
+        {
+            var result = ResolveInternal(uri, resolveType);
+            if (result == null && traceFailing)
+            {
+                Logger.Trace($"URI not resolved: {uri}");
+            }
+
+            return result;
+        }
+
+        private IElement ResolveInternal(string uri, ResolveType resolveType)
         {
             if (resolveType != ResolveType.OnlyMetaClasses)
             {
@@ -133,7 +150,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                 if ((resolveType & ResolveType.NoWorkspace) == 0)
                 {
-                    var workspaceResult = _Workspace?.Resolve(uri, resolveType);
+                    var workspaceResult = _Workspace?.Resolve(uri, resolveType, false);
                     if (workspaceResult != null)
                     {
                         return workspaceResult;
@@ -141,9 +158,9 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
             }
 
-            if ((resolveType & (ResolveType.NoWorkspace | ResolveType.NoMetaWorkspaces)) == 0 )
+            if ((resolveType & (ResolveType.NoWorkspace | ResolveType.NoMetaWorkspaces)) == 0)
             {
-                // Now look into the explicit extents, if no specific constaint is given
+                // Now look into the explicit extents, if no specific constraint is given
                 foreach (var metaExtent in MetaExtents)
                 {
                     var element = metaExtent.element(uri);
@@ -155,6 +172,8 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                 return ResolveByMetaWorkspaces(uri, _Workspace);
             }
+
+
             return null;
         }
 
@@ -175,6 +194,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 return null;
             }
+
             alreadyVisited.Add(workspace);
 
             // If still not found, look into the meta workspaces. Nevertheless, no recursion
@@ -199,6 +219,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     }
                 }
             }
+
             return null;
         }
 

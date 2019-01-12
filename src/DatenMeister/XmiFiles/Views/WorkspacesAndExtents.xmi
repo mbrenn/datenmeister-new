@@ -63,8 +63,8 @@
     </packagedElement>
 
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ViewAssociation"
-                     metaclasmetaclasssName="datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.Workspace"
-                     view-ref="WorkspacesAndExtents.Workspaces.List"
+                     metaclass="datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.Workspace"
+                     view-ref="#WorkspacesAndExtents.Workspaces.List"
                      viewType="Detail">
     </packagedElement>
 

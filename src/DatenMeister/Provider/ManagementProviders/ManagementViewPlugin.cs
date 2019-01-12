@@ -58,7 +58,7 @@ namespace DatenMeister.Provider.ManagementProviders
             {
                 var document = XDocument.Load(stream);
                 var pseudoProvider = new XmiProvider(document);
-                var pseudoExtent = new MofExtent(pseudoProvider)
+                var pseudoExtent = new MofUriExtent(pseudoProvider)
                 {
                     Workspace = viewExtent.GetWorkspace()
                 };

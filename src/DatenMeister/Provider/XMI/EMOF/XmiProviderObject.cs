@@ -260,7 +260,13 @@ namespace DatenMeister.Provider.XMI.EMOF
                     continue;
                 }
 
-                result.Add(attribute.Name.ToString());
+                var attributeName = attribute.Name.ToString();
+                if (attributeName.EndsWith("-ref"))
+                {
+                    attributeName = attributeName.Substring(0, attributeName.Length - "-ref".Length);
+                }
+
+                result.Add(attributeName);
             }
 
             foreach (var element in XmlNode.Elements().Distinct())

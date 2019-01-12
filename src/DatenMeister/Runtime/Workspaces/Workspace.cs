@@ -270,9 +270,15 @@ namespace DatenMeister.Runtime.Workspaces
             throw new NotImplementedException();
         }
 
-        public IElement Resolve(string uri, ResolveType resolveType)
+        public IElement Resolve(string uri, ResolveType resolveType, bool traceFailing)
         {
-            return _extent.Select(theExtent => (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace)).FirstOrDefault(found => found != null);
+            var result = _extent.Select(theExtent => (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false)).FirstOrDefault(found => found != null);
+            if (result == null && traceFailing)
+            {
+                Logger.Trace($"URI not resolved: {uri}");
+            }
+
+            return result;
         }
 
         public IElement ResolveById(string id)

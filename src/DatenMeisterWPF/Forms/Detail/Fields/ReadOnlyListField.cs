@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
@@ -12,8 +11,11 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 {
     public class ReadOnlyListField : IDetailField
     {
-        public UIElement CreateElement(IObject valueElement, IElement fieldData, DetailFormControl detailForm,
-            ref FieldFlags fieldFlags)
+        public UIElement CreateElement(
+            IObject valueElement, 
+            IElement fieldData, 
+            DetailFormControl detailForm,
+            FieldParameter fieldFlags)
         {
             var contentBlock = new Grid();
             contentBlock.ColumnDefinitions.Add(new ColumnDefinition());

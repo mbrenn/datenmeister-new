@@ -115,6 +115,7 @@
     <Compile Include="Forms\Detail\Fields\IDetailField.cs" />
     <Compile Include="Forms\Detail\Fields\ReadOnlyListField.cs" />
     <Compile Include="Forms\Detail\Fields\ReferenceField.cs" />
+    <Compile Include="Forms\Detail\Fields\SeparatorLineField.cs" />
     <Compile Include="Forms\Detail\Fields\SubElementsField.cs" />
     <Compile Include="Forms\Detail\Fields\TextboxField.cs" />
     <Compile Include="Forms\Lists\ExtentList.cs" />

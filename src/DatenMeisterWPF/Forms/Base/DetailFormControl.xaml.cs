@@ -443,29 +443,42 @@ namespace DatenMeisterWPF.Forms.Base
         {
             if (fields == null) throw new ArgumentNullException(nameof(fields));
 
-            var flags = FieldFlags.Focussed;
+            var anyFocused = false;
             foreach (var field in fields.Cast<IElement>())
             {
+                var flags = new FieldParameter();
+
                 var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
                 if (fieldType == MetaClassElementFieldData.FieldType)
                 {
                     continue;
                 }
-
-                var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
-                var isReadOnly = field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
-
-                // Sets the title block
-                var titleBlock = new TextBlock
-                {
-                    Text = $"{title}: ",
-                    IsEnabled = !isReadOnly
-                };
-
-                var oldFlags = flags;
+                
                 var (detailElement, contentBlock) =
-                    FieldFactory.GetUIElementFor(DetailElement, field, this, ref flags);
+                    FieldFactory.GetUIElementFor(DetailElement, field, this, flags);
 
+                if (!flags.IsSpanned)
+                {
+
+                    var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
+                    var isReadOnly = field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
+
+                    // Sets the title block
+                    var titleBlock = new TextBlock
+                    {
+                        Text = string.IsNullOrEmpty(title) ? "" : $"{title}: ",
+                        IsEnabled = !isReadOnly
+                    };
+
+                    CreateRowForField(titleBlock, contentBlock);
+                }
+                else
+                {
+                    CreateSpannedRow(contentBlock);
+                }
+            
+                // Checks whether the control element shall be stored in
+                // the detail element iself or within the attached fields
                 if (field.getOrNull<bool>(_FormAndFields._FieldData.isAttached) == true)
                 {
                     AttachedItemFields.Add(detailElement);
@@ -475,18 +488,22 @@ namespace DatenMeisterWPF.Forms.Base
                     ItemFields.Add(detailElement);
                 }
 
-                Grid.SetColumn(contentBlock, 1);
-                Grid.SetRow(contentBlock, _fieldCount);
-
-                CreateRowForField(titleBlock, contentBlock);
-
                 // Check, if element shall be focused
-                if ((oldFlags & FieldFlags.Focussed) != (flags & FieldFlags.Focussed))
+                if (!anyFocused && flags.CanBeFocused)
                 {
                     contentBlock.Focus();
+                    anyFocused = true;
                 }
             }
 
+            AddRowsForInteractionHandlers();
+        }
+
+        /// <summary>
+        /// Adds the buttons for the interactionhandlers. 
+        /// </summary>
+        private void AddRowsForInteractionHandlers()
+        {
             var buttons = new List<Button>();
 
             // Creates additional rows for buttons with additional actions
@@ -604,13 +621,13 @@ namespace DatenMeisterWPF.Forms.Base
                 {
                     var fieldKey = new TextBox();
                     var fieldValue = new TextboxField();
-                    var flags = FieldFlags.Zero;
+                    var flags = new FieldParameter();
 
                     var fieldUIElement = fieldValue.CreateElement(
                         DetailElement,
                         null,
                         this, 
-                        ref flags);
+                        flags);
                     ItemFields.Add(fieldValue);
 
                     CreateRowForField(fieldKey, fieldUIElement);

@@ -419,6 +419,16 @@ namespace DatenMeister.Models.Forms
         public _TextFieldData @TextFieldData = new _TextFieldData();
         public IElement @__TextFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.TextFieldData");
 
+        public class _SeparatorLineFieldData
+        {
+            public static string @Height = "Height";
+            public IElement _Height = null;
+
+        }
+
+        public _SeparatorLineFieldData @SeparatorLineFieldData = new _SeparatorLineFieldData();
+        public IElement @__SeparatorLineFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.SeparatorLineFieldData");
+
         public static _FormAndFields TheOne = new _FormAndFields();
 
     }

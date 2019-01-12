@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -177,7 +176,7 @@ namespace DatenMeisterWPF.Navigation
                             var formFactory = new MofFactory(fields);
 
                             var dropField = formFactory.Create<_FormAndFields>(f => f.__DropDownFieldData);
-                            dropField.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
+                            //dropField.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
                             dropField.set(_FormAndFields._DropDownFieldData.name, "ParentProperty");
                             dropField.set(_FormAndFields._DropDownFieldData.title, "Parent Property");
                             dropField.set(_FormAndFields._DropDownFieldData.isAttached, true);
@@ -194,6 +193,10 @@ namespace DatenMeisterWPF.Navigation
 
                             dropField.set(_FormAndFields._DropDownFieldData.values, list);
                             fields.add(0, dropField);
+
+                            // Adds the line to separate it from the other side 
+                            var lineField = formFactory.Create<_FormAndFields>(f => f.__SeparatorLineFieldData);
+                            fields.add(1, lineField);
                         };
                     });
 

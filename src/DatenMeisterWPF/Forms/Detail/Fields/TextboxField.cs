@@ -21,12 +21,12 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
-            _name = fieldData.get(_FormAndFields._FieldData.name).ToString();
-            var isReadOnly = fieldData.get<bool>(_FormAndFields._FieldData.isReadOnly);
+            _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
             var width = fieldData.getOrDefault<int>(_FormAndFields._TextFieldData.width);
 
             _valueText = string.Empty;
-            if (value.isSet(_name))
+            if (!string.IsNullOrEmpty(_name) && value.isSet(_name))
             {
                 _valueText = value.getOrDefault<string>(_name) ?? string.Empty;
             }

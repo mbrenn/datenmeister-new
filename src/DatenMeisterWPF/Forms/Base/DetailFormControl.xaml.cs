@@ -652,12 +652,19 @@ namespace DatenMeisterWPF.Forms.Base
                     var fieldValue = new TextboxField();
                     var flags = new FieldParameter();
 
+                    var fieldData = MofFactory.CreateElementFor<_FormAndFields>(
+                        EffectiveForm,
+                        x => x.__TextFieldData);
+
                     var fieldUIElement = fieldValue.CreateElement(
                         DetailElement,
-                        null,
+                        fieldData,
                         this, 
                         flags);
-                    ItemFields.Add(fieldValue);
+
+                    ItemFields.Add(new NewPropertyField(
+                        fieldKey,
+                        fieldUIElement));
 
                     CreateRowForField(fieldKey, fieldUIElement);
                     fieldKey.Focus();
@@ -690,6 +697,41 @@ namespace DatenMeisterWPF.Forms.Base
                     MessageBox.Show(exc.ToString());
                 }
             }).IsDefault = true;
+        }
+
+        /// <summary>
+        /// This helper class is used to allow the setting of new properties
+        /// by the user. It takes two text boxes and sets
+        /// the new property as defined by the user within the given object
+        /// </summary>
+        private class NewPropertyField : IDetailField
+        {
+            private readonly TextBox _fieldKey;
+            private readonly UIElement _fieldUiElement;
+
+            public NewPropertyField(TextBox fieldKey, UIElement fieldUiElement)
+            {
+                _fieldKey = fieldKey;
+                _fieldUiElement = fieldUiElement;
+            }
+
+            public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, FieldParameter fieldFlags)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void CallSetAction(IObject element)
+            {
+                var propertyKey = _fieldKey.Text;
+                var propertyValue = (_fieldUiElement as TextBox)?.Text;
+
+                if (string.IsNullOrEmpty(propertyKey) || propertyValue == null)
+                {
+                    return;
+                }
+
+                element.set(propertyKey, propertyValue);
+            }
         }
 
         /// <summary>

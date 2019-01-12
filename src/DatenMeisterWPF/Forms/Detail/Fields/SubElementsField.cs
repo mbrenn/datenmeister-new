@@ -39,7 +39,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             
             CreatePanelElement(value, fieldData, detailForm, panel);
 
-            fieldFlags.CanBeFocussed = true;
+            fieldFlags.CanBeFocused = true;
 
             return panel;
         }

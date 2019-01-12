@@ -17,7 +17,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
-            fieldFlags.CanBeFocussed = true;
+            fieldFlags.CanBeFocused = true;
             throw new System.NotImplementedException();
         }
 

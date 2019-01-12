@@ -81,7 +81,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             _comboBox.ItemsSource = items;
             _comboBox.SelectedValue = selectedBoxItem;
 
-            fieldFlags.CanBeFocussed = true;
+            fieldFlags.CanBeFocused = true;
             return _comboBox;
         }
 

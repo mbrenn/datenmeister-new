@@ -42,7 +42,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 IsEnabled = isReadOnly
             };
 
-            fieldFlags.CanBeFocussed = true;
+            fieldFlags.CanBeFocused = true;
             return _checkbox;
         }
 

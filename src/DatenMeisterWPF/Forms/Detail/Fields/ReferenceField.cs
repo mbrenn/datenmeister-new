@@ -75,7 +75,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     }
                 }
 
-                fieldFlags.CanBeFocussed = true;
+                fieldFlags.CanBeFocused = true;
                 return _control;
             }
             else
@@ -137,7 +137,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 panel.Children.Add(openButten);
                 panel.Children.Add(selectButton);
 
-                fieldFlags.CanBeFocussed = true;
+                fieldFlags.CanBeFocused = true;
                 return panel;
             }
         }

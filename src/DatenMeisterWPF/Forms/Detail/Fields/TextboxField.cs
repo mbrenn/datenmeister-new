@@ -70,7 +70,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     _contentBlock.HorizontalAlignment = HorizontalAlignment.Left;
                 }
 
-                fieldFlags.CanBeFocussed = true;
+                fieldFlags.CanBeFocused = true;
 
                 return _contentBlock;
             }

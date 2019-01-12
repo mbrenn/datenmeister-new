@@ -194,7 +194,7 @@ namespace DatenMeisterWPF.Navigation
                             dropField.set(_FormAndFields._DropDownFieldData.values, list);
                             fields.add(0, dropField);
 
-                            // Adds the line to separate it from the other side
+                            // Adds the line to separate it from the other side 
                             var lineField = formFactory.Create<_FormAndFields>(f => f.__SeparatorLineFieldData);
                             fields.add(1, lineField);
                         };

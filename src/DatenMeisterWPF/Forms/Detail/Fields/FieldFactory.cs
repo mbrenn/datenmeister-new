@@ -111,7 +111,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         /// Defines whether the current field could be focussed.
         /// That flag shall be erased by the detail control, if the flag is not focussed
         /// </summary>
-        public bool CanBeFocussed { get; set; }
+        public bool CanBeFocused { get; set; }
 
         /// <summary>
         /// Gets or sets the information whether the element is spanned through the complete row

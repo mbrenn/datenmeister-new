@@ -180,9 +180,8 @@ namespace DatenMeisterWPF.Forms.Base
 
             if (result == null)
             {
-                // Nothing was found... so, create your default list lsit. 
+                // Nothing was found... so, create your default list list. 
                 result = viewFinder.CreateView(collection);
-                result.set("name", viewDefinition.Name);
             }
 
             // Creates the layoutcontrol for the given view
@@ -194,7 +193,7 @@ namespace DatenMeisterWPF.Forms.Base
             var tabControl = new ItemExplorerTab(viewDefinition)
             {
                 Content = control,
-                Header = NamedElementMethods.GetName(result)
+                Header = viewDefinition.Name
             };
 
             control.SetContent(collection, result, viewDefinition.ViewExtensions);

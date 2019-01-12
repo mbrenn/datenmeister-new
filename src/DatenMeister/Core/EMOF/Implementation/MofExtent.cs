@@ -31,7 +31,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets or sets the workspace to which the extent is allocated
         /// </summary>
-        public Workspace Workspace { get; set; }
+        protected Workspace _Workspace { get; set; }
+
+        /// <summary>
+        /// Gets or sets the workspace to which the extent is allocated
+        /// </summary>
+        public IWorkspace Workspace
+        {
+            get => _Workspace;
+            set => _Workspace = (Workspace) value;
+        }
         
         /// <summary>
         /// Gets the workspace via the interface
@@ -219,8 +228,6 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
         }
 
-        
-
         /// <summary>
         /// Resolves the DotNetType by navigating through the current and the meta instances. 
         /// </summary>
@@ -248,7 +255,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
             }
 
-            var resolve = ResolveDotNetTypeByMetaWorkspaces(metaclassUri, Workspace);
+            var resolve = ResolveDotNetTypeByMetaWorkspaces(metaclassUri, _Workspace);
             return resolve;
         }
 
@@ -322,7 +329,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             // If still not found, look into the meta workspaces. Nevertheless, no recursion
-            var metaWorkspaces = Workspace?.MetaWorkspaces;
+            var metaWorkspaces = _Workspace?.MetaWorkspaces;
             if (metaWorkspaces != null)
             {
                 foreach (var metaWorkspace in metaWorkspaces)

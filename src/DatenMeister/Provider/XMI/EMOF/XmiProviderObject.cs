@@ -124,6 +124,11 @@ namespace DatenMeister.Provider.XMI.EMOF
                 return propertyAsDateTime.ToUniversalTime().ToString(CultureInfo.InvariantCulture);
             }
 
+            if (value.GetType().IsEnum)
+            {
+                return value.ToString();
+            }
+
             if (value == null)
             {
                 throw new ArgumentNullException(nameof(value));

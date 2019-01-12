@@ -63,6 +63,38 @@ namespace DatenMeister.Runtime
                 return (T)(object)new MofReflectiveSequence((MofObject)value, property);
             }
 
+            if (typeof(T).IsEnum)
+            {
+                var valueAsElement = value.get(property);
+                if (valueAsElement == null)
+                {
+                    return default(T);
+                }
+
+                if (typeof(T) == valueAsElement.GetType())
+                {
+                    return (T) valueAsElement;
+                }
+
+                if (valueAsElement is string propertyValueAsString)
+                {
+                    return (T) Enum.Parse(typeof(T), propertyValueAsString);
+                }
+
+                if (valueAsElement is IElement propertyObject && value is MofObject mofObject)
+                {
+                    // Get Enumeration Instance
+                    var resolvedElement = mofObject.CreatedByExtent.Resolve(propertyObject);
+                    if (resolvedElement == null)
+                    {
+                        return default(T);
+                    }
+
+                    var name = NamedElementMethods.GetName(resolvedElement);
+                    return (T) Enum.Parse(typeof(T), name);
+                }
+            }
+
             throw new InvalidOperationException($"{typeof(T).FullName} is not handled by get");
         }
 

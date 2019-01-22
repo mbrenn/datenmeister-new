@@ -22,7 +22,7 @@
         <Border  BorderBrush="Black" BorderThickness="1" Margin="10">
             <ScrollViewer>
                 <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Margin="5">
-                    Der DatenMeister - Unendliche Weiten (<Hyperlink NavigateUri="http://www.depon.net/" RequestNavigate="Hyperlink_OnRequestNavigate">http://www.depon.net/</Hyperlink>) - V0.0.2<LineBreak />
+                    Der DatenMeister - Unendliche Weiten (<Hyperlink NavigateUri="http://www.depon.net/" RequestNavigate="Hyperlink_OnRequestNavigate">http://www.depon.net/</Hyperlink>) - <TextBlock x:Name="TxtVersionNumber"></TextBlock><LineBreak />
                     <LineBreak />
                     Thanks for the Icons as courtesy of Axialis Software <Hyperlink NavigateUri="http://axialis.com" RequestNavigate="Hyperlink_OnRequestNavigate">http://axialis.com</Hyperlink>.<LineBreak />
                     <LineBreak />

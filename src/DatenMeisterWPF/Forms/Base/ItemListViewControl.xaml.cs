@@ -16,6 +16,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.FastViewFilter;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.CSV;
@@ -40,6 +41,11 @@ namespace DatenMeisterWPF.Forms.Base
     public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavigationGuest
     {
         private static readonly ILogger Logger = new ClassLogger(typeof(ItemListViewControl));
+
+        /// <summary>
+        /// Defines the change event handle being used for current view
+        /// </summary>
+        private EventHandle _changeEventHandle;
 
         public ItemListViewControl()
         {
@@ -94,13 +100,33 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         /// Updates the content by going through the fields and items
         /// </summary>
-        public void SetContent(IReflectiveCollection items, IElement formDefintion, List<ViewExtension> viewExtensions) 
+        public void SetContent(IReflectiveCollection items, IElement formDefintion, List<ViewExtension> viewExtensions)
         {
+            UnregisterCurrentChangeEventHandle();
+            if (items is IHasExtent asExtent)
+            {
+                App.Scope.Resolve<ChangeEventManager>().RegisterFor(
+                    asExtent.Extent,
+                    (extent, element) => { UpdateContent(); });
+            }
+
             Items = items;
             CurrentFormDefinition = formDefintion;
             ViewExtensions = viewExtensions;
             IncludeStandardExtensions();
             UpdateContent();
+        }
+
+        /// <summary>
+        /// Unregisters the change event handle and sets the variable _changeEventHandle to null
+        /// </summary>
+        private void UnregisterCurrentChangeEventHandle()
+        {
+            if (_changeEventHandle != null)
+            {
+                App.Scope.Resolve<ChangeEventManager>().Unregister(_changeEventHandle);
+                _changeEventHandle = null;
+            }
         }
 
         /// <summary>
@@ -832,5 +858,10 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         private IEnumerable<IElement> GetFastFilters() => CurrentFormDefinition.ForceAsEnumerable(_FormAndFields._ListForm.fastViewFilters).OfType<IElement>();
+
+        private void ItemListViewControl_OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            UnregisterCurrentChangeEventHandle();
+        }
     }
 }

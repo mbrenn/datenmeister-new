@@ -32,8 +32,6 @@ namespace DatenMeisterWPF.Forms.Base
     {
         private int _fieldCount;
 
-        private bool? _hideViewSelection;
-
         /// <summary>
         /// Stores the title of the form control. If not overridden, a default
         /// title will be created
@@ -271,7 +269,6 @@ namespace DatenMeisterWPF.Forms.Base
             );
 
             AttachedElement = InMemoryObject.CreateEmpty();
-            UpdateViewList();
         }
 
         /// <summary>
@@ -292,75 +289,12 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
-        ///     This method gets called to update the views
-        /// </summary>
-        private void UpdateViewList()
-        {
-            // Nobody likes the view list anymore
-            return;
-            // Skip, if view selection shall be hidden
-            if (_hideViewSelection == true) return;
-
-            // If a specific viewdefinition is set, no view selection will shown.
-            if (ViewDefinition.Mode == ViewDefinitionMode.Specific) return;
-
-            // Update view
-            var views = GetFormsForView()?.ToList();
-
-            if (views != null)
-            {
-                if (ViewDefinition.Element != null && views.IndexOf(ViewDefinition.Element) == -1)
-                {
-                    views.Add(ViewDefinition.Element);
-                }
-
-                ViewList.Visibility = Visibility.Visible;
-                var list = new List<ViewDefinition>
-                {
-                    new ViewDefinition("Default", null, ViewDefinitionMode.Default),
-                    new ViewDefinition("All Properties", null, ViewDefinitionMode.AllProperties)
-                };
-
-                list.AddRange(views.Select(x => new ViewDefinition(NamedElementMethods.GetFullName(x), x)));
-                ViewList.ItemsSource = list;
-
-                switch (ViewDefinition.Mode)
-                {
-                    case ViewDefinitionMode.AllProperties:
-                        ViewList.SelectedIndex = 1;
-                        break;
-                    case ViewDefinitionMode.Default:
-                        ViewList.SelectedIndex = 0;
-                        break;
-                    default:
-                        ViewList.SelectedIndex = 2 + views.IndexOf(ViewDefinition.Element);
-                        break;
-                }
-            }
-            else
-            {
-                ViewList.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        /// <summary>
         ///     Gets the enumeration of all views that may match to the shown items
         /// </summary>
         public IEnumerable<IElement> GetFormsForView()
         {
             return App.Scope?.Resolve<IViewFinder>()
                 .FindViews((DetailElement as IHasExtent)?.Extent as IUriExtent, DetailElement);
-        }
-
-        private void ViewList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!(ViewList.SelectedItem is ViewDefinition newForm))
-            {
-                return;
-            }
-
-            ViewDefinition = newForm;
-            UpdateContent();
         }
 
         /// <summary>
@@ -372,19 +306,6 @@ namespace DatenMeisterWPF.Forms.Base
             UpdateActualViewDefinition();
 
             OnViewDefined();
-
-            if (_hideViewSelection == null)
-            {
-                if (DotNetHelper.IsTrue(EffectiveForm.GetOrDefault(_FormAndFields._Form.fixView)))
-                {
-                    ViewList.Visibility = Visibility.Collapsed;
-                    _hideViewSelection = true;
-                }
-                else
-                {
-                    _hideViewSelection = false;
-                }
-            }
         }
 
         private void UpdateActualViewDefinition()
@@ -424,10 +345,6 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             var isMinimized = EffectiveForm.getOrDefault<bool>(_FormAndFields._Form.minimizeDesign);
-            if (isMinimized)
-            {
-                ViewList.Visibility = Visibility.Collapsed;
-            }
 
             _fieldCount = 0;
 

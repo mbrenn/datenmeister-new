@@ -15,7 +15,6 @@
     </UserControl.InputBindings>
     <DockPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
-            <helper:ComboBoxEx x:Name="ViewList" SelectionChanged="ViewList_OnSelectionChanged"></helper:ComboBoxEx>
         </StackPanel>
         <StackPanel Orientation="Horizontal" x:Name="ButtonBar" 
                     DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10">

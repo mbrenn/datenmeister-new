@@ -1,10 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using Autofac;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.EMOF;
 using DatenMeister.Excel.Helper;
-using DatenMeister.Integration;
 using DatenMeister.Provider;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
@@ -30,13 +27,6 @@ namespace DatenMeister.Excel.ProviderLoader
 
             var workbook = new XSSFWorkbook(settings.filePath);
             return new ExcelProvider(workbook, settings);
-        }
-
-        private readonly IDatenMeisterScope _scope;
-
-        public ExcelFileProviderLoader(ILifetimeScope scope)
-        {
-            _scope = (IDatenMeisterScope) scope;
         }
 
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty)

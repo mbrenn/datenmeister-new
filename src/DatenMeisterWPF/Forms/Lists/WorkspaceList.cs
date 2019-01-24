@@ -71,28 +71,12 @@ namespace DatenMeisterWPF.Forms.Lists
                 NavigatorForWorkspaces.CreateNewWorkspace(NavigationHost);
             }
 
-            void JumpToTypeManager()
-            {
-                NavigatorForItems.NavigateToItemsInExtent(
-                    NavigationHost,
-                    WorkspaceNames.NameTypes,
-                    WorkspaceNames.UriUserTypesExtent);
-            }
-
             viewDefinition.ViewExtensions.Add(
                 new RibbonButtonDefinition(
                     "Add Workspace",
                     NewWorkspace,
                     "workspaces-new",
                     NavigationCategories.File + "." + "Workspaces"));
-
-            viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
-                    "Type Manager",
-                    JumpToTypeManager,
-                    string.Empty,
-                    NavigationCategories.Type + "." + "Manager"
-                ));
 
             viewDefinition.ViewExtensions.Add(
                 new RibbonButtonDefinition(

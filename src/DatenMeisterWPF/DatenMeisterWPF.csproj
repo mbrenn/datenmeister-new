@@ -128,6 +128,7 @@
     <Compile Include="Navigation\IHasTitle.cs" />
     <Compile Include="Navigation\INavigationGuest.cs" />
     <Compile Include="Navigation\INavigationHost.cs" />
+    <Compile Include="Modules\TypeManager\TypeManagerListView.cs" />
     <Compile Include="Navigation\ControlNavigation.cs" />
     <Compile Include="Navigation\CreatableTypeNavigator.cs" />
     <Compile Include="Navigation\IControlNavigation.cs" />

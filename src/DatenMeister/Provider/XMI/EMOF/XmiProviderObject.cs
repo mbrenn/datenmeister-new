@@ -174,7 +174,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                     new XAttribute("href", uriReference.Uri));
             }
 
-            throw new InvalidOperationException("Value is not an XmlObject or an IElement: " + value);
+            throw new InvalidOperationException("Value is not an XmlObject or an IElement: " + (value ?? "'null'"));
         }
 
         /// <inheritdoc />

@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.XMI;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -21,8 +21,8 @@ namespace DatenMeister.Provider.Xml
             // Now load the stuff
             var provider = new InMemoryProvider();
             var extent = new MofUriExtent(provider);
-            var simpleLoader = new SimpleLoader();
-            simpleLoader.LoadFromFile(new MofFactory(extent), extent, settings.filePath);
+            var simpleLoader = new XmlToExtentConverter(settings);
+            simpleLoader.Convert(XDocument.Load(settings.filePath), extent);
 
             return new LoadedProviderInfo(provider);
         }

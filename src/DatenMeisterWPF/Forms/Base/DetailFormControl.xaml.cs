@@ -178,7 +178,7 @@ namespace DatenMeisterWPF.Forms.Base
 
             void CopyContent()
             {
-                var inMemory = InMemoryObject.CreateEmpty();
+                var inMemory = InMemoryObject.CreateEmpty(DetailElement.GetExtentOf());
                 StoreDialogContentIntoElement(inMemory);
 
                 var copyContent = new CopyToClipboardCommand(inMemory);
@@ -187,7 +187,7 @@ namespace DatenMeisterWPF.Forms.Base
 
             void CopyContentAsXmi()
             {
-                var inMemory = InMemoryObject.CreateEmpty();
+                var inMemory = InMemoryObject.CreateEmpty(DetailElement.GetExtentOf());
                 StoreDialogContentIntoElement(inMemory);
 
                 var copyContent = new CopyToClipboardCommand(inMemory);
@@ -269,32 +269,6 @@ namespace DatenMeisterWPF.Forms.Base
             );
 
             AttachedElement = InMemoryObject.CreateEmpty();
-        }
-
-        /// <summary>
-        ///     Sets the form being used for the detail element.
-        /// </summary>
-        /// <param name="form">Form to be set</param>
-        public void SetForm(IElement form)
-        {
-            ViewDefinition = new ViewDefinition(
-                NamedElementMethods.GetFullName(form),
-                form,
-                ViewDefinitionMode.Specific);
-
-            if (IsInitialized)
-            {
-                UpdateContent();
-            }
-        }
-
-        /// <summary>
-        ///     Gets the enumeration of all views that may match to the shown items
-        /// </summary>
-        public IEnumerable<IElement> GetFormsForView()
-        {
-            return App.Scope?.Resolve<IViewFinder>()
-                .FindViews((DetailElement as IHasExtent)?.Extent as IUriExtent, DetailElement);
         }
 
         /// <summary>
@@ -661,6 +635,7 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 // Copy all data from DetailElement to element to also have the non-shown properties in the mirror object
                 ObjectCopier.CopyPropertiesStatic(DetailElement, element);
+                return;
             }
 
             foreach (var field in ItemFields)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
@@ -116,6 +117,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             // Second phase: Get properties by the object iself
             // This item does not have a metaclass and also no properties, so we try to find them by using the item
             var itemAsAllProperties = item as IObjectAllProperties;
+            var itemAsObject = item as IObject;
 
             var isByProperties =
                 creationMode.HasFlag(CreationMode.ByProperties);
@@ -133,11 +135,31 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     var column = form.fields.FirstOrDefault(x => x.name == property);
                     if (column == null)
                     {
-                        column = new TextFieldData
+                        // Check by content, which type of field shall be created
+                        var propertyValue = itemAsObject?.GetOrDefault(property);
+
+                        if (DotNetHelper.IsPrimitiveType(propertyValue?.GetType()))
                         {
-                            name = property,
-                            title = property
-                        };
+                            column = new TextFieldData
+                            {
+                                name = property,
+                                title = property
+                            };
+                        }
+                        else
+                        {
+                            if (DotNetHelper.IsEnumeration(propertyValue?.GetType()))
+                            {
+                                column = new SubElementFieldData(property, property);
+                            }
+                            else
+                            {
+                                column = new ReferenceFieldData(property, property)
+                                {
+                                    isSelectionInline = false
+                                };
+                            }
+                        }
 
                         form.fields.Add(column);
                     }

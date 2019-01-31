@@ -39,7 +39,24 @@ namespace DatenMeisterWPF.Forms.Base
         public bool ShowRoot
         {
             get => (bool) GetValue(ShowRootProperty);
-            set => SetValue(ShowRootProperty, value);
+            set
+            {
+                SetValue(ShowRootProperty, value);
+                UpdateView();
+            }
+        }
+
+        public static readonly DependencyProperty ShowAllChildrenProperty = DependencyProperty.Register(
+            "ShowAllChildren", typeof(bool), typeof(ItemsTreeView), new PropertyMetadata(default(bool)));
+
+        public bool ShowAllChildren
+        {
+            get => (bool) GetValue(ShowAllChildrenProperty);
+            set
+            {
+                SetValue(ShowAllChildrenProperty, value); 
+                UpdateView();
+            }
         }
 
         /// <summary>
@@ -57,8 +74,6 @@ namespace DatenMeisterWPF.Forms.Base
         public ItemsTreeView()
         {
             InitializeComponent();
-
-
         }
 
         public IReflectiveCollection ItemsSource
@@ -223,9 +238,11 @@ namespace DatenMeisterWPF.Forms.Base
 
                 var n = 0;
                 var childModels = new List<TreeViewItem>();
-                foreach (var property in _propertiesForChildren)
+                var propertiesForChildren = ShowAllChildren ? (item as IObjectAllProperties).getPropertiesBeingSet().ToList() : _propertiesForChildren.ToList();
+                foreach (var property in propertiesForChildren)
                 {
-                    if (itemAsObject.GetOrDefault(property) is IReflectiveCollection childItems)
+                    var propertyValue = itemAsObject.GetOrDefault(property);
+                    if (propertyValue is IReflectiveCollection childItems)
                     {
                         foreach (var childItem in childItems)
                         {
@@ -239,6 +256,17 @@ namespace DatenMeisterWPF.Forms.Base
 
                             if (n >= MaxItemsPerLevel) break;
                         }
+                    }
+
+                    if (propertyValue is IElement element)
+                    {
+                        var childTreeViewItem = CreateTreeViewItem(element);
+                        if (childTreeViewItem != null)
+                        {
+                            childModels.Add(childTreeViewItem);
+                        }
+
+                        n++;
                     }
 
                     if (n >= MaxItemsPerLevel) break;

@@ -51,6 +51,7 @@ namespace DatenMeisterWPF.Forms.Lists
 
         private void ItemsInExtentList_Loaded(object sender, RoutedEventArgs e)
         {
+            NavigationTreeView.ShowAllChildren = true;
             var workLogic = App.Scope.Resolve<IWorkspaceLogic>();
             workLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out var workspace, out _extent);
             if (_extent == null)

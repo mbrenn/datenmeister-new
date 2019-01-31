@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -87,6 +88,7 @@ namespace DatenMeister.Provider.Xml
 
             // Try to figure out the id
             var id = GuessId(mofElement);
+            var localName = id;
             id = string.IsNullOrEmpty(innerName) ? id : $"{innerName}.{id}";
             if (mofElement is ICanSetId canSetId)
             {
@@ -125,7 +127,17 @@ namespace DatenMeister.Provider.Xml
                 else
                 {
                     mofElement.set(pair.Key, pair.Value);
+
+                    if (!mofElement.isSet(_UML._CommonStructure._NamedElement.name))
+                    {
+                        mofElement.set(_UML._CommonStructure._NamedElement.name, pair.Key);
+                    }
                 }
+            }
+
+            if (!mofElement.isSet(_UML._CommonStructure._NamedElement.name) && localName != ((IHasId) mofElement).Id)
+            {
+                mofElement.set(_UML._CommonStructure._NamedElement.name, localName);
             }
         }
 
@@ -135,25 +147,31 @@ namespace DatenMeister.Provider.Xml
             var name = mofElement.getOrDefault<string>("name");
             if (!string.IsNullOrEmpty(name))
             {
-                return name;
+                result = name;
             }
-
-            name = mofElement.getOrDefault<string>("Name");
-            if (!string.IsNullOrEmpty(name))
+            else
             {
-                return name;
-            }
-
-            name = mofElement.getOrDefault<string>("title");
-            if (!string.IsNullOrEmpty(name))
-            {
-                return name;
-            }
-
-            name = mofElement.getOrDefault<string>("Title");
-            if (!string.IsNullOrEmpty(name))
-            {
-                return name;
+                name = mofElement.getOrDefault<string>("Name");
+                if (!string.IsNullOrEmpty(name))
+                {
+                    result = name;
+                }
+                else
+                {
+                    name = mofElement.getOrDefault<string>("title");
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        result = name;
+                    }
+                    else
+                    {
+                        name = mofElement.getOrDefault<string>("Title");
+                        if (!string.IsNullOrEmpty(name))
+                        {
+                            result = name;
+                        }
+                    }
+                }
             }
 
             return result;

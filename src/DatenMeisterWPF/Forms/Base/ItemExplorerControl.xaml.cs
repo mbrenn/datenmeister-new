@@ -8,7 +8,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 

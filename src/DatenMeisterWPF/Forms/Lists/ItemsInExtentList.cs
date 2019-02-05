@@ -45,6 +45,11 @@ namespace DatenMeisterWPF.Forms.Lists
         public string ExtentUrl { get; set; }
 
         /// <summary>
+        /// Gets the extent of the item class
+        /// </summary>
+        public IExtent Extent => _extent;
+
+        /// <summary>
         ///     Gets or sets a flag whether, all items shall be shown in one tab.
         /// </summary>
         public bool ShowAllItemsInOneTab { get; set; }
@@ -53,7 +58,7 @@ namespace DatenMeisterWPF.Forms.Lists
         {
             NavigationTreeView.ShowAllChildren = true;
             var workLogic = App.Scope.Resolve<IWorkspaceLogic>();
-            workLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out var workspace, out _extent);
+            workLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out var _, out _extent);
             if (_extent == null)
             {
                 MessageBox.Show("The given workspace and extent was not found.");
@@ -81,7 +86,7 @@ namespace DatenMeisterWPF.Forms.Lists
         protected override void OnRecreateViews()
         {
             // Group by SelectedItems
-            var metaClasses = SelectedItems.Select(x => (x as IElement)?.getMetaClass()).Distinct().ToList();
+            var metaClasses = SelectedItems.Select(x => (x as IElement)?.getMetaClass()).Distinct().Where(x=>x != null).ToList();
             if (metaClasses.Count == 0 || ShowAllItemsInOneTab)
             {
                 CreateTabForItems(SelectedItems, null);

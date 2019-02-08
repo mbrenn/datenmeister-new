@@ -247,10 +247,42 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void ItemTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ResetNavigationTreeViewExtensions();
+        }
+
+        /// <summary>
+        /// Resets the view extensions for the attached navigation view
+        /// </summary>
+        private void ResetNavigationTreeViewExtensions()
+        {
             NavigationTreeView.ViewExtensions.Clear();
             foreach (var extension in GetViewExtensions().OfType<TreeViewItemCommandDefinition>())
             {
                 NavigationTreeView.ViewExtensions.Add(extension);
+            }
+
+            if (NavigationTreeView.ShowAllChildren)
+            {
+                NavigationTreeView.ViewExtensions.Add(new
+                    TreeViewItemCommandDefinition(
+                        "Show only packages",
+                        _ =>
+                        {
+                            NavigationTreeView.ShowAllChildren = false;
+                            ResetNavigationTreeViewExtensions();
+                        }));
+                
+            }
+            else
+            {
+                NavigationTreeView.ViewExtensions.Add(new
+                    TreeViewItemCommandDefinition(
+                        "Show all children",
+                        _ =>
+                        {
+                            NavigationTreeView.ShowAllChildren = true;
+                            ResetNavigationTreeViewExtensions();
+                        }));
             }
         }
 

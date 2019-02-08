@@ -14,16 +14,19 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         private TextBox _contentBlock;
         private string _valueText;
 
-        public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
+        public UIElement CreateElement(IObject value, 
+            IElement fieldData, 
+            DetailFormControl detailForm,
             FieldParameter fieldFlags)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
-
+            
             _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
             var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
             var width = fieldData.getOrDefault<int>(_FormAndFields._TextFieldData.width);
+            var height = fieldData.getOrDefault<int>(_FormAndFields._TextFieldData.lineHeight);
 
             _valueText = string.Empty;
             if (!string.IsNullOrEmpty(_name) && value.isSet(_name))
@@ -68,6 +71,13 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 {
                     _contentBlock.Width = 300;
                     _contentBlock.HorizontalAlignment = HorizontalAlignment.Left;
+                }
+
+                if (height > 0)
+                {
+                    _contentBlock.Height = 10 * height;
+                    _contentBlock.VerticalAlignment = VerticalAlignment.Top;
+                    _contentBlock.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
                 }
 
                 fieldFlags.CanBeFocused = true;

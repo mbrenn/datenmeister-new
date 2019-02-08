@@ -429,6 +429,43 @@ namespace DatenMeister.Models.Forms
         public _SeparatorLineFieldData @SeparatorLineFieldData = new _SeparatorLineFieldData();
         public IElement @__SeparatorLineFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.SeparatorLineFieldData");
 
+        public class _FileSelectionFieldData
+        {
+            public static string @defaultPath = "defaultPath";
+            public IElement _defaultPath = null;
+
+            public static string @defaultExtension = "defaultExtension";
+            public IElement _defaultExtension = null;
+
+            public static string @isSaving = "isSaving";
+            public IElement _isSaving = null;
+
+            public static string @isAttached = "isAttached";
+            public IElement _isAttached = null;
+
+            public static string @fieldType = "fieldType";
+            public IElement _fieldType = null;
+
+            public static string @name = "name";
+            public IElement _name = null;
+
+            public static string @title = "title";
+            public IElement _title = null;
+
+            public static string @isEnumeration = "isEnumeration";
+            public IElement _isEnumeration = null;
+
+            public static string @defaultValue = "defaultValue";
+            public IElement _defaultValue = null;
+
+            public static string @isReadOnly = "isReadOnly";
+            public IElement _isReadOnly = null;
+
+        }
+
+        public _FileSelectionFieldData @FileSelectionFieldData = new _FileSelectionFieldData();
+        public IElement @__FileSelectionFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FileSelectionFieldData");
+
         public class _ViewType
         {
             public static string @Detail = "Detail";

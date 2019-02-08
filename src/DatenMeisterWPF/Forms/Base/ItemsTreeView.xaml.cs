@@ -8,7 +8,6 @@ using System.Windows.Input;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
@@ -54,8 +53,11 @@ namespace DatenMeisterWPF.Forms.Base
             get => (bool) GetValue(ShowAllChildrenProperty);
             set
             {
-                SetValue(ShowAllChildrenProperty, value); 
-                UpdateView();
+                if (ShowAllChildren != value)
+                {
+                    SetValue(ShowAllChildrenProperty, value);
+                    UpdateView();
+                }
             }
         }
 
@@ -238,7 +240,10 @@ namespace DatenMeisterWPF.Forms.Base
 
                 var n = 0;
                 var childModels = new List<TreeViewItem>();
-                var propertiesForChildren = ShowAllChildren ? (item as IObjectAllProperties).getPropertiesBeingSet().ToList() : _propertiesForChildren.ToList();
+                var propertiesForChildren = ShowAllChildren ?
+                    (item as IObjectAllProperties)?.getPropertiesBeingSet().ToList() ?? new List<string>() : 
+                    _propertiesForChildren.ToList();
+
                 foreach (var property in propertiesForChildren)
                 {
                     var propertyValue = itemAsObject.GetOrDefault(property);

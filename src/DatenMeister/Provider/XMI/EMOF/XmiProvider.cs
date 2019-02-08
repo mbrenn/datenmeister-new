@@ -149,6 +149,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             return _rootNode.Descendants().FirstOrDefault(x => XmiId.Get(x) == id);
         }
+
         /// <inheritdoc />
         public IEnumerable<IProviderObject> GetRootObjects()
         {

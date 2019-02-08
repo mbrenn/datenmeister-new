@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -12,11 +11,9 @@ using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Lists;
-using DatenMeisterWPF.Modules.TypeManager;
 
 namespace DatenMeisterWPF.Navigation
 {
@@ -32,16 +29,19 @@ namespace DatenMeisterWPF.Navigation
         public static IControlNavigationSaveItem NavigateToElementDetailView(
             INavigationHost window, 
             IObject element,
-            Action<DetailFormControl> afterCreated = null)
+            Action<DetailFormControl> afterCreated = null,
+            string title = null)
         {
             return (IControlNavigationSaveItem) window.NavigateTo(
                 () =>
                 {
                     var control = new DetailFormControl
                     {
-                        DetailElement = element,
-                        AllowNewProperties = true
+                        AllowNewProperties = true,
+                        Title = title
                     };
+
+                    control.SetContent(element, null);
 
                     // calls the hook, so event handling can be introduced
                     afterCreated?.Invoke(control);
@@ -70,7 +70,10 @@ namespace DatenMeisterWPF.Navigation
                         viewLogic.GetInternalViewExtent(),
                         ManagementViewDefinitions.PathNewXmiDetailForm);
 
-                    var control = new DetailFormControl();
+                    var control = new DetailFormControl
+                    {
+                        Title = "Create new XMI extent"
+                    };
                     control.SetContent(null, newXmiDetailForm);
                     control.AddDefaultButtons("Create");
                     control.ElementSaved += (x, y) => 
@@ -179,7 +182,7 @@ namespace DatenMeisterWPF.Navigation
                             var formFactory = new MofFactory(fields);
 
                             var dropField = formFactory.Create<_FormAndFields>(f => f.__DropDownFieldData);
-                            dropField.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
+                            //dropField.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
                             dropField.set(_FormAndFields._DropDownFieldData.name, "ParentProperty");
                             dropField.set(_FormAndFields._DropDownFieldData.title, "Parent Property");
                             dropField.set(_FormAndFields._DropDownFieldData.isAttached, true);
@@ -196,8 +199,13 @@ namespace DatenMeisterWPF.Navigation
 
                             dropField.set(_FormAndFields._DropDownFieldData.values, list);
                             fields.add(0, dropField);
+
+                            // Adds the line to separate it from the other side 
+                            var lineField = formFactory.Create<_FormAndFields>(f => f.__SeparatorLineFieldData);
+                            fields.add(1, lineField);
                         };
-                    });
+                    },
+                    "New Item");
 
                 detailControlView.Saved += (a, b) =>
                 {
@@ -218,7 +226,8 @@ namespace DatenMeisterWPF.Navigation
         /// Creates a new item for the given extent being located in the workspace
         /// </summary>
         /// <param name="window">Navigation extent being used to open up the new dialog</param>
-        /// <param name="extent">Object to whose property, the new element will be added
+        /// <param name="extent">Extent which will be used for the factory to create the new item.
+        /// The item itself will NOT be added to the extent
         /// </param>
         /// <param name="metaclass">Metaclass, whose instance will be created</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
@@ -249,7 +258,7 @@ namespace DatenMeisterWPF.Navigation
             void CreateElementItself(IElement selectedMetaClass)
             {
                 var newElement = factory.create(selectedMetaClass);
-                var detailControlView = NavigateToElementDetailView(window, newElement);
+                var detailControlView = NavigateToElementDetailView(window, newElement, title: "New Item");
                 detailControlView.Closed += (a, b) =>
                 {
                     result.OnNewItemCreated(new NewItemEventArgs(newElement));
@@ -294,7 +303,7 @@ namespace DatenMeisterWPF.Navigation
             {
                 var newElement = factory.create(selectedMetaClass);
 
-                var detailControlView = NavigateToElementDetailView(window, newElement);
+                var detailControlView = NavigateToElementDetailView(window, newElement, title: "New Item");
                 detailControlView.Saved += (a, b) =>
                 {
                     collection.add(newElement);

@@ -4,7 +4,8 @@ using DatenMeister.Runtime.ExtentStorage.Configuration;
 namespace DatenMeister.Runtime.ExtentStorage
 {
     /// <summary>
-    /// Defines the return information of the loading of a provider. The loader may add additional information to the
+    /// Defines the return information of the loading of a provider.
+    /// The loader may add additional information to the
     /// structure to change the loader config or to perform other operation
     /// </summary>
     public class LoadedProviderInfo
@@ -22,7 +23,8 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         /// <summary>
         /// Gets or sets the config that shall be used in the future for the provider.
-        /// It may be set by ProviderLoader which support the 'one-time' transformation of one datatype ot another. 
+        /// It may be set by ProviderLoader which support the 'one-time'
+        /// transformation of one datatype ot another. 
         /// </summary>
         public ExtentLoaderConfig UsedConfig { get; set; }
 

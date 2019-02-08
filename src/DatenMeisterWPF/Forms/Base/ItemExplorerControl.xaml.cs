@@ -8,7 +8,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Navigation;
 
@@ -180,9 +179,8 @@ namespace DatenMeisterWPF.Forms.Base
 
             if (result == null)
             {
-                // Nothing was found... so, create your default list lsit. 
+                // Nothing was found... so, create your default list list. 
                 result = viewFinder.CreateView(collection);
-                result.set("name", viewDefinition.Name);
             }
 
             // Creates the layoutcontrol for the given view
@@ -194,7 +192,7 @@ namespace DatenMeisterWPF.Forms.Base
             var tabControl = new ItemExplorerTab(viewDefinition)
             {
                 Content = control,
-                Header = NamedElementMethods.GetName(result)
+                Header = viewDefinition.Name
             };
 
             control.SetContent(collection, result, viewDefinition.ViewExtensions);
@@ -249,10 +247,42 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void ItemTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ResetNavigationTreeViewExtensions();
+        }
+
+        /// <summary>
+        /// Resets the view extensions for the attached navigation view
+        /// </summary>
+        private void ResetNavigationTreeViewExtensions()
+        {
             NavigationTreeView.ViewExtensions.Clear();
             foreach (var extension in GetViewExtensions().OfType<TreeViewItemCommandDefinition>())
             {
                 NavigationTreeView.ViewExtensions.Add(extension);
+            }
+
+            if (NavigationTreeView.ShowAllChildren)
+            {
+                NavigationTreeView.ViewExtensions.Add(new
+                    TreeViewItemCommandDefinition(
+                        "Show only packages",
+                        _ =>
+                        {
+                            NavigationTreeView.ShowAllChildren = false;
+                            ResetNavigationTreeViewExtensions();
+                        }));
+                
+            }
+            else
+            {
+                NavigationTreeView.ViewExtensions.Add(new
+                    TreeViewItemCommandDefinition(
+                        "Show all children",
+                        _ =>
+                        {
+                            NavigationTreeView.ShowAllChildren = true;
+                            ResetNavigationTreeViewExtensions();
+                        }));
             }
         }
 

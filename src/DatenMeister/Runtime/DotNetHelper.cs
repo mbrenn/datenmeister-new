@@ -56,7 +56,7 @@ namespace DatenMeister.Runtime
         /// <returns>true, if an enumeration and not a string</returns>
         public static bool IsEnumeration(Type type)
         {
-            return type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type);
+            return type != null && type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type);
         }
 
         /// <summary>

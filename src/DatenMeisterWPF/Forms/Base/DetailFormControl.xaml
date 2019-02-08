@@ -15,13 +15,12 @@
     </UserControl.InputBindings>
     <DockPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
-            <helper:ComboBoxEx x:Name="ViewList" SelectionChanged="ViewList_OnSelectionChanged"></helper:ComboBoxEx>
         </StackPanel>
         <StackPanel Orientation="Horizontal" x:Name="ButtonBar" 
                     DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10">
         </StackPanel>
         <ScrollViewer>
-            <Grid x:Name="DataGrid" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Grid x:Name="DataGrid" Margin="10" VerticalAlignment="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="60*"/>

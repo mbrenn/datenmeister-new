@@ -13,7 +13,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="uri"></param>
         /// <returns></returns>
-        IElement Resolve(string uri, ResolveType resolveType);
+        IElement Resolve(string uri, ResolveType resolveType, bool traceFailing = true);
 
         /// <summary>
         /// Resolves a certain element by id

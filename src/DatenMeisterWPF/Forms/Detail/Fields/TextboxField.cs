@@ -14,19 +14,22 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         private TextBox _contentBlock;
         private string _valueText;
 
-        public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
-            ref FieldFlags fieldFlags)
+        public UIElement CreateElement(IObject value, 
+            IElement fieldData, 
+            DetailFormControl detailForm,
+            FieldParameter fieldFlags)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
-
-            _name = fieldData.get(_FormAndFields._FieldData.name).ToString();
-            var isReadOnly = fieldData.get<bool>(_FormAndFields._FieldData.isReadOnly);
+            
+            _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
             var width = fieldData.getOrDefault<int>(_FormAndFields._TextFieldData.width);
+            var height = fieldData.getOrDefault<int>(_FormAndFields._TextFieldData.lineHeight);
 
             _valueText = string.Empty;
-            if (value.isSet(_name))
+            if (!string.IsNullOrEmpty(_name) && value.isSet(_name))
             {
                 _valueText = value.getOrDefault<string>(_name) ?? string.Empty;
             }
@@ -70,7 +73,14 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     _contentBlock.HorizontalAlignment = HorizontalAlignment.Left;
                 }
 
-                fieldFlags = fieldFlags & ~FieldFlags.Focussed;
+                if (height > 0)
+                {
+                    _contentBlock.Height = 10 * height;
+                    _contentBlock.VerticalAlignment = VerticalAlignment.Top;
+                    _contentBlock.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                }
+
+                fieldFlags.CanBeFocused = true;
 
                 return _contentBlock;
             }

@@ -184,5 +184,19 @@ namespace DatenMeister.Runtime
 
             return null;
         }
+
+        /// <summary>
+        /// Finds in the meta extents and meta workspaces the metaclass
+        /// </summary>
+        /// <typeparam name="TFilledType">Filled Type to be evaluated</typeparam>
+        /// <param name="extent">Extent to be evaluated</param>
+        /// <param name="type">Type converter finding the requested type</param>
+        /// <returns>The found element</returns>
+        public static IElement FindInMeta<TFilledType>(this IExtent extent, Func<TFilledType, IElement> type)
+            where TFilledType : class, new()
+        {
+            var filledType = ((MofExtent)extent).Workspace.GetFromMetaWorkspace<TFilledType>();
+            return type(filledType);
+        }
     }
 }

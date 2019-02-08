@@ -28,11 +28,15 @@ namespace DatenMeisterWPF.Forms.Base
     /// <summary>
     ///     Interaktionslogik für DetailFormControl.xaml
     /// </summary>
-    public partial class DetailFormControl : UserControl, INavigationGuest, IHasSelectedItems
+    public partial class DetailFormControl : UserControl, INavigationGuest, IHasSelectedItems, IHasTitle
     {
         private int _fieldCount;
 
-        private bool? _hideViewSelection;
+        /// <summary>
+        /// Stores the title of the form control. If not overridden, a default
+        /// title will be created
+        /// </summary>
+        private string _internalTitle;
 
         public DetailFormControl()
         {
@@ -43,7 +47,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         ///     Gets the detailed element, whose content is shown in the dialog
         /// </summary>
-        public IObject DetailElement { get; set; }
+        public IObject DetailElement { get; private set; }
 
         /// <summary>
         ///     Defines the form definition being used in the detail for
@@ -88,6 +92,30 @@ namespace DatenMeisterWPF.Forms.Base
         ///     Gets or sets the navigation host
         /// </summary>
         public INavigationHost NavigationHost { get; set; }
+
+        /// <summary>
+        /// Gets the title for the control
+        /// </summary>
+        public string Title
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_internalTitle))
+                {
+                    return _internalTitle;
+                }
+
+                if (DetailElement == null)
+                {
+                    return "New item";
+                }
+
+                return $"Edit Item: {NamedElementMethods.GetName(DetailElement)}";
+
+            }
+
+            set => _internalTitle = value;
+        }
 
         /// <summary>
         ///     Prepares the navigation of the host. The function is called by the navigation
@@ -150,7 +178,7 @@ namespace DatenMeisterWPF.Forms.Base
 
             void CopyContent()
             {
-                var inMemory = InMemoryObject.CreateEmpty();
+                var inMemory = InMemoryObject.CreateEmpty(DetailElement.GetExtentOf());
                 StoreDialogContentIntoElement(inMemory);
 
                 var copyContent = new CopyToClipboardCommand(inMemory);
@@ -159,7 +187,7 @@ namespace DatenMeisterWPF.Forms.Base
 
             void CopyContentAsXmi()
             {
-                var inMemory = InMemoryObject.CreateEmpty();
+                var inMemory = InMemoryObject.CreateEmpty(DetailElement.GetExtentOf());
                 StoreDialogContentIntoElement(inMemory);
 
                 var copyContent = new CopyToClipboardCommand(inMemory);
@@ -204,7 +232,6 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void DetailFormControl_Loaded(object sender, RoutedEventArgs e)
         {
-            SetContent(DetailElement, ViewDefinition?.Element);
             LoadingCompleted?.Invoke(this, EventArgs.Empty);
         }
 
@@ -242,95 +269,6 @@ namespace DatenMeisterWPF.Forms.Base
             );
 
             AttachedElement = InMemoryObject.CreateEmpty();
-            UpdateViewList();
-            UpdateContent();
-        }
-
-        /// <summary>
-        ///     Sets the form being used for the detail element.
-        /// </summary>
-        /// <param name="form">Form to be set</param>
-        public void SetForm(IElement form)
-        {
-            ViewDefinition = new ViewDefinition(
-                NamedElementMethods.GetFullName(form),
-                form,
-                ViewDefinitionMode.Specific);
-
-            if (IsInitialized)
-            {
-                UpdateContent();
-            }
-        }
-
-        /// <summary>
-        ///     This method gets called to update the views
-        /// </summary>
-        private void UpdateViewList()
-        {
-            // Skip, if view selection shall be hidden
-            if (_hideViewSelection == true) return;
-
-            // If a specific viewdefinition is set, no view selection will shown.
-            if (ViewDefinition.Mode == ViewDefinitionMode.Specific) return;
-
-            // Update view
-            var views = GetFormsForView()?.ToList();
-
-            if (views != null)
-            {
-                if (ViewDefinition.Element != null && views.IndexOf(ViewDefinition.Element) == -1)
-                {
-                    views.Add(ViewDefinition.Element);
-                }
-
-                ViewList.Visibility = Visibility.Visible;
-                var list = new List<ViewDefinition>
-                {
-                    new ViewDefinition("Default", null, ViewDefinitionMode.Default),
-                    new ViewDefinition("All Properties", null, ViewDefinitionMode.AllProperties)
-                };
-
-                list.AddRange(views.Select(x => new ViewDefinition(NamedElementMethods.GetFullName(x), x)));
-                ViewList.ItemsSource = list;
-
-                switch (ViewDefinition.Mode)
-                {
-                    case ViewDefinitionMode.AllProperties:
-                        ViewList.SelectedIndex = 1;
-                        break;
-                    case ViewDefinitionMode.Default:
-                        ViewList.SelectedIndex = 0;
-                        break;
-                    default:
-                        ViewList.SelectedIndex = 2 + views.IndexOf(ViewDefinition.Element);
-                        break;
-                }
-            }
-            else
-            {
-                ViewList.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        /// <summary>
-        ///     Gets the enumeration of all views that may match to the shown items
-        /// </summary>
-        public IEnumerable<IElement> GetFormsForView()
-        {
-            return App.Scope?.Resolve<IViewFinder>()
-                .FindViews((DetailElement as IHasExtent)?.Extent as IUriExtent, DetailElement);
-        }
-
-        private void ViewList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!(ViewList.SelectedItem is ViewDefinition newForm))
-            {
-                return;
-            }
-
-            ViewDefinition = newForm;
-            UpdateContent();
         }
 
         /// <summary>
@@ -342,19 +280,6 @@ namespace DatenMeisterWPF.Forms.Base
             UpdateActualViewDefinition();
 
             OnViewDefined();
-
-            if (_hideViewSelection == null)
-            {
-                if (DotNetHelper.IsTrue(EffectiveForm.GetOrDefault(_FormAndFields._Form.fixView)))
-                {
-                    ViewList.Visibility = Visibility.Collapsed;
-                    _hideViewSelection = true;
-                }
-                else
-                {
-                    _hideViewSelection = false;
-                }
-            }
         }
 
         private void UpdateActualViewDefinition()
@@ -380,7 +305,7 @@ namespace DatenMeisterWPF.Forms.Base
         /// <summary>
         ///     Updates the content
         /// </summary>
-        private void UpdateContent()
+        public void UpdateContent()
         {
             RefreshViewDefinition();
 
@@ -394,10 +319,6 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             var isMinimized = EffectiveForm.getOrDefault<bool>(_FormAndFields._Form.minimizeDesign);
-            if (isMinimized)
-            {
-                ViewList.Visibility = Visibility.Collapsed;
-            }
 
             _fieldCount = 0;
 
@@ -443,29 +364,41 @@ namespace DatenMeisterWPF.Forms.Base
         {
             if (fields == null) throw new ArgumentNullException(nameof(fields));
 
-            var flags = FieldFlags.Focussed;
+            var anyFocused = false;
             foreach (var field in fields.Cast<IElement>())
             {
+                var flags = new FieldParameter();
+
                 var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
                 if (fieldType == MetaClassElementFieldData.FieldType)
                 {
                     continue;
                 }
-
-                var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
-                var isReadOnly = field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
-
-                // Sets the title block
-                var titleBlock = new TextBlock
-                {
-                    Text = $"{title}: ",
-                    IsEnabled = !isReadOnly
-                };
-
-                var oldFlags = flags;
+                
                 var (detailElement, contentBlock) =
-                    FieldFactory.GetUIElementFor(DetailElement, field, this, ref flags);
+                    FieldFactory.GetUIElementFor(DetailElement, field, this, flags);
 
+                if (!flags.IsSpanned)
+                {
+                    var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
+                    var isReadOnly = field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
+
+                    // Sets the title block
+                    var titleBlock = new TextBlock
+                    {
+                        Text = string.IsNullOrEmpty(title) ? "" : $"{title}: ",
+                        IsEnabled = !isReadOnly
+                    };
+
+                    CreateRowForField(titleBlock, contentBlock);
+                }
+                else
+                {
+                    CreateSpannedRow(contentBlock);
+                }
+            
+                // Checks whether the control element shall be stored in
+                // the detail element iself or within the attached fields
                 if (field.getOrNull<bool>(_FormAndFields._FieldData.isAttached) == true)
                 {
                     AttachedItemFields.Add(detailElement);
@@ -475,18 +408,22 @@ namespace DatenMeisterWPF.Forms.Base
                     ItemFields.Add(detailElement);
                 }
 
-                Grid.SetColumn(contentBlock, 1);
-                Grid.SetRow(contentBlock, _fieldCount);
-
-                CreateRowForField(titleBlock, contentBlock);
-
                 // Check, if element shall be focused
-                if ((oldFlags & FieldFlags.Focussed) != (flags & FieldFlags.Focussed))
+                if (!anyFocused && flags.CanBeFocused)
                 {
                     contentBlock.Focus();
+                    anyFocused = true;
                 }
             }
 
+            AddRowsForInteractionHandlers();
+        }
+
+        /// <summary>
+        /// Adds the buttons for the interactionhandlers. 
+        /// </summary>
+        private void AddRowsForInteractionHandlers()
+        {
             var buttons = new List<Button>();
 
             // Creates additional rows for buttons with additional actions
@@ -604,14 +541,21 @@ namespace DatenMeisterWPF.Forms.Base
                 {
                     var fieldKey = new TextBox();
                     var fieldValue = new TextboxField();
-                    var flags = FieldFlags.Zero;
+                    var flags = new FieldParameter();
+
+                    var fieldData = MofFactory.CreateElementFor<_FormAndFields>(
+                        EffectiveForm,
+                        x => x.__TextFieldData);
 
                     var fieldUIElement = fieldValue.CreateElement(
                         DetailElement,
-                        null,
+                        fieldData,
                         this, 
-                        ref flags);
-                    ItemFields.Add(fieldValue);
+                        flags);
+
+                    ItemFields.Add(new NewPropertyField(
+                        fieldKey,
+                        fieldUIElement));
 
                     CreateRowForField(fieldKey, fieldUIElement);
                     fieldKey.Focus();
@@ -647,6 +591,41 @@ namespace DatenMeisterWPF.Forms.Base
         }
 
         /// <summary>
+        /// This helper class is used to allow the setting of new properties
+        /// by the user. It takes two text boxes and sets
+        /// the new property as defined by the user within the given object
+        /// </summary>
+        private class NewPropertyField : IDetailField
+        {
+            private readonly TextBox _fieldKey;
+            private readonly UIElement _fieldUiElement;
+
+            public NewPropertyField(TextBox fieldKey, UIElement fieldUiElement)
+            {
+                _fieldKey = fieldKey;
+                _fieldUiElement = fieldUiElement;
+            }
+
+            public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, FieldParameter fieldFlags)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void CallSetAction(IObject element)
+            {
+                var propertyKey = _fieldKey.Text;
+                var propertyValue = (_fieldUiElement as TextBox)?.Text;
+
+                if (string.IsNullOrEmpty(propertyKey) || propertyValue == null)
+                {
+                    return;
+                }
+
+                element.set(propertyKey, propertyValue);
+            }
+        }
+
+        /// <summary>
         ///     Takes the input that the user has currently into the dialog and stores these changes into the given element.
         /// </summary>
         /// <param name="element">Element in which the content of the element shall be stored</param>
@@ -656,6 +635,7 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 // Copy all data from DetailElement to element to also have the non-shown properties in the mirror object
                 ObjectCopier.CopyPropertiesStatic(DetailElement, element);
+                return;
             }
 
             foreach (var field in ItemFields)

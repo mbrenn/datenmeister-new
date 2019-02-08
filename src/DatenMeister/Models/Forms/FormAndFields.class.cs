@@ -419,6 +419,65 @@ namespace DatenMeister.Models.Forms
         public _TextFieldData @TextFieldData = new _TextFieldData();
         public IElement @__TextFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.TextFieldData");
 
+        public class _SeparatorLineFieldData
+        {
+            public static string @Height = "Height";
+            public IElement _Height = null;
+
+        }
+
+        public _SeparatorLineFieldData @SeparatorLineFieldData = new _SeparatorLineFieldData();
+        public IElement @__SeparatorLineFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.SeparatorLineFieldData");
+
+        public class _FileSelectionFieldData
+        {
+            public static string @defaultPath = "defaultPath";
+            public IElement _defaultPath = null;
+
+            public static string @defaultExtension = "defaultExtension";
+            public IElement _defaultExtension = null;
+
+            public static string @isSaving = "isSaving";
+            public IElement _isSaving = null;
+
+            public static string @isAttached = "isAttached";
+            public IElement _isAttached = null;
+
+            public static string @fieldType = "fieldType";
+            public IElement _fieldType = null;
+
+            public static string @name = "name";
+            public IElement _name = null;
+
+            public static string @title = "title";
+            public IElement _title = null;
+
+            public static string @isEnumeration = "isEnumeration";
+            public IElement _isEnumeration = null;
+
+            public static string @defaultValue = "defaultValue";
+            public IElement _defaultValue = null;
+
+            public static string @isReadOnly = "isReadOnly";
+            public IElement _isReadOnly = null;
+
+        }
+
+        public _FileSelectionFieldData @FileSelectionFieldData = new _FileSelectionFieldData();
+        public IElement @__FileSelectionFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FileSelectionFieldData");
+
+        public class _ViewType
+        {
+            public static string @Detail = "Detail";
+            public IElement @__Detail = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType-Detail");
+            public static string @List = "List";
+            public IElement @__List = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType-List");
+
+        }
+
+        public _ViewType @ViewType = new _ViewType();
+        public IElement @__ViewType = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType");
+
         public static _FormAndFields TheOne = new _FormAndFields();
 
     }

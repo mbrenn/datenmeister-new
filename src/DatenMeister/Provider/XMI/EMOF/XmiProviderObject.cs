@@ -124,6 +124,11 @@ namespace DatenMeister.Provider.XMI.EMOF
                 return propertyAsDateTime.ToUniversalTime().ToString(CultureInfo.InvariantCulture);
             }
 
+            if (value.GetType().IsEnum)
+            {
+                return value.ToString();
+            }
+
             if (value == null)
             {
                 throw new ArgumentNullException(nameof(value));
@@ -169,7 +174,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                     new XAttribute("href", uriReference.Uri));
             }
 
-            throw new InvalidOperationException("Value is not an XmlObject or an IElement: " + value);
+            throw new InvalidOperationException("Value is not an XmlObject or an IElement: " + (value ?? "'null'"));
         }
 
         /// <inheritdoc />
@@ -255,7 +260,13 @@ namespace DatenMeister.Provider.XMI.EMOF
                     continue;
                 }
 
-                result.Add(attribute.Name.ToString());
+                var attributeName = attribute.Name.ToString();
+                if (attributeName.EndsWith("-ref"))
+                {
+                    attributeName = attributeName.Substring(0, attributeName.Length - "-ref".Length);
+                }
+
+                result.Add(attributeName);
             }
 
             foreach (var element in XmlNode.Elements().Distinct())

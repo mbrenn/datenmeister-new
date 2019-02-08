@@ -3,9 +3,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Navigation;
 
@@ -16,6 +18,10 @@ namespace DatenMeisterWPF.Windows
     /// </summary>
     public partial class DetailFormWindow : Window, IHasRibbon, INavigationHost
     {
+        /// <summary>
+        /// Defines the logger for the DetailFormWindow
+        /// </summary>
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(DetailFormWindow));
         /// <summary>
         /// Defines the event that will be thrown, when the user has clicked upon 'save' in the inner form.
         /// This event has to be invoked by the child elements. 
@@ -59,9 +65,13 @@ namespace DatenMeisterWPF.Windows
         public void SetFocus()
         {
             if (MainContent == null)
+            {
                 Focus();
+            }
             else
+            {
                 MainContent?.Focus();
+            }
         }
 
         /// <inheritdoc />
@@ -86,24 +96,8 @@ namespace DatenMeisterWPF.Windows
             {
                 if (control.IsDesignMinimized())
                 {
-                    Dispatcher.InvokeAsync(() =>
-                    {
-
-                        var width = control.EffectiveForm.getOrDefault<double>(_FormAndFields._Form.defaultWidth);
-                        var height = control.EffectiveForm.getOrDefault<double>(_FormAndFields._Form.defaultWidth);
-                        if (width <= 0 && height <= 0)
-                        {
-                            width = 1000;
-                            height = 1000;
-                        }
-
-                        MainRibbon.IsMinimized = true;
-                        control.DataGrid.Measure(new Size(width, height));
-                        Width = Math.Ceiling(control.DataGrid.DesiredSize.Width) + 50;
-                        Height = Math.Ceiling(control.DataGrid.DesiredSize.Height) + 150;
-                        Top = (Owner?.Top ?? 0) + 100;
-                        Left = (Owner?.Left ?? 0) + 100;
-                    });
+                    SwitchToMinimumSize();
+                    MainRibbon.IsMinimized = true;
                 }
 
                 var size = control.DefaultSize;
@@ -116,9 +110,51 @@ namespace DatenMeisterWPF.Windows
                         window.Height = size.Height;
                     }
                 }
+
+                var name = NamedElementMethods.GetName(control.DetailElement);
+                if (!string.IsNullOrEmpty(name))
+                {
+                    Title = $"Edit element: {name}";
+                }
+            }
+
+            if (element is IHasTitle title)
+            {
+                Title = title.Title;
             }
 
             Focus();
+        }
+
+        /// <summary>
+        /// Takes the content of the window and resizes the window
+        /// to the detail form elements. 
+        /// </summary>
+        public void SwitchToMinimumSize()
+        {
+            var control = MainContent.Content as DetailFormControl;
+            if (control?.EffectiveForm == null)
+            {
+                return;
+            }
+
+            var width = control.EffectiveForm.getOrDefault<double>(_FormAndFields._Form.defaultWidth);
+            var height = control.EffectiveForm.getOrDefault<double>(_FormAndFields._Form.defaultWidth);
+            if (width <= 0 && height <= 0)
+            {
+                width = 1000;
+                height = 1000;
+            }
+            
+            MainRibbon.Measure(new Size(width,height));
+            var heightOffset = MainRibbon.DesiredSize.Height;
+
+            control.Measure(new Size(width, height - heightOffset));
+            Width = Math.Ceiling(control.DesiredSize.Width) + 50;
+            Height = Math.Ceiling(control.DesiredSize.Height) + 50 + heightOffset;
+
+            Logger.Trace(
+                $"Size: {Height}: {control.DesiredSize.Height}(ctrl) + {MainRibbon.DesiredSize.Height}");
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)

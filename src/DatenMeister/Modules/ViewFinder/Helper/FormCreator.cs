@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
@@ -95,7 +96,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             if (creationMode.HasFlag(CreationMode.ByMetaClass)
                 && metaClass != null)
             {
-                var classifierMethods = ClassifierMethods.GetPropertiesOfClassifier(metaClass).Where(x=> x.isSet("name")).ToList();
+                var classifierMethods = ClassifierMethods.
+                    GetPropertiesOfClassifier(metaClass).Where(x=> x.isSet("name")).ToList();
                 foreach (var property in classifierMethods.OrderBy(x=>x.get("name").ToString()))
                 {
                     wasInMetaClass = true;
@@ -115,6 +117,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             // Second phase: Get properties by the object iself
             // This item does not have a metaclass and also no properties, so we try to find them by using the item
             var itemAsAllProperties = item as IObjectAllProperties;
+            var itemAsObject = item as IObject;
 
             var isByProperties =
                 creationMode.HasFlag(CreationMode.ByProperties);
@@ -132,11 +135,31 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     var column = form.fields.FirstOrDefault(x => x.name == property);
                     if (column == null)
                     {
-                        column = new TextFieldData
+                        // Check by content, which type of field shall be created
+                        var propertyValue = itemAsObject?.GetOrDefault(property);
+
+                        if (DotNetHelper.IsPrimitiveType(propertyValue?.GetType()))
                         {
-                            name = property,
-                            title = property
-                        };
+                            column = new TextFieldData
+                            {
+                                name = property,
+                                title = property
+                            };
+                        }
+                        else
+                        {
+                            if (DotNetHelper.IsEnumeration(propertyValue?.GetType()))
+                            {
+                                column = new SubElementFieldData(property, property);
+                            }
+                            else
+                            {
+                                column = new ReferenceFieldData(property, property)
+                                {
+                                    isSelectionInline = false
+                                };
+                            }
+                        }
 
                         form.fields.Add(column);
                     }
@@ -170,7 +193,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 Logger.Trace(propertyType.ToString());
             }
 
-            var propertyName = property.get("name").ToString();
+            var propertyName = property.get<string>("name");
 
             if (propertyType == null)
             {
@@ -182,6 +205,17 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                 return columnNoPropertyType;
             }
+
+            // Check, if field property is an enumeration
+            var uriResolver = propertyType.GetUriResolver();
+            var stringType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String",
+                ResolveType.Default);
+            var integerType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer",
+                ResolveType.Default);
+            var booleanType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Boolean",
+                ResolveType.Default);
+            var realType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real",
+                ResolveType.Default);
 
             // Checks, if the property is an enumeration. 
             if (propertyType.metaclass != null)
@@ -197,8 +231,25 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     return comboBox;
                 }
 
+                if (propertyType.@equals(booleanType))
+                {
+                    var checkbox = new CheckboxFieldData(propertyName, propertyName);
+                    return checkbox;
+                }
 
-
+                if (!propertyType.@equals(stringType) && !propertyType.@equals(integerType) && !propertyType.@equals(realType))
+                {
+                    if (property.getOrDefault<int>(_UML._CommonStructure._MultiplicityElement.upper) > 1)
+                    {
+                        var elements = new SubElementFieldData(propertyName, propertyName);
+                        return elements;
+                    }
+                    else
+                    {
+                        var reference = new ReferenceFieldData(propertyName, propertyName);
+                        return reference;
+                    }
+                }
             }
 
             // Checks, if the property is a field data
@@ -208,15 +259,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 title = propertyName
             };
 
-            // Check, if field property is an enumeration
-            var uriResolver = propertyType.GetUriResolver();
-            var stringType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String",
-                ResolveType.Default);
-            var integerType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer",
-                ResolveType.Default);
-
             // If propertyType is an integer, the field can be smaller
-            if (propertyType?.@equals(integerType) == true)
+            if (propertyType.@equals(integerType))
             {
                 column.width = 10;
             }

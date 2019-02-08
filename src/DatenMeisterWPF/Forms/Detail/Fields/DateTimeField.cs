@@ -7,13 +7,17 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 {
     public class DateTimeField : IDetailField
     {
-        public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
-            ref FieldFlags fieldFlags)
+        public UIElement CreateElement(
+            IObject value, 
+            IElement fieldData, 
+            DetailFormControl detailForm,
+            FieldParameter fieldFlags)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
+            fieldFlags.CanBeFocused = true;
             throw new System.NotImplementedException();
         }
 

@@ -7,7 +7,8 @@
              xmlns:dm="clr-namespace:DatenMeisterWPF.Forms.Base"
              xmlns:wpf="clr-namespace:BurnSystems.WPF;assembly=BurnSystems.WPF"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="800"
+             Unloaded="ItemListViewControl_OnUnloaded">
     <UserControl.Resources>
         <DataTemplate x:Key="TemplateColumnButton">
             <Button Click="ButtonBase_OnClick" Loaded="RowButton_OnInitialized" VerticalAlignment="Top">Edit</Button>

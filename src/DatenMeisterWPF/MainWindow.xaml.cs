@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -52,11 +53,19 @@ namespace DatenMeisterWPF
 
             if (App.Scope.Resolve<ExtentStorageData>().FailedLoading)
             {
-                MessageBox.Show("An exception occured during the loading of the events. \r\n" +
-                                "This will lead to a read-only instance of DatenMeister. All changes will be lost. \r\n" +
-                                "To resolve the issue, verify the log and fix the 'DatenMeister.Extents.xml'.", "Error during start-up of DatenMeister", 
-                    MessageBoxButton.OK, 
-                    MessageBoxImage.Warning);
+                Title += " (READ-ONLY)";
+
+                if (MessageBox.Show("An exception occured during the loading of the events. \r\n" +
+                                    "This will lead to a read-only instance of DatenMeister. All changes will be lost. \r\n" +
+                                    "To resolve the issue, verify the log and fix the 'DatenMeister.Extents.xml'.\n\n" +
+                                    "Would you like to open the corresponding folder?",
+                        "Error during start-up of DatenMeister",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    var databasePath = App.Scope.Resolve<IntegrationSettings>().DatabasePath;
+                    Process.Start(databasePath);
+                }
             }
         }
 
@@ -136,7 +145,6 @@ namespace DatenMeisterWPF
             }
 
             _ribbonHelper.EvaluateExtensions(viewExtensions);
-
 
             void OpenLog()
             {

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
@@ -12,12 +11,15 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 {
     public class ReadOnlyListField : IDetailField
     {
-        public UIElement CreateElement(IObject valueElement, IElement fieldData, DetailFormControl detailForm,
-            ref FieldFlags fieldFlags)
+        public UIElement CreateElement(
+            IObject valueElement, 
+            IElement fieldData, 
+            DetailFormControl detailForm,
+            FieldParameter fieldFlags)
         {
             var contentBlock = new Grid();
-            contentBlock.ColumnDefinitions.Add(new ColumnDefinition());
-            contentBlock.ColumnDefinitions.Add(new ColumnDefinition());
+            contentBlock.ColumnDefinitions.Add(new ColumnDefinition {Width = GridLength.Auto});
+            contentBlock.ColumnDefinitions.Add(new ColumnDefinition {Width = GridLength.Auto});
 
             var name = fieldData.get<string>(_FormAndFields._FieldData.name);
 
@@ -54,7 +56,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     // Creates the button
                     if (innerValue is IElement asIElement)
                     {
-                        var button = new Button {Content = "Edit"};
+                        var button = new Button {Content = "Edit", Padding = new Thickness(10,0,10,0)};
                         Grid.SetRow(button, inner);
                         Grid.SetColumn(button, 1);
 

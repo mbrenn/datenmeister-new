@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 
 namespace DatenMeister.Models.Forms
@@ -21,7 +22,10 @@ namespace DatenMeister.Models.Forms
                 typeof(MetaClassElementFieldData),
                 typeof(ReferenceFieldData),
                 typeof(SubElementFieldData),
-                typeof(TextFieldData)
+                typeof(TextFieldData),
+                typeof(SeparatorLineFieldData),
+                typeof(FileSelectionFieldData),
+                typeof(ViewType)
             };
         }
     }

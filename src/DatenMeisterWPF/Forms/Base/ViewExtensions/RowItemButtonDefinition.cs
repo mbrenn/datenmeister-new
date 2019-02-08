@@ -1,5 +1,6 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Forms.Base.ViewExtensions
 {

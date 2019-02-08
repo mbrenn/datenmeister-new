@@ -23,8 +23,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
         public UIElement CreateElement(
             IObject value, 
             IElement fieldData, 
-            DetailFormControl detailForm, 
-            ref FieldFlags fieldFlags)
+            DetailFormControl detailForm,
+            FieldParameter fieldFlags)
         {
             var isInline = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isSelectionInline);
             _name = fieldData.get<string>(_FormAndFields._FieldData.name);
@@ -37,7 +37,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 _control = new LocateElementControl
                 {
                     MinHeight = 400,
-                    MaxHeight = 400
+                    MaxHeight = 400,
+                    MinWidth = 600
                 };
 
                 if (fieldData.GetOrDefault(_FormAndFields._ReferenceFieldData.defaultValue) is IElement element)
@@ -75,6 +76,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     }
                 }
 
+                fieldFlags.CanBeFocused = true;
                 return _control;
             }
             else
@@ -135,6 +137,8 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 panel.Children.Add(itemText);
                 panel.Children.Add(openButten);
                 panel.Children.Add(selectButton);
+
+                fieldFlags.CanBeFocused = true;
                 return panel;
             }
         }

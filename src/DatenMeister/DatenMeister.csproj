@@ -17,6 +17,7 @@
     <None Remove="XmiFiles\MOF.xmi" />
     <None Remove="XmiFiles\PrimitiveTypes.xmi" />
     <None Remove="XmiFiles\UML.xmi" />
+    <None Remove="XmiFiles\Views\UML.xmi" />
     <None Remove="XmiFiles\Views\WorkspacesAndExtents.xmi" />
   </ItemGroup>
   <ItemGroup>
@@ -24,6 +25,7 @@
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
     <EmbeddedResource Include="XmiFiles\UML.xmi" />
+    <EmbeddedResource Include="XmiFiles\Views\UML.xmi" />
     <EmbeddedResource Include="XmiFiles\Views\WorkspacesAndExtents.xmi" />
   </ItemGroup>
   <ItemGroup>

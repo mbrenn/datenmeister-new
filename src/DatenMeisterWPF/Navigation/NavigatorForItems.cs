@@ -270,6 +270,24 @@ namespace DatenMeisterWPF.Navigation
         }
 
         /// <summary>
+        /// Creates a new item for the given extent being located in the workspace and adds it to the given item
+        /// </summary>
+        /// <param name="window">Navigation extent being used to open up the new dialog</param>
+        /// <param name="extent">Extent which will be used for the factory to create the new item. 
+        /// </param>
+        /// <param name="metaclass">Metaclass, whose instance will be created</param>
+        /// <returns>The control element that can be used to receive events from the dialog</returns>
+        public static IControlNavigationNewItem NavigateToCreateNewItemInExtent(
+            INavigationHost window,
+            IExtent extent,
+            IElement metaclass)
+        {
+            var result = NavigateToCreateNewItem(window, extent, metaclass);
+            result.NewItemCreated += (x, y) => { extent.elements().add(y.NewItem); };
+            return result;
+        }
+
+        /// <summary>
         /// Creates a new item for the given object and adds it to the properties of the item
         /// If the property is not a reflective collection, a reflective collection will be created
         /// </summary>

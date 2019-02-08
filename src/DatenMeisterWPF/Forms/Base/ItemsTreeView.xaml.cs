@@ -73,6 +73,17 @@ namespace DatenMeisterWPF.Forms.Base
 
         private Dictionary<IObject, TreeViewItem> _mappingItems = new Dictionary<IObject, TreeViewItem>();
 
+        /// <summary>
+        /// Stores the previously selected item when the tree is rebuilt.
+        /// This allows the refocussing to the item
+        /// </summary>
+        private object _previouslySelectedItem;
+
+        /// <summary>
+        /// Stores the item that shall be selected, after the items have been created
+        /// </summary>
+        private TreeViewItem _newSelectedItem;
+
         public ItemsTreeView()
         {
             InitializeComponent();
@@ -129,7 +140,6 @@ namespace DatenMeisterWPF.Forms.Base
         public void SetDefaultProperties()
         {
             _propertiesForChildren.Add(_UML._Packages._Package.packagedElement);
-            UpdateView();
         }
 
         /// <summary>
@@ -153,6 +163,9 @@ namespace DatenMeisterWPF.Forms.Base
 
             var model = new List<TreeViewItem>();
 
+            _newSelectedItem = null;
+            _previouslySelectedItem = (TreeView.SelectedItem as TreeViewItem)?.Tag;
+
             var container = TreeView as ItemsControl;
             if (ShowRoot)
             {
@@ -166,7 +179,7 @@ namespace DatenMeisterWPF.Forms.Base
                 container.ItemsSource = new[] {rootItem};
                 container = rootItem;
             }
-            
+
             lock (_alreadyVisited)
             {
                 var n = 0;
@@ -188,6 +201,13 @@ namespace DatenMeisterWPF.Forms.Base
                 }
 
                 container.ItemsSource = model;
+            }
+
+            if (_newSelectedItem != null)
+            {
+                _newSelectedItem.IsSelected = true;
+                _newSelectedItem.IsExpanded = true;
+                _newSelectedItem.BringIntoView();
             }
         }
 
@@ -233,6 +253,11 @@ namespace DatenMeisterWPF.Forms.Base
                 Header = item.ToString(),
                 Tag = item
             };
+
+            if (_previouslySelectedItem != null && _previouslySelectedItem.Equals(item))
+            {
+                _newSelectedItem = treeViewItem;
+            }
 
             if (item is IObject itemAsObject)
             {

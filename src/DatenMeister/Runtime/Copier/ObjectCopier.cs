@@ -26,6 +26,11 @@ namespace DatenMeister.Runtime.Copier
         private IExtent _sourceExtent;
 
         /// <summary>
+        /// Gets or sets a value indicating whether references shall be cloned, so there will no UriReferences
+        /// </summary>
+        public bool CloneAllReferences { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the ObjectCopier. 
         /// </summary>
         /// <param name="factory"></param>
@@ -42,7 +47,7 @@ namespace DatenMeister.Runtime.Copier
         public IElement Copy(IObject element)
         {
             // Gets the source extent
-            _sourceExtent = (element as IHasExtent)?.Extent;
+            _sourceExtent = (element as IHasExtent)?.Extent ?? (element as MofElement)?.CreatedByExtent;
 
             var targetElement = _factory.create((element as IElement)?.getMetaClass());
             CopyProperties(element, targetElement);
@@ -90,7 +95,7 @@ namespace DatenMeister.Runtime.Copier
             if (value is IElement valueAsElement)
             {
                 var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
-                if (propertyExtent == null || propertyExtent == _sourceExtent)
+                if (propertyExtent == null || propertyExtent == _sourceExtent || CloneAllReferences)
                 {
                     return Copy(valueAsElement);
                 }

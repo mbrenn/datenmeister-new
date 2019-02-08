@@ -22,11 +22,12 @@ namespace DatenMeisterWPF.Modules.TypeManager
             var result = base.GetViewExtensions().ToList();
 
             var type = SelectionType.Package;
-            if ((SelectedPackage as IElement)?.metaclass?.@equals(Extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class)) == true)
+            if ((SelectedPackage as IElement)?.metaclass?.@equals(
+                    Extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class)) == true)
             {
                 type = SelectionType.Class;
             }
-            
+
             if (type == SelectionType.Package)
             {
                 result.Add(
@@ -34,11 +35,10 @@ namespace DatenMeisterWPF.Modules.TypeManager
                         "Create new Class",
                         () =>
                         {
-                            var navigationEvents = NavigatorForItems.NavigateToCreateNewItem(
+                            NavigatorForItems.NavigateToCreateNewItemInExtent(
                                 NavigationHost,
                                 Extent,
                                 Extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class));
-                            navigationEvents.NewItemCreated += (x, y) => { Extent.elements().add(y.NewItem); };
                         },
                         Name = string.Empty,
                         NavigationCategories.Type + "." + "Manager"));
@@ -60,6 +60,31 @@ namespace DatenMeisterWPF.Modules.TypeManager
                         NavigationCategories.Type + "." + "Manager"));
 
             }
+
+            result.Add(
+                new RibbonButtonDefinition(
+                    "Create new Package",
+                () =>
+                {
+                    if (SelectedPackage == null)
+                    {
+                        NavigatorForItems.NavigateToCreateNewItemInExtent(
+                            NavigationHost,
+                            Extent,
+                            Extent.FindInMeta<_UML>(x => x.Packages.__Package));
+                    }
+                    else
+                    {
+                        NavigatorForItems.NavigateToNewItemForPropertyCollection(
+                            NavigationHost,
+                            SelectedPackage,
+                            _UML._StructuredClassifiers._Class.ownedAttribute,
+                            Extent.FindInMeta<_UML>(x => x.Packages.__Package));
+                    }
+
+                },
+                    Name = string.Empty,
+                    NavigationCategories.Type + "." + "Manager"));
 
             return result;
         }

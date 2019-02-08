@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
@@ -10,27 +10,56 @@ using DatenMeisterWPF.Navigation;
 
 namespace DatenMeisterWPF.Modules.TypeManager
 {
+    enum SelectionType
+    {
+        Package,
+        Class
+    }
     public class TypeManagerListView : ItemsInExtentList, INavigationGuest
     {
         public new IEnumerable<ViewExtension> GetViewExtensions()
         {
             var result = base.GetViewExtensions().ToList();
 
-            result.Add( 
-                new RibbonButtonDefinition(
-                    "Create new Class",
-                    () =>
-                    {
-                        var navigationEvents= NavigatorForItems.NavigateToCreateNewItem(
-                            NavigationHost,
-                            Extent,
-                            Extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class));
-                        navigationEvents.NewItemCreated += (x, y) => { Extent.elements().add(y.NewItem); };
+            var type = SelectionType.Package;
+            if ((SelectedPackage as IElement)?.metaclass?.@equals(Extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class)) == true)
+            {
+                type = SelectionType.Class;
+            }
+            
+            if (type == SelectionType.Package)
+            {
+                result.Add(
+                    new RibbonButtonDefinition(
+                        "Create new Class",
+                        () =>
+                        {
+                            var navigationEvents = NavigatorForItems.NavigateToCreateNewItem(
+                                NavigationHost,
+                                Extent,
+                                Extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class));
+                            navigationEvents.NewItemCreated += (x, y) => { Extent.elements().add(y.NewItem); };
+                        },
+                        Name = string.Empty,
+                        NavigationCategories.Type + "." + "Manager"));
+            }
+            else
+            {
+                result.Add(
+                    new RibbonButtonDefinition(
+                        "Create new Property",
+                        () =>
+                        {
+                            NavigatorForItems.NavigateToNewItemForPropertyCollection(
+                                NavigationHost,
+                                SelectedPackage,
+                                _UML._StructuredClassifiers._Class.ownedAttribute,
+                                Extent.FindInMeta<_UML>(x => x.Classification.__Property));
+                        },
+                        Name = string.Empty,
+                        NavigationCategories.Type + "." + "Manager"));
 
-                        MessageBox.Show("Create new Class");
-                    }, 
-                    Name = string.Empty,
-                    NavigationCategories.Type + "." + "Manager"));
+            }
 
             return result;
         }

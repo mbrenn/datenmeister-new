@@ -29,7 +29,7 @@ namespace DatenMeisterWPF.Navigation
 
         public static void OpenFolder(INavigationHost window)
         {
-            var integrationSettings = App.Scope.Resolve<IntegrationSettings>();
+            var integrationSettings = GiveMe.Scope.Resolve<IntegrationSettings>();
             Process.Start(integrationSettings.DatabasePath);
         }
 
@@ -62,9 +62,9 @@ namespace DatenMeisterWPF.Navigation
             // Ok... what to do now? 
             // Collect all files... 
             var files = new List<string>();
-            var workspaceLogic= App.Scope.Resolve<IWorkspaceLogic>();
-            var extentManager = App.Scope.Resolve<IExtentManager>();
-            var integrationSettings = App.Scope.Resolve<IntegrationSettings>();
+            var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
+            var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+            var integrationSettings = GiveMe.Scope.Resolve<IntegrationSettings>();
             foreach (var workspace in workspaceLogic.Workspaces)
             {
                 if (workspace.id == WorkspaceNames.NameData)
@@ -92,9 +92,9 @@ namespace DatenMeisterWPF.Navigation
                 MessageBox.Show("DatenMeister was not closed");
                 return;
             }
-            
-            App.Scope.UnuseDatenMeister();
-            App.Scope = null;
+
+            GiveMe.Scope.UnuseDatenMeister();
+            GiveMe.Scope = null;
 
 
             foreach (var file in files)

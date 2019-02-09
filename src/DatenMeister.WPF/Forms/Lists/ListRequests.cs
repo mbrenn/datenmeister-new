@@ -6,6 +6,7 @@ using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
@@ -39,7 +40,7 @@ namespace DatenMeisterWPF.Forms.Lists
         internal static ViewDefinition RequestFormForWorkspaces(INavigationHost navigationHost)
         {
             // Finds the view
-            var viewLogic = App.Scope.Resolve<ViewLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             var formElement = NamedElementMethods.GetByFullName(
                 viewLogic.GetInternalViewExtent(),
                 ManagementViewDefinitions.PathWorkspaceListView);
@@ -75,7 +76,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 {
                     var workspaceId = workspace.get("id").ToString();
 
-                    var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+                    var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                     workspaceLogic.RemoveWorkspace(workspaceId);
                 }
             }
@@ -88,7 +89,7 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <returns>The created form</returns>
         internal static ViewDefinition RequestFormForExtents(ItemExplorerControl control, string workspaceId)
         {
-            var viewExtent = App.Scope.Resolve<ViewLogic>().GetInternalViewExtent();
+            var viewExtent = GiveMe.Scope.Resolve<ViewLogic>().GetInternalViewExtent();
             var result =
                 NamedElementMethods.GetByFullName(
                     viewExtent,
@@ -156,8 +157,8 @@ namespace DatenMeisterWPF.Forms.Lists
                 if (MessageBox.Show("Are you sure, you would like to delete the extent?", "Delete Extent",
                         MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    var extentManager = App.Scope.Resolve<ExtentManager>();
-                    var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+                    var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
+                    var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
 
                     var extentToBeDeleted =
                         workspaceLogic.FindExtent(workspaceId, DotNetHelper.AsString(element.get("uri")));
@@ -177,7 +178,7 @@ namespace DatenMeisterWPF.Forms.Lists
 
             void AddZipCodeExample()
             {
-                var zipCodeExampleManager = App.Scope.Resolve<ZipCodeExampleManager>();
+                var zipCodeExampleManager = GiveMe.Scope.Resolve<ZipCodeExampleManager>();
                 zipCodeExampleManager.AddZipCodeExample(workspaceId);
             }
 
@@ -193,7 +194,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 {
                     if (dlg.ImportCommand != null)
                     {
-                        var extentImport = App.Scope.Resolve<ExtentImport>();
+                        var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
                         extentImport.ImportExtent(dlg.ImportCommand);
                     }
                 };
@@ -219,10 +220,10 @@ namespace DatenMeisterWPF.Forms.Lists
             {
                 // Let user select the type of the extent
                 var dlg = new LocateItemDialog();
-                var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+                var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                 var extent = workspaceLogic.FindExtent(WorkspaceNames.NameTypes, WorkspaceNames.UriInternalTypesExtent);
 
-                var packageMethods = App.Scope.Resolve<PackageMethods>();
+                var packageMethods = GiveMe.Scope.Resolve<PackageMethods>();
                 var package = packageMethods.GetPackagedObjects(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
                 dlg.SetAsRoot(package);
                 if (dlg.ShowDialog() != true) return;
@@ -237,7 +238,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 detailControl.Closed += (x, y) =>
                 {
                     // Now, we got the item extent... 
-                    var extentManager = App.Scope.Resolve<IExtentManager>();
+                    var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
 
                     // Convert back to instance
                     var extentLoaderConfig = DotNetConverter.ConvertToDotNetObject(createdElement) as ExtentLoaderConfig;

@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Functions.Queries;
@@ -58,7 +59,7 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 if (_eventHandle != null)
                 {
-                    App.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
+                    GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
                 }
 
                 _eventHandle = value;
@@ -160,7 +161,7 @@ namespace DatenMeisterWPF.Forms.Base
         public ItemExplorerTab AddTab(IReflectiveCollection collection, ViewDefinition viewDefinition)
         {
             // Gets the default view for the given tab
-            var viewFinder = App.Scope.Resolve<IViewFinder>();
+            var viewFinder = GiveMe.Scope.Resolve<IViewFinder>();
             IElement result = null;
 
             switch (viewDefinition.Mode)
@@ -290,7 +291,7 @@ namespace DatenMeisterWPF.Forms.Base
         {
             if (_eventHandle != null)
             {
-                App.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
+                GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
                 _eventHandle = null;
             }
         }

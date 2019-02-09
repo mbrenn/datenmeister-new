@@ -6,6 +6,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
@@ -20,7 +21,7 @@ namespace DatenMeisterWPF.Controls
         {
             InitializeComponent();
 
-            _workspaceLogic = App.Scope?.Resolve<IWorkspaceLogic>();
+            _workspaceLogic = GiveMe.Scope?.Resolve<IWorkspaceLogic>();
         }
 
         private void Control_Loaded(object sender, RoutedEventArgs e)

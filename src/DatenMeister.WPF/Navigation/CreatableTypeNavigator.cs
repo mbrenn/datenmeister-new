@@ -4,6 +4,7 @@ using Autofac.Features.Metadata;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
@@ -33,9 +34,9 @@ namespace DatenMeisterWPF.Navigation
             IExtent extent,
             string buttonName = "Create")
         {
-            var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
-            var viewLogic = App.Scope.Resolve<ViewLogic>();
-            var viewDefinitions = App.Scope.Resolve<ManagementViewDefinitions>();
+            var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
            
             return window.NavigateTo(
                 () =>

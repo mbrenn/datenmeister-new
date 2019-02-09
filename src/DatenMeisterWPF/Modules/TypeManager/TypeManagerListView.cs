@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using DatenMeister.Core;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Forms.Base.ViewExtensions;
 using DatenMeisterWPF.Forms.Lists;
@@ -16,8 +18,17 @@ namespace DatenMeisterWPF.Modules.TypeManager
 
             result.Add( 
                 new RibbonButtonDefinition(
-                    "Create new Class", 
-                    () => MessageBox.Show("Create new Class"), 
+                    "Create new Class",
+                    () =>
+                    {
+                        var navigationEvents= NavigatorForItems.NavigateToCreateNewItem(
+                            NavigationHost,
+                            Extent,
+                            Extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class));
+                        navigationEvents.NewItemCreated += (x, y) => { Extent.elements().add(y.NewItem); };
+
+                        MessageBox.Show("Create new Class");
+                    }, 
                     Name = string.Empty,
                     NavigationCategories.Type + "." + "Manager"));
 

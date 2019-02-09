@@ -620,6 +620,57 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
+                        if(name == "FileSelectionFieldData") // Looking for class
+                        {
+                            tree.__FileSelectionFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "defaultPath") // Looking for property
+                                {
+                                    tree.FileSelectionFieldData._defaultPath = value;
+                                }
+                                if(name == "defaultExtension") // Looking for property
+                                {
+                                    tree.FileSelectionFieldData._defaultExtension = value;
+                                }
+                                if(name == "isSaving") // Looking for property
+                                {
+                                    tree.FileSelectionFieldData._isSaving = value;
+                                }
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.FileSelectionFieldData._isAttached = value;
+                                }
+                                if(name == "fieldType") // Looking for property
+                                {
+                                    tree.FileSelectionFieldData._fieldType = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.FileSelectionFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.FileSelectionFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.FileSelectionFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.FileSelectionFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.FileSelectionFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
                     }
                 }
             }

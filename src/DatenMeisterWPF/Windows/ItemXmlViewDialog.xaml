@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterOwner">
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button x:Name="UpdateButton" Click="UpdateButton_OnClick" IsCancel="True">Update</Button>
+            <Button x:Name="UpdateButton" Click="UpdateButton_OnClick" IsDefault="True">Update</Button>
             <Button x:Name="CloseButton" Click="CloseButton_Click" IsCancel="True">Close</Button>
         </StackPanel>
         <TextBox x:Name="XmlTextField" Margin="10" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"></TextBox>

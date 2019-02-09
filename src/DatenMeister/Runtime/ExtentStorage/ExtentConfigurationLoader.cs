@@ -65,7 +65,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 var found = _mapper.ConfigurationTypes.FirstOrDefault(x => x.FullName == configType);
                 if (found == null)
                 {
-                    Logger.Error($"Unknown Configuration Type: {configType}");
+                    Logger.Fatal($"Unknown Configuration Type: {configType}");
                     ExtentStorageData.FailedLoading = true;
                     throw new InvalidOperationException($"Unknown Configuration Type: {configType}");
                 }

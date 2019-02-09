@@ -11,11 +11,9 @@ using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeisterWPF.Forms.Base;
 using DatenMeisterWPF.Forms.Lists;
-using DatenMeisterWPF.Modules.TypeManager;
 
 namespace DatenMeisterWPF.Navigation
 {
@@ -228,7 +226,8 @@ namespace DatenMeisterWPF.Navigation
         /// Creates a new item for the given extent being located in the workspace
         /// </summary>
         /// <param name="window">Navigation extent being used to open up the new dialog</param>
-        /// <param name="extent">Object to whose property, the new element will be added
+        /// <param name="extent">Extent which will be used for the factory to create the new item.
+        /// The item itself will NOT be added to the extent
         /// </param>
         /// <param name="metaclass">Metaclass, whose instance will be created</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>

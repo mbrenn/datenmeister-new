@@ -101,7 +101,8 @@ namespace DatenMeisterWPF.Command
             string xmlResult;
             if (selectedList.Count == 1)
             {
-                var result = ObjectCopier.Copy(new MofFactory(tempExtent), selectedList.First());
+                var copier = new ObjectCopier(new MofFactory(tempExtent)) {CloneAllReferences = false};
+                var result = copier.Copy(selectedList.First());
                 xmlResult = ((XmiProviderObject) ((MofObject) result).ProviderObject).XmlNode.ToString();
             }
             else

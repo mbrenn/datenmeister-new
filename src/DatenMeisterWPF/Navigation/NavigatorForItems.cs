@@ -270,13 +270,53 @@ namespace DatenMeisterWPF.Navigation
         }
 
         /// <summary>
+        /// Creates a new item for the given extent being located in the workspace and adds it to the given item
+        /// </summary>
+        /// <param name="window">Navigation extent being used to open up the new dialog</param>
+        /// <param name="extent">Extent which will be used for the factory to create the new item. 
+        /// </param>
+        /// <param name="metaclass">Metaclass, whose instance will be created</param>
+        /// <returns>The control element that can be used to receive events from the dialog</returns>
+        public static IControlNavigationNewItem NavigateToCreateNewItemInExtent(
+            INavigationHost window,
+            IExtent extent,
+            IElement metaclass)
+        {
+            var result = NavigateToCreateNewItem(window, extent, metaclass);
+            result.NewItemCreated += (x, y) => { extent.elements().add(y.NewItem); };
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a new item for the given object and adds it to the properties of the item
+        /// If the property is not a reflective collection, a reflective collection will be created
+        /// </summary>
+        /// <param name="window">Navigation extent of window</param>
+        /// <param name="host">Element which will receive the object</param>
+        /// <param name="property">Property to which the result will be added</param>
+        /// <param name="metaClass">Metaclass that is created </param>
+        /// <returns>The navigation being used for the control</returns>
+        public static IControlNavigationNewItem NavigateToNewItemForPropertyCollection(
+            INavigationHost window,
+            IObject host,
+            string property,
+            IElement metaClass)
+        {
+            var reflectiveCollection = host.get<IReflectiveCollection>(property);
+            return NavigateToNewItemForCollection(
+                window,
+                reflectiveCollection,
+                metaClass);
+        }
+
+        /// <summary>
         /// Creates a new item for the given extent and reflective collection by metaclass 
         /// </summary>
         /// <param name="window">Navigation extent of window</param>
         /// <param name="collection">Extent to which the item will be added</param>
         /// <param name="metaClass">Metaclass to be added</param>
         /// <returns>The navigation being used for control</returns>
-        public static  IControlNavigationNewItem NavigateToNewItemForCollection(
+        public static IControlNavigationNewItem NavigateToNewItemForCollection(
             INavigationHost window, 
             IReflectiveCollection collection,
             IElement metaclass)

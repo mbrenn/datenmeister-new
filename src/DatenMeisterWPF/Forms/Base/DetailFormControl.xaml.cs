@@ -635,7 +635,6 @@ namespace DatenMeisterWPF.Forms.Base
             {
                 // Copy all data from DetailElement to element to also have the non-shown properties in the mirror object
                 ObjectCopier.CopyPropertiesStatic(DetailElement, element);
-                return;
             }
 
             foreach (var field in ItemFields)
@@ -643,9 +642,13 @@ namespace DatenMeisterWPF.Forms.Base
                 field.CallSetAction(element);
             }
 
-            foreach (var field in AttachedItemFields)
+            // Calls the attached elements, if this method is not invoked 'externally'
+            if (!Equals(element, DetailElement))
             {
-                field.CallSetAction(AttachedElement);
+                foreach (var field in AttachedItemFields)
+                {
+                    field.CallSetAction(AttachedElement);
+                }
             }
         }
 

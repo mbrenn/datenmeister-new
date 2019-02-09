@@ -12,7 +12,7 @@ namespace DatenMeisterWPF.Forms.Detail
     {
         public void SetContent()
         {
-            var viewLogic = App.Scope.Resolve<ViewLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             var viewExtent = viewLogic.GetInternalViewExtent();
 
             var formElement = NamedElementMethods.GetByFullName(viewExtent, ManagementViewDefinitions.PathNewWorkspaceForm);
@@ -26,7 +26,7 @@ namespace DatenMeisterWPF.Forms.Detail
                 var annotation = DetailElement.get("annotation").ToString();
 
                 var workspace = new Workspace(workspaceId, annotation);
-                var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+                var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                 workspaceLogic.AddWorkspace(workspace);
             };
 

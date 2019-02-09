@@ -2,6 +2,7 @@
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Functions.Queries;
@@ -37,7 +38,7 @@ namespace DatenMeisterWPF.Forms.Lists
         public void SetContent(string workspaceId)
         {
             WorkspaceId = workspaceId;
-            var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);
+            var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
             var workspace =
                 workspaceExtent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() as IElement;
 
@@ -45,7 +46,7 @@ namespace DatenMeisterWPF.Forms.Lists
             SetItems(extents);
 
             // Registers upon events
-            var eventManager = App.Scope.Resolve<ChangeEventManager>();
+            var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
             EventHandle = eventManager.RegisterFor(workspaceExtent, (x, y) =>
             {
                 Tabs.FirstOrDefault()?.Control.UpdateContent();

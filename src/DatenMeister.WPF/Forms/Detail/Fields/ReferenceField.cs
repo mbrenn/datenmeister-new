@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
@@ -54,7 +55,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
 
                     if (!string.IsNullOrEmpty(workspace) && !string.IsNullOrEmpty(extent))
                     {
-                        var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+                        var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                         workspaceLogic.RetrieveWorkspaceAndExtent(
                             workspace, 
                             extent, 
@@ -67,7 +68,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                     }
                     else if (!string.IsNullOrEmpty(workspace))
                     {
-                        var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+                        var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                         var foundWorkspace = workspaceLogic.GetWorkspace(workspace);
                         if (foundWorkspace != null)
                         {

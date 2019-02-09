@@ -10,6 +10,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
@@ -284,7 +285,7 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void UpdateActualViewDefinition()
         {
-            var viewFinder = App.Scope.Resolve<IViewFinder>();
+            var viewFinder = GiveMe.Scope.Resolve<IViewFinder>();
             if (ViewDefinition.Mode == ViewDefinitionMode.Default)
             {
                 EffectiveForm = viewFinder.FindDetailView(DetailElement);
@@ -427,7 +428,7 @@ namespace DatenMeisterWPF.Forms.Base
             var buttons = new List<Button>();
 
             // Creates additional rows for buttons with additional actions
-            var interactionHandlers = App.Scope.Resolve<IEnumerable<IElementInteractionsHandler>>();
+            var interactionHandlers = GiveMe.Scope.Resolve<IEnumerable<IElementInteractionsHandler>>();
             foreach (var handler in interactionHandlers
                 .SelectMany(x => x.GetInteractions(DetailElement)))
             {

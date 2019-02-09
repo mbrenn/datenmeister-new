@@ -12,6 +12,11 @@ namespace DatenMeister.Integration
     public static class GiveMe
     {
         /// <summary>
+        /// Gets or sets the scope for the DatenMeister
+        /// </summary>
+        public static IDatenMeisterScope Scope { get; set; }
+
+        /// <summary>
         /// Returns a fully initialized DatenMeister for use. 
         /// </summary>
         /// <param name="settings">Integration settings for the initialization of DatenMeister</param>

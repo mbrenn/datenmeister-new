@@ -2,6 +2,7 @@
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeisterWPF.Windows;
 
@@ -19,7 +20,7 @@ namespace DatenMeisterWPF.Navigation
             var dlg = new QueryElementDialog {Owner = window as Window};
             if (dlg.ShowDialog() == true)
             {
-                var workspaceLogic = App.Scope.Resolve<IWorkspaceLogic>();
+                var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                 var element = workspaceLogic.FindItem(dlg.QueryUrl.Text);
 
                 if (element == null)
@@ -40,7 +41,7 @@ namespace DatenMeisterWPF.Navigation
         {
             var dlg = new LocateItemDialog
             {
-                WorkspaceLogic = App.Scope.Resolve<IWorkspaceLogic>(),
+                WorkspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>(),
                 AsToolBox = true,
                 Owner = mainWindow as Window
             };
@@ -59,7 +60,7 @@ namespace DatenMeisterWPF.Navigation
         {
             var dlg = new LocateItemDialog
             {
-                WorkspaceLogic = App.Scope.Resolve<IWorkspaceLogic>(),
+                WorkspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>(),
             };
 
             if (workspace != null && defaultExtent != null)

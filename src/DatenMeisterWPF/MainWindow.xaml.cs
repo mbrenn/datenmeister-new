@@ -43,7 +43,7 @@ namespace DatenMeisterWPF
         private async void Window_Initialized(object sender, EventArgs e)
         {
             MainControl.Content = new IntroScreen();
-            App.Scope = await Task.Run(
+            GiveMe.Scope = await Task.Run(
                 () => GiveMe.DatenMeister());
 
             _ribbonHelper.LoadIconRepository();
@@ -51,7 +51,7 @@ namespace DatenMeisterWPF
             //NavigatorForWorkspaces.NavigateToWorkspaces(this);
             NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData);
 
-            if (App.Scope.Resolve<ExtentStorageData>().FailedLoading)
+            if (GiveMe.Scope.Resolve<ExtentStorageData>().FailedLoading)
             {
                 Title += " (READ-ONLY)";
 
@@ -63,7 +63,7 @@ namespace DatenMeisterWPF
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    var databasePath = App.Scope.Resolve<IntegrationSettings>().DatabasePath;
+                    var databasePath = GiveMe.Scope.Resolve<IntegrationSettings>().DatabasePath;
                     Process.Start(databasePath);
                 }
             }

@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
@@ -23,10 +24,10 @@ namespace DatenMeisterWPF.Forms.Lists
 
         private void WorkspaceList_Loaded(object sender, RoutedEventArgs e)
         {
-            var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(App.Scope);
+            var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
             SetItems(workspaceExtent.elements());
 
-            var eventManager = App.Scope.Resolve<ChangeEventManager>();
+            var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
             EventHandle = eventManager.RegisterFor(workspaceExtent, (x,y) =>
             {
                 Tabs.FirstOrDefault()?.Control.UpdateContent();

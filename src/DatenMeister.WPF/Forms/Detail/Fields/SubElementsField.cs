@@ -7,6 +7,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
@@ -94,7 +95,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 if (form == null)
                 {
                     // otherwise, we have to automatically create a form
-                    var formFinder = App.Scope.Resolve<IViewFinder>();
+                    var formFinder = GiveMe.Scope.Resolve<IViewFinder>();
                     form = formFinder.CreateView(valueOfElement);
                 }
 

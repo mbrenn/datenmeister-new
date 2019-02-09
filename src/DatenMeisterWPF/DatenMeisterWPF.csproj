@@ -81,122 +81,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Commands\PasteToClipboardCommand.cs" />
-    <Compile Include="Commands\CopyToClipboardCommand.cs" />
-    <Compile Include="Commands\DatenMeisterCommands.cs" />
-    <Compile Include="Controls\LocateElementControl.xaml.cs">
-      <DependentUpon>LocateElementControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Base\DetailFormControl.xaml.cs">
-      <DependentUpon>DetailFormControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Base\ICanUnregister.cs" />
-    <Compile Include="Forms\Base\IHasSelectedItems.cs" />
-    <Compile Include="Forms\Base\ItemExplorerControl.xaml.cs">
-      <DependentUpon>ItemExplorerControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Base\ItemExplorerTab.cs" />
-    <Compile Include="Forms\Base\ItemsTreeView.xaml.cs">
-      <DependentUpon>ItemsTreeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Base\ViewDefinitionMode.cs" />
-    <Compile Include="Forms\Base\ViewDefinition.cs" />
-    <Compile Include="Forms\Base\ViewExtensions\GenericButtonDefinition.cs" />
-    <Compile Include="Forms\Base\ViewExtensions\InfoLineDefinition.cs" />
-    <Compile Include="Forms\Base\ViewExtensions\ItemButtonDefinition.cs" />
-    <Compile Include="Forms\Base\ViewExtensions\RibbonButtonDefinition.cs" />
-    <Compile Include="Forms\Base\ViewExtensions\RowItemButtonDefinition.cs" />
-    <Compile Include="Forms\Base\ViewExtensions\TreeViewItemCommandDefinition.cs" />
-    <Compile Include="Forms\Base\ViewExtensions\ViewExtension.cs" />
-    <Compile Include="Forms\Detail\Fields\CheckboxField.cs" />
-    <Compile Include="Forms\Detail\Fields\DateTimeField.cs" />
-    <Compile Include="Forms\Detail\Fields\DropdownField.cs" />
-    <Compile Include="Forms\Detail\Fields\FieldFactory.cs" />
-    <Compile Include="Forms\Detail\Fields\FileReferenceField.cs" />
-    <Compile Include="Forms\Detail\Fields\IDetailField.cs" />
-    <Compile Include="Forms\Detail\Fields\ReadOnlyListField.cs" />
-    <Compile Include="Forms\Detail\Fields\ReferenceField.cs" />
-    <Compile Include="Forms\Detail\Fields\SeparatorLineField.cs" />
-    <Compile Include="Forms\Detail\Fields\SubElementsField.cs" />
-    <Compile Include="Forms\Detail\Fields\TextboxField.cs" />
-    <Compile Include="Forms\Lists\ExtentList.cs" />
-    <Compile Include="Forms\Lists\ItemsInExtentList.cs" />
-    <Compile Include="Forms\Lists\ListRequests.cs" />
-    <Compile Include="Forms\Specific\ImportExtentDlg.xaml.cs">
-      <DependentUpon>ImportExtentDlg.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Helper\ComboBoxEx.cs" />
-    <Compile Include="Navigation\IHasTitle.cs" />
-    <Compile Include="Navigation\INavigationGuest.cs" />
-    <Compile Include="Navigation\INavigationHost.cs" />
-    <Compile Include="Modules\TypeManager\TypeManagerListView.cs" />
-    <Compile Include="Navigation\ControlNavigation.cs" />
-    <Compile Include="Navigation\CreatableTypeNavigator.cs" />
-    <Compile Include="Navigation\IControlNavigation.cs" />
-    <Compile Include="Navigation\NavigatorForExcelHandling.cs" />
-    <Compile Include="Navigation\Navigator.cs" />
-    <Compile Include="Navigation\NavigatorForDialogs.cs" />
-    <Compile Include="Navigation\NavigatorForExtents.cs" />
-    <Compile Include="Navigation\NavigatorForItems.cs" />
-    <Compile Include="Navigation\NavigatorForWorkspaces.cs" />
-    <Compile Include="Windows\ExcelImportDefinitionDialog.xaml.cs">
-      <DependentUpon>ExcelImportDefinitionDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\LocateItemDialog.xaml.cs">
-      <DependentUpon>LocateItemDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\LogWindow.xaml.cs">
-      <DependentUpon>LogWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\RibbonHelper.cs" />
-    <Compile Include="Windows\AboutDialog.xaml.cs">
-      <DependentUpon>AboutDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\DetailFormWindow.xaml.cs">
-      <DependentUpon>DetailFormWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\IHasRibbon.cs" />
-    <Compile Include="Windows\ItemXmlViewDialog.xaml.cs">
-      <DependentUpon>ItemXmlViewDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Detail\NewWorkspaceControl.cs" />
-    <Compile Include="Windows\ListFormWindow.xaml.cs">
-      <DependentUpon>ListFormWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\QueryElementDialog.xaml.cs">
-      <DependentUpon>QueryElementDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\TreeViewWindow.xaml.cs">
-      <DependentUpon>TreeViewWindow.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Controls\LocateElementControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\Base\DetailFormControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\Base\ItemExplorerControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\Base\ItemsTreeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\Base\ItemListViewControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\IntroScreen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\Specific\ImportExtentDlg.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -205,14 +89,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Forms\Base\ItemListViewControl.xaml.cs">
-      <DependentUpon>ItemListViewControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Base\ViewButton.cs" />
-    <Compile Include="Forms\IntroScreen.xaml.cs">
-      <DependentUpon>IntroScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Lists\WorkspaceList.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -220,42 +96,6 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\AboutDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\DetailFormWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\ExcelImportDefinitionDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\ItemXmlViewDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\ListFormWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\LocateItemDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\LogWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\QueryElementDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\TreeViewWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -279,7 +119,6 @@
     <None Include="Examples\plz.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Forms\Lists\ClassDiagram1.cd" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

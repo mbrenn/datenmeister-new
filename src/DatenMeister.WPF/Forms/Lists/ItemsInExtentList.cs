@@ -12,6 +12,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.ViewFinder;
@@ -58,7 +59,7 @@ namespace DatenMeisterWPF.Forms.Lists
         {
             NavigationTreeView.ShowAllChildren = false;
 
-            var workLogic = App.Scope.Resolve<IWorkspaceLogic>();
+            var workLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             workLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out var _, out _extent);
             if (_extent == null)
             {
@@ -66,7 +67,7 @@ namespace DatenMeisterWPF.Forms.Lists
                 return;
             }
 
-            EventHandle = App.Scope.Resolve<ChangeEventManager>().RegisterFor(
+            EventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
                 _extent,
                 (x,y) =>
                 {
@@ -144,7 +145,7 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <param name="metaClass">Meta class of the items</param>
         private void CreateTabForItems(IReflectiveCollection tabItems, IElement metaClass)
         {
-            var viewFinder = App.Scope.Resolve<IViewFinder>();
+            var viewFinder = GiveMe.Scope.Resolve<IViewFinder>();
             IElement view;
 
             if (Items == SelectedItems)
@@ -302,7 +303,7 @@ namespace DatenMeisterWPF.Forms.Lists
 
             void OpenExtentFolder()
             {
-                var extentManager = App.Scope.Resolve<IExtentManager>();
+                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
                 if (extentManager.GetLoadConfigurationFor(_extent as IUriExtent) is ExtentFileLoaderConfig
                         loadConfiguration && loadConfiguration.filePath != null)
                 {

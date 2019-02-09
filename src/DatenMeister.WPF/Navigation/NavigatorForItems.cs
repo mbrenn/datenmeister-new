@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
@@ -62,7 +63,7 @@ namespace DatenMeisterWPF.Navigation
             INavigationHost window,
             string workspaceId)
         {
-            var viewLogic = App.Scope.Resolve<ViewLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             return window.NavigateTo(
                 () =>
                 {
@@ -89,7 +90,7 @@ namespace DatenMeisterWPF.Navigation
                             workspaceId = workspaceId
                         };
 
-                        var extentManager = App.Scope.Resolve<IExtentManager>();
+                        var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
                         extentManager.LoadExtent(configuration, true);
                     };
 

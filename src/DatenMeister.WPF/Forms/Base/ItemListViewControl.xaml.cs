@@ -14,6 +14,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
@@ -50,7 +51,7 @@ namespace DatenMeisterWPF.Forms.Base
 
         public ItemListViewControl()
         {
-            _fastViewFilter = App.Scope.Resolve<FastViewFilterLogic>();
+            _fastViewFilter = GiveMe.Scope.Resolve<FastViewFilterLogic>();
             InitializeComponent();
         }
 
@@ -106,7 +107,7 @@ namespace DatenMeisterWPF.Forms.Base
             UnregisterCurrentChangeEventHandle();
             if (items is IHasExtent asExtent)
             {
-                App.Scope.Resolve<ChangeEventManager>().RegisterFor(
+                GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
                     asExtent.Extent,
                     (extent, element) => { UpdateContent(); });
             }
@@ -125,7 +126,7 @@ namespace DatenMeisterWPF.Forms.Base
         {
             if (_changeEventHandle != null)
             {
-                App.Scope.Resolve<ChangeEventManager>().Unregister(_changeEventHandle);
+                GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_changeEventHandle);
                 _changeEventHandle = null;
             }
         }
@@ -548,7 +549,7 @@ namespace DatenMeisterWPF.Forms.Base
 
             void CopyForm()
             {
-                var viewLogic = App.Scope.Resolve<ViewLogic>();
+                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
                 var target = viewLogic.GetUserViewExtent();
                 var copier = new ObjectCopier(new MofFactory(target));
 
@@ -569,7 +570,7 @@ namespace DatenMeisterWPF.Forms.Base
                     };
                     if (dlg.ShowDialog(Window.GetWindow(this)) == true)
                     {
-                        var loader = new CSVLoader(App.Scope.Resolve<IWorkspaceLogic>());
+                        var loader = new CSVLoader(GiveMe.Scope.Resolve<IWorkspaceLogic>());
                         var memoryProvider = new InMemoryProvider();
                         var temporary = new MofUriExtent(memoryProvider, "datenmeister:///temp");
                         var copier = new ExtentCopier(new MofFactory(temporary));
@@ -757,7 +758,7 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void FastViewFilter_OnClick(object sender, RoutedEventArgs e)
         {
-            var translator = new FastViewFilterTranslator(App.Scope.Resolve<IWorkspaceLogic>());
+            var translator = new FastViewFilterTranslator(GiveMe.Scope.Resolve<IWorkspaceLogic>());
             var menu = new ContextMenu();
             var list = new List<object>();
 
@@ -792,7 +793,8 @@ namespace DatenMeisterWPF.Forms.Base
                             }
 
                             // Now, create the replacement
-                            var formAndFields = App.Scope.Resolve<IWorkspaceLogic>().GetTypesWorkspace().Get<_FormAndFields>();
+                            var formAndFields = 
+                                GiveMe.Scope.Resolve<IWorkspaceLogic>().GetTypesWorkspace().Get<_FormAndFields>();
                             var factory = new MofFactory(b.View);
                             var element = factory.create(formAndFields.__DropDownFieldData);
                             element.set(_FormAndFields._DropDownFieldData.name,nameof(PropertyComparisonFilter.Property));
@@ -854,7 +856,8 @@ namespace DatenMeisterWPF.Forms.Base
 
             foreach (var filter in fastFilters.OfType<IElement>())
             {
-                var translator = new FastViewFilterTranslator(App.Scope.Resolve<IWorkspaceLogic>());
+                var translator = new FastViewFilterTranslator(
+                    GiveMe.Scope.Resolve<IWorkspaceLogic>());
 
                 var text = new TextBlock
                 {

@@ -495,7 +495,7 @@ namespace DatenMeister.Runtime
             switch (value)
             {
                 case IElement element when element.metaclass != null:
-                    return ClassifierMethods.GetPropertyNamesOfClassifier(element);
+                    return ClassifierMethods.GetPropertyNamesOfClassifier(element.metaclass);
 
                 case IObjectAllProperties knowsProperties:
                     return knowsProperties.getPropertiesBeingSet();

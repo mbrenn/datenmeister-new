@@ -299,9 +299,9 @@ namespace DatenMeisterWPF.Forms.Base
             // Creates the column
             foreach (var field in fields.Cast<IElement>())
             {
-                var name = "_" + (field.get(_FormAndFields._FieldData.name)?.ToString() ?? string.Empty);
-                var title = field.get(_FormAndFields._FieldData.title)?.ToString() ?? string.Empty;
-                var fieldType = field.get(_FormAndFields._FieldData.fieldType).ToString();
+                var name = "_" + (field.getOrDefault<string>(_FormAndFields._FieldData.name) ?? string.Empty);
+                var title = field.getOrDefault<string>(_FormAndFields._FieldData.title) ?? string.Empty;
+                var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
                 bool isReadOnly;
 
                 if (fieldType == MetaClassElementFieldData.FieldType)
@@ -312,7 +312,7 @@ namespace DatenMeisterWPF.Forms.Base
                 }
                 else
                 {
-                    var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
+                    var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
                     isReadOnly = isEnumeration;
                 }
 

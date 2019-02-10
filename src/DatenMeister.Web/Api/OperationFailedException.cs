@@ -16,9 +16,5 @@ namespace DatenMeister.Web.Api
         public OperationFailedException(string message, Exception innerException) : base(message, innerException)
         {
         }
-
-        protected OperationFailedException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

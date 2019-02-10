@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.UmlBootstrap;
+using DatenMeister.Runtime;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator
@@ -20,7 +24,10 @@ namespace DatenMeister.SourcecodeGenerator
         /// </summary>
         private readonly ISourceParser _parser;
 
-
+        /// <summary>
+        /// Initializates a new instance of the WalkPackageClass instance
+        /// </summary>
+        /// <param name="parser"></param>
         public WalkPackageClass(ISourceParser parser)
         {
             _parser = parser ?? new XmiSourceParser();
@@ -63,6 +70,7 @@ namespace DatenMeister.SourcecodeGenerator
         ///     Regards the given element as a package
         ///     and returns a full namespace for the package.
         /// </param>
+        /// <param name="stack">Current callstack</param>
         private void Walk(IObject element, CallStack stack)
         {
             if (_parser.IsPackage(element))
@@ -73,6 +81,11 @@ namespace DatenMeister.SourcecodeGenerator
             if (_parser.IsClass(element))
             {
                 WalkClass(element, stack);
+            }
+
+            if (_parser.IsEnum(element))
+            {
+                WalkEnum(element, stack);
             }
         }
 
@@ -99,13 +112,13 @@ namespace DatenMeister.SourcecodeGenerator
         ///     Creates a C# source code. Not to be used for recursive
         ///     call since the namespace is just once created
         /// </summary>
-        /// <param name="element">
+        /// <param name="stack">
         ///     Regards the given element as a package
         ///     and returns a full namespace for the package.
         /// </param>
         private void StartNamespace(ref CallStack stack)
         {
-            Result.AppendLine($"{stack.Indentation}// Created by {GetType().FullName} Version {FactoryVersion} created at {DateTime.Now}");
+            Result.AppendLine($"{stack.Indentation}// Created by {GetType().FullName} Version {FactoryVersion}");
 
             // Check, if we have namespaces
             if (!string.IsNullOrEmpty(Namespace))
@@ -176,6 +189,11 @@ namespace DatenMeister.SourcecodeGenerator
                 {
                     WalkClass(subElement, innerStack);
                 }
+
+                if (_parser.IsEnum(subElement) )
+                {
+                    WalkEnum(subElement, innerStack);
+                }
             }
         }
 
@@ -201,6 +219,37 @@ namespace DatenMeister.SourcecodeGenerator
         }
 
         protected virtual void WalkProperty(IObject classInstance, CallStack stack)
+        {
+        }
+
+
+        /// <summary>
+        /// Walks the enumeration
+        /// </summary>
+        /// <param name="enumInstance">Enumeration to be walked</param>
+        /// <param name="stack">Stack being used</param>
+        protected virtual void WalkEnum(IObject enumInstance, CallStack stack)
+        {
+            var innerStack = new CallStack(stack);
+            var name = GetNameOfElement(enumInstance);
+            innerStack.Fullname += $".{name}";
+
+            // Needs to be updated
+            foreach (var enumLiteral in enumInstance.GetAsEnumerable(_UML._SimpleClassifiers._Enumeration.ownedLiteral).OfType<IElement>())
+            {
+                if (_parser.IsEnumLiteral(enumLiteral))
+                {
+                    WalkEnumLiteral(enumLiteral, innerStack);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Walks the enumeration literal
+        /// </summary>
+        /// <param name="enumLiteral">Enumeration Literal to be walked</param>
+        /// <param name="innerStack">Stack being used</param>
+        protected virtual void WalkEnumLiteral(IObject enumLiteral, CallStack innerStack)
         {
         }
 

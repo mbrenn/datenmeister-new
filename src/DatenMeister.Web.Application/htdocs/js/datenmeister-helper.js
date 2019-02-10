@@ -1,5 +1,6 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
+    exports.__esModule = true;
     // Helper function out of http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
     function getParameterByNameFromHash(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");

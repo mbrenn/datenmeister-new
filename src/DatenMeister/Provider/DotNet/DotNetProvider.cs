@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -9,40 +10,22 @@ namespace DatenMeister.Provider.DotNet
     /// </summary>
     public class DotNetProvider : IProvider
     {
-        private readonly IDotNetTypeLookup _typeLookup;
+        /// <summary>
+        /// Gets the type lookup
+        /// </summary>
+        internal IDotNetTypeLookup TypeLookup { get; }
 
         private readonly object _syncObject = new object();
         
         private readonly List<DotNetProviderObject> _elements = new List<DotNetProviderObject>();
 
         /// <summary>
-        /// Stores the object that stores the properties
-        /// </summary>
-        //private readonly InMemoryObject _innerObject = new InMemoryObject();
-
-        /// <summary>
         /// Initializes a new instance of the DotNetExtent class
         /// </summary>
-        /// <param name="contextUri">Uri of the context</param>
         /// <param name="typeLookup">Looked up type</param>
         public DotNetProvider(IDotNetTypeLookup typeLookup)
         {
-            _typeLookup = typeLookup;
-
-            /*
-            if (typeLookup == null) throw new ArgumentNullException(nameof(typeLookup));
-            if (string.IsNullOrEmpty(contextUri))
-                throw new ArgumentException("Value cannot be null or empty.", nameof(contextUri));
-
-            _contextUri = contextUri;
-            // _navigator = new ExtentUrlNavigator<DotNetElement>(this);
-
-            // Creates the Reflective seqeunce
-            var reflectiveSequence =
-                typeLookup.CreateDotNetReflectiveSequence(new List<object>(), this);
-            _elements = new ReflectiveSequenceForExtent(
-                this, 
-                reflectiveSequence);*/
+            TypeLookup = typeLookup;
         }
 
         /// <inheritdoc />
@@ -55,22 +38,15 @@ namespace DatenMeister.Provider.DotNet
                     throw new InvalidOperationException(".Net-Provider requires a meta class");
                 }
 
-                var type = _typeLookup.ToType(metaClassUri);
+                var type = TypeLookup.ToType(metaClassUri);
                 if (type == null)
                 {
                     throw new InvalidOperationException("No metaclass with uri '" + metaClassUri + "' is known");
                 }
 
-                return CreateElementOfType(metaClassUri, type);
+                var result = Activator.CreateInstance(type);
+                return new DotNetProviderObject(this, result, metaClassUri);
             }
-        }
-
-        private DotNetProviderObject CreateElementOfType(string metaClassUri, Type type)
-        {
-            var result = Activator.CreateInstance(type);
-            var providerObject = new DotNetProviderObject(this, _typeLookup, result, metaClassUri);
-
-            return providerObject;
         }
 
         /// <inheritdoc />
@@ -78,8 +54,10 @@ namespace DatenMeister.Provider.DotNet
         {
             lock (_syncObject)
             {
-                var providerObject = valueAsObject as DotNetProviderObject;
-                if (providerObject == null) throw new ArgumentNullException(nameof(providerObject));
+                if (!(valueAsObject is DotNetProviderObject providerObject))
+                {
+                    throw new ArgumentNullException(nameof(providerObject));
+                }
 
                 if (index == -1)
                 {
@@ -126,6 +104,15 @@ namespace DatenMeister.Provider.DotNet
             {
                 yield return element;
             }
+        }
+
+        /// <summary>
+        /// Gets the capabilities of the provider
+        /// </summary>
+        /// <returns></returns>
+        public ProviderCapability GetCapabilities()
+        {
+            return 0;
         }
     }
 }

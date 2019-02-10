@@ -1,73 +1,92 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.XMI.ExtentStorage
 {
     [ConfiguredBy(typeof(XmiStorageConfiguration))]
-    public class XmiStorage : IExtentStorage
+    public class XmiStorage : IProviderLoader
     {
-        private readonly IWorkspaceLogic _workspaceCollection;
-        
-        public XmiStorage(IWorkspaceLogic workspaceCollection)
-        {
-            if (workspaceCollection == null) throw new ArgumentNullException(nameof(workspaceCollection));
-            _workspaceCollection = workspaceCollection;
-        }
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiStorage));
 
-        public IProvider LoadExtent(ExtentStorageConfiguration configuration, bool createAlsoEmpty = false)
+        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)
         {
             var xmiConfiguration = (XmiStorageConfiguration) configuration;
 
             XDocument xmlDocument;
-            if (!File.Exists(xmiConfiguration.Path))
+            if (!File.Exists(xmiConfiguration.filePath))
             {
                 if (createAlsoEmpty)
                 {
-                    // We need to create an empty Xmi file... Not the best thing at the moment, but we try it. 
-                    xmlDocument = new XDocument(
-                        new XElement(XmlUriExtent.DefaultRootNodeName));
+                    xmlDocument = CreateEmptyXmiDocument(xmiConfiguration);
                 }
                 else
                 {
                     throw new InvalidOperationException(
-                        $"File not found: {xmiConfiguration.Path}");
+                        $"File not found: {xmiConfiguration.filePath}");
                 }
             }
             else
             {
-                xmlDocument = XDocument.Load(xmiConfiguration.Path);
+                try
+                {
+                    xmlDocument = XDocument.Load(xmiConfiguration.filePath);
+                }
+                catch(Exception exc)
+                {
+                    Logger.Warn(exc.ToString());
+                    xmlDocument = CreateEmptyXmiDocument(xmiConfiguration);
+                }
             }
 
-            var result = new XmlUriExtent(xmlDocument);
-
-            return result;
+            return new LoadedProviderInfo(new XmiProvider(xmlDocument));
         }
 
-        public void StoreExtent(IProvider extent, ExtentStorageConfiguration configuration)
+        /// <summary>
+        /// Creates an empty Xmi document as given by the configuration
+        /// </summary>
+        /// <param name="xmiConfiguration">Xmi Configuration being used</param>
+        /// <returns>Found XDocument</returns>
+        private static XDocument CreateEmptyXmiDocument(XmiStorageConfiguration xmiConfiguration)
         {
-            var xmiConfiguration = configuration as XmiStorageConfiguration;
-            if (xmiConfiguration != null)
+            // Creates directory if necessary
+            var directoryPath = Path.GetDirectoryName(xmiConfiguration.filePath);
+            if (!Directory.Exists(directoryPath))
             {
-                var xmlExtent = extent as XmlUriExtent;
-                if (xmlExtent == null)
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            // We need to create an empty Xmi file... Not the best thing at the moment, but we try it. 
+            var xmlDocument = new XDocument(
+                new XElement(XmiProvider.DefaultRootNodeName));
+
+            // Try to create file, to verify that file access and other activities are given
+            File.WriteAllText(xmiConfiguration.filePath, string.Empty);
+            return xmlDocument;
+        }
+
+        public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)
+        {
+            if (configuration is XmiStorageConfiguration xmiConfiguration)
+            {
+                if (!(extent is XmiProvider xmlExtent))
                 {
                     throw new InvalidOperationException("Only XmlUriExtents are supported");
                 }
 
                 // Deletes existing file
-                if (File.Exists(xmiConfiguration.Path))
+                if (File.Exists(xmiConfiguration.filePath))
                 {
-                    File.Delete(xmiConfiguration.Path);
+                    File.Delete(xmiConfiguration.filePath);
                 }
 
                 // Loads existing file
-                using (var fileStream = File.OpenWrite(xmiConfiguration.Path))
+                using (var fileStream = File.OpenWrite(xmiConfiguration.filePath))
                 {
                     xmlExtent.Document.Save(fileStream);
                 }

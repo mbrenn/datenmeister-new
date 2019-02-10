@@ -67,9 +67,7 @@ namespace DatenMeister.Uml
         public Bootstrapper(
             IWorkspaceLogic workspaceLogic)
         {
-            if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
-
-            _workspaceLogic = workspaceLogic;
+            _workspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
         }
 
         private void StrapUml(
@@ -84,17 +82,8 @@ namespace DatenMeister.Uml
 
         private void StrapUmlSlim(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure)
         {
-            if (umlInfrastructure == null)
-            {
-                throw new ArgumentNullException(nameof(umlInfrastructure));
-            }
-            if (primitiveInfrastructure == null)
-            {
-                throw new ArgumentNullException(nameof(primitiveInfrastructure));
-            }
-
-            UmlInfrastructure = umlInfrastructure;
-            PrimitiveTypesInfrastructure = primitiveInfrastructure;
+            UmlInfrastructure = umlInfrastructure ?? throw new ArgumentNullException(nameof(umlInfrastructure));
+            PrimitiveTypesInfrastructure = primitiveInfrastructure ?? throw new ArgumentNullException(nameof(primitiveInfrastructure));
         }
 
         private void StrapMof(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure, IUriExtent mofInfrastructure)
@@ -106,22 +95,9 @@ namespace DatenMeister.Uml
 
         private void StrapMofSlim(IUriExtent primitiveInfrastructure, IUriExtent umlInfrastructure, IUriExtent mofInfrastructure)
         {
-            if (umlInfrastructure == null)
-            {
-                throw new ArgumentNullException(nameof(umlInfrastructure));
-            }
-            if (primitiveInfrastructure == null)
-            {
-                throw new ArgumentNullException(nameof(primitiveInfrastructure));
-            }
-            if (mofInfrastructure == null)
-            {
-                throw new ArgumentNullException(nameof(mofInfrastructure));
-            }
-
-            UmlInfrastructure = umlInfrastructure;
-            MofInfrastructure = mofInfrastructure;
-            PrimitiveTypesInfrastructure = primitiveInfrastructure;
+            UmlInfrastructure = umlInfrastructure ?? throw new ArgumentNullException(nameof(umlInfrastructure));
+            MofInfrastructure = mofInfrastructure ?? throw new ArgumentNullException(nameof(mofInfrastructure));
+            PrimitiveTypesInfrastructure = primitiveInfrastructure ?? throw new ArgumentNullException(nameof(primitiveInfrastructure));
         }
 
         /// <summary>
@@ -309,8 +285,8 @@ namespace DatenMeister.Uml
             // the metaclass of these element depending on the attribute value of Xmi:Type
             // If the current layer is UML, the metaLayer needs to trace to the MOF metalayer
             var extentsOfMetaLayer = _workspaceLogic.GetExtentsForWorkspace(metaLayer).ToList();
-            var umlElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml).elements().GetAllDescendants();
-            var mofElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriMof).elements().GetAllDescendants();
+            var umlElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUmlExtent).elements().GetAllDescendants();
+            var mofElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriMofExtent).elements().GetAllDescendants();
             var mofMetaClasses = 
                 mofElements
                     .Cast<IElement>()
@@ -375,8 +351,8 @@ namespace DatenMeister.Uml
             }
 
             var metaClassGeneralization =
-                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUml)
-                    .element(WorkspaceNames.UriUml + "#Generalization");
+                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUmlExtent)
+                    .element(WorkspaceNames.UriUmlExtent + "#Generalization");
             EvaluateGeneralizations(umlDescendents, metaClassGeneralization);
 
             // ConvertPropertiesToRealProperties(allElements);
@@ -396,7 +372,12 @@ namespace DatenMeister.Uml
             {
                 if (elementInstance.isSet("general"))
                 {
-                    var general = elementInstance.getFirstOrDefault("general");
+                    var general = elementInstance.GetFirstOrDefault("general");
+                    if (general == null)
+                    {
+                        throw new InvalidOperationException(elementInstance.ToString());
+                    }
+
                     var generalAsString = general.ToString();
                     if (DotNetHelper.IsOfMofObject(general))
                     {
@@ -431,10 +412,9 @@ namespace DatenMeister.Uml
 
             foreach (var element in allElements.OfType<IObjectAllProperties>())
             {
-                var asElement = element as IElement;
-                if (asElement == null)
+                if (!(element is IElement asElement))
                 {
-                    throw new InvalidOperationException($"Given Element is not an element: {element.ToString()}");
+                    throw new InvalidOperationException($"Given Element is not an element: {element}");
                 }
 
                 var metaClass = asElement.getMetaClass();
@@ -504,14 +484,26 @@ namespace DatenMeister.Uml
             if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriUml);
-            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriMof);
-            
-            var primitiveExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypes); 
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriUmlExtent);
+            umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001");
+            umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/UML.xmi");
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriMofExtent);
+            mofExtent.AddAlternativeUri("http://www.omg.org/spec/MOF/20131001");
+            var primitiveExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypesExtent); 
+            primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/PrimitiveTypes/20131001");
+            primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/PrimitiveTypes.xmi");
+
+            // Assigns the extents to the datalayer
+            workspaceLogic.AddExtent(dataLayer, umlExtent);
+            workspaceLogic.AddExtent(dataLayer, primitiveExtent);
+            if (mode == BootstrapMode.Mof || mode == BootstrapMode.SlimMof)
+            {
+                workspaceLogic.AddExtent(dataLayer, mofExtent);
+            }
 
             if (!isSlim)
             {
-                var loader = new SimpleLoader();
+                var loader = new SimpleLoader(dataLayer);
                 if (paths == null || paths.LoadFromEmbeddedResources)
                 {
                     loader.LoadFromEmbeddedResource(new MofFactory(primitiveExtent),  primitiveExtent, "DatenMeister.XmiFiles.PrimitiveTypes.xmi");
@@ -531,14 +523,6 @@ namespace DatenMeister.Uml
                         loader.LoadFromFile(new MofFactory(mofExtent), mofExtent, paths.PathMof);
                     }
                 }
-            }
-
-            // Assigns the extents to the datalayer
-            workspaceLogic.AddExtent(dataLayer, umlExtent);
-            workspaceLogic.AddExtent(dataLayer, primitiveExtent);
-            if (mode == BootstrapMode.Mof || mode == BootstrapMode.SlimMof)
-            {
-                workspaceLogic.AddExtent(dataLayer, mofExtent);
             }
             
             var bootStrapper = new Bootstrapper(workspaceLogic);
@@ -582,7 +566,7 @@ namespace DatenMeister.Uml
                     bootStrapper.StrapUml(
                         primitiveInfrastructure: primitiveExtent,
                         umlInfrastructure: umlExtent,
-                        mofDataLayer: dataLayer.MetaWorkspace);
+                        mofDataLayer: dataLayer.MetaWorkspaces.FirstOrDefault());
                 }
 
                 dataLayer.Create<FillTheUML, _UML>();
@@ -617,7 +601,7 @@ namespace DatenMeister.Uml
             if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-            return  PerformFullBootstrap(workspaceLogic, dataLayer, mode, filePaths);
+            return PerformFullBootstrap(workspaceLogic, dataLayer, mode, filePaths);
         }
 
         /// <summary>

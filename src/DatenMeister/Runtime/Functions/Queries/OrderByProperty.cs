@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Functions.Queries
 {
-    public class OrderByProperty : IReflectiveCollection
+    public class OrderByProperty : IReflectiveCollection, IHasExtent
     {
         private readonly string _orderByProperty;
         private readonly IReflectiveCollection _parent;
@@ -66,5 +67,10 @@ namespace DatenMeister.Runtime.Functions.Queries
         {
             return GetEnumerator();
         }
+
+        /// <summary>
+        /// Gets the extent associated to the parent extent
+        /// </summary>
+        public IExtent Extent => (_parent as IHasExtent)?.Extent;
     }
 }

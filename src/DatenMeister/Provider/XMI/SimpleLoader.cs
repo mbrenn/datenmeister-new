@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Xml.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -13,21 +14,36 @@ using DatenMeister.Runtime.Workspaces;
 namespace DatenMeister.Provider.XMI
 {
     /// <summary>
-    /// Includes a simple XMI loader which is attribute and element driven
+    /// Includes a simple XMI loader which is attribute and element driven.
+    /// By loading an xmi file, the attributes and extents are directly stored into an existing Extent. 
     /// </summary>
     public class SimpleLoader
     {
+        /// <summary>
+        /// Stores the uri resolver being used to figure out the href instances.
+        /// </summary>
+        private readonly IUriResolver _uriResolver;
         private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>();
 
         /// <summary>
         /// Defines a list of actions that will be performed after the loading has finished
         /// </summary>
         private readonly List<Action> _afterLoadActions = new List<Action>();
-        
+
+        /// <summary>
+        /// Initializes a new instance of the 
+        /// </summary>
+        /// <param name="uriResolver"></param>
+        public SimpleLoader(IUriResolver uriResolver = null)
+        {
+            _uriResolver = uriResolver;
+        }
+
 
         /// <summary>
         /// Loads the xmi from the embedded resources
         /// </summary>
+        /// <param name="factory">Factory being used to elements</param>
         /// <param name="extent">Extent being loaded</param>
         /// <param name="resourceName">Path to the resources</param>
         public void LoadFromEmbeddedResource(IFactory factory, IUriExtent extent, string resourceName)
@@ -83,6 +99,28 @@ namespace DatenMeister.Provider.XMI
         }
 
         /// <summary>
+        /// Loads the document from a string. 
+        /// </summary>
+        /// <param name="factory">Factory being used to create the instance</param>
+        /// <param name="extent">Extent to which the elements will be added</param>
+        /// <param name="xmlText">Text to be addede</param>
+        public void LoadFromText(IFactory factory, IUriExtent extent, string xmlText)
+        {
+            var document = XDocument.Parse(xmlText);
+            LoadFromDocument(factory, extent, document);
+        }
+
+        /// <summary>
+        /// Loads the Xml from a text
+        /// </summary>
+        /// <param name="factory">Factory to be used</param>
+        /// <param name="element">Element being used</param>
+        public IObject LoadFromXmlNode(IFactory factory, XElement element)
+        {
+            return LoadElement(factory, element);
+        }
+
+        /// <summary>
         ///     Loads the specific element with a very simple loading algorithm
         /// </summary>
         /// <param name="factory">Factory being used to create instances</param>
@@ -107,8 +145,7 @@ namespace DatenMeister.Provider.XMI
                 {
                     _idToElement[xmiId] = resultingElement;
 
-                    var resultSetId = resultingElement as ICanSetId;
-                    if (resultSetId != null)
+                    if (resultingElement is ICanSetId resultSetId)
                     {
                         resultSetId.Id = xmiId;
                     }
@@ -127,6 +164,22 @@ namespace DatenMeister.Provider.XMI
                         () =>
                         {
                             var referencedElement = _idToElement[attributeIdRef.Value];
+                            resultingElement.set(subElement.Name.ToString(), referencedElement);
+                        });
+                    continue;
+                }
+
+                var attributeHref = subElement.Attribute("href");
+                if (attributeHref != null && _uriResolver != null)
+                {
+                    _afterLoadActions.Add(
+                        () =>
+                        {
+                            var referencedElement = _uriResolver?.Resolve(attributeHref.Value, ResolveType.Default);
+                            if (referencedElement == null)
+                            {
+                                throw new InvalidOperationException("Unknown href:" + attributeHref.Value);
+                            }
                             resultingElement.set(subElement.Name.ToString(), referencedElement);
                         });
                     continue;

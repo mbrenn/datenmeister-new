@@ -1,7 +1,17 @@
-﻿using DatenMeister.Core.Plugins;
+﻿using System.Reflection;
+using System.Xml.Linq;
+using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Filler;
+using DatenMeister.Core.Plugins;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.XMI.EMOF;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Uml.Plugin
 {
@@ -13,76 +23,51 @@ namespace DatenMeister.Uml.Plugin
         /// </summary>
         private readonly ViewLogic _viewLogic;
 
-        public UmlPlugin(ViewLogic viewLogic)
+        private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly PackageMethods _packageMethods;
+        private readonly NamedElementMethods _namedElementMethods;
+
+        public const string PackageName = "Uml";
+
+        public UmlPlugin(ViewLogic viewLogic, IWorkspaceLogic workspaceLogic, PackageMethods packageMethods, NamedElementMethods namedElementMethods)
         {
             _viewLogic = viewLogic;
+            _workspaceLogic = workspaceLogic;
+            _packageMethods = packageMethods;
+            _namedElementMethods = namedElementMethods;
         }
 
-        public void Start()
+        public void Start(PluginLoadingPosition position)
         {
-            InitViews();
+            AddToViewDefinition();
         }
+
 
         /// <summary>
-        /// Initializes the views for the given extent
+        /// Adds the views to the view logic
         /// </summary>
-        private void InitViews()
+        public void AddToViewDefinition()
         {
-            var classView = new DefaultViewForMetaclass(
-                WorkspaceNames.UriUml + "#Class",
-                ViewType.Detail,
-                new Form(
-                    "Class",
-                    new TextFieldData("name", "Classname"),
-                    new SubElementFieldData("ownedAttribute", "Properties"),
-                    new SubElementFieldData("attribute", "Properties")));
-            
-            AddForView(classView);
+            var viewExtent = _viewLogic.GetInternalViewExtent();
 
-            var packageView = new DefaultViewForMetaclass(
-                WorkspaceNames.UriUml + "#Package",
-                ViewType.Detail,
-                new Form(
-                    "Package",
-                    new TextFieldData("name", "Classname")));
+            // Creates the package for "ManagementProvider" containing the views
+            var targetPackage = _packageMethods.GetOrCreatePackageStructure(viewExtent.elements(), PackageName);
 
-            AddForView(packageView);
+            using (var stream = typeof(ManagementViewPlugin).GetTypeInfo().Assembly.GetManifestResourceStream(
+                "DatenMeister.XmiFiles.Views.UML.xmi"))
+            {
+                var document = XDocument.Load(stream);
+                var pseudoProvider = new XmiProvider(document);
+                var pseudoExtent = new MofUriExtent(pseudoProvider)
+                {
+                    Workspace = viewExtent.GetWorkspace()
+                };
 
-            var classExtentView = new DefaultViewForExtentType(
-                "Uml.Classes",
-                new Form(
-                    "Class",
-                    new TextFieldData("name", "Classname"),
-                    new SubElementFieldData("ownedAttribute", "Properties"),
-                    new SubElementFieldData("attribute", "Properties")));
-
-            AddForView(classExtentView);
-        }
-
-        /// <summary>
-        /// Adds a default view for as a detail and list item
-        /// </summary>
-        /// <param name="classView">Defaultview to be added</param>
-        private void AddForView(DefaultViewForMetaclass classView)
-        {
-            _viewLogic.Add(classView);
-            /*
-            var element = _typeLookup.CreateDotNetElement(classView);
-            _viewLogic.Add(element);
-            */
-        }
-
-        /// <summary>
-        /// Adds a default view for as a detail and list item
-        /// </summary>
-        /// <param name="classView">Defaultview to be added</param>
-        private void AddForView(DefaultViewForExtentType classView)
-        {
-            _viewLogic.Add(classView);
-            /*
-            var element = _typeLookup.CreateDotNetElement(classView);
-            _viewLogic.Add(element);
-            */
+                var sourcePackage = _packageMethods.GetOrCreatePackageStructure(
+                    pseudoExtent.elements(),
+                    PackageName);
+                PackageMethods.ImportPackage(sourcePackage, targetPackage);
+            }
         }
     }
 }

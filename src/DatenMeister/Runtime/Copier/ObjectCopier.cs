@@ -1,13 +1,34 @@
 ﻿using System;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Copier
 {
+    /// <summary>
+    /// The object copier can be used to copy one mof element to another mof element
+    /// </summary>
     public class ObjectCopier
     {
+        /// <summary>
+        /// Contains the factory method
+        /// </summary>
         private readonly IFactory _factory;
+
+        /// <summary>
+        /// Stores the extent of the element to be copied. 
+        /// This information is used to check whether an element shall be copied or a reference
+        /// shall be used. Property values referencing to another extent are not copied... Instead uri 
+        /// references are copied
+        /// </summary>
+        private IExtent _sourceExtent;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether references shall be cloned, so there will no UriReferences
+        /// </summary>
+        public bool CloneAllReferences { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the ObjectCopier. 
@@ -15,8 +36,7 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="factory"></param>
         public ObjectCopier(IFactory factory)
         {
-            if (factory == null) throw new ArgumentNullException(nameof(factory));
-            _factory = factory;
+            _factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
         /// <summary>
@@ -26,6 +46,9 @@ namespace DatenMeister.Runtime.Copier
         /// <returns>true, if element has been successfully copied</returns>
         public IElement Copy(IObject element)
         {
+            // Gets the source extent
+            _sourceExtent = (element as IHasExtent)?.Extent ?? (element as MofElement)?.CreatedByExtent;
+
             var targetElement = _factory.create((element as IElement)?.getMetaClass());
             CopyProperties(element, targetElement);
 
@@ -37,20 +60,17 @@ namespace DatenMeister.Runtime.Copier
         /// </summary>
         /// <param name="sourceElement">Source element which is verified</param>
         /// <param name="targetElement">Target element which is verified</param>
-        private void CopyProperties(IObject sourceElement, IObject targetElement)
+        public void CopyProperties(IObject sourceElement, IObject targetElement)
         {
             if (sourceElement == null) throw new ArgumentNullException(nameof(sourceElement));
             if (targetElement == null) throw new ArgumentNullException(nameof(targetElement));
-            var elementAsExt = sourceElement as IObjectAllProperties;
-            if (elementAsExt == null)
+            if (!(sourceElement is IObjectAllProperties elementAsExt))
             {
                 throw new ArgumentException($"{nameof(sourceElement)} is not of type IObjectAllProperties");
             }
 
             // Transfers the id
-            var sourceWithId = sourceElement as IHasId;
-            var targetCanSetId = targetElement as ICanSetId;
-            if (sourceWithId != null && targetCanSetId != null)
+            if (sourceElement is IHasId sourceWithId && targetElement is ICanSetId targetCanSetId)
             {
                 targetCanSetId.Id = sourceWithId.Id;
             }
@@ -58,10 +78,8 @@ namespace DatenMeister.Runtime.Copier
             // Transfers the properties
             foreach (var property in elementAsExt.getPropertiesBeingSet())
             {
-                object result;
-
                 var value = sourceElement.get(property);
-                result = CopyValue(value, targetElement as IElement);
+                var result = CopyValue(value, targetElement as IElement);
 
                 targetElement.set(property, result);
             }
@@ -74,14 +92,21 @@ namespace DatenMeister.Runtime.Copier
                 return null;
             }
 
-            var valueAsElement = value as IElement;
-            if (valueAsElement != null)
+            if (value is IElement valueAsElement)
             {
-                var copiedElement = Copy(valueAsElement);
+                var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
+                if (propertyExtent == null || propertyExtent == _sourceExtent || CloneAllReferences)
+                {
+                    return Copy(valueAsElement);
+                }
+                else
+                {
+                    // See above... Don't copy the elements which are references by another extent
+                    return value;
+                }
             }
 
-            var valueAsCollection = value as IReflectiveCollection;
-            if (valueAsCollection != null)
+            if (value is IReflectiveCollection valueAsCollection)
             {
                 return valueAsCollection
                     .Select(innerValue => CopyValue(innerValue, containingElement));
@@ -89,7 +114,6 @@ namespace DatenMeister.Runtime.Copier
 
             return value;
         }
-
 
         /// <summary>
         /// Copies the given element by using the factory
@@ -101,6 +125,18 @@ namespace DatenMeister.Runtime.Copier
         {
             var copier = new ObjectCopier(factory);
             return copier.Copy(element);
+        }
+
+        /// <summary>
+        /// Copies the given element by using the factory
+        /// </summary>
+        /// <param name="factory">Factory to be used to create the element</param>
+        /// <param name="element">Element to be copied</param>
+        /// <returns>The created element that will be copied</returns>
+        public static void CopyPropertiesStatic(IObject source, IObject target)
+        {
+            var copier = new ObjectCopier(new MofFactory(target));
+            copier.CopyProperties(source, target);
         }
     }
 }

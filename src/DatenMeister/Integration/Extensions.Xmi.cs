@@ -16,7 +16,7 @@ namespace DatenMeister.Integration
 			this IDatenMeisterScope scope,
             string uri)
 		{
-            var xmlProvider = new XmlUriExtent();
+            var xmlProvider = new XmiProvider();
 		    return new MofUriExtent(xmlProvider, uri);
 		}
     }

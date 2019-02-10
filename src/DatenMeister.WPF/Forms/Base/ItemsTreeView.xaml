@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="DatenMeisterWPF.Forms.Base.ItemsTreeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DatenMeisterWPF.Forms.Base"
+             mc:Ignorable="d" Initialized="ItemsTreeView_OnInitialized" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+            <TreeView x:Name="TreeView" MouseDoubleClick="treeView_MouseDoubleClicked" KeyDown="treeView_KeyDown" SelectedItemChanged="treeView_SelectedItemChanged" MouseRightButtonDown="TreeView_MouseRightButtonDown" ContextMenuOpening="TreeView_ContextMenuOpening">
+                <TreeView.ContextMenu>
+                <ContextMenu x:Name="ItemContextMenu"></ContextMenu>
+                </TreeView.ContextMenu>
+            </TreeView>
+    </Grid>
+</UserControl>

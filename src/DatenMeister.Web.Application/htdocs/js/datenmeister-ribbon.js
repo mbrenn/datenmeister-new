@@ -1,5 +1,6 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
+    exports.__esModule = true;
     var Ribbon = (function () {
         function Ribbon(domContainer) {
             this.domContainer = domContainer;

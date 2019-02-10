@@ -1,0 +1,9 @@
+﻿<item p1:type="datenmeister:///_internal/xmi/uml#Package" p1:id="_package_Apps_ZipCode" name="ZipCode" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+  <packagedElement p1:type="datenmeister:///_internal/xmi/uml#Class" p1:id="DatenMeister.Modules.ZipExample.ZipCode" name="ZipCode">
+    <ownedAttribute p1:type="datenmeister:///_internal/xmi/uml#Property" p1:id="40aee394-c413-4949-b297-4fe210b76a79" name="id" />
+    <ownedAttribute p1:type="datenmeister:///_internal/xmi/uml#Property" p1:id="47152bca-6fd1-4658-b4ce-1f8d8f2c0dbc" name="zip" />
+    <ownedAttribute p1:type="datenmeister:///_internal/xmi/uml#Property" p1:id="5f8d07db-c0e0-40b9-b3ed-0f927eecf498" name="positionLong" />
+    <ownedAttribute p1:type="datenmeister:///_internal/xmi/uml#Property" p1:id="7207d924-5b7e-4b90-8e58-f0cf69f70b98" name="positionLat" />
+    <ownedAttribute p1:type="datenmeister:///_internal/xmi/uml#Property" p1:id="8c9c587b-6177-43e3-88e6-5af9b1793e34" name="name" />
+  </packagedElement>
+</item>

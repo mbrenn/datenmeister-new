@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Filler;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.SourcecodeGenerator.SourceParser;
@@ -14,8 +16,11 @@ namespace DatenMeister.SourcecodeGenerator
         public static void GenerateSourceFor(SourceGeneratorOptions options, _UML uml = null)
         {
             uml = uml ?? new _UML(); // Verifies that a uml is existing
+            var primitiveTypes = new _PrimitiveTypes();
 
-            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///");
+            ////////////////////////////////////////
+            // First of all, create all Mof types, representing the objects under concern
+            var extent = new MofUriExtent(new InMemoryProvider(), options.ExtentUrl);
             var factory = new MofFactory(extent);
 
             // Creates the package
@@ -28,7 +33,10 @@ namespace DatenMeister.SourcecodeGenerator
             foreach (var type in options.Types)
             {
                 var typeObject = dotNetProvider.CreateTypeFor(type);
-                elements.Add(typeObject);
+                if (typeObject != null)
+                {
+                    elements.Add(typeObject);
+                }
             }
 
             // And adds the converted elements to package and the package to the temporary MOF Extent
@@ -48,7 +56,8 @@ namespace DatenMeister.SourcecodeGenerator
             classTreeGenerator.Walk(extent);
 
             var pathOfClassTree = GetPath(options, ".class.cs");
-            File.WriteAllText(pathOfClassTree, classTreeGenerator.Result.ToString());
+            var fileContent = classTreeGenerator.Result.ToString();
+            File.WriteAllText(pathOfClassTree, fileContent);
 
             ////////////////////////////////////////
             // Creates now the filler
@@ -61,17 +70,24 @@ namespace DatenMeister.SourcecodeGenerator
             fillerGenerator.Walk(extent);
 
             var pathOfFillerTree = GetPath(options, ".filler.cs");
-            File.WriteAllText(pathOfFillerTree, fillerGenerator.Result.ToString());
+            fileContent = fillerGenerator.Result.ToString();
+            File.WriteAllText(pathOfFillerTree, fileContent);
 
             ////////////////////////////////////////
             // Creates the Dot Net Integration Parser
             var dotNetGenerator = new DotNetIntegrationGenerator();
             dotNetGenerator.Create(options.Namespace, options.Name, options.Types);
 
-            var pathOfDotNetIngegration = GetPath(options, ".dotnet.cs");
-            File.WriteAllText(pathOfDotNetIngegration, dotNetGenerator.Result.ToString());
+            var pathOfDotNetIntegration = GetPath(options, ".dotnet.cs");
+            File.WriteAllText(pathOfDotNetIntegration, dotNetGenerator.Result.ToString());
         }
 
+        /// <summary>
+        /// Gets the path by adding the extension to the suggested filename
+        /// </summary>
+        /// <param name="options">Options for Source code generator</param>
+        /// <param name="extension">File extension to be set</param>
+        /// <returns>Path to be used</returns>
         private static string GetPath(SourceGeneratorOptions options, string extension)
         {
             var pathOfDotNetIngegration =

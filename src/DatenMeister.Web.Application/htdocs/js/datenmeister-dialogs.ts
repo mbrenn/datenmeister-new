@@ -1,47 +1,46 @@
-﻿
-import DMN = require("./datenmeister-navigation");
-import DMClient = require("./datenmeister-client");
+﻿import DMClient = require("./datenmeister-client");
 import DMI = require("./datenmeister-interfaces");
-import DMView = require("./datenmeister-view");
+import * as DMVM from "./datenmeister-viewmodels";
+import * as DMView from "./datenmeister-view";
 
-export function showDialogNewWorkspace(navigation: DMN.INavigation): void {
-    var configuration = new DMN.DialogConfiguration();
+export function showDialogNewWorkspace(viewport: DMI.Views.IViewPort): void {
+    var configuration = new DMI.Navigation.DialogConfiguration();
 
     configuration.onOkForm = data => {
         DMClient.WorkspaceApi.createWorkspace(
             {
-                name: data.v["name"],
-                annotation: data.v["annotation"]
+                name: data["name"],
+                annotation: data["annotation"]
             })
-            .done(() => navigation.navigateToWorkspaces());
+            .done(() => DMView.WorkspaceList.navigateToWorkspaces(viewport));
     };
 
-    configuration.addColumn(new DMI.Table.TextDataField("Name", "name"));
-    var annotationColumn = new DMI.Table.TextDataField("Annotation", "annotation");
+    configuration.addColumn(new DMVM.TextDataField("Name", "name"));
+    var annotationColumn = new DMVM.TextDataField("Annotation", "annotation");
     annotationColumn.lineHeight = 4;
     configuration.addColumn(annotationColumn);
-
-    navigation.navigateToDialog(configuration);
+    
+    DMView.navigateToDialog(viewport, configuration);
 }
 
-export function showNavigationForNewExtents(navigation: DMN.INavigation, workspace: string) {
-    var view = new DMView.EmptyView(navigation);
+export function showNavigationForNewExtents(viewport: DMI.Views.IViewPort, workspace: string) {
+    var view = new DMView.EmptyView(viewport);
 
     view.addLink("New CSV Extent",
         () => {
-            showDialogNewCsvExtent(navigation, workspace);
+            showDialogNewCsvExtent(viewport, workspace);
         });
 
     view.addLink("New XmlExtent",
         () => {
-            showDialogNewXmiExtent(navigation, workspace);
+            showDialogNewXmiExtent(viewport, workspace);
         });
 
-    navigation.navigateToView(view);
+    viewport.setView(view);
 }
 
-export function showDialogNewCsvExtent(navigation: DMN.INavigation, workspace: string) {
-    var configuration = new DMN.DialogConfiguration();
+export function showDialogNewCsvExtent(viewport: DMI.Views.IViewPort, workspace: string) {
+    var configuration = new DMI.Navigation.DialogConfiguration();
 
     configuration.onOkForm = data => {
         DMClient.ExtentApi.createExtent(
@@ -52,20 +51,20 @@ export function showDialogNewCsvExtent(navigation: DMN.INavigation, workspace: s
                 filename: data.v["filename"],
                 columns: data.v["columns"]
             })
-            .done(() => navigation.navigateToExtents(data.v["workspace"]));
+            .done(() => DMView.ExtentList.navigateToExtents(viewport, data.v["workspace"]));
     };
 
-    configuration.addColumn(new DMI.Table.TextDataField("Workspace", "workspace").withDefaultValue(workspace));
-    configuration.addColumn(new DMI.Table.TextDataField("URI", "contextUri").withDefaultValue("dm:///"));
-    configuration.addColumn(new DMI.Table.TextDataField("Filename", "filename"));
-    configuration.addColumn(new DMI.Table.TextDataField("Columns", "columns").withDefaultValue("Column1,Column2"));
-    configuration.ws = workspace;
+    configuration.addColumn(new DMVM.TextDataField("Workspace", "workspace").withDefaultValue(workspace));
+    configuration.addColumn(new DMVM.TextDataField("URI", "contextUri").withDefaultValue("dm:///"));
+    configuration.addColumn(new DMVM.TextDataField("Filename", "filename"));
+    configuration.addColumn(new DMVM.TextDataField("Columns", "columns").withDefaultValue("Column1,Column2"));
+    // TODO configuration.ws = workspace;
 
-    navigation.navigateToDialog(configuration);
+    DMView.navigateToDialog(viewport, configuration);
 }
 
-export function showDialogAddCsvExtent(navigation: DMN.INavigation, workspace: string) {
-    var configuration = new DMN.DialogConfiguration();
+export function showDialogAddCsvExtent(viewport: DMI.Views.IViewPort, workspace: string) {
+    var configuration = new DMI.Navigation.DialogConfiguration();
 
     configuration.onOkForm = data => {
         DMClient.ExtentApi.addExtent(
@@ -75,19 +74,21 @@ export function showDialogAddCsvExtent(navigation: DMN.INavigation, workspace: s
                 contextUri: data.v["contextUri"],
                 filename: data.v["filename"]
             })
-            .done(() => navigation.navigateToExtents(data.v["workspace"]));
+            .done(() => DMView.ExtentList.navigateToExtents(viewport, data.v["workspace"]));
     };
 
-    configuration.addColumn(new DMI.Table.TextDataField("Workspace", "workspace").withDefaultValue(workspace));
-    configuration.addColumn(new DMI.Table.TextDataField("URI", "contextUri").withDefaultValue("dm:///"));
-    configuration.addColumn(new DMI.Table.TextDataField("Filename", "filename"));
-    configuration.ws = workspace;
+    configuration.addColumn(new DMVM.TextDataField("Workspace", "workspace").withDefaultValue(workspace));
+    configuration.addColumn(new DMVM.TextDataField("URI", "contextUri").withDefaultValue("dm:///"));
+    configuration.addColumn(new DMVM.TextDataField("Filename", "filename"));
+    // TODO configuration.ws = workspace;
 
-    navigation.navigateToDialog(configuration);
+    DMView.navigateToDialog(viewport, configuration);
 }
 
-export function showDialogNewXmiExtent(navigation: DMN.INavigation, workspace: string) {
-    var configuration = new DMN.DialogConfiguration();
+export function showDialogNewXmiExtent(
+    viewport: DMI.Views.IViewPort,
+    workspace: string) {
+    var configuration = new DMI.Navigation.DialogConfiguration();
     configuration.onOkForm = data => {
         DMClient.ExtentApi.createExtent(
             {
@@ -96,12 +97,12 @@ export function showDialogNewXmiExtent(navigation: DMN.INavigation, workspace: s
                 contextUri: data.v["contextUri"],
                 name: data.v["name"]
             })
-            .done(() => navigation.navigateToExtents(data.v["workspace"]));
+            .done(() => DMView.ExtentList.navigateToExtents(viewport, data.v["workspace"]));
     };
 
-    configuration.addColumn(new DMI.Table.TextDataField("Name", "name").withDefaultValue("name"));
-    configuration.addColumn(new DMI.Table.TextDataField("Workspace", "workspace").withDefaultValue(workspace).asReadOnly());
-    configuration.addColumn(new DMI.Table.TextDataField("URI", "contextUri").withDefaultValue("dm:///"));
+    configuration.addColumn(new DMVM.TextDataField("Name", "name").withDefaultValue("name"));
+    configuration.addColumn(new DMVM.TextDataField("Workspace", "workspace").withDefaultValue(workspace).asReadOnly());
+    configuration.addColumn(new DMVM.TextDataField("URI", "contextUri").withDefaultValue("dm:///"));
 
-    navigation.navigateToDialog(configuration);
+    DMView.navigateToDialog(viewport, configuration);
 }

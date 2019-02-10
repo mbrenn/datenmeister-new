@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Extension;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 
 namespace DatenMeister.Runtime.Workspaces
@@ -11,8 +15,10 @@ namespace DatenMeister.Runtime.Workspaces
     /// MOF Facility Object Lifecycle (MOFFOL)
     /// </summary>
     /// <typeparam name="T">Type of the extents being handled</typeparam>
-    public class Workspace : IWorkspace
+    public class Workspace : IWorkspace, IObject, IUriResolver
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(Workspace));
+
         private readonly object _syncObject = new object();
 
         private readonly List<IExtent> _extent = new List<IExtent>();
@@ -20,20 +26,33 @@ namespace DatenMeister.Runtime.Workspaces
         private readonly List<ITag> _properties = new List<ITag>();
 
         /// <summary>
+        /// Stores a list of meta workspaces that are associated to the given workspace
+        /// The metaworkspaces are requested to figure out meta classes
+        /// </summary>
+        public List<Workspace> MetaWorkspaces { get; } = new List<Workspace>();
+
+        /// <summary>
+        /// Adds a meta workspace
+        /// </summary>
+        /// <param name="workspace">Workspace to be added as a meta workspace</param>
+        public void AddMetaWorkspace(Workspace workspace)
+        {
+            lock (MetaWorkspaces)
+            {
+                MetaWorkspaces.Add(workspace);
+            }
+        }
+
+        /// <summary>
         /// Gets a list the cache which stores the filled types
         /// </summary>
         internal List<object> FilledTypeCache { get; } = new List<object>();
-
-        /// <summary>
-        /// Gets or sets the meta workspace for the given
-        /// </summary>
-        public Workspace MetaWorkspace { get; set; }
 
         public string id { get; }
 
         public string annotation { get; set; }
 
-        public IList<IExtent> extent => _extent;
+        public IEnumerable<IExtent> extent => _extent;
 
         public IEnumerable<ITag> properties => _properties;
 
@@ -41,12 +60,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         public Workspace(string id, string annotation = null)
         {
-            if (id == null)
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
-
-            this.id = id;
+            this.id = id ?? throw new ArgumentNullException(nameof(id));
             this.annotation = annotation;
         }
 
@@ -54,7 +68,7 @@ namespace DatenMeister.Runtime.Workspaces
             where TFiller : IFiller<TFilledType>, new()
             where TFilledType : class, new()
         {
-            lock (FilledTypeCache)
+            lock (SyncObject)
             {
                 var filledType = Get<TFilledType>();
                 if (filledType != null)
@@ -80,16 +94,80 @@ namespace DatenMeister.Runtime.Workspaces
 
         public void ClearCache()
         {
-            lock (FilledTypeCache)
+            lock (SyncObject)
             {
                 FilledTypeCache.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Adds an extent to the workspace
+        /// </summary>
+        /// <param name="newExtent">The extent to be added</param>
+        public void AddExtent(IUriExtent newExtent)
+        {
+            var asMofExtent = (MofExtent)newExtent;
+            if (newExtent == null) throw new ArgumentNullException(nameof(newExtent));
+            if (asMofExtent.Workspace != null)
+            {
+                Logger.Fatal($"The extent is already assigned to a workspace: {newExtent.contextURI()}");
+                throw new InvalidOperationException("The extent is already assigned to a workspace");
+            }
+
+            lock (SyncObject)
+            {
+                if (extent.Any(x => (x as IUriExtent)?.contextURI() == newExtent.contextURI()))
+                {
+                    Logger.Fatal($"Extent with uri {newExtent.contextURI()} is already added to the given workspace");
+                    throw new InvalidOperationException($"Extent with uri {newExtent.contextURI()} is already added to the given workspace");
+                }
+
+                Logger.Debug($"Added extent to workspace: {newExtent.contextURI()} --> {id}");
+                _extent.Add(newExtent);
+                asMofExtent.Workspace = this;
+            }
+        }
+
+        /// <summary>
+        /// Removes the extent with the given uri out of the database
+        /// </summary>
+        /// <param name="uri">Uri of the extent</param>
+        /// <returns>true, if the object can be deleted</returns>
+        public bool RemoveExtent(string uri)
+        {
+            lock (SyncObject)
+            {
+                var found = _extent.FirstOrDefault(
+                    x => x is IUriExtent uriExtent
+                         && uriExtent.contextURI() == uri);
+
+                if (found != null)
+                {
+                    _extent.Remove(found);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Removes the extent from the workspace 
+        /// </summary>
+        /// <param name="extentForRemoval">Extent to be removed</param>
+        /// <returns>true, if the extent could be removed</returns>
+        public bool RemoveExtent(IExtent extentForRemoval)
+        {
+            lock (SyncObject)
+            {
+                return _extent.Remove(extentForRemoval);
             }
         }
 
         public TFilledType Get<TFilledType>()
             where TFilledType : class, new()
         {
-            lock (FilledTypeCache)
+            lock (SyncObject)
             {
                 // Looks into the cache for the filledtypes
                 foreach (var value in FilledTypeCache)
@@ -104,9 +182,52 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        /// <summary>
+        /// Gets a property by querying all meta workspaces
+        /// </summary>
+        /// <typeparam name="TFilledType">Property to be queried</typeparam>
+        /// <returns>The property being queried</returns>
+        public TFilledType GetFromMetaWorkspace<TFilledType>(
+            MetaRecursive metaRecursive = MetaRecursive.JustOne)
+            where TFilledType : class, new()
+        {
+            lock (SyncObject)
+            {
+                var open = new List<Workspace>(MetaWorkspaces);
+                var visited = new List<Workspace>();
+                while (open.Count > 0)
+                {
+                    var meta = open[0];
+                    open.RemoveAt(0);
+                    visited.Add(meta);
+
+                    var result = meta.Get<TFilledType>();
+                    if (result != null)
+                    {
+                        return result;
+                    }
+
+                    // Adds the meta workspaces of the meta workspace to the list to be analyzed
+                    if (metaRecursive == MetaRecursive.Recursively)
+                    {
+                        var newMetaWorkspaces = meta.MetaWorkspaces;
+                        foreach (var newMeta in newMetaWorkspaces)
+                        {
+                            if (!visited.Contains(newMeta))
+                            {
+                                open.Add(newMeta);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public void Set<TFilledType>(TFilledType value) where TFilledType : class, new()
         {
-            lock (FilledTypeCache)
+            lock (SyncObject)
             {
                 FilledTypeCache.Add(value);
             }
@@ -117,6 +238,52 @@ namespace DatenMeister.Runtime.Workspaces
             return !string.IsNullOrEmpty(annotation) 
                 ? $"({id}) {annotation}" 
                 : $"({id})";
+        }
+
+        public bool @equals(object other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object get(string property)
+        {
+            if (property == "id")
+            {
+                return id;
+            }
+
+            throw new InvalidOperationException($"Given property {id} is not set.");
+        }
+
+        public void set(string property, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool isSet(string property)
+        {
+            return property == "id";
+        }
+
+        public void unset(string property)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IElement Resolve(string uri, ResolveType resolveType, bool traceFailing)
+        {
+            var result = _extent.Select(theExtent => (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false)).FirstOrDefault(found => found != null);
+            if (result == null && traceFailing)
+            {
+                Logger.Trace($"URI not resolved: {uri}");
+            }
+
+            return result;
+        }
+
+        public IElement ResolveById(string id)
+        {
+            return _extent.Select(theExtent => (theExtent as IUriResolver)?.ResolveById(id)).FirstOrDefault(found => found != null);
         }
     }
 }

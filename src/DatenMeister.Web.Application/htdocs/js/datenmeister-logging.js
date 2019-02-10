@@ -1,7 +1,6 @@
-/// <reference path="typings/jquery/jquery.d.ts" />
-/// <reference path="typings/jquery/underscore.d.ts" />
 define(["require", "exports"], function (require, exports) {
     "use strict";
+    exports.__esModule = true;
     var Logging = (function () {
         function Logging() {
         }

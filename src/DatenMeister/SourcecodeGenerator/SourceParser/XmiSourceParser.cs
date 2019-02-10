@@ -24,6 +24,22 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
                    element.get(attributeXmi).ToString() == "uml:Class";
         }
 
+        public bool IsEnum(IObject element)
+        {
+            var attributeXmi = "{" + Namespaces.Xmi + "}type";
+
+            return element.isSet(attributeXmi) &&
+                   element.get(attributeXmi).ToString() == "uml:Enumeration";
+        }
+
+        public bool IsEnumLiteral(IObject element)
+        {
+            var attributeXmi = "{" + Namespaces.Xmi + "}type";
+
+            return element.isSet(attributeXmi) &&
+                   element.get(attributeXmi).ToString() == "uml:EnumerationLiteral";
+        }
+
         public bool IsProperty(IObject element)
         {
             var attributeXmi = "{" + Namespaces.Xmi + "}type";

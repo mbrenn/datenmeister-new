@@ -1,5 +1,6 @@
-define(["require", "exports", "./datenmeister-interfaces"], function (require, exports, DMI) {
+define(["require", "exports", "./datenmeister-clientinterface"], function (require, exports, DMC) {
     "use strict";
+    exports.__esModule = true;
     var ClientApi;
     (function (ClientApi) {
         function getPlugins() {
@@ -39,8 +40,9 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             var callback = $.Deferred();
             $.ajax({
                 url: "/api/datenmeister/workspace/create",
+                contentType: "application/json",
                 method: "POST",
-                data: model,
+                data: JSON.stringify(model),
                 cache: false,
                 success: function (data) {
                     callback.resolve(true);
@@ -56,8 +58,9 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             var callback = $.Deferred();
             $.ajax({
                 url: "/api/datenmeister/workspace/delete",
+                contentType: "application/json",
                 method: "POST",
-                data: { name: workspace },
+                data: JSON.stringify({ name: workspace }),
                 cache: false,
                 success: function (data) {
                     callback.resolve(true);
@@ -72,15 +75,31 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
     })(WorkspaceApi = exports.WorkspaceApi || (exports.WorkspaceApi = {}));
     var ExtentApi;
     (function (ExtentApi) {
+        function getExtents(ws) {
+            var callback = $.Deferred();
+            $.ajax({
+                url: "/api/datenmeister/extent/all?ws=" + encodeURIComponent(ws),
+                cache: false,
+                success: function (data) {
+                    callback.resolve(data);
+                },
+                error: function (data) {
+                    callback.reject(false);
+                }
+            });
+            return callback;
+        }
+        ExtentApi.getExtents = getExtents;
         function createItem(ws, extentUrl, metaclass) {
             var callback = $.Deferred();
-            var postModel = new DMI.PostModels.ItemCreateModel();
+            var postModel = new DMC.Out.ItemCreateModel();
             postModel.ws = ws;
             postModel.ext = extentUrl;
             postModel.metaclass = metaclass;
             $.ajax({
                 url: "/api/datenmeister/extent/item_create",
-                data: postModel,
+                contentType: "application/json",
+                data: JSON.stringify(postModel),
                 method: "POST",
                 success: function (data) { callback.resolve(data); },
                 error: function (data) { callback.reject(false); }
@@ -90,7 +109,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         ExtentApi.createItem = createItem;
         function createItemAsSubElement(ws, extentUrl, parentItem, parentProperty, metaclass) {
             var callback = $.Deferred();
-            var postModel = new DMI.PostModels.ItemCreateModel();
+            var postModel = new DMC.Out.ItemCreateModel();
             postModel.ws = ws;
             postModel.ext = extentUrl;
             postModel.metaclass = metaclass;
@@ -98,7 +117,8 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             postModel.parentProperty = parentProperty;
             $.ajax({
                 url: "/api/datenmeister/extent/item_create",
-                data: postModel,
+                contentType: "application/json",
+                data: JSON.stringify(postModel),
                 method: "POST",
                 success: function (data) { callback.resolve(data); },
                 error: function (data) { callback.reject(false); }
@@ -109,13 +129,14 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         /* Deletes an item from the database and returns the value indicatng whether the deleteion was successful */
         function deleteItem(ws, extent, item) {
             var callback = $.Deferred();
-            var postModel = new DMI.PostModels.ItemDeleteModel();
+            var postModel = new DMC.Out.ItemDeleteModel();
             postModel.ws = ws;
             postModel.ext = extent;
             postModel.item = item;
             $.ajax({
                 url: "/api/datenmeister/extent/item_delete",
-                data: postModel,
+                contentType: "application/json",
+                data: JSON.stringify(postModel),
                 method: "POST",
                 success: function (data) { callback.resolve(true); },
                 error: function (data) { callback.reject(false); }
@@ -159,12 +180,13 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         }
         function deleteExtent(ws, extent) {
             var callback = $.Deferred();
-            var postModel = new DMI.PostModels.ExtentReferenceModel();
+            var postModel = new DMC.Out.ExtentReferenceModel();
             postModel.ws = ws;
             postModel.ext = extent;
             $.ajax({
                 url: "/api/datenmeister/extent/extent_delete",
-                data: postModel,
+                contentType: "application/json",
+                data: JSON.stringify(postModel),
                 method: "POST",
                 success: function (data) { callback.resolve(true); },
                 error: function (data) { callback.reject(false); }
@@ -176,7 +198,8 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             var callback = $.Deferred();
             $.ajax({
                 url: "/api/datenmeister/extent/extent_create",
-                data: extentData,
+                contentType: "application/json",
+                data: JSON.stringify(extentData),
                 method: "POST",
                 success: function (data) { callback.resolve(true); },
                 error: function (data) { callback.reject(false); }
@@ -188,7 +211,8 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             var callback = $.Deferred();
             $.ajax({
                 url: "/api/datenmeister/extent/extent_add",
-                data: extentData,
+                contentType: "application/json",
+                data: JSON.stringify(extentData),
                 method: "POST",
                 success: function (data) { callback.resolve(true); },
                 error: function (data) { callback.reject(false); }
@@ -255,15 +279,16 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         ItemApi.getItem = getItem;
         function deleteProperty(ws, extent, item, property) {
             var callback = $.Deferred();
-            var postModel = new DMI.PostModels.ItemUnsetPropertyModel();
+            var postModel = new DMC.Out.ItemUnsetPropertyModel();
             postModel.ws = ws;
             postModel.ext = extent;
             postModel.item = item;
             postModel.property = property;
             $.ajax({
                 url: "/api/datenmeister/extent/item_unset_property",
-                data: postModel,
+                data: JSON.stringify(postModel),
                 method: "POST",
+                contentType: "application/json",
                 success: function (data) { callback.resolve(true); },
                 error: function (data) { callback.resolve(false); }
             });
@@ -272,7 +297,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         ItemApi.deleteProperty = deleteProperty;
         function setProperty(ws, extentUrl, itemUrl, property, newValue) {
             var callback = $.Deferred();
-            var postModel = new DMI.PostModels.ItemSetPropertyModel();
+            var postModel = new DMC.Out.ItemSetPropertyModel();
             postModel.ws = ws;
             postModel.ext = extentUrl;
             postModel.item = itemUrl;
@@ -280,6 +305,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             postModel.newValue = newValue;
             $.ajax({
                 url: "/api/datenmeister/extent/item_set_property",
+                contentType: "application/json",
                 data: postModel,
                 method: "POST",
                 success: function (data) { callback.resolve(true); },
@@ -290,7 +316,7 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
         ItemApi.setProperty = setProperty;
         function setProperties(ws, extentUrl, itemUrl, item) {
             var callback = $.Deferred();
-            var postModel = new DMI.PostModels.ItemSetPropertiesModel();
+            var postModel = new DMC.Out.ItemSetPropertiesModel();
             postModel.ws = ws;
             postModel.ext = extentUrl;
             postModel.item = itemUrl;
@@ -305,8 +331,9 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             }
             $.ajax({
                 url: "/api/datenmeister/extent/item_set_properties",
-                data: postModel,
+                data: JSON.stringify(postModel),
                 method: "POST",
+                contentType: "application/json",
                 success: function (data) { callback.resolve(true); },
                 error: function (data) { callback.resolve(false); }
             });
@@ -320,8 +347,9 @@ define(["require", "exports", "./datenmeister-interfaces"], function (require, e
             var callback = $.Deferred();
             $.ajax({
                 url: "/api/datenmeister/example/addzipcodes",
-                data: { ws: workspace },
+                data: JSON.stringify({ ws: workspace }),
                 method: "POST",
+                contentType: "application/json",
                 success: function (data) { callback.resolve(true); },
                 error: function (data) { callback.resolve(false); }
             });

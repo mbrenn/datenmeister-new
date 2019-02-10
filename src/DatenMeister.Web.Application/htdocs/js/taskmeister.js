@@ -1,20 +1,23 @@
-define(["require", "exports", "./datenmeister-client"], function (require, exports, DMClient) {
+define(["require", "exports", "./datenmeister-client", "./datenmeister-view"], function (require, exports, DMClient, DMView) {
     "use strict";
+    exports.__esModule = true;
     function load(plugin) {
         return {
-            onViewPortChanged: function (ev) {
+            onRibbonUpdate: function (ev) {
                 var tab = ev.layout.getRibbon().getOrAddTab("Tasks");
-                if (ev.extent !== undefined && ev.extent !== null) {
+                if (ev.viewState.extent !== undefined && ev.viewState.extent !== null) {
                     tab.addIcon("Add Task", "...", function () {
-                        DMClient.ExtentApi.createItem(ev.workspace, ev.extent, "datenmeister:///types#TaskMeisterLib.Model.IActivity")
+                        DMClient.ExtentApi.createItem(ev.viewState.workspace, ev.viewState.extent, "datenmeister:///types#TaskMeisterLib.Model.IActivity")
                             .done(function (innerData) {
-                            ev.navigation.navigateToItem(ev.workspace, ev.extent, innerData.newuri);
+                            DMView.ItemDetail.navigateToItem(ev.layout.mainViewPort, ev.viewState.workspace, ev.viewState.extent, innerData.newuri);
                         });
                     });
                     tab.addIcon("Show Tasks", "...,", function () {
-                        ev.navigation.navigateToItems(ev.workspace, ev.extent, "dm:///management/views#Views.Activity.Detail");
+                        DMView.ItemList.navigateToItems(ev.layout.mainViewPort, ev.viewState.workspace, ev.viewState.extent, "dm:///management/views#Views.Activity.Detail");
                     });
                 }
+            },
+            onViewPortChanged: function (ev) {
             }
         };
     }

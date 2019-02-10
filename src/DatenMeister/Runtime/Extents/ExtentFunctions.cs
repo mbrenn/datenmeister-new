@@ -1,15 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Filler;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.Extents
 {
+    /// <summary>
+    /// Helper function for extents
+    /// </summary>
     public class ExtentFunctions
     {
+        /// <summary>
+        /// Stores the workspace logic
+        /// </summary>
         private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
@@ -25,13 +33,35 @@ namespace DatenMeister.Runtime.Extents
         /// Gets an enumeration of creatable types for a given extent. 
         /// It navigates to the meta extent and looks for all classes
         /// </summary>
+        /// <param name="collection">The reflectivecollection into which a new instance shall be created</param>
+        /// <returns>Enumeration of types</returns>
+        public CreateableTypeResult GetCreatableTypes(IReflectiveCollection collection)
+        {
+            return GetCreatableTypes(((IHasExtent) collection).Extent);
+        }
+
+        /// <summary>
+        /// Gets an enumeration of creatable types for a given extent. 
+        /// It navigates to the meta extent and looks for all classes
+        /// </summary>
+        /// <param name="element">The reflectivecollection into which a new instance shall be created</param>
+        /// <returns>Enumeration of types</returns>
+        public CreateableTypeResult GetCreatableTypes(IElement element)
+        {
+            return GetCreatableTypes(((IHasExtent)element).Extent);
+        }
+
+        /// <summary>
+        /// Gets an enumeration of creatable types for a given extent. 
+        /// It navigates to the meta extent and looks for all classes
+        /// </summary>
         /// <param name="extent">The extent into which a new instance shall be created</param>
         /// <returns>Enumeration of types</returns>
-        public CreateableTypeResult GetCreatableTypes(IUriExtent extent)
+        public CreateableTypeResult GetCreatableTypes(IExtent extent)
         {
             var dataLayer = _workspaceLogic.GetWorkspaceOfExtent(extent);
-            var typeLayer = dataLayer.MetaWorkspace;
-            var umlLayer= typeLayer.MetaWorkspace;
+            var typeLayer = dataLayer.MetaWorkspaces.FirstOrDefault();
+            var umlLayer = typeLayer.MetaWorkspaces.FirstOrDefault();
 
             var uml = umlLayer.Get<_UML>();
             var classType = uml?.StructuredClassifiers.__Class;
@@ -43,7 +73,7 @@ namespace DatenMeister.Runtime.Extents
                 {
 
                     MetaLayer = typeLayer,
-                    CreatableTypes = new IElement[] {}
+                    CreatableTypes = new IElement[] { }
                 };
             }
 

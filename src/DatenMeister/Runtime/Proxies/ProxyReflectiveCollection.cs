@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Proxies
 {
-    public class ProxyReflectiveCollection : IReflectiveCollection
+    public class ProxyReflectiveCollection : IReflectiveCollection, IHasExtent
     {
         protected IReflectiveCollection Collection { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the conversion method being used, when content of the 
         /// reflective collection is being extracted out of the reflective collection. 
@@ -86,26 +87,22 @@ namespace DatenMeister.Runtime.Proxies
         {
             PublicizeElementFunc = x =>
             {
-                var asElement = x as IElement;
-                if (asElement != null)
+                if (x is IElement asElement)
                 {
                     return publicizeElement(asElement);
                 }
 
-                var asObject = x as IObject;
-                return asObject != null ? publicizeObject(asObject) : x;
+                return x is IObject asObject ? publicizeObject(asObject) : x;
             };
 
             PrivatizeElementFunc = x =>
             {
-                var asElement = x as TElementType;
-                if (asElement != null)
+                if (x is TElementType asElement)
                 {
                     return privatizeElement(asElement);
                 }
 
-                var asObject = x as TObjectType;
-                return asObject != null ? privatizeObject(asObject) : x;
+                return x is TObjectType asObject ? privatizeObject(asObject) : x;
             };
 
             return this;
@@ -119,5 +116,10 @@ namespace DatenMeister.Runtime.Proxies
                 x => x.GetProxiedElement(),
                 x => x.GetProxiedElement());
         }
+
+        /// <summary>
+        /// Gets the extent associated to the parent extent
+        /// </summary>
+        public IExtent Extent => (Collection as IHasExtent)?.Extent;
     }
 }

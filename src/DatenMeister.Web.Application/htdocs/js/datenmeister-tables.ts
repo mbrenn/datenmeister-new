@@ -1,264 +1,273 @@
 ﻿import * as DMH from "./datenmeister-helper"
 import * as DMI from "./datenmeister-interfaces"
-import * as DMN from "./datenmeister-navigation"
+import * as DMCI from "./datenmeister-clientinterface"
+import * as DMVM from "./datenmeister-viewmodels"
 import * as DMClient from "./datenmeister-client"
 import * as DMToolbar from "./datenmeister-toolbar"
 
-export class ItemListTableConfiguration {
-    onItemEdit: (url: string) => boolean;
-    onItemDelete: (url: string, domRow: JQuery) => boolean;
-    onItemSelect: (url: string) => boolean;
 
-    isReadOnly: boolean;
 
-    showColumnForId: boolean;
-    itemsPerPage: number;
-    navigation: DMN.INavigation;
+export class ListTableConfiguration {
+    fields: Array<Fields.IField>;
 
-    paging: DMToolbar.ToolbarPaging;
+    constructor() {
+        this.fields = new Array<Fields.IField>();
+    }
+
+    addField(field: Fields.IField) {
+        this.fields[this.fields.length] = field;
+    }
+}
+/**
+ * Composes the table as a list view
+ */
+export class ListTableComposer {
+    // Called, when the user clicks on the item
+    onClickItem: (item: DMCI.In.ITableItem) => void;
+    items: Array<DMCI.In.ITableItem>;
+    rows: Array<JQuery>;
+
+    configuration: ListTableConfiguration;
+    container: JQuery;
+    domTable: JQuery;
+
+    // This method can be used to add a filtering to the table
+    filterItem: (item: any) => Boolean;
+
+    constructor(configuration: ListTableConfiguration, container: JQuery) {
+        this.configuration = configuration;
+        this.container = container;
+    }
+
     
-    constructor(navigation: DMN.INavigation) {
-        this.onItemEdit = (url: string) => false;
-        this.onItemDelete = (url: string, domRow: JQuery) => false;
+    composeTable(items: Array<any>) {
+        this.items = items;
+        this.rows = new Array<JQuery>();
+        
+        this.domTable = $("<table class='table table-condensed'></table>");
 
-        this.showColumnForId = false;
-        this.itemsPerPage = 20;
-        this.isReadOnly = true;
-        this.navigation = navigation;
+
+        this.composeContent();
+        this.container.append(this.domTable);
+    }
+
+    refresh() {
+        this.domTable.empty();
+        this.composeContent();
+    }
+
+    composeContent() {
+
+        this.domTable.empty();
+        this.rows = new Array<JQuery>();
+        // Creates the headrow
+        var domHeadRow = $("<tr></tr>");
+        var field: Fields.IField;
+        var n;
+        for (n in this.configuration.fields) {
+            field = this.configuration.fields[n];
+            var domColumn = $("<th></th>");
+            domColumn.text(field.title);
+            domHeadRow.append(domColumn);
+
+            // Apply style to headline cell
+            field.applyStandardStyles(domColumn);
+
+        }
+
+        this.domTable.append(domHeadRow);
+
+
+        // Create content
+        for (n in this.items) {
+            var item = this.items[n];
+            if (this.filterItem !== undefined && this.filterItem !== null && this.filterItem(item) === false) {
+                // Item can be filtered out
+                continue;
+            }
+
+            var domRow = $("<tr></tr>");
+            this.rows[n] = domRow;
+
+            for (var f in this.configuration.fields) {
+                field = this.configuration.fields[f];
+                var domCell = $("<td></td>");
+                var fieldInstance = field.createInstance(item);
+                var domField = fieldInstance.getDom();
+                domCell.append(domField);
+                domRow.append(domCell);
+
+                // Apply style to headline cell
+                field.applyStandardStyles(domCell);
+            }
+
+            this.domTable.append(domRow);
+        }
     }
 }
 
-/*
-    * Used to show a lot of items in a database. The table will use an array of MofObjects
-    * as the datasource
-    */
-export class ItemListTable {
-    configuration: ItemListTableConfiguration;
-    domContainer: JQuery;
+
+export class DetailTableConfiguration {
+    fields: Array<Fields.IField>;
+
+    constructor() {
+        this.fields = new Array<Fields.IField>();
+    }
+}
+
+export class DetailTableComposer {
+
+    item: any;
+    configuration: DetailTableConfiguration;
+    domForEditArray: Array<Fields.IFieldInstance>;
+    container: JQuery;
     domTable: JQuery;
-    lastProcessedSearchString: string;
-    domTotalNumber: JQuery;
-    domFilteredNumber: JQuery;
-    totalPages: number;
-    domNewItem: JQuery;
-    createableTypes: Array<DMI.ClientResponse.IItemModel>;
 
-    provider: DMI.Api.IItemsProvider;
-    currentQuery: DMI.Api.IItemTableQuery;
+    onClickOk: (newItem: any) => void;
+    onClickCancel: () => void;
+    
 
-    onDataReceived: DMH.SimpleEventClass<(data: DMI.ClientResponse.IItemsContent) => void>;
-
-    constructor(
-        dom: JQuery,
-        provider: DMI.Api.IItemsProvider,
-        configuration: ItemListTableConfiguration) {
-        this.domContainer = dom;
-        this.provider = provider;
+    constructor(configuration: DetailTableConfiguration, container: JQuery) {
         this.configuration = configuration;
-        this.totalPages = 0;
-        this.currentQuery = new DMI.Api.ItemTableQuery();
-        this.currentQuery.amount = configuration.itemsPerPage;
-        this.onDataReceived = new DMH.SimpleEventClass<(data: DMI.ClientResponse.IItemsContent) => void>();
+        this.container = container;
     }
 
-    // Replaces the content at the dom with the created table
-    loadAndShow(): JQueryDeferred<DMI.ClientResponse.IItemsContent> {
-        return this.provider.performQuery(this.currentQuery).done((data) => {
-            this.createDomForTable(data);
-        });
-    }
 
-    reload(): JQueryDeferred<DMI.ClientResponse.IItemsContent> {
-        return this.provider.performQuery(this.currentQuery).done((data) => {
-            this.updateDomForItems(data);
-        });
-    }
-
-    createDomForTable(data: DMI.ClientResponse.IItemsContent)
-    {
-        var tthis = this;
-        this.domContainer.empty();
-
-        var domAmount = $("<div>Total: <span class='totalnumber'>##</span>, Filtered: <span class='filterednumber'>##</span>");
-        this.domTotalNumber = $(".totalnumber", domAmount);
-        this.domFilteredNumber = $(".filterednumber", domAmount);
-
-        if (this.configuration.navigation !== undefined) {
-            this.configuration.navigation.setStatus(domAmount);
-            this.configuration.isReadOnly = true;
-        } else {
-            this.domContainer.append(domAmount);
+    composeTable(item?: any): void {
+        if (item === undefined || item === null) {
+            item = {};
         }
-
+        this.item = item;
         this.domTable = $("<table class='table table-condensed'></table>");
+        this.composeContent();
+        this.container.append(this.domTable);
+    }
 
-        // First the headline
-        var domRow = $("<tr></tr>");
-        var domColumn;
-        if (this.configuration.showColumnForId) {
+    refresh() {
+        this.domTable.empty();
+        this.composeContent();
+    }
 
-            domColumn = $("<th>ID</th>");
-            domRow.append(domColumn);
-        }
+    composeContent() {
+        this.domTable.empty();
 
-        var columns = data.columns.fields;
-        for (var c in columns) {
-            if (columns.hasOwnProperty(c)) {
-                var column = columns[c];
-                domColumn = $("<th></th>");
-                domColumn.text(column.title);
-                domRow.append(domColumn);
-            }
-        }
+        var tthis = this;
+        var domRow: JQuery;
 
-        // Creates the columns for commands
-        var domCommand = $("<th></th>");
-        domRow.append(domCommand);
+        // Creates the 
+        domRow = $("<tr><th>Title</th><th>Value</th><th></th></tr>");
 
         this.domTable.append(domRow);
 
+        var field: Fields.IField;
+        this.domForEditArray = new Array<Fields.IFieldInstance>();
+
         // Now, the items
-        tthis.createRowsForItems(data);
-        this.domContainer.append(this.domTable);
-    }
+        for (var f in this.configuration.fields) {
+            field = this.configuration.fields[f];
 
-    updateDomForItems(data: DMI.ClientResponse.IItemsContent): void {
-        this.onDataReceived.trigger(data);
+            // Creates the row
+            domRow = $("<tr></tr>");
 
-        $("tr", this.domTable).has("td")
-            .remove();
-        this.createRowsForItems(data);
-    }
+            // Title column
+            var domColumn = $("<td class='table_column_name'></td>");
+            domColumn.data("column", "name");
+            domColumn.text(field.title);
+            domRow.append(domColumn);
 
-    createRowsForItems(data: DMI.ClientResponse.IItemsContent): void {
-        this.domTotalNumber.text(data.totalItemCount);
-        this.domFilteredNumber.text(data.filteredItemCount);
+            // Value column
+            domColumn = $("<td class='table_column_value'></td>");
+            domColumn.data("column", "value");
+            var fieldInstance = field.createInstance(this.item);
 
-        if (this.configuration.paging !== undefined) {
-            this.configuration.paging.setTotalPages(
-                Math.floor((data.filteredItemCount - 1) / this.configuration.itemsPerPage) + 1);
+            var domForEdit = fieldInstance.getDom();
+            domColumn.append(domForEdit);
+            domRow.append(domColumn);
+
+            // Third column
+            domColumn = $("<td></td>");
+            domRow.append(domColumn);
+
+
+            // Stores the fieldinstance
+            this.domForEditArray[field.name] = fieldInstance;
+            this.domTable.append(domRow);
         }
 
-        // Now, the items
-        var items = data.items;
-        for (var i in items) {
-            if (items.hasOwnProperty(i)) {
-                var item = items[i];
+        // Add new property
+        /*if (this.configuration.supportNewProperties) {
+            this.offerNewProperty(domTable);
+        }*/
 
-                // Gets the id of the item
-                var id = item.uri;
-                var hashIndex = item.uri.indexOf("#");
-                if (hashIndex !== -1) {
-                    id = item.uri.substring(hashIndex + 1);
-                }
+        // Adds the OK and Cancel button
+        var domOkCancel = $("<tr><td colspan='3' class='text-right'></td></tr>");
+        var domOkCancelColumn = $("td", domOkCancel);
 
-                var domRow = $("<tr></tr>");
-                var domColumn;
-                if (this.configuration.showColumnForId) {
-                    domColumn = $("<td></td>");
-                    domColumn.text(id);
-                    domRow.append(domColumn);
-                }
+        if (this.onClickOk !== undefined || this.onClickOk !== undefined) {
+            var domEdit = $("<button class='btn btn-primary dm-button-ok'>OK</button>");
+            domEdit.click(() => {
+                tthis.clickOnOk();
+            });
 
-                var columns = data.columns.fields;
-                for (var c in columns) {
-                    if (columns.hasOwnProperty(c)) {
-                        domColumn = $("<td></td>");
-                        domColumn.append(createDomForContent(
-                            item,
-                            columns[c],
-                            this.configuration));
+            domOkCancelColumn.append(domEdit);
+        }
 
-                        domRow.append(domColumn);
-                    }
-                }
+        if (this.onClickCancel !== undefined || this.onClickCancel !== undefined) {
+            var domCancel = $("<button class='btn btn-default dm-button-cancel'>Cancel</button>");
+            domCancel.click(() => tthis.clickOnCancel());
+            domOkCancelColumn.append(domCancel);
+        }
 
-                // Add Edit link
-                var buttons = $("<td class='dm-itemtable-commands'></td>");
-                var domViewColumn = $("<button href='#' class='btn btn-primary'>View</button>");
-                domViewColumn.click((url => {
-                    return () => this.configuration.onItemSelect(url);
-                })(item.uri));
-                buttons.append(domViewColumn);
+        this.domTable.append(domOkCancel);
+        
+    }
 
-                var domEditColumn = $("<button href='#' class='btn btn-primary'>Edit</button>");
-                domEditColumn.click((url => {
-                    return () => this.configuration.onItemEdit(url);
-                })(item.uri));
-                buttons.append(domEditColumn);
+    /**
+     * Sets the focus on the first field of the table
+     */
+    setFocusOnFirstRow(): void {
+        if (this.configuration.fields.length > 0) {
+            var firstProperty = this.configuration.fields[0].name;
+            if (firstProperty != undefined && this.domForEditArray[firstProperty] != undefined) {
+                this.domForEditArray[firstProperty].focus();
+            }
 
-                var domDeleteColumn = $("<button href='#' class='btn btn-danger'>Delete</button>");
-                domDeleteColumn.click(((url: string, innerDomRow: JQuery, innerDomDelete: JQuery)=> {
-                    return () => {
-                        if (innerDomDelete.data("wasClicked") === true) {
-                            return this.configuration.onItemDelete(url, innerDomRow);
-                        } else {
-                            innerDomDelete.data("wasClicked", true);
-                            innerDomDelete.text("Confirm");
-                            return false;
-                        }
-                    };
-                })(item.uri, domRow, domDeleteColumn));
+        }
+    }
 
-                buttons.append(domDeleteColumn);
-                domRow.append(buttons);
-                this.domTable.append(domRow);
+    clickOnOk(): void {
+        if (this.onClickOk !== undefined && this.onClickOk !== null) {
+            var newItem = $.extend({}, this.item);
+            this.submitForm(newItem);
+            this.onClickOk(newItem);
+        }
+        
+    }
+
+    clickOnCancel(): void {
+        if (this.onClickCancel !== undefined && this.onClickCancel !== null) {
+            this.onClickCancel();
+        }
+    }
+
+    submitForm(newItem: any) {
+        var fields = this.configuration.fields;
+        for (var f in fields) {
+            if (fields.hasOwnProperty(f)) {
+                var field = fields[f];
+                var domEdit = this.domForEditArray[field.name];
+
+                var value = domEdit.val();
+                newItem[field.name] = value;
             }
         }
     }
-}
 
-export class ItemContentConfiguration {
-    autoProperties: boolean;
-    columns: Array<DMI.ClientResponse.IFieldData>;
-
-    // Gets or sets a flag, whether we should start with full edit mode
-    // if we start with edit mode, all property values will be shown as an edit field
-    // and an 'OK', 'Cancel'-button is added at the buttom of the table
-    isReadOnly: boolean;
-
-    /**
-     * Includes the information whether the button to create new properties shall be included
-     */
-    supportNewProperties: boolean;
-
-    navigation: DMN.INavigation;
-    
-    onItemSelect: (url: string) => boolean;
-
-    onOkForm: () => void;
-    onCancelForm: () => void;
-
-    /**
-     * Called, if the user clicks on the edit button. The edit button is not shown, when there is no item attached to it
-     * @returns {} Function being called
-     */
-    onEditButton: () => void;
-
-    constructor(navigation: DMN.INavigation) {
-        this.isReadOnly = false;
-        this.autoProperties = false;
-        this.supportNewProperties = true;
-        this.columns = new Array<DMI.ClientResponse.IFieldData>();
-        this.navigation = navigation;
-    }
-
-    addColumn(column: DMI.ClientResponse.IFieldData) {
-        this.columns[this.columns.length] = column;
-    }
-}
-
-/**
- * Defines the table for one item and shows all properties
- */
-export class ItemContentTable {
-    item: DMI.ClientResponse.IItemContentModel;
-    configuration: ItemContentConfiguration;
-    domContainer: JQuery;
+    /*item: any;
     domForEditArray: Array<JQuery>;
 
     constructor(
-        item: DMI.ClientResponse.IItemContentModel,
+        item: DMCI.In.IItemContentModel,
         configuration: ItemContentConfiguration) {
         this.item = item;
         this.configuration = configuration;
@@ -267,17 +276,17 @@ export class ItemContentTable {
     show(dom: JQuery) {
         dom.empty();
         this.domContainer = dom;
-        
+
         var domTable = $("<table class='table table-condensed'></table>");
 
         // First the headline
         var domRow: JQuery;
         domRow = $("<tr><th>Title</th><th>Value</th><th></th></tr>");
-        
+
         domTable.append(domRow);
 
         var propertyValue = this.item.v;
-        var column: DMI.ClientResponse.IFieldData;
+        var column: DMCI.In.IFieldData;
 
         if (this.configuration.autoProperties) {
             this.configuration.columns.length = 0;
@@ -313,7 +322,7 @@ export class ItemContentTable {
                 this.configuration);
             domColumn.append(domForEdit);
             domRow.append(domColumn);
-            
+
             domColumn = $("<td></td>");
             domRow.append(domColumn);
 
@@ -336,7 +345,7 @@ export class ItemContentTable {
         if (this.configuration.onEditButton !== undefined) {
             var domEdit = $("<button class='btn btn-primary dm-button-ok'>Edit</button>");
             domEdit.click(() => {
-                this.configuration.onEditButton(); 
+                this.configuration.onEditButton();
             });
 
             domOkCancelColumn.append(domEdit);
@@ -345,7 +354,7 @@ export class ItemContentTable {
         var domCancel = $("<button class='btn btn-default dm-button-cancel'>Cancel</button>");
 
         domOkCancelColumn.append(domCancel);
-        
+
         domOk.click(() => {
             this.submitForm();
             if (this.configuration.onOkForm !== undefined) {
@@ -363,19 +372,6 @@ export class ItemContentTable {
         domTable.append(domOkCancel);
 
         dom.append(domTable);
-    }
-
-    submitForm() {
-        var columns = this.configuration.columns;
-        for (var columnNr in columns) {
-            if (columns.hasOwnProperty(columnNr)) {
-                var column = columns[columnNr];
-                var domEdit = this.domForEditArray[column.name];
-
-                var value = domEdit.val();
-                this.item.v[column.name] = value;
-            }
-        }
     }
 
     offerNewProperty(domTable: JQuery) {
@@ -412,7 +408,7 @@ export class ItemContentTable {
                 };
 
                 tthis.configuration.columns[this.configuration.columns.length] = column;
-                
+
                 tthis.show(tthis.domContainer);
                 return false;
             });
@@ -426,204 +422,312 @@ export class ItemContentTable {
         });
 
         domTable.append(domNewProperty);
-    }
+    }*/
 }
 
-/**
- * Creates the DOM for the content as defined by the columns
- * @param item Item, whose content shall be shown
- * @param column Column defining the content
- * @param inEditMode true, if the field is in edit mode
- * @param configuration Configuration of the complete table
- */
-function createDomForContent(
-    item: DMI.ClientResponse.IItemContentModel,
-    column: DMI.ClientResponse.IFieldData,
-    configuration: ItemListTableConfiguration | ItemContentConfiguration): JQuery {
 
-    if (column.fieldType === DMI.Table.ColumnTypes.dropdown) {
-        var dropdownField = new DropDownField();
-        return dropdownField.createDom(item, column, configuration);
+export namespace Fields {
+    export function addEditButton(
+        configuration: ListTableConfiguration,
+        onClick: (item: any) => void): IField {
+        var buttonField = new ButtonField("EDIT", onClick);
+        buttonField.horizontalAlignment = Alignments.Right;
+        buttonField.width = -1;
+        configuration.fields[configuration.fields.length] = buttonField;
+        return buttonField;
     }
 
-    if (column.fieldType === DMI.Table.ColumnTypes.subElements) {
-        var field = new SubElementField();
-        return field.createDom(item, column, configuration);
+    export function addDeleteButton(
+        configuration: ListTableConfiguration,
+        onClick: (item: any) => void): IField {
+        var buttonField = new ButtonField("DELETE");
+        buttonField.horizontalAlignment = Alignments.Right;
+        buttonField.width = -1;
+        buttonField.click((item: any, button: ButtonFieldInstance) => {
+            if (button !== undefined && button.state === true) {
+                onClick(item);
+            } else {
+                button.state = true;
+                button.setText("CONFIRM");
+            }
+
+        });
+
+        configuration.fields[configuration.fields.length] = buttonField;
+        return buttonField;
     }
 
-    return createDefaultDomForContent(item, column, configuration);
-}
 
-export class DropDownField {
+    export interface IField {
+        getFieldType(): string;
+        title: string;
+        name: string;
+        defaultValue: any;
+        isEnumeration: boolean;
+        isReadOnly?: boolean;
 
-    createDom(item: DMI.ClientResponse.IItemContentModel,
-        column: DMI.ClientResponse.IFieldData,
-        configuration: ItemListTableConfiguration | ItemContentConfiguration): JQuery {
-        var contentValue = item.v[column.name];
-        if (contentValue === undefined) {
-            contentValue = column.defaultValue;
+        /**
+         * Stores the with of the field.
+         * If the width is -1, the corresponding column will be set to a minimum width
+         */
+        width: number;
+
+        createInstance(item: any): IFieldInstance;
+        applyStandardStyles(domCell: JQuery);
+    }
+
+    /**
+     * Defines the instance of a field which allows a focus
+     */
+    export interface IFieldInstance {
+        getDom() : JQuery;
+        focus() : void;
+    }
+
+    /**
+     * Enumerates the alignments
+     */
+    export enum Alignments
+    {
+        Left,
+        Center,
+        Right,
+        Top, 
+        Middle,
+        Bottom
+        
+    }
+
+    export class FieldBase {
+        title: string;
+        name: string;
+        defaultValue: any;
+        isEnumeration: boolean;
+        isReadOnly?: boolean;
+        horizontalAlignment: Alignments;
+        width: number;
+
+        getFieldType(): string { throw new Error("Not implemented"); }
+
+        createInstance(item: any): IFieldInstance { throw new Error("Not implemented"); }
+
+        readOnly(): FieldBase {
+            this.isReadOnly = true;
+            return this;
         }
 
-        let domDD = $("<select></select>");
-        let asDD = column as DMI.ClientResponse.IDropDownFieldData;
-        for (var name in asDD.values) {
-            var displayText = asDD.values[name];
-            let domOption = $("<option></option>").attr("value", name).text(displayText);
-            domDD.append(domOption);
-        }
+        applyStandardStyles(dom: JQuery) {
+            if (this.horizontalAlignment === Alignments.Right) {
+                dom.css("text-align", "right");
+            }
 
-        domDD.val(contentValue);
-        return domDD;
-    }
-}
-
-export class SubElementField {
-
-    createDom(item: DMI.ClientResponse.IItemContentModel,
-        column: DMI.ClientResponse.IFieldData,
-        configuration: ItemListTableConfiguration | ItemContentConfiguration): JQuery {
-        let domSE = $("<ul></ul>");
-        let asSE = column as DMI.ClientResponse.ISubElementsFieldData;
-
-        // The content value
-        var contentValue = item.v[column.name];
-        for (var n in contentValue) {
-            var subItem = contentValue[n];
-
-            var func = innerItem => {
-                var domLine = $("<li><a href='#'></a></li>");
-                var domA = $("a", domLine);
-                domA.text(innerItem.v);
-                domA.click(() => {
-                    configuration.navigation.navigateToItem(innerItem.ws, innerItem.ext, innerItem.u);
-                    return false;
-                });
-                domSE.append(domLine);
-            };
-
-            func(subItem);
-        }
-
-        // For read-only things, don't show the button for new properties
-        if (!configuration.isReadOnly) {
-            var btn = $("<button>New Element</button>");
-            btn.click(() => {
-                DMClient.ExtentApi.createItemAsSubElement(
-                    item.ws,
-                    item.ext,
-                    item.uri,
-                    column.name,
-                    asSE.metaClassUri
-                ).done((data) => {
-                    var uri = data.newuri;
-                    configuration.navigation.navigateToItem(item.ws, item.ext, uri);
-                    return false;
-                });
-            });
-
-            domSE.append(btn);
-        }
-
-        return domSE;
-    }
-}
-
-/**
- * Creates the DOM for the content as defined by column, when the column.fieldType is not set
- * @param item Item, whose content shall be shown
- * @param column Column defining the content
- * @param inEditMode true, if the field is in edit mode
- * @param configuration Configuration of the complete table
- */
-function createDefaultDomForContent(
-    item: DMI.ClientResponse.IItemContentModel,
-    column: DMI.ClientResponse.IFieldData,
-    configuration: ItemListTableConfiguration | ItemContentConfiguration) : JQuery {
-
-    var contentValue = item.v[column.name];
-    if (contentValue === undefined) {
-        contentValue = column.defaultValue;
-    }
-
-    // Enumerates all values
-    if (column.isEnumeration) {
-        let domResult = $("<ul></ul>");
-        if (contentValue !== undefined) {
-            for (var n in contentValue) {
-                var listValue = contentValue[n];
-                var domEntry = $("<li><a href='#'></a></li>");
-                var domInner = $("a", domEntry);
-                domInner.click(((innerListValue) => {
-                    return () => {
-                        if (configuration !== undefined && configuration.onItemSelect !== undefined) {
-                            configuration.onItemSelect(innerListValue.u);
-                        } else {
-                            alert("No Event handler for 'onItemView' within createDomForContent");
-                        }
-
-                        return false;
-                    };
-                })(listValue));
-
-                domInner.text(listValue.v);
-                domResult.append(domEntry);
+            // Defines the width of the cell
+            if (this.width === -1) {
+                dom.css("width", "1%");
+            } else if (this.width !== undefined && this.width !== null) {
+                dom.css("width", this.width + "%");
             }
         }
+    }
 
-        return domResult;
+    export class FieldInstanceBase {
+        dom: JQuery;
 
-    } else {
-        // Just a single value to be shown. 
+        constructor(dom: JQuery) {
+            this.dom = dom;
+        }
+        getDom(): JQuery {
+            return this.dom;
+        }
 
-        if (contentValue !== undefined && contentValue !== null && contentValue.u !== undefined && contentValue.u !== null) {
-            // Single value, which is a reference
-            var domAnchor = $("<a href='#'></a>");
-            domAnchor.click(((innerListValue) => {
-                return () => {
-                    if (configuration !== undefined && configuration.onItemSelect !== undefined) {
-                        configuration.onItemSelect(innerListValue.u);
-                    } else {
-                        alert("No Event handler for 'onItemView' within createDomForContent");
-                    }
+        focus() {}
+    }
 
-                    return false;
-                };
-            })(contentValue));
-            domAnchor.text(contentValue.v);
-            return domAnchor;
+    export class ButtonField extends FieldBase implements IField {
+        onClick: (item: any, button: ButtonFieldInstance) => void;
 
-        } else {
-            // Single value, which is not a reference
-            let asTextBox = column as DMI.ClientResponse.ITextFieldData;
-            var isReadonly = configuration.isReadOnly || asTextBox.isReadOnly;
+        constructor(title: string,
+            onClick?: (item: any, button: ButtonFieldInstance) => void) {
+            super();
+            this.title = title;
+            this.onClick = onClick;
+        }
 
+        click(onClick: (item: any, button: ButtonFieldInstance) => void) {
+            this.onClick = onClick;
+        }
+
+        createInstance(item: any): IFieldInstance {
+            var domButton = $("<button href='#' class='btn btn-primary'></button>");
+
+            var instance = new ButtonFieldInstance(domButton);
+
+            domButton.click(() => {
+                this.onClick(item, instance);
+                return false;
+            });
+            domButton.text(this.title);
+            return instance;
+        };
+    }
+
+    /**
+     * Implements the instance of a field which can be used to trigger the instance. 
+     */
+    export class ButtonFieldInstance extends FieldInstanceBase implements IFieldInstance {
+        /**
+         * Just a status for delete button
+         */
+        state: Boolean;
+
+        domContainer: JQuery;
+
+        constructor(dom: JQuery) {
+            super(dom);
+
+            this.state = false;
+        }
+
+        setText(text: string): void {
+            this.domContainer.text(text);
+        }
+
+        setState(state: Boolean) {
+            this.state = state;
+        }
+
+        getState(): Boolean {
+            return this.state;
+        }
+
+        focus() {
+            
+        }
+    }
+
+    export class TextboxField extends FieldBase implements IField {
+        lineHeight: number;
+        getFieldType(): string { return DMVM.ColumnTypes.textbox; }
+
+        constructor(name?: string, title?: string) {
+            super();
+            this.title = title;
+            this.name = name;
+        }
+
+        createInstance(item: any): IFieldInstance {
+            var contentValue = item[this.name];
+            var isReadonly = this.isReadOnly;
+            
             // We have a textbox, so check if we have multiple line
-            if (asTextBox.lineHeight !== undefined && asTextBox.lineHeight > 1) {
+            if (this.lineHeight !== undefined && this.lineHeight > 1) {
                 let domTextBoxMultiple = $("<textarea class='form-control'></textarea>")
-                    .attr('rows', asTextBox.lineHeight);
+                    .attr("rows", this.lineHeight);
                 domTextBoxMultiple.val(contentValue);
                 if (isReadonly) {
                     domTextBoxMultiple.attr("readonly", "readonly");
                 }
-
-                return domTextBoxMultiple;
+                
+                return new TextboxFieldInstance(domTextBoxMultiple, domTextBoxMultiple);
             } else {
                 // Single line
                 if (isReadonly) {
-                    let domResult = $("<span class='dm-itemtable-data'></span>");
-                    domResult.text(contentValue);
-                    return domResult;
+                    let domSpan = $("<span class='dm-itemtable-data'></span>");
+                    domSpan.text(contentValue);
+                    return new TextboxFieldInstance(domSpan, undefined);
                 } else {
                     let domTextBox = $("<input type='textbox' class='form-control' />");
                     domTextBox.val(contentValue);
 
-                    if (asTextBox.isReadOnly) {
+                    if (this.isReadOnly) {
                         domTextBox.attr("readonly", "readonly");
                     }
 
-                    return domTextBox;
+                    return new TextboxFieldInstance(domTextBox, domTextBox);
                 }
             }
         }
     }
+
+    export class TextboxFieldInstance extends FieldInstanceBase implements IFieldInstance {
+
+        /**
+         * The element getting the focus
+         */
+        domFocus: JQuery;
+
+        constructor(dom: JQuery, domFocus: JQuery) {
+            super(dom);
+            this.domFocus = domFocus;
+        }
+
+        focus(): void {
+            if (this.domFocus != undefined) {
+                this.domFocus.focus();
+            }
+        }
+    }
+
+    export class DropDownField extends FieldBase implements IField {
+        values: Array<string>;
+
+        getFieldType(): string {
+            return DMVM.ColumnTypes.dropdown;
+        }
+
+        createInstance(item: any): IFieldInstance {
+            var contentValue = item[this.name];
+            if (contentValue === undefined) {
+                contentValue = this.defaultValue;
+            }
+
+            let domDD = $("<select></select>");
+            for (var name in this.values) {
+                var displayText = this.values[name];
+                let domOption = $("<option></option>").attr("value", name).text(displayText);
+                domDD.append(domOption);
+            }
+
+            domDD.val(contentValue);
+            return new FieldInstanceBase(domDD);
+        }
+    }
+}
+
+/**
+ * Converts field data structure to real fields
+ * @param fieldDatas The data to be converted as an array
+ */
+export function convertFieldDataToFields(fieldDatas: Array<DMCI.In.IFieldData>): Array<Fields.IField> {
+    var result = new Array<Fields.IField>();
+    for (var n in fieldDatas) {
+        result[n] = convertFieldDataToField(fieldDatas[n]);
+    }
+
+    return result;
+}
+
+/**
+ * Converts one instance of field data to a real field
+ * @param data Data to be converted
+ */
+export function convertFieldDataToField(data: DMCI.In.IFieldData): Fields.IField {
+    var field: Fields.FieldBase;
+
+    switch (data.fieldType) {
+        case DMVM.ColumnTypes.textbox:
+            field = new Fields.TextboxField();
+            break;
+        default:
+            throw `Unknown fieldtype: ${data.fieldType}`;
+    }
+
+    field.title = data.title;
+    field.isReadOnly = data.isReadOnly;
+    field.isEnumeration = data.isEnumeration;
+    field.defaultValue = data.defaultValue;
+    field.name = data.name;
+    return field;
+
+
 }

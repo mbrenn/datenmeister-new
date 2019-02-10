@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Filler;
 
 namespace DatenMeister.SourcecodeGenerator.SourceParser
 {
@@ -15,26 +16,38 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
         public bool IsPackage(IObject element)
         {
             var asElement = element as IElement;
-            return Equals(asElement?.getMetaClass(), _uml.Packages.__Package);
+            return asElement?.getMetaClass()?.equals(_uml.Packages.__Package) == true;
             
         }
 
         public bool IsClass(IObject element)
         {
             var asElement = element as IElement;
-            return Equals(asElement?.getMetaClass(), _uml.StructuredClassifiers.__Class);
+            return asElement?.getMetaClass()?.equals(_uml.StructuredClassifiers.__Class) == true;
+        }
+
+        public bool IsEnum(IObject element)
+        {
+            var asElement = element as IElement;
+            return asElement?.getMetaClass()?.equals(_uml.SimpleClassifiers.__Enumeration) == true;
+        }
+
+        public bool IsEnumLiteral(IObject element)
+        {
+            var asElement = element as IElement;
+            return asElement?.getMetaClass()?.equals(_uml.SimpleClassifiers.__EnumerationLiteral) == true;
         }
 
         public bool IsProperty(IObject element)
         {
             var asElement = element as IElement;
-            return Equals(asElement?.getMetaClass(), _uml.Classification.__Property);
+            return asElement?.getMetaClass()?.equals(_uml.Classification.__Property) == true;
         }
 
         public bool IsPrimitiveType(IObject element)
         {
             var asElement = element as IElement;
-            return Equals(asElement?.getMetaClass(), _uml.SimpleClassifiers.__PrimitiveType);
+            return asElement?.getMetaClass()?.equals(_uml.SimpleClassifiers.__PrimitiveType) == true;
         }
     }
 }

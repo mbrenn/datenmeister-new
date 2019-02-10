@@ -11,11 +11,21 @@
 
         public string PathToXmiFiles { get; set; } // = "App_Data";
 
-        public bool EstablishDataEnvironment { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether the data environment including all the metamodels shall be established
+        /// </summary>
+        public bool EstablishDataEnvironment { get; set; } = true;
+
+        public string DatabasePath { get; set; }
 
         /// <summary>
-        /// Gets or sets the hooks being used for the integration
+        /// Gets or sets a value indicating whether the loading of an extent may fail without interrupting the complete initialization of the DatenMeister
         /// </summary>
-        public IIntegrationHooks Hooks { get; set; }
+        public bool AllowNoFailOfLoading { get; set; }
+
+        public IntegrationSettings()
+        {
+            DatabasePath = GiveMe.DefaultDatabasePath;
+        }
     }
 }

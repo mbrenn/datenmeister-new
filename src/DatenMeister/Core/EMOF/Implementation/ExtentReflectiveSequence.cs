@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
 
@@ -11,9 +13,12 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// <summary>
     /// Implements the reflective sequence for 
     /// </summary>
-    public class ExtentReflectiveSequence : IReflectiveSequence
+    public class ExtentReflectiveSequence : IReflectiveSequence, IHasExtent
     {
         private readonly MofExtent _extent;
+
+        /// <inheritdoc />
+        public IExtent Extent => _extent;
 
         /// <summary>
         /// Initializes a new instance of the ExtentReflectiveSequence class
@@ -70,16 +75,18 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void clear()
         {
             _extent.Provider.DeleteAllElements();
+            _extent?.ChangeEventManager?.SendChangeEvent(_extent);
         }
 
         /// <inheritdoc />
         public bool remove(object value)
         {
-            var valueAsObject = value as MofObject;
-            if (valueAsObject != null)
+            if (value is MofObject valueAsObject)
             {
-                return _extent.Provider.DeleteElement(valueAsObject.ProviderObject.Id);
-                
+                var result = _extent.Provider.DeleteElement(valueAsObject.ProviderObject.Id);
+
+                _extent?.ChangeEventManager?.SendChangeEvent(_extent);
+                return result;
             }
 
             throw new NotImplementedException("Only the deletion of values are supported");
@@ -105,13 +112,14 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>true, if object could be added</returns>
         private bool AddInternal(object value, int index)
         {
-            var valueAsObject = value as MofObject;
-            if (valueAsObject != null)
+            if (value is MofObject valueAsObject)
             {
                 if (valueAsObject.Extent == _extent || valueAsObject.Extent == null)
                 {
                     _extent.Provider.AddElement(valueAsObject.ProviderObject, index);
                     valueAsObject.Extent = _extent;
+
+                    _extent?.ChangeEventManager?.SendChangeEvent(_extent);
                     return true;
                 }
 
@@ -125,6 +133,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             _extent.Provider.AddElement((IProviderObject) _extent.ConvertForSetting(value), index);
+
+            _extent?.ChangeEventManager?.SendChangeEvent(_extent);
             return true;
         }
 
@@ -138,6 +148,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void remove(int index)
         {
             remove(_extent.Provider.GetRootObjects().ElementAt(index));
+            _extent?.ChangeEventManager?.SendChangeEvent(_extent);
         }
 
         /// <inheritdoc />
@@ -152,6 +163,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             var result = get(index);
             remove(index);
             set(index, value);
+            _extent?.ChangeEventManager?.SendChangeEvent(_extent);
 
             return result;
         }

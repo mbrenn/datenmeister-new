@@ -1,19 +1,24 @@
 ﻿import * as DMI from "./datenmeister-interfaces";
 import * as DMClient from "./datenmeister-client";
+import * as DMCI from "./datenmeister-clientinterface";
+import * as DMView from "./datenmeister-view";
 
 
-export function load(plugin: DMI.Api.PluginParameter): DMI.Api.IPluginResult {
+export function load(plugin: DMI.Plugin.PluginParameter): DMI.Plugin.IPluginResult {
     return {
-        onViewPortChanged: (ev) => {
+        onRibbonUpdate: (ev) => {
             var tab = ev.layout.getRibbon().getOrAddTab("Tasks");
-            if (ev.extent !== undefined && ev.extent !== null) {
+            if (ev.viewState.extent !== undefined && ev.viewState.extent !== null) {
                 tab.addIcon(
                     "Add Task",
                     "...",
                     () => {
-                        DMClient.ExtentApi.createItem(ev.workspace, ev.extent, "datenmeister:///types#TaskMeisterLib.Model.IActivity")
-                            .done((innerData: DMI.ClientResponse.ICreateItemResult) => {
-                                ev.navigation.navigateToItem(ev.workspace, ev.extent, innerData.newuri);
+                        DMClient.ExtentApi.createItem(
+                                ev.viewState.workspace,
+                                ev.viewState.extent,
+                                "datenmeister:///types#TaskMeisterLib.Model.IActivity")
+                            .done((innerData: DMCI.In.ICreateItemResult) => {
+                                DMView.ItemDetail.navigateToItem(ev.layout.mainViewPort, ev.viewState.workspace, ev.viewState.extent, innerData.newuri);
                             });
                     });
 
@@ -21,9 +26,12 @@ export function load(plugin: DMI.Api.PluginParameter): DMI.Api.IPluginResult {
                     "Show Tasks",
                     "...,",
                     () => {
-                        ev.navigation.navigateToItems(ev.workspace, ev.extent, "dm:///management/views#Views.Activity.Detail");
+                        DMView.ItemList.navigateToItems(ev.layout.mainViewPort, ev.viewState.workspace, ev.viewState.extent, "dm:///management/views#Views.Activity.Detail");
                     });
             }
+        },
+        onViewPortChanged: (ev) => {
+            
         }
     };
 }

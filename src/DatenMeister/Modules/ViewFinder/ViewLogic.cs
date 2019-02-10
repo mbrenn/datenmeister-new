@@ -1,15 +1,18 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
+using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Plugins;
+using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
-using DatenMeister.Provider.DotNet;
+using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -20,86 +23,112 @@ namespace DatenMeister.Modules.ViewFinder
     /// Defines the access to the view logic and abstracts the access to the view extent
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class ViewLogic
+    [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterInitialization)]
+    public class ViewLogic : IDatenMeisterPlugin
     {
         /// <summary>
-        /// Defines the uri of the view to the view extents
+        /// Defines the path to the packages of the fast view filters
         /// </summary>
-        public const string UriViewExtent = "dm:///management/views";
+        public const string PackagePathTypesFastViewFilters = "DatenMeister::FastViewFilters";
 
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(ViewLogic));
+
+        /// <summary>
+        /// Stores a debug variable that can be used to extent the debugging of view retrieval process.
+        /// </summary>
+        private const bool ActivateDebuggingForViewRetrieval = false;
+        
+        /// <summary>
+        /// Stores the type of the extent containing the views 
+        /// </summary>
+        public const string ViewExtentType = "DatenMeister.Views";
         private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly ExtentCreator _extentCreator;
         private readonly NamedElementMethods _namedElementMethods;
+        private readonly LocalTypeSupport _localTypeSupport;
 
-        public ViewLogic(IWorkspaceLogic workspaceLogic, NamedElementMethods namedElementMethods)
+        public ViewLogic(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator, NamedElementMethods namedElementMethods, LocalTypeSupport localTypeSupport)
         {
             _workspaceLogic = workspaceLogic;
+            _extentCreator = extentCreator;
             _namedElementMethods = namedElementMethods;
+            _localTypeSupport = localTypeSupport;
         }
 
         /// <summary>
         /// Integrates the the view logic into the workspace. 
         /// </summary>
-        public void Integrate()
+        public void Start(PluginLoadingPosition position)
         {
             var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
 
-            var dotNetUriExtent = new MofUriExtent(new InMemoryProvider(), UriViewExtent);
-            _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
-        }
+            switch (position)
+            {
+                case PluginLoadingPosition.AfterBootstrapping:
+                    // Creates the internal views for the DatenMeister
+                    var dotNetUriExtent =
+                        new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriInternalViewExtent);
+                    dotNetUriExtent.SetExtentType(ViewExtentType);
+                    _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
+                    break;
 
+                case PluginLoadingPosition.AfterInitialization:
+                    _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
+                        WorkspaceNames.NameManagement,
+                        WorkspaceNames.UriUserViewExtent,
+                        "DatenMeister.Views_User",
+                        ViewExtentType
+                    );
+
+                    // Adds the local fast view filters
+                    _localTypeSupport.AddInternalTypes(FastViewFilters.Types, PackagePathTypesFastViewFilters);
+                    break;
+            }
+        }
 
         /// <summary>
         /// Adds a view to the system
         /// </summary>
+        /// <param name="type">Location Type to which the element shall be added</param>
         /// <param name="view">View to be added</param>
-        public void Add(IObject view)
+        public void Add(ViewLocationType type, IObject view)
         {
-            GetViewExtent().elements().add(view);
+            GetViewExtent(type).elements().add(view);
         }
 
         /// <summary>
         /// Adds the form
         /// </summary>
+        /// <param name="type">Location Type to which the element shall be added</param>
         /// <param name="form">Default view to be used</param>
         /// <param name="id">Id of the element that shall be created</param>
-        public void Add(Form form, string id = null)
+        public void Add(ViewLocationType type, Form form, string id = null)
         {
-            var viewExtent = GetViewExtent();
+            var viewExtent = GetInternalViewExtent();
             var factory = new MofFactory(viewExtent);
-            GetViewExtent().elements().add(factory.createFrom(form, id));
+            GetViewExtent(type).elements().add(factory.createFrom(form, id));
         }
 
         /// <summary>
         /// Adds a default view for a certain meta class
         /// </summary>
+        /// <param name="type">Location Type to which the element shall be added</param>
         /// <param name="defaultView">Default view to be used</param>
         /// <param name="id">Id of the element that shall be created</param>
-        public void Add(DefaultViewForMetaclass defaultView, string id = null)
+        public void Add(ViewLocationType type, ViewAssociation defaultView, string id = null)
         {
-            var viewExtent = GetViewExtent();
+            var viewExtent = GetInternalViewExtent();
             var factory = new MofFactory(viewExtent);
-            GetViewExtent().elements().add(factory.createFrom(defaultView, id));
+            GetViewExtent(type).elements().add(factory.createFrom(defaultView, id));
         }
 
         /// <summary>
-        /// Adds a default view for a certain meta class
+        /// Gets the internal view extent being empty at each start-up
         /// </summary>
-        /// <param name="defaultView">Default view to be used</param>
-        /// <param name="id">Id of the element that shall be created</param>
-        public void Add(DefaultViewForExtentType defaultView, string id = null)
+        /// <returns></returns>
+        public IUriExtent GetInternalViewExtent()
         {
-            var viewExtent = GetViewExtent();
-            var factory = new MofFactory(viewExtent);
-            GetViewExtent().elements().add(factory.createFrom(defaultView, id));
-        }
-
-
-        private IUriExtent GetViewExtent()
-        {
-            var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
-
-            var foundExtent = mgmtWorkspace.FindExtent(UriViewExtent);
-            if (foundExtent == null)
+            if (!(_workspaceLogic.FindExtent(WorkspaceNames.UriInternalViewExtent) is IUriExtent foundExtent))
             {
                 throw new InvalidOperationException("The view extent is not found in the management");
             }
@@ -108,28 +137,86 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
         /// <summary>
-        /// Gets the view as given by the name of the view
+        /// Gets the extent of the user being stored on permanent storage
+        /// </summary>
+        /// <returns></returns>
+        public IUriExtent GetUserViewExtent()
+        {
+            if (!(_workspaceLogic.FindExtent(WorkspaceNames.UriUserViewExtent) is IUriExtent foundExtent))
+            {
+                throw new InvalidOperationException("The view extent is not found in the management");
+            }
+
+            return foundExtent;
+        }
+
+        /// <summary>
+        /// Gets the view extent.. Whether the default internal or the default external
+        /// </summary>
+        /// <param name="locationType">Type of the location to be used</param>
+        /// <returns>The found extent of the given location</returns>
+        public IUriExtent GetViewExtent(ViewLocationType locationType)
+        {
+            switch (locationType)
+            {
+                case ViewLocationType.Internal:
+                    return GetInternalViewExtent();
+                case ViewLocationType.User:
+                    return GetUserViewExtent();
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(locationType), locationType, null);
+            }
+        }
+
+        /// <summary>
+        /// Gets the view as given by the url of the view
         /// </summary>
         /// <param name="url">The Url to be queried</param>
         /// <returns>The found view or null if not found</returns>
         public IObject GetViewByUrl(string url)
         {
-            return GetViewExtent().element(url);
+            if (url.StartsWith(WorkspaceNames.UriInternalViewExtent))
+            {
+                return GetUserViewExtent().element(url);
+            }
+            else
+            {
+                return GetInternalViewExtent().element(url);
+            }
         }
 
         /// <summary>
         /// Gets all forms and returns them as an enumeration
         /// </summary>
         /// <returns>Enumeration of forms</returns>
-        public IReflectiveCollection GetAllViews()
+        public IReflectiveCollection GetAllForms()
         {
-            var viewExtent = GetViewExtent();
-            var formAndFields = GetFormAndFieldInstance(viewExtent);
+            var internalViewExtent = GetInternalViewExtent();
+            var userViewExtent = GetUserViewExtent();
+            var formAndFields = GetFormAndFieldInstance(internalViewExtent);
 
-            return viewExtent.elements()
-                .GetAllDescendants()
-                .WhenMetaClassIs(formAndFields.__Form);
+            return internalViewExtent.elements()
+                    .Union(userViewExtent.elements())
+                .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement })
+                .WhenMetaClassIsOneOf(formAndFields.__Form, formAndFields.__DetailForm, formAndFields.__ListForm);
         }
+
+        /// <summary>
+        /// Gets all view associations and returns them as an enumeration
+        /// </summary>
+        /// <returns>Enumeration of assocations</returns>
+        public IReflectiveCollection GetAllViewAssociations()
+        {
+            var internalViewExtent = GetInternalViewExtent();
+            var userViewExtent = GetUserViewExtent();
+            var formAndFields = GetFormAndFieldInstance(internalViewExtent);
+
+            return internalViewExtent.elements()
+                .Union(userViewExtent.elements())
+                .GetAllDescendants(new[] { _UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement })
+                .WhenMetaClassIsOneOf(formAndFields.__ViewAssociation);
+        }
+
 
         /// <summary>
         /// Finds the association view for the given element in the detail view
@@ -145,61 +232,165 @@ namespace DatenMeister.Modules.ViewFinder
                 return null;
             }
 
-            var viewExtent = GetViewExtent();
-            var formAndFields = GetFormAndFieldInstance(viewExtent);
-            var metaClassUri = metaClass.GetUri();
-            var typeAsString = type.ToString();
-
-            foreach (
-                var element in viewExtent.elements().
-                WhenMetaClassIs(formAndFields.__DefaultViewForMetaclass).
-                Select(x => x as IElement))
-            {
-                Debug.Assert(element != null, "element != null");
-
-                var innerMetaClass = element.get(_FormAndFields._DefaultViewForMetaclass.metaclass);
-                var innerType = element.get(_FormAndFields._DefaultViewForMetaclass.viewType).ToString();
-
-                if (innerMetaClass.Equals(metaClassUri) && innerType.Equals(typeAsString))
-                {
-                    return element.getFirstOrDefault(_FormAndFields._DefaultViewForMetaclass.view) as IElement;
-                }
-            }
-
-            return null;
+            return FindViewFor(type, null, NamedElementMethods.GetFullName(metaClass), metaClass);
         }
 
         /// <summary>
         /// Looks in the view extent and checks for all elements, where the type of the extent is fitting to the view
         /// </summary>
         /// <param name="extentType">Type of the extent</param>
-        /// <param name="list"></param>
+        /// <param name="metaClass">Metaclass of the elements being shown</param>
+        /// <param name="type">Type of the view</param>
         /// <returns>The found view</returns>
-        public IElement FindViewForExtentType(string extentType, ViewType type)
+        public IElement FindViewForExtentType(string extentType, IElement metaClass, ViewType type)
         {
-            if (string.IsNullOrEmpty(extentType))
+            if (string.IsNullOrEmpty(extentType) && metaClass == null)
             {
                 return null;
             }
 
-            var viewExtent = GetViewExtent();
-            var formAndFields = GetFormAndFieldInstance(viewExtent);
+            return FindViewFor(
+                type, 
+                extentType, 
+                metaClass == null ? null : NamedElementMethods.GetFullName(metaClass),
+                metaClass);
+        }
+
+
+        /// <summary>
+        /// Finds the view for the given item.
+        /// First, it looks for the specific instance
+        /// Second, it looks by the given type
+        /// </summary>
+        /// <param name="value">Value, whose view is currently is requested</param>
+        /// <param name="viewType">Type of the view being queried</param>
+        /// <returns>The found view or null, if not found</returns>
+        public IElement FindViewForValue(IObject value, ViewType viewType)
+        {
+            return FindViewFor((value as IElement)?.metaclass, viewType);
+        }
+
+        /// <summary>
+        /// Find st
+        /// </summary>
+        /// <param name="viewType">The view type to be found</param>
+        /// <param name="extentType">The extent type whose view is queried. May be null, if not relevant</param>
+        /// <param name="metaClassName">The uri of the metaclass whose view is queried. May be null, if not relevant</param>
+        /// <param name="metaClass">The element of the metaclass whose view is queried. May be null, if not relevant</param>
+        /// <returns>The found view or null, if not found</returns>
+        public IElement FindViewFor(
+            ViewType viewType,
+            string extentType,
+            string metaClassName,
+            IElement metaClass)
+        {
+            var foundPoints = 0;
+            IElement foundView = null;
+            var viewAssociations = GetAllViewAssociations().Select(x=> x as IElement).ToList();
+            InternalDebug("---");
+            InternalDebug("# of ViewAssociations: " + viewAssociations.Count);
+
             foreach (
-                var element in viewExtent.elements().
-                WhenMetaClassIs(formAndFields.__DefaultViewForExtentType).
-                Select(x => x as IElement))
+                var element in viewAssociations)
             {
-                Debug.Assert(element != null, "element != null");
+                InternalDebug("-");
+                var points = 0;
+                if (element == null) throw new NullReferenceException("element");
 
-                var innerExtentType = element.get(_FormAndFields._DefaultViewForExtentType.extentType);
+                var innerExtentType = element.getOrDefault<string>(_FormAndFields._ViewAssociation.extentType);
+                var innerMetaClass = element.getOrDefault<IElement>(_FormAndFields._ViewAssociation.metaclass);
+                var innerMetaClassName = element.getOrDefault<string>(_FormAndFields._ViewAssociation.metaclassName);
+                var innerViewType = element.getOrNull<ViewType>(_FormAndFields._ViewAssociation.viewType) ?? ViewType.Detail;
 
-                if (innerExtentType.Equals(extentType))
+                var innerView = element.GetOrDefault(_FormAndFields._ViewAssociation.view) as IElement;
+                var isMatching = true;
+
+                // Now go through each property and get the points
+                if (extentType != null && innerExtentType != null)
                 {
-                    return element.getFirstOrDefault(_FormAndFields._DefaultViewForMetaclass.view) as IElement;
+                    if (extentType == innerExtentType)
+                    {
+                        InternalDebug("-- MATCH: ExtentType: " + extentType + ", ViewAssociation ExtentType: " + innerExtentType );
+                        points++;
+                    }
+                    else
+                    {
+                        InternalDebug("-- NO MATCH: ExtentType: " + extentType + ", ViewAssociation ExtentType: " + innerExtentType );
+                        isMatching = false;
+                    }
+                }
+
+                if (metaClassName != null && innerMetaClassName != null)
+                {
+                    if (metaClassName == innerMetaClassName)
+                    {
+                        InternalDebug("-- MATCH: metaClassName: " + metaClassName + ", ViewAssociation innerMetaClassName: " + innerMetaClassName);
+                        points++;
+                    }
+                    else
+                    {
+                        InternalDebug("-- NO MATCH: metaClassName: " + metaClassName + ", ViewAssociation innerMetaClassName: " + innerMetaClassName);
+                        isMatching = false;
+                    }
+                }
+
+                if (metaClass != null && innerMetaClass != null)
+                {
+                    if (metaClass == innerMetaClass)
+                    {
+                        InternalDebug("-- MATCH: metaClass: " + NamedElementMethods.GetName(metaClass) +
+                                      ", ViewAssociation innerMetaClass: " + NamedElementMethods.GetName(innerMetaClass));
+                        points++;
+                    }
+                    else
+                    {
+                        InternalDebug("-- NO MATCH: metaClass: " + NamedElementMethods.GetName(metaClass) +
+                                      ", ViewAssociation innerMetaClass: " + NamedElementMethods.GetName(innerMetaClass));
+                        isMatching = false;
+                    }
+                }
+
+                if (viewType != innerViewType)
+                {
+                    InternalDebug("-- NO MATCH: viewType: " + viewType + ", ViewAssociation viewType: " + innerViewType);
+                    isMatching = false;
+                }
+                else
+                {
+                    InternalDebug("-- MATCH: viewType: " + viewType + ", ViewAssociation viewType: " + innerViewType);
+                }
+
+                InternalDebug("-- Points: " + points + ", Matched" + isMatching);
+                
+                // The matching view with the maximum points win
+                if (isMatching)
+                {
+                    if (points > foundPoints)
+                    {
+                        foundPoints = points;
+                        foundView = innerView;
+
+                        InternalDebug("-- Selected!");
+                    }
                 }
             }
 
-            throw new NotImplementedException();
+            return foundView;
+        }
+
+        /// <summary>
+        /// Writes the information to the debugger, if the ActivateDebuggingForViewRetrieval is configured as true
+        /// </summary>
+        /// <param name="s"></param>
+        private void InternalDebug(string s)
+        {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            if (ActivateDebuggingForViewRetrieval)
+#pragma warning disable 162
+            {
+                Logger.Trace(s);
+            }
+#pragma warning restore 162
         }
 
         /// <summary>
@@ -210,7 +401,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns></returns>
         private _FormAndFields GetFormAndFieldInstance(IExtent viewExtent)
         {
-            return _workspaceLogic.GetWorkspaceOfExtent(viewExtent).MetaWorkspace.Get<_FormAndFields>();
+            return _workspaceLogic.GetWorkspaceOfExtent(viewExtent).GetFromMetaWorkspace<_FormAndFields>();
         }
     }
 }

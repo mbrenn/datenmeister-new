@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Uml.Helper;
@@ -17,7 +18,7 @@ namespace DatenMeister.Tests.Web
         {
             var property1 = "zip";
             var property2 = "location";
-            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///");
+            var extent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///");
             var factory = new MofFactory(extent);
             var mofObject = factory.create(null);
             mofObject.set(property1, "55130");
@@ -32,7 +33,7 @@ namespace DatenMeister.Tests.Web
             var creator = new FormCreator();
             var result = creator.CreateForm(extent, FormCreator.CreationMode.All);
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.fields.Count(), Is.EqualTo(2));
+            Assert.That(result.fields.OfType<TextFieldData>().Count(), Is.EqualTo(2));
             var firstColumn = result.fields.FirstOrDefault(x => x.name == "zip");
             var secondColumn = result.fields.FirstOrDefault(x => x.name == "location");
 
@@ -41,7 +42,7 @@ namespace DatenMeister.Tests.Web
 
             Assert.That(firstColumn.isEnumeration, Is.False);
 
-            Assert.That(result.fields.Count, Is.EqualTo(2));
+            Assert.That(result.fields.OfType<TextFieldData>().Count, Is.EqualTo(2));
             Assert.That(result.fields[0].name, Is.EqualTo("zip"));
             Assert.That(result.fields[1].name, Is.EqualTo("location"));
         }
@@ -53,7 +54,7 @@ namespace DatenMeister.Tests.Web
             var property2 = "location";
             var property3 = "other";
 
-            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///");
+            var extent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///");
             var factory = new MofFactory(extent);
             var mofObject = factory.create(null);
             mofObject.set(property1, "55130");
@@ -73,7 +74,7 @@ namespace DatenMeister.Tests.Web
             var creator = new FormCreator();
             var result = creator.CreateForm(extent, FormCreator.CreationMode.All);
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.fields.Count, Is.EqualTo(3));
+            Assert.That(result.fields.OfType<TextFieldData>().Count, Is.EqualTo(3));
             var firstColumn = result.fields.FirstOrDefault(x => x.name == "zip");
             var secondColumn = result.fields.FirstOrDefault(x => x.name == "location");
             var thirdColumn = result.fields.FirstOrDefault(x => x.name == "other");

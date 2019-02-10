@@ -21,7 +21,7 @@ namespace DatenMeister.Excel.EMOF
         /// <summary>
         /// Gets the provider as a typed instance
         /// </summary>
-        public ExcelExtent ExcelProvider => (ExcelExtent)Provider;
+        public ExcelProvider ExcelProvider => (ExcelProvider)Provider;
 
         /// <summary>
         /// Gets or sets the columns and their names
@@ -42,11 +42,11 @@ namespace DatenMeister.Excel.EMOF
         /// <summary>
         /// Initializes a new instance of the SheetItem
         /// </summary>
-        /// <param name="extent">Extent to which the item belongs</param>
+        /// <param name="provider">Extent to which the item belongs</param>
         /// <param name="sheet">The sheet that is used for access</param>
-        public SheetItem(ExcelExtent extent, ISheet sheet)
+        public SheetItem(ExcelProvider provider, ISheet sheet)
         {
-            Provider = extent;
+            Provider = provider;
             Sheet = sheet;
 
             InitializeData();
@@ -84,39 +84,31 @@ namespace DatenMeister.Excel.EMOF
         /// <inheritdoc />
         public object GetProperty(string property)
         {
-            if (property == "items")
+            switch (property)
             {
-                var collection = new List<object>();
+                case "items":
+                    var collection = new List<object>();
 
-                var n = RowOffset;
-                while (true)
-                {
-                    var cell = Sheet.GetRow(n)?.GetCell(ColumnOffset);
-                    if (string.IsNullOrEmpty(cell?.GetStringContent()))
+                    var n = RowOffset;
+                    while (true)
                     {
-                        break;
+                        var cell = Sheet.GetRow(n)?.GetCell(ColumnOffset);
+                        if (string.IsNullOrEmpty(cell?.GetStringContent()))
+                        {
+                            break;
+                        }
+
+                        collection.Add(new RowItem(this, n));
+                        n++;
                     }
 
-                    collection.Add(new RowItem(this, n));
-                    n++;
-                }
-
-                return collection;
-            }
-
-            if (property == "name")
-            {
-                return Sheet.SheetName;
-            }
-
-            if (property == "columnOffset")
-            {
-                return ColumnOffset;
-            }
-
-            if (property == "rowOffset")
-            {
-                return RowOffset;
+                    return collection;
+                case "name":
+                    return Sheet.SheetName;
+                case "columnOffset":
+                    return ColumnOffset;
+                case "rowOffset":
+                    return RowOffset;
             }
 
             throw new NotImplementedException();
@@ -161,7 +153,7 @@ namespace DatenMeister.Excel.EMOF
         /// <inheritdoc />
         public bool RemoveFromProperty(string property, object value)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />

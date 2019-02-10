@@ -3,14 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider.DotNet
 {
     public class DotNetProviderObject : IProviderObject
     {
-        private readonly IDotNetTypeLookup _typeLookup;
-
         private readonly object _value;
 
         /// <summary>
@@ -19,7 +16,15 @@ namespace DatenMeister.Provider.DotNet
         /// <returns></returns>
         public object GetNativeValue() => _value;
 
-        public IProvider Provider { get; }
+        /// <summary>
+        /// Gets the provider as DotNetProvider object
+        /// </summary>
+        public DotNetProvider Provider { get; }
+
+        /// <summary>
+        /// Gets the provider for the interface
+        /// </summary>
+        IProvider IProviderObject.Provider => Provider;
 
         /// <summary>
         /// Stores the type of the value
@@ -29,6 +34,9 @@ namespace DatenMeister.Provider.DotNet
         /// <inheritdoc />
         public string MetaclassUri { get; set; }
 
+        /// <summary>
+        /// Gets or sets the id of the object of the DotNetProviderObject
+        /// </summary>
         public string Id { get; set; }
 
         /// <summary>
@@ -38,33 +46,14 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="typeLookup">Typelookup to be used to create element</param>
         /// <param name="value">Value to be set</param>
         /// <param name="metaClassUri">metaclass to be set to the object</param>
-        public DotNetProviderObject(DotNetProvider provider, IDotNetTypeLookup typeLookup, object value, string metaClassUri)
+        public DotNetProviderObject(DotNetProvider provider, object value, string metaClassUri)
         {
-            if (provider == null) throw new ArgumentNullException(nameof(provider));
-            if (typeLookup == null) throw new ArgumentNullException(nameof(typeLookup));
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            if (metaClassUri == null) throw new ArgumentNullException(nameof(metaClassUri));
-
-            Provider = provider;
-            _typeLookup = typeLookup;
-            _value = value;
-            MetaclassUri = metaClassUri;
+            Provider = provider ?? throw new ArgumentNullException(nameof(provider));
+            _value = value ?? throw new ArgumentNullException(nameof(value));
+            MetaclassUri = metaClassUri ?? throw new ArgumentNullException(nameof(metaClassUri));
             _type = value.GetType();
 
-            Id = typeLookup.GetId(value);
-        }
-
-        public DotNetProviderObject(DotNetProvider dotNetProvider, IDotNetTypeLookup typeLookup, object value)
-        {
-            if (dotNetProvider == null) throw new ArgumentNullException(nameof(dotNetProvider));
-            if (typeLookup == null) throw new ArgumentNullException(nameof(typeLookup));
-
-            Provider = dotNetProvider;
-            _typeLookup = typeLookup;
-            _value = value;
-            _type = value.GetType();
-
-            MetaclassUri = typeLookup.ToElement(_type);
+            Id = provider.TypeLookup.GetId(value);
         }
 
         /// <inheritdoc />
@@ -77,7 +66,7 @@ namespace DatenMeister.Provider.DotNet
         public object GetProperty(string property)
         {
             var result = GetValueOfProperty(property);
-            return _typeLookup.CreateDotNetElementIfNecessary(result, Provider as DotNetProvider);
+            return Provider.CreateDotNetElementIfNecessary(result);
         }
 
         private object GetValueOfProperty(string property)
@@ -116,7 +105,7 @@ namespace DatenMeister.Provider.DotNet
                 throw new InvalidOperationException($"Property not known '{property}'.");
             }
 
-            member.SetValue(_value, Extensions.ConvertToNative(value));
+            member.SetValue(_value, DotNetProviderExtensions.ConvertToNative(value));
         }
 
         public IList GetPropertyAsList(string property)
@@ -134,7 +123,7 @@ namespace DatenMeister.Provider.DotNet
                 list = GetPropertyAsList(property);
             }
 
-            return list.Add(Extensions.ConvertToNative(value)) != -1;
+            return list.Add(DotNetProviderExtensions.ConvertToNative(value)) != -1;
         }
 
         /// <inheritdoc />
@@ -147,7 +136,7 @@ namespace DatenMeister.Provider.DotNet
                 list = GetPropertyAsList(property);
             }
 
-            value = Extensions.ConvertToNative(value);
+            value = DotNetProviderExtensions.ConvertToNative(value);
 
             var result = list.Contains(value);
             list.Remove(value);

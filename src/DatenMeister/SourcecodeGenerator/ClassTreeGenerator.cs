@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator
@@ -23,7 +24,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// </summary>
         public ClassTreeGenerator(ISourceParser parser = null) : base(parser)
         {
-            FactoryVersion = new Version(1, 1, 0, 0);
+            FactoryVersion = new Version(1, 2, 0, 0);
         }
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace DatenMeister.SourcecodeGenerator
             WriteUsages(new[]
             {
                 "DatenMeister.Core.EMOF.Interface.Reflection",
+                "DatenMeister.Core.EMOF.Implementation",
                 "DatenMeister.Provider.InMemory"
             });
             
@@ -88,6 +90,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// <param name="classInstance">The class that shall be retrieved</param>
         protected override void WalkClass(IObject classInstance, CallStack stack)
         {
+            var asElement = classInstance as IElement;
             var name = GetNameOfElement(classInstance);
 
             Result.AppendLine($"{stack.Indentation}public class _{name}");
@@ -99,10 +102,9 @@ namespace DatenMeister.SourcecodeGenerator
 
             Result.AppendLine();
             Result.AppendLine($"{stack.Indentation}public _{name} @{name} = new _{name}();");
-            Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new InMemoryElement();");
-            Result.AppendLine(); 
+            Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement.GetUri()}\");");
+            Result.AppendLine();
         }
-
 
         protected override void WalkProperty(IObject propertyObject, CallStack stack)
         {
@@ -110,16 +112,46 @@ namespace DatenMeister.SourcecodeGenerator
 
             var nameAsObject = propertyObject.get("name");
             var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
-            if (name != null)
-            {
-                Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
-                Result.AppendLine($"{stack.Indentation}public IElement _{name} = null;");
-                Result.AppendLine();
-            }
-            else
-            {
-                Debug.WriteLine($"Found unknown property: {propertyObject}");
-            }
+            Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
+            Result.AppendLine($"{stack.Indentation}public IElement _{name} = null;");
+            Result.AppendLine();
+        }
+
+        /// <summary>
+        ///     Parses the packages
+        /// </summary>
+        /// <param name="enumInstance">The class that shall be retrieved</param>
+        /// <param name="stack">Stack being used</param>
+        protected override void WalkEnum(IObject enumInstance, CallStack stack)
+        {
+            var asElement = enumInstance as IElement;
+            var name = GetNameOfElement(enumInstance);
+
+            Result.AppendLine($"{stack.Indentation}public class _{name}");
+            Result.AppendLine($"{stack.Indentation}{{");
+
+            base.WalkEnum(enumInstance, stack);
+
+            Result.AppendLine();
+            Result.AppendLine($"{stack.Indentation}}}");
+            Result.AppendLine();
+
+            Result.AppendLine($"{stack.Indentation}public _{name} @{name} = new _{name}();");
+            Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement.GetUri()}\");");
+            Result.AppendLine();
+        }
+
+        protected override void WalkEnumLiteral(IObject enumLiteralObject, CallStack stack)
+        {
+            var asElement = enumLiteralObject as IElement;
+            base.WalkEnumLiteral(enumLiteralObject, stack);
+
+            var nameAsObject = enumLiteralObject.get("name");
+
+            var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
+            Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
+
+            Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement.GetUri()}\");");
         }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using System.IO;
 using System.Linq;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.CSV.Runtime.Storage;
+using DatenMeister.Integration;
+using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Proxies.ReadOnly;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Tests.CSV;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime
@@ -25,15 +26,15 @@ namespace DatenMeister.Tests.Runtime
             var element = readOnly.elements().ElementAt(0) as IElement;
             Assert.That(element, Is.Not.Null);
             Assert.Throws<ReadOnlyAccessException>(() =>
-                element?.unset("Test"));
+                element.unset("Test"));
 
             Assert.That(readOnly.elements().size(), Is.GreaterThan(0));
             Assert.That(readOnly.elements().size(), Is.EqualTo(csvExtent.elements().size()));
 
             var property1  = ((IObjectAllProperties) element).getPropertiesBeingSet().ElementAt(0);
-            Assert.That(element?.get(property1), Is.Not.Null);
+            Assert.That(element.get(property1), Is.Not.Null);
 
-            Assert.Throws<ReadOnlyAccessException>(() => ((IElementSetMetaClass) element)?.SetMetaClass(null));
+            Assert.Throws<ReadOnlyAccessException>(() => ((IElementSetMetaClass) element).SetMetaClass(null));
         }   
 
         /// <summary>
@@ -43,18 +44,18 @@ namespace DatenMeister.Tests.Runtime
         private static IUriExtent CreateSimpleCsvExtent()
         {
             var csvFile = "eins 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
-            File.WriteAllText("data.txt", csvFile);
+            File.WriteAllText(CSVExtentTests.PathForTemporaryDataFile, csvFile);
 
-            var mapper = new ManualConfigurationToExtentStorageMapper();
-            mapper.AddMapping(typeof (CSVStorageConfiguration), scope => new CSVStorage(null));
+            var mapper = new ConfigurationToExtentStorageMapper();
+            mapper.AddMapping(typeof (CSVExtentLoaderConfig), scope => new CsvProviderLoader(null));
             var workspaceData = WorkspaceLogic.InitDefault();
 
             var data = new ExtentStorageData();
-            var logic = new ExtentStorageLoader(data, mapper, null, new WorkspaceLogic(workspaceData));
-            var configuration = new CSVStorageConfiguration
+            var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(workspaceData), new IntegrationSettings());
+            var configuration = new CSVExtentLoaderConfig
             {
-                Path = "data.txt",
-                ExtentUri = "dm:///local/",
+                filePath = CSVExtentTests.PathForTemporaryDataFile,
+                extentUri = "datenmeister:///local/",
                 Settings =
                 {
                     HasHeader = false,

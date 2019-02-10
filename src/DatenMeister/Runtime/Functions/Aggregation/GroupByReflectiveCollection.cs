@@ -14,7 +14,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         /// <summary>
         /// Stores the extent being used to provide the information
         /// </summary>
-        private readonly MofUriExtent _extent = new MofUriExtent(new InMemoryProvider(), "dm:///temp");
+        private readonly MofUriExtent _extent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///temp");
 
         private readonly MofFactory _mofFactory;
 
@@ -124,7 +124,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
                 {
                     // Add the value to the result
                     aggregators[n].Add(
-                        element.getOrDefault(aggregateColumn));
+                        element.GetOrDefault(aggregateColumn));
 
                     n++;
                 }
@@ -134,7 +134,6 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             foreach (var pair in aggregatedValues)
             {
                 var element = _mofFactory.create(null);
-
                 element.set(groupByColumn, pair.Key);
 
                 var n = 0;

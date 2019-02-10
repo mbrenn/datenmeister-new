@@ -21,8 +21,7 @@ namespace DatenMeister.Runtime.Dynamic
         {
             if (value != null)
             {
-                var valueAsExpandoObject = value as ExpandoObject;
-                if (valueAsExpandoObject == null)
+                if (!(value is ExpandoObject valueAsExpandoObject))
                 {
                     throw new InvalidOperationException("The given value is not of type ExpandObject");
                 }
@@ -63,8 +62,7 @@ namespace DatenMeister.Runtime.Dynamic
         public static dynamic ToDynamic(IObject value, bool wrapInObject)
         {
             var result = new ExpandoObject();
-            var allProperties = value as IObjectAllProperties;
-            if (allProperties == null)
+            if (!(value is IObjectAllProperties allProperties))
             {
                 throw new ArgumentException("value is not of type IObjectAllProperties.");
             }

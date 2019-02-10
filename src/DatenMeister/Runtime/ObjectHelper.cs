@@ -6,11 +6,118 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Runtime
 {
     public static class ObjectHelper
     {
+        /// <summary>
+        /// Gets the typed value of the property. 
+        /// </summary>
+        /// <typeparam name="T">Type of the property</typeparam>
+        /// <param name="value">MOF Object being queried</param>
+        /// <param name="property">Property being queried in the <c>value</c></param>
+        /// <returns>The content of the element or default(T) if not nknown</returns>
+        public static T get<T>(this IObject value, string property)
+        {
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
+            if (typeof(T) == typeof(string))
+            {
+                return (T)(object)DotNetHelper.AsString(value.get(property));
+            }
+
+            if (typeof(T) == typeof(int))
+            {
+                return (T)(object)DotNetHelper.AsInteger(value.get(property));
+            }
+
+            if (typeof(T) == typeof(double))
+            {
+                return (T)(object)DotNetHelper.AsDouble(value.get(property));
+            }
+
+            if (typeof(T) == typeof(bool))
+            {
+                return (T)(object)DotNetHelper.AsBoolean(value.get(property));
+            }
+
+            if (typeof(T) == typeof(IObject))
+            {
+                return (T)(value.get(property) as IObject);
+            }
+
+            if ( typeof(T) == typeof(IElement))
+            {
+                return (T)(value.get(property) as IElement);
+            }
+
+            if (typeof(T) == typeof(IReflectiveCollection))
+            {
+                return (T) (object) new MofReflectiveSequence((MofObject) value, property);
+            }
+
+            if (typeof(T) == typeof(IReflectiveSequence))
+            {
+                return (T)(object)new MofReflectiveSequence((MofObject)value, property);
+            }
+
+            if (typeof(T).IsEnum)
+            {
+                var valueAsElement = value.get(property);
+                if (valueAsElement == null)
+                {
+                    return default(T);
+                }
+
+                if (typeof(T) == valueAsElement.GetType())
+                {
+                    return (T) valueAsElement;
+                }
+
+                if (valueAsElement is string propertyValueAsString)
+                {
+                    return (T) Enum.Parse(typeof(T), propertyValueAsString);
+                }
+
+                if (valueAsElement is IElement propertyObject && value is MofObject mofObject)
+                {
+                    // Get Enumeration Instance
+                    var resolvedElement = mofObject.CreatedByExtent.Resolve(propertyObject);
+                    if (resolvedElement == null)
+                    {
+                        return default(T);
+                    }
+
+                    var name = NamedElementMethods.GetName(resolvedElement);
+                    return (T) Enum.Parse(typeof(T), name);
+                }
+            }
+
+            throw new InvalidOperationException($"{typeof(T).FullName} is not handled by get");
+        }
+
+        public static T? getOrNull<T>(this IObject value, string property) where T : struct
+        {
+            if (!value.isSet(property))
+            {
+                return null;
+            }
+
+            return get<T>(value, property);
+        }
+
+        public static T getOrDefault<T>(this IObject value, string property) 
+        {
+            if (!value.isSet(property))
+            {
+                return default(T);
+            }
+
+            return get<T>(value, property);
+        }
+
         /// <summary>
         /// Gets the value of a property if the property is set. 
         /// If the property is no set, then null will be returned
@@ -18,7 +125,7 @@ namespace DatenMeister.Runtime
         /// <param name="value">Object being queried</param>
         /// <param name="property">Property of the object</param>
         /// <returns>The value of the object or null, if not existing</returns>
-        public static object getOrDefault(this IObject value, string property)
+        public static object GetOrDefault(this IObject value, string property)
         {
             if (value.isSet(property))
             {
@@ -27,6 +134,7 @@ namespace DatenMeister.Runtime
 
             return null;
         }
+
         /// <summary>
         /// Gets the value of a property if the property is set and is not an enumeration. 
         /// If the property is an enumeration, the first element will be returned
@@ -35,14 +143,14 @@ namespace DatenMeister.Runtime
         /// <param name="value">Object being queried</param>
         /// <param name="property">Property of the object</param>
         /// <returns>The value of the object or null, if not existing</returns>
-        public static object getFirstOrDefault(this IObject value, string property)
+        public static object GetFirstOrDefault(this IObject value, string property)
         {
             if (value.isSet(property))
             {
                 var result = value.get(property);
                 if (DotNetHelper.IsOfEnumeration(result))
                 {
-                    var resultAsEnumeration = result as IEnumerable<object>;
+                    var resultAsEnumeration = (IEnumerable<object>) result;
                     return resultAsEnumeration.FirstOrDefault();
                 }
 
@@ -50,6 +158,19 @@ namespace DatenMeister.Runtime
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Adds a list item to the reflective sequence of the given value.
+        /// If the given property is not already a reflective sequence, it will become to one
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="property"></param>
+        /// <param name="toBeAdded"></param>
+        public static void AddCollectionItem(this IObject value, string property, object toBeAdded)
+        {
+            var reflection = new MofReflectiveSequence(value as MofObject,  property);
+            reflection.add(toBeAdded);
         }
 
         public static Dictionary<object, object> AsDictionary(
@@ -84,6 +205,19 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
+        /// Sets the properties of the value
+        /// </summary>
+        /// <param name="value">Object which will receive the values</param>
+        /// <param name="properties">Properties to be set</param>
+        public static void SetProperties(this IObject value, IDictionary<string, object> properties)
+        {
+            foreach (var pair in properties)
+            {
+                value.set(pair.Key, pair.Value);
+            }
+        }
+
+        /// <summary>
         /// Gets a certain property value as a reflective collection. 
         /// If the value is not a reflective collection, an exception is thrown
         /// </summary>
@@ -95,8 +229,7 @@ namespace DatenMeister.Runtime
             this IObject value,
             string property)
         {
-            var result = value.get(property) as IReflectiveCollection;
-            if (result == null)
+            if (!(value.get(property) is IReflectiveCollection result))
             {
                 throw new InvalidOperationException("The given result is not a ReflectiveCollection");
             }
@@ -116,8 +249,7 @@ namespace DatenMeister.Runtime
             this IObject value,
             string property)
         {
-            var result = value.get(property) as IReflectiveSequence;
-            if (result == null)
+            if (!(value.get(property) is IReflectiveSequence result))
             {
                 throw new InvalidOperationException("The given result is not a ReflectiveSequence");
             }
@@ -137,13 +269,40 @@ namespace DatenMeister.Runtime
             this IObject value,
             string property)
         {
-            var result = value.get(property) as IEnumerable<object>;
-            if (result == null)
+            if (!(value.get(property) is IEnumerable<object> result))
             {
                 throw new InvalidOperationException("The given result is not a ReflectiveSequence");
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Gets a certain property value as a reflective sequence.
+        /// If the value is not a reflective sequence, an exception is thrown
+        /// </summary>
+        /// <param name="value">Value to be queried</param>
+        /// <param name="property">Property that is access</param>
+        /// <returns>The reflective sequence or an exception if the property is not
+        /// a reflective collection</returns>
+        public static IEnumerable<object> ForceAsEnumerable(
+            this IObject value,
+            string property)
+        {
+            if (!value.isSet(property))
+            {
+                // If value is not set, an empty list is returned
+                return new object[] { };
+            }
+
+            var result = value.get(property);
+            if (result is IEnumerable<object> resultAsEnumerable)
+            {
+                // Ok, directly return it as enumerable
+                return resultAsEnumerable;
+            }
+
+            return result == null ? new object[]{} : new[] {result};
         }
 
         /// <summary>
@@ -155,8 +314,7 @@ namespace DatenMeister.Runtime
         public static IObject AsIObject(
             this object value)
         {
-            var result = value as IObject;
-            if (result == null)
+            if (!(value is IObject result))
             {
                 throw new InvalidOperationException("The given value is not an IObject");
             }
@@ -173,8 +331,7 @@ namespace DatenMeister.Runtime
         public static IElement AsIElement(
             this object value)
         {
-            var result = value as IElement;
-            if (result == null)
+            if (!(value is IElement result))
             {
                 throw new InvalidOperationException("The given value is not an IElement");
             }
@@ -193,6 +350,12 @@ namespace DatenMeister.Runtime
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
+            // If the given object is already an extent... happy life
+            if (value is IExtent asExtent)
+            {
+                return asExtent;
+            }
+
             // If the object is contained by another object, query the contained objects 
             // because the extents will only be stored in the root elements
             var asElement = value as IElement;
@@ -203,8 +366,7 @@ namespace DatenMeister.Runtime
             }
 
             // If the object knows the extent to which it belongs to, it will return it
-            var objectKnowsExtent = value as IHasExtent;
-            if (objectKnowsExtent != null)
+            if (value is IHasExtent objectKnowsExtent)
             {
                 return objectKnowsExtent.Extent as IUriExtent;
             }
@@ -228,8 +390,7 @@ namespace DatenMeister.Runtime
             }
 
             // Checks, if the given result is a uriextent
-            var resultAsUriExtent = result as IUriExtent;
-            if (resultAsUriExtent == null)
+            if (!(result is IUriExtent resultAsUriExtent))
             {
                 throw new InvalidOperationException($"The returned extent is not an IUriExtent {result}");
             }
@@ -245,8 +406,7 @@ namespace DatenMeister.Runtime
         public static string GetUri(this IElement element)
         {
             // First, verifies if the element has direct access to the uri of the element
-            var asKnowsUri = element as IKnowsUri;
-            if (asKnowsUri != null)
+            if (element is IKnowsUri asKnowsUri)
             {
                 return asKnowsUri.Uri;
             }
@@ -313,17 +473,36 @@ namespace DatenMeister.Runtime
             }
         }
 
-        /// <summary>
-        /// Is true
-        /// </summary>
-        /// <param name="value">Value to be checked</param>
-        /// <returns>True, if value indicates a true statement</returns>
-        public static bool IsTrue(object value)
+        public static IUriResolver GetUriResolver(this IObject element)
         {
-            return value.Equals(true) ||
-                   value.Equals(1) ||
-                   value.Equals("true") ||
-                   value.Equals("TRUE");
+            return (element as MofObject)?.Extent as IUriResolver;
+        }
+
+        public static IUriResolver GetUriResolver(this IExtent element)
+        {
+            return element as IUriResolver;
+        }
+
+        /// <summary>
+        /// Gets all possible properties of the given element.
+        /// If the element has a metaclass (or some other Classifier), the properties
+        /// of the metaclass. Otherwise, the set properties will be returned
+        /// </summary>
+        /// <param name="value">Element, whose properties will be queried</param>
+        /// <returns>Enumeration of properties</returns>
+        public static IEnumerable<string> GetPropertyNames(IObject value)
+        {
+            switch (value)
+            {
+                case IElement element when element.metaclass != null:
+                    return ClassifierMethods.GetPropertyNamesOfClassifier(element);
+
+                case IObjectAllProperties knowsProperties:
+                    return knowsProperties.getPropertiesBeingSet();
+
+                default:
+                    return Array.Empty<string>();
+            }
         }
     }
 }

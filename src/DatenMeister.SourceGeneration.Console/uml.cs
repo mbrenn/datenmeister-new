@@ -1,7 +1,8 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Provider.InMemory;
 
-// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.1.0.0 created at 21.01.2017 23:36:07
+// Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0
 namespace DatenMeister.Core
 {
     public class _UML
@@ -37,7 +38,7 @@ namespace DatenMeister.Core
             }
 
             public _Activity @Activity = new _Activity();
-            public IElement @__Activity = new InMemoryElement();
+            public IElement @__Activity = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Activity");
 
             public class _ActivityEdge
             {
@@ -74,14 +75,14 @@ namespace DatenMeister.Core
             }
 
             public _ActivityEdge @ActivityEdge = new _ActivityEdge();
-            public IElement @__ActivityEdge = new InMemoryElement();
+            public IElement @__ActivityEdge = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ActivityEdge");
 
             public class _ActivityFinalNode
             {
             }
 
             public _ActivityFinalNode @ActivityFinalNode = new _ActivityFinalNode();
-            public IElement @__ActivityFinalNode = new InMemoryElement();
+            public IElement @__ActivityFinalNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ActivityFinalNode");
 
             public class _ActivityGroup
             {
@@ -103,7 +104,7 @@ namespace DatenMeister.Core
             }
 
             public _ActivityGroup @ActivityGroup = new _ActivityGroup();
-            public IElement @__ActivityGroup = new InMemoryElement();
+            public IElement @__ActivityGroup = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ActivityGroup");
 
             public class _ActivityNode
             {
@@ -134,7 +135,7 @@ namespace DatenMeister.Core
             }
 
             public _ActivityNode @ActivityNode = new _ActivityNode();
-            public IElement @__ActivityNode = new InMemoryElement();
+            public IElement @__ActivityNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ActivityNode");
 
             public class _ActivityParameterNode
             {
@@ -144,7 +145,7 @@ namespace DatenMeister.Core
             }
 
             public _ActivityParameterNode @ActivityParameterNode = new _ActivityParameterNode();
-            public IElement @__ActivityParameterNode = new InMemoryElement();
+            public IElement @__ActivityParameterNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ActivityParameterNode");
 
             public class _ActivityPartition
             {
@@ -172,35 +173,35 @@ namespace DatenMeister.Core
             }
 
             public _ActivityPartition @ActivityPartition = new _ActivityPartition();
-            public IElement @__ActivityPartition = new InMemoryElement();
+            public IElement @__ActivityPartition = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ActivityPartition");
 
             public class _CentralBufferNode
             {
             }
 
             public _CentralBufferNode @CentralBufferNode = new _CentralBufferNode();
-            public IElement @__CentralBufferNode = new InMemoryElement();
+            public IElement @__CentralBufferNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CentralBufferNode");
 
             public class _ControlFlow
             {
             }
 
             public _ControlFlow @ControlFlow = new _ControlFlow();
-            public IElement @__ControlFlow = new InMemoryElement();
+            public IElement @__ControlFlow = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ControlFlow");
 
             public class _ControlNode
             {
             }
 
             public _ControlNode @ControlNode = new _ControlNode();
-            public IElement @__ControlNode = new InMemoryElement();
+            public IElement @__ControlNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ControlNode");
 
             public class _DataStoreNode
             {
             }
 
             public _DataStoreNode @DataStoreNode = new _DataStoreNode();
-            public IElement @__DataStoreNode = new InMemoryElement();
+            public IElement @__DataStoreNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#DataStoreNode");
 
             public class _DecisionNode
             {
@@ -213,7 +214,7 @@ namespace DatenMeister.Core
             }
 
             public _DecisionNode @DecisionNode = new _DecisionNode();
-            public IElement @__DecisionNode = new InMemoryElement();
+            public IElement @__DecisionNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#DecisionNode");
 
             public class _ExceptionHandler
             {
@@ -232,7 +233,7 @@ namespace DatenMeister.Core
             }
 
             public _ExceptionHandler @ExceptionHandler = new _ExceptionHandler();
-            public IElement @__ExceptionHandler = new InMemoryElement();
+            public IElement @__ExceptionHandler = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExceptionHandler");
 
             public class _ExecutableNode
             {
@@ -242,35 +243,35 @@ namespace DatenMeister.Core
             }
 
             public _ExecutableNode @ExecutableNode = new _ExecutableNode();
-            public IElement @__ExecutableNode = new InMemoryElement();
+            public IElement @__ExecutableNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExecutableNode");
 
             public class _FinalNode
             {
             }
 
             public _FinalNode @FinalNode = new _FinalNode();
-            public IElement @__FinalNode = new InMemoryElement();
+            public IElement @__FinalNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#FinalNode");
 
             public class _FlowFinalNode
             {
             }
 
             public _FlowFinalNode @FlowFinalNode = new _FlowFinalNode();
-            public IElement @__FlowFinalNode = new InMemoryElement();
+            public IElement @__FlowFinalNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#FlowFinalNode");
 
             public class _ForkNode
             {
             }
 
             public _ForkNode @ForkNode = new _ForkNode();
-            public IElement @__ForkNode = new InMemoryElement();
+            public IElement @__ForkNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ForkNode");
 
             public class _InitialNode
             {
             }
 
             public _InitialNode @InitialNode = new _InitialNode();
-            public IElement @__InitialNode = new InMemoryElement();
+            public IElement @__InitialNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InitialNode");
 
             public class _InterruptibleActivityRegion
             {
@@ -283,7 +284,7 @@ namespace DatenMeister.Core
             }
 
             public _InterruptibleActivityRegion @InterruptibleActivityRegion = new _InterruptibleActivityRegion();
-            public IElement @__InterruptibleActivityRegion = new InMemoryElement();
+            public IElement @__InterruptibleActivityRegion = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InterruptibleActivityRegion");
 
             public class _JoinNode
             {
@@ -296,14 +297,14 @@ namespace DatenMeister.Core
             }
 
             public _JoinNode @JoinNode = new _JoinNode();
-            public IElement @__JoinNode = new InMemoryElement();
+            public IElement @__JoinNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#JoinNode");
 
             public class _MergeNode
             {
             }
 
             public _MergeNode @MergeNode = new _MergeNode();
-            public IElement @__MergeNode = new InMemoryElement();
+            public IElement @__MergeNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MergeNode");
 
             public class _ObjectFlow
             {
@@ -322,7 +323,7 @@ namespace DatenMeister.Core
             }
 
             public _ObjectFlow @ObjectFlow = new _ObjectFlow();
-            public IElement @__ObjectFlow = new InMemoryElement();
+            public IElement @__ObjectFlow = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ObjectFlow");
 
             public class _ObjectNode
             {
@@ -344,7 +345,7 @@ namespace DatenMeister.Core
             }
 
             public _ObjectNode @ObjectNode = new _ObjectNode();
-            public IElement @__ObjectNode = new InMemoryElement();
+            public IElement @__ObjectNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ObjectNode");
 
             public class _Variable
             {
@@ -357,7 +358,23 @@ namespace DatenMeister.Core
             }
 
             public _Variable @Variable = new _Variable();
-            public IElement @__Variable = new InMemoryElement();
+            public IElement @__Variable = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Variable");
+
+            public class _ObjectNodeOrderingKind
+            {
+                public static string @unordered = "unordered";
+                public IElement @__unordered = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ObjectNodeOrderingKind-unordered");
+                public static string @ordered = "ordered";
+                public IElement @__ordered = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ObjectNodeOrderingKind-ordered");
+                public static string @LIFO = "LIFO";
+                public IElement @__LIFO = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ObjectNodeOrderingKind-LIFO");
+                public static string @FIFO = "FIFO";
+                public IElement @__FIFO = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ObjectNodeOrderingKind-FIFO");
+
+            }
+
+            public _ObjectNodeOrderingKind @ObjectNodeOrderingKind = new _ObjectNodeOrderingKind();
+            public IElement @__ObjectNodeOrderingKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ObjectNodeOrderingKind");
 
         }
 
@@ -376,7 +393,7 @@ namespace DatenMeister.Core
             }
 
             public _Duration @Duration = new _Duration();
-            public IElement @__Duration = new InMemoryElement();
+            public IElement @__Duration = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Duration");
 
             public class _DurationConstraint
             {
@@ -389,7 +406,7 @@ namespace DatenMeister.Core
             }
 
             public _DurationConstraint @DurationConstraint = new _DurationConstraint();
-            public IElement @__DurationConstraint = new InMemoryElement();
+            public IElement @__DurationConstraint = new MofObjectShadow("datenmeister:///_internal/xmi/uml#DurationConstraint");
 
             public class _DurationInterval
             {
@@ -402,7 +419,7 @@ namespace DatenMeister.Core
             }
 
             public _DurationInterval @DurationInterval = new _DurationInterval();
-            public IElement @__DurationInterval = new InMemoryElement();
+            public IElement @__DurationInterval = new MofObjectShadow("datenmeister:///_internal/xmi/uml#DurationInterval");
 
             public class _DurationObservation
             {
@@ -415,7 +432,7 @@ namespace DatenMeister.Core
             }
 
             public _DurationObservation @DurationObservation = new _DurationObservation();
-            public IElement @__DurationObservation = new InMemoryElement();
+            public IElement @__DurationObservation = new MofObjectShadow("datenmeister:///_internal/xmi/uml#DurationObservation");
 
             public class _Expression
             {
@@ -428,7 +445,7 @@ namespace DatenMeister.Core
             }
 
             public _Expression @Expression = new _Expression();
-            public IElement @__Expression = new InMemoryElement();
+            public IElement @__Expression = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Expression");
 
             public class _Interval
             {
@@ -441,7 +458,7 @@ namespace DatenMeister.Core
             }
 
             public _Interval @Interval = new _Interval();
-            public IElement @__Interval = new InMemoryElement();
+            public IElement @__Interval = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Interval");
 
             public class _IntervalConstraint
             {
@@ -451,7 +468,7 @@ namespace DatenMeister.Core
             }
 
             public _IntervalConstraint @IntervalConstraint = new _IntervalConstraint();
-            public IElement @__IntervalConstraint = new InMemoryElement();
+            public IElement @__IntervalConstraint = new MofObjectShadow("datenmeister:///_internal/xmi/uml#IntervalConstraint");
 
             public class _LiteralBoolean
             {
@@ -461,7 +478,7 @@ namespace DatenMeister.Core
             }
 
             public _LiteralBoolean @LiteralBoolean = new _LiteralBoolean();
-            public IElement @__LiteralBoolean = new InMemoryElement();
+            public IElement @__LiteralBoolean = new MofObjectShadow("datenmeister:///_internal/xmi/uml#LiteralBoolean");
 
             public class _LiteralInteger
             {
@@ -471,14 +488,14 @@ namespace DatenMeister.Core
             }
 
             public _LiteralInteger @LiteralInteger = new _LiteralInteger();
-            public IElement @__LiteralInteger = new InMemoryElement();
+            public IElement @__LiteralInteger = new MofObjectShadow("datenmeister:///_internal/xmi/uml#LiteralInteger");
 
             public class _LiteralNull
             {
             }
 
             public _LiteralNull @LiteralNull = new _LiteralNull();
-            public IElement @__LiteralNull = new InMemoryElement();
+            public IElement @__LiteralNull = new MofObjectShadow("datenmeister:///_internal/xmi/uml#LiteralNull");
 
             public class _LiteralReal
             {
@@ -488,14 +505,14 @@ namespace DatenMeister.Core
             }
 
             public _LiteralReal @LiteralReal = new _LiteralReal();
-            public IElement @__LiteralReal = new InMemoryElement();
+            public IElement @__LiteralReal = new MofObjectShadow("datenmeister:///_internal/xmi/uml#LiteralReal");
 
             public class _LiteralSpecification
             {
             }
 
             public _LiteralSpecification @LiteralSpecification = new _LiteralSpecification();
-            public IElement @__LiteralSpecification = new InMemoryElement();
+            public IElement @__LiteralSpecification = new MofObjectShadow("datenmeister:///_internal/xmi/uml#LiteralSpecification");
 
             public class _LiteralString
             {
@@ -505,7 +522,7 @@ namespace DatenMeister.Core
             }
 
             public _LiteralString @LiteralString = new _LiteralString();
-            public IElement @__LiteralString = new InMemoryElement();
+            public IElement @__LiteralString = new MofObjectShadow("datenmeister:///_internal/xmi/uml#LiteralString");
 
             public class _LiteralUnlimitedNatural
             {
@@ -515,14 +532,14 @@ namespace DatenMeister.Core
             }
 
             public _LiteralUnlimitedNatural @LiteralUnlimitedNatural = new _LiteralUnlimitedNatural();
-            public IElement @__LiteralUnlimitedNatural = new InMemoryElement();
+            public IElement @__LiteralUnlimitedNatural = new MofObjectShadow("datenmeister:///_internal/xmi/uml#LiteralUnlimitedNatural");
 
             public class _Observation
             {
             }
 
             public _Observation @Observation = new _Observation();
-            public IElement @__Observation = new InMemoryElement();
+            public IElement @__Observation = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Observation");
 
             public class _OpaqueExpression
             {
@@ -541,7 +558,7 @@ namespace DatenMeister.Core
             }
 
             public _OpaqueExpression @OpaqueExpression = new _OpaqueExpression();
-            public IElement @__OpaqueExpression = new InMemoryElement();
+            public IElement @__OpaqueExpression = new MofObjectShadow("datenmeister:///_internal/xmi/uml#OpaqueExpression");
 
             public class _StringExpression
             {
@@ -554,7 +571,7 @@ namespace DatenMeister.Core
             }
 
             public _StringExpression @StringExpression = new _StringExpression();
-            public IElement @__StringExpression = new InMemoryElement();
+            public IElement @__StringExpression = new MofObjectShadow("datenmeister:///_internal/xmi/uml#StringExpression");
 
             public class _TimeConstraint
             {
@@ -567,7 +584,7 @@ namespace DatenMeister.Core
             }
 
             public _TimeConstraint @TimeConstraint = new _TimeConstraint();
-            public IElement @__TimeConstraint = new InMemoryElement();
+            public IElement @__TimeConstraint = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TimeConstraint");
 
             public class _TimeExpression
             {
@@ -580,7 +597,7 @@ namespace DatenMeister.Core
             }
 
             public _TimeExpression @TimeExpression = new _TimeExpression();
-            public IElement @__TimeExpression = new InMemoryElement();
+            public IElement @__TimeExpression = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TimeExpression");
 
             public class _TimeInterval
             {
@@ -593,7 +610,7 @@ namespace DatenMeister.Core
             }
 
             public _TimeInterval @TimeInterval = new _TimeInterval();
-            public IElement @__TimeInterval = new InMemoryElement();
+            public IElement @__TimeInterval = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TimeInterval");
 
             public class _TimeObservation
             {
@@ -606,14 +623,14 @@ namespace DatenMeister.Core
             }
 
             public _TimeObservation @TimeObservation = new _TimeObservation();
-            public IElement @__TimeObservation = new InMemoryElement();
+            public IElement @__TimeObservation = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TimeObservation");
 
             public class _ValueSpecification
             {
             }
 
             public _ValueSpecification @ValueSpecification = new _ValueSpecification();
-            public IElement @__ValueSpecification = new InMemoryElement();
+            public IElement @__ValueSpecification = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ValueSpecification");
 
         }
 
@@ -626,7 +643,7 @@ namespace DatenMeister.Core
             }
 
             public _Actor @Actor = new _Actor();
-            public IElement @__Actor = new InMemoryElement();
+            public IElement @__Actor = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Actor");
 
             public class _Extend
             {
@@ -645,7 +662,7 @@ namespace DatenMeister.Core
             }
 
             public _Extend @Extend = new _Extend();
-            public IElement @__Extend = new InMemoryElement();
+            public IElement @__Extend = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Extend");
 
             public class _ExtensionPoint
             {
@@ -655,7 +672,7 @@ namespace DatenMeister.Core
             }
 
             public _ExtensionPoint @ExtensionPoint = new _ExtensionPoint();
-            public IElement @__ExtensionPoint = new InMemoryElement();
+            public IElement @__ExtensionPoint = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExtensionPoint");
 
             public class _Include
             {
@@ -668,7 +685,7 @@ namespace DatenMeister.Core
             }
 
             public _Include @Include = new _Include();
-            public IElement @__Include = new InMemoryElement();
+            public IElement @__Include = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Include");
 
             public class _UseCase
             {
@@ -687,7 +704,7 @@ namespace DatenMeister.Core
             }
 
             public _UseCase @UseCase = new _UseCase();
-            public IElement @__UseCase = new InMemoryElement();
+            public IElement @__UseCase = new MofObjectShadow("datenmeister:///_internal/xmi/uml#UseCase");
 
         }
 
@@ -715,14 +732,14 @@ namespace DatenMeister.Core
             }
 
             public _Association @Association = new _Association();
-            public IElement @__Association = new InMemoryElement();
+            public IElement @__Association = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Association");
 
             public class _AssociationClass
             {
             }
 
             public _AssociationClass @AssociationClass = new _AssociationClass();
-            public IElement @__AssociationClass = new InMemoryElement();
+            public IElement @__AssociationClass = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AssociationClass");
 
             public class _Class
             {
@@ -753,7 +770,7 @@ namespace DatenMeister.Core
             }
 
             public _Class @Class = new _Class();
-            public IElement @__Class = new InMemoryElement();
+            public IElement @__Class = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Class");
 
             public class _Collaboration
             {
@@ -763,7 +780,7 @@ namespace DatenMeister.Core
             }
 
             public _Collaboration @Collaboration = new _Collaboration();
-            public IElement @__Collaboration = new InMemoryElement();
+            public IElement @__Collaboration = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Collaboration");
 
             public class _CollaborationUse
             {
@@ -776,7 +793,7 @@ namespace DatenMeister.Core
             }
 
             public _CollaborationUse @CollaborationUse = new _CollaborationUse();
-            public IElement @__CollaborationUse = new InMemoryElement();
+            public IElement @__CollaborationUse = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CollaborationUse");
 
             public class _Component
             {
@@ -798,7 +815,7 @@ namespace DatenMeister.Core
             }
 
             public _Component @Component = new _Component();
-            public IElement @__Component = new InMemoryElement();
+            public IElement @__Component = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Component");
 
             public class _ComponentRealization
             {
@@ -811,7 +828,7 @@ namespace DatenMeister.Core
             }
 
             public _ComponentRealization @ComponentRealization = new _ComponentRealization();
-            public IElement @__ComponentRealization = new InMemoryElement();
+            public IElement @__ComponentRealization = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ComponentRealization");
 
             public class _ConnectableElement
             {
@@ -824,7 +841,7 @@ namespace DatenMeister.Core
             }
 
             public _ConnectableElement @ConnectableElement = new _ConnectableElement();
-            public IElement @__ConnectableElement = new InMemoryElement();
+            public IElement @__ConnectableElement = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ConnectableElement");
 
             public class _ConnectableElementTemplateParameter
             {
@@ -834,7 +851,7 @@ namespace DatenMeister.Core
             }
 
             public _ConnectableElementTemplateParameter @ConnectableElementTemplateParameter = new _ConnectableElementTemplateParameter();
-            public IElement @__ConnectableElementTemplateParameter = new InMemoryElement();
+            public IElement @__ConnectableElementTemplateParameter = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ConnectableElementTemplateParameter");
 
             public class _Connector
             {
@@ -856,7 +873,7 @@ namespace DatenMeister.Core
             }
 
             public _Connector @Connector = new _Connector();
-            public IElement @__Connector = new InMemoryElement();
+            public IElement @__Connector = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Connector");
 
             public class _ConnectorEnd
             {
@@ -872,7 +889,7 @@ namespace DatenMeister.Core
             }
 
             public _ConnectorEnd @ConnectorEnd = new _ConnectorEnd();
-            public IElement @__ConnectorEnd = new InMemoryElement();
+            public IElement @__ConnectorEnd = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ConnectorEnd");
 
             public class _EncapsulatedClassifier
             {
@@ -882,7 +899,7 @@ namespace DatenMeister.Core
             }
 
             public _EncapsulatedClassifier @EncapsulatedClassifier = new _EncapsulatedClassifier();
-            public IElement @__EncapsulatedClassifier = new InMemoryElement();
+            public IElement @__EncapsulatedClassifier = new MofObjectShadow("datenmeister:///_internal/xmi/uml#EncapsulatedClassifier");
 
             public class _Port
             {
@@ -910,7 +927,7 @@ namespace DatenMeister.Core
             }
 
             public _Port @Port = new _Port();
-            public IElement @__Port = new InMemoryElement();
+            public IElement @__Port = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Port");
 
             public class _StructuredClassifier
             {
@@ -929,7 +946,19 @@ namespace DatenMeister.Core
             }
 
             public _StructuredClassifier @StructuredClassifier = new _StructuredClassifier();
-            public IElement @__StructuredClassifier = new InMemoryElement();
+            public IElement @__StructuredClassifier = new MofObjectShadow("datenmeister:///_internal/xmi/uml#StructuredClassifier");
+
+            public class _ConnectorKind
+            {
+                public static string @assembly = "assembly";
+                public IElement @__assembly = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ConnectorKind-assembly");
+                public static string @delegation = "delegation";
+                public IElement @__delegation = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ConnectorKind-delegation");
+
+            }
+
+            public _ConnectorKind @ConnectorKind = new _ConnectorKind();
+            public IElement @__ConnectorKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ConnectorKind");
 
         }
 
@@ -951,14 +980,14 @@ namespace DatenMeister.Core
             }
 
             public _ConnectionPointReference @ConnectionPointReference = new _ConnectionPointReference();
-            public IElement @__ConnectionPointReference = new InMemoryElement();
+            public IElement @__ConnectionPointReference = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ConnectionPointReference");
 
             public class _FinalState
             {
             }
 
             public _FinalState @FinalState = new _FinalState();
-            public IElement @__FinalState = new InMemoryElement();
+            public IElement @__FinalState = new MofObjectShadow("datenmeister:///_internal/xmi/uml#FinalState");
 
             public class _ProtocolConformance
             {
@@ -971,7 +1000,7 @@ namespace DatenMeister.Core
             }
 
             public _ProtocolConformance @ProtocolConformance = new _ProtocolConformance();
-            public IElement @__ProtocolConformance = new InMemoryElement();
+            public IElement @__ProtocolConformance = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ProtocolConformance");
 
             public class _ProtocolStateMachine
             {
@@ -981,7 +1010,7 @@ namespace DatenMeister.Core
             }
 
             public _ProtocolStateMachine @ProtocolStateMachine = new _ProtocolStateMachine();
-            public IElement @__ProtocolStateMachine = new InMemoryElement();
+            public IElement @__ProtocolStateMachine = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ProtocolStateMachine");
 
             public class _ProtocolTransition
             {
@@ -997,7 +1026,7 @@ namespace DatenMeister.Core
             }
 
             public _ProtocolTransition @ProtocolTransition = new _ProtocolTransition();
-            public IElement @__ProtocolTransition = new InMemoryElement();
+            public IElement @__ProtocolTransition = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ProtocolTransition");
 
             public class _Pseudostate
             {
@@ -1013,7 +1042,7 @@ namespace DatenMeister.Core
             }
 
             public _Pseudostate @Pseudostate = new _Pseudostate();
-            public IElement @__Pseudostate = new InMemoryElement();
+            public IElement @__Pseudostate = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Pseudostate");
 
             public class _Region
             {
@@ -1038,7 +1067,7 @@ namespace DatenMeister.Core
             }
 
             public _Region @Region = new _Region();
-            public IElement @__Region = new InMemoryElement();
+            public IElement @__Region = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Region");
 
             public class _State
             {
@@ -1090,7 +1119,7 @@ namespace DatenMeister.Core
             }
 
             public _State @State = new _State();
-            public IElement @__State = new InMemoryElement();
+            public IElement @__State = new MofObjectShadow("datenmeister:///_internal/xmi/uml#State");
 
             public class _StateMachine
             {
@@ -1109,7 +1138,7 @@ namespace DatenMeister.Core
             }
 
             public _StateMachine @StateMachine = new _StateMachine();
-            public IElement @__StateMachine = new InMemoryElement();
+            public IElement @__StateMachine = new MofObjectShadow("datenmeister:///_internal/xmi/uml#StateMachine");
 
             public class _Transition
             {
@@ -1143,7 +1172,7 @@ namespace DatenMeister.Core
             }
 
             public _Transition @Transition = new _Transition();
-            public IElement @__Transition = new InMemoryElement();
+            public IElement @__Transition = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Transition");
 
             public class _Vertex
             {
@@ -1159,7 +1188,49 @@ namespace DatenMeister.Core
             }
 
             public _Vertex @Vertex = new _Vertex();
-            public IElement @__Vertex = new InMemoryElement();
+            public IElement @__Vertex = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Vertex");
+
+            public class _PseudostateKind
+            {
+                public static string @initial = "initial";
+                public IElement @__initial = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-initial");
+                public static string @deepHistory = "deepHistory";
+                public IElement @__deepHistory = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-deepHistory");
+                public static string @shallowHistory = "shallowHistory";
+                public IElement @__shallowHistory = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-shallowHistory");
+                public static string @join = "join";
+                public IElement @__join = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-join");
+                public static string @fork = "fork";
+                public IElement @__fork = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-fork");
+                public static string @junction = "junction";
+                public IElement @__junction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-junction");
+                public static string @choice = "choice";
+                public IElement @__choice = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-choice");
+                public static string @entryPoint = "entryPoint";
+                public IElement @__entryPoint = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-entryPoint");
+                public static string @exitPoint = "exitPoint";
+                public IElement @__exitPoint = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-exitPoint");
+                public static string @terminate = "terminate";
+                public IElement @__terminate = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind-terminate");
+
+            }
+
+            public _PseudostateKind @PseudostateKind = new _PseudostateKind();
+            public IElement @__PseudostateKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PseudostateKind");
+
+            public class _TransitionKind
+            {
+                public static string @internal = "internal";
+                public IElement @__internal = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TransitionKind-internal");
+                public static string @local = "local";
+                public IElement @__local = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TransitionKind-local");
+                public static string @external = "external";
+                public IElement @__external = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TransitionKind-external");
+
+            }
+
+            public _TransitionKind @TransitionKind = new _TransitionKind();
+            public IElement @__TransitionKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TransitionKind");
 
         }
 
@@ -1181,7 +1252,7 @@ namespace DatenMeister.Core
             }
 
             public _BehavioredClassifier @BehavioredClassifier = new _BehavioredClassifier();
-            public IElement @__BehavioredClassifier = new InMemoryElement();
+            public IElement @__BehavioredClassifier = new MofObjectShadow("datenmeister:///_internal/xmi/uml#BehavioredClassifier");
 
             public class _DataType
             {
@@ -1194,7 +1265,7 @@ namespace DatenMeister.Core
             }
 
             public _DataType @DataType = new _DataType();
-            public IElement @__DataType = new InMemoryElement();
+            public IElement @__DataType = new MofObjectShadow("datenmeister:///_internal/xmi/uml#DataType");
 
             public class _Enumeration
             {
@@ -1204,7 +1275,7 @@ namespace DatenMeister.Core
             }
 
             public _Enumeration @Enumeration = new _Enumeration();
-            public IElement @__Enumeration = new InMemoryElement();
+            public IElement @__Enumeration = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Enumeration");
 
             public class _EnumerationLiteral
             {
@@ -1217,7 +1288,7 @@ namespace DatenMeister.Core
             }
 
             public _EnumerationLiteral @EnumerationLiteral = new _EnumerationLiteral();
-            public IElement @__EnumerationLiteral = new InMemoryElement();
+            public IElement @__EnumerationLiteral = new MofObjectShadow("datenmeister:///_internal/xmi/uml#EnumerationLiteral");
 
             public class _Interface
             {
@@ -1242,7 +1313,7 @@ namespace DatenMeister.Core
             }
 
             public _Interface @Interface = new _Interface();
-            public IElement @__Interface = new InMemoryElement();
+            public IElement @__Interface = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Interface");
 
             public class _InterfaceRealization
             {
@@ -1255,14 +1326,14 @@ namespace DatenMeister.Core
             }
 
             public _InterfaceRealization @InterfaceRealization = new _InterfaceRealization();
-            public IElement @__InterfaceRealization = new InMemoryElement();
+            public IElement @__InterfaceRealization = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InterfaceRealization");
 
             public class _PrimitiveType
             {
             }
 
             public _PrimitiveType @PrimitiveType = new _PrimitiveType();
-            public IElement @__PrimitiveType = new InMemoryElement();
+            public IElement @__PrimitiveType = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PrimitiveType");
 
             public class _Reception
             {
@@ -1272,7 +1343,7 @@ namespace DatenMeister.Core
             }
 
             public _Reception @Reception = new _Reception();
-            public IElement @__Reception = new InMemoryElement();
+            public IElement @__Reception = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Reception");
 
             public class _Signal
             {
@@ -1282,7 +1353,7 @@ namespace DatenMeister.Core
             }
 
             public _Signal @Signal = new _Signal();
-            public IElement @__Signal = new InMemoryElement();
+            public IElement @__Signal = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Signal");
 
         }
 
@@ -1304,7 +1375,7 @@ namespace DatenMeister.Core
             }
 
             public _Extension @Extension = new _Extension();
-            public IElement @__Extension = new InMemoryElement();
+            public IElement @__Extension = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Extension");
 
             public class _ExtensionEnd
             {
@@ -1317,7 +1388,7 @@ namespace DatenMeister.Core
             }
 
             public _ExtensionEnd @ExtensionEnd = new _ExtensionEnd();
-            public IElement @__ExtensionEnd = new InMemoryElement();
+            public IElement @__ExtensionEnd = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExtensionEnd");
 
             public class _Image
             {
@@ -1333,7 +1404,7 @@ namespace DatenMeister.Core
             }
 
             public _Image @Image = new _Image();
-            public IElement @__Image = new InMemoryElement();
+            public IElement @__Image = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Image");
 
             public class _Model
             {
@@ -1343,7 +1414,7 @@ namespace DatenMeister.Core
             }
 
             public _Model @Model = new _Model();
-            public IElement @__Model = new InMemoryElement();
+            public IElement @__Model = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Model");
 
             public class _Package
             {
@@ -1374,7 +1445,7 @@ namespace DatenMeister.Core
             }
 
             public _Package @Package = new _Package();
-            public IElement @__Package = new InMemoryElement();
+            public IElement @__Package = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Package");
 
             public class _PackageMerge
             {
@@ -1387,7 +1458,7 @@ namespace DatenMeister.Core
             }
 
             public _PackageMerge @PackageMerge = new _PackageMerge();
-            public IElement @__PackageMerge = new InMemoryElement();
+            public IElement @__PackageMerge = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PackageMerge");
 
             public class _Profile
             {
@@ -1400,7 +1471,7 @@ namespace DatenMeister.Core
             }
 
             public _Profile @Profile = new _Profile();
-            public IElement @__Profile = new InMemoryElement();
+            public IElement @__Profile = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Profile");
 
             public class _ProfileApplication
             {
@@ -1416,7 +1487,7 @@ namespace DatenMeister.Core
             }
 
             public _ProfileApplication @ProfileApplication = new _ProfileApplication();
-            public IElement @__ProfileApplication = new InMemoryElement();
+            public IElement @__ProfileApplication = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ProfileApplication");
 
             public class _Stereotype
             {
@@ -1429,7 +1500,7 @@ namespace DatenMeister.Core
             }
 
             public _Stereotype @Stereotype = new _Stereotype();
-            public IElement @__Stereotype = new InMemoryElement();
+            public IElement @__Stereotype = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Stereotype");
 
         }
 
@@ -1445,7 +1516,7 @@ namespace DatenMeister.Core
             }
 
             public _ActionExecutionSpecification @ActionExecutionSpecification = new _ActionExecutionSpecification();
-            public IElement @__ActionExecutionSpecification = new InMemoryElement();
+            public IElement @__ActionExecutionSpecification = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ActionExecutionSpecification");
 
             public class _BehaviorExecutionSpecification
             {
@@ -1455,7 +1526,7 @@ namespace DatenMeister.Core
             }
 
             public _BehaviorExecutionSpecification @BehaviorExecutionSpecification = new _BehaviorExecutionSpecification();
-            public IElement @__BehaviorExecutionSpecification = new InMemoryElement();
+            public IElement @__BehaviorExecutionSpecification = new MofObjectShadow("datenmeister:///_internal/xmi/uml#BehaviorExecutionSpecification");
 
             public class _CombinedFragment
             {
@@ -1471,7 +1542,7 @@ namespace DatenMeister.Core
             }
 
             public _CombinedFragment @CombinedFragment = new _CombinedFragment();
-            public IElement @__CombinedFragment = new InMemoryElement();
+            public IElement @__CombinedFragment = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CombinedFragment");
 
             public class _ConsiderIgnoreFragment
             {
@@ -1481,7 +1552,7 @@ namespace DatenMeister.Core
             }
 
             public _ConsiderIgnoreFragment @ConsiderIgnoreFragment = new _ConsiderIgnoreFragment();
-            public IElement @__ConsiderIgnoreFragment = new InMemoryElement();
+            public IElement @__ConsiderIgnoreFragment = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ConsiderIgnoreFragment");
 
             public class _Continuation
             {
@@ -1491,14 +1562,14 @@ namespace DatenMeister.Core
             }
 
             public _Continuation @Continuation = new _Continuation();
-            public IElement @__Continuation = new InMemoryElement();
+            public IElement @__Continuation = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Continuation");
 
             public class _DestructionOccurrenceSpecification
             {
             }
 
             public _DestructionOccurrenceSpecification @DestructionOccurrenceSpecification = new _DestructionOccurrenceSpecification();
-            public IElement @__DestructionOccurrenceSpecification = new InMemoryElement();
+            public IElement @__DestructionOccurrenceSpecification = new MofObjectShadow("datenmeister:///_internal/xmi/uml#DestructionOccurrenceSpecification");
 
             public class _ExecutionOccurrenceSpecification
             {
@@ -1508,7 +1579,7 @@ namespace DatenMeister.Core
             }
 
             public _ExecutionOccurrenceSpecification @ExecutionOccurrenceSpecification = new _ExecutionOccurrenceSpecification();
-            public IElement @__ExecutionOccurrenceSpecification = new InMemoryElement();
+            public IElement @__ExecutionOccurrenceSpecification = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExecutionOccurrenceSpecification");
 
             public class _ExecutionSpecification
             {
@@ -1521,14 +1592,14 @@ namespace DatenMeister.Core
             }
 
             public _ExecutionSpecification @ExecutionSpecification = new _ExecutionSpecification();
-            public IElement @__ExecutionSpecification = new InMemoryElement();
+            public IElement @__ExecutionSpecification = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExecutionSpecification");
 
             public class _Gate
             {
             }
 
             public _Gate @Gate = new _Gate();
-            public IElement @__Gate = new InMemoryElement();
+            public IElement @__Gate = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Gate");
 
             public class _GeneralOrdering
             {
@@ -1541,7 +1612,7 @@ namespace DatenMeister.Core
             }
 
             public _GeneralOrdering @GeneralOrdering = new _GeneralOrdering();
-            public IElement @__GeneralOrdering = new InMemoryElement();
+            public IElement @__GeneralOrdering = new MofObjectShadow("datenmeister:///_internal/xmi/uml#GeneralOrdering");
 
             public class _Interaction
             {
@@ -1563,7 +1634,7 @@ namespace DatenMeister.Core
             }
 
             public _Interaction @Interaction = new _Interaction();
-            public IElement @__Interaction = new InMemoryElement();
+            public IElement @__Interaction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Interaction");
 
             public class _InteractionConstraint
             {
@@ -1576,7 +1647,7 @@ namespace DatenMeister.Core
             }
 
             public _InteractionConstraint @InteractionConstraint = new _InteractionConstraint();
-            public IElement @__InteractionConstraint = new InMemoryElement();
+            public IElement @__InteractionConstraint = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionConstraint");
 
             public class _InteractionFragment
             {
@@ -1595,7 +1666,7 @@ namespace DatenMeister.Core
             }
 
             public _InteractionFragment @InteractionFragment = new _InteractionFragment();
-            public IElement @__InteractionFragment = new InMemoryElement();
+            public IElement @__InteractionFragment = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionFragment");
 
             public class _InteractionOperand
             {
@@ -1608,7 +1679,7 @@ namespace DatenMeister.Core
             }
 
             public _InteractionOperand @InteractionOperand = new _InteractionOperand();
-            public IElement @__InteractionOperand = new InMemoryElement();
+            public IElement @__InteractionOperand = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperand");
 
             public class _InteractionUse
             {
@@ -1630,7 +1701,7 @@ namespace DatenMeister.Core
             }
 
             public _InteractionUse @InteractionUse = new _InteractionUse();
-            public IElement @__InteractionUse = new InMemoryElement();
+            public IElement @__InteractionUse = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionUse");
 
             public class _Lifeline
             {
@@ -1652,7 +1723,7 @@ namespace DatenMeister.Core
             }
 
             public _Lifeline @Lifeline = new _Lifeline();
-            public IElement @__Lifeline = new InMemoryElement();
+            public IElement @__Lifeline = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Lifeline");
 
             public class _Message
             {
@@ -1683,7 +1754,7 @@ namespace DatenMeister.Core
             }
 
             public _Message @Message = new _Message();
-            public IElement @__Message = new InMemoryElement();
+            public IElement @__Message = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Message");
 
             public class _MessageEnd
             {
@@ -1693,14 +1764,14 @@ namespace DatenMeister.Core
             }
 
             public _MessageEnd @MessageEnd = new _MessageEnd();
-            public IElement @__MessageEnd = new InMemoryElement();
+            public IElement @__MessageEnd = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageEnd");
 
             public class _MessageOccurrenceSpecification
             {
             }
 
             public _MessageOccurrenceSpecification @MessageOccurrenceSpecification = new _MessageOccurrenceSpecification();
-            public IElement @__MessageOccurrenceSpecification = new InMemoryElement();
+            public IElement @__MessageOccurrenceSpecification = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageOccurrenceSpecification");
 
             public class _OccurrenceSpecification
             {
@@ -1716,14 +1787,14 @@ namespace DatenMeister.Core
             }
 
             public _OccurrenceSpecification @OccurrenceSpecification = new _OccurrenceSpecification();
-            public IElement @__OccurrenceSpecification = new InMemoryElement();
+            public IElement @__OccurrenceSpecification = new MofObjectShadow("datenmeister:///_internal/xmi/uml#OccurrenceSpecification");
 
             public class _PartDecomposition
             {
             }
 
             public _PartDecomposition @PartDecomposition = new _PartDecomposition();
-            public IElement @__PartDecomposition = new InMemoryElement();
+            public IElement @__PartDecomposition = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PartDecomposition");
 
             public class _StateInvariant
             {
@@ -1736,7 +1807,75 @@ namespace DatenMeister.Core
             }
 
             public _StateInvariant @StateInvariant = new _StateInvariant();
-            public IElement @__StateInvariant = new InMemoryElement();
+            public IElement @__StateInvariant = new MofObjectShadow("datenmeister:///_internal/xmi/uml#StateInvariant");
+
+            public class _InteractionOperatorKind
+            {
+                public static string @seq = "seq";
+                public IElement @__seq = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-seq");
+                public static string @alt = "alt";
+                public IElement @__alt = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-alt");
+                public static string @opt = "opt";
+                public IElement @__opt = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-opt");
+                public static string @break = "break";
+                public IElement @__break = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-break");
+                public static string @par = "par";
+                public IElement @__par = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-par");
+                public static string @strict = "strict";
+                public IElement @__strict = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-strict");
+                public static string @loop = "loop";
+                public IElement @__loop = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-loop");
+                public static string @critical = "critical";
+                public IElement @__critical = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-critical");
+                public static string @neg = "neg";
+                public IElement @__neg = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-neg");
+                public static string @assert = "assert";
+                public IElement @__assert = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-assert");
+                public static string @ignore = "ignore";
+                public IElement @__ignore = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-ignore");
+                public static string @consider = "consider";
+                public IElement @__consider = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind-consider");
+
+            }
+
+            public _InteractionOperatorKind @InteractionOperatorKind = new _InteractionOperatorKind();
+            public IElement @__InteractionOperatorKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InteractionOperatorKind");
+
+            public class _MessageKind
+            {
+                public static string @complete = "complete";
+                public IElement @__complete = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageKind-complete");
+                public static string @lost = "lost";
+                public IElement @__lost = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageKind-lost");
+                public static string @found = "found";
+                public IElement @__found = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageKind-found");
+                public static string @unknown = "unknown";
+                public IElement @__unknown = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageKind-unknown");
+
+            }
+
+            public _MessageKind @MessageKind = new _MessageKind();
+            public IElement @__MessageKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageKind");
+
+            public class _MessageSort
+            {
+                public static string @synchCall = "synchCall";
+                public IElement @__synchCall = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort-synchCall");
+                public static string @asynchCall = "asynchCall";
+                public IElement @__asynchCall = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort-asynchCall");
+                public static string @asynchSignal = "asynchSignal";
+                public IElement @__asynchSignal = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort-asynchSignal");
+                public static string @createMessage = "createMessage";
+                public IElement @__createMessage = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort-createMessage");
+                public static string @deleteMessage = "deleteMessage";
+                public IElement @__deleteMessage = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort-deleteMessage");
+                public static string @reply = "reply";
+                public IElement @__reply = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort-reply");
+
+            }
+
+            public _MessageSort @MessageSort = new _MessageSort();
+            public IElement @__MessageSort = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageSort");
 
         }
 
@@ -1770,7 +1909,7 @@ namespace DatenMeister.Core
             }
 
             public _InformationFlow @InformationFlow = new _InformationFlow();
-            public IElement @__InformationFlow = new InMemoryElement();
+            public IElement @__InformationFlow = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InformationFlow");
 
             public class _InformationItem
             {
@@ -1780,7 +1919,7 @@ namespace DatenMeister.Core
             }
 
             public _InformationItem @InformationItem = new _InformationItem();
-            public IElement @__InformationItem = new InMemoryElement();
+            public IElement @__InformationItem = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InformationItem");
 
         }
 
@@ -1808,21 +1947,21 @@ namespace DatenMeister.Core
             }
 
             public _Artifact @Artifact = new _Artifact();
-            public IElement @__Artifact = new InMemoryElement();
+            public IElement @__Artifact = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Artifact");
 
             public class _CommunicationPath
             {
             }
 
             public _CommunicationPath @CommunicationPath = new _CommunicationPath();
-            public IElement @__CommunicationPath = new InMemoryElement();
+            public IElement @__CommunicationPath = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CommunicationPath");
 
             public class _DeployedArtifact
             {
             }
 
             public _DeployedArtifact @DeployedArtifact = new _DeployedArtifact();
-            public IElement @__DeployedArtifact = new InMemoryElement();
+            public IElement @__DeployedArtifact = new MofObjectShadow("datenmeister:///_internal/xmi/uml#DeployedArtifact");
 
             public class _Deployment
             {
@@ -1838,7 +1977,7 @@ namespace DatenMeister.Core
             }
 
             public _Deployment @Deployment = new _Deployment();
-            public IElement @__Deployment = new InMemoryElement();
+            public IElement @__Deployment = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Deployment");
 
             public class _DeploymentSpecification
             {
@@ -1854,7 +1993,7 @@ namespace DatenMeister.Core
             }
 
             public _DeploymentSpecification @DeploymentSpecification = new _DeploymentSpecification();
-            public IElement @__DeploymentSpecification = new InMemoryElement();
+            public IElement @__DeploymentSpecification = new MofObjectShadow("datenmeister:///_internal/xmi/uml#DeploymentSpecification");
 
             public class _DeploymentTarget
             {
@@ -1867,21 +2006,21 @@ namespace DatenMeister.Core
             }
 
             public _DeploymentTarget @DeploymentTarget = new _DeploymentTarget();
-            public IElement @__DeploymentTarget = new InMemoryElement();
+            public IElement @__DeploymentTarget = new MofObjectShadow("datenmeister:///_internal/xmi/uml#DeploymentTarget");
 
             public class _Device
             {
             }
 
             public _Device @Device = new _Device();
-            public IElement @__Device = new InMemoryElement();
+            public IElement @__Device = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Device");
 
             public class _ExecutionEnvironment
             {
             }
 
             public _ExecutionEnvironment @ExecutionEnvironment = new _ExecutionEnvironment();
-            public IElement @__ExecutionEnvironment = new InMemoryElement();
+            public IElement @__ExecutionEnvironment = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExecutionEnvironment");
 
             public class _Manifestation
             {
@@ -1891,7 +2030,7 @@ namespace DatenMeister.Core
             }
 
             public _Manifestation @Manifestation = new _Manifestation();
-            public IElement @__Manifestation = new InMemoryElement();
+            public IElement @__Manifestation = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Manifestation");
 
             public class _Node
             {
@@ -1901,7 +2040,7 @@ namespace DatenMeister.Core
             }
 
             public _Node @Node = new _Node();
-            public IElement @__Node = new InMemoryElement();
+            public IElement @__Node = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Node");
 
         }
 
@@ -1917,7 +2056,7 @@ namespace DatenMeister.Core
             }
 
             public _Abstraction @Abstraction = new _Abstraction();
-            public IElement @__Abstraction = new InMemoryElement();
+            public IElement @__Abstraction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Abstraction");
 
             public class _Comment
             {
@@ -1930,7 +2069,7 @@ namespace DatenMeister.Core
             }
 
             public _Comment @Comment = new _Comment();
-            public IElement @__Comment = new InMemoryElement();
+            public IElement @__Comment = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Comment");
 
             public class _Constraint
             {
@@ -1946,7 +2085,7 @@ namespace DatenMeister.Core
             }
 
             public _Constraint @Constraint = new _Constraint();
-            public IElement @__Constraint = new InMemoryElement();
+            public IElement @__Constraint = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Constraint");
 
             public class _Dependency
             {
@@ -1959,7 +2098,7 @@ namespace DatenMeister.Core
             }
 
             public _Dependency @Dependency = new _Dependency();
-            public IElement @__Dependency = new InMemoryElement();
+            public IElement @__Dependency = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Dependency");
 
             public class _DirectedRelationship
             {
@@ -1972,7 +2111,7 @@ namespace DatenMeister.Core
             }
 
             public _DirectedRelationship @DirectedRelationship = new _DirectedRelationship();
-            public IElement @__DirectedRelationship = new InMemoryElement();
+            public IElement @__DirectedRelationship = new MofObjectShadow("datenmeister:///_internal/xmi/uml#DirectedRelationship");
 
             public class _Element
             {
@@ -1988,7 +2127,7 @@ namespace DatenMeister.Core
             }
 
             public _Element @Element = new _Element();
-            public IElement @__Element = new InMemoryElement();
+            public IElement @__Element = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Element");
 
             public class _ElementImport
             {
@@ -2007,7 +2146,7 @@ namespace DatenMeister.Core
             }
 
             public _ElementImport @ElementImport = new _ElementImport();
-            public IElement @__ElementImport = new InMemoryElement();
+            public IElement @__ElementImport = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ElementImport");
 
             public class _MultiplicityElement
             {
@@ -2032,7 +2171,7 @@ namespace DatenMeister.Core
             }
 
             public _MultiplicityElement @MultiplicityElement = new _MultiplicityElement();
-            public IElement @__MultiplicityElement = new InMemoryElement();
+            public IElement @__MultiplicityElement = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MultiplicityElement");
 
             public class _NamedElement
             {
@@ -2057,7 +2196,7 @@ namespace DatenMeister.Core
             }
 
             public _NamedElement @NamedElement = new _NamedElement();
-            public IElement @__NamedElement = new InMemoryElement();
+            public IElement @__NamedElement = new MofObjectShadow("datenmeister:///_internal/xmi/uml#NamedElement");
 
             public class _Namespace
             {
@@ -2082,7 +2221,7 @@ namespace DatenMeister.Core
             }
 
             public _Namespace @Namespace = new _Namespace();
-            public IElement @__Namespace = new InMemoryElement();
+            public IElement @__Namespace = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Namespace");
 
             public class _PackageableElement
             {
@@ -2092,7 +2231,7 @@ namespace DatenMeister.Core
             }
 
             public _PackageableElement @PackageableElement = new _PackageableElement();
-            public IElement @__PackageableElement = new InMemoryElement();
+            public IElement @__PackageableElement = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PackageableElement");
 
             public class _PackageImport
             {
@@ -2108,7 +2247,7 @@ namespace DatenMeister.Core
             }
 
             public _PackageImport @PackageImport = new _PackageImport();
-            public IElement @__PackageImport = new InMemoryElement();
+            public IElement @__PackageImport = new MofObjectShadow("datenmeister:///_internal/xmi/uml#PackageImport");
 
             public class _ParameterableElement
             {
@@ -2121,14 +2260,14 @@ namespace DatenMeister.Core
             }
 
             public _ParameterableElement @ParameterableElement = new _ParameterableElement();
-            public IElement @__ParameterableElement = new InMemoryElement();
+            public IElement @__ParameterableElement = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterableElement");
 
             public class _Realization
             {
             }
 
             public _Realization @Realization = new _Realization();
-            public IElement @__Realization = new InMemoryElement();
+            public IElement @__Realization = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Realization");
 
             public class _Relationship
             {
@@ -2138,7 +2277,7 @@ namespace DatenMeister.Core
             }
 
             public _Relationship @Relationship = new _Relationship();
-            public IElement @__Relationship = new InMemoryElement();
+            public IElement @__Relationship = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Relationship");
 
             public class _TemplateableElement
             {
@@ -2151,7 +2290,7 @@ namespace DatenMeister.Core
             }
 
             public _TemplateableElement @TemplateableElement = new _TemplateableElement();
-            public IElement @__TemplateableElement = new InMemoryElement();
+            public IElement @__TemplateableElement = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TemplateableElement");
 
             public class _TemplateBinding
             {
@@ -2167,7 +2306,7 @@ namespace DatenMeister.Core
             }
 
             public _TemplateBinding @TemplateBinding = new _TemplateBinding();
-            public IElement @__TemplateBinding = new InMemoryElement();
+            public IElement @__TemplateBinding = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TemplateBinding");
 
             public class _TemplateParameter
             {
@@ -2189,7 +2328,7 @@ namespace DatenMeister.Core
             }
 
             public _TemplateParameter @TemplateParameter = new _TemplateParameter();
-            public IElement @__TemplateParameter = new InMemoryElement();
+            public IElement @__TemplateParameter = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TemplateParameter");
 
             public class _TemplateParameterSubstitution
             {
@@ -2208,7 +2347,7 @@ namespace DatenMeister.Core
             }
 
             public _TemplateParameterSubstitution @TemplateParameterSubstitution = new _TemplateParameterSubstitution();
-            public IElement @__TemplateParameterSubstitution = new InMemoryElement();
+            public IElement @__TemplateParameterSubstitution = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TemplateParameterSubstitution");
 
             public class _TemplateSignature
             {
@@ -2224,7 +2363,7 @@ namespace DatenMeister.Core
             }
 
             public _TemplateSignature @TemplateSignature = new _TemplateSignature();
-            public IElement @__TemplateSignature = new InMemoryElement();
+            public IElement @__TemplateSignature = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TemplateSignature");
 
             public class _Type
             {
@@ -2234,7 +2373,7 @@ namespace DatenMeister.Core
             }
 
             public _Type @Type = new _Type();
-            public IElement @__Type = new InMemoryElement();
+            public IElement @__Type = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Type");
 
             public class _TypedElement
             {
@@ -2244,14 +2383,30 @@ namespace DatenMeister.Core
             }
 
             public _TypedElement @TypedElement = new _TypedElement();
-            public IElement @__TypedElement = new InMemoryElement();
+            public IElement @__TypedElement = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TypedElement");
 
             public class _Usage
             {
             }
 
             public _Usage @Usage = new _Usage();
-            public IElement @__Usage = new InMemoryElement();
+            public IElement @__Usage = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Usage");
+
+            public class _VisibilityKind
+            {
+                public static string @public = "public";
+                public IElement @__public = new MofObjectShadow("datenmeister:///_internal/xmi/uml#VisibilityKind-public");
+                public static string @private = "private";
+                public IElement @__private = new MofObjectShadow("datenmeister:///_internal/xmi/uml#VisibilityKind-private");
+                public static string @protected = "protected";
+                public IElement @__protected = new MofObjectShadow("datenmeister:///_internal/xmi/uml#VisibilityKind-protected");
+                public static string @package = "package";
+                public IElement @__package = new MofObjectShadow("datenmeister:///_internal/xmi/uml#VisibilityKind-package");
+
+            }
+
+            public _VisibilityKind @VisibilityKind = new _VisibilityKind();
+            public IElement @__VisibilityKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#VisibilityKind");
 
         }
 
@@ -2264,7 +2419,7 @@ namespace DatenMeister.Core
             }
 
             public _AnyReceiveEvent @AnyReceiveEvent = new _AnyReceiveEvent();
-            public IElement @__AnyReceiveEvent = new InMemoryElement();
+            public IElement @__AnyReceiveEvent = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AnyReceiveEvent");
 
             public class _Behavior
             {
@@ -2295,7 +2450,7 @@ namespace DatenMeister.Core
             }
 
             public _Behavior @Behavior = new _Behavior();
-            public IElement @__Behavior = new InMemoryElement();
+            public IElement @__Behavior = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Behavior");
 
             public class _CallEvent
             {
@@ -2305,7 +2460,7 @@ namespace DatenMeister.Core
             }
 
             public _CallEvent @CallEvent = new _CallEvent();
-            public IElement @__CallEvent = new InMemoryElement();
+            public IElement @__CallEvent = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CallEvent");
 
             public class _ChangeEvent
             {
@@ -2315,28 +2470,28 @@ namespace DatenMeister.Core
             }
 
             public _ChangeEvent @ChangeEvent = new _ChangeEvent();
-            public IElement @__ChangeEvent = new InMemoryElement();
+            public IElement @__ChangeEvent = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ChangeEvent");
 
             public class _Event
             {
             }
 
             public _Event @Event = new _Event();
-            public IElement @__Event = new InMemoryElement();
+            public IElement @__Event = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Event");
 
             public class _FunctionBehavior
             {
             }
 
             public _FunctionBehavior @FunctionBehavior = new _FunctionBehavior();
-            public IElement @__FunctionBehavior = new InMemoryElement();
+            public IElement @__FunctionBehavior = new MofObjectShadow("datenmeister:///_internal/xmi/uml#FunctionBehavior");
 
             public class _MessageEvent
             {
             }
 
             public _MessageEvent @MessageEvent = new _MessageEvent();
-            public IElement @__MessageEvent = new InMemoryElement();
+            public IElement @__MessageEvent = new MofObjectShadow("datenmeister:///_internal/xmi/uml#MessageEvent");
 
             public class _OpaqueBehavior
             {
@@ -2349,7 +2504,7 @@ namespace DatenMeister.Core
             }
 
             public _OpaqueBehavior @OpaqueBehavior = new _OpaqueBehavior();
-            public IElement @__OpaqueBehavior = new InMemoryElement();
+            public IElement @__OpaqueBehavior = new MofObjectShadow("datenmeister:///_internal/xmi/uml#OpaqueBehavior");
 
             public class _SignalEvent
             {
@@ -2359,7 +2514,7 @@ namespace DatenMeister.Core
             }
 
             public _SignalEvent @SignalEvent = new _SignalEvent();
-            public IElement @__SignalEvent = new InMemoryElement();
+            public IElement @__SignalEvent = new MofObjectShadow("datenmeister:///_internal/xmi/uml#SignalEvent");
 
             public class _TimeEvent
             {
@@ -2372,7 +2527,7 @@ namespace DatenMeister.Core
             }
 
             public _TimeEvent @TimeEvent = new _TimeEvent();
-            public IElement @__TimeEvent = new InMemoryElement();
+            public IElement @__TimeEvent = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TimeEvent");
 
             public class _Trigger
             {
@@ -2385,7 +2540,7 @@ namespace DatenMeister.Core
             }
 
             public _Trigger @Trigger = new _Trigger();
-            public IElement @__Trigger = new InMemoryElement();
+            public IElement @__Trigger = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Trigger");
 
         }
 
@@ -2404,7 +2559,7 @@ namespace DatenMeister.Core
             }
 
             public _Substitution @Substitution = new _Substitution();
-            public IElement @__Substitution = new InMemoryElement();
+            public IElement @__Substitution = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Substitution");
 
             public class _BehavioralFeature
             {
@@ -2429,7 +2584,7 @@ namespace DatenMeister.Core
             }
 
             public _BehavioralFeature @BehavioralFeature = new _BehavioralFeature();
-            public IElement @__BehavioralFeature = new InMemoryElement();
+            public IElement @__BehavioralFeature = new MofObjectShadow("datenmeister:///_internal/xmi/uml#BehavioralFeature");
 
             public class _Classifier
             {
@@ -2484,7 +2639,7 @@ namespace DatenMeister.Core
             }
 
             public _Classifier @Classifier = new _Classifier();
-            public IElement @__Classifier = new InMemoryElement();
+            public IElement @__Classifier = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Classifier");
 
             public class _ClassifierTemplateParameter
             {
@@ -2500,7 +2655,7 @@ namespace DatenMeister.Core
             }
 
             public _ClassifierTemplateParameter @ClassifierTemplateParameter = new _ClassifierTemplateParameter();
-            public IElement @__ClassifierTemplateParameter = new InMemoryElement();
+            public IElement @__ClassifierTemplateParameter = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ClassifierTemplateParameter");
 
             public class _Feature
             {
@@ -2513,7 +2668,7 @@ namespace DatenMeister.Core
             }
 
             public _Feature @Feature = new _Feature();
-            public IElement @__Feature = new InMemoryElement();
+            public IElement @__Feature = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Feature");
 
             public class _Generalization
             {
@@ -2532,7 +2687,7 @@ namespace DatenMeister.Core
             }
 
             public _Generalization @Generalization = new _Generalization();
-            public IElement @__Generalization = new InMemoryElement();
+            public IElement @__Generalization = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Generalization");
 
             public class _GeneralizationSet
             {
@@ -2551,7 +2706,7 @@ namespace DatenMeister.Core
             }
 
             public _GeneralizationSet @GeneralizationSet = new _GeneralizationSet();
-            public IElement @__GeneralizationSet = new InMemoryElement();
+            public IElement @__GeneralizationSet = new MofObjectShadow("datenmeister:///_internal/xmi/uml#GeneralizationSet");
 
             public class _InstanceSpecification
             {
@@ -2567,7 +2722,7 @@ namespace DatenMeister.Core
             }
 
             public _InstanceSpecification @InstanceSpecification = new _InstanceSpecification();
-            public IElement @__InstanceSpecification = new InMemoryElement();
+            public IElement @__InstanceSpecification = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InstanceSpecification");
 
             public class _InstanceValue
             {
@@ -2577,7 +2732,7 @@ namespace DatenMeister.Core
             }
 
             public _InstanceValue @InstanceValue = new _InstanceValue();
-            public IElement @__InstanceValue = new InMemoryElement();
+            public IElement @__InstanceValue = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InstanceValue");
 
             public class _Operation
             {
@@ -2632,7 +2787,7 @@ namespace DatenMeister.Core
             }
 
             public _Operation @Operation = new _Operation();
-            public IElement @__Operation = new InMemoryElement();
+            public IElement @__Operation = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Operation");
 
             public class _OperationTemplateParameter
             {
@@ -2642,7 +2797,7 @@ namespace DatenMeister.Core
             }
 
             public _OperationTemplateParameter @OperationTemplateParameter = new _OperationTemplateParameter();
-            public IElement @__OperationTemplateParameter = new InMemoryElement();
+            public IElement @__OperationTemplateParameter = new MofObjectShadow("datenmeister:///_internal/xmi/uml#OperationTemplateParameter");
 
             public class _Parameter
             {
@@ -2673,7 +2828,7 @@ namespace DatenMeister.Core
             }
 
             public _Parameter @Parameter = new _Parameter();
-            public IElement @__Parameter = new InMemoryElement();
+            public IElement @__Parameter = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Parameter");
 
             public class _ParameterSet
             {
@@ -2686,7 +2841,7 @@ namespace DatenMeister.Core
             }
 
             public _ParameterSet @ParameterSet = new _ParameterSet();
-            public IElement @__ParameterSet = new InMemoryElement();
+            public IElement @__ParameterSet = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterSet");
 
             public class _Property
             {
@@ -2741,7 +2896,7 @@ namespace DatenMeister.Core
             }
 
             public _Property @Property = new _Property();
-            public IElement @__Property = new InMemoryElement();
+            public IElement @__Property = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Property");
 
             public class _RedefinableElement
             {
@@ -2757,7 +2912,7 @@ namespace DatenMeister.Core
             }
 
             public _RedefinableElement @RedefinableElement = new _RedefinableElement();
-            public IElement @__RedefinableElement = new InMemoryElement();
+            public IElement @__RedefinableElement = new MofObjectShadow("datenmeister:///_internal/xmi/uml#RedefinableElement");
 
             public class _RedefinableTemplateSignature
             {
@@ -2773,7 +2928,7 @@ namespace DatenMeister.Core
             }
 
             public _RedefinableTemplateSignature @RedefinableTemplateSignature = new _RedefinableTemplateSignature();
-            public IElement @__RedefinableTemplateSignature = new InMemoryElement();
+            public IElement @__RedefinableTemplateSignature = new MofObjectShadow("datenmeister:///_internal/xmi/uml#RedefinableTemplateSignature");
 
             public class _Slot
             {
@@ -2789,7 +2944,7 @@ namespace DatenMeister.Core
             }
 
             public _Slot @Slot = new _Slot();
-            public IElement @__Slot = new InMemoryElement();
+            public IElement @__Slot = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Slot");
 
             public class _StructuralFeature
             {
@@ -2799,7 +2954,67 @@ namespace DatenMeister.Core
             }
 
             public _StructuralFeature @StructuralFeature = new _StructuralFeature();
-            public IElement @__StructuralFeature = new InMemoryElement();
+            public IElement @__StructuralFeature = new MofObjectShadow("datenmeister:///_internal/xmi/uml#StructuralFeature");
+
+            public class _AggregationKind
+            {
+                public static string @none = "none";
+                public IElement @__none = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AggregationKind-none");
+                public static string @shared = "shared";
+                public IElement @__shared = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AggregationKind-shared");
+                public static string @composite = "composite";
+                public IElement @__composite = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AggregationKind-composite");
+
+            }
+
+            public _AggregationKind @AggregationKind = new _AggregationKind();
+            public IElement @__AggregationKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AggregationKind");
+
+            public class _CallConcurrencyKind
+            {
+                public static string @sequential = "sequential";
+                public IElement @__sequential = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CallConcurrencyKind-sequential");
+                public static string @guarded = "guarded";
+                public IElement @__guarded = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CallConcurrencyKind-guarded");
+                public static string @concurrent = "concurrent";
+                public IElement @__concurrent = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CallConcurrencyKind-concurrent");
+
+            }
+
+            public _CallConcurrencyKind @CallConcurrencyKind = new _CallConcurrencyKind();
+            public IElement @__CallConcurrencyKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CallConcurrencyKind");
+
+            public class _ParameterDirectionKind
+            {
+                public static string @in = "in";
+                public IElement @__in = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterDirectionKind-in");
+                public static string @inout = "inout";
+                public IElement @__inout = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterDirectionKind-inout");
+                public static string @out = "out";
+                public IElement @__out = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterDirectionKind-out");
+                public static string @return = "return";
+                public IElement @__return = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterDirectionKind-return");
+
+            }
+
+            public _ParameterDirectionKind @ParameterDirectionKind = new _ParameterDirectionKind();
+            public IElement @__ParameterDirectionKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterDirectionKind");
+
+            public class _ParameterEffectKind
+            {
+                public static string @create = "create";
+                public IElement @__create = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterEffectKind-create");
+                public static string @read = "read";
+                public IElement @__read = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterEffectKind-read");
+                public static string @update = "update";
+                public IElement @__update = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterEffectKind-update");
+                public static string @delete = "delete";
+                public IElement @__delete = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterEffectKind-delete");
+
+            }
+
+            public _ParameterEffectKind @ParameterEffectKind = new _ParameterEffectKind();
+            public IElement @__ParameterEffectKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ParameterEffectKind");
 
         }
 
@@ -2818,7 +3033,7 @@ namespace DatenMeister.Core
             }
 
             public _ValueSpecificationAction @ValueSpecificationAction = new _ValueSpecificationAction();
-            public IElement @__ValueSpecificationAction = new InMemoryElement();
+            public IElement @__ValueSpecificationAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ValueSpecificationAction");
 
             public class _VariableAction
             {
@@ -2828,14 +3043,14 @@ namespace DatenMeister.Core
             }
 
             public _VariableAction @VariableAction = new _VariableAction();
-            public IElement @__VariableAction = new InMemoryElement();
+            public IElement @__VariableAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#VariableAction");
 
             public class _WriteLinkAction
             {
             }
 
             public _WriteLinkAction @WriteLinkAction = new _WriteLinkAction();
-            public IElement @__WriteLinkAction = new InMemoryElement();
+            public IElement @__WriteLinkAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#WriteLinkAction");
 
             public class _WriteStructuralFeatureAction
             {
@@ -2848,7 +3063,7 @@ namespace DatenMeister.Core
             }
 
             public _WriteStructuralFeatureAction @WriteStructuralFeatureAction = new _WriteStructuralFeatureAction();
-            public IElement @__WriteStructuralFeatureAction = new InMemoryElement();
+            public IElement @__WriteStructuralFeatureAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#WriteStructuralFeatureAction");
 
             public class _WriteVariableAction
             {
@@ -2858,7 +3073,21 @@ namespace DatenMeister.Core
             }
 
             public _WriteVariableAction @WriteVariableAction = new _WriteVariableAction();
-            public IElement @__WriteVariableAction = new InMemoryElement();
+            public IElement @__WriteVariableAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#WriteVariableAction");
+
+            public class _ExpansionKind
+            {
+                public static string @parallel = "parallel";
+                public IElement @__parallel = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExpansionKind-parallel");
+                public static string @iterative = "iterative";
+                public IElement @__iterative = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExpansionKind-iterative");
+                public static string @stream = "stream";
+                public IElement @__stream = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExpansionKind-stream");
+
+            }
+
+            public _ExpansionKind @ExpansionKind = new _ExpansionKind();
+            public IElement @__ExpansionKind = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExpansionKind");
 
             public class _AcceptCallAction
             {
@@ -2868,7 +3097,7 @@ namespace DatenMeister.Core
             }
 
             public _AcceptCallAction @AcceptCallAction = new _AcceptCallAction();
-            public IElement @__AcceptCallAction = new InMemoryElement();
+            public IElement @__AcceptCallAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AcceptCallAction");
 
             public class _AcceptEventAction
             {
@@ -2884,7 +3113,7 @@ namespace DatenMeister.Core
             }
 
             public _AcceptEventAction @AcceptEventAction = new _AcceptEventAction();
-            public IElement @__AcceptEventAction = new InMemoryElement();
+            public IElement @__AcceptEventAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AcceptEventAction");
 
             public class _Action
             {
@@ -2909,7 +3138,7 @@ namespace DatenMeister.Core
             }
 
             public _Action @Action = new _Action();
-            public IElement @__Action = new InMemoryElement();
+            public IElement @__Action = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Action");
 
             public class _ActionInputPin
             {
@@ -2919,7 +3148,7 @@ namespace DatenMeister.Core
             }
 
             public _ActionInputPin @ActionInputPin = new _ActionInputPin();
-            public IElement @__ActionInputPin = new InMemoryElement();
+            public IElement @__ActionInputPin = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ActionInputPin");
 
             public class _AddStructuralFeatureValueAction
             {
@@ -2932,7 +3161,7 @@ namespace DatenMeister.Core
             }
 
             public _AddStructuralFeatureValueAction @AddStructuralFeatureValueAction = new _AddStructuralFeatureValueAction();
-            public IElement @__AddStructuralFeatureValueAction = new InMemoryElement();
+            public IElement @__AddStructuralFeatureValueAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AddStructuralFeatureValueAction");
 
             public class _AddVariableValueAction
             {
@@ -2945,7 +3174,7 @@ namespace DatenMeister.Core
             }
 
             public _AddVariableValueAction @AddVariableValueAction = new _AddVariableValueAction();
-            public IElement @__AddVariableValueAction = new InMemoryElement();
+            public IElement @__AddVariableValueAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#AddVariableValueAction");
 
             public class _BroadcastSignalAction
             {
@@ -2955,7 +3184,7 @@ namespace DatenMeister.Core
             }
 
             public _BroadcastSignalAction @BroadcastSignalAction = new _BroadcastSignalAction();
-            public IElement @__BroadcastSignalAction = new InMemoryElement();
+            public IElement @__BroadcastSignalAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#BroadcastSignalAction");
 
             public class _CallAction
             {
@@ -2968,7 +3197,7 @@ namespace DatenMeister.Core
             }
 
             public _CallAction @CallAction = new _CallAction();
-            public IElement @__CallAction = new InMemoryElement();
+            public IElement @__CallAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CallAction");
 
             public class _CallBehaviorAction
             {
@@ -2978,7 +3207,7 @@ namespace DatenMeister.Core
             }
 
             public _CallBehaviorAction @CallBehaviorAction = new _CallBehaviorAction();
-            public IElement @__CallBehaviorAction = new InMemoryElement();
+            public IElement @__CallBehaviorAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CallBehaviorAction");
 
             public class _CallOperationAction
             {
@@ -2991,7 +3220,7 @@ namespace DatenMeister.Core
             }
 
             public _CallOperationAction @CallOperationAction = new _CallOperationAction();
-            public IElement @__CallOperationAction = new InMemoryElement();
+            public IElement @__CallOperationAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CallOperationAction");
 
             public class _Clause
             {
@@ -3016,7 +3245,7 @@ namespace DatenMeister.Core
             }
 
             public _Clause @Clause = new _Clause();
-            public IElement @__Clause = new InMemoryElement();
+            public IElement @__Clause = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Clause");
 
             public class _ClearAssociationAction
             {
@@ -3029,7 +3258,7 @@ namespace DatenMeister.Core
             }
 
             public _ClearAssociationAction @ClearAssociationAction = new _ClearAssociationAction();
-            public IElement @__ClearAssociationAction = new InMemoryElement();
+            public IElement @__ClearAssociationAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ClearAssociationAction");
 
             public class _ClearStructuralFeatureAction
             {
@@ -3039,14 +3268,14 @@ namespace DatenMeister.Core
             }
 
             public _ClearStructuralFeatureAction @ClearStructuralFeatureAction = new _ClearStructuralFeatureAction();
-            public IElement @__ClearStructuralFeatureAction = new InMemoryElement();
+            public IElement @__ClearStructuralFeatureAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ClearStructuralFeatureAction");
 
             public class _ClearVariableAction
             {
             }
 
             public _ClearVariableAction @ClearVariableAction = new _ClearVariableAction();
-            public IElement @__ClearVariableAction = new InMemoryElement();
+            public IElement @__ClearVariableAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ClearVariableAction");
 
             public class _ConditionalNode
             {
@@ -3065,7 +3294,7 @@ namespace DatenMeister.Core
             }
 
             public _ConditionalNode @ConditionalNode = new _ConditionalNode();
-            public IElement @__ConditionalNode = new InMemoryElement();
+            public IElement @__ConditionalNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ConditionalNode");
 
             public class _CreateLinkAction
             {
@@ -3075,7 +3304,7 @@ namespace DatenMeister.Core
             }
 
             public _CreateLinkAction @CreateLinkAction = new _CreateLinkAction();
-            public IElement @__CreateLinkAction = new InMemoryElement();
+            public IElement @__CreateLinkAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CreateLinkAction");
 
             public class _CreateLinkObjectAction
             {
@@ -3085,7 +3314,7 @@ namespace DatenMeister.Core
             }
 
             public _CreateLinkObjectAction @CreateLinkObjectAction = new _CreateLinkObjectAction();
-            public IElement @__CreateLinkObjectAction = new InMemoryElement();
+            public IElement @__CreateLinkObjectAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CreateLinkObjectAction");
 
             public class _CreateObjectAction
             {
@@ -3098,7 +3327,7 @@ namespace DatenMeister.Core
             }
 
             public _CreateObjectAction @CreateObjectAction = new _CreateObjectAction();
-            public IElement @__CreateObjectAction = new InMemoryElement();
+            public IElement @__CreateObjectAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#CreateObjectAction");
 
             public class _DestroyLinkAction
             {
@@ -3108,7 +3337,7 @@ namespace DatenMeister.Core
             }
 
             public _DestroyLinkAction @DestroyLinkAction = new _DestroyLinkAction();
-            public IElement @__DestroyLinkAction = new InMemoryElement();
+            public IElement @__DestroyLinkAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#DestroyLinkAction");
 
             public class _DestroyObjectAction
             {
@@ -3124,7 +3353,7 @@ namespace DatenMeister.Core
             }
 
             public _DestroyObjectAction @DestroyObjectAction = new _DestroyObjectAction();
-            public IElement @__DestroyObjectAction = new InMemoryElement();
+            public IElement @__DestroyObjectAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#DestroyObjectAction");
 
             public class _ExpansionNode
             {
@@ -3137,7 +3366,7 @@ namespace DatenMeister.Core
             }
 
             public _ExpansionNode @ExpansionNode = new _ExpansionNode();
-            public IElement @__ExpansionNode = new InMemoryElement();
+            public IElement @__ExpansionNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExpansionNode");
 
             public class _ExpansionRegion
             {
@@ -3153,14 +3382,14 @@ namespace DatenMeister.Core
             }
 
             public _ExpansionRegion @ExpansionRegion = new _ExpansionRegion();
-            public IElement @__ExpansionRegion = new InMemoryElement();
+            public IElement @__ExpansionRegion = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ExpansionRegion");
 
             public class _InputPin
             {
             }
 
             public _InputPin @InputPin = new _InputPin();
-            public IElement @__InputPin = new InMemoryElement();
+            public IElement @__InputPin = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InputPin");
 
             public class _InvocationAction
             {
@@ -3173,7 +3402,7 @@ namespace DatenMeister.Core
             }
 
             public _InvocationAction @InvocationAction = new _InvocationAction();
-            public IElement @__InvocationAction = new InMemoryElement();
+            public IElement @__InvocationAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#InvocationAction");
 
             public class _LinkAction
             {
@@ -3186,7 +3415,7 @@ namespace DatenMeister.Core
             }
 
             public _LinkAction @LinkAction = new _LinkAction();
-            public IElement @__LinkAction = new InMemoryElement();
+            public IElement @__LinkAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#LinkAction");
 
             public class _LinkEndCreationData
             {
@@ -3199,7 +3428,7 @@ namespace DatenMeister.Core
             }
 
             public _LinkEndCreationData @LinkEndCreationData = new _LinkEndCreationData();
-            public IElement @__LinkEndCreationData = new InMemoryElement();
+            public IElement @__LinkEndCreationData = new MofObjectShadow("datenmeister:///_internal/xmi/uml#LinkEndCreationData");
 
             public class _LinkEndData
             {
@@ -3215,7 +3444,7 @@ namespace DatenMeister.Core
             }
 
             public _LinkEndData @LinkEndData = new _LinkEndData();
-            public IElement @__LinkEndData = new InMemoryElement();
+            public IElement @__LinkEndData = new MofObjectShadow("datenmeister:///_internal/xmi/uml#LinkEndData");
 
             public class _LinkEndDestructionData
             {
@@ -3228,7 +3457,7 @@ namespace DatenMeister.Core
             }
 
             public _LinkEndDestructionData @LinkEndDestructionData = new _LinkEndDestructionData();
-            public IElement @__LinkEndDestructionData = new InMemoryElement();
+            public IElement @__LinkEndDestructionData = new MofObjectShadow("datenmeister:///_internal/xmi/uml#LinkEndDestructionData");
 
             public class _LoopNode
             {
@@ -3262,7 +3491,7 @@ namespace DatenMeister.Core
             }
 
             public _LoopNode @LoopNode = new _LoopNode();
-            public IElement @__LoopNode = new InMemoryElement();
+            public IElement @__LoopNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#LoopNode");
 
             public class _OpaqueAction
             {
@@ -3281,14 +3510,14 @@ namespace DatenMeister.Core
             }
 
             public _OpaqueAction @OpaqueAction = new _OpaqueAction();
-            public IElement @__OpaqueAction = new InMemoryElement();
+            public IElement @__OpaqueAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#OpaqueAction");
 
             public class _OutputPin
             {
             }
 
             public _OutputPin @OutputPin = new _OutputPin();
-            public IElement @__OutputPin = new InMemoryElement();
+            public IElement @__OutputPin = new MofObjectShadow("datenmeister:///_internal/xmi/uml#OutputPin");
 
             public class _Pin
             {
@@ -3298,7 +3527,7 @@ namespace DatenMeister.Core
             }
 
             public _Pin @Pin = new _Pin();
-            public IElement @__Pin = new InMemoryElement();
+            public IElement @__Pin = new MofObjectShadow("datenmeister:///_internal/xmi/uml#Pin");
 
             public class _QualifierValue
             {
@@ -3311,7 +3540,7 @@ namespace DatenMeister.Core
             }
 
             public _QualifierValue @QualifierValue = new _QualifierValue();
-            public IElement @__QualifierValue = new InMemoryElement();
+            public IElement @__QualifierValue = new MofObjectShadow("datenmeister:///_internal/xmi/uml#QualifierValue");
 
             public class _RaiseExceptionAction
             {
@@ -3321,7 +3550,7 @@ namespace DatenMeister.Core
             }
 
             public _RaiseExceptionAction @RaiseExceptionAction = new _RaiseExceptionAction();
-            public IElement @__RaiseExceptionAction = new InMemoryElement();
+            public IElement @__RaiseExceptionAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#RaiseExceptionAction");
 
             public class _ReadExtentAction
             {
@@ -3334,7 +3563,7 @@ namespace DatenMeister.Core
             }
 
             public _ReadExtentAction @ReadExtentAction = new _ReadExtentAction();
-            public IElement @__ReadExtentAction = new InMemoryElement();
+            public IElement @__ReadExtentAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ReadExtentAction");
 
             public class _ReadIsClassifiedObjectAction
             {
@@ -3353,7 +3582,7 @@ namespace DatenMeister.Core
             }
 
             public _ReadIsClassifiedObjectAction @ReadIsClassifiedObjectAction = new _ReadIsClassifiedObjectAction();
-            public IElement @__ReadIsClassifiedObjectAction = new InMemoryElement();
+            public IElement @__ReadIsClassifiedObjectAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ReadIsClassifiedObjectAction");
 
             public class _ReadLinkAction
             {
@@ -3363,7 +3592,7 @@ namespace DatenMeister.Core
             }
 
             public _ReadLinkAction @ReadLinkAction = new _ReadLinkAction();
-            public IElement @__ReadLinkAction = new InMemoryElement();
+            public IElement @__ReadLinkAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ReadLinkAction");
 
             public class _ReadLinkObjectEndAction
             {
@@ -3379,7 +3608,7 @@ namespace DatenMeister.Core
             }
 
             public _ReadLinkObjectEndAction @ReadLinkObjectEndAction = new _ReadLinkObjectEndAction();
-            public IElement @__ReadLinkObjectEndAction = new InMemoryElement();
+            public IElement @__ReadLinkObjectEndAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ReadLinkObjectEndAction");
 
             public class _ReadLinkObjectEndQualifierAction
             {
@@ -3395,7 +3624,7 @@ namespace DatenMeister.Core
             }
 
             public _ReadLinkObjectEndQualifierAction @ReadLinkObjectEndQualifierAction = new _ReadLinkObjectEndQualifierAction();
-            public IElement @__ReadLinkObjectEndQualifierAction = new InMemoryElement();
+            public IElement @__ReadLinkObjectEndQualifierAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ReadLinkObjectEndQualifierAction");
 
             public class _ReadSelfAction
             {
@@ -3405,7 +3634,7 @@ namespace DatenMeister.Core
             }
 
             public _ReadSelfAction @ReadSelfAction = new _ReadSelfAction();
-            public IElement @__ReadSelfAction = new InMemoryElement();
+            public IElement @__ReadSelfAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ReadSelfAction");
 
             public class _ReadStructuralFeatureAction
             {
@@ -3415,7 +3644,7 @@ namespace DatenMeister.Core
             }
 
             public _ReadStructuralFeatureAction @ReadStructuralFeatureAction = new _ReadStructuralFeatureAction();
-            public IElement @__ReadStructuralFeatureAction = new InMemoryElement();
+            public IElement @__ReadStructuralFeatureAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ReadStructuralFeatureAction");
 
             public class _ReadVariableAction
             {
@@ -3425,7 +3654,7 @@ namespace DatenMeister.Core
             }
 
             public _ReadVariableAction @ReadVariableAction = new _ReadVariableAction();
-            public IElement @__ReadVariableAction = new InMemoryElement();
+            public IElement @__ReadVariableAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ReadVariableAction");
 
             public class _ReclassifyObjectAction
             {
@@ -3444,7 +3673,7 @@ namespace DatenMeister.Core
             }
 
             public _ReclassifyObjectAction @ReclassifyObjectAction = new _ReclassifyObjectAction();
-            public IElement @__ReclassifyObjectAction = new InMemoryElement();
+            public IElement @__ReclassifyObjectAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ReclassifyObjectAction");
 
             public class _ReduceAction
             {
@@ -3463,7 +3692,7 @@ namespace DatenMeister.Core
             }
 
             public _ReduceAction @ReduceAction = new _ReduceAction();
-            public IElement @__ReduceAction = new InMemoryElement();
+            public IElement @__ReduceAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ReduceAction");
 
             public class _RemoveStructuralFeatureValueAction
             {
@@ -3476,7 +3705,7 @@ namespace DatenMeister.Core
             }
 
             public _RemoveStructuralFeatureValueAction @RemoveStructuralFeatureValueAction = new _RemoveStructuralFeatureValueAction();
-            public IElement @__RemoveStructuralFeatureValueAction = new InMemoryElement();
+            public IElement @__RemoveStructuralFeatureValueAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#RemoveStructuralFeatureValueAction");
 
             public class _RemoveVariableValueAction
             {
@@ -3489,7 +3718,7 @@ namespace DatenMeister.Core
             }
 
             public _RemoveVariableValueAction @RemoveVariableValueAction = new _RemoveVariableValueAction();
-            public IElement @__RemoveVariableValueAction = new InMemoryElement();
+            public IElement @__RemoveVariableValueAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#RemoveVariableValueAction");
 
             public class _ReplyAction
             {
@@ -3505,7 +3734,7 @@ namespace DatenMeister.Core
             }
 
             public _ReplyAction @ReplyAction = new _ReplyAction();
-            public IElement @__ReplyAction = new InMemoryElement();
+            public IElement @__ReplyAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ReplyAction");
 
             public class _SendObjectAction
             {
@@ -3518,7 +3747,7 @@ namespace DatenMeister.Core
             }
 
             public _SendObjectAction @SendObjectAction = new _SendObjectAction();
-            public IElement @__SendObjectAction = new InMemoryElement();
+            public IElement @__SendObjectAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#SendObjectAction");
 
             public class _SendSignalAction
             {
@@ -3531,7 +3760,7 @@ namespace DatenMeister.Core
             }
 
             public _SendSignalAction @SendSignalAction = new _SendSignalAction();
-            public IElement @__SendSignalAction = new InMemoryElement();
+            public IElement @__SendSignalAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#SendSignalAction");
 
             public class _SequenceNode
             {
@@ -3541,7 +3770,7 @@ namespace DatenMeister.Core
             }
 
             public _SequenceNode @SequenceNode = new _SequenceNode();
-            public IElement @__SequenceNode = new InMemoryElement();
+            public IElement @__SequenceNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#SequenceNode");
 
             public class _StartClassifierBehaviorAction
             {
@@ -3551,7 +3780,7 @@ namespace DatenMeister.Core
             }
 
             public _StartClassifierBehaviorAction @StartClassifierBehaviorAction = new _StartClassifierBehaviorAction();
-            public IElement @__StartClassifierBehaviorAction = new InMemoryElement();
+            public IElement @__StartClassifierBehaviorAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#StartClassifierBehaviorAction");
 
             public class _StartObjectBehaviorAction
             {
@@ -3561,7 +3790,7 @@ namespace DatenMeister.Core
             }
 
             public _StartObjectBehaviorAction @StartObjectBehaviorAction = new _StartObjectBehaviorAction();
-            public IElement @__StartObjectBehaviorAction = new InMemoryElement();
+            public IElement @__StartObjectBehaviorAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#StartObjectBehaviorAction");
 
             public class _StructuralFeatureAction
             {
@@ -3574,7 +3803,7 @@ namespace DatenMeister.Core
             }
 
             public _StructuralFeatureAction @StructuralFeatureAction = new _StructuralFeatureAction();
-            public IElement @__StructuralFeatureAction = new InMemoryElement();
+            public IElement @__StructuralFeatureAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#StructuralFeatureAction");
 
             public class _StructuredActivityNode
             {
@@ -3602,7 +3831,7 @@ namespace DatenMeister.Core
             }
 
             public _StructuredActivityNode @StructuredActivityNode = new _StructuredActivityNode();
-            public IElement @__StructuredActivityNode = new InMemoryElement();
+            public IElement @__StructuredActivityNode = new MofObjectShadow("datenmeister:///_internal/xmi/uml#StructuredActivityNode");
 
             public class _TestIdentityAction
             {
@@ -3618,7 +3847,7 @@ namespace DatenMeister.Core
             }
 
             public _TestIdentityAction @TestIdentityAction = new _TestIdentityAction();
-            public IElement @__TestIdentityAction = new InMemoryElement();
+            public IElement @__TestIdentityAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#TestIdentityAction");
 
             public class _UnmarshallAction
             {
@@ -3634,7 +3863,7 @@ namespace DatenMeister.Core
             }
 
             public _UnmarshallAction @UnmarshallAction = new _UnmarshallAction();
-            public IElement @__UnmarshallAction = new InMemoryElement();
+            public IElement @__UnmarshallAction = new MofObjectShadow("datenmeister:///_internal/xmi/uml#UnmarshallAction");
 
             public class _ValuePin
             {
@@ -3644,7 +3873,7 @@ namespace DatenMeister.Core
             }
 
             public _ValuePin @ValuePin = new _ValuePin();
-            public IElement @__ValuePin = new InMemoryElement();
+            public IElement @__ValuePin = new MofObjectShadow("datenmeister:///_internal/xmi/uml#ValuePin");
 
         }
 

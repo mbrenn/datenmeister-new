@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider.InMemory
 {
@@ -17,10 +20,33 @@ namespace DatenMeister.Provider.InMemory
         /// Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the InMemoryObject
         /// </summary>
         /// <returns>The created object as MofObject</returns>
-        public static MofElement CreateEmpty()
+        public static MofElement CreateEmpty(IExtent uriExtent = null)
         {
-            var inner = new InMemoryObject(InMemoryProvider.TemporaryProvider);
-            return new MofElement(inner, null);
+            var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
+            return factory.create(null) as MofElement;
+        }
+
+        /// <summary>
+        /// Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the InMemoryObject
+        /// </summary>
+        /// <returns>The created object as MofObject</returns>
+        public static MofElement CreateEmpty(string metaClass, IExtent uriExtent = null)
+        {
+            var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
+            var element = factory.create(null) as MofElement;
+            element.SetMetaClass(metaClass);
+            return element;
+        }
+
+        /// <summary>
+        /// Creates an empty element with the given type
+        /// </summary>
+        /// <param name="type">Type of the element to be created</param>
+        /// <returns>Returned element to be created</returns>
+        public static IObject CreateEmpty(IElement type)
+        {
+            var mofFactory = new MofFactory(InMemoryProvider.TemporaryExtent);
+            return mofFactory.create(type);
         }
 
         /// <summary>
@@ -34,6 +60,7 @@ namespace DatenMeister.Provider.InMemory
         /// <summary>
         /// Initializes a new instance of the InMemoryObject.
         /// </summary>
+        /// <param name="provider">Provider being the host for the element</param>
         /// <param name="metaclassUri">Uri of the metaclass</param>
         public InMemoryObject(IProvider provider, string metaclassUri = null)
         {
@@ -42,7 +69,7 @@ namespace DatenMeister.Provider.InMemory
             MetaclassUri = metaclassUri;
         }
 
-        internal static void CheckValue(object value)
+        private static void CheckValue(object value)
         {
             if (value is MofReflectiveSequence || value is MofObject)
             {
@@ -59,8 +86,7 @@ namespace DatenMeister.Provider.InMemory
         /// <returns></returns>
         public object GetProperty(string property)
         {
-            object result;
-            if (_values.TryGetValue(property, out result))
+            if (_values.TryGetValue(property, out var result))
             {
                 return result;
             }
@@ -151,7 +177,9 @@ namespace DatenMeister.Provider.InMemory
             if (result == null)
             {
                 result = new List<object>();
+                _values[property] = result;
             }
+
             return result;
         }
 

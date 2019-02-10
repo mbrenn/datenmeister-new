@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Der DatenMeister - Organize yourself</title>
     <link href="css/bootstrap.min.css" rel="stylesheet" />
@@ -15,55 +15,22 @@
     <script src="js/underscore-min.js"></script>
     <script src="js/require.js" data-main="js/datenmeister-start.js"></script>
 
-    <!-- Templates for the workspaces -->
-    <script type="text/x-jquery-tmpl" id="template_workspace_table">
-        <table class="table">
-            <tr>
-                <th>ID</th>
-                <th>Data</th>
-            </tr>
-        </table>
-    </script>
-    <script type="text/x-jquery-tmpl" id="template_workspace">
-        <tr>
-            <td><a href="#" class="data"><%-id%></a></td>
-            <td><%-annotation%></td>
-        </tr>
-    </script>
-
-    <!-- Templates for the extents -->
-    <script type="text/x-jquery-tmpl" id="template_extent_table">
-        <table class="table">
-            <tr>
-                <th>URI</th>
-                <th>Items</th>
-                <th>Layer</th>
-                <th>Type</th>
-            </tr>
-        </table>
-    </script>
-    <script type="text/x-jquery-tmpl" id="template_extent">
-        <tr>
-            <td><a href="#" class="data"><%-uri%></a></td>
-            <td><%-count%></td>
-            <td><%-dataLayer%></td>
-            <td><%-type%></td>
-        </tr>
-    </script>
 </head>
 
 <body>
 <div class="datenmeister-ribbon">
 </div>
-<div class="dm-topbar col-md-12 container-title">
-</div>
     <div id="dm-ajaxloading">
         LOADING
     </div>
-<div class="fluid-container body-content">
+<div class="body-content">
     <div class="row">
-        <div id="dm-viewport" class="col-md-12">
-            LOADING! YEAH BABY!
+        <div id="dm-viewport" class="container-fluid">
+            <div class="dm-topbar col-md-12 container-title">
+            </div>
+            <div class="dm-view col-md-12">
+                LOADING! YEAH BABY!
+            </div>
         </div>
     <!--<div class="only-workspaces col-md-4">
         <div class="panel panel-primary">

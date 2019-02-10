@@ -12,6 +12,6 @@
         /// Sets the container of the given element in a hard way
         /// </summary>
         /// <param name="container">Container to be set</param>
-        void SetContainer(IElement container);
+        IObject Container { set; }
     }
 }

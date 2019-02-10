@@ -9,7 +9,7 @@ namespace DatenMeister.Integration
 {
     public class DatenMeisterScope : IDatenMeisterScope
     {
-        private ILifetimeScope _lifetimeScopeImplementation;
+        private readonly ILifetimeScope _lifetimeScopeImplementation;
 
         public DatenMeisterScope(ILifetimeScope lifetimeScopeImplementation)
         {
@@ -21,10 +21,7 @@ namespace DatenMeister.Integration
             return _lifetimeScopeImplementation.ResolveComponent(registration, parameters);
         }
 
-        public IComponentRegistry ComponentRegistry
-        {
-            get { return _lifetimeScopeImplementation.ComponentRegistry; }
-        }
+        public IComponentRegistry ComponentRegistry => _lifetimeScopeImplementation.ComponentRegistry;
 
         public void Dispose()
         {
@@ -36,32 +33,26 @@ namespace DatenMeister.Integration
             return _lifetimeScopeImplementation.BeginLifetimeScope();
         }
 
-        public IDisposer Disposer
-        {
-            get { return _lifetimeScopeImplementation.Disposer; }
-        }
+        public IDisposer Disposer => _lifetimeScopeImplementation.Disposer;
 
-        public object Tag
-        {
-            get { return _lifetimeScopeImplementation.Tag; }
-        }
+        public object Tag => _lifetimeScopeImplementation.Tag;
 
         public event EventHandler<LifetimeScopeBeginningEventArgs> ChildLifetimeScopeBeginning
         {
-            add { _lifetimeScopeImplementation.ChildLifetimeScopeBeginning += value; }
-            remove { _lifetimeScopeImplementation.ChildLifetimeScopeBeginning -= value; }
+            add => _lifetimeScopeImplementation.ChildLifetimeScopeBeginning += value;
+            remove => _lifetimeScopeImplementation.ChildLifetimeScopeBeginning -= value;
         }
 
         public event EventHandler<LifetimeScopeEndingEventArgs> CurrentScopeEnding
         {
-            add { _lifetimeScopeImplementation.CurrentScopeEnding += value; }
-            remove { _lifetimeScopeImplementation.CurrentScopeEnding -= value; }
+            add => _lifetimeScopeImplementation.CurrentScopeEnding += value;
+            remove => _lifetimeScopeImplementation.CurrentScopeEnding -= value;
         }
 
         public event EventHandler<ResolveOperationBeginningEventArgs> ResolveOperationBeginning
         {
-            add { _lifetimeScopeImplementation.ResolveOperationBeginning += value; }
-            remove { _lifetimeScopeImplementation.ResolveOperationBeginning -= value; }
+            add => _lifetimeScopeImplementation.ResolveOperationBeginning += value;
+            remove => _lifetimeScopeImplementation.ResolveOperationBeginning -= value;
         }
 
         public ILifetimeScope BeginLifetimeScope(object tag, Action<ContainerBuilder> configurationAction)

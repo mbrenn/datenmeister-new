@@ -1,5 +1,6 @@
 define(["require", "exports", "./datenmeister-client"], function (require, exports, DMClient) {
     "use strict";
+    exports.__esModule = true;
     var ItemsFromExtentProvider = (function () {
         function ItemsFromExtentProvider(ws, extent) {
             this.ws = ws;

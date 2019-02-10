@@ -1,4 +1,5 @@
 ﻿using System;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
 using DatenMeister.Provider.InMemory;
@@ -11,25 +12,11 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICanSetId
     {
-        /// <inheritdoc />
+        /// <inheritdoc cref="ICanSetId.Id" />
         public string Id
         {
-            get { return ProviderObject.Id; }
-            set { ProviderObject.Id = value; }
-        }
-
-        /// <summary>
-        /// Stores the container object
-        /// </summary>
-        private IElement _container;
-
-        /// <summary>
-        /// Initialiezs a new instance of the MofElement. This method is just used for migration
-        /// </summary>
-        [Obsolete]
-        public MofElement() : base(new InMemoryObject(InMemoryProvider.TemporaryProvider), InMemoryProvider.TemporaryExtent)
-        {
-
+            get => ProviderObject.Id;
+            set => ProviderObject.Id = value;
         }
 
         /// <summary>
@@ -44,7 +31,32 @@ namespace DatenMeister.Core.EMOF.Implementation
             IElement container = null)
             : base(providedObject, extent)
         {
-            _container = container;
+            Container = container;
+            if (CreatedByExtent == null)
+            {
+                CreatedByExtent = ((MofElement) container)?.CreatedByExtent;
+            }
+        }
+
+        /// <summary>
+        /// Sets the referenced extent being used to resolve uris
+        /// </summary>
+        /// <param name="extent">Extent to be set as start for references</param>
+        /// <returns>The element itself for chaining</returns>
+        public MofElement SetReferencedExtent(MofExtent extent)
+        {
+            CreatedByExtent = extent;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the referenced extent being used to resolve uris
+        /// </summary>
+        /// <param name="extent">Extent to be set as start for references</param>
+        /// <returns>The element itself for chaining</returns>
+        public MofElement SetReferencedExtent(IUriExtent extent)
+        {
+            return SetReferencedExtent((MofExtent) extent);
         }
 
         /// <inheritdoc />
@@ -60,27 +72,21 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return null;
             }
 
-            var result = CreatedByExtent?.Resolver.Resolve(uri);
-
+            var result = (CreatedByExtent as IUriResolver)?.Resolve(uri, ResolveType.OnlyMetaClasses);
             if (result == null)
             {
                 result = new MofObjectShadow(uri);
             }
+
             return result;
         }
 
         /// <inheritdoc />
         public IElement container()
         {
-            return _container;
+            return Container as IElement;
         }
-
-        public void SetContainer(IElement container)
-        {
-            _container = container;
-            Extent = ((MofElement) container).Extent;
-        }
-
+        
         /// <summary>
         /// Sets the meta class for the given element
         /// </summary>
@@ -94,6 +100,18 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             ProviderObject.MetaclassUri = ((MofUriExtent) mofElement.Extent).uri(metaClass);
+
+            Extent?.ChangeEventManager?.SendChangeEvent(this);
+        }
+
+        /// <summary>
+        /// Sets the metaclas by directly setting the uri
+        /// </summary>
+        /// <param name="metaClassUri">Uri to be set</param>
+        public void SetMetaClass(string metaClassUri)
+        {
+            ProviderObject.MetaclassUri = metaClassUri;
+            Extent?.ChangeEventManager?.SendChangeEvent(this);
         }
 
         /// <summary>
@@ -127,13 +145,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         public bool @equals(object other)
         {
-            var asElement = other as IElement;
-            if (asElement == null)
-            {
-                return false;
-            }
-
-            return asElement.GetUri() == Uri;
+            return MofObject.AreEqual(this, other as IObject);
         }
 
         public object get(string property)

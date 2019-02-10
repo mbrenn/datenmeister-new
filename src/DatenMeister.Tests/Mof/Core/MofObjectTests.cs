@@ -1,8 +1,9 @@
-﻿using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Proxies;
 using NUnit.Framework;
 
@@ -78,7 +79,7 @@ namespace DatenMeister.Tests.Mof.Core
         [Test]
         public void TestProxyForUriExtent()
         {
-            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///test");
             var proxiedUriExtent = new ProxyUriExtent(uriExtent).ActivateObjectConversion();
 
             var mofElement = InMemoryObject.CreateEmpty();
@@ -109,7 +110,7 @@ namespace DatenMeister.Tests.Mof.Core
         [Test]
         public void TestKnowsExtent()
         {
-            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///test");
             var factory = new MofFactory(uriExtent);
 
             var mofElement = factory.create(null);
@@ -134,9 +135,30 @@ namespace DatenMeister.Tests.Mof.Core
         }
 
         [Test]
+        public void TestGetGenerics()
+        {
+            var value = InMemoryObject.CreateEmpty();
+            value.set("nr", 42);
+            value.set("string", "ABC");
+            value.set("collection", new object[] {43, 2, 321, 231});
+            var otherValue = InMemoryObject.CreateEmpty();
+            otherValue.set("name", "Martin");
+
+            value.set("mof", otherValue);
+
+            Assert.That(value.getOrDefault<string>("nr"), Is.EqualTo("42"));
+            Assert.That(value.getOrDefault<int>("nr"), Is.EqualTo(42));
+            Assert.That(value.getOrDefault<string>("string"), Is.EqualTo("ABC"));
+            Assert.That(value.getOrDefault<IReflectiveCollection>("collection").Count(), Is.EqualTo(4));
+            Assert.That(value.getOrDefault<IReflectiveCollection>("collection").ElementAt(2), Is.EqualTo(321));
+            Assert.That(value.getOrDefault<IObject>("mof").get<string>("name"), Is.EqualTo("Martin"));
+            Assert.That(value.getOrDefault<IElement>("mof").get<string>("name"), Is.EqualTo("Martin"));
+        }
+
+        [Test]
         public void TestSetDotNet()
         {
-            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///test");
             var factory = new MofFactory(uriExtent);
 
             var mofElement = factory.create(null);
@@ -148,6 +170,33 @@ namespace DatenMeister.Tests.Mof.Core
             var asObject = (IObject) retrieve;
             Assert.That(asObject.get("X"), Is.EqualTo(23));
             Assert.That(asObject.get("Y"), Is.EqualTo(24));
+        }
+
+        /// <summary>
+        /// Defines the point class being used for the test above
+        /// </summary>
+        public class Point
+        {
+            /// <summary>
+            /// Initializes a new instance of the Point class
+            /// </summary>
+            /// <param name="x">The first coordinate</param>
+            /// <param name="y">The second coordinate</param>
+            public Point(int x, int y)
+            {
+                X = x;
+                Y = y;
+            }
+
+            /// <summary>
+            /// Gets the first coordinate
+            /// </summary>
+            public int X { get; }
+
+            /// <summary>
+            /// Gets the second coordinate
+            /// </summary>
+            public int Y { get; }
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System.IO;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Models;
+using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.SourcecodeGenerator;
@@ -21,7 +21,8 @@ namespace DatenMeister.SourceGeneration.Console
             System.Console.Write("Create Sourcecode for Web-Fields...");
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
-                { 
+                {
+                    ExtentUrl = "datenmeister:///DatenMeister/Types/FormAndFields",
                     Name = "FormAndFields",
                     Path = "./",
                     Namespace = "DatenMeister.Models.Forms",
@@ -32,12 +33,37 @@ namespace DatenMeister.SourceGeneration.Console
             System.Console.Write("Create Sourcecode for Excel...");
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
-                {
+                { 
+                    ExtentUrl = "datenmeister:///DatenMeister/Types/Excel",
                     Name = "ExcelModels",
                     Path = "./",
                     Namespace = "DatenMeister.Excel",
                     Types = ExcelModels.AllTypes
                 });
+            System.Console.WriteLine(" Done");
+
+            System.Console.Write("Create Sourcecode for Management Provider...");
+            SourceGenerator.GenerateSourceFor(
+                new SourceGeneratorOptions
+                {
+                    ExtentUrl = WorkspaceNames.UriInternalTypesExtent,
+                    Name = "ManagementProvider",
+                    Path = "./",
+                    Namespace = "DatenMeister.Provider.ManagementProviders.Model",
+                    Types = ManagementProviderModel.AllTypes
+                });
+
+            System.Console.Write("Create Sourcecode for Fast Filter...");
+            SourceGenerator.GenerateSourceFor(
+                new SourceGeneratorOptions
+                {
+                    ExtentUrl = WorkspaceNames.UriInternalTypesExtent,
+                    Name = "FastViewFilters",
+                    Path = "./",
+                    Namespace = "DatenMeister.Models.FastViewFilter",
+                    Types = FastViewFilters.Types
+                });
+
             System.Console.WriteLine(" Done");
 
 #if !DEBUG
@@ -50,19 +76,27 @@ namespace DatenMeister.SourceGeneration.Console
             
             File.Copy("./FormAndFields.filler.cs", "../../../DatenMeister/Models/Forms/FormAndFields.filler.cs", true);
             File.Copy("./FormAndFields.class.cs", "../../../DatenMeister/Models/Forms/FormAndFields.class.cs", true);
-            File.Copy("./FormAndFields.dotnet.cs", "../../../DatenMeister/Integration/Modules/FormAndFields.dotnet.cs", true);
+            File.Copy("./FormAndFields.dotnet.cs", "../../../DatenMeister/Models/Forms/FormAndFields.dotnet.cs", true);
             
             File.Copy("./ExcelModels.filler.cs", "../../../DatenMeister.Excel/Models/ExcelModels.filler.cs", true);
             File.Copy("./ExcelModels.class.cs", "../../../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
             File.Copy("./ExcelModels.dotnet.cs", "../../../DatenMeister.Excel/Models/ExcelModels.dotnet.cs", true);
+            
+            File.Copy("./ManagementProvider.filler.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.filler.cs", true);
+            File.Copy("./ManagementProvider.class.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.class.cs", true);
+            File.Copy("./ManagementProvider.dotnet.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.dotnet.cs", true);
+            
+            File.Copy("./FastViewFilters.filler.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.filler.cs", true);
+            File.Copy("./FastViewFilters.class.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.class.cs", true);
+            File.Copy("./FastViewFilters.dotnet.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.dotnet.cs", true);
 #endif
         }
 
         private static void CreateSourceForUmlAndMof()
         {
-            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriUml);
-            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriMof);
-            var primitiveTypeExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypes);
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriUmlExtent);
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriMofExtent);
+            var primitiveTypeExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypesExtent);
 
             var loader = new SimpleLoader();
             loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, "data/UML.xmi");

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.ChangeEvents;
+using DatenMeister.Provider.ManagementProviders;
 
 namespace DatenMeister.Runtime.Workspaces
 {
@@ -12,15 +15,21 @@ namespace DatenMeister.Runtime.Workspaces
     /// </summary>
     public class WorkspaceLogic : IWorkspaceLogic
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(WorkspaceLogic));
+
         private readonly WorkspaceData _fileData;
+        private readonly ChangeEventManager _changeEventManager;
 
         /// <summary>
         /// Initializes a new instance of the WorkspaceLogic
         /// </summary>
         /// <param name="fileData"></param>
-        public WorkspaceLogic(WorkspaceData fileData)
+        /// <param name="changeEventManager">Change Event Manager being used to propagate changes of extents
+        /// and workspaces</param>
+        public WorkspaceLogic(WorkspaceData fileData, ChangeEventManager changeEventManager = null)
         {
             _fileData = fileData;
+            _changeEventManager = changeEventManager;
         }
 
         /// <summary>
@@ -62,23 +71,23 @@ namespace DatenMeister.Runtime.Workspaces
 
             Workspace result = null;
             // If the object knows the extent to which it belongs to, it will return it
-            var objectKnowsExtent = value as IHasExtent;
-            if (objectKnowsExtent != null)
+            if (value is IHasExtent objectKnowsExtent)
             {
                 var found = objectKnowsExtent.Extent;
                 result = GetWorkspaceOfExtent(found);
             }
 
-            // Otherwise check it by the dataextent
-            if (result != null)
+            lock (_fileData)
             {
-                lock (_fileData)
+                // Otherwise check it by the data extent
+                if (result != null)
                 {
-                    result =_fileData.Workspaces.FirstOrDefault(x => x.extent.Cast<IUriExtent>().WithElement(value) != null);
+                    result = _fileData.Workspaces.FirstOrDefault(x =>
+                        x.extent.Cast<IUriExtent>().WithElement(value) != null);
                 }
-            }
 
-            return result ?? _fileData.Default;
+                return result ?? _fileData.Default;
+            }
         }
 
         public IEnumerable<IUriExtent> GetExtentsForWorkspace(Workspace dataLayer)
@@ -108,9 +117,16 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        /// <summary>
+        /// Gets the default workspace
+        /// </summary>
+        /// <returns>The default workspace</returns>
         public Workspace GetDefaultWorkspace()
         {
-            return _fileData.Default;
+            lock (_fileData)
+            {
+                return _fileData.Default;
+            }
         }
 
         /// <summary>
@@ -130,16 +146,41 @@ namespace DatenMeister.Runtime.Workspaces
                     throw new InvalidOperationException("id is already known");
                 }
 
+                Logger.Debug($"Adding workspace {workspace.id}");
                 _fileData.Workspaces.Add(workspace);
 
                 // If no metaworkspace is given, define the one from the default one
-                if (workspace.MetaWorkspace == null)
+                if (workspace.MetaWorkspaces.Count == 0 && _fileData.Default?.MetaWorkspaces != null)
                 {
-                    workspace.MetaWorkspace = _fileData.Default?.MetaWorkspace;
+                    foreach (var innerWorkspace in _fileData.Default?.MetaWorkspaces)
+                    {
+                        workspace.AddMetaWorkspace(innerWorkspace);
+                    }
                 }
             }
+
+            SendEventForWorkspaceChange(workspace);
         }
 
+        /// <summary>
+        /// Sends an event for a workspace change
+        /// </summary>
+        /// <param name="workspace">The workspace that has been changed.</param>
+        public void SendEventForWorkspaceChange(Workspace workspace)
+        {
+            if (workspace != null)
+            {
+                _changeEventManager?.SendChangeEvent((IWorkspace) workspace);
+            }
+
+            _changeEventManager?.SendChangeEvent(this.GetManagementWorkspace().FindExtent(ExtentOfWorkspaces.WorkspaceUri));
+        }
+
+        /// <summary>
+        /// Gets the workspace by id
+        /// </summary>
+        /// <param name="id">Id of the workspace</param>
+        /// <returns>Found the workspace</returns>
         public Workspace GetWorkspace(string id)
         {
             lock (_fileData)
@@ -151,7 +192,16 @@ namespace DatenMeister.Runtime.Workspaces
         /// <summary>
         /// Gets an enumeration of all workspaces
         /// </summary>
-        public IEnumerable<Workspace> Workspaces => _fileData.Workspaces.ToList();
+        public IEnumerable<Workspace> Workspaces
+        {
+            get
+            {
+                lock (_fileData)
+                {
+                    return _fileData.Workspaces.ToList();
+                }
+            }
+        }
 
         /// <summary>
         /// Removes the workspace from the collection
@@ -159,15 +209,18 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="id">Id of the workspace to be deleted</param>
         public void RemoveWorkspace(string id)
         {
+            Workspace workspaceToBeDeleted;
             lock (_fileData)
             {
-                var workspaceToBeDeleted = GetWorkspace(id);
+                workspaceToBeDeleted = GetWorkspace(id);
 
                 if (workspaceToBeDeleted != null)
                 {
                     _fileData.Workspaces.Remove(workspaceToBeDeleted);
                 }
             }
+
+            SendEventForWorkspaceChange(workspaceToBeDeleted);
         }
 
         /// <summary>
@@ -177,18 +230,14 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="newExtent">The extent to be added</param>
         public void AddExtent(Workspace workspace, IUriExtent newExtent)
         {
-            if (newExtent == null) throw new ArgumentNullException(nameof(newExtent));
-
-            lock (workspace.SyncObject)
+            workspace.AddExtent(newExtent);
+            if (newExtent is MofExtent mofExtent 
+                && mofExtent.ChangeEventManager != _changeEventManager)
             {
-                if (workspace.extent.Any(x => (x as IUriExtent)?.contextURI() == newExtent.contextURI()))
-                {
-                    throw new InvalidOperationException($"Extent with uri {newExtent.contextURI()} is already added");
-                }
-
-                workspace.extent.Add(newExtent);
-                ((MofExtent) newExtent).Resolver = new WorkspaceUriResolver(this);
+                mofExtent.ChangeEventManager = _changeEventManager;
             }
+
+            SendEventForWorkspaceChange(workspace);
         }
 
         /// <summary>
@@ -212,12 +261,13 @@ namespace DatenMeister.Runtime.Workspaces
             logic.AddWorkspace(workspaceMof);
             logic.AddWorkspace(workspaceMgmt);
 
-            workspaceData.MetaWorkspace = workspaceTypes;
-            workspaceMgmt.MetaWorkspace = workspaceTypes;
-            workspaceTypes.MetaWorkspace = workspaceUml;
-            workspaceUml.MetaWorkspace = workspaceMof;
-            workspaceMof.MetaWorkspace = workspaceMof;
+            workspaceData.AddMetaWorkspace(workspaceTypes);
+            workspaceMgmt.AddMetaWorkspace(workspaceTypes);
+            workspaceTypes.AddMetaWorkspace(workspaceUml);
+            workspaceUml.AddMetaWorkspace(workspaceMof);
+            workspaceMof.AddMetaWorkspace(workspaceMof);
             logic.SetDefaultWorkspace(workspaceData);
+
             return workspace;
         }
 

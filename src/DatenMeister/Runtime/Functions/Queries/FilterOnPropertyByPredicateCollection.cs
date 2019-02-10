@@ -32,8 +32,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         {
             foreach (var value in Collection)
             {
-                var valueAsObject = value as IObject;
-                if (valueAsObject != null && valueAsObject.isSet(_property))
+                if (value is IObject valueAsObject && valueAsObject.isSet(_property))
                 {
                     var property = valueAsObject.get(_property);
                     if (_filter(property))

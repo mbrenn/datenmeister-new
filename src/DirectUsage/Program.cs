@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.IO;
+using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Excel.Integration;
 using DatenMeister.Integration;
-using DatenMeister.Provider;
-using DatenMeister.Provider.InMemory;
+using DatenMeister.Models.Forms;
+using DatenMeister.Provider.DotNet;
+using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Aggregation;
-using DatenMeister.Runtime.Functions.Interfaces;
-using DatenMeister.Runtime.Functions.Transformation;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DirectUsage
 {
@@ -22,8 +18,22 @@ namespace DirectUsage
         static void Main(string[] args)
         {
             var watch = new Stopwatch();
-            
-            watch.Start();
+
+
+            var dm = GiveMe.DatenMeister(new IntegrationSettings { PerformSlimIntegration = false });
+
+            var xmlExtent = new MofUriExtent(new XmiProvider(), "dm:///test");
+            var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
+            var uml = workspaceLogic.GetUmlWorkspace().Get<_UML>();
+
+            var dotNetTypeGenerator = new DotNetTypeGenerator(new MofFactory(xmlExtent), uml);
+            var created = dotNetTypeGenerator.CreateTypeFor(typeof(FieldData));
+            var objectAsText = ExtentFormatter.ToText(created);
+            Console.WriteLine(objectAsText);
+            File.WriteAllText("types.txt", objectAsText);
+
+
+            /*watch.Start();
             var dm = GiveMe.DatenMeister(new IntegrationSettings { PerformSlimIntegration = false });
             Console.WriteLine($"Slim: {watch.Elapsed}");
             
@@ -35,7 +45,7 @@ namespace DirectUsage
 
             // Testing Excel
             var xmiExtent = dm.CreateXmiExtent("dm:///extent");
-            Console.WriteLine(xmiExtent.ToString());
+            Console.WriteLine(xmiExtent.ToString());*/
 
             /*
             var excelExtent = dm.LoadExcel("d:///excel", "files/Quadratzahlen.xlsx");

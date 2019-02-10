@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Web.Http;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -15,10 +14,9 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ItemsAndExtents;
-using DatenMeister.Models.PostModels;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.CSV;
-using DatenMeister.Provider.CSV.Runtime.Storage;
+using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Dynamic;
@@ -28,41 +26,37 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.Web.PostModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.Web.Api
 {
-    [RoutePrefix("api/datenmeister/extent")]
-    public class ExtentController : ApiController
+    [Route("api/datenmeister/extent")]
+    public class ExtentController : Controller
     {
         /// <summary>
         /// Defines the maximum numnber of items that shall be returned via GetItems
         /// </summary>
         private const int MaxItemAmount = 100;
         
-        private readonly IUmlNameResolution _resolution;
-        private readonly IExtentStorageLoader _extentStorageLoader;
+        private readonly IExtentManager _extentManager;
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentFunctions _extentFunctions;
         private readonly ILifetimeScope _diScope;
         private readonly IViewFinder _viewFinder;
-        private readonly NamedElementMethods _namedElementMethods;
 
         public ExtentController(
-            IUmlNameResolution resolution, 
-            IExtentStorageLoader extentStorageLoader, 
+            IExtentManager extentManager, 
             IWorkspaceLogic workspaceLogic, 
             ExtentFunctions extentFunctions,
             ILifetimeScope diScope,
-            IViewFinder viewFinder,
-            NamedElementMethods namedElementMethods)
+            IViewFinder viewFinder)
         {
-            _resolution = resolution;
-            _extentStorageLoader = extentStorageLoader;
+            _extentManager = extentManager;
             _workspaceLogic = workspaceLogic;
             _extentFunctions = extentFunctions;
             _diScope = diScope;
             _viewFinder = viewFinder;
-            _namedElementMethods = namedElementMethods;
         }
 
         [Route("all")]
@@ -71,7 +65,7 @@ namespace DatenMeister.Web.Api
             var result = new List<object>();
             var workspace = GetWorkspace(ws);
 
-            foreach (var extent in workspace.extent.Cast<IUriExtent>())
+            foreach (var extent in workspace.extent.Cast<MofUriExtent>())
             {
                 result.Add(
                     new
@@ -79,7 +73,8 @@ namespace DatenMeister.Web.Api
                         uri = extent.contextURI(),
                         dataLayer = _workspaceLogic.GetWorkspaceOfExtent(extent).id,
                         count = extent.elements().Count(),
-                        type = extent.GetType().Name
+                        type = extent.GetType().Name,
+                        providerType = extent.Provider.GetType().Name
                     });
             }
 
@@ -96,7 +91,7 @@ namespace DatenMeister.Web.Api
         ///     exception is thrown</returns>
         private Workspace GetWorkspace(string ws)
         {
-            var workspace = _workspaceLogic.Workspaces.First(x => x.id == ws);
+            var workspace = _workspaceLogic.Workspaces.FirstOrDefault(x => x.id == ws);
             if (workspace == null)
             {
                 throw new InvalidOperationException("Workspace not found");
@@ -136,7 +131,7 @@ namespace DatenMeister.Web.Api
 
             // Creates the new workspace
             var configuration = GetStorageConfiguration(model, filename);
-            var createdExtent = _extentStorageLoader.LoadExtent(configuration, true);
+            var createdExtent = _extentManager.LoadExtent(configuration, true);
 
             return new
             {
@@ -155,7 +150,7 @@ namespace DatenMeister.Web.Api
             if (!Path.IsPathRooted(filename))
             {
                 filename = Path.GetFileName(filename);
-                var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+                var appBase = AppContext.BaseDirectory;
                 filename = Path.Combine(appBase, "App_Data/Database", filename);
             }
             return filename;
@@ -207,7 +202,7 @@ namespace DatenMeister.Web.Api
 
             // Creates the new workspace
             var configuration = GetStorageConfiguration(model, filename);
-            var createdExtent = _extentStorageLoader.LoadExtent(configuration, true);
+            var createdExtent = _extentManager.LoadExtent(configuration, true);
 
             return new
             {
@@ -222,26 +217,26 @@ namespace DatenMeister.Web.Api
         /// <param name="model">Model to be used to retrieve the information</param>
         /// <param name="filename">Filename to be used</param>
         /// <returns></returns>
-        private static ExtentStorageConfiguration GetStorageConfiguration(ExtentAddModel model, string filename)
+        private static ExtentLoaderConfig GetStorageConfiguration(ExtentAddModel model, string filename)
         {
-            ExtentStorageConfiguration configuration;
+            ExtentLoaderConfig configuration;
             switch (model.type)
             {
                 case "xmi":
                     configuration = new XmiStorageConfiguration
                     {
-                        ExtentUri = model.contextUri,
-                        Path = filename,
-                        Workspace = model.workspace
+                        extentUri = model.contextUri,
+                        filePath = filename,
+                        workspaceId = model.workspace
                     };
 
                     break;
                 case "csv":
-                    var csvExtentData = new CSVStorageConfiguration
+                    var csvExtentData = new CSVExtentLoaderConfig
                     {
-                        ExtentUri = model.contextUri,
-                        Path = filename,
-                        Workspace = model.workspace,
+                        extentUri = model.contextUri,
+                        filePath = filename,
+                        workspaceId = model.workspace,
                         Settings = new CSVSettings()
                     };
 
@@ -288,7 +283,7 @@ namespace DatenMeister.Web.Api
             IUriExtent foundExtent;
             _workspaceLogic.RetrieveWorkspaceAndExtent(ws, extent, out foundWorkspace, out foundExtent);
 
-            var provider = new CSVDataProvider(_workspaceLogic);
+            var provider = new CSVLoader(_workspaceLogic);
             
             using (var stream = new StringWriter())
             {
@@ -336,7 +331,7 @@ namespace DatenMeister.Web.Api
                     let typeExtent = type.GetUriExtentOf()
                     select new
                     {
-                        name = _resolution.GetName(type),
+                        name = NamedElementMethods.GetName(type),
                         uri = typeExtent.uri(type),
                         ext = typeExtent.contextURI(),
                         ws = _workspaceLogic.FindWorkspace(typeExtent)?.id
@@ -379,7 +374,7 @@ namespace DatenMeister.Web.Api
                     let typeExtent = viewType.GetUriExtentOf()
                     select new
                     {
-                        name = _resolution.GetName(viewType),
+                        name = NamedElementMethods.GetName(viewType),
                         uri = typeExtent.uri(viewType),
                         ext = typeExtent.contextURI(),
                         ws = _workspaceLogic.FindWorkspace(typeExtent)?.id
@@ -410,16 +405,16 @@ namespace DatenMeister.Web.Api
 
             if (foundExtent == null)
             {
-                return Content(HttpStatusCode.NotFound, "Extent Not Found");
+                return Content(HttpStatusCode.NotFound.ToString(), "Extent Not Found");
             }
 
             var totalItems = foundExtent.elements();
             var foundItems = totalItems;
             
-            var result = _viewFinder.FindView(foundExtent, view);
+            var result = _viewFinder.FindListView(foundExtent);
             if (result == null)
             {
-                return Content(HttpStatusCode.NotFound, "View Not Found");
+                return Content(HttpStatusCode.NotFound.ToString(), "View Not Found");
             }
 
             var fields =
@@ -433,7 +428,7 @@ namespace DatenMeister.Web.Api
             IEnumerable<object> filteredItems = foundItems;
             var metaClasses = filteredItems.GetMetaClasses().Select(x => new ItemModel
             {
-                name = _resolution.GetName(x),
+                name = NamedElementMethods.GetName(x),
                 uri = x.GetUri()
             });
 
@@ -503,7 +498,7 @@ namespace DatenMeister.Web.Api
                 return NotFound();
             }
 
-            var result = _viewFinder.FindView(foundElement, view);
+            var result = _viewFinder.FindDetailView(foundElement);
             itemModel.c = DynamicConverter.ToDynamic(result, false);
             itemModel.v = ConvertToJson(foundElement, result);
             itemModel.layer = _workspaceLogic?.GetWorkspaceOfObject(foundElement)?.id;
@@ -518,8 +513,8 @@ namespace DatenMeister.Web.Api
 
                 var metaClassModel = new ItemModel
                 {
-                    name = _resolution.GetName(metaClass),
-                    fullname = _namedElementMethods.GetFullName(metaClass),
+                    name = NamedElementMethods.GetName(metaClass),
+                    fullname = NamedElementMethods.GetFullName(metaClass),
                     uri = extentWithMetaClass?.uri(metaClass),
                     ext = extentWithMetaClass?.contextURI(),
                     ws = _workspaceLogic.Workspaces.FindWorkspace(extentWithMetaClass)?.id,
@@ -725,7 +720,7 @@ namespace DatenMeister.Web.Api
                 var property = field.get(_FormAndFields._FieldData.name).ToString();
                 var propertyValue = element.get(property);
 
-                if (ObjectHelper.IsTrue(field.get(_FormAndFields._FieldData.isEnumeration)))
+                if (DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration)))
                 {
                     // Checks if the given element ís an enumeration
                     if (DotNetHelper.IsOfEnumeration(propertyValue))
@@ -738,7 +733,7 @@ namespace DatenMeister.Web.Api
                             list.Add(new
                             {
                                 u = asElement?.GetUri(),
-                                v = listValue == null ? "null" : _resolution.GetName(listValue)
+                                v = listValue == null ? "null" : NamedElementMethods.GetName(listValue)
                             });
                         }
 
@@ -772,12 +767,12 @@ namespace DatenMeister.Web.Api
                 tempResult = new
                 {
                     u = asElement.GetUri(),
-                    v = _resolution.GetName(asElement)
+                    v = NamedElementMethods.GetName(asElement)
                 };
             }
             else
             {
-                tempResult = propertyValue == null ? "null" : _resolution.GetName(propertyValue);
+                tempResult = propertyValue == null ? "null" : NamedElementMethods.GetName(propertyValue);
             }
             return tempResult;
         }

@@ -2,23 +2,26 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Web.Http;
-using DatenMeister.Models.PostModels;
-using DatenMeister.Provider.CSV.Runtime.Storage;
+using BurnSystems.Logging;
+using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Web.PostModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.Web.Api
 {
-    [RoutePrefix("api/datenmeister/example")]
-    public class ExampleController : ApiController
+    [Route("api/datenmeister/example")]
+    public class ExampleController : Controller
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(ExampleController));
+
         private readonly IWorkspaceLogic _workspaceLogic;
-        private readonly IExtentStorageLoader _loader;
+        private readonly IExtentManager _loader;
 
         private static readonly Random Random = new Random();
 
-        public ExampleController(IWorkspaceLogic workspaceLogic,IExtentStorageLoader loader)
+        public ExampleController(IWorkspaceLogic workspaceLogic,IExtentManager loader)
         {
             _workspaceLogic = workspaceLogic;
             _loader = loader;
@@ -28,7 +31,7 @@ namespace DatenMeister.Web.Api
         public void AddZipExample([FromBody] WorkspaceReferenceModel workspace)
         {
             // Finds the file and copies the file to the given location
-            var appBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+            var appBase = AppContext.BaseDirectory;
             string filename;
             var tries = 0;
             int randomNumber;
@@ -41,20 +44,20 @@ namespace DatenMeister.Web.Api
                 {
                     throw new InvalidOperationException("Did not find a unique name for zip extent");
                 }
-            } while (File.Exists(filename));
+            } while (System.IO.File.Exists(filename));
 
             var originalFilename = Path.Combine(
                 appBase,
                 "App_Data/Example",
                 "plz.csv");
 
-            File.Copy(originalFilename, filename);
+            System.IO.File.Copy(originalFilename, filename);
 
-            var defaultConfiguration = new CSVStorageConfiguration
+            var defaultConfiguration = new CSVExtentLoaderConfig
             {
-                ExtentUri = $"datenmeister:///zipcodes/{randomNumber}",
-                Path = filename,
-                Workspace = workspace.ws,
+                extentUri = $"datenmeister:///zipcodes/{randomNumber}",
+                filePath = filename,
+                workspaceId = workspace.ws,
                 Settings =
                 {
                     HasHeader = false,
@@ -62,13 +65,13 @@ namespace DatenMeister.Web.Api
                     Encoding = "UTF-8",
                     Columns = new [] { "Id", "Zip", "PositionLong", "PositionLat", "CityName" }.ToList(),
                     // Columns = new object[] { idProperty, zipProperty, positionLongProperty, positionLatProperty, citynameProperty }.ToList(),
-                    MetaclassUri = "dm:///types#DatenMeister.Apps.ZipCode.Model.ZipCode"
+                    MetaclassUri = "datenmeister:///types#DatenMeister.Apps.ZipCode.Model.ZipCode"
                 }
             };
 
             _loader.LoadExtent(defaultConfiguration, false);
 
-            Debug.WriteLine("Zip codes loaded");
+            Logger.Info("Zip codes loaded");
         }
     }
 }

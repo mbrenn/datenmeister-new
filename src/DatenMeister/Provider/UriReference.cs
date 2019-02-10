@@ -11,5 +11,19 @@
         /// Stores the Uri to which the element is a reference
         /// </summary>
         public string Uri { get; set; }
+
+
+        public UriReference()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the UriReference class
+        /// </summary>
+        /// <param name="uri">Uri to be set as property</param>
+        public UriReference(string uri)
+        {
+            Uri = uri;
+        }
     }
 }

@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Web.Http;
-using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Models.PostModels;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Web.PostModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.Web.Api
 {
-    [RoutePrefix("api/datenmeister/workspace")]
-    public class WorkspaceController : ApiController
+    [Route("api/datenmeister/workspace")]
+    public class WorkspaceController : Controller
     {
         private readonly IWorkspaceLogic _workspaceCollection;
 
@@ -38,6 +36,11 @@ namespace DatenMeister.Web.Api
         [HttpPost]
         public object Create([FromBody] WorkspaceCreateModel model)
         {
+            if (model == null)
+            {
+                return new { success = false };
+            }
+
             var workspace = new Workspace(model.name, model.annotation);
             _workspaceCollection.AddWorkspace(workspace);
 

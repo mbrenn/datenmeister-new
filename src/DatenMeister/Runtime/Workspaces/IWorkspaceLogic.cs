@@ -11,10 +11,22 @@ namespace DatenMeister.Runtime.Workspaces
     {
         void AddWorkspace(Workspace workspace);
 
+        /// <summary>
+        /// Removes a workspace containing the id
+        /// </summary>
+        /// <param name="id">Id of the workspace</param>
         void RemoveWorkspace(string id);
 
+        /// <summary>
+        /// Gets the workspace with specific id
+        /// </summary>
+        /// <param name="id">Id of the workspace</param>
+        /// <returns>Found workspace or null, if not found</returns>
         Workspace GetWorkspace(string id);
 
+        /// <summary>
+        /// Gets the workspaces of the workspace logic
+        /// </summary>
         IEnumerable<Workspace> Workspaces { get; }
 
         /// <summary>
@@ -46,5 +58,11 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspace">Workspace to which the extent shall be added</param>
         /// <param name="newExtent">The extent to be added</param>
         void AddExtent(Workspace workspace, IUriExtent newExtent);
+
+        /// <summary>
+        /// Sends an event for a workspace change
+        /// </summary>
+        /// <param name="workspace">The workspace that has been changed</param>
+        void SendEventForWorkspaceChange(Workspace workspace);
     }
 }

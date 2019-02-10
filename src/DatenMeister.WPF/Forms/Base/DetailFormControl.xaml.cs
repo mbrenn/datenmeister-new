@@ -644,7 +644,7 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             // Calls the attached elements, if this method is not invoked 'externally'
-            if (!Equals(element, DetailElement))
+            if (!element.@equals(DetailElement))
             {
                 foreach (var field in AttachedItemFields)
                 {

@@ -88,6 +88,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     MaxHeight = 500,
+                    Width = 650,
                     NavigationHost = detailForm.NavigationHost
                 };
 
@@ -111,7 +112,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             }
 
             // Gets the buttons for specific types
-            if (fieldData?.get(_FormAndFields._SubElementFieldData.defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
+            if (fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData.defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
             {
                 foreach (var type in defaultTypesForNewItems.OfType<IElement>())
                 {

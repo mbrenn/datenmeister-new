@@ -11,11 +11,11 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
-using DatenMeisterWPF.Forms.Base;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Navigation;
+using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Navigation;
 
-namespace DatenMeisterWPF.Forms.Detail.Fields
+namespace DatenMeister.WPF.Forms.Detail.Fields
 {
     public class SubElementsField : IDetailField
     {

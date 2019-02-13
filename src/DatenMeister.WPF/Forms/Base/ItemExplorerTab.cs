@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace DatenMeisterWPF.Forms.Base
+namespace DatenMeister.WPF.Forms.Base
 {
     /// <summary>
     /// The tab instance containing the information about the control and other additional information

@@ -3,9 +3,8 @@ using System.Text;
 using System.Windows;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
-using DatenMeister.Excel.Annotations;
 
-namespace DatenMeisterWPF.Windows
+namespace DatenMeister.WPF.Windows
 {
     /// <summary>
     /// Interaktionslogik für LogWindow.xaml

@@ -4,9 +4,9 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeisterWPF.Windows;
+using DatenMeister.WPF.Windows;
 
-namespace DatenMeisterWPF.Navigation
+namespace DatenMeister.WPF.Navigation
 {
     public static class NavigatorForDialogs
     {

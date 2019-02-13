@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using Autofac;
-using Autofac.Features.Metadata;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -9,11 +7,10 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeisterWPF.Forms.Base;
+using DatenMeister.WPF.Forms.Base;
 
-namespace DatenMeisterWPF.Navigation
+namespace DatenMeister.WPF.Navigation
 {
     public class CreatableTypeNavigator : ControlNavigation
     {

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls.Ribbon;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Modules;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Navigation;
+using DatenMeister.WPF.Navigation;
 
-namespace DatenMeisterWPF.Windows
+namespace DatenMeister.WPF.Windows
 {
     public class RibbonHelper
     {

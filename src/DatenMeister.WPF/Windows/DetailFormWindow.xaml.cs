@@ -8,10 +8,10 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
-using DatenMeisterWPF.Forms.Base;
-using DatenMeisterWPF.Navigation;
+using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Navigation;
 
-namespace DatenMeisterWPF.Windows
+namespace DatenMeister.WPF.Windows
 {
     /// <summary>
     ///     Interaktionslogik für DetailFormWindow.xaml

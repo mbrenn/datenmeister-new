@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +9,9 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
-using DatenMeisterWPF.Forms.Base;
+using DatenMeister.WPF.Forms.Base;
 
-namespace DatenMeisterWPF.Command
+namespace DatenMeister.WPF.Commands
 {
     /// <summary>
     ///     The enumeration defines the format of the copying

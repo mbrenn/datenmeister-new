@@ -1,4 +1,4 @@
-﻿namespace DatenMeisterWPF.Forms.Base
+﻿namespace DatenMeister.WPF.Forms.Base
 {
     /// <summary>
     /// Defines possible types of the list view control type

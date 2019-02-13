@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace DatenMeisterWPF.Helper
+namespace DatenMeister.WPF.Helper
 {
     /// <summary>
     /// Extents the combobox by setting the width of the combobox to the largest element. 

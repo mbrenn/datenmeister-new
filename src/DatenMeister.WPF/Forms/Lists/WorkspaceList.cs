@@ -7,13 +7,12 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider.ManagementProviders;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
-using DatenMeisterWPF.Forms.Base;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Navigation;
+using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Navigation;
 
-namespace DatenMeisterWPF.Forms.Lists
+namespace DatenMeister.WPF.Forms.Lists
 {
     public class WorkspaceList : ItemExplorerControl, INavigationGuest
     {

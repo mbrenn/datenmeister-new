@@ -11,12 +11,12 @@ using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.WPF.Forms;
+using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Modules;
-using DatenMeisterWPF.Forms;
-using DatenMeisterWPF.Forms.Base;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Navigation;
-using DatenMeisterWPF.Windows;
+using DatenMeister.WPF.Navigation;
+using DatenMeister.WPF.Windows;
 
 namespace DatenMeisterWPF
 {

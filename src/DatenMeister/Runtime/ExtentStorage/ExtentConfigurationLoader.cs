@@ -48,8 +48,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Loads the configuration of the extents and returns the configuration
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <returns>A touple of the extentloader config element
+        /// and the xml node to the metaclass</returns>
         public List<Tuple<ExtentLoaderConfig, XElement>> GetConfigurationFromFile()
         {
             var path = ExtentStorageData.FilePath;

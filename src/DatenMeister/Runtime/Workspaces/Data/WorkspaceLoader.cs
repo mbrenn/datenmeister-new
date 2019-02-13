@@ -44,7 +44,6 @@ namespace DatenMeister.Runtime.Workspaces.Data
                     // Not existing
                     return null;
                 }
-
             
                 foreach (var workspaceInfo in workspaceData.workspaces)
                 {

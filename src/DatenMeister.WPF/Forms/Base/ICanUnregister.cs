@@ -1,4 +1,4 @@
-﻿namespace DatenMeisterWPF.Forms.Base
+﻿namespace DatenMeister.WPF.Forms.Base
 {
     /// <summary>
     /// This interface needs to be implemented by all classes that contain elements that need to be unregistered

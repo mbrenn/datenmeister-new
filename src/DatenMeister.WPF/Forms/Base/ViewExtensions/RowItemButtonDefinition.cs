@@ -1,8 +1,8 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeisterWPF.Navigation;
+using DatenMeister.WPF.Navigation;
 
-namespace DatenMeisterWPF.Forms.Base.ViewExtensions
+namespace DatenMeister.WPF.Forms.Base.ViewExtensions
 {
     public class RowItemButtonDefinition : ViewExtension
     {

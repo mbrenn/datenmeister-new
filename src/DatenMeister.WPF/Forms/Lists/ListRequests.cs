@@ -17,14 +17,14 @@ using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Forms.Specific;
 using DatenMeister.WPF.Modules;
-using DatenMeisterWPF.Forms.Base;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Forms.Specific;
-using DatenMeisterWPF.Navigation;
-using DatenMeisterWPF.Windows;
+using DatenMeister.WPF.Navigation;
+using DatenMeister.WPF.Windows;
 
-namespace DatenMeisterWPF.Forms.Lists
+namespace DatenMeister.WPF.Forms.Lists
 {
     public static class ListRequests
     {

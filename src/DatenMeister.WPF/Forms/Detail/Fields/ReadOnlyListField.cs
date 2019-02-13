@@ -4,10 +4,10 @@ using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
-using DatenMeisterWPF.Forms.Base;
-using DatenMeisterWPF.Navigation;
+using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Navigation;
 
-namespace DatenMeisterWPF.Forms.Detail.Fields
+namespace DatenMeister.WPF.Forms.Detail.Fields
 {
     public class ReadOnlyListField : IDetailField
     {

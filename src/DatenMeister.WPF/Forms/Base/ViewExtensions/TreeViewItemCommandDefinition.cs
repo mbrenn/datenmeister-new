@@ -1,7 +1,7 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeisterWPF.Forms.Base.ViewExtensions
+namespace DatenMeister.WPF.Forms.Base.ViewExtensions
 {
     public class TreeViewItemCommandDefinition : ViewExtension
     {

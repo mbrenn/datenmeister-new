@@ -1,7 +1,7 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeisterWPF.Navigation
+namespace DatenMeister.WPF.Navigation
 {
     /// <summary>
     /// This interface is created for every navigated element

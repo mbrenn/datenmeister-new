@@ -15,10 +15,10 @@ using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Uml.Helper;
-using DatenMeisterWPF.Forms.Base;
-using DatenMeisterWPF.Forms.Lists;
+using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Forms.Lists;
 
-namespace DatenMeisterWPF.Navigation
+namespace DatenMeister.WPF.Navigation
 {
     public class NavigatorForItems
     {

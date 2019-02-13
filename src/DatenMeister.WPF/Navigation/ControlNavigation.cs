@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DatenMeisterWPF.Navigation
+namespace DatenMeister.WPF.Navigation
 {
     public class ControlNavigation : IControlNavigation, IControlNavigationSaveItem, IControlNavigationNewItem
     {

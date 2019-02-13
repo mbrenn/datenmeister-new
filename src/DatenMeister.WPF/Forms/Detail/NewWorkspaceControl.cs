@@ -4,9 +4,9 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
-using DatenMeisterWPF.Forms.Base;
+using DatenMeister.WPF.Forms.Base;
 
-namespace DatenMeisterWPF.Forms.Detail
+namespace DatenMeister.WPF.Forms.Detail
 {
     public class NewWorkspaceControl : DetailFormControl
     {

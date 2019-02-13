@@ -180,6 +180,9 @@ namespace DatenMeister.Integration
                     fields,
                     (MofUriExtent) localTypeSupport.InternalTypes);
 
+                // Performs the integration into the DatenMeister
+                Modules.ZipExample.Integrate.Into(scope);
+
                 // Adds the module for managementprovider
                 var managementProvider = new _ManagementProvider();
                 typeWorkspace.Set(fields);
@@ -215,9 +218,6 @@ namespace DatenMeister.Integration
 
                     scope.Resolve<UserLogic>().Initialize();
                 }
-
-                // Performs the integration into the DatenMeister
-                Modules.ZipExample.Integrate.Into(scope);
 
                 // Finally loads the plugin
                 pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterInitialization);

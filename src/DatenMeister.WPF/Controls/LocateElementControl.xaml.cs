@@ -10,7 +10,7 @@ using DatenMeister.Integration;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeisterWPF.Controls
+namespace DatenMeister.WPF.Controls
 {
     /// <summary>
     /// Interaktionslogik für LocateElement.xaml

@@ -6,10 +6,10 @@ using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Functions.Queries;
-using DatenMeisterWPF.Forms.Base;
-using DatenMeisterWPF.Navigation;
+using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Navigation;
 
-namespace DatenMeisterWPF.Forms.Lists
+namespace DatenMeister.WPF.Forms.Lists
 {
     public class ExtentList : ItemExplorerControl
     {

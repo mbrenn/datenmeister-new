@@ -4,11 +4,11 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Forms.Lists;
-using DatenMeisterWPF.Navigation;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Forms.Lists;
+using DatenMeister.WPF.Navigation;
 
-namespace DatenMeisterWPF.Modules.TypeManager
+namespace DatenMeister.WPF.Modules.TypeManager
 {
     enum SelectionType
     {

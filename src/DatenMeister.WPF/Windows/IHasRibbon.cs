@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls.Ribbon;
 
-namespace DatenMeisterWPF.Windows
+namespace DatenMeister.WPF.Windows
 {
     public interface IHasRibbon
     {

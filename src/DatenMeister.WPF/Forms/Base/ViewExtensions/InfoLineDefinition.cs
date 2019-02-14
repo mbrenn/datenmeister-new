@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeisterWPF.Forms.Base.ViewExtensions
+namespace DatenMeister.WPF.Forms.Base.ViewExtensions
 {
     public class InfoLineDefinition : ViewExtension
     {

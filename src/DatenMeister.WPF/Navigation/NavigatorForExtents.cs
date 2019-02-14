@@ -3,9 +3,9 @@ using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeisterWPF.Forms.Lists;
+using DatenMeister.WPF.Forms.Lists;
 
-namespace DatenMeisterWPF.Navigation
+namespace DatenMeister.WPF.Navigation
 {
     public static class NavigatorForExtents
     {

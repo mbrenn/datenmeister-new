@@ -6,10 +6,10 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Helper;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeisterWPF.Windows;
+using DatenMeister.WPF.Windows;
 using Microsoft.Win32;
 
-namespace DatenMeisterWPF.Navigation
+namespace DatenMeister.WPF.Navigation
 {
     public static class NavigatorForExcelHandling
     {

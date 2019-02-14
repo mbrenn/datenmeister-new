@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeisterWPF.Forms.Base;
+using DatenMeister.WPF.Forms.Base;
 
-namespace DatenMeisterWPF.Forms.Detail.Fields
+namespace DatenMeister.WPF.Forms.Detail.Fields
 {
     public class DateTimeField : IDetailField
     {

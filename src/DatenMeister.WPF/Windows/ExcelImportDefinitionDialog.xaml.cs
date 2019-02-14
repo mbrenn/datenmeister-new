@@ -11,7 +11,7 @@ using DatenMeister.Excel.Helper;
 using DatenMeister.Runtime;
 using Path = System.IO.Path;
 
-namespace DatenMeisterWPF.Windows
+namespace DatenMeister.WPF.Windows
 {
     public enum ExcelImportType
     {

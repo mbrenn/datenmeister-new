@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
 
-namespace DatenMeisterWPF.Forms.Base
+namespace DatenMeister.WPF.Forms.Base
 {
     /// <summary>
     /// Defines the class for a view in list

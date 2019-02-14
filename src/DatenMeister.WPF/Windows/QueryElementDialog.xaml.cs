@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace DatenMeisterWPF.Windows
+namespace DatenMeister.WPF.Windows
 {
     /// <summary>
     /// Interaktionslogik für QueryElementDialog.xaml

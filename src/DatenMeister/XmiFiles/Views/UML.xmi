@@ -22,8 +22,6 @@
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm"
                      p1:id="umlListClass" name="List - Classes" fixView="False" inhibitNewItems="False"
                      hideMetaClass="False" minimizeDesign="False" defaultWidth="0" defaultHeight="0">
-      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData"
-              isAttached="False" fieldType="metaclass" title="Metaclass" isEnumeration="False" isReadOnly="False" />
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" lineHeight="0"
               width="0" isAttached="False" fieldType="text" name="name" title="Name of Class" isEnumeration="False"
               isReadOnly="False" />
@@ -32,6 +30,20 @@
               isReadOnly="False">
         <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Property" />
       </fields>
+      <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Class" />
+    </packagedElement>
+
+
+    <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm"
+                     p1:id="umlListProperties" name="List - Properties" fixView="False" inhibitNewItems="False"
+                     hideMetaClass="False" minimizeDesign="False" defaultWidth="0" defaultHeight="0">
+      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" lineHeight="0"
+              width="0" isAttached="False" fieldType="text" name="name" title="Name of Property" isEnumeration="False"
+              isReadOnly="False" />
+      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData"
+              isSelectionInline="False" showWorkspaceSelection="False" showExtentSelection="False" isAttached="False"
+              fieldType="reference" name="type" title="Type of Property" isEnumeration="False" isReadOnly="False" />
+      <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Property" />
     </packagedElement>
 
 
@@ -108,6 +120,14 @@
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ViewAssociation"
                      viewType="List" extentType="Uml.Classes"
                      view-ref="#umlListPackage">
+    </packagedElement>
+    <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ViewAssociation"
+                     viewType="List" extentType="Uml.Classes" metaclass-ref="datenmeister:///_internal/xmi/uml#Class"
+                     view-ref="#umlListClass">
+    </packagedElement>
+    <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ViewAssociation"
+                     viewType="List" extentType="Uml.Classes" metaclass-ref="datenmeister:///_internal/xmi/uml#Property"
+                     view-ref="#umlListProperties">
     </packagedElement>
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ViewAssociation"
                      viewType="List" metaclass-ref="datenmeister:///_internal/xmi/uml#Package"

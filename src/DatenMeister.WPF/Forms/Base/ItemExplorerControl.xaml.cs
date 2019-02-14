@@ -161,7 +161,7 @@ namespace DatenMeister.WPF.Forms.Base
         public ItemExplorerTab AddTab(IReflectiveCollection collection, ViewDefinition viewDefinition)
         {
             // Gets the default view for the given tab
-            var viewFinder = GiveMe.Scope.Resolve<IViewFinder>();
+            var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
             IElement result = null;
 
             switch (viewDefinition.Mode)

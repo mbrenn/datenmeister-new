@@ -144,8 +144,9 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <param name="metaClass">Meta class of the items</param>
         private void CreateTabForItems(IReflectiveCollection tabItems, IElement metaClass)
         {
-            var viewFinder = GiveMe.Scope.Resolve<IViewFinder>();
+            var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
             IElement view;
+            var extentType = (Items as IHasExtent)?.Extent.GetExtentType();
 
             if (Items == SelectedItems)
             {
@@ -156,8 +157,11 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 // User has selected a sub element and its children shall be shown
                 view =
-                    viewFinder.FindListViewFor(
-                        (tabItems as MofReflectiveSequence)?.MofObject, metaClass)
+                    viewFinder.FindViewFor(
+                        ViewType.List,
+                        extentType,
+                        null,
+                        metaClass)
                     ?? viewFinder.CreateView(tabItems);
             }
 

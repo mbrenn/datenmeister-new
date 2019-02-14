@@ -271,7 +271,7 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
         /// <summary>
-        /// Find st
+        /// Finds the view matching to the most of the items
         /// </summary>
         /// <param name="viewType">The view type to be found</param>
         /// <param name="extentType">The extent type whose view is queried. May be null, if not relevant</param>

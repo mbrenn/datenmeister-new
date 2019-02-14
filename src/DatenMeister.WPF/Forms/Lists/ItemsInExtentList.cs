@@ -135,7 +135,6 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 CreateTabForMetaclass(metaClass);
             }
-
         }
 
         /// <summary>

@@ -5,6 +5,21 @@
 
 
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm"
+                     p1:id="umlListPackage" name="List - Package" fixView="False" inhibitNewItems="False"
+                     hideMetaClass="False" minimizeDesign="False" defaultWidth="0" defaultHeight="0">
+      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" lineHeight="0"
+              width="0" isAttached="False" fieldType="text" name="name" title="Name of Package" isEnumeration="False"
+              isReadOnly="False" />
+      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
+              isAttached="False" fieldType="subelements" name="packagedElement" title="Packaged Elements"
+              isEnumeration="True" isReadOnly="False">
+      </fields>
+      <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Package" />
+      <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Class" />
+    </packagedElement>
+
+
+    <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm"
                      p1:id="umlListClass" name="List - Classes" fixView="False" inhibitNewItems="False"
                      hideMetaClass="False" minimizeDesign="False" defaultWidth="0" defaultHeight="0">
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData"
@@ -16,21 +31,6 @@
               isAttached="False" fieldType="subelements" name="ownedAttribute" title="Properties" isEnumeration="True"
               isReadOnly="False">
         <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Property" />
-      </fields>
-    </packagedElement>
-
-
-    <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm"
-                     p1:id="umlListPackage" name="List - Package" fixView="False" inhibitNewItems="False"
-                     hideMetaClass="False" minimizeDesign="False" defaultWidth="0" defaultHeight="0">
-      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" lineHeight="0"
-              width="0" isAttached="False" fieldType="text" name="name" title="Name of Package" isEnumeration="False"
-              isReadOnly="False" />
-      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData"
-              isAttached="False" fieldType="subelements" name="packagedElement" title="Packaged Elements"
-              isEnumeration="True" isReadOnly="False">
-        <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Package" />
-        <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Class" />
       </fields>
     </packagedElement>
 
@@ -107,7 +107,7 @@
     </packagedElement>
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ViewAssociation"
                      viewType="List" extentType="Uml.Classes"
-                     view-ref="#umlListClass">
+                     view-ref="#umlListPackage">
     </packagedElement>
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ViewAssociation"
                      viewType="List" metaclass-ref="datenmeister:///_internal/xmi/uml#Package"

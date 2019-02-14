@@ -303,7 +303,12 @@ namespace DatenMeister.Modules.ViewFinder
                 var innerViewType = element.getOrNull<ViewType>(_FormAndFields._ViewAssociation.viewType) ??
                                     ViewType.Detail;
 
-                var innerView = element.GetOrDefault(_FormAndFields._ViewAssociation.view) as IElement;
+                var innerView = element.getOrDefault<IElement>(_FormAndFields._ViewAssociation.view);
+                if (innerView == null)
+                {
+                    Logger.Warn("Given form has null value. This is not recommended and will lead of unintended behavior of default views.");
+                }
+
                 var isMatching = true;
 
                 // Now go through each property and get the points

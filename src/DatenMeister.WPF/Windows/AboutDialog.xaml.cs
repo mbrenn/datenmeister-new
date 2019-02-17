@@ -15,7 +15,7 @@ namespace DatenMeister.WPF.Windows
         {
             InitializeComponent();
             TxtVersionNumber.Text = "v" +
-                Assembly.GetAssembly(typeof(AboutDialog))
+                Assembly.GetEntryAssembly()
                     .GetCustomAttributes(typeof(AssemblyFileVersionAttribute))
                     .Cast<AssemblyFileVersionAttribute>()
                     .Select(x => x.Version)

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Xml.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
+using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
@@ -207,6 +210,41 @@ namespace DatenMeister.Uml.Helper
             {
                 var copiedObject = objectCopier.Copy(subElement);
                 AddObjectToPackage(targetPackage, copiedObject);
+            }
+        }
+
+        /// <summary>
+        /// Imports a package by a manifest resource 
+        /// </summary>
+        /// <param name="manifestType">Type of the assembly containing the
+        /// manifest. It eases the life instead of given the assembly</param>
+        /// <param name="manifestName">Name of the manifest resource stream</param>
+        /// <param name="sourcePackageName">Path of the package to be imported</param>
+        /// <param name="targetExtent">Extent to which the extent shall be imported</param>
+        /// <param name="targetPackageName">Path within the extent that shall receive
+        /// the package</param>
+        public void ImportByManifest(Type manifestType, string manifestName,
+            string sourcePackageName,
+            IExtent targetExtent, string targetPackageName)
+        {
+            // Creates the package for "ManagementProvider" containing the views
+            var targetPackage = GetOrCreatePackageStructure(
+                targetExtent.elements(), targetPackageName);
+
+            using (var stream = typeof(PackageMethods).GetTypeInfo()
+                .Assembly.GetManifestResourceStream(manifestName))
+            {
+                var document = XDocument.Load(stream);
+                var pseudoProvider = new XmiProvider(document);
+                var pseudoExtent = new MofUriExtent(pseudoProvider)
+                {
+                    Workspace = targetExtent.GetWorkspace()
+                };
+
+                var sourcePackage = GetOrCreatePackageStructure(
+                    pseudoExtent.elements(),
+                    sourcePackageName);
+                PackageMethods.ImportPackage(sourcePackage, targetPackage);
             }
         }
     }

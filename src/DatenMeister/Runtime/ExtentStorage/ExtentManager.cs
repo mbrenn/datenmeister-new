@@ -265,7 +265,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     loaded.RemoveAt(0);
 
                     // Check, if given workspace can be loaded or whether references are still in list
-                    if (IsForMetaWorkspaceIn(extentLoaderConfig.workspaceId, loaded))
+                    if (IsMetaWorkspaceInLoaderList(extentLoaderConfig.workspaceId, loaded))
                     {
                         // If yes, put current workspace to the end
                         loaded.Add(tuple);
@@ -324,9 +324,23 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="loaded">List of items still to be loaded</param>
         /// <returns>True, if the loading should be inhibited because one
         /// of the metaitems are still in</returns>
-        private bool IsForMetaWorkspaceIn(string workspaceId, List<Tuple<ExtentLoaderConfig, XElement>> loaded)
+        private bool IsMetaWorkspaceInLoaderList(string workspaceId, List<Tuple<ExtentLoaderConfig, XElement>> loaded)
+        {
+            return IsMetaWorkspaceInList(
+                workspaceId,
+                loaded.Select(x => x.Item1.workspaceId));
+        }
+
+        private bool IsMetaWorkspaceInList(
+            string workspaceId, 
+            IEnumerable<string> workspaceList)
         {
             var workspace = _workspaceLogic.GetWorkspace(workspaceId);
+            if (string.IsNullOrEmpty(workspaceId) || workspace == null)
+            {
+                // If workspace is not known, accept it
+                return false;
+            }
             var metaWorkspaces = workspace.MetaWorkspaces;
             foreach (var metaWorkspace in metaWorkspaces)
             {
@@ -336,12 +350,12 @@ namespace DatenMeister.Runtime.ExtentStorage
                     continue;
                 }
 
-                if (loaded.Any(x => x.Item1.workspaceId == metaWorkspace.id))
+                if (workspaceList.Any(x => x == metaWorkspace.id))
                 {
                     return true;
                 }
 
-                if (IsForMetaWorkspaceIn(metaWorkspace.id, loaded))
+                if (IsMetaWorkspaceInList(metaWorkspace.id, workspaceList))
                 {
                     return true;
                 }

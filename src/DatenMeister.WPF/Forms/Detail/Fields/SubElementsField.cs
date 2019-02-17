@@ -88,6 +88,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     MaxHeight = 500,
+                    Width = 650,
                     NavigationHost = detailForm.NavigationHost
                 };
 
@@ -95,7 +96,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 if (form == null)
                 {
                     // otherwise, we have to automatically create a form
-                    var formFinder = GiveMe.Scope.Resolve<IViewFinder>();
+                    var formFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
                     form = formFinder.CreateView(valueOfElement);
                 }
 
@@ -111,7 +112,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             }
 
             // Gets the buttons for specific types
-            if (fieldData?.get(_FormAndFields._SubElementFieldData.defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
+            if (fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData.defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
             {
                 foreach (var type in defaultTypesForNewItems.OfType<IElement>())
                 {

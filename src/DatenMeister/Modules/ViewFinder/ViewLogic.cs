@@ -36,7 +36,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Stores a debug variable that can be used to extent the debugging of view retrieval process.
         /// </summary>
-        private const bool ActivateDebuggingForViewRetrieval = false;
+        private const bool ActivateDebuggingForViewRetrieval = true;
         
         /// <summary>
         /// Stores the type of the extent containing the views 
@@ -271,7 +271,7 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
         /// <summary>
-        /// Find st
+        /// Finds the view matching to the most of the items
         /// </summary>
         /// <param name="viewType">The view type to be found</param>
         /// <param name="extentType">The extent type whose view is queried. May be null, if not relevant</param>
@@ -300,59 +300,72 @@ namespace DatenMeister.Modules.ViewFinder
                 var innerExtentType = element.getOrDefault<string>(_FormAndFields._ViewAssociation.extentType);
                 var innerMetaClass = element.getOrDefault<IElement>(_FormAndFields._ViewAssociation.metaclass);
                 var innerMetaClassName = element.getOrDefault<string>(_FormAndFields._ViewAssociation.metaclassName);
-                var innerViewType = element.getOrNull<ViewType>(_FormAndFields._ViewAssociation.viewType) ?? ViewType.Detail;
+                var innerViewType = element.getOrNull<ViewType>(_FormAndFields._ViewAssociation.viewType) ??
+                                    ViewType.Detail;
 
-                var innerView = element.GetOrDefault(_FormAndFields._ViewAssociation.view) as IElement;
+                var innerView = element.getOrDefault<IElement>(_FormAndFields._ViewAssociation.view);
+                if (innerView == null)
+                {
+                    Logger.Warn("Given form has null value. This is not recommended and will lead of unintended behavior of default views.");
+                }
+
                 var isMatching = true;
 
                 // Now go through each property and get the points
                 if (extentType != null && innerExtentType != null)
                 {
-                    if (extentType == innerExtentType)
+                    if (extentType.Equals(innerExtentType))
                     {
-                        InternalDebug("-- MATCH: ExtentType: " + extentType + ", ViewAssociation ExtentType: " + innerExtentType );
+                        InternalDebug("-- MATCH: ExtentType: " + extentType + ", ViewAssociation ExtentType: " +
+                                      innerExtentType);
                         points++;
                     }
                     else
                     {
-                        InternalDebug("-- NO MATCH: ExtentType: " + extentType + ", ViewAssociation ExtentType: " + innerExtentType );
+                        InternalDebug("-- NO MATCH: ExtentType: " + extentType + ", ViewAssociation ExtentType: " +
+                                      innerExtentType);
                         isMatching = false;
                     }
                 }
 
                 if (metaClassName != null && innerMetaClassName != null)
                 {
-                    if (metaClassName == innerMetaClassName)
+                    if (metaClassName.Equals(innerMetaClassName))
                     {
-                        InternalDebug("-- MATCH: metaClassName: " + metaClassName + ", ViewAssociation innerMetaClassName: " + innerMetaClassName);
+                        InternalDebug("-- MATCH: metaClassName: " + metaClassName +
+                                      ", ViewAssociation innerMetaClassName: " + innerMetaClassName);
                         points++;
                     }
                     else
                     {
-                        InternalDebug("-- NO MATCH: metaClassName: " + metaClassName + ", ViewAssociation innerMetaClassName: " + innerMetaClassName);
+                        InternalDebug("-- NO MATCH: metaClassName: " + metaClassName +
+                                      ", ViewAssociation innerMetaClassName: " + innerMetaClassName);
                         isMatching = false;
                     }
                 }
 
                 if (metaClass != null && innerMetaClass != null)
                 {
-                    if (metaClass == innerMetaClass)
+                    if (metaClass.@equals(innerMetaClass))
                     {
                         InternalDebug("-- MATCH: metaClass: " + NamedElementMethods.GetName(metaClass) +
-                                      ", ViewAssociation innerMetaClass: " + NamedElementMethods.GetName(innerMetaClass));
+                                      ", ViewAssociation innerMetaClass: " +
+                                      NamedElementMethods.GetName(innerMetaClass));
                         points++;
                     }
                     else
                     {
                         InternalDebug("-- NO MATCH: metaClass: " + NamedElementMethods.GetName(metaClass) +
-                                      ", ViewAssociation innerMetaClass: " + NamedElementMethods.GetName(innerMetaClass));
+                                      ", ViewAssociation innerMetaClass: " +
+                                      NamedElementMethods.GetName(innerMetaClass));
                         isMatching = false;
                     }
                 }
 
-                if (viewType != innerViewType)
+                if (!viewType.Equals(innerViewType))
                 {
-                    InternalDebug("-- NO MATCH: viewType: " + viewType + ", ViewAssociation viewType: " + innerViewType);
+                    InternalDebug("-- NO MATCH: viewType: " + viewType + ", ViewAssociation viewType: " +
+                                  innerViewType);
                     isMatching = false;
                 }
                 else
@@ -361,7 +374,7 @@ namespace DatenMeister.Modules.ViewFinder
                 }
 
                 InternalDebug("-- Points: " + points + ", Matched" + isMatching);
-                
+
                 // The matching view with the maximum points win
                 if (isMatching)
                 {

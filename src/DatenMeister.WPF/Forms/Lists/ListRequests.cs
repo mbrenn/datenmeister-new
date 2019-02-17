@@ -47,7 +47,7 @@ namespace DatenMeister.WPF.Forms.Lists
             var viewDefinition = new ViewDefinition("Workspaces", formElement);
 
             viewDefinition.ViewExtensions.Add(
-                new RowItemButtonDefinition("Show Extents", ShowExtents));
+                new RowItemButtonDefinition("Show Extents", ShowExtents, ItemListViewControl.ButtonPosition.Before));
             viewDefinition.ViewExtensions.Add(
                 new RowItemButtonDefinition("Delete Workspace", DeleteWorkspace));
             viewDefinition.ViewExtensions.Add(
@@ -96,7 +96,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     ManagementViewDefinitions.PathExtentListView);
 
             var viewDefinition = new ViewDefinition("Extents", result);
-            viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition("Show Items", ShowItems));
+            viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition("Show Items", ShowItems, ItemListViewControl.ButtonPosition.Before));
 
             viewDefinition.ViewExtensions.Add(
                 new TreeViewItemCommandDefinition(

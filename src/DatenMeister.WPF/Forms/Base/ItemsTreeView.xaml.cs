@@ -10,10 +10,10 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Navigation;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Navigation;
 
-namespace DatenMeisterWPF.Forms.Base
+namespace DatenMeister.WPF.Forms.Base
 {
     /// <summary>
     /// Interaktionslogik für ItemsTreeView.xaml

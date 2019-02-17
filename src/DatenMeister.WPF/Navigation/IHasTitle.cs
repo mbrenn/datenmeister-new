@@ -1,4 +1,4 @@
-﻿namespace DatenMeisterWPF.Navigation
+﻿namespace DatenMeister.WPF.Navigation
 {
     /// <summary>
     /// Defines the interface to retrieve the title of a component.

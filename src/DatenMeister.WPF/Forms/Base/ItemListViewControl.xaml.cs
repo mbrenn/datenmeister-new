@@ -27,15 +27,15 @@ using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Commands;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Modules;
-using DatenMeisterWPF.Command;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Modules.TypeManager;
-using DatenMeisterWPF.Navigation;
-using DatenMeisterWPF.Windows;
+using DatenMeister.WPF.Modules.TypeManager;
+using DatenMeister.WPF.Navigation;
+using DatenMeister.WPF.Windows;
 using Microsoft.Win32;
 
-namespace DatenMeisterWPF.Forms.Base
+namespace DatenMeister.WPF.Forms.Base
 {
     /// <summary>
     /// Interaktionslogik für ItemListViewControl.xaml

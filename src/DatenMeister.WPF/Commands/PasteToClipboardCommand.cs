@@ -7,7 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.Copier;
 
-namespace DatenMeisterWPF.Command
+namespace DatenMeister.WPF.Commands
 {
     public class PasteToClipboardCommand
     {

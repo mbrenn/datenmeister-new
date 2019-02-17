@@ -8,10 +8,10 @@ using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeisterWPF.Forms.Detail;
-using DatenMeisterWPF.Forms.Lists;
+using DatenMeister.WPF.Forms.Detail;
+using DatenMeister.WPF.Forms.Lists;
 
-namespace DatenMeisterWPF.Navigation
+namespace DatenMeister.WPF.Navigation
 {
     public static class NavigatorForWorkspaces
     {

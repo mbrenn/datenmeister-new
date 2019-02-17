@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DatenMeisterWPF.Forms.Base.ViewExtensions
+namespace DatenMeister.WPF.Forms.Base.ViewExtensions
 {
     /// <summary>
     /// Defines the ribbon

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using DatenMeisterWPF.Navigation;
+using DatenMeister.WPF.Navigation;
 
-namespace DatenMeisterWPF.Windows
+namespace DatenMeister.WPF.Windows
 {
     /// <summary>
     /// Interaktionslogik für ListFormWindow.xaml

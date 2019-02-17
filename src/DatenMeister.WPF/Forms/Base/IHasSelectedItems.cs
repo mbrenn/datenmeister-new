@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeisterWPF.Forms.Base
+namespace DatenMeister.WPF.Forms.Base
 {
     /// <summary>
     /// Defines the interface that the user can selecte item

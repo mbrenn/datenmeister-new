@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Navigation;
 
-namespace DatenMeisterWPF.Windows
+namespace DatenMeister.WPF.Windows
 {
     /// <summary>
     /// Interaktionslogik für AboutDialog.xaml

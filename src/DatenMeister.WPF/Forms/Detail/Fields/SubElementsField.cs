@@ -11,11 +11,11 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
-using DatenMeisterWPF.Forms.Base;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Navigation;
+using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Navigation;
 
-namespace DatenMeisterWPF.Forms.Detail.Fields
+namespace DatenMeister.WPF.Forms.Detail.Fields
 {
     public class SubElementsField : IDetailField
     {
@@ -88,6 +88,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     MaxHeight = 500,
+                    Width = 650,
                     NavigationHost = detailForm.NavigationHost
                 };
 
@@ -95,7 +96,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
                 if (form == null)
                 {
                     // otherwise, we have to automatically create a form
-                    var formFinder = GiveMe.Scope.Resolve<IViewFinder>();
+                    var formFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
                     form = formFinder.CreateView(valueOfElement);
                 }
 
@@ -111,7 +112,7 @@ namespace DatenMeisterWPF.Forms.Detail.Fields
             }
 
             // Gets the buttons for specific types
-            if (fieldData?.get(_FormAndFields._SubElementFieldData.defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
+            if (fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData.defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
             {
                 foreach (var type in defaultTypesForNewItems.OfType<IElement>())
                 {

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI;
 
-namespace DatenMeisterWPF.Windows
+namespace DatenMeister.WPF.Windows
 {
     /// <summary>
     /// Interaktionslogik für ItemXmlViewWindow.xaml

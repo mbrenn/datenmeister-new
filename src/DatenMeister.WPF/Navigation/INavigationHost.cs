@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace DatenMeisterWPF.Navigation
+namespace DatenMeister.WPF.Navigation
 {
     /// <summary>
     /// Defines the navigation host

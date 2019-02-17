@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -13,10 +15,10 @@ using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Uml.Helper;
-using DatenMeisterWPF.Forms.Base;
-using DatenMeisterWPF.Forms.Lists;
+using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Forms.Lists;
 
-namespace DatenMeisterWPF.Navigation
+namespace DatenMeister.WPF.Navigation
 {
     public class NavigatorForItems
     {
@@ -189,7 +191,8 @@ namespace DatenMeisterWPF.Navigation
                             dropField.set(_FormAndFields._DropDownFieldData.isAttached, true);
 
                             var list = new List<object>();
-                            var properties = ObjectHelper.GetPropertyNames(element);
+                            var properties = ObjectHelper.GetPropertyNames(element)
+                                .OrderBy(z => z).Distinct();
                             foreach (var property in properties)
                             {
                                 var valuePair = formFactory.Create<_FormAndFields>(f => f.__ValuePair);
@@ -211,6 +214,12 @@ namespace DatenMeisterWPF.Navigation
                 detailControlView.Saved += (a, b) =>
                 {
                     var selectedProperty = b.AttachedItem.getOrDefault<string>("ParentProperty");
+                    if (string.IsNullOrEmpty(selectedProperty))
+                    {
+                        MessageBox.Show("Property to which the new item will be added is not set.");
+                        return;
+                    }
+
                     element.AddCollectionItem(selectedProperty, b.Item);
 
                     // Adds the element to the dialog

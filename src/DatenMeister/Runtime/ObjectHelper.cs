@@ -13,6 +13,30 @@ namespace DatenMeister.Runtime
     public static class ObjectHelper
     {
         /// <summary>
+        /// Gets the given property value as a single element, if the get function returns
+        /// a collection or enumeration
+        /// </summary>
+        /// <param name="value">Object to be queried</param>
+        /// <param name="property">Property to be queried</param>
+        /// <returns>The given and singlelized element, if there is just one element in the enumeration</returns>
+        private static object GetAsSingle(this IObject value, string property)
+        {
+            var propertyValue = value.get(property);
+            if (propertyValue is IEnumerable<object> asObjectList)
+            {
+                var list = asObjectList.ToList();
+                if (list.Count == 1)
+                {
+                    return list[0];
+                }
+
+                return null;
+            }
+
+            return propertyValue;
+        }
+
+        /// <summary>
         /// Gets the typed value of the property. 
         /// </summary>
         /// <typeparam name="T">Type of the property</typeparam>
@@ -25,32 +49,32 @@ namespace DatenMeister.Runtime
 
             if (typeof(T) == typeof(string))
             {
-                return (T)(object)DotNetHelper.AsString(value.get(property));
+                return (T)(object)DotNetHelper.AsString(value.GetAsSingle(property));
             }
 
             if (typeof(T) == typeof(int))
             {
-                return (T)(object)DotNetHelper.AsInteger(value.get(property));
+                return (T)(object)DotNetHelper.AsInteger(value.GetAsSingle(property));
             }
 
             if (typeof(T) == typeof(double))
             {
-                return (T)(object)DotNetHelper.AsDouble(value.get(property));
+                return (T)(object)DotNetHelper.AsDouble(value.GetAsSingle(property));
             }
 
             if (typeof(T) == typeof(bool))
             {
-                return (T)(object)DotNetHelper.AsBoolean(value.get(property));
+                return (T)(object)DotNetHelper.AsBoolean(value.GetAsSingle(property));
             }
 
             if (typeof(T) == typeof(IObject))
             {
-                return (T)(value.get(property) as IObject);
+                return (T)(value.GetAsSingle(property) as IObject);
             }
 
             if ( typeof(T) == typeof(IElement))
             {
-                return (T)(value.get(property) as IElement);
+                return (T)(value.GetAsSingle(property) as IElement);
             }
 
             if (typeof(T) == typeof(IReflectiveCollection))
@@ -65,7 +89,7 @@ namespace DatenMeister.Runtime
 
             if (typeof(T).IsEnum)
             {
-                var valueAsElement = value.get(property);
+                var valueAsElement = value.GetAsSingle(property);
                 if (valueAsElement == null)
                 {
                     return default(T);
@@ -495,7 +519,7 @@ namespace DatenMeister.Runtime
             switch (value)
             {
                 case IElement element when element.metaclass != null:
-                    return ClassifierMethods.GetPropertyNamesOfClassifier(element);
+                    return ClassifierMethods.GetPropertyNamesOfClassifier(element.metaclass);
 
                 case IObjectAllProperties knowsProperties:
                     return knowsProperties.getPropertiesBeingSet();

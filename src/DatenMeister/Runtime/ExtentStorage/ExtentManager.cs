@@ -258,6 +258,36 @@ namespace DatenMeister.Runtime.ExtentStorage
                 }
 
                 var failedExtents = new List<string>();
+                while (loaded.Count > 0)
+                {
+                    var tuple = loaded[0];
+                    var (extentLoaderConfig, xElement) = tuple;
+                    loaded.RemoveAt(0);
+
+                    // Check, if given workspace can be loaded or whether references are still in list
+                    if (IsMetaWorkspaceInLoaderList(extentLoaderConfig.workspaceId, loaded))
+                    {
+                        // If yes, put current workspace to the end
+                        loaded.Add(tuple);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var extent = LoadExtent(extentLoaderConfig, false);
+                            if (xElement != null)
+                            {
+                                ((MofExtent)extent).LocalMetaElementXmlNode = xElement;
+                            }
+                        }
+                        catch (Exception exc)
+                        {
+                            Logger.Warn($"Loading extent of {extentLoaderConfig.extentUri} failed: {exc.Message}");
+                            failedExtents.Add(extentLoaderConfig.extentUri);
+                        }
+                    }
+                }
+
                 foreach (var (extentLoaderConfig, xElement) in loaded)
                 {
                     try
@@ -283,6 +313,55 @@ namespace DatenMeister.Runtime.ExtentStorage
                     throw new LoadingExtentsFailedException(failedExtents);
                 }
             }
+        }
+
+        /// <summary>
+        /// Checks if a loading request is still open for one
+        /// of the metaworkspaces of <c>workspaceId</c>. This ensures that
+        /// the type definitions are loaded before the actual data
+        /// </summary>
+        /// <param name="workspaceId">Id of the workspace to be checked</param>
+        /// <param name="loaded">List of items still to be loaded</param>
+        /// <returns>True, if the loading should be inhibited because one
+        /// of the metaitems are still in</returns>
+        private bool IsMetaWorkspaceInLoaderList(string workspaceId, List<Tuple<ExtentLoaderConfig, XElement>> loaded)
+        {
+            return IsMetaWorkspaceInList(
+                workspaceId,
+                loaded.Select(x => x.Item1.workspaceId));
+        }
+
+        private bool IsMetaWorkspaceInList(
+            string workspaceId, 
+            IEnumerable<string> workspaceList)
+        {
+            var workspace = _workspaceLogic.GetWorkspace(workspaceId);
+            if (string.IsNullOrEmpty(workspaceId) || workspace == null)
+            {
+                // If workspace is not known, accept it
+                return false;
+            }
+            var metaWorkspaces = workspace.MetaWorkspaces;
+            foreach (var metaWorkspace in metaWorkspaces)
+            {
+                if (metaWorkspace.id == workspaceId)
+                {
+                    // Skip the self reference
+                    continue;
+                }
+
+                if (workspaceList.Any(x => x == metaWorkspace.id))
+                {
+                    return true;
+                }
+
+                if (IsMetaWorkspaceInList(metaWorkspace.id, workspaceList))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

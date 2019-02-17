@@ -1,4 +1,4 @@
-﻿namespace DatenMeisterWPF.Forms.Base.ViewExtensions
+﻿namespace DatenMeister.WPF.Forms.Base.ViewExtensions
 {
     /// <summary>
     /// Defines an extension for the view, like row buttons, Navigation buttons and

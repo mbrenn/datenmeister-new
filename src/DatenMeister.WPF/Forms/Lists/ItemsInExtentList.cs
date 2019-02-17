@@ -23,14 +23,14 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Modules;
-using DatenMeisterWPF.Forms.Base;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Navigation;
-using DatenMeisterWPF.Windows;
+using DatenMeister.WPF.Navigation;
+using DatenMeister.WPF.Windows;
 using Microsoft.Win32;
 
-namespace DatenMeisterWPF.Forms.Lists
+namespace DatenMeister.WPF.Forms.Lists
 {
     public class ItemsInExtentList : ItemExplorerControl
     {
@@ -135,7 +135,6 @@ namespace DatenMeisterWPF.Forms.Lists
             {
                 CreateTabForMetaclass(metaClass);
             }
-
         }
 
         /// <summary>
@@ -145,8 +144,9 @@ namespace DatenMeisterWPF.Forms.Lists
         /// <param name="metaClass">Meta class of the items</param>
         private void CreateTabForItems(IReflectiveCollection tabItems, IElement metaClass)
         {
-            var viewFinder = GiveMe.Scope.Resolve<IViewFinder>();
+            var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
             IElement view;
+            var extentType = (Items as IHasExtent)?.Extent.GetExtentType();
 
             if (Items == SelectedItems)
             {
@@ -157,8 +157,11 @@ namespace DatenMeisterWPF.Forms.Lists
             {
                 // User has selected a sub element and its children shall be shown
                 view =
-                    viewFinder.FindListViewFor(
-                        (tabItems as MofReflectiveSequence)?.MofObject, metaClass)
+                    viewFinder.FindViewFor(
+                        ViewType.List,
+                        extentType,
+                        null,
+                        metaClass)
                     ?? viewFinder.CreateView(tabItems);
             }
 

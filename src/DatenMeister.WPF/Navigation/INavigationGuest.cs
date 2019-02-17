@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
 
-namespace DatenMeisterWPF.Navigation
+namespace DatenMeister.WPF.Navigation
 {
     /// <summary>
     /// Defines the interface for the given controls. 

@@ -17,14 +17,14 @@ using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Forms.Specific;
 using DatenMeister.WPF.Modules;
-using DatenMeisterWPF.Forms.Base;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Forms.Specific;
-using DatenMeisterWPF.Navigation;
-using DatenMeisterWPF.Windows;
+using DatenMeister.WPF.Navigation;
+using DatenMeister.WPF.Windows;
 
-namespace DatenMeisterWPF.Forms.Lists
+namespace DatenMeister.WPF.Forms.Lists
 {
     public static class ListRequests
     {
@@ -47,7 +47,7 @@ namespace DatenMeisterWPF.Forms.Lists
             var viewDefinition = new ViewDefinition("Workspaces", formElement);
 
             viewDefinition.ViewExtensions.Add(
-                new RowItemButtonDefinition("Show Extents", ShowExtents));
+                new RowItemButtonDefinition("Show Extents", ShowExtents, ItemListViewControl.ButtonPosition.Before));
             viewDefinition.ViewExtensions.Add(
                 new RowItemButtonDefinition("Delete Workspace", DeleteWorkspace));
             viewDefinition.ViewExtensions.Add(
@@ -96,7 +96,7 @@ namespace DatenMeisterWPF.Forms.Lists
                     ManagementViewDefinitions.PathExtentListView);
 
             var viewDefinition = new ViewDefinition("Extents", result);
-            viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition("Show Items", ShowItems));
+            viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition("Show Items", ShowItems, ItemListViewControl.ButtonPosition.Before));
 
             viewDefinition.ViewExtensions.Add(
                 new TreeViewItemCommandDefinition(

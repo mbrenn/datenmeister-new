@@ -13,7 +13,7 @@ namespace DatenMeister.Modules.ViewFinder
     /// Includes the implementation of the IViewFinder
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class ViewFinderImpl : IViewFinder
+    public class ViewFinderImpl
     {
         private readonly FormCreator _formCreator;
         private readonly ViewLogic _viewLogic;
@@ -84,6 +84,23 @@ namespace DatenMeister.Modules.ViewFinder
 
             // Ok, find it by creating the properties
             return null;
+        }
+
+        /// <summary>
+        /// Finds the view matching to the most of the items and constraints
+        /// </summary>
+        /// <param name="viewType">The view type to be found</param>
+        /// <param name="extentType">The extent type whose view is queried. May be null, if not relevant</param>
+        /// <param name="metaClassName">The uri of the metaclass whose view is queried. May be null, if not relevant</param>
+        /// <param name="metaClass">The element of the metaclass whose view is queried. May be null, if not relevant</param>
+        /// <returns>The found view or null, if not found</returns>
+        public IElement FindViewFor(
+            ViewType viewType,
+            string extentType,
+            string metaClassName,
+            IElement metaClass)
+        {
+            return _viewLogic.FindViewFor(viewType, extentType, metaClassName, metaClass);
         }
 
         /// <summary>

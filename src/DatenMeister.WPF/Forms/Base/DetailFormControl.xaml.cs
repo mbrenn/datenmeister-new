@@ -8,7 +8,6 @@ using System.Windows.Media;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
@@ -18,13 +17,13 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Uml.Helper;
 using DatenMeister.UserInteractions;
-using DatenMeisterWPF.Command;
-using DatenMeisterWPF.Forms.Base.ViewExtensions;
-using DatenMeisterWPF.Forms.Detail.Fields;
-using DatenMeisterWPF.Navigation;
-using DatenMeisterWPF.Windows;
+using DatenMeister.WPF.Commands;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Forms.Detail.Fields;
+using DatenMeister.WPF.Navigation;
+using DatenMeister.WPF.Windows;
 
-namespace DatenMeisterWPF.Forms.Base
+namespace DatenMeister.WPF.Forms.Base
 {
     /// <summary>
     ///     Interaktionslogik für DetailFormControl.xaml
@@ -285,7 +284,7 @@ namespace DatenMeisterWPF.Forms.Base
 
         private void UpdateActualViewDefinition()
         {
-            var viewFinder = GiveMe.Scope.Resolve<IViewFinder>();
+            var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
             if (ViewDefinition.Mode == ViewDefinitionMode.Default)
             {
                 EffectiveForm = viewFinder.FindDetailView(DetailElement);
@@ -644,7 +643,7 @@ namespace DatenMeisterWPF.Forms.Base
             }
 
             // Calls the attached elements, if this method is not invoked 'externally'
-            if (!Equals(element, DetailElement))
+            if (!element.@equals(DetailElement))
             {
                 foreach (var field in AttachedItemFields)
                 {

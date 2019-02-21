@@ -15,6 +15,11 @@ namespace DatenMeister.Models.Forms
 
         public string metaclassName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the metaclass of the parent object containg the list of elements
+        /// </summary>
+        public IElement parentMetaclass { get; set; }
+
         public string extentType { get; set; }
 
         public Form view { get; set; }

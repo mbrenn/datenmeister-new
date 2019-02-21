@@ -174,10 +174,29 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 foreach (var type in defaultTypesForNewItems.OfType<IElement>())
                 {
-                    var typeName = type.get(_UML._CommonStructure._NamedElement.name);
+                    // Check if type is a directly type or the DefaultTypeForNewElement
+                    if (type.metaclass.@equals(
+                        type.GetUriExtentOf().FindInMeta<_FormAndFields>(
+                            x => x.__DefaultTypeForNewElement)))
+                    {
+                        var newType = type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
+                        var parentProperty = type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty);
 
-                    viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
-                        $"New {typeName}", () => { CreateNewElementByUser(type); }));
+                        Create(newType, parentProperty);
+                    }
+                    else
+                    {
+                        Create(type, null);
+                    }
+
+                    void Create(IElement newType, string parentProperty)
+                    {
+
+                        var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
+
+                        viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
+                            $"New {typeName}", () => { CreateNewElementByUser(type, null); }));
+                    }
                 }
             }
 
@@ -185,7 +204,7 @@ namespace DatenMeister.WPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
                 "New Item", () =>
                 {
-                    CreateNewElementByUser(null);
+                    CreateNewElementByUser(null, null);
                 }));
 
             // Allows the deletion of an item
@@ -208,8 +227,9 @@ namespace DatenMeister.WPF.Forms.Lists
                 viewDefinition);
         }
 
-        private void CreateNewElementByUser(IElement type)
+        private void CreateNewElementByUser(IElement type, string parentProperty)
         {
+            // TODO: Evaluate parent property
             if (IsExtentSelectedInTreeview)
             {
                 NavigatorForItems.NavigateToNewItemForExtent(
@@ -222,7 +242,8 @@ namespace DatenMeister.WPF.Forms.Lists
                 NavigatorForItems.NavigateToNewItemForItem(
                     NavigationHost,
                     SelectedPackage,
-                    type);
+                    type, 
+                    parentProperty);
             }
         }
 

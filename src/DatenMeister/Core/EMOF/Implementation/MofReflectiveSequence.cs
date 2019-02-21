@@ -51,7 +51,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             if (MofObject.ProviderObject.IsPropertySet(_property))
             {
-                return (IEnumerable<object>) MofObject.ProviderObject.GetProperty(_property);
+                var value = (IEnumerable<object>) MofObject.ProviderObject.GetProperty(_property);
+                if (value != null)
+                {
+                    return value;
+                }
             }
 
             return Array.Empty<object>();

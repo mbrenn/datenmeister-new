@@ -25,7 +25,8 @@ namespace DatenMeister.Models.Forms
                 typeof(TextFieldData),
                 typeof(SeparatorLineFieldData),
                 typeof(FileSelectionFieldData),
-                typeof(ViewType)
+                typeof(ViewType),
+                typeof(DefaultTypeForNewElement)
             };
         }
     }

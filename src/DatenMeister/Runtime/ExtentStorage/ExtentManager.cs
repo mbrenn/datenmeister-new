@@ -331,6 +331,14 @@ namespace DatenMeister.Runtime.ExtentStorage
                 loaded.Select(x => x.Item1.workspaceId));
         }
 
+        /// <summary>
+        /// Gets or sets the value whether the metaworkspaces of workspaceid
+        /// is found in the workspaceList
+        /// </summary>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="workspaceList">List of the workspaces which are checked
+        /// against the metaworkspaces of workspace id</param>
+        /// <returns>true, if the workspace is found</returns>
         private bool IsMetaWorkspaceInList(
             string workspaceId, 
             IEnumerable<string> workspaceList)

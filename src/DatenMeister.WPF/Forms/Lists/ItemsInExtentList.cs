@@ -39,6 +39,7 @@ namespace DatenMeister.WPF.Forms.Lists
         public ItemsInExtentList()
         {
             Loaded += ItemsInExtentList_Loaded;
+            _workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
         }
 
         public string WorkspaceId { get; set; }
@@ -58,9 +59,8 @@ namespace DatenMeister.WPF.Forms.Lists
         private void ItemsInExtentList_Loaded(object sender, RoutedEventArgs e)
         {
             NavigationTreeView.ShowAllChildren = false;
-
-            var workLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            workLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out var _, out _extent);
+            
+            _workspaceLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out var _, out _extent);
             if (_extent == null)
             {
                 MessageBox.Show("The given workspace and extent was not found.");
@@ -81,6 +81,8 @@ namespace DatenMeister.WPF.Forms.Lists
         /// Stores the metaclasses currently shown
         /// </summary>
         private List<IElement> _metaClasses = new List<IElement>();
+
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
         ///     Sets the items of the given extent
@@ -176,7 +178,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 {
                     // Check if type is a directly type or the DefaultTypeForNewElement
                     if (type.metaclass.@equals(
-                        type.GetUriExtentOf().FindInMeta<_FormAndFields>(
+                        _workspaceLogic.GetTypesWorkspace().Create<_FormAndFields>(
                             x => x.__DefaultTypeForNewElement)))
                     {
                         var newType = type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
@@ -195,7 +197,7 @@ namespace DatenMeister.WPF.Forms.Lists
                         var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
 
                         viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
-                            $"New {typeName}", () => { CreateNewElementByUser(type, null); }));
+                            $"New {typeName}", () => { CreateNewElementByUser(newType, parentProperty); }));
                     }
                 }
             }

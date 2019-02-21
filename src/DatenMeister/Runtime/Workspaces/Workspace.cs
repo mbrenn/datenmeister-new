@@ -183,6 +183,43 @@ namespace DatenMeister.Runtime.Workspaces
         }
 
         /// <summary>
+        /// Gets the element of the current workspace and performs in addition a conversion function
+        /// </summary>
+        /// <typeparam name="TFilledType">Class to be looked after</typeparam>
+        /// <param name="function"></param>
+        /// <returns>Found function</returns>
+        public IElement Get<TFilledType>(Func<TFilledType, IElement> function)
+            where TFilledType : class, new()
+        {
+            var result = Get<TFilledType>();
+            if (result == null)
+            {
+                return null;
+            }
+
+            return function(result);
+        }
+
+        /// <summary>
+        /// Creates the element of the current workspace and performs in addition a conversion function.
+        /// The elements are cached for performancewise improved handling
+        /// </summary>
+        /// <typeparam name="TFilledType">Class to be looked after</typeparam>
+        /// <param name="function"></param>
+        /// <returns>Found function</returns>
+        public IElement Create<TFilledType>(Func<TFilledType, IElement> function)
+            where TFilledType : class, new()
+        {
+            var result = Get<TFilledType>();
+            if (result == null)
+            {
+                return null;
+            }
+
+            return function(result);
+        }
+
+        /// <summary>
         /// Gets a property by querying all meta workspaces
         /// </summary>
         /// <typeparam name="TFilledType">Property to be queried</typeparam>

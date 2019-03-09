@@ -14,6 +14,7 @@ using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
@@ -167,10 +168,13 @@ namespace DatenMeister.WPF.Navigation
                 CreateElementItself(metaclass);
             }
 
+            // Creates a element by the given metaclass. If parent property is not defined, the parent property
+            // may be chosen by the user
             void CreateElementItself(IElement selectedMetaclass)
             {
                 var factory = new MofFactory(element);
                 var newElement = factory.create(selectedMetaclass);
+                var typeWorkspace = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace();
 
                 // Creates the dialog
                 var detailControlView = NavigateToElementDetailView(
@@ -188,7 +192,8 @@ namespace DatenMeister.WPF.Navigation
                             if (parentProperty == null) // ParentProperty is not given, so user gives property
                             {
                                 // Parent property is already given by function call
-                                var dropField = formFactory.Create<_FormAndFields>(f => f.__DropDownFieldData);
+                                var dropField = formFactory.Create<_FormAndFields>(typeWorkspace, f => f.__DropDownFieldData);
+
                                 //dropField.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
                                 dropField.set(_FormAndFields._DropDownFieldData.name, "ParentProperty");
                                 dropField.set(_FormAndFields._DropDownFieldData.title, "Parent Property");
@@ -199,7 +204,7 @@ namespace DatenMeister.WPF.Navigation
                                     .OrderBy(z => z).Distinct();
                                 foreach (var property in properties)
                                 {
-                                    var valuePair = formFactory.Create<_FormAndFields>(f => f.__ValuePair);
+                                    var valuePair = formFactory.Create<_FormAndFields>(typeWorkspace, f => f.__ValuePair);
                                     valuePair.set(_FormAndFields._ValuePair.name, property);
                                     valuePair.set(_FormAndFields._ValuePair.value, property);
                                     list.Add(valuePair);
@@ -209,7 +214,7 @@ namespace DatenMeister.WPF.Navigation
                                 fields.add(0, dropField);
 
                                 // Adds the line to separate it from the other side 
-                                var lineField = formFactory.Create<_FormAndFields>(f => f.__SeparatorLineFieldData);
+                                var lineField = formFactory.Create<_FormAndFields>(typeWorkspace, f => f.__SeparatorLineFieldData);
                                 fields.add(1, lineField);
                             }
                         };

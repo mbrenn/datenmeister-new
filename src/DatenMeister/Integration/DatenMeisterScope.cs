@@ -4,11 +4,17 @@ using Autofac;
 using Autofac.Core;
 using Autofac.Core.Lifetime;
 using Autofac.Core.Resolving;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Integration
 {
     public class DatenMeisterScope : IDatenMeisterScope
     {
+        /// <summary>
+        /// Gets the workspace logic
+        /// </summary>
+        public IWorkspaceLogic WorkspaceLogic => this.Resolve<IWorkspaceLogic>();
+
         private readonly ILifetimeScope _lifetimeScopeImplementation;
 
         public DatenMeisterScope(ILifetimeScope lifetimeScopeImplementation)

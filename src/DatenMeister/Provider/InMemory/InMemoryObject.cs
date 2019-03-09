@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Implementation;
@@ -15,6 +14,16 @@ namespace DatenMeister.Provider.InMemory
     public class InMemoryObject : IProviderObject
     {
         public IProvider Provider { get; }
+        
+        /// <summary>
+        /// Stores the temporary factory
+        /// </summary>
+        private static IFactory _temporaryFactory;
+
+        /// <summary>
+        /// Stores the temporary factory
+        /// </summary>
+        public static IFactory TemporaryFactory => _temporaryFactory ?? (_temporaryFactory = new MofFactory(InMemoryProvider.TemporaryExtent));
 
         /// <summary>
         /// Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the InMemoryObject

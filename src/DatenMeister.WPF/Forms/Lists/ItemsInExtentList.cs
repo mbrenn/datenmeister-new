@@ -8,7 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using Autofac;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -60,7 +59,7 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             NavigationTreeView.ShowAllChildren = false;
             
-            _workspaceLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out var _, out _extent);
+            _workspaceLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out _, out _extent);
             if (_extent == null)
             {
                 MessageBox.Show("The given workspace and extent was not found.");
@@ -193,7 +192,6 @@ namespace DatenMeister.WPF.Forms.Lists
 
                     void Create(IElement newType, string parentProperty)
                     {
-
                         var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
 
                         viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(

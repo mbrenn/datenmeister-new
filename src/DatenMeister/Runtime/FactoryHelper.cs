@@ -1,6 +1,7 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime
 {
@@ -39,6 +40,26 @@ namespace DatenMeister.Runtime
         {
             var metaInfo = GetMetaInformation<TFilledType>(factory);
             return factory.create(type(metaInfo));
+        }
+
+        /// <summary>
+        /// Creates the element as being retrieved by the TFilledType
+        /// by using the given workspace. 
+        /// </summary>
+        /// <typeparam name="TFilledType">Type of the FilledType</typeparam>
+        /// <param name="factory">Factory being used to create the instance</param>
+        /// <param name="workspace">Workspace from which the TFilledType will be retrieved</param>
+        /// <param name="funcType">Function used to create the specific type</param>
+        /// <returns>Instance of the type being created</returns>
+        public static IElement Create<TFilledType>(
+            this IFactory factory,
+            Workspace workspace,
+            Func<TFilledType, IElement> funcType)
+            where TFilledType : class, new()
+        {
+            var filledType = workspace.Get<TFilledType>();
+            var typeToCreated = funcType(filledType);
+            return factory.create(typeToCreated);
         }
     }
 }

@@ -300,6 +300,9 @@ namespace DatenMeister.WPF.Forms.Base
                     EffectiveForm = ViewDefinition.Element;
                     break;
             }
+
+            // Clones the EffectiveForm
+            EffectiveForm = (IElement) ObjectCopier.CopyForTemporary(EffectiveForm);
         }
 
         /// <summary>
@@ -643,7 +646,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             // Calls the attached elements, if this method is not invoked 'externally'
-            if (!element.@equals(DetailElement))
+            if (element.@equals(DetailElement))
             {
                 foreach (var field in AttachedItemFields)
                 {

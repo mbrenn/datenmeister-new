@@ -14,8 +14,16 @@
               isAttached="False" fieldType="subelements" name="packagedElement" title="Packaged Elements"
               isEnumeration="True" isReadOnly="False">
       </fields>
-      <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Package" />
-      <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Class" />
+
+      <defaultTypesForNewElements
+        p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement"
+        metaClass-ref="datenmeister:///_internal/xmi/uml#Package"
+        parentProperty="packagedElement"/>
+      <defaultTypesForNewElements
+        p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement"
+        metaClass-ref="datenmeister:///_internal/xmi/uml#Class"
+        parentProperty="packagedElement"/>
+
     </packagedElement>
 
 

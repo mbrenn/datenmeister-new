@@ -86,6 +86,9 @@ namespace DatenMeister.Models.Forms
             public static string @metaclassName = "metaclassName";
             public IElement _metaclassName = null;
 
+            public static string @parentMetaclass = "parentMetaclass";
+            public IElement _parentMetaclass = null;
+
             public static string @extentType = "extentType";
             public IElement _extentType = null;
 
@@ -431,9 +434,6 @@ namespace DatenMeister.Models.Forms
 
         public class _FileSelectionFieldData
         {
-            public static string @defaultPath = "defaultPath";
-            public IElement _defaultPath = null;
-
             public static string @defaultExtension = "defaultExtension";
             public IElement _defaultExtension = null;
 
@@ -477,6 +477,19 @@ namespace DatenMeister.Models.Forms
 
         public _ViewType @ViewType = new _ViewType();
         public IElement @__ViewType = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType");
+
+        public class _DefaultTypeForNewElement
+        {
+            public static string @metaClass = "metaClass";
+            public IElement _metaClass = null;
+
+            public static string @parentProperty = "parentProperty";
+            public IElement _parentProperty = null;
+
+        }
+
+        public _DefaultTypeForNewElement @DefaultTypeForNewElement = new _DefaultTypeForNewElement();
+        public IElement @__DefaultTypeForNewElement = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DefaultTypeForNewElement");
 
         public static _FormAndFields TheOne = new _FormAndFields();
 

@@ -8,7 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using Autofac;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -39,6 +38,7 @@ namespace DatenMeister.WPF.Forms.Lists
         public ItemsInExtentList()
         {
             Loaded += ItemsInExtentList_Loaded;
+            _workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
         }
 
         public string WorkspaceId { get; set; }
@@ -58,9 +58,8 @@ namespace DatenMeister.WPF.Forms.Lists
         private void ItemsInExtentList_Loaded(object sender, RoutedEventArgs e)
         {
             NavigationTreeView.ShowAllChildren = false;
-
-            var workLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            workLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out var _, out _extent);
+            
+            _workspaceLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out _, out _extent);
             if (_extent == null)
             {
                 MessageBox.Show("The given workspace and extent was not found.");
@@ -81,6 +80,8 @@ namespace DatenMeister.WPF.Forms.Lists
         /// Stores the metaclasses currently shown
         /// </summary>
         private List<IElement> _metaClasses = new List<IElement>();
+
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
         ///     Sets the items of the given extent
@@ -174,10 +175,28 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 foreach (var type in defaultTypesForNewItems.OfType<IElement>())
                 {
-                    var typeName = type.get(_UML._CommonStructure._NamedElement.name);
+                    // Check if type is a directly type or the DefaultTypeForNewElement
+                    if (type.metaclass.@equals(
+                        _workspaceLogic.GetTypesWorkspace().Create<_FormAndFields>(
+                            x => x.__DefaultTypeForNewElement)))
+                    {
+                        var newType = type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
+                        var parentProperty = type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty);
 
-                    viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
-                        $"New {typeName}", () => { CreateNewElementByUser(type); }));
+                        Create(newType, parentProperty);
+                    }
+                    else
+                    {
+                        Create(type, null);
+                    }
+
+                    void Create(IElement newType, string parentProperty)
+                    {
+                        var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
+
+                        viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
+                            $"New {typeName}", () => { CreateNewElementByUser(newType, parentProperty); }));
+                    }
                 }
             }
 
@@ -185,7 +204,7 @@ namespace DatenMeister.WPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
                 "New Item", () =>
                 {
-                    CreateNewElementByUser(null);
+                    CreateNewElementByUser(null, null);
                 }));
 
             // Allows the deletion of an item
@@ -208,8 +227,9 @@ namespace DatenMeister.WPF.Forms.Lists
                 viewDefinition);
         }
 
-        private void CreateNewElementByUser(IElement type)
+        private void CreateNewElementByUser(IElement type, string parentProperty)
         {
+            // TODO: Evaluate parent property
             if (IsExtentSelectedInTreeview)
             {
                 NavigatorForItems.NavigateToNewItemForExtent(
@@ -222,7 +242,8 @@ namespace DatenMeister.WPF.Forms.Lists
                 NavigatorForItems.NavigateToNewItemForItem(
                     NavigationHost,
                     SelectedPackage,
-                    type);
+                    type, 
+                    parentProperty);
             }
         }
 

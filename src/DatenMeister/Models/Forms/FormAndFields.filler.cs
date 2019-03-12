@@ -149,6 +149,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ViewAssociation._metaclassName = value;
                                 }
+                                if(name == "parentMetaclass") // Looking for property
+                                {
+                                    tree.ViewAssociation._parentMetaclass = value;
+                                }
                                 if(name == "extentType") // Looking for property
                                 {
                                     tree.ViewAssociation._extentType = value;
@@ -629,10 +633,6 @@ namespace DatenMeister.Models.Forms
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
-                                if(name == "defaultPath") // Looking for property
-                                {
-                                    tree.FileSelectionFieldData._defaultPath = value;
-                                }
                                 if(name == "defaultExtension") // Looking for property
                                 {
                                     tree.FileSelectionFieldData._defaultExtension = value;
@@ -668,6 +668,25 @@ namespace DatenMeister.Models.Forms
                                 if(name == "isReadOnly") // Looking for property
                                 {
                                     tree.FileSelectionFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
+                        if(name == "DefaultTypeForNewElement") // Looking for class
+                        {
+                            tree.__DefaultTypeForNewElement = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "metaClass") // Looking for property
+                                {
+                                    tree.DefaultTypeForNewElement._metaClass = value;
+                                }
+                                if(name == "parentProperty") // Looking for property
+                                {
+                                    tree.DefaultTypeForNewElement._parentProperty = value;
                                 }
                             }
                         }

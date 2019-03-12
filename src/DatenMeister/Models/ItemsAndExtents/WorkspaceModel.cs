@@ -9,22 +9,11 @@ namespace DatenMeister.Models.ItemsAndExtents
 
         public WorkspaceModel(Workspace workspace)
         {
-            if (workspace == null)
-            {
-                throw new ArgumentNullException(nameof(workspace));
-            }
-
-            _workspace = workspace;
+            _workspace = workspace ?? throw new ArgumentNullException(nameof(workspace));
         }
 
-        public string id
-        {
-            get { return _workspace.id; }
-        }
+        public string id => _workspace.id;
 
-        public string annotation
-        {
-            get { return _workspace.annotation; }
-        }
+        public string annotation => _workspace.annotation;
     }
 }

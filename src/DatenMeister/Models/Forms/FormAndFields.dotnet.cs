@@ -135,6 +135,13 @@ namespace DatenMeister.Models.Forms
                 filledStructure.__ViewType = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
+            {
+                var type = typeof(DatenMeister.Models.Forms.DefaultTypeForNewElement);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__DefaultTypeForNewElement = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
         }
     }
 }

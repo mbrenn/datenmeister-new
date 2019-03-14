@@ -19,6 +19,12 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
 {
     public class SubElementsField : IDetailField
     {
+        private StackPanel _panel;
+        private INavigationHost _navigationHost;
+        private IObject _element;
+        private IElement _fieldData;
+        private string _propertyName;
+
         /// <summary>
         /// Creates the element
         /// </summary>
@@ -33,16 +39,20 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             DetailFormControl detailForm,
             FieldParameter fieldFlags)
         {
-            var panel = new StackPanel
+            _element = value;
+            _fieldData = fieldData;
+            _navigationHost = detailForm.NavigationHost;
+            _propertyName = _fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
+            _panel = new StackPanel
             {
                 Orientation = Orientation.Vertical
             };
             
-            CreatePanelElement(value, fieldData, detailForm, panel);
+            CreatePanelElement();
 
             fieldFlags.CanBeFocused = true;
 
-            return panel;
+            return _panel;
         }
 
         public void CallSetAction(IObject element)
@@ -56,11 +66,10 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
         /// <param name="fieldData">Field Data being used to define the layout and used property</param>
         /// <param name="detailForm"></param>
         /// <param name="panel"></param>
-        private void CreatePanelElement(IObject value, IElement fieldData, DetailFormControl detailForm, StackPanel panel)
+        private void CreatePanelElement()
         {
-            var name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
-            var valueOfElement = value.getOrDefault<IReflectiveCollection>(name);
-            var form = fieldData.getOrDefault<IElement>(_FormAndFields._SubElementFieldData.form);
+            var valueOfElement = _element.getOrDefault<IReflectiveCollection>(_propertyName);
+            var form = _fieldData.getOrDefault<IElement>(_FormAndFields._SubElementFieldData.form);
 
             if (valueOfElement == null)
             {
@@ -68,19 +77,19 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 {
                     Text = "No list"
                 };
-                panel.Children.Add(emptyText);
+                _panel.Children.Add(emptyText);
 
                 // If user clicks on the button, an empty reflective collection is created
                 var button = new Button {Content = "Create empty list"};
                 button.Click += (x, y) =>
                 {
                     var emptyList = new List<object>();
-                    value.set(name, emptyList);
-                    panel.Children.Clear();
-                    CreatePanelElement(value, fieldData, detailForm, panel);
+                    _element.set(_propertyName, emptyList);
+                    _panel.Children.Clear();
+                    CreatePanelElement();
                 };
 
-                panel.Children.Add(button);
+                _panel.Children.Add(button);
             }
             else
             {
@@ -89,7 +98,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     MaxHeight = 500,
                     Width = 650,
-                    NavigationHost = detailForm.NavigationHost
+                    NavigationHost = _navigationHost
                 };
 
                 // Checks, whether a form is given
@@ -104,40 +113,19 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 viewExtensions.Add(
                     new RowItemButtonDefinition(
                         "Edit",
-                        (guest, item) => NavigatorForItems.NavigateToElementDetailView(detailForm.NavigationHost, item),
+                        (guest, item) => NavigatorForItems.NavigateToElementDetailView(_navigationHost, item),
                         ItemListViewControl.ButtonPosition.Before));
                 listViewControl.SetContent(valueOfElement, form, viewExtensions);
 
-                panel.Children.Add(listViewControl);
+                _panel.Children.Add(listViewControl);
             }
 
             // Gets the buttons for specific types
-            if (fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData.defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
+            if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData.defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
             {
                 foreach (var type in defaultTypesForNewItems.OfType<IElement>())
                 {
-                    var typeName = type.get(_UML._CommonStructure._NamedElement.name);
-                    var button = new Button {Content =  $"New {typeName}"};
-                    button.Click += (a, b) =>
-                    {
-                        var elements = NavigatorForItems.NavigateToCreateNewItem(detailForm.NavigationHost, (value as MofObject)?.CreatedByExtent, type);
-                        elements.NewItemCreated += (x, y) =>
-                        {
-                            if (value.GetOrDefault(name) is IReflectiveCollection propertyCollection)
-                            {
-                                propertyCollection.add(y.NewItem);
-                            }
-                            else
-                            {
-                                value.set(name, new List<object> { y.NewItem });
-                            }
-
-                            panel.Children.Clear();
-                            CreatePanelElement(value, fieldData, detailForm, panel);
-                        };
-                    };
-
-                    panel.Children.Add(button);
+                    CreateButtonForType(type);
                 }
             }
 
@@ -146,27 +134,58 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             createItemButton.Click += (x, y) =>
             {
                 var result = NavigatorForItems.NavigateToCreateNewItem(
-                    detailForm.NavigationHost,
-                    (value as MofObject)?.CreatedByExtent,
+                    _navigationHost,
+                    (_element as MofObject)?.CreatedByExtent,
                     null);
 
                 result.NewItemCreated += (a, b) =>
                 {
-                    if (value.GetOrDefault(name) is IReflectiveCollection propertyCollection)
+                    if (_element.GetOrDefault(_propertyName) is IReflectiveCollection propertyCollection)
                     {
                         propertyCollection.add(b.NewItem);
                     }
                     else
                     {
-                        value.set(name, new List<object> { b.NewItem });
+                        _element.set(_propertyName, new List<object> { b.NewItem });
                     }
 
-                    panel.Children.Clear();
-                    CreatePanelElement(value, fieldData, detailForm, panel);
+                    _panel.Children.Clear();
+                    CreatePanelElement();
                 };
             };
 
-            panel.Children.Add(createItemButton);
+            _panel.Children.Add(createItemButton);
+        }
+
+        /// <summary>
+        /// Creates a button for a certain type and add it to the panel
+        /// </summary>
+        /// <param name="type">Type which shall be added</param>
+        private void CreateButtonForType(IElement type)
+        {
+            var typeName = type.get(_UML._CommonStructure._NamedElement.name);
+            var button = new Button {Content = $"New {typeName}"};
+            button.Click += (a, b) =>
+            {
+                var elements =
+                    NavigatorForItems.NavigateToCreateNewItem(_navigationHost, (_element as MofObject)?.CreatedByExtent, type);
+                elements.NewItemCreated += (x, y) =>
+                {
+                    if (_element.GetOrDefault(_propertyName) is IReflectiveCollection propertyCollection)
+                    {
+                        propertyCollection.add(y.NewItem);
+                    }
+                    else
+                    {
+                        _element.set(_propertyName, new List<object> {y.NewItem});
+                    }
+
+                    _panel.Children.Clear();
+                    CreatePanelElement();
+                };
+            };
+
+            _panel.Children.Add(button);
         }
     }
 }

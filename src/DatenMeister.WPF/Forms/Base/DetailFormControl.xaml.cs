@@ -302,7 +302,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             // Clones the EffectiveForm
-            EffectiveForm = (IElement) ObjectCopier.CopyForTemporary(EffectiveForm);
+            EffectiveForm = ObjectCopier.Copy(new MofFactory(EffectiveForm), EffectiveForm);
         }
 
         /// <summary>

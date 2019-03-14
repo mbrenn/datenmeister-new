@@ -1,1 +1,0 @@
-﻿This file is just used to create the plugin directory

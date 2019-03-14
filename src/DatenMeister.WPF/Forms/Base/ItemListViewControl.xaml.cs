@@ -139,7 +139,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns>Returned element for the </returns>
         private object GetValueOfElement(IObject element, IElement field)
         {
-            var fieldType = field.get(_FormAndFields._FieldData.fieldType).ToString();
+            var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
             if (fieldType == MetaClassElementFieldData.FieldType)
             {
                 var elementAsElement = element as IElement;
@@ -212,7 +212,7 @@ namespace DatenMeister.WPF.Forms.Base
                     foreach (var field in fields.Cast<IElement>())
                     {
                         var columnName = fieldDataNames[n];
-                        var isEnumeration = DotNetHelper.AsBoolean(field.get(_FormAndFields._FieldData.isEnumeration));
+                        var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
                         var value = GetValueOfElement(item, field);
 
                         if (isEnumeration)

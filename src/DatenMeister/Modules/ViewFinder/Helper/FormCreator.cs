@@ -137,8 +137,9 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     {
                         // Check by content, which type of field shall be created
                         var propertyValue = itemAsObject?.GetOrDefault(property);
+                        var propertyType = propertyValue?.GetType();
 
-                        if (DotNetHelper.IsPrimitiveType(propertyValue?.GetType()))
+                        if (DotNetHelper.IsPrimitiveType(propertyType))
                         {
                             column = new TextFieldData
                             {
@@ -148,7 +149,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                         }
                         else
                         {
-                            if (DotNetHelper.IsEnumeration(propertyValue?.GetType()))
+                            if (DotNetHelper.IsEnumeration(propertyType))
                             {
                                 column = new SubElementFieldData(property, property);
                             }
@@ -241,12 +242,20 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 {
                     if (property.getOrDefault<int>(_UML._CommonStructure._MultiplicityElement.upper) > 1)
                     {
-                        var elements = new SubElementFieldData(propertyName, propertyName);
+                        var elements = new SubElementFieldData(propertyName, propertyName)
+                        {
+                            defaultTypesForNewElements = new List<IElement> {propertyType}
+                        };
+
                         return elements;
                     }
                     else
                     {
-                        var reference = new ReferenceFieldData(propertyName, propertyName);
+                        var reference = new ReferenceFieldData(propertyName, propertyName)
+                        {
+
+                        };
+
                         return reference;
                     }
                 }

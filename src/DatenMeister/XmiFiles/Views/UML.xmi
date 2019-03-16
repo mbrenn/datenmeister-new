@@ -5,14 +5,11 @@
 
 
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm"
-                     p1:id="umlListPackage" name="List - Package" fixView="False" inhibitNewItems="False"
-                     hideMetaClass="False" minimizeDesign="False" defaultWidth="0" defaultHeight="0">
-      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" lineHeight="0"
-              width="0" isAttached="False" fieldType="text" name="name" title="Name of Package" isEnumeration="False"
-              isReadOnly="False" />
+                     p1:id="umlListPackage" name="List - Package" >
+      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" 
+              name="name" title="Name of Package" />
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
-              isAttached="False" fieldType="subelements" name="packagedElement" title="Packaged Elements"
-              isEnumeration="True" isReadOnly="False">
+              name="packagedElement" title="Packaged Elements" isEnumeration="True">
       </fields>
 
       <defaultTypesForNewElements
@@ -26,88 +23,63 @@
 
     </packagedElement>
 
-
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm"
-                     p1:id="umlListClass" name="List - Classes" fixView="False" inhibitNewItems="False"
-                     hideMetaClass="False" minimizeDesign="False" defaultWidth="0" defaultHeight="0">
-      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" lineHeight="0"
-              width="0" isAttached="False" fieldType="text" name="name" title="Name of Class" isEnumeration="False"
-              isReadOnly="False" />
-      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData"
-              isAttached="False" fieldType="subelements" name="ownedAttribute" title="Properties" isEnumeration="True"
-              isReadOnly="False">
-        <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Property" />
+                     p1:id="umlListClass" name="List - Classes">
+      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" 
+              name="name" title="Name of Class" />
+      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
+              name="ownedAttribute" title="Properties" isEnumeration="True" >
       </fields>
       <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Class" />
     </packagedElement>
 
-
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm"
-                     p1:id="umlListProperties" name="List - Properties" fixView="False" inhibitNewItems="False"
-                     hideMetaClass="False" minimizeDesign="False" defaultWidth="0" defaultHeight="0">
-      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" lineHeight="0"
-              width="0" isAttached="False" fieldType="text" name="name" title="Name of Property" isEnumeration="False"
-              isReadOnly="False" />
-      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData"
-              isSelectionInline="False" showWorkspaceSelection="False" showExtentSelection="False" isAttached="False"
-              fieldType="reference" name="type" title="Type of Property" isEnumeration="False" isReadOnly="False" />
+                     p1:id="umlListProperties" name="List - Properties">
+      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" 
+              name="name" title="Name of Property" />
+      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
+              name="type" title="Type of Property" />
       <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Property" />
     </packagedElement>
 
-
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.Form"
-                     p1:id="umlDetailPackage" name="Detail - Package" fixView="False" inhibitNewItems="False"
-                     hideMetaClass="False" minimizeDesign="False" defaultWidth="0" defaultHeight="0">
-      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" lineHeight="0"
-              width="0" isAttached="False" fieldType="text" name="name" title="Name of Package" isEnumeration="False"
-              isReadOnly="False" />
+                     p1:id="umlDetailPackage" name="Detail - Package">
+      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" 
+              name="name" title="Name of Package" />
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData"
-              isAttached="False" fieldType="subelements" name="packagedElement" title="Packaged Elements"
-              isEnumeration="True" isReadOnly="False">
+              name="packagedElement" title="Packaged Elements" isEnumeration="True" >
         <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Package" />
         <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Class" />
       </fields>
     </packagedElement>
 
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.Form"
-                     p1:id="umlDetailClass" name="Detail - Classes" fixView="False" inhibitNewItems="False"
-                     hideMetaClass="False" minimizeDesign="False" defaultWidth="0" defaultHeight="0">
+                     p1:id="umlDetailClass" name="Detail - Classes">
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData"
-              isAttached="False" fieldType="metaclass" title="Metaclass" isEnumeration="False" isReadOnly="False" />
-      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" lineHeight="0"
-              width="0" isAttached="False" fieldType="text" name="name" title="Name of Class" isEnumeration="False"
-              isReadOnly="False" />
+              title="Metaclass" />
+      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" 
+              name="name" title="Name of Class" />
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData"
-              isAttached="False" fieldType="subelements" name="ownedAttribute" title="Properties" isEnumeration="True"
-              isReadOnly="False" form-ref="#umlListClass">
-        <form p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm"
-            fixView="False" inhibitNewItems="False"
-            hideMetaClass="False" minimizeDesign="False" defaultWidth="0" defaultHeight="0">
+              name="ownedAttribute" title="Properties" isEnumeration="True">
+        <form p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm">
           <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" 
-                  name="name" title="Name of Property" 
-                  isReadOnly="False" />
+                  name="name" title="Name of Property" />
           <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData"
                   name="ownedAttribute" title="Properties" isEnumeration="True">
           </fields>
         </form>
         <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Property" />
       </fields>
-      <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Property" />
-
     </packagedElement>
 
-
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.Form"
-                     p1:id="umlDetailProperty" name="Detail - Property" fixView="False" inhibitNewItems="False"
-                     hideMetaClass="False" minimizeDesign="False" defaultWidth="0" defaultHeight="0">
+                     p1:id="umlDetailProperty" name="Detail - Property">
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData"
-              isAttached="False" fieldType="metaclass" title="Metaclass" isEnumeration="False" isReadOnly="False" />
-      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" lineHeight="0"
-              width="0" isAttached="False" fieldType="text" name="name" title="Name of Property" isEnumeration="False"
-              isReadOnly="False" />
+              title="Metaclass" />
+      <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" 
+              name="name" title="Name of Property" />
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData"
-              isSelectionInline="False" showWorkspaceSelection="False" showExtentSelection="False" isAttached="False"
-              fieldType="reference" name="type" title="Type of Property" isEnumeration="False" isReadOnly="False" />
+              name="type" title="Type of Property" />
     </packagedElement>
 
 

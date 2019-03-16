@@ -150,7 +150,7 @@ namespace DatenMeister.WPF.Forms.Base
                     : NamedElementMethods.GetFullName(elementAsElement.getMetaClass());
             }
 
-            var name = field.get(_FormAndFields._FieldData.name)?.ToString();
+            var name = field.getOrDefault<string>(_FormAndFields._FieldData.name);
             return element.isSet(name) ? element.get(name) : null;
         }
 

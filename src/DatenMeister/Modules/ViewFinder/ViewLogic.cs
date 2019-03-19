@@ -7,9 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Plugins;
-using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
@@ -26,10 +24,6 @@ namespace DatenMeister.Modules.ViewFinder
     [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterInitialization)]
     public class ViewLogic : IDatenMeisterPlugin
     {
-        /// <summary>
-        /// Defines the path to the packages of the fast view filters
-        /// </summary>
-        public const string PackagePathTypesFastViewFilters = "DatenMeister::FastViewFilters";
 
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ViewLogic));
 
@@ -44,15 +38,11 @@ namespace DatenMeister.Modules.ViewFinder
         public const string ViewExtentType = "DatenMeister.Views";
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentCreator _extentCreator;
-        private readonly NamedElementMethods _namedElementMethods;
-        private readonly LocalTypeSupport _localTypeSupport;
 
-        public ViewLogic(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator, NamedElementMethods namedElementMethods, LocalTypeSupport localTypeSupport)
+        public ViewLogic(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator)
         {
             _workspaceLogic = workspaceLogic;
             _extentCreator = extentCreator;
-            _namedElementMethods = namedElementMethods;
-            _localTypeSupport = localTypeSupport;
         }
 
         /// <summary>
@@ -79,9 +69,6 @@ namespace DatenMeister.Modules.ViewFinder
                         "DatenMeister.Views_User",
                         ViewExtentType
                     );
-
-                    // Adds the local fast view filters
-                    _localTypeSupport.AddInternalTypes(FastViewFilters.Types, PackagePathTypesFastViewFilters);
                     break;
             }
         }

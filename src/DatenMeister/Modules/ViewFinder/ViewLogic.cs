@@ -30,8 +30,14 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Stores a debug variable that can be used to extent the debugging of view retrieval process.
         /// </summary>
+#if VIEWLOGICINFO
         private const bool ActivateDebuggingForViewRetrieval = true;
-        
+#warning Internal Debugging Info activated
+
+#else
+        private const bool ActivateDebuggingForViewRetrieval = false;
+#endif
+
         /// <summary>
         /// Stores the type of the extent containing the views 
         /// </summary>

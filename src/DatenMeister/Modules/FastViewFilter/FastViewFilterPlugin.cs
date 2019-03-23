@@ -10,7 +10,6 @@ namespace DatenMeister.Modules.FastViewFilter
     [PluginLoading(PluginLoadingPosition.AfterInitialization)]
     public class FastViewFilterPlugin : IDatenMeisterPlugin
     {
-
         /// <summary>
         /// Stores the local type support
         /// </summary>

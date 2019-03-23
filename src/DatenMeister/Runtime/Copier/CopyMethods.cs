@@ -33,13 +33,15 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="collection">Collection to be parsed</param>
         /// <param name="targetElement">Element to which the elements will be added </param>
         /// <param name="propertyName">Name of the property to which the elements will be added</param>
+        /// <param name="copyOptions">Copies the options</param>
         public static void CopyToElementsProperty(
             IReflectiveCollection collection, 
             IObject targetElement,
-            string propertyName)
+            string propertyName,
+            CopyOptions copyOptions)
         {
             var copier = new ObjectCopier(new MofFactory(targetElement));
-            var copiedElements = collection.OfType<IElement>().Select(x => copier.Copy(x));
+            var copiedElements = collection.OfType<IElement>().Select(x => copier.Copy(x, copyOptions));
 
             if (!targetElement.isSet(propertyName))
             {

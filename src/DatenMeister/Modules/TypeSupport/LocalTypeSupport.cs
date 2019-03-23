@@ -95,7 +95,8 @@ namespace DatenMeister.Modules.TypeSupport
                     .FindElementByUri("datenmeister:///_internal/xmi/primitivetypes?PrimitiveTypes")
                     .get(_UML._Packages._Package.packagedElement) as IReflectiveCollection,
                 foundPackage,
-                _UML._Packages._Package.packagedElement);
+                _UML._Packages._Package.packagedElement,
+                CopyOptions.CopyId);
         }
 
         /// <summary>

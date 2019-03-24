@@ -1,5 +1,4 @@
-﻿using System.Data;
-using DatenMeister.Runtime.Workspaces;
+﻿using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.DataViews
 {
@@ -8,7 +7,7 @@ namespace DatenMeister.Modules.DataViews
         /// <summary>
         /// Defines the path to the packages of the fast view filters
         /// </summary>
-        public const string PackagePathTypesDataView = "DatenMeister::DataView";
+        public const string PackagePathTypesDataView = "DatenMeister::DataViews";
 
         private readonly IWorkspaceLogic _workspaceLogic;
 

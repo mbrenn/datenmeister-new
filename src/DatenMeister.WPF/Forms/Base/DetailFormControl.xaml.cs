@@ -52,7 +52,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Defines the form definition being used in the detail for
         /// </summary>
-        public IElement EffectiveForm { get; private set; }
+        public IObject EffectiveForm { get; private set; }
 
         /// <summary>
         ///     Gets or sets the view definition
@@ -692,12 +692,12 @@ namespace DatenMeister.WPF.Forms.Base
 
         public class ViewEventArgs : EventArgs
         {
-            public ViewEventArgs(IElement view)
+            public ViewEventArgs(IObject view)
             {
                 View = view;
             }
 
-            public IElement View { get; }
+            public IObject View { get; }
         }
     }
 }

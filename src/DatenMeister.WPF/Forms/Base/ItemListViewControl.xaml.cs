@@ -83,7 +83,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Defines the current form definition of the window as provided by the
         /// derived method 'RequestForm'.
         /// </summary>
-        public IElement CurrentFormDefinition { get; set; }
+        public IObject CurrentFormDefinition { get; set; }
 
         /// <summary>
         /// Gets or sets the view extensions
@@ -102,7 +102,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Updates the content by going through the fields and items
         /// </summary>
-        public void SetContent(IReflectiveCollection items, IElement formDefintion, List<ViewExtension> viewExtensions)
+        public void SetContent(IReflectiveCollection items, IObject formDefintion, List<ViewExtension> viewExtensions)
         {
             UnregisterCurrentChangeEventHandle();
             if (items is IHasExtent asExtent)

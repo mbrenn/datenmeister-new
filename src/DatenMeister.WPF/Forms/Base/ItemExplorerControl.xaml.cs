@@ -162,7 +162,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             // Gets the default view for the given tab
             var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
-            IElement result = null;
+            IObject result = null;
 
             switch (viewDefinition.Mode)
             {

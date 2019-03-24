@@ -343,7 +343,7 @@ namespace DatenMeister.Runtime
         /// <param name="value">Value to be converted</param>
         /// <param name="extent">The extent being used to create and resolve the element</param>
         /// <returns>The converted element</returns>
-        public static IElement ConvertToMofElement(
+        public static IObject ConvertToMofElement(
             object value,
             IUriExtent extent)
         {
@@ -361,7 +361,7 @@ namespace DatenMeister.Runtime
         /// <param name="extent">The extent being used to figure out the </param>
         /// <param name="factory">Factory being used to create the mof element</param>
         /// <returns>The converted element</returns>
-        public static IElement ConvertToMofElement(
+        public static IObject ConvertToMofElement(
             object value,
             MofUriExtent extent,
             IFactory factory)
@@ -369,6 +369,13 @@ namespace DatenMeister.Runtime
             if (value == null)
             {
                 return null;
+            }
+
+            if (value is IObject valueAsObject)
+            {
+                // If, for whatever reason, the user adds a MOF object into a native object. Might most often occur, 
+                // if a native object references a MOF object and no native representation makes sense. 
+                return valueAsObject;
             }
             
             // Creates the mof element for type

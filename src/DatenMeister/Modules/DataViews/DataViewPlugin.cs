@@ -11,6 +11,7 @@ namespace DatenMeister.Modules.DataViews
     {
         private readonly LocalTypeSupport _localTypeSupport;
         private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly DataViewLogic _dataViewLogic;
 
         /// <summary>
         /// Gets a list of types which need to be transferred as a MofType
@@ -21,14 +22,21 @@ namespace DatenMeister.Modules.DataViews
             return new[]
             {
                 typeof(DataView),
-                typeof(ViewNode)
+                typeof(ViewNode),
+                typeof(SourceExtentNode),
+                typeof(FlattenNode),
+                typeof(FilterPropertyNode),
+                typeof(FilterTypeNode),
+                typeof(ComparisonMode),
+                typeof(SelectPathNode)
             };
         }
 
-        public DataViewPlugin(LocalTypeSupport localTypeSupport, IWorkspaceLogic workspaceLogic)
+        public DataViewPlugin(LocalTypeSupport localTypeSupport, IWorkspaceLogic workspaceLogic, DataViewLogic dataViewLogic)
         {
             _localTypeSupport = localTypeSupport;
             _workspaceLogic = workspaceLogic;
+            _dataViewLogic = dataViewLogic;
         }
 
         /// <summary>
@@ -42,6 +50,8 @@ namespace DatenMeister.Modules.DataViews
                 case PluginLoadingPosition.AfterBootstrapping:
                     var workspace = new Workspace("Views", "Container of all views which are created dynamically.");
                     _workspaceLogic.AddWorkspace(workspace);
+                    workspace.ExtentPlugins.Add(new DataViewExtentPlugin(_workspaceLogic, _dataViewLogic));
+
                     break;
                 case PluginLoadingPosition.AfterInitialization:
                     _localTypeSupport.AddInternalTypes(GetTypes(), DataViewLogic.PackagePathTypesDataView);

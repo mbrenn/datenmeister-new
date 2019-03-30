@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.DataViews
@@ -14,23 +12,23 @@ namespace DatenMeister.Modules.DataViews
         /// </summary>
         private readonly IWorkspaceLogic _workspaceLogic;
 
+        private readonly DataViewLogic _dataViewLogic;
+
         /// <summary>
         /// Initializes a new instance of the workspace logic
         /// </summary>
         /// <param name="workspaceLogic">Workspace Logic to be added</param>
-        public DataViewExtentPlugin(IWorkspaceLogic workspaceLogic)
+        public DataViewExtentPlugin(IWorkspaceLogic workspaceLogic, DataViewLogic dataViewLogic)
         {
             _workspaceLogic = workspaceLogic;
+            _dataViewLogic = dataViewLogic;
         }
 
         public IEnumerator<IExtent> GetEnumerator()
         {
-            var metaClass = (IElement) _workspaceLogic.GetTypesWorkspace().FindElementByUri("datenmeister:///_internal/types/internal?DatenMeister::DataViews::DataView");
-            var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
-            foreach (var extent in managementWorkspace.extent)
+            foreach (var dataView in _dataViewLogic.GetDataViewElements())
             {
-                extent.elements().GetAllDescendants().WhenMetaClassIs(metaClass);
-                yield return null;
+                yield return new DataViewExtent(dataView, _workspaceLogic, _dataViewLogic);
             }
         }
 

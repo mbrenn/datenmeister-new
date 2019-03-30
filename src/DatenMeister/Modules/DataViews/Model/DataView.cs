@@ -8,6 +8,6 @@
 
         public string uri { get; set; }
 
-        public ViewNode ViewNode { get; set; }
+        public ViewNode viewNode { get; set; }
     }
 }

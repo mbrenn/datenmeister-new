@@ -55,9 +55,9 @@ namespace DatenMeister.Models.DataViews
                                 {
                                     tree.DataView._uri = value;
                                 }
-                                if(name == "ViewNode") // Looking for property
+                                if(name == "viewNode") // Looking for property
                                 {
-                                    tree.DataView._ViewNode = value;
+                                    tree.DataView._viewNode = value;
                                 }
                             }
                         }
@@ -73,6 +73,129 @@ namespace DatenMeister.Models.DataViews
                                 if(name == "name") // Looking for property
                                 {
                                     tree.ViewNode._name = value;
+                                }
+                            }
+                        }
+                        if(name == "SourceExtentNode") // Looking for class
+                        {
+                            tree.__SourceExtentNode = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "extentUri") // Looking for property
+                                {
+                                    tree.SourceExtentNode._extentUri = value;
+                                }
+                                if(name == "workspace") // Looking for property
+                                {
+                                    tree.SourceExtentNode._workspace = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.SourceExtentNode._name = value;
+                                }
+                            }
+                        }
+                        if(name == "FlattenNode") // Looking for class
+                        {
+                            tree.__FlattenNode = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "input") // Looking for property
+                                {
+                                    tree.FlattenNode._input = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.FlattenNode._name = value;
+                                }
+                            }
+                        }
+                        if(name == "FilterPropertyNode") // Looking for class
+                        {
+                            tree.__FilterPropertyNode = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "input") // Looking for property
+                                {
+                                    tree.FilterPropertyNode._input = value;
+                                }
+                                if(name == "property") // Looking for property
+                                {
+                                    tree.FilterPropertyNode._property = value;
+                                }
+                                if(name == "value") // Looking for property
+                                {
+                                    tree.FilterPropertyNode._value = value;
+                                }
+                                if(name == "comparisonMode") // Looking for property
+                                {
+                                    tree.FilterPropertyNode._comparisonMode = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.FilterPropertyNode._name = value;
+                                }
+                            }
+                        }
+                        if(name == "FilterTypeNode") // Looking for class
+                        {
+                            tree.__FilterTypeNode = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "input") // Looking for property
+                                {
+                                    tree.FilterTypeNode._input = value;
+                                }
+                                if(name == "type") // Looking for property
+                                {
+                                    tree.FilterTypeNode._type = value;
+                                }
+                                if(name == "includeInherits") // Looking for property
+                                {
+                                    tree.FilterTypeNode._includeInherits = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.FilterTypeNode._name = value;
+                                }
+                            }
+                        }
+                        if(name == "SelectPathNode") // Looking for class
+                        {
+                            tree.__SelectPathNode = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "input") // Looking for property
+                                {
+                                    tree.SelectPathNode._input = value;
+                                }
+                                if(name == "path") // Looking for property
+                                {
+                                    tree.SelectPathNode._path = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.SelectPathNode._name = value;
                                 }
                             }
                         }

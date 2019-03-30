@@ -58,7 +58,8 @@ namespace DatenMeister.Modules.DataViews
         public IReflectiveSequence GetElementsForViewNode(IElement viewNode)
         {
             var dataview = _workspaceLogic.GetTypesWorkspace().Create<FillTheDataViews,_DataViews>();
-            if (viewNode.getMetaClass()?.@equals(dataview.SourceExtentNode) == true)
+            var metaClass = viewNode.getMetaClass();
+            if (metaClass?.@equals(dataview.__SourceExtentNode) == true)
             {
                 var workspaceName = viewNode.getOrDefault<string>(_DataViews._SourceExtentNode.workspace);
                 if (string.IsNullOrEmpty(workspaceName))
@@ -85,8 +86,8 @@ namespace DatenMeister.Modules.DataViews
             }
 
             Logger.Warn($"Unknown type of viewnode: {viewNode.getMetaClass()}");
-
-            throw new System.NotImplementedException();
+            
+            return new PureReflectiveSequence();
         }
     }
 }

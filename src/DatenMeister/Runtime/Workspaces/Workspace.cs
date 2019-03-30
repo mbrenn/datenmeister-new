@@ -199,9 +199,9 @@ namespace DatenMeister.Runtime.Workspaces
                 // Looks into the cache for the filledtypes
                 foreach (var value in FilledTypeCache)
                 {
-                    if (value is TFilledType)
+                    if (value is TFilledType filledType)
                     {
-                        return value as TFilledType;
+                        return filledType;
                     }
                 }
 

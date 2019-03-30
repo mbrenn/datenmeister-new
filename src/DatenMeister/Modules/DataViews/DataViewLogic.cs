@@ -1,16 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.DataViews;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Proxies;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.DataViews
 {
     public class DataViewLogic
     {
+        /// <summary>
+        /// Stores the logger
+        /// </summary>
+        private static readonly ILogger Logger = new ClassLogger(typeof(DataViewLogic));
+
         /// <summary>
         /// Defines the path to the packages of the fast view filters
         /// </summary>
@@ -48,6 +57,35 @@ namespace DatenMeister.Modules.DataViews
         /// <returns>The reflective Sequence</returns>
         public IReflectiveSequence GetElementsForViewNode(IElement viewNode)
         {
+            var dataview = _workspaceLogic.GetTypesWorkspace().Create<FillTheDataViews,_DataViews>();
+            if (viewNode.getMetaClass()?.@equals(dataview.SourceExtentNode) == true)
+            {
+                var workspaceName = viewNode.getOrDefault<string>(_DataViews._SourceExtentNode.workspace);
+                if (string.IsNullOrEmpty(workspaceName))
+                {
+                    workspaceName = WorkspaceNames.NameData;
+                }
+
+                var extentUri = viewNode.getOrDefault<string>(_DataViews._SourceExtentNode.extentUri);
+                var workspace = _workspaceLogic.GetWorkspace(workspaceName);
+                if (workspace == null)
+                {
+                    Logger.Warn($"Workspace is not found: {workspaceName}");
+                    return new PureReflectiveSequence();
+                }
+
+                var extent = workspace.FindExtent(extentUri);
+                if (extent == null)
+                {
+                    Logger.Warn($"Extent is not found: {extentUri}");
+                    return new PureReflectiveSequence();
+                }
+
+                return extent.elements();
+            }
+
+            Logger.Warn($"Unknown type of viewnode: {viewNode.getMetaClass()}");
+
             throw new System.NotImplementedException();
         }
     }

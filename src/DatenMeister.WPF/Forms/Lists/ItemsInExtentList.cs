@@ -297,6 +297,7 @@ namespace DatenMeister.WPF.Forms.Lists
                         {
                             new Bold {Inlines = {new Run("Extent: ")}},
                             new Run(ExtentUrl)
+                                {ContextMenu = ItemListViewControl.GetCopyToClipboardContextMenu(ExtentUrl)}
                         }
                     }));
 

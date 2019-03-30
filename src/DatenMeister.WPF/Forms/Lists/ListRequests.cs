@@ -149,6 +149,9 @@ namespace DatenMeister.WPF.Forms.Lists
                         {
                             new Bold {Inlines = {new Run("Workspace: ")}},
                             new Run(workspaceId)
+                            {
+                                ContextMenu = ItemListViewControl.GetCopyToClipboardContextMenu(workspaceId)
+                            }
                         }
                     }));
 

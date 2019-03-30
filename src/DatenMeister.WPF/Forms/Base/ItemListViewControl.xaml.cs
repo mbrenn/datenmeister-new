@@ -881,5 +881,22 @@ namespace DatenMeister.WPF.Forms.Base
         {
             UnregisterCurrentChangeEventHandle();
         }
+
+        /// <summary>
+        /// Gets the context menu allowing the copying of the given text to the Clipboard
+        /// </summary>
+        /// <param name="text">Text to be stored</param>
+        /// <returns>Resulting context menu</returns>
+        public static ContextMenu GetCopyToClipboardContextMenu(string text)
+        {
+            var contextMenu = new ContextMenu();
+            var item = new MenuItem
+            {
+                Header = "Copy to Clipboard"
+            };
+            item.Click += (x, y) => { Clipboard.SetText(text); };
+            contextMenu.Items.Add(item);
+            return contextMenu;
+        }
     }
 }

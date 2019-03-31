@@ -269,14 +269,22 @@ namespace DatenMeister.Modules.TypeSupport
 
         }
 
-        private IUriExtent GetInternalTypeExtent()
+        /// <summary>
+        /// Gets the extent containing the internal types
+        /// </summary>
+        /// <returns>Extent containing the internal types which are rebuilt at each DatenMeister start-up</returns>
+        public IUriExtent GetInternalTypeExtent()
         { 
             var workspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
             var internalTypeExtent = GetInternalTypeExtent(workspace);
             return internalTypeExtent;
         }
 
-        private IUriExtent GetUserTypeExtent()
+        /// <summary>
+        /// Gets the extent containing the types being created by the user
+        /// </summary>
+        /// <returns>Extent containing elements for the user and which are stored persistently. </returns>
+        public IUriExtent GetUserTypeExtent()
         {
             var workspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
             var internalTypeExtent = GetUserTypeExtent(workspace);

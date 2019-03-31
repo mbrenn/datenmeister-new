@@ -1,0 +1,121 @@
+﻿using System.ComponentModel;
+using System.Linq;
+using Autofac;
+using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
+using DatenMeister.Models.DataViews;
+using DatenMeister.Modules.DataViews;
+using DatenMeister.Modules.DataViews.Model;
+using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
+using NUnit.Framework;
+
+namespace DatenMeister.Tests.Modules
+{
+    [TestFixture]
+    public class DataviewTests
+    {
+        [Test]
+        public void TestCreationOfDataviews()
+        {
+            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
+            {
+                var helper = dm.Resolve<DataViewHelper>();
+                var viewWorkspace = helper.GetViewWorkspace();
+
+                Assert.That(viewWorkspace.extent.Count(), Is.EqualTo(0));
+                helper.CreateDataview("Test", "dm:///view/test");
+
+                Assert.That(viewWorkspace.extent.Count(), Is.EqualTo(1));
+            }
+        }
+
+        [Test]
+        public void TestPropertyFilter()
+        {
+            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
+            {
+                CreateDataForTest(dm);
+
+                var helper = dm.Resolve<DataViewHelper>();
+                var dataView = helper.CreateDataview("Test", "dm:///view/test");
+                var model = helper.GetModel();
+
+                var userViewExtent = helper.GetUserViewExtent();
+
+                var factory = new MofFactory(userViewExtent);
+                var extentSource = factory.create(model.__SourceExtentNode);
+                extentSource.set(_DataViews._SourceExtentNode.extentUri, "dm:///testdata");
+                userViewExtent.elements().add(extentSource);
+
+                var propertyFilter = factory.create(model.__FilterPropertyNode);
+                userViewExtent.elements().add(propertyFilter);
+                propertyFilter.set(_DataViews._FilterPropertyNode.property, "name");
+                propertyFilter.set(_DataViews._FilterPropertyNode.comparisonMode, ComparisonMode.Contains);
+                propertyFilter.set(_DataViews._FilterPropertyNode.value, "ai");
+                propertyFilter.set(_DataViews._FilterPropertyNode.input, extentSource);
+
+                dataView.set(_DataViews._DataView.viewNode, propertyFilter);
+
+                var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
+                var extent = workspaceLogic.FindExtent("dm:///view/test");
+
+                Assert.That(extent, Is.Not.Null);
+
+                var elements = extent.elements().OfType<IElement>().ToArray();
+                Assert.That(elements.All(x=> x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
+                Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
+                Assert.That(elements.Length, Is.GreaterThan(0));
+                
+                // Go to Non-Contain
+                propertyFilter.set(_DataViews._FilterPropertyNode.comparisonMode, ComparisonMode.DoesNotContain);
+                elements = extent.elements().OfType<IElement>().ToArray();
+                Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
+                Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
+                Assert.That(elements.Length, Is.GreaterThan(0));
+            }
+        }
+
+        private IUriExtent CreateDataForTest(IDatenMeisterScope dm)
+        {
+            var localTypeSupport = dm.Resolve<LocalTypeSupport>();
+            var userTypeExtent = localTypeSupport.GetUserTypeExtent();
+            var uml = dm.Resolve<IWorkspaceLogic>().GetUmlData();
+
+            // Create two example types
+            var userTypeFactory = new MofFactory(userTypeExtent);
+            var createdClass = userTypeFactory.create(uml.StructuredClassifiers.__Class);
+            createdClass.set(_UML._CommonStructure._NamedElement.name, "First Class");
+            userTypeExtent.elements().add(createdClass);
+
+            var secondClass = userTypeFactory.create(uml.StructuredClassifiers.__Class);
+            secondClass.set(_UML._CommonStructure._NamedElement.name, "Second Class");
+            userTypeExtent.elements().add(secondClass);
+
+            // Ok, now add the data
+            var extent = dm.CreateAndAddXmiExtent("dm:///testdata", "testdata.xmi");
+            var factory = new MofFactory(extent);
+            var element1 = factory.create(createdClass);
+            element1.set("name", "Bach");
+            element1.set("zip", 32432);
+            extent.elements().add(element1);
+
+            element1 = factory.create(createdClass);
+            element1.set("name", "Mainz");
+            element1.set("zip", 55130);
+            extent.elements().add(element1);
+
+            element1 = factory.create(secondClass);
+            element1.set("name", "Bischofsheim");
+            element1.set("zip", 65474);
+            extent.elements().add(element1);
+
+            return extent;
+
+        }
+    }
+}

@@ -48,7 +48,7 @@ namespace DatenMeister.Modules.DataViews
             switch (position)
             {
                 case PluginLoadingPosition.AfterBootstrapping:
-                    var workspace = new Workspace("Views", "Container of all views which are created dynamically.");
+                    var workspace = new Workspace(WorkspaceNames.NameViews, "Container of all views which are created dynamically.");
                     _workspaceLogic.AddWorkspace(workspace);
                     workspace.ExtentPlugins.Add(new DataViewExtentPlugin(_workspaceLogic, _dataViewLogic));
 

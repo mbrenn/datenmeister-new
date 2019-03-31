@@ -101,10 +101,10 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// </summary>
         /// <param name="collection">Collection to be evaluated</param>
         /// <returns>A reflective collection, containing all items</returns>
-        public static IReflectiveCollection GetAllDescendants(
+        public static IReflectiveSequence GetAllDescendants(
             this IReflectiveCollection collection)
         {
-            return new TemporaryReflectiveCollection(AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
+            return new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
         }
 
         /// <summary>
@@ -113,11 +113,11 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <param name="collection">Collection to be evaluated</param>
         /// <param name="byFollowingProperties">Columns that shall be followed. This prevents the following of properties</param>
         /// <returns>A reflective collection, containing all items</returns>
-        public static IReflectiveCollection GetAllDescendants(
+        public static IReflectiveSequence GetAllDescendants(
             this IReflectiveCollection collection,
             IEnumerable<string> byFollowingProperties)
         {
-            return new TemporaryReflectiveCollection(AllDescendentsQuery.GetDescendents(collection, byFollowingProperties).Cast<object>().ToList());
+            return new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection, byFollowingProperties).Cast<object>().ToList());
         }
 
         /// <summary>

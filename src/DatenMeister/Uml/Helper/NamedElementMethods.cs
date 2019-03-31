@@ -129,7 +129,7 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="value">The value being queried</param>
         /// <returns>An enumeration</returns>
-        private static IEnumerable<IElement> GetAllPropertyValues(IElement value)
+        public static IEnumerable<IElement> GetAllPropertyValues(IElement value)
         {
             if (!(value is IObjectAllProperties asProperties))
             {

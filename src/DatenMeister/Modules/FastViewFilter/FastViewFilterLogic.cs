@@ -1,7 +1,6 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -10,6 +9,11 @@ namespace DatenMeister.Modules.FastViewFilter
 {
     public class FastViewFilterLogic
     {
+        /// <summary>
+        /// Defines the path to the packages of the fast view filters
+        /// </summary>
+        public const string PackagePathTypesFastViewFilters = "DatenMeister::FastViewFilters";
+
         private readonly LocalTypeSupport _localTypeSupport;
         private readonly PackageMethods _packageMethods;
         private readonly _UML _uml;
@@ -27,6 +31,6 @@ namespace DatenMeister.Modules.FastViewFilter
         public IReflectiveCollection FastViewFilters =>
             _packageMethods.GetPackagedObjects(
                 _localTypeSupport.InternalTypes.elements(),
-                ViewLogic.PackagePathTypesFastViewFilters).WhenMetaClassIs(_uml.StructuredClassifiers.__Class);
+                PackagePathTypesFastViewFilters).WhenMetaClassIs(_uml.StructuredClassifiers.__Class);
     }
 }

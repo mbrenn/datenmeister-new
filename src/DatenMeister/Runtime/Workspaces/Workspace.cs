@@ -32,6 +32,11 @@ namespace DatenMeister.Runtime.Workspaces
         public List<Workspace> MetaWorkspaces { get; } = new List<Workspace>();
 
         /// <summary>
+        /// Adds plugins which allow additional extents to an extent
+        /// </summary>
+        public List<IEnumerable<IExtent>> ExtentPlugins = new List<IEnumerable<IExtent>>();
+
+        /// <summary>
         /// Adds a meta workspace
         /// </summary>
         /// <param name="workspace">Workspace to be added as a meta workspace</param>
@@ -52,7 +57,29 @@ namespace DatenMeister.Runtime.Workspaces
 
         public string annotation { get; set; }
 
-        public IEnumerable<IExtent> extent => _extent;
+        /// <summary>
+        /// Gets the extents. The source of the extent list is the _extent combined with the
+        /// enumeration of plugins. 
+        /// </summary>
+        public IEnumerable<IExtent> extent
+        {
+            get
+            {
+                foreach (var localExtent in _extent)
+                {
+                    yield return localExtent;
+                }
+
+                foreach (var plugin in ExtentPlugins)
+                {
+                    foreach (var pluginExtent in plugin)
+                    {
+                        yield return pluginExtent;
+                    }
+                }
+
+            }
+        }
 
         public IEnumerable<ITag> properties => _properties;
 
@@ -172,9 +199,9 @@ namespace DatenMeister.Runtime.Workspaces
                 // Looks into the cache for the filledtypes
                 foreach (var value in FilledTypeCache)
                 {
-                    if (value is TFilledType)
+                    if (value is TFilledType filledType)
                     {
-                        return value as TFilledType;
+                        return filledType;
                     }
                 }
 

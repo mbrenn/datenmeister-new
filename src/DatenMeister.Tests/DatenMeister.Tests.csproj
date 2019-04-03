@@ -64,6 +64,7 @@
     <Compile Include="DotNet\DotNetTests.cs" />
     <Compile Include="Excel\ExcelTests.cs" />
     <Compile Include="Modules\ChangeEventManager.cs" />
+    <Compile Include="Modules\DataviewTests.cs" />
     <Compile Include="Modules\UserManagementTests.cs" />
     <Compile Include="Modules\ViewLogicTests.cs" />
     <Compile Include="Mof\Core\MofObjectTests.cs" />

@@ -83,7 +83,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Defines the current form definition of the window as provided by the
         /// derived method 'RequestForm'.
         /// </summary>
-        public IElement CurrentFormDefinition { get; set; }
+        public IObject CurrentFormDefinition { get; set; }
 
         /// <summary>
         /// Gets or sets the view extensions
@@ -102,7 +102,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Updates the content by going through the fields and items
         /// </summary>
-        public void SetContent(IReflectiveCollection items, IElement formDefintion, List<ViewExtension> viewExtensions)
+        public void SetContent(IReflectiveCollection items, IObject formDefintion, List<ViewExtension> viewExtensions)
         {
             UnregisterCurrentChangeEventHandle();
             if (items is IHasExtent asExtent)
@@ -880,6 +880,23 @@ namespace DatenMeister.WPF.Forms.Base
         private void ItemListViewControl_OnUnloaded(object sender, RoutedEventArgs e)
         {
             UnregisterCurrentChangeEventHandle();
+        }
+
+        /// <summary>
+        /// Gets the context menu allowing the copying of the given text to the Clipboard
+        /// </summary>
+        /// <param name="text">Text to be stored</param>
+        /// <returns>Resulting context menu</returns>
+        public static ContextMenu GetCopyToClipboardContextMenu(string text)
+        {
+            var contextMenu = new ContextMenu();
+            var item = new MenuItem
+            {
+                Header = "Copy to Clipboard"
+            };
+            item.Click += (x, y) => { Clipboard.SetText(text); };
+            contextMenu.Items.Add(item);
+            return contextMenu;
         }
     }
 }

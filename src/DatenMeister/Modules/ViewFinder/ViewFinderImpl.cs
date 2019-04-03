@@ -109,7 +109,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="sequence">Sequence to be used</param>
         /// <returns>Created form object</returns>
-        public IElement CreateView(IReflectiveCollection sequence)
+        public IObject CreateView(IReflectiveCollection sequence)
         {
             var form = _formCreator.CreateForm(sequence, FormCreator.CreationMode.All);
             return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetInternalViewExtent());
@@ -120,7 +120,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="element">Element to be used</param>
         /// <returns>Created form object</returns>
-        public IElement CreateView(IObject element)
+        public IObject CreateView(IObject element)
         {
             var form = _formCreator.CreateForm(element, FormCreator.CreationMode.All);
             return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetInternalViewExtent());

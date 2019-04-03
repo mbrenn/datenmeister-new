@@ -146,7 +146,7 @@ namespace DatenMeister.WPF.Forms.Lists
         private void CreateTabForItems(IReflectiveCollection tabItems, IElement metaClass)
         {
             var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
-            IElement view;
+            IObject view;
             var extentType = (Items as IHasExtent)?.Extent.GetExtentType();
 
             if (Items == SelectedItems)
@@ -297,6 +297,7 @@ namespace DatenMeister.WPF.Forms.Lists
                         {
                             new Bold {Inlines = {new Run("Extent: ")}},
                             new Run(ExtentUrl)
+                                {ContextMenu = ItemListViewControl.GetCopyToClipboardContextMenu(ExtentUrl)}
                         }
                     }));
 

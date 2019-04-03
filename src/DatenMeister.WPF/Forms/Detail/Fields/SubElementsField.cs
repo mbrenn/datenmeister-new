@@ -69,7 +69,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
         private void CreatePanelElement()
         {
             var valueOfElement = _element.getOrDefault<IReflectiveCollection>(_propertyName);
-            var form = _fieldData.getOrDefault<IElement>(_FormAndFields._SubElementFieldData.form);
+            IObject form = _fieldData.getOrDefault<IElement>(_FormAndFields._SubElementFieldData.form);
 
             if (valueOfElement == null)
             {

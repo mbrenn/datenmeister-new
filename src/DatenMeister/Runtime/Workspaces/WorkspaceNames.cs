@@ -7,6 +7,7 @@
         public const string NameTypes = "Types";
         public const string NameUml = "UML";
         public const string NameMof = "MOF";
+        public const string NameViews = "Views";
         public const string UriUmlExtent = "datenmeister:///_internal/xmi/uml";
         public const string UriMofExtent = "datenmeister:///_internal/xmi/mof";
         public const string UriPrimitiveTypesExtent = "datenmeister:///_internal/xmi/primitivetypes";

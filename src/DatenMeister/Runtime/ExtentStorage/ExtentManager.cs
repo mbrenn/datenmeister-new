@@ -232,7 +232,6 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
         }
 
-
         /// <summary>
         /// Loads all extents
         /// </summary>
@@ -349,6 +348,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 // If workspace is not known, accept it
                 return false;
             }
+            
             var metaWorkspaces = workspace.MetaWorkspaces;
             foreach (var metaWorkspace in metaWorkspaces)
             {

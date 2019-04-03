@@ -290,16 +290,32 @@ namespace DatenMeister.Runtime.Workspaces
         {
             return logic.GetWorkspace(WorkspaceNames.NameManagement);
         }
-        public static Workspace GetDataWorkspace(
-            this IWorkspaceLogic logic)
+
+        public static Workspace GetDataWorkspace(this IWorkspaceLogic logic)
         {
             return logic.GetWorkspace(WorkspaceNames.NameData);
         }
 
-        public static Workspace GetTypesWorkspace(
-            this IWorkspaceLogic logic)
+        public static Workspace GetTypesWorkspace(this IWorkspaceLogic logic)
         {
             return logic.GetWorkspace(WorkspaceNames.NameTypes);
+        }
+
+        public static Workspace GetViewsWorkspace(this IWorkspaceLogic logic)
+        {
+            return logic.GetWorkspace(WorkspaceNames.NameViews);
+        }
+
+        public static IUriExtent GetUserViewsExtent(this IWorkspaceLogic logic)
+        {
+            var mgmt = GetManagementWorkspace(logic);
+            return mgmt.FindExtent(WorkspaceNames.UriUserViewExtent);
+        }
+
+        public static IUriExtent GetInternalViewsExtent(this IWorkspaceLogic logic)
+        {
+            var mgmt = GetManagementWorkspace(logic);
+            return mgmt.FindExtent(WorkspaceNames.UriInternalViewExtent);
         }
 
         /// <summary>

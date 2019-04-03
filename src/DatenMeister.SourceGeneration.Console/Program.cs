@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Models;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.DataViews;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.XMI;
@@ -66,6 +67,19 @@ namespace DatenMeister.SourceGeneration.Console
 
             System.Console.WriteLine(" Done");
 
+            System.Console.Write("Create Sourcecode for DataViews...");
+            SourceGenerator.GenerateSourceFor(
+                new SourceGeneratorOptions
+                {
+                    ExtentUrl = WorkspaceNames.UriInternalTypesExtent,
+                    Name = "DataViews",
+                    Path = "./",
+                    Namespace = "DatenMeister.Models.DataViews",
+                    Types = DataViewPlugin.GetTypes()
+                });
+
+            System.Console.WriteLine(" Done");
+
 #if !DEBUG
             File.Copy("../../primitivetypes.cs", "../../../DatenMeister/Core/Filler/primitivetypes.cs", true);
             File.Copy("../../FillThePrimitiveTypes.cs", "../../../DatenMeister/Core/Filler/FillThePrimitiveTypes.cs", true);
@@ -89,6 +103,11 @@ namespace DatenMeister.SourceGeneration.Console
             File.Copy("./FastViewFilters.filler.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.filler.cs", true);
             File.Copy("./FastViewFilters.class.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.class.cs", true);
             File.Copy("./FastViewFilters.dotnet.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.dotnet.cs", true);
+ 
+            File.Copy("./DataViews.filler.cs", "../../../DatenMeister/Models/DataViews/DataViews.filler.cs", true);
+            File.Copy("./DataViews.class.cs", "../../../DatenMeister/Models/DataViews/DataViews.class.cs", true);
+            File.Copy("./DataViews.dotnet.cs", "../../../DatenMeister/Models/DataViews/DataViews.dotnet.cs", true);
+
 #endif
         }
 

@@ -22,6 +22,12 @@ namespace DatenMeister.DotNet
             }
         }
 
+        /// <summary>
+        /// Loads an xml document from the assembly
+        /// </summary>
+        /// <param name="typeInAssembly">Type containing the assembly in which the resource is located</param>
+        /// <param name="resourcePath">Path to the resource</param>
+        /// <returns>Document to be located</returns>
         public static XDocument LoadXmlFromAssembly(Type typeInAssembly, string resourcePath)
         {
             using (var stream =

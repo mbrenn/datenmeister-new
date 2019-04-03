@@ -26,6 +26,11 @@ namespace DatenMeister.Integration
 {
     public class Integrator
     {
+        /// <summary>
+        /// Settings being used for integration
+        /// </summary>
+        private IntegrationSettings _settings;
+
         public string PathWorkspaces { get; }
 
         public string PathExtents { get; }
@@ -46,8 +51,6 @@ namespace DatenMeister.Integration
         {
             return Path.Combine(settings.DatabasePath, "DatenMeister.Extents.xml");
         }
-
-        private IntegrationSettings _settings;
 
         public Integrator(IntegrationSettings settings)
         {

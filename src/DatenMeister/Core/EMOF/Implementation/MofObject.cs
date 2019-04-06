@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Implementation.Uml;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
@@ -198,6 +199,14 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public void set(string property, object value)
         {
+            // Checks if the value is a default value. If yes, it can be removed...
+            if (MofUmlHelper.IsDefaultValue(this, property, value))
+            {
+                ProviderObject.DeleteProperty(property);
+                return;
+            }
+
+            // Value is not a default value, so it needs to be stored into the database
             if (DotNetHelper.IsOfEnumeration(value))
             {
                 var valueAsEnumeration = (IEnumerable<object>) value;

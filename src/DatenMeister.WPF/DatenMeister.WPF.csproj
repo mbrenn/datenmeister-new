@@ -75,10 +75,12 @@
     <Compile Include="Forms\Base\ViewExtensions\GenericButtonDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\InfoLineDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\ItemButtonDefinition.cs" />
+    <Compile Include="Forms\Base\ViewExtensions\IViewExtensionFactory.cs" />
     <Compile Include="Forms\Base\ViewExtensions\RibbonButtonDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\RowItemButtonDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\TreeViewItemCommandDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\ViewExtension.cs" />
+    <Compile Include="Forms\Base\ViewExtensions\ViewExtensionTargetInformation.cs" />
     <Compile Include="Forms\Detail\Fields\CheckboxField.cs" />
     <Compile Include="Forms\Detail\Fields\DateTimeField.cs" />
     <Compile Include="Forms\Detail\Fields\DropdownField.cs" />
@@ -101,11 +103,15 @@
     <Compile Include="Forms\Specific\ImportExtentDlg.xaml.cs">
       <DependentUpon>ImportExtentDlg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GuiObjectCollection.cs" />
     <Compile Include="Helper\ComboBoxEx.cs" />
     <Compile Include="Modules\Icons.cs" />
     <Compile Include="Modules\IIconRepository.cs" />
     <Compile Include="Modules\StandardRepository.cs" />
     <Compile Include="Modules\TypeManager\TypeManagerListView.cs" />
+    <Compile Include="Modules\ViewManager\NavigatorForViews.cs" />
+    <Compile Include="Modules\ViewManager\ViewManagerPlugin.cs" />
+    <Compile Include="Modules\ViewManager\ViewManagerViewExtensionFactory.cs" />
     <Compile Include="Navigation\ControlNavigation.cs" />
     <Compile Include="Navigation\CreatableTypeNavigator.cs" />
     <Compile Include="Navigation\IControlNavigation.cs" />

@@ -203,12 +203,13 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="sourcePackage">Source package containing the elements to be imported</param>
         /// <param name="targetPackage">Target package receiving the elements</param>
-        public static void ImportPackage(IObject sourcePackage, IElement targetPackage)
+        /// <param name="copyOptions">Defines the options which shall be used for the importing of the package</param>
+        public static void ImportPackage(IObject sourcePackage, IElement targetPackage, CopyOptions copyOptions = CopyOptions.None)
         {
             var objectCopier = new ObjectCopier(new MofFactory(targetPackage.GetExtentOf()));
             foreach (var subElement in GetPackagedObjects(sourcePackage).OfType<IObject>())
             {
-                var copiedObject = objectCopier.Copy(subElement);
+                var copiedObject = objectCopier.Copy(subElement, copyOptions);
                 AddObjectToPackage(targetPackage, copiedObject);
             }
         }
@@ -244,7 +245,7 @@ namespace DatenMeister.Uml.Helper
                 var sourcePackage = GetOrCreatePackageStructure(
                     pseudoExtent.elements(),
                     sourcePackageName);
-                PackageMethods.ImportPackage(sourcePackage, targetPackage);
+                PackageMethods.ImportPackage(sourcePackage, targetPackage, CopyOptions.CopyId);
             }
         }
     }

@@ -179,7 +179,9 @@ namespace DatenMeister.Integration
                 IntegrateFormAndFields.Assign(
                     workspaceData.Uml.Get<_UML>(),
                     mofFactory,
-                    packageMethods.GetPackagedObjects(localTypeSupport.InternalTypes.elements(), "DatenMeister::Forms"),
+                    packageMethods.GetPackagedObjects(
+                        localTypeSupport.InternalTypes.elements(), 
+                        "DatenMeister::Forms"),
                     fields,
                     (MofUriExtent) localTypeSupport.InternalTypes);
 
@@ -188,11 +190,13 @@ namespace DatenMeister.Integration
 
                 // Adds the module for managementprovider
                 var managementProvider = new _ManagementProvider();
-                typeWorkspace.Set(fields);
+                typeWorkspace.Set(managementProvider);
                 IntegrateManagementProvider.Assign(
                     workspaceData.Uml.Get<_UML>(),
                     mofFactory,
-                    packageMethods.GetPackagedObjects(localTypeSupport.InternalTypes.elements(), "DatenMeister::Management"),
+                    packageMethods.GetPackagedObjects(
+                        localTypeSupport.InternalTypes.elements(), 
+                        "DatenMeister::Management"),
                     managementProvider,
                     (MofUriExtent) localTypeSupport.InternalTypes);
 

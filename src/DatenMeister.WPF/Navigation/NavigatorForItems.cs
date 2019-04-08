@@ -21,6 +21,46 @@ using DatenMeister.WPF.Forms.Lists;
 
 namespace DatenMeister.WPF.Navigation
 {
+    public class NavigateToItemConfig
+    {
+        /// <summary>
+        /// Gets or sets the detail element that shall be shown
+        /// </summary>
+        public IObject DetailElement { get; set; }
+
+        /// <summary>
+        /// Gets or sets the title for the dialog or window
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the action that shall be performed after the view has been created
+        /// </summary>
+        public Action<DetailFormControl> AfterCreatedFunction { get; set; }
+
+        /// <summary>
+        /// If the detail element is empty, then the metaclass can be set, so a new element will be created which is derived
+        /// by the metaclass. 
+        /// </summary>
+        public IElement MetaClass { get; set; }
+
+        /// <summary>
+        /// If the detail element is empty, then the element will be added upon the given container element by the <c>ContainerProperty</c>.
+        /// If ContainerProperty is empty, then the user will be asked which property of the parent shall be used for adding
+        /// </summary>
+        public IObject ContainerElement { get; set; }
+
+        /// <summary>
+        /// Gets or sets the property of the containerelement to which the element will be added
+        /// </summary>
+        public string ContainerProperty { get; set; }
+
+        /// <summary>
+        /// Gets or sets the form definition to be used to create the item
+        /// </summary>
+        public IObject FormDefinition { get; set; }
+    }
+
     public class NavigatorForItems
     {
         /// <summary>
@@ -29,26 +69,46 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="window">Window which is the owner for the detail window</param>
         /// <param name="element">Element to be shown</param>
         /// <param name="afterCreated">This method will be called after the instance of DetailFormControl was created. It can be used to hook upon event in DetailFormControl</param>
+        /// <param name="title">Title of the element to be shown</param>
         /// <returns>The navigation being used to control the view</returns>
         public static IControlNavigationSaveItem NavigateToElementDetailView(
-            INavigationHost window, 
+            INavigationHost window,
             IObject element,
             Action<DetailFormControl> afterCreated = null,
             string title = null)
         {
+            return NavigateToElementDetailView(window,
+                new NavigateToItemConfig
+                {
+                    Title = title,
+                    DetailElement = element,
+                    AfterCreatedFunction = afterCreated
+                });
+        }
+
+        public static IControlNavigationSaveItem NavigateToElementDetailView(
+                INavigationHost window,
+                NavigateToItemConfig navigateToItemConfig)
+        { 
             return (IControlNavigationSaveItem) window.NavigateTo(
                 () =>
                 {
                     var control = new DetailFormControl
                     {
                         AllowNewProperties = true,
-                        Title = title
+                        Title = navigateToItemConfig.Title
                     };
 
-                    control.SetContent(element, null);
+                    control.SetContent(navigateToItemConfig.DetailElement, null);
+                    if (navigateToItemConfig.FormDefinition != null)
+                    {
+                        control.ViewDefinition = new ViewDefinition(
+                            "Selected",
+                            navigateToItemConfig.FormDefinition);
+                    }
 
                     // calls the hook, so event handling can be introduced
-                    afterCreated?.Invoke(control);
+                    navigateToItemConfig.AfterCreatedFunction?.Invoke(control);
 
                     control.AddDefaultButtons();
                     return control;
@@ -145,6 +205,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="element">The item to which one of the properties will be aded
         /// </param>
         /// <param name="metaclass">Metaclass, whose instance will be created</param>
+        /// <param name="parentProperty">The property on which the new element will be attached to the parent property</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
         public static IControlNavigationNewItem NavigateToNewItemForItem(
             INavigationHost window,
@@ -152,8 +213,30 @@ namespace DatenMeister.WPF.Navigation
             IElement metaclass,
             string parentProperty = null)
         {
+            return NavigateToNewItemForItem(
+                window,
+                new NavigateToItemConfig
+                {
+                    ContainerElement = element,
+                    MetaClass = metaclass,
+                    ContainerProperty = parentProperty
+                }
+            );
+        }
+        /// <summary>
+        /// Creates a new item and adds the item to the given container element.
+        /// The property to which the container will be determined is set by the Container Property
+        /// If the property is not set, then the user will be asked about which property to be set
+        /// </summary>
+        /// <param name="window">Navigation Host being used</param>
+        /// <param name="config">Configuration for the user</param>
+        /// <returns>The control element</returns>
+        public static IControlNavigationNewItem NavigateToNewItemForItem(
+            INavigationHost window,
+            NavigateToItemConfig config)
+        { 
             var result = new ControlNavigation();
-            if (metaclass == null)
+            if (config.MetaClass == null)
             {
                 var createableTypes = new CreatableTypeNavigator();
                 createableTypes.Closed += (x, y) =>
@@ -161,18 +244,18 @@ namespace DatenMeister.WPF.Navigation
                     CreateElementItself(createableTypes.SelectedType);
                 };
 
-                createableTypes.NavigateToSelectCreateableType(window, element.GetExtentOf());
+                createableTypes.NavigateToSelectCreateableType(window, config.ContainerElement.GetExtentOf());
             }
             else
             {
-                CreateElementItself(metaclass);
+                CreateElementItself(config.MetaClass);
             }
 
             // Creates a element by the given metaclass. If parent property is not defined, the parent property
             // may be chosen by the user
             void CreateElementItself(IElement selectedMetaclass)
             {
-                var factory = new MofFactory(element);
+                var factory = new MofFactory(config.ContainerElement);
                 var newElement = factory.create(selectedMetaclass);
                 var typeWorkspace = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace();
 
@@ -189,7 +272,7 @@ namespace DatenMeister.WPF.Navigation
                                     .get<IReflectiveSequence>(_FormAndFields._Form.fields);
                             var formFactory = new MofFactory(fields);
 
-                            if (parentProperty == null) // ParentProperty is not given, so user gives property
+                            if (config.ContainerProperty == null) // ParentProperty is not given, so user gives property
                             {
                                 // Parent property is already given by function call
                                 var dropField = formFactory.Create<_FormAndFields>(typeWorkspace, f => f.__DropDownFieldData);
@@ -200,7 +283,7 @@ namespace DatenMeister.WPF.Navigation
                                 dropField.set(_FormAndFields._DropDownFieldData.isAttached, true);
 
                                 var list = new List<object>();
-                                var properties = ObjectHelper.GetPropertyNames(element)
+                                var properties = ObjectHelper.GetPropertyNames(config.ContainerElement)
                                     .OrderBy(z => z).Distinct();
                                 foreach (var property in properties)
                                 {
@@ -223,8 +306,8 @@ namespace DatenMeister.WPF.Navigation
 
                 detailControlView.Saved += (a, b) =>
                 {
-                    var selectedProperty = parentProperty != null ? 
-                        parentProperty : 
+                    var selectedProperty = config.ContainerProperty != null ? 
+                        config.ContainerProperty : 
                         b.AttachedItem.getOrDefault<string>("ParentProperty");
 
                     if (string.IsNullOrEmpty(selectedProperty))
@@ -233,7 +316,7 @@ namespace DatenMeister.WPF.Navigation
                         return;
                     }
 
-                    element.AddCollectionItem(selectedProperty, b.Item);
+                    config.ContainerElement.AddCollectionItem(selectedProperty, b.Item);
 
                     // Adds the element to the dialog
                     // collection.add(newElement);

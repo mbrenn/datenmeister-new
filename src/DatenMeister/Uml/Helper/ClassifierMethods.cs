@@ -93,19 +93,41 @@ namespace DatenMeister.Uml.Helper
 
 
         /// <summary>
-        /// Gets or sets a valiue whether the given element is a derived type of the fullname.
+        /// Gets or sets a value whether the given element is a derived type of the fullname.
         /// </summary>
-        /// <param name="classifier">Classifier to be verified</param>
-        /// <param name="fullName">The full name given</param>
+        /// <param name="specializedClassifier">Classifier to be verified</param>
+        /// <param name="generalizedFullName">The full name given</param>
         /// <returns>true, if the element is a derived type</returns>
-        public static bool IsDerivedTypeOf (IElement classifier, string fullName)
+        public static bool IsSpecializedClassifierOf(IElement specializedClassifier, string generalizedFullName)
         {
-            if (NamedElementMethods.GetFullName(classifier) == fullName)
+            if (NamedElementMethods.GetFullName(specializedClassifier) == generalizedFullName)
             {
                 return true;
             }
 
-            return GetGeneralizations(classifier).Any(x => IsDerivedTypeOf(x, fullName));
+            return GetGeneralizations(specializedClassifier).Any(x => IsSpecializedClassifierOf(x, generalizedFullName));
+        }
+
+        /// <summary>
+        /// Gets the information whether the specialized classifier can be generalized to the generalizedClassifier
+        /// </summary>
+        /// <param name="specializedClassifer">Special class which is checked</param>
+        /// <param name="generalizedClassifier">The class against the specialized will be checked against. </param>
+        /// <returns>true, if</returns>
+        public static bool IsSpecializedClassifierOf(IElement specializedClassifer, IElement generalizedClassifier)
+        {
+            if (specializedClassifer == null || generalizedClassifier == null)
+            {
+                return false;
+            }
+
+            if (specializedClassifer.@equals(generalizedClassifier))
+            {
+                return true;
+            }
+
+            return GetGeneralizations(specializedClassifer)
+                .Any(generalization => IsSpecializedClassifierOf(generalization, generalizedClassifier));
         }
     }
 }

@@ -42,6 +42,13 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                     MinWidth = 600
                 };
 
+                var filterMetaClasses =
+                    fieldData.getOrDefault<IElement>(_FormAndFields._ReferenceFieldData.metaClassFilter);
+                if (filterMetaClasses != null)
+                {
+                    _control.FilterMetaClasses = filterMetaClasses;
+                }
+
                 if (fieldData.GetOrDefault(_FormAndFields._ReferenceFieldData.defaultValue) is IElement element)
                 {
                     _control.Select(element);

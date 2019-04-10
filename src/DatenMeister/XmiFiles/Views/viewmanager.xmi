@@ -7,8 +7,9 @@
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
               name="name" title="Name of view" />
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData"
-              name="type" title="Select View" defaultWorkspace="Management" 
-              defaultExtentUri="datenmeister:///management/views/user"/>
+              name="type" title="Select View" defaultWorkspace="Management" isSelectionInline="True"
+              defaultExtentUri="datenmeister:///management/views/user" 
+              metaClassFilter-ref="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.Form"/>
     </packagedElement>
   </item>
 </item>

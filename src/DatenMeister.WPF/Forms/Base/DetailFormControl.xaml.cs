@@ -147,6 +147,10 @@ namespace DatenMeister.WPF.Forms.Base
                 null,
                 NavigationCategories.File + ".Copy");
 
+            yield return new ItemButtonDefinition(
+                "Delete", 
+                (x) => MessageBox.Show("X"));
+
             if (DetailElement != null)
             {
                 yield return new RibbonButtonDefinition(
@@ -698,6 +702,18 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             public IObject View { get; }
+        }
+
+        public void EvaluateViewExtensions(IEnumerable<ViewExtension> extensions)
+        {
+            foreach (var extension in extensions)
+            {
+                if (extension is ItemButtonDefinition itemButtonDefinition)
+                {
+                    AddGenericButton(itemButtonDefinition.Name,
+                        () => itemButtonDefinition.OnPressed(DetailElement));
+                }
+            }
         }
     }
 }

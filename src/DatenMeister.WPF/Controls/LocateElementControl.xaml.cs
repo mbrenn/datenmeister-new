@@ -71,7 +71,7 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Gets or sets the metaclasses that will be filtered
         /// </summary>
-        public IElement FilterMetaClasses
+        public IEnumerable<IElement> FilterMetaClasses
         {
             get => items.FilterMetaClasses;
             set => items.FilterMetaClasses = value;

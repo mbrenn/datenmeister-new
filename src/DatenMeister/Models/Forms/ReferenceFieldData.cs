@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Models.Forms
 {
@@ -48,6 +49,6 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         /// Gets or sets the metaclasses to which all elements will be filtered. 
         /// </summary>
-        public IElement metaClassFilter { get; set; }
+        public IEnumerable<IElement> metaClassFilter { get; set; }
     }
 }

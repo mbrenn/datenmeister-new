@@ -64,12 +64,12 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Stores the metaclasses that will be used as filtering
         /// </summary>
-        private IElement _filterMetaClasses;
+        private IEnumerable<IElement> _filterMetaClasses;
 
         /// <summary>
         /// Gets or sets the metaclasses that will be used as filtering
         /// </summary>
-        public IElement FilterMetaClasses
+        public IEnumerable<IElement> FilterMetaClasses
         {
             get => _filterMetaClasses;
             set
@@ -208,9 +208,22 @@ namespace DatenMeister.WPF.Forms.Base
                     // Perform filtering of the item
                     if (FilterMetaClasses != null && item is IElement itemAsElement)
                     {
-                        if (!ClassifierMethods.IsSpecializedClassifierOf(itemAsElement.metaclass, FilterMetaClasses))
+                        var list = FilterMetaClasses.ToList();
+                        if (list.Count != 0)
                         {
-                            continue;
+                            var found = false;
+                            foreach (var metaClass in list)
+                            {
+                                if (ClassifierMethods.IsSpecializedClassifierOf(itemAsElement.metaclass, metaClass))
+                                {
+                                    found = true;
+                                }
+                            }
+
+                            if (found == false)
+                            {
+                                continue;
+                            }
                         }
                     }
 

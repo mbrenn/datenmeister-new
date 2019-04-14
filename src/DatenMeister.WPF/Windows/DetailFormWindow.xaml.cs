@@ -55,10 +55,12 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         public void RebuildNavigation()
         {
+            var detailForm = MainContent?.Content as DetailFormControl;
             var extensions = RibbonHelper.GetDefaultNavigation();
-            var otherExtensions = (MainContent?.Content as DetailFormControl)?.GetViewExtensions();
+            var otherExtensions = detailForm?.GetViewExtensions();
             if (otherExtensions != null) extensions = extensions.Union(otherExtensions);
 
+            detailForm.EvaluateViewExtensions(extensions);
             RibbonHelper.EvaluateExtensions(extensions);
         }
 

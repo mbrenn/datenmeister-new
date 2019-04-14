@@ -420,7 +420,13 @@ namespace DatenMeister.WPF.Forms.Base
                 return;
             }
 
-            NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
+            NavigatorForItems.NavigateToElementDetailView(
+                NavigationHost,
+                new NavigateToItemConfig
+                {
+                    DetailElement = selectedElement,
+                    DetailElementContainer = Items
+                });
         }
 
         /// <summary>
@@ -609,7 +615,9 @@ namespace DatenMeister.WPF.Forms.Base
 
             ViewExtensions.Add(
                 new RowItemButtonDefinition(
-                    "Edit", NavigateToElement, ButtonPosition.Before));
+                    "Edit", 
+                    NavigateToElement, 
+                    ButtonPosition.Before));
 
             ViewExtensions.Add(
                 new RibbonButtonDefinition(

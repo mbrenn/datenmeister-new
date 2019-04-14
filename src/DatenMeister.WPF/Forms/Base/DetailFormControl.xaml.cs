@@ -147,6 +147,12 @@ namespace DatenMeister.WPF.Forms.Base
                 null,
                 NavigationCategories.File + ".Copy");
 
+            yield return new RibbonButtonDefinition(
+                "Create Form",
+                CopyForm,
+                null,
+                NavigationCategories.File + ".Views");
+
             if (DetailElement != null)
             {
                 yield return new RibbonButtonDefinition(
@@ -206,6 +212,18 @@ namespace DatenMeister.WPF.Forms.Base
                 var itemXmlView = new ItemXmlViewWindow();
                 itemXmlView.UpdateContent(DetailElement);
                 itemXmlView.Show();
+            }
+
+            void CopyForm()
+            {
+                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                var target = viewLogic.GetUserViewExtent();
+                var copier = new ObjectCopier(new MofFactory(target));
+
+                var copiedForm = copier.Copy(EffectiveForm);
+                target.elements().add(copiedForm);
+
+                NavigatorForItems.NavigateToElementDetailView(NavigationHost, copiedForm);
             }
         }
 

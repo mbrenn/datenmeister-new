@@ -50,6 +50,12 @@ namespace DatenMeister.WPF.Forms.Base
         public IObject DetailElement { get; private set; }
 
         /// <summary>
+        /// Gets or sets the container for the Detail Element. It will be used to
+        /// delete the item, if required. 
+        /// </summary>
+        public IReflectiveCollection DetailElementContainer { get; set; }
+
+        /// <summary>
         ///     Defines the form definition being used in the detail for
         /// </summary>
         public IObject EffectiveForm { get; private set; }
@@ -147,9 +153,24 @@ namespace DatenMeister.WPF.Forms.Base
                 null,
                 NavigationCategories.File + ".Copy");
 
-            yield return new ItemButtonDefinition(
-                "Delete", 
-                (x) => MessageBox.Show("X"));
+            if (DetailElementContainer != null)
+            {
+                yield return new ItemButtonDefinition(
+                    "Delete",
+                    (x) =>
+                    {
+                        if (
+                            MessageBox.Show(
+                                "Do you want to delete the item?", 
+                                "Delete item", 
+                                MessageBoxButton.YesNo) ==
+                            MessageBoxResult.Yes)
+                        {
+                            DetailElementContainer.remove(DetailElement);
+                            (NavigationHost as Window)?.Close();
+                        }
+                    });
+            }
 
             if (DetailElement != null)
             {
@@ -554,7 +575,7 @@ namespace DatenMeister.WPF.Forms.Base
                         EffectiveForm,
                         x => x.__TextFieldData);
 
-                    var fieldUIElement = fieldValue.CreateElement(
+                    var fieldUiElement = fieldValue.CreateElement(
                         DetailElement,
                         fieldData,
                         this, 
@@ -562,9 +583,9 @@ namespace DatenMeister.WPF.Forms.Base
 
                     ItemFields.Add(new NewPropertyField(
                         fieldKey,
-                        fieldUIElement));
+                        fieldUiElement));
 
-                    CreateRowForField(fieldKey, fieldUIElement);
+                    CreateRowForField(fieldKey, fieldUiElement);
                     fieldKey.Focus();
                 });
             }

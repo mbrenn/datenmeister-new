@@ -36,6 +36,27 @@ namespace DatenMeister.Tests.Uml
             }
         }
 
+
+        [Test]
+        public void TestGeneralizationEvaluation()
+        {
+            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
+            {
+                var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
+                var uml = workspaceLogic.GetUmlData();
+
+                var isSpecialized = ClassifierMethods.IsSpecializedClassifierOf(
+                    uml.StructuredClassifiers.__Class,
+                    uml.Classification.__Classifier);
+                Assert.That(isSpecialized, Is.True);
+
+                isSpecialized = ClassifierMethods.IsSpecializedClassifierOf(
+                    uml.CommonStructure.__Comment,
+                    uml.Classification.__Classifier);
+                Assert.That(isSpecialized, Is.False);
+            }
+        }
+
         [Test]
         public void TestFullName()
         {

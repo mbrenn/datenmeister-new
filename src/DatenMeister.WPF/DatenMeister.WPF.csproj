@@ -107,6 +107,7 @@
     <Compile Include="Helper\ComboBoxEx.cs" />
     <Compile Include="Modules\Icons.cs" />
     <Compile Include="Modules\IIconRepository.cs" />
+    <Compile Include="Modules\ImportExtentManager\ImportExtentManagerPlugin.cs" />
     <Compile Include="Modules\StandardRepository.cs" />
     <Compile Include="Modules\TypeManager\TypeManagerListView.cs" />
     <Compile Include="Modules\ViewManager\NavigatorForViews.cs" />

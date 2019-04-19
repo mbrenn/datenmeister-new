@@ -37,6 +37,11 @@ namespace DatenMeister.Models.Forms
         public string defaultWorkspace { get; set; }
 
         /// <summary>
+        /// Does not only set the default children
+        /// </summary>
+        public bool showAllChildren { get; set; }
+
+        /// <summary>
         /// Gets or sets the value whether the workspace selection shall be shown
         /// </summary>
         public bool showWorkspaceSelection { get; set; }

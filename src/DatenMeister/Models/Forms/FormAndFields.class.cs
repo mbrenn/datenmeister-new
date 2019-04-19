@@ -319,6 +319,9 @@ namespace DatenMeister.Models.Forms
             public static string @defaultWorkspace = "defaultWorkspace";
             public IElement _defaultWorkspace = null;
 
+            public static string @showAllChildren = "showAllChildren";
+            public IElement _showAllChildren = null;
+
             public static string @showWorkspaceSelection = "showWorkspaceSelection";
             public IElement _showWorkspaceSelection = null;
 

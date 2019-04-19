@@ -473,6 +473,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ReferenceFieldData._defaultWorkspace = value;
                                 }
+                                if(name == "showAllChildren") // Looking for property
+                                {
+                                    tree.ReferenceFieldData._showAllChildren = value;
+                                }
                                 if(name == "showWorkspaceSelection") // Looking for property
                                 {
                                     tree.ReferenceFieldData._showWorkspaceSelection = value;

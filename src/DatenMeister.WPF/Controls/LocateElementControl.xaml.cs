@@ -33,7 +33,7 @@ namespace DatenMeister.WPF.Controls
             }
         }
 
-        private IWorkspaceLogic _workspaceLogic;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
         /// Stores the selected workspace used by the user
@@ -66,6 +66,19 @@ namespace DatenMeister.WPF.Controls
         {
             get => (bool) GetValue(ShowExtentSelectionProperty);
             set => SetValue(ShowExtentSelectionProperty, value);
+        }
+
+        public static readonly DependencyProperty ShowAllChildrenProperty = DependencyProperty.Register(
+            "ShowAllChildren", typeof(bool), typeof(LocateElementControl), new PropertyMetadata(default(bool)));
+
+        public bool ShowAllChildren
+        {
+            get => (bool) GetValue(ShowAllChildrenProperty);
+            set
+            {
+                SetValue(ShowAllChildrenProperty, value);
+                items.ShowAllChildren = true;
+            }
         }
 
         /// <summary>

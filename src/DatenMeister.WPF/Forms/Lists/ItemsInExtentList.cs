@@ -288,7 +288,29 @@ namespace DatenMeister.WPF.Forms.Lists
                     null,
                     NavigationCategories.File + ".Workspaces"));
 
+            // Adds the import elements
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Import existing Extent",
+                    null,
+                    null,
+                    NavigationCategories.File + ".Import"));
 
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Import new Extent",
+                    null,
+                    null,
+                    NavigationCategories.File + ".Import"));
+
+            viewDefinition.ViewExtensions.Add(
+                new RibbonButtonDefinition(
+                    "Import from Clipboard",
+                    null,
+                    null,
+                    NavigationCategories.File + ".Import"));
+
+            // Adds the infoline
             viewDefinition.ViewExtensions.Add(
                 new InfoLineDefinition(() =>
                     new TextBlock

@@ -481,6 +481,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ReferenceFieldData._showExtentSelection = value;
                                 }
+                                if(name == "metaClassFilter") // Looking for property
+                                {
+                                    tree.ReferenceFieldData._metaClassFilter = value;
+                                }
                                 if(name == "isAttached") // Looking for property
                                 {
                                     tree.ReferenceFieldData._isAttached = value;

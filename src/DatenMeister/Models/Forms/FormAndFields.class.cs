@@ -325,6 +325,9 @@ namespace DatenMeister.Models.Forms
             public static string @showExtentSelection = "showExtentSelection";
             public IElement _showExtentSelection = null;
 
+            public static string @metaClassFilter = "metaClassFilter";
+            public IElement _metaClassFilter = null;
+
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
 

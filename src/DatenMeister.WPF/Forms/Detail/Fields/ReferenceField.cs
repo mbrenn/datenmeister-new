@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using Autofac;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
@@ -41,6 +44,13 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                     MaxHeight = 400,
                     MinWidth = 600
                 };
+
+                var filterMetaClasses =
+                    fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._ReferenceFieldData.metaClassFilter);
+                if (filterMetaClasses != null)
+                {
+                    _control.FilterMetaClasses = filterMetaClasses.OfType<IElement>();
+                }
 
                 if (fieldData.GetOrDefault(_FormAndFields._ReferenceFieldData.defaultValue) is IElement element)
                 {

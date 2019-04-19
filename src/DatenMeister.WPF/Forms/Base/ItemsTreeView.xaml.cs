@@ -62,6 +62,24 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
+        /// Stores the metaclasses that will be used as filtering
+        /// </summary>
+        private IEnumerable<IElement> _filterMetaClasses;
+
+        /// <summary>
+        /// Gets or sets the metaclasses that will be used as filtering
+        /// </summary>
+        public IEnumerable<IElement> FilterMetaClasses
+        {
+            get => _filterMetaClasses;
+            set
+            {
+                _filterMetaClasses = value;
+                UpdateView();
+            }
+        }
+
+        /// <summary>
         /// Defines the maximum items per level. This is used to reduce the amount of items
         /// </summary>
         private const int MaxItemsPerLevel = 100;
@@ -187,6 +205,29 @@ namespace DatenMeister.WPF.Forms.Base
                 _mappingItems.Clear();
                 foreach (var item in ItemsSource)
                 {
+                    // Perform filtering of the item
+                    if (FilterMetaClasses != null && item is IElement itemAsElement)
+                    {
+                        var list = FilterMetaClasses.ToList();
+                        if (list.Count != 0)
+                        {
+                            var found = false;
+                            foreach (var metaClass in list)
+                            {
+                                if (ClassifierMethods.IsSpecializedClassifierOf(itemAsElement.metaclass, metaClass))
+                                {
+                                    found = true;
+                                }
+                            }
+
+                            if (found == false)
+                            {
+                                continue;
+                            }
+                        }
+                    }
+
+                    // Create treeview
                     var treeViewItem = CreateTreeViewItem(item);
                     if (treeViewItem != null)
                     {

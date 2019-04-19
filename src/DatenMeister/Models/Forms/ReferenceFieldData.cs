@@ -1,4 +1,7 @@
-﻿namespace DatenMeister.Models.Forms
+﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+
+namespace DatenMeister.Models.Forms
 {
     /// <summary>
     /// Allows the selection of a certain field by navigating through the extent
@@ -42,5 +45,10 @@
         /// Gets or sets the value whether the extent selection shall be shown
         /// </summary>
         public bool showExtentSelection { get; set; }
+
+        /// <summary>
+        /// Gets or sets the metaclasses to which all elements will be filtered. 
+        /// </summary>
+        public IEnumerable<IElement> metaClassFilter { get; set; }
     }
 }

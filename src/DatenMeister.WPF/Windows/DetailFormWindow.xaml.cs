@@ -164,7 +164,8 @@ namespace DatenMeister.WPF.Windows
 
         public void OnSaved(IObject detailElement, IObject attachedElement)
         {
-            Saved?.Invoke(this, new ItemEventArgs(
+            Saved?.Invoke(this, 
+                new ItemEventArgs(
                 detailElement, 
                 attachedElement));
         }

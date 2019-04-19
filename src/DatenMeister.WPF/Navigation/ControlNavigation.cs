@@ -4,6 +4,10 @@ namespace DatenMeister.WPF.Navigation
 {
     public class ControlNavigation : IControlNavigation, IControlNavigationSaveItem, IControlNavigationNewItem
     {
+        public INavigationGuest NavigationGuest { get; set; }
+
+        public INavigationHost NavigationHost { get; set; }
+
         public event EventHandler Closed;
         public event EventHandler<ItemEventArgs> Saved;
         public event EventHandler<NewItemEventArgs> NewItemCreated;

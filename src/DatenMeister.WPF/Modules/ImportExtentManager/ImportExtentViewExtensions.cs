@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Lists;
@@ -13,9 +17,16 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
     /// </summary>
     public class ImportExtentViewExtensions : IViewExtensionFactory
     {
+        private ImportExtentManagerPlugin _plugin;
+
+        public ImportExtentViewExtensions(ImportExtentManagerPlugin plugin)
+        {
+            _plugin = plugin;
+        }
+
         public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
-            if (viewExtensionTargetInformation.NavigationGuest is ItemsInExtentList)
+            if (viewExtensionTargetInformation.NavigationGuest is ItemsInExtentList itemInExtentList)
             {
                 // Adds the import elements
                 yield return new RibbonButtonDefinition(
@@ -40,7 +51,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
             // Imports the existing extent
             void ImportExistingExtent()
             {
-                NavigatorForItems.NavigateToElementDetailView(
+                var controlNavigation = NavigatorForItems.NavigateToElementDetailView(
                     viewExtensionTargetInformation.NavigationHost,
                     new NavigateToItemConfig
                     {
@@ -48,6 +59,32 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                         FormDefinition = GiveMe.Scope.WorkspaceLogic.GetInternalViewsExtent()
                             .element("#ImportManagerFindExtent")
                     });
+
+                controlNavigation.Saved += (x, y) =>
+                {
+                    var selectedExtent = y.Item.getOrDefault<IElement>("selectedExtent");
+                    if (selectedExtent == null)
+                    {
+                        MessageBox.Show("No extent selected");
+                        return;
+                    }
+
+                    var metaClass = selectedExtent.getMetaClass();
+                    if (metaClass?.@equals(_ManagementProvider.TheOne.__Extent) != true)
+                    {
+                        MessageBox.Show("Selected element does not reference an extent");
+                        return;
+                    }
+
+                    var workspace = (y.Item as IElement)?.container();
+                    var workspaceName = workspace.getOrDefault<string>(_ManagementProvider._Workspace.id);
+                    var uri = y.Item.getOrDefault<string>(_ManagementProvider._Extent.uri);
+
+                    // Gets the extent from which the data shall be imported
+                    var sourceExtent  = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
+
+                    _plugin.PerformImport(sourceExtent, itemInExtentList.Items);
+                };
             }
         }
     }

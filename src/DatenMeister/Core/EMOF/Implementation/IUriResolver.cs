@@ -27,13 +27,16 @@ namespace DatenMeister.Core.EMOF.Implementation
     public enum ResolveType
     {
         /// <summary>
-        /// Default resolving process in which all extents in current workspace but also meta workspaces are resolved
+        /// Default resolving process in which all extents in current workspace but also meta workspaces are resolved.
+        /// If nothing was found, a full search will be started
         /// </summary>
         Default = 1, 
+
         /// <summary>
-        /// Resolving in which the current workspace will not be looked. Usefull to look for meta classes
+        /// Resolving in which the current workspace will not be looked. Useful to look for meta classes
         /// </summary>
         OnlyMetaClasses = 2,
+
         /// <summary>
         /// Resolving in which the current extent is resolved solely
         /// </summary>

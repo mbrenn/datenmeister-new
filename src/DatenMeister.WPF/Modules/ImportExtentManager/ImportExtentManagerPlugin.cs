@@ -1,4 +1,6 @@
-﻿using DatenMeister.Core.Plugins;
+﻿using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.Plugins;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Uml.Plugin;
@@ -21,13 +23,18 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
         public void Start(PluginLoadingPosition position)
         {
-            GuiObjectCollection.TheOne.ViewExtensionFactories.Add(new ImportExtentViewExtensions());
+            GuiObjectCollection.TheOne.ViewExtensionFactories.Add(new ImportExtentViewExtensions(this));
             _packageMethods.ImportByManifest(
                 typeof(UmlPlugin),
                 "DatenMeister.XmiFiles.Views.ImportExtentManager.xmi",
                 PackageName,
                 _viewLogic.GetInternalViewExtent(),
                 PackageName);
+        }
+
+        public void PerformImport(IExtent sourceExtent, IReflectiveCollection items)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

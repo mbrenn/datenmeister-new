@@ -5,7 +5,7 @@
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.Form"
                      p1:id="ImportManagerFindExtent" name="Find Extent">
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData"
-              name="type" title="Select Extent" defaultWorkspace="Management" isSelectionInline="True"
+              name="selectedExtent" title="Select Extent" defaultWorkspace="Management" isSelectionInline="True"
               defaultExtentUri="datenmeister:///_internal/workspaces/" showAllChildren="True"/>
     </packagedElement>
   </item>

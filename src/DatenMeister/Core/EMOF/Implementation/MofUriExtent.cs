@@ -3,6 +3,7 @@ using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
@@ -158,6 +159,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
             }
 
+            var alreadyVisited = new HashSet<Runtime.Workspaces.Workspace>();
+            
             if ((resolveType & (ResolveType.NoWorkspace | ResolveType.NoMetaWorkspaces)) == 0)
             {
                 // Now look into the explicit extents, if no specific constraint is given
@@ -169,10 +172,30 @@ namespace DatenMeister.Core.EMOF.Implementation
                         return element;
                     }
                 }
-
-                return ResolveByMetaWorkspaces(uri, _Workspace);
+                
+                return ResolveByMetaWorkspaces(uri, _Workspace, alreadyVisited);
             }
 
+            // If still not found, do a full search in every extent in every workspace
+            if (resolveType == ResolveType.Default)
+            {
+                foreach (var workspace in GiveMe.Scope.WorkspaceLogic.Workspaces)
+                {
+                    if (alreadyVisited.Contains(workspace))
+                    {
+                        continue;
+                    }
+
+                    foreach (var extent in workspace.extent.OfType<IUriExtent>())
+                    {
+                        var result = extent.element(uri);
+                        if (result != null)
+                        {
+                            return result;
+                        }
+                    }
+                }
+            }
 
             return null;
         }

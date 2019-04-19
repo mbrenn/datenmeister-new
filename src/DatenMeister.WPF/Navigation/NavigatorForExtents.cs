@@ -32,7 +32,7 @@ namespace DatenMeister.WPF.Navigation
         public static IControlNavigation OpenExtent(INavigationHost navigationHost, string workspaceId, string extentUrl)
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var uri = ExtentOfWorkspaces.WorkspaceUri + "#" + WebUtility.UrlEncode(extentUrl);
+            var uri = WorkspaceNames.ExtentManagementExtentUri + "#" + WebUtility.UrlEncode(extentUrl);
             return NavigatorForItems.NavigateToElementDetailView(
                 navigationHost, 
                 workspaceLogic.FindItem(uri));

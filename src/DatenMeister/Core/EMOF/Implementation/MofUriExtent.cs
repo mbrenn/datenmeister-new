@@ -173,7 +173,11 @@ namespace DatenMeister.Core.EMOF.Implementation
                     }
                 }
                 
-                return ResolveByMetaWorkspaces(uri, _Workspace, alreadyVisited);
+                var workspaceResult = ResolveByMetaWorkspaces(uri, _Workspace, alreadyVisited);
+                if (workspaceResult != null)
+                {
+                    return workspaceResult;
+                }
             }
 
             // If still not found, do a full search in every extent in every workspace

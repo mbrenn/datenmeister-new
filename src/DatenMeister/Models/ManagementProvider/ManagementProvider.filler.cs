@@ -82,6 +82,10 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                                 {
                                     tree.Workspace._annotation = value;
                                 }
+                                if(name == "extents") // Looking for property
+                                {
+                                    tree.Workspace._extents = value;
+                                }
                             }
                         }
                     }

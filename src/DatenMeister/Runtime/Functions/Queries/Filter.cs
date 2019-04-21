@@ -15,6 +15,14 @@ namespace DatenMeister.Runtime.Functions.Queries
     /// </summary>
     public static class Filter
     {
+        /// <summary>
+        /// Gets the elements out of the reflective collection in which a certain proprety starts
+        /// with a the given value.
+        /// </summary>
+        /// <param name="collection">Collection to be queried</param>
+        /// <param name="property">Property to be set</param>
+        /// <param name="value">The property needs to start with the given value</param>
+        /// <returns></returns>
         public static IReflectiveCollection WhenPropertyStartsWith(
             this IReflectiveCollection collection,
             string property,

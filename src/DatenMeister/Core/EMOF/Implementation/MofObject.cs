@@ -24,22 +24,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         public MofExtent Extent
         {
-            get
-            {
-                if (_extent == null)
-                {
-                    return (Container as MofObject)?.Extent;
-                }
-
-                return _extent;
-            }
+            get => _extent ?? CreatedByExtent;
             set => _extent = CreatedByExtent = value;
         }
-
-        /// <summary>
-        /// Gets or sets the container of the object. This is used to figure out the extent of the container by traversing down the parents
-        /// </summary>
-        public IObject Container { get; set; }
 
         /// <summary>
         /// Stores the extent that is used to create the element. 

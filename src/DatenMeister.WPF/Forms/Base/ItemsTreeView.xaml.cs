@@ -205,28 +205,6 @@ namespace DatenMeister.WPF.Forms.Base
                 _mappingItems.Clear();
                 foreach (var item in ItemsSource)
                 {
-                    // Perform filtering of the item
-                    if (FilterMetaClasses != null && item is IElement itemAsElement)
-                    {
-                        var list = FilterMetaClasses.ToList();
-                        if (list.Count != 0)
-                        {
-                            var found = false;
-                            foreach (var metaClass in list)
-                            {
-                                if (ClassifierMethods.IsSpecializedClassifierOf(itemAsElement.metaclass, metaClass))
-                                {
-                                    found = true;
-                                }
-                            }
-
-                            if (found == false)
-                            {
-                                continue;
-                            }
-                        }
-                    }
-
                     // Create treeview
                     var treeViewItem = CreateTreeViewItem(item);
                     if (treeViewItem != null)
@@ -286,9 +264,32 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 return null;
             }
-
+            
             _alreadyVisited.Add(item);
 
+            // Perform filtering of the item
+            if (FilterMetaClasses != null && item is IElement itemAsElement)
+            {
+                var list = FilterMetaClasses.ToList();
+                if (list.Count != 0)
+                {
+                    var found = false;
+                    foreach (var metaClass in list)
+                    {
+                        if (ClassifierMethods.IsSpecializedClassifierOf(itemAsElement.metaclass, metaClass))
+                        {
+                            found = true;
+                        }
+                    }
+
+                    if (found == false)
+                    {
+                        return null;
+                    }
+                }
+            }
+
+            // Filtering agrees to the item, so it will be added
             var treeViewItem = new TreeViewItem
             {
                 Header = item.ToString(),

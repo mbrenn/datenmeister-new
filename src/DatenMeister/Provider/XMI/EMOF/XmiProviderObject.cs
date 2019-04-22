@@ -396,5 +396,19 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             return false;
         }
+
+        /// <summary>
+        /// Gets the container of the object
+        /// </summary>
+        /// <returns></returns>
+        public IProviderObject GetContainer()
+        {
+            if (XmlNode.Parent != null)
+            {
+                return new XmiProviderObject(XmlNode.Parent, (XmiProvider) Provider);
+            }
+
+            return null;
+        }
     }
 }

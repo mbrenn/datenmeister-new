@@ -38,7 +38,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets or sets the uri of the extent
         /// </summary>
-        private string UriOfExtent {
+        private string UriOfExtent
+        {
             get
             {
                 var uri = isSet("__uri") ? get("__uri") : null;

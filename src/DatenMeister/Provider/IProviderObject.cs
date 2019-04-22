@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Provider
 {
@@ -42,5 +43,16 @@ namespace DatenMeister.Provider
 
         bool RemoveFromProperty(string property, object value);
 
+        /// <summary>
+        /// Gets the container of the element, if supported by the provider
+        /// </summary>
+        /// <returns>null, if no container object available, otherwise an IProviderObject instance</returns>
+        IProviderObject GetContainer();
+
+        /// <summary>
+        /// Sets the container element for the given object
+        /// </summary>
+        /// <param name="value">Value to be set</param>
+        void SetContainer(IProviderObject value);
     }
 }

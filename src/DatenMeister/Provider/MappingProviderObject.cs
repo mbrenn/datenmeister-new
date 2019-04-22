@@ -109,6 +109,11 @@ namespace DatenMeister.Provider
             return result?.Remove(value) == true;
         }
 
+        public IProviderObject GetContainer()
+        {
+            return null;
+        }
+
         /// <summary>
         /// Defines the class to define the properties
         /// </summary>

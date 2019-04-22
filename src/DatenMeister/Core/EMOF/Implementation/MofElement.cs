@@ -24,17 +24,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="providedObject">Provided object by database</param>
         /// <param name="extent">Extent to which the object is allocated to</param>
-        /// <param name="container"></param>
+        /// <param name="referenceElement"></param>
         public MofElement(
             IProviderObject providedObject, 
             MofExtent extent,
-            IElement container = null)
+            IElement referenceElement = null)
             : base(providedObject, extent)
         {
-            Container = container;
             if (CreatedByExtent == null)
             {
-                CreatedByExtent = ((MofElement) container)?.CreatedByExtent;
+                CreatedByExtent = ((MofElement) referenceElement)?.CreatedByExtent;
             }
         }
 
@@ -84,7 +83,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IElement container()
         {
-            return Container as IElement;
+            return new MofElement(ProviderObject.GetContainer(), Extent);
+        }
+
+        /// <summary>
+        /// Sets the container for the element
+        /// </summary>
+        public IObject Container
+        {
+            set => ProviderObject.SetContainer(((MofObject)value).ProviderObject);
         }
         
         /// <summary>

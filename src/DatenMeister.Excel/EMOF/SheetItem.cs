@@ -158,6 +158,11 @@ namespace DatenMeister.Excel.EMOF
             return null;
         }
 
+        public void SetContainer(IProviderObject value)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <inheritdoc />
         public string Id { get; set; }
 

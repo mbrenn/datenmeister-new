@@ -74,18 +74,23 @@ namespace DatenMeister.Excel.EMOF
         /// <inheritdoc />
         public bool AddToProperty(string property, object value, int index)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
         public bool RemoveFromProperty(string property, object value)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IProviderObject GetContainer()
         {
             return SheetItem;
+        }
+
+        public void SetContainer(IProviderObject value)
+        {
+            throw new NotImplementedException();
         }
 
 /*
@@ -174,10 +179,7 @@ namespace DatenMeister.Excel.EMOF
 
                 return $"{firstPart}.{secondPart}";
             }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            set => throw new NotImplementedException();
         }
 
         /// <inheritdoc />

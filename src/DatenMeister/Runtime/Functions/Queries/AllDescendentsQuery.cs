@@ -26,6 +26,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         ///     return this object itself
         /// </summary>
         /// <param name="element">Element being queried</param>
+        /// <param name="byFollowingProperties">The properties that shall be followed</param>
         /// <returns>An enumeration of all object and its descendents</returns>
         public static IEnumerable<IObject> GetDescendents(IObject element, IEnumerable<string> byFollowingProperties = null)
         {
@@ -75,10 +76,10 @@ namespace DatenMeister.Runtime.Functions.Queries
 
                 var value = asMofObject.get(property, noReferences: true);
 
-                if (value is IObject)
+                if (value is IObject valueAsObject)
                 {
                     // Value is an object... perfect!
-                    foreach (var innerValue in GetDescendentsInternal(value as IObject, byFollowingProperties))
+                    foreach (var innerValue in GetDescendentsInternal(valueAsObject, byFollowingProperties))
                     {
                         yield return innerValue;
                     }
@@ -99,14 +100,29 @@ namespace DatenMeister.Runtime.Functions.Queries
 
         private IEnumerable<IObject> GetDescendentsInternal(IEnumerable valueAsEnumerable, ICollection<string> byFollowingProperties)
         {
-            foreach (var element in valueAsEnumerable)
+            if (valueAsEnumerable is MofReflectiveSequence reflectiveSequence)
             {
-                if (element is IObject)
+                foreach (var element in reflectiveSequence.Enumerate(true))
                 {
-                    var elementAsIObject = element as IObject;
-                    foreach (var value in GetDescendentsInternal(elementAsIObject, byFollowingProperties))
+                    if (element is IObject elementAsIObject)
                     {
-                        yield return value;
+                        foreach (var value in GetDescendentsInternal(elementAsIObject, byFollowingProperties))
+                        {
+                            yield return value;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (var element in valueAsEnumerable)
+                {
+                    if (element is IObject elementAsIObject)
+                    {
+                        foreach (var value in GetDescendentsInternal(elementAsIObject, byFollowingProperties))
+                        {
+                            yield return value;
+                        }
                     }
                 }
             }

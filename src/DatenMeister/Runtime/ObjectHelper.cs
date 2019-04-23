@@ -108,7 +108,7 @@ namespace DatenMeister.Runtime
                 if (valueAsElement is IElement propertyObject && value is MofObject mofObject)
                 {
                     // Get Enumeration Instance
-                    var resolvedElement = mofObject.CreatedByExtent.Resolve(propertyObject);
+                    var resolvedElement = mofObject.ReferencedExtent.Resolve(propertyObject);
                     if (resolvedElement == null)
                     {
                         return default(T);

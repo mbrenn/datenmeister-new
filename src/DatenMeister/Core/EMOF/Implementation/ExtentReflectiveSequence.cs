@@ -34,7 +34,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             foreach (var element in _extent.Provider.GetRootObjects())
             {
-                var resultElement = new MofElement(element, _extent);
+                var resultElement = new MofElement(element, _extent)
+                {
+                    Extent = _extent
+                };
                 yield return resultElement;
             }
         }
@@ -134,7 +137,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             _extent.Provider.AddElement((IProviderObject) _extent.ConvertForSetting(value), index);
 
-            _extent?.ChangeEventManager?.SendChangeEvent(_extent);
+            _extent.ChangeEventManager?.SendChangeEvent(_extent);
             return true;
         }
 

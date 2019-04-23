@@ -205,6 +205,10 @@ namespace DatenMeister.Provider.InMemory
             return null;
         }
 
+        public void SetContainer(IProviderObject value)
+        {
+        }
+
         /// <inheritdoc />
         public void EmptyListForProperty(string property)
         {

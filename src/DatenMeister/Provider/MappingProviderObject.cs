@@ -114,6 +114,10 @@ namespace DatenMeister.Provider
             return null;
         }
 
+        public void SetContainer(IProviderObject value)
+        {
+        }
+
         /// <summary>
         /// Defines the class to define the properties
         /// </summary>

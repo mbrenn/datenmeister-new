@@ -2,8 +2,6 @@
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -31,9 +29,9 @@ namespace DatenMeister.Core.EMOF.Implementation
             IElement referenceElement = null)
             : base(providedObject, extent)
         {
-            if (CreatedByExtent == null)
+            if (ReferencedExtent == null)
             {
-                CreatedByExtent = ((MofElement) referenceElement)?.CreatedByExtent;
+                ReferencedExtent = ((MofElement) referenceElement)?.ReferencedExtent;
             }
         }
 
@@ -44,7 +42,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>The element itself for chaining</returns>
         public MofElement SetReferencedExtent(MofExtent extent)
         {
-            CreatedByExtent = extent;
+            ReferencedExtent = extent;
             return this;
         }
 
@@ -71,7 +69,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return null;
             }
 
-            var result = (CreatedByExtent as IUriResolver)?.Resolve(uri, ResolveType.OnlyMetaClasses);
+            var result = (ReferencedExtent as IUriResolver)?.Resolve(uri, ResolveType.OnlyMetaClasses);
             if (result == null)
             {
                 result = new MofObjectShadow(uri);
@@ -83,7 +81,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IElement container()
         {
-            return new MofElement(ProviderObject.GetContainer(), Extent);
+            var containerElement = ProviderObject.GetContainer();
+            return containerElement != null
+                ? new MofElement(containerElement, Extent ?? ReferencedExtent)
+                : null;
         }
 
         /// <summary>

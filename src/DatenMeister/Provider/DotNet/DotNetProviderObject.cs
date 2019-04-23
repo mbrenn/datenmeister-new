@@ -148,6 +148,10 @@ namespace DatenMeister.Provider.DotNet
             return null;
         }
 
+        public void SetContainer(IProviderObject value)
+        {
+        }
+
         /// <inheritdoc />
         public void EmptyListForProperty(string property)
         {

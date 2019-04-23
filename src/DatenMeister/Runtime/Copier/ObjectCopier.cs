@@ -41,7 +41,7 @@ namespace DatenMeister.Runtime.Copier
         /// <summary>
         /// Initializes a new instance of the ObjectCopier. 
         /// </summary>
-        /// <param name="factory"></param>
+        /// <param name="factory">Factory being used to get added </param>
         public ObjectCopier(IFactory factory)
         {
             _factory = factory ?? throw new ArgumentNullException(nameof(factory));
@@ -51,11 +51,12 @@ namespace DatenMeister.Runtime.Copier
         /// Copies the element as given in <c>element</c>
         /// </summary>
         /// <param name="element">Element that shall be copied</param>
+        /// <param name="copyOptions">Defines the option being used for copying</param>
         /// <returns>true, if element has been successfully copied</returns>
         public IElement Copy(IObject element, CopyOptions copyOptions = CopyOptions.None)
         {
             // Gets the source extent
-            _sourceExtent = (element as IHasExtent)?.Extent ?? (element as MofElement)?.CreatedByExtent;
+            _sourceExtent = (element as IHasExtent)?.Extent ?? (element as MofElement)?.ReferencedExtent;
 
             var targetElement = _factory.create((element as IElement)?.getMetaClass());
             CopyProperties(element, targetElement, copyOptions);
@@ -68,6 +69,7 @@ namespace DatenMeister.Runtime.Copier
         /// </summary>
         /// <param name="sourceElement">Source element which is verified</param>
         /// <param name="targetElement">Target element which is verified</param>
+        /// <param name="copyOptions">Options to be copied</param>
         public void CopyProperties(IObject sourceElement, IObject targetElement, CopyOptions copyOptions = CopyOptions.None)
         {
             if (sourceElement == null) throw new ArgumentNullException(nameof(sourceElement));
@@ -95,6 +97,13 @@ namespace DatenMeister.Runtime.Copier
             }
         }
 
+        /// <summary>
+        /// Copies the value, so it can be added to the target extent
+        /// </summary>
+        /// <param name="value">Value to be copied</param>
+        /// <param name="containingElement">Element to which the element will be copied</param>
+        /// <param name="copyOptions">Copy options being used</param>
+        /// <returns>The object that has been copied</returns>
         private object CopyValue(object value, IElement containingElement, CopyOptions copyOptions)
         {
             if (value == null)
@@ -107,6 +116,10 @@ namespace DatenMeister.Runtime.Copier
                 var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
                 if (propertyExtent == null || propertyExtent == _sourceExtent || CloneAllReferences)
                 {
+                    // If element is not associated to an extent
+                    // Or is associated to the source extent (as it should be)
+                    // Or if all references shall be cloned
+                    // The element will be copied. 
                     return Copy(valueAsElement, copyOptions);
                 }
                 else

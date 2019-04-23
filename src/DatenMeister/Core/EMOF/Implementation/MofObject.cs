@@ -24,15 +24,25 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         public MofExtent Extent
         {
-            get => _extent ?? CreatedByExtent;
-            set => _extent = CreatedByExtent = value;
+            get => _extent;
+            set
+            {
+                if (value == null)
+                {
+                    _extent = null;
+                }
+                else
+                {
+                    _extent = ReferencedExtent = value;
+                }
+            }
         }
 
         /// <summary>
         /// Stores the extent that is used to create the element. 
         /// This extent is used for type lookup and other referencing things. 
         /// </summary>
-        public MofExtent CreatedByExtent { get; protected set; }
+        public MofExtent ReferencedExtent { get; set; }
 
         /// <summary>
         /// Gets the extent of the mof object
@@ -48,10 +58,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Initializes a new instance of the MofObject class. 
         /// </summary>
         /// <param name="providedObject">The database abstraction of the object</param>
-        /// <param name="extent">The extent being used to access the item</param>
-        public MofObject(IProviderObject providedObject, MofExtent extent)
+        /// <param name="referencedExtent">The extent being used to access the item</param>
+        public MofObject(IProviderObject providedObject, MofExtent referencedExtent)
         {
-            ProviderObject = providedObject ?? throw new ArgumentNullException(nameof(providedObject));
+            if (providedObject == null)
+            {
+                throw new ArgumentNullException(nameof(providedObject));
+            }
+
+            ProviderObject = providedObject;
 
             if (providedObject.Provider == null)
             {
@@ -59,7 +74,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 throw new ArgumentNullException("providedObject.Provider");
             }
             
-            CreatedByExtent = Extent = extent;
+            ReferencedExtent = referencedExtent;
         }
 
         /// <inheritdoc />
@@ -162,7 +177,11 @@ namespace DatenMeister.Core.EMOF.Implementation
             
             if (value is IProviderObject resultAsProviderObject)
             {
-                return new MofElement(resultAsProviderObject, container.Extent, container as MofElement);
+                var result = new MofElement(resultAsProviderObject, container.ReferencedExtent, container as MofElement)
+                {
+                    Extent = container.Extent
+                };
+                return result;
             }
 
             if (value is IEnumerable<object>)
@@ -177,7 +196,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     return valueAsUriReference;
                 }
 
-                var extentResolver = container.Extent as IUriResolver ?? container.CreatedByExtent as IUriResolver;
+                var extentResolver = container.Extent as IUriResolver ?? container.ReferencedExtent as IUriResolver;
                 return extentResolver?.Resolve(valueAsUriReference.Uri, ResolveType.Default);
             }
 
@@ -240,7 +259,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         public IObject CreatedBy(MofExtent extent)
         {
-            CreatedByExtent = extent;
+            ReferencedExtent = extent ?? throw new ArgumentNullException(nameof(extent));
             return this;
         }
     }

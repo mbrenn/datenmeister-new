@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -14,7 +15,7 @@ namespace DatenMeister.Runtime.Copier
 
         public ExtentCopier(IFactory factory)
         {
-            _factory = factory;
+            _factory = factory ?? throw new InvalidOperationException(nameof(factory));
         }
 
         public void Copy(IExtent source, IExtent target)

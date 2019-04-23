@@ -36,7 +36,7 @@ namespace DatenMeister.Runtime.Proxies
 
         public IObject Container
         {
-            get => Element.Container as IElement;
+            get => Element.container();
             set => Element.Container = value;
         }
 

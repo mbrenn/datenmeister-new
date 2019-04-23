@@ -182,7 +182,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             // If still not found, do a full search in every extent in every workspace
-            if (resolveType == ResolveType.Default)
+            if (resolveType == ResolveType.Default && GiveMe.Scope?.WorkspaceLogic != null)
             {
                 foreach (var workspace in GiveMe.Scope.WorkspaceLogic.Workspaces)
                 {

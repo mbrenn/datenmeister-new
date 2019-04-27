@@ -411,10 +411,12 @@ namespace DatenMeister.Core.EMOF.Implementation
                     }
 
                     var result = (MofElement) ObjectCopier.Copy(new MofFactory(extent), asMofObject);
-                    if (container is IElement containerAsElement)
+                    /*if (container is IElement containerAsElement)
                     {
-                        result.Container = containerAsElement;
-                    }
+                        // Setting a container shall not be done by the copying itself.
+                        // Setting the container will be done during the SetProperty
+                        // result.Container = containerAsElement;
+                    }*/
 
                     return result.ProviderObject;
                 }

@@ -25,9 +25,26 @@ namespace DatenMeister.Provider
         private T Value { get; }
 
         /// <summary>
+        /// Gets or sets the mapping for the container property
+        /// </summary>
+        private MappingContainerProperty ContainerMapping { get; set; }
+
+        /// <summary>
         /// Stores the mappings
         /// </summary>
         private readonly Dictionary<string, MappingProperty> _mappings = new Dictionary<string, MappingProperty>();
+
+        /// <summary>
+        /// Adds the mapping for the container
+        /// </summary>
+        /// <param name="getFunction">Defines the getter function to retrieve the container</param>
+        /// <param name="setFunction">Defines the setter function to set the container</param>
+        public void AddContainerMapping(Func<T, IProviderObject> getFunction, Action<T, IProviderObject> setFunction)
+        {
+            ContainerMapping = new MappingContainerProperty(
+                getFunction,
+                setFunction);
+        }
 
         /// <summary>
         /// Adds the mapping for a property
@@ -111,11 +128,12 @@ namespace DatenMeister.Provider
 
         public IProviderObject GetContainer()
         {
-            return null;
+            return ContainerMapping?.GetFunction(Value);
         }
 
         public void SetContainer(IProviderObject value)
         {
+            ContainerMapping?.SetFunction(Value, value);
         }
 
         /// <summary>
@@ -131,6 +149,21 @@ namespace DatenMeister.Provider
 
             public Func<T, object> GetFunction { get; }
             public Action<T, object> SetFunction { get; }
+        }
+
+        /// <summary>
+        /// Defines the class to define the properties
+        /// </summary>
+        private class MappingContainerProperty
+        {
+            public MappingContainerProperty(Func<T, IProviderObject> getFunction, Action<T, IProviderObject> setFunction)
+            {
+                GetFunction = getFunction;
+                SetFunction = setFunction;
+            }
+
+            public Func<T, IProviderObject> GetFunction { get; }
+            public Action<T, IProviderObject> SetFunction { get; }
         }
     }
 }

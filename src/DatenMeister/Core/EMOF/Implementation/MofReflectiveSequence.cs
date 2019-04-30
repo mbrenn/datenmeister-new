@@ -78,7 +78,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         public bool add(object value)
         {
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
-            var result =  MofObject.ProviderObject.AddToProperty(_property, valueToBeAdded);
+            var result = MofObject.ProviderObject.AddToProperty(_property, valueToBeAdded);
+
+            MofObject.SetContainer(MofObject.ProviderObject, value, valueToBeAdded);
 
             MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
 

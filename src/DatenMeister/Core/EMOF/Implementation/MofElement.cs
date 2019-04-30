@@ -84,6 +84,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             var containerElement = ProviderObject.GetContainer();
             return containerElement != null
                 ? new MofElement(containerElement, Extent ?? ReferencedExtent)
+                    {Extent = Extent}
                 : null;
         }
 

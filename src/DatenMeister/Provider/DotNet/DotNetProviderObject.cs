@@ -143,6 +143,11 @@ namespace DatenMeister.Provider.DotNet
             return result;
         }
 
+        public bool HasContainer()
+        {
+            return false;
+        }
+
         public IProviderObject GetContainer()
         {
             return null;

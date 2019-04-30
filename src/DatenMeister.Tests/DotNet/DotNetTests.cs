@@ -148,6 +148,7 @@ namespace DatenMeister.Tests.DotNet
             }
         }
 
+
         [Test]
         public void TestOfEnumerationWithString()
         {

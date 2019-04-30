@@ -83,6 +83,11 @@ namespace DatenMeister.Excel.EMOF
             throw new NotImplementedException();
         }
 
+        public bool HasContainer()
+        {
+            return SheetItem != null;
+        }
+
         public IProviderObject GetContainer()
         {
             return SheetItem;

@@ -126,6 +126,11 @@ namespace DatenMeister.Provider
             return result?.Remove(value) == true;
         }
 
+        public bool HasContainer()
+        {
+            return ContainerMapping?.GetFunction(Value) != null;
+        }
+
         public IProviderObject GetContainer()
         {
             return ContainerMapping?.GetFunction(Value);

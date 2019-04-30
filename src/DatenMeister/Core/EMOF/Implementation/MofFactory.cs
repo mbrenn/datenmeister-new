@@ -111,6 +111,12 @@ namespace DatenMeister.Core.EMOF.Implementation
                 throw new InvalidOperationException("Extent may not be null");
             }
 
+            // If the instance of given type was created, add the extent's type to the meta extents
+            if (metaClass?.GetExtentOf() is IUriExtent typeExtent)
+            {
+                Extent.AddMetaExtent(typeExtent);
+            }
+
             return new MofElement(_provider.CreateElement(uriMetaClass), Extent).CreatedBy(Extent);
         }
 

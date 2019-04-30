@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using DatenMeister.Core.EMOF.Implementation.Uml;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -61,12 +62,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="referencedExtent">The extent being used to access the item</param>
         public MofObject(IProviderObject providedObject, MofExtent referencedExtent)
         {
-            if (providedObject == null)
-            {
-                throw new ArgumentNullException(nameof(providedObject));
-            }
-
-            ProviderObject = providedObject;
+            ProviderObject = providedObject ?? throw new ArgumentNullException(nameof(providedObject));
 
             if (providedObject.Provider == null)
             {
@@ -181,6 +177,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 {
                     Extent = container.Extent
                 };
+
                 return result;
             }
 
@@ -220,15 +217,77 @@ namespace DatenMeister.Core.EMOF.Implementation
                 ProviderObject.EmptyListForProperty(property);
                 foreach (var child in valueAsEnumeration)
                 {
-                    ProviderObject.AddToProperty(property, MofExtent.ConvertForSetting(this, child));
+                    var valueForSetting = MofExtent.ConvertForSetting(this, child);
+                    ProviderObject.AddToProperty(property, valueForSetting);
+
+                    SetContainer(ProviderObject, child, valueForSetting);
                 }
             }
             else
             {
-                ProviderObject.SetProperty(property, MofExtent.ConvertForSetting(this, value));
+                var valueForSetting = MofExtent.ConvertForSetting(this, value);
+                ProviderObject.SetProperty(property, valueForSetting);
+
+                SetContainer(ProviderObject, value, valueForSetting);
             }
 
             _extent?.ChangeEventManager?.SendChangeEvent(this);
+        }
+
+        /// <summary>
+        /// Sets the container of the child object to the this instance
+        /// </summary>
+        /// <param name="child">Child as potential IElement object</param>
+        /// <param name="childForProviders">Child as potential provider object</param>
+        internal static void SetContainer(IProviderObject parentProviderObject, object child, object childForProviders)
+        {
+            if (child is IElement childAsElement && childForProviders is IProviderObject childProviderObject)
+            {
+                if( childAsElement.GetExtentOf() == null && !childProviderObject.HasContainer())
+                { 
+                    SetContainer(parentProviderObject, childProviderObject);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets the container information of the childObject to be associated to the parentObject
+        /// </summary>
+        /// <param name="parentObject">Object, who will be the parent of the child object</param>
+        /// <param name="childObject">Child object getting the parent object as container</param>
+        private static void SetContainer(IProviderObject parentObject, IProviderObject childObject)
+        {
+#if DEBUG
+            if (parentObject == childObject)
+            {
+                Debugger.Break();
+                Debug.Fail("parentObject == childObject");
+            }
+
+            // Check by recursion
+            IProviderObject parentContainer = parentObject;
+            for (var n = 0; n < 1000; n++)
+            {
+                parentContainer = parentContainer.GetContainer();
+                if (parentContainer == childObject)
+                {
+                    Debugger.Break();
+                    Debug.Fail("parentObject == childObject");
+                }
+
+                if (parentContainer == null)
+                {
+                    break;
+                }
+
+                if (n == 999)
+                {
+                    Debugger.Break();
+                    Debug.Fail("Unlimited recursion");
+                }
+            }
+#endif
+            childObject.SetContainer(parentObject);
         }
 
         /// <inheritdoc />

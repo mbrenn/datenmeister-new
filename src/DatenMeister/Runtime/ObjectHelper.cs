@@ -395,7 +395,7 @@ namespace DatenMeister.Runtime
                 return objectKnowsExtent.Extent as IUriExtent;
             }
 
-            throw new ArgumentException($"The following element does not implement the IObjectKnowsExtent interface: {value}, {value.GetType()}");
+            return null;
         }
 
         /// <summary>

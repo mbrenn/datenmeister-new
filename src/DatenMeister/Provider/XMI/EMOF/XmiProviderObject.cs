@@ -397,6 +397,11 @@ namespace DatenMeister.Provider.XMI.EMOF
             return false;
         }
 
+        public bool HasContainer()
+        {
+            return XmlNode.Parent != null;
+        }
+
         /// <summary>
         /// Gets the container of the object
         /// </summary>

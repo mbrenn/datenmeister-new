@@ -26,7 +26,10 @@ namespace DatenMeister.Modules.FastViewFilter
 
         public void Start(PluginLoadingPosition position)
         {
-            _localTypeSupport.AddInternalTypes(FastViewFilters.Types, FastViewFilterLogic.PackagePathTypesFastViewFilters);
+            var internalTypes = _localTypeSupport.AddInternalTypes(
+                FastViewFilters.Types, 
+                FastViewFilterLogic.PackagePathTypesFastViewFilters);
+            FillTheFastViewFilters.DoFill(internalTypes, _FastViewFilters.TheOne);
         }
     }
 }

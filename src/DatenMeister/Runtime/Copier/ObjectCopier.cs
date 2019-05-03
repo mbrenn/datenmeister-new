@@ -8,11 +8,31 @@ using DatenMeister.Provider.InMemory;
 
 namespace DatenMeister.Runtime.Copier
 {
-    [Flags]
-    public enum CopyOptions
+    public static class CopyOptions
     {
-        None = 0x00,
-        CopyId = 0x01
+        /// <summary>
+        /// Gets the default copy options which create new ids for each copied element
+        /// </summary>
+        public static CopyOption None { get; } = new CopyOption();
+
+        /// <summary>
+        /// Gets the copy options which copies also the ids
+        /// </summary>
+        public static CopyOption CopyId => new CopyOption {CopyId = true};
+    }
+
+    public class CopyOption
+    {
+        /// <summary>
+        /// Gets or sets a value indicating whether the ids of the objects shall be copied or whether a new id shall be generated for each copied element
+        /// </summary>
+        public bool CopyId { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether references shall be cloned, so there will no UriReferences
+        /// </summary>
+        public bool CloneAllReferences { get; set; }
     }
 
     /// <summary>
@@ -34,11 +54,6 @@ namespace DatenMeister.Runtime.Copier
         private IExtent _sourceExtent;
 
         /// <summary>
-        /// Gets or sets a value indicating whether references shall be cloned, so there will no UriReferences
-        /// </summary>
-        public bool CloneAllReferences { get; set; }
-
-        /// <summary>
         /// Initializes a new instance of the ObjectCopier. 
         /// </summary>
         /// <param name="factory">Factory being used to get added </param>
@@ -53,8 +68,10 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="element">Element that shall be copied</param>
         /// <param name="copyOptions">Defines the option being used for copying</param>
         /// <returns>true, if element has been successfully copied</returns>
-        public IElement Copy(IObject element, CopyOptions copyOptions = CopyOptions.None)
+        public IElement Copy(IObject element, CopyOption copyOptions = null)
         {
+            copyOptions = copyOptions ?? CopyOptions.None;
+
             // Gets the source extent
             _sourceExtent = (element as IHasExtent)?.Extent ?? (element as MofElement)?.ReferencedExtent;
 
@@ -70,8 +87,10 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="sourceElement">Source element which is verified</param>
         /// <param name="targetElement">Target element which is verified</param>
         /// <param name="copyOptions">Options to be copied</param>
-        public void CopyProperties(IObject sourceElement, IObject targetElement, CopyOptions copyOptions = CopyOptions.None)
+        public void CopyProperties(IObject sourceElement, IObject targetElement, CopyOption copyOptions = null)
         {
+            copyOptions = copyOptions ?? CopyOptions.None;
+
             if (sourceElement == null) throw new ArgumentNullException(nameof(sourceElement));
             if (targetElement == null) throw new ArgumentNullException(nameof(targetElement));
             if (!(sourceElement is IObjectAllProperties elementAsExt))
@@ -80,7 +99,7 @@ namespace DatenMeister.Runtime.Copier
             }
 
             // Transfers the id, if requested by the copy options
-            if (copyOptions.HasFlag(CopyOptions.CopyId)
+            if (copyOptions.CopyId
                 && sourceElement is IHasId sourceWithId 
                 && targetElement is ICanSetId targetCanSetId)
             {
@@ -104,8 +123,10 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="containingElement">Element to which the element will be copied</param>
         /// <param name="copyOptions">Copy options being used</param>
         /// <returns>The object that has been copied</returns>
-        private object CopyValue(object value, IElement containingElement, CopyOptions copyOptions)
+        private object CopyValue(object value, IElement containingElement, CopyOption copyOptions = null)
         {
+            copyOptions = copyOptions ?? CopyOptions.None;
+
             if (value == null)
             {
                 return null;
@@ -114,7 +135,7 @@ namespace DatenMeister.Runtime.Copier
             if (value is IElement valueAsElement)
             {
                 var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
-                if (propertyExtent == null || propertyExtent == _sourceExtent || CloneAllReferences)
+                if (propertyExtent == null || propertyExtent == _sourceExtent || copyOptions.CloneAllReferences)
                 {
                     // If element is not associated to an extent
                     // Or is associated to the source extent (as it should be)
@@ -144,8 +165,10 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="factory">Factory to be used to create the element</param>
         /// <param name="element">Element to be copied</param>
         /// <returns>The created element that will be copied</returns>
-        public static IElement Copy(IFactory factory, IObject element, CopyOptions copyOptions = CopyOptions.None)
+        public static IElement Copy(IFactory factory, IObject element, CopyOption copyOptions = null)
         {
+            copyOptions = copyOptions ?? CopyOptions.None;
+
             var copier = new ObjectCopier(factory);
             return copier.Copy(element, copyOptions);
         }
@@ -155,9 +178,12 @@ namespace DatenMeister.Runtime.Copier
         /// </summary>
         /// <param name="factory">Factory to be used to create the element</param>
         /// <param name="element">Element to be copied</param>
+        /// <param name="copyOptions">Defines the objects being used for copying</param>
         /// <returns>The created element that will be copied</returns>
-        public static void CopyPropertiesStatic(IObject source, IObject target, CopyOptions copyOptions = CopyOptions.None)
+        public static void CopyPropertiesStatic(IObject source, IObject target, CopyOption copyOptions = null)
         {
+            copyOptions = copyOptions ?? CopyOptions.None;
+
             var copier = new ObjectCopier(new MofFactory(target));
             copier.CopyProperties(source, target, copyOptions);
         }

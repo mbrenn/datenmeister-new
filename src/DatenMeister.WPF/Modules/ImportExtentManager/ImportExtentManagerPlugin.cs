@@ -1,7 +1,10 @@
-﻿using DatenMeister.Core.EMOF.Interface.Common;
+﻿using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Uml.Plugin;
 
@@ -34,7 +37,8 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
         public void PerformImport(IExtent sourceExtent, IReflectiveCollection items)
         {
-            throw new System.NotImplementedException();
+            var copier = new ExtentCopier(new MofFactory(items));
+            copier.Copy(sourceExtent.elements(), items, CopyOptions.None);
         }
     }
 }

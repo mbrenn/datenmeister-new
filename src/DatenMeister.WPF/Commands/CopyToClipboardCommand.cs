@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using BurnSystems.Logging;
+﻿using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.WPF.Forms.Base;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows;
 
 namespace DatenMeister.WPF.Commands
 {
@@ -100,8 +100,8 @@ namespace DatenMeister.WPF.Commands
             string xmlResult;
             if (selectedList.Count == 1)
             {
-                var copier = new ObjectCopier(new MofFactory(tempExtent)) {CloneAllReferences = false};
-                var result = copier.Copy(selectedList.First());
+                var copier = new ObjectCopier(new MofFactory(tempExtent));
+                var result = copier.Copy(selectedList.First(), new CopyOption{CloneAllReferences = true});
                 xmlResult = ((XmiProviderObject) ((MofObject) result).ProviderObject).XmlNode.ToString();
             }
             else

@@ -76,14 +76,21 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                         return;
                     }
 
-                    var workspace = (y.Item as IElement)?.container();
+                    var workspace = selectedExtent.container();
+                    if (workspace == null)
+                    {
+                        MessageBox.Show("The extent is not connected to the workspace.");
+                    }
+
                     var workspaceName = workspace.getOrDefault<string>(_ManagementProvider._Workspace.id);
-                    var uri = y.Item.getOrDefault<string>(_ManagementProvider._Extent.uri);
+                    var uri = selectedExtent.getOrDefault<string>(_ManagementProvider._Extent.uri);
 
                     // Gets the extent from which the data shall be imported
                     var sourceExtent  = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
 
+                    itemInExtentList.ReflushOnChange = false;
                     _plugin.PerformImport(sourceExtent, itemInExtentList.Items);
+                    itemInExtentList.ReflushOnChange = true;
                 };
             }
         }

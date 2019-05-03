@@ -45,6 +45,26 @@ namespace DatenMeister.WPF.Forms.Lists
 
         public string ExtentUrl { get; set; }
 
+
+        private bool _reflushOnChange = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the window content shall be reflushed, when the elements within view have changes.
+        /// If the value is set to true, then a reflush will be triggerd
+        /// </summary>
+        public bool ReflushOnChange
+        {
+            get => _reflushOnChange;
+            set
+            {
+                _reflushOnChange = value;
+                if (_reflushOnChange)
+                {
+                    UpdateAllViews();
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the extent of the item class
         /// </summary>
@@ -70,7 +90,10 @@ namespace DatenMeister.WPF.Forms.Lists
                 _extent,
                 (x,y) =>
                 {
-                    UpdateAllViews();
+                    if (ReflushOnChange)
+                    {
+                        UpdateAllViews();
+                    }
                 });
 
             SetItems(_extent.elements());

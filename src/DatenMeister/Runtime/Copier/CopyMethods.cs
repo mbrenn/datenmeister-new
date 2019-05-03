@@ -38,7 +38,7 @@ namespace DatenMeister.Runtime.Copier
             IReflectiveCollection collection, 
             IObject targetElement,
             string targetPropertyName,
-            CopyOptions copyOptions)
+            CopyOption copyOptions)
         {
             var copier = new ObjectCopier(new MofFactory(targetElement));
             var copiedElements = collection.OfType<IElement>().Select(x => copier.Copy(x, copyOptions));

@@ -108,7 +108,7 @@ namespace DatenMeister.Runtime
                 if (valueAsElement is IElement propertyObject && value is MofObject mofObject)
                 {
                     // Get Enumeration Instance
-                    var resolvedElement = mofObject.CreatedByExtent.Resolve(propertyObject);
+                    var resolvedElement = mofObject.ReferencedExtent.Resolve(propertyObject);
                     if (resolvedElement == null)
                     {
                         return default(T);
@@ -395,7 +395,7 @@ namespace DatenMeister.Runtime
                 return objectKnowsExtent.Extent as IUriExtent;
             }
 
-            throw new ArgumentException($"The following element does not implement the IObjectKnowsExtent interface: {value}, {value.GetType()}");
+            return null;
         }
 
         /// <summary>

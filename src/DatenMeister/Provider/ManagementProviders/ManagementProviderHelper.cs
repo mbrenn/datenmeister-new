@@ -19,7 +19,7 @@ namespace DatenMeister.Provider.ManagementProviders
         {
             // Adds the extent containing the workpsaces
             workspaceLogic.GetManagementWorkspace().AddExtent(
-                new MofUriExtent(new ExtentOfWorkspaces(workspaceLogic), ExtentOfWorkspaces.WorkspaceUri));
+                new MofUriExtent(new ExtentOfWorkspaces(workspaceLogic), WorkspaceNames.ExtentManagementExtentUri));
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace DatenMeister.Provider.ManagementProviders
         public static IUriExtent GetExtentsForWorkspaces(IDatenMeisterScope scope)
         {
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
-            return workspaceLogic.GetManagementWorkspace().FindExtent(ExtentOfWorkspaces.WorkspaceUri);
+            return workspaceLogic.GetManagementWorkspace().FindExtent(WorkspaceNames.ExtentManagementExtentUri);
         }
     }
 }

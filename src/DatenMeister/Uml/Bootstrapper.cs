@@ -122,7 +122,6 @@ namespace DatenMeister.Uml
                     .ToList();
 
             // First, find the all classes of the uml namespace...
-
             var idToElementCache = new Dictionary<string, IElement>();
 
             // Go through all elements and set the id

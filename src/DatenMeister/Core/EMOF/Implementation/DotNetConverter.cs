@@ -207,7 +207,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             var mofElement = (MofElement) element;
             var metaClassUri = mofElement.metaclass.GetUri();
 
-            var type = mofElement.CreatedByExtent.ResolveDotNetType(metaClassUri, ResolveType.Default);
+            var type = mofElement.ReferencedExtent.ResolveDotNetType(metaClassUri, ResolveType.Default);
 
             if (type == null)
             {
@@ -276,7 +276,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                         else if (propertyValue is IElement propertyObject && value is MofObject mofObject)
                         {
                             // Get Enumeration Instance
-                            var resolvedElement = mofObject.CreatedByExtent.Resolve(propertyObject);
+                            var resolvedElement = mofObject.ReferencedExtent.Resolve(propertyObject);
                             if (resolvedElement == null)
                             {
                                 return null;

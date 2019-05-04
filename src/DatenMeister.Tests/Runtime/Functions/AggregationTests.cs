@@ -15,9 +15,9 @@ namespace DatenMeister.Tests.Runtime.Functions
     [TestFixture]
     public class AggregationTests
     {
-        private string property1 ="Prop1";
-        private string property2="Prop2";
-        private string property3="Prop3";
+        private string property1 = "Prop1";
+        private string property2 = "Prop2";
+        private string property3 = "Prop3";
 
         [Test]
         public void TestMax()
@@ -81,8 +81,8 @@ namespace DatenMeister.Tests.Runtime.Functions
 
             Func<IAggregator> aggregatorFunc = () => new SumAggregator();
             var finalValue = reflectiveSequence.GroupProperties(
-                property3, 
-                property1, 
+                property3,
+                property1,
                 aggregatorFunc,
                 property1).Cast<IObject>();
 
@@ -105,7 +105,7 @@ namespace DatenMeister.Tests.Runtime.Functions
             var factory = new MofFactory(extent);
 
             element.set("c", new List<object>());
-            var reflectiveSequence = element.get("c") as IReflectiveSequence;
+            var reflectiveSequence = (IReflectiveCollection) element.get("c");
 
             var value = factory.create(null);
             value.set(property1, 3);
@@ -137,9 +137,6 @@ namespace DatenMeister.Tests.Runtime.Functions
             value.set(property2, 3);
             reflectiveSequence.add(value);
             return reflectiveSequence;
-            
-
-            throw new NotImplementedException();
         }
     }
 }

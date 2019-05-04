@@ -57,6 +57,9 @@ namespace DatenMeister.WPF.Navigation
 
             var result = new ControlNavigation();
             var userControl = factoryMethod();
+            result.NavigationHost = parentWindow as INavigationHost;
+            result.NavigationGuest = userControl as INavigationGuest;
+
             switch (userControl)
             {
                 case null:

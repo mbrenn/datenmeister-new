@@ -24,6 +24,7 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Helper;
 using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
@@ -38,12 +39,18 @@ namespace DatenMeister.WPF.Forms.Lists
         public ItemsInExtentList()
         {
             Loaded += ItemsInExtentList_Loaded;
+            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateAllViews);
             _workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
         }
 
         public string WorkspaceId { get; set; }
 
         public string ExtentUrl { get; set; }
+
+        /// <summary>
+        /// Stores the delayed dispatcher
+        /// </summary>
+        private DelayedRefreshDispatcher _delayedDispatcher;
 
         /// <summary>
         /// Gets the extent of the item class
@@ -70,7 +77,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 _extent,
                 (x,y) =>
                 {
-                    UpdateAllViews();
+                    _delayedDispatcher.RequestRefresh();
                 });
 
             SetItems(_extent.elements());
@@ -288,7 +295,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     null,
                     NavigationCategories.File + ".Workspaces"));
 
-
+            // Adds the infoline
             viewDefinition.ViewExtensions.Add(
                 new InfoLineDefinition(() =>
                     new TextBlock

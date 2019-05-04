@@ -473,6 +473,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ReferenceFieldData._defaultWorkspace = value;
                                 }
+                                if(name == "showAllChildren") // Looking for property
+                                {
+                                    tree.ReferenceFieldData._showAllChildren = value;
+                                }
                                 if(name == "showWorkspaceSelection") // Looking for property
                                 {
                                     tree.ReferenceFieldData._showWorkspaceSelection = value;
@@ -480,6 +484,10 @@ namespace DatenMeister.Models.Forms
                                 if(name == "showExtentSelection") // Looking for property
                                 {
                                     tree.ReferenceFieldData._showExtentSelection = value;
+                                }
+                                if(name == "metaClassFilter") // Looking for property
+                                {
+                                    tree.ReferenceFieldData._metaClassFilter = value;
                                 }
                                 if(name == "isAttached") // Looking for property
                                 {

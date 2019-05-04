@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -105,8 +106,11 @@
     </Compile>
     <Compile Include="GuiObjectCollection.cs" />
     <Compile Include="Helper\ComboBoxEx.cs" />
+    <Compile Include="Helper\DelayedRefreshDispatcher.cs" />
     <Compile Include="Modules\Icons.cs" />
     <Compile Include="Modules\IIconRepository.cs" />
+    <Compile Include="Modules\ImportExtentManager\ImportExtentManagerPlugin.cs" />
+    <Compile Include="Modules\ImportExtentManager\ImportExtentViewExtensions.cs" />
     <Compile Include="Modules\StandardRepository.cs" />
     <Compile Include="Modules\TypeManager\TypeManagerListView.cs" />
     <Compile Include="Modules\ViewManager\NavigatorForViews.cs" />

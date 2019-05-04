@@ -35,7 +35,7 @@ namespace DatenMeister.Modules.DataViews
             var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
             foreach (var extent in managementWorkspace.extent.OfType<IUriExtent>())
             {
-                if (extent.contextURI() == ExtentOfWorkspaces.WorkspaceUri)
+                if (extent.contextURI() == WorkspaceNames.ExtentManagementExtentUri)
                 {
                     continue;
                 }

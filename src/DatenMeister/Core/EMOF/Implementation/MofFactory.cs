@@ -19,14 +19,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         private readonly IProvider _provider;
 
         /// <summary>
-        /// Stores the extent being connected to the factory
-        /// </summary>
-        private readonly MofExtent _extent;
-
-        /// <summary>
         /// Gets the Mof Extent being connected to the factory
         /// </summary>
-        public MofExtent Extent => _extent;
+        public MofExtent Extent { get; }
 
         /// <summary>
         /// Initializes a new instance of the Factory
@@ -34,7 +29,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="extent"></param>
         public MofFactory(MofExtent extent)
         {
-            _extent = extent ?? throw new ArgumentNullException(nameof(extent));
+            Extent = extent ?? throw new ArgumentNullException(nameof(extent));
 
             _provider = extent.Provider;
             if (_provider == null) throw new ArgumentNullException(nameof(_provider));
@@ -49,15 +44,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Initializes a new instance of the provider
-        /// </summary>
-        /// <param name="provider">Provider object to be set</param>
-        public MofFactory(IProvider provider)
-        {
-            _provider = provider ?? throw new ArgumentNullException(nameof(provider));
-        }
-
-        /// <summary>
         /// Initializes a new instance of the MofFactory by retrieving an object
         /// </summary>
         /// <param name="value">Value to be set</param>
@@ -68,13 +54,13 @@ namespace DatenMeister.Core.EMOF.Implementation
             if (extent != null)
             {
                 // First, try the correct way via the extent.
-                _extent = extent;
+                Extent = extent;
                 _provider = extent.Provider;
             }
-            else if (asMofObject.CreatedByExtent != null)
+            else if (asMofObject.ReferencedExtent != null)
             {
-                _extent = asMofObject.CreatedByExtent;
-                _provider = _extent.Provider;
+                Extent = asMofObject.ReferencedExtent;
+                _provider = Extent.Provider;
             }
             else
             {
@@ -114,13 +100,24 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                 if (extentAsMofUriExtent != null)
                 {
-                    _extent?.AddMetaExtent(extentAsMofUriExtent);
+                    Extent?.AddMetaExtent(extentAsMofUriExtent);
                 }
                 
                 uriMetaClass = ((MofUriExtent) elementAsMetaClass?.Extent)?.uri(metaClass);
             }
 
-            return new MofElement(_provider.CreateElement(uriMetaClass), null).CreatedBy(_extent);
+            if (Extent == null)
+            {
+                throw new InvalidOperationException("Extent may not be null");
+            }
+
+            // If the instance of given type was created, add the extent's type to the meta extents
+            if (metaClass?.GetExtentOf() is IUriExtent typeExtent)
+            {
+                Extent.AddMetaExtent(typeExtent);
+            }
+
+            return new MofElement(_provider.CreateElement(uriMetaClass), Extent).CreatedBy(Extent);
         }
 
         /// <summary>
@@ -131,14 +128,14 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>The created .Net object</returns>
         public IObject createFrom(object value, string id = null)
         {
-            var result = (IProviderObject) _extent.ConvertForSetting(value);
+            var result = (IProviderObject) Extent.ConvertForSetting(value);
 
             if (result != null && !string.IsNullOrEmpty(id))
             {
                 result.Id = id;
             }
 
-            return new MofElement(result, _extent);
+            return new MofElement(result, Extent);
         }
 
         /// <inheritdoc />

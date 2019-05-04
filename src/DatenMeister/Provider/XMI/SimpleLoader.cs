@@ -180,6 +180,7 @@ namespace DatenMeister.Provider.XMI
                             {
                                 throw new InvalidOperationException("Unknown href:" + attributeHref.Value);
                             }
+
                             resultingElement.set(subElement.Name.ToString(), referencedElement);
                         });
                     continue;

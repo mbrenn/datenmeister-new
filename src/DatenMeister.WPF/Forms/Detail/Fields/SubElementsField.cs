@@ -135,7 +135,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             {
                 var result = NavigatorForItems.NavigateToCreateNewItem(
                     _navigationHost,
-                    (_element as MofObject)?.CreatedByExtent,
+                    (_element as MofObject)?.ReferencedExtent,
                     null);
 
                 result.NewItemCreated += (a, b) =>
@@ -168,7 +168,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             button.Click += (a, b) =>
             {
                 var elements =
-                    NavigatorForItems.NavigateToCreateNewItem(_navigationHost, (_element as MofObject)?.CreatedByExtent, type);
+                    NavigatorForItems.NavigateToCreateNewItem(_navigationHost, (_element as MofObject)?.ReferencedExtent, type);
                 elements.NewItemCreated += (x, y) =>
                 {
                     if (_element.GetOrDefault(_propertyName) is IReflectiveCollection propertyCollection)

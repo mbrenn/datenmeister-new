@@ -26,6 +26,11 @@ namespace DatenMeister.Provider.InMemory
         public static IFactory TemporaryFactory => _temporaryFactory ?? (_temporaryFactory = new MofFactory(InMemoryProvider.TemporaryExtent));
 
         /// <summary>
+        /// Stores the container being associated to the in memory object
+        /// </summary>
+        private IProviderObject _container;
+
+        /// <summary>
         /// Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the InMemoryObject
         /// </summary>
         /// <returns>The created object as MofObject</returns>
@@ -198,6 +203,21 @@ namespace DatenMeister.Provider.InMemory
             CheckValue(value);
             var result = GetListOfProperty(property);
             return result.Remove(value);
+        }
+
+        public bool HasContainer()
+        {
+            return _container != null;
+        }
+
+        public IProviderObject GetContainer()
+        {
+            return _container;
+        }
+
+        public void SetContainer(IProviderObject value)
+        {
+            _container = value;
         }
 
         /// <inheritdoc />

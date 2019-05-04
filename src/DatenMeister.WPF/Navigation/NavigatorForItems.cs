@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using Autofac;
@@ -27,6 +28,12 @@ namespace DatenMeister.WPF.Navigation
         /// Gets or sets the detail element that shall be shown
         /// </summary>
         public IObject DetailElement { get; set; }
+
+        /// <summary>
+        /// Gets or sets the container for the detail element which can be used to
+        /// delete it
+        /// </summary>
+        public IReflectiveCollection DetailElementContainer { get; set; }
 
         /// <summary>
         /// Gets or sets the title for the dialog or window
@@ -96,7 +103,8 @@ namespace DatenMeister.WPF.Navigation
                     var control = new DetailFormControl
                     {
                         AllowNewProperties = true,
-                        Title = navigateToItemConfig.Title
+                        Title = navigateToItemConfig.Title,
+                        DetailElementContainer = navigateToItemConfig.DetailElementContainer
                     };
 
                     control.SetContent(navigateToItemConfig.DetailElement, null);

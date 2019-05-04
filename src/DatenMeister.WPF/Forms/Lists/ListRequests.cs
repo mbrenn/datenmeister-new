@@ -276,9 +276,6 @@ namespace DatenMeister.WPF.Forms.Lists
             var detailControl = NavigatorForItems.NavigateToElementDetailView(navigationHost, createdElement);
             detailControl.Closed += (x, y) =>
             {
-                // Now, we got the item extent... 
-                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-
                 // Convert back to instance
                 var extentLoaderConfig = DotNetConverter.ConvertToDotNetObject(createdElement) as ExtentLoaderConfig;
 

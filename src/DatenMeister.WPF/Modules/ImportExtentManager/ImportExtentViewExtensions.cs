@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Lists;
@@ -106,7 +108,22 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                 }
                 else
                 {
-                    MessageBox.Show("TEST");
+                    // Now, we got the item extent... 
+                    var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+                    var loadedExtent = extentManager.LoadExtentWithoutAdding(result);
+                    if (loadedExtent != null)
+                    {
+                        var itemCountBefore = loadedExtent.elements().Count();
+                        _plugin.PerformImport(loadedExtent, itemInExtentList.Items);
+                        var itemCountAfter = loadedExtent.elements().Count();
+
+                        MessageBox.Show($"Import has been performed. {itemCountAfter - itemCountBefore} root elements have been added.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Extent could not be loaded");
+                    }
+
                 }
 
             }

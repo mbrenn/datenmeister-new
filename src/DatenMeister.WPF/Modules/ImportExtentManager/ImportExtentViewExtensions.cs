@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -88,10 +89,17 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     // Gets the extent from which the data shall be imported
                     var sourceExtent  = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
 
+                    var itemCountBefore = sourceExtent.elements().Count();
                     _plugin.PerformImport(sourceExtent, itemInExtentList.Items);
+                    var itemCountAfter = sourceExtent.elements().Count();
 
-                    MessageBox.Show("Import has been performed.");
+                    MessageBox.Show($"Import has been performed. {itemCountAfter - itemCountBefore} root elements have been added.");
                 };
+            }
+
+            void ImportNewExtent()
+            {
+
             }
         }
     }

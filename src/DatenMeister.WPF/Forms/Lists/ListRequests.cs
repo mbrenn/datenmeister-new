@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -6,6 +7,7 @@ using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Excel.Annotations;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ZipExample;
@@ -219,39 +221,12 @@ namespace DatenMeister.WPF.Forms.Lists
                     uri);
             }
 
-            void LoadExtent()
+            async void LoadExtent()
             {
-                // Let user select the type of the extent
-                var dlg = new LocateItemDialog
+                var extentLoaderConfig = await QueryExtentConfigurationByUserAsync(control.NavigationHost);
+                if (extentLoaderConfig != null)
                 {
-                    ShowWorkspaceSelection = false,
-                    ShowExtentSelection = false
-                };
-                var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-                var extent = workspaceLogic.FindExtent(WorkspaceNames.NameTypes, WorkspaceNames.UriInternalTypesExtent);
-                
-
-                var packageMethods = GiveMe.Scope.Resolve<PackageMethods>();
-                var package = packageMethods.GetPackagedObjects(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
-                dlg.SetAsRoot(package);
-
-                // User has selected the type 
-                if (dlg.ShowDialog() != true) return;
-                if (!(dlg.SelectedElement is IElement selectedExtentType)) return;
-
-                // Create the item
-                var factory = new MofFactory(extent);
-                var createdElement = factory.create(selectedExtentType);
-                
-                // Let user fill out the configuration of the extent
-                var detailControl = NavigatorForItems.NavigateToElementDetailView(control.NavigationHost, createdElement);
-                detailControl.Closed += (x, y) =>
-                {
-                    // Now, we got the item extent... 
                     var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-
-                    // Convert back to instance
-                    var extentLoaderConfig = DotNetConverter.ConvertToDotNetObject(createdElement) as ExtentLoaderConfig;
 
                     try
                     {
@@ -263,8 +238,54 @@ namespace DatenMeister.WPF.Forms.Lists
                         Logger.Warn($"User failed to create extent via general dialog: {exc.Message}");
                         MessageBox.Show(exc.Message);
                     }
-                };
+
+                }
             }
+        }
+
+        public static Task<ExtentLoaderConfig> QueryExtentConfigurationByUserAsync(INavigationHost navigationHost)
+        {
+            // Let user select the type of the extent
+            var dlg = new LocateItemDialog
+            {
+                ShowWorkspaceSelection = false,
+                ShowExtentSelection = false,
+                MessageText = "Select type of extent",
+                Title = "Select type of extent"
+            };
+
+            var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
+            var extent = workspaceLogic.FindExtent(WorkspaceNames.NameTypes, WorkspaceNames.UriInternalTypesExtent);
+
+
+            var packageMethods = GiveMe.Scope.Resolve<PackageMethods>();
+            var package =
+                packageMethods.GetPackagedObjects(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
+            dlg.SetAsRoot(package);
+
+            // User has selected the type 
+            if (dlg.ShowDialog() != true) return Task.FromResult<ExtentLoaderConfig>(null);
+            if (!(dlg.SelectedElement is IElement selectedExtentType)) return Task.FromResult<ExtentLoaderConfig>(null);
+
+            // Create the item
+            var factory = new MofFactory(extent);
+            var createdElement = factory.create(selectedExtentType);
+
+            // Let user fill out the configuration of the extent
+            var result = new TaskCompletionSource<ExtentLoaderConfig>();
+            var detailControl = NavigatorForItems.NavigateToElementDetailView(navigationHost, createdElement);
+            detailControl.Closed += (x, y) =>
+            {
+                // Now, we got the item extent... 
+                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+
+                // Convert back to instance
+                var extentLoaderConfig = DotNetConverter.ConvertToDotNetObject(createdElement) as ExtentLoaderConfig;
+
+                result.SetResult(extentLoaderConfig);
+            };
+
+            return result.Task;
         }
     }
 }

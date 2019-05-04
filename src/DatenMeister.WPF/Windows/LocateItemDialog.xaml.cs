@@ -38,6 +38,22 @@ namespace DatenMeister.WPF.Windows
 
         public IObject SelectedElement { get; set; }
 
+
+        public static readonly DependencyProperty MessageTextProperty = DependencyProperty.Register(
+            "MessageText", typeof(string), typeof(LocateItemDialog), new PropertyMetadata(default(string), OnMessageTextChanged));
+
+        public string MessageText
+        {
+            get => (string)GetValue(MessageTextProperty);
+            set => SetValue(MessageTextProperty, value);
+        }
+
+
+        private static void OnMessageTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((LocateItemDialog)d).txtTitle.Text = (string)e.NewValue;
+        }
+
         public LocateItemDialog()
         {
             InitializeComponent();

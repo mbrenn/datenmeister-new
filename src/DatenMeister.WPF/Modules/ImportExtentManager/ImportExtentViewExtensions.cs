@@ -97,8 +97,17 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                 };
             }
 
-            void ImportNewExtent()
+            async void ImportNewExtent()
             {
+                var result = await ListRequests.QueryExtentConfigurationByUserAsync(viewExtensionTargetInformation.NavigationHost);
+                if (result == null)
+                {
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("TEST");
+                }
 
             }
         }

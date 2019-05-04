@@ -15,13 +15,13 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBlock Text="Select Workspace:"  Grid.Row="0" />
+        <TextBlock x:Name="txtWorkspace" Text="Select Workspace:"  Grid.Row="0" />
         <StackPanel Orientation="Vertical" Grid.Row="1">
             <ComboBox x:Name="cboWorkspace" SelectionChanged="cboWorkspace_SelectionChanged"></ComboBox>
         </StackPanel>
-        <TextBlock Text="Select Extent:"  Grid.Row="2" />
+        <TextBlock x:Name="txtExtent" Text="Select Extent:"  Grid.Row="2" />
         <StackPanel Orientation="Vertical" Grid.Row="3">
-            <ComboBox x:Name="cboExtents" SelectionChanged="cboExtents_SelectionChanged"></ComboBox>
+            <ComboBox x:Name="cboExtent" SelectionChanged="cboExtents_SelectionChanged"></ComboBox>
         </StackPanel>
         <TextBlock Text="Select Item:" Grid.Row="4" />
         <base:ItemsTreeView x:Name="items" Grid.Row="5" />

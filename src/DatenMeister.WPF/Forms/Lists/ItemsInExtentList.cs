@@ -270,7 +270,7 @@ namespace DatenMeister.WPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(
                 new RibbonButtonDefinition(
                     "Extent Info",
-                    () => NavigatorForExtents.OpenExtent(NavigationHost, WorkspaceId, ExtentUrl),
+                    () => NavigatorForExtents.OpenDetailOfExtent(NavigationHost, ExtentUrl),
                     null,
                     NavigationCategories.File + ".Workspaces"));
 

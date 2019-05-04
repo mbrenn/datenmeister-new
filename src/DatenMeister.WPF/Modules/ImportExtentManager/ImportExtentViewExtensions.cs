@@ -38,7 +38,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
                 yield return new RibbonButtonDefinition(
                     "Import new Extent",
-                    null,
+                    ImportNewExtent,
                     null,
                     NavigationCategories.File + ".Import");
 

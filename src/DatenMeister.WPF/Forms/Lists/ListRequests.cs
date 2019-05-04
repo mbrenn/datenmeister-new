@@ -222,13 +222,20 @@ namespace DatenMeister.WPF.Forms.Lists
             void LoadExtent()
             {
                 // Let user select the type of the extent
-                var dlg = new LocateItemDialog();
+                var dlg = new LocateItemDialog
+                {
+                    ShowWorkspaceSelection = false,
+                    ShowExtentSelection = false
+                };
                 var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                 var extent = workspaceLogic.FindExtent(WorkspaceNames.NameTypes, WorkspaceNames.UriInternalTypesExtent);
+                
 
                 var packageMethods = GiveMe.Scope.Resolve<PackageMethods>();
                 var package = packageMethods.GetPackagedObjects(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
                 dlg.SetAsRoot(package);
+
+                // User has selected the type 
                 if (dlg.ShowDialog() != true) return;
                 if (!(dlg.SelectedElement is IElement selectedExtentType)) return;
 

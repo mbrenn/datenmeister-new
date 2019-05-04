@@ -43,6 +43,17 @@ namespace DatenMeister.WPF.Windows
             InitializeComponent();
         }
 
+        public bool ShowWorkspaceSelection
+        {
+            get => LocateElementControl.ShowWorkspaceSelection;
+            set => LocateElementControl.ShowWorkspaceSelection = value;
+        }
+        public bool ShowExtentSelection
+        {
+            get => LocateElementControl.ShowExtentSelection;
+            set => LocateElementControl.ShowExtentSelection = value;
+        }
+
         /// <summary>
         /// Navigates to a specific workspace
         /// </summary>

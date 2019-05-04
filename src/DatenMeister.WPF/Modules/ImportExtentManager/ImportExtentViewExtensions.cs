@@ -88,9 +88,9 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     // Gets the extent from which the data shall be imported
                     var sourceExtent  = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
 
-                    itemInExtentList.ReflushOnChange = false;
                     _plugin.PerformImport(sourceExtent, itemInExtentList.Items);
-                    itemInExtentList.ReflushOnChange = true;
+
+                    MessageBox.Show("Import has been performed.");
                 };
             }
         }

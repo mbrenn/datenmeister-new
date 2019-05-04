@@ -24,6 +24,7 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Helper;
 using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
@@ -38,6 +39,7 @@ namespace DatenMeister.WPF.Forms.Lists
         public ItemsInExtentList()
         {
             Loaded += ItemsInExtentList_Loaded;
+            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateAllViews);
             _workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
         }
 
@@ -45,25 +47,10 @@ namespace DatenMeister.WPF.Forms.Lists
 
         public string ExtentUrl { get; set; }
 
-
-        private bool _reflushOnChange = true;
-
         /// <summary>
-        /// Gets or sets a value indicating whether the window content shall be reflushed, when the elements within view have changes.
-        /// If the value is set to true, then a reflush will be triggerd
+        /// Stores the delayed dispatcher
         /// </summary>
-        public bool ReflushOnChange
-        {
-            get => _reflushOnChange;
-            set
-            {
-                _reflushOnChange = value;
-                if (_reflushOnChange)
-                {
-                    UpdateAllViews();
-                }
-            }
-        }
+        private DelayedRefreshDispatcher _delayedDispatcher;
 
         /// <summary>
         /// Gets the extent of the item class
@@ -90,10 +77,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 _extent,
                 (x,y) =>
                 {
-                    if (ReflushOnChange)
-                    {
-                        UpdateAllViews();
-                    }
+                    _delayedDispatcher.RequestRefresh();
                 });
 
             SetItems(_extent.elements());

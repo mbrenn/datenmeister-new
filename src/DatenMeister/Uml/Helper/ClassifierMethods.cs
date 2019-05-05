@@ -141,21 +141,29 @@ namespace DatenMeister.Uml.Helper
         /// <param name="specializedClassifier">The classifier which will have a new generalization
         /// and consequently will get the properties of the generalization attached</param>
         /// <param name="generalizedClassifier">Generalized class being used as base for specialized one</param>
-        public static void AddGeneralization(IElement specializedClassifier, IElement generalizedClassifier)
+        public static IElement AddGeneralization(IElement specializedClassifier, IElement generalizedClassifier)
         {
             if (GetGeneralizations(specializedClassifier).Contains(generalizedClassifier))
             {
                 // Nothing to do
-                return;
+                return null;
             }
 
             var factory = new MofFactory(specializedClassifier);
             var uml = GiveMe.Scope.WorkspaceLogic.GetUmlData();
 
             var newGeneralization = factory.create(uml.Classification.__Generalization);
-            newGeneralization.set(_UML._Classification._Generalization.general, generalizedClassifier);
-            newGeneralization.set(_UML._Classification._Generalization.specific, specializedClassifier);
-            specializedClassifier.AddCollectionItem(_UML._Classification._Classifier.generalization, newGeneralization);
+            newGeneralization.set(
+                _UML._Classification._Generalization.general, 
+                generalizedClassifier);
+            newGeneralization.set(
+                _UML._Classification._Generalization.specific, 
+                specializedClassifier);
+            specializedClassifier.AddCollectionItem(
+                _UML._Classification._Classifier.generalization, 
+                newGeneralization);
+
+            return newGeneralization;
         }
     }
 }

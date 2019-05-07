@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls.Ribbon;
+using BurnSystems.Logging;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Navigation;
@@ -13,6 +14,11 @@ namespace DatenMeister.WPF.Windows
 {
     public class RibbonHelper
     {
+        /// <summary>
+        /// Defines the logger
+        /// </summary>
+        private static readonly ILogger Logger = new ClassLogger(typeof(RibbonHelper));
+
         private readonly IHasRibbon _mainWindow;
 
         /// <summary>
@@ -126,7 +132,17 @@ namespace DatenMeister.WPF.Windows
             {
                 Definition = definition,
                 Button = button,
-                ClickEvent = (x, y) => clickMethod()
+                ClickEvent = (x, y) =>
+                {
+                    if (clickMethod == null)
+                    {
+                        Logger.Error("No method defined which is called after a click");
+                    }
+                    else
+                    {
+                        clickMethod();
+                    }
+                }
             };
             _buttons.Add(item);
             button.Click += item.ClickEvent;

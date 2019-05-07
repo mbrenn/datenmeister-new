@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using Autofac;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
@@ -41,6 +44,16 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                     MaxHeight = 400,
                     MinWidth = 600
                 };
+
+                var filterMetaClasses =
+                    fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._ReferenceFieldData.metaClassFilter);
+                if (filterMetaClasses != null)
+                {
+                    _control.FilterMetaClasses = filterMetaClasses.OfType<IElement>();
+                }
+
+                var showAllChildren = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.showAllChildren);
+                if (showAllChildren) _control.ShowAllChildren = true;
 
                 if (fieldData.GetOrDefault(_FormAndFields._ReferenceFieldData.defaultValue) is IElement element)
                 {
@@ -102,8 +115,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
 
                 UpdateTextOfTextBlock(foundItem, itemText);
 
-                var openButten = new Button {Content = "Open"};
-                openButten.Click += (sender, args) =>
+                var openButton = new Button {Content = "Open"};
+                openButton.Click += (sender, args) =>
                 {
                     if (!(value.GetOrDefault(fieldName) is IElement itemToOpen))
                     {
@@ -133,10 +146,10 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 };
 
                 // Adds the ui elements
-                Grid.SetColumn(openButten, 1);
+                Grid.SetColumn(openButton, 1);
                 Grid.SetColumn(selectButton, 2);
                 panel.Children.Add(itemText);
-                panel.Children.Add(openButten);
+                panel.Children.Add(openButton);
                 panel.Children.Add(selectButton);
 
                 fieldFlags.CanBeFocused = true;

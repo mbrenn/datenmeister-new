@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using Autofac;
 using DatenMeister.Integration;
-using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Lists;
 
@@ -26,13 +25,12 @@ namespace DatenMeister.WPF.Navigation
         /// Opens the extent as 
         /// </summary>
         /// <param name="navigationHost">Host for navigation being to be used</param>
-        /// <param name="workspaceId">Id of the workspace</param>
         /// <param name="extentUrl">Url of the extent to be shown</param>
         /// <returns>Navigation to be used</returns>
-        public static IControlNavigation OpenExtent(INavigationHost navigationHost, string workspaceId, string extentUrl)
+        public static IControlNavigation OpenDetailOfExtent(INavigationHost navigationHost, string extentUrl)
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var uri = ExtentOfWorkspaces.WorkspaceUri + "#" + WebUtility.UrlEncode(extentUrl);
+            var uri = WorkspaceNames.ExtentManagementExtentUri + "#" + WebUtility.UrlEncode(extentUrl);
             return NavigatorForItems.NavigateToElementDetailView(
                 navigationHost, 
                 workspaceLogic.FindItem(uri));

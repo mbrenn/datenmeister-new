@@ -30,7 +30,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Gets or sets the items to be shown. These items are shown also in the navigation view and will
         /// not be modified, even if the user clicks on the navigation tree. 
         /// </summary>
-        protected IReflectiveCollection Items { get; set; }
+        public IReflectiveCollection Items { get; protected set; }
 
         /// <summary>
         /// Defines the item that the user currently has selected on the object tree

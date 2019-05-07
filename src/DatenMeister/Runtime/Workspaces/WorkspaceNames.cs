@@ -28,6 +28,12 @@
         public const string UriUserViewExtent = "datenmeister:///management/views/user";
 
 
+        /// <summary>
+        /// Gets the uri of the extent which contains the workspaces
+        /// </summary>
+        public const string ExtentManagementExtentUri = "datenmeister:///_internal/workspaces/";
+
+
         public const string StandardUmlNamespace = "http://www.omg.org/spec/UML/20131001";
         public const string StandardUmlNamespaceAlternative = "http://www.omg.org/spec/UML/20131001/UML.xmi";
 

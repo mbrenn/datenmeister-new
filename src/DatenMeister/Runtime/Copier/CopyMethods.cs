@@ -16,40 +16,40 @@ namespace DatenMeister.Runtime.Copier
         /// <summary>
         /// Copies the targetElement to the target workspaces
         /// </summary>
-        /// <param name="element">Element to be copied</param>
-        /// <param name="collection">Collection as target collection</param>
-        public static void CopyToTargetWorkspace(IElement element, IReflectiveCollection collection)
+        /// <param name="sourceElement">Element to be copied</param>
+        /// <param name="targetCollection">Collection as target collection</param>
+        public static void CopyToTargetWorkspace(IElement sourceElement, IReflectiveCollection targetCollection)
         {
-            var objectCopier = new ObjectCopier(new MofFactory(collection));
-            var copiedElement = objectCopier.Copy(element);
-            collection.add(copiedElement);
+            var objectCopier = new ObjectCopier(new MofFactory(targetCollection));
+            var copiedElement = objectCopier.Copy(sourceElement);
+            targetCollection.add(copiedElement);
         }
 
         /// <summary>
-        /// Copies a collection to an elements property, 
-        /// if the property already has a collection, then the values are directly added, 
-        /// otherwise, the values are stored in an intermediate location
+        /// Copies a collection to an elements property of the targetElement,
+        /// If the property is not set, the property will be directly set by the copy
+        /// If the property is set, then the copied elements will be added to the already existing values
         /// </summary>
         /// <param name="collection">Collection to be parsed</param>
         /// <param name="targetElement">Element to which the elements will be added </param>
-        /// <param name="propertyName">Name of the property to which the elements will be added</param>
+        /// <param name="targetPropertyName">Name of the property to which the elements will be added</param>
         /// <param name="copyOptions">Copies the options</param>
         public static void CopyToElementsProperty(
             IReflectiveCollection collection, 
             IObject targetElement,
-            string propertyName,
-            CopyOptions copyOptions)
+            string targetPropertyName,
+            CopyOption copyOptions)
         {
             var copier = new ObjectCopier(new MofFactory(targetElement));
             var copiedElements = collection.OfType<IElement>().Select(x => copier.Copy(x, copyOptions));
 
-            if (!targetElement.isSet(propertyName))
+            if (!targetElement.isSet(targetPropertyName))
             {
-                targetElement.set(propertyName, copiedElements);
+                targetElement.set(targetPropertyName, copiedElements);
             }
             else
             {
-                var setProperty = targetElement.get(propertyName);
+                var setProperty = targetElement.get(targetPropertyName);
                 if (setProperty is IReflectiveCollection targetCollection)
                 {
                     foreach (var copiedElement in copiedElements)
@@ -62,7 +62,7 @@ namespace DatenMeister.Runtime.Copier
                     var newList = new List<object> {setProperty};
                     newList.AddRange(copiedElements);
 
-                    targetElement.set(propertyName, newList);
+                    targetElement.set(targetPropertyName, newList);
                 }
             }
         }
@@ -94,10 +94,10 @@ namespace DatenMeister.Runtime.Copier
         /// Copies the targetElement from the source extent to the target workspace
         /// </summary>
         /// <param name="sourceExtent">Source extent to be used</param>
-        /// <param name="sourcePath">Path to be looked up. Can also be a container</param>
-        /// <param name="targetExtent">Target Extent in which the items shall be stored</param>
-        /// <param name="targetPath"></param>
-        /// <param name="targetProperty"></param>
+        /// <param name="sourcePath">Path to be looked up to retrieve the source element</param>
+        /// <param name="targetExtent">Target Reflective Collection in which the items shall be stored</param>
+        /// <param name="targetPath">Path of the element in which the elements shall be stored</param>
+        /// <param name="targetProperty">Target Property in which the elements will be stored</param>
         public static void CopyToTargetWorkspace(
             IReflectiveCollection sourceExtent,
             string sourcePath,

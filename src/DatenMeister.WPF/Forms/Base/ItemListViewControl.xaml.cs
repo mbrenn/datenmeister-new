@@ -29,6 +29,7 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Commands;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Helper;
 using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Modules.TypeManager;
 using DatenMeister.WPF.Navigation;
@@ -51,6 +52,7 @@ namespace DatenMeister.WPF.Forms.Base
 
         public ItemListViewControl()
         {
+            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateContent);
             _fastViewFilter = GiveMe.Scope.Resolve<FastViewFilterLogic>();
             InitializeComponent();
         }
@@ -78,6 +80,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// Defines the logic for the fastview filters
         /// </summary>
         private readonly FastViewFilterLogic _fastViewFilter;
+
+        private DelayedRefreshDispatcher _delayedDispatcher;
 
         /// <summary>
         /// Defines the current form definition of the window as provided by the
@@ -109,7 +113,10 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
                     asExtent.Extent,
-                    (extent, element) => { UpdateContent(); });
+                    (extent, element) =>
+                    {
+                        _delayedDispatcher.RequestRefresh();
+                    });
             }
 
             Items = items;

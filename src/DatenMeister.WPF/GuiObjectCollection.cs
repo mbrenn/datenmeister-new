@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Documents;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 
 namespace DatenMeister.WPF
@@ -10,6 +9,11 @@ namespace DatenMeister.WPF
     /// </summary>
     public class GuiObjectCollection
     {
+        /// <summary>
+        /// Defines the synchronization object
+        /// </summary>
+        private static readonly object SyncObject = new object();
+
         /// <summary>
         /// Stores the singleton
         /// </summary>
@@ -24,7 +28,7 @@ namespace DatenMeister.WPF
             {
                 if (_theOne == null)
                 {
-                    lock (typeof(GuiObjectCollection))
+                    lock (SyncObject)
                     {
                         if (_theOne == null)
                         {

@@ -153,6 +153,13 @@ namespace DatenMeister.WPF.Forms.Base
                 null,
                 NavigationCategories.File + ".Copy");
 
+            yield return new RibbonButtonDefinition(
+                "Create Form",
+                CopyForm,
+                null,
+                NavigationCategories.File + ".Views");
+
+
             if (DetailElementContainer != null)
             {
                 yield return new ItemButtonDefinition(

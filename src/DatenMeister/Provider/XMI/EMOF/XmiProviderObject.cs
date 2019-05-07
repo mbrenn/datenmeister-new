@@ -396,5 +396,39 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             return false;
         }
+
+        public bool HasContainer()
+        {
+            return XmlNode.Parent != null;
+        }
+
+        /// <summary>
+        /// Gets the container of the object
+        /// </summary>
+        /// <returns></returns>
+        public IProviderObject GetContainer()
+        {
+            if (XmlNode.Parent != null)
+            {
+                return new XmiProviderObject(XmlNode.Parent, (XmiProvider) Provider);
+            }
+
+            return null;
+        }
+
+        public void SetContainer(IProviderObject value)
+        {
+            if (!(value is XmiProviderObject providerObject))
+            {
+                throw new ArgumentException($"{nameof(value)} is not of Type provider Object");
+            }
+
+            if (XmlNode.Parent != null)
+            {
+                XmlNode.Remove();
+            }
+
+            providerObject.XmlNode.Add(XmlNode);
+        }
     }
 }

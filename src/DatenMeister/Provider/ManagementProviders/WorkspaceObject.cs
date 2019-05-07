@@ -33,7 +33,7 @@ namespace DatenMeister.Provider.ManagementProviders
 
             AddMapping(
                 "extents",
-                w => w.extent.Select(x => new ExtentObject(provider, (IUriExtent) x)),
+                w => w.extent.Select(x => new ExtentObject(provider, workspace, (IUriExtent) x)),
                 (w, v) => throw new InvalidOperationException("Extent cannot be set"));
         }
 

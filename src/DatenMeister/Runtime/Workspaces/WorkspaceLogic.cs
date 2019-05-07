@@ -173,7 +173,7 @@ namespace DatenMeister.Runtime.Workspaces
                 _changeEventManager?.SendChangeEvent((IWorkspace) workspace);
             }
 
-            _changeEventManager?.SendChangeEvent(this.GetManagementWorkspace().FindExtent(ExtentOfWorkspaces.WorkspaceUri));
+            _changeEventManager?.SendChangeEvent(this.GetManagementWorkspace().FindExtent(WorkspaceNames.ExtentManagementExtentUri));
         }
 
         /// <summary>

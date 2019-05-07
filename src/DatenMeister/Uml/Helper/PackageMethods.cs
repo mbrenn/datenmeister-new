@@ -204,8 +204,9 @@ namespace DatenMeister.Uml.Helper
         /// <param name="sourcePackage">Source package containing the elements to be imported</param>
         /// <param name="targetPackage">Target package receiving the elements</param>
         /// <param name="copyOptions">Defines the options which shall be used for the importing of the package</param>
-        public static void ImportPackage(IObject sourcePackage, IElement targetPackage, CopyOptions copyOptions = CopyOptions.None)
+        public static void ImportPackage(IObject sourcePackage, IElement targetPackage, CopyOption copyOptions = null)
         {
+            copyOptions = copyOptions ?? CopyOptions.None;
             var objectCopier = new ObjectCopier(new MofFactory(targetPackage.GetExtentOf()));
             foreach (var subElement in GetPackagedObjects(sourcePackage).OfType<IObject>())
             {

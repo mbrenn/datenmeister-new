@@ -2,8 +2,6 @@
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -24,17 +22,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="providedObject">Provided object by database</param>
         /// <param name="extent">Extent to which the object is allocated to</param>
-        /// <param name="container"></param>
+        /// <param name="referenceElement"></param>
         public MofElement(
             IProviderObject providedObject, 
             MofExtent extent,
-            IElement container = null)
+            IElement referenceElement = null)
             : base(providedObject, extent)
         {
-            Container = container;
-            if (CreatedByExtent == null)
+            if (ReferencedExtent == null)
             {
-                CreatedByExtent = ((MofElement) container)?.CreatedByExtent;
+                ReferencedExtent = ((MofElement) referenceElement)?.ReferencedExtent;
             }
         }
 
@@ -45,7 +42,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>The element itself for chaining</returns>
         public MofElement SetReferencedExtent(MofExtent extent)
         {
-            CreatedByExtent = extent;
+            ReferencedExtent = extent;
             return this;
         }
 
@@ -72,7 +69,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return null;
             }
 
-            var result = (CreatedByExtent as IUriResolver)?.Resolve(uri, ResolveType.OnlyMetaClasses);
+            var result = (ReferencedExtent as IUriResolver)?.Resolve(uri, ResolveType.OnlyMetaClasses);
             if (result == null)
             {
                 result = new MofObjectShadow(uri);
@@ -84,7 +81,19 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IElement container()
         {
-            return Container as IElement;
+            var containerElement = ProviderObject.GetContainer();
+            return containerElement != null
+                ? new MofElement(containerElement, Extent ?? ReferencedExtent)
+                    {Extent = Extent}
+                : null;
+        }
+
+        /// <summary>
+        /// Sets the container for the element
+        /// </summary>
+        public IObject Container
+        {
+            set => ProviderObject.SetContainer(((MofObject)value).ProviderObject);
         }
         
         /// <summary>

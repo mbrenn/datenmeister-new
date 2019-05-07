@@ -1,9 +1,10 @@
 ﻿using System;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
+using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Provider.ManagementProviders
 {
@@ -14,7 +15,7 @@ namespace DatenMeister.Provider.ManagementProviders
             MetaclassUriPath = ((MofObjectShadow)_ManagementProvider.TheOne.__Extent).Uri;
         }
 
-        public ExtentObject(IProvider provider, IUriExtent uriExtent) : base(uriExtent, provider, uriExtent.contextURI(), MetaclassUriPath)
+        public ExtentObject(IProvider provider, Workspace parentWorkspace, IUriExtent uriExtent) : base(uriExtent, provider, uriExtent.contextURI(), MetaclassUriPath)
         {
             AddMapping(
                 "uri",
@@ -40,6 +41,11 @@ namespace DatenMeister.Provider.ManagementProviders
                 "alternativeUris",
                 e => (e as MofUriExtent)?.AlternativeUris,
                 (e, v) => throw new InvalidOperationException("alternativeUris cannot be set"));
+
+            AddContainerMapping(
+                (x) => new WorkspaceObject(provider, parentWorkspace),
+                (_, value) => { return; }
+            );
         }
 
         /// <summary>

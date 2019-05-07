@@ -36,10 +36,23 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IEnumerator<object> GetEnumerator()
         {
+            foreach (var item in Enumerate())
+            {
+                yield return item;
+            }
+        }
+
+        /// <summary>
+        /// Performs an enumeration of all members of the collection
+        /// </summary>
+        /// <param name="noReferences">true, if UriReferences shall be resolved</param>
+        /// <returns>Enumeration of collection</returns>
+        internal IEnumerable<object> Enumerate(bool noReferences = false)
+        {
             var result = GetPropertyAsEnumerable();
             foreach (var item in result)
             {
-                yield return MofObject.ConvertToMofObject(MofObject, _property, item);
+                yield return MofObject.ConvertToMofObject(MofObject, _property, item, noReferences);
             }
         }
 
@@ -65,7 +78,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         public bool add(object value)
         {
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
-            var result =  MofObject.ProviderObject.AddToProperty(_property, valueToBeAdded);
+            var result = MofObject.ProviderObject.AddToProperty(_property, valueToBeAdded);
+
+            MofObject.SetContainer(MofObject.ProviderObject, value, valueToBeAdded);
 
             MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
 
@@ -164,6 +179,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public IExtent Extent => MofObject.Extent ?? MofObject.CreatedByExtent;
+        public IExtent Extent => MofObject.Extent ?? MofObject.ReferencedExtent;
     }
 }

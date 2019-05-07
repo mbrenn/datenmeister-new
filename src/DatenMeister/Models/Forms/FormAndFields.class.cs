@@ -319,11 +319,17 @@ namespace DatenMeister.Models.Forms
             public static string @defaultWorkspace = "defaultWorkspace";
             public IElement _defaultWorkspace = null;
 
+            public static string @showAllChildren = "showAllChildren";
+            public IElement _showAllChildren = null;
+
             public static string @showWorkspaceSelection = "showWorkspaceSelection";
             public IElement _showWorkspaceSelection = null;
 
             public static string @showExtentSelection = "showExtentSelection";
             public IElement _showExtentSelection = null;
+
+            public static string @metaClassFilter = "metaClassFilter";
+            public IElement _metaClassFilter = null;
 
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;

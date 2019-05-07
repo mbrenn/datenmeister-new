@@ -30,7 +30,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             using (var scope = builder.BeginLifetimeScope())
             {
                 var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
-                var workspaceExtent = workspaceLogic.FindExtent(ExtentOfWorkspaces.WorkspaceUri);
+                var workspaceExtent = workspaceLogic.FindExtent(WorkspaceNames.ExtentManagementExtentUri);
                 Assert.That(workspaceExtent, Is.Not.Null);
                 var asData = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameData);
                 var asManagement = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameManagement);

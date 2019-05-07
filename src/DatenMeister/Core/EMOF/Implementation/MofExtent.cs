@@ -364,11 +364,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Converts the given value to an element that can be used be for the provider object
         /// </summary>
         /// <param name="value">Value to be set</param>
-        /// <param name="extent">Extent being used to create the factory or TypeLookup</param>
+        /// <param name="extent">Extent being used to create the factory or being used for .Net TypeLookup</param>
         /// <param name="container">Container which will host the newly created object</param>
         /// <returns>The converted object being ready for Provider</returns>
         public static object ConvertForSetting(object value, MofExtent extent, MofObject container)
         {
+            if (extent == null)
+            {
+                throw new ArgumentNullException(nameof(extent));
+            }
+
             if (value == null)
             {
                 return null;
@@ -406,10 +411,12 @@ namespace DatenMeister.Core.EMOF.Implementation
                     }
 
                     var result = (MofElement) ObjectCopier.Copy(new MofFactory(extent), asMofObject);
-                    if (container is IElement containerAsElement)
+                    /*if (container is IElement containerAsElement)
                     {
-                        result.Container = containerAsElement;
-                    }
+                        // Setting a container shall not be done by the copying itself.
+                        // Setting the container will be done during the SetProperty
+                        // result.Container = containerAsElement;
+                    }*/
 
                     return result.ProviderObject;
                 }
@@ -447,17 +454,20 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// An arbitrary object shall be stored into the database
         /// </summary>
         /// <param name="mofObject">The Mofobject for which the element will be created</param>
-        /// <param name="value">Value to be converted</param>
+        /// <param name="childValue">Value to be converted</param>
         /// <returns>The converted object or an exception if the object cannot be converted</returns>
-        public static object ConvertForSetting(MofObject mofObject, object value)
+        public static object ConvertForSetting(MofObject mofObject, object childValue)
         {
-            var result = ConvertForSetting(value, mofObject.CreatedByExtent, mofObject);
+            var result = ConvertForSetting(childValue, mofObject.ReferencedExtent, mofObject);
 
             if (result is IProviderObject)
             {
-                if (value is MofObject childAsObject)
+                if (childValue is MofObject childValueAsObject)
                 {
-                    childAsObject.Container = mofObject;
+                    // Sets the extent of the newly added object which will be associated to the mofObject
+                    // This value must be set, so the new information is propagated to the MofObjects
+                    childValueAsObject.ReferencedExtent = mofObject.Extent ?? mofObject.ReferencedExtent;
+                    childValueAsObject.Extent = mofObject.Extent;
                 }
             }
 

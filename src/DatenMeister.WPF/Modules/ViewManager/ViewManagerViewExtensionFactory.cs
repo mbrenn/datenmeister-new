@@ -38,14 +38,23 @@ namespace DatenMeister.WPF.Modules.ViewManager
                 var openView = new RibbonButtonDefinition(
                     "Open View",
                     () =>
-                        NavigatorForItems.NavigateToElementDetailView(
+                    {
+                        var action = NavigatorForItems.NavigateToElementDetailView(
                             viewExtensionTargetInformation.NavigationHost,
                             new NavigateToItemConfig
                             {
                                 DetailElement = InMemoryObject.CreateEmpty(),
                                 FormDefinition = GiveMe.Scope.WorkspaceLogic.GetInternalViewsExtent()
                                     .element("#ViewManagerFindView")
-                            }),
+                            });
+                        action.Saved += (a, b) =>
+                        {
+                            var asItemListView =
+                                (viewExtensionTargetInformation.NavigationGuest as ItemExplorerControl);
+                            asItemListView?.AddTab(
+                                asItemListView.Items, new ViewDefinition("Selected Form", b.Item));
+                        };
+                    },
                     "",
                     "Views");
 

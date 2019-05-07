@@ -37,6 +37,9 @@ namespace DatenMeister.Provider.ManagementProviders.Model
             public static string @annotation = "annotation";
             public IElement _annotation = null;
 
+            public static string @extents = "extents";
+            public IElement _extents = null;
+
         }
 
         public _Workspace @Workspace = new _Workspace();

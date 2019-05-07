@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Helper;
 using DatenMeister.Provider;
-using DatenMeister.Runtime;
 using NPOI.SS.UserModel;
 
 namespace DatenMeister.Excel.EMOF
@@ -152,6 +149,21 @@ namespace DatenMeister.Excel.EMOF
 
         /// <inheritdoc />
         public bool RemoveFromProperty(string property, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool HasContainer()
+        {
+            return false;
+        }
+
+        public IProviderObject GetContainer()
+        {
+            return null;
+        }
+
+        public void SetContainer(IProviderObject value)
         {
             throw new NotImplementedException();
         }

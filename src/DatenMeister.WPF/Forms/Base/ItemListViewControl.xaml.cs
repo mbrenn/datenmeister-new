@@ -615,10 +615,10 @@ namespace DatenMeister.WPF.Forms.Base
                 copyContent.Execute(CopyType.AsXmi);
             }
 
-            void JumpToTypeManager()
+            /*void JumpToTypeManager()
             {
                 TypeManagerListView.NavigateToTypeManager(this.NavigationHost);
-            }
+            }*/
 
             ViewExtensions.Add(
                 new RowItemButtonDefinition(
@@ -675,13 +675,13 @@ namespace DatenMeister.WPF.Forms.Base
                     null,
                     NavigationCategories.File + ".Copy"));
             
-            ViewExtensions.Add(
+            /*ViewExtensions.Add(
                 new RibbonButtonDefinition(
                     "Type Manager",
                     JumpToTypeManager,
                     string.Empty,
                     NavigationCategories.Type + "." + "Manager"
-                ));
+                ));*/
         }
 
         /// <inheritdoc />

@@ -2,6 +2,9 @@
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Plugins;
+using DatenMeister.Excel.Annotations;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
@@ -15,7 +18,73 @@ namespace DatenMeister.WPF.Modules.TypeManager
         Package,
         Class
     }
-    public class TypeManagerListView : ItemsInExtentList, INavigationGuest
+
+    [UsedImplicitly]
+    public class TypeManagerPlugin : IDatenMeisterPlugin
+    {
+        /// <summary>
+        /// Starts the plugin
+        /// </summary>
+        /// <param name="position">Position of the plugin</param>
+        public void Start(PluginLoadingPosition position)
+        {
+            GuiObjectCollection.TheOne.ViewExtensionFactories.Add(new TypeManagerViewExtension());
+        }
+    }
+
+    public class TypeManagerViewExtension : IViewExtensionFactory
+    {
+        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionTargetInformation viewExtensionTargetInformation)
+        {
+            if (viewExtensionTargetInformation.NavigationGuest is ItemsInExtentList itemInExtentList)
+            {
+                var extent = itemInExtentList.Items.GetAssociatedExtent();
+                var extentType = extent?.GetExtentType();
+
+                if (extentType == "Uml.Classes")
+                {
+                    yield return new RibbonButtonDefinition(
+                        "Create new Class",
+                        () =>
+                        {
+                            NavigatorForItems.NavigateToCreateNewItemInExtent(
+                                viewExtensionTargetInformation.NavigationHost,
+                                extent,
+                                extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class));
+                        },
+                        string.Empty,
+                        NavigationCategories.Type + "." + "Manager");
+
+                    /*
+                    yield return new RibbonButtonDefinition(
+                        "Create new Package",
+                        () =>
+                        {
+                            if (itemInExtentList.SelectedPackage == null)
+                            {
+                                NavigatorForItems.NavigateToCreateNewItemInExtent(
+                                    viewExtensionTargetInformation.NavigationHost,
+                                    extent,
+                                    extent.FindInMeta<_UML>(x => x.Packages.__Package));
+                            }
+                            else
+                            {
+                                NavigatorForItems.NavigateToNewItemForPropertyCollection(
+                                    viewExtensionTargetInformation.NavigationHost,
+                                    SelectedPackage,
+                                    _UML._StructuredClassifiers._Class.ownedAttribute,
+                                    extent.FindInMeta<_UML>(x => x.Packages.__Package));
+                            }
+
+                        },
+                        string.Empty,
+                        NavigationCategories.Type + "." + "Manager");*/
+                }
+            }
+        }
+    }
+
+    /*public class TypeManagerListView : ItemsInExtentList, INavigationGuest
     {
         public new IEnumerable<ViewExtension> GetViewExtensions()
         {
@@ -103,5 +172,5 @@ namespace DatenMeister.WPF.Modules.TypeManager
         }
 
 
-    }
+    }*/
 }

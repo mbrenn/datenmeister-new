@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using DatenMeister.Integration;
@@ -20,7 +21,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="window">Windows to be used</param>
         /// <returns>The navigation to control the view</returns>
-        public static IControlNavigation NavigateToWorkspaces(INavigationHost window)
+        public static Task<NavigateToElementDetailResult> NavigateToWorkspaces(INavigationHost window)
         {
             return window.NavigateTo(
                 () => new WorkspaceList(),
@@ -33,7 +34,7 @@ namespace DatenMeister.WPF.Navigation
             Process.Start(integrationSettings.DatabasePath);
         }
 
-        public static IControlNavigation CreateNewWorkspace(INavigationHost navigationHost)
+        public static Task<NavigateToElementDetailResult> CreateNewWorkspace(INavigationHost navigationHost)
         {
             return navigationHost.NavigateTo(() =>
                 {

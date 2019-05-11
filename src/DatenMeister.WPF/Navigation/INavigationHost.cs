@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -18,7 +19,7 @@ namespace DatenMeister.WPF.Navigation
         /// Type of the navigation mode. Can create subwindows or 
         /// other certain special modes. </param>
         /// <returns>The navigation information being used to receive certain events</returns>
-        IControlNavigation NavigateTo(
+        Task<NavigateToElementDetailResult> NavigateTo(
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode);
 

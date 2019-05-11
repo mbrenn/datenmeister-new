@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Integration;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Workspaces;
@@ -37,9 +35,9 @@ namespace DatenMeister.WPF.Modules.ViewManager
             {
                 var openView = new RibbonButtonDefinition(
                     "Open View",
-                    () =>
+                    async () =>
                     {
-                        var action = NavigatorForItems.NavigateToElementDetailView(
+                        var action = await NavigatorForItems.NavigateToElementDetailViewAsync(
                             viewExtensionTargetInformation.NavigationHost,
                             new NavigateToItemConfig
                             {
@@ -47,13 +45,14 @@ namespace DatenMeister.WPF.Modules.ViewManager
                                 FormDefinition = GiveMe.Scope.WorkspaceLogic.GetInternalViewsExtent()
                                     .element("#ViewManagerFindView")
                             });
-                        action.Saved += (a, b) =>
+
+                        if (action.Result == NavigationResult.Saved)
                         {
                             var asItemListView =
-                                (viewExtensionTargetInformation.NavigationGuest as ItemExplorerControl);
+                                viewExtensionTargetInformation.NavigationGuest as ItemExplorerControl;
                             asItemListView?.AddTab(
-                                asItemListView.Items, new ViewDefinition("Selected Form", b.Item));
-                        };
+                                asItemListView.Items, new ViewDefinition("Selected Form", action.DetailElement));
+                        }
                     },
                     "",
                     "Views");

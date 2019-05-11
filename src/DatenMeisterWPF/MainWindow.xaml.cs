@@ -49,7 +49,7 @@ namespace DatenMeisterWPF
             _ribbonHelper.LoadIconRepository();
 
             //NavigatorForWorkspaces.NavigateToWorkspaces(this);
-            NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData);
+            _ = NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData);
 
             if (GiveMe.Scope.Resolve<ExtentStorageData>().FailedLoading)
             {
@@ -75,7 +75,7 @@ namespace DatenMeisterWPF
         /// <param name="factoryMethod">Method being used to create the control</param>
         /// <param name="navigationMode">Navigation mode defining whether to create a new window or something similar</param>
         /// <returns>The navigation instance supporting events and other methods. </returns>
-        public IControlNavigation NavigateTo(
+        public Task<NavigateToElementDetailResult> NavigateTo(
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
         {
@@ -96,8 +96,9 @@ namespace DatenMeisterWPF
 
                 MainControl.Content = userControl;
 
-                var result = new ControlNavigation();
-                return result;
+                var task = new TaskCompletionSource<NavigateToElementDetailResult>();
+                task.SetResult(new NavigateToElementDetailResult());
+                return task.Task;
             }
 
             return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);

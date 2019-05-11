@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Excel.Annotations;
-using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Lists;
 using DatenMeister.WPF.Navigation;

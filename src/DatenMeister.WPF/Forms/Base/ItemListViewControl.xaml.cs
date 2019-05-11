@@ -427,7 +427,7 @@ namespace DatenMeister.WPF.Forms.Base
                 return;
             }
 
-            NavigatorForItems.NavigateToElementDetailView(
+            _ = NavigatorForItems.NavigateToElementDetailViewAsync(
                 NavigationHost,
                 new NavigateToItemConfig
                 {
@@ -786,11 +786,11 @@ namespace DatenMeister.WPF.Forms.Base
                     Header = filterName
                 };
 
-                item.Click += (x, y) =>
+                item.Click += async (x, y) =>
                 {
                     var subItem = InMemoryObject.CreateEmpty(filter);
 
-                    var events = NavigatorForItems.NavigateToElementDetailView(
+                    var events = await NavigatorForItems.NavigateToElementDetailView(
                         NavigationHost, 
                         subItem,
                         (d) => { d.ViewDefined += (a, b) =>
@@ -837,7 +837,7 @@ namespace DatenMeister.WPF.Forms.Base
                             fields.add(0, element);
                         }; });
 
-                    events.Saved += (a, b) =>
+                    if (events.Result == NavigationResult.Saved)
                     {
                         AddFastFilter(subItem);
                     };

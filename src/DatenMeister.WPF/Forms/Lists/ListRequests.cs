@@ -243,7 +243,7 @@ namespace DatenMeister.WPF.Forms.Lists
             }
         }
 
-        public static Task<ExtentLoaderConfig> QueryExtentConfigurationByUserAsync(INavigationHost navigationHost)
+        public static async Task<ExtentLoaderConfig> QueryExtentConfigurationByUserAsync(INavigationHost navigationHost)
         {
             // Let user select the type of the extent
             var dlg = new LocateItemDialog
@@ -257,32 +257,31 @@ namespace DatenMeister.WPF.Forms.Lists
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             var extent = workspaceLogic.FindExtent(WorkspaceNames.NameTypes, WorkspaceNames.UriInternalTypesExtent);
 
-
             var packageMethods = GiveMe.Scope.Resolve<PackageMethods>();
             var package =
                 packageMethods.GetPackagedObjects(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
             dlg.SetAsRoot(package);
 
             // User has selected the type 
-            if (dlg.ShowDialog() != true) return Task.FromResult<ExtentLoaderConfig>(null);
-            if (!(dlg.SelectedElement is IElement selectedExtentType)) return Task.FromResult<ExtentLoaderConfig>(null);
+            if (dlg.ShowDialog() != true) return null;
+            if (!(dlg.SelectedElement is IElement selectedExtentType)) return null;
 
             // Create the item
             var factory = new MofFactory(extent);
             var createdElement = factory.create(selectedExtentType);
 
             // Let user fill out the configuration of the extent
-            var result = new TaskCompletionSource<ExtentLoaderConfig>();
-            var detailControl = NavigatorForItems.NavigateToElementDetailView(navigationHost, createdElement);
-            detailControl.Closed += (x, y) =>
+            var detailControl = await NavigatorForItems.NavigateToElementDetailView(navigationHost, createdElement);
+
+            if (detailControl.Result == NavigationResult.Saved)
             {
                 // Convert back to instance
-                var extentLoaderConfig = DotNetConverter.ConvertToDotNetObject(createdElement) as ExtentLoaderConfig;
+                var extentLoaderConfig =
+                    DotNetConverter.ConvertToDotNetObject(createdElement) as ExtentLoaderConfig;
+                return extentLoaderConfig;
+            }
 
-                result.SetResult(extentLoaderConfig);
-            };
-
-            return result.Task;
+            return null;
         }
     }
 }

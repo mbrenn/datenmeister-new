@@ -52,9 +52,9 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
             }
 
             // Imports the existing extent
-            void ImportExistingExtent()
+            async void ImportExistingExtent()
             {
-                var controlNavigation = NavigatorForItems.NavigateToElementDetailView(
+                var controlNavigation = await NavigatorForItems.NavigateToElementDetailViewAsync(
                     viewExtensionTargetInformation.NavigationHost,
                     new NavigateToItemConfig
                     {
@@ -63,9 +63,9 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                             .element("#ImportManagerFindExtent")
                     });
 
-                controlNavigation.Saved += (x, y) =>
-                {
-                    var selectedExtent = y.Item.getOrDefault<IElement>("selectedExtent");
+                if (controlNavigation.Result == NavigationResult.Saved)
+                { 
+                    var selectedExtent = controlNavigation.DetailElement.getOrDefault<IElement>("selectedExtent");
                     if (selectedExtent == null)
                     {
                         MessageBox.Show("No extent selected");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
@@ -28,6 +29,14 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         public event EventHandler<ItemEventArgs> Saved;
 
+        /// <summary>
+        /// Defines the event that will be thrown, when the user has clicked upon 'save' in the inner form.
+        /// This event has to be invoked by the child elements. 
+        /// </summary>
+        public event EventHandler<ItemEventArgs> Cancelled;
+
+        private bool _finalEventsThrown; 
+
         public DetailFormWindow()
         {
             InitializeComponent();
@@ -45,7 +54,7 @@ namespace DatenMeister.WPF.Windows
             return MainRibbon;
         }
 
-        public IControlNavigation NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode)
+        public Task<NavigateToElementDetailResult> NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode)
         {
             return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
         }
@@ -55,10 +64,11 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         public void RebuildNavigation()
         {
-            var detailForm = MainContent?.Content as DetailFormControl;
+            var detailForm = (DetailFormControl) MainContent?.Content;
             var extensions = RibbonHelper.GetDefaultNavigation();
             var otherExtensions = detailForm?.GetViewExtensions();
             if (otherExtensions != null) extensions = extensions.Union(otherExtensions);
+            extensions = extensions.ToList();
 
             detailForm.EvaluateViewExtensions(extensions);
             RibbonHelper.EvaluateExtensions(extensions);
@@ -166,10 +176,38 @@ namespace DatenMeister.WPF.Windows
 
         public void OnSaved(IObject detailElement, IObject attachedElement)
         {
+            if (_finalEventsThrown)
+            {
+                throw new InvalidOperationException("Final event was already thrown");
+            }
+
+            _finalEventsThrown = true;
             Saved?.Invoke(this, 
                 new ItemEventArgs(
                 detailElement, 
                 attachedElement));
+        }
+
+        public void OnCancelled(IObject detailElement, IObject attachedElement)
+        {
+            if (_finalEventsThrown)
+            {
+                throw new InvalidOperationException("Final event was already thrown")
+            }
+
+            _finalEventsThrown = true;
+            Cancelled?.Invoke(this,
+                new ItemEventArgs(
+                    detailElement,
+                    attachedElement));
+        }
+
+        private void DetailFormWindow_OnClosed(object sender, EventArgs e)
+        {
+            if (!_finalEventsThrown)
+            {
+                OnCancelled(null, null);
+            }
         }
     }
 }

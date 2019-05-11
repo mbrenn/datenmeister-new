@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -26,7 +27,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="extent">Extent to whom the type shall be created</param>
         /// <param name="buttonName">Name of the button</param>
         /// <returns>The control navigation</returns>
-        public IControlNavigation NavigateToSelectCreateableType(
+        public Task<NavigateToElementDetailResult> NavigateToSelectCreateableType(
             INavigationHost window,
             IExtent extent,
             string buttonName = "Create")

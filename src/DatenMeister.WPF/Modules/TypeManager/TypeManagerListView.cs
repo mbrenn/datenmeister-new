@@ -34,14 +34,28 @@ namespace DatenMeister.WPF.Modules.TypeManager
 
     public class TypeManagerViewExtension : IViewExtensionFactory
     {
-        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionTargetInformation viewExtensionTargetInformation)
+        public IEnumerable<ViewExtension> GetViewExtensions(
+            ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
             if (viewExtensionTargetInformation.NavigationGuest is ItemsInExtentList itemInExtentList)
             {
                 var extent = itemInExtentList.Items.GetAssociatedExtent();
                 var extentType = extent?.GetExtentType();
+                if (extentType != "Uml.Classes")
+                {
+                    // The extent type is not of "Uml.Classes", so we don't inject the buttons
+                    yield break;
+                }
 
-                if (extentType == "Uml.Classes")
+                var selectedPackage = itemInExtentList.SelectedPackage;
+                var type = SelectionType.Package;
+                if ((selectedPackage as IElement)?.metaclass?.@equals(
+                        extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class)) == true)
+                {
+                    type = SelectionType.Class;
+                }
+
+                if (type == SelectionType.Package)
                 {
                     yield return new RibbonButtonDefinition(
                         "Create new Class",
@@ -54,123 +68,49 @@ namespace DatenMeister.WPF.Modules.TypeManager
                         },
                         string.Empty,
                         NavigationCategories.Type + "." + "Manager");
-
-                    /*
-                    yield return new RibbonButtonDefinition(
-                        "Create new Package",
-                        () =>
-                        {
-                            if (itemInExtentList.SelectedPackage == null)
-                            {
-                                NavigatorForItems.NavigateToCreateNewItemInExtent(
-                                    viewExtensionTargetInformation.NavigationHost,
-                                    extent,
-                                    extent.FindInMeta<_UML>(x => x.Packages.__Package));
-                            }
-                            else
+                }
+                else if (type == SelectionType.Class)
+                {
+                    yield return
+                        new RibbonButtonDefinition(
+                            "Create new Property",
+                            () =>
                             {
                                 NavigatorForItems.NavigateToNewItemForPropertyCollection(
                                     viewExtensionTargetInformation.NavigationHost,
-                                    SelectedPackage,
+                                    selectedPackage,
                                     _UML._StructuredClassifiers._Class.ownedAttribute,
-                                    extent.FindInMeta<_UML>(x => x.Packages.__Package));
-                            }
-
-                        },
-                        string.Empty,
-                        NavigationCategories.Type + "." + "Manager");*/
+                                    extent.FindInMeta<_UML>(x => x.Classification.__Property));
+                            },
+                            string.Empty,
+                            NavigationCategories.Type + "." + "Manager");
                 }
-            }
-        }
-    }
 
-    /*public class TypeManagerListView : ItemsInExtentList, INavigationGuest
-    {
-        public new IEnumerable<ViewExtension> GetViewExtensions()
-        {
-            var result = base.GetViewExtensions().ToList();
-
-            var type = SelectionType.Package;
-            if ((SelectedPackage as IElement)?.metaclass?.@equals(
-                    Extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class)) == true)
-            {
-                type = SelectionType.Class;
-            }
-
-            if (type == SelectionType.Package)
-            {
-                result.Add(
-                    new RibbonButtonDefinition(
-                        "Create new Class",
-                        () =>
+                yield return new RibbonButtonDefinition(
+                    "Create new Package",
+                    () =>
+                    {
+                        if (selectedPackage == null)
                         {
                             NavigatorForItems.NavigateToCreateNewItemInExtent(
-                                NavigationHost,
-                                Extent,
-                                Extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class));
-                        },
-                        Name = string.Empty,
-                        NavigationCategories.Type + "." + "Manager"));
-            }
-            else
-            {
-                result.Add(
-                    new RibbonButtonDefinition(
-                        "Create new Property",
-                        () =>
+                                viewExtensionTargetInformation.NavigationHost,
+                                extent,
+                                extent.FindInMeta<_UML>(x => x.Packages.__Package));
+                        }
+                        else
                         {
                             NavigatorForItems.NavigateToNewItemForPropertyCollection(
-                                NavigationHost,
-                                SelectedPackage,
+                                viewExtensionTargetInformation.NavigationHost,
+                                itemInExtentList.SelectedPackage,
                                 _UML._StructuredClassifiers._Class.ownedAttribute,
-                                Extent.FindInMeta<_UML>(x => x.Classification.__Property));
-                        },
-                        Name = string.Empty,
-                        NavigationCategories.Type + "." + "Manager"));
+                                extent.FindInMeta<_UML>(x => x.Packages.__Package));
+                        }
 
+                    },
+                    string.Empty,
+                    NavigationCategories.Type + "." + "Manager");
             }
 
-            result.Add(
-                new RibbonButtonDefinition(
-                    "Create new Package",
-                () =>
-                {
-                    if (SelectedPackage == null)
-                    {
-                        NavigatorForItems.NavigateToCreateNewItemInExtent(
-                            NavigationHost,
-                            Extent,
-                            Extent.FindInMeta<_UML>(x => x.Packages.__Package));
-                    }
-                    else
-                    {
-                        NavigatorForItems.NavigateToNewItemForPropertyCollection(
-                            NavigationHost,
-                            SelectedPackage,
-                            _UML._StructuredClassifiers._Class.ownedAttribute,
-                            Extent.FindInMeta<_UML>(x => x.Packages.__Package));
-                    }
-
-                },
-                    Name = string.Empty,
-                    NavigationCategories.Type + "." + "Manager"));
-
-            return result;
         }
-
-        /// <summary>
-        /// Opens the Type Manager
-        /// </summary>
-        /// <param name="window">Window to be used</param>
-        /// <returns>The navigation support</returns>
-        public static IControlNavigation NavigateToTypeManager(
-            INavigationHost window)
-        {
-            return window.NavigateTo(() =>
-                    new TypeManagerListView { WorkspaceId = WorkspaceNames.NameTypes, ExtentUrl = WorkspaceNames.UriUserTypesExtent },
-                NavigationMode.List);
-        }
-
-
-    }*/
+    }
 }

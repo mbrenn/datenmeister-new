@@ -42,7 +42,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspace">Workspace to be added as a meta workspace</param>
         public void AddMetaWorkspace(Workspace workspace)
         {
-            lock (MetaWorkspaces)
+            lock (_syncObject)
             {
                 MetaWorkspaces.Add(workspace);
             }
@@ -83,8 +83,6 @@ namespace DatenMeister.Runtime.Workspaces
 
         public IEnumerable<ITag> properties => _properties;
 
-        public object SyncObject => _syncObject;
-
         public Workspace(string id, string annotation = null)
         {
             this.id = id ?? throw new ArgumentNullException(nameof(id));
@@ -95,7 +93,7 @@ namespace DatenMeister.Runtime.Workspaces
             where TFiller : IFiller<TFilledType>, new()
             where TFilledType : class, new()
         {
-            lock (SyncObject)
+            lock (_syncObject)
             {
                 var filledType = Get<TFilledType>();
                 if (filledType != null)
@@ -121,7 +119,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         public void ClearCache()
         {
-            lock (SyncObject)
+            lock (_syncObject)
             {
                 FilledTypeCache.Clear();
             }
@@ -141,7 +139,7 @@ namespace DatenMeister.Runtime.Workspaces
                 throw new InvalidOperationException("The extent is already assigned to a workspace");
             }
 
-            lock (SyncObject)
+            lock (_syncObject)
             {
                 if (extent.Any(x => (x as IUriExtent)?.contextURI() == newExtent.contextURI()))
                 {
@@ -162,7 +160,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>true, if the object can be deleted</returns>
         public bool RemoveExtent(string uri)
         {
-            lock (SyncObject)
+            lock (_syncObject)
             {
                 var found = _extent.FirstOrDefault(
                     x => x is IUriExtent uriExtent
@@ -185,7 +183,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>true, if the extent could be removed</returns>
         public bool RemoveExtent(IExtent extentForRemoval)
         {
-            lock (SyncObject)
+            lock (_syncObject)
             {
                 return _extent.Remove(extentForRemoval);
             }
@@ -194,7 +192,7 @@ namespace DatenMeister.Runtime.Workspaces
         public TFilledType Get<TFilledType>()
             where TFilledType : class, new()
         {
-            lock (SyncObject)
+            lock (_syncObject)
             {
                 // Looks into the cache for the filledtypes
                 foreach (var value in FilledTypeCache)
@@ -255,7 +253,7 @@ namespace DatenMeister.Runtime.Workspaces
             MetaRecursive metaRecursive = MetaRecursive.JustOne)
             where TFilledType : class, new()
         {
-            lock (SyncObject)
+            lock (_syncObject)
             {
                 var open = new List<Workspace>(MetaWorkspaces);
                 var visited = new List<Workspace>();
@@ -291,7 +289,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         public void Set<TFilledType>(TFilledType value) where TFilledType : class, new()
         {
-            lock (SyncObject)
+            lock (_syncObject)
             {
                 FilledTypeCache.Add(value);
             }

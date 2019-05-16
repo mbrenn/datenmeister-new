@@ -95,14 +95,23 @@ namespace DatenMeister.WPF.Windows
 
         private void AcceptAndCloseDialog()
         {
-            DialogResult = true;
             SelectedElement = LocateElementControl.SelectedElement;
+            
+            // Opens the dialog
+            if (!(Owner is INavigationHost navigationHost))
+            {
+                throw new InvalidOperationException("Owner is not set or ist not a navigation host");
+            }
+
+            _ = NavigatorForItems.NavigateToElementDetailView(
+                navigationHost,
+                SelectedElement);
+
             Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
             Close();
         }
 

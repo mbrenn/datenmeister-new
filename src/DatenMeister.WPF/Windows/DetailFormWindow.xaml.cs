@@ -67,11 +67,11 @@ namespace DatenMeister.WPF.Windows
             var detailForm = (DetailFormControl) MainContent?.Content;
             var extensions = RibbonHelper.GetDefaultNavigation();
             var otherExtensions = detailForm?.GetViewExtensions();
-            if (otherExtensions != null) extensions = extensions.Union(otherExtensions);
-            extensions = extensions.ToList();
+            extensions = otherExtensions != null ? extensions.Union(otherExtensions) : extensions;
 
-            detailForm.EvaluateViewExtensions(extensions);
-            RibbonHelper.EvaluateExtensions(extensions);
+            var extensionList = extensions.ToList();
+            detailForm?.EvaluateViewExtensions(extensionList);
+            RibbonHelper.EvaluateExtensions(extensionList);
         }
 
         public void SetFocus()
@@ -192,7 +192,7 @@ namespace DatenMeister.WPF.Windows
         {
             if (_finalEventsThrown)
             {
-                throw new InvalidOperationException("Final event was already thrown")
+                throw new InvalidOperationException("Final event was already thrown");
             }
 
             _finalEventsThrown = true;

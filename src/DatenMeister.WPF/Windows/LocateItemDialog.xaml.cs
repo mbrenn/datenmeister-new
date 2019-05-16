@@ -38,9 +38,36 @@ namespace DatenMeister.WPF.Windows
 
         public IObject SelectedElement { get; set; }
 
+
+        public static readonly DependencyProperty MessageTextProperty = DependencyProperty.Register(
+            "MessageText", typeof(string), typeof(LocateItemDialog), new PropertyMetadata(default(string), OnMessageTextChanged));
+
+        public string MessageText
+        {
+            get => (string)GetValue(MessageTextProperty);
+            set => SetValue(MessageTextProperty, value);
+        }
+
+
+        private static void OnMessageTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((LocateItemDialog)d).txtTitle.Text = (string)e.NewValue;
+        }
+
         public LocateItemDialog()
         {
             InitializeComponent();
+        }
+
+        public bool ShowWorkspaceSelection
+        {
+            get => LocateElementControl.ShowWorkspaceSelection;
+            set => LocateElementControl.ShowWorkspaceSelection = value;
+        }
+        public bool ShowExtentSelection
+        {
+            get => LocateElementControl.ShowExtentSelection;
+            set => LocateElementControl.ShowExtentSelection = value;
         }
 
         /// <summary>
@@ -68,14 +95,23 @@ namespace DatenMeister.WPF.Windows
 
         private void AcceptAndCloseDialog()
         {
-            DialogResult = true;
             SelectedElement = LocateElementControl.SelectedElement;
+            
+            // Opens the dialog
+            if (!(Owner is INavigationHost navigationHost))
+            {
+                throw new InvalidOperationException("Owner is not set or ist not a navigation host");
+            }
+
+            _ = NavigatorForItems.NavigateToElementDetailView(
+                navigationHost,
+                SelectedElement);
+
             Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
             Close();
         }
 

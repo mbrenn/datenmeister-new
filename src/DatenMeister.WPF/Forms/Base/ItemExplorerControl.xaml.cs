@@ -35,7 +35,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Defines the item that the user currently has selected on the object tree
         /// </summary>
-        protected IObject SelectedPackage{ get; set; }
+        public IObject SelectedPackage{ get; protected set; }
 
         /// <summary>
         /// Gets a value indicating whether the user has selected an extent within the

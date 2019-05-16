@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using DatenMeister.WPF.Navigation;
@@ -29,7 +30,7 @@ namespace DatenMeister.WPF.Windows
         /// <param name="factoryMethod">Factory method being used</param>
         /// <param name="navigationMode">Navigation mode</param>
         /// <returns></returns>
-        public IControlNavigation NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode)
+        public Task<NavigateToElementDetailResult> NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode)
         {
             return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
         }

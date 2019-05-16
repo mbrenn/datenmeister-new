@@ -612,7 +612,13 @@ namespace DatenMeister.WPF.Forms.Base
             AddGenericButton("Cancel", () =>
             {
                 var window = Window.GetWindow(this);
+                if (window is DetailFormWindow detailFormWindow)
+                {
+                    detailFormWindow.OnCancelled(DetailElement, AttachedElement);
+                }
+
                 window?.Close();
+
             }).IsCancel = true;
 
             AddGenericButton(saveText, () =>
@@ -623,12 +629,13 @@ namespace DatenMeister.WPF.Forms.Base
 
                     OnElementSaved();
                     var window = Window.GetWindow(this);
-                    window?.Close();
-
                     if (window is DetailFormWindow detailFormWindow)
                     {
                         detailFormWindow.OnSaved(DetailElement, AttachedElement);
                     }
+
+                    window?.Close();
+
                 }
                 catch (Exception exc)
                 {

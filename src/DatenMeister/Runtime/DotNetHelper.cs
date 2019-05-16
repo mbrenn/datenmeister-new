@@ -303,7 +303,7 @@ namespace DatenMeister.Runtime
                 return AsBoolean(value.get(property)) == false;
             }
 
-            return false;
+            return true;
         }
 
         /// <summary>

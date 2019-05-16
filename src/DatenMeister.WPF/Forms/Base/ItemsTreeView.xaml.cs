@@ -253,7 +253,7 @@ namespace DatenMeister.WPF.Forms.Base
 
         /// <summary>
         /// Creates the treeview item for the given item. 
-        /// If thie item is an object and contains additional items within the properties, 
+        /// If this item is an object and contains additional items within the properties, 
         /// these subitems are also creates as TreeViewItemss
         /// </summary>
         /// <param name="item"></param>

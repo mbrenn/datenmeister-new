@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -15,7 +16,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="window">Navigation host being used to open up the new dialog</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public static IControlNavigation SearchByUrl(INavigationHost window)
+        public static Task<NavigateToElementDetailResult> SearchByUrl(INavigationHost window)
         {
             var dlg = new QueryElementDialog {Owner = window as Window};
             if (dlg.ShowDialog() == true)

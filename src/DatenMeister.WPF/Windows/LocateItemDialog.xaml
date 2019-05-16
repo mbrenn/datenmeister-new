@@ -8,11 +8,14 @@
         Title="LocateItemDialog" Height="600" Width="800">
     <Grid Margin="10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <controls:LocateElementControl x:Name="LocateElementControl" />
-        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
+
+        <TextBlock x:Name="txtTitle" FontSize="24"></TextBlock>
+        <controls:LocateElementControl x:Name="LocateElementControl" Grid.Row="1" />
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
             <Button Click="Open_Click">Open</Button>
             <Button Click="Cancel_Click">Cancel</Button>
         </StackPanel>

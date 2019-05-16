@@ -2,8 +2,10 @@
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using NUnit.Framework;
@@ -54,6 +56,34 @@ namespace DatenMeister.Tests.Uml
                     uml.CommonStructure.__Comment,
                     uml.Classification.__Classifier);
                 Assert.That(isSpecialized, Is.False);
+            }
+        }
+
+        [Test]
+        public void TestAddGeneralization()
+        {
+            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
+            {
+                var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
+                var uml = workspaceLogic.GetUmlData();
+                var extent = dm.CreateXmiExtent("dm:///test");
+                var factory = new MofFactory(extent);
+                var classSpecialized = factory.create(uml.Classification.__Classifier);
+                var classGeneralized = factory.create(uml.Classification.__Classifier);
+
+                extent.elements().add(classSpecialized);
+                extent.elements().add(classGeneralized);
+
+                ClassifierMethods.AddGeneralization(
+                    classSpecialized,
+                    classGeneralized); 
+
+                var generalizations = ClassifierMethods.GetGeneralizations(classGeneralized).ToList();
+                Assert.That(generalizations.Count, Is.EqualTo(0));
+
+                generalizations = ClassifierMethods.GetGeneralizations(classSpecialized).ToList();
+                Assert.That(generalizations.Count, Is.EqualTo(1));
+                Assert.That(generalizations.First().Equals(classGeneralized), Is.True);
             }
         }
 

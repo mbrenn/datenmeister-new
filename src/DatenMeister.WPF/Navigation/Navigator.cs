@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Windows;
 
@@ -38,6 +40,41 @@ namespace DatenMeister.WPF.Navigation
     }
 
     /// <summary>
+    /// Enumeration of the user dialog result
+    /// </summary>
+    public enum NavigationResult
+    {
+        Closed,
+        Saved,
+        Cancelled
+    }
+
+    public class NavigateToElementDetailResult
+    {
+        /// <summary>
+        /// Stores the result of the navigation
+        /// </summary>
+        public NavigationResult Result { get; set; }
+
+        /// <summary>
+        /// Stores the detail element that was shown
+        /// </summary>
+        public IObject DetailElement { get; set; }
+
+        /// <summary>
+        /// Gets or sets the host for navigation
+        /// </summary>
+        public INavigationHost NavigationHost { get; set; }
+
+        /// <summary>
+        /// Gets or sets the guest for navigation
+        /// </summary>
+        public INavigationGuest NavigationGuest { get; set; }
+
+        public IObject AttachedElement { get; set; }
+    }
+
+    /// <summary>
     /// Defines the navigation method to allow a fluent navigation between instances
     /// </summary>
     public static class Navigator
@@ -47,15 +84,21 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="parentWindow">Parent window to be used</param>
         /// <param name="factoryMethod">Factory method to be used to create the usercontrol</param>
+        /// <param name="navigationMode">Mode of the navigation</param>
         /// <returns>Creates a new window which can be used by the user. </returns>
-        public static IControlNavigation NavigateByCreatingAWindow(Window parentWindow, Func<UserControl> factoryMethod, NavigationMode navigationMode)
+        public static Task<NavigateToElementDetailResult> NavigateByCreatingAWindow(
+            Window parentWindow, 
+            Func<UserControl> factoryMethod, 
+            NavigationMode navigationMode)
         {
+            var task = new TaskCompletionSource<NavigateToElementDetailResult>();
+            var result = new NavigateToElementDetailResult();
+
             if (parentWindow == null)
             {
                 throw new InvalidOperationException("No parent window is not allowed");
             }
 
-            var result = new ControlNavigation();
             var userControl = factoryMethod();
             result.NavigationHost = parentWindow as INavigationHost;
             result.NavigationGuest = userControl as INavigationGuest;
@@ -76,7 +119,11 @@ namespace DatenMeister.WPF.Navigation
                     };
 
                     asListViewControl.NavigationHost = listFormWindow;
-                    listFormWindow.Closed += (x, y) => result.OnClosed();
+                    listFormWindow.Closed += (x, y) =>
+                    {
+                        result.Result = NavigationResult.Closed;
+                        task.SetResult(result);
+                    };
 
                     SetPosition(listFormWindow, parentWindow, navigationMode);
                     break;
@@ -89,12 +136,18 @@ namespace DatenMeister.WPF.Navigation
                     };
                     detailFormWindow.SetMainContent(asDetailFormControl);
                     asDetailFormControl.NavigationHost = detailFormWindow;
-                    detailFormWindow.Closed += (x, y) =>
+                    detailFormWindow.Cancelled += (x, y) =>
                     {
-                        result.OnClosed();
+                        result.Result = NavigationResult.Cancelled;
+                        task.SetResult(result);
                         parentWindow.Focus();
                     };
-                    detailFormWindow.Saved += (x, y) => { result.OnSaved(y); };
+                    detailFormWindow.Saved += (x, y) =>
+                    {
+                        result.Result = NavigationResult.Saved;
+                        result.DetailElement = y.Item;
+                        task.SetResult(result);
+                    };
 
                     asDetailFormControl.UpdateContent();
                     SetPosition(detailFormWindow, parentWindow, navigationMode);
@@ -104,7 +157,7 @@ namespace DatenMeister.WPF.Navigation
                 }
             }
 
-            return result;
+            return task.Task;
         }
 
         /// <summary>

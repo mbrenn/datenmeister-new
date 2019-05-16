@@ -196,7 +196,7 @@ namespace DatenMeister.Runtime
             where TFilledType : class, new()
         {
             var filledType = ((MofExtent)extent).Workspace.GetFromMetaWorkspace<TFilledType>();
-            return type(filledType);
+            return filledType == null ? null : type(filledType);
         }
     }
 }

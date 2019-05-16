@@ -14,6 +14,15 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// <returns>The loaded extent</returns>
         IUriExtent LoadExtent(ExtentLoaderConfig configuration, bool createAlsoEmpty = false);
 
+
+        /// <summary>
+        /// Imports an extent without adding it into he database.
+        /// This is used to perform a temporary loading
+        /// </summary>
+        /// <param name="configuration">Configuration to be loaded</param>
+        /// <returns>Resulting uri extent</returns>
+        IUriExtent LoadExtentWithoutAdding(ExtentLoaderConfig configuration);
+
         /// <summary>
         /// Stores the extent according to the used configuration during loading. 
         /// If loading was not performed, an exception is thrown. 

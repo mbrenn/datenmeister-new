@@ -13,7 +13,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
         /// <param name="navigationGuest"></param>
         public static void OpenSelectViewDialog(INavigationGuest navigationGuest)
         {
-            NavigatorForItems.NavigateToElementDetailView(
+            _ = NavigatorForItems.NavigateToElementDetailViewAsync(
                 navigationGuest.NavigationHost,
                 null);
         }

@@ -3,9 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
+using DatenMeister.Integration;
+using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Uml.Helper
 {
@@ -13,7 +17,7 @@ namespace DatenMeister.Uml.Helper
     {
         /// <summary>
         /// Returns a list of all properties within the classifier. 
-        /// Also properties from generalized classes need to be returned
+        /// Also properties from generalized classes will be returned
         /// </summary>
         /// <param name="classifier">Gets the properties and all properties from base classes</param>
         public static IEnumerable<IElement> GetPropertiesOfClassifier(IElement classifier)
@@ -128,6 +132,38 @@ namespace DatenMeister.Uml.Helper
 
             return GetGeneralizations(specializedClassifer)
                 .Any(generalization => IsSpecializedClassifierOf(generalization, generalizedClassifier));
+        }
+
+        /// <summary>
+        /// Adds a new generalization to the specialized classifier mapping to the
+        /// generalizedClassifier
+        /// </summary>
+        /// <param name="specializedClassifier">The classifier which will have a new generalization
+        /// and consequently will get the properties of the generalization attached</param>
+        /// <param name="generalizedClassifier">Generalized class being used as base for specialized one</param>
+        public static IElement AddGeneralization(IElement specializedClassifier, IElement generalizedClassifier)
+        {
+            if (GetGeneralizations(specializedClassifier).Contains(generalizedClassifier))
+            {
+                // Nothing to do
+                return null;
+            }
+
+            var factory = new MofFactory(specializedClassifier);
+            var uml = GiveMe.Scope.WorkspaceLogic.GetUmlData();
+
+            var newGeneralization = factory.create(uml.Classification.__Generalization);
+            newGeneralization.set(
+                _UML._Classification._Generalization.general, 
+                generalizedClassifier);
+            newGeneralization.set(
+                _UML._Classification._Generalization.specific, 
+                specializedClassifier);
+            specializedClassifier.AddCollectionItem(
+                _UML._Classification._Classifier.generalization, 
+                newGeneralization);
+
+            return newGeneralization;
         }
     }
 }

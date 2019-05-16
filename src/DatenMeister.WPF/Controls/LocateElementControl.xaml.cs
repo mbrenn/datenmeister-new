@@ -51,7 +51,12 @@ namespace DatenMeister.WPF.Controls
         }
 
         public static readonly DependencyProperty ShowWorkspaceSelectionProperty = DependencyProperty.Register(
-            "ShowWorkspaceSelection", typeof(bool), typeof(LocateElementControl), new PropertyMetadata(default(bool)));
+            "ShowWorkspaceSelection", 
+            typeof(bool), 
+            typeof(LocateElementControl), 
+            new PropertyMetadata(
+                true,
+                OnShowWorkSpaceSelectionChanged));
 
         public bool ShowWorkspaceSelection
         {
@@ -59,8 +64,30 @@ namespace DatenMeister.WPF.Controls
             set => SetValue(ShowWorkspaceSelectionProperty, value);
         }
 
+        private static void OnShowWorkSpaceSelectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (LocateElementControl) d;
+            var newValue = (bool)e.NewValue;
+            control.txtWorkspace.Visibility = 
+                control.cboWorkspace.Visibility = newValue ? Visibility.Visible : Visibility.Collapsed;
+
+        }
+
         public static readonly DependencyProperty ShowExtentSelectionProperty = DependencyProperty.Register(
-            "ShowExtentSelection", typeof(bool), typeof(LocateElementControl), new PropertyMetadata(default(bool)));
+            "ShowExtentSelection", 
+            typeof(bool), 
+            typeof(LocateElementControl), 
+            new PropertyMetadata(
+                true,
+                OnShowExtentSelectionChanged));
+
+        private static void OnShowExtentSelectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (LocateElementControl)d;
+            var newValue = (bool)e.NewValue;
+            control.txtExtent.Visibility =
+                control.cboExtent.Visibility = newValue ? Visibility.Visible : Visibility.Collapsed;
+        }
 
         public bool ShowExtentSelection
         {
@@ -108,7 +135,7 @@ namespace DatenMeister.WPF.Controls
                 {
                     if ((cboItem as ComboBoxItem)?.Tag == value)
                     {
-                        cboExtents.SelectedItem = cboItem;
+                        cboExtent.SelectedItem = cboItem;
                         break;
                     }
                 }
@@ -124,16 +151,16 @@ namespace DatenMeister.WPF.Controls
             set
             {
                 _selectedExtent = value;
-                if (cboExtents.ItemsSource == null)
+                if (cboExtent.ItemsSource == null)
                 {
                     return;
                 }
 
-                foreach (var cboItem in cboExtents.ItemsSource)
+                foreach (var cboItem in cboExtent.ItemsSource)
                 {
                     if ((cboItem as ComboBoxItem)?.Tag == value)
                     {
-                        cboExtents.SelectedItem = cboItem;
+                        cboExtent.SelectedItem = cboItem;
                         break;
                     }
                 }
@@ -184,7 +211,7 @@ namespace DatenMeister.WPF.Controls
         private void UpdateWorkspaces()
         {
             var workspaces = _workspaceLogic.Workspaces;
-            cboExtents.ItemsSource = null;
+            cboExtent.ItemsSource = null;
 
             var comboWorkspaces = new List<object>();
 
@@ -226,12 +253,12 @@ namespace DatenMeister.WPF.Controls
         {
             if (_selectedWorkspace == null)
             {
-                cboExtents.IsEnabled = false;
-                cboExtents.SelectedItem = null;
+                cboExtent.IsEnabled = false;
+                cboExtent.SelectedItem = null;
             }
             else
             {
-                cboExtents.IsEnabled = true;
+                cboExtent.IsEnabled = true;
 
                 var comboItems = new List<object>();
                 var index = -1;
@@ -254,16 +281,16 @@ namespace DatenMeister.WPF.Controls
                     n++;
                 }
 
-                cboExtents.ItemsSource = comboItems;
+                cboExtent.ItemsSource = comboItems;
 
                 // Sets the selected workspace
                 if (index != -1)
                 {
-                    cboExtents.SelectedIndex = index;
+                    cboExtent.SelectedIndex = index;
                 }
                 else
                 {
-                    cboExtents.SelectedItem = null;
+                    cboExtent.SelectedItem = null;
                 }
             }
         }
@@ -277,7 +304,7 @@ namespace DatenMeister.WPF.Controls
         private void cboExtents_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             items.SetDefaultProperties();
-            if (cboExtents.SelectedItem is ComboBoxItem selected)
+            if (cboExtent.SelectedItem is ComboBoxItem selected)
             {
                 switch (selected.Tag)
                 {

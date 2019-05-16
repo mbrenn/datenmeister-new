@@ -63,6 +63,42 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <returns>The loaded extent</returns>
         public IUriExtent LoadExtent(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)
         {
+            var (uriExtent, isAlreadyAdded) = LoadExtentWithoutAddingInternal(ref configuration, createAlsoEmpty);
+            if (isAlreadyAdded)
+            {
+                return uriExtent;
+            }
+
+            AddToWorkspaceIfPossible(configuration, uriExtent);
+
+            // Stores the information into the data container
+            var info = new ExtentStorageData.LoadedExtentInformation
+            {
+                Configuration = configuration,
+                Extent = uriExtent
+            };
+
+            lock (_extentStorageData.LoadedExtents)
+            {
+                _extentStorageData.LoadedExtents.Add(info);
+            }
+
+            return uriExtent;
+        }
+
+        /// <summary>
+        /// Imports an extent without adding it intot he database.
+        /// This is used to perform a temporary loading
+        /// </summary>
+        /// <param name="configuration">Configuration to be loaded</param>
+        /// <returns>Resulting uri extent</returns>
+        public IUriExtent LoadExtentWithoutAdding(ExtentLoaderConfig configuration)
+        {
+            return LoadExtentWithoutAddingInternal(ref configuration, false).Item1;
+        }
+
+        private (IUriExtent,bool) LoadExtentWithoutAddingInternal(ref ExtentLoaderConfig configuration, bool createAlsoEmpty)
+        {
             // Check, if the extent url is a real uri
             if (!Uri.IsWellFormedUriString(configuration.extentUri, UriKind.Absolute))
             {
@@ -80,18 +116,24 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             // Creates the extent loader, being capable to load or store an extent
             var extentLoader = _map.CreateFor(_diScope, configuration);
-        
+
             // Loads the extent
             var loadedProviderInfo = extentLoader.LoadProvider(configuration, createAlsoEmpty);
 
             // If the extent is already added (for example, the provider loader calls itself LoadExtent due to an indirection), then the resulting event extent will 
             if (loadedProviderInfo.IsExtentAlreadyAddedToWorkspace)
             {
-                return (IUriExtent) _workspaceLogic.FindExtent(loadedProviderInfo.UsedConfig.workspaceId, loadedProviderInfo.UsedConfig.extentUri);
+                {
+                    return (
+                        (IUriExtent) _workspaceLogic.FindExtent(loadedProviderInfo.UsedConfig.workspaceId,
+                            loadedProviderInfo.UsedConfig.extentUri),
+                        true);
+                }
             }
 
             var loadedProvider = loadedProviderInfo.Provider;
-            configuration = loadedProviderInfo.UsedConfig ?? configuration; // Updates the configuration, if it needs to be updated
+            configuration =
+                loadedProviderInfo.UsedConfig ?? configuration; // Updates the configuration, if it needs to be updated
 
             Logger.Info($"Loading extent: {configuration}");
 
@@ -100,22 +142,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 throw new InvalidOperationException("Extent for configuration could not be loaded");
             }
 
-            var uriExtent = new MofUriExtent(loadedProvider, configuration.extentUri);
-            AddToWorkspaceIfPossible(configuration, uriExtent);
-
-            // Stores the information into the data container
-            var info = new ExtentStorageData.LoadedExtentInformation
-            {
-                Configuration = configuration,
-                Extent = uriExtent
-            };
-
-            lock (_extentStorageData.LoadedExtents)
-            {
-                _extentStorageData.LoadedExtents.Add(info);
-            }
-
-            return uriExtent;
+            return (new MofUriExtent(loadedProvider, configuration.extentUri), false);
         }
 
         /// <summary>

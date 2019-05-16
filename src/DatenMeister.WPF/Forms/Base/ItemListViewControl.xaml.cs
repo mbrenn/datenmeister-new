@@ -31,7 +31,6 @@ using DatenMeister.WPF.Commands;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Helper;
 using DatenMeister.WPF.Modules;
-using DatenMeister.WPF.Modules.TypeManager;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using Microsoft.Win32;
@@ -674,14 +673,6 @@ namespace DatenMeister.WPF.Forms.Base
                     CopyContentAsXmi,
                     null,
                     NavigationCategories.File + ".Copy"));
-            
-            /*ViewExtensions.Add(
-                new RibbonButtonDefinition(
-                    "Type Manager",
-                    JumpToTypeManager,
-                    string.Empty,
-                    NavigationCategories.Type + "." + "Manager"
-                ));*/
         }
 
         /// <inheritdoc />

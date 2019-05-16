@@ -97,7 +97,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     MaxHeight = 500,
-                    Width = 650,
+                    MinWidth = 650,
                     NavigationHost = _navigationHost
                 };
 

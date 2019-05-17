@@ -219,6 +219,7 @@ namespace DatenMeister.Runtime
                    (
                        value.Equals(true) ||
                        value.Equals(1) ||
+                       value.Equals("True") ||
                        value.Equals("true") ||
                        value.Equals("TRUE") ||
                        value is string && value.ToString().ToLower() == "true");

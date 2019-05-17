@@ -97,7 +97,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     MaxHeight = 500,
-                    Width = 650,
+                    MinHeight = 300,
+                    MinWidth = 650,
                     NavigationHost = _navigationHost
                 };
 
@@ -115,6 +116,19 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                         "Edit",
                         (guest, item) => NavigatorForItems.NavigateToElementDetailView(_navigationHost, item),
                         ItemListViewControl.ButtonPosition.Before));
+                viewExtensions.Add(
+                    new RowItemButtonDefinition(
+                        "Delete",
+
+                        (guest, item) =>
+                        {
+                            if (MessageBox.Show(
+                                    "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
+                                MessageBoxResult.Yes)
+                            {
+                                valueOfElement.remove(item);
+                            }
+                        }));
                 listViewControl.SetContent(valueOfElement, form, viewExtensions);
 
                 _panel.Children.Add(listViewControl);

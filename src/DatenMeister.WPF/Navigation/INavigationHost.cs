@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.WPF.Navigation
 {
@@ -40,5 +41,14 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <returns></returns>
         Window GetWindow();
+    }
+
+    public interface IDetailNavigationHost : INavigationHost
+    {
+        IObject DetailElement { get; }
+
+        IElement AttachedElement { get; }
+
+        IElement EffectiveForm { get; }
     }
 }

@@ -120,10 +120,10 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="element">Element to be used</param>
         /// <returns>Created form object</returns>
-        public IObject CreateView(IObject element)
+        public IElement CreateView(IObject element)
         {
             var form = _formCreator.CreateForm(element, FormCreator.CreationMode.All);
-            return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetInternalViewExtent());
+            return DotNetHelper.ConvertToMofElement(form, _viewLogic.GetInternalViewExtent()) as IElement;
         }
 
         /// <inheritdoc />

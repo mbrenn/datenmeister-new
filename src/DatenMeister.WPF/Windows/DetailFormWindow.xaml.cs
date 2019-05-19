@@ -4,10 +4,16 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
+using Autofac;
 using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Navigation;
@@ -17,12 +23,13 @@ namespace DatenMeister.WPF.Windows
     /// <summary>
     ///     Interaktionslogik für DetailFormWindow.xaml
     /// </summary>
-    public partial class DetailFormWindow : Window, IHasRibbon, INavigationHost
+    public partial class DetailFormWindow : Window, IHasRibbon, IDetailNavigationHost
     {
         /// <summary>
         /// Defines the logger for the DetailFormWindow
         /// </summary>
         private static readonly ClassLogger Logger = new ClassLogger(typeof(DetailFormWindow));
+
         /// <summary>
         /// Defines the event that will be thrown, when the user has clicked upon 'save' in the inner form.
         /// This event has to be invoked by the child elements. 
@@ -35,7 +42,31 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         public event EventHandler<ItemEventArgs> Cancelled;
 
-        private bool _finalEventsThrown; 
+        /// <summary>
+        /// Stores the value whether the  saved or cancelled event is already thrown. 
+        /// This information is used to decide whether to throw an event when user closes the dialogue
+        /// </summary>
+        private bool _finalEventsThrown;
+
+        /// <summary>
+        /// Stores the detail element
+        /// </summary>
+        private ViewDefinition _viewDefinition;
+
+        /// <summary>
+        /// Stores the effective form
+        /// </summary>
+        public IElement EffectiveForm { get; private set; }
+
+        /// <summary>
+        /// Stores the form element
+        /// </summary>
+        public IObject DetailElement { get; private set; }
+
+        /// <summary>
+        /// Stores the attached element
+        /// </summary>
+        public IElement AttachedElement { get; private set; }
 
         public DetailFormWindow()
         {
@@ -208,6 +239,75 @@ namespace DatenMeister.WPF.Windows
             {
                 OnCancelled(null, null);
             }
+        }
+
+        /// <summary>
+        /// Opens the form by creating the inner dialog
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="viewDefinition"></param>
+        public void SetContent(IElement element, ViewDefinition viewDefinition)
+        {
+            DetailElement = element ?? InMemoryObject.CreateEmpty();
+            _viewDefinition = viewDefinition;
+
+            UpdateActualViewDefinition();
+
+            CreateDetailForm();
+        }
+
+
+        /// <summary>
+        ///     Sets the content for a completely new object
+        /// </summary>
+        /// <param name="formDefinition">Form Definition being used</param>
+        public void SetContentForNewObject(IElement formDefinition)
+        {
+            SetContent(
+                InMemoryObject.CreateEmpty(),
+                new ViewDefinition("Empty Element", formDefinition));
+        }
+
+        /// <summary>
+        /// Creates the detailform matching to the given effective form
+        /// </summary>
+        private void CreateDetailForm()
+        {
+            if (EffectiveForm != null)
+            {
+                var control = new DetailFormControl
+                {
+                    AllowNewProperties = true,
+                    NavigationHost = this
+                };
+                
+                control.UpdateContent();
+
+                MainContent = control;
+            }
+        }
+
+        private void UpdateActualViewDefinition()
+        {
+            var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
+            if (_viewDefinition.Mode == ViewDefinitionMode.Default)
+            {
+                EffectiveForm = viewFinder.FindDetailView(DetailElement);
+            }
+
+            switch (_viewDefinition.Mode)
+            {
+                case ViewDefinitionMode.AllProperties:
+                case ViewDefinitionMode.Default when EffectiveForm == null:
+                    EffectiveForm = viewFinder.CreateView(DetailElement);
+                    break;
+                case ViewDefinitionMode.Specific:
+                    EffectiveForm = _viewDefinition.Element;
+                    break;
+            }
+
+            // Clones the EffectiveForm
+            EffectiveForm = ObjectCopier.Copy(new MofFactory(EffectiveForm), EffectiveForm);
         }
     }
 }

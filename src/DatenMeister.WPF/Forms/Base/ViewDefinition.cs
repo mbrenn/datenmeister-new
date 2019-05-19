@@ -22,7 +22,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets the corresponding element
         /// </summary>
-        public IObject Element { get; }
+        public IElement Element { get; }
 
         /// <summary>
         /// Initializes a new instance of the new ViewDefinition class
@@ -30,7 +30,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="name"></param>
         /// <param name="element"></param>
         /// <param name="mode">Stores the type as given</param>
-        public ViewDefinition(string name, IObject element, ViewDefinitionMode mode = ViewDefinitionMode.Specific)
+        public ViewDefinition(string name, IElement element, ViewDefinitionMode mode = ViewDefinitionMode.Specific)
         {
             Name = name;
             Element = element;

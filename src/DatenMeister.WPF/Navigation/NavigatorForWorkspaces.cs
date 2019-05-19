@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using DatenMeister.Integration;
+using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Detail;
 using DatenMeister.WPF.Forms.Lists;
 
@@ -36,11 +39,31 @@ namespace DatenMeister.WPF.Navigation
 
         public static Task<NavigateToElementDetailResult> CreateNewWorkspace(INavigationHost navigationHost)
         {
-            return navigationHost.NavigateTo(() =>
+            return navigationHost.NavigateTo(async () =>
                 {
-                    var dlg = new NewWorkspaceControl();
-                    dlg.SetContent();
-                    return dlg;
+                    var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                    var viewExtent = viewLogic.GetInternalViewExtent();
+
+                    var formElement = NamedElementMethods.GetByFullName(
+                        viewExtent,
+                        ManagementViewDefinitions.PathNewWorkspaceForm);
+
+                    var result = await NavigatorForItems.NavigateToElementDetailViewAsync(navigationHost,
+                        new NavigateToItemConfig
+                        {
+                            FormDefinition = formElement
+
+                        });
+
+                    if (result.Result == NavigationResult.Saved)
+                    {
+                        var workspaceId = result.DetailElement.get("id").ToString();
+                        var annotation = result.DetailElement.get("annotation").ToString();
+
+                        var workspace = new Workspace(workspaceId, annotation);
+                        var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
+                        workspaceLogic.AddWorkspace(workspace);
+                    }
                 },
                 NavigationMode.Detail);
         }

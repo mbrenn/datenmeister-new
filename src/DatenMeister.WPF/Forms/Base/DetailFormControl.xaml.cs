@@ -47,7 +47,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Gets the detailed element, whose content is shown in the dialog
         /// </summary>
-        public IObject DetailElement { get; private set; }
+        public IObject DetailElement => NavigationHost.DetailElement;
 
         /// <summary>
         /// Gets or sets the container for the Detail Element. It will be used to
@@ -61,16 +61,11 @@ namespace DatenMeister.WPF.Forms.Base
         public IObject EffectiveForm { get; private set; }
 
         /// <summary>
-        ///     Gets or sets the view definition
-        /// </summary>
-        public ViewDefinition ViewDefinition { get; set; }
-
-        /// <summary>
         ///     Gets or sets a value indicating whether new properties may be added by the user to the element
         /// </summary>
         public bool AllowNewProperties { get; set; }
 
-        public IElement AttachedElement { get; private set; }
+        public IElement AttachedElement => NavigationHost.AttachedElement;
 
         /// <summary>
         ///     Gets the default size
@@ -97,7 +92,16 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Gets or sets the navigation host
         /// </summary>
-        public INavigationHost NavigationHost { get; set; }
+        public IDetailNavigationHost NavigationHost { get; set; }
+
+        /// <summary>
+        /// Defines the navigation host
+        /// </summary>
+        INavigationHost INavigationGuest.NavigationHost
+        {
+            get => NavigationHost;
+            set => NavigationHost = (IDetailNavigationHost) value;
+        }
 
         /// <summary>
         /// Gets the title for the control
@@ -302,82 +306,12 @@ namespace DatenMeister.WPF.Forms.Base
         public event EventHandler LoadingCompleted;
 
         /// <summary>
-        ///     Sets the content for a completely new object
-        /// </summary>
-        /// <param name="formDefinition">Form Definition being used</param>
-        public void SetContentForNewObject(IElement formDefinition)
-        {
-            SetContent(
-                InMemoryObject.CreateEmpty(),
-                formDefinition);
-        }
-
-        /// <summary>
-        /// Sets the content by setting a form definition and the object itself.
-        /// The form definition may be null, so a form will be automatically created. 
-        /// </summary>
-        /// <param name="element">Element to be shown. If null, then a new element will be created.</param>
-        /// <param name="formDefinition">The form definition. If null, then the form will be automatically created </param>
-        public void SetContent(IObject element, IElement formDefinition)
-        {
-            DetailElement = element ?? InMemoryObject.CreateEmpty();
-            SetViewDefinition(formDefinition, false);
-
-            AttachedElement = InMemoryObject.CreateEmpty();
-        }
-
-        /// <summary>
-        /// Sets the view for the detail form. 
-        /// </summary>
-        /// <param name="formDefinition"></param>
-        /// <param name="refreshView">true, if the view shall be refreshed</param>
-        public void SetViewDefinition(IElement formDefinition, bool refreshView = true)
-        {
-            ViewDefinition = new ViewDefinition(
-                null,
-                formDefinition,
-                formDefinition == null ? ViewDefinitionMode.Default : ViewDefinitionMode.Specific
-            );
-
-            if (refreshView)
-            {
-                UpdateActualViewDefinition();
-                UpdateContent();
-            }
-        }
-
-        /// <summary>
         ///     This method gets called, when a new item is added or an existing item was modified.
         ///     Derivation of the class which have automatic creation of columns may include additional columns
         /// </summary>
         private void RefreshViewDefinition()
         {
-            UpdateActualViewDefinition();
-
             OnViewDefined();
-        }
-
-        private void UpdateActualViewDefinition()
-        {
-            var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
-            if (ViewDefinition.Mode == ViewDefinitionMode.Default)
-            {
-                EffectiveForm = viewFinder.FindDetailView(DetailElement);
-            }
-
-            switch (ViewDefinition.Mode)
-            {
-                case ViewDefinitionMode.AllProperties:
-                case ViewDefinitionMode.Default when EffectiveForm == null:
-                    EffectiveForm = viewFinder.CreateView(DetailElement);
-                    break;
-                case ViewDefinitionMode.Specific:
-                    EffectiveForm = ViewDefinition.Element;
-                    break;
-            }
-
-            // Clones the EffectiveForm
-            EffectiveForm = ObjectCopier.Copy(new MofFactory(EffectiveForm), EffectiveForm);
         }
 
         /// <summary>
@@ -590,6 +524,9 @@ namespace DatenMeister.WPF.Forms.Base
             _fieldCount++;
         }
 
+        /// <summary>
+        /// Creates a separation line
+        /// </summary>
         private void CreateSeparator()
         {
             DataGrid.RowDefinitions.Add(new RowDefinition());

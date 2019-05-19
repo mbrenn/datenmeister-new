@@ -53,7 +53,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         /// Stores the delayed dispatcher
         /// </summary>
-        private DelayedRefreshDispatcher _delayedDispatcher;
+        private readonly DelayedRefreshDispatcher _delayedDispatcher;
 
         /// <summary>
         /// Gets the extent of the item class
@@ -89,7 +89,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         /// Stores the metaclasses currently shown
         /// </summary>
-        private List<IElement> _metaClasses = new List<IElement>();
+        private readonly List<IElement> _metaClasses = new List<IElement>();
 
         private readonly IWorkspaceLogic _workspaceLogic;
 
@@ -239,7 +239,6 @@ namespace DatenMeister.WPF.Forms.Lists
 
         private void CreateNewElementByUser(IElement type, string parentProperty)
         {
-            // TODO: Evaluate parent property
             if (IsExtentSelectedInTreeview)
             {
                 NavigatorForItems.NavigateToNewItemForExtent(

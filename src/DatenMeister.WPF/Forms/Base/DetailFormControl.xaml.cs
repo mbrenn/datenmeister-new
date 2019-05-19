@@ -117,7 +117,6 @@ namespace DatenMeister.WPF.Forms.Base
                 }
 
                 return $"Edit Item: {NamedElementMethods.GetName(DetailElement)}";
-
             }
 
             set => _internalTitle = value;
@@ -188,6 +187,23 @@ namespace DatenMeister.WPF.Forms.Base
                     NavigationCategories.File);
             }
 
+            // Get the view extensions by the plugins
+            var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
+            var data = new ViewExtensionTargetInformation
+            {
+                NavigationGuest = this,
+                NavigationHost = NavigationHost
+            };
+
+            foreach (var plugin in viewExtensionPlugins)
+            {
+                foreach (var extension in plugin.GetViewExtensions(data))
+                {
+                    yield return extension;
+                }
+            }
+
+            // Local methods for the buttons
             void ViewConfig()
             {
                 var dlg = new ItemXmlViewWindow
@@ -305,14 +321,29 @@ namespace DatenMeister.WPF.Forms.Base
         public void SetContent(IObject element, IElement formDefinition)
         {
             DetailElement = element ?? InMemoryObject.CreateEmpty();
+            SetViewDefinition(formDefinition, false);
 
+            AttachedElement = InMemoryObject.CreateEmpty();
+        }
+
+        /// <summary>
+        /// Sets the view for the detail form. 
+        /// </summary>
+        /// <param name="formDefinition"></param>
+        /// <param name="refreshView">true, if the view shall be refreshed</param>
+        public void SetViewDefinition(IElement formDefinition, bool refreshView = true)
+        {
             ViewDefinition = new ViewDefinition(
                 null,
                 formDefinition,
                 formDefinition == null ? ViewDefinitionMode.Default : ViewDefinitionMode.Specific
             );
 
-            AttachedElement = InMemoryObject.CreateEmpty();
+            if (refreshView)
+            {
+                UpdateActualViewDefinition();
+                UpdateContent();
+            }
         }
 
         /// <summary>
@@ -360,7 +391,8 @@ namespace DatenMeister.WPF.Forms.Base
             AttachedItemFields.Clear();
             ItemFields.Clear();
 
-            if (!(EffectiveForm?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
+            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.fields);
+            if (fields == null)
             {
                 return;
             }

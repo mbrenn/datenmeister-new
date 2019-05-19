@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
@@ -18,20 +20,29 @@ namespace DatenMeister.WPF.Modules.ViewManager
         /// </summary>
         /// <param name="viewExtensionTargetInformation"></param>
         /// <returns></returns>
-        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionTargetInformation viewExtensionTargetInformation)
+        public IEnumerable<ViewExtension> GetViewExtensions(
+            ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
-            var result = new RibbonButtonDefinition(
-                "Switch to User Views",
-                () => Navigation.NavigatorForItems.NavigateToItemsInExtent(
-                    viewExtensionTargetInformation.NavigationHost,
-                    WorkspaceNames.NameManagement,
-                    WorkspaceNames.UriUserViewExtent),
-                "",
-                "Views");
+            var navigationGuest = viewExtensionTargetInformation.NavigationGuest;
+            var itemExplorerControl = navigationGuest as ItemExplorerControl;
+            var detailFormControl = navigationGuest as DetailFormControl;
 
-            yield return result;
+            if (navigationGuest is ItemExplorerControl)
+            {
+                var result = new RibbonButtonDefinition(
+                    "Switch to User Views",
+                    () => Navigation.NavigatorForItems.NavigateToItemsInExtent(
+                        viewExtensionTargetInformation.NavigationHost,
+                        WorkspaceNames.NameManagement,
+                        WorkspaceNames.UriUserViewExtent),
+                    "",
+                    "Views");
 
-            if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl)
+                yield return result;
+
+            }
+
+            if (itemExplorerControl != null|| detailFormControl != null)
             {
                 var openView = new RibbonButtonDefinition(
                     "Open View",
@@ -46,12 +57,14 @@ namespace DatenMeister.WPF.Modules.ViewManager
                                     .element("#ViewManagerFindView")
                             });
 
-                        if (action.Result == NavigationResult.Saved)
+                        if (action.Result == NavigationResult.Saved && action.DetailElement is IElement asElement)
                         {
-                            var asItemListView =
-                                viewExtensionTargetInformation.NavigationGuest as ItemExplorerControl;
-                            asItemListView?.AddTab(
-                                asItemListView.Items, new ViewDefinition("Selected Form", action.DetailElement));
+                            var formDefinition = asElement.getOrDefault<IElement>("form");
+
+                            itemExplorerControl?.AddTab(
+                                itemExplorerControl.Items, new ViewDefinition("Selected Form", formDefinition));
+
+                            detailFormControl?.SetViewDefinition(formDefinition);
                         }
                     },
                     "",

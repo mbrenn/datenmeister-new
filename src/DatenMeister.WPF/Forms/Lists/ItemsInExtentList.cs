@@ -35,7 +35,7 @@ namespace DatenMeister.WPF.Forms.Lists
     public class ItemsInExtentList : ItemExplorerControl
     {
         /// <summary>
-        /// Stores the extent being associeated to the extentlist
+        /// Stores the extent being associated to the extentlist
         /// </summary>
         private IExtent _extent;
 

@@ -7,6 +7,7 @@ using System.Windows.Controls.Ribbon;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
@@ -67,6 +68,12 @@ namespace DatenMeister.WPF.Windows
         /// Stores the attached element
         /// </summary>
         public IElement AttachedElement { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the container element in which the DetailElement is allocated to.
+        /// This information is used to delete the item if required
+        /// </summary>
+        public IReflectiveCollection DetailElementContainer { get; set; }
 
         public DetailFormWindow()
         {
@@ -251,11 +258,12 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         /// <param name="element"></param>
         /// <param name="viewDefinition"></param>
-        public void SetContent(IObject element, ViewDefinition viewDefinition)
+        public void SetContent(IObject element, ViewDefinition viewDefinition, IReflectiveCollection container = null)
         {
             DetailElement = element ?? InMemoryObject.CreateEmpty();
+            DetailElementContainer = container;
             _viewDefinition = viewDefinition;
-
+            
             UpdateActualViewDefinition();
 
             CreateDetailForm();

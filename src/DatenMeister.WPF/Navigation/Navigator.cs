@@ -94,9 +94,11 @@ namespace DatenMeister.WPF.Navigation
 
             var detailFormWindow = new DetailFormWindow
             {
-                Owner = navigationHost.GetWindow()
+                Owner = navigationHost.GetWindow(),
+                DetailElementContainer = navigateToItemConfig.DetailElementContainer
             };
-            detailFormWindow.SetContent(navigateToItemConfig.DetailElement, new ViewDefinition(navigateToItemConfig.FormDefinition));
+
+            detailFormWindow.SetContent(navigateToItemConfig.DetailElement, new ViewDefinition(navigateToItemConfig.FormDefinition), navigateToItemConfig.DetailElementContainer);
             detailFormWindow.Cancelled += (x, y) =>
             {
                 result.Result = NavigationResult.Cancelled;

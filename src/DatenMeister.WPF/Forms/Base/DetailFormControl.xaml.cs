@@ -53,7 +53,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Gets or sets the container for the Detail Element. It will be used to
         /// delete the item, if required. 
         /// </summary>
-        public IReflectiveCollection DetailElementContainer { get; set; }
+        public IReflectiveCollection DetailElementContainer => NavigationHost.DetailElementContainer;
 
         /// <summary>
         ///     Defines the form definition being used in the detail for
@@ -367,6 +367,8 @@ namespace DatenMeister.WPF.Forms.Base
                     }
                 }
             }
+
+            AddDefaultButtons();
         }
 
         /// <summary>

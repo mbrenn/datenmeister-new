@@ -53,7 +53,7 @@
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm"
                      p1:id="WorkspacesAndExtents.Workspaces.Detail" name="Detail - New Workspace" fixView="False"
                      inhibitNewItems="False" hideMetaClass="False" minimizeDesign="True" defaultWidth="0"
-                     defaultHeight="0">
+                     defaultHeight="0" defaultApplyText="Create Workspace" title="Create Workspace" allowNewProperties="False">
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" lineHeight="0"
               width="0" isAttached="False" fieldType="text" name="id" title="Name" isEnumeration="False"
               isReadOnly="False" />

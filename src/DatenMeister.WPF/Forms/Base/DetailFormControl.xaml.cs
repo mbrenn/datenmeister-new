@@ -321,6 +321,10 @@ namespace DatenMeister.WPF.Forms.Base
         {
             RefreshViewDefinition();
 
+            // Checks, if the form overwrites the allow new properties information. If yes, store it
+            var t = EffectiveForm?.getOrNull<bool>(_FormAndFields._DetailForm.allowNewProperties);
+            AllowNewProperties = t ?? AllowNewProperties;
+
             DataGrid.Children.Clear();
             AttachedItemFields.Clear();
             ItemFields.Clear();
@@ -551,8 +555,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Adds the default cancel and save buttons
         /// </summary>
-        public void AddDefaultButtons(string saveText = "Save")
+        public void AddDefaultButtons(string saveText = null)
         {
+            saveText = saveText ?? EffectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.defaultApplyText);
+            saveText = saveText ?? "Save";
+
             if (AllowNewProperties)
             {
                 AddGenericButton("New Property", () =>

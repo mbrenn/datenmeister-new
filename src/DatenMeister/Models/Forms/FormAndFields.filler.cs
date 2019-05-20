@@ -172,6 +172,14 @@ namespace DatenMeister.Models.Forms
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
+                                if(name == "defaultApplyText") // Looking for property
+                                {
+                                    tree.DetailForm._defaultApplyText = value;
+                                }
+                                if(name == "allowNewProperties") // Looking for property
+                                {
+                                    tree.DetailForm._allowNewProperties = value;
+                                }
                                 if(name == "name") // Looking for property
                                 {
                                     tree.DetailForm._name = value;

@@ -102,6 +102,12 @@ namespace DatenMeister.Models.Forms
 
         public class _DetailForm
         {
+            public static string @defaultApplyText = "defaultApplyText";
+            public IElement _defaultApplyText = null;
+
+            public static string @allowNewProperties = "allowNewProperties";
+            public IElement _allowNewProperties = null;
+
             public static string @name = "name";
             public IElement _name = null;
 

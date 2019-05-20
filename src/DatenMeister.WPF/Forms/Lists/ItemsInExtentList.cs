@@ -156,7 +156,7 @@ namespace DatenMeister.WPF.Forms.Lists
         private void CreateTabForItems(IReflectiveCollection tabItems, IElement metaClass)
         {
             var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
-            IObject view;
+            IElement view;
             var extentType = (Items as IHasExtent)?.Extent.GetExtentType();
 
             if (Items == SelectedItems)

@@ -58,7 +58,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Defines the form definition being used in the detail for
         /// </summary>
-        public IObject EffectiveForm { get; private set; }
+        public IObject EffectiveForm { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether new properties may be added by the user to the element
@@ -71,8 +71,8 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Gets the default size
         /// </summary>
         public Size DefaultSize => new Size(
-            DotNetHelper.AsDouble(EffectiveForm?.get(_FormAndFields._Form.defaultWidth)),
-            DotNetHelper.AsDouble(EffectiveForm?.get(_FormAndFields._Form.defaultHeight))
+            EffectiveForm?.getOrDefault<double>(_FormAndFields._Form.defaultWidth) ?? 0.0,
+            EffectiveForm?.getOrDefault<double>(_FormAndFields._Form.defaultHeight) ?? 0.0
         );
 
         public List<IDetailField> ItemFields { get; } = new List<IDetailField>();

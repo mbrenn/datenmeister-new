@@ -136,7 +136,7 @@ namespace DatenMeister.Runtime
         {
             if (!value.isSet(property))
             {
-                return default(T);
+                return default;
             }
 
             return get<T>(value, property);

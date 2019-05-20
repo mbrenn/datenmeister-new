@@ -7,6 +7,7 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Navigation;
+using DatenMeister.WPF.Windows;
 
 namespace DatenMeister.WPF.Modules.ViewManager
 {
@@ -25,7 +26,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
         {
             var navigationGuest = viewExtensionTargetInformation.NavigationGuest;
             var itemExplorerControl = navigationGuest as ItemExplorerControl;
-            var detailFormControl = navigationGuest as DetailFormControl;
+            var detailFormControl = viewExtensionTargetInformation.NavigationHost as DetailFormWindow;
 
             if (navigationGuest is ItemExplorerControl)
             {
@@ -48,7 +49,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                     "Open View",
                     async () =>
                     {
-                        var action = await NavigatorForItems.NavigateToElementDetailViewAsync(
+                        var action = await Navigator.CreateDetailWindow(
                             viewExtensionTargetInformation.NavigationHost,
                             new NavigateToItemConfig
                             {
@@ -64,7 +65,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                             itemExplorerControl?.AddTab(
                                 itemExplorerControl.Items, new ViewDefinition("Selected Form", formDefinition));
 
-                            detailFormControl?.SetViewDefinition(formDefinition);
+                            detailFormControl.SetForm(formDefinition);
                         }
                     },
                     "",

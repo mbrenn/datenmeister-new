@@ -55,7 +55,7 @@ namespace DatenMeister.WPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(
                 new TreeViewItemCommandDefinition(
                     "New Workspace",
-                    (x) => { NavigatorForWorkspaces.CreateNewWorkspace(navigationHost); }));
+                    (x) => { _ = NavigatorForWorkspaces.CreateNewWorkspace(navigationHost); }));
 
             return viewDefinition;
 
@@ -178,7 +178,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void NewXmiExtent()
             {
-                NavigatorForItems.NavigateToNewXmiExtentDetailView(control.NavigationHost, workspaceId);
+                _ = NavigatorForItems.NavigateToNewXmiExtentDetailView(control.NavigationHost, workspaceId);
             }
 
             void AddZipCodeExample()

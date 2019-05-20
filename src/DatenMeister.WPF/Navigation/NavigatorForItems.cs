@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -66,7 +65,7 @@ namespace DatenMeister.WPF.Navigation
         /// <summary>
         /// Gets or sets the form definition to be used to create the item
         /// </summary>
-        public IObject FormDefinition { get; set; }
+        public IElement FormDefinition { get; set; }
     }
 
     public class NavigatorForItems
@@ -102,52 +101,11 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="window">Window to be used as navigation host</param>
         /// <param name="navigateToItemConfig">Configuration for navigation</param>
         /// <returns>The task providing the result</returns>
-        public static async Task<NavigateToElementDetailResult> NavigateToElementDetailViewAsync(
+        public static Task<NavigateToElementDetailResult> NavigateToElementDetailViewAsync(
             INavigationHost window,
             NavigateToItemConfig navigateToItemConfig)
         {
-            var controlNavigationSaveItem = await window.NavigateTo(
-                () =>
-                {
-                    var control = new DetailFormControl
-                    {
-                        AllowNewProperties = true,
-                        Title = navigateToItemConfig.Title,
-                        DetailElementContainer = navigateToItemConfig.DetailElementContainer
-                    };
-
-                    control.SetContent(navigateToItemConfig.DetailElement, null);
-                    if (navigateToItemConfig.FormDefinition != null)
-                    {
-                        control.ViewDefinition = new ViewDefinition(
-                            "Selected",
-                            navigateToItemConfig.FormDefinition);
-                    }
-
-                    // calls the hook, so event handling can be introduced
-                    navigateToItemConfig.AfterCreatedFunction?.Invoke(control);
-
-                    control.AddDefaultButtons();
-                    return control;
-                },
-                NavigationMode.Detail);
-
-            if (controlNavigationSaveItem.Result == NavigationResult.Saved)
-            {
-                return
-                    new NavigateToElementDetailResult
-                    {
-                        Result = NavigationResult.Saved,
-                        DetailElement = controlNavigationSaveItem.DetailElement,
-                        AttachedElement = controlNavigationSaveItem.AttachedElement
-                    };
-            }
-
-            return 
-                new NavigateToElementDetailResult
-                    {
-                        Result = NavigationResult.Cancelled
-                    };
+            return Navigator.CreateDetailWindow(window, navigateToItemConfig);
         }
 
         /// <summary>
@@ -156,44 +114,37 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="window">Window being used as an owner</param>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <returns></returns>
-        public static Task<NavigateToElementDetailResult> NavigateToNewXmiExtentDetailView(
+        public static async Task<NavigateToElementDetailResult> NavigateToNewXmiExtentDetailView(
             INavigationHost window,
             string workspaceId)
         {
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-            return window.NavigateTo(
-                () =>
+            var navigateToItemConfig = new NavigateToItemConfig
+            {
+                FormDefinition = NamedElementMethods.GetByFullName(
+                    viewLogic.GetInternalViewExtent(),
+                    ManagementViewDefinitions.PathNewXmiDetailForm)
+            };
+
+            var result = await NavigateToElementDetailViewAsync(window, navigateToItemConfig);
+            if (result.Result == NavigationResult.Saved)
+            {
+                var configuration = new XmiStorageConfiguration
                 {
-                    var newXmiDetailForm = NamedElementMethods.GetByFullName(
-                        viewLogic.GetInternalViewExtent(),
-                        ManagementViewDefinitions.PathNewXmiDetailForm);
+                    extentUri = result.DetailElement.isSet("uri")
+                        ? result.DetailElement.get("uri").ToString()
+                        : string.Empty,
+                    filePath = result.DetailElement.isSet("filepath")
+                        ? result.DetailElement.get("filepath").ToString()
+                        : string.Empty,
+                    workspaceId = workspaceId
+                };
 
-                    var control = new DetailFormControl
-                    {
-                        Title = "Create new XMI extent"
-                    };
-                    control.SetContent(null, newXmiDetailForm);
-                    control.AddDefaultButtons("Create");
-                    control.ElementSaved += (x, y) => 
-                    {
-                        var configuration = new XmiStorageConfiguration
-                        {
-                            extentUri = control.DetailElement.isSet("uri")
-                                ? control.DetailElement.get("uri").ToString()
-                                : string.Empty,
-                            filePath = control.DetailElement.isSet("filepath")
-                                ? control.DetailElement.get("filepath").ToString()
-                                : string.Empty,
-                            workspaceId = workspaceId
-                        };
+                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+                extentManager.LoadExtent(configuration, true);
+            }
 
-                        var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-                        extentManager.LoadExtent(configuration, true);
-                    };
-
-                    return control;
-                },
-                NavigationMode.Detail);
+            return result;
         }
 
         /// <summary>
@@ -278,7 +229,7 @@ namespace DatenMeister.WPF.Navigation
                     CreateElementItself(createableTypes.SelectedType);
                 };
 
-                createableTypes.NavigateToSelectCreateableType(window, config.ContainerElement.GetExtentOf());
+                _ = createableTypes.NavigateToSelectCreateableType(window, config.ContainerElement.GetExtentOf());
             }
             else
             {
@@ -387,7 +338,7 @@ namespace DatenMeister.WPF.Navigation
                    CreateElementItself(createableTypes.SelectedType);
                 };
 
-                createableTypes.NavigateToSelectCreateableType(window, extent);
+                _ = createableTypes.NavigateToSelectCreateableType(window, extent);
             }
             else
             {
@@ -473,7 +424,7 @@ namespace DatenMeister.WPF.Navigation
                     CreateElementItself(createableTypes.SelectedType);
                 };
 
-                createableTypes.NavigateToSelectCreateableType(window, collection.GetAssociatedExtent());
+                _ = createableTypes.NavigateToSelectCreateableType(window, collection.GetAssociatedExtent());
             }
             else
             {

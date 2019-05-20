@@ -27,7 +27,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="extent">Extent to whom the type shall be created</param>
         /// <param name="buttonName">Name of the button</param>
         /// <returns>The control navigation</returns>
-        public Task<NavigateToElementDetailResult> NavigateToSelectCreateableType(
+        public async Task<NavigateToElementDetailResult> NavigateToSelectCreateableType(
             INavigationHost window,
             IExtent extent,
             string buttonName = "Create")
@@ -35,54 +35,51 @@ namespace DatenMeister.WPF.Navigation
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
-           
-            return window.NavigateTo(
-                () =>
+
+
+            var defaultTypePackage = extent.GetDefaultTypePackage();
+            IWorkspace metaWorkspace = null;
+            IExtent metaExtent = null;
+            if (defaultTypePackage == null)
+            {
+                // Selects the type workspace, if the current extent is in data workspace or some other workspace whose meta level is of type
+                // Otherwise, select the first meta workspace and extent
+                var typeWorkspace = workspaceLogic.GetTypesWorkspace();
+                var workspace = workspaceLogic.GetWorkspaceOfExtent(extent);
+                if (workspace?.MetaWorkspaces?.Contains(typeWorkspace) == true)
                 {
-                    var defaultTypePackage = extent.GetDefaultTypePackage();
-                    IWorkspace metaWorkspace = null;
-                    IExtent metaExtent = null;
-                    if (defaultTypePackage == null)
-                    {
-                        // Selects the type workspace, if the current extent is in data workspace or some other workspace whose meta level is of type
-                        // Otherwise, select the first meta workspace and extent
-                        var typeWorkspace = workspaceLogic.GetTypesWorkspace();
-                        var workspace = workspaceLogic.GetWorkspaceOfExtent(extent);
-                        if (workspace?.MetaWorkspaces?.Contains(typeWorkspace) == true)
-                        {
-                            metaWorkspace = workspaceLogic.GetTypesWorkspace();
-                            metaExtent = metaWorkspace.FindExtent(WorkspaceNames.UriUserTypesExtent);
-                        }
-                        else
-                        {
-                            metaWorkspace = workspace?.MetaWorkspaces?.FirstOrDefault();
-                            metaExtent = metaWorkspace?.extent?.FirstOrDefault();
-                        }
-                    }
+                    metaWorkspace = workspaceLogic.GetTypesWorkspace();
+                    metaExtent = metaWorkspace.FindExtent(WorkspaceNames.UriUserTypesExtent);
+                }
+                else
+                {
+                    metaWorkspace = workspace?.MetaWorkspaces?.FirstOrDefault();
+                    metaExtent = metaWorkspace?.extent?.FirstOrDefault();
+                }
+            }
 
-                    var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetInternalViewExtent());
-                    //var items = extentFunctions.GetCreatableTypes(extent).CreatableTypes;
-                    var formPathToType = viewDefinitions.GetFindTypeForm(defaultTypePackage, metaWorkspace, metaExtent);
+            var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetInternalViewExtent());
+            //var items = extentFunctions.GetCreatableTypes(extent).CreatableTypes;
+            var formPathToType = viewDefinitions.GetFindTypeForm(defaultTypePackage, metaWorkspace, metaExtent);
 
-                    var control = new DetailFormControl
-                    {
-                        Title = "Select Type"
-                    };
-                    control.SetContent(element, formPathToType);
-                    control.AddDefaultButtons(buttonName);
-                    control.ElementSaved += (x, y) =>
-                    {
-                        if (control.DetailElement.GetOrDefault("selectedType") is IElement metaClass)
-                        {
-                            SelectedType = metaClass;
-                        }
+            var navigateToItemConfig = new NavigateToItemConfig()
+            {
+                DetailElement =  element,
+                FormDefinition = formPathToType
+            };
 
-                        OnClosed();
-                    };
+            var result = await Navigator.CreateDetailWindow(window, navigateToItemConfig);
+            if (result.Result == NavigationResult.Saved)
+            {
+                if (result.DetailElement.GetOrDefault("selectedType") is IElement metaClass)
+                {
+                    SelectedType = metaClass;
+                }
 
-                    return control;
-                },
-                NavigationMode.ForceNewWindow);
+                OnClosed();
+            }
+
+            return result;
         }
     }
 }

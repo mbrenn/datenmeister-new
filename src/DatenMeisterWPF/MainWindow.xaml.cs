@@ -101,7 +101,8 @@ namespace DatenMeisterWPF
                 return task.Task;
             }
 
-            return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
+            throw new InvalidOperationException();
+            // return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
         }
 
         /// <summary>

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 
 namespace DatenMeister.WPF.Forms.Base
@@ -32,9 +34,30 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="mode">Stores the type as given</param>
         public ViewDefinition(string name, IElement element, ViewDefinitionMode mode = ViewDefinitionMode.Specific)
         {
-            Name = name;
-            Element = element;
-            Mode = mode;
+            if (element == null)
+            {
+                Mode = ViewDefinitionMode.Default;
+            }
+            else
+            {
+                Name = name;
+                Element = element;
+                Mode = mode;
+            }
+        }
+
+        public ViewDefinition(IElement element, ViewDefinitionMode mode = ViewDefinitionMode.Specific)
+        {
+            if (element == null)
+            {
+                Mode = ViewDefinitionMode.Default;
+            }
+            else
+            {
+                Name = element.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
+                Element = element;
+                Mode = mode;
+            }
         }
 
         public List<ViewExtension> ViewExtensions { get; } = new List<ViewExtension>();

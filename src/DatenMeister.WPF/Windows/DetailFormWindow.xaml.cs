@@ -77,6 +77,11 @@ namespace DatenMeister.WPF.Windows
         private RibbonHelper RibbonHelper { get; }
 
         /// <summary>
+        /// Gets the ui element of the main control
+        /// </summary>
+        public UIElement MainControl => MainContent.Content as UIElement;
+
+        /// <summary>
         ///     Gets the ribbon
         /// </summary>
         /// <returns></returns>
@@ -246,13 +251,24 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         /// <param name="element"></param>
         /// <param name="viewDefinition"></param>
-        public void SetContent(IElement element, ViewDefinition viewDefinition)
+        public void SetContent(IObject element, ViewDefinition viewDefinition)
         {
             DetailElement = element ?? InMemoryObject.CreateEmpty();
             _viewDefinition = viewDefinition;
 
             UpdateActualViewDefinition();
 
+            CreateDetailForm();
+        }
+
+        /// <summary>
+        /// Sets the form and updates the content of the detail form
+        /// </summary>
+        /// <param name="formDefinition"></param>
+        public void SetForm(IElement formDefinition)
+        {
+            _viewDefinition = new ViewDefinition(formDefinition);
+            UpdateActualViewDefinition();
             CreateDetailForm();
         }
 
@@ -265,7 +281,7 @@ namespace DatenMeister.WPF.Windows
         {
             SetContent(
                 InMemoryObject.CreateEmpty(),
-                new ViewDefinition("Empty Element", formDefinition));
+                new ViewDefinition(formDefinition));
         }
 
         /// <summary>
@@ -278,12 +294,13 @@ namespace DatenMeister.WPF.Windows
                 var control = new DetailFormControl
                 {
                     AllowNewProperties = true,
-                    NavigationHost = this
+                    NavigationHost = this,
+                    EffectiveForm = EffectiveForm
                 };
                 
                 control.UpdateContent();
 
-                MainContent = control;
+                SetMainContent(control);
             }
         }
 

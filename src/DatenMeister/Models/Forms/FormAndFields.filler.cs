@@ -180,6 +180,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.DetailForm._allowNewProperties = value;
                                 }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.DetailForm._title = value;
+                                }
                                 if(name == "name") // Looking for property
                                 {
                                     tree.DetailForm._name = value;

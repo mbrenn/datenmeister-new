@@ -23,5 +23,10 @@
         /// Gets or sets a value indicating whether the detailform allows new properties
         /// </summary>
         public bool allowNewProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets the title as shown in window header
+        /// </summary>
+        public string title { get; set; }
     }
 }

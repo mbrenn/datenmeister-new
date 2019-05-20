@@ -108,6 +108,9 @@ namespace DatenMeister.Models.Forms
             public static string @allowNewProperties = "allowNewProperties";
             public IElement _allowNewProperties = null;
 
+            public static string @title = "title";
+            public IElement _title = null;
+
             public static string @name = "name";
             public IElement _name = null;
 

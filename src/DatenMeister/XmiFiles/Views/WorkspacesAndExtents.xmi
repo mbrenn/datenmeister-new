@@ -41,7 +41,7 @@
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm"
                      p1:id="WorkspacesAndExtents.Xmi.Extents" name="Detail - New Xmi Extent" fixView="False"
                      inhibitNewItems="True" hideMetaClass="False" minimizeDesign="True" defaultWidth="0"
-                     defaultHeight="0">
+                     defaultHeight="0" defaultApplyText="Create Xmi Extent" title="Create Xmi Extent" allowNewProperties="False">
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" lineHeight="0"
               width="0" isAttached="False" fieldType="text" name="uri" title="URI" isEnumeration="False"
               defaultValue="datenmeister:///" isReadOnly="False" />

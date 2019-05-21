@@ -128,7 +128,8 @@ namespace DatenMeister.WPF.Windows
                 "Close",
                 CloseWindow,
                 null,
-                NavigationCategories.File);
+                NavigationCategories.File,
+                -10);
 
             // Local methods for the buttons
             void CloseWindow()

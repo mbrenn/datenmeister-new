@@ -132,11 +132,6 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
-            yield return new RibbonButtonDefinition(
-                "View-Configuration",
-                ViewConfig,
-                null,
-                NavigationCategories.File);
 
             yield return new RibbonButtonDefinition(
                 "Copy",
@@ -155,6 +150,12 @@ namespace DatenMeister.WPF.Forms.Base
                 PasteContent,
                 null,
                 NavigationCategories.File);
+
+            yield return new RibbonButtonDefinition(
+                "Show View-Configuration",
+                ViewConfig,
+                null,
+                NavigationCategories.Views);
 
             yield return new RibbonButtonDefinition(
                 "Create Form",

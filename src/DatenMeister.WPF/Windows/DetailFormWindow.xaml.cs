@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Ribbon;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -17,6 +17,7 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Windows
@@ -24,7 +25,7 @@ namespace DatenMeister.WPF.Windows
     /// <summary>
     ///     Interaktionslogik für DetailFormWindow.xaml
     /// </summary>
-    public partial class DetailFormWindow : Window, IHasRibbon, IDetailNavigationHost
+    public partial class DetailFormWindow : Window, IDetailNavigationHost
     {
         /// <summary>
         /// Defines the logger for the DetailFormWindow
@@ -78,24 +79,15 @@ namespace DatenMeister.WPF.Windows
         public DetailFormWindow()
         {
             InitializeComponent();
-            RibbonHelper = new RibbonHelper(this);
+            RibbonHelper = new MenuHelper(MainMenu);
         }
 
-        private RibbonHelper RibbonHelper { get; }
+        private MenuHelper RibbonHelper { get; }
 
         /// <summary>
         /// Gets the ui element of the main control
         /// </summary>
         public UIElement MainControl => MainContent.Content as UIElement;
-
-        /// <summary>
-        ///     Gets the ribbon
-        /// </summary>
-        /// <returns></returns>
-        public Ribbon GetRibbon()
-        {
-            return MainRibbon;
-        }
 
         public Task<NavigateToElementDetailResult> NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode)
         {
@@ -108,9 +100,7 @@ namespace DatenMeister.WPF.Windows
         public void RebuildNavigation()
         {
             var detailForm = (DetailFormControl) MainContent?.Content;
-            var extensions = RibbonHelper.GetDefaultNavigation();
-            var otherExtensions = detailForm?.GetViewExtensions();
-            extensions = otherExtensions != null ? extensions.Union(otherExtensions) : extensions;
+            var extensions = detailForm?.GetViewExtensions() ?? new List<ViewExtension>();
 
             var extensionList = extensions.ToList();
             detailForm?.EvaluateViewExtensions(extensionList);
@@ -152,7 +142,6 @@ namespace DatenMeister.WPF.Windows
                 if (control.IsDesignMinimized())
                 {
                     SwitchToMinimumSize();
-                    MainRibbon.IsMinimized = true;
                 }
 
                 var size = control.DefaultSize;
@@ -200,21 +189,13 @@ namespace DatenMeister.WPF.Windows
                 width = 1000;
                 height = 1000;
             }
-            
-            MainRibbon.Measure(new Size(width,height));
-            var heightOffset = MainRibbon.DesiredSize.Height;
+
+            MainMenu.Measure(new Size(width,height));
+            var heightOffset = MainMenu.DesiredSize.Height;
 
             control.Measure(new Size(width, height - heightOffset));
             Width = Math.Ceiling(control.DesiredSize.Width) + 50;
             Height = Math.Ceiling(control.DesiredSize.Height) + 50 + heightOffset;
-
-            Logger.Trace(
-                $"Size: {Height}: {control.DesiredSize.Height}(ctrl) + {MainRibbon.DesiredSize.Height}");
-        }
-
-        private void Close_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
 
         public void OnSaved(IObject detailElement, IObject attachedElement)
@@ -279,7 +260,6 @@ namespace DatenMeister.WPF.Windows
             UpdateActualViewDefinition();
             CreateDetailForm();
         }
-
 
         /// <summary>
         ///     Sets the content for a completely new object

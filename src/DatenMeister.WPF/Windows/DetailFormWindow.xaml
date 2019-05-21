@@ -25,13 +25,7 @@
     </Window.Resources>
     <DockPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
-            <Ribbon x:Name="MainRibbon" IsMinimized="False">
-                <Ribbon.ApplicationMenu>
-                    <RibbonApplicationMenu>
-                        <RibbonApplicationMenuItem Header="Close" Click="Close_Click" />
-                    </RibbonApplicationMenu>
-                </Ribbon.ApplicationMenu>
-            </Ribbon>
+            <Menu x:Name="MainMenu" />
         </StackPanel>
         <ContentControl x:Name="MainContent" x:FieldModifier="private"></ContentControl>
     </DockPanel>

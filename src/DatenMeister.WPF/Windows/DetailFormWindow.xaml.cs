@@ -76,13 +76,19 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         public IReflectiveCollection DetailElementContainer { get; set; }
 
+        /// <summary>
+        /// Gets a helper for menu
+        /// </summary>
+        private MenuHelper MenuHelper { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the DetailFormWindow class. 
+        /// </summary>
         public DetailFormWindow()
         {
             InitializeComponent();
             MenuHelper = new MenuHelper(MainMenu);
         }
-
-        private MenuHelper MenuHelper { get; }
 
         /// <summary>
         /// Gets the ui element of the main control
@@ -112,6 +118,10 @@ namespace DatenMeister.WPF.Windows
             MenuHelper.EvaluateExtensions(extensionList);
         }
 
+        /// <summary>
+        /// Gets the default extensions
+        /// </summary>
+        /// <returns>Enumeration of extensions</returns>
         private IEnumerable<ViewExtension> GetDefaultExtension()
         {
             yield return new RibbonButtonDefinition(
@@ -127,6 +137,9 @@ namespace DatenMeister.WPF.Windows
             }
         }
 
+        /// <summary>
+        /// Sets the focus of the detail form
+        /// </summary>
         public void SetFocus()
         {
             if (MainContent == null)

@@ -644,17 +644,17 @@ namespace DatenMeister.WPF.Forms.Base
 
             ViewExtensions.Add(
                 new RibbonButtonDefinition(
-                    "Form Definition",
+                    "Show Form Definition",
                     ShowFormDefinition,
                     null,
-                    NavigationCategories.File + ".Views"));
+                    NavigationCategories.Views));
 
             ViewExtensions.Add(
                 new RibbonButtonDefinition(
                     "Create Form",
                     CopyForm,
                     null,
-                    NavigationCategories.File + ".Views"));
+                    NavigationCategories.Views));
 
             ViewExtensions.Add(
                 new RibbonButtonDefinition(

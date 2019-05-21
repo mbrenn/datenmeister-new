@@ -31,13 +31,13 @@ namespace DatenMeister.WPF.Modules.ViewManager
             if (navigationGuest is ItemExplorerControl)
             {
                 var result = new RibbonButtonDefinition(
-                    "Switch to User Views",
+                    "Navigate to User Views",
                     () => Navigation.NavigatorForItems.NavigateToItemsInExtent(
                         viewExtensionTargetInformation.NavigationHost,
                         WorkspaceNames.NameManagement,
                         WorkspaceNames.UriUserViewExtent),
                     "",
-                    "Views");
+                    NavigationCategories.Views);
 
                 yield return result;
 
@@ -69,7 +69,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                         }
                     },
                     "",
-                    "Views");
+                    NavigationCategories.Views);
 
                 yield return openView;
             }

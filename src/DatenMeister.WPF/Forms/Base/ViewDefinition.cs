@@ -37,6 +37,7 @@ namespace DatenMeister.WPF.Forms.Base
             if (element == null)
             {
                 Mode = ViewDefinitionMode.Default;
+                Name = name;
             }
             else
             {

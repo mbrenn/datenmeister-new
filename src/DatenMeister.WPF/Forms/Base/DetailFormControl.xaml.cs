@@ -132,7 +132,6 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
-
             yield return new RibbonButtonDefinition(
                 "Copy",
                 CopyContent,

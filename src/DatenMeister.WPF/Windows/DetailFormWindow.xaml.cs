@@ -310,7 +310,10 @@ namespace DatenMeister.WPF.Windows
                 SetMainContent(control);
 
                 var title = EffectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.title);
-                Title = title;
+                if (!string.IsNullOrEmpty(title))
+                {
+                    Title = title;
+                }
             }
         }
 

@@ -43,7 +43,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
 
             }
 
-            if (itemExplorerControl != null|| detailFormControl != null)
+            if (itemExplorerControl != null || detailFormControl != null)
             {
                 var openView = new RibbonButtonDefinition(
                     "Open View",

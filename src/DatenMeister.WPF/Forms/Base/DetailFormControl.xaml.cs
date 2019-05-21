@@ -136,31 +136,31 @@ namespace DatenMeister.WPF.Forms.Base
                 "View-Configuration",
                 ViewConfig,
                 null,
-                NavigationCategories.File + ".Views");
+                NavigationCategories.File);
 
             yield return new RibbonButtonDefinition(
                 "Copy",
                 CopyContent,
                 null,
-                NavigationCategories.File + ".Copy");
+                NavigationCategories.File);
 
             yield return new RibbonButtonDefinition(
                 "Copy as XMI",
                 CopyContentAsXmi,
                 null,
-                NavigationCategories.File + ".Copy");
+                NavigationCategories.File);
 
             yield return new RibbonButtonDefinition(
                 "Paste",
                 PasteContent,
                 null,
-                NavigationCategories.File + ".Copy");
+                NavigationCategories.File);
 
             yield return new RibbonButtonDefinition(
                 "Create Form",
                 CopyForm,
                 null,
-                NavigationCategories.File + ".Views");
+                NavigationCategories.Views);
 
 
             if (DetailElementContainer != null)

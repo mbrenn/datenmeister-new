@@ -79,10 +79,10 @@ namespace DatenMeister.WPF.Windows
         public DetailFormWindow()
         {
             InitializeComponent();
-            RibbonHelper = new MenuHelper(MainMenu);
+            MenuHelper = new MenuHelper(MainMenu);
         }
 
-        private MenuHelper RibbonHelper { get; }
+        private MenuHelper MenuHelper { get; }
 
         /// <summary>
         /// Gets the ui element of the main control
@@ -100,11 +100,31 @@ namespace DatenMeister.WPF.Windows
         public void RebuildNavigation()
         {
             var detailForm = (DetailFormControl) MainContent?.Content;
-            var extensions = detailForm?.GetViewExtensions() ?? new List<ViewExtension>();
+            var extensions = GetDefaultExtension();
+            var otherExtensions = detailForm?.GetViewExtensions();
+            if (otherExtensions != null)
+            {
+                extensions = extensions.Union(otherExtensions);
+            }
 
             var extensionList = extensions.ToList();
             detailForm?.EvaluateViewExtensions(extensionList);
-            RibbonHelper.EvaluateExtensions(extensionList);
+            MenuHelper.EvaluateExtensions(extensionList);
+        }
+
+        private IEnumerable<ViewExtension> GetDefaultExtension()
+        {
+            yield return new RibbonButtonDefinition(
+                "Close",
+                CloseWindow,
+                null,
+                NavigationCategories.File);
+
+            // Local methods for the buttons
+            void CloseWindow()
+            {
+                Close();
+            }
         }
 
         public void SetFocus()

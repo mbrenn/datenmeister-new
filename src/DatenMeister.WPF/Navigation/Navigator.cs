@@ -37,6 +37,8 @@ namespace DatenMeister.WPF.Navigation
         public static string File = "File";
 
         public static string Type = "Types";
+
+        public static string Views = "Views";
     }
 
     /// <summary>

@@ -60,7 +60,7 @@ namespace DatenMeister.WPF.Windows
             if (indexOfSemicolon == -1)
             {
                 tabName = categoryName;
-                groupName = "Standard";
+                groupName = null;
             }
             else
             {
@@ -78,15 +78,23 @@ namespace DatenMeister.WPF.Windows
 
                 _menu.Items.Add(tab);
             }
-            
-            var group = tab.Items.OfType<MenuItem>().FirstOrDefault(x => x.Header.ToString() == groupName);
-            if (@group == null)
+
+            MenuItem group;
+            if ( !string.IsNullOrEmpty(groupName))
             {
-                @group = new MenuItem
+                group = tab.Items.OfType<MenuItem>().FirstOrDefault(x => x.Header.ToString() == groupName);
+                if (@group == null)
                 {
-                    Header = groupName
-                };
-                tab.Items.Add(@group);
+                    @group = new MenuItem
+                    {
+                        Header = groupName
+                    };
+                    tab.Items.Add(@group);
+                }
+            }
+            else
+            {
+                group = tab;
             }
 
             var button = new MenuItem

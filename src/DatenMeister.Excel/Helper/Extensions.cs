@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using NPOI.SS.UserModel;
 
 namespace DatenMeister.Excel.Helper

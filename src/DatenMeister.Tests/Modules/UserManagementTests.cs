@@ -1,7 +1,4 @@
-﻿using Autofac;
-using DatenMeister.Integration;
-using DatenMeister.Modules.UserManagement;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules
 {

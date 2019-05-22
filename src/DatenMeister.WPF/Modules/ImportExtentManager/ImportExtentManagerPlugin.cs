@@ -3,7 +3,6 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Modules.ViewFinder;
-using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Uml.Plugin;

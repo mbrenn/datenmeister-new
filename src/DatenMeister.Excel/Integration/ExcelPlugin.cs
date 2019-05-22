@@ -1,10 +1,4 @@
-﻿using System.Diagnostics;
-using Autofac;
-using DatenMeister.Core.Plugins;
-using DatenMeister.Excel.Helper;
-using DatenMeister.Integration;
-using DatenMeister.Provider.CSV.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
+﻿using DatenMeister.Core.Plugins;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Excel.Integration

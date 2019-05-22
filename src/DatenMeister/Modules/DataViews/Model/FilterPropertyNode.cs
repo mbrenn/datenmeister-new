@@ -1,6 +1,4 @@
-﻿using DatenMeister.Models.FastViewFilter;
-
-namespace DatenMeister.Modules.DataViews.Model
+﻿namespace DatenMeister.Modules.DataViews.Model
 {
     public enum ComparisonMode
     {

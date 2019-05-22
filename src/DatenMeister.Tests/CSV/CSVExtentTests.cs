@@ -1,11 +1,9 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.CSV.Runtime;
-using DatenMeister.Provider.XMI.EMOF;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.CSV

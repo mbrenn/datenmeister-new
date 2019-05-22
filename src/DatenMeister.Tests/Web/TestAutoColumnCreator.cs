@@ -4,9 +4,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.InMemory;
-using DatenMeister.Uml.Helper;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace DatenMeister.Tests.Web
 {

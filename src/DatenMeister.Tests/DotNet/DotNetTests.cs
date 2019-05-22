@@ -2,16 +2,12 @@
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Filler;
 using DatenMeister.Excel.Helper;
 using DatenMeister.Integration;
 using DatenMeister.Models.FastViewFilter;
-using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Tests.Xmi;
 using NUnit.Framework;

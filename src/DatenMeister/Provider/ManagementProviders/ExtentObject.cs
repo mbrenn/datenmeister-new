@@ -3,7 +3,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
 using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Provider.ManagementProviders

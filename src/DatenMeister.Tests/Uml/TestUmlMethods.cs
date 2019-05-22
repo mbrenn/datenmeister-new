@@ -1,11 +1,8 @@
 ﻿using System.Linq;
 using Autofac;
-using Autofac.Features.ResolveAnything;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using NUnit.Framework;

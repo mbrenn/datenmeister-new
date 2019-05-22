@@ -7,7 +7,6 @@ using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Excel.Annotations;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ZipExample;

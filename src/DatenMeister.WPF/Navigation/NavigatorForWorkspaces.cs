@@ -12,7 +12,6 @@ using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
-using DatenMeister.WPF.Forms.Detail;
 using DatenMeister.WPF.Forms.Lists;
 
 namespace DatenMeister.WPF.Navigation

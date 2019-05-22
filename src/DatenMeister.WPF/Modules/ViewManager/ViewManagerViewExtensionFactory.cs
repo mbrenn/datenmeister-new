@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Navigation;
+using DatenMeister.WPF.Windows;
 
 namespace DatenMeister.WPF.Modules.ViewManager
 {
@@ -18,26 +21,35 @@ namespace DatenMeister.WPF.Modules.ViewManager
         /// </summary>
         /// <param name="viewExtensionTargetInformation"></param>
         /// <returns></returns>
-        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionTargetInformation viewExtensionTargetInformation)
+        public IEnumerable<ViewExtension> GetViewExtensions(
+            ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
-            var result = new RibbonButtonDefinition(
-                "Switch to User Views",
-                () => Navigation.NavigatorForItems.NavigateToItemsInExtent(
-                    viewExtensionTargetInformation.NavigationHost,
-                    WorkspaceNames.NameManagement,
-                    WorkspaceNames.UriUserViewExtent),
-                "",
-                "Views");
+            var navigationGuest = viewExtensionTargetInformation.NavigationGuest;
+            var itemExplorerControl = navigationGuest as ItemExplorerControl;
+            var detailFormControl = viewExtensionTargetInformation.NavigationHost as DetailFormWindow;
 
-            yield return result;
+            if (navigationGuest is ItemExplorerControl)
+            {
+                var result = new RibbonButtonDefinition(
+                    "Navigate to User Views",
+                    () => Navigation.NavigatorForItems.NavigateToItemsInExtent(
+                        viewExtensionTargetInformation.NavigationHost,
+                        WorkspaceNames.NameManagement,
+                        WorkspaceNames.UriUserViewExtent),
+                    "",
+                    NavigationCategories.Views);
 
-            if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl)
+                yield return result;
+
+            }
+
+            if (itemExplorerControl != null || detailFormControl != null)
             {
                 var openView = new RibbonButtonDefinition(
                     "Open View",
                     async () =>
                     {
-                        var action = await NavigatorForItems.NavigateToElementDetailViewAsync(
+                        var action = await Navigator.CreateDetailWindow(
                             viewExtensionTargetInformation.NavigationHost,
                             new NavigateToItemConfig
                             {
@@ -46,16 +58,18 @@ namespace DatenMeister.WPF.Modules.ViewManager
                                     .element("#ViewManagerFindView")
                             });
 
-                        if (action.Result == NavigationResult.Saved)
+                        if (action.Result == NavigationResult.Saved && action.DetailElement is IElement asElement)
                         {
-                            var asItemListView =
-                                viewExtensionTargetInformation.NavigationGuest as ItemExplorerControl;
-                            asItemListView?.AddTab(
-                                asItemListView.Items, new ViewDefinition("Selected Form", action.DetailElement));
+                            var formDefinition = asElement.getOrDefault<IElement>("form");
+
+                            itemExplorerControl?.AddTab(
+                                itemExplorerControl.Items, new ViewDefinition("Selected Form", formDefinition));
+
+                            detailFormControl?.SetForm(formDefinition);
                         }
                     },
                     "",
-                    "Views");
+                    NavigationCategories.Views);
 
                 yield return openView;
             }

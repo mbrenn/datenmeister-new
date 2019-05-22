@@ -1,6 +1,5 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Provider.InMemory;
 
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0
 namespace DatenMeister.Models.Forms
@@ -102,6 +101,15 @@ namespace DatenMeister.Models.Forms
 
         public class _DetailForm
         {
+            public static string @defaultApplyText = "defaultApplyText";
+            public IElement _defaultApplyText = null;
+
+            public static string @allowNewProperties = "allowNewProperties";
+            public IElement _allowNewProperties = null;
+
+            public static string @title = "title";
+            public IElement _title = null;
+
             public static string @name = "name";
             public IElement _name = null;
 

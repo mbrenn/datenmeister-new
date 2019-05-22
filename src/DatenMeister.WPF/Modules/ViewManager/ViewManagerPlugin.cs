@@ -26,6 +26,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
         public void Start(PluginLoadingPosition position)
         {
             GuiObjectCollection.TheOne.ViewExtensionFactories.Add(new ViewManagerViewExtensionFactory());
+
             _packageMethods.ImportByManifest(
                 typeof(UmlPlugin),
                 "DatenMeister.XmiFiles.Views.Viewmanager.xmi",

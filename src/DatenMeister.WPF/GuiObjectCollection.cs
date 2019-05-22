@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
+﻿using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using System.Collections.Generic;
 
 namespace DatenMeister.WPF
 {
@@ -45,6 +45,5 @@ namespace DatenMeister.WPF
         /// Gets a list of the allowed view extension factories
         /// </summary>
         public List<IViewExtensionFactory> ViewExtensionFactories { get; }= new List<IViewExtensionFactory>();
-
     }
 }

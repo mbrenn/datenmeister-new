@@ -35,7 +35,7 @@ namespace DatenMeister.WPF.Forms.Lists
     public class ItemsInExtentList : ItemExplorerControl
     {
         /// <summary>
-        /// Stores the extent being associeated to the extentlist
+        /// Stores the extent being associated to the extentlist
         /// </summary>
         private IExtent _extent;
 
@@ -53,7 +53,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         /// Stores the delayed dispatcher
         /// </summary>
-        private DelayedRefreshDispatcher _delayedDispatcher;
+        private readonly DelayedRefreshDispatcher _delayedDispatcher;
 
         /// <summary>
         /// Gets the extent of the item class
@@ -89,7 +89,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         /// Stores the metaclasses currently shown
         /// </summary>
-        private List<IElement> _metaClasses = new List<IElement>();
+        private readonly List<IElement> _metaClasses = new List<IElement>();
 
         private readonly IWorkspaceLogic _workspaceLogic;
 
@@ -156,7 +156,7 @@ namespace DatenMeister.WPF.Forms.Lists
         private void CreateTabForItems(IReflectiveCollection tabItems, IElement metaClass)
         {
             var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
-            IObject view;
+            IElement view;
             var extentType = (Items as IHasExtent)?.Extent.GetExtentType();
 
             if (Items == SelectedItems)
@@ -239,7 +239,6 @@ namespace DatenMeister.WPF.Forms.Lists
 
         private void CreateNewElementByUser(IElement type, string parentProperty)
         {
-            // TODO: Evaluate parent property
             if (IsExtentSelectedInTreeview)
             {
                 NavigatorForItems.NavigateToNewItemForExtent(

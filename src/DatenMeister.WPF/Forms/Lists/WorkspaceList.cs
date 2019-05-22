@@ -68,7 +68,7 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             void NewWorkspace()
             {
-                NavigatorForWorkspaces.CreateNewWorkspace(NavigationHost);
+                _ = NavigatorForWorkspaces.CreateNewWorkspace(NavigationHost);
             }
 
             viewDefinition.ViewExtensions.Add(

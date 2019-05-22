@@ -8,13 +8,28 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
     /// </summary>
     public class RibbonButtonDefinition : ViewExtension
     {
-        public RibbonButtonDefinition(string name, Action onPressed, string imageName, string categoryName)
+        /// <summary>
+        /// Initializes a new instance of the RibbonButtonDefinition class
+        /// </summary>
+        /// <param name="name">Name of the button being shown</param>
+        /// <param name="onPressed">Action which is called when the user clicks on the button</param>
+        /// <param name="imageName">Name of the image to be shown</param>
+        /// <param name="categoryName">Name of the category being used</param>
+        /// <param name="index">Index being used to provide the correct call order</param>
+        public RibbonButtonDefinition(string name, Action onPressed, string imageName, string categoryName, int index = 0)
         {
             Name = name;
             OnPressed = onPressed;
             ImageName = imageName;
             CategoryName = categoryName;
+            Index = Math.Min(index, 65535) * 65536 + 
+                    name.GetHashCode() % 65535;
         }
+
+        /// <summary>
+        /// Gets or sets the index of the ribbon definition which is used to order the items
+        /// </summary>
+        public int Index { get; set; }
 
         /// <summary>
         /// Gets the name of the ribbon

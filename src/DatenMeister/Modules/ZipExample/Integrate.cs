@@ -1,8 +1,5 @@
-﻿using System.IO;
-using System.Reflection;
-using Autofac;
+﻿using Autofac;
 using DatenMeister.DotNet;
-using DatenMeister.Integration;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Uml.Helper;
 using DatenMeister.UserInteractions;

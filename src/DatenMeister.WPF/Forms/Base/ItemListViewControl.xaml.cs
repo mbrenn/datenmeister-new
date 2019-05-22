@@ -80,7 +80,10 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private readonly FastViewFilterLogic _fastViewFilter;
 
-        private DelayedRefreshDispatcher _delayedDispatcher;
+        /// <summary>
+        /// Stores the delaying dispatcher
+        /// </summary>
+        private readonly DelayedRefreshDispatcher _delayedDispatcher;
 
         /// <summary>
         /// Defines the current form definition of the window as provided by the
@@ -641,17 +644,17 @@ namespace DatenMeister.WPF.Forms.Base
 
             ViewExtensions.Add(
                 new RibbonButtonDefinition(
-                    "Form Definition",
+                    "Show Form Definition",
                     ShowFormDefinition,
                     null,
-                    NavigationCategories.File + ".Views"));
+                    NavigationCategories.Views));
 
             ViewExtensions.Add(
                 new RibbonButtonDefinition(
                     "Create Form",
                     CopyForm,
                     null,
-                    NavigationCategories.File + ".Views"));
+                    NavigationCategories.Views));
 
             ViewExtensions.Add(
                 new RibbonButtonDefinition(

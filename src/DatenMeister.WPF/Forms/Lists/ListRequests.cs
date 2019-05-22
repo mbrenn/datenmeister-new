@@ -7,7 +7,6 @@ using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Excel.Annotations;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ZipExample;
@@ -55,7 +54,7 @@ namespace DatenMeister.WPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(
                 new TreeViewItemCommandDefinition(
                     "New Workspace",
-                    (x) => { NavigatorForWorkspaces.CreateNewWorkspace(navigationHost); }));
+                    (x) => { _ = NavigatorForWorkspaces.CreateNewWorkspace(navigationHost); }));
 
             return viewDefinition;
 
@@ -178,7 +177,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void NewXmiExtent()
             {
-                NavigatorForItems.NavigateToNewXmiExtentDetailView(control.NavigationHost, workspaceId);
+                _ = NavigatorForItems.NavigateToNewXmiExtentDetailView(control.NavigationHost, workspaceId);
             }
 
             void AddZipCodeExample()

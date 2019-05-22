@@ -101,7 +101,8 @@ namespace DatenMeisterWPF
                 return task.Task;
             }
 
-            return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
+            throw new InvalidOperationException();
+            // return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
         }
 
         /// <summary>
@@ -115,12 +116,14 @@ namespace DatenMeisterWPF
                     "Home",
                     () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
                     Icons.FileHome,
-                    NavigationCategories.File + ".Workspaces"),
+                    NavigationCategories.File + ".Workspaces",
+                    10),
                 new RibbonButtonDefinition(
                     "Workspaces",
                     () => NavigatorForWorkspaces.NavigateToWorkspaces(this),
                     Icons.WorkspacesShow,
-                    NavigationCategories.File + ".Workspaces"),
+                    NavigationCategories.File + ".Workspaces",
+                    9),
                 new RibbonButtonDefinition(
                     "Find by URL",
                     () => NavigatorForDialogs.SearchByUrl(this),

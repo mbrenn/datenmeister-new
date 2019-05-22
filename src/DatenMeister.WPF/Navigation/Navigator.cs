@@ -37,6 +37,8 @@ namespace DatenMeister.WPF.Navigation
         public static string File = "File";
 
         public static string Type = "Types";
+
+        public static string Views = "Views";
     }
 
     /// <summary>
@@ -79,6 +81,48 @@ namespace DatenMeister.WPF.Navigation
     /// </summary>
     public static class Navigator
     {
+        /// <summary>
+        /// Creates a detail window showing the element and the event
+        /// </summary>
+        /// <param name="navigationHost"></param>
+        /// <param name="navigateToItemConfig"></param>
+        /// <returns></returns>
+        public static Task<NavigateToElementDetailResult> CreateDetailWindow(
+            INavigationHost navigationHost,
+            NavigateToItemConfig navigateToItemConfig)
+        {
+            var task = new TaskCompletionSource<NavigateToElementDetailResult>();
+            var result = new NavigateToElementDetailResult();
+
+            var detailFormWindow = new DetailFormWindow
+            {
+                Owner = navigationHost.GetWindow(),
+                DetailElementContainer = navigateToItemConfig.DetailElementContainer
+            };
+
+            detailFormWindow.SetContent(navigateToItemConfig.DetailElement, new ViewDefinition(navigateToItemConfig.FormDefinition), navigateToItemConfig.DetailElementContainer);
+            detailFormWindow.Cancelled += (x, y) =>
+            {
+                result.Result = NavigationResult.Cancelled;
+                task.SetResult(result);
+                navigationHost.GetWindow();
+            };
+
+            detailFormWindow.Saved += (x, y) =>
+            {
+                result.Result = NavigationResult.Saved;
+                result.DetailElement = y.Item;
+                task.SetResult(result);
+            };
+
+            detailFormWindow.SwitchToMinimumSize();
+
+            navigateToItemConfig.AfterCreatedFunction?.Invoke(detailFormWindow.MainControl as DetailFormControl);
+            detailFormWindow.Show();
+
+            return task.Task;
+        }
+
         /// <summary>
         /// Performs the default navigation by creating a new window
         /// </summary>

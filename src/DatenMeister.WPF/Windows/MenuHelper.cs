@@ -1,39 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
 using BurnSystems.Logging;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Modules;
-using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Windows
 {
-    public class RibbonHelper
+    public class MenuHelper
     {
         /// <summary>
         /// Defines the logger
         /// </summary>
-        private static readonly ILogger Logger = new ClassLogger(typeof(RibbonHelper));
+        private static readonly ILogger Logger = new ClassLogger(typeof(MenuHelper));
 
-        private readonly IHasRibbon _mainWindow;
+        private readonly Menu _menu;
 
-        /// <summary>
-        /// Stores the icon repository
-        /// </summary>
-        private static IIconRepository IconRepository { get; set; }
+        private readonly List<MenuHelperItem> _buttons =
+            new List<MenuHelperItem>();
 
-        private readonly List<RibbonHelperItem> _buttons =
-            new List<RibbonHelperItem>();
-
-        private class RibbonHelperItem
+        private class MenuHelperItem
         {
             public RibbonButtonDefinition Definition { get; set; }
 
-            public RibbonButton Button { get; set; }
+            public MenuItem Button { get; set; }
 
             public RoutedEventHandler ClickEvent { get; set; }
 
@@ -47,33 +38,9 @@ namespace DatenMeister.WPF.Windows
             }
         }
 
-        /// <summary>
-        /// Loads the icon repository. 
-        /// If DatenMeister.Icons is existing, then the full and cool icons will be used. 
-        /// </summary>
-        public void LoadIconRepository()
+        public MenuHelper(Menu menu)
         {
-            if (IconRepository == null)
-            {
-                if (File.Exists("DatenMeister.Icons.dll"))
-                {
-                    var dllPath = Path.Combine(Environment.CurrentDirectory, "DatenMeister.Icons.dll");
-                    var assembly = Assembly.LoadFile(dllPath);
-
-                    var type = assembly.GetType("DatenMeister.Icons.NiceIconsRepository");
-                    IconRepository = Activator.CreateInstance(type) as IIconRepository;
-                }
-
-                if (IconRepository == null)
-                {
-                    IconRepository = new StandardRepository();
-                }
-            }
-        }
-
-        public RibbonHelper(IHasRibbon mainWindow)
-        {
-            _mainWindow = mainWindow;
+            _menu = menu;
         }
 
         /// <summary>
@@ -93,7 +60,7 @@ namespace DatenMeister.WPF.Windows
             if (indexOfSemicolon == -1)
             {
                 tabName = categoryName;
-                groupName = "Standard";
+                groupName = null;
             }
             else
             {
@@ -101,34 +68,41 @@ namespace DatenMeister.WPF.Windows
                 groupName = categoryName.Substring(indexOfSemicolon + 1);
             }
 
-            var tab = _mainWindow.GetRibbon().Items.OfType<RibbonTab>().FirstOrDefault(x => x.Header?.ToString() == tabName);
+            var tab = _menu.Items.OfType<MenuItem>().FirstOrDefault(x => x.Header?.ToString() == tabName);
             if (tab == null)
             {
-                tab = new RibbonTab
+                tab = new MenuItem
                 {
                     Header = tabName
                 };
 
-                _mainWindow.GetRibbon().Items.Add(tab);
-            }
-            
-            var group = tab.Items.OfType<RibbonGroup>().FirstOrDefault(x => x.Header.ToString() == groupName);
-            if (@group == null)
-            {
-                @group = new RibbonGroup
-                {
-                    Header = groupName
-                };
-                tab.Items.Add(@group);
+                _menu.Items.Add(tab);
             }
 
-            var button = new RibbonButton
+            MenuItem group;
+            if ( !string.IsNullOrEmpty(groupName))
             {
-                Label = name,
-                LargeImageSource = string.IsNullOrEmpty(imageName) ? null : IconRepository.GetIcon(imageName)
+                group = tab.Items.OfType<MenuItem>().FirstOrDefault(x => x.Header.ToString() == groupName);
+                if (@group == null)
+                {
+                    @group = new MenuItem
+                    {
+                        Header = groupName
+                    };
+                    tab.Items.Add(@group);
+                }
+            }
+            else
+            {
+                group = tab;
+            }
+
+            var button = new MenuItem
+            {
+                Header = name
             };
 
-            var item = new RibbonHelperItem
+            var item = new MenuHelperItem
             {
                 Definition = definition,
                 Button = button,
@@ -163,28 +137,6 @@ namespace DatenMeister.WPF.Windows
             }
 
             @group.Items.Add(button);
-        }
-
-        /// <summary>
-        /// Prepares the default navigation
-        /// </summary>
-        public IEnumerable<ViewExtension> GetDefaultNavigation()
-        {
-            return new[]
-            {
-                new RibbonButtonDefinition(
-                    "Close",
-                    () => (_mainWindow as Window)?.Close(),
-                    "file-exit",
-                    NavigationCategories.File),
-                new RibbonButtonDefinition("About",
-                    () => new AboutDialog
-                    {
-                        Owner = _mainWindow as Window
-                    }.ShowDialog(),
-                    "file-about",
-                    NavigationCategories.File)
-            };
         }
 
         public void EvaluateExtensions(IEnumerable<ViewExtension> viewExtensions)

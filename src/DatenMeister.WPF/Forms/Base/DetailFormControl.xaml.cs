@@ -47,37 +47,32 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Gets the detailed element, whose content is shown in the dialog
         /// </summary>
-        public IObject DetailElement { get; private set; }
+        public IObject DetailElement => NavigationHost.DetailElement;
 
         /// <summary>
         /// Gets or sets the container for the Detail Element. It will be used to
         /// delete the item, if required. 
         /// </summary>
-        public IReflectiveCollection DetailElementContainer { get; set; }
+        public IReflectiveCollection DetailElementContainer => NavigationHost.DetailElementContainer;
 
         /// <summary>
         ///     Defines the form definition being used in the detail for
         /// </summary>
-        public IObject EffectiveForm { get; private set; }
-
-        /// <summary>
-        ///     Gets or sets the view definition
-        /// </summary>
-        public ViewDefinition ViewDefinition { get; set; }
+        public IObject EffectiveForm { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether new properties may be added by the user to the element
         /// </summary>
         public bool AllowNewProperties { get; set; }
 
-        public IElement AttachedElement { get; private set; }
+        public IElement AttachedElement => NavigationHost.AttachedElement;
 
         /// <summary>
         ///     Gets the default size
         /// </summary>
         public Size DefaultSize => new Size(
-            DotNetHelper.AsDouble(EffectiveForm?.get(_FormAndFields._Form.defaultWidth)),
-            DotNetHelper.AsDouble(EffectiveForm?.get(_FormAndFields._Form.defaultHeight))
+            EffectiveForm?.getOrDefault<double>(_FormAndFields._Form.defaultWidth) ?? 0.0,
+            EffectiveForm?.getOrDefault<double>(_FormAndFields._Form.defaultHeight) ?? 0.0
         );
 
         public List<IDetailField> ItemFields { get; } = new List<IDetailField>();
@@ -97,7 +92,16 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Gets or sets the navigation host
         /// </summary>
-        public INavigationHost NavigationHost { get; set; }
+        public IDetailNavigationHost NavigationHost { get; set; }
+
+        /// <summary>
+        /// Defines the navigation host
+        /// </summary>
+        INavigationHost INavigationGuest.NavigationHost
+        {
+            get => NavigationHost;
+            set => NavigationHost = (IDetailNavigationHost) value;
+        }
 
         /// <summary>
         /// Gets the title for the control
@@ -117,7 +121,6 @@ namespace DatenMeister.WPF.Forms.Base
                 }
 
                 return $"Edit Item: {NamedElementMethods.GetName(DetailElement)}";
-
             }
 
             set => _internalTitle = value;
@@ -130,34 +133,34 @@ namespace DatenMeister.WPF.Forms.Base
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
             yield return new RibbonButtonDefinition(
-                "View-Configuration",
-                ViewConfig,
-                null,
-                NavigationCategories.File + ".Views");
-
-            yield return new RibbonButtonDefinition(
                 "Copy",
                 CopyContent,
                 null,
-                NavigationCategories.File + ".Copy");
+                NavigationCategories.File);
 
             yield return new RibbonButtonDefinition(
                 "Copy as XMI",
                 CopyContentAsXmi,
                 null,
-                NavigationCategories.File + ".Copy");
+                NavigationCategories.File);
 
             yield return new RibbonButtonDefinition(
                 "Paste",
                 PasteContent,
                 null,
-                NavigationCategories.File + ".Copy");
+                NavigationCategories.File);
+
+            yield return new RibbonButtonDefinition(
+                "Show View-Configuration",
+                ViewConfig,
+                null,
+                NavigationCategories.Views);
 
             yield return new RibbonButtonDefinition(
                 "Create Form",
                 CopyForm,
                 null,
-                NavigationCategories.File + ".Views");
+                NavigationCategories.Views);
 
 
             if (DetailElementContainer != null)
@@ -188,6 +191,23 @@ namespace DatenMeister.WPF.Forms.Base
                     NavigationCategories.File);
             }
 
+            // Get the view extensions by the plugins
+            var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
+            var data = new ViewExtensionTargetInformation
+            {
+                NavigationGuest = this,
+                NavigationHost = NavigationHost
+            };
+
+            foreach (var plugin in viewExtensionPlugins)
+            {
+                foreach (var extension in plugin.GetViewExtensions(data))
+                {
+                    yield return extension;
+                }
+            }
+
+            // Local methods for the buttons
             void ViewConfig()
             {
                 var dlg = new ItemXmlViewWindow
@@ -286,67 +306,12 @@ namespace DatenMeister.WPF.Forms.Base
         public event EventHandler LoadingCompleted;
 
         /// <summary>
-        ///     Sets the content for a completely new object
-        /// </summary>
-        /// <param name="formDefinition">Form Definition being used</param>
-        public void SetContentForNewObject(IElement formDefinition)
-        {
-            SetContent(
-                InMemoryObject.CreateEmpty(),
-                formDefinition);
-        }
-
-        /// <summary>
-        /// Sets the content by setting a form definition and the object itself.
-        /// The form definition may be null, so a form will be automatically created. 
-        /// </summary>
-        /// <param name="element">Element to be shown. If null, then a new element will be created.</param>
-        /// <param name="formDefinition">The form definition. If null, then the form will be automatically created </param>
-        public void SetContent(IObject element, IElement formDefinition)
-        {
-            DetailElement = element ?? InMemoryObject.CreateEmpty();
-
-            ViewDefinition = new ViewDefinition(
-                null,
-                formDefinition,
-                formDefinition == null ? ViewDefinitionMode.Default : ViewDefinitionMode.Specific
-            );
-
-            AttachedElement = InMemoryObject.CreateEmpty();
-        }
-
-        /// <summary>
         ///     This method gets called, when a new item is added or an existing item was modified.
         ///     Derivation of the class which have automatic creation of columns may include additional columns
         /// </summary>
         private void RefreshViewDefinition()
         {
-            UpdateActualViewDefinition();
-
             OnViewDefined();
-        }
-
-        private void UpdateActualViewDefinition()
-        {
-            var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
-            if (ViewDefinition.Mode == ViewDefinitionMode.Default)
-            {
-                EffectiveForm = viewFinder.FindDetailView(DetailElement);
-            }
-
-            switch (ViewDefinition.Mode)
-            {
-                case ViewDefinitionMode.AllProperties:
-                case ViewDefinitionMode.Default when EffectiveForm == null:
-                    EffectiveForm = viewFinder.CreateView(DetailElement);
-                    break;
-                case ViewDefinitionMode.Specific:
-                    EffectiveForm = ViewDefinition.Element;
-                    break;
-            }
-
-            // Clones the EffectiveForm
-            EffectiveForm = ObjectCopier.Copy(new MofFactory(EffectiveForm), EffectiveForm);
         }
 
         /// <summary>
@@ -356,11 +321,16 @@ namespace DatenMeister.WPF.Forms.Base
         {
             RefreshViewDefinition();
 
+            // Checks, if the form overwrites the allow new properties information. If yes, store it
+            var t = EffectiveForm?.getOrNull<bool>(_FormAndFields._DetailForm.allowNewProperties);
+            AllowNewProperties = t ?? AllowNewProperties;
+
             DataGrid.Children.Clear();
             AttachedItemFields.Clear();
             ItemFields.Clear();
 
-            if (!(EffectiveForm?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
+            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.fields);
+            if (fields == null)
             {
                 return;
             }
@@ -401,6 +371,8 @@ namespace DatenMeister.WPF.Forms.Base
                     }
                 }
             }
+
+            AddDefaultButtons();
         }
 
         /// <summary>
@@ -558,6 +530,9 @@ namespace DatenMeister.WPF.Forms.Base
             _fieldCount++;
         }
 
+        /// <summary>
+        /// Creates a separation line
+        /// </summary>
         private void CreateSeparator()
         {
             DataGrid.RowDefinitions.Add(new RowDefinition());
@@ -580,8 +555,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Adds the default cancel and save buttons
         /// </summary>
-        public void AddDefaultButtons(string saveText = "Save")
+        public void AddDefaultButtons(string saveText = null)
         {
+            saveText = saveText ?? EffectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.defaultApplyText);
+            saveText = saveText ?? "Save";
+
             if (AllowNewProperties)
             {
                 AddGenericButton("New Property", () =>

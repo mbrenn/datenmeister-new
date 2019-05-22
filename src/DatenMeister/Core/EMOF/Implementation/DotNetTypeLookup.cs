@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using DatenMeister.Provider.DotNet;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {

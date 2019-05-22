@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using DatenMeister.Integration;
+using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.WPF.Forms.Detail;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Lists;
 
 namespace DatenMeister.WPF.Navigation
@@ -34,15 +36,38 @@ namespace DatenMeister.WPF.Navigation
             Process.Start(integrationSettings.DatabasePath);
         }
 
-        public static Task<NavigateToElementDetailResult> CreateNewWorkspace(INavigationHost navigationHost)
+        /// <summary>
+        /// Creates a new workspace by asking the user about new workspace information
+        /// </summary>
+        /// <param name="navigationHost"></param>
+        /// <returns></returns>
+        public static async Task<NavigateToElementDetailResult> CreateNewWorkspace(INavigationHost navigationHost)
         {
-            return navigationHost.NavigateTo(() =>
+            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            var viewExtent = viewLogic.GetInternalViewExtent();
+
+            var formElement = NamedElementMethods.GetByFullName(
+                viewExtent,
+                ManagementViewDefinitions.PathNewWorkspaceForm);
+
+            var result = await NavigatorForItems.NavigateToElementDetailViewAsync(navigationHost,
+                new NavigateToItemConfig
                 {
-                    var dlg = new NewWorkspaceControl();
-                    dlg.SetContent();
-                    return dlg;
-                },
-                NavigationMode.Detail);
+                    FormDefinition = formElement
+
+                });
+
+            if (result.Result == NavigationResult.Saved)
+            {
+                var workspaceId = result.DetailElement.get("id").ToString();
+                var annotation = result.DetailElement.get("annotation").ToString();
+
+                var workspace = new Workspace(workspaceId, annotation);
+                var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
+                workspaceLogic.AddWorkspace(workspace);
+            }
+
+            return result;
         }
 
         /// <summary>

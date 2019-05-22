@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using Autofac;
-using BurnSystems.Collections;
 using BurnSystems.Logging;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;

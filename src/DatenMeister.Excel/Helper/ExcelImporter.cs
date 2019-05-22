@@ -1,17 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Autofac;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Annotations;
 using DatenMeister.Excel.Spreadsheet;
-using DatenMeister.Integration;
-using DatenMeister.Provider;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.XMI.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Excel.Helper
 {

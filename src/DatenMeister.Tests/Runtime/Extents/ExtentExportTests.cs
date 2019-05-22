@@ -2,7 +2,6 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Provider.XMI.EMOF;
-using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Extents;
 using NUnit.Framework;
 

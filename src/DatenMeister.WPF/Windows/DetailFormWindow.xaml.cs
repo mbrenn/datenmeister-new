@@ -149,7 +149,7 @@ namespace DatenMeister.WPF.Windows
             }
             else
             {
-                MainContent?.Focus();
+                MainContent.Focus();
             }
         }
 
@@ -200,8 +200,6 @@ namespace DatenMeister.WPF.Windows
             {
                 Title = title.Title;
             }
-
-            Focus();
         }
 
         /// <summary>
@@ -330,7 +328,10 @@ namespace DatenMeister.WPF.Windows
                 }
             }
         }
-
+        
+        /// <summary>
+        /// Sets the effective form by using the viewdefinition
+        /// </summary>
         private void UpdateActualViewDefinition()
         {
             var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();

@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Autofac;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -30,6 +31,14 @@ namespace DatenMeister.WPF.Forms.Base
     /// </summary>
     public partial class DetailFormControl : UserControl, INavigationGuest, IHasSelectedItems, IHasTitle
     {
+        /// <summary>
+        /// Stores the logger
+        /// </summary>
+        private static readonly ClassLogger logger = new ClassLogger(typeof(DetailFormControl));
+
+        /// <summary>
+        /// Stores  the number of fields
+        /// </summary>
         private int _fieldCount;
 
         /// <summary>
@@ -64,7 +73,10 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Gets or sets a value indicating whether new properties may be added by the user to the element
         /// </summary>
         public bool AllowNewProperties { get; set; }
-
+        
+        /// <summary>
+        /// Gets the attached element which is allocated in the navigation host
+        /// </summary>
         public IElement AttachedElement => NavigationHost.AttachedElement;
 
         /// <summary>
@@ -74,9 +86,15 @@ namespace DatenMeister.WPF.Forms.Base
             EffectiveForm?.getOrDefault<double>(_FormAndFields._Form.defaultWidth) ?? 0.0,
             EffectiveForm?.getOrDefault<double>(_FormAndFields._Form.defaultHeight) ?? 0.0
         );
-
+        
+        /// <summary>
+        /// Gets the list of the item fields being used to store the information into the item
+        /// </summary>
         public List<IDetailField> ItemFields { get; } = new List<IDetailField>();
 
+        /// <summary>
+        /// Gets the list of field information being allocated to the form but not to the detail form
+        /// </summary>
         public List<IDetailField> AttachedItemFields { get; } = new List<IDetailField>();
 
         public IObject GetSelectedItem()
@@ -417,7 +435,7 @@ namespace DatenMeister.WPF.Forms.Base
                 }
             
                 // Checks whether the control element shall be stored in
-                // the detail element iself or within the attached fields
+                // the detail element itself or within the attached fields
                 if (field.getOrNull<bool>(_FormAndFields._FieldData.isAttached) == true)
                 {
                     AttachedItemFields.Add(detailElement);
@@ -430,7 +448,15 @@ namespace DatenMeister.WPF.Forms.Base
                 // Check, if element shall be focused
                 if (!anyFocused && flags.CanBeFocused)
                 {
-                    contentBlock.Focus();
+                    // For what ever, we have to set the focus via the invoking and not directly
+                    Dispatcher.BeginInvoke((Action)(() =>
+                    {
+                        if (!contentBlock.Focus())
+                        {
+                            logger.Debug("No keyboard focus set");
+                        }
+                    }));
+
                     anyFocused = true;
                 }
             }

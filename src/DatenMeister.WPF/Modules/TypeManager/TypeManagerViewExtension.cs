@@ -2,8 +2,9 @@
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
+using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Lists;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.TypeManager
@@ -13,8 +14,18 @@ namespace DatenMeister.WPF.Modules.TypeManager
         public IEnumerable<ViewExtension> GetViewExtensions(
             ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
-            if (viewExtensionTargetInformation.NavigationGuest is ItemsInExtentList itemInExtentList)
+            if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl itemInExtentList)
             {
+                yield return new RibbonButtonDefinition(
+                    "View User Types",
+                    () => NavigatorForItems.NavigateToItemsInExtent(
+                        viewExtensionTargetInformation.NavigationHost,
+                        WorkspaceNames.NameTypes,
+                        WorkspaceNames.UriUserTypesExtent),
+                    string.Empty,
+                    "Navigation.User");
+
+                // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
                 var extent = itemInExtentList.Items.GetAssociatedExtent();
                 var extentType = extent?.GetExtentType();
                 if (extentType != "Uml.Classes")

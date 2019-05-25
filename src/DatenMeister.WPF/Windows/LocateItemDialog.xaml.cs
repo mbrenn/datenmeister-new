@@ -103,10 +103,6 @@ namespace DatenMeister.WPF.Windows
                 throw new InvalidOperationException("Owner is not set or ist not a navigation host");
             }
 
-            _ = NavigatorForItems.NavigateToElementDetailView(
-                navigationHost,
-                SelectedElement);
-
             Close();
         }
 

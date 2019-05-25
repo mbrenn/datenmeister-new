@@ -62,7 +62,9 @@ namespace DatenMeister.WPF.Navigation
             var dlg = new LocateItemDialog
             {
                 WorkspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>(),
+                Owner = mainWindow.GetWindow()
             };
+
 
             if (workspace != null && defaultExtent != null)
             {

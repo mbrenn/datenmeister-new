@@ -253,10 +253,8 @@ namespace DatenMeister.Runtime
             this IObject value,
             string property)
         {
-            if (!(value.get(property) is IReflectiveCollection result))
-            {
-                throw new InvalidOperationException("The given result is not a ReflectiveCollection");
-            }
+            var result = value.getOrDefault<IReflectiveCollection>(property);
+            result = result ?? CreateReflectiveCollectionObject(value, property);
 
             return result;
         }
@@ -273,13 +271,20 @@ namespace DatenMeister.Runtime
             this IObject value,
             string property)
         {
-            if (!(value.get(property) is IReflectiveSequence result))
-            {
-                throw new InvalidOperationException("The given result is not a ReflectiveSequence");
-            }
+            var result = value.getOrDefault<IReflectiveSequence>(property);
+            result = result ?? (IReflectiveSequence) CreateReflectiveCollectionObject(value, property);
 
             return result;
         }
+
+        /// <summary>
+        /// Gets the reflective collection of a property of the mof object
+        /// </summary>
+        /// <param name="mofObject">Mof Object whose property shall be considered as a reflective collection</param>
+        /// <param name="property">Name of the property</param>
+        /// <returns>The reflective collection containing the property</returns>
+        private static IReflectiveCollection CreateReflectiveCollectionObject(this IObject mofObject, string property)
+            => new MofReflectiveSequence((MofObject)mofObject, property);
 
         /// <summary>
         /// Gets a certain property value as a reflective sequence.

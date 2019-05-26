@@ -29,7 +29,8 @@
         </StackPanel>
         <StackPanel DockPanel.Dock="Top" x:Name="InfoLines" Margin="10,5,10,5">
         </StackPanel>
-        <StackPanel Orientation="Horizontal" x:Name="ButtonBar" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="10">
+        <StackPanel Orientation="Horizontal" x:Name="ButtonBar" DockPanel.Dock="Bottom" 
+                    Visibility="Collapsed"  HorizontalAlignment="Right" Margin="10">
         </StackPanel>
         <Grid x:Name="MainGrid">
             <DataGrid Grid.Row="0"

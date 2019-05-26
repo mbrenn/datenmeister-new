@@ -46,7 +46,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
             if (itemExplorerControl != null || detailFormControl != null)
             {
                 var openView = new RibbonButtonDefinition(
-                    "Open View",
+                    "Change Form",
                     async () =>
                     {
                         var action = await Navigator.CreateDetailWindow(

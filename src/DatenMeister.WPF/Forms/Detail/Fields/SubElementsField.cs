@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -62,110 +64,112 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
         /// <summary>
         /// Creates the content for the panel element dependent on the item and its values
         /// </summary>
-        /// <param name="value">Item to be shown</param>
-        /// <param name="fieldData">Field Data being used to define the layout and used property</param>
-        /// <param name="detailForm"></param>
-        /// <param name="panel"></param>
         private void CreatePanelElement()
         {
+            _panel.Children.Clear();
+
             var valueOfElement = _element.getOrDefault<IReflectiveCollection>(_propertyName);
             IObject form = _fieldData.getOrDefault<IElement>(_FormAndFields._SubElementFieldData.form);
 
-            if (valueOfElement == null)
+            valueOfElement = valueOfElement ?? _element.GetAsReflectiveCollection(_propertyName);
+            var listViewControl = new ItemListViewControl
             {
-                var emptyText = new TextBlock
-                {
-                    Text = "No list"
-                };
-                _panel.Children.Add(emptyText);
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Height = 400,
+                MinWidth = 650,
+                NavigationHost = _navigationHost
+            };
 
-                // If user clicks on the button, an empty reflective collection is created
-                var button = new Button {Content = "Create empty list"};
-                button.Click += (x, y) =>
-                {
-                    var emptyList = new List<object>();
-                    _element.set(_propertyName, emptyList);
-                    _panel.Children.Clear();
-                    CreatePanelElement();
-                };
-
-                _panel.Children.Add(button);
+            // Checks, whether a form is given
+            if (form == null)
+            {
+                // otherwise, we have to automatically create a form
+                var formFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
+                form = formFinder.CreateView(valueOfElement);
             }
-            else
+
+            var viewExtensions = new List<ViewExtension>
             {
-                var listViewControl = new ItemListViewControl
-                {
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    MaxHeight = 500,
-                    MinHeight = 300,
-                    MinWidth = 650,
-                    NavigationHost = _navigationHost
-                };
+                new RowItemButtonDefinition(
+                    "Edit",
+                    (guest, item) => NavigatorForItems.NavigateToElementDetailView(_navigationHost, item),
+                    ItemListViewControl.ButtonPosition.Before),
 
-                // Checks, whether a form is given
-                if (form == null)
-                {
-                    // otherwise, we have to automatically create a form
-                    var formFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
-                    form = formFinder.CreateView(valueOfElement);
-                }
-
-                var viewExtensions = new List<ViewExtension>();
-                viewExtensions.Add(
-                    new RowItemButtonDefinition(
-                        "Edit",
-                        (guest, item) => NavigatorForItems.NavigateToElementDetailView(_navigationHost, item),
-                        ItemListViewControl.ButtonPosition.Before));
-                viewExtensions.Add(
-                    new RowItemButtonDefinition(
-                        "Delete",
-
-                        (guest, item) =>
+                new RowItemButtonDefinition(
+                    "Delete",
+                    (guest, item) =>
+                    {
+                        if (MessageBox.Show(
+                                "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
+                            MessageBoxResult.Yes)
                         {
-                            if (MessageBox.Show(
-                                    "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
-                                MessageBoxResult.Yes)
-                            {
-                                valueOfElement.remove(item);
-                            }
-                        }));
-                listViewControl.SetContent(valueOfElement, form, viewExtensions);
+                            valueOfElement.remove(item);
+                        }
+                    })
+            };
 
-                _panel.Children.Add(listViewControl);
-            }
+            listViewControl.SetContent(valueOfElement, form, viewExtensions);
+
+            _panel.Children.Add(listViewControl);
+
+            var listItems = new List<Tuple<string, Action>>
+            {
+                new Tuple<string, Action>(
+                    "Select object",
+                    () =>
+                    {
+                        var result = NavigatorForItems.NavigateToCreateNewItem(
+                            _navigationHost,
+                            (_element as MofObject)?.ReferencedExtent,
+                            null);
+
+                        result.NewItemCreated += (a, b) =>
+                        {
+                            if (_element.GetOrDefault(_propertyName) is IReflectiveCollection propertyCollection)
+                            {
+                                propertyCollection.add(b.NewItem);
+                            }
+                            else
+                            {
+                                _element.set(_propertyName, new List<object> {b.NewItem});
+                            }
+
+                            _panel.Children.Clear();
+                            CreatePanelElement();
+                        };
+                    })
+            };
 
             // Gets the buttons for specific types
-            if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData.defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
+            if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData
+                .defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
             {
                 foreach (var type in defaultTypesForNewItems.OfType<IElement>())
                 {
-                    CreateButtonForType(type);
+                    listItems.Add(CreateButtonForType(type));
                 }
             }
 
             // If user clicks on the button, an empty reflective collection is created
-            var createItemButton = new Button { Content = "Add item" };
+            var createItemButton = new Button {Content = "Add item", HorizontalAlignment = HorizontalAlignment.Right};
             createItemButton.Click += (x, y) =>
             {
-                var result = NavigatorForItems.NavigateToCreateNewItem(
-                    _navigationHost,
-                    (_element as MofObject)?.ReferencedExtent,
-                    null);
+                var menu = new ContextMenu();
+                var menuItems = new List<MenuItem>();
 
-                result.NewItemCreated += (a, b) =>
+                foreach (var item in listItems)
                 {
-                    if (_element.GetOrDefault(_propertyName) is IReflectiveCollection propertyCollection)
+                    var menuItem = new MenuItem
                     {
-                        propertyCollection.add(b.NewItem);
-                    }
-                    else
-                    {
-                        _element.set(_propertyName, new List<object> { b.NewItem });
-                    }
+                        Header = item.Item1
+                    };
+                    menuItem.Click += (a, b) => item.Item2();
+                    menuItems.Add(menuItem);
+                }
 
-                    _panel.Children.Clear();
-                    CreatePanelElement();
-                };
+                menu.ItemsSource = menuItems;
+                menu.PlacementTarget = createItemButton;
+                menu.IsOpen = true;
             };
 
             _panel.Children.Add(createItemButton);
@@ -175,31 +179,34 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
         /// Creates a button for a certain type and add it to the panel
         /// </summary>
         /// <param name="type">Type which shall be added</param>
-        private void CreateButtonForType(IElement type)
+        private Tuple<string, Action> CreateButtonForType(IElement type)
         {
             var typeName = type.get(_UML._CommonStructure._NamedElement.name);
-            var button = new Button {Content = $"New {typeName}"};
-            button.Click += (a, b) =>
-            {
-                var elements =
-                    NavigatorForItems.NavigateToCreateNewItem(_navigationHost, (_element as MofObject)?.ReferencedExtent, type);
-                elements.NewItemCreated += (x, y) =>
+
+            var result = new Tuple<string, Action>(
+                $"New {typeName}",
+                () =>
                 {
-                    if (_element.GetOrDefault(_propertyName) is IReflectiveCollection propertyCollection)
+                    var elements =
+                        NavigatorForItems.NavigateToCreateNewItem(_navigationHost,
+                            (_element as MofObject)?.ReferencedExtent, type);
+                    elements.NewItemCreated += (x, y) =>
                     {
-                        propertyCollection.add(y.NewItem);
-                    }
-                    else
-                    {
-                        _element.set(_propertyName, new List<object> {y.NewItem});
-                    }
+                        if (_element.GetOrDefault(_propertyName) is IReflectiveCollection propertyCollection)
+                        {
+                            propertyCollection.add(y.NewItem);
+                        }
+                        else
+                        {
+                            _element.set(_propertyName, new List<object> {y.NewItem});
+                        }
 
-                    _panel.Children.Clear();
-                    CreatePanelElement();
-                };
-            };
+                        _panel.Children.Clear();
+                        CreatePanelElement();
+                    };
+                });
 
-            _panel.Children.Add(button);
+            return result;
         }
     }
 }

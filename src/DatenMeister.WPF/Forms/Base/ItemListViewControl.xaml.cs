@@ -108,9 +108,10 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Updates the content by going through the fields and items
         /// </summary>
-        public void SetContent(IReflectiveCollection items, IObject formDefintion, List<ViewExtension> viewExtensions)
+        public void SetContent(IReflectiveCollection items, IObject formDefinition, List<ViewExtension> viewExtensions)
         {
             UnregisterCurrentChangeEventHandle();
+
             if (items is IHasExtent asExtent)
             {
                 GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
@@ -122,7 +123,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             Items = items;
-            CurrentFormDefinition = formDefintion;
+            CurrentFormDefinition = formDefinition;
             ViewExtensions = viewExtensions;
             IncludeStandardExtensions();
             UpdateContent();
@@ -302,6 +303,7 @@ namespace DatenMeister.WPF.Forms.Base
             ClearInfoLines();
             DataGrid.Columns.Clear();
             ButtonBar.Children.Clear();
+            ButtonBar.Visibility = Visibility.Collapsed;
 
             var fieldNames = new List<string>();
 
@@ -391,6 +393,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             button.Pressed += (x, y) => { onPressed(); };
             ButtonBar.Children.Add(button);
+            ButtonBar.Visibility = Visibility.Visible;
             return button;
         }
 
@@ -414,6 +417,7 @@ namespace DatenMeister.WPF.Forms.Base
             };
 
             ButtonBar.Children.Add(button);
+            ButtonBar.Visibility = Visibility.Visible;
             return button;
         }
 

@@ -114,7 +114,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             if (items is IHasExtent asExtent)
             {
-                GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
+                _changeEventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
                     asExtent.Extent,
                     (extent, element) =>
                     {
@@ -132,7 +132,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Unregisters the change event handle and sets the variable _changeEventHandle to null
         /// </summary>
-        private void UnregisterCurrentChangeEventHandle()
+        protected void UnregisterCurrentChangeEventHandle()
         {
             if (_changeEventHandle != null)
             {

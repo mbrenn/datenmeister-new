@@ -49,13 +49,40 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// <summary>
         /// Gets the name of category
         /// </summary>
-        public string CategoryName { get; }
+        public string CategoryName { get; private set; }
+
+        private bool _isTopCategoryFixed;
 
         public override string ToString()
         {
             return $"{CategoryName}.{Name} [{ImageName}]";
         }
 
+        /// <summary>
+        /// Sets the top category name by overwriting the
+        /// first part of the <c>CategoryName</c>. If the Category name
+        /// was already fixed, then no overwriting will be performed
+        /// </summary>
+        /// <param name="topCategory">Name of the category</param>
+        public void FixTopCategoryIfNotFixed(string topCategory)
+        {
+            if (_isTopCategoryFixed)
+            {
+                return;
+            }
+
+            _isTopCategoryFixed = true;
+
+            var indexPositionDot = CategoryName.IndexOf('.');
+            if (indexPositionDot == -1)
+            {
+                CategoryName = topCategory;
+            }
+            else
+            {
+                CategoryName = topCategory + CategoryName.Substring(indexPositionDot);
+            }
+        }
         /// <summary>
         /// Verifies whether two ribbon button definitions can be regarded as absolutely equal
         /// </summary>
@@ -94,11 +121,6 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
             if (ImageName != null)
             {
                 result ^= ImageName.GetHashCode();
-            }
-
-            if (CategoryName != null)
-            {
-                result ^= CategoryName.GetHashCode();
             }
 
             return result;

@@ -111,6 +111,7 @@ namespace DatenMeister.WPF.Forms.Base
         public void SetContent(IReflectiveCollection items, IObject formDefinition, List<ViewExtension> viewExtensions)
         {
             UnregisterCurrentChangeEventHandle();
+
             if (items is IHasExtent asExtent)
             {
                 _changeEventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
@@ -302,6 +303,7 @@ namespace DatenMeister.WPF.Forms.Base
             ClearInfoLines();
             DataGrid.Columns.Clear();
             ButtonBar.Children.Clear();
+            ButtonBar.Visibility = Visibility.Collapsed;
 
             var fieldNames = new List<string>();
 
@@ -391,6 +393,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             button.Pressed += (x, y) => { onPressed(); };
             ButtonBar.Children.Add(button);
+            ButtonBar.Visibility = Visibility.Visible;
             return button;
         }
 
@@ -414,6 +417,7 @@ namespace DatenMeister.WPF.Forms.Base
             };
 
             ButtonBar.Children.Add(button);
+            ButtonBar.Visibility = Visibility.Visible;
             return button;
         }
 

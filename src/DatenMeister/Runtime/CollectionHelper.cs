@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -16,7 +17,8 @@ namespace DatenMeister.Runtime
             return new ReflectiveList<T>(collection);
         }
 
-        public static IList<T> ToList<T>(this IReflectiveCollection collection, Func<object, T> wrapFunc, Func<T, object> unwrapFunc)
+        public static IList<T> ToList<T>(this IReflectiveCollection collection, Func<object, T> wrapFunc,
+            Func<T, object> unwrapFunc)
         {
             return new ReflectiveList<T>(collection, wrapFunc, unwrapFunc);
         }
@@ -54,6 +56,11 @@ namespace DatenMeister.Runtime
             return values.OfType<IElement>().Select(x => x.getMetaClass()).Where(x => x != null).Distinct();
         }
 
+        /// <summary>
+        /// Gets the associated extent of the reflective collection
+        /// </summary>
+        /// <param name="collection"></param>
+        /// <returns></returns>
         public static IExtent GetAssociatedExtent(this IReflectiveCollection collection)
         {
             var mofReflection = collection as IHasExtent ??

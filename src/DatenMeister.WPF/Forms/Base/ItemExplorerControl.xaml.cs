@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -310,6 +311,11 @@ namespace DatenMeister.WPF.Forms.Base
                 GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
                 _eventHandle = null;
             }
+        }
+
+        private void ItemExplorerControl_OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            Unregister();
         }
     }
 }

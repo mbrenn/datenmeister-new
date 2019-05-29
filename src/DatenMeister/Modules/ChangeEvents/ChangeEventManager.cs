@@ -148,7 +148,7 @@ namespace DatenMeister.Modules.ChangeEvents
 
                 _handles.Add(eventHandle);
 
-                ClassLogger.Trace($"Registered event for: {value}");
+                ClassLogger.Trace($"Registered event for: {value} ({_handles.Count})");
                 return eventHandle;
             }
             finally
@@ -171,7 +171,7 @@ namespace DatenMeister.Modules.ChangeEvents
 
                 _handles.Add(eventHandle);
 
-                ClassLogger.Trace($"Registered event for: {extent}");
+                ClassLogger.Trace($"Registered event for: {extent} ({_handles.Count})");
 
                 return eventHandle;
             }
@@ -195,7 +195,7 @@ namespace DatenMeister.Modules.ChangeEvents
 
                 _handles.Add(eventHandle);
 
-                ClassLogger.Trace($"Registered event for: {workspace}");
+                ClassLogger.Trace($"Registered event for: {workspace} ({_handles.Count})");
 
                 return eventHandle;
             }

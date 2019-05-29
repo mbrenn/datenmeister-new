@@ -89,6 +89,11 @@ namespace DatenMeister.WPF.Forms.Base
             
             foreach (var extension in selectedTab.ViewDefinition.ViewExtensions)
             {
+                if (extension is RibbonButtonDefinition ribbonButtonDefinition)
+                {
+                    ribbonButtonDefinition.FixTopCategoryIfNotFixed("View");
+                }
+
                 yield return extension;
             }
 
@@ -96,14 +101,18 @@ namespace DatenMeister.WPF.Forms.Base
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
             var data = new ViewExtensionTargetInformation
             {
-                NavigationGuest = this,
-                NavigationHost = NavigationHost
+                NavigationGuest = this
             };
 
             foreach (var plugin in viewExtensionPlugins)
             {
                 foreach (var extension in plugin.GetViewExtensions(data))
                 {
+                    if (extension is RibbonButtonDefinition ribbonButtonDefinition)
+                    {
+                        ribbonButtonDefinition.FixTopCategoryIfNotFixed("Item");
+                    }
+
                     yield return extension;
                 }
             }

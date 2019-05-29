@@ -113,7 +113,7 @@ namespace DatenMeister.WPF.Forms.Base
             UnregisterCurrentChangeEventHandle();
             if (items is IHasExtent asExtent)
             {
-                _changeEventHandle =  GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
+                _changeEventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
                     asExtent.Extent,
                     (extent, element) =>
                     {

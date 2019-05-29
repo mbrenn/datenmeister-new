@@ -11,6 +11,7 @@ using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.WPF;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
@@ -110,7 +111,9 @@ namespace DatenMeisterWPF
         /// </summary>
         public void RebuildNavigation()
         {
-            IEnumerable<ViewExtension> viewExtensions = new List<ViewExtension>
+            var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
+
+            var viewExtensions = new List<ViewExtension>
             {
                 new RibbonButtonDefinition(
                     "Home",
@@ -141,11 +144,53 @@ namespace DatenMeisterWPF
                     NavigationCategories.File + ".Search")
             };
 
-            viewExtensions = viewExtensions.Union(_ribbonHelper.GetDefaultNavigation());
+            viewExtensions = viewExtensions.Union(_ribbonHelper.GetDefaultNavigation()).ToList();
             if (MainControl.Content is INavigationGuest guest)
             {
-                guest.NavigationHost = this;
-                viewExtensions = viewExtensions.Union(guest.GetViewExtensions());
+                var guestViewExtensions = guest.GetViewExtensions().ToList();
+                foreach (var viewExtension in guestViewExtensions.OfType<RibbonButtonDefinition>())
+                {
+                    viewExtension.FixTopCategoryIfNotFixed("Extent");
+                }
+
+                viewExtensions = viewExtensions.Union(guestViewExtensions).ToList();
+
+                /*
+                 * Gets the plugins for the selected extent
+                 */
+                var dataItems = new ViewExtensionTargetInformation
+                {
+                    NavigationGuest = guest
+                };
+
+                foreach (var plugin in viewExtensionPlugins)
+                {
+                    foreach (var extension in plugin.GetViewExtensions(dataItems))
+                    {
+                        viewExtensions.Add(extension);
+                    }
+                }
+            }
+
+            /*
+             * Gets the plugins for the MainWindow itself
+             */
+            var data = new ViewExtensionTargetInformation
+            {
+                NavigationHost = this
+            };
+
+            foreach (var plugin in viewExtensionPlugins)
+            {
+                foreach (var extension in plugin.GetViewExtensions(data))
+                {
+                    if (extension is RibbonButtonDefinition ribbonButtonDefinition)
+                    {
+                        ribbonButtonDefinition.FixTopCategoryIfNotFixed("Item");
+                    }
+
+                    viewExtensions.Add(extension);
+                }
             }
 
             _ribbonHelper.EvaluateExtensions(viewExtensions);

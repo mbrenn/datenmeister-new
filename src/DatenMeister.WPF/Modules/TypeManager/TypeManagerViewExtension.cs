@@ -14,7 +14,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
         public IEnumerable<ViewExtension> GetViewExtensions(
             ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
-            if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl itemInExtentList)
+            if (viewExtensionTargetInformation.NavigationHost != null)
             {
                 yield return new RibbonButtonDefinition(
                     "View User Types",
@@ -24,6 +24,10 @@ namespace DatenMeister.WPF.Modules.TypeManager
                         WorkspaceNames.UriUserTypesExtent),
                     string.Empty,
                     "Navigation.User");
+            }
+
+            if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl itemInExtentList)
+            {
 
                 // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
                 var extent = itemInExtentList.Items.GetAssociatedExtent();

@@ -28,7 +28,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
             var itemExplorerControl = navigationGuest as ItemExplorerControl;
             var detailFormControl = viewExtensionTargetInformation.NavigationHost as DetailFormWindow;
 
-            if (navigationGuest is ItemExplorerControl)
+            if (viewExtensionTargetInformation.NavigationHost != null)
             {
                 var result = new RibbonButtonDefinition(
                     "View User Views",
@@ -40,7 +40,6 @@ namespace DatenMeister.WPF.Modules.ViewManager
                     "Navigation.User");
 
                 yield return result;
-
             }
 
             if (itemExplorerControl != null || detailFormControl != null)

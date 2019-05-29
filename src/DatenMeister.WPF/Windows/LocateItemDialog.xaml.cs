@@ -48,7 +48,6 @@ namespace DatenMeister.WPF.Windows
             set => SetValue(MessageTextProperty, value);
         }
 
-
         private static void OnMessageTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((LocateItemDialog)d).txtTitle.Text = (string)e.NewValue;
@@ -96,6 +95,7 @@ namespace DatenMeister.WPF.Windows
         private void AcceptAndCloseDialog()
         {
             SelectedElement = LocateElementControl.SelectedElement;
+            DialogResult = true;
             
             // Opens the dialog
             if (!(Owner is INavigationHost navigationHost))
@@ -108,6 +108,7 @@ namespace DatenMeister.WPF.Windows
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
             Close();
         }
 

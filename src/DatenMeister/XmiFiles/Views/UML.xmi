@@ -93,7 +93,11 @@
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" 
               name="name" title="Name of Package" />
       <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData"
-              name="packagedElement" title="Packaged Elements" isEnumeration="True" >
+              name="packagedElement" title="Packaged Elements" isEnumeration="True">
+        <form p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm">
+          <fields p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
+                  name="name" title="Name of Packaged Element" />
+        </form>
         <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Package" />
         <defaultTypesForNewElements href="datenmeister:///_internal/xmi/uml#Class" />
       </fields>

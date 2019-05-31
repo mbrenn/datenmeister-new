@@ -10,23 +10,26 @@ namespace DatenMeister.Models.Forms
         {
             return new[]
             {
+                typeof(FieldData),
                 typeof(CheckboxFieldData),
                 typeof(DateTimeFieldData),
                 typeof(ViewAssociation),
-                typeof(DetailForm),
                 typeof(DropDownFieldData),
                 typeof(DropDownFieldData.ValuePair),
-                typeof(FieldData),
-                typeof(Form),
-                typeof(ListForm),
                 typeof(MetaClassElementFieldData),
                 typeof(ReferenceFieldData),
                 typeof(SubElementFieldData),
                 typeof(TextFieldData),
                 typeof(SeparatorLineFieldData),
                 typeof(FileSelectionFieldData),
+                typeof(DefaultTypeForNewElement),
+
+                // Now the forms
                 typeof(ViewType),
-                typeof(DefaultTypeForNewElement)
+                typeof(Form),
+                typeof(DetailForm),
+                typeof(ListForm), 
+                typeof(ExtentForm)
             };
         }
     }

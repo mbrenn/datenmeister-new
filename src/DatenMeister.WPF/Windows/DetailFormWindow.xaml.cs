@@ -173,11 +173,6 @@ namespace DatenMeister.WPF.Windows
             MainContent.Content = element;
             if (element is DetailFormControl control)
             {
-                if (control.IsDesignMinimized())
-                {
-                    SwitchToMinimumSize();
-                }
-
                 var size = control.DefaultSize;
                 if (Math.Abs(size.Width) > 1E-7 && size.Height > 1E-7)
                 {
@@ -214,8 +209,8 @@ namespace DatenMeister.WPF.Windows
                 return;
             }
 
-            var width = control.EffectiveForm.getOrDefault<double>(_FormAndFields._Form.defaultWidth);
-            var height = control.EffectiveForm.getOrDefault<double>(_FormAndFields._Form.defaultWidth);
+            var width = control.EffectiveForm.getOrDefault<double>(_FormAndFields._DetailForm.defaultWidth);
+            var height = control.EffectiveForm.getOrDefault<double>(_FormAndFields._DetailForm.defaultWidth);
             if (width <= 0 && height <= 0)
             {
                 width = 1000;

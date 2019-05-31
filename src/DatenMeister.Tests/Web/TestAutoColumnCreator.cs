@@ -31,18 +31,18 @@ namespace DatenMeister.Tests.Web
             var creator = new FormCreator();
             var result = creator.CreateForm(extent, FormCreator.CreationMode.All);
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.fields.OfType<TextFieldData>().Count(), Is.EqualTo(2));
-            var firstColumn = result.fields.FirstOrDefault(x => x.name == "zip");
-            var secondColumn = result.fields.FirstOrDefault(x => x.name == "location");
+            Assert.That(result.field.OfType<TextFieldData>().Count(), Is.EqualTo(2));
+            var firstColumn = result.field.FirstOrDefault(x => x.name == "zip");
+            var secondColumn = result.field.FirstOrDefault(x => x.name == "location");
 
             Assert.That(firstColumn, Is.Not.Null);
             Assert.That(secondColumn, Is.Not.Null);
 
             Assert.That(firstColumn.isEnumeration, Is.False);
 
-            Assert.That(result.fields.OfType<TextFieldData>().Count, Is.EqualTo(2));
-            Assert.That(result.fields[0].name, Is.EqualTo("zip"));
-            Assert.That(result.fields[1].name, Is.EqualTo("location"));
+            Assert.That(result.field.OfType<TextFieldData>().Count, Is.EqualTo(2));
+            Assert.That(result.field[0].name, Is.EqualTo("zip"));
+            Assert.That(result.field[1].name, Is.EqualTo("location"));
         }
 
         [Test]
@@ -72,11 +72,11 @@ namespace DatenMeister.Tests.Web
             var creator = new FormCreator();
             var result = creator.CreateForm(extent, FormCreator.CreationMode.All);
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.fields.OfType<TextFieldData>().Count, Is.EqualTo(2));
-            Assert.That(result.fields.OfType<SubElementFieldData>().Count, Is.EqualTo(1));
-            var firstColumn = result.fields.FirstOrDefault(x => x.name == "zip");
-            var secondColumn = result.fields.FirstOrDefault(x => x.name == "location");
-            var thirdColumn = result.fields.FirstOrDefault(x => x.name == "other");
+            Assert.That(result.field.OfType<TextFieldData>().Count, Is.EqualTo(2));
+            Assert.That(result.field.OfType<SubElementFieldData>().Count, Is.EqualTo(1));
+            var firstColumn = result.field.FirstOrDefault(x => x.name == "zip");
+            var secondColumn = result.field.FirstOrDefault(x => x.name == "location");
+            var thirdColumn = result.field.FirstOrDefault(x => x.name == "other");
 
             Assert.That(firstColumn, Is.Not.Null);
             Assert.That(secondColumn, Is.Not.Null);

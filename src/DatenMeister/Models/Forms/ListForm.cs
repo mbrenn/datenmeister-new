@@ -17,6 +17,15 @@ namespace DatenMeister.Models.Forms
         {
         }
 
+        public string property { get; set; }
+
+        public IElement metaClass { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value whether new values shall be allowed
+        /// </summary>
+        public bool inhibitNewItems { get; set; }
+
         /// <summary>
         ///     Stores an enumeration of default types that can be used for creation
         /// </summary>

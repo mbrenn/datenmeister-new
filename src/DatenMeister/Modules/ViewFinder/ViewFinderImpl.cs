@@ -43,7 +43,7 @@ namespace DatenMeister.Modules.ViewFinder
             var extentType = extent.GetExtentType();
             if ((!string.IsNullOrEmpty(extentType)) || (metaClass != null))
             {
-                var viewResult = _viewLogic.FindViewForExtentType(extentType, metaClass, ViewType.List);
+                var viewResult = _viewLogic.FindViewForExtentType(extentType, metaClass, ViewType.TreeItemList);
                 if (viewResult != null)
                 {
                     return viewResult;
@@ -66,7 +66,7 @@ namespace DatenMeister.Modules.ViewFinder
         {
             if (metaClass != null)
             {
-                var viewResult = _viewLogic.FindViewFor(metaClass, ViewType.List);
+                var viewResult = _viewLogic.FindViewFor(metaClass, ViewType.TreeItemList);
                 if (viewResult != null)
                 {
                     return viewResult;
@@ -75,7 +75,7 @@ namespace DatenMeister.Modules.ViewFinder
 
             if (value != null)
             {
-                var viewResult = _viewLogic.FindViewForValue(value, ViewType.List);
+                var viewResult = _viewLogic.FindViewForValue(value, ViewType.TreeItemList);
                 if (viewResult != null)
                 {
                     return viewResult;

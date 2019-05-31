@@ -26,6 +26,7 @@
     <None Remove="XmiFiles\PrimitiveTypes.xmi" />
     <None Remove="XmiFiles\UML.xmi" />
     <None Remove="XmiFiles\Views\ImportExtentManager.xmi" />
+    <None Remove="XmiFiles\Views\UML - Kopieren.xmi" />
     <None Remove="XmiFiles\Views\UML.xmi" />
     <None Remove="XmiFiles\Views\Viewmanager.xmi" />
     <None Remove="XmiFiles\Views\WorkspacesAndExtents.xmi" />
@@ -35,6 +36,7 @@
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
     <EmbeddedResource Include="XmiFiles\UML.xmi" />
+    <EmbeddedResource Include="XmiFiles\Views\UML - Kopieren.xmi" />
     <EmbeddedResource Include="XmiFiles\Views\UML.xmi" />
     <EmbeddedResource Include="XmiFiles\Views\ImportExtentManager.xmi" />
     <EmbeddedResource Include="XmiFiles\Views\Viewmanager.xmi" />

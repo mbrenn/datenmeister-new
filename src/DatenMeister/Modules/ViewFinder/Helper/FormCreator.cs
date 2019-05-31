@@ -55,13 +55,13 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             }
 
             // Move the metaclass to the end of the field
-            for (var n = 0; n < result.fields.Count; n++)
+            for (var n = 0; n < result.field.Count; n++)
             {
-                var field = result.fields[n];
+                var field = result.field[n];
                 if (field is MetaClassElementFieldData)
                 {
-                    result.fields.RemoveAt(n);
-                    result.fields.Add(field);
+                    result.field.RemoveAt(n);
+                    result.field.Add(field);
                 }
             }
 
@@ -101,7 +101,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 {
                     wasInMetaClass = true;
                     var propertyName = property.get("name").ToString();
-                    var isAlreadyIn = form.fields.Any(x => x.name == propertyName);
+                    var isAlreadyIn = form.field.Any(x => x.name == propertyName);
                     if (isAlreadyIn)
                     {
                         continue;
@@ -109,7 +109,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                     var column = GetFieldForProperty(property);
 
-                    form.fields.Add(column);
+                    form.field.Add(column);
                 }
             }
 
@@ -131,7 +131,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                 foreach (var property in properties)
                 {
-                    var column = form.fields.FirstOrDefault(x => x.name == property);
+                    var column = form.field.FirstOrDefault(x => x.name == property);
                     if (column == null)
                     {
                         // Check by content, which type of field shall be created
@@ -161,7 +161,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                             }
                         }
 
-                        form.fields.Add(column);
+                        form.field.Add(column);
                     }
 
                     var value = ((IObject) item).get(property);
@@ -172,9 +172,9 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             // Third phase: Add metaclass
             var isMetaClass = creationMode.HasFlag(CreationMode.AddMetaClass);
-            if (isMetaClass && !form.fields.Any(x => x is MetaClassElementFieldData))
+            if (isMetaClass && !form.field.Any(x => x is MetaClassElementFieldData))
             {
-                form.fields.Add(new MetaClassElementFieldData());
+                form.field.Add(new MetaClassElementFieldData());
             }
         }
 

@@ -49,12 +49,9 @@ namespace DatenMeister.Provider.ManagementProviders
         /// <returns>The created type</returns>
         public IElement GetFindTypeForm(IObject preSelectedPackage, IWorkspace workspace = null, IExtent extent = null)
         {
-            var form = new Form(FindTypeForm)
+            var form = new DetailForm(FindTypeForm)
             {
-                inhibitNewItems = true,
-                fixView = true,
-                hideMetaClass = true,
-                minimizeDesign = true,
+                hideMetaInformation = true,
                 defaultHeight = 600,
                 defaultWidth = 700
             };

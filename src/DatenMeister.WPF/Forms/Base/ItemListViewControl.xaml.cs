@@ -173,7 +173,7 @@ namespace DatenMeister.WPF.Forms.Base
         public void UpdateContent()
         {
             SupportNewItems =
-                !CurrentFormDefinition.getOrDefault<bool>(_FormAndFields._Form.inhibitNewItems);
+                !CurrentFormDefinition.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
             SupportNewItems = false; // TODO: Make new items working
 
             var listItems = new ObservableCollection<ExpandoObject>();
@@ -295,7 +295,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// and the fields being used.</returns>
         private (List<string> names, IReflectiveCollection fields) UpdateColumnDefinitions()
         {   
-            if (!(CurrentFormDefinition?.get(_FormAndFields._Form.fields) is IReflectiveCollection fields))
+            if (!(CurrentFormDefinition?.get(_FormAndFields._Form.field) is IReflectiveCollection fields))
             {
                 return (null, null);
             }
@@ -793,10 +793,8 @@ namespace DatenMeister.WPF.Forms.Base
                         subItem,
                         (d) => { d.ViewDefined += (a, b) =>
                         {
-                            b.View.set(_FormAndFields._Form.minimizeDesign, true);
-
                             // Remove the field with property
-                            var fields = b.View.get<IReflectiveSequence>(_FormAndFields._Form.fields);
+                            var fields = b.View.get<IReflectiveSequence>(_FormAndFields._Form.field);
                             var propertyField = QueryHelper.GetChildWithProperty(fields,
                                 _FormAndFields._FieldData.name, 
                                 nameof(PropertyComparisonFilter.Property));
@@ -816,7 +814,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                             var pairs = new List<IObject>();
                             foreach (var field in 
-                                CurrentFormDefinition.get<IReflectiveCollection>(_FormAndFields._ListForm.fields)
+                                CurrentFormDefinition.get<IReflectiveCollection>(_FormAndFields._ListForm.field)
                                     .OfType<IObject>())
                             {
                                 if (!field.isSet(_FormAndFields._FieldData.name))

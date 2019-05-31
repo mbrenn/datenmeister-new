@@ -254,7 +254,7 @@ namespace DatenMeister.WPF.Navigation
                         {
                             // Gets the view definition
                             var fields = y.View
-                                    .get<IReflectiveSequence>(_FormAndFields._Form.fields);
+                                    .get<IReflectiveSequence>(_FormAndFields._Form.field);
                             var formFactory = new MofFactory(fields);
 
                             if (config.ContainerProperty == null) // ParentProperty is not given, so user gives property

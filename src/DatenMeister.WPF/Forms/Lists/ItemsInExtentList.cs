@@ -169,7 +169,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 // User has selected a sub element and its children shall be shown
                 view =
                     viewFinder.FindViewFor(
-                        ViewType.List,
+                        ViewType.TreeItemList,
                         extentType,
                         null,
                         metaClass)

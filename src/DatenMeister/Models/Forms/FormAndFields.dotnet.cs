@@ -1,3 +1,4 @@
+using DatenMeister;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -23,6 +24,13 @@ namespace DatenMeister.Models.Forms
         {
             var generator = new DotNetTypeGenerator(factory, uml, extent);
             {
+                var type = typeof(DatenMeister.Models.Forms.FieldData);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__FieldData = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
                 var type = typeof(DatenMeister.Models.Forms.CheckboxFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
@@ -44,13 +52,6 @@ namespace DatenMeister.Models.Forms
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.Forms.DetailForm);
-                var typeAsElement = generator.CreateTypeFor(type);
-                collection.add(typeAsElement);
-                filledStructure.__DetailForm = typeAsElement;
-                extent.TypeLookup.Add(typeAsElement, type);
-            }
-            {
                 var type = typeof(DatenMeister.Models.Forms.DropDownFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
@@ -62,27 +63,6 @@ namespace DatenMeister.Models.Forms
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__ValuePair = typeAsElement;
-                extent.TypeLookup.Add(typeAsElement, type);
-            }
-            {
-                var type = typeof(DatenMeister.Models.Forms.FieldData);
-                var typeAsElement = generator.CreateTypeFor(type);
-                collection.add(typeAsElement);
-                filledStructure.__FieldData = typeAsElement;
-                extent.TypeLookup.Add(typeAsElement, type);
-            }
-            {
-                var type = typeof(DatenMeister.Models.Forms.Form);
-                var typeAsElement = generator.CreateTypeFor(type);
-                collection.add(typeAsElement);
-                filledStructure.__Form = typeAsElement;
-                extent.TypeLookup.Add(typeAsElement, type);
-            }
-            {
-                var type = typeof(DatenMeister.Models.Forms.ListForm);
-                var typeAsElement = generator.CreateTypeFor(type);
-                collection.add(typeAsElement);
-                filledStructure.__ListForm = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
@@ -128,6 +108,13 @@ namespace DatenMeister.Models.Forms
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
+                var type = typeof(DatenMeister.Models.Forms.DefaultTypeForNewElement);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__DefaultTypeForNewElement = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
                 var type = typeof(DatenMeister.Models.Forms.ViewType);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
@@ -135,10 +122,31 @@ namespace DatenMeister.Models.Forms
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.Forms.DefaultTypeForNewElement);
+                var type = typeof(DatenMeister.Models.Forms.Form);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__DefaultTypeForNewElement = typeAsElement;
+                filledStructure.__Form = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.DetailForm);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__DetailForm = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.ListForm);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ListForm = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.ExtentForm);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ExtentForm = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
         }

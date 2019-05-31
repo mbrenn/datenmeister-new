@@ -83,8 +83,8 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Gets the default size
         /// </summary>
         public Size DefaultSize => new Size(
-            EffectiveForm?.getOrDefault<double>(_FormAndFields._Form.defaultWidth) ?? 0.0,
-            EffectiveForm?.getOrDefault<double>(_FormAndFields._Form.defaultHeight) ?? 0.0
+            EffectiveForm?.getOrDefault<double>(_FormAndFields._DetailForm.defaultWidth) ?? 0.0,
+            EffectiveForm?.getOrDefault<double>(_FormAndFields._DetailForm.defaultHeight) ?? 0.0
         );
         
         /// <summary>
@@ -297,15 +297,6 @@ namespace DatenMeister.WPF.Forms.Base
         public event EventHandler ElementSaved;
 
         /// <summary>
-        ///     Gets or sets the flag whether design shall be minimized
-        /// </summary>
-        /// <returns>true, if design shall be minimized</returns>
-        public bool IsDesignMinimized()
-        {
-            return EffectiveForm?.getOrDefault<bool>(_FormAndFields._Form.minimizeDesign) == true;
-        }
-
-        /// <summary>
         ///     This event is called, when the view for the detail view is defined
         ///     While handling the event, the view itself may be changed
         /// </summary>
@@ -346,13 +337,11 @@ namespace DatenMeister.WPF.Forms.Base
             AttachedItemFields.Clear();
             ItemFields.Clear();
 
-            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.fields);
+            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field);
             if (fields == null)
             {
                 return;
             }
-
-            var isMinimized = EffectiveForm.getOrDefault<bool>(_FormAndFields._Form.minimizeDesign);
 
             _fieldCount = 0;
 
@@ -364,9 +353,9 @@ namespace DatenMeister.WPF.Forms.Base
                 var mofElement = (MofElement) DetailElement;
                 var uriExtent = DetailElement.GetUriExtentOf();
 
-                var hideMetaClass = EffectiveForm.getOrDefault<bool>(_FormAndFields._Form.hideMetaClass);
+                var hideMetaClass = EffectiveForm.getOrDefault<bool>(_FormAndFields._Form.hideMetaInformation);
 
-                if (!hideMetaClass && !isMinimized)
+                if (!hideMetaClass)
                 {
                     CreateSeparator();
 
@@ -377,15 +366,11 @@ namespace DatenMeister.WPF.Forms.Base
                     CreateRowForField("Url w/ ID:", mofElement.GetUri(), true);
                     CreateRowForField("Url w/Fullname:", $"{uriExtentText}?{fullName}", true);
 
-                    // Sets the metaclass
-                    if (DotNetHelper.IsFalseOrNotSet(EffectiveForm, _FormAndFields._Form.hideMetaClass))
-                    {
                         var metaClass = (DetailElement as IElement)?.getMetaClass();
                         CreateRowForField(
                             "Meta Class:",
                             metaClass == null ? string.Empty : NamedElementMethods.GetFullName(metaClass),
                             true);
-                    }
                 }
             }
 
@@ -582,7 +567,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void AddDefaultButtons(string saveText = null)
         {
-            saveText = saveText ?? EffectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.defaultApplyText);
+            saveText = saveText ?? EffectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.buttonApplyText);
             saveText = saveText ?? "Save";
 
             if (AllowNewProperties)

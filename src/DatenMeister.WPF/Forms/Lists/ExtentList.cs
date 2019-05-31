@@ -65,7 +65,8 @@ namespace DatenMeister.WPF.Forms.Lists
 
             AddTab(
                 SelectedItems,
-                viewDefinition);
+                viewDefinition.Element,
+                viewDefinition.ViewExtensions);
         }
 
         /// <summary>

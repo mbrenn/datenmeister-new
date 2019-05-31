@@ -329,21 +329,10 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         private void UpdateActualViewDefinition()
         {
-            var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
+            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             if (_viewDefinition.Mode == ViewDefinitionMode.Default)
             {
-                EffectiveForm = viewFinder.FindDetailView(DetailElement);
-            }
-
-            switch (_viewDefinition.Mode)
-            {
-                case ViewDefinitionMode.AllProperties:
-                case ViewDefinitionMode.Default when EffectiveForm == null:
-                    EffectiveForm = viewFinder.CreateView(DetailElement);
-                    break;
-                case ViewDefinitionMode.Specific:
-                    EffectiveForm = _viewDefinition.Element;
-                    break;
+                EffectiveForm = viewLogic.GetDetailForm(DetailElement, DetailElement.GetUriExtentOf(), _viewDefinition.Mode);
             }
 
             // Clones the EffectiveForm

@@ -184,21 +184,21 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ViewAssociation._metaclass = value;
                                 }
-                                if(name == "metaclassName") // Looking for property
+                                if(name == "extentType") // Looking for property
                                 {
-                                    tree.ViewAssociation._metaclassName = value;
+                                    tree.ViewAssociation._extentType = value;
                                 }
                                 if(name == "parentMetaclass") // Looking for property
                                 {
                                     tree.ViewAssociation._parentMetaclass = value;
                                 }
-                                if(name == "extentType") // Looking for property
+                                if(name == "parentProperty") // Looking for property
                                 {
-                                    tree.ViewAssociation._extentType = value;
+                                    tree.ViewAssociation._parentProperty = value;
                                 }
-                                if(name == "view") // Looking for property
+                                if(name == "form") // Looking for property
                                 {
-                                    tree.ViewAssociation._view = value;
+                                    tree.ViewAssociation._form = value;
                                 }
                             }
                         }

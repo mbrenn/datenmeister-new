@@ -85,7 +85,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             {
                 // otherwise, we have to automatically create a form
                 var formFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
-                form = formFinder.CreateView(valueOfElement);
+                form = formFinder.FindListFormForTreeItemDetailView(_element, _propertyName, null);
             }
 
             var viewExtensions = new List<ViewExtension>

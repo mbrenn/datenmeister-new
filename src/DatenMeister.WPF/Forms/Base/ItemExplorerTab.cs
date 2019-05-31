@@ -1,4 +1,7 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.Generic;
+using System.Windows.Controls;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
 
 namespace DatenMeister.WPF.Forms.Base
 {
@@ -7,15 +10,15 @@ namespace DatenMeister.WPF.Forms.Base
     /// </summary>
     public class ItemExplorerTab : TabItem
     {
-        public ItemExplorerTab(ViewDefinition viewDefinition)
+        public ItemExplorerTab(IElement form)
         {
-            ViewDefinition = viewDefinition;
+            Form = form;
         }
 
         /// <summary>
         /// Gets or sets the view definition being used for the tab
         /// </summary>
-        public ViewDefinition ViewDefinition { get; set; }
+        public IElement Form { get; set; }
 
         /// <summary>
         /// Gets or sets the control
@@ -25,5 +28,7 @@ namespace DatenMeister.WPF.Forms.Base
             get => Content as ItemListViewControl;
             set => Content = value;
         }
+
+        public IEnumerable<ViewExtension> ViewExtensions { get; set; }
     }
 }

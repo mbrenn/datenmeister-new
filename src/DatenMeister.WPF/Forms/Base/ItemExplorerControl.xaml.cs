@@ -4,11 +4,14 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Navigation;
@@ -82,12 +85,12 @@ namespace DatenMeister.WPF.Forms.Base
         public virtual IEnumerable<ViewExtension> GetViewExtensions()
         {
             var selectedTab = ItemTabControl.SelectedItem as ItemExplorerTab;
-            if (selectedTab?.ViewDefinition?.ViewExtensions == null)
+            if (selectedTab?.ViewExtensions == null)
             {
                 yield break;
             }
             
-            foreach (var extension in selectedTab.ViewDefinition.ViewExtensions)
+            foreach (var extension in selectedTab.ViewExtensions)
             {
                 if (extension is RibbonButtonDefinition ribbonButtonDefinition)
                 {
@@ -183,32 +186,16 @@ namespace DatenMeister.WPF.Forms.Base
         /// Adds a new tab to the form
         /// </summary>
         /// <param name="collection">Collection being used</param>
-        /// <param name="viewDefinition">Form to be added</param>
-        public ItemExplorerTab AddTab(IReflectiveCollection collection, ViewDefinition viewDefinition)
+        /// <param name="form">Form to be used for the tabulator</param>
+        /// <param name="viewExtensions">Stores the view extensions</param>
+        public ItemExplorerTab AddTab(IReflectiveCollection collection, IElement form, List<ViewExtension> viewExtensions)
         {
             // Gets the default view for the given tab
             var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
-            IObject result = null;
+            IObject result = form;
+            var name = form.getOrDefault<string>(_FormAndFields._Form.title) ??
+                       form.getOrDefault<string>(_FormAndFields._Form.name);
 
-            switch (viewDefinition.Mode)
-            {
-                // Used, when an external function requires a specific view mode
-                case ViewDefinitionMode.Specific:
-                    result = viewDefinition.Element;
-                    break;
-                // Creates the view by creating the 'all Properties' view by parsing all the items
-                case ViewDefinitionMode.AllProperties:
-                    result = viewFinder.CreateView(Items);
-                    break;
-                case ViewDefinitionMode.Default:
-                    break;
-            }
-
-            if (result == null)
-            {
-                // Nothing was found... so, create your default list list. 
-                result = viewFinder.CreateView(collection);
-            }
 
             // Creates the layoutcontrol for the given view
             var control = new ItemListViewControl
@@ -216,13 +203,16 @@ namespace DatenMeister.WPF.Forms.Base
                 NavigationHost = NavigationHost
             };
 
-            var tabControl = new ItemExplorerTab(viewDefinition)
+
+            var tabControl = new ItemExplorerTab(form)
             {
                 Content = control,
-                Header = viewDefinition.Name
+                Header = name,
+                ViewExtensions = viewExtensions
             };
 
-            control.SetContent(collection, result, viewDefinition.ViewExtensions);
+
+            control.SetContent(collection, result, viewExtensions);
             Tabs.Add(tabControl);
 
             // Selects the item, if none of the items are selected

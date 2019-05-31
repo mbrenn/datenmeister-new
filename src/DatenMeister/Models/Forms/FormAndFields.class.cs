@@ -111,17 +111,17 @@ namespace DatenMeister.Models.Forms
             public static string @metaclass = "metaclass";
             public IElement _metaclass = null;
 
-            public static string @metaclassName = "metaclassName";
-            public IElement _metaclassName = null;
+            public static string @extentType = "extentType";
+            public IElement _extentType = null;
 
             public static string @parentMetaclass = "parentMetaclass";
             public IElement _parentMetaclass = null;
 
-            public static string @extentType = "extentType";
-            public IElement _extentType = null;
+            public static string @parentProperty = "parentProperty";
+            public IElement _parentProperty = null;
 
-            public static string @view = "view";
-            public IElement _view = null;
+            public static string @form = "form";
+            public IElement _form = null;
 
         }
 

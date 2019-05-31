@@ -49,7 +49,7 @@ namespace DatenMeister.WPF.Forms.Lists
             }
             else
             {
-                view = ListRequests.RequestFormForWorkspaces(NavigationHost);
+                view = ListRequests.RequestFormForWorkspaces(Items, NavigationHost);
             }
 
             PrepareNavigation(view);
@@ -57,7 +57,8 @@ namespace DatenMeister.WPF.Forms.Lists
             // Sets the workspaces
             AddTab(
                 SelectedItems,
-                view);
+                view.Element,
+                view.ViewExtensions);
         }
 
         /// <summary>

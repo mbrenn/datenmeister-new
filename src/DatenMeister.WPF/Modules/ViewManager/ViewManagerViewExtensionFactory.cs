@@ -62,7 +62,9 @@ namespace DatenMeister.WPF.Modules.ViewManager
                             var formDefinition = asElement.getOrDefault<IElement>("form");
 
                             itemExplorerControl?.AddTab(
-                                itemExplorerControl.Items, new ViewDefinition("Selected Form", formDefinition));
+                                itemExplorerControl.Items,
+                                formDefinition,
+                                null);
 
                             detailFormControl?.SetForm(formDefinition);
                         }

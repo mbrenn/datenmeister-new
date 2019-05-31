@@ -86,11 +86,6 @@ namespace DatenMeister.WPF.Forms.Lists
             SetItems(_extent.elements());
         }
 
-        /// <summary>
-        /// Stores the metaclasses currently shown
-        /// </summary>
-        private readonly List<IElement> _metaClasses = new List<IElement>();
-
         private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
@@ -98,35 +93,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// </summary>
         protected override void OnRecreateViews()
         {
-            // Group by SelectedItems
-            var metaClasses = SelectedItems.Select(x => (x as IElement)?.getMetaClass()).Distinct().Where(x=>x != null).ToList();
-            if (metaClasses.Count == 0 || ShowAllItemsInOneTab)
-            {
-                CreateTabForItems(SelectedItems, null);
-            }
-            else
-            {
-                foreach (var metaClass in metaClasses)
-                {
-                    CreateTabForMetaclass(metaClass);
-                }
-            }
-        }
-
-        private void CreateTabForMetaclass(IElement metaClass)
-        {
-            IReflectiveCollection tabItems;
-            if (metaClass == null)
-            {
-                tabItems = SelectedItems.WhenMetaClassIsNotSet();
-            }
-            else
-            {
-                tabItems = SelectedItems.WhenMetaClassIsOneOf(metaClass);
-            }
-
-            CreateTabForItems(tabItems, metaClass);
-            _metaClasses.Add(metaClass);
+            CreateFormForItems(SelectedItems);
         }
 
         /// <summary>
@@ -140,12 +107,12 @@ namespace DatenMeister.WPF.Forms.Lists
                 return;
             }
 
-            // Goes through the metaclasses and gets the one, that are not already in a tab
+            /*// Goes through the metaclasses and gets the one, that are not already in a tab
             var metaClasses = SelectedItems.Select(x => (x as IElement)?.getMetaClass()).Distinct().ToList();
             foreach (var metaClass in metaClasses.Where(x=> !_metaClasses.Contains(x)).ToArray())
             {
                 CreateTabForMetaclass(metaClass);
-            }
+            }*/
         }
 
         /// <summary>
@@ -153,34 +120,33 @@ namespace DatenMeister.WPF.Forms.Lists
         /// </summary>
         /// <param name="tabItems">Items for the tab</param>
         /// <param name="metaClass">Meta class of the items</param>
-        private void CreateTabForItems(IReflectiveCollection tabItems, IElement metaClass)
+        private void CreateFormForItems(IReflectiveCollection tabItems)
         {
-            var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
-            IElement view;
+            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            IElement form;
             var extentType = (Items as IHasExtent)?.Extent.GetExtentType();
 
             if (Items == SelectedItems)
             {
                 // Finds the view by the extent type
-                view = viewFinder.FindListView((Items as IHasExtent)?.Extent as IUriExtent, metaClass);
+                form = viewLogic.GetExtentForm((Items as IHasExtent)?.Extent as IUriExtent, ViewDefinitionMode.Default);
             }
             else
             {
                 // User has selected a sub element and its children shall be shown
-                view =
-                    viewFinder.FindViewFor(
-                        ViewType.TreeItemList,
-                        extentType,
-                        null,
-                        metaClass)
-                    ?? viewFinder.CreateView(tabItems);
+                form = viewLogic.GetItemTreeFormForObject(
+                    SelectedPackage,
+                        Extent,
+                        ViewDefinitionMode.Default);
             }
 
-            var className = metaClass == null ? "Items" : NamedElementMethods.GetName(metaClass);
-            var viewDefinition = new ViewDefinition(className, view);
+            var className = "Items";
+            var viewDefinition = new ViewDefinition(className, form);
+
+            var viewExtensions = new List<ViewExtension>();
 
             // Sets the generic buttons to create the new types
-            if (view?.GetOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
+            if (form?.GetOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
                 is IReflectiveCollection defaultTypesForNewItems)
             {
                 foreach (var type in defaultTypesForNewItems.OfType<IElement>())
@@ -204,21 +170,21 @@ namespace DatenMeister.WPF.Forms.Lists
                     {
                         var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
 
-                        viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
+                        viewExtensions.Add(new GenericButtonDefinition(
                             $"New {typeName}", () => { CreateNewElementByUser(newType, parentProperty); }));
                     }
                 }
             }
 
             // Sets the button for the new item
-            viewDefinition.ViewExtensions.Add(new GenericButtonDefinition(
+            viewExtensions.Add(new GenericButtonDefinition(
                 "New Item", () =>
                 {
                     CreateNewElementByUser(null, null);
                 }));
 
             // Allows the deletion of an item
-            viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition(
+            viewExtensions.Add(new RowItemButtonDefinition(
                 "Delete",
                 (guest, item) =>
                 {
@@ -234,7 +200,8 @@ namespace DatenMeister.WPF.Forms.Lists
 
             AddTab(
                 tabItems,
-                viewDefinition);
+                form,
+                viewExtensions);
         }
 
         private void CreateNewElementByUser(IElement type, string parentProperty)

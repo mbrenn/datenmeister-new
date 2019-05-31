@@ -13,16 +13,17 @@ namespace DatenMeister.Models.Forms
 
         public IObject metaclass { get; set; }
 
-        public string metaclassName { get; set; }
+        public string extentType { get; set; }
 
         /// <summary>
         /// Gets or sets the metaclass of the parent object containg the list of elements
         /// </summary>
         public IElement parentMetaclass { get; set; }
 
-        public string extentType { get; set; }
+        public string parentProperty { get; set; }
 
-        public Form view { get; set; }
+
+        public Form form { get; set; }
 
         public ViewAssociation()
         {
@@ -35,12 +36,13 @@ namespace DatenMeister.Models.Forms
 
         public ViewAssociation(ViewType viewType, Form form) : this(viewType)
         {
-            this.view = form;
+            this.form = form;
         }
 
         public override string ToString()
         {
             var builder = new StringBuilder();
+            builder.Append("View for: ");
             builder.Append(viewType.ToString());
 
             if (extentType != null)
@@ -48,17 +50,12 @@ namespace DatenMeister.Models.Forms
                 builder.Append($" - ExtentType: {extentType}");
             }
 
-            if (metaclassName != null)
-            {
-                builder.Append($" - MetaClass Name: {metaclassName}");
-            }
-
             if (metaclass != null)
             {
                 builder.Append($" - MetaClass: {NamedElementMethods.GetName(metaclass)}");
             }
 
-            return $"View for: {viewType} - {metaclassName}";
+            return builder.ToString();
         }
     }
 }

@@ -480,23 +480,17 @@ namespace DatenMeister.Models.Forms
 
         public class _ExtentForm
         {
-            public static string @tab = "tab";
-            public IElement _tab = null;
-
-            public static string @autoTabs = "autoTabs";
-            public IElement _autoTabs = null;
-
             public static string @name = "name";
             public IElement _name = null;
 
             public static string @title = "title";
             public IElement _title = null;
 
-            public static string @field = "field";
-            public IElement _field = null;
+            public static string @tab = "tab";
+            public IElement _tab = null;
 
-            public static string @hideMetaInformation = "hideMetaInformation";
-            public IElement _hideMetaInformation = null;
+            public static string @autoTabs = "autoTabs";
+            public IElement _autoTabs = null;
 
         }
 

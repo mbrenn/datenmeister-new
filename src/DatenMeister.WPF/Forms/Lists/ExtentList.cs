@@ -63,7 +63,7 @@ namespace DatenMeister.WPF.Forms.Lists
             var viewDefinition = ListRequests.RequestFormForExtents(this, WorkspaceId);
             PrepareNavigation(viewDefinition);
 
-            AddTab(
+            EvaluateForm(
                 SelectedItems,
                 viewDefinition.Element,
                 viewDefinition.ViewExtensions);

@@ -679,14 +679,6 @@ namespace DatenMeister.Models.Forms
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
-                                if(name == "tab") // Looking for property
-                                {
-                                    tree.ExtentForm._tab = value;
-                                }
-                                if(name == "autoTabs") // Looking for property
-                                {
-                                    tree.ExtentForm._autoTabs = value;
-                                }
                                 if(name == "name") // Looking for property
                                 {
                                     tree.ExtentForm._name = value;
@@ -695,13 +687,13 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ExtentForm._title = value;
                                 }
-                                if(name == "field") // Looking for property
+                                if(name == "tab") // Looking for property
                                 {
-                                    tree.ExtentForm._field = value;
+                                    tree.ExtentForm._tab = value;
                                 }
-                                if(name == "hideMetaInformation") // Looking for property
+                                if(name == "autoTabs") // Looking for property
                                 {
-                                    tree.ExtentForm._hideMetaInformation = value;
+                                    tree.ExtentForm._autoTabs = value;
                                 }
                             }
                         }

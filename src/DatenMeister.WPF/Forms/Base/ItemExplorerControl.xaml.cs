@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -54,6 +55,11 @@ namespace DatenMeister.WPF.Forms.Base
         protected IReflectiveCollection SelectedItems { get; set; }
 
         /// <summary>
+        /// Gets or sets the view extensions
+        /// </summary>
+        protected ICollection<ViewExtension> ViewExtensions { get; set; }
+
+        /// <summary>
         /// Gets or sets the eventhandle for the content of the control
         /// </summary>
         public EventHandle EventHandle
@@ -84,6 +90,13 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns>Gets the enumeration of the view extensions</returns>
         public virtual IEnumerable<ViewExtension> GetViewExtensions()
         {
+            if (ViewExtensions != null)
+            {
+                foreach (var viewExtension in ViewExtensions)
+                {
+                    yield return viewExtension;
+                }
+            }
             var selectedTab = ItemTabControl.SelectedItem as ItemExplorerTab;
             if (selectedTab?.ViewExtensions == null)
             {
@@ -141,15 +154,6 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// This method shall be called, when the content of the shown information has changed and all views shall be updated
-        /// </summary>
-        public void RecreateAllViews()
-        { 
-            UpdateTreeContent();
-            RecreateViews();
-        }
-
-        /// <summary>
         /// Recreates all views
         /// </summary>
         protected void RecreateViews()
@@ -159,7 +163,8 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// This method will be called when the user has selected an item and the views need to be recreated
+        /// This method will be called when the user has selected an item and the views need to be recreated.
+        /// This method must be overridden by the subclasses
         /// </summary>
         protected virtual void OnRecreateViews()
         {
@@ -183,19 +188,40 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
+        /// Evaluates the extent form by passing through the tabs and creating the necessary views of each tab
+        /// If the subform is constrained by a property or metaclass, the collection itself is filtered within the
+        /// this call
+        /// </summary>
+        /// <param name="collection">Collection of the item which shall be created</param>
+        /// <param name="extentForm">The extent form to be shown. The tabs of the extern form are passed</param>
+        /// <param name="viewExtensions">The view extensions which are applied</param>
+        public void EvaluateForm(
+            IReflectiveCollection collection, 
+            IElement extentForm,
+            ICollection<ViewExtension> viewExtensions)
+        {
+            var tabs = extentForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
+            foreach (var tab in tabs.OfType<IElement>())
+            {
+                AddTab(collection, tab, Array.Empty<ViewExtension>());
+            }
+
+            
+        }
+
+        /// <summary>
         /// Adds a new tab to the form
         /// </summary>
         /// <param name="collection">Collection being used</param>
         /// <param name="form">Form to be used for the tabulator</param>
         /// <param name="viewExtensions">Stores the view extensions</param>
-        public ItemExplorerTab AddTab(IReflectiveCollection collection, IElement form, List<ViewExtension> viewExtensions)
+        public ItemExplorerTab AddTab(IReflectiveCollection collection, IElement form, ICollection<ViewExtension> viewExtensions)
         {
             // Gets the default view for the given tab
             var viewFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
             IObject result = form;
             var name = form.getOrDefault<string>(_FormAndFields._Form.title) ??
                        form.getOrDefault<string>(_FormAndFields._Form.name);
-
 
             // Creates the layoutcontrol for the given view
             var control = new ItemListViewControl
@@ -210,7 +236,6 @@ namespace DatenMeister.WPF.Forms.Base
                 Header = name,
                 ViewExtensions = viewExtensions
             };
-
 
             control.SetContent(collection, result, viewExtensions);
             Tabs.Add(tabControl);

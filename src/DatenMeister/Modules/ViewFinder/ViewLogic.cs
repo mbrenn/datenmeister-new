@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -9,12 +6,12 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.Modules.ViewFinder
@@ -226,10 +223,11 @@ namespace DatenMeister.Modules.ViewFinder
                 // Try to find the view, but very improbable
             }
 
-            var factory = new MofFactory(GetUserViewExtent());
+            var formCreator = new FormCreator();
+            var createdForm = formCreator.CreateExtentForm(collection, FormCreator.CreationMode.All);
 
-
-            throw new InvalidOperationException();
+            var convertedForm = (IElement) DotNetConverter.ConvertToMofObject(GetInternalViewExtent(), createdForm);
+            return convertedForm;
         }
 
         public IElement GetItemTreeFormForObject(IObject element, IExtent extent, ViewDefinitionMode viewDefinitionMode)

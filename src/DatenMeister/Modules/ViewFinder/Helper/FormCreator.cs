@@ -39,21 +39,53 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             All = ByMetaClass | ByProperties | AddMetaClass
         }
 
-        public Form CreateForm(IUriExtent extent, CreationMode creationMode)
+        public ExtentForm CreateExtentForm(IUriExtent extent, CreationMode creationMode)
         {
-            return CreateForm(extent.elements(), creationMode);
+            return CreateExtentForm(extent.elements(), creationMode);
         }
 
-        public Form CreateForm(IReflectiveCollection elements, CreationMode creationMode)
+        public ExtentForm CreateExtentForm(IReflectiveCollection elements, CreationMode creationMode)
         {
             if (elements == null) throw new ArgumentNullException(nameof(elements));
-
-            var result = new Form {name = "Items"};
-            foreach (var item in elements)
+            var elementsAsObjects = elements.OfType<IObject>().ToList();
+            var elementsWithoutMetaClass = elementsAsObjects.Where(x =>
             {
-                CreateForm(result, item, creationMode);
+                if (x is IElement element)
+                {
+                    return element.getMetaClass() == null;
+                }
+
+                return true;
+            }).ToList();
+            var elementsWithMetaClass = elementsAsObjects
+                .OfType<IElement>()
+                .GroupBy(x => x.getMetaClass());
+
+            var result = new ExtentForm { name = "Items" };
+
+            if (elementsWithoutMetaClass.Any())
+            {
+                var form = new ListForm("Unclassified");
+                foreach (var item in elementsWithoutMetaClass)
+                {
+                    AddToListForm(form, item, creationMode);
+                }
+
+                result.tab.Add(form);
             }
 
+            foreach (var group in elementsWithMetaClass)
+            {
+                var form = new ListForm(NamedElementMethods.GetName(group.Key));
+                foreach (var item in group)
+                {
+                    AddToListForm(form, item, creationMode);
+                }
+
+                result.tab.Add(form);
+            }
+
+            /*
             // Move the metaclass to the end of the field
             for (var n = 0; n < result.field.Count; n++)
             {
@@ -63,17 +95,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     result.field.RemoveAt(n);
                     result.field.Add(field);
                 }
-            }
+            }*/
 
-            return result;
-        }
-
-        public Form CreateForm(object item, CreationMode creationMode)
-        {
-            if (item == null) throw new ArgumentNullException(nameof(item));
-
-            var result = new Form {name = "Item"};
-            CreateForm(result, item, creationMode);
             return result;
         }
 
@@ -83,7 +106,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <param name="form">Form which will be extended by the given object</param>
         /// <param name="item">Item being used</param>
         /// <param name="creationMode">Creation mode for the form. Whether by metaclass or ByProperties</param>
-        private void CreateForm(Form form, object item, CreationMode creationMode)
+        private void AddToListForm(ListForm form, object item, CreationMode creationMode)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 

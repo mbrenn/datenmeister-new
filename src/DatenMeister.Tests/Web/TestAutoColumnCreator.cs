@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Web
@@ -31,18 +34,26 @@ namespace DatenMeister.Tests.Web
             var creator = new FormCreator(null);
             var result = creator.CreateExtentForm(extent, FormCreator.CreationMode.All);
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.tab[0].field.OfType<TextFieldData>().Count(), Is.EqualTo(2));
-            var firstColumn = result.tab[0].field.FirstOrDefault(x => x.name == "zip");
-            var secondColumn = result.tab[0].field.FirstOrDefault(x => x.name == "location");
+            var tab = result.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab).Select(x=> x as IElement).FirstOrDefault();
+            Assert.That(tab, Is.Not.Null);
+            Assert.That(tab
+                .getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field)
+                .OfType<IElement>()
+                .Count(x => x.getMetaClass().ToString().Contains("TextFieldData")), Is.EqualTo(2));
+            var firstColumn = tab
+                .getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field)
+                .OfType<IElement>()
+                .FirstOrDefault(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == "zip");
+            var secondColumn =
+                tab
+                    .getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field)
+                    .OfType<IElement>()
+                    .FirstOrDefault(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == "location");
 
             Assert.That(firstColumn, Is.Not.Null);
             Assert.That(secondColumn, Is.Not.Null);
 
-            Assert.That(firstColumn.isEnumeration, Is.False);
-
-            Assert.That(result.tab[0].field.OfType<TextFieldData>().Count, Is.EqualTo(2));
-            Assert.That(result.tab[0].field[0].name, Is.EqualTo("zip"));
-            Assert.That(result.tab[0].field[1].name, Is.EqualTo("location"));
+            Assert.That(firstColumn.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration), Is.False);
         }
 
         [Test]
@@ -72,19 +83,42 @@ namespace DatenMeister.Tests.Web
             var creator = new FormCreator(null);
             var result = creator.CreateExtentForm(extent, FormCreator.CreationMode.All);
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.tab[0].field.OfType<TextFieldData>().Count, Is.EqualTo(2));
-            Assert.That(result.tab[0].field.OfType<SubElementFieldData>().Count, Is.EqualTo(1));
-            var firstColumn = result.tab[0].field.FirstOrDefault(x => x.name == "zip");
-            var secondColumn = result.tab[0].field.FirstOrDefault(x => x.name == "location");
-            var thirdColumn = result.tab[0].field.FirstOrDefault(x => x.name == "other");
+
+            var tab = result.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab).Select(x => x as IElement).FirstOrDefault();
+
+            Assert.That(tab
+                .getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field)
+                .OfType<IElement>()
+                .Count(x => x.getMetaClass().ToString().Contains("TextFieldData")), Is.EqualTo(2));
+
+            Assert.That(tab
+                .getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field)
+                .OfType<IElement>()
+                .Count(x => x.getMetaClass().ToString().Contains("SubElementFieldData")), Is.EqualTo(1));
+
+
+            var firstColumn = tab
+                .getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field)
+                .OfType<IElement>()
+                .FirstOrDefault(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == "zip");
+            var secondColumn =
+                tab
+                    .getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field)
+                    .OfType<IElement>()
+                    .FirstOrDefault(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == "location");
+            var thirdColumn = tab
+                .getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field)
+                .OfType<IElement>()
+                .FirstOrDefault(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == "other");
+
 
             Assert.That(firstColumn, Is.Not.Null);
             Assert.That(secondColumn, Is.Not.Null);
             Assert.That(thirdColumn, Is.Not.Null);
 
-            Assert.That(firstColumn.isEnumeration, Is.False);
-            Assert.That(secondColumn.isEnumeration, Is.False);
-            Assert.That(thirdColumn.isEnumeration, Is.True);
+            Assert.That(firstColumn.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration), Is.False);
+            Assert.That(secondColumn.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration), Is.False);
+            Assert.That(thirdColumn.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration), Is.True);
         }
     }
 }

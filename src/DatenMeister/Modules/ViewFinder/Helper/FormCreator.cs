@@ -28,6 +28,16 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         private readonly ViewLogic _viewLogic;
 
         /// <summary>
+        /// Stores the factory to create the fields and forms
+        /// </summary>
+        private readonly IFactory _factory;
+
+        /// <summary>
+        /// Stores the information for form and fields including all metaclasses
+        /// </summary>
+        private readonly _FormAndFields _formAndFields;
+
+        /// <summary>
         /// Defines the logger
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(FormCreator));
@@ -48,14 +58,27 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         public FormCreator(ViewLogic viewLogic)
         {
             _viewLogic = viewLogic;
+            var userExtent = _viewLogic.GetUserViewExtent();
+            _factory = new MofFactory(userExtent);
+            _formAndFields = userExtent.GetWorkspace().GetFromMetaWorkspace<_FormAndFields>();
         }
 
-        public ExtentForm CreateExtentForm(IUriExtent extent, CreationMode creationMode)
+        public IElement CreateDetailForm (IObject element)
+        {
+            var createdForm = _factory.create(_formAndFields.__DetailForm);
+            createdForm.set(_FormAndFields._DetailForm.name, "Item");
+
+            AddToForm(createdForm, element, FormCreator.CreationMode.All);
+
+            return createdForm;
+        }
+
+        public IElement CreateExtentForm(IUriExtent extent, CreationMode creationMode)
         {
             return CreateExtentForm(extent.elements(), creationMode);
         }
 
-        public ExtentForm CreateExtentForm(IReflectiveCollection elements, CreationMode creationMode)
+        public IElement CreateExtentForm(IReflectiveCollection elements, CreationMode creationMode)
         {
             if (elements == null) throw new ArgumentNullException(nameof(elements));
             var elementsAsObjects = elements.OfType<IObject>().ToList();
@@ -73,29 +96,38 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 .OfType<IElement>()
                 .GroupBy(x => x.getMetaClass());
 
-            var result = new ExtentForm { name = "Items" };
+
+            var result = _factory.create(_formAndFields.__ExtentForm);
+            result.set(_FormAndFields._ExtentForm.name, "Items");
+
+            var tabs = new List<IElement>();
 
             if (elementsWithoutMetaClass.Any())
             {
-                var form = new ListForm("Unclassified");
+                var form = _factory.create(_formAndFields.__ListForm);
+                form.set(_FormAndFields._ListForm.name, "Unclassified");
+
                 foreach (var item in elementsWithoutMetaClass)
                 {
                     AddToForm(form, item, creationMode);
                 }
 
-                result.tab.Add(form);
+                tabs.Add(form);
             }
 
             foreach (var group in elementsWithMetaClass)
             {
-                var form = new ListForm(NamedElementMethods.GetName(group.Key));
+                var form = _factory.create(_formAndFields.__ListForm);
+                form.set(_FormAndFields._ListForm.name, NamedElementMethods.GetName(group.Key));
                 foreach (var item in group)
                 {
                     AddToForm(form, item, creationMode);
                 }
 
-                result.tab.Add(form);
+                tabs.Add(form);
             }
+
+            result.set(_FormAndFields._ExtentForm.tab, tabs);
 
             return result;
         }
@@ -106,7 +138,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <param name="form">Form which will be extended by the given object</param>
         /// <param name="item">Item being used</param>
         /// <param name="creationMode">Creation mode for the form. Whether by metaclass or ByProperties</param>
-        public void AddToForm(Form form, object item, CreationMode creationMode)
+        public void AddToForm(IElement form, object item, CreationMode creationMode)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
@@ -124,7 +156,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 {
                     wasInMetaClass = true;
                     var propertyName = property.get("name").ToString();
-                    var isAlreadyIn = form.field.Any(x => x.name == propertyName);
+
+                    var isAlreadyIn = form
+                        .get<IReflectiveCollection>(_FormAndFields._Form.field)
+                        .OfType<IObject>()
+                        .Any(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == propertyName);
+
                     if (isAlreadyIn)
                     {
                         continue;
@@ -132,7 +169,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                     var column = GetFieldForProperty(property);
 
-                    form.field.Add(column);
+                    form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
                 }
             }
 
@@ -154,7 +191,10 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                 foreach (var property in properties)
                 {
-                    var column = form.field.FirstOrDefault(x => x.name == property);
+                    var column = form
+                        .get<IReflectiveCollection>(_FormAndFields._Form.field)
+                        .OfType<IObject>()
+                        .FirstOrDefault(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == property);
                     if (column == null)
                     {
                         // Check by content, which type of field shall be created
@@ -163,41 +203,43 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                         if (DotNetHelper.IsPrimitiveType(propertyType))
                         {
-                            column = new TextFieldData
-                            {
-                                name = property,
-                                title = property
-                            };
+                            column = _factory.create(_formAndFields.__TextFieldData);
                         }
                         else
                         {
                             if (DotNetHelper.IsEnumeration(propertyType))
                             {
-                                column = new SubElementFieldData(property, property);
+                                column = _factory.create(_formAndFields.__SubElementFieldData);
                             }
                             else
                             {
-                                column = new ReferenceFieldData(property, property)
-                                {
-                                    isSelectionInline = false
-                                };
+                                column = _factory.create(_formAndFields.__ReferenceFieldData);
+                                column.set(_FormAndFields._ReferenceFieldData.isSelectionInline, false);
                             }
                         }
 
-                        form.field.Add(column);
+                        column.set(_FormAndFields._TextFieldData.name, property);
+                        column.set(_FormAndFields._TextFieldData.title, property);
+
+                        form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
                     }
 
                     var value = ((IObject) item).get(property);
-                    column.isEnumeration |= value is IEnumerable && !(value is string);
+                    column.set(_FormAndFields._FieldData.isEnumeration,
+                        column.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration) | value is IEnumerable && !(value is string));
                 }
 
             }
 
             // Third phase: Add metaclass
             var isMetaClass = creationMode.HasFlag(CreationMode.AddMetaClass);
-            if (isMetaClass && !form.field.Any(x => x is MetaClassElementFieldData))
+            if (isMetaClass && !form
+                    .get<IReflectiveCollection>(_FormAndFields._Form.field)
+                    .OfType<IElement>()
+                    .Any(x => x.getMetaClass().@equals(_formAndFields.__MetaClassElementFieldData)))
             {
-                form.field.Add(new MetaClassElementFieldData());
+                
+                form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(new MetaClassElementFieldData());
             }
         }
 
@@ -206,7 +248,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// </summary>
         /// <param name="property">Property which is requesting a field</param>
         /// <returns>The field data</returns>
-        public FieldData GetFieldForProperty(IElement property)
+        public IElement GetFieldForProperty(IElement property)
         {
             var propertyType = PropertyHelper.GetPropertyType(property);
 
@@ -220,11 +262,9 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             if (propertyType == null)
             {
-                var columnNoPropertyType = new TextFieldData
-                {
-                    name = propertyName,
-                    title = propertyName
-                };
+                var columnNoPropertyType = _factory.create(_formAndFields.__TextFieldData);
+                columnNoPropertyType.set(_FormAndFields._TextFieldData.name, propertyName);
+                columnNoPropertyType.set(_FormAndFields._TextFieldData.title, propertyName);
 
                 return columnNoPropertyType;
             }
@@ -248,15 +288,26 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                 if (propertyType.metaclass.@equals(uml.SimpleClassifiers.__Enumeration))
                 {
-                    var comboBox = new DropDownFieldData(propertyName, propertyName);
+                    var comboBox = _factory.create(_formAndFields.__DropDownFieldData);
+                    comboBox.set(_FormAndFields._DropDownFieldData.name, propertyName);
+                    comboBox.set(_FormAndFields._DropDownFieldData.title, propertyName);
+
                     var values = EnumerationHelper.GetEnumValues(propertyType);
-                    comboBox.values = values.Select(x => new DropDownFieldData.ValuePair(x, x)).ToList();
+                    comboBox.set(_FormAndFields._DropDownFieldData.values, values.Select(x =>
+                    {
+                        var data = _factory.create(_formAndFields.__ValuePair);
+                        data.set(_FormAndFields._ValuePair.name, x);
+                        data.set(_FormAndFields._ValuePair.value, x);
+                        return data;
+                    }).ToList());
                     return comboBox;
                 }
 
                 if (propertyType.@equals(booleanType))
                 {
-                    var checkbox = new CheckboxFieldData(propertyName, propertyName);
+                    var checkbox = _factory.create(_formAndFields.__CheckboxFieldData);
+                    checkbox.set(_FormAndFields._CheckboxFieldData.name, propertyName);
+                    checkbox.set(_FormAndFields._CheckboxFieldData.title, propertyName);
                     return checkbox;
                 }
 
@@ -264,19 +315,21 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 {
                     if (property.getOrDefault<int>(_UML._CommonStructure._MultiplicityElement.upper) > 1)
                     {
-                        var elements = new SubElementFieldData(propertyName, propertyName)
-                        {
-                            defaultTypesForNewElements = new List<IElement> {propertyType}
-                        };
+
+                        var elements = _factory.create(_formAndFields.__SubElementFieldData);
+                        elements.set(_FormAndFields._SubElementFieldData.name, propertyName);
+                        elements.set(_FormAndFields._SubElementFieldData.title, propertyName);
+                        elements.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
+                            new List<IElement> {propertyType});
 
                         return elements;
                     }
                     else
                     {
-                        var reference = new ReferenceFieldData(propertyName, propertyName)
-                        {
 
-                        };
+                        var reference = _factory.create(_formAndFields.__ReferenceFieldData);
+                        reference.set(_FormAndFields._ReferenceFieldData.name, propertyName);
+                        reference.set(_FormAndFields._ReferenceFieldData.title, propertyName);
 
                         return reference;
                     }
@@ -284,16 +337,14 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             }
 
             // Checks, if the property is a field data
-            var column = new TextFieldData
-            {
-                name = propertyName,
-                title = propertyName
-            };
+            var column = _factory.create(_formAndFields.__TextFieldData);
+            column.set(_FormAndFields._TextFieldData.name, propertyName);
+            column.set(_FormAndFields._TextFieldData.title, propertyName);
 
             // If propertyType is an integer, the field can be smaller
             if (propertyType.@equals(integerType))
             {
-                column.width = 10;
+                column.set(_FormAndFields._TextFieldData.width, 10);
             }
 
             return column;

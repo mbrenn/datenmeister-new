@@ -229,11 +229,7 @@ namespace DatenMeister.Modules.ViewFinder
 
             // Ok, we have not found the form. So create one
             var formCreator = new FormCreator(this);
-            var createdForm = new DetailForm("Item");
-            formCreator.AddToForm(createdForm, element, FormCreator.CreationMode.All);
-
-            var convertedForm = (IElement)DotNetConverter.ConvertToMofObject(GetInternalViewExtent(), createdForm);
-            return convertedForm;
+            return formCreator.CreateDetailForm(element);
         }
 
         public IElement GetExtentForm(IUriExtent extent, ViewDefinitionMode viewDefinitionMode)
@@ -256,10 +252,7 @@ namespace DatenMeister.Modules.ViewFinder
 
             // Ok, now perform the creation... 
             var formCreator = new FormCreator(this);
-            var createdForm = formCreator.CreateExtentForm(extent, FormCreator.CreationMode.All);
-
-            var convertedForm = (IElement)DotNetConverter.ConvertToMofObject(GetInternalViewExtent(), createdForm);
-            return convertedForm;
+            return formCreator.CreateExtentForm(extent, FormCreator.CreationMode.All);
         }
 
         public IElement GetExtentForm(IReflectiveCollection collection, ViewDefinitionMode viewDefinitionMode)
@@ -270,10 +263,7 @@ namespace DatenMeister.Modules.ViewFinder
             }
 
             var formCreator = new FormCreator(this);
-            var createdForm = formCreator.CreateExtentForm(collection, FormCreator.CreationMode.All);
-
-            var convertedForm = (IElement) DotNetConverter.ConvertToMofObject(GetInternalViewExtent(), createdForm);
-            return convertedForm;
+            return formCreator.CreateExtentForm(collection, FormCreator.CreationMode.All);
         }
 
         /// <summary>

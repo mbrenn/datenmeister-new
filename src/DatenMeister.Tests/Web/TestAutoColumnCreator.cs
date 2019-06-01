@@ -28,7 +28,7 @@ namespace DatenMeister.Tests.Web
             
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
-            var creator = new FormCreator();
+            var creator = new FormCreator(null);
             var result = creator.CreateExtentForm(extent, FormCreator.CreationMode.All);
             Assert.That(result, Is.Not.Null);
             Assert.That(result.tab[0].field.OfType<TextFieldData>().Count(), Is.EqualTo(2));
@@ -69,7 +69,7 @@ namespace DatenMeister.Tests.Web
             extent.elements().add(mofObject2);
 
             // Execute the stuff
-            var creator = new FormCreator();
+            var creator = new FormCreator(null);
             var result = creator.CreateExtentForm(extent, FormCreator.CreationMode.All);
             Assert.That(result, Is.Not.Null);
             Assert.That(result.tab[0].field.OfType<TextFieldData>().Count, Is.EqualTo(2));

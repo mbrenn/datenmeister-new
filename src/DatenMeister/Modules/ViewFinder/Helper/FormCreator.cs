@@ -22,6 +22,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
     public class FormCreator
     {
         /// <summary>
+        /// Stores the reference to the view logic which is required to get the views
+        /// for the tabs of the extent form
+        /// </summary>
+        private readonly ViewLogic _viewLogic;
+
+        /// <summary>
         /// Defines the logger
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(FormCreator));
@@ -37,6 +43,11 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             OnlyPropertiesIfNoMetaClass = 4,
             AddMetaClass = 8,
             All = ByMetaClass | ByProperties | AddMetaClass
+        }
+
+        public FormCreator(ViewLogic viewLogic)
+        {
+            _viewLogic = viewLogic;
         }
 
         public ExtentForm CreateExtentForm(IUriExtent extent, CreationMode creationMode)
@@ -57,6 +68,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                 return true;
             }).ToList();
+
             var elementsWithMetaClass = elementsAsObjects
                 .OfType<IElement>()
                 .GroupBy(x => x.getMetaClass());
@@ -68,7 +80,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 var form = new ListForm("Unclassified");
                 foreach (var item in elementsWithoutMetaClass)
                 {
-                    AddToListForm(form, item, creationMode);
+                    AddToForm(form, item, creationMode);
                 }
 
                 result.tab.Add(form);
@@ -79,23 +91,11 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 var form = new ListForm(NamedElementMethods.GetName(group.Key));
                 foreach (var item in group)
                 {
-                    AddToListForm(form, item, creationMode);
+                    AddToForm(form, item, creationMode);
                 }
 
                 result.tab.Add(form);
             }
-
-            /*
-            // Move the metaclass to the end of the field
-            for (var n = 0; n < result.field.Count; n++)
-            {
-                var field = result.field[n];
-                if (field is MetaClassElementFieldData)
-                {
-                    result.field.RemoveAt(n);
-                    result.field.Add(field);
-                }
-            }*/
 
             return result;
         }
@@ -106,7 +106,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <param name="form">Form which will be extended by the given object</param>
         /// <param name="item">Item being used</param>
         /// <param name="creationMode">Creation mode for the form. Whether by metaclass or ByProperties</param>
-        private void AddToListForm(ListForm form, object item, CreationMode creationMode)
+        public void AddToForm(Form form, object item, CreationMode creationMode)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
@@ -297,6 +297,18 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             }
 
             return column;
+        }
+
+        /// <summary>
+        /// Creates the extent form for a specific object which is shown in the item explorer view
+        /// </summary>
+        /// <param name="element">Element which shall be shown</param>
+        /// <param name="extent">Extent containing the element</param>
+        /// <param name="creationMode">The creation mode for autogeneration of the fields</param>
+        /// <returns>Created Extent form as MofObject</returns>
+        public IElement CreateExtentFormForObject(IObject element, IExtent extent, CreationMode creationMode)
+        {
+            throw new NotImplementedException();
         }
     }
 }

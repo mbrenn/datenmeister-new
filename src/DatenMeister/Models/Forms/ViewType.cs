@@ -3,7 +3,9 @@ namespace DatenMeister.Models.Forms
     public enum ViewType
     {
         Detail,
-        TreeItemList, 
+        ExtentForm, 
+        TreeItemExtent,
+        TreeItemList,
         TreeItemDetail
     }
 }

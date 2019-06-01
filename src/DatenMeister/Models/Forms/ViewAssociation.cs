@@ -11,14 +11,14 @@ namespace DatenMeister.Models.Forms
     {
         public ViewType viewType { get; set; } 
 
-        public IObject metaclass { get; set; }
+        public IObject metaClass { get; set; }
 
         public string extentType { get; set; }
 
         /// <summary>
         /// Gets or sets the metaclass of the parent object containg the list of elements
         /// </summary>
-        public IElement parentMetaclass { get; set; }
+        public IElement parentMetaClass { get; set; }
 
         public string parentProperty { get; set; }
 
@@ -50,9 +50,9 @@ namespace DatenMeister.Models.Forms
                 builder.Append($" - ExtentType: {extentType}");
             }
 
-            if (metaclass != null)
+            if (metaClass != null)
             {
-                builder.Append($" - MetaClass: {NamedElementMethods.GetName(metaclass)}");
+                builder.Append($" - MetaClass: {NamedElementMethods.GetName(metaClass)}");
             }
 
             return builder.ToString();

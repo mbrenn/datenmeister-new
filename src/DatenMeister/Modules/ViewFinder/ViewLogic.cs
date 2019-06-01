@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -206,42 +207,132 @@ namespace DatenMeister.Modules.ViewFinder
             return _workspaceLogic.GetWorkspaceOfExtent(viewExtent).GetFromMetaWorkspace<_FormAndFields>();
         }
 
-        public IElement GetDetailForm(IObject element, IExtent extent, ViewDefinitionMode viewDefinitionMode )
+        public IElement GetDetailForm(IObject element, IExtent extent, ViewDefinitionMode viewDefinitionMode)
         {
-            throw new InvalidOperationException();
+            if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
+            {
+                // Tries to find the form
+                var viewFinder = new ViewFinder(this);
+                var foundForm = viewFinder.FindFormsFor(
+                    new FindViewQuery
+                    {
+                        metaClass = (element as IElement)?.getMetaClass(),
+                        viewType = ViewType.Detail,
+                        extentType = extent == null ? string.Empty : extent.GetExtentType()
+                    }).FirstOrDefault();
+
+                if (foundForm != null)
+                {
+                    return foundForm;
+                }
+            }
+
+            // Ok, we have not found the form. So create one
+            var formCreator = new FormCreator(this);
+            var createdForm = new DetailForm("Item");
+            formCreator.AddToForm(createdForm, element, FormCreator.CreationMode.All);
+
+            var convertedForm = (IElement)DotNetConverter.ConvertToMofObject(GetInternalViewExtent(), createdForm);
+            return convertedForm;
         }
 
         public IElement GetExtentForm(IUriExtent extent, ViewDefinitionMode viewDefinitionMode)
         {
-            throw new InvalidOperationException();
+            if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
+            {
+                var viewFinder = new ViewFinder(this);
+                var foundForm = viewFinder.FindFormsFor(
+                    new FindViewQuery
+                    {
+                        extentType = extent.GetExtentType(),
+                        viewType = ViewType.TreeItemExtent
+                    }).FirstOrDefault();
+
+                if (foundForm != null)
+                {
+                    return foundForm;
+                }
+            }
+
+            // Ok, now perform the creation... 
+            var formCreator = new FormCreator(this);
+            var createdForm = formCreator.CreateExtentForm(extent, FormCreator.CreationMode.All);
+
+            var convertedForm = (IElement)DotNetConverter.ConvertToMofObject(GetInternalViewExtent(), createdForm);
+            return convertedForm;
         }
 
         public IElement GetExtentForm(IReflectiveCollection collection, ViewDefinitionMode viewDefinitionMode)
         {
-            if (viewDefinitionMode != ViewDefinitionMode.AllProperties)
+            if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
             {
                 // Try to find the view, but very improbable
             }
 
-            var formCreator = new FormCreator();
+            var formCreator = new FormCreator(this);
             var createdForm = formCreator.CreateExtentForm(collection, FormCreator.CreationMode.All);
 
             var convertedForm = (IElement) DotNetConverter.ConvertToMofObject(GetInternalViewExtent(), createdForm);
             return convertedForm;
         }
 
+        /// <summary>
+        /// Gets the list view next to the item explorer control 
+        /// </summary>
+        /// <param name="element">Element for which the list view will be created</param>
+        /// <param name="extent">Extent containing the object</param>
+        /// <param name="viewDefinitionMode">Defines the method how to retrieve the form</param>
+        /// <returns>Found extent form</returns>
         public IElement GetItemTreeFormForObject(IObject element, IExtent extent, ViewDefinitionMode viewDefinitionMode)
         {
-            throw new InvalidOperationException();
+            if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
+            {
+                var viewFinder = new ViewFinder(this);
+                var foundForm = viewFinder.FindFormsFor(new FindViewQuery()
+                {
+                    extentType = extent.GetExtentType(),
+                    metaClass = (element as IElement)?.getMetaClass(),
+                    viewType = ViewType.TreeItemDetail
+                }).FirstOrDefault();
+
+                if (foundForm != null)
+                {
+                    return foundForm;
+                }
+            }
+
+            var formCreator = new FormCreator(this);
+            var createdForm = formCreator.CreateExtentFormForObject(element, extent, FormCreator.CreationMode.All);
+
+            return createdForm;
         }
 
         protected IElement GetItemTreeFormForObjectsProperties(
             IObject element, 
-            string property, 
-            IElement metaClass,
+            string elementProperty, 
+            IElement propertyMetaClass,
             IUriExtent extent, 
             ViewDefinitionMode viewDefinitionMode)
         {
+
+            if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
+            {
+                var viewFinder = new ViewFinder(this);
+                var foundForm = viewFinder.FindFormsFor(new FindViewQuery
+                {
+                    extentType = extent.GetExtentType(),
+                    metaClass = propertyMetaClass,
+                    viewType = ViewType.TreeItemDetail,
+                    parentProperty = elementProperty,
+                    parentMetaClass = (element as IElement)?.getMetaClass()
+                }).FirstOrDefault();
+
+                if (foundForm != null)
+                {
+                    return foundForm;
+                }
+            }
+
             throw new InvalidOperationException();
         }
     }

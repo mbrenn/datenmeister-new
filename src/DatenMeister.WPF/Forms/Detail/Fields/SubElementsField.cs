@@ -84,7 +84,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             if (form == null)
             {
                 // otherwise, we have to automatically create a form
-                var formFinder = GiveMe.Scope.Resolve<ViewFinderImpl>();
+                var formFinder = GiveMe.Scope.Resolve<ViewFinder>();
                 form = formFinder.FindListFormForTreeItemDetailView(_element, _propertyName, null);
             }
 

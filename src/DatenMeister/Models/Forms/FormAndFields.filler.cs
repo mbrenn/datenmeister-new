@@ -180,17 +180,17 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ViewAssociation._viewType = value;
                                 }
-                                if(name == "metaclass") // Looking for property
+                                if(name == "metaClass") // Looking for property
                                 {
-                                    tree.ViewAssociation._metaclass = value;
+                                    tree.ViewAssociation._metaClass = value;
                                 }
                                 if(name == "extentType") // Looking for property
                                 {
                                     tree.ViewAssociation._extentType = value;
                                 }
-                                if(name == "parentMetaclass") // Looking for property
+                                if(name == "parentMetaClass") // Looking for property
                                 {
-                                    tree.ViewAssociation._parentMetaclass = value;
+                                    tree.ViewAssociation._parentMetaClass = value;
                                 }
                                 if(name == "parentProperty") // Looking for property
                                 {

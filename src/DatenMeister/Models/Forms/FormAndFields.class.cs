@@ -108,14 +108,14 @@ namespace DatenMeister.Models.Forms
             public static string @viewType = "viewType";
             public IElement _viewType = null;
 
-            public static string @metaclass = "metaclass";
-            public IElement _metaclass = null;
+            public static string @metaClass = "metaClass";
+            public IElement _metaClass = null;
 
             public static string @extentType = "extentType";
             public IElement _extentType = null;
 
-            public static string @parentMetaclass = "parentMetaclass";
-            public IElement _parentMetaclass = null;
+            public static string @parentMetaClass = "parentMetaClass";
+            public IElement _parentMetaClass = null;
 
             public static string @parentProperty = "parentProperty";
             public IElement _parentProperty = null;

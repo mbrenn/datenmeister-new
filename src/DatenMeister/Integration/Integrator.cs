@@ -113,7 +113,7 @@ namespace DatenMeister.Integration
             kernel.RegisterType<ExtentConfigurationLoader>().As<ExtentConfigurationLoader>();
 
             // Adds the view finder
-            kernel.RegisterType<ViewFinderImpl>().As<ViewFinderImpl>();
+            kernel.RegisterType<ViewFinder>().As<ViewFinder>();
 
             var pluginManager = new PluginManager();
             kernel.RegisterInstance(pluginManager).As<PluginManager>();

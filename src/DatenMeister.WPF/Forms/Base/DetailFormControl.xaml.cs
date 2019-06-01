@@ -232,6 +232,7 @@ namespace DatenMeister.WPF.Forms.Base
                     SupportWriting = true,
                     Owner = Window.GetWindow(this)
                 };
+
                 dlg.UpdateContent(EffectiveForm);
 
                 dlg.UpdateButtonPressed += (x, y) =>

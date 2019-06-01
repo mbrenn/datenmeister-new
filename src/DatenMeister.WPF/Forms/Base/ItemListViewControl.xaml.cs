@@ -655,7 +655,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             ViewExtensions.Add(
                 new RibbonButtonDefinition(
-                    "Create Form",
+                    "Create Form from current View",
                     CopyForm,
                     null,
                     NavigationCategories.Views));

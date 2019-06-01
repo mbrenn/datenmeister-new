@@ -6,6 +6,7 @@ using System.Windows.Documents;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ViewFinder;
@@ -38,13 +39,19 @@ namespace DatenMeister.WPF.Forms.Lists
         /// Requests the form for the workspace
         /// </summary>
         /// <returns>Requested form</returns>
-        internal static ViewDefinition RequestFormForWorkspaces(INavigationHost navigationHost)
+        internal static ViewDefinition RequestFormForWorkspaces(IReflectiveCollection items, INavigationHost navigationHost)
         {
             // Finds the view
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             var formElement = NamedElementMethods.GetByFullName(
                 viewLogic.GetInternalViewExtent(),
                 ManagementViewDefinitions.PathWorkspaceListView);
+
+            if (formElement == null)
+            {
+                formElement = viewLogic.GetExtentForm(items, ViewDefinitionMode.Default);
+            }
+
             var viewDefinition = new ViewDefinition("Workspaces", formElement);
 
             viewDefinition.ViewExtensions.Add(
@@ -90,11 +97,16 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <returns>The created form</returns>
         internal static ViewDefinition RequestFormForExtents(ItemExplorerControl control, string workspaceId)
         {
-            var viewExtent = GiveMe.Scope.Resolve<ViewLogic>().GetInternalViewExtent();
+            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            var viewExtent = viewLogic.GetInternalViewExtent();
             var result =
                 NamedElementMethods.GetByFullName(
                     viewExtent,
                     ManagementViewDefinitions.PathExtentListView);
+            if (result == null)
+            {
+                result = viewLogic.GetExtentForm(control.Items, ViewDefinitionMode.Default);
+            }
 
             var viewDefinition = new ViewDefinition("Extents", result);
             viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition("Show Items", ShowItems, ItemListViewControl.ButtonPosition.Before));

@@ -65,20 +65,20 @@
 
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ViewAssociation"
                      metaclass="datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.Workspace"
-                     view-ref="#WorkspacesAndExtents.Workspaces.List"
+                     form-ref="#WorkspacesAndExtents.Workspaces.List"
                      viewType="Detail">
     </packagedElement>
 
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ViewAssociation"
                      metaclass="datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.Extent"
                      viewType="Detail"
-                     view-ref="#WorkspacesAndExtents.Extents.List">
+                     form-ref="#WorkspacesAndExtents.Extents.List">
     </packagedElement>
 
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ViewAssociation"
                      metaclass="datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.Workspace"
                      viewType="List"
-                     view-ref="#WorkspacesAndExtents.Workspaces.List">
+                     form-ref="#WorkspacesAndExtents.Workspaces.List">
     </packagedElement>-->
   </item>
 </item>

@@ -201,6 +201,11 @@ namespace DatenMeister.WPF.Forms.Base
             ICollection<ViewExtension> viewExtensions)
         {
             var tabs = extentForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
+            if (tabs == null)
+            {
+                // No tabs, nothing to do
+                return;
+            }
             foreach (var tab in tabs.OfType<IElement>())
             {
                 AddTab(collection, tab, Array.Empty<ViewExtension>());

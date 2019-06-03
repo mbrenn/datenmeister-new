@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -34,6 +35,20 @@ namespace DatenMeister.Runtime
             }
 
             return propertyValue;
+        }
+
+        public static bool IsPropertyOfType<T>(this IObject value, string property)
+        {
+            if (value.isSet(property))
+            {
+                if (value.get(property) is T)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+
         }
 
         /// <summary>

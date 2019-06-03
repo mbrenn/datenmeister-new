@@ -198,10 +198,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             PrepareNavigation(viewDefinition);
 
-            AddTab(
-                tabItems,
-                form,
-                viewExtensions);
+            EvaluateForm(tabItems, form, viewExtensions);
         }
 
         private void CreateNewElementByUser(IElement type, string parentProperty)

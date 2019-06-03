@@ -255,6 +255,42 @@ namespace DatenMeister.Modules.ViewFinder
             return formCreator.CreateExtentForm(extent, FormCreator.CreationMode.All);
         }
 
+        /// <summary>
+        /// Gets one of the list forms for the extent. If the extent form is available, but
+        /// the form creator thinks about creating a list form for the extent, it will query this
+        /// method
+        /// </summary>
+        /// <param name="extent">Extent for which the list is created</param>
+        /// <param name="metaClass">Metaclass of the items that are listed now</param>
+        /// <param name="viewDefinitionMode">The view definition mode</param>
+        /// <returns>The found or created list form</returns>
+        public IElement GetListFormForExtent(
+            IExtent extent, 
+            IElement metaClass,
+            ViewDefinitionMode viewDefinitionMode)
+        {
+            if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
+            {
+                var viewFinder = new ViewFinder(this);
+                var foundForm = viewFinder.FindFormsFor(
+                    new FindViewQuery
+                    {
+                        extentType = extent.GetExtentType(),
+                        viewType = ViewType.TreeItemExtent,
+                        metaClass = metaClass
+                    }).FirstOrDefault();
+
+                if (foundForm != null)
+                {
+                    return foundForm;
+                }
+            }
+
+            // Ok, now perform the creation... 
+            var formCreator = new FormCreator(this);
+            return formCreator.CreateListForm(metaClass, FormCreator.CreationMode.All);
+        }
+
         public IElement GetExtentForm(IReflectiveCollection collection, ViewDefinitionMode viewDefinitionMode)
         {
             if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
@@ -324,6 +360,44 @@ namespace DatenMeister.Modules.ViewFinder
             }
 
             throw new InvalidOperationException();
+        }
+
+        /// <summary>
+        /// Gets the list form for a property in the object
+        /// </summary>
+        /// <param name="element">Element to be queried</param>
+        /// <param name="extent">Extent in which the element is located</param>
+        /// <param name="propertyName">Name of the property</param>
+        /// <param name="metaClass">The metaclass for which the form is created</param>
+        /// <param name="viewDefinitionMode">The view definition mode</param>
+        /// <returns></returns>
+        public IElement GetListFormForExtentForPropertyInObject(IObject element, IExtent extent, string propertyName, IElement metaClass, ViewDefinitionMode viewDefinitionMode)
+        {
+            if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
+            {
+                var viewFinder = new ViewFinder(this);
+                var foundForm = viewFinder.FindFormsFor(new FindViewQuery
+                {
+                    extentType = extent.GetExtentType(),
+                    metaClass = metaClass,
+                    viewType = ViewType.TreeItemDetail,
+                    parentProperty = propertyName,
+                    parentMetaClass = (element as IElement)?.getMetaClass()
+                }).FirstOrDefault();
+
+                if (foundForm != null)
+                {
+                    return foundForm;
+                }
+            }
+
+
+            var formCreator = new FormCreator(this);
+            var createdForm =
+                formCreator.CreateListFormForPropertyInObject(metaClass, propertyName, FormCreator.CreationMode.All);
+
+            return createdForm;
+
         }
     }
 }

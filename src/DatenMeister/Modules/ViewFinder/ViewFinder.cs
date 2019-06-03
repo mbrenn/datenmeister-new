@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
@@ -38,90 +37,6 @@ namespace DatenMeister.Modules.ViewFinder
             ViewLogic viewLogic)
         {
             _viewLogic = viewLogic;
-        }
-
-
-        /// <summary>
-        /// Finds the extent form for the given extent
-        /// </summary>
-        /// <param name="extent"></param>
-        /// <returns></returns>
-        public IElement FindFormForExtentView(IUriExtent extent)
-        {
-            var extentType = extent.GetExtentType();
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Finds the specific list form for the given extent and 
-        /// </summary>
-        /// <param name="extent">Extent to be shown</param>
-        /// <param name="metaClass">Meta class of the elements that are shown in the current list</param>
-        /// <returns>The found view</returns>
-        public IElement FindListFormForExtentView(IUriExtent extent, IElement metaClass)
-        {
-            var extentType = extent.GetExtentType();
-            if ((!string.IsNullOrEmpty(extentType)) || (metaClass != null))
-            {
-                var viewResult = FindFormsFor(
-                    new FindViewQuery
-                    {
-                        extentType = extentType,
-                        metaClass = metaClass,
-                        viewType = ViewType.TreeItemList
-                    }).FirstOrDefault();
-
-                if (viewResult != null)
-                {
-                    return viewResult;
-                }
-            }
-
-            // Ok, find it by creating the properties
-            return null;
-        }
-
-        /// <summary>
-        /// Finds the form matching to the detail form
-        /// </summary>
-        /// <param name="element">Element to be parsed</param>
-        /// <returns>The form to be found</returns>
-        public IElement FindFormForDetailView(IObject element)
-        {
-            var valueAsElement = element as IElement;
-            var metaClass = valueAsElement?.metaclass;
-
-            if (valueAsElement != null)
-            {
-                // Check, if we have a specific form
-                var viewResult = FindFormsFor(
-                    new FindViewQuery
-                    {
-                        metaClass = metaClass,
-                        viewType = ViewType.Detail
-
-                    }).FirstOrDefault();
-
-                if (viewResult != null)
-                {
-                    return viewResult;
-                }
-            }
-
-            return null;
-            throw new InvalidOperationException();
-        }
-
-        /// <summary>
-        /// Finds the form which is used when the user clicks in the ItemExplorer View on one item
-        /// </summary>
-        /// <param name="element">Element which is clicked</param>
-        /// <param name="uriExtent">The uri extent in which the element is hosted</param>
-        /// <returns>Found detail form which is shown in the item explorer window</returns>
-        public IElement FindFormForTreeItemDetailView(IObject element, IUriExtent uriExtent)
-        {
-
-            throw new InvalidOperationException();
         }
 
         /// <summary>

@@ -12,6 +12,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.Modules.ViewFinder.Helper
 {
@@ -81,6 +82,13 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         public IElement CreateExtentForm(IReflectiveCollection elements, CreationMode creationMode)
         {
             if (elements == null) throw new ArgumentNullException(nameof(elements));
+
+
+            var tabs = new List<IElement>();
+
+            var result = _factory.create(_formAndFields.__ExtentForm);
+            result.set(_FormAndFields._ExtentForm.name, "Items");
+
             var elementsAsObjects = elements.OfType<IObject>().ToList();
             var elementsWithoutMetaClass = elementsAsObjects.Where(x =>
             {
@@ -95,12 +103,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             var elementsWithMetaClass = elementsAsObjects
                 .OfType<IElement>()
                 .GroupBy(x => x.getMetaClass());
-
-
-            var result = _factory.create(_formAndFields.__ExtentForm);
-            result.set(_FormAndFields._ExtentForm.name, "Items");
-
-            var tabs = new List<IElement>();
 
             if (elementsWithoutMetaClass.Any())
             {
@@ -117,18 +119,35 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             foreach (var group in elementsWithMetaClass)
             {
-                var form = _factory.create(_formAndFields.__ListForm);
-                form.set(_FormAndFields._ListForm.name, NamedElementMethods.GetName(group.Key));
-                foreach (var item in group)
-                {
-                    AddToForm(form, item, creationMode);
-                }
+                // Now try to figure out the metaclass 
+                var groupedMetaclass = group.Key;
+                var form = _viewLogic.GetListFormForExtent((elements as IHasExtent)?.Extent, groupedMetaclass,
+                    ViewDefinitionMode.Default);
 
                 tabs.Add(form);
             }
 
             result.set(_FormAndFields._ExtentForm.tab, tabs);
 
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a list form for a certain metaclass
+        /// </summary>
+        /// <param name="metaClass"></param>
+        /// <param name="creationMode"></param>
+        public IElement CreateListForm(IElement metaClass, CreationMode creationMode)
+        {
+            if (!creationMode.HasFlag(CreationMode.ByMetaClass))
+            {
+                throw new InvalidOperationException("The list form will only be created for the metaclass");
+            }
+
+            var result = _factory.create(_formAndFields.__ListForm);
+
+            result.set(_FormAndFields._ListForm.title, $"{NamedElementMethods.GetName(metaClass)}");
+            AddToFormByMetaclass(result, metaClass);
             return result;
         }
 
@@ -150,27 +169,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             if (creationMode.HasFlag(CreationMode.ByMetaClass)
                 && metaClass != null)
             {
-                var classifierMethods = ClassifierMethods.
-                    GetPropertiesOfClassifier(metaClass).Where(x=> x.isSet("name")).ToList();
-                foreach (var property in classifierMethods.OrderBy(x=>x.get("name").ToString()))
-                {
-                    wasInMetaClass = true;
-                    var propertyName = property.get("name").ToString();
-
-                    var isAlreadyIn = form
-                        .get<IReflectiveCollection>(_FormAndFields._Form.field)
-                        .OfType<IObject>()
-                        .Any(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == propertyName);
-
-                    if (isAlreadyIn)
-                    {
-                        continue;
-                    }
-
-                    var column = GetFieldForProperty(property);
-
-                    form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
-                }
+                wasInMetaClass = AddToFormByMetaclass(form, metaClass);
             }
 
             // Second phase: Get properties by the object iself
@@ -241,6 +240,33 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 
                 form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(new MetaClassElementFieldData());
             }
+        }
+
+        private bool AddToFormByMetaclass(IElement form, IElement metaClass)
+        {
+            bool wasInMetaClass = false;
+            var classifierMethods = ClassifierMethods.GetPropertiesOfClassifier(metaClass).Where(x => x.isSet("name")).ToList();
+            foreach (var property in classifierMethods.OrderBy(x => x.get("name").ToString()))
+            {
+                wasInMetaClass = true;
+                var propertyName = property.get("name").ToString();
+
+                var isAlreadyIn = form
+                    .get<IReflectiveCollection>(_FormAndFields._Form.field)
+                    .OfType<IObject>()
+                    .Any(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == propertyName);
+
+                if (isAlreadyIn)
+                {
+                    continue;
+                }
+
+                var column = GetFieldForProperty(property);
+
+                form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
+            }
+
+            return wasInMetaClass;
         }
 
         /// <summary>
@@ -324,15 +350,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                         return elements;
                     }
-                    else
-                    {
 
-                        var reference = _factory.create(_formAndFields.__ReferenceFieldData);
-                        reference.set(_FormAndFields._ReferenceFieldData.name, propertyName);
-                        reference.set(_FormAndFields._ReferenceFieldData.title, propertyName);
+                    var reference = _factory.create(_formAndFields.__ReferenceFieldData);
+                    reference.set(_FormAndFields._ReferenceFieldData.name, propertyName);
+                    reference.set(_FormAndFields._ReferenceFieldData.title, propertyName);
 
-                        return reference;
-                    }
+                    return reference;
                 }
             }
 
@@ -359,7 +382,92 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <returns>Created Extent form as MofObject</returns>
         public IElement CreateExtentFormForObject(IObject element, IExtent extent, CreationMode creationMode)
         {
-            throw new NotImplementedException();
+            var extentForm = _factory.create(_formAndFields.__ExtentForm);
+
+            extentForm.set(_FormAndFields._ExtentForm.name, NamedElementMethods.GetName(element));
+
+            var tabs = new List<IElement>();
+
+            // Get all proeprties
+            var properties = (element as IObjectAllProperties)?.getPropertiesBeingSet();
+            if (properties == null)
+            {
+                throw new InvalidOperationException("ExtentForm cannot be created because given element is not of Type IObjectAllProperties");
+            }
+
+            var propertiesWithCollection =
+                from p in properties
+                where element.IsPropertyOfType<IReflectiveCollection>(p)
+                let propertyContent = element.get<IReflectiveCollection>(p)
+                where propertyContent != null
+                select new {propertyName = p, propertyContent};
+
+            foreach (var pair in propertiesWithCollection)
+            {
+                var elementsAsObjects = pair.propertyContent.OfType<IObject>().ToList();
+                var elementsWithoutMetaClass = elementsAsObjects.Where(x =>
+                {
+                    if (x is IElement innerElement)
+                    {
+                        return innerElement.getMetaClass() == null;
+                    }
+
+                    return true;
+                }).ToList();
+
+                var elementsWithMetaClass = elementsAsObjects
+                    .OfType<IElement>()
+                    .GroupBy(x => x.getMetaClass());
+
+                if (elementsWithoutMetaClass.Any())
+                {
+                    var form = _factory.create(_formAndFields.__ListForm);
+                    form.set(_FormAndFields._ListForm.name, "Unclassified");
+
+                    foreach (var item in elementsWithoutMetaClass)
+                    {
+                        AddToForm(form, item, creationMode);
+                    }
+
+                    tabs.Add(form);
+                }
+
+                foreach (var group in elementsWithMetaClass)
+                {
+                    // Now try to figure out the metaclass 
+                    var groupedMetaclass = group.Key;
+                    var form = _viewLogic.GetListFormForExtentForPropertyInObject(
+                        element,
+                        extent, 
+                        pair.propertyName,
+                        groupedMetaclass,
+                        ViewDefinitionMode.Default);
+
+                    tabs.Add(form);
+                }
+
+            }
+
+            return extentForm;
+        }
+
+        /// <summary>
+        /// Creates a list form for a certain metaclass
+        /// </summary>
+        /// <param name="metaClass"></param>
+        /// <param name="creationMode"></param>
+        public IElement CreateListFormForPropertyInObject(IElement metaClass, string propertyName, CreationMode creationMode)
+        {
+            if (!creationMode.HasFlag(CreationMode.ByMetaClass))
+            {
+                throw new InvalidOperationException("The list form will only be created for the metaclass");
+            }
+
+            var result = _factory.create(_formAndFields.__ListForm);
+            AddToFormByMetaclass(result, metaClass);
+            result.set(_FormAndFields._ListForm.property, propertyName);
+            result.set(_FormAndFields._ListForm.title, $"{propertyName} - {NamedElementMethods.GetName(metaClass)}");
+            return result;
         }
     }
 }

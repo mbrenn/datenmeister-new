@@ -206,12 +206,14 @@ namespace DatenMeister.WPF.Forms.Base
                 // No tabs, nothing to do
                 return;
             }
+
             foreach (var tab in tabs.OfType<IElement>())
             {
                 AddTab(collection, tab, Array.Empty<ViewExtension>());
             }
 
-            
+            ViewExtensions = viewExtensions;
+
         }
 
         /// <summary>

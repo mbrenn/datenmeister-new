@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,6 +41,17 @@ namespace DatenMeister.WPF.Navigation
         public static string Type = "Types";
 
         public static string Views = "Views";
+
+        /// <summary>
+        /// Defines the order of the ribbon for standard items.
+        /// All other ribbons will be stored after that
+        /// </summary>
+        public static string[] RibbonOrder = new[]
+        {
+            "File",
+            "Extent",
+            "Item"
+        };
     }
 
     /// <summary>

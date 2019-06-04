@@ -109,7 +109,40 @@ namespace DatenMeister.WPF.Windows
                     Header = tabName
                 };
 
-                _mainWindow.GetRibbon().Items.Add(tab);
+                // Find perfect position
+                var posFound = Array.IndexOf(NavigationCategories.RibbonOrder, tabName);
+                var ribbons = _mainWindow.GetRibbon();
+                if (posFound == -1)
+                {
+                    ribbons.Items.Add(tab);
+                }
+                else
+                {
+                    // Find the correct position for the tab according to the ribbonorder
+                    for (var n = 0; n <= posFound; n++)
+                    {
+                        if (ribbons.Items.Count <= n)
+                        {
+                            ribbons.Items.Add(tab);
+                            break;
+                        }
+
+                        // Gets the value of the item
+                        var posInIndex =
+                            Array.IndexOf(
+                                NavigationCategories.RibbonOrder,
+                                ((RibbonTab) ribbons.Items[n]).Header.ToString());
+                        if (posInIndex == -1)
+                        {
+                            posInIndex = int.MaxValue;
+                        }
+
+                        if (posInIndex > posFound || n == posFound)
+                        {
+                            ribbons.Items.Insert(n, tab);
+                        }
+                    }
+                }
             }
             
             var group = tab.Items.OfType<RibbonGroup>().FirstOrDefault(x => x.Header.ToString() == groupName);

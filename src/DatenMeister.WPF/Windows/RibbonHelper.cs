@@ -140,6 +140,7 @@ namespace DatenMeister.WPF.Windows
                         if (posInIndex > posFound || n == posFound)
                         {
                             ribbons.Items.Insert(n, tab);
+                            break;
                         }
                     }
                 }

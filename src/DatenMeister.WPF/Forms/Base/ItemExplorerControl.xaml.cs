@@ -97,6 +97,7 @@ namespace DatenMeister.WPF.Forms.Base
                     yield return viewExtension;
                 }
             }
+
             var selectedTab = ItemTabControl.SelectedItem as ItemExplorerTab;
             if (selectedTab?.ViewExtensions == null)
             {
@@ -241,7 +242,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 Content = control,
                 Header = name,
-                ViewExtensions = viewExtensions
+                ViewExtensions = viewExtensions.Union(control.GetViewExtensions())
             };
 
             control.SetContent(collection, result, viewExtensions);

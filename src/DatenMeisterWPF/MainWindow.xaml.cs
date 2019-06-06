@@ -155,9 +155,9 @@ namespace DatenMeisterWPF
 
                 viewExtensions = viewExtensions.Union(guestViewExtensions).ToList();
 
-                /*
+                /*/*
                  * Gets the plugins for the selected extent
-                 */
+                 
                 var dataItems = new ViewExtensionTargetInformation
                 {
                     NavigationGuest = guest
@@ -167,9 +167,14 @@ namespace DatenMeisterWPF
                 {
                     foreach (var extension in plugin.GetViewExtensions(dataItems))
                     {
+                        if (extension is RibbonButtonDefinition ribbonButtonDefinition)
+                        {
+                            ribbonButtonDefinition.FixTopCategoryIfNotFixed("Extent");
+                        }
+
                         viewExtensions.Add(extension);
                     }
-                }
+                }*/
             }
 
             /*
@@ -186,7 +191,7 @@ namespace DatenMeisterWPF
                 {
                     if (extension is RibbonButtonDefinition ribbonButtonDefinition)
                     {
-                        ribbonButtonDefinition.FixTopCategoryIfNotFixed("Item");
+                     //   ribbonButtonDefinition.FixTopCategoryIfNotFixed("Item");
                     }
 
                     viewExtensions.Add(extension);

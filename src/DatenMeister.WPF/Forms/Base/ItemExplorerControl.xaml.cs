@@ -127,7 +127,7 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     if (extension is RibbonButtonDefinition ribbonButtonDefinition)
                     {
-                        ribbonButtonDefinition.FixTopCategoryIfNotFixed("Item");
+                        ribbonButtonDefinition.FixTopCategoryIfNotFixed("Extent");
                     }
 
                     yield return extension;

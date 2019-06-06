@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,12 +18,7 @@ namespace DatenMeister.WPF.Navigation
         /// <summary>
         /// Shows a detailled view of items
         /// </summary>
-        Detail,
-
-        /// <summary>
-        /// Forces a popup of the window which will be centered before hand. 
-        /// </summary>
-        ForceNewWindow
+        Detail
     }
 
     /// <summary>
@@ -46,8 +39,7 @@ namespace DatenMeister.WPF.Navigation
         /// Defines the order of the ribbon for standard items.
         /// All other ribbons will be stored after that
         /// </summary>
-        public static string[] RibbonOrder = new[]
-        {
+        public static string[] RibbonOrder = {
             "File",
             "Extent",
             "Item"

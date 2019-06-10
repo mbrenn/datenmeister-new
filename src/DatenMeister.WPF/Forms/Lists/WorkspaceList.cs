@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using Autofac;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
@@ -16,6 +17,11 @@ namespace DatenMeister.WPF.Forms.Lists
 {
     public class WorkspaceList : ItemExplorerControl, INavigationGuest
     {
+        /// <summary>
+        /// Stores the workspace extent
+        /// </summary>
+        private IUriExtent _workspaceExtent;
+
         public WorkspaceList()
         {
             Loaded += WorkspaceList_Loaded;
@@ -23,11 +29,11 @@ namespace DatenMeister.WPF.Forms.Lists
 
         private void WorkspaceList_Loaded(object sender, RoutedEventArgs e)
         {
-            var workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
-            SetItems(workspaceExtent.elements());
+            _workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
+            SetItems(_workspaceExtent.elements());
 
             var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
-            EventHandle = eventManager.RegisterFor(workspaceExtent, (x,y) =>
+            EventHandle = eventManager.RegisterFor(_workspaceExtent, (x,y) =>
             {
                 Tabs.FirstOrDefault()?.Control.UpdateContent();
             });
@@ -45,11 +51,11 @@ namespace DatenMeister.WPF.Forms.Lists
                 && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
             {
                 var workspaceId = SelectedPackage.get("id")?.ToString();
-                view = ListRequests.RequestFormForExtents(this, workspaceId);
+                view = ListRequests.RequestFormForExtents(_workspaceExtent, workspaceId, NavigationHost);
             }
             else
             {
-                view = ListRequests.RequestFormForWorkspaces(Items, NavigationHost);
+                view = ListRequests.RequestFormForWorkspaces(_workspaceExtent, NavigationHost);
             }
 
             PrepareNavigation(view);

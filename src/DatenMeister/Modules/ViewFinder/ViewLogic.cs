@@ -209,7 +209,7 @@ namespace DatenMeister.Modules.ViewFinder
 
         public IElement GetDetailForm(IObject element, IExtent extent, ViewDefinitionMode viewDefinitionMode)
         {
-            if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
+            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
             {
                 // Tries to find the form
                 var viewFinder = new ViewFinder(this);
@@ -234,7 +234,7 @@ namespace DatenMeister.Modules.ViewFinder
 
         public IElement GetExtentForm(IUriExtent extent, ViewDefinitionMode viewDefinitionMode)
         {
-            if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
+            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
             {
                 var viewFinder = new ViewFinder(this);
                 var foundForm = viewFinder.FindFormsFor(
@@ -256,6 +256,17 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
         /// <summary>
+        /// Gets the extent form containing the subforms
+        /// </summary>
+        /// <param name="subforms">The forms to be added to the extent forms</param>
+        /// <returns>The created extent</returns>
+        public IElement GetExtentFormForSubforms(params IElement[] subforms)
+        {
+            var formCreator = new FormCreator(this);
+            return formCreator.CreateExtentForm(subforms);
+        }
+
+        /// <summary>
         /// Gets one of the list forms for the extent. If the extent form is available, but
         /// the form creator thinks about creating a list form for the extent, it will query this
         /// method
@@ -269,7 +280,7 @@ namespace DatenMeister.Modules.ViewFinder
             IElement metaClass,
             ViewDefinitionMode viewDefinitionMode)
         {
-            if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
+            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
             {
                 var viewFinder = new ViewFinder(this);
                 var foundForm = viewFinder.FindFormsFor(
@@ -291,9 +302,44 @@ namespace DatenMeister.Modules.ViewFinder
             return formCreator.CreateListForm(metaClass, FormCreator.CreationMode.All);
         }
 
+        /// <summary>
+        /// Gets the list form for an elements property to be shown in sub item view or other views
+        /// </summary>
+        /// <param name="element">Element whose property is enumerated</param>
+        /// <param name="property">Name of the property to be enumeration</param>
+        /// <param name="viewDefinitionMode">The view definition mode</param>
+        /// <returns>The list form for the list</returns>
+        public IElement GetListFormForElementsProperty(
+            IObject element,
+            string property, 
+            ViewDefinitionMode viewDefinitionMode = ViewDefinitionMode.Default)
+        {
+            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
+            {
+                var viewFinder = new ViewFinder(this);
+                var foundForm = viewFinder.FindFormsFor(
+                    new FindViewQuery
+                    {
+                        extentType = (element as IHasExtent)?.Extent?.GetExtentType(),
+                        viewType = ViewType.ObjectList
+                    }).FirstOrDefault();
+
+                if (foundForm != null)
+                {
+                    return foundForm;
+                }
+            }
+
+
+            var formCreator = new FormCreator(this);
+            var createdForm = formCreator.CreateListForm(element.get<IReflectiveCollection>(property), FormCreator.CreationMode.All);
+
+            return createdForm;
+        }
+
         public IElement GetExtentForm(IReflectiveCollection collection, ViewDefinitionMode viewDefinitionMode)
         {
-            if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
+            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
             {
                 // Try to find the view, but very improbable
             }
@@ -309,14 +355,15 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="extent">Extent containing the object</param>
         /// <param name="viewDefinitionMode">Defines the method how to retrieve the form</param>
         /// <returns>Found extent form</returns>
-        public IElement GetItemTreeFormForObject(IObject element, IExtent extent, ViewDefinitionMode viewDefinitionMode)
+        public IElement GetItemTreeFormForObject(IObject element, ViewDefinitionMode viewDefinitionMode)
         {
-            if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
+            var extent = (element as IHasExtent)?.Extent;
+            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
             {
                 var viewFinder = new ViewFinder(this);
-                var foundForm = viewFinder.FindFormsFor(new FindViewQuery()
+                var foundForm = viewFinder.FindFormsFor(new FindViewQuery
                 {
-                    extentType = extent.GetExtentType(),
+                    extentType = extent?.GetExtentType(),
                     metaClass = (element as IElement)?.getMetaClass(),
                     viewType = ViewType.TreeItemDetail
                 }).FirstOrDefault();
@@ -341,7 +388,7 @@ namespace DatenMeister.Modules.ViewFinder
             ViewDefinitionMode viewDefinitionMode)
         {
 
-            if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
+            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
             {
                 var viewFinder = new ViewFinder(this);
                 var foundForm = viewFinder.FindFormsFor(new FindViewQuery
@@ -373,7 +420,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns></returns>
         public IElement GetListFormForExtentForPropertyInObject(IObject element, IExtent extent, string propertyName, IElement metaClass, ViewDefinitionMode viewDefinitionMode)
         {
-            if (!viewDefinitionMode.HasFlag(ViewDefinitionMode.AllProperties))
+            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
             {
                 var viewFinder = new ViewFinder(this);
                 var foundForm = viewFinder.FindFormsFor(new FindViewQuery

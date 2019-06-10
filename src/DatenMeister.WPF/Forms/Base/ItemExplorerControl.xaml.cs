@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Autofac;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -15,6 +14,7 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Forms.Base
@@ -103,7 +103,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 yield break;
             }
-            
+
             foreach (var extension in selectedTab.ViewExtensions)
             {
                 if (extension is RibbonButtonDefinition ribbonButtonDefinition)
@@ -133,6 +133,14 @@ namespace DatenMeister.WPF.Forms.Base
                     yield return extension;
                 }
             }
+
+
+            yield return
+                new RibbonButtonDefinition(
+                    "Refresh",
+                    UpdateAllViews,
+                    Icons.Refresh,
+                    NavigationCategories.File + ".Views");
         }
 
         public void SetItems(IReflectiveCollection items)

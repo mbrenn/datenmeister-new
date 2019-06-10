@@ -8,16 +8,21 @@
         /// <summary>
         /// Uses the viewfinder to retrieve the view
         /// </summary> 
-        Default,
+        Default = 0x03,
 
         /// <summary>
         /// Returns all properties by form creator
         /// </summary>
-        AllProperties,
+        AllProperties = 0x01,
 
         /// <summary>
-        /// Uses the view as given in the instance
+        /// Allows the finding of a form via the view finder
         /// </summary>
-        Specific
+        ViaViewFinder = 0x02,
+
+        /// <summary>
+        /// No automatic creation is defined and the caller has to set the corresponding form to be used
+        /// </summary>
+        Specific = 0x04
     }
 }

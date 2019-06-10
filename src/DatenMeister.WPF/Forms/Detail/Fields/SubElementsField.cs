@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -84,8 +83,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             if (form == null)
             {
                 // otherwise, we have to automatically create a form
-                var formFinder = GiveMe.Scope.Resolve<ViewFinder>();
-                form = formFinder.FindListFormForTreeItemDetailView(_element, _propertyName, null);
+                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                form = viewLogic.GetListFormForElementsProperty(_element, _propertyName);
             }
 
             var viewExtensions = new List<ViewExtension>

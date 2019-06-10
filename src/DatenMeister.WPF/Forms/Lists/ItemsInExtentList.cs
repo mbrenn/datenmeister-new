@@ -19,9 +19,7 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Helper;
@@ -124,7 +122,6 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             IElement form;
-            var extentType = (Items as IHasExtent)?.Extent.GetExtentType();
 
             if (Items == SelectedItems)
             {
@@ -136,8 +133,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 // User has selected a sub element and its children shall be shown
                 form = viewLogic.GetItemTreeFormForObject(
                     SelectedPackage,
-                        Extent,
-                        ViewDefinitionMode.Default);
+                    ViewDefinitionMode.Default);
             }
 
             var className = "Items";

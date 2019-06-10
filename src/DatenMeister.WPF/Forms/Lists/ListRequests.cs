@@ -7,11 +7,14 @@ using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
@@ -39,7 +42,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// Requests the form for the workspace
         /// </summary>
         /// <returns>Requested form</returns>
-        internal static ViewDefinition RequestFormForWorkspaces(IReflectiveCollection items, INavigationHost navigationHost)
+        internal static ViewDefinition RequestFormForWorkspaces(IUriExtent extent, INavigationHost navigationHost)
         {
             // Finds the view
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
@@ -49,7 +52,11 @@ namespace DatenMeister.WPF.Forms.Lists
 
             if (formElement == null)
             {
-                formElement = viewLogic.GetExtentForm(items, ViewDefinitionMode.Default);
+                // formElement = viewLogic.GetExtentForm(items, ViewDefinitionMode.Default);
+                var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
+                formElement = viewLogic.GetExtentFormForSubforms(
+                    viewLogic.GetListFormForExtent(extent, formAndFields.__Workspace,
+                        ViewDefinitionMode.Default));
             }
 
             var viewDefinition = new ViewDefinition("Workspaces", formElement);
@@ -93,9 +100,11 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         /// Requests the form for extent elements
         /// </summary>
+        /// <param name="extent">Extent being used</param>
         /// <param name="workspaceId">The Id of the workspace</param>
+        /// <param name="navigationHost">Defines the navigation host being used for the window</param>
         /// <returns>The created form</returns>
-        internal static ViewDefinition RequestFormForExtents(ItemExplorerControl control, string workspaceId)
+        internal static ViewDefinition RequestFormForExtents(IUriExtent extent, string workspaceId, INavigationHost navigationHost)
         {
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             var viewExtent = viewLogic.GetInternalViewExtent();
@@ -103,9 +112,14 @@ namespace DatenMeister.WPF.Forms.Lists
                 NamedElementMethods.GetByFullName(
                     viewExtent,
                     ManagementViewDefinitions.PathExtentListView);
+
             if (result == null)
             {
-                result = viewLogic.GetExtentForm(control.Items, ViewDefinitionMode.Default);
+                // result = viewLogic.GetExtentForm(control.Items, ViewDefinitionMode.Default);
+                var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
+                result = viewLogic.GetExtentFormForSubforms(
+                    viewLogic.GetListFormForExtent(extent, formAndFields.__Extent,
+                        ViewDefinitionMode.Default));
             }
 
             var viewDefinition = new ViewDefinition("Extents", result);
@@ -184,12 +198,12 @@ namespace DatenMeister.WPF.Forms.Lists
 
             async void ImportFromExcel()
             {
-                await NavigatorForExcelHandling.ImportFromExcel(control.NavigationHost, workspaceId);
+                await NavigatorForExcelHandling.ImportFromExcel(navigationHost, workspaceId);
             }
 
             void NewXmiExtent()
             {
-                _ = NavigatorForItems.NavigateToNewXmiExtentDetailView(control.NavigationHost, workspaceId);
+                _ = NavigatorForItems.NavigateToNewXmiExtentDetailView(navigationHost, workspaceId);
             }
 
             void AddZipCodeExample()
@@ -202,7 +216,7 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 var dlg = new ImportExtentDlg
                 {
-                    Owner = control.NavigationHost.GetWindow(),
+                    Owner = navigationHost.GetWindow(),
                     Workspace = workspaceId
                 };
 
@@ -234,7 +248,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             async void LoadExtent()
             {
-                var extentLoaderConfig = await QueryExtentConfigurationByUserAsync(control.NavigationHost);
+                var extentLoaderConfig = await QueryExtentConfigurationByUserAsync(navigationHost);
                 if (extentLoaderConfig != null)
                 {
                     var extentManager = GiveMe.Scope.Resolve<IExtentManager>();

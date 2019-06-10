@@ -634,13 +634,6 @@ namespace DatenMeister.WPF.Forms.Base
 
             ViewExtensions.Add(
                 new RibbonButtonDefinition(
-                    "Refresh",
-                    UpdateContent,
-                    Icons.Refresh,
-                    NavigationCategories.File + ".Views"));
-
-            ViewExtensions.Add(
-                new RibbonButtonDefinition(
                     "Extent as XMI",
                     ViewExtent,
                     null,

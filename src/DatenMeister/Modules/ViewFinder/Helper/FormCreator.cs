@@ -74,6 +74,17 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             return createdForm;
         }
 
+        /// <summary>
+        /// Creates an extent form containing the subforms
+        /// </summary>
+        /// <returns>The created extent</returns>
+        public IElement CreateExtentForm(params IElement[] subForms)
+        {
+            var result = _factory.create(_formAndFields.__ExtentForm);
+            result.set(_FormAndFields._ExtentForm.tab, subForms);
+            return result;
+        }
+
         public IElement CreateExtentForm(IUriExtent extent, CreationMode creationMode)
         {
             return CreateExtentForm(extent.elements(), creationMode);
@@ -133,6 +144,43 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         }
 
         /// <summary>
+        /// Creates the list form out of the elements in the reflective collection.
+        /// Supports the creation by the metaclass and by the object's properties
+        /// </summary>
+        /// <param name="elements">Elements to be queried</param>
+        /// <param name="creationMode">The used creation mode</param>
+        /// <returns>The created list form </returns>
+        public IElement CreateListForm(IReflectiveCollection elements, CreationMode creationMode)
+        {
+            var alreadyVisitedMetaClasses = new HashSet<IElement>();
+
+            var result = _factory.create(_formAndFields.__ListForm);
+
+            foreach (var element in elements.OfType<IObject>())
+            {
+                var metaClass = (element as IElement)?.getMetaClass();
+
+                if (creationMode.HasFlag(CreationMode.ByMetaClass) && metaClass != null)
+                {
+                    if (alreadyVisitedMetaClasses.Contains(metaClass))
+                    {
+                        continue;
+                    }
+
+                    alreadyVisitedMetaClasses.Add(metaClass);
+                    AddToFormByMetaclass(result, metaClass);
+                }
+                else if (creationMode.HasFlag(CreationMode.ByProperties))
+                {
+                    AddToForm(result, element, CreationMode.ByProperties);
+                }
+            }
+
+            return result;
+
+        }
+
+        /// <summary>
         /// Creates a list form for a certain metaclass
         /// </summary>
         /// <param name="metaClass"></param>
@@ -186,6 +234,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                  || (isOnlyPropertiesIfNoMetaClass && !wasInMetaClass))
                 && itemAsAllProperties != null)
             {
+                // Creates the form out of the properties of the item
                 var properties = itemAsAllProperties.getPropertiesBeingSet();
 
                 foreach (var property in properties)
@@ -227,7 +276,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     column.set(_FormAndFields._FieldData.isEnumeration,
                         column.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration) | value is IEnumerable && !(value is string));
                 }
-
             }
 
             // Third phase: Add metaclass
@@ -383,12 +431,11 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         public IElement CreateExtentFormForObject(IObject element, IExtent extent, CreationMode creationMode)
         {
             var extentForm = _factory.create(_formAndFields.__ExtentForm);
-
             extentForm.set(_FormAndFields._ExtentForm.name, NamedElementMethods.GetName(element));
 
             var tabs = new List<IElement>();
 
-            // Get all proeprties
+            // Get all properties
             var properties = (element as IObjectAllProperties)?.getPropertiesBeingSet();
             if (properties == null)
             {
@@ -401,6 +448,18 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 let propertyContent = element.get<IReflectiveCollection>(p)
                 where propertyContent != null
                 select new {propertyName = p, propertyContent};
+
+            var propertiesWithoutCollection =
+                from p in properties
+                where !element.IsPropertyOfType<IReflectiveCollection>(p)
+                let propertyContent = element.get(p)
+                where propertyContent != null
+                select new { propertyName = p, propertyContent };
+
+            if (propertiesWithoutCollection.Any())
+            {
+                var detailForm = _factory.create(_formAndFields.__ExtentForm);
+            }
 
             foreach (var pair in propertiesWithCollection)
             {
@@ -452,9 +511,10 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         }
 
         /// <summary>
-        /// Creates a list form for a certain metaclass
+        /// Creates a list form for a certain metaclass being used inside an extent form
         /// </summary>
         /// <param name="metaClass"></param>
+        /// <param name="propertyName">Name of the property</param>
         /// <param name="creationMode"></param>
         public IElement CreateListFormForPropertyInObject(IElement metaClass, string propertyName, CreationMode creationMode)
         {

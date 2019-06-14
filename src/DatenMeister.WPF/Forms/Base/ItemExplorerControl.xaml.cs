@@ -32,6 +32,11 @@ namespace DatenMeister.WPF.Forms.Base
         private EventHandle _eventHandle;
 
         /// <summary>
+        /// Gets the definition of the current form
+        /// </summary>
+        public IElement CurrentForm { get; private set; }
+
+        /// <summary>
         /// Gets or sets the items to be shown. These items are shown also in the navigation view and will
         /// not be modified, even if the user clicks on the navigation tree. 
         /// </summary>
@@ -209,6 +214,7 @@ namespace DatenMeister.WPF.Forms.Base
             IElement extentForm,
             ICollection<ViewExtension> viewExtensions)
         {
+            CurrentForm = extentForm;
             var tabs = extentForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
             if (tabs == null)
             {

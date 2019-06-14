@@ -1,8 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
+using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
@@ -73,6 +78,49 @@ namespace DatenMeister.WPF.Modules.ViewManager
                     NavigationCategories.Views);
 
                 yield return openView;
+
+                if (itemExplorerControl != null)
+                {
+                    var showFormDefinition = new RibbonButtonDefinition(
+                        "Show Form Definition",
+                        () =>
+                        {
+                            var dlg = new ItemXmlViewWindow
+                            {
+                                /*SupportWriting = true,*/
+                                Owner = Window.GetWindow(itemExplorerControl.NavigationHost.GetWindow())
+                            };
+                            dlg.SupportWriting = false;
+
+                            dlg.UpdateContent(itemExplorerControl.CurrentForm);
+
+                            dlg.ShowDialog();
+
+                        },
+                        "",
+                        NavigationCategories.Views);
+
+                    yield return showFormDefinition;
+
+                    var copyFormDefinition = new RibbonButtonDefinition(
+                        "Save Form Definition",
+                        () =>
+                        {
+                            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                            var target = viewLogic.GetUserViewExtent();
+                            var copier = new ObjectCopier(new MofFactory(target));
+
+                            var copiedForm = copier.Copy(itemExplorerControl.CurrentForm);
+                            target.elements().add(copiedForm);
+
+                            NavigatorForItems.NavigateToElementDetailView(itemExplorerControl.NavigationHost,
+                                copiedForm);
+                        },
+                        "",
+                        NavigationCategories.Views);
+
+                    yield return copyFormDefinition;
+                }
             }
         }
     }

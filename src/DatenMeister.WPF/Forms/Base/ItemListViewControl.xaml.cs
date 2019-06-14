@@ -225,7 +225,7 @@ namespace DatenMeister.WPF.Forms.Base
                         var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
                         var value = GetValueOfElement(item, field);
 
-                        if (isEnumeration)
+                        if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
                         {
                             var result = new StringBuilder();
                             var valueAsList = DotNetHelper.AsEnumeration(value);

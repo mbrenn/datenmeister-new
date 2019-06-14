@@ -73,8 +73,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
                 EvaluateForm(
                     SelectedItems,
-                    viewDefinition.Element,
-                    viewDefinition.ViewExtensions);
+                    viewDefinition);
             }
             else
             {
@@ -84,8 +83,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
                 EvaluateForm(
                     SelectedItems,
-                    viewDefinition.Element,
-                    viewDefinition.ViewExtensions);
+                    viewDefinition);
             }
 
         }

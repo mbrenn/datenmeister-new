@@ -205,15 +205,13 @@ namespace DatenMeister.WPF.Forms.Base
         /// this call
         /// </summary>
         /// <param name="collection">Collection of the item which shall be created</param>
-        /// <param name="extentForm">The extent form to be shown. The tabs of the extern form are passed</param>
-        /// <param name="viewExtensions">The view extensions which are applied</param>
+        /// <param name="viewDefinition">The extent form to be shown. The tabs of the extern form are passed</param>
         public void EvaluateForm(
             IReflectiveCollection collection, 
-            IElement extentForm,
-            ICollection<ViewExtension> viewExtensions)
+            ViewDefinition viewDefinition)
         {
-            CurrentForm = extentForm;
-            var tabs = extentForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
+            CurrentForm = viewDefinition.Element;
+            var tabs = viewDefinition.Element.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
             if (tabs == null)
             {
                 // No tabs, nothing to do
@@ -222,10 +220,18 @@ namespace DatenMeister.WPF.Forms.Base
 
             foreach (var tab in tabs.OfType<IElement>())
             {
-                AddTab(collection, tab, Array.Empty<ViewExtension>());
+                ICollection<ViewExtension> tabViewExtensions = null;
+                if (viewDefinition.TabViewExtensions != null)
+                {
+                    tabViewExtensions = viewDefinition.TabViewExtensions(tab).ToList();
+                }
+
+                tabViewExtensions = tabViewExtensions ?? Array.Empty<ViewExtension>();
+
+                AddTab(collection, tab, tabViewExtensions);
             }
 
-            ViewExtensions = viewExtensions;
+            ViewExtensions = viewDefinition.ViewExtensions;
         }
 
         /// <summary>

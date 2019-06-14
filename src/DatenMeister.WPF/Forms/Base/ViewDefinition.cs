@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
@@ -61,7 +62,16 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public List<ViewExtension> ViewExtensions { get; } = new List<ViewExtension>();
+        /// <summary>
+        /// Gets the view definitions that are application for the complete extent form
+        /// </summary>
+        public List<ViewExtension> ViewExtensions { get; set; } = new List<ViewExtension>();
+
+        /// <summary>
+        /// Gets or sets the function that will receive a list of view extensions dependent on the form for the tab being used
+        /// This function is called by the ItemExplorerControl to figure the valid extensions
+        /// </summary>
+        public Func<IElement, IEnumerable<ViewExtension>> TabViewExtensions { get; set; }
 
         public ViewDefinition(ViewDefinitionMode mode) : this (null, null, mode)
         {   

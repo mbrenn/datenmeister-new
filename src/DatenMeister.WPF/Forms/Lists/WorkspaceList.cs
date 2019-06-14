@@ -61,7 +61,7 @@ namespace DatenMeister.WPF.Forms.Lists
             PrepareNavigation(view);
 
             // Sets the workspaces
-            EvaluateForm(SelectedItems, view.Element, view.ViewExtensions);
+            EvaluateForm(SelectedItems, view);
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -57,12 +58,25 @@ namespace DatenMeister.WPF.Forms.Lists
                         ViewDefinitionMode.Default));
             }
 
-            var viewDefinition = new ViewDefinition("Workspaces", formElement);
+            var viewDefinition = new ViewDefinition("Workspaces", formElement)
+            {
+                TabViewExtensions = form =>
+                {
+                    var result = new List<ViewExtension>
+                    {
+                        new RowItemButtonDefinition(
+                            "Show Extents",
+                            ShowExtents,
+                            ItemListViewControl.ButtonPosition.Before),
+                        new RowItemButtonDefinition("Delete Workspace", DeleteWorkspace)
+                    };
 
-            viewDefinition.ViewExtensions.Add(
-                new RowItemButtonDefinition("Show Extents", ShowExtents, ItemListViewControl.ButtonPosition.Before));
-            viewDefinition.ViewExtensions.Add(
-                new RowItemButtonDefinition("Delete Workspace", DeleteWorkspace));
+
+                    return result;
+                }
+            };
+
+
             viewDefinition.ViewExtensions.Add(
                 new TreeViewItemCommandDefinition(
                     "New Workspace",
@@ -120,8 +134,17 @@ namespace DatenMeister.WPF.Forms.Lists
                         ViewDefinitionMode.Default));
             }
 
-            var viewDefinition = new ViewDefinition("Extents", result);
-            viewDefinition.ViewExtensions.Add(new RowItemButtonDefinition("Show Items", ShowItems, ItemListViewControl.ButtonPosition.Before));
+            var viewDefinition = new ViewDefinition("Extents", result)
+            {
+                TabViewExtensions = (form) =>
+                {
+                    return new List<ViewExtension>()
+                    {
+                        new RowItemButtonDefinition("Show Items", ShowItems, ItemListViewControl.ButtonPosition.Before),
+                        new RowItemButtonDefinition("Delete", DeleteExtent)
+                    };
+                }
+            };
 
             viewDefinition.ViewExtensions.Add(
                 new TreeViewItemCommandDefinition(
@@ -162,9 +185,6 @@ namespace DatenMeister.WPF.Forms.Lists
                     LoadExtent,
                     Icons.ImportExcel,
                     NavigationCategories.File + ".Extent"));
-
-            viewDefinition.ViewExtensions.Add(
-                new RowItemButtonDefinition("Delete", DeleteExtent));
 
             viewDefinition.ViewExtensions.Add(
                 new InfoLineDefinition(() =>

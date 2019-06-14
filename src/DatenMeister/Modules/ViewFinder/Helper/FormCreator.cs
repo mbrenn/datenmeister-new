@@ -292,7 +292,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
         private bool AddToFormByMetaclass(IElement form, IElement metaClass)
         {
-            bool wasInMetaClass = false;
+            var wasInMetaClass = false;
+            if (metaClass == null)
+            {
+                return false;
+            }
+
             var classifierMethods = ClassifierMethods.GetPropertiesOfClassifier(metaClass).Where(x => x.isSet("name")).ToList();
             foreach (var property in classifierMethods.OrderBy(x => x.get("name").ToString()))
             {

@@ -104,19 +104,17 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             var selectedTab = ItemTabControl.SelectedItem as ItemExplorerTab;
-            if (selectedTab?.ViewExtensions == null)
+            if (selectedTab?.ViewExtensions != null)
             {
-                yield break;
-            }
-
-            foreach (var extension in selectedTab.ViewExtensions)
-            {
-                if (extension is RibbonButtonDefinition ribbonButtonDefinition)
+                foreach (var extension in selectedTab.ViewExtensions)
                 {
-                    ribbonButtonDefinition.FixTopCategoryIfNotFixed("View");
-                }
+                    if (extension is RibbonButtonDefinition ribbonButtonDefinition)
+                    {
+                        ribbonButtonDefinition.FixTopCategoryIfNotFixed("View");
+                    }
 
-                yield return extension;
+                    yield return extension;
+                }
             }
 
             // Get the view extensions by the plugins
@@ -138,7 +136,6 @@ namespace DatenMeister.WPF.Forms.Base
                     yield return extension;
                 }
             }
-
 
             yield return
                 new RibbonButtonDefinition(
@@ -174,6 +171,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             Tabs.Clear();
             OnRecreateViews();
+            NavigationHost.RebuildNavigation();
         }
 
         /// <summary>
@@ -228,7 +226,6 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             ViewExtensions = viewExtensions;
-
         }
 
         /// <summary>

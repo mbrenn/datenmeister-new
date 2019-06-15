@@ -9,6 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -90,9 +91,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         public FormCreator(ViewLogic viewLogic)
         {
             _viewLogic = viewLogic;
-            var userExtent = _viewLogic.GetUserViewExtent();
-            _factory = new MofFactory(userExtent);
-            _formAndFields = userExtent.GetWorkspace().GetFromMetaWorkspace<_FormAndFields>();
+            var userExtent = _viewLogic?.GetUserViewExtent();
+            _factory = userExtent != null 
+                ? new MofFactory(userExtent)
+                : InMemoryObject.TemporaryFactory;
+            _formAndFields = userExtent?.GetWorkspace().GetFromMetaWorkspace<_FormAndFields>()
+                ?? _FormAndFields.TheOne;
         }
 
         public IElement CreateDetailForm (IObject element)
@@ -269,10 +273,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             // Third phase: Add metaclass
             var isMetaClass = creationMode.HasFlag(CreationMode.AddMetaClass);
-            if (isMetaClass && !form
+            if (isMetaClass &&
+                !form
                     .get<IReflectiveCollection>(_FormAndFields._Form.field)
                     .OfType<IElement>()
-                    .Any(x => x.getMetaClass().@equals(_formAndFields.__MetaClassElementFieldData)))
+                    .Where(x => x != null)
+                    .Any(x => x.getMetaClass()?.@equals(_formAndFields.__MetaClassElementFieldData) ?? false))
             {
                 form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(new MetaClassElementFieldData());
             }

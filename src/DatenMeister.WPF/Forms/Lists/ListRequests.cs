@@ -71,11 +71,9 @@ namespace DatenMeister.WPF.Forms.Lists
                         new RowItemButtonDefinition("Delete Workspace", DeleteWorkspace)
                     };
 
-
                     return result;
                 }
             };
-
 
             viewDefinition.ViewExtensions.Add(
                 new TreeViewItemCommandDefinition(

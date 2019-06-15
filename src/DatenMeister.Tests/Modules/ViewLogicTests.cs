@@ -43,6 +43,8 @@ namespace DatenMeister.Tests.Modules
             Assert.That(n, Is.GreaterThan(0));
         }
 
+        /*
+         * Test is obsolete since the view associations are currently not stored in the xmi
         [Test]
         public void TestGetAllViewAssociations()
         {
@@ -56,6 +58,6 @@ namespace DatenMeister.Tests.Modules
             }
 
             Assert.That(n, Is.GreaterThan(0));
-        }
+        }*/
     }
 }

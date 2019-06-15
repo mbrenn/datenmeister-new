@@ -243,8 +243,6 @@ namespace DatenMeister.WPF.Forms.Base
         public ItemExplorerTab AddTab(IReflectiveCollection collection, IElement form, ICollection<ViewExtension> viewExtensions)
         {
             // Gets the default view for the given tab
-            var viewFinder = GiveMe.Scope.Resolve<ViewFinder>();
-            IObject result = form;
             var name = form.getOrDefault<string>(_FormAndFields._Form.title) ??
                        form.getOrDefault<string>(_FormAndFields._Form.name);
 
@@ -262,7 +260,7 @@ namespace DatenMeister.WPF.Forms.Base
                 ViewExtensions = viewExtensions.Union(control.GetViewExtensions())
             };
 
-            control.SetContent(collection, result, viewExtensions);
+            control.SetContent(collection, form, viewExtensions);
             Tabs.Add(tabControl);
 
             // Selects the item, if none of the items are selected

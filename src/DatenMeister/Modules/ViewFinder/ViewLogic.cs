@@ -202,8 +202,9 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="viewExtent">Extent of the view</param>
         /// <returns></returns>
-        private _FormAndFields GetFormAndFieldInstance(IExtent viewExtent)
+        public _FormAndFields GetFormAndFieldInstance(IExtent viewExtent = null)
         {
+            viewExtent = viewExtent ?? GetUserViewExtent();
             return _workspaceLogic.GetWorkspaceOfExtent(viewExtent).GetFromMetaWorkspace<_FormAndFields>();
         }
 

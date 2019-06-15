@@ -86,6 +86,11 @@ namespace DatenMeister.WPF.Forms.Base
         private readonly DelayedRefreshDispatcher _delayedDispatcher;
 
         /// <summary>
+        /// Stores the view logic
+        /// </summary>
+        private ViewLogic _viewLogic;
+
+        /// <summary>
         /// Defines the current form definition of the window as provided by the
         /// derived method 'RequestForm'.
         /// </summary>
@@ -110,6 +115,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void SetContent(IReflectiveCollection items, IObject formDefinition, ICollection<ViewExtension> viewExtensions)
         {
+            _viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             UnregisterCurrentChangeEventHandle();
 
             if (items is IHasExtent asExtent)
@@ -122,7 +128,18 @@ namespace DatenMeister.WPF.Forms.Base
                     });
             }
 
-            Items = items;
+            // If form  defines constraints upon metaclass, then the filtering will occur here
+            var metaClass = formDefinition.getOrDefault<IElement>(_FormAndFields._ListForm.metaClass);
+
+            if (metaClass != null)
+            {
+                Items = items.WhenMetaClassIs(metaClass);
+            }
+            else
+            {
+                Items = items;
+            }
+
             CurrentFormDefinition = formDefinition;
             ViewExtensions = viewExtensions.ToList();
             IncludeStandardExtensions();
@@ -150,7 +167,9 @@ namespace DatenMeister.WPF.Forms.Base
         private object GetValueOfElement(IObject element, IElement field)
         {
             var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
-            if (fieldType == MetaClassElementFieldData.FieldType)
+            var fieldMetaClass = field.getMetaClass();
+            if (fieldType == MetaClassElementFieldData.FieldType || 
+                fieldMetaClass?.@equals(_viewLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
             {
                 var elementAsElement = element as IElement;
                 var metaClass = elementAsElement?.getMetaClass();
@@ -313,9 +332,12 @@ namespace DatenMeister.WPF.Forms.Base
                 var name = "_" + (field.getOrDefault<string>(_FormAndFields._FieldData.name) ?? string.Empty);
                 var title = field.getOrDefault<string>(_FormAndFields._FieldData.title) ?? string.Empty;
                 var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
+                var fieldMetaClass = field.getMetaClass();
+
                 bool isReadOnly;
 
-                if (fieldType == MetaClassElementFieldData.FieldType)
+                if (fieldType == MetaClassElementFieldData.FieldType
+                    || fieldMetaClass?.@equals(_viewLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
                 {
                     title = "Metaclass";
                     name = "Metaclass";

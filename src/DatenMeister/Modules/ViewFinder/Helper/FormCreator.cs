@@ -165,13 +165,19 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             foreach (var group in elementsWithMetaClass)
             {
+                if (group.Key == null)
+                {
+                    continue;
+                }
+
                 // Now try to figure out the metaclass 
                 var groupedMetaclass = group.Key;
                 IElement form = null;
                 if (_viewLogic != null)
                 {
                     form = _viewLogic.GetListFormForExtent(
-                        (elements as IHasExtent)?.Extent, groupedMetaclass,
+                        (elements as IHasExtent)?.Extent, 
+                        groupedMetaclass,
                         ViewDefinitionMode.Default);
                 }
                 else
@@ -179,6 +185,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     // If no view logic is given, then ask directly the form creator. 
                     form = this.CreateListForm(groupedMetaclass, creationMode);
                 }
+
+                form.set(_FormAndFields._ListForm.metaClass, group.Key);
 
                 tabs.Add(form);
             }
@@ -222,7 +230,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             }
 
             return result;
-
         }
 
         /// <summary>

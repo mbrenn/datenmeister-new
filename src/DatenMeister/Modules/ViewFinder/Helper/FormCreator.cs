@@ -167,8 +167,18 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             {
                 // Now try to figure out the metaclass 
                 var groupedMetaclass = group.Key;
-                var form = _viewLogic.GetListFormForExtent((elements as IHasExtent)?.Extent, groupedMetaclass,
-                    ViewDefinitionMode.Default);
+                IElement form = null;
+                if (_viewLogic != null)
+                {
+                    form = _viewLogic.GetListFormForExtent(
+                        (elements as IHasExtent)?.Extent, groupedMetaclass,
+                        ViewDefinitionMode.Default);
+                }
+                else
+                {
+                    // If no view logic is given, then ask directly the form creator. 
+                    form = this.CreateListForm(groupedMetaclass, creationMode);
+                }
 
                 tabs.Add(form);
             }
@@ -277,10 +287,10 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 !form
                     .get<IReflectiveCollection>(_FormAndFields._Form.field)
                     .OfType<IElement>()
-                    .Where(x => x != null)
                     .Any(x => x.getMetaClass()?.@equals(_formAndFields.__MetaClassElementFieldData) ?? false))
             {
-                form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(new MetaClassElementFieldData());
+                var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
+                form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(metaClassField);
             }
         }
 

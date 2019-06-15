@@ -188,6 +188,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             return null;
         }
+
+        public override string ToString()
+        {
+            return $"Shadow: {Uri}";
+        }
     }
 
     /// <summary>

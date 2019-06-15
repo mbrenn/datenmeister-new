@@ -43,16 +43,47 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(FormCreator));
 
+        private IElement _stringType;
+        private IElement _integerType;
+        private IElement _booleanType;
+        private IElement _realType;
+
         /// <summary>
         /// Stores the creation mode
         /// </summary>
         [Flags]
         public enum CreationMode
         {
-            ByMetaClass = 1,
-            ByProperties = 2,
-            OnlyPropertiesIfNoMetaClass = 4,
-            AddMetaClass = 8,
+            /// <summary>
+            /// Allows the creation of forms by the metaclass of the given extent
+            /// </summary>
+            ByMetaClass = 0x01,
+
+            /// <summary>
+            /// Allows the creation of forms by going through the properties
+            /// </summary>
+            ByProperties = 0x02,
+
+            /// <summary>
+            /// Allowes the creation of forms by going through the propeerties only if
+            /// the element does not have a metaclass
+            /// </summary>
+            OnlyPropertiesIfNoMetaClass = 0x04,
+
+            /// <summary>
+            /// Adds the metaclass itself to the form 
+            /// </summary>
+            AddMetaClass = 0x08,
+
+            /// <summary>
+            /// Creates only fields that are usable in a list form.
+            /// So most of the time only 'TextFields'. 
+            /// </summary>
+            ForListForms = 0x10,
+
+            /// <summary>
+            /// Creates all properties that are possible
+            /// </summary>
             All = ByMetaClass | ByProperties | AddMetaClass
         }
 
@@ -168,7 +199,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     }
 
                     alreadyVisitedMetaClasses.Add(metaClass);
-                    AddToFormByMetaclass(result, metaClass);
+                    AddToFormByMetaclass(result, metaClass, creationMode);
                 }
                 else if (creationMode.HasFlag(CreationMode.ByProperties))
                 {
@@ -195,7 +226,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             var result = _factory.create(_formAndFields.__ListForm);
 
             result.set(_FormAndFields._ListForm.title, $"{NamedElementMethods.GetName(metaClass)}");
-            AddToFormByMetaclass(result, metaClass);
+            AddToFormByMetaclass(result, metaClass, creationMode);
             return result;
         }
 
@@ -217,13 +248,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             if (creationMode.HasFlag(CreationMode.ByMetaClass)
                 && metaClass != null)
             {
-                wasInMetaClass = AddToFormByMetaclass(form, metaClass);
+                wasInMetaClass = AddToFormByMetaclass(form, metaClass, creationMode);
             }
 
             // Second phase: Get properties by the object iself
             // This item does not have a metaclass and also no properties, so we try to find them by using the item
             var itemAsAllProperties = item as IObjectAllProperties;
-            var itemAsObject = item as IObject;
 
             var isByProperties =
                 creationMode.HasFlag(CreationMode.ByProperties);
@@ -234,48 +264,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                  || (isOnlyPropertiesIfNoMetaClass && !wasInMetaClass))
                 && itemAsAllProperties != null)
             {
-                // Creates the form out of the properties of the item
-                var properties = itemAsAllProperties.getPropertiesBeingSet();
-
-                foreach (var property in properties)
-                {
-                    var column = form
-                        .get<IReflectiveCollection>(_FormAndFields._Form.field)
-                        .OfType<IObject>()
-                        .FirstOrDefault(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == property);
-                    if (column == null)
-                    {
-                        // Check by content, which type of field shall be created
-                        var propertyValue = itemAsObject?.GetOrDefault(property);
-                        var propertyType = propertyValue?.GetType();
-
-                        if (DotNetHelper.IsPrimitiveType(propertyType))
-                        {
-                            column = _factory.create(_formAndFields.__TextFieldData);
-                        }
-                        else
-                        {
-                            if (DotNetHelper.IsEnumeration(propertyType))
-                            {
-                                column = _factory.create(_formAndFields.__SubElementFieldData);
-                            }
-                            else
-                            {
-                                column = _factory.create(_formAndFields.__ReferenceFieldData);
-                                column.set(_FormAndFields._ReferenceFieldData.isSelectionInline, false);
-                            }
-                        }
-
-                        column.set(_FormAndFields._TextFieldData.name, property);
-                        column.set(_FormAndFields._TextFieldData.title, property);
-
-                        form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
-                    }
-
-                    var value = ((IObject) item).get(property);
-                    column.set(_FormAndFields._FieldData.isEnumeration,
-                        column.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration) | value is IEnumerable && !(value is string));
-                }
+                AddToFormByProperties(form, item, creationMode);
             }
 
             // Third phase: Add metaclass
@@ -285,12 +274,81 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     .OfType<IElement>()
                     .Any(x => x.getMetaClass().@equals(_formAndFields.__MetaClassElementFieldData)))
             {
-                
                 form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(new MetaClassElementFieldData());
             }
         }
 
-        private bool AddToFormByMetaclass(IElement form, IElement metaClass)
+        /// <summary>
+        /// Adds the fields to the properties as given in the object itself.
+        /// The properties are retrieved by reading the available property types
+        /// from the object itself via the interface IObjectAllProperties
+        /// </summary>
+        /// <param name="form">Form to be extended</param>
+        /// <param name="item">Item to be evaluated</param>
+        /// <param name="creationMode">The creation mode that is used</param>
+        private void AddToFormByProperties(IElement form, object item, CreationMode creationMode)
+        {
+            var itemAsAllProperties = item as IObjectAllProperties;
+            if (itemAsAllProperties == null)
+            {
+                // The object does not allow the retrieving of properties
+                return;
+            }
+
+            var itemAsObject = item as IObject;
+            // Creates the form out of the properties of the item
+            var properties = itemAsAllProperties.getPropertiesBeingSet();
+
+            foreach (var property in properties)
+            {
+                var column = form
+                    .get<IReflectiveCollection>(_FormAndFields._Form.field)
+                    .OfType<IObject>()
+                    .FirstOrDefault(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == property);
+                if (column == null)
+                {
+                    // Check by content, which type of field shall be created
+                    var propertyValue = itemAsObject?.GetOrDefault(property);
+                    var propertyType = propertyValue?.GetType();
+
+                    if (DotNetHelper.IsPrimitiveType(propertyType) || creationMode.HasFlag(CreationMode.ForListForms))
+                    {
+                        column = _factory.create(_formAndFields.__TextFieldData);
+                    }
+                    else
+                    {
+                        if (DotNetHelper.IsEnumeration(propertyType))
+                        {
+                            column = _factory.create(_formAndFields.__SubElementFieldData);
+                        }
+                        else
+                        {
+                            column = _factory.create(_formAndFields.__ReferenceFieldData);
+                            column.set(_FormAndFields._ReferenceFieldData.isSelectionInline, false);
+                        }
+                    }
+
+                    column.set(_FormAndFields._TextFieldData.name, property);
+                    column.set(_FormAndFields._TextFieldData.title, property);
+
+                    form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
+                }
+
+                var value = ((IObject) item).get(property);
+                column.set(_FormAndFields._FieldData.isEnumeration,
+                    column.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration) | value is IEnumerable &&
+                    !(value is string));
+            }
+        }
+
+        /// <summary>
+        /// Adds the fields for the form by going through the properties of the metaclass
+        /// </summary>
+        /// <param name="form">Form that will be extended</param>
+        /// <param name="metaClass">Metaclass to be used</param>
+        /// <param name="creationMode">Creation Mode to be used</param>
+        /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
+        private bool AddToFormByMetaclass(IElement form, IElement metaClass, CreationMode creationMode)
         {
             var wasInMetaClass = false;
             if (metaClass == null)
@@ -314,7 +372,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     continue;
                 }
 
-                var column = GetFieldForProperty(property);
+                var column = GetFieldForProperty(property, creationMode);
 
                 form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
             }
@@ -326,10 +384,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// Gets the field data, depending upon the given property
         /// </summary>
         /// <param name="property">Property which is requesting a field</param>
+        /// <param name="creationMode">Defines the mode how to create the fields</param>
         /// <returns>The field data</returns>
-        public IElement GetFieldForProperty(IElement property)
+        public IElement GetFieldForProperty(IElement property, CreationMode creationMode)
         {
             var propertyType = PropertyHelper.GetPropertyType(property);
+            var isForListForm = creationMode.HasFlag(CreationMode.ForListForms);
 
             if (propertyType != null)
             {
@@ -350,13 +410,13 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             // Check, if field property is an enumeration
             var uriResolver = propertyType.GetUriResolver();
-            var stringType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String",
+            _stringType = _stringType ?? uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String",
                 ResolveType.Default);
-            var integerType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer",
+            _integerType = _integerType ?? uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer",
                 ResolveType.Default);
-            var booleanType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Boolean",
+            _booleanType = _booleanType ?? uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Boolean",
                 ResolveType.Default);
-            var realType = uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real",
+            _realType = _realType ?? uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real",
                 ResolveType.Default);
 
             // Checks, if the property is an enumeration. 
@@ -365,7 +425,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 var umlTypeExtent = propertyType.metaclass.GetUriExtentOf();
                 var uml = umlTypeExtent.GetWorkspace().Get<_UML>();
 
-                if (propertyType.metaclass.@equals(uml.SimpleClassifiers.__Enumeration))
+                if (propertyType.metaclass.@equals(uml.SimpleClassifiers.__Enumeration) && !isForListForm)
                 {
                     var comboBox = _factory.create(_formAndFields.__DropDownFieldData);
                     comboBox.set(_FormAndFields._DropDownFieldData.name, propertyName);
@@ -382,7 +442,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     return comboBox;
                 }
 
-                if (propertyType.@equals(booleanType))
+                if (propertyType.@equals(_booleanType) && !isForListForm)
                 {
                     var checkbox = _factory.create(_formAndFields.__CheckboxFieldData);
                     checkbox.set(_FormAndFields._CheckboxFieldData.name, propertyName);
@@ -390,11 +450,10 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     return checkbox;
                 }
 
-                if (!propertyType.@equals(stringType) && !propertyType.@equals(integerType) && !propertyType.@equals(realType))
+                if (!propertyType.@equals(_stringType) && !propertyType.@equals(_integerType) && !propertyType.@equals(_realType) && !isForListForm)
                 {
                     if (property.getOrDefault<int>(_UML._CommonStructure._MultiplicityElement.upper) > 1)
                     {
-
                         var elements = _factory.create(_formAndFields.__SubElementFieldData);
                         elements.set(_FormAndFields._SubElementFieldData.name, propertyName);
                         elements.set(_FormAndFields._SubElementFieldData.title, propertyName);
@@ -418,7 +477,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             column.set(_FormAndFields._TextFieldData.title, propertyName);
 
             // If propertyType is an integer, the field can be smaller
-            if (propertyType.@equals(integerType))
+            if (propertyType.@equals(_integerType))
             {
                 column.set(_FormAndFields._TextFieldData.width, 10);
             }
@@ -529,7 +588,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             }
 
             var result = _factory.create(_formAndFields.__ListForm);
-            AddToFormByMetaclass(result, metaClass);
+            AddToFormByMetaclass(result, metaClass, creationMode);
             result.set(_FormAndFields._ListForm.property, propertyName);
             result.set(_FormAndFields._ListForm.title, $"{propertyName} - {NamedElementMethods.GetName(metaClass)}");
             return result;

@@ -75,7 +75,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                         }
                     },
                     "",
-                    NavigationCategories.Views);
+                    NavigationCategories.Views + ".Forms");
 
                 yield return openView;
 
@@ -98,7 +98,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
 
                         },
                         "",
-                        NavigationCategories.Views);
+                        NavigationCategories.Views + ".Forms");
 
                     yield return showFormDefinition;
 
@@ -117,7 +117,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                                 copiedForm);
                         },
                         "",
-                        NavigationCategories.Views);
+                        NavigationCategories.Views + ".Forms");
 
                     yield return copyFormDefinition;
                 }

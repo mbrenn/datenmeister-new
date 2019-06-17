@@ -51,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\DataViews\" />
-    <Folder Include="Models\ItemsAndExtents\" />
     <Folder Include="Models\ManagementProvider\" />
   </ItemGroup>
   <ItemGroup>

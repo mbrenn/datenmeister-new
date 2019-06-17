@@ -7,12 +7,15 @@ using System.Windows;
 using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Lists;
+using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.WPF.Navigation
 {
@@ -49,8 +52,15 @@ namespace DatenMeister.WPF.Navigation
             var formElement = NamedElementMethods.GetByFullName(
                 viewExtent,
                 ManagementViewDefinitions.PathNewWorkspaceForm);
+            if (formElement == null)
+            {
+                var creator = GiveMe.Scope.Resolve<FormCreator>();
+                var managementProvider =  GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
+                formElement = creator.CreateDetailFormByMetaClass(managementProvider.__CreateNewWorkspaceModel);
+            }
 
-            var result = await NavigatorForItems.NavigateToElementDetailViewAsync(navigationHost,
+            var result = await NavigatorForItems.NavigateToElementDetailViewAsync(
+                navigationHost,
                 new NavigateToItemConfig
                 {
                     FormDefinition = formElement

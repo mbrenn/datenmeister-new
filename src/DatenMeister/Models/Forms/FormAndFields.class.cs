@@ -381,10 +381,14 @@ namespace DatenMeister.Models.Forms
         {
             public static string @Detail = "Detail";
             public IElement @__Detail = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType-Detail");
+            public static string @TreeItemExtent = "TreeItemExtent";
+            public IElement @__TreeItemExtent = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType-TreeItemExtent");
             public static string @TreeItemList = "TreeItemList";
             public IElement @__TreeItemList = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType-TreeItemList");
             public static string @TreeItemDetail = "TreeItemDetail";
             public IElement @__TreeItemDetail = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType-TreeItemDetail");
+            public static string @ObjectList = "ObjectList";
+            public IElement @__ObjectList = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType-ObjectList");
 
         }
 

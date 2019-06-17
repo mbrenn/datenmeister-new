@@ -335,6 +335,10 @@ namespace DatenMeister.WPF.Windows
             {
                 EffectiveForm = viewLogic.GetDetailForm(DetailElement, DetailElement.GetUriExtentOf(), _viewDefinition.Mode);
             }
+            else if (_viewDefinition.Mode == ViewDefinitionMode.Specific)
+            {
+                EffectiveForm = _viewDefinition.Element;
+            }
 
             // Clones the EffectiveForm
             EffectiveForm = ObjectCopier.Copy(new MofFactory(EffectiveForm), EffectiveForm);

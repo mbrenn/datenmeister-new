@@ -115,6 +115,27 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         }
 
         /// <summary>
+        /// Creates a detail form by using the metaclass of the given element
+        /// </summary>
+        /// <param name="metaClass">Metaclass to which the form will be created</param>
+        /// <param name="creationMode">The creation mode being used</param>
+        /// <returns>The created form for the metaclass</returns>
+        public IElement CreateDetailFormByMetaClass(IElement metaClass, CreationMode creationMode = CreationMode.All)
+        {
+            var createdForm = _factory.create(_formAndFields.__DetailForm);
+            createdForm.set(_FormAndFields._DetailForm.name, "Item");
+
+            if (creationMode.HasFlag(CreationMode.AddMetaClass))
+            {
+                createdForm.set(_FormAndFields._DetailForm.hideMetaInformation, true);
+            }
+
+            AddToFormByMetaclass(createdForm, metaClass, creationMode);
+
+            return createdForm;
+        }
+
+        /// <summary>
         /// Creates an extent form containing the subforms
         /// </summary>
         /// <returns>The created extent</returns>
@@ -385,7 +406,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             }
 
             var classifierMethods = ClassifierMethods.GetPropertiesOfClassifier(metaClass).Where(x => x.isSet("name")).ToList();
-            foreach (var property in classifierMethods.OrderBy(x => x.get("name").ToString()))
+            foreach (var property in classifierMethods/*.OrderBy(x => x.get("name").ToString())*/)
             {
                 wasInMetaClass = true;
                 var propertyName = property.get("name").ToString();

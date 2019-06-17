@@ -88,6 +88,25 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                                 }
                             }
                         }
+                        if(name == "CreateNewWorkspaceModel") // Looking for class
+                        {
+                            tree.__CreateNewWorkspaceModel = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "id") // Looking for property
+                                {
+                                    tree.CreateNewWorkspaceModel._id = value;
+                                }
+                                if(name == "annotation") // Looking for property
+                                {
+                                    tree.CreateNewWorkspaceModel._annotation = value;
+                                }
+                            }
+                        }
                     }
                 }
             }

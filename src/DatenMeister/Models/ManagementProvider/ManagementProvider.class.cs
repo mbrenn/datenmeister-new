@@ -45,6 +45,19 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         public _Workspace @Workspace = new _Workspace();
         public IElement @__Workspace = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.Workspace");
 
+        public class _CreateNewWorkspaceModel
+        {
+            public static string @id = "id";
+            public IElement _id = null;
+
+            public static string @annotation = "annotation";
+            public IElement _annotation = null;
+
+        }
+
+        public _CreateNewWorkspaceModel @CreateNewWorkspaceModel = new _CreateNewWorkspaceModel();
+        public IElement @__CreateNewWorkspaceModel = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.FormViewModels.CreateNewWorkspaceModel");
+
         public static _ManagementProvider TheOne = new _ManagementProvider();
 
     }

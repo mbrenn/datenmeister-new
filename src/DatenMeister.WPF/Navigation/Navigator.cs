@@ -107,7 +107,8 @@ namespace DatenMeister.WPF.Navigation
 
             detailFormWindow.SetContent(
                 navigateToItemConfig.DetailElement, 
-                new ViewDefinition(navigateToItemConfig.FormDefinition), navigateToItemConfig.DetailElementContainer);
+                new ViewDefinition(navigateToItemConfig.FormDefinition), 
+                navigateToItemConfig.DetailElementContainer);
 
             detailFormWindow.Cancelled += (x, y) =>
             {

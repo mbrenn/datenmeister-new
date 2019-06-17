@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DatenMeister.Provider.ManagementProviders.Model.FormViewModels;
 
 namespace DatenMeister.Provider.ManagementProviders.Model
 {
@@ -14,7 +15,8 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         public static IEnumerable<Type> AllTypes => new[]
         {
             typeof(Extent),
-            typeof(Workspace)
+            typeof(Workspace),
+            typeof(CreateNewWorkspaceModel)
         };
     }
 }

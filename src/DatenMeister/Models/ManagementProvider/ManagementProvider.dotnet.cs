@@ -37,6 +37,13 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                 filledStructure.__Workspace = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
+            {
+                var type = typeof(DatenMeister.Provider.ManagementProviders.Model.FormViewModels.CreateNewWorkspaceModel);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__CreateNewWorkspaceModel = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
         }
     }
 }

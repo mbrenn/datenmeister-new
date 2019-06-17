@@ -99,13 +99,17 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 ?? _FormAndFields.TheOne;
         }
 
-        public IElement CreateDetailForm (IObject element)
+        public IElement CreateDetailForm (IObject element, CreationMode creationMode = CreationMode.All)
         {
             var createdForm = _factory.create(_formAndFields.__DetailForm);
             createdForm.set(_FormAndFields._DetailForm.name, "Item");
-            createdForm.set(_FormAndFields._DetailForm.hideMetaInformation, true);
 
-            AddToForm(createdForm, element, FormCreator.CreationMode.All);
+            if (creationMode.HasFlag(CreationMode.AddMetaClass))
+            {
+                createdForm.set(_FormAndFields._DetailForm.hideMetaInformation, true);
+            }
+
+            AddToForm(createdForm, element, creationMode);
 
             return createdForm;
         }

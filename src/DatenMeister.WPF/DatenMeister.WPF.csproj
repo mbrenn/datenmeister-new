@@ -87,6 +87,7 @@
     <Compile Include="Forms\Detail\Fields\FieldFactory.cs" />
     <Compile Include="Forms\Detail\Fields\FileReferenceField.cs" />
     <Compile Include="Forms\Detail\Fields\IDetailField.cs" />
+    <Compile Include="Forms\Detail\Fields\MetaClassElementField.cs" />
     <Compile Include="Forms\Detail\Fields\ReadOnlyListField.cs" />
     <Compile Include="Forms\Detail\Fields\ReferenceField.cs" />
     <Compile Include="Forms\Detail\Fields\SeparatorLineField.cs" />

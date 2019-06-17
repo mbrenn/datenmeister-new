@@ -54,7 +54,6 @@ namespace DatenMeister.WPF.Navigation
                 new NavigateToItemConfig
                 {
                     FormDefinition = formElement
-
                 });
 
             if (result.Result == NavigationResult.Saved)

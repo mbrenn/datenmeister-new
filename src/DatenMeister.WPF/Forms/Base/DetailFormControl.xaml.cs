@@ -367,11 +367,11 @@ namespace DatenMeister.WPF.Forms.Base
                     CreateRowForField("Url w/ ID:", mofElement.GetUri(), true);
                     CreateRowForField("Url w/Fullname:", $"{uriExtentText}?{fullName}", true);
 
-                        var metaClass = (DetailElement as IElement)?.getMetaClass();
-                        CreateRowForField(
-                            "Meta Class:",
-                            metaClass == null ? string.Empty : NamedElementMethods.GetFullName(metaClass),
-                            true);
+                    var metaClass = (DetailElement as IElement)?.getMetaClass();
+                    CreateRowForField(
+                        "Meta Class:",
+                        metaClass == null ? string.Empty : NamedElementMethods.GetFullName(metaClass),
+                        true);
                 }
             }
 
@@ -391,34 +391,31 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 var flags = new FieldParameter();
 
-                var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
-                if (fieldType == MetaClassElementFieldData.FieldType)
-                {
-                    continue;
-                }
-                
                 var (detailElement, contentBlock) =
                     FieldFactory.GetUIElementFor(DetailElement, field, this, flags);
 
-                if (!flags.IsSpanned)
+                if (contentBlock != null)
                 {
-                    var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
-                    var isReadOnly = field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
-
-                    // Sets the title block
-                    var titleBlock = new TextBlock
+                    if (!flags.IsSpanned)
                     {
-                        Text = string.IsNullOrEmpty(title) ? "" : $"{title}: ",
-                        IsEnabled = !isReadOnly
-                    };
+                        var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
+                        var isReadOnly = field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
 
-                    CreateRowForField(titleBlock, contentBlock);
+                        // Sets the title block
+                        var titleBlock = new TextBlock
+                        {
+                            Text = string.IsNullOrEmpty(title) ? "" : $"{title}: ",
+                            IsEnabled = !isReadOnly
+                        };
+
+                        CreateRowForField(titleBlock, contentBlock);
+                    }
+                    else
+                    {
+                        CreateSpannedRow(contentBlock);
+                    }
                 }
-                else
-                {
-                    CreateSpannedRow(contentBlock);
-                }
-            
+
                 // Checks whether the control element shall be stored in
                 // the detail element itself or within the attached fields
                 if (field.getOrNull<bool>(_FormAndFields._FieldData.isAttached) == true)
@@ -431,7 +428,7 @@ namespace DatenMeister.WPF.Forms.Base
                 }
 
                 // Check, if element shall be focused
-                if (!anyFocused && flags.CanBeFocused)
+                if (!anyFocused && flags.CanBeFocused && contentBlock != null)
                 {
                     // For what ever, we have to set the focus via the invoking and not directly
                     Dispatcher.BeginInvoke((Action)(() =>
@@ -484,7 +481,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="keyText">Text to be added</param>
         /// <param name="valueText">Value to be added</param>
         /// <param name="selectable">True, if the user can copy the content to the clipboard.</param>
-        private void CreateRowForField(string keyText, string valueText, bool selectable = false)
+        public void CreateRowForField(string keyText, string valueText, bool selectable = false)
         {
             var valueTextBlock = new TextBlock {Text = valueText};
 
@@ -508,7 +505,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         /// <param name="propertyKey">UIElement for the left column</param>
         /// <param name="propertyValue">UIElement for the right column</param>
-        private void CreateRowForField(UIElement propertyKey, UIElement propertyValue)
+        public void CreateRowForField(UIElement propertyKey, UIElement propertyValue)
         {
             DataGrid.RowDefinitions.Add(new RowDefinition());
 
@@ -529,7 +526,7 @@ namespace DatenMeister.WPF.Forms.Base
         ///     columns.
         /// </summary>
         /// <param name="element">Element to be included</param>
-        private void CreateSpannedRow(UIElement element)
+        public void CreateSpannedRow(UIElement element)
         {
             DataGrid.RowDefinitions.Add(new RowDefinition());
 
@@ -544,7 +541,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Creates a separation line
         /// </summary>
-        private void CreateSeparator()
+        public void CreateSeparator()
         {
             DataGrid.RowDefinitions.Add(new RowDefinition());
             var line = new Canvas

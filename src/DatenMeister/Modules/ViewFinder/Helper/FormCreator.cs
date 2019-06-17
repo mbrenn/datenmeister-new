@@ -103,6 +103,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         {
             var createdForm = _factory.create(_formAndFields.__DetailForm);
             createdForm.set(_FormAndFields._DetailForm.name, "Item");
+            createdForm.set(_FormAndFields._DetailForm.hideMetaInformation, true);
 
             AddToForm(createdForm, element, FormCreator.CreationMode.All);
 

@@ -33,6 +33,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                         return new ReferenceField();
                     case CheckboxFieldData.FieldType:
                         return new CheckboxField();
+                    case MetaClassElementFieldData.FieldType:
+                        return new MetaClassElementField();
                     default:
                         if (isEnumeration)
                         {
@@ -70,6 +72,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                         return new CheckboxField();
                     case "DatenMeister.Models.Forms.TextboxFieldData":
                         return new TextboxField();
+                    case "DatenMeister.Models.Forms.MetaClassElementFieldData":
+                        return new MetaClassElementField();
                     default:
                         if (isEnumeration)
                         {

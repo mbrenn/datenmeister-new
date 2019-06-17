@@ -330,6 +330,7 @@ namespace DatenMeister.WPF.Windows
         private void UpdateActualViewDefinition()
         {
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+
             if (_viewDefinition.Mode == ViewDefinitionMode.Default)
             {
                 EffectiveForm = viewLogic.GetDetailForm(DetailElement, DetailElement.GetUriExtentOf(), _viewDefinition.Mode);

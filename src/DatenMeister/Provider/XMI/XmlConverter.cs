@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.EMOF;
+using DatenMeister.Provider.XMI.Standards;
 using DatenMeister.Runtime.Copier;
 
 namespace DatenMeister.Provider.XMI
@@ -14,6 +15,11 @@ namespace DatenMeister.Provider.XMI
     public class XmlConverter
     {
         private readonly MofExtent _extent;
+
+        /// <summary>
+        /// Ignores the ids
+        /// </summary>
+        public bool SkipIds { get; set; }
 
         public XmlConverter()
         {
@@ -29,10 +35,18 @@ namespace DatenMeister.Provider.XMI
         public XElement ConvertToXml(IObject element)
         {
             var copier = new ObjectCopier(new MofFactory(_extent));
+
             var result = (MofElement) copier.Copy(element);
+            var xmlNode = ((XmiProviderObject)result.ProviderObject).XmlNode;
+            if (SkipIds)
+            {
+                foreach (var node in xmlNode.DescendantNodesAndSelf().OfType<XElement>())
+                {
+                    node.Attribute(XmiId.IdAttributeName)?.Remove();
+                }
+            }
 
-
-            return ((XmiProviderObject) result.ProviderObject).XmlNode;
+            return xmlNode;
         }
 
         /// <summary>
@@ -53,7 +67,17 @@ namespace DatenMeister.Provider.XMI
 
             rootItem.set("items", list);
 
-            return ((XmiProviderObject) rootItem.ProviderObject).XmlNode;
+            var xmlNode = ((XmiProviderObject) rootItem.ProviderObject).XmlNode;
+
+            if (SkipIds)
+            {
+                foreach (var node in xmlNode.DescendantNodesAndSelf().OfType<XElement>())
+                {
+                    node.Attribute(XmiId.IdAttributeName)?.Remove();
+                }
+            }
+
+            return xmlNode;
         }
 
         /// <summary>

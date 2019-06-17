@@ -12,6 +12,9 @@ namespace DatenMeister.WPF.Windows
     /// </summary>
     public partial class ItemXmlViewWindow : Window
     {
+        private IReflectiveCollection _usedReflectiveCollection;
+
+        private IObject _usedObject;
         public bool SupportWriting
         {
             get => UpdateButton.Visibility == Visibility.Collapsed;
@@ -44,9 +47,11 @@ namespace DatenMeister.WPF.Windows
         /// <param name="elements">Items to be shown</param>
         public void UpdateContent(IReflectiveCollection elements)
         {
-            var xmiConverter = new XmlConverter();
-            var element = xmiConverter.ConvertToXml(elements);
-            XmlTextField.Text = element.ToString();
+            _usedReflectiveCollection = elements;
+            _usedObject = null;
+
+            UpdateContent();
+
         }
 
         /// <summary>
@@ -68,15 +73,29 @@ namespace DatenMeister.WPF.Windows
         /// <param name="item">Item to be shown</param>
         public void UpdateContent(IObject item)
         {
-            if (item == null)
+            _usedReflectiveCollection = null;
+            _usedObject = item;
+
+            UpdateContent();
+        }
+
+        public void UpdateContent()
+        {
+            var converter = new XmlConverter();
+            converter.SkipIds = IgnoreIDs.IsChecked == true;
+            if ( _usedReflectiveCollection != null )
             {
-                XmlTextField.Text = string.Empty;
+                var element = converter.ConvertToXml(_usedReflectiveCollection);
+                XmlTextField.Text = element.ToString();
+            }
+            else if (_usedObject != null)
+            {
+                var element = converter.ConvertToXml(_usedObject);
+                XmlTextField.Text = element.ToString();
             }
             else
             {
-                var xmiConverter = new XmlConverter();
-                var element = xmiConverter.ConvertToXml(item);
-                XmlTextField.Text = element.ToString();
+                XmlTextField.Text = string.Empty;
             }
         }
 
@@ -107,5 +126,9 @@ namespace DatenMeister.WPF.Windows
                 set;
             }
         }*/
+        private void Ignore_IDs_OnClick(object sender, RoutedEventArgs e)
+        {
+            UpdateContent();
+        }
     }
 }

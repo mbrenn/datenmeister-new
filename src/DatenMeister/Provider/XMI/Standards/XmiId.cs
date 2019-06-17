@@ -10,6 +10,11 @@ namespace DatenMeister.Provider.XMI.Standards
     public static class XmiId
     {
         /// <summary>
+        /// Gets the name of the attribute for the id
+        /// </summary>
+        public static XName IdAttributeName { get; } = Namespaces.Xmi + "id";
+        
+        /// <summary>
         /// Verifies of the given document is valid and does not have duplicates
         /// </summary>
         /// <param name="document">Document to be verified</param>

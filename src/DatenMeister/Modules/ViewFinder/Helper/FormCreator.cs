@@ -519,11 +519,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         {
             var extentForm = _factory.create(_formAndFields.__ExtentForm);
             extentForm.set(_FormAndFields._ExtentForm.name, NamedElementMethods.GetName(element));
+            var objectMetaClass = (element as IElement)?.getMetaClass();
 
             var tabs = new List<IElement>();
 
             // Get all properties
-            var properties = (element as IObjectAllProperties)?.getPropertiesBeingSet();
+            var properties = (element as IObjectAllProperties)?.getPropertiesBeingSet().ToList();
             if (properties == null)
             {
                 throw new InvalidOperationException("ExtentForm cannot be created because given element is not of Type IObjectAllProperties");
@@ -537,15 +538,29 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 select new {propertyName = p, propertyContent};
 
             var propertiesWithoutCollection =
-                from p in properties
+                (from p in properties
                 where !element.IsPropertyOfType<IReflectiveCollection>(p)
                 let propertyContent = element.get(p)
                 where propertyContent != null
-                select new { propertyName = p, propertyContent };
+                select new {propertyName = p, propertyContent}).ToList();
 
             if (propertiesWithoutCollection.Any())
             {
-                var detailForm = _factory.create(_formAndFields.__ExtentForm);
+                var detailForm = _factory.create(_formAndFields.__DetailForm);
+                var fields = new List<IElement>();
+
+                foreach (var pair in propertiesWithoutCollection)
+                {
+                    if (objectMetaClass != null)
+                    {
+                        var property = ClassifierMethods.GetPropertyOfClassifier(objectMetaClass, pair.propertyName);
+                        var field = GetFieldForProperty(property, CreationMode.All);
+                        fields.Add(field);
+                    }
+                }
+
+                detailForm.set(_FormAndFields._DetailForm.field, fields);
+                tabs.Add(detailForm);
             }
 
             foreach (var pair in propertiesWithCollection)
@@ -591,8 +606,9 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                     tabs.Add(form);
                 }
-
             }
+
+            extentForm.set(_FormAndFields._ExtentForm.tab, tabs);
 
             return extentForm;
         }

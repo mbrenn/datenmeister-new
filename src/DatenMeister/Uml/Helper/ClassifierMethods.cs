@@ -45,6 +45,22 @@ namespace DatenMeister.Uml.Helper
         }
 
         /// <summary>
+        /// Gets the property of a classifier by name
+        /// </summary>
+        /// <param name="classifier">Classifier being queried</param>
+        /// <param name="propertyName">Name of the propertyf</param>
+        /// <returns>The found property</returns>
+        public static IElement GetPropertyOfClassifier(IElement classifier, string propertyName)
+        {
+
+            if (classifier == null) throw new ArgumentNullException(nameof(classifier));
+
+            var properties = GetPropertiesOfClassifier(classifier);
+            return properties.FirstOrDefault(x => x.get<string>(_UML._CommonStructure._NamedElement.name) == propertyName);
+            
+        }
+
+        /// <summary>
         /// Gets all generalizations of the given elements
         /// </summary>
         /// <param name="classifier">Classifier, whose generalizations are requested</param>

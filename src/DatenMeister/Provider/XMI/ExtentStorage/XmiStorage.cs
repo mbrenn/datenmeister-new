@@ -66,7 +66,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 new XElement(XmiProvider.DefaultRootNodeName));
 
             // Try to create file, to verify that file access and other activities are given
-            File.WriteAllText(xmiConfiguration.filePath, string.Empty);
+            xmlDocument.Save(xmiConfiguration.filePath);
             return xmlDocument;
         }
 

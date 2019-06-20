@@ -6,15 +6,15 @@ cd modules
 
 if (Test-Path $moduleName) {
 	Write-Host "Pulling DatenMeister.Icon"
-	cd DatenMeiser.Icons
+	cd DatenMeister.Icons
 	git pull
 	cd ..
-	Break Script
 }
 else {
 	Write-Host "Cloning DatenMeister.Icons"
 	mkdir DatenMeister.Icons
-	git clone -b develop https://github.com/mbrenn/burnsystems.git modules/DatenMeister.Icons
+	cd DatenMeister.Icons
+	git clone -b master ssh://mbrenn@ratte-ubuntu/~/git/DatenMeister.Icons .
 	cd ..
 }
 

@@ -4,6 +4,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Helper;
 using DatenMeister.Provider;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -36,6 +37,7 @@ namespace DatenMeister.Excel.ProviderLoader
             };
 
             var extent = (MofExtent) _extentManager.LoadExtent(xmiConfiguration, true);
+            extent.elements().RemoveAll();
 
             // Loads the excelinformation into the extent
             ExcelReferenceLoader.ImportExcelIntoExtent(extent, settings);

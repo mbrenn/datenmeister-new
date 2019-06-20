@@ -150,7 +150,6 @@ namespace DatenMeister.Excel.Helper
         /// </summary>
         public int GuessColumnCount()
         {
-
             var foundSheet = GetSelectedSheet();
             if (foundSheet == null) return -1;
 

@@ -33,6 +33,11 @@ namespace DatenMeister.Runtime.Copier
         /// Gets or sets a value indicating whether references shall be cloned, so there will no UriReferences
         /// </summary>
         public bool CloneAllReferences { get; set; }
+
+        /// <summary>
+        /// True, if only the primitive elements shall be copied and not any recursion
+        /// </summary>
+        public bool NoRecursion { get; set; }
     }
 
     /// <summary>
@@ -126,6 +131,7 @@ namespace DatenMeister.Runtime.Copier
         private object CopyValue(object value, IElement containingElement, CopyOption copyOptions = null)
         {
             copyOptions = copyOptions ?? CopyOptions.None;
+            var noRecursion = copyOptions.NoRecursion;
 
             if (value == null)
             {
@@ -134,6 +140,11 @@ namespace DatenMeister.Runtime.Copier
 
             if (value is IElement valueAsElement)
             {
+                if (noRecursion)
+                {
+                    return null;
+                }
+
                 var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
                 if (propertyExtent == null || propertyExtent == _sourceExtent || copyOptions.CloneAllReferences)
                 {
@@ -152,6 +163,11 @@ namespace DatenMeister.Runtime.Copier
 
             if (value is IReflectiveCollection valueAsCollection)
             {
+                if (noRecursion)
+                {
+                    return null;
+                }
+
                 return valueAsCollection
                     .Select(innerValue => CopyValue(innerValue, containingElement, copyOptions));
             }

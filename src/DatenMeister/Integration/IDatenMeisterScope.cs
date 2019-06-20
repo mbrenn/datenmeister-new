@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Integration
@@ -9,5 +10,10 @@ namespace DatenMeister.Integration
         /// Gets the logic for the workspaces
         /// </summary>
         IWorkspaceLogic WorkspaceLogic { get; }
+
+        /// <summary>
+        /// This event is called before the element is being disposed
+        /// </summary>
+        event EventHandler BeforeDisposing;
     }
 }

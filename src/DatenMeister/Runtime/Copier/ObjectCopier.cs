@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -212,6 +213,25 @@ namespace DatenMeister.Runtime.Copier
         public static IObject CopyForTemporary(IObject value)
         {
             return Copy(InMemoryObject.TemporaryFactory, value, CopyOptions.None);
+        }
+
+        /// <summary>
+        /// Copies the element for a temporary usage. Here, the in memory Object will be used
+        /// </summary>
+        /// <param name="value">Value to copied</param>
+        /// <returns>Element being copied</returns>
+        public static IReflectiveCollection CopyForTemporary(IReflectiveCollection value, CopyOption copyOptions = null)
+        {
+            var temp = new TemporaryReflectiveCollection();
+            copyOptions = copyOptions ?? CopyOptions.None;
+
+            foreach (var item in value.OfType<IObject>())
+            {
+                temp.add(Copy(InMemoryObject.TemporaryFactory, item, copyOptions));
+            }
+
+            return temp;
+
         }
     }
 }

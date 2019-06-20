@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using BurnSystems.Logging;
@@ -71,7 +72,13 @@ namespace DatenMeister.Integration
             kernel.RegisterInstance(_settings).As<IntegrationSettings>();
             kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
-            // Creates the database path for the DatenMeister
+            // Creates the database path for the DatenMeister. 
+            // and avoids to have a non-rooted path because it will lead to double creation of assemblies
+            if (!Path.IsPathRooted(_settings.DatabasePath))
+            {
+                var assemblyDirectoryName = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                _settings.DatabasePath = Path.Combine(assemblyDirectoryName, _settings.DatabasePath);
+            }
             if (!Directory.Exists(_settings.DatabasePath))
             {
                 Directory.CreateDirectory(_settings.DatabasePath);

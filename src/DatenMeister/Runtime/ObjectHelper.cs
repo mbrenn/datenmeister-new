@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DatenMeister.Core.EMOF.Implementation;
@@ -100,6 +101,16 @@ namespace DatenMeister.Runtime
             if (typeof(T) == typeof(IReflectiveSequence))
             {
                 return (T)(object)new MofReflectiveSequence((MofObject)value, property);
+            }
+
+            if (typeof(T) == typeof(DateTime))
+            {
+                if (DateTime.TryParse(value.GetAsSingle(property).ToString(), CultureInfo.InvariantCulture, DateTimeStyles.None, out var result))
+                {
+                    return (T)(object) result;
+                }
+
+                return (T)(object) DateTime.MinValue;
             }
 
             if (typeof(T).IsEnum)
@@ -248,12 +259,14 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Object which will receive the values</param>
         /// <param name="properties">Properties to be set</param>
-        public static void SetProperties(this IObject value, IDictionary<string, object> properties)
+        public static IObject SetProperties(this IObject value, IDictionary<string, object> properties)
         {
             foreach (var pair in properties)
             {
                 value.set(pair.Key, pair.Value);
             }
+
+            return value;
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Plugins;
+using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.InMemory;
@@ -30,11 +31,13 @@ namespace DatenMeister.Modules.ViewFinder
         public const string ViewExtentType = "DatenMeister.Views";
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentCreator _extentCreator;
+        private readonly IntegrationSettings _integrationSettings;
 
-        public ViewLogic(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator)
+        public ViewLogic(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator, IntegrationSettings integrationSettings)
         {
             _workspaceLogic = workspaceLogic;
             _extentCreator = extentCreator;
+            _integrationSettings = integrationSettings;
         }
 
         /// <summary>
@@ -59,7 +62,8 @@ namespace DatenMeister.Modules.ViewFinder
                         WorkspaceNames.NameManagement,
                         WorkspaceNames.UriUserViewExtent,
                         "DatenMeister.Views_User",
-                        ViewExtentType
+                        ViewExtentType,
+                        _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate
                     );
                     break;
             }

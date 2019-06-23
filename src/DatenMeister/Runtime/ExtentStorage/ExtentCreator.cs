@@ -45,7 +45,8 @@ namespace DatenMeister.Runtime.ExtentStorage
             string workspace,
             string uri,
             string name,
-            string extentType = null)
+            string extentType = null, 
+            ExtentCreationFlags extentCreationFlags = ExtentCreationFlags.LoadOrCreate)
         {
             // Creates the user types, if not existing
             var foundExtent = _workspaceLogic.FindExtent(uri);
@@ -61,7 +62,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     workspaceId = workspace
                 };
 
-                foundExtent = _extentManager.LoadExtent(storageConfiguration, ExtentCreationFlags.LoadOrCreate);
+                foundExtent = _extentManager.LoadExtent(storageConfiguration, extentCreationFlags);
 
                 if (extentType != null)
                 {

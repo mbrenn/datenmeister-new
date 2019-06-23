@@ -173,3 +173,4 @@ project.lock.json
 /src/.vs
 /src/DatenMeister.Web.Application/htdocs/img/icons
 /modules/DatenMeister.Icons
+src/.idea/*

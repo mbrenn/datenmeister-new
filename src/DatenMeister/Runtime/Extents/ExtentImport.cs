@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Runtime.Extents
@@ -30,7 +31,7 @@ namespace DatenMeister.Runtime.Extents
                 extentUri =  importSettings.newExtentUri,
                 filePath = importSettings.fileToBeExported,
                 workspaceId = importSettings.Workspace
-                    }, false);
+                    }, ExtentCreationFlags.LoadOnly);
 
             return resultingExtent;
         }

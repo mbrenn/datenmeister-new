@@ -23,7 +23,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 filePath = filename
             };
 
-            return extentManager.LoadExtent(xmiConfiguration, true);
+            return extentManager.LoadExtent(xmiConfiguration, ExtentCreationFlags.LoadOrCreate);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace DatenMeister.Excel.ProviderLoader
             return new ExcelProvider(workbook, settings);
         }
 
-        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty)
+        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
             var excelFile = (ExcelExtentSettings) configuration;
             var excelProvider = LoadProvider(excelFile);

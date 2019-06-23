@@ -261,7 +261,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
 
                 // Creates the extent
                 var loader = scope.Resolve<IExtentManager>();
-                var loadedExtent = loader.LoadExtent(storageConfiguration, true);
+                var loadedExtent = loader.LoadExtent(storageConfiguration, ExtentCreationFlags.LoadOrCreate);
 
                 // Includes some data
                 var factory = MofFactory.CreateByExtent(loadedExtent);
@@ -280,7 +280,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 // Reloads it
                 storageConfiguration.extentUri = "datenmeister:///test_new";
 
-                var newExtent = loader.LoadExtent(storageConfiguration, false);
+                var newExtent = loader.LoadExtent(storageConfiguration, ExtentCreationFlags.LoadOnly);
                 Assert.That(newExtent.elements().size(), Is.EqualTo(1));
                 Assert.That((newExtent.elements().ElementAt(0) as IElement).get("test"), Is.EqualTo("Test"));
             }

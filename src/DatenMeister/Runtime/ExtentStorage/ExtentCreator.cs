@@ -61,7 +61,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     workspaceId = workspace
                 };
 
-                foundExtent = _extentManager.LoadExtent(storageConfiguration, true);
+                foundExtent = _extentManager.LoadExtent(storageConfiguration, ExtentCreationFlags.LoadOrCreate);
 
                 if (extentType != null)
                 {

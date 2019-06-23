@@ -10,6 +10,7 @@ using DatenMeister.Excel.Integration;
 using DatenMeister.Integration;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
@@ -65,7 +66,7 @@ namespace DatenMeister.Tests.Excel
                 };
 
                 var extentManager = dm.Resolve<IExtentManager>();
-                var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, true);
+                var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
                 Assert.That(loadedExtent.elements().Count(), Is.GreaterThan(0));
 
                 var secondElement = loadedExtent.elements().ElementAtOrDefault(1) as IObject;
@@ -114,7 +115,7 @@ namespace DatenMeister.Tests.Excel
                 };
 
                 var extentManager = dm.Resolve<IExtentManager>();
-                var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, true);
+                var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOnly);
                 Assert.That(loadedExtent.elements().Count(), Is.GreaterThan(0));
 
                 var secondElement = loadedExtent.elements().ElementAtOrDefault(1) as IObject;

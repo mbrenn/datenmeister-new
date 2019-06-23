@@ -11,7 +11,7 @@ namespace DatenMeister.Provider.Xml
     [ConfiguredBy(typeof(XmlReferenceSettings))]
     public class XmlReferenceLoader : IProviderLoader
     {
-        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty)
+        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
             if (!(configuration is XmlReferenceSettings settings))
             {

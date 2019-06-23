@@ -16,6 +16,9 @@
         /// </summary>
         public bool EstablishDataEnvironment { get; set; } = true;
 
+        /// <summary>
+        /// Gets or sets the name of the database path in which the databases are stored per default
+        /// </summary>
         public string DatabasePath { get; set; }
 
         /// <summary>

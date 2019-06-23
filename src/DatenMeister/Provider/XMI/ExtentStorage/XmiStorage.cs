@@ -14,14 +14,14 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiStorage));
 
-        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)
+        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
             var xmiConfiguration = (XmiStorageConfiguration) configuration;
 
             XDocument xmlDocument;
-            if (!File.Exists(xmiConfiguration.filePath))
+            if (!File.Exists(xmiConfiguration.filePath) || extentCreationFlags == ExtentCreationFlags.CreateOnly)
             {
-                if (createAlsoEmpty)
+                if (extentCreationFlags != ExtentCreationFlags.LoadOnly)
                 {
                     xmlDocument = CreateEmptyXmiDocument(xmiConfiguration);
                 }

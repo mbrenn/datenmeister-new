@@ -5,6 +5,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Helper;
 using DatenMeister.Integration;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.WPF.Windows;
 using Microsoft.Win32;
@@ -45,12 +46,12 @@ namespace DatenMeister.WPF.Navigation
                         case ExcelImportType.AsCopy:
                             var importSettings =
                                 DotNetConverter.ConvertToDotNetObject<ExcelImportSettings>(dlg.GetConfigurationObject());
-                            GiveMe.Scope.Resolve<IExtentManager>().LoadExtent(importSettings, true);
+                            GiveMe.Scope.Resolve<IExtentManager>().LoadExtent(importSettings, ExtentCreationFlags.LoadOrCreate);
                             break;
                         case ExcelImportType.AsReference:
                             var referenceSettings =
                                 DotNetConverter.ConvertToDotNetObject<ExcelReferenceSettings>(dlg.GetConfigurationObject());
-                            GiveMe.Scope.Resolve<IExtentManager>().LoadExtent(referenceSettings, true);
+                            GiveMe.Scope.Resolve<IExtentManager>().LoadExtent(referenceSettings, ExtentCreationFlags.LoadOrCreate);
                             break;
                     }
 

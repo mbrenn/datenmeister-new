@@ -271,7 +271,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
                     try
                     {
-                        var loadedExtent = extentManager.LoadExtent(extentLoaderConfig, true);
+                        var loadedExtent = extentManager.LoadExtent(extentLoaderConfig, ExtentCreationFlags.LoadOrCreate);
                         Logger.Info($"User created extent via general dialog: {loadedExtent.contextURI()}");
                     }
                     catch (Exception exc)

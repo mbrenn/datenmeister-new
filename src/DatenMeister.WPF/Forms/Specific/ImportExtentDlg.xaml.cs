@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.Extents;
+using DatenMeister.Runtime.ExtentStorage;
 using Microsoft.Win32;
 
 namespace DatenMeister.WPF.Forms.Specific
@@ -46,11 +47,12 @@ namespace DatenMeister.WPF.Forms.Specific
                 try
                 {
                     var loader = new XmiStorage();
-                    var provider = loader.LoadProvider(new XmiStorageConfiguration()
-                    {
-                        filePath = sourceFilename.Text
-                    });
-                    
+                    var provider = loader.LoadProvider(new XmiStorageConfiguration
+                        {
+                            filePath = sourceFilename.Text
+                        },
+                        ExtentCreationFlags.LoadOnly);
+
                     var extent = new MofUriExtent(provider.Provider);
                     newExtentUri.Text = extent.contextURI();
                 }

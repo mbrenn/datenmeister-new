@@ -661,7 +661,8 @@ namespace DatenMeister.WPF.Forms.Base
                     null,
                     NavigationCategories.File + ".Views"));
 
-            ViewExtensions.Add(
+            // Forms can only be created for the complete Extent
+            /*ViewExtensions.Add(
                 new RibbonButtonDefinition(
                     "Show Form Definition",
                     ShowFormDefinition,
@@ -673,7 +674,7 @@ namespace DatenMeister.WPF.Forms.Base
                     "Create Form from current View",
                     CopyForm,
                     null,
-                    NavigationCategories.Views));
+                    NavigationCategories.Views));*/
 
             ViewExtensions.Add(
                 new RibbonButtonDefinition(

@@ -45,9 +45,10 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             // Finds the view
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-            var formElement = NamedElementMethods.GetByFullName(
+            var formElement = viewLogic.GetInternalViewExtent().element($"#{ManagementViewDefinitions.IdWorkspaceListView}");
+            /*var formElement = NamedElementMethods.GetByFullName(
                 viewLogic.GetInternalViewExtent(),
-                ManagementViewDefinitions.PathWorkspaceListView);
+                ManagementViewDefinitions.PathWorkspaceListView);*/
 
             if (formElement == null)
             {

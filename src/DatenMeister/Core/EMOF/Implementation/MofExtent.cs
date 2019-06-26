@@ -15,6 +15,9 @@ using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
+    /// <summary>
+    /// Implements the extent interface according the MOF specification
+    /// </summary>
     public class MofExtent : IExtent, IHasWorkspace
     {
         /// <summary>
@@ -73,10 +76,8 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                 return new MofObject(nullObject, this);
             }
-            else
-            {
-                return MetaXmiElement;
-            }
+
+            return MetaXmiElement;
         }
 
         /// <summary>
@@ -99,6 +100,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Initializes a new instance of the Extent 
         /// </summary>
         /// <param name="provider">Provider being used for the extent</param>
+        /// <param name="changeEventManager">The change event manager being used
+        /// to notify the system about changes in the event</param>
         public MofExtent(IProvider provider, ChangeEventManager changeEventManager = null)
         {
             ChangeEventManager = changeEventManager;
@@ -162,7 +165,10 @@ namespace DatenMeister.Core.EMOF.Implementation
             if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
                 ProviderCapability.StoreMetaDataInExtent)
             {
-                return Provider.Get(null)?.IsPropertySet(property) ?? false;
+                var nullObject = Provider.Get(null)??
+                                 throw new InvalidOperationException(
+                                     "Provider does not support setting of extent properties");
+                return nullObject.IsPropertySet(property);
             }
             else
             {
@@ -176,7 +182,12 @@ namespace DatenMeister.Core.EMOF.Implementation
             if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
                 ProviderCapability.StoreMetaDataInExtent)
             {
-                Provider.Get(null)?.DeleteProperty(property);
+                
+                var nullObject = Provider.Get(null)??
+                                 throw new InvalidOperationException(
+                                     "Provider does not support setting of extent properties");
+                
+                nullObject.DeleteProperty(property);
             }
             else
             {
@@ -233,7 +244,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="metaclassUri">Uri class to be retrieved</param>
         /// <param name="resolveType">The resolveing strategy</param>
-        /// <returns></returns>
+        /// <returns>Resolved .Net Type as IElement</returns>
         public Type ResolveDotNetType(string metaclassUri, ResolveType resolveType)
         {
             if (resolveType != ResolveType.OnlyMetaClasses)
@@ -262,7 +273,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Resolves the the given uri by looking through each meta workspace of the workspace
         /// </summary>
-        /// <param name="uri">Uri being retrieved</param>
+        /// <param name="metaclassUri">Uri being retrieved</param>
         /// <param name="workspace">Workspace whose meta workspaces were queried</param>
         /// <param name="alreadyVisited">Set of all workspaces already being visited. This avoid unnecessary recursion and unlimited recursion</param>
         /// <returns>Found element or null, if not found</returns>
@@ -271,7 +282,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             Workspace workspace,
             HashSet<Workspace> alreadyVisited = null)
         {
-            alreadyVisited = alreadyVisited ?? new HashSet<Runtime.Workspaces.Workspace>();
+            alreadyVisited = alreadyVisited ?? new HashSet<Workspace>();
             if (alreadyVisited.Contains(workspace))
             {
                 return null;

@@ -204,7 +204,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void set(string property, object value)
         {
             // Checks if the value is a default value. If yes, it can be removed...
-            if (MofUmlHelper.IsDefaultValue(this, property, value))
+            if (MofHelper.IsDefaultValue(this, property, value))
             {
                 ProviderObject.DeleteProperty(property);
                 return;

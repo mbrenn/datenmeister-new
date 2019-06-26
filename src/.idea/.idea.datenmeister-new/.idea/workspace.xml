@@ -1,0 +1,2077 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8a3b1e9e-1c47-49d5-9f2e-b33645e95ecd" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/FieldFactory.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1235">
+              <caret line="72" column="54" selection-start-line="72" selection-start-column="54" selection-end-line="72" selection-end-column="54" />
+              <folding>
+                <marker date="1561289423275" expanded="false" signature="6:182" ph="..." />
+                <marker date="1561289423275" expanded="true" signature="230:5405" ph="{...}" />
+                <marker date="1561289423275" expanded="true" signature="269:4830" ph="{...}" />
+                <marker date="1561289423275" expanded="true" signature="284:590" ph="/// Creates a specific field by the reading out the field type ... " />
+                <marker date="1561289423275" expanded="true" signature="668:3879" ph="{...}" />
+                <marker date="1561289423275" expanded="true" signature="905:2084" ph="{...}" />
+                <marker date="1561289423275" expanded="true" signature="954:2070" ph="{...}" />
+                <marker date="1561289423275" expanded="true" signature="1804:1916" ph="{...}" />
+                <marker date="1561289423275" expanded="true" signature="1945:2052" ph="{...}" />
+                <marker date="1561289423275" expanded="true" signature="2101:3869" ph="{...}" />
+                <marker date="1561289423275" expanded="true" signature="2246:2397" ph="{...}" />
+                <marker date="1561289423275" expanded="true" signature="2478:3855" ph="{...}" />
+                <marker date="1561289423275" expanded="true" signature="3589:3701" ph="{...}" />
+                <marker date="1561289423275" expanded="true" signature="3730:3837" ph="{...}" />
+                <marker date="1561289423275" expanded="true" signature="3889:4432" ph="/// Gets the UI Element for the given field and value ... " />
+                <marker date="1561289423275" expanded="true" signature="4613:4824" ph="{...}" />
+                <marker date="1561289423275" expanded="true" signature="4836:4926" ph="/// Defines possible field parameter for the creation ... " />
+                <marker date="1561289423275" expanded="true" signature="4958:5403" ph="{...}" />
+                <marker date="1561289423275" expanded="true" signature="4973:5163" ph="/// Defines whether the current field could be focussed. ... " />
+                <marker date="1561289423275" expanded="true" signature="5220:5353" ph="/// Gets or sets the information whether the element is spanned through the complete row ... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DatenMeister/Modules/ViewFinder/Helper/FormCreator.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="8721">
+              <caret line="488" selection-start-line="476" selection-start-column="12" selection-end-line="488" />
+              <folding>
+                <marker date="1561305928930" expanded="false" signature="6:543" ph="..." />
+                <marker date="1561305928930" expanded="true" signature="593:30919" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="600:725" ph="/// Creates a view out of the given extent, elements (collection) or element).  ... " />
+                <marker date="1561305928930" expanded="true" signature="754:30917" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="769:935" ph="/// Stores the reference to the view logic which is required to get the views ... " />
+                <marker date="1561305928930" expanded="true" signature="1051:1149" ph="/// Stores the factory to create the fields and forms ... " />
+                <marker date="1561305928930" expanded="true" signature="1203:1320" ph="/// Stores the information for form and fields including all metaclasses ... " />
+                <marker date="1561305928930" expanded="true" signature="1386:1453" ph="/// Defines the logger ... " />
+                <marker date="1561305928930" expanded="true" signature="1703:1776" ph="/// Stores the creation mode ... " />
+                <marker date="1561305928930" expanded="true" signature="1825:2943" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="1848:1970" ph="/// Allows the creation of forms by the metaclass of the given extent ... " />
+                <marker date="1561305928930" expanded="true" signature="2016:2133" ph="/// Allows the creation of forms by going through the properties ... " />
+                <marker date="1561305928930" expanded="true" signature="2180:2361" ph="/// Allowes the creation of forms by going through the propeerties only if ... " />
+                <marker date="1561305928930" expanded="true" signature="2423:2518" ph="/// Adds the metaclass itself to the form  ... " />
+                <marker date="1561305928930" expanded="true" signature="2565:2729" ph="/// Creates only fields that are usable in a list form. ... " />
+                <marker date="1561305928930" expanded="true" signature="2776:2873" ph="/// Creates all properties that are possible ... " />
+                <marker date="1561305928930" expanded="true" signature="2992:3456" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="3467:3864" ph="/// Creates a detail form by considering the the information that is stored within ... " />
+                <marker date="1561305928930" expanded="true" signature="3968:4408" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="4190:4305" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="4418:4762" ph="/// Creates a detail form by using the metaclass of the given element ... " />
+                <marker date="1561305928930" expanded="true" signature="4880:5333" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="5102:5217" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="5343:5488" ph="/// Creates an extent form containing the subforms ... " />
+                <marker date="1561305928930" expanded="true" signature="5557:5741" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="5751:6121" ph="/// Creates an extent form for the given extent by parsing through each element ... " />
+                <marker date="1561305928930" expanded="true" signature="6208:6298" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="6308:6662" ph="/// Creates the extent by parsing through all the elements and creation of fields ... " />
+                <marker date="1561305928930" expanded="true" signature="6762:9042" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="7493:7855" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="7715:7808" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="7913:8941" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="8104:8596" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="8143:8364" ph="/* Asks the view logic whether it has a list form for the specific metaclass ... */" />
+                <marker date="1561305928930" expanded="true" signature="8617:8820" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="9052:9444" ph="/// Creates the list form out of the elements in the reflective collection. ... " />
+                <marker date="1561305928930" expanded="true" signature="9542:10491" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="9756:10453" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="9931:10254" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="10020:10098" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="10328:10439" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="10501:10686" ph="/// Creates a list form for a certain metaclass ... " />
+                <marker date="1561305928930" expanded="true" signature="10772:11260" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="10847:10984" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="11270:11616" ph="/// Creates the form out of the given element.  ... " />
+                <marker date="1561305928930" expanded="true" signature="11701:13583" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="12097:12211" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="12225:12392" ph="/* Second phase: Get properties by the object iself ... */" />
+                <marker date="1561305928930" expanded="true" signature="12840:12933" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="13350:13573" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="13593:14058" ph="/// Adds the fields to the properties as given in the object itself. ... " />
+                <marker date="1561305928930" expanded="true" signature="14156:16949" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="14235:14361" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="14411:14582" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="14442:14544" ph="/* The object cannot be converted and FormCreator does not support ... */" />
+                <marker date="1561305928930" expanded="true" signature="14773:16939" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="15219:16670" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="15426:15598" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="15718:15844" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="15869:16400" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="15961:16105" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="16134:16378" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="16959:17396" ph="/// Adds the fields for the form by going through the properties of the metaclass ... " />
+                <marker date="1561305928930" expanded="true" signature="17500:18532" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="17585:17643" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="17829:18486" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="18242:18308" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="18542:18860" ph="/// Gets the field data, depending upon the given property ... " />
+                <marker date="1561305928930" expanded="true" signature="18950:25503" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="19564:19684" ph="/* uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + &quot;##String&quot;, ... */" />
+                <marker date="1561305928930" expanded="true" signature="19754:19875" ph="/* uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + &quot;##Integer&quot;, ... */" />
+                <marker date="1561305928930" expanded="true" signature="19945:20066" ph="/* uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + &quot;##Boolean&quot;, ... */" />
+                <marker date="1561305928930" expanded="true" signature="20127:20245" ph="/* uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + &quot;##Real&quot;, ... */" />
+                <marker date="1561305928930" expanded="true" signature="20293:23692" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="20547:23678" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="20676:21740" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="21346:21665" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="21819:22266" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="22444:23660" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="22622:23252" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="23743:24967" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="23932:24109" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="24130:24271" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="24576:24953" ph="/* Unknown property type, so just create something ... */" />
+                <marker date="1561305928930" expanded="true" signature="25368:25465" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="25513:25956" ph="/// Creates the extent form for a specific object which is selected in the item explorer view. ... " />
+                <marker date="1561305928930" expanded="true" signature="26066:29912" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="26554:26725" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="27449:28162" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="27660:28035" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="27727:28017" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="28222:29803" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="28418:28635" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="28471:28583" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="28855:29253" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="29093:29198" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="29315:29789" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="29922:30208" ph="/// Creates a list form for a certain metaclass being used inside an extent form ... " />
+                <marker date="1561305928930" expanded="true" signature="30334:30911" ph="{...}" />
+                <marker date="1561305928930" expanded="true" signature="30409:30546" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DatenMeister/Provider/XMI/EMOF/XmiProviderObject.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="6802">
+              <caret line="385" column="16" selection-start-line="385" selection-start-column="16" selection-end-line="385" selection-end-column="16" />
+              <folding>
+                <marker date="1561281920540" expanded="false" signature="6:206" ph="..." />
+                <marker date="1561281920540" expanded="true" signature="248:14590" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="255:350" ph="/// Abstracts the IObject from EMOF ... " />
+                <marker date="1561281920540" expanded="true" signature="403:14588" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="418:614" ph="/// Checks whether the given property name is valid. This conversion is used to store the data into the xml ... " />
+                <marker date="1561281920540" expanded="true" signature="682:856" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="728:788" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="866:1118" ph="/// Denormalizes the property names, so they can be stored into the xml.  ... " />
+                <marker date="1561281920540" expanded="true" signature="1188:1357" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="1235:1294" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="1447:1708" ph="/// Converts a property name to a property string used for references ... " />
+                <marker date="1561281920540" expanded="true" signature="1786:1848" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="1858:1924" ph="/// Gets the Xml Node ... " />
+                <marker date="1561281920540" expanded="true" signature="1989:2094" ph="/// Gets the id of the XmlElement ... " />
+                <marker date="1561281920540" expanded="true" signature="2119:2224" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="2305:2522" ph="/// Initializes a new instance of the XmlElement class. ... " />
+                <marker date="1561281920540" expanded="true" signature="2592:2951" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="2861:2941" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="2961:3180" ph="/// Converts the object to a string value ... " />
+                <marker date="1561281920540" expanded="true" signature="3238:4306" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="3281:3350" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="3400:3469" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="3517:3622" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="3671:3740" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="3795:3905" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="3946:4015" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="4047:4139" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="4316:4726" ph="/// Converts the given value to an xml element. ... " />
+                <marker date="1561281920540" expanded="true" signature="4806:5880" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="4877:5012" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="5026:5324" ph="/* var valueAsElement = value as IElement; ... */" />
+                <marker date="1561281920540" expanded="true" signature="5380:5485" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="5593:5752" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="5944:6083" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="6162:6626" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="6705:8570" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="6994:7944" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="7131:7900" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="7263:7457" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="7482:7882" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="7580:7685" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="7714:7860" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="8109:8177" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="8312:8401" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="8649:9542" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="8764:9312" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="8934:9000" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="9116:9254" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="9380:9461" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="9622:9960" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="9868:9924" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="10051:11205" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="10166:10260" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="10394:10529" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="10591:10820" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="10837:11195" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="11066:11181" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="11291:11511" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="11521:11755" ph="/// Gets the size of all elements of a value, if that is an enumeration ... " />
+                <marker date="1561281920540" expanded="true" signature="11806:11881" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="11990:12636" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="12139:12308" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="12325:12600" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="12734:13698" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="12880:13241" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="12978:13227" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="13083:13209" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="13258:13661" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="13421:13647" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="13503:13629" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="13734:13797" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="13807:13920" ph="/// Gets the container of the object ... " />
+                <marker date="1561281920540" expanded="true" signature="13966:14166" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="14016:14130" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="14223:14582" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="14295:14419" ph="{...}" />
+                <marker date="1561281920540" expanded="true" signature="14460:14522" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DatenMeister/Core/EMOF/Implementation/MofReflectiveSequence.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="9">
+              <caret line="119" column="9" selection-start-line="119" selection-start-column="9" selection-end-line="119" selection-end-column="9" />
+              <folding>
+                <marker date="1556994899373" expanded="false" signature="6:242" ph="..." />
+                <marker date="1556994899373" expanded="true" signature="291:5830" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="298:467" ph="/// Implements a reflective sequence as given by the MOF specification.  ... " />
+                <marker date="1556994899373" expanded="true" signature="540:5828" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="599:690" ph="/// Gets the mof object being assigned to the  ... " />
+                <marker date="1556994899373" expanded="true" signature="810:899" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="975:1031" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="1110:1239" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="1166:1229" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="1249:1499" ph="/// Performs an enumeration of all members of the collection ... " />
+                <marker date="1556994899373" expanded="true" signature="1573:1815" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="1676:1805" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="1825:1976" ph="/// Gets the given property as an enumerable ... " />
+                <marker date="1556994899373" expanded="true" signature="2038:2400" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="2115:2347" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="2263:2333" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="2466:2851" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="2933:3310" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="3020:3264" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="3070:3149" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="3170:3250" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="3366:3535" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="3604:4140" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="3692:3891" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="3908:4024" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="4194:4268" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="4345:4610" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="4675:4860" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="4926:5216" ph="{...}" />
+                <marker date="1556994899373" expanded="true" signature="5295:5713" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/datenmeister-new.sln">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DatenMeister/Modules/ViewFinder/ViewLogic.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="5548">
+              <caret line="327" column="77" selection-start-line="327" selection-start-column="77" selection-end-line="327" selection-end-column="77" />
+              <folding>
+                <marker date="1561291670909" expanded="false" signature="6:624" ph="..." />
+                <marker date="1561291670909" expanded="true" signature="667:18890" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="674:795" ph="/// Defines the access to the view logic and abstracts the access to the view extent ... " />
+                <marker date="1561291670909" expanded="true" signature="1010:18888" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="1025:1125" ph="/// Stores the type of the extent containing the views  ... " />
+                <marker date="1561291670909" expanded="true" signature="1392:1483" ph="/// Gets the workspace logic of the view logic ... " />
+                <marker date="1561291670909" expanded="true" signature="1677:1843" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="1853:1952" ph="/// Integrates the the view logic into the workspace.  ... " />
+                <marker date="1561291670909" expanded="true" signature="2010:3167" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="2144:3157" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="3177:3396" ph="/// Adds a view to the system ... " />
+                <marker date="1561291670909" expanded="true" signature="3457:3531" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="3541:3832" ph="/// Adds the form ... " />
+                <marker date="1561291670909" expanded="true" signature="3908:4114" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="4124:4453" ph="/// Adds a default view for a certain meta class ... " />
+                <marker date="1561291670909" expanded="true" signature="4547:4760" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="4770:4909" ph="/// Gets the internal view extent being empty at each start-up ... " />
+                <marker date="1561291670909" expanded="true" signature="4959:5254" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="5080:5211" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="5264:5406" ph="/// Gets the extent of the user being stored on permanent storage ... " />
+                <marker date="1561291670909" expanded="true" signature="5452:5743" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="5569:5700" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="5753:6026" ph="/// Gets the view extent.. Whether the default internal or the default external ... " />
+                <marker date="1561291670909" expanded="true" signature="6097:6497" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="6141:6487" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="6507:6728" ph="/// Gets the view as given by the url of the view ... " />
+                <marker date="1561291670909" expanded="true" signature="6776:7057" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="6856:6941" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="6958:7047" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="7067:7217" ph="/// Gets all forms and returns them as an enumeration ... " />
+                <marker date="1561291670909" expanded="true" signature="7268:7826" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="7836:8004" ph="/// Gets all view associations and returns them as an enumeration ... " />
+                <marker date="1561291670909" expanded="true" signature="8066:8578" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="8588:8827" ph="/// Gets the form and field instance which contains the references to  ... " />
+                <marker date="1561291670909" expanded="true" signature="8908:9096" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="9207:10094" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="9295:9911" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="9522:9764" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="9823:9897" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="10191:10953" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="10279:10754" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="10464:10607" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="10666:10740" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="10963:11191" ph="/// Gets the extent form containing the subforms ... " />
+                <marker date="1561291670909" expanded="true" signature="11268:11400" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="11410:11960" ph="/// Gets one of the list forms for the extent. If the extent form is available, but ... " />
+                <marker date="1561291670909" expanded="true" signature="12118:12928" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="12206:12728" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="12391:12581" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="12640:12714" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="12938:13371" ph="/// Gets the list form for an elements property to be shown in sub item view or other views ... " />
+                <marker date="1561291670909" expanded="true" signature="13566:14383" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="13654:14151" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="13839:14004" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="14063:14137" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="14495:14827" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="14583:14672" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="14837:15245" ph="/// Gets the list view next to the item explorer control  ... " />
+                <marker date="1561291670909" expanded="true" signature="15350:16219" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="15496:16006" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="15656:15859" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="15918:15992" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="16474:17245" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="16563:17183" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="16723:17036" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="17095:17169" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="17255:17761" ph="/// Gets the list form for a property in the object ... " />
+                <marker date="1561291670909" expanded="true" signature="17938:18882" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="18026:18635" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="18186:18488" ph="{...}" />
+                <marker date="1561291670909" expanded="true" signature="18547:18621" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DatenMeister/Runtime/Workspaces/WorkspaceExtensions.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4161">
+              <caret line="242" column="39" selection-start-line="242" selection-start-column="39" selection-end-line="242" selection-end-column="39" />
+              <folding>
+                <marker date="1561291391475" expanded="false" signature="6:254" ph="..." />
+                <marker date="1561291391475" expanded="true" signature="297:14533" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="329:672" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="344:491" ph="/// Indicates that only one meta extent shall be used to figure out whether a meta extent will be used ... " />
+                <marker date="1561291391475" expanded="true" signature="519:646" ph="/// Indicates that unlimited meta extents will be resolved to find the structure.  ... " />
+                <marker date="1561291391475" expanded="true" signature="717:14531" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="808:939" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="1037:1429" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="1091:1368" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="1251:1354" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="1535:1633" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="1643:2147" ph="/// Gets the given class from the metalayer to the datalayer ... " />
+                <marker date="1561291391475" expanded="true" signature="2396:2495" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="2505:3003" ph="/// Gets the given class from the metalayer to the datalayer ... " />
+                <marker date="1561291391475" expanded="true" signature="3246:3410" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="3420:3794" ph="/// Finds an extent by the given uri ... " />
+                <marker date="1561291391475" expanded="true" signature="3883:4125" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="4135:4733" ph="/// Adds an extent to the workspace, but checks, if the given uri is already existing ... " />
+                <marker date="1561291391475" expanded="true" signature="4859:5346" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="5115:5233" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="5356:5657" ph="/// Removes the extent with the given uri out of the database ... " />
+                <marker date="1561291391475" expanded="true" signature="5735:5803" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="5813:6195" ph="/// Returns the given workspace and extents out of the urls ... " />
+                <marker date="1561291391475" expanded="true" signature="6437:6660" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="6902:7411" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="7046:7149" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="7301:7401" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="7421:7800" ph="/// Returns the given workspace out of a collection to which the extent is associated ... " />
+                <marker date="1561291391475" expanded="true" signature="7929:8047" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="8057:8396" ph="/// Finds the extent with the given uri in one of the workspaces in the database ... " />
+                <marker date="1561291391475" expanded="true" signature="8513:8701" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="8711:9128" ph="/// Finds the extent with the given uri in one of the workspaces in the database ... " />
+                <marker date="1561291391475" expanded="true" signature="9277:9714" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="9338:9495" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="9724:10122" ph="/// Finds the extent and workspace and returns it as a tuple ... " />
+                <marker date="1561291391475" expanded="true" signature="10351:10599" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="10610:10943" ph="/// Finds the extent with the given uri in one of the workspaces in the database ... " />
+                <marker date="1561291391475" expanded="true" signature="11053:11268" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="11520:11812" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="11719:11802" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="11896:11986" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="12064:12148" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="12227:12312" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="12391:12476" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="12557:12701" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="12786:12934" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="12944:13136" ph="/// Gets the data  ... " />
+                <marker date="1561291391475" expanded="true" signature="13201:13335" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="13345:13550" ph="/// Gets the uml data from the workspace ... " />
+                <marker date="1561291391475" expanded="true" signature="13625:13737" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="13747:13964" ph="/// Gets the primitive data from the workspace ... " />
+                <marker date="1561291391475" expanded="true" signature="14056:14179" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="14269:14352" ph="{...}" />
+                <marker date="1561291391475" expanded="true" signature="14442:14525" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DatenMeister/Uml/Helper/PropertyHelper.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="114">
+              <caret line="9" column="24" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
+              <folding>
+                <marker date="1561290778456" expanded="false" signature="6:103" ph="..." />
+                <marker date="1561290778456" expanded="true" signature="138:1085" ph="{...}" />
+                <marker date="1561290778456" expanded="true" signature="145:234" ph="/// Defines some helper classes for property objects ... " />
+                <marker date="1561290778456" expanded="true" signature="273:1083" ph="{...}" />
+                <marker date="1561290778456" expanded="true" signature="288:481" ph="/// Gets the type of the property ... " />
+                <marker date="1561290778456" expanded="true" signature="543:654" ph="{...}" />
+                <marker date="1561290778456" expanded="true" signature="664:904" ph="/// Gets the value whether the property is a collection by ... " />
+                <marker date="1561290778456" expanded="true" signature="959:1077" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DatenMeister/Models/Forms/ReferenceFieldData.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="114">
+              <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+              <folding>
+                <marker date="1556994899382" expanded="false" signature="6:84" ph="..." />
+                <marker date="1556994899382" expanded="true" signature="121:1978" ph="{...}" />
+                <marker date="1556994899382" expanded="true" signature="128:241" ph="/// Allows the selection of a certain field by navigating through the extent ... " />
+                <marker date="1556994899382" expanded="true" signature="289:1976" ph="{...}" />
+                <marker date="1556994899382" expanded="true" signature="403:424" ph="{...}" />
+                <marker date="1556994899382" expanded="true" signature="517:538" ph="{...}" />
+                <marker date="1556994899382" expanded="true" signature="548:667" ph="/// Gets or sets the value whether the selection shall be performed inline ... " />
+                <marker date="1556994899382" expanded="true" signature="729:874" ph="/// Gets or sets the default extent that shall be shown, when the user clicks on the selection field ... " />
+                <marker date="1556994899382" expanded="true" signature="937:1211" ph="/// Gets or sets the default workspace that will be shown, when the user clicks on the selection field. This ... " />
+                <marker date="1556994899382" expanded="true" signature="1274:1361" ph="/// Does not only set the default children ... " />
+                <marker date="1556994899382" expanded="true" signature="1421:1539" ph="/// Gets or sets the value whether the workspace selection shall be shown ... " />
+                <marker date="1556994899382" expanded="true" signature="1606:1721" ph="/// Gets or sets the value whether the extent selection shall be shown ... " />
+                <marker date="1556994899382" expanded="true" signature="1785:1903" ph="/// Gets or sets the metaclasses to which all elements will be filtered.  ... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DatenMeister/Models/Forms/TextFieldData.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="19">
+              <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+              <folding>
+                <marker date="1545338003693" expanded="true" signature="35:531" ph="{...}" />
+                <marker date="1545338003693" expanded="true" signature="80:529" ph="{...}" />
+                <marker date="1545338003693" expanded="true" signature="184:205" ph="{...}" />
+                <marker date="1545338003693" expanded="true" signature="293:326" ph="{...}" />
+                <marker date="1545338003693" expanded="true" signature="381:484" ph="/// Gets or sets the width in guessed number of characters ... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>&quot;Show Form Definition&quot;</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2A131ECD-A997-4C61-BD4E-B8637DFB803F/0e/3a3fc026/List`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/FieldFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/00A78D6D-663C-4F46-9D5F-BC222D4BFE01/8a/42c06491/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/SubElementsField.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeisterWPF/MainWindow.xaml.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister/Runtime/Workspaces/WorkspaceLogic.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister/Provider/ManagementProviders/WorkspaceObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/SeparatorLineField.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2A131ECD-A997-4C61-BD4E-B8637DFB803F/ac/f12b395e/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister/Provider/ManagementProviders/ManagementViewDefinitions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister/Provider/ManagementProviders/ManagementProviderHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/ReferenceField.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister/Provider/ManagementProviders/ManagementViewPlugin.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../modules/BurnSystems/src/BurnSystems/Logging/Pipe/PipeLoggingClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/ReadOnlyListField.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeisterWPF/MainWindow.xaml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/TextboxField.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister/Modules/ViewFinder/ViewLogic.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister/Models/Forms/ReferenceFieldData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister/Uml/Helper/PropertyHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister/Uml/Helper/PackageMethods.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister/Modules/ViewFinder/Helper/FormCreator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister/Models/Forms/TextFieldData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Base/ItemExplorerTab.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Base/ItemListViewControl.xaml.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Base/ItemExplorerControl.xaml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/IL/37D48AE7-77D6-4A98-82EC-7FD3A3BC9782/d0/097bef60/020000BApdb.il" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Base/ItemExplorerControl.xaml.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister/Provider/XMI/EMOF/XmiProviderObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister/Core/EMOF/Implementation/MofReflectiveSequence.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister/Runtime/Workspaces/WorkspaceExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Lists/ItemsInExtentList.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E5679236-9300-4723-8C7B-E380C98B4100/d4/88473302/Window.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Lists/ListRequests.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/DatenMeister/XmiFiles/Views/WorkspacesAndExtents.xmi" />
+        <option value="$PROJECT_DIR$/DatenMeister/Provider/ManagementProviders/ManagementViewPlugin.cs" />
+        <option value="$PROJECT_DIR$/DatenMeister/Uml/Helper/PackageMethods.cs" />
+        <option value="$PROJECT_DIR$/DatenMeister.WPF/Forms/Base/ItemListViewControl.xaml.cs" />
+        <option value="$PROJECT_DIR$/DatenMeister/Provider/ManagementProviders/ManagementViewDefinitions.cs" />
+        <option value="$PROJECT_DIR$/DatenMeister.WPF/Forms/Lists/ListRequests.cs" />
+        <option value="$PROJECT_DIR$/DatenMeister/XmiFiles/Views/WorkspacesAndExtents.xml" />
+        <option value="$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/ReferenceField.cs" />
+        <option value="$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/FieldFactory.cs" />
+        <option value="$PROJECT_DIR$/DatenMeister/Uml/Helper/PropertyHelper.cs" />
+        <option value="$PROJECT_DIR$/DatenMeister/Runtime/Workspaces/WorkspaceExtensions.cs" />
+        <option value="$PROJECT_DIR$/DatenMeister/Modules/ViewFinder/ViewLogic.cs" />
+        <option value="$PROJECT_DIR$/DatenMeister/Modules/ViewFinder/Helper/FormCreator.cs" />
+        <option value="$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/SubElementsField.cs" />
+        <option value="$PROJECT_DIR$/DatenMeister/Core/EMOF/Implementation/MofReflectiveSequence.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectConfigurationFiles">
+    <option name="files">
+      <list>
+        <option value="$PROJECT_DIR$/.idea/.idea.datenmeister-new/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/.idea/.idea.datenmeister-new/.idea/indexLayout.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-10" />
+    <option name="y" value="-10" />
+    <option name="width" value="3860" />
+    <option name="height" value="2130" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="SolutionExplorer" proportions="" version="1">
+      <autoscrollToSource SolutionExplorer="true" />
+      <autoscrollFromSource SolutionExplorer="true" />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="SolutionExplorer">
+        <subPane>
+          <expand>
+            <path>
+              <item name="" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="datenmeister-new" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+            <path>
+              <item name="" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="datenmeister-new" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="Library - WPF" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+            <path>
+              <item name="" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="datenmeister-new" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="Tests" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+            <path>
+              <item name="" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="datenmeister-new" type="24d0babc:SolutionExplorerModelNode" />
+              <item name="Tools" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <option name="show-all-files" value="false" />
+      </pane>
+      <pane id="FileSystemExplorer" />
+      <pane id="AssemblyExplorer" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Rider.DefaultBreakpoints.AreToggled" value="true" />
+    <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Default" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/DatenMeisterWPF/bin/Debug/DatenMeisterWPF.exe" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/DatenMeisterWPF/bin/Debug" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/DatenMeisterWPF/DatenMeisterWPF.csproj" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="Console" />
+      <option name="PROJECT_TFM" value=".NETFramework,Version=v4.6.2" />
+      <method v="2">
+        <option name="Build" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8a3b1e9e-1c47-49d5-9f2e-b33645e95ecd" name="Default Changelist" comment="" />
+      <created>1561286159073</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1561286159073</updated>
+      <workItem from="1561286162342" duration="833000" />
+      <workItem from="1561287022405" duration="7645000" />
+      <workItem from="1561579083242" duration="174000" />
+      <workItem from="1561579303208" duration="236000" />
+    </task>
+    <task id="LOCAL-00001" summary="Introduced remove button">
+      <created>1561579455476</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1561579455476</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="8934000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="3086" height="1702" extended-state="6" />
+    <layout>
+      <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.49912128" visible="true" weight="0.1896267" />
+      <window_info id="Structure" order="2" sideWeight="0.50087875" side_tool="true" weight="0.30186668" />
+      <window_info anchor="bottom" id="Inspection Results" visible="true" weight="0.32954547" />
+      <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
+      <window_info anchor="bottom" id="XAML Preview" order="1" />
+      <window_info anchor="bottom" id="Unit Tests" order="2" weight="0.32975364" />
+      <window_info anchor="bottom" id="Terminal" order="3" weight="0.32905984" />
+      <window_info anchor="bottom" id="Database Changes" order="4" />
+      <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="6" />
+      <window_info anchor="bottom" id="Performance Profiler" order="7" weight="0.32905984" />
+      <window_info anchor="bottom" id="Build" order="8" weight="0.36004272" />
+      <window_info anchor="bottom" id="NuGet" order="9" weight="0.21474358" />
+      <window_info anchor="bottom" id="Message" order="10" />
+      <window_info anchor="bottom" id="Find" order="11" />
+      <window_info anchor="bottom" id="Run" order="12" weight="0.32905984" />
+      <window_info active="true" anchor="bottom" id="Debug" order="13" visible="true" weight="0.22612447" />
+      <window_info anchor="bottom" id="Cvs" order="14" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="15" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="16" weight="0.32975364" />
+      <window_info anchor="bottom" id="Stacktrace" order="17" weight="0.32905984" />
+      <window_info anchor="right" id="Database" order="0" weight="0.3296" />
+      <window_info anchor="right" id="Unit Tests Coverage" order="1" weight="0.3296" />
+      <window_info anchor="right" id="Errors In Solution" order="2" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="3" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="4" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="5" weight="0.25" />
+      <window_info anchor="right" id="IL Viewer" order="6" weight="0.3296" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.40277037" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="NuGet" order="0" />
+      <window_info anchor="bottom" id="Docker" order="1" show_stripe_button="false" />
+      <window_info anchor="bottom" id="XAML Preview" order="2" />
+      <window_info anchor="bottom" id="Unit Tests" order="3" />
+      <window_info anchor="bottom" id="Terminal" order="4" />
+      <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Performance Profiler" order="8" />
+      <window_info anchor="bottom" id="Build" order="9" visible="true" weight="0.55709714" />
+      <window_info anchor="bottom" id="Message" order="10" />
+      <window_info anchor="bottom" id="Find" order="11" />
+      <window_info anchor="bottom" id="Run" order="12" />
+      <window_info anchor="bottom" id="Debug" order="13" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="14" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="15" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="16" />
+      <window_info anchor="right" id="Errors In Solution" order="0" />
+      <window_info anchor="right" id="Database" order="1" />
+      <window_info anchor="right" id="Unit Tests Coverage" order="2" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="3" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="4" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="5" weight="0.25" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Introduced remove button" />
+    <option name="LAST_COMMIT_MESSAGE" value="Introduced remove button" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" suspend="NONE" type="DotNet Exception Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/FieldFactory.cs</url>
+          <line>81</line>
+          <properties documentPath="$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/FieldFactory.cs" initialLine="79">
+            <startOffsets>
+              <option value="3644" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3675" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/FieldFactory.cs</url>
+          <line>42</line>
+          <properties documentPath="$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/FieldFactory.cs" initialLine="40">
+            <startOffsets>
+              <option value="1859" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1890" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>primitiveTypes.__Boolean.Equals(_booleanType)</expression-string>
+        <language-id>C#</language-id>
+        <custom-info>RiderImportsList:</custom-info>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/DatenMeisterWPF/MainWindow.xaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <marker date="1537386318270" expanded="true" signature="0:1036" ph="&lt;&lt;DockPanel&gt;&#10;        &lt;Ribbon DockPanel.Dock=&quot;Top&quot; x:Name=&quot;MainRibbon&quot;&gt;&#10;            &lt;Ribbon.ApplicationMenu&gt;&#10;                &lt;RibbonApplicationMenu&gt;&#10;                    &lt;RibbonApplicationMenuItem Header=&quot;Close&quot; Click=&quot;Close_OnClick&quot; /&gt;&#10;                &lt;/RibbonApplicationMenu&gt;&#10;            &lt;/Ribbon.ApplicationMenu&gt;&#10;        &lt;/Ribbon&gt;&#10;        &lt;Grid&gt;&#10;            &lt;ContentControl x:Name=&quot;MainControl&quot;&gt;&lt;/ContentControl&gt;&#10;        &lt;/Grid&gt;&#10;    &lt;/DockPanel&gt;.../&gt;" />
+            <marker date="1537386318270" expanded="true" signature="580:1025" ph="&lt;&lt;Ribbon DockPanel.Dock=&quot;Top&quot; x:Name=&quot;MainRibbon&quot;&gt;&#10;            &lt;Ribbon.ApplicationMenu&gt;&#10;                &lt;RibbonApplicationMenu&gt;&#10;                    &lt;RibbonApplicationMenuItem Header=&quot;Close&quot; Click=&quot;Close_OnClick&quot; /&gt;&#10;                &lt;/RibbonApplicationMenu&gt;&#10;            &lt;/Ribbon.ApplicationMenu&gt;&#10;        &lt;/Ribbon&gt; &lt;Grid&gt;&#10;            &lt;ContentControl x:Name=&quot;MainControl&quot;&gt;&lt;/ContentControl&gt;&#10;        &lt;/Grid&gt;.../&gt;" />
+            <marker date="1537386318270" expanded="true" signature="600:910" ph="&lt;&lt;Ribbon.ApplicationMenu&gt;&#10;                &lt;RibbonApplicationMenu&gt;&#10;                    &lt;RibbonApplicationMenuItem Header=&quot;Close&quot; Click=&quot;Close_OnClick&quot; /&gt;&#10;                &lt;/RibbonApplicationMenu&gt;&#10;            &lt;/Ribbon.ApplicationMenu&gt;.../&gt;" />
+            <marker date="1537386318270" expanded="true" signature="662:892" ph="&lt;&lt;RibbonApplicationMenu&gt;&#10;                    &lt;RibbonApplicationMenuItem Header=&quot;Close&quot; Click=&quot;Close_OnClick&quot; /&gt;&#10;                &lt;/RibbonApplicationMenu&gt;.../&gt;" />
+            <marker date="1537386318270" expanded="true" signature="703:854" ph="&lt;&lt;RibbonApplicationMenuItem Header=&quot;Close&quot; Click=&quot;Close_OnClick&quot; /&gt;.../&gt;" />
+            <marker date="1537386318270" expanded="true" signature="919:1008" ph="&lt;&lt;ContentControl x:Name=&quot;MainControl&quot;&gt;&lt;/ContentControl&gt;.../&gt;" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2A131ECD-A997-4C61-BD4E-B8637DFB803F/ac/f12b395e/ThrowHelper.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1395">
+          <caret line="95" column="25" selection-start-line="95" selection-start-column="25" selection-end-line="95" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2A131ECD-A997-4C61-BD4E-B8637DFB803F/0e/3a3fc026/List`1.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="781">
+          <caret line="250" column="34" lean-forward="true" selection-start-line="250" selection-start-column="34" selection-end-line="250" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E5679236-9300-4723-8C7B-E380C98B4100/d4/88473302/Window.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="2500" column="6" selection-start-line="2500" selection-start-column="6" selection-end-line="2500" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/Runtime/Workspaces/WorkspaceLogic.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-111">
+          <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
+          <folding>
+            <marker date="1558125400246" expanded="false" signature="6:282" ph="..." />
+            <marker date="1558125400246" expanded="true" signature="325:10208" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="332:447" ph="/// The logic defines the relationships between the layers and the metalayers. ... " />
+            <marker date="1558125400246" expanded="true" signature="497:10206" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="723:1008" ph="/// Initializes a new instance of the WorkspaceLogic ... " />
+            <marker date="1558125400246" expanded="true" signature="1108:1216" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="1226:1411" ph="/// Sets the default workspace that will be assumed, when the extent is not assigned to a workspace ... " />
+            <marker date="1558125400246" expanded="true" signature="1468:1588" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="1651:1878" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="1888:2151" ph="/// Gets the workspace of the extent which is storing the object ... " />
+            <marker date="1558125400246" expanded="true" signature="2212:3314" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="2235:2387" ph="/* If the object is contained by another object, query the contained objects ... */" />
+            <marker date="1558125400246" expanded="true" signature="2515:2596" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="2777:2913" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="3050:3237" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="3398:3727" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="3737:4003" ph="/// Gets the datalayer by name. ... " />
+            <marker date="1558125400246" expanded="true" signature="4047:4201" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="4211:4339" ph="/// Gets the default workspace ... " />
+            <marker date="1558125400246" expanded="true" signature="4386:4505" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="4515:4776" ph="/// Adds a workspace and assigns the meta workspace for the given workspace ... " />
+            <marker date="1558125400246" expanded="true" signature="4830:5841" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="5106:5222" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="5530:5764" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="5634:5746" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="5851:6018" ph="/// Sends an event for a workspace change ... " />
+            <marker date="1558125400246" expanded="true" signature="6087:6383" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="6132:6238" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="6393:6574" ph="/// Gets the workspace by id ... " />
+            <marker date="1558125400246" expanded="true" signature="6623:6777" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="6787:6873" ph="/// Gets an enumeration of all workspaces ... " />
+            <marker date="1558125400246" expanded="true" signature="6922:7113" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="6948:7103" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="7123:7284" ph="/// Removes the workspace from the collection ... " />
+            <marker date="1558125400246" expanded="true" signature="7331:7731" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="7536:7643" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="7741:7977" ph="/// Adds an extent to the workspace ... " />
+            <marker date="1558125400246" expanded="true" signature="8050:8385" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="8226:8322" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="8395:8561" ph="/// Performs an initialization of the common workspaces ... " />
+            <marker date="1558125400246" expanded="true" signature="8611:9934" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="9991:10065" ph="{...}" />
+            <marker date="1558125400246" expanded="true" signature="10120:10200" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/Provider/ManagementProviders/ManagementProviderHelper.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+          <folding>
+            <marker date="1556994899394" expanded="false" signature="6:182" ph="..." />
+            <marker date="1556994899394" expanded="true" signature="235:1412" ph="{...}" />
+            <marker date="1556994899394" expanded="true" signature="242:308" ph="/// Defines the static helper ... " />
+            <marker date="1556994899394" expanded="true" signature="357:1410" ph="{...}" />
+            <marker date="1556994899394" expanded="true" signature="372:571" ph="/// Initializes the ExtentHelper and creates the extent for the workspaces ... " />
+            <marker date="1556994899394" expanded="true" signature="641:898" ph="{...}" />
+            <marker date="1556994899394" expanded="true" signature="908:1121" ph="/// Gets the extent that contains the workspaces  ... " />
+            <marker date="1556994899394" expanded="true" signature="1204:1404" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/Provider/ManagementProviders/WorkspaceObject.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+          <folding>
+            <marker date="1556994899399" expanded="false" signature="6:245" ph="..." />
+            <marker date="1556994899399" expanded="true" signature="298:1607" ph="{...}" />
+            <marker date="1556994899399" expanded="true" signature="368:1605" ph="{...}" />
+            <marker date="1556994899399" expanded="true" signature="407:522" ph="{...}" />
+            <marker date="1556994899399" expanded="true" signature="532:760" ph="/// Initializes a new instance of the WorkspaceObject ... " />
+            <marker date="1556994899399" expanded="true" signature="893:1454" ph="{...}" />
+            <marker date="1556994899399" expanded="true" signature="1464:1544" ph="/// Stores the uri to the metaclass ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/Provider/ManagementProviders/ManagementViewPlugin.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="627">
+          <caret line="36" column="71" lean-forward="true" selection-start-line="36" selection-start-column="71" selection-end-line="36" selection-end-column="71" />
+          <folding>
+            <marker date="1561287686448" expanded="false" signature="6:133" ph="..." />
+            <marker date="1561287686448" expanded="true" signature="186:1403" ph="{...}" />
+            <marker date="1561287686448" expanded="true" signature="290:1401" ph="{...}" />
+            <marker date="1561287686448" expanded="true" signature="411:611" ph="/// Initializes a new instance of the ManagementViewDefinitions class ... " />
+            <marker date="1561287686448" expanded="true" signature="699:801" ph="{...}" />
+            <marker date="1561287686448" expanded="true" signature="860:915" ph="{...}" />
+            <marker date="1561287686448" expanded="true" signature="925:1006" ph="/// Adds the views to the view logic ... " />
+            <marker date="1561287686448" expanded="true" signature="1048:1395" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/00A78D6D-663C-4F46-9D5F-BC222D4BFE01/8a/42c06491/ExceptionDispatchInfo.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="824">
+          <caret line="90" column="79" lean-forward="true" selection-start-line="90" selection-start-column="79" selection-end-line="90" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeisterWPF/MainWindow.xaml.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="47" selection-start-line="47" selection-end-line="47" />
+          <folding>
+            <marker date="1561015302464" expanded="false" signature="6:608" ph="..." />
+            <marker date="1561015302464" expanded="true" signature="635:8847" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="642:720" ph="/// Interaktionslogik für MainWindow.xaml ... " />
+            <marker date="1561015302464" expanded="true" signature="794:8845" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="863:986" ph="/// Gets the ribbon ... " />
+            <marker date="1561015302464" expanded="true" signature="1064:1171" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="1246:2561" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="1676:2551" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="2355:2537" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="2571:2982" ph="/// Called, if the host shall navigate to a certain control ... " />
+            <marker date="1561015302464" expanded="true" signature="3133:4111" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="3249:3953" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="3383:3478" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="3613:3697" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="4121:4201" ph="/// Rebuild the complete navigation ... " />
+            <marker date="1561015302464" expanded="true" signature="4241:7859" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="4412:5653" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="5816:6972" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="6008:6114" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="6218:6958" ph="/* Gets the plugins for the selected extent ... */" />
+            <marker date="1561015302464" expanded="true" signature="6986:7062" ph="/* Gets the plugins for the MainWindow itself ... */" />
+            <marker date="1561015302464" expanded="true" signature="7133:7186" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="7245:7646" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="7333:7632" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="7435:7562" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="7737:7849" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="7877:7940" ph="/// Sets the focus ... " />
+            <marker date="1561015302464" expanded="true" signature="7971:8036" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="8106:8147" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="8224:8732" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="8360:8432" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="8661:8722" ph="{...}" />
+            <marker date="1561015302464" expanded="true" signature="8794:8839" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/XmiFiles/Views/viewmanager.xmi">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/Uml/Helper/PackageMethods.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="588">
+          <caret line="226" column="59" selection-start-line="226" selection-start-column="59" selection-end-line="226" selection-end-column="59" />
+          <folding>
+            <marker date="1561288383964" expanded="false" signature="6:474" ph="..." />
+            <marker date="1561288383964" expanded="true" signature="509:11115" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="543:11113" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="617:764" ph="/// Initializes a new instance of the PackageMethods ... " />
+            <marker date="1561288383964" expanded="true" signature="826:892" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="902:1207" ph="/// Gets or creates a package by following the path.  ... " />
+            <marker date="1561288383964" expanded="true" signature="1340:1793" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="1803:2108" ph="/// Gets or creates a package by following the path.  ... " />
+            <marker date="1561288383964" expanded="true" signature="2245:2489" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="2499:3252" ph="/// Gets or create the package structure and returns the last created element. ... " />
+            <marker date="1561288383964" expanded="true" signature="3528:5726" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="3926:5689" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="4167:4520" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="4244:4322" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="4405:4502" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="4608:5042" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="4885:4971" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="5222:5345" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="5384:5595" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="5736:5961" ph="/// Adds an object to a package ... " />
+            <marker date="1561288383964" expanded="true" signature="6041:6215" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="6225:6445" ph="/// Adds the element of the elements to the package ... " />
+            <marker date="1561288383964" expanded="true" signature="6540:6786" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="6704:6776" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="6796:7037" ph="/// Gets the packages elements of the package ... " />
+            <marker date="1561288383964" expanded="true" signature="7117:7232" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="7242:7756" ph="/// Imports a set of element into the the target package by creating the additional ... " />
+            <marker date="1561288383964" expanded="true" signature="7861:8076" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="8086:8623" ph="/// Imports the package according the Uml rules (Ok, not now, but at sometime at one day). ... " />
+            <marker date="1561288383964" expanded="true" signature="8742:9179" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="8997:9169" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="9189:9813" ph="/// Imports a package by a manifest resource  ... " />
+            <marker date="1561288383964" expanded="true" signature="9988:11107" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="10351:11097" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="10388:10535" ph="{...}" />
+            <marker date="1561288383964" expanded="true" signature="10756:10835" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Lists/ItemsInExtentList.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="608">
+          <caret line="32" column="49" selection-start-line="32" selection-start-column="49" selection-end-line="32" selection-end-column="49" />
+          <folding>
+            <marker date="1561015302385" expanded="true" signature="6:979" ph="..." />
+            <marker date="1561015302385" expanded="true" signature="1019:12337" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="1078:12335" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="1093:1194" ph="/// Stores the extent being associated to the extentlist ... " />
+            <marker date="1561015302385" expanded="true" signature="1263:1493" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="1599:1677" ph="/// Stores the delayed dispatcher ... " />
+            <marker date="1561015302385" expanded="true" signature="1757:1839" ph="/// Gets the extent of the item class ... " />
+            <marker date="1561015302385" expanded="true" signature="1891:2009" ph="///     Gets or sets a flag whether, all items shall be shown in one tab. ... " />
+            <marker date="1561015302385" expanded="true" signature="2145:2768" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="2353:2487" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="2637:2713" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="2837:2924" ph="///     Sets the items of the given extent ... " />
+            <marker date="1561015302385" expanded="true" signature="2974:3041" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="3051:3176" ph="/// Updates all views without regenerating the tabulators, which are already set ... " />
+            <marker date="1561015302385" expanded="true" signature="3222:3750" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="3305:3357" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="3371:3740" ph="/* Goes through the metaclasses and gets the one, that are not already in a tab ... */" />
+            <marker date="1561015302385" expanded="true" signature="3760:4015" ph="///     Creates the tab for the given items and the metaclass that shell be shown ... " />
+            <marker date="1561015302385" expanded="true" signature="4087:7341" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="4228:4430" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="4447:4703" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="5091:6378" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="5186:6364" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="5489:5839" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="5864:5952" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="6026:6346" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="6538:6613" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="6799:7113" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="6994:7095" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="7258:7329" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="7424:7912" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="7478:7660" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="7677:7902" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="7922:8074" ph="///     Prepares the navigation of the host. The function is called by the navigation ... " />
+            <marker date="1561015302385" expanded="true" signature="8143:12329" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="9729:10066" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="9789:10044" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="10101:11074" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="10180:10383" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="10433:11060" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="10527:10902" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="10944:11042" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="11111:11756" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="11389:11586" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="11607:11742" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="11787:12319" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="11838:12305" ph="{...}" />
+            <marker date="1561015302385" expanded="true" signature="12133:12251" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Base/ItemListViewControl.xaml.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-950">
+          <caret line="641" column="50" lean-forward="true" selection-start-line="641" selection-start-column="50" selection-end-line="641" selection-end-column="50" />
+          <folding>
+            <marker date="1561288530913" expanded="false" signature="6:1183" ph="..." />
+            <marker date="1561288530913" expanded="true" signature="1222:34985" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="1229:1316" ph="/// Interaktionslogik für ItemListViewControl.xaml ... " />
+            <marker date="1561288530913" expanded="true" signature="1412:34983" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="1523:1631" ph="/// Defines the change event handle being used for current view ... " />
+            <marker date="1561288530913" expanded="true" signature="1717:1937" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="1947:2130" ph="/// Gets or sets the host for the list view item. The navigation ... " />
+            <marker date="1561288530913" expanded="true" signature="2200:2421" ph="/// Gets or sets the items to be shown. These items are shown also in the navigation view and will ... " />
+            <marker date="1561288530913" expanded="true" signature="2610:2697" ph="/// Defines the text being used for search ... " />
+            <marker date="1561288530913" expanded="true" signature="2743:2834" ph="/// Defines the logic for the fastview filters ... " />
+            <marker date="1561288530913" expanded="true" signature="2906:2985" ph="/// Stores the delaying dispatcher ... " />
+            <marker date="1561288530913" expanded="true" signature="3065:3135" ph="/// Stores the view logic ... " />
+            <marker date="1561288530913" expanded="true" signature="3183:3342" ph="/// Defines the current form definition of the window as provided by the ... " />
+            <marker date="1561288530913" expanded="true" signature="3411:3492" ph="/// Gets or sets the view extensions ... " />
+            <marker date="1561288530913" expanded="true" signature="3574:3699" ph="/// Gets or sets the information whether new items can be added via the datagrid ... " />
+            <marker date="1561288530913" expanded="true" signature="3736:3852" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="3862:3968" ph="/// Updates the content by going through the fields and items ... " />
+            <marker date="1561288530913" expanded="true" signature="4095:5152" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="4262:4568" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="4468:4552" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="4803:4889" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="4906:4965" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="5162:5295" ph="/// Unregisters the change event handle and sets the variable _changeEventHandle to null ... " />
+            <marker date="1561288530913" expanded="true" signature="5355:5581" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="5409:5571" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="5591:5870" ph="/// Gets the value of the element by the field ... " />
+            <marker date="1561288530913" expanded="true" signature="5944:6766" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="6286:6605" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="6776:7056" ph="/// Updates the content of the list by recreating the columns and rows ... " />
+            <marker date="1561288530913" expanded="true" signature="7092:12085" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="7592:7644" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="7708:12028" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="7884:8204" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="8338:8731" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="8480:8641" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="8850:12014" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="9106:10750" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="9459:10552" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="9681:10448" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="9894:10418" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="10188:10384" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="10581:10698" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="11069:11995" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="11098:11334" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="11380:11973" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="11453:11575" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="12095:12338" ph="/// Updates the columns for the fields and returns the names and fields ... " />
+            <marker date="1561288530913" expanded="true" signature="12431:15907" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="12551:12616" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="12926:14232" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="13538:13694" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="13715:13906" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="13980:14128" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="14326:15855" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="14376:15841" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="14655:14872" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="14957:15077" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="15106:15220" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="15917:16183" ph="/// Adds a button to the view ... " />
+            <marker date="1561288530913" expanded="true" signature="16257:16563" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="16320:16367" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="16573:16782" ph="/// Adds a button to the view ... " />
+            <marker date="1561288530913" expanded="true" signature="16862:17274" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="16925:16971" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="17026:17136" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="17284:17498" ph="/// Opens the selected element ... " />
+            <marker date="1561288530913" expanded="true" signature="17586:17984" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="17638:17690" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="17849:17972" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="17994:18111" ph="/// Defines the possible position of the row button compared to the data ... " />
+            <marker date="1561288530913" expanded="true" signature="18146:18204" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="18214:18414" ph="/// Called, if the user clicks on the button ... " />
+            <marker date="1561288530913" expanded="true" signature="18488:18628" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="18646:18896" ph="/// Gets the object and column from the button being clicked by the user ... " />
+            <marker date="1561288530913" expanded="true" signature="19024:19665" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="19186:19251" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="19329:19394" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="19674:19901" ph="/// Called, when a rown button is initialized. ... " />
+            <marker date="1561288530913" expanded="true" signature="19980:20412" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="20144:20298" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="20315:20402" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="20499:20592" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="20602:20748" ph="/// Prepares the navigation of the host. The function is called by the navigation  ... " />
+            <marker date="1561288530913" expanded="true" signature="20810:21150" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="20904:21140" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="21160:21244" ph="/// Prepares the navigation and ribbons ... " />
+            <marker date="1561288530913" expanded="true" signature="21292:26202" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="21369:21609" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="21448:21518" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="21648:22267" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="21727:21844" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="21974:22217" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="22296:22735" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="22767:24007" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="22801:23855" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="22889:23021" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="23094:23837" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="23893:23993" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="24039:24190" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="24227:24376" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="24390:24526" ph="/* void JumpToTypeManager() ... */" />
+            <marker date="1561288530913" expanded="true" signature="25029:25492" ph="/* ViewExtensions.Add( ... */" />
+            <marker date="1561288530913" expanded="true" signature="26212:26320" ph="/// The template being used to click ... " />
+            <marker date="1561288530913" expanded="true" signature="26389:26625" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="26412:26540" ph="/// Gets or sets the action being called when the user clicks on the button ... " />
+            <marker date="1561288530913" expanded="true" signature="26635:26785" ph="/// Gets an enumeration of all selected items ... " />
+            <marker date="1561288530913" expanded="true" signature="26840:27435" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="26948:27081" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="27130:27425" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="27200:27411" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="27301:27393" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="27445:27578" ph="/// GEts the currently selected item  ... " />
+            <marker date="1561288530913" expanded="true" signature="27619:27695" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="27705:27894" ph="/// Called, if the user performs a double click on the given item ... " />
+            <marker date="1561288530913" expanded="true" signature="27980:28281" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="28062:28114" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="28190:28271" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="28371:28506" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="28516:28585" ph="/// Clears the infolines ... " />
+            <marker date="1561288530913" expanded="true" signature="28622:28682" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="28692:28833" ph="/// Adds an infoline to the window ... " />
+            <marker date="1561288530913" expanded="true" signature="28884:28949" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="29028:32717" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="29311:32567" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="29450:29509" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="29574:32519" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="29838:32340" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="29891:32337" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="30341:30463" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="31491:32168" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="31603:31717" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="32408:32500" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="32727:32884" ph="/// Adds a fast filter to the current view ... " />
+            <marker date="1561288530913" expanded="true" signature="32939:33132" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="33178:34017" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="33444:34007" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="33642:33723" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="33786:33935" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="34265:34335" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="34345:34582" ph="/// Gets the context menu allowing the copying of the given text to the Clipboard ... " />
+            <marker date="1561288530913" expanded="true" signature="34659:34977" ph="{...}" />
+            <marker date="1561288530913" expanded="true" signature="34767:34827" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Base/ItemExplorerControl.xaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <marker date="1561015302370" expanded="true" signature="0:1482" ph="&lt;&lt;DockPanel&gt;&#10;        &lt;Grid x:Name=&quot;MainGrid&quot;&gt;&#10;            &lt;Grid.ColumnDefinitions&gt;&#10;                &lt;ColumnDefinition Width=&quot;20*&quot; /&gt;&#10;                &lt;ColumnDefinition Width=&quot;5&quot;&gt;&lt;/ColumnDefinition&gt;&#10;                &lt;ColumnDefinition Width=&quot;80*&quot;/&gt;&#10;            &lt;/Grid.ColumnDefinitions&gt;&#10;            &lt;base:ItemsTreeView Grid.Row=&quot;0&quot; Margin=&quot;10,0,10,0&quot; x:Name=&quot;NavigationTreeView&quot; &#10;                          ItemChosen=&quot;NavigationTreeView_OnItemChosen&quot; ItemSelected=&quot;NavigationTreeView_OnItemSelected&quot; ShowRoot=&quot;True&quot;&gt;&#10;            &lt;/base:ItemsTreeView&gt;&#10;            &lt;GridSplitter Grid.Column=&quot;1&quot; Width=&quot;5&quot; Grid.Row=&quot;0&quot;&#10;                      HorizontalAlignment=&quot;Stretch&quot; &#10;                      VerticalAlignment=&quot;Stretch&quot;&gt;&lt;/GridSplitter&gt;&#10;            &lt;TabControl Grid.Column=&quot;2&quot; x:Name=&quot;ItemTabControl&quot; SelectionChanged=&quot;ItemTabControl_SelectionChanged&quot;&gt;&lt;/TabControl&gt;&#10;        &lt;/Grid&gt;&#10;    &lt;/DockPanel&gt;.../&gt;" />
+            <marker date="1561015302370" expanded="true" signature="577:1467" ph="&lt;&lt;Grid x:Name=&quot;MainGrid&quot;&gt;&#10;            &lt;Grid.ColumnDefinitions&gt;&#10;                &lt;ColumnDefinition Width=&quot;20*&quot; /&gt;&#10;                &lt;ColumnDefinition Width=&quot;5&quot;&gt;&lt;/ColumnDefinition&gt;&#10;                &lt;ColumnDefinition Width=&quot;80*&quot;/&gt;&#10;            &lt;/Grid.ColumnDefinitions&gt;&#10;            &lt;base:ItemsTreeView Grid.Row=&quot;0&quot; Margin=&quot;10,0,10,0&quot; x:Name=&quot;NavigationTreeView&quot; &#10;                          ItemChosen=&quot;NavigationTreeView_OnItemChosen&quot; ItemSelected=&quot;NavigationTreeView_OnItemSelected&quot; ShowRoot=&quot;True&quot;&gt;&#10;            &lt;/base:ItemsTreeView&gt;&#10;            &lt;GridSplitter Grid.Column=&quot;1&quot; Width=&quot;5&quot; Grid.Row=&quot;0&quot;&#10;                      HorizontalAlignment=&quot;Stretch&quot; &#10;                      VerticalAlignment=&quot;Stretch&quot;&gt;&lt;/GridSplitter&gt;&#10;            &lt;TabControl Grid.Column=&quot;2&quot; x:Name=&quot;ItemTabControl&quot; SelectionChanged=&quot;ItemTabControl_SelectionChanged&quot;&gt;&lt;/TabControl&gt;&#10;        &lt;/Grid&gt;.../&gt;" />
+            <marker date="1561015302370" expanded="true" signature="597:1450" ph="&lt;&lt;Grid.ColumnDefinitions&gt;&#10;                &lt;ColumnDefinition Width=&quot;20*&quot; /&gt;&#10;                &lt;ColumnDefinition Width=&quot;5&quot;&gt;&lt;/ColumnDefinition&gt;&#10;                &lt;ColumnDefinition Width=&quot;80*&quot;/&gt;&#10;            &lt;/Grid.ColumnDefinitions&gt; &lt;base:ItemsTreeView Grid.Row=&quot;0&quot; Margin=&quot;10,0,10,0&quot; x:Name=&quot;NavigationTreeView&quot; &#10;                          ItemChosen=&quot;NavigationTreeView_OnItemChosen&quot; ItemSelected=&quot;NavigationTreeView_OnItemSelected&quot; ShowRoot=&quot;True&quot;&gt;&#10;            &lt;/base:ItemsTreeView&gt; &lt;GridSplitter Grid.Column=&quot;1&quot; Width=&quot;5&quot; Grid.Row=&quot;0&quot;&#10;                      HorizontalAlignment=&quot;Stretch&quot; &#10;                      VerticalAlignment=&quot;Stretch&quot;&gt;&lt;/GridSplitter&gt; &lt;TabControl Grid.Column=&quot;2&quot; x:Name=&quot;ItemTabControl&quot; SelectionChanged=&quot;ItemTabControl_SelectionChanged&quot;&gt;&lt;/TabControl&gt;.../&gt;" />
+            <marker date="1561015302370" expanded="true" signature="634:857" ph="&lt;&lt;ColumnDefinition Width=&quot;20*&quot; /&gt; &lt;ColumnDefinition Width=&quot;5&quot;&gt;&lt;/ColumnDefinition&gt; &lt;ColumnDefinition Width=&quot;80*&quot;/&gt;.../&gt;" />
+            <marker date="1561015302370" expanded="true" signature="870:1121" ph="&lt;.../&gt;" />
+            <marker date="1561015302370" expanded="true" signature="1134:1305" ph="&lt;.../&gt;" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Base/ItemExplorerTab.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+          <folding>
+            <marker date="1561015302373" expanded="false" signature="6:165" ph="..." />
+            <marker date="1561015302373" expanded="true" signature="204:956" ph="{...}" />
+            <marker date="1561015302373" expanded="true" signature="211:346" ph="/// The tab instance containing the information about the control and other additional information ... " />
+            <marker date="1561015302373" expanded="true" signature="389:954" ph="{...}" />
+            <marker date="1561015302373" expanded="true" signature="441:486" ph="{...}" />
+            <marker date="1561015302373" expanded="true" signature="496:600" ph="/// Gets or sets the view definition being used for the tab ... " />
+            <marker date="1561015302373" expanded="true" signature="653:726" ph="/// Gets or sets the control ... " />
+            <marker date="1561015302373" expanded="true" signature="769:876" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Base/ItemExplorerControl.xaml.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2755">
+          <caret line="249" column="44" selection-start-line="249" selection-start-column="44" selection-end-line="249" selection-end-column="44" />
+          <folding>
+            <marker date="1561015302371" expanded="false" signature="6:606" ph="..." />
+            <marker date="1561015302371" expanded="true" signature="645:12647" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="652:731" ph="/// Interaktionslogik für ItemBrowser.xaml ... " />
+            <marker date="1561015302371" expanded="true" signature="824:12645" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="839:940" ph="/// Stores the information about the active tab controls ... " />
+            <marker date="1561015302371" expanded="true" signature="1110:1198" ph="/// Gets the definition of the current form ... " />
+            <marker date="1561015302371" expanded="true" signature="1266:1487" ph="/// Gets or sets the items to be shown. These items are shown also in the navigation view and will ... " />
+            <marker date="1561015302371" expanded="true" signature="1564:1685" ph="/// Defines the item that the user currently has selected on the object tree ... " />
+            <marker date="1561015302371" expanded="true" signature="1757:1903" ph="/// Gets a value indicating whether the user has selected an extent within the ... " />
+            <marker date="1561015302371" expanded="true" signature="1982:2217" ph="/// Gets or sets the items to be shown in the detail view. Usually, they are the same as the items. ... " />
+            <marker date="1561015302371" expanded="true" signature="2295:2376" ph="/// Gets or sets the view extensions ... " />
+            <marker date="1561015302371" expanded="true" signature="2460:2568" ph="/// Gets or sets the eventhandle for the content of the control ... " />
+            <marker date="1561015302371" expanded="true" signature="2607:2910" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="2666:2900" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="2722:2847" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="2948:3050" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="3121:3269" ph="/// Gets the view extensions ... " />
+            <marker date="1561015302371" expanded="true" signature="3339:5047" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="3389:3563" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="3465:3549" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="3695:4083" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="3779:4069" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="3881:4006" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="4299:4353" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="4412:4806" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="4500:4792" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="4602:4729" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="5106:5215" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="5225:5322" ph="/// Updates all views without recreating the items.  ... " />
+            <marker date="1561015302371" expanded="true" signature="5367:5531" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="5448:5521" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="5541:5609" ph="/// Recreates all views ... " />
+            <marker date="1561015302371" expanded="true" signature="5648:5773" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="5783:5990" ph="/// This method will be called when the user has selected an item and the views need to be recreated. ... " />
+            <marker date="1561015302371" expanded="true" signature="6039:6059" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="6077:6171" ph="/// Updates the tree content of the explorer view ... " />
+            <marker date="1561015302371" expanded="true" signature="6214:6459" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="6524:6584" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="6594:7086" ph="/// Evaluates the extent form by passing through the tabs and creating the necessary views of each tab ... " />
+            <marker date="1561015302371" expanded="true" signature="7210:8070" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="7415:7509" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="7567:7999" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="7712:7836" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="8080:8371" ph="/// Adds a new tab to the form ... " />
+            <marker date="1561015302371" expanded="true" signature="8501:9548" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="8847:8910" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="8981:9145" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="9368:9506" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="9634:9693" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="9781:10327" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="9861:10052" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="10069:10317" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="10337:10479" ph="/// Opens the selected element ... " />
+            <marker date="1561015302371" expanded="true" signature="10543:10761" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="10594:10646" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="10859:10928" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="10938:11046" ph="/// Resets the view extensions for the attached navigation view ... " />
+            <marker date="1561015302371" expanded="true" signature="11103:12264" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="11267:11361" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="11414:11835" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="11637:11801" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="11852:12254" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="12074:12237" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="12298:12506" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="12346:12496" ph="{...}" />
+            <marker date="1561015302371" expanded="true" signature="12593:12639" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../modules/BurnSystems/src/BurnSystems/Logging/Pipe/PipeLoggingClient.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="855">
+          <caret line="48" column="19" selection-start-line="48" selection-start-column="19" selection-end-line="48" selection-end-column="19" />
+          <folding>
+            <marker date="1558550064140" expanded="false" signature="6:87" ph="..." />
+            <marker date="1558550064140" expanded="true" signature="123:1733" ph="{...}" />
+            <marker date="1558550064140" expanded="true" signature="174:1731" ph="{...}" />
+            <marker date="1558550064140" expanded="true" signature="267:874" ph="{...}" />
+            <marker date="1558550064140" expanded="true" signature="396:795" ph="{...}" />
+            <marker date="1558550064140" expanded="true" signature="439:781" ph="{...}" />
+            <marker date="1558550064140" expanded="true" signature="578:704" ph="{...}" />
+            <marker date="1558550064140" expanded="true" signature="836:864" ph="{...}" />
+            <marker date="1558550064140" expanded="true" signature="884:1725" ph="IDisposable Support" />
+            <marker date="1558550064140" expanded="true" signature="1041:1455" ph="{...}" />
+            <marker date="1558550064140" expanded="true" signature="1084:1445" ph="{...}" />
+            <marker date="1558550064140" expanded="true" signature="1129:1237" ph="{...}" />
+            <marker date="1558550064140" expanded="true" signature="1255:1391" ph="/* TODO: free unmanaged resources (unmanaged objects) and override a finalizer below. ... */" />
+            <marker date="1558550064140" expanded="true" signature="1568:1706" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/Provider/ManagementProviders/ManagementViewDefinitions.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="665">
+          <caret line="43" column="28" lean-forward="true" selection-start-line="43" selection-start-column="28" selection-end-line="43" selection-end-column="47" />
+          <folding>
+            <marker date="1561288882388" expanded="false" signature="6:258" ph="..." />
+            <marker date="1561288882388" expanded="true" signature="311:2720" ph="{...}" />
+            <marker date="1561288882388" expanded="true" signature="356:2718" ph="{...}" />
+            <marker date="1561288882388" expanded="true" signature="463:519" ph="{...}" />
+            <marker date="1561288882388" expanded="true" signature="529:608" ph="/// Stores the name of the package ... " />
+            <marker date="1561288882388" expanded="true" signature="1569:1860" ph="/// Creates a form to create a new type.  ... " />
+            <marker date="1561288882388" expanded="true" signature="1980:2712" ph="{...}" />
+            <marker date="1561288882388" expanded="true" signature="2055:2186" ph="{...}" />
+            <marker date="1561288882388" expanded="true" signature="2277:2507" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/XmiFiles/Views/WorkspacesAndExtents.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="494">
+          <caret line="27" column="68" selection-start-line="27" selection-start-column="68" selection-end-line="27" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Lists/ListRequests.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="496">
+          <caret line="60" lean-forward="true" selection-start-line="60" selection-end-line="60" />
+          <folding>
+            <marker date="1561288917500" expanded="false" signature="6:1074" ph="..." />
+            <marker date="1561288917500" expanded="true" signature="1114:13175" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="1153:13173" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="1168:1249" ph="/// Defines the logger for the class ... " />
+            <marker date="1561288917500" expanded="true" signature="1351:1481" ph="/// Requests the form for the workspace ... " />
+            <marker date="1561288917500" expanded="true" signature="1596:4383" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="1838:2011" ph="/* var formElement = NamedElementMethods.GetByFullName( ... */" />
+            <marker date="1561288917500" expanded="true" signature="2049:2488" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="2581:3113" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="2643:3099" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="2722:3044" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="3466:3770" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="3588:3652" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="3857:4373" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="4105:4359" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="4393:4759" ph="/// Requests the form for extent elements ... " />
+            <marker date="1561288917500" expanded="true" signature="4891:11394" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="5236:5670" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="5755:6147" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="5819:6133" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="5894:6114" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="7784:8186" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="7844:8164" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="7998:8138" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="8261:8885" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="8455:8871" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="8927:9049" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="9082:9211" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="9249:9438" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="9472:10036" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="9549:9668" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="9727:9992" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="9779:9974" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="10169:10509" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="10546:11384" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="10708:11370" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="10831:11107" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="11149:11351" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="11516:13167" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="11636:11847" ph="{...}" />
+            <marker date="1561288917500" expanded="true" signature="12878:13131" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/ReferenceField.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="116" lean-forward="true" selection-start-line="116" selection-end-line="116" />
+          <folding>
+            <marker date="1561289136894" expanded="true" signature="6:419" ph="..." />
+            <marker date="1561289136894" expanded="true" signature="474:678" ph="/// Implements a reference field which is shown the currently selected instance and allows the user to select  ... " />
+            <marker date="1561289136894" expanded="true" signature="725:7462" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="991:6776" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="1300:3936" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="1331:1446" ph="/* Defines the locate element control in which the user can select ... */" />
+            <marker date="1561289136894" expanded="true" signature="1515:1643" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="1851:1974" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="2279:2361" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="2382:3840" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="2789:3366" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="3218:3344" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="3429:3822" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="3674:3800" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="3953:6766" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="4021:4503" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="4083:4485" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="4733:4817" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="5015:5456" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="5097:5202" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="5227:5438" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="5599:6138" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="5945:6120" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="6828:7031" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="6940:7021" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="7121:7456" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="7166:7293" ph="{...}" />
+            <marker date="1561289136894" expanded="true" signature="7310:7446" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/SeparatorLineField.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+          <folding>
+            <marker date="1552423617778" expanded="false" signature="6:166" ph="..." />
+            <marker date="1552423617778" expanded="true" signature="214:839" ph="{...}" />
+            <marker date="1552423617778" expanded="true" signature="267:837" ph="{...}" />
+            <marker date="1552423617778" expanded="true" signature="456:739" ph="{...}" />
+            <marker date="1552423617778" expanded="true" signature="519:654" ph="{...}" />
+            <marker date="1552423617778" expanded="true" signature="791:831" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/TextboxField.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-22">
+          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+          <folding>
+            <marker date="1552423617781" expanded="false" signature="6:213" ph="..." />
+            <marker date="1552423617781" expanded="true" signature="261:3431" ph="{...}" />
+            <marker date="1552423617781" expanded="true" signature="308:3429" ph="{...}" />
+            <marker date="1552423617781" expanded="true" signature="588:3192" ph="{...}" />
+            <marker date="1552423617781" expanded="true" signature="1341:1449" ph="{...}" />
+            <marker date="1552423617781" expanded="true" signature="1466:1723" ph="{...}" />
+            <marker date="1552423617781" expanded="true" signature="1557:1709" ph="{...}" />
+            <marker date="1552423617781" expanded="true" signature="1752:2248" ph="{...}" />
+            <marker date="1552423617781" expanded="true" signature="1832:1889" ph="{...}" />
+            <marker date="1552423617781" expanded="true" signature="2265:3182" ph="{...}" />
+            <marker date="1552423617781" expanded="true" signature="2340:2397" ph="{...}" />
+            <marker date="1552423617781" expanded="true" signature="2430:2602" ph="{...}" />
+            <marker date="1552423617781" expanded="true" signature="2623:2788" ph="{...}" />
+            <marker date="1552423617781" expanded="true" signature="2821:3080" ph="{...}" />
+            <marker date="1552423617781" expanded="true" signature="3244:3423" ph="{...}" />
+            <marker date="1552423617781" expanded="true" signature="3329:3413" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/ReadOnlyListField.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-22">
+          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+          <folding>
+            <marker date="1552423617775" expanded="false" signature="6:268" ph="..." />
+            <marker date="1552423617775" expanded="true" signature="316:2866" ph="{...}" />
+            <marker date="1552423617775" expanded="true" signature="368:2864" ph="{...}" />
+            <marker date="1552423617775" expanded="true" signature="563:2773" ph="{...}" />
+            <marker date="1552423617775" expanded="true" signature="939:2729" ph="{...}" />
+            <marker date="1552423617775" expanded="true" signature="1063:1142" ph="{...}" />
+            <marker date="1552423617775" expanded="true" signature="1307:2715" ph="{...}" />
+            <marker date="1552423617775" expanded="true" signature="1565:1649" ph="{...}" />
+            <marker date="1552423617775" expanded="true" signature="1714:1840" ph="{...}" />
+            <marker date="1552423617775" expanded="true" signature="2118:2667" ph="{...}" />
+            <marker date="1552423617775" expanded="true" signature="2825:2858" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/SubElementsField.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1102">
+          <caret line="78" column="62" selection-start-line="78" selection-start-column="62" selection-end-line="78" selection-end-column="62" />
+          <folding>
+            <marker date="1561306016642" expanded="false" signature="6:554" ph="..." />
+            <marker date="1561306016642" expanded="true" signature="602:7900" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="653:7898" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="862:1211" ph="/// Creates the element ... " />
+            <marker date="1561306016642" expanded="true" signature="1393:1865" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="1668:1734" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="1917:1937" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="1947:2074" ph="/// Creates the content for the panel element dependent on the item and its values ... " />
+            <marker date="1561306016642" expanded="true" signature="2116:6574" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="2598:2824" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="2903:3157" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="3228:3960" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="3607:3945" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="3814:3923" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="4165:5204" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="4293:5189" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="4610:5166" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="4725:4852" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="4885:5036" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="5452:5659" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="5547:5645" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="5927:6511" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="6077:6357" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="6164:6231" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="6584:6757" ph="/// Creates a button for a certain type and add it to the panel ... " />
+            <marker date="1561306016642" expanded="true" signature="6830:7892" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="7046:7852" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="7321:7833" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="7432:7547" ph="{...}" />
+            <marker date="1561306016642" expanded="true" signature="7576:7715" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister.WPF/Forms/Detail/Fields/FieldFactory.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1235">
+          <caret line="72" column="54" selection-start-line="72" selection-start-column="54" selection-end-line="72" selection-end-column="54" />
+          <folding>
+            <marker date="1561289423275" expanded="false" signature="6:182" ph="..." />
+            <marker date="1561289423275" expanded="true" signature="230:5405" ph="{...}" />
+            <marker date="1561289423275" expanded="true" signature="269:4830" ph="{...}" />
+            <marker date="1561289423275" expanded="true" signature="284:590" ph="/// Creates a specific field by the reading out the field type ... " />
+            <marker date="1561289423275" expanded="true" signature="668:3879" ph="{...}" />
+            <marker date="1561289423275" expanded="true" signature="905:2084" ph="{...}" />
+            <marker date="1561289423275" expanded="true" signature="954:2070" ph="{...}" />
+            <marker date="1561289423275" expanded="true" signature="1804:1916" ph="{...}" />
+            <marker date="1561289423275" expanded="true" signature="1945:2052" ph="{...}" />
+            <marker date="1561289423275" expanded="true" signature="2101:3869" ph="{...}" />
+            <marker date="1561289423275" expanded="true" signature="2246:2397" ph="{...}" />
+            <marker date="1561289423275" expanded="true" signature="2478:3855" ph="{...}" />
+            <marker date="1561289423275" expanded="true" signature="3589:3701" ph="{...}" />
+            <marker date="1561289423275" expanded="true" signature="3730:3837" ph="{...}" />
+            <marker date="1561289423275" expanded="true" signature="3889:4432" ph="/// Gets the UI Element for the given field and value ... " />
+            <marker date="1561289423275" expanded="true" signature="4613:4824" ph="{...}" />
+            <marker date="1561289423275" expanded="true" signature="4836:4926" ph="/// Defines possible field parameter for the creation ... " />
+            <marker date="1561289423275" expanded="true" signature="4958:5403" ph="{...}" />
+            <marker date="1561289423275" expanded="true" signature="4973:5163" ph="/// Defines whether the current field could be focussed. ... " />
+            <marker date="1561289423275" expanded="true" signature="5220:5353" ph="/// Gets or sets the information whether the element is spanned through the complete row ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/Modules/ViewFinder/Helper/FormCreator.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8721">
+          <caret line="488" selection-start-line="476" selection-start-column="12" selection-end-line="488" />
+          <folding>
+            <marker date="1561305928930" expanded="false" signature="6:543" ph="..." />
+            <marker date="1561305928930" expanded="true" signature="593:30919" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="600:725" ph="/// Creates a view out of the given extent, elements (collection) or element).  ... " />
+            <marker date="1561305928930" expanded="true" signature="754:30917" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="769:935" ph="/// Stores the reference to the view logic which is required to get the views ... " />
+            <marker date="1561305928930" expanded="true" signature="1051:1149" ph="/// Stores the factory to create the fields and forms ... " />
+            <marker date="1561305928930" expanded="true" signature="1203:1320" ph="/// Stores the information for form and fields including all metaclasses ... " />
+            <marker date="1561305928930" expanded="true" signature="1386:1453" ph="/// Defines the logger ... " />
+            <marker date="1561305928930" expanded="true" signature="1703:1776" ph="/// Stores the creation mode ... " />
+            <marker date="1561305928930" expanded="true" signature="1825:2943" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="1848:1970" ph="/// Allows the creation of forms by the metaclass of the given extent ... " />
+            <marker date="1561305928930" expanded="true" signature="2016:2133" ph="/// Allows the creation of forms by going through the properties ... " />
+            <marker date="1561305928930" expanded="true" signature="2180:2361" ph="/// Allowes the creation of forms by going through the propeerties only if ... " />
+            <marker date="1561305928930" expanded="true" signature="2423:2518" ph="/// Adds the metaclass itself to the form  ... " />
+            <marker date="1561305928930" expanded="true" signature="2565:2729" ph="/// Creates only fields that are usable in a list form. ... " />
+            <marker date="1561305928930" expanded="true" signature="2776:2873" ph="/// Creates all properties that are possible ... " />
+            <marker date="1561305928930" expanded="true" signature="2992:3456" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="3467:3864" ph="/// Creates a detail form by considering the the information that is stored within ... " />
+            <marker date="1561305928930" expanded="true" signature="3968:4408" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="4190:4305" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="4418:4762" ph="/// Creates a detail form by using the metaclass of the given element ... " />
+            <marker date="1561305928930" expanded="true" signature="4880:5333" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="5102:5217" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="5343:5488" ph="/// Creates an extent form containing the subforms ... " />
+            <marker date="1561305928930" expanded="true" signature="5557:5741" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="5751:6121" ph="/// Creates an extent form for the given extent by parsing through each element ... " />
+            <marker date="1561305928930" expanded="true" signature="6208:6298" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="6308:6662" ph="/// Creates the extent by parsing through all the elements and creation of fields ... " />
+            <marker date="1561305928930" expanded="true" signature="6762:9042" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="7493:7855" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="7715:7808" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="7913:8941" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="8104:8596" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="8143:8364" ph="/* Asks the view logic whether it has a list form for the specific metaclass ... */" />
+            <marker date="1561305928930" expanded="true" signature="8617:8820" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="9052:9444" ph="/// Creates the list form out of the elements in the reflective collection. ... " />
+            <marker date="1561305928930" expanded="true" signature="9542:10491" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="9756:10453" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="9931:10254" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="10020:10098" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="10328:10439" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="10501:10686" ph="/// Creates a list form for a certain metaclass ... " />
+            <marker date="1561305928930" expanded="true" signature="10772:11260" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="10847:10984" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="11270:11616" ph="/// Creates the form out of the given element.  ... " />
+            <marker date="1561305928930" expanded="true" signature="11701:13583" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="12097:12211" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="12225:12392" ph="/* Second phase: Get properties by the object iself ... */" />
+            <marker date="1561305928930" expanded="true" signature="12840:12933" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="13350:13573" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="13593:14058" ph="/// Adds the fields to the properties as given in the object itself. ... " />
+            <marker date="1561305928930" expanded="true" signature="14156:16949" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="14235:14361" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="14411:14582" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="14442:14544" ph="/* The object cannot be converted and FormCreator does not support ... */" />
+            <marker date="1561305928930" expanded="true" signature="14773:16939" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="15219:16670" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="15426:15598" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="15718:15844" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="15869:16400" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="15961:16105" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="16134:16378" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="16959:17396" ph="/// Adds the fields for the form by going through the properties of the metaclass ... " />
+            <marker date="1561305928930" expanded="true" signature="17500:18532" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="17585:17643" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="17829:18486" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="18242:18308" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="18542:18860" ph="/// Gets the field data, depending upon the given property ... " />
+            <marker date="1561305928930" expanded="true" signature="18950:25503" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="19564:19684" ph="/* uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + &quot;##String&quot;, ... */" />
+            <marker date="1561305928930" expanded="true" signature="19754:19875" ph="/* uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + &quot;##Integer&quot;, ... */" />
+            <marker date="1561305928930" expanded="true" signature="19945:20066" ph="/* uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + &quot;##Boolean&quot;, ... */" />
+            <marker date="1561305928930" expanded="true" signature="20127:20245" ph="/* uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + &quot;##Real&quot;, ... */" />
+            <marker date="1561305928930" expanded="true" signature="20293:23692" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="20547:23678" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="20676:21740" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="21346:21665" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="21819:22266" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="22444:23660" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="22622:23252" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="23743:24967" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="23932:24109" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="24130:24271" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="24576:24953" ph="/* Unknown property type, so just create something ... */" />
+            <marker date="1561305928930" expanded="true" signature="25368:25465" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="25513:25956" ph="/// Creates the extent form for a specific object which is selected in the item explorer view. ... " />
+            <marker date="1561305928930" expanded="true" signature="26066:29912" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="26554:26725" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="27449:28162" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="27660:28035" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="27727:28017" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="28222:29803" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="28418:28635" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="28471:28583" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="28855:29253" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="29093:29198" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="29315:29789" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="29922:30208" ph="/// Creates a list form for a certain metaclass being used inside an extent form ... " />
+            <marker date="1561305928930" expanded="true" signature="30334:30911" ph="{...}" />
+            <marker date="1561305928930" expanded="true" signature="30409:30546" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/Provider/XMI/EMOF/XmiProviderObject.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6802">
+          <caret line="385" column="16" selection-start-line="385" selection-start-column="16" selection-end-line="385" selection-end-column="16" />
+          <folding>
+            <marker date="1561281920540" expanded="false" signature="6:206" ph="..." />
+            <marker date="1561281920540" expanded="true" signature="248:14590" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="255:350" ph="/// Abstracts the IObject from EMOF ... " />
+            <marker date="1561281920540" expanded="true" signature="403:14588" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="418:614" ph="/// Checks whether the given property name is valid. This conversion is used to store the data into the xml ... " />
+            <marker date="1561281920540" expanded="true" signature="682:856" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="728:788" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="866:1118" ph="/// Denormalizes the property names, so they can be stored into the xml.  ... " />
+            <marker date="1561281920540" expanded="true" signature="1188:1357" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="1235:1294" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="1447:1708" ph="/// Converts a property name to a property string used for references ... " />
+            <marker date="1561281920540" expanded="true" signature="1786:1848" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="1858:1924" ph="/// Gets the Xml Node ... " />
+            <marker date="1561281920540" expanded="true" signature="1989:2094" ph="/// Gets the id of the XmlElement ... " />
+            <marker date="1561281920540" expanded="true" signature="2119:2224" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="2305:2522" ph="/// Initializes a new instance of the XmlElement class. ... " />
+            <marker date="1561281920540" expanded="true" signature="2592:2951" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="2861:2941" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="2961:3180" ph="/// Converts the object to a string value ... " />
+            <marker date="1561281920540" expanded="true" signature="3238:4306" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="3281:3350" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="3400:3469" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="3517:3622" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="3671:3740" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="3795:3905" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="3946:4015" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="4047:4139" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="4316:4726" ph="/// Converts the given value to an xml element. ... " />
+            <marker date="1561281920540" expanded="true" signature="4806:5880" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="4877:5012" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="5026:5324" ph="/* var valueAsElement = value as IElement; ... */" />
+            <marker date="1561281920540" expanded="true" signature="5380:5485" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="5593:5752" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="5944:6083" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="6162:6626" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="6705:8570" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="6994:7944" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="7131:7900" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="7263:7457" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="7482:7882" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="7580:7685" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="7714:7860" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="8109:8177" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="8312:8401" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="8649:9542" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="8764:9312" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="8934:9000" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="9116:9254" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="9380:9461" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="9622:9960" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="9868:9924" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="10051:11205" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="10166:10260" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="10394:10529" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="10591:10820" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="10837:11195" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="11066:11181" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="11291:11511" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="11521:11755" ph="/// Gets the size of all elements of a value, if that is an enumeration ... " />
+            <marker date="1561281920540" expanded="true" signature="11806:11881" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="11990:12636" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="12139:12308" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="12325:12600" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="12734:13698" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="12880:13241" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="12978:13227" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="13083:13209" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="13258:13661" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="13421:13647" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="13503:13629" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="13734:13797" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="13807:13920" ph="/// Gets the container of the object ... " />
+            <marker date="1561281920540" expanded="true" signature="13966:14166" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="14016:14130" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="14223:14582" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="14295:14419" ph="{...}" />
+            <marker date="1561281920540" expanded="true" signature="14460:14522" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/Modules/ViewFinder/ViewLogic.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5548">
+          <caret line="327" column="77" selection-start-line="327" selection-start-column="77" selection-end-line="327" selection-end-column="77" />
+          <folding>
+            <marker date="1561291670909" expanded="false" signature="6:624" ph="..." />
+            <marker date="1561291670909" expanded="true" signature="667:18890" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="674:795" ph="/// Defines the access to the view logic and abstracts the access to the view extent ... " />
+            <marker date="1561291670909" expanded="true" signature="1010:18888" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="1025:1125" ph="/// Stores the type of the extent containing the views  ... " />
+            <marker date="1561291670909" expanded="true" signature="1392:1483" ph="/// Gets the workspace logic of the view logic ... " />
+            <marker date="1561291670909" expanded="true" signature="1677:1843" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="1853:1952" ph="/// Integrates the the view logic into the workspace.  ... " />
+            <marker date="1561291670909" expanded="true" signature="2010:3167" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="2144:3157" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="3177:3396" ph="/// Adds a view to the system ... " />
+            <marker date="1561291670909" expanded="true" signature="3457:3531" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="3541:3832" ph="/// Adds the form ... " />
+            <marker date="1561291670909" expanded="true" signature="3908:4114" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="4124:4453" ph="/// Adds a default view for a certain meta class ... " />
+            <marker date="1561291670909" expanded="true" signature="4547:4760" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="4770:4909" ph="/// Gets the internal view extent being empty at each start-up ... " />
+            <marker date="1561291670909" expanded="true" signature="4959:5254" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="5080:5211" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="5264:5406" ph="/// Gets the extent of the user being stored on permanent storage ... " />
+            <marker date="1561291670909" expanded="true" signature="5452:5743" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="5569:5700" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="5753:6026" ph="/// Gets the view extent.. Whether the default internal or the default external ... " />
+            <marker date="1561291670909" expanded="true" signature="6097:6497" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="6141:6487" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="6507:6728" ph="/// Gets the view as given by the url of the view ... " />
+            <marker date="1561291670909" expanded="true" signature="6776:7057" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="6856:6941" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="6958:7047" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="7067:7217" ph="/// Gets all forms and returns them as an enumeration ... " />
+            <marker date="1561291670909" expanded="true" signature="7268:7826" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="7836:8004" ph="/// Gets all view associations and returns them as an enumeration ... " />
+            <marker date="1561291670909" expanded="true" signature="8066:8578" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="8588:8827" ph="/// Gets the form and field instance which contains the references to  ... " />
+            <marker date="1561291670909" expanded="true" signature="8908:9096" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="9207:10094" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="9295:9911" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="9522:9764" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="9823:9897" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="10191:10953" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="10279:10754" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="10464:10607" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="10666:10740" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="10963:11191" ph="/// Gets the extent form containing the subforms ... " />
+            <marker date="1561291670909" expanded="true" signature="11268:11400" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="11410:11960" ph="/// Gets one of the list forms for the extent. If the extent form is available, but ... " />
+            <marker date="1561291670909" expanded="true" signature="12118:12928" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="12206:12728" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="12391:12581" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="12640:12714" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="12938:13371" ph="/// Gets the list form for an elements property to be shown in sub item view or other views ... " />
+            <marker date="1561291670909" expanded="true" signature="13566:14383" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="13654:14151" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="13839:14004" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="14063:14137" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="14495:14827" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="14583:14672" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="14837:15245" ph="/// Gets the list view next to the item explorer control  ... " />
+            <marker date="1561291670909" expanded="true" signature="15350:16219" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="15496:16006" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="15656:15859" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="15918:15992" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="16474:17245" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="16563:17183" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="16723:17036" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="17095:17169" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="17255:17761" ph="/// Gets the list form for a property in the object ... " />
+            <marker date="1561291670909" expanded="true" signature="17938:18882" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="18026:18635" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="18186:18488" ph="{...}" />
+            <marker date="1561291670909" expanded="true" signature="18547:18621" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/Runtime/Workspaces/WorkspaceExtensions.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4161">
+          <caret line="242" column="39" selection-start-line="242" selection-start-column="39" selection-end-line="242" selection-end-column="39" />
+          <folding>
+            <marker date="1561291391475" expanded="false" signature="6:254" ph="..." />
+            <marker date="1561291391475" expanded="true" signature="297:14533" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="329:672" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="344:491" ph="/// Indicates that only one meta extent shall be used to figure out whether a meta extent will be used ... " />
+            <marker date="1561291391475" expanded="true" signature="519:646" ph="/// Indicates that unlimited meta extents will be resolved to find the structure.  ... " />
+            <marker date="1561291391475" expanded="true" signature="717:14531" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="808:939" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="1037:1429" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="1091:1368" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="1251:1354" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="1535:1633" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="1643:2147" ph="/// Gets the given class from the metalayer to the datalayer ... " />
+            <marker date="1561291391475" expanded="true" signature="2396:2495" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="2505:3003" ph="/// Gets the given class from the metalayer to the datalayer ... " />
+            <marker date="1561291391475" expanded="true" signature="3246:3410" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="3420:3794" ph="/// Finds an extent by the given uri ... " />
+            <marker date="1561291391475" expanded="true" signature="3883:4125" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="4135:4733" ph="/// Adds an extent to the workspace, but checks, if the given uri is already existing ... " />
+            <marker date="1561291391475" expanded="true" signature="4859:5346" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="5115:5233" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="5356:5657" ph="/// Removes the extent with the given uri out of the database ... " />
+            <marker date="1561291391475" expanded="true" signature="5735:5803" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="5813:6195" ph="/// Returns the given workspace and extents out of the urls ... " />
+            <marker date="1561291391475" expanded="true" signature="6437:6660" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="6902:7411" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="7046:7149" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="7301:7401" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="7421:7800" ph="/// Returns the given workspace out of a collection to which the extent is associated ... " />
+            <marker date="1561291391475" expanded="true" signature="7929:8047" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="8057:8396" ph="/// Finds the extent with the given uri in one of the workspaces in the database ... " />
+            <marker date="1561291391475" expanded="true" signature="8513:8701" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="8711:9128" ph="/// Finds the extent with the given uri in one of the workspaces in the database ... " />
+            <marker date="1561291391475" expanded="true" signature="9277:9714" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="9338:9495" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="9724:10122" ph="/// Finds the extent and workspace and returns it as a tuple ... " />
+            <marker date="1561291391475" expanded="true" signature="10351:10599" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="10610:10943" ph="/// Finds the extent with the given uri in one of the workspaces in the database ... " />
+            <marker date="1561291391475" expanded="true" signature="11053:11268" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="11520:11812" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="11719:11802" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="11896:11986" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="12064:12148" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="12227:12312" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="12391:12476" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="12557:12701" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="12786:12934" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="12944:13136" ph="/// Gets the data  ... " />
+            <marker date="1561291391475" expanded="true" signature="13201:13335" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="13345:13550" ph="/// Gets the uml data from the workspace ... " />
+            <marker date="1561291391475" expanded="true" signature="13625:13737" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="13747:13964" ph="/// Gets the primitive data from the workspace ... " />
+            <marker date="1561291391475" expanded="true" signature="14056:14179" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="14269:14352" ph="{...}" />
+            <marker date="1561291391475" expanded="true" signature="14442:14525" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/Uml/Helper/PropertyHelper.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="9" column="24" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
+          <folding>
+            <marker date="1561290778456" expanded="false" signature="6:103" ph="..." />
+            <marker date="1561290778456" expanded="true" signature="138:1085" ph="{...}" />
+            <marker date="1561290778456" expanded="true" signature="145:234" ph="/// Defines some helper classes for property objects ... " />
+            <marker date="1561290778456" expanded="true" signature="273:1083" ph="{...}" />
+            <marker date="1561290778456" expanded="true" signature="288:481" ph="/// Gets the type of the property ... " />
+            <marker date="1561290778456" expanded="true" signature="543:654" ph="{...}" />
+            <marker date="1561290778456" expanded="true" signature="664:904" ph="/// Gets the value whether the property is a collection by ... " />
+            <marker date="1561290778456" expanded="true" signature="959:1077" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/Models/Forms/ReferenceFieldData.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+          <folding>
+            <marker date="1556994899382" expanded="false" signature="6:84" ph="..." />
+            <marker date="1556994899382" expanded="true" signature="121:1978" ph="{...}" />
+            <marker date="1556994899382" expanded="true" signature="128:241" ph="/// Allows the selection of a certain field by navigating through the extent ... " />
+            <marker date="1556994899382" expanded="true" signature="289:1976" ph="{...}" />
+            <marker date="1556994899382" expanded="true" signature="403:424" ph="{...}" />
+            <marker date="1556994899382" expanded="true" signature="517:538" ph="{...}" />
+            <marker date="1556994899382" expanded="true" signature="548:667" ph="/// Gets or sets the value whether the selection shall be performed inline ... " />
+            <marker date="1556994899382" expanded="true" signature="729:874" ph="/// Gets or sets the default extent that shall be shown, when the user clicks on the selection field ... " />
+            <marker date="1556994899382" expanded="true" signature="937:1211" ph="/// Gets or sets the default workspace that will be shown, when the user clicks on the selection field. This ... " />
+            <marker date="1556994899382" expanded="true" signature="1274:1361" ph="/// Does not only set the default children ... " />
+            <marker date="1556994899382" expanded="true" signature="1421:1539" ph="/// Gets or sets the value whether the workspace selection shall be shown ... " />
+            <marker date="1556994899382" expanded="true" signature="1606:1721" ph="/// Gets or sets the value whether the extent selection shall be shown ... " />
+            <marker date="1556994899382" expanded="true" signature="1785:1903" ph="/// Gets or sets the metaclasses to which all elements will be filtered.  ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/Models/Forms/TextFieldData.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+          <folding>
+            <marker date="1545338003693" expanded="true" signature="35:531" ph="{...}" />
+            <marker date="1545338003693" expanded="true" signature="80:529" ph="{...}" />
+            <marker date="1545338003693" expanded="true" signature="184:205" ph="{...}" />
+            <marker date="1545338003693" expanded="true" signature="293:326" ph="{...}" />
+            <marker date="1545338003693" expanded="true" signature="381:484" ph="/// Gets or sets the width in guessed number of characters ... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatenMeister/Core/EMOF/Implementation/MofReflectiveSequence.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9">
+          <caret line="119" column="9" selection-start-line="119" selection-start-column="9" selection-end-line="119" selection-end-column="9" />
+          <folding>
+            <marker date="1556994899373" expanded="false" signature="6:242" ph="..." />
+            <marker date="1556994899373" expanded="true" signature="291:5830" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="298:467" ph="/// Implements a reflective sequence as given by the MOF specification.  ... " />
+            <marker date="1556994899373" expanded="true" signature="540:5828" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="599:690" ph="/// Gets the mof object being assigned to the  ... " />
+            <marker date="1556994899373" expanded="true" signature="810:899" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="975:1031" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="1110:1239" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="1166:1229" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="1249:1499" ph="/// Performs an enumeration of all members of the collection ... " />
+            <marker date="1556994899373" expanded="true" signature="1573:1815" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="1676:1805" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="1825:1976" ph="/// Gets the given property as an enumerable ... " />
+            <marker date="1556994899373" expanded="true" signature="2038:2400" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="2115:2347" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="2263:2333" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="2466:2851" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="2933:3310" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="3020:3264" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="3070:3149" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="3170:3250" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="3366:3535" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="3604:4140" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="3692:3891" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="3908:4024" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="4194:4268" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="4345:4610" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="4675:4860" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="4926:5216" ph="{...}" />
+            <marker date="1556994899373" expanded="true" signature="5295:5713" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datenmeister-new.sln">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+  </component>
+</project>

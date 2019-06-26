@@ -339,6 +339,17 @@ namespace DatenMeister.Runtime.Workspaces
             return uml.Get<_UML>();
         }
 
+        /// <summary>
+        /// Gets the primitive data from the workspace
+        /// </summary>
+        /// <param name="workspaceLogic">Workspace logic being used</param>
+        /// <returns>The Primitive data</returns>
+        public static _PrimitiveTypes GetPrimitiveData(this IWorkspaceLogic workspaceLogic)
+        {
+            var uml = workspaceLogic.GetUmlWorkspace();
+            return uml.Get<_PrimitiveTypes>();
+        }
+
         public static Workspace GetUmlWorkspace(
             this IWorkspaceLogic logic)
         {

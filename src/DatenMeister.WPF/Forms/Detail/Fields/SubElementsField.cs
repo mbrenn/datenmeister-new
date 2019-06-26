@@ -71,10 +71,12 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             IObject form = _fieldData.getOrDefault<IElement>(_FormAndFields._SubElementFieldData.form);
 
             valueOfElement = valueOfElement ?? _element.GetAsReflectiveCollection(_propertyName);
+            var valueCount = valueOfElement.Count();
+            
             var listViewControl = new ItemListViewControl
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                Height = 400,
+                Height = Math.Min(400, 200 + 20 * valueCount),
                 MinWidth = 650,
                 NavigationHost = _navigationHost
             };

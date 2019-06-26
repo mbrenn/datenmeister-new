@@ -28,10 +28,16 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Stores the type of the extent containing the views 
         /// </summary>
-        public const string ViewExtentType = "DatenMeister.Views";
+        private const string ViewExtentType = "DatenMeister.Views";
+        
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentCreator _extentCreator;
         private readonly IntegrationSettings _integrationSettings;
+
+        /// <summary>
+        /// Gets the workspace logic of the view logic
+        /// </summary>
+        public IWorkspaceLogic WorkspaceLogic => _workspaceLogic;
 
         public ViewLogic(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator, IntegrationSettings integrationSettings)
         {

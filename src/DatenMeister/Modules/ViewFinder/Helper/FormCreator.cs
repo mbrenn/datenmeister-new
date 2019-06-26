@@ -29,6 +29,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// </summary>
         private readonly ViewLogic _viewLogic;
 
+        private readonly IWorkspaceLogic _workspaceLogic;
+
         /// <summary>
         /// Stores the factory to create the fields and forms
         /// </summary>
@@ -91,6 +93,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         public FormCreator(ViewLogic viewLogic)
         {
             _viewLogic = viewLogic;
+            
+            _workspaceLogic = _viewLogic.WorkspaceLogic;
             var userExtent = _viewLogic?.GetUserViewExtent();
             _factory = userExtent != null 
                 ? new MofFactory(userExtent)
@@ -108,7 +112,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <param name="element"></param>
         /// <param name="creationMode"></param>
         /// <returns></returns>
-        public IElement CreateDetailForm (IObject element, CreationMode creationMode = CreationMode.All)
+        public IElement CreateDetailForm(IObject element, CreationMode creationMode = CreationMode.All)
         {
             var createdForm = _factory.create(_formAndFields.__DetailForm);
             createdForm.set(_FormAndFields._DetailForm.name, "Item");
@@ -176,7 +180,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         public IElement CreateExtentForm(IReflectiveCollection elements, CreationMode creationMode)
         {
             if (elements == null) throw new ArgumentNullException(nameof(elements));
-
 
             var tabs = new List<IElement>();
 
@@ -465,86 +468,109 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             var propertyType = PropertyHelper.GetPropertyType(property);
             var isForListForm = creationMode.HasFlag(CreationMode.ForListForms);
             var propertyName = property.get<string>("name");
+            var propertyIsEnumeration = PropertyHelper.IsCollection(property);
 
+            // Check, if field property is an enumeration
+            var uml = _workspaceLogic.GetUmlData();
+            var primitiveTypes = _workspaceLogic.GetPrimitiveData();
+            //var uriResolver = propertyType.GetUriResolver();
+            _stringType = _stringType ?? primitiveTypes.__String; /*uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String",
+                ResolveType.Default);*/
+            _integerType = _integerType ?? primitiveTypes.__Integer; /*uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer",
+                ResolveType.Default);*/
+            _booleanType = _booleanType ?? primitiveTypes.__Boolean; /*uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Boolean",
+                ResolveType.Default);*/
+            _realType = _realType ?? primitiveTypes.__Real; /*uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real",
+                ResolveType.Default);*/
+         
+            if (propertyType != null)
+            {   
+                Logger.Info("TEST: " + primitiveTypes.__Boolean.Equals(_booleanType)); // TODO: If successful, remove it
+
+                // Checks, if the property is an enumeration. 
+                if (propertyType.metaclass != null)
+                {
+                    if (propertyType.metaclass.@equals(uml.SimpleClassifiers.__Enumeration) && !isForListForm)
+                    {
+                        // If we have an enumeration (C#: Enum) and the field is not for a list form 
+                        var comboBox = _factory.create(_formAndFields.__DropDownFieldData);
+                        comboBox.set(_FormAndFields._DropDownFieldData.name, propertyName);
+                        comboBox.set(_FormAndFields._DropDownFieldData.title, propertyName);
+
+                        var values = EnumerationHelper.GetEnumValues(propertyType);
+                        comboBox.set(
+                            _FormAndFields._DropDownFieldData.values,
+                            values.Select(x =>
+                            {
+                                var data = _factory.create(_formAndFields.__ValuePair);
+                                data.set(_FormAndFields._ValuePair.name, x);
+                                data.set(_FormAndFields._ValuePair.value, x);
+                                return data;
+                            }).ToList());
+                        return comboBox;
+                    }
+
+                    if (propertyType.@equals(_booleanType) && !isForListForm)
+                    {
+                        // If we have a boolean and the field is not for a list form
+                        var checkbox = _factory.create(_formAndFields.__CheckboxFieldData);
+                        checkbox.set(_FormAndFields._CheckboxFieldData.name, propertyName);
+                        checkbox.set(_FormAndFields._CheckboxFieldData.title, propertyName);
+                        return checkbox;
+                    }
+
+                    if (!propertyType.@equals(_stringType) && !propertyType.@equals(_integerType) &&
+                        !propertyType.@equals(_realType) && !isForListForm)
+                    {
+                        // If we have something else than a primitive type and it is not for a list form
+                        if (propertyIsEnumeration)
+                        {
+                            // It can contain multiple elements
+                            var elements = _factory.create(_formAndFields.__SubElementFieldData);
+                            elements.set(_FormAndFields._SubElementFieldData.name, propertyName);
+                            elements.set(_FormAndFields._SubElementFieldData.title, propertyName);
+                            elements.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
+                                new List<IElement> {propertyType});
+
+                            return elements;
+                        }
+
+                        // It can just contain one element
+                        var reference = _factory.create(_formAndFields.__ReferenceFieldData);
+                        reference.set(_FormAndFields._ReferenceFieldData.name, propertyName);
+                        reference.set(_FormAndFields._ReferenceFieldData.title, propertyName);
+
+                        return reference;
+                    }
+                }
+            }
+            
             if (propertyType == null)
             {
-                // Unknown property type, so just create something
+                // If we have something else than a primitive type and it is not for a list form
+                IElement element; 
+                if (propertyIsEnumeration)
+                {
+                    // It can contain multiple elements
+                    element = _factory.create(_formAndFields.__SubElementFieldData);
+                }
+                else
+                {
+                    element = _factory.create(_formAndFields.__ReferenceFieldData);
+                    
+                }
+                
+                // It can just contain one element
+                element.set(_FormAndFields._SubElementFieldData.name, propertyName);
+                element.set(_FormAndFields._SubElementFieldData.title, propertyName);
+                return element;
+                
+                /*// Unknown property type, so just create something
                 var columnNoPropertyType = _factory.create(_formAndFields.__TextFieldData);
                 columnNoPropertyType.set(_FormAndFields._TextFieldData.name, propertyName);
                 columnNoPropertyType.set(_FormAndFields._TextFieldData.title, propertyName);
 
-                return columnNoPropertyType;
-            }
-
-            // Check, if field property is an enumeration
-            var umlTypeExtent = propertyType.metaclass.GetUriExtentOf();
-            var uml = umlTypeExtent.GetWorkspace().Get<_UML>();
-            var primitiveTypes = umlTypeExtent.GetWorkspace().Get<_PrimitiveTypes>();
-            var uriResolver = propertyType.GetUriResolver();
-            _stringType = _stringType ?? uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String",
-                ResolveType.Default);
-            _integerType = _integerType ?? uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer",
-                ResolveType.Default);
-            _booleanType = _booleanType ?? uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Boolean",
-                ResolveType.Default);
-            _realType = _realType ?? uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real",
-                ResolveType.Default);
-            Logger.Info("TEST: " + primitiveTypes.__Boolean.Equals(_booleanType)); // TODO: If successful, remove it
-
-            // Checks, if the property is an enumeration. 
-            if (propertyType.metaclass != null)
-            {
-                if (propertyType.metaclass.@equals(uml.SimpleClassifiers.__Enumeration) && !isForListForm)
-                {
-                    // If we have an enumeration (C#: Enum) and the field is not for a list form 
-                    var comboBox = _factory.create(_formAndFields.__DropDownFieldData);
-                    comboBox.set(_FormAndFields._DropDownFieldData.name, propertyName);
-                    comboBox.set(_FormAndFields._DropDownFieldData.title, propertyName);
-
-                    var values = EnumerationHelper.GetEnumValues(propertyType);
-                    comboBox.set(
-                        _FormAndFields._DropDownFieldData.values,
-                        values.Select(x =>
-                        {
-                            var data = _factory.create(_formAndFields.__ValuePair);
-                            data.set(_FormAndFields._ValuePair.name, x);
-                            data.set(_FormAndFields._ValuePair.value, x);
-                            return data;
-                        }).ToList());
-                    return comboBox;
-                }
-
-                if (propertyType.@equals(_booleanType) && !isForListForm)
-                {
-                    // If we have a boolean and the field is not for a list form
-                    var checkbox = _factory.create(_formAndFields.__CheckboxFieldData);
-                    checkbox.set(_FormAndFields._CheckboxFieldData.name, propertyName);
-                    checkbox.set(_FormAndFields._CheckboxFieldData.title, propertyName);
-                    return checkbox;
-                }
-
-                if (!propertyType.@equals(_stringType) && !propertyType.@equals(_integerType) && !propertyType.@equals(_realType) && !isForListForm)
-                {
-                    // If we have something else than a primitive type and it is not for a list form
-                    if (property.getOrDefault<int>(_UML._CommonStructure._MultiplicityElement.upper) > 1)
-                    {
-                        // It can contain multiple elements
-                        var elements = _factory.create(_formAndFields.__SubElementFieldData);
-                        elements.set(_FormAndFields._SubElementFieldData.name, propertyName);
-                        elements.set(_FormAndFields._SubElementFieldData.title, propertyName);
-                        elements.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
-                            new List<IElement> {propertyType});
-
-                        return elements;
-                    }
-
-                    // It can just contain one element
-                    var reference = _factory.create(_formAndFields.__ReferenceFieldData);
-                    reference.set(_FormAndFields._ReferenceFieldData.name, propertyName);
-                    reference.set(_FormAndFields._ReferenceFieldData.title, propertyName);
-
-                    return reference;
-                }
+                return columnNoPropertyType;*/
             }
 
             // Per default, assume some kind of text

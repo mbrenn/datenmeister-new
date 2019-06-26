@@ -100,6 +100,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                     {
                         new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Star)},
                         new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)},
+                        new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)},
                         new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)}
                     }
                 };
@@ -144,12 +145,17 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                     }
                 };
 
+                var removeButton = new Button {Content = "Remove"};
+                removeButton.Click += (sender, args) => { value.unset(fieldName); };
+
                 // Adds the ui elements
                 Grid.SetColumn(openButton, 1);
                 Grid.SetColumn(selectButton, 2);
+                Grid.SetColumn(removeButton, 2);
                 panel.Children.Add(itemText);
                 panel.Children.Add(openButton);
                 panel.Children.Add(selectButton);
+                panel.Children.Add(removeButton);
 
                 fieldFlags.CanBeFocused = true;
                 return panel;

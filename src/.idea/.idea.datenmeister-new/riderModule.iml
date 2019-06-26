@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../../../modules/BurnSystems/src/BurnSystems" />
+    <content url="file://$MODULE_DIR$/../../../modules/DatenMeister.Icons/src/DatenMeister.Icons" />
+    <content url="file://$MODULE_DIR$/../../../modules/burnsystems.wpf/src/BurnSystems.WPF" />
+    <content url="file://$MODULE_DIR$/../.." />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

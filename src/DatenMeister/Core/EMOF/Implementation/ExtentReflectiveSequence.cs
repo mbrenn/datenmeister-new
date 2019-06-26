@@ -15,6 +15,9 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class ExtentReflectiveSequence : IReflectiveSequence, IHasExtent
     {
+        /// <summary>
+        /// Stores the extent which is abstracted by this class instance
+        /// </summary>
         private readonly MofExtent _extent;
 
         /// <inheritdoc />
@@ -23,7 +26,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Initializes a new instance of the ExtentReflectiveSequence class
         /// </summary>
-        /// <param name="extent"></param>
+        /// <param name="extent">Extent to be covered by this refective sequence</param>
         public ExtentReflectiveSequence(MofExtent extent)
         {
             _extent = extent;
@@ -36,8 +39,10 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 var resultElement = new MofElement(element, _extent)
                 {
+                    // Sets also the directly associated extent
                     Extent = _extent
                 };
+                
                 yield return resultElement;
             }
         }

@@ -38,16 +38,47 @@ using Microsoft.Win32;
 namespace DatenMeister.WPF.Forms.Base
 {
     /// <summary>
-    /// Interaktionslogik für ItemListViewControl.xaml
+    ///     Interaktionslogik für ItemListViewControl.xaml
     /// </summary>
     public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavigationGuest
     {
+        /// <summary>
+        ///     Defines the possible position of the row button compared to the data
+        /// </summary>
+        public enum ButtonPosition
+        {
+            Before,
+            After
+        }
+
         private static readonly ILogger Logger = new ClassLogger(typeof(ItemListViewControl));
 
         /// <summary>
-        /// Defines the change event handle being used for current view
+        ///     Stores the delaying dispatcher
+        /// </summary>
+        private readonly DelayedRefreshDispatcher _delayedDispatcher;
+
+        /// <summary>
+        ///     Defines the logic for the fastview filters
+        /// </summary>
+        private readonly FastViewFilterLogic _fastViewFilter;
+
+        private readonly IDictionary<ExpandoObject, IObject> _itemMapping = new Dictionary<ExpandoObject, IObject>();
+
+        /// <summary>
+        ///     Defines the change event handle being used for current view
         /// </summary>
         private EventHandle _changeEventHandle;
+
+        /// <summary>
+        ///     Defines the text being used for search
+        /// </summary>
+        private string _searchText;
+
+        /// <summary>
+        ///     Stores the view logic
+        /// </summary>
+        private ViewLogic _viewLogic;
 
         public ItemListViewControl()
         {
@@ -57,52 +88,24 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Gets or sets the host for the list view item. The navigation
-        /// host is used to set the ribbons and other navigational things
-        /// </summary>
-        public INavigationHost NavigationHost { get; set; }
-
-        /// <summary>
-        /// Gets or sets the items to be shown. These items are shown also in the navigation view and will
-        /// not be modified, even if the user clicks on the navigation tree. 
+        ///     Gets or sets the items to be shown. These items are shown also in the navigation view and will
+        ///     not be modified, even if the user clicks on the navigation tree.
         /// </summary>
         protected IReflectiveCollection Items { get; set; }
 
-        private readonly IDictionary<ExpandoObject, IObject> _itemMapping = new Dictionary<ExpandoObject, IObject>();
-
         /// <summary>
-        /// Defines the text being used for search
-        /// </summary>
-        private string _searchText;
-
-        /// <summary>
-        /// Defines the logic for the fastview filters
-        /// </summary>
-        private readonly FastViewFilterLogic _fastViewFilter;
-
-        /// <summary>
-        /// Stores the delaying dispatcher
-        /// </summary>
-        private readonly DelayedRefreshDispatcher _delayedDispatcher;
-
-        /// <summary>
-        /// Stores the view logic
-        /// </summary>
-        private ViewLogic _viewLogic;
-
-        /// <summary>
-        /// Defines the current form definition of the window as provided by the
-        /// derived method 'RequestForm'.
+        ///     Defines the current form definition of the window as provided by the
+        ///     derived method 'RequestForm'.
         /// </summary>
         public IObject CurrentFormDefinition { get; set; }
 
         /// <summary>
-        /// Gets or sets the view extensions
+        ///     Gets or sets the view extensions
         /// </summary>
         public List<ViewExtension> ViewExtensions { get; private set; }
 
         /// <summary>
-        /// Gets or sets the information whether new items can be added via the datagrid
+        ///     Gets or sets the information whether new items can be added via the datagrid
         /// </summary>
         private bool SupportNewItems
         {
@@ -111,34 +114,72 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Updates the content by going through the fields and items
+        ///     Gets an enumeration of all selected items
         /// </summary>
-        public void SetContent(IReflectiveCollection items, IObject formDefinition, ICollection<ViewExtension> viewExtensions)
+        /// <returns>Enumeration of selected item</returns>
+        public IEnumerable<IObject> GetSelectedItems()
+        {
+            var selectedItems = DataGrid.SelectedItems;
+            if (selectedItems.Count == 0)
+                // If no item is selected, get all items
+                selectedItems = DataGrid.Items;
+
+            foreach (var item in selectedItems)
+                if (item is ExpandoObject selectedItem)
+                    if (_itemMapping.TryGetValue(selectedItem, out var foundItem))
+                        yield return foundItem;
+        }
+
+        /// <summary>
+        ///     GEts the currently selected item
+        /// </summary>
+        /// <returns>Item being selected</returns>
+        public IObject GetSelectedItem()
+        {
+            return GetSelectedItems().FirstOrDefault();
+        }
+
+        /// <summary>
+        ///     Gets or sets the host for the list view item. The navigation
+        ///     host is used to set the ribbons and other navigational things
+        /// </summary>
+        public INavigationHost NavigationHost { get; set; }
+
+        /// <summary>
+        ///     Prepares the navigation of the host. The function is called by the navigation
+        ///     host.
+        /// </summary>
+        public IEnumerable<ViewExtension> GetViewExtensions()
+        {
+            foreach (var ribbon in ViewExtensions.OfType<RibbonButtonDefinition>())
+                yield return new RibbonButtonDefinition(
+                    ribbon.Name,
+                    ribbon.OnPressed,
+                    ribbon.ImageName,
+                    ribbon.CategoryName);
+        }
+
+        /// <summary>
+        ///     Updates the content by going through the fields and items
+        /// </summary>
+        public void SetContent(IReflectiveCollection items, IObject formDefinition,
+            ICollection<ViewExtension> viewExtensions)
         {
             _viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             UnregisterCurrentChangeEventHandle();
 
             if (items is IHasExtent asExtent)
-            {
                 _changeEventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
                     asExtent.Extent,
-                    (extent, element) =>
-                    {
-                        _delayedDispatcher.RequestRefresh();
-                    });
-            }
+                    (extent, element) => { _delayedDispatcher.RequestRefresh(); });
 
             // If form  defines constraints upon metaclass, then the filtering will occur here
             var metaClass = formDefinition.getOrDefault<IElement>(_FormAndFields._ListForm.metaClass);
 
             if (metaClass != null)
-            {
                 Items = items.WhenMetaClassIs(metaClass);
-            }
             else
-            {
                 Items = items;
-            }
 
             CurrentFormDefinition = formDefinition;
             ViewExtensions = viewExtensions.ToList();
@@ -147,7 +188,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Unregisters the change event handle and sets the variable _changeEventHandle to null
+        ///     Unregisters the change event handle and sets the variable _changeEventHandle to null
         /// </summary>
         protected void UnregisterCurrentChangeEventHandle()
         {
@@ -159,7 +200,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Gets the value of the element by the field
+        ///     Gets the value of the element by the field
         /// </summary>
         /// <param name="element">Element being queried</param>
         /// <param name="field">Field being used for query</param>
@@ -168,8 +209,8 @@ namespace DatenMeister.WPF.Forms.Base
         {
             var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
             var fieldMetaClass = field.getMetaClass();
-            if (fieldType == MetaClassElementFieldData.FieldType || 
-                fieldMetaClass?.@equals(_viewLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
+            if (fieldType == MetaClassElementFieldData.FieldType ||
+                fieldMetaClass?.equals(_viewLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
             {
                 var elementAsElement = element as IElement;
                 var metaClass = elementAsElement?.getMetaClass();
@@ -184,10 +225,10 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Updates the content of the list by recreating the columns and rows
-        /// of the items.
-        /// This method is called, when the used clicks on the left side or
-        /// an additional item was created/edited or removed. 
+        ///     Updates the content of the list by recreating the columns and rows
+        ///     of the items.
+        ///     This method is called, when the used clicks on the left side or
+        ///     an additional item was created/edited or removed.
         /// </summary>
         public void UpdateContent()
         {
@@ -200,10 +241,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             // Updates all columns and returns the fieldnames and fields
             var (fieldDataNames, fields) = UpdateColumnDefinitions();
-            if (fieldDataNames == null)
-            {
-                return;
-            }
+            if (fieldDataNames == null) return;
 
             // Creates the rows
             if (Items != null)
@@ -290,10 +328,7 @@ namespace DatenMeister.WPF.Forms.Base
                         }
                         catch (Exception exc)
                         {
-                            if (!noMessageBox)
-                            {
-                                MessageBox.Show(exc.Message);
-                            }
+                            if (!noMessageBox) MessageBox.Show(exc.Message);
 
                             // Sets flag, so no additional message box will be shown when the itemObject is updated, possibly, leading to a new exception. 
                             noMessageBox = true;
@@ -308,16 +343,16 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Updates the columns for the fields and returns the names and fields
+        ///     Updates the columns for the fields and returns the names and fields
         /// </summary>
-        /// <returns>The tuple containing the names being used for the column
-        /// and the fields being used.</returns>
+        /// <returns>
+        ///     The tuple containing the names being used for the column
+        ///     and the fields being used.
+        /// </returns>
         private (List<string> names, IReflectiveCollection fields) UpdateColumnDefinitions()
-        {   
+        {
             if (!(CurrentFormDefinition?.get(_FormAndFields._Form.field) is IReflectiveCollection fields))
-            {
                 return (null, null);
-            }
 
             ClearInfoLines();
             DataGrid.Columns.Clear();
@@ -337,7 +372,7 @@ namespace DatenMeister.WPF.Forms.Base
                 bool isReadOnly;
 
                 if (fieldType == MetaClassElementFieldData.FieldType
-                    || fieldMetaClass?.@equals(_viewLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
+                    || fieldMetaClass?.equals(_viewLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
                 {
                     title = "Metaclass";
                     name = "Metaclass";
@@ -362,7 +397,6 @@ namespace DatenMeister.WPF.Forms.Base
 
             // Creates the row button
             foreach (var definition in ViewExtensions)
-            {
                 switch (definition)
                 {
                     case RowItemButtonDefinition rowButtonDefinition:
@@ -375,13 +409,9 @@ namespace DatenMeister.WPF.Forms.Base
                         };
 
                         if (rowButtonDefinition.Position == ButtonPosition.Before)
-                        {
                             DataGrid.Columns.Insert(0, dataColumn);
-                        }
                         else
-                        {
                             DataGrid.Columns.Add(dataColumn);
-                        }
 
                         break;
                     case GenericButtonDefinition genericButtonDefinition:
@@ -394,13 +424,12 @@ namespace DatenMeister.WPF.Forms.Base
                         AddInfoLine(lineDefinition.InfolineFactory());
                         break;
                 }
-            }
 
             return (fieldNames, fields);
         }
 
         /// <summary>
-        /// Adds a button to the view
+        ///     Adds a button to the view
         /// </summary>
         /// <param name="name">Name of the button</param>
         /// <param name="onPressed">Called if the user clicks on the button</param>
@@ -410,7 +439,6 @@ namespace DatenMeister.WPF.Forms.Base
             var button = new ViewButton
             {
                 Content = name
-
             };
 
             button.Pressed += (x, y) => { onPressed(); };
@@ -420,7 +448,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Adds a button to the view
+        ///     Adds a button to the view
         /// </summary>
         /// <param name="name"></param>
         /// <param name="onPressed"></param>
@@ -444,16 +472,13 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Opens the selected element
+        ///     Opens the selected element
         /// </summary>
         /// <param name="guest">The Guest element to be queried</param>
         /// <param name="selectedElement">Selected element</param>
         private void NavigateToElement(INavigationGuest guest, IObject selectedElement)
-        { 
-            if (selectedElement == null)
-            {
-                return;
-            }
+        {
+            if (selectedElement == null) return;
 
             _ = NavigatorForItems.NavigateToElementDetailViewAsync(
                 NavigationHost,
@@ -465,16 +490,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Defines the possible position of the row button compared to the data
-        /// </summary>
-        public enum ButtonPosition
-        {
-            Before,
-            After
-        }
-
-        /// <summary>
-        /// Called, if the user clicks on the button
+        ///     Called, if the user clicks on the button
         /// </summary>
         /// <param name="sender">Sender being used</param>
         /// <param name="e">Event arguments</param>
@@ -483,52 +499,43 @@ namespace DatenMeister.WPF.Forms.Base
             var (selectedItem, column) = GetObjectsFromEventRouting(e);
             column.OnClick(this, selectedItem);
         }
-        
+
         /// <summary>
-        /// Gets the object and column from the button being clicked by the user
+        ///     Gets the object and column from the button being clicked by the user
         /// </summary>
         /// <param name="e">Event being called</param>
         /// <returns>The selected item of the button and the column</returns>
-        private (IObject selectedItem, ClickedTemplateColumn column) 
+        private (IObject selectedItem, ClickedTemplateColumn column)
             GetObjectsFromEventRouting(RoutedEventArgs e)
         {
             var content = ((ContentPresenter) ((Button) e.Source).TemplatedParent).Content;
 
-            if (!(content is ExpandoObject expandoObject))
-            {
-                return (null, null);
-            }
+            if (!(content is ExpandoObject expandoObject)) return (null, null);
 
-            if (!_itemMapping.TryGetValue(expandoObject, out var foundItem))
-            {
-                return (null, null);
-            }
+            if (!_itemMapping.TryGetValue(expandoObject, out var foundItem)) return (null, null);
 
             var button = (Button) e.Source;
             var contentPresenter = (ContentPresenter) button.TemplatedParent;
             var column = (ClickedTemplateColumn) ((DataGridCell) contentPresenter.Parent).Column;
             return (foundItem, column);
         }
+
         /// <summary>
-        /// Called, when a rown button is initialized.
-        /// The method is called, when a row is created.
+        ///     Called, when a rown button is initialized.
+        ///     The method is called, when a row is created.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void RowButton_OnInitialized(object sender, RoutedEventArgs e)
         {
             var (selectedItem, column) = GetObjectsFromEventRouting(e);
-            var button = (Button)e.Source;
+            var button = (Button) e.Source;
 
             if (selectedItem == null)
-            {
                 // It is a 'new item'-row which does not need a button
                 button.Visibility = Visibility.Hidden;
-            }
             else
-            {
                 button.Content = column.Header.ToString();
-            }
         }
 
         private void SearchField_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -538,23 +545,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Prepares the navigation of the host. The function is called by the navigation 
-        /// host. 
-        /// </summary>
-        public IEnumerable<ViewExtension> GetViewExtensions()
-        {
-            foreach (var ribbon in ViewExtensions.OfType<RibbonButtonDefinition>())
-            {
-                yield return new RibbonButtonDefinition(
-                    ribbon.Name,
-                    ribbon.OnPressed,
-                    ribbon.ImageName,
-                    ribbon.CategoryName);
-            }
-        }
-
-        /// <summary>
-        /// Prepares the navigation and ribbons
+        ///     Prepares the navigation and ribbons
         /// </summary>
         public void IncludeStandardExtensions()
         {
@@ -643,15 +634,10 @@ namespace DatenMeister.WPF.Forms.Base
                 copyContent.Execute(CopyType.AsXmi);
             }
 
-            /*void JumpToTypeManager()
-            {
-                TypeManagerListView.NavigateToTypeManager(this.NavigationHost);
-            }*/
-
             ViewExtensions.Add(
                 new RowItemButtonDefinition(
-                    "Edit", 
-                    NavigateToElement, 
+                    "Edit",
+                    NavigateToElement,
                     ButtonPosition.Before));
 
             ViewExtensions.Add(
@@ -660,21 +646,6 @@ namespace DatenMeister.WPF.Forms.Base
                     ViewExtent,
                     null,
                     NavigationCategories.File + ".Views"));
-
-            // Forms can only be created for the complete Extent
-            /*ViewExtensions.Add(
-                new RibbonButtonDefinition(
-                    "Show Form Definition",
-                    ShowFormDefinition,
-                    null,
-                    NavigationCategories.Views));
-
-            ViewExtensions.Add(
-                new RibbonButtonDefinition(
-                    "Create Form from current View",
-                    CopyForm,
-                    null,
-                    NavigationCategories.Views));*/
 
             ViewExtensions.Add(
                 new RibbonButtonDefinition(
@@ -698,66 +669,17 @@ namespace DatenMeister.WPF.Forms.Base
                     NavigationCategories.File + ".Copy"));
         }
 
-        /// <inheritdoc />
         /// <summary>
-        /// The template being used to click
-        /// </summary>
-        private class ClickedTemplateColumn : DataGridTemplateColumn
-        {
-            /// <summary>
-            /// Gets or sets the action being called when the user clicks on the button
-            /// </summary>
-            public Action<INavigationGuest, IObject> OnClick { get; set; }
-        }
-
-        /// <summary>
-        /// Gets an enumeration of all selected items
-        /// </summary>
-        /// <returns>Enumeration of selected item</returns>
-        public IEnumerable<IObject> GetSelectedItems()
-        {
-            var selectedItems = DataGrid.SelectedItems;
-            if (selectedItems.Count == 0)
-            {
-                // If no item is selected, get all items
-                selectedItems = DataGrid.Items;
-            }
-
-            foreach (var item in selectedItems)
-            {
-                if (item is ExpandoObject selectedItem)
-                {
-                    if (_itemMapping.TryGetValue(selectedItem, out var foundItem))
-                    {
-                        yield return foundItem;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// GEts the currently selected item 
-        /// </summary>
-        /// <returns>Item being selected</returns>
-        public IObject GetSelectedItem()
-        {
-            return GetSelectedItems().FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Called, if the user performs a double click on the given item
+        ///     Called, if the user performs a double click on the given item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (!(DataGrid.SelectedItem is ExpandoObject selectedItem))
-            {
-                return;
-            }
+            if (!(DataGrid.SelectedItem is ExpandoObject selectedItem)) return;
 
             if (_itemMapping.TryGetValue(selectedItem, out var foundItem))
-            {   
+            {
                 // OnMouseDoubleClick(foundItem);
             }
         }
@@ -769,7 +691,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Clears the infolines
+        ///     Clears the infolines
         /// </summary>
         public void ClearInfoLines()
         {
@@ -777,7 +699,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Adds an infoline to the window
+        ///     Adds an infoline to the window
         /// </summary>
         /// <param name="element">Element to be added</param>
         public void AddInfoLine(UIElement element)
@@ -805,54 +727,53 @@ namespace DatenMeister.WPF.Forms.Base
                     var subItem = InMemoryObject.CreateEmpty(filter);
 
                     var events = await NavigatorForItems.NavigateToElementDetailView(
-                        NavigationHost, 
+                        NavigationHost,
                         subItem,
-                        (d) => { d.ViewDefined += (a, b) =>
+                        d =>
                         {
-                            // Remove the field with property
-                            var fields = b.View.get<IReflectiveSequence>(_FormAndFields._Form.field);
-                            var propertyField = QueryHelper.GetChildWithProperty(fields,
-                                _FormAndFields._FieldData.name, 
-                                nameof(PropertyComparisonFilter.Property));
-                            if (propertyField != null)
+                            d.ViewDefined += (a, b) =>
                             {
-                                fields.remove(propertyField);
-                            }
+                                // Remove the field with property
+                                var fields = b.View.get<IReflectiveSequence>(_FormAndFields._Form.field);
+                                var propertyField = QueryHelper.GetChildWithProperty(fields,
+                                    _FormAndFields._FieldData.name,
+                                    nameof(PropertyComparisonFilter.Property));
+                                if (propertyField != null) fields.remove(propertyField);
 
-                            // Now, create the replacement
-                            var formAndFields = 
-                                GiveMe.Scope.Resolve<IWorkspaceLogic>().GetTypesWorkspace().Get<_FormAndFields>();
-                            var factory = new MofFactory(b.View);
-                            var element = factory.create(formAndFields.__DropDownFieldData);
-                            element.set(_FormAndFields._DropDownFieldData.name,nameof(PropertyComparisonFilter.Property));
-                            element.set(_FormAndFields._DropDownFieldData.title, nameof(PropertyComparisonFilter.Property));
-                            element.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
+                                // Now, create the replacement
+                                var formAndFields =
+                                    GiveMe.Scope.Resolve<IWorkspaceLogic>().GetTypesWorkspace().Get<_FormAndFields>();
+                                var factory = new MofFactory(b.View);
+                                var element = factory.create(formAndFields.__DropDownFieldData);
+                                element.set(_FormAndFields._DropDownFieldData.name,
+                                    nameof(PropertyComparisonFilter.Property));
+                                element.set(_FormAndFields._DropDownFieldData.title,
+                                    nameof(PropertyComparisonFilter.Property));
+                                element.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
 
-                            var pairs = new List<IObject>();
-                            foreach (var field in 
-                                CurrentFormDefinition.get<IReflectiveCollection>(_FormAndFields._ListForm.field)
-                                    .OfType<IObject>())
-                            {
-                                if (!field.isSet(_FormAndFields._FieldData.name))
+                                var pairs = new List<IObject>();
+                                foreach (var field in
+                                    CurrentFormDefinition.get<IReflectiveCollection>(_FormAndFields._ListForm.field)
+                                        .OfType<IObject>())
                                 {
-                                    continue;
+                                    if (!field.isSet(_FormAndFields._FieldData.name)) continue;
+
+                                    var pair = factory.create(formAndFields.__ValuePair);
+
+                                    pair.set(_FormAndFields._ValuePair.name,
+                                        field.get<string>(_FormAndFields._FieldData.title));
+                                    pair.set(_FormAndFields._ValuePair.value,
+                                        field.get<string>(_FormAndFields._FieldData.name));
+                                    pairs.Add(pair);
                                 }
 
-                                var pair = factory.create(formAndFields.__ValuePair);
-                                
-                                pair.set(_FormAndFields._ValuePair.name, field.get<string>(_FormAndFields._FieldData.title));
-                                pair.set(_FormAndFields._ValuePair.value, field.get<string>(_FormAndFields._FieldData.name));
-                                pairs.Add(pair);
-                            }
+                                element.set(_FormAndFields._DropDownFieldData.values, pairs);
+                                fields.add(0, element);
+                            };
+                        });
 
-                            element.set(_FormAndFields._DropDownFieldData.values, pairs);
-                            fields.add(0, element);
-                        }; });
-
-                    if (events.Result == NavigationResult.Saved)
-                    {
-                        AddFastFilter(subItem);
-                    };
+                    if (events.Result == NavigationResult.Saved) AddFastFilter(subItem);
+                    ;
                 };
 
                 list.Add(item);
@@ -865,7 +786,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Adds a fast filter to the current view
+        ///     Adds a fast filter to the current view
         /// </summary>
         /// <param name="fastFilter">Fast filter to be stored</param>
         private void AddFastFilter(IObject fastFilter)
@@ -902,7 +823,10 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        private IEnumerable<IElement> GetFastFilters() => CurrentFormDefinition.ForceAsEnumerable(_FormAndFields._ListForm.fastViewFilters).OfType<IElement>();
+        private IEnumerable<IElement> GetFastFilters()
+        {
+            return CurrentFormDefinition.ForceAsEnumerable(_FormAndFields._ListForm.fastViewFilters).OfType<IElement>();
+        }
 
         private void ItemListViewControl_OnUnloaded(object sender, RoutedEventArgs e)
         {
@@ -910,7 +834,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Gets the context menu allowing the copying of the given text to the Clipboard
+        ///     Gets the context menu allowing the copying of the given text to the Clipboard
         /// </summary>
         /// <param name="text">Text to be stored</param>
         /// <returns>Resulting context menu</returns>
@@ -924,6 +848,18 @@ namespace DatenMeister.WPF.Forms.Base
             item.Click += (x, y) => { Clipboard.SetText(text); };
             contextMenu.Items.Add(item);
             return contextMenu;
+        }
+
+        /// <inheritdoc />
+        /// <summary>
+        ///     The template being used to click
+        /// </summary>
+        private class ClickedTemplateColumn : DataGridTemplateColumn
+        {
+            /// <summary>
+            ///     Gets or sets the action being called when the user clicks on the button
+            /// </summary>
+            public Action<INavigationGuest, IObject> OnClick { get; set; }
         }
     }
 }

@@ -579,7 +579,7 @@ namespace DatenMeister.WPF.Forms.Base
                 dlg.ShowDialog();
             }
 
-            void CopyForm()
+            void  CopyForm()
             {
                 var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
                 var target = viewLogic.GetUserViewExtent();

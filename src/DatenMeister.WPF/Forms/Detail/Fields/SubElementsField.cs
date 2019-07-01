@@ -91,10 +91,10 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
 
             var viewExtensions = new List<ViewExtension>
             {
-                new RowItemButtonDefinition(
+                /*new RowItemButtonDefinition(
                     "Edit",
                     (guest, item) => NavigatorForItems.NavigateToElementDetailView(_navigationHost, item),
-                    ItemListViewControl.ButtonPosition.Before),
+                    ItemListViewControl.ButtonPosition.Before),*/
 
                 new RowItemButtonDefinition(
                     "Delete",
@@ -116,7 +116,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             var listItems = new List<Tuple<string, Action>>
             {
                 new Tuple<string, Action>(
-                    "Select object",
+                    "Select Type",
                     () =>
                     {
                         var result = NavigatorForItems.NavigateToCreateNewItem(
@@ -152,7 +152,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             }
 
             // If user clicks on the button, an empty reflective collection is created
-            var createItemButton = new Button {Content = "Add item", HorizontalAlignment = HorizontalAlignment.Right};
+            var createItemButton = new Button {Content = "Create new item", HorizontalAlignment = HorizontalAlignment.Right};
             createItemButton.Click += (x, y) =>
             {
                 var menu = new ContextMenu();

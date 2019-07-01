@@ -135,6 +135,7 @@ namespace DatenMeister.Tests.Excel
                 var extentManager = dm.Resolve<IWorkspaceLogic>();
 
                 var loadedExtent = extentManager.FindExtent("dm:///excel2");
+                Assert.That(loadedExtent, Is.Not.Null);
                 Assert.That(loadedExtent.elements().Count(), Is.GreaterThan(0));
 
                 var secondElement = loadedExtent.elements().ElementAtOrDefault(1) as IObject;

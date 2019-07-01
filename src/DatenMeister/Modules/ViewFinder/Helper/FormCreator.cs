@@ -94,7 +94,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         {
             _viewLogic = viewLogic;
             
-            _workspaceLogic = _viewLogic.WorkspaceLogic;
+            _workspaceLogic = _viewLogic?.WorkspaceLogic;
             var userExtent = _viewLogic?.GetUserViewExtent();
             _factory = userExtent != null 
                 ? new MofFactory(userExtent)
@@ -412,9 +412,9 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
                 }
 
+                // Makes the field to an enumeration, if explicitly requested or the type behind is an enumeration
                 column.set(
                     _FormAndFields._FieldData.isEnumeration,
-                    
                     column.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration) | DotNetHelper.IsEnumeration(propertyValue?.GetType()));
             }
         }
@@ -530,7 +530,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                             elements.set(_FormAndFields._SubElementFieldData.name, propertyName);
                             elements.set(_FormAndFields._SubElementFieldData.title, propertyName);
                             elements.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
-                                new List<IElement> {propertyType});
+                                ClassifierMethods.GetSpecializations(propertyType).ToList());
 
                             return elements;
                         }

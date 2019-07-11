@@ -208,6 +208,20 @@ namespace DatenMeister.Uml.Helper
         /// <param name="generalizedClassifier">Generalized class being used as base for specialized one</param>
         public static IElement AddGeneralization(IElement specializedClassifier, IElement generalizedClassifier)
         {
+            var uml = GiveMe.Scope.WorkspaceLogic.GetUmlData();
+            return AddGeneralization(uml, specializedClassifier, generalizedClassifier);
+        }
+
+        /// <summary>
+        /// Adds a new generalization to the specialized classifier mapping to the
+        /// generalizedClassifier
+        /// </summary>
+        /// <param name="uml">Unml being used</param>
+        /// <param name="specializedClassifier">The classifier which will have a new generalization
+        /// and consequently will get the properties of the generalization attached</param>
+        /// <param name="generalizedClassifier">Generalized class being used as base for specialized one</param>
+        public static IElement AddGeneralization(_UML uml, IElement specializedClassifier, IElement generalizedClassifier)
+        {
             if (GetGeneralizations(specializedClassifier).Contains(generalizedClassifier))
             {
                 // Nothing to do
@@ -215,18 +229,17 @@ namespace DatenMeister.Uml.Helper
             }
 
             var factory = new MofFactory(specializedClassifier);
-            var uml = GiveMe.Scope.WorkspaceLogic.GetUmlData();
 
             var newGeneralization = factory.create(uml.Classification.__Generalization);
-            newGeneralization.set(
-                _UML._Classification._Generalization.general, 
-                generalizedClassifier);
-            newGeneralization.set(
-                _UML._Classification._Generalization.specific, 
-                specializedClassifier);
             specializedClassifier.AddCollectionItem(
                 _UML._Classification._Classifier.generalization, 
                 newGeneralization);
+            newGeneralization.set(
+                _UML._Classification._Generalization.general, 
+                generalizedClassifier);
+            /*newGeneralization.set(
+                _UML._Classification._Generalization.specific, 
+                specializedClassifier);*/
 
             return newGeneralization;
         }

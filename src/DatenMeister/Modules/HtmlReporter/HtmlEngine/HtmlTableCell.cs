@@ -1,0 +1,33 @@
+namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
+{
+    /// <summary>
+    /// Defines a single html cell which is used in  a table row
+    /// </summary>
+    public class HtmlTableCell
+    {
+        private readonly object _content;
+
+        private readonly string _cssClass;
+
+        public bool IsHeading { get; set; }
+
+        public HtmlTableCell(object content, string cssClass = null)
+        {
+            _content = content;
+            _cssClass = cssClass;
+        }
+
+        public override string ToString()
+        {
+            var htmlTab = IsHeading ? "th" : "td";
+            if (string.IsNullOrEmpty(_cssClass))
+            {
+                return $"<{htmlTab}>{_content}</{htmlTab}>";
+            }
+            else
+            {
+                return $"<{htmlTab} class=\"{_cssClass}>{_content}</{htmlTab}>";
+            }
+        }
+    }
+}

@@ -48,7 +48,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// to a EML Type information
         /// </summary>
         /// <param name="type">Type to be converted</param>
-        /// <returns>The converted type or null, if the corresponding element is not found</returns>
+        /// <returns>The converted type or null, if the corresponding element is not found.
+        /// Returns the metaclass to the given element</returns>
         public string ToElement(Type type)
         {
             _typesToElements.TryGetValue(type, out var result);

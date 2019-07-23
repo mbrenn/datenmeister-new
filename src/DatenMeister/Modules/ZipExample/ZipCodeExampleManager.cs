@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 
@@ -93,7 +94,7 @@ namespace DatenMeister.Modules.ZipExample
                 }
             };
 
-            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration, false);
+            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration, ExtentCreationFlags.LoadOnly);
             loadedExtent.SetExtentType("DatenMeister.Example.ZipCodes");
 
             var zipCodeTypePackage =

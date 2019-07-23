@@ -16,6 +16,15 @@
         /// </summary>
         public bool EstablishDataEnvironment { get; set; } = true;
 
+        /// <summary>
+        /// True, if the default extents like users, user types, user views and other automatically generated
+        /// extents shall be created as empty
+        /// </summary>
+        public bool InitializeDefaultExtents { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the database path in which the databases are stored per default
+        /// </summary>
         public string DatabasePath { get; set; }
 
         /// <summary>

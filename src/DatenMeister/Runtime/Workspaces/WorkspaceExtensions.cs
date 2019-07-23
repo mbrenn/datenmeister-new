@@ -285,6 +285,23 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        /// <summary>
+        /// Gets all elements of all extents within the workspace
+        /// </summary>
+        /// <param name="workspace">Workspace to be evaluated.
+        /// All extents are parsed within the workspace</param>
+        /// <returns>Enumeration of all objects</returns>
+        public static IEnumerable<IObject> GetAllElements(this IWorkspace workspace)
+        {
+            foreach (var extent in workspace.extent)
+            {
+                foreach (var element in extent.elements().OfType<IObject>())
+                {
+                    yield return element;
+                }
+            }
+        }
+
         public static Workspace GetManagementWorkspace(this IWorkspaceLogic logic)
         {
             return logic.GetWorkspace(WorkspaceNames.NameManagement);
@@ -337,6 +354,17 @@ namespace DatenMeister.Runtime.Workspaces
         {
             var uml = workspaceLogic.GetUmlWorkspace();
             return uml.Get<_UML>();
+        }
+
+        /// <summary>
+        /// Gets the primitive data from the workspace
+        /// </summary>
+        /// <param name="workspaceLogic">Workspace logic being used</param>
+        /// <returns>The Primitive data</returns>
+        public static _PrimitiveTypes GetPrimitiveData(this IWorkspaceLogic workspaceLogic)
+        {
+            var uml = workspaceLogic.GetUmlWorkspace();
+            return uml.Get<_PrimitiveTypes>();
         }
 
         public static Workspace GetUmlWorkspace(

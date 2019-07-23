@@ -9,12 +9,35 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
+    /// <summary>
+    /// Defines the possible extent creation methods for the extent manager.
+    /// Per default, the option load-only is chosen per default
+    /// </summary>
+    public enum ExtentCreationFlags
+    {
+        /// <summary>
+        /// Tries to load the extent. If the extent cannot be loaded, the extent is NOT created
+        /// </summary>
+        LoadOnly,
+
+        /// <summary>
+        /// Tries to load the extent. If the extent cannot be loaded, a new extent is created
+        /// </summary>
+        LoadOrCreate,
+
+        /// <summary>
+        /// Creates a new extent by overwriting the existing one
+        /// </summary>
+        CreateOnly
+    }
+
     /// <summary>
     /// This logic handles the loading and storing of extents automatically. 
     /// This loader is responsible to retrieve an extent by the given ExtentLoaderConfig
@@ -61,9 +84,9 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="configuration">Configuration being used to load</param>
         /// <param name="createAlsoEmpty">true, if also empty extents will be created, if the file does not exist</param>
         /// <returns>The loaded extent</returns>
-        public IUriExtent LoadExtent(ExtentLoaderConfig configuration, bool createAlsoEmpty = false)
+        public IUriExtent LoadExtent(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags = ExtentCreationFlags.LoadOnly)
         {
-            var (uriExtent, isAlreadyAdded) = LoadExtentWithoutAddingInternal(ref configuration, createAlsoEmpty);
+            var (uriExtent, isAlreadyAdded) = LoadExtentWithoutAddingInternal(ref configuration, extentCreationFlags);
             if (isAlreadyAdded)
             {
                 return uriExtent;
@@ -94,10 +117,10 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <returns>Resulting uri extent</returns>
         public IUriExtent LoadExtentWithoutAdding(ExtentLoaderConfig configuration)
         {
-            return LoadExtentWithoutAddingInternal(ref configuration, false).Item1;
+            return LoadExtentWithoutAddingInternal(ref configuration, ExtentCreationFlags.LoadOnly).Item1;
         }
 
-        private (IUriExtent,bool) LoadExtentWithoutAddingInternal(ref ExtentLoaderConfig configuration, bool createAlsoEmpty)
+        private (IUriExtent,bool) LoadExtentWithoutAddingInternal(ref ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
             // Check, if the extent url is a real uri
             if (!Uri.IsWellFormedUriString(configuration.extentUri, UriKind.Absolute))
@@ -118,7 +141,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             var extentLoader = _map.CreateFor(_diScope, configuration);
 
             // Loads the extent
-            var loadedProviderInfo = extentLoader.LoadProvider(configuration, createAlsoEmpty);
+            var loadedProviderInfo = extentLoader.LoadProvider(configuration, extentCreationFlags);
 
             // If the extent is already added (for example, the provider loader calls itself LoadExtent due to an indirection), then the resulting event extent will 
             if (loadedProviderInfo.IsExtentAlreadyAddedToWorkspace)
@@ -300,7 +323,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     {
                         try
                         {
-                            var extent = LoadExtent(extentLoaderConfig, false);
+                            var extent = LoadExtent(extentLoaderConfig, ExtentCreationFlags.LoadOnly);
                             if (xElement != null)
                             {
                                 ((MofExtent)extent).LocalMetaElementXmlNode = xElement;
@@ -318,7 +341,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 {
                     try
                     {
-                        var extent = LoadExtent(extentLoaderConfig, false);
+                        var extent = LoadExtent(extentLoaderConfig, ExtentCreationFlags.LoadOnly);
                         if (xElement != null)
                         {
                             ((MofExtent) extent).LocalMetaElementXmlNode = xElement;
@@ -354,7 +377,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             return IsMetaWorkspaceInList(
                 workspaceId,
-                loaded.Select(x => x.Item1.workspaceId));
+                loaded.Select(x => x.Item1.workspaceId)
+                    .ToArray());
         }
 
         /// <summary>
@@ -367,7 +391,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <returns>true, if the workspace is found</returns>
         private bool IsMetaWorkspaceInList(
             string workspaceId, 
-            IEnumerable<string> workspaceList)
+            ICollection<string> workspaceList)
         {
             var workspace = _workspaceLogic.GetWorkspace(workspaceId);
             if (string.IsNullOrEmpty(workspaceId) || workspace == null)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -10,7 +9,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
-using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
@@ -20,66 +18,16 @@ using DatenMeister.WPF.Navigation;
 namespace DatenMeister.WPF.Forms.Base
 {
     /// <summary>
-    /// Interaktionslogik für ItemBrowser.xaml
+    ///     Interaktionslogik für ItemBrowser.xaml
     /// </summary>
     public partial class ItemExplorerControl : UserControl, INavigationGuest, ICanUnregister
     {
         /// <summary>
-        /// Stores the information about the active tab controls
+        ///     Stores the information about the active tab controls
         /// </summary>
         protected readonly ObservableCollection<ItemExplorerTab> Tabs = new ObservableCollection<ItemExplorerTab>();
 
         private EventHandle _eventHandle;
-
-        /// <summary>
-        /// Gets the definition of the current form
-        /// </summary>
-        public IElement CurrentForm { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the items to be shown. These items are shown also in the navigation view and will
-        /// not be modified, even if the user clicks on the navigation tree. 
-        /// </summary>
-        public IReflectiveCollection Items { get; protected set; }
-
-        /// <summary>
-        /// Defines the item that the user currently has selected on the object tree
-        /// </summary>
-        public IObject SelectedPackage{ get; protected set; }
-
-        /// <summary>
-        /// Gets a value indicating whether the user has selected an extent within the
-        /// treeview. 
-        /// </summary>
-        public bool IsExtentSelectedInTreeview { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the items to be shown in the detail view. Usually, they are the same as the items.
-        /// If the user clicks on the navigation tree, a subview of the items may be shown
-        /// </summary>
-        protected IReflectiveCollection SelectedItems { get; set; }
-
-        /// <summary>
-        /// Gets or sets the view extensions
-        /// </summary>
-        protected ICollection<ViewExtension> ViewExtensions { get; set; }
-
-        /// <summary>
-        /// Gets or sets the eventhandle for the content of the control
-        /// </summary>
-        public EventHandle EventHandle
-        {
-            get => _eventHandle;
-            set
-            {
-                if (_eventHandle != null)
-                {
-                    GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
-                }
-
-                _eventHandle = value;
-            }
-        }
 
         public ItemExplorerControl()
         {
@@ -87,35 +35,83 @@ namespace DatenMeister.WPF.Forms.Base
             ItemTabControl.ItemsSource = Tabs;
         }
 
+        /// <summary>
+        ///     Gets the definition of the current form
+        /// </summary>
+        public IElement CurrentForm { get; private set; }
+
+        /// <summary>
+        ///     Gets or sets the items to be shown. These items are shown also in the navigation view and will
+        ///     not be modified, even if the user clicks on the navigation tree.
+        /// </summary>
+        public IReflectiveCollection Items { get; protected set; }
+
+        /// <summary>
+        ///     Defines the item that the user currently has selected on the object tree
+        /// </summary>
+        public IObject SelectedPackage { get; protected set; }
+
+        /// <summary>
+        ///     Gets a value indicating whether the user has selected an extent within the
+        ///     treeview.
+        /// </summary>
+        public bool IsExtentSelectedInTreeview { get; private set; }
+
+        /// <summary>
+        ///     Gets or sets the items to be shown in the detail view. Usually, they are the same as the items.
+        ///     If the user clicks on the navigation tree, a subview of the items may be shown
+        /// </summary>
+        protected IReflectiveCollection SelectedItems { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the view extensions
+        /// </summary>
+        protected ICollection<ViewExtension> ViewExtensions { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the eventhandle for the content of the control
+        /// </summary>
+        public EventHandle EventHandle
+        {
+            get => _eventHandle;
+            set
+            {
+                if (_eventHandle != null) GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
+
+                _eventHandle = value;
+            }
+        }
+
+        public void Unregister()
+        {
+            if (_eventHandle != null)
+            {
+                GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
+                _eventHandle = null;
+            }
+        }
+
         public INavigationHost NavigationHost { get; set; }
 
         /// <summary>
-        /// Gets the view extensions
+        ///     Gets the view extensions
         /// </summary>
         /// <returns>Gets the enumeration of the view extensions</returns>
         public virtual IEnumerable<ViewExtension> GetViewExtensions()
         {
             if (ViewExtensions != null)
-            {
                 foreach (var viewExtension in ViewExtensions)
-                {
                     yield return viewExtension;
-                }
-            }
 
             var selectedTab = ItemTabControl.SelectedItem as ItemExplorerTab;
             if (selectedTab?.ViewExtensions != null)
-            {
                 foreach (var extension in selectedTab.ViewExtensions)
                 {
                     if (extension is RibbonButtonDefinition ribbonButtonDefinition)
-                    {
                         ribbonButtonDefinition.FixTopCategoryIfNotFixed("View");
-                    }
 
                     yield return extension;
                 }
-            }
 
             // Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
@@ -125,16 +121,12 @@ namespace DatenMeister.WPF.Forms.Base
             };
 
             foreach (var plugin in viewExtensionPlugins)
+            foreach (var extension in plugin.GetViewExtensions(data))
             {
-                foreach (var extension in plugin.GetViewExtensions(data))
-                {
-                    if (extension is RibbonButtonDefinition ribbonButtonDefinition)
-                    {
-                        ribbonButtonDefinition.FixTopCategoryIfNotFixed("Extent");
-                    }
+                if (extension is RibbonButtonDefinition ribbonButtonDefinition)
+                    ribbonButtonDefinition.FixTopCategoryIfNotFixed("Extent");
 
-                    yield return extension;
-                }
+                yield return extension;
             }
 
             yield return
@@ -153,19 +145,16 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Updates all views without recreating the items. 
+        ///     Updates all views without recreating the items.
         /// </summary>
         public virtual void UpdateAllViews()
         {
             UpdateTreeContent();
-            foreach (var tab in Tabs)
-            {
-                tab.Control.UpdateContent();
-            }
+            foreach (var tab in Tabs) tab.Control.UpdateContent();
         }
 
         /// <summary>
-        /// Recreates all views
+        ///     Recreates all views
         /// </summary>
         protected void RecreateViews()
         {
@@ -175,15 +164,15 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// This method will be called when the user has selected an item and the views need to be recreated.
-        /// This method must be overridden by the subclasses
+        ///     This method will be called when the user has selected an item and the views need to be recreated.
+        ///     This method must be overridden by the subclasses
         /// </summary>
         protected virtual void OnRecreateViews()
         {
         }
-        
+
         /// <summary>
-        /// Updates the tree content of the explorer view
+        ///     Updates the tree content of the explorer view
         /// </summary>
         protected void UpdateTreeContent()
         {
@@ -200,33 +189,31 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Evaluates the extent form by passing through the tabs and creating the necessary views of each tab
-        /// If the subform is constrained by a property or metaclass, the collection itself is filtered within the
-        /// this call
+        ///     Evaluates the extent form by passing through the tabs and creating the necessary views of each tab
+        ///     If the subform is constrained by a property or metaclass, the collection itself is filtered within the
+        ///     this call
         /// </summary>
         /// <param name="collection">Collection of the item which shall be created</param>
         /// <param name="viewDefinition">The extent form to be shown. The tabs of the extern form are passed</param>
         public void EvaluateForm(
-            IReflectiveCollection collection, 
+            IReflectiveCollection collection,
             ViewDefinition viewDefinition)
         {
             CurrentForm = viewDefinition.Element;
             var tabs = viewDefinition.Element.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
             if (tabs == null)
-            {
                 // No tabs, nothing to do
                 return;
-            }
 
             foreach (var tab in tabs.OfType<IElement>())
             {
-                ICollection<ViewExtension> tabViewExtensions = null;
+                var tabViewExtensions = new List<ViewExtension>();
                 if (viewDefinition.TabViewExtensions != null)
-                {
                     tabViewExtensions = viewDefinition.TabViewExtensions(tab).ToList();
-                }
 
-                tabViewExtensions = tabViewExtensions ?? Array.Empty<ViewExtension>();
+                if (viewDefinition.ViewExtensions != null)
+                    foreach (var viewExtension in viewDefinition.ViewExtensions)
+                        tabViewExtensions.Add(viewExtension);
 
                 AddTab(collection, tab, tabViewExtensions);
             }
@@ -235,12 +222,13 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Adds a new tab to the form
+        ///     Adds a new tab to the form
         /// </summary>
         /// <param name="collection">Collection being used</param>
         /// <param name="form">Form to be used for the tabulator</param>
         /// <param name="viewExtensions">Stores the view extensions</param>
-        public ItemExplorerTab AddTab(IReflectiveCollection collection, IElement form, ICollection<ViewExtension> viewExtensions)
+        public ItemExplorerTab AddTab(IReflectiveCollection collection, IElement form,
+            ICollection<ViewExtension> viewExtensions)
         {
             // Gets the default view for the given tab
             var name = form.getOrDefault<string>(_FormAndFields._Form.title) ??
@@ -297,15 +285,12 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Opens the selected element
+        ///     Opens the selected element
         /// </summary>
         /// <param name="selectedElement">Selected element</param>
         private void NavigateToElement(IObject selectedElement)
         {
-            if (selectedElement == null)
-            {
-                return;
-            }
+            if (selectedElement == null) return;
 
             NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
         }
@@ -316,18 +301,15 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Resets the view extensions for the attached navigation view
+        ///     Resets the view extensions for the attached navigation view
         /// </summary>
         private void ResetNavigationTreeViewExtensions()
         {
             NavigationTreeView.ViewExtensions.Clear();
             foreach (var extension in GetViewExtensions().OfType<TreeViewItemCommandDefinition>())
-            {
                 NavigationTreeView.ViewExtensions.Add(extension);
-            }
 
             if (NavigationTreeView.ShowAllChildren)
-            {
                 NavigationTreeView.ViewExtensions.Add(new
                     TreeViewItemCommandDefinition(
                         "Show only packages",
@@ -336,10 +318,7 @@ namespace DatenMeister.WPF.Forms.Base
                             NavigationTreeView.ShowAllChildren = false;
                             ResetNavigationTreeViewExtensions();
                         }));
-                
-            }
             else
-            {
                 NavigationTreeView.ViewExtensions.Add(new
                     TreeViewItemCommandDefinition(
                         "Show all children",
@@ -348,16 +327,6 @@ namespace DatenMeister.WPF.Forms.Base
                             NavigationTreeView.ShowAllChildren = true;
                             ResetNavigationTreeViewExtensions();
                         }));
-            }
-        }
-
-        public void Unregister()
-        {
-            if (_eventHandle != null)
-            {
-                GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
-                _eventHandle = null;
-            }
         }
 
         private void ItemExplorerControl_OnUnloaded(object sender, RoutedEventArgs e)

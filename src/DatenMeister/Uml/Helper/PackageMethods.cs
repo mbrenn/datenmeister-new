@@ -235,6 +235,11 @@ namespace DatenMeister.Uml.Helper
             using (var stream = typeof(PackageMethods).GetTypeInfo()
                 .Assembly.GetManifestResourceStream(manifestName))
             {
+                if (stream == null)
+                {
+                    throw new InvalidOperationException($"The stream for {manifestName} could not be opened");
+                }
+                
                 var document = XDocument.Load(stream);
                 var pseudoProvider = new XmiProvider(document);
                 var pseudoExtent = new MofUriExtent(pseudoProvider)

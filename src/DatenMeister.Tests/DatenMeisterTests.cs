@@ -43,7 +43,8 @@ namespace DatenMeister.Tests
                 DatabasePath = path,
                 EstablishDataEnvironment = true,
                 PerformSlimIntegration = false,
-                AllowNoFailOfLoading = false
+                AllowNoFailOfLoading = false,
+                InitializeDefaultExtents = dropDatabase
             };
 
             if (dropDatabase)

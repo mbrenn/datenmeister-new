@@ -41,6 +41,8 @@ namespace DatenMeister.Provider.ManagementProviders
 
         public const string PathNewWorkspaceForm = PackageName + "::" + NewWorkspaceForm;
 
+        public const string IdWorkspaceListView = "WorkspacesAndExtents.Workspaces.List";
+
         /// <summary>
         /// Creates a form to create a new type. 
         /// </summary>

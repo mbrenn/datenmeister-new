@@ -71,10 +71,12 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             IObject form = _fieldData.getOrDefault<IElement>(_FormAndFields._SubElementFieldData.form);
 
             valueOfElement = valueOfElement ?? _element.GetAsReflectiveCollection(_propertyName);
+            var valueCount = valueOfElement.Count();
+            
             var listViewControl = new ItemListViewControl
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                Height = 400,
+                Height = Math.Min(400, 200 + 20 * valueCount),
                 MinWidth = 650,
                 NavigationHost = _navigationHost
             };
@@ -89,10 +91,10 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
 
             var viewExtensions = new List<ViewExtension>
             {
-                new RowItemButtonDefinition(
+                /*new RowItemButtonDefinition(
                     "Edit",
                     (guest, item) => NavigatorForItems.NavigateToElementDetailView(_navigationHost, item),
-                    ItemListViewControl.ButtonPosition.Before),
+                    ItemListViewControl.ButtonPosition.Before),*/
 
                 new RowItemButtonDefinition(
                     "Delete",
@@ -114,7 +116,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             var listItems = new List<Tuple<string, Action>>
             {
                 new Tuple<string, Action>(
-                    "Select object",
+                    "Select Type",
                     () =>
                     {
                         var result = NavigatorForItems.NavigateToCreateNewItem(
@@ -150,7 +152,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             }
 
             // If user clicks on the button, an empty reflective collection is created
-            var createItemButton = new Button {Content = "Add item", HorizontalAlignment = HorizontalAlignment.Right};
+            var createItemButton = new Button {Content = "Create new item", HorizontalAlignment = HorizontalAlignment.Right};
             createItemButton.Click += (x, y) =>
             {
                 var menu = new ContextMenu();

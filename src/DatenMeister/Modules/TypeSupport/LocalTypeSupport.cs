@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Plugins;
+using DatenMeister.Integration;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -35,6 +36,7 @@ namespace DatenMeister.Modules.TypeSupport
 
         private readonly ExtentCreator _extentCreator;
         private readonly PackageMethods _packageMethods;
+        private readonly IntegrationSettings _integrationSettings;
 
         public IUriExtent InternalTypes => GetInternalTypeExtent();
 
@@ -44,11 +46,12 @@ namespace DatenMeister.Modules.TypeSupport
         /// Initializes a new instance of the LocalTypeSupport class
         /// </summary>
         /// <param name="workspaceLogic">Workspace logic which is required to find the given local type support storage</param>
-        public LocalTypeSupport(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator, PackageMethods packageMethods)
+        public LocalTypeSupport(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator, PackageMethods packageMethods, IntegrationSettings integrationSettings)
         {
             _workspaceLogic = workspaceLogic;
             _extentCreator = extentCreator;
             _packageMethods = packageMethods;
+            _integrationSettings = integrationSettings;
         }
 
         /// <summary>
@@ -109,7 +112,8 @@ namespace DatenMeister.Modules.TypeSupport
                 WorkspaceNames.NameTypes,
                 WorkspaceNames.UriUserTypesExtent,
                 "DatenMeister.Types_User",
-                "Uml.Classes"
+                "Uml.Classes", 
+                _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate
             );
 
             // Creates the user types, if not existing

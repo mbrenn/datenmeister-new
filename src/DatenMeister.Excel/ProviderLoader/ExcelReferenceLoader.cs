@@ -16,7 +16,7 @@ namespace DatenMeister.Excel.ProviderLoader
     [ConfiguredBy(typeof(ExcelReferenceSettings))]
     public class ExcelReferenceLoader : IProviderLoader
     {
-        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty)
+        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
             if (!(configuration is ExcelReferenceSettings settings))
             {

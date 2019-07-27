@@ -160,6 +160,28 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
+        /// Takes the given collection and uses the information in the ListForm to filter
+        /// the collection of the items.
+        /// Here, the metaclass is used. 
+        /// </summary>
+        /// <param name="collection">Collection to be handled</param>
+        /// <param name="listFormDefinition">List Form Definition to be used</param>
+        /// <returns>The filtered reflective collection</returns>
+        public static IReflectiveCollection FilterItems(
+            IReflectiveCollection collection,
+            IObject listFormDefinition)
+        {
+            // If form  defines constraints upon metaclass, then the filtering will occur here
+            var metaClass = listFormDefinition.getOrDefault<IElement>(_FormAndFields._ListForm.metaClass);
+
+
+            if (metaClass != null)
+                return collection.WhenMetaClassIs(metaClass);
+            else
+                return collection;
+        }
+
+        /// <summary>
         ///     Updates the content by going through the fields and items
         /// </summary>
         public void SetContent(IReflectiveCollection items, IObject formDefinition,
@@ -174,12 +196,7 @@ namespace DatenMeister.WPF.Forms.Base
                     (extent, element) => { _delayedDispatcher.RequestRefresh(); });
 
             // If form  defines constraints upon metaclass, then the filtering will occur here
-            var metaClass = formDefinition.getOrDefault<IElement>(_FormAndFields._ListForm.metaClass);
-
-            if (metaClass != null)
-                Items = items.WhenMetaClassIs(metaClass);
-            else
-                Items = items;
+            Items = FilterItems(items, formDefinition);
 
             CurrentFormDefinition = formDefinition;
             ViewExtensions = viewExtensions.ToList();

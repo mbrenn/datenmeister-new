@@ -61,7 +61,7 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Gets or sets the items to be shown in the detail view. Usually, they are the same as the items.
         ///     If the user clicks on the navigation tree, a subview of the items may be shown
         /// </summary>
-        protected IReflectiveCollection SelectedItems { get; set; }
+        public IReflectiveCollection SelectedItems { get; set; }
 
         /// <summary>
         ///     Gets or sets the view extensions
@@ -117,16 +117,19 @@ namespace DatenMeister.WPF.Forms.Base
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
             var data = new ViewExtensionTargetInformation
             {
-                NavigationGuest = this
+                NavigationGuest = this,
+                NavigationHost = NavigationHost
             };
 
             foreach (var plugin in viewExtensionPlugins)
-            foreach (var extension in plugin.GetViewExtensions(data))
             {
-                if (extension is RibbonButtonDefinition ribbonButtonDefinition)
-                    ribbonButtonDefinition.FixTopCategoryIfNotFixed("Extent");
+                foreach (var extension in plugin.GetViewExtensions(data))
+                {
+                    if (extension is RibbonButtonDefinition ribbonButtonDefinition)
+                        ribbonButtonDefinition.FixTopCategoryIfNotFixed("Extent");
 
-                yield return extension;
+                    yield return extension;
+                }
             }
 
             yield return

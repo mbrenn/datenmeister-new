@@ -58,12 +58,18 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
                 var listFields = new List<HtmlElement>();
                 foreach (var field in fields.OfType<IObject>())
                 {
+                    var fieldName = field.getOrDefault<string>(_FormAndFields._FieldData.name);
+                    if (fieldName == null)
+                    {
+                        continue;
+                    }
+                    
                     listFields.Add(
                         new HtmlTableCell(field.getOrDefault<string>(_FormAndFields._FieldData.title) ?? "unset") { IsHeading = true });
-                    table.AddRow(listFields.ToArray());
                 }
                 
-                
+                table.AddRow(listFields.ToArray());
+               
                 // Now go through the items and show them
                 foreach (var item in collection.OfType<IObject>())
                 {
@@ -71,6 +77,11 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
                     foreach (var field in fields.OfType<IElement>())
                     {
                         var fieldName = field.getOrDefault<string>(_FormAndFields._FieldData.name);
+                        if (fieldName == null)
+                        {
+                            continue;
+                        }
+                        
                         var value = (HtmlElement) item.getOrDefault<string>(fieldName)
                                     ?? new HtmlRawString("<i>unset</i>");
                         
@@ -81,7 +92,6 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
                 }
                 
                 _htmlEngine.Add(table);
-                                
             }
         }
 

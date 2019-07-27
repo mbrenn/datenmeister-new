@@ -8,6 +8,7 @@ using DatenMeister.Modules.HtmlReporter.Formatter;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Forms.Lists;
 using DatenMeister.WPF.Windows;
 
 namespace DatenMeister.WPF.Modules.ReportManager
@@ -27,6 +28,34 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         "Report"
                     );
             }
+
+            if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl explorerControl)
+            {
+                yield return new RibbonButtonDefinition(
+                    "As Html", 
+                    () => CreateReportForExplorerView(explorerControl), 
+                    null, 
+                    "View.Report");
+            }
+        }
+
+        private void CreateReportForExplorerView(ItemExplorerControl explorerControl)
+        {
+            var collection = explorerControl.SelectedItems;
+            var form = explorerControl.CurrentForm;
+            var id = StringManipulation.RandomString(10);
+            var tmpPath = Path.Combine(Path.GetTempPath(), id + ".html");
+            
+            using (var report = new HtmlReport(tmpPath))
+            {
+                report.StartReport("List");
+                report.Add(new HtmlHeadline("Items in collection", 1));
+                var itemFormatter = new ItemFormatter(report);
+                itemFormatter.FormatCollectionOfItems(collection, form);
+                report.EndReport();
+            }
+
+            Process.Start(tmpPath);
         }
 
         private void CreateReportForDetailElement(DetailFormControl detailFormControl)

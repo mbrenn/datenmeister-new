@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using System;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Core.EMOF.Implementation.Uml
 {
@@ -6,7 +7,7 @@ namespace DatenMeister.Core.EMOF.Implementation.Uml
     /// This class includes several methods to support the interaction
     /// between the MOF model and the UML rules
     /// </summary>
-    public static class MofUmlHelper
+    public static class MofHelper
     {
         /// <summary>
         /// Checks whether the value at the given property for the element is the default value.
@@ -39,6 +40,48 @@ namespace DatenMeister.Core.EMOF.Implementation.Uml
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Gets the default value for the given type. 
+        /// </summary>
+        /// <param name="type">Type, whose default value is queried</param>
+        /// <returns>The default value</returns>
+        public static object GetDefaultValue(Type type)
+        {
+            if (type == null)
+            {
+                return null;
+            }
+
+            if (type == typeof(string))
+            {
+                return null;
+            }
+
+            if (type == typeof(double))
+            {
+                return 0.0;
+            }
+
+            if (type == typeof(int))
+            {
+                return 0;
+            }
+
+            if (type == typeof(bool))
+            {
+                return false;
+            }
+
+            if (type == typeof(DateTime))
+            {
+                return DateTime.MinValue;
+            }
+
+            throw new ArgumentException(
+                $"Type of element is not supported {type.FullName}",
+                nameof(type));
         }
     }
 }

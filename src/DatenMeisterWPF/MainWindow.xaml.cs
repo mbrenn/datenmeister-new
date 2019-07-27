@@ -180,7 +180,7 @@ namespace DatenMeisterWPF
             /*
              * Gets the plugins for the MainWindow itself
              */
-            var data = new ViewExtensionTargetInformation
+            var data = new ViewExtensionTargetInformation(ViewExtensionContext.Application)
             {
                 NavigationHost = this
             };

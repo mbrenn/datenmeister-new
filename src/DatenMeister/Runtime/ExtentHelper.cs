@@ -110,6 +110,25 @@ namespace DatenMeister.Runtime
             return GetProperties(elements);
         }
 
+        /// <summary>
+        /// Removes all elements within the reflective collection 
+        /// </summary>
+        /// <param name="elements">Elements in which all elements shall be removed</param>
+        public static void RemoveAll(this IReflectiveCollection elements)
+        {
+            if (elements == null) throw new ArgumentNullException(nameof(elements));
+
+            foreach (var element in elements.ToList())
+            {
+                elements.remove(element);
+            }
+        }
+
+        /// <summary>
+        /// Gets the unified amount of properties of all the elements within the given reflective collection
+        /// </summary>
+        /// <param name="elements"></param>
+        /// <returns></returns>
         public static IEnumerable<string> GetProperties(IReflectiveCollection elements)
         {
             var result = new List<object>();

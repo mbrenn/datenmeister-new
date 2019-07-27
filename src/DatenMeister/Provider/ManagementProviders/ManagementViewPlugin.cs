@@ -34,7 +34,7 @@ namespace DatenMeister.Provider.ManagementProviders
         {
             _packageMethods.ImportByManifest(
                 typeof(ManagementViewPlugin),
-                "DatenMeister.XmiFiles.Views.WorkspacesAndExtents.xmi",
+                "DatenMeister.XmiFiles.Views.WorkspacesAndExtents.xml",
                 ManagementViewDefinitions.PackageName,
                 _viewLogic.GetInternalViewExtent(),
                 ManagementViewDefinitions.PackageName);

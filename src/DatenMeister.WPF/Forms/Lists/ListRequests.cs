@@ -45,9 +45,10 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             // Finds the view
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-            var formElement = NamedElementMethods.GetByFullName(
+            var formElement = viewLogic.GetInternalViewExtent().element($"#{ManagementViewDefinitions.IdWorkspaceListView}");
+            /*var formElement = NamedElementMethods.GetByFullName(
                 viewLogic.GetInternalViewExtent(),
-                ManagementViewDefinitions.PathWorkspaceListView);
+                ManagementViewDefinitions.PathWorkspaceListView);*/
 
             if (formElement == null)
             {
@@ -271,7 +272,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
                     try
                     {
-                        var loadedExtent = extentManager.LoadExtent(extentLoaderConfig, true);
+                        var loadedExtent = extentManager.LoadExtent(extentLoaderConfig, ExtentCreationFlags.LoadOrCreate);
                         Logger.Info($"User created extent via general dialog: {loadedExtent.contextURI()}");
                     }
                     catch (Exception exc)

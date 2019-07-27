@@ -80,7 +80,7 @@ namespace DatenMeister.WPF.Windows
             }
 
             MenuItem group;
-            if ( !string.IsNullOrEmpty(groupName))
+            if (!string.IsNullOrEmpty(groupName))
             {
                 group = tab.Items.OfType<MenuItem>().FirstOrDefault(x => x.Header.ToString() == groupName);
                 if (@group == null)
@@ -143,7 +143,7 @@ namespace DatenMeister.WPF.Windows
         {
             var copiedList = _buttons.ToList();
 
-            foreach (var viewExtension in viewExtensions.OfType<RibbonButtonDefinition>().OrderByDescending(x => x.Index))
+            foreach (var viewExtension in viewExtensions.OfType<RibbonButtonDefinition>().OrderByDescending(x => x.Priority))
             {
                 // Check, navigation button is already given
                 var foundTuple = _buttons.Find(x => RibbonButtonDefinition.AreEqual(viewExtension, x.Definition));

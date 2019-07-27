@@ -194,7 +194,8 @@ namespace DatenMeister.WPF.Forms.Lists
 
             PrepareNavigation(viewDefinition);
 
-            EvaluateForm(tabItems,
+            EvaluateForm(
+                tabItems,
                 new ViewDefinition(form)
                 {
                     ViewExtensions = viewExtensions

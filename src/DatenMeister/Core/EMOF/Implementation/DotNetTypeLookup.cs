@@ -43,6 +43,13 @@ namespace DatenMeister.Core.EMOF.Implementation
             _typesToElements[type] = metaclassUri;
         }
 
+        /// <summary>
+        /// Gets the .Net type of the element and converts it
+        /// to a EML Type information
+        /// </summary>
+        /// <param name="type">Type to be converted</param>
+        /// <returns>The converted type or null, if the corresponding element is not found.
+        /// Returns the metaclass to the given element</returns>
         public string ToElement(Type type)
         {
             _typesToElements.TryGetValue(type, out var result);

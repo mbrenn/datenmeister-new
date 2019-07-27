@@ -168,7 +168,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Converts the given .Net Object in value to a MofObject. The intermediate InMemory Extent is used. 
         /// </summary>
         /// <param name="value">Value to be converted</param>
-        /// <param name="metaClass">Metaclass being used to create the element</param>
+        /// <param name="metaclass">Metaclass being used to create the element</param>
         /// <param name="requestedId">Id of the element that shall be put</param>
         /// <returns>The converted element as a MofObject</returns>
         public static IObject ConvertFromDotNetObject(

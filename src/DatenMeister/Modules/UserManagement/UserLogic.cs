@@ -4,6 +4,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Functions.Algorithm;
@@ -30,12 +31,14 @@ namespace DatenMeister.Modules.UserManagement
         private readonly ExtentCreator _extentCreator;
 
         private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly IntegrationSettings _integrationSettings;
 
-        public UserLogic(LocalTypeSupport localTypeSupport, ExtentCreator extentCreator, IWorkspaceLogic workspaceLogic)
+        public UserLogic(LocalTypeSupport localTypeSupport, ExtentCreator extentCreator, IWorkspaceLogic workspaceLogic, IntegrationSettings integrationSettings)
         {
             _localTypeSupport = localTypeSupport;
             _extentCreator = extentCreator;
             _workspaceLogic = workspaceLogic;
+            _integrationSettings = integrationSettings;
         }
 
         /// <summary>
@@ -53,7 +56,9 @@ namespace DatenMeister.Modules.UserManagement
             var extent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
                 WorkspaceNames.NameManagement,
                 ExtentUri,
-                ExtentName);
+                ExtentName,
+                null, 
+                _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate);
 
             if (!(extent.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() is IElement settings))
             {

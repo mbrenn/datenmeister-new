@@ -17,6 +17,11 @@ namespace DatenMeister.Integration
 
         private readonly ILifetimeScope _lifetimeScopeImplementation;
 
+        /// <summary>
+        /// This event will be called before the items are actually disposed
+        /// </summary>
+        public event EventHandler BeforeDisposing;
+
         public DatenMeisterScope(ILifetimeScope lifetimeScopeImplementation)
         {
             _lifetimeScopeImplementation = lifetimeScopeImplementation;
@@ -31,6 +36,8 @@ namespace DatenMeister.Integration
 
         public void Dispose()
         {
+            BeforeDisposing?.Invoke(this, EventArgs.Empty);
+
             _lifetimeScopeImplementation.Dispose();
         }
 

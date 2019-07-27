@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -33,6 +34,11 @@ namespace DatenMeister.Runtime.Copier
         /// Gets or sets a value indicating whether references shall be cloned, so there will no UriReferences
         /// </summary>
         public bool CloneAllReferences { get; set; }
+
+        /// <summary>
+        /// True, if only the primitive elements shall be copied and not any recursion
+        /// </summary>
+        public bool NoRecursion { get; set; }
     }
 
     /// <summary>
@@ -126,6 +132,7 @@ namespace DatenMeister.Runtime.Copier
         private object CopyValue(object value, IElement containingElement, CopyOption copyOptions = null)
         {
             copyOptions = copyOptions ?? CopyOptions.None;
+            var noRecursion = copyOptions.NoRecursion;
 
             if (value == null)
             {
@@ -134,6 +141,11 @@ namespace DatenMeister.Runtime.Copier
 
             if (value is IElement valueAsElement)
             {
+                if (noRecursion)
+                {
+                    return null;
+                }
+
                 var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
                 if (propertyExtent == null || propertyExtent == _sourceExtent || copyOptions.CloneAllReferences)
                 {
@@ -152,6 +164,11 @@ namespace DatenMeister.Runtime.Copier
 
             if (value is IReflectiveCollection valueAsCollection)
             {
+                if (noRecursion)
+                {
+                    return null;
+                }
+
                 return valueAsCollection
                     .Select(innerValue => CopyValue(innerValue, containingElement, copyOptions));
             }
@@ -196,6 +213,25 @@ namespace DatenMeister.Runtime.Copier
         public static IObject CopyForTemporary(IObject value)
         {
             return Copy(InMemoryObject.TemporaryFactory, value, CopyOptions.None);
+        }
+
+        /// <summary>
+        /// Copies the element for a temporary usage. Here, the in memory Object will be used
+        /// </summary>
+        /// <param name="value">Value to copied</param>
+        /// <returns>Element being copied</returns>
+        public static IReflectiveCollection CopyForTemporary(IReflectiveCollection value, CopyOption copyOptions = null)
+        {
+            var temp = new TemporaryReflectiveCollection();
+            copyOptions = copyOptions ?? CopyOptions.None;
+
+            foreach (var item in value.OfType<IObject>())
+            {
+                temp.add(Copy(InMemoryObject.TemporaryFactory, item, copyOptions));
+            }
+
+            return temp;
+
         }
     }
 }

@@ -204,7 +204,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void set(string property, object value)
         {
             // Checks if the value is a default value. If yes, it can be removed...
-            if (MofUmlHelper.IsDefaultValue(this, property, value))
+            if (MofHelper.IsDefaultValue(this, property, value))
             {
                 ProviderObject.DeleteProperty(property);
                 return;
@@ -220,7 +220,13 @@ namespace DatenMeister.Core.EMOF.Implementation
                     var valueForSetting = MofExtent.ConvertForSetting(this, child);
                     ProviderObject.AddToProperty(property, valueForSetting);
 
-                    SetContainer(ProviderObject, child, valueForSetting);
+                    // Checks, if the element that has been set is not associated to a container. 
+                    // If the element is not associated, set the container.
+                    if (valueForSetting is IProviderObject valueAsProviderObject &&
+                        !valueAsProviderObject.HasContainer())
+                    {
+                        SetContainer(ProviderObject, child, valueForSetting);
+                    }
                 }
             }
             else
@@ -228,7 +234,13 @@ namespace DatenMeister.Core.EMOF.Implementation
                 var valueForSetting = MofExtent.ConvertForSetting(this, value);
                 ProviderObject.SetProperty(property, valueForSetting);
 
-                SetContainer(ProviderObject, value, valueForSetting);
+                // Checks, if the element that has been set is not associated to a container. 
+                // If the element is not associated, set the container. 
+                if (valueForSetting is IProviderObject valueAsProviderObject &&
+                    !valueAsProviderObject.HasContainer())
+                {
+                    SetContainer(ProviderObject, value, valueForSetting);
+                }
             }
 
             _extent?.ChangeEventManager?.SendChangeEvent(this);

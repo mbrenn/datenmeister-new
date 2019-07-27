@@ -11,8 +11,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Returns an element by resolving the uri
         /// </summary>
-        /// <param name="uri"></param>
-        /// <returns></returns>
+        /// <param name="uri">The uri to be used for resolving</param>
+        /// <param name="resolveType">The type of resolve strategy</param>
+        /// <param name="traceFailing">True, if a trace event shall be thrown, if
+        /// the resolving did not succeed</param>
+        /// <returns>The found element or null, if no element was found</returns>
         IElement Resolve(string uri, ResolveType resolveType, bool traceFailing = true);
 
         /// <summary>
@@ -33,7 +36,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         Default = 1, 
 
         /// <summary>
-        /// Resolving in which the current workspace will not be looked. Useful to look for meta classes
+        /// Resolving in which the current workspace will not be looked. The type
+        /// will only be looked within the meta workspaces and extents. Useful to look for meta classes
         /// </summary>
         OnlyMetaClasses = 2,
 

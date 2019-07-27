@@ -38,7 +38,8 @@ namespace DatenMeister.Tests.Modules
         {
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
-                CreateDataForTest(dm);
+                var dataExtent = CreateDataForTest(dm);
+                Assert.That(dataExtent.elements().Count(), Is.GreaterThan(1));
 
                 var helper = dm.Resolve<DataViewHelper>();
                 var dataView = helper.CreateDataview("Test", "dm:///view/test");

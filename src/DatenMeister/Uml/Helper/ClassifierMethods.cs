@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Uml.Helper
@@ -52,7 +53,6 @@ namespace DatenMeister.Uml.Helper
         /// <returns>The found property</returns>
         public static IElement GetPropertyOfClassifier(IElement classifier, string propertyName)
         {
-
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
 
             var properties = GetPropertiesOfClassifier(classifier);
@@ -64,9 +64,12 @@ namespace DatenMeister.Uml.Helper
         /// Gets all generalizations of the given elements
         /// </summary>
         /// <param name="classifier">Classifier, whose generalizations are requested</param>
+        /// <param name="alreadyVisited">Contains the elements that have been visited already
+        /// The already visited elements will not be returned again</param>
         /// <returns>Enumeration of elements</returns>
-        public static IEnumerable<IElement> GetGeneralizations(IElement classifier)
+        public static IEnumerable<IElement> GetGeneralizations(IElement classifier, HashSet<IElement> alreadyVisited = null)
         {
+            alreadyVisited = alreadyVisited ?? new HashSet<IElement>();
             var propertyGeneralization = _UML._Classification._Classifier.generalization;
             var propertyGeneral = _UML._Classification._Generalization.general;
 
@@ -82,7 +85,21 @@ namespace DatenMeister.Uml.Helper
                         {
                             throw new InvalidOperationException("Somehow I got a null.... Generalizations needs to be verified");
                         }
+
+                        if (alreadyVisited.Contains(general))
+                        {
+                            continue;
+                        }
+
+                        alreadyVisited.Add(general);
+                        
                         yield return general;
+                        
+                        // Checks if the general also has generalization
+                        foreach (var childGeneral in GetGeneralizations(general, alreadyVisited))
+                        {
+                            yield return childGeneral;
+                        }
                     }
                 }
             }
@@ -93,9 +110,42 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="extent">Extent being used to find all elements</param>
         /// <param name="element">Element to be </param>
+        /// <param name="visitedElements">Contains the elements that already have been visited.
+        /// If the element has been visited, then no recursion is done</param>
         /// <returns></returns>
-        public static IEnumerable<IElement> GetSpecializations(IUriExtent extent, IElement element)
+        public static IEnumerable<IElement> GetSpecializations(IElement element, HashSet<IElement> visitedElements = null)
         {
+            visitedElements = visitedElements ?? new HashSet<IElement>();
+            var extent = (element as IHasExtent)?.Extent;
+            var workspace = extent?.GetWorkspace();
+            var classInstance = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+            if (classInstance == null)
+            {
+                throw new InvalidOperationException("Classifier is not known in metaextent");
+            }
+            if (workspace != null)
+            {
+                // Go through each element within the found scope
+                foreach (var elementInExtent in AllDescendentsQuery.GetDescendents(workspace.GetAllElements()).OfType<IElement>())
+                {
+                    if (classInstance.@equals(elementInExtent))
+                    {
+                        if (visitedElements.Contains(elementInExtent))
+                        {
+                            continue;
+                        }
+
+                        visitedElements.Add(elementInExtent);
+                        
+                        // Checks, if the element contains a generalization 
+                        if (GetGeneralizations(classInstance).Contains(element))
+                        {
+                            yield return elementInExtent;
+                        }
+                    }
+                }
+            }
+            
             yield return element;
         }
 
@@ -158,6 +208,20 @@ namespace DatenMeister.Uml.Helper
         /// <param name="generalizedClassifier">Generalized class being used as base for specialized one</param>
         public static IElement AddGeneralization(IElement specializedClassifier, IElement generalizedClassifier)
         {
+            var uml = GiveMe.Scope.WorkspaceLogic.GetUmlData();
+            return AddGeneralization(uml, specializedClassifier, generalizedClassifier);
+        }
+
+        /// <summary>
+        /// Adds a new generalization to the specialized classifier mapping to the
+        /// generalizedClassifier
+        /// </summary>
+        /// <param name="uml">Unml being used</param>
+        /// <param name="specializedClassifier">The classifier which will have a new generalization
+        /// and consequently will get the properties of the generalization attached</param>
+        /// <param name="generalizedClassifier">Generalized class being used as base for specialized one</param>
+        public static IElement AddGeneralization(_UML uml, IElement specializedClassifier, IElement generalizedClassifier)
+        {
             if (GetGeneralizations(specializedClassifier).Contains(generalizedClassifier))
             {
                 // Nothing to do
@@ -165,18 +229,17 @@ namespace DatenMeister.Uml.Helper
             }
 
             var factory = new MofFactory(specializedClassifier);
-            var uml = GiveMe.Scope.WorkspaceLogic.GetUmlData();
 
             var newGeneralization = factory.create(uml.Classification.__Generalization);
-            newGeneralization.set(
-                _UML._Classification._Generalization.general, 
-                generalizedClassifier);
-            newGeneralization.set(
-                _UML._Classification._Generalization.specific, 
-                specializedClassifier);
             specializedClassifier.AddCollectionItem(
                 _UML._Classification._Classifier.generalization, 
                 newGeneralization);
+            newGeneralization.set(
+                _UML._Classification._Generalization.general, 
+                generalizedClassifier);
+            /*newGeneralization.set(
+                _UML._Classification._Generalization.specific, 
+                specializedClassifier);*/
 
             return newGeneralization;
         }

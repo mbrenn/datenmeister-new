@@ -17,10 +17,10 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// <param name="configuration">Configuration to be used to retrieve the information.
         /// The configuration may be changed, if the provider
         /// loader is just a placeholder for another configuration</param>
-        /// <param name="createAlsoEmpty">true, if the extent shall also be created, if it is empty.
+        /// <param name="extentCreationFlags">true, if the extent shall also be created, if it is empty.
         /// Can be used to create an empty extent. </param>
         /// <returns>Loaded extent</returns>
-        LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, bool createAlsoEmpty);
+        LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags);
 
         /// <summary>
         /// Sores the extent according to the given configuration

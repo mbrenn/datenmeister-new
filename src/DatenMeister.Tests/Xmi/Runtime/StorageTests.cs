@@ -6,6 +6,7 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
@@ -42,7 +43,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
             var xmiStorage = new XmiStorage();
             xmiStorage.StoreProvider(extent.Provider, xmiStorageConfiguration);
 
-            var otherExtent = new MofUriExtent(xmiStorage.LoadProvider(xmiStorageConfiguration).Provider, "datenmeister:///tests/");
+            var otherExtent = new MofUriExtent(xmiStorage.LoadProvider(xmiStorageConfiguration, ExtentCreationFlags.LoadOnly).Provider, "datenmeister:///tests/");
             Assert.That(otherExtent.elements().size(), Is.EqualTo(3));
             Assert.That(otherExtent.contextURI(), Is.EqualTo("datenmeister:///tests/"));
             Assert.That((otherExtent.elements().ElementAt(0) as IObject)?.get("name"), Is.EqualTo("Martin"));

@@ -18,5 +18,15 @@ namespace DatenMeister.Uml.Helper
         {
             return value.getOrDefault<IElement>(_UML._CommonStructure._TypedElement.type);
         }
+
+        /// <summary>
+        /// Gets the value whether the property is a collection by
+        /// </summary>
+        /// <param name="value">Value to ne evaluated</param>
+        /// <returns>true, if the given property is a collection</returns>
+        public static bool IsCollection(IObject value)
+        {
+            return value.getOrDefault<int>(_UML._CommonStructure._MultiplicityElement.upper) > 1;
+        }
     }
 }

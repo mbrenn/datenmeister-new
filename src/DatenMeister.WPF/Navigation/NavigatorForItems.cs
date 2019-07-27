@@ -14,6 +14,7 @@ using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -141,7 +142,7 @@ namespace DatenMeister.WPF.Navigation
                 };
 
                 var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-                extentManager.LoadExtent(configuration, true);
+                extentManager.LoadExtent(configuration, ExtentCreationFlags.LoadOrCreate);
             }
 
             return result;

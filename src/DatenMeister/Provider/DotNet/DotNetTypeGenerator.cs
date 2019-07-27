@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -88,9 +89,18 @@ namespace DatenMeister.Provider.DotNet
                 }
 
                 umlClass.set(_UML._CommonStructure._NamedElement.name, type.Name);
+                
+                // Goes through the generalizations
+                var generalization = type.BaseType;
+                if (generalization != null && generalization != typeof(object))
+                {
+                    var generalizedClass = ((MofExtent) _targetExtent).ToResolvedElement(generalization);
+                    // We got a generalization
+                    ClassifierMethods.AddGeneralization(_umlHost, umlClass, generalizedClass);
+                }
 
+                // Goes through all the properties
                 var properties = new List<IObject>();
-
                 foreach (var property in type.GetProperties())
                 {
                     var umlProperty = _factoryForTypes.create(_umlHost.Classification.__Property);

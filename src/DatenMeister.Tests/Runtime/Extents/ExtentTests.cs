@@ -10,6 +10,7 @@ using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
@@ -67,7 +68,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 }
 
                 var extentLoader = dm.Resolve<IExtentManager>();
-                var loadedExtent = extentLoader.LoadExtent(loaderConfig, true);
+                var loadedExtent = extentLoader.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
                 loadedExtent.set("test", "this is a test");
                 loadedExtent.SetExtentType("Happy Extent");
                 extentLoader.StoreExtent(loadedExtent);
@@ -126,14 +127,14 @@ namespace DatenMeister.Tests.Runtime.Extents
                     {
                         filePath = "./test.csv",
                         extentUri = csvExtentUri
-                    }, true);
+                    }, ExtentCreationFlags.LoadOrCreate);
 
                 var mofExtent = extentManager.LoadExtent(
                     new XmiStorageConfiguration
                     {
                         filePath = "./test.xmi",
                         extentUri = xmiExtentUri
-                    }, true);
+                    }, ExtentCreationFlags.LoadOrCreate);
 
                 csvExtent.SetExtentType("CSVExtent");
                 mofExtent.SetExtentType("XMIExtent");

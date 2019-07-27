@@ -61,7 +61,7 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Gets or sets the items to be shown in the detail view. Usually, they are the same as the items.
         ///     If the user clicks on the navigation tree, a subview of the items may be shown
         /// </summary>
-        protected IReflectiveCollection SelectedItems { get; set; }
+        public IReflectiveCollection SelectedItems { get; set; }
 
         /// <summary>
         ///     Gets or sets the view extensions
@@ -105,6 +105,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             var selectedTab = ItemTabControl.SelectedItem as ItemExplorerTab;
             if (selectedTab?.ViewExtensions != null)
+            {
                 foreach (var extension in selectedTab.ViewExtensions)
                 {
                     if (extension is RibbonButtonDefinition ribbonButtonDefinition)
@@ -112,21 +113,29 @@ namespace DatenMeister.WPF.Forms.Base
 
                     yield return extension;
                 }
+            }
 
             // Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var data = new ViewExtensionTargetInformation
+            var extentData = new ViewExtensionTargetInformation(ViewExtensionContext.Extent)
             {
-                NavigationGuest = this
+                NavigationGuest = this,
+                NavigationHost = NavigationHost
             };
 
             foreach (var plugin in viewExtensionPlugins)
-            foreach (var extension in plugin.GetViewExtensions(data))
             {
-                if (extension is RibbonButtonDefinition ribbonButtonDefinition)
-                    ribbonButtonDefinition.FixTopCategoryIfNotFixed("Extent");
+                foreach (var extension in plugin.GetViewExtensions(extentData))
+                {
+                    // Checks, if the Category starts with View. If yes, then 
+                    // the element may be fixed 
+                    if (extension is RibbonButtonDefinition ribbonButtonDefinition)
+                    {
+                        ribbonButtonDefinition.FixTopCategoryIfNotFixed("Extent");
+                    }
 
-                yield return extension;
+                    yield return extension;
+                }
             }
 
             yield return
@@ -227,7 +236,9 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="collection">Collection being used</param>
         /// <param name="form">Form to be used for the tabulator</param>
         /// <param name="viewExtensions">Stores the view extensions</param>
-        public ItemExplorerTab AddTab(IReflectiveCollection collection, IElement form,
+        public ItemExplorerTab AddTab(
+            IReflectiveCollection collection, 
+            IElement form,
             ICollection<ViewExtension> viewExtensions)
         {
             // Gets the default view for the given tab

@@ -110,6 +110,8 @@
     <Compile Include="Modules\IIconRepository.cs" />
     <Compile Include="Modules\ImportExtentManager\ImportExtentManagerPlugin.cs" />
     <Compile Include="Modules\ImportExtentManager\ImportExtentViewExtensions.cs" />
+    <Compile Include="Modules\ReportManager\ReportManagerPlugin.cs" />
+    <Compile Include="Modules\ReportManager\ReportManagerViewExtension.cs" />
     <Compile Include="Modules\StandardRepository.cs" />
     <Compile Include="Modules\TypeManager\TypeManagerListView.cs" />
     <Compile Include="Modules\TypeManager\TypeManagerPlugin.cs" />

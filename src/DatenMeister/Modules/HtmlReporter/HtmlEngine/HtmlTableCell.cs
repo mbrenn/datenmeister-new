@@ -3,15 +3,15 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
     /// <summary>
     /// Defines a single html cell which is used in  a table row
     /// </summary>
-    public class HtmlTableCell
+    public class HtmlTableCell : HtmlElement
     {
-        private readonly object _content;
+        private readonly HtmlElement _content;
 
         private readonly string _cssClass;
 
         public bool IsHeading { get; set; }
 
-        public HtmlTableCell(object content, string cssClass = null)
+        public HtmlTableCell(HtmlElement content, string cssClass = null)
         {
             _content = content;
             _cssClass = cssClass;

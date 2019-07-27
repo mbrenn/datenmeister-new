@@ -2,19 +2,19 @@ using System.Net;
 
 namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
 {
-    public class HtmlParagraph
+    public class HtmlParagraph : HtmlElement
     {
         /// <summary>
         /// Defines the css class being used for that paragraph
         /// </summary>
-        public  string CssClass { get; set; }
+        private string CssClass { get; set; }
 
         /// <summary>
         /// Gets or sets the paragraph to be stored 
         /// </summary>
-        public object Paragraph { get; }        
-        
-        public HtmlParagraph(object paragraph)
+        private HtmlElement Paragraph { get; }
+
+        public HtmlParagraph(HtmlElement paragraph)
         {
             Paragraph = paragraph;
         }

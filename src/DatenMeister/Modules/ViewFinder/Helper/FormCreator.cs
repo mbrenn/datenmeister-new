@@ -485,8 +485,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
          
             if (propertyType != null)
             {   
-                Logger.Info("TEST: " + primitiveTypes.__Boolean.Equals(_booleanType)); // TODO: If successful, remove it
-
                 // Checks, if the property is an enumeration. 
                 if (propertyType.metaclass != null)
                 {

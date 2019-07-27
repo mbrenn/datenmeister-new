@@ -71,7 +71,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// </summary>
         /// <param name="elementToBeAdded">Element that should be added
         /// should be an element within this namespace. </param>
-        public void Add(object elementToBeAdded)
+        public void Add(HtmlElement elementToBeAdded)
         {
             _streamWriter.WriteLine(elementToBeAdded.ToString());
         }

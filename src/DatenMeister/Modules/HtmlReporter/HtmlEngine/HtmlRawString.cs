@@ -1,6 +1,6 @@
 namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
 {
-    public class HtmlRawString
+    public class HtmlRawString : HtmlElement
     {
         /// <summary>
         /// Gets the content of the string being used as a value for the html

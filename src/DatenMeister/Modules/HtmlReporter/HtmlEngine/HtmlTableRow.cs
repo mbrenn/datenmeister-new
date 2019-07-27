@@ -5,14 +5,14 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
 {
     public class HtmlTableRow
     {
-        public List<object> Cells { get; } = new List<object>();
+        private List<HtmlElement> Cells { get; } = new List<HtmlElement>();
 
         public HtmlTableRow()
         {
             
         }
 
-        public HtmlTableRow(IEnumerable<object> cells)
+        public HtmlTableRow(IEnumerable<HtmlElement> cells)
         {
             Cells.AddRange(cells);
         }

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
 {
-    public class HtmlTable
+    public class HtmlTable : HtmlElement
     {
         // Option 1: Create one table class and no rows and cells
         // Option 2: Create a row and cell class being capable to host content
@@ -12,7 +12,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// <summary>
         /// Stores the list of cells
         /// </summary>
-        private List<HtmlTableRow> Rows = new List<HtmlTableRow>();
+        private readonly List<HtmlTableRow> _rows = new List<HtmlTableRow>();
         
         /// <summary>
         /// Initializes a new instance of the HtmlTable class
@@ -22,16 +22,16 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
             
         }
 
-        public HtmlTableRow AddRow(params object[] cells)
+        public HtmlTableRow AddRow(params HtmlElement[] cells)
         {
             var result = new HtmlTableRow(cells);
-            Rows.Add(result);
+            _rows.Add(result);
             return result;
         }
 
         public void AddRow(HtmlTableRow tableRow)
         {
-            Rows.Add(tableRow);
+            _rows.Add(tableRow);
         }
 
         public override string ToString()
@@ -39,7 +39,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
             var builder = new StringBuilder();
             builder.AppendLine("<table>");
 
-            foreach (var row in Rows)
+            foreach (var row in _rows)
             {
                 builder.AppendLine(row.ToString());
             }

@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using System.Linq;
+using BurnSystems;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
@@ -10,10 +13,76 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
     public class ItemFormatter
     {
         private readonly HtmlReport _htmlEngine;
-
+        
+        /// <summary>
+        /// Defines the logger being used for this class
+        /// </summary>
+        private readonly ILogger _logger = new ClassLogger(typeof(ItemFormatter));
+            
+        /// <summary>
+        /// Initializes a new instance of the ItemFormatter class
+        /// </summary>
+        /// <param name="htmlEngine">Html engine to be used</param>
         public ItemFormatter(HtmlReport htmlEngine)
         {
             _htmlEngine = htmlEngine;
+        }
+
+        /// <summary>
+        /// Creates a set of tables for each tabulator within the given defined form
+        /// </summary>
+        /// <param name="collection">Collection of items to be parsed</param>
+        /// <param name="extentForm">The extent form being used to create the tables</param>
+        public void FormatCollectionOfItems(IEnumerable<object> collection, IObject extentForm)
+        {
+            collection = collection.ToList();
+            var tabs = extentForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
+            if (tabs == null)
+            {
+                _logger.Warn("The given extent form does not have a tabulator");
+                return;
+            }
+
+            foreach (var tab in tabs.OfType<IObject>())
+            {
+                var table = new HtmlTable();
+                var fields = tab.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field);
+
+                if (fields == null)
+                {
+                    _logger.Warn("The given tabulator does not contain fields");
+                    continue;
+                }
+
+                // Adds the fields that will be added to the table as the headline
+                var listFields = new List<HtmlElement>();
+                foreach (var field in fields.OfType<IObject>())
+                {
+                    listFields.Add(
+                        new HtmlTableCell(field.getOrDefault<string>(_FormAndFields._FieldData.title) ?? "unset") { IsHeading = true });
+                    table.AddRow(listFields.ToArray());
+                }
+                
+                
+                // Now go through the items and show them
+                foreach (var item in collection.OfType<IObject>())
+                {
+                    listFields.Clear();
+                    foreach (var field in fields.OfType<IElement>())
+                    {
+                        var fieldName = field.getOrDefault<string>(_FormAndFields._FieldData.name);
+                        var value = (HtmlElement) item.getOrDefault<string>(fieldName)
+                                    ?? new HtmlRawString("<i>unset</i>");
+                        
+                        listFields.Add(new HtmlTableCell(value));
+                    }
+
+                    table.AddRow(listFields.ToArray());
+                }
+                
+                _htmlEngine.Add(table);
+                                
+            }
         }
 
         /// <summary>
@@ -63,7 +132,7 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
                 table.AddRow(
                     new HtmlTableCell(title),
                     new HtmlTableCell(
-                        (object) item.getOrDefault<string>(fieldName) ??
+                        (HtmlElement) item.getOrDefault<string>(fieldName) ??
                         new HtmlRawString("<i>unset</i>")));
             }
         }

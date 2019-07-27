@@ -2,7 +2,7 @@ using System;
 
 namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
 {
-    public class HtmlHeadline
+    public class HtmlHeadline : HtmlElement
     {
         public HtmlHeadline(object headline, int level)
         {

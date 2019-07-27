@@ -68,7 +68,7 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Stores the attached element
         /// </summary>
-        public IElement AttachedElement { get; private set; }
+        public IElement AttachedElement { get; }
 
         /// <summary>
         /// Gets or sets the container element in which the DetailElement is allocated to.
@@ -129,7 +129,7 @@ namespace DatenMeister.WPF.Windows
                 CloseWindow,
                 null,
                 NavigationCategories.File,
-                -10);
+                2000);
 
             // Local methods for the buttons
             void CloseWindow()

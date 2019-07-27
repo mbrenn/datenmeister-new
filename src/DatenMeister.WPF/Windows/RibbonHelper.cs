@@ -225,7 +225,7 @@ namespace DatenMeister.WPF.Windows
         {
             var copiedList = _buttons.ToList();
 
-            foreach (var viewExtension in viewExtensions.OfType<RibbonButtonDefinition>().OrderByDescending(x => x.Index))
+            foreach (var viewExtension in viewExtensions.OfType<RibbonButtonDefinition>().OrderByDescending(x => x.Priority))
             {
                 // Check, navigation button is already given
                 var foundTuple = _buttons.Find(x => RibbonButtonDefinition.AreEqual(viewExtension, x.Definition));

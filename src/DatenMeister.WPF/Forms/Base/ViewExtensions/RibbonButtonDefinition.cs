@@ -15,21 +15,23 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// <param name="onPressed">Action which is called when the user clicks on the button</param>
         /// <param name="imageName">Name of the image to be shown</param>
         /// <param name="categoryName">Name of the category being used</param>
-        /// <param name="index">Index being used to provide the correct call order</param>
-        public RibbonButtonDefinition(string name, Action onPressed, string imageName, string categoryName, int index = 0)
+        /// <param name="priority">Index being used to provide the correct sort order.
+        /// The higher the number, the higher the priority</param>
+        public RibbonButtonDefinition(string name, Action onPressed, string imageName, string categoryName, int priority = 0)
         {
             Name = name;
             OnPressed = onPressed;
             ImageName = imageName;
             CategoryName = categoryName;
-            Index = Math.Min(index, 65535) * 65536 + 
+            Priority = Math.Min(priority, 65535) * 65536 + 
                     name.GetHashCode() % 65535;
         }
 
         /// <summary>
-        /// Gets or sets the index of the ribbon definition which is used to order the items
+        /// Gets or sets the index of the ribbon definition which is used to order the items.
+        /// The higher the number, the higher the priority
         /// </summary>
-        public int Index { get; set; }
+        public int Priority { get; set; }
 
         /// <summary>
         /// Gets the name of the ribbon

@@ -51,7 +51,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// </summary>
         public string CategoryName { get; private set; }
 
-        private bool _isTopCategoryFixed;
+        public bool IsTopCategoryFixed { get; set; }
 
         public override string ToString()
         {
@@ -66,12 +66,12 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// <param name="topCategory">Name of the category</param>
         public void FixTopCategoryIfNotFixed(string topCategory)
         {
-            if (_isTopCategoryFixed)
+            if (IsTopCategoryFixed)
             {
                 return;
             }
 
-            _isTopCategoryFixed = true;
+            IsTopCategoryFixed = true;
 
             var indexPositionDot = CategoryName.IndexOf('.');
             if (indexPositionDot == -1)

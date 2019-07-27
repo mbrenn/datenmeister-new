@@ -105,6 +105,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             var selectedTab = ItemTabControl.SelectedItem as ItemExplorerTab;
             if (selectedTab?.ViewExtensions != null)
+            {
                 foreach (var extension in selectedTab.ViewExtensions)
                 {
                     if (extension is RibbonButtonDefinition ribbonButtonDefinition)
@@ -112,10 +113,11 @@ namespace DatenMeister.WPF.Forms.Base
 
                     yield return extension;
                 }
+            }
 
             // Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var data = new ViewExtensionTargetInformation
+            var extentData = new ViewExtensionTargetInformation(ViewExtensionContext.Extent)
             {
                 NavigationGuest = this,
                 NavigationHost = NavigationHost
@@ -123,10 +125,14 @@ namespace DatenMeister.WPF.Forms.Base
 
             foreach (var plugin in viewExtensionPlugins)
             {
-                foreach (var extension in plugin.GetViewExtensions(data))
+                foreach (var extension in plugin.GetViewExtensions(extentData))
                 {
+                    // Checks, if the Category starts with View. If yes, then 
+                    // the element may be fixed 
                     if (extension is RibbonButtonDefinition ribbonButtonDefinition)
+                    {
                         ribbonButtonDefinition.FixTopCategoryIfNotFixed("Extent");
+                    }
 
                     yield return extension;
                 }
@@ -230,7 +236,9 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="collection">Collection being used</param>
         /// <param name="form">Form to be used for the tabulator</param>
         /// <param name="viewExtensions">Stores the view extensions</param>
-        public ItemExplorerTab AddTab(IReflectiveCollection collection, IElement form,
+        public ItemExplorerTab AddTab(
+            IReflectiveCollection collection, 
+            IElement form,
             ICollection<ViewExtension> viewExtensions)
         {
             // Gets the default view for the given tab

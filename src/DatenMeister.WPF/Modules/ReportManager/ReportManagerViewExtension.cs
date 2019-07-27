@@ -32,10 +32,13 @@ namespace DatenMeister.WPF.Modules.ReportManager
             if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl explorerControl)
             {
                 yield return new RibbonButtonDefinition(
-                    "As Html", 
-                    () => CreateReportForExplorerView(explorerControl), 
-                    null, 
-                    "View.Report");
+                    "As Html",
+                    () => CreateReportForExplorerView(explorerControl),
+                    null,
+                    "View.Report")
+                {
+                    IsTopCategoryFixed = true
+                };
             }
         }
 

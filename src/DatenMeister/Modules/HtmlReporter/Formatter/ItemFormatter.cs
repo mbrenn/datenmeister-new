@@ -21,7 +21,7 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
         /// </summary>
         /// <param name="item">Item to be formatted</param>
         /// <param name="detailForm">The detailform being used for formatting</param>
-        public void FormatItem(IElement item, IElement detailForm)
+        public void FormatItem(IObject item, IObject detailForm)
         {
             var table = new HtmlTable();
             table.AddRow(
@@ -31,10 +31,15 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
             CreateRowForFields(item, detailForm, table);
             
             var tabs = detailForm.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.tab);
-            foreach (var tab in tabs.OfType<IElement>())
+            if (tabs != null)
             {
-                CreateRowForFields(item, tab, table);
+                foreach (var tab in tabs.OfType<IElement>())
+                {
+                    CreateRowForFields(item, tab, table);
+                }
             }
+            
+            _htmlEngine.Add(table);
         }
 
         /// <summary>
@@ -44,7 +49,7 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
         /// <param name="item">Item to be shown</param>
         /// <param name="form">Form containing the field</param>
         /// <param name="table">The Html Table in which the fields will be include</param>
-        private static void CreateRowForFields(IElement item, IElement form, HtmlTable table)
+        private static void CreateRowForFields(IObject item, IObject form, HtmlTable table)
         {
             var fields = form.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field);
             foreach (var field in fields.OfType<IElement>())
@@ -52,6 +57,9 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
                 var fieldName = field.getOrDefault<string>(_FormAndFields._FieldData.name);
                 var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
 
+                // Skip titles with null value
+                if (fieldName == null) continue;
+                
                 table.AddRow(
                     new HtmlTableCell(title),
                     new HtmlTableCell(

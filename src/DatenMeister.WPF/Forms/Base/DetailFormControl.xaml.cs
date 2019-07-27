@@ -213,7 +213,8 @@ namespace DatenMeister.WPF.Forms.Base
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
             var data = new ViewExtensionTargetInformation
             {
-                NavigationGuest = this
+                NavigationGuest = this,
+                NavigationHost = NavigationHost
             };
 
             foreach (var plugin in viewExtensionPlugins)

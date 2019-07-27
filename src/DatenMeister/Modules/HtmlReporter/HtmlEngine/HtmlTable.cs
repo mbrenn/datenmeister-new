@@ -24,7 +24,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
 
         public HtmlTableRow AddRow(params object[] cells)
         {
-            var result = new HtmlTableRow();
+            var result = new HtmlTableRow(cells);
             Rows.Add(result);
             return result;
         }

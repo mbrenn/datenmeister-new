@@ -67,6 +67,16 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         }
 
         /// <summary>
+        /// Adds the element that should be added to the report
+        /// </summary>
+        /// <param name="elementToBeAdded">Element that should be added
+        /// should be an element within this namespace. </param>
+        public void Add(object elementToBeAdded)
+        {
+            _streamWriter.WriteLine(elementToBeAdded.ToString());
+        }
+
+        /// <summary>
         /// Ends the report
         /// </summary>
         /// <exception cref="InvalidOperationException"></exception>

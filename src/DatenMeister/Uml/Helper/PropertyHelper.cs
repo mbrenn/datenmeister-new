@@ -1,4 +1,6 @@
-﻿using DatenMeister.Core;
+﻿using System;
+using System.Globalization;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 
@@ -26,7 +28,35 @@ namespace DatenMeister.Uml.Helper
         /// <returns>true, if the given property is a collection</returns>
         public static bool IsCollection(IObject value)
         {
-            return value.getOrDefault<int>(_UML._CommonStructure._MultiplicityElement.upper) > 1;
+            var multiplicity = value.getOrDefault<string>(_UML._CommonStructure._MultiplicityElement.upper);
+
+            if (multiplicity == null)
+            {
+                // If value is not set, try to find it via the uppervalue
+                var temp = value.getOrDefault<IElement>(_UML._CommonStructure._MultiplicityElement.upperValue);
+                multiplicity = temp?.getOrDefault<string>(_UML._Values._LiteralInteger.value);
+            }
+            
+            if (multiplicity == "*")
+            {
+                return true;
+            }
+
+            if (string.IsNullOrEmpty(multiplicity))
+            {
+                return false;
+            }
+
+            if (Int32.TryParse(
+                    multiplicity,
+                    NumberStyles.Integer,
+                    CultureInfo.InvariantCulture,
+                    out var multiplicityNumber))
+            {
+                return multiplicityNumber > 1;
+            }
+
+            return false;
         }
     }
 }

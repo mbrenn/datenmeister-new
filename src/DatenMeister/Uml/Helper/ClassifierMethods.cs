@@ -20,25 +20,36 @@ namespace DatenMeister.Uml.Helper
         /// Also properties from generalized classes will be returned
         /// </summary>
         /// <param name="classifier">Gets the properties and all properties from base classes</param>
-        public static IEnumerable<IElement> GetPropertiesOfClassifier(IElement classifier)
+        /// <param name="alreadyIn">Returns the properties that are already in. </param>
+        public static IEnumerable<IElement> GetPropertiesOfClassifier(IElement classifier, HashSet<string> alreadyIn = null)
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
-
+            alreadyIn = alreadyIn ?? new HashSet<string>();
+            
             var propertyOwnedAttribute = _UML._StructuredClassifiers._StructuredClassifier.ownedAttribute;
 
             if (classifier.isSet(propertyOwnedAttribute))
             {
                 var result = (IEnumerable) classifier.get(propertyOwnedAttribute);
-                foreach (var item in result)
+                foreach (var item in result.OfType<IElement>())
                 {
-                    yield return item as IElement;
+                    // Checks, if a property with the same name was already selected
+                    var name = item.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
+                    if (alreadyIn.Contains(name))
+                    {
+                        continue;
+                    }
+
+                    alreadyIn.Add(name);
+                    
+                    yield return item;
                 }
             }
 
             // Check for generalizations
             foreach (var general in GetGeneralizations(classifier))
             {
-                foreach (var found in GetPropertiesOfClassifier(general))
+                foreach (var found in GetPropertiesOfClassifier(general, alreadyIn))
                 {
                     yield return found;
                 }

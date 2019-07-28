@@ -432,7 +432,7 @@ namespace DatenMeister.WPF.Forms.Base
                 if (!anyFocused && flags.CanBeFocused && contentBlock != null)
                 {
                     // For what ever, we have to set the focus via the invoking and not directly
-                    Dispatcher.BeginInvoke((Action)(() =>
+                    Dispatcher.BeginInvoke((Action) (() =>
                     {
                         if (!contentBlock.Focus())
                         {

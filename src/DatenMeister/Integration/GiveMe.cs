@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Autofac;
+using DatenMeister.Core.Plugins;
 
 namespace DatenMeister.Integration
 {
@@ -13,6 +15,14 @@ namespace DatenMeister.Integration
         /// Gets or sets the scope for the DatenMeister
         /// </summary>
         public static IDatenMeisterScope Scope { get; set; }
+
+        /// <summary>
+        /// Return the DatenMeisterScope asynchronisously as a task.
+        /// </summary>
+        /// <param name="settings">Settings to be used</param>
+        /// <returns>The created task, retuning the DatenMeister. </returns>
+        public static Task<IDatenMeisterScope> DatenMeisterAsync(IntegrationSettings settings = null) 
+            => Task.Run(() => DatenMeister(settings));
 
         /// <summary>
         /// Returns a fully initialized DatenMeister for use. 

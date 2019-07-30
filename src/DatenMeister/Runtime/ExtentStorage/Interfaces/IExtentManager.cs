@@ -11,7 +11,9 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// <param name="configuration">Configuration being used to load</param>
         /// <param name="extentCreationFlags">true, if also empty extents will be created, if the file does not exist</param>
         /// <returns>The loaded extent</returns>
-        IUriExtent LoadExtent(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags = ExtentCreationFlags.LoadOnly);
+        IUriExtent LoadExtent(
+            ExtentLoaderConfig configuration, 
+            ExtentCreationFlags extentCreationFlags = ExtentCreationFlags.LoadOnly);
 
 
         /// <summary>

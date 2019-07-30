@@ -21,8 +21,8 @@
             </Grid.ColumnDefinitions>
             
             <TextBlock x:Name="ActiveTime" Grid.ColumnSpan="2"></TextBlock>
-            <Button Grid.Row="1" Grid.Column="0">Start</Button>
-            <Button Grid.Row="1" Grid.Column="1">End</Button>
+            <Button Grid.Row="1" Grid.Column="0" Click="Start_OnClick">Start</Button>
+            <Button Grid.Row="1" Grid.Column="1" Click="End_OnClick">End</Button>
         </Grid>
     </Grid>
 </Window>

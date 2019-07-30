@@ -1,4 +1,6 @@
-﻿namespace DatenMeister.Runtime.ExtentStorage.Configuration
+﻿using DatenMeister.Runtime.Workspaces;
+
+namespace DatenMeister.Runtime.ExtentStorage.Configuration
 {
     /// <summary>
     /// Defines the storage configuration, which allows the extent getting loaded and saved. 
@@ -14,6 +16,6 @@
         /// <summary>
         /// Gets ors sets the workspace in which the data will be loaded
         /// </summary>
-        public string workspaceId { get; set; }
+        public string workspaceId { get; set; } = WorkspaceNames.NameData;
     }
 }

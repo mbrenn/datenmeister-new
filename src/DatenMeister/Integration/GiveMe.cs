@@ -21,7 +21,7 @@ namespace DatenMeister.Integration
         /// </summary>
         /// <param name="settings">Settings to be used</param>
         /// <returns>The created task, retuning the DatenMeister. </returns>
-        public static Task<IDatenMeisterScope> DatenMeisterAsync(IntegrationSettings settings = null) 
+        public static Task<IDatenMeisterScope> DatenMeisterAsync(IntegrationSettings settings = null)
             => Task.Run(() => DatenMeister(settings));
 
         /// <summary>

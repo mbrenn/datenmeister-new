@@ -59,7 +59,10 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         private readonly ILifetimeScope _diScope;
 
-        private readonly IWorkspaceLogic _workspaceLogic;
+        /// <summary>
+        /// Gets the workspace logic for the extent manager
+        /// </summary>
+        public IWorkspaceLogic WorkspaceLogic { get; }
 
         private readonly IntegrationSettings _integrationSettings;
 
@@ -72,7 +75,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             _extentStorageData = data ?? throw new ArgumentNullException(nameof(data));
             _map = map ?? throw new ArgumentNullException(nameof(map));
-            _workspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
+            WorkspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
             _integrationSettings = integrationSettings ?? throw new ArgumentNullException(nameof(integrationSettings));
             _diScope = diScope;
         }
@@ -148,7 +151,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             {
                 {
                     return (
-                        (IUriExtent) _workspaceLogic.FindExtent(loadedProviderInfo.UsedConfig.workspaceId,
+                        (IUriExtent) WorkspaceLogic.FindExtent(loadedProviderInfo.UsedConfig.workspaceId,
                             loadedProviderInfo.UsedConfig.extentUri),
                         true);
                 }
@@ -176,18 +179,18 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="loadedExtent">The loaded extent to be added to the workpace</param>
         private void AddToWorkspaceIfPossible(ExtentLoaderConfig configuration, IUriExtent loadedExtent)
         {
-            if (_workspaceLogic != null)
+            if (WorkspaceLogic != null)
             {
                 var workspace = string.IsNullOrEmpty(configuration.workspaceId)
-                    ? _workspaceLogic.GetDefaultWorkspace()
-                    : _workspaceLogic.GetWorkspace(configuration.workspaceId);
+                    ? WorkspaceLogic.GetDefaultWorkspace()
+                    : WorkspaceLogic.GetWorkspace(configuration.workspaceId);
 
                 if (workspace == null)
                 {
                     throw new InvalidOperationException($"Workspace {configuration.workspaceId} not found");
                 }
 
-                workspace.AddExtentNoDuplicate(_workspaceLogic, loadedExtent);
+                workspace.AddExtentNoDuplicate(WorkspaceLogic, loadedExtent);
             }
         }
 
@@ -270,7 +273,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             lock (_extentStorageData.LoadedExtents)
             {
-                var workspace = _workspaceLogic.GetWorkspaceOfExtent(extent);
+                var workspace = WorkspaceLogic.GetWorkspaceOfExtent(extent);
 
                 // Removes the loading information of the extent
                 DetachExtent(extent);
@@ -278,7 +281,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 // Removes the extent from the workspace
                 workspace.RemoveExtent(extent);
 
-                _workspaceLogic.SendEventForWorkspaceChange(workspace);
+                WorkspaceLogic.SendEventForWorkspaceChange(workspace);
             }
         }
 
@@ -393,7 +396,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             string workspaceId, 
             ICollection<string> workspaceList)
         {
-            var workspace = _workspaceLogic.GetWorkspace(workspaceId);
+            var workspace = WorkspaceLogic.GetWorkspace(workspaceId);
             if (string.IsNullOrEmpty(workspaceId) || workspace == null)
             {
                 // If workspace is not known, accept it

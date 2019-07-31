@@ -8,9 +8,16 @@
         Title="StundenMeister" Height="450" Width="800" WindowStyle="ToolWindow"
         Loaded="MainWindow_OnLoaded" Closed="MainWindow_OnClosed">
     <Grid>
-        <Viewbox x:Name="LoadingText" Stretch="Uniform">
-            <TextBlock >Loading</TextBlock>
-        </Viewbox>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Viewbox x:Name="LoadingText" Stretch="Uniform">
+                <TextBlock>Loading</TextBlock>
+            </Viewbox>
+            <TextBlock x:Name="TxtLogging" Grid.Row="1" />
+        </Grid>
         <Grid x:Name="LoadedAsset" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition />

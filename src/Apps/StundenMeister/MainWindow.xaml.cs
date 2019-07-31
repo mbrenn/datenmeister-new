@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using Autofac;
+using BurnSystems.Logging;
+using BurnSystems.WPF;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Navigation;
@@ -26,6 +28,8 @@ namespace StundenMeister
 
         private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
+            TheLog.AddProvider(new TextBlockLogProvider(TxtLogging), LogLevel.Trace);
+            
             LoadingText.Visibility = Visibility.Visible;
             LoadedAsset.Visibility = Visibility.Collapsed;
 

@@ -21,6 +21,7 @@ namespace StundenMeister
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
+            TheLog.FilterThreshold = LogLevel.Trace;
             TheLog.AddProvider(new DebugProvider());
             TheLog.AddProvider(new ConsoleProvider());
             TheLog.AddProvider(new FileProvider(

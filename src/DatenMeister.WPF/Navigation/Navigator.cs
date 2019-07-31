@@ -51,8 +51,25 @@ namespace DatenMeister.WPF.Navigation
     /// </summary>
     public enum NavigationResult
     {
+
+        /// <summary>
+        /// User has done nothing, since the navigation type does not offer such kind of userdialog feedback
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// User has clicked on closed without saving
+        /// </summary>
         Closed,
+
+        /// <summary>
+        /// User has clicked explicitly on the save button
+        /// </summary>
         Saved,
+
+        /// <summary>
+        /// User has cancelled the activity
+        /// </summary>
         Cancelled
     }
 

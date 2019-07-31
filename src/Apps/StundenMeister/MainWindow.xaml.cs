@@ -7,6 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using Autofac;
 using DatenMeister.Integration;
+using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.WPF.Navigation;
+using DatenMeister.WPF.Windows;
 using StundenMeister.Logic;
 
 namespace StundenMeister
@@ -109,6 +112,28 @@ namespace StundenMeister
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
             GiveMe.Scope.UnuseDatenMeister();
+        }
+
+        private void ManageCostCenters_Click(object sender, RoutedEventArgs e)
+        {
+            var metaclass = StundenMeisterLogic.Get().Data.ClassCostCenter;
+            NavigatorForItems.NavigateToItems(
+                StundenMeisterLogic.Get().Data
+                    .Extent
+                    .elements()
+                    .WhenMetaClassIs(metaclass),
+                metaclass);
+        }
+
+        private void ManageTimeRecordings_Click(object sender, RoutedEventArgs e)
+        {
+            var metaclass = StundenMeisterLogic.Get().Data.ClassTimeRecording;
+            NavigatorForItems.NavigateToItems(
+                StundenMeisterLogic.Get().Data
+                    .Extent
+                    .elements()
+                    .WhenMetaClassIs(metaclass),
+                metaclass);
         }
     }
 }

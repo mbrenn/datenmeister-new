@@ -12,11 +12,6 @@ namespace DatenMeister.WPF.Windows
     public partial class ListFormWindow : Window, INavigationHost
     {
         /// <summary>
-        /// Gets or sets the navigation host
-        /// </summary>
-        public INavigationHost NavigationHost { get; set; }
-
-        /// <summary>
         /// Initializes a new instance of ListFormWindow class.
         /// </summary>
         public ListFormWindow()
@@ -30,24 +25,38 @@ namespace DatenMeister.WPF.Windows
         /// <param name="factoryMethod">Factory method being used</param>
         /// <param name="navigationMode">Navigation mode</param>
         /// <returns></returns>
-        public Task<NavigateToElementDetailResult> NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode)
+        public Task<NavigateToElementDetailResult> NavigateTo(Func<UserControl> factoryMethod,
+            NavigationMode navigationMode)
         {
-            return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
+            if (navigationMode == NavigationMode.Detail)
+            {
+                return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
+            }
+            else
+            {
+                MainViewSet.Content = factoryMethod();
+                var task = new TaskCompletionSource<NavigateToElementDetailResult>();
+                task.SetResult(new NavigateToElementDetailResult()
+                {
+                    NavigationGuest = MainViewSet as INavigationGuest,
+                    NavigationHost = this, 
+                    Result = NavigationResult.None
+                });
+                return task.Task;
+            }
         }
 
         public void AddNavigationButton(string name, Action clickMethod, string imageName, string categoryName)
         {
-            throw new NotImplementedException();
         }
 
         public void SetFocus()
         {
-            throw new NotImplementedException();
+            MainViewSet?.Focus();
         }
 
         public void RebuildNavigation()
         {
-            throw new NotImplementedException();
         }
 
         /// <inheritdoc />

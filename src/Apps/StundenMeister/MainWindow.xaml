@@ -54,6 +54,8 @@
                 <Button Grid.Column="2" Click="MenuItem_Click">
                     <Button.ContextMenu>
                         <ContextMenu>
+                            <MenuItem Header="Manage Cost Centers" Click="ManageCostCenters_Click" />
+                            <MenuItem Header="Manage Time Recordings" Click="ManageTimeRecordings_Click" />
                             <MenuItem Header="Open Storage Folder" Click="OpenStorageFolder_Click" />
                             <MenuItem Header="Exit" Click="Exit_OnClick" />
                         </ContextMenu>

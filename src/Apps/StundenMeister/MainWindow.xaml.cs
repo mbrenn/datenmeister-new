@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+using Autofac;
 using DatenMeister.Integration;
-using DatenMeister.Runtime;
 using StundenMeister.Logic;
-using StundenMeister.Model;
 
 namespace StundenMeister
 {
@@ -16,9 +16,6 @@ namespace StundenMeister
     /// </summary>
     public partial class MainWindow : Window
     {
-        
-        public IElement CurrentTimeRecoding; 
-
         public MainWindow()
         {
             InitializeComponent();
@@ -48,64 +45,70 @@ namespace StundenMeister
             timer2.Interval = TimeSpan.FromSeconds(1.0);
             timer2.Tick += (x, y) => UpdateContentByTick();
             timer2.Start();
-
-
+            
+            UpdateContentByTick();
         }
 
         private void UpdateContentByTick()
         {
-            if (CurrentTimeRecoding != null)
-            {
-                // There is an active recording. We have to update the information to show the user the latest
-                // and greatest information. 
-                var startDate = CurrentTimeRecoding.getOrDefault<DateTime>(nameof(TimeRecording.startDate));
-                DateTime endDate;
-                var isActive = CurrentTimeRecoding.getOrDefault<bool>(nameof(TimeRecording.isActive));
-                
-                if (isActive)
-                {
-                    // While current time recording is active, advance content
-                    endDate = DateTime.UtcNow;
-                    CurrentTimeRecoding.set(nameof(TimeRecording.endDate), endDate);
-                }
-                else
-                {
-                    // If current time recording is not active, just use the stored time
-                    endDate = CurrentTimeRecoding.getOrDefault<DateTime>(nameof(TimeRecording.endDate));
-                }
+            var logic = new TimeRecordingLogic(StundenMeisterLogic.Get());
+            logic.UpdateCurrentRecording();
+            
+            var timeSpanDay = logic.CalculateWorkingHoursInDay();
+            var timeSpanWeek = logic.CalculateWorkingHoursInWeek();
+            var timeSpanMonth = logic.CalculateWorkingHoursInMonth();
+            ActiveTimeDay.Text =
+                $"{timeSpanDay.Hours:00}:{timeSpanDay.Minutes:00}:{timeSpanDay.Seconds:00}";
+            ActiveTimeWeek.Text = $"{timeSpanWeek.Hours:00}:{timeSpanWeek.Minutes:00}:{timeSpanWeek.Seconds:00}";
+            ActiveTimeMonth.Text = $"{timeSpanMonth.Hours:00}:{timeSpanMonth.Minutes:00}:{timeSpanMonth.Seconds:00}";
 
-                var timeSpan = endDate - startDate;
-                ActiveTime.Text = $"{timeSpan.Hours:00}:{timeSpan.Minutes:00}:{timeSpan.Seconds:00}";
-            }
-            else
-            {
-                ActiveTime.Text = "Not Started";
-            }
+            Title = logic.IsTimeRecordingActive() ? "StundenMeister (active)" : "StundenMeister";
         }
 
         private void Start_OnClick(object sender, RoutedEventArgs e)
         {
-            if (CurrentTimeRecoding != null)
-            {
-                CurrentTimeRecoding.set(nameof(TimeRecording.isActive), false);
-                CurrentTimeRecoding.set(nameof(TimeRecording.endDate), DateTime.UtcNow);
-            }
-
-            var logic = StundenMeisterLogic.Get();
-
-            CurrentTimeRecoding = logic.CreateAndAddNewTimeRecoding();
-            CurrentTimeRecoding.set(nameof(TimeRecording.startDate), DateTime.UtcNow);
-            CurrentTimeRecoding.set(nameof(TimeRecording.endDate), DateTime.UtcNow);
-            CurrentTimeRecoding.set(nameof(TimeRecording.isActive), true);
+            var logic = new TimeRecordingLogic(
+                StundenMeisterLogic.Get());
+            logic.StartNewRecording();
         }
 
         private void End_OnClick(object sender, RoutedEventArgs e)
         {
-            if (CurrentTimeRecoding != null)
+            var logic = new TimeRecordingLogic(
+                StundenMeisterLogic.Get());
+            logic.EndRecording();
+        }
+
+        private void Exit_OnClick(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void OpenStorageFolder_Click(object sender, RoutedEventArgs e)
+        {
+            var settings = GiveMe.Scope.Resolve<IntegrationSettings>();
+            Process.Start(settings.DatabasePath);
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (!(sender is Button senderButton))
             {
-                CurrentTimeRecoding.set(nameof(TimeRecording.isActive), false);
-                CurrentTimeRecoding.set(nameof(TimeRecording.endDate), DateTime.UtcNow);
+                throw new InvalidOperationException("sender is not a button");
             }
+
+            if (senderButton.ContextMenu == null)
+            {
+                // Nothing to see here
+                return;
+            }
+
+            senderButton.ContextMenu.IsOpen = true;
+        }
+
+        private void MainWindow_OnClosed(object sender, EventArgs e)
+        {
+            GiveMe.Scope.UnuseDatenMeister();
         }
     }
 }

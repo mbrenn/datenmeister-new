@@ -7,6 +7,7 @@ using DatenMeister.Core.Plugins;
 using DatenMeister.Integration;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using StundenMeister.Model;
 
@@ -31,42 +32,36 @@ namespace StundenMeister.Logic
             _localTypeSupport = localTypeSupport;
             _extentManager = extentManager;
         }
-        
+
         public void Start(PluginLoadingPosition position)
         {
             var types = _localTypeSupport.AddInternalTypes(
                 TypeList.Types);
-            StundenMeisterData.TheOne.ClassCostCenter = 
+            StundenMeisterData.TheOne.ClassCostCenter =
                 types[Array.IndexOf(TypeList.Types, typeof(CostCenter))];
-            StundenMeisterData.TheOne.ClassTimeRecording = 
+            StundenMeisterData.TheOne.ClassTimeRecording =
                 types[Array.IndexOf(TypeList.Types, typeof(TimeRecording))];
 
             var directory = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ToString(), 
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "StundenMeister");
             var filePath = Path.Combine(directory, "StundenMeister.xmi");
 
-            var xmiStorageData = new XmiStorageConfiguration
+            var storageData = new XmiStorageConfiguration
             {
                 extentUri = "dm:///stundenmeister/",
                 filePath = filePath
             };
 
-            StundenMeisterData.TheOne.Data = _extentManager.LoadExtentIfNotAlreadyLoaded(
-                xmiStorageData, 
-                ExtentCreationFlags.LoadOrCreate);
+            StundenMeisterData.TheOne.Extent =
+                _extentManager.LoadExtentIfNotAlreadyLoaded(
+                    storageData,
+                    ExtentCreationFlags.LoadOrCreate);
         }
-        
+
         /// <summary>
-        /// Creates a new element containing the time recordings
+        /// Gets the data for the Stundenmeister
         /// </summary>
-        /// <returns>The element being created</returns>
-        public IElement CreateAndAddNewTimeRecoding()
-        {
-            var factory = new MofFactory(StundenMeisterData.TheOne.Data);
-            var createdItem = factory.create(StundenMeisterData.TheOne.ClassTimeRecording);
-            StundenMeisterData.TheOne.Data.elements().add(createdItem);
-            return createdItem;
-        }
+        public StundenMeisterData Data => StundenMeisterData.TheOne;
     }
 }

@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StundenMeister"
         mc:Ignorable="d"
-        Title="StundenMeister" Height="450" Width="800" WindowStyle="ToolWindow" Loaded="MainWindow_OnLoaded">
+        Title="StundenMeister" Height="450" Width="800" WindowStyle="ToolWindow"
+        Loaded="MainWindow_OnLoaded" Closed="MainWindow_OnClosed">
     <Grid>
         <Viewbox x:Name="LoadingText" Stretch="Uniform">
             <TextBlock >Loading</TextBlock>
@@ -17,12 +18,49 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            
-            <TextBlock x:Name="ActiveTime" Grid.ColumnSpan="2"></TextBlock>
-            <Button Grid.Row="1" Grid.Column="0" Click="Start_OnClick">Start</Button>
-            <Button Grid.Row="1" Grid.Column="1" Click="End_OnClick">End</Button>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="1" Grid.Row="0">Today</TextBlock>
+                <TextBlock Grid.Column="2" Grid.Row="0">Week</TextBlock>
+                <TextBlock Grid.Column="3" Grid.Row="0">Month</TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="1">Total</TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="1" x:Name="ActiveTimeDay"></TextBlock>
+                <TextBlock Grid.Column="2" Grid.Row="1" x:Name="ActiveTimeWeek"></TextBlock>
+                <TextBlock Grid.Column="3" Grid.Row="1" x:Name="ActiveTimeMonth"></TextBlock>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Click="Start_OnClick">Start</Button>
+                <Button Grid.Column="1" Click="End_OnClick">End</Button>
+                <Button Grid.Column="2" Click="MenuItem_Click">
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Open Storage Folder" Click="OpenStorageFolder_Click" />
+                            <MenuItem Header="Exit" Click="Exit_OnClick" />
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                    M
+                </Button>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

@@ -538,7 +538,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        ///     Called, when a rown button is initialized.
+        ///     Called, when a row button is initialized.
         ///     The method is called, when a row is created.
         /// </summary>
         /// <param name="sender"></param>

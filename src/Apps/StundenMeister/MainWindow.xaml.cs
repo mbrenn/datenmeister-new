@@ -41,7 +41,7 @@ namespace StundenMeister
             LoadingText.Visibility = Visibility.Collapsed;
             LoadedAsset.Visibility = Visibility.Visible;
             
-            System.Timers.Timer timer = new Timer();
+            Timer timer = new Timer();
             timer.AutoReset = true;
             
             var timer2 = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
@@ -73,6 +73,7 @@ namespace StundenMeister
             var logic = new TimeRecordingLogic(
                 StundenMeisterLogic.Get());
             logic.StartNewRecording();
+            UpdateContentByTick();
         }
 
         private void End_OnClick(object sender, RoutedEventArgs e)
@@ -80,6 +81,7 @@ namespace StundenMeister
             var logic = new TimeRecordingLogic(
                 StundenMeisterLogic.Get());
             logic.EndRecording();
+            UpdateContentByTick();
         }
 
         private void Exit_OnClick(object sender, RoutedEventArgs e)

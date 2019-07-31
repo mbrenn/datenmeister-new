@@ -57,6 +57,9 @@ namespace StundenMeister.Logic
                 _extentManager.LoadExtentIfNotAlreadyLoaded(
                     storageData,
                     ExtentCreationFlags.LoadOrCreate);
+            
+            var recordingLogic = new TimeRecordingLogic(this);
+            recordingLogic.Initialize();
         }
 
         /// <summary>

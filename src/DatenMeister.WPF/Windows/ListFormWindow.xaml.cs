@@ -35,6 +35,11 @@ namespace DatenMeister.WPF.Windows
             else
             {
                 MainViewSet.Content = factoryMethod();
+                if (MainViewSet.Content is INavigationGuest navigationGuest)
+                {
+                    navigationGuest.NavigationHost = this;
+                }
+
                 var task = new TaskCompletionSource<NavigateToElementDetailResult>();
                 task.SetResult(new NavigateToElementDetailResult()
                 {

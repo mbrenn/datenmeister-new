@@ -18,6 +18,59 @@ namespace StundenMeister.Logic
         }
 
         /// <summary>
+        /// Performs the initialization.
+        /// 1), it is looked, whether one time recording is still active and if yes, this time recording
+        /// is set within the <c>StundenMeisterData</c> instance.
+        /// 2) If there are multiple activations of the time recordings, only the last one is kept active
+        /// </summary>
+        public void Initialize()
+        {
+            var list = _stundenMeisterLogic.Data.Extent.elements()
+                .WhenMetaClassIs(
+                    _stundenMeisterLogic.Data.ClassTimeRecording)
+                .WhenPropertyHasValue(
+                    nameof(TimeRecording.isActive), true)
+                .OfType<IElement>()
+                .ToList();
+            IElement theActiveOne = null;
+            if (list.Count > 1)
+            {
+                // Find the one with the highest starting date and deactivate the rest
+                var highest = DateTime.MinValue;
+
+                foreach (var item in list)
+                {
+                    var date = item.getOrDefault<DateTime>(nameof(TimeRecording.startDate));
+                    if (date > highest)
+                    {
+                        theActiveOne = item;
+                        highest = date;
+                    }
+                }
+                
+                // Now, deactivate everything, which is not the active one
+                foreach (var item in list)
+                {
+                    if (item == theActiveOne)
+                    {
+                        continue;
+                    }
+                    
+                    item.set(nameof(TimeRecording.isActive), false);
+                }
+            }
+            else 
+            {
+                theActiveOne = list.FirstOrDefault();
+            }
+
+            if (theActiveOne != null)
+            {
+                _stundenMeisterLogic.Data.CurrentTimeRecording = theActiveOne;
+            }
+        }
+
+        /// <summary>
         /// Creates a new element containing the time recordings
         /// </summary>
         /// <returns>The element being created</returns>
@@ -59,6 +112,26 @@ namespace StundenMeister.Logic
                 currentTimeRecording.set(nameof(TimeRecording.isActive), false);
                 currentTimeRecording.set(nameof(TimeRecording.endDate), DateTime.UtcNow);
                 _stundenMeisterLogic.Data.CurrentTimeRecording = null;
+            }
+            
+            // By the way. Check for any other active time recording
+            CheckForActiveTimeRecordingsAndDeactivate();
+        }
+
+        /// <summary>
+        /// Checks all time recordings and deactivate them if there are still some
+        /// active time recordings
+        /// </summary>
+        private void CheckForActiveTimeRecordingsAndDeactivate()
+        {
+            foreach (var element in _stundenMeisterLogic.Data.Extent.elements()
+                .WhenMetaClassIs(
+                    _stundenMeisterLogic.Data.ClassTimeRecording)
+                .WhenPropertyHasValue(
+                    nameof(TimeRecording.isActive), true)
+                .OfType<IElement>())
+            {
+                element.set(nameof(TimeRecording.isActive), false);
             }
         }
 

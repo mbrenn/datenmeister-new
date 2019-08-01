@@ -724,6 +724,11 @@ namespace DatenMeister.WPF.Forms.Base
             InfoLines.Children.Add(element);
         }
 
+        /// <summary>
+        /// Called, when the user has clicked on the button to add a new fast view filter
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FastViewFilter_OnClick(object sender, RoutedEventArgs e)
         {
             var translator = new FastViewFilterTranslator(GiveMe.Scope.Resolve<IWorkspaceLogic>());
@@ -840,6 +845,10 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
+        /// <summary>
+        /// Gets a the applied fast filters as an enumeration
+        /// </summary>
+        /// <returns>Enumeration of the fast filters</returns>
         private IEnumerable<IElement> GetFastFilters()
         {
             return CurrentFormDefinition.ForceAsEnumerable(_FormAndFields._ListForm.fastViewFilters).OfType<IElement>();

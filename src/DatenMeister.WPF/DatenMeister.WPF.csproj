@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="Forms\Base\ViewButton.cs" />
     <Compile Include="Forms\Base\ViewDefinition.cs" />
+    <Compile Include="Forms\Base\ViewExtensionHelper.cs" />
     <Compile Include="Forms\Base\ViewExtensions\GenericButtonDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\InfoLineDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\ItemButtonDefinition.cs" />

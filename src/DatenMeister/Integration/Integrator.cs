@@ -166,7 +166,7 @@ namespace DatenMeister.Integration
                     workspaceData.Uml,
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml);
                 umlWatch.Stop();
-
+                
                 Logger.Info($" Bootstrapping Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
 
                 pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterBootstrapping);

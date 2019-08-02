@@ -187,6 +187,12 @@ namespace DatenMeister.Provider.DotNet
                     ResolveType.NoMetaWorkspaces);
                 umlProperty.set(_UML._CommonStructure._TypedElement.type, realType);
             }
+            else if (property == typeof(DateTime))
+            {
+                var dateTimeType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real",
+                    ResolveType.NoMetaWorkspaces);
+                umlProperty.set(_UML._CommonStructure._TypedElement.type, dateTimeType);
+            }
             else if (property.IsEnum)
             {
                 var typeUri = (_targetExtent as MofExtent)?.TypeLookup.ToElement(property);

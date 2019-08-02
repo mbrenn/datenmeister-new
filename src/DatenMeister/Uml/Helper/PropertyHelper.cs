@@ -18,7 +18,7 @@ namespace DatenMeister.Uml.Helper
         /// <returns>Type of the property</returns>
         public static IElement GetPropertyType(IObject value)
         {
-            return value.getOrDefault<IElement>(_UML._CommonStructure._TypedElement.type);
+            return value?.getOrDefault<IElement>(_UML._CommonStructure._TypedElement.type);
         }
 
         /// <summary>

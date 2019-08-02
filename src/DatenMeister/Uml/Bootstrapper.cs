@@ -23,7 +23,7 @@ namespace DatenMeister.Uml
         private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
-        ///     Stores a vlaue indicating whether the run was already performed.
+        ///     Stores a value indicating whether the run was already performed.
         ///     If yes, the method is locked
         /// </summary>
         private bool _wasRun;

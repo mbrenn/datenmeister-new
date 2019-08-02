@@ -9,6 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Integration;
+using DatenMeister.Modules.FastViewFilter;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -40,13 +41,20 @@ namespace DatenMeister.Modules.TypeSupport
 
         public IUriExtent InternalTypes => GetInternalTypeExtent();
 
-        public IUriExtent UserTypeExtent => GetUserTypeExtent(); 
+        public IUriExtent UserTypeExtent => GetUserTypeExtent();
 
         /// <summary>
         /// Initializes a new instance of the LocalTypeSupport class
         /// </summary>
         /// <param name="workspaceLogic">Workspace logic which is required to find the given local type support storage</param>
-        public LocalTypeSupport(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator, PackageMethods packageMethods, IntegrationSettings integrationSettings)
+        /// <param name="extentCreator">The creator for the extents</param>
+        /// <param name="packageMethods">The methods for the packages</param>
+        /// <param name="integrationSettings">The Integration settings</param>
+        public LocalTypeSupport(
+            IWorkspaceLogic workspaceLogic, 
+            ExtentCreator extentCreator, 
+            PackageMethods packageMethods, 
+            IntegrationSettings integrationSettings)
         {
             _workspaceLogic = workspaceLogic;
             _extentCreator = extentCreator;
@@ -100,6 +108,16 @@ namespace DatenMeister.Modules.TypeSupport
                 foundPackage,
                 _UML._Packages._Package.packagedElement,
                 CopyOptions.CopyId);
+            
+            // Create the Primitive Type for the .Net-Type: DateTime
+            var internalUserExtent = GetInternalTypeExtent();
+            var factory = new MofFactory(internalUserExtent);
+            var package = _packageMethods.GetOrCreatePackageStructure(internalUserExtent.elements(), "PrimitiveTypes");
+            var umlData = _workspaceLogic.GetUmlData();
+
+            var dateTime = factory.create(umlData.SimpleClassifiers.__PrimitiveType);
+            dateTime.set(_UML._CommonStructure._NamedElement.name, "DateTime");
+            PackageMethods.AddObjectToPackage(package, dateTime);
         }
 
         /// <summary>

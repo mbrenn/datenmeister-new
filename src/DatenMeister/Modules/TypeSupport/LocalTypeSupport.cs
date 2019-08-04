@@ -116,6 +116,7 @@ namespace DatenMeister.Modules.TypeSupport
             var umlData = _workspaceLogic.GetUmlData();
 
             var dateTime = factory.create(umlData.SimpleClassifiers.__PrimitiveType);
+            ((ICanSetId) dateTime).Id = "PrimitiveTypes.DateTime";
             dateTime.set(_UML._CommonStructure._NamedElement.name, "DateTime");
             PackageMethods.AddObjectToPackage(package, dateTime);
         }

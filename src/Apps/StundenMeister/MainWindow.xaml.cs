@@ -44,10 +44,9 @@ namespace StundenMeister
 
             LoadingText.Visibility = Visibility.Collapsed;
             LoadedAsset.Visibility = Visibility.Visible;
-            
-            Timer timer = new Timer();
-            timer.AutoReset = true;
-            
+
+            Timer timer = new Timer {AutoReset = true};
+
             var timer2 = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
             timer2.Interval = TimeSpan.FromSeconds(1.0);
             timer2.Tick += (x, y) => UpdateContentByTick();
@@ -56,8 +55,12 @@ namespace StundenMeister
             UpdateContentByTick();
         }
 
+        private int _ticksOccured = 0;
+
         private void UpdateContentByTick()
         {
+            _ticksOccured++;
+            
             var logic = new TimeRecordingLogic(StundenMeisterLogic.Get());
             logic.UpdateCurrentRecording();
             
@@ -70,6 +73,12 @@ namespace StundenMeister
             ActiveTimeMonth.Text = $"{timeSpanMonth.Hours:00}:{timeSpanMonth.Minutes:00}:{timeSpanMonth.Seconds:00}";
 
             Title = logic.IsTimeRecordingActive() ? "StundenMeister (active)" : "StundenMeister";
+
+            if (_ticksOccured > 60 * 5)
+            {
+                _ticksOccured = 0;
+                StundenMeisterLogic.Get().StoreExtent();
+            }
         }
 
         private void Start_OnClick(object sender, RoutedEventArgs e)

@@ -6,12 +6,12 @@ using DatenMeister.Runtime.Proxies;
 
 namespace DatenMeister.Runtime.Functions.Queries
 {
-    public class FilterOnPropertyByPredicateCollection : ProxyReflectiveCollection
+    public class FilterOnPropertyByPredicateCollection<T> : ProxyReflectiveCollection
     {
         /// <summary>
         ///     Stores the filter to filter on the property
         /// </summary>
-        private readonly Predicate<object> _filter;
+        private readonly Predicate<T> _filter;
 
         /// <summary>
         ///     Stores the property
@@ -21,7 +21,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         public FilterOnPropertyByPredicateCollection(
             IReflectiveCollection collection,
             string property,
-            Predicate<object> filter)
+            Predicate<T> filter)
             : base(collection)
         {
             _property = property;
@@ -34,7 +34,7 @@ namespace DatenMeister.Runtime.Functions.Queries
             {
                 if (value is IObject valueAsObject && valueAsObject.isSet(_property))
                 {
-                    var property = valueAsObject.get(_property);
+                    var property = valueAsObject.get<T>(_property);
                     if (_filter(property))
                     {
                         yield return valueAsObject;
@@ -48,10 +48,9 @@ namespace DatenMeister.Runtime.Functions.Queries
             var result = 0;
             foreach (var value in Collection)
             {
-                var valueAsObject = value as IObject;
-                if (valueAsObject != null && valueAsObject.isSet(_property))
+                if (value is IObject valueAsObject && valueAsObject.isSet(_property))
                 {
-                    var property = valueAsObject.get(_property);
+                    var property = valueAsObject.get<T>(_property);
                     if (_filter(property))
                     {
                         result++;

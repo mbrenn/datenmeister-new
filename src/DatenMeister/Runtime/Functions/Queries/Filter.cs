@@ -28,10 +28,10 @@ namespace DatenMeister.Runtime.Functions.Queries
             string property,
             string value)
         {
-            return new FilterOnPropertyByPredicateCollection(
+            return new FilterOnPropertyByPredicateCollection<string>(
                 collection,
                 property,
-                x => ((string) x)?.StartsWith(value) == true);
+                x => x?.StartsWith(value) == true);
         }
 
         public static IReflectiveCollection WhenMetaClassIs(
@@ -61,24 +61,24 @@ namespace DatenMeister.Runtime.Functions.Queries
             return new FilterOnPropertyIsSet(collection, propertyName);
         }
 
-        public static IReflectiveCollection WhenPropertyHasValue(
+        public static IReflectiveCollection WhenPropertyHasValue<T>(
             this IReflectiveCollection collection,
             string property,
-            object value)
+            T value)
         {
-            return new FilterOnPropertyByPredicateCollection(
+            return new FilterOnPropertyByPredicateCollection<T>(
                 collection,
                 property,
                 x => x?.Equals(value) == true);
         }
 
-        public static IReflectiveCollection WhenPropertyIsOneOf(
+        public static IReflectiveCollection WhenPropertyIsOneOf<T>(
             this IReflectiveCollection collection,
             string property,
-            IEnumerable<object> values)
+            IEnumerable<T> values)
         {
             var valuesAsList = values.ToList();
-            return new FilterOnPropertyByPredicateCollection(
+            return new FilterOnPropertyByPredicateCollection<T>(
                 collection,
                 property,
                 x => valuesAsList.Any(y => x?.Equals(y) == true));

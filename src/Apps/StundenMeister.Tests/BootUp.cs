@@ -37,14 +37,17 @@ namespace StundenMeister.Tests
             var path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             path = Path.Combine(path, "StundenMeister.Tests");
             
-            var settings = new IntegrationSettings()
+            var settings = new IntegrationSettings
             {
                 DatabasePath = path
             };
             
             GiveMe.DropDatenMeisterStorage(settings);
 
-            return GiveMe.DatenMeister(settings);
+            var datenMeister = GiveMe.DatenMeister(settings);
+            var logic = datenMeister.Resolve<StundenMeisterLogic>();
+            logic.Data.Extent.elements().clear();
+            return datenMeister;
         }
     }
 }

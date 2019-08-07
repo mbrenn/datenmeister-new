@@ -141,5 +141,10 @@ namespace StundenMeister
                     .WhenMetaClassIs(metaclass),
                 metaclass);
         }
+
+        private void StoreNow_Click(object sender, RoutedEventArgs e)
+        {
+            StundenMeisterLogic.Get().StoreExtent();
+        }
     }
 }

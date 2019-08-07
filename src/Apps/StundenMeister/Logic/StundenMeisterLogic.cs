@@ -63,6 +63,14 @@ namespace StundenMeister.Logic
         }
 
         /// <summary>
+        /// Stores the information of the extent into the file
+        /// </summary>
+        public void StoreExtent()
+        {
+            _extentManager.StoreExtent(Data.Extent); 
+        }
+
+        /// <summary>
         /// Gets the data for the Stundenmeister
         /// </summary>
         public StundenMeisterData Data => StundenMeisterData.TheOne;

@@ -18,11 +18,6 @@ namespace DatenMeister.Provider.DotNet
     /// </summary>
     public class DotNetTypeGenerator
     {
-        /// <summary>
-        /// Stores the logger
-        /// </summary>
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(DotNetTypeGenerator));
-
         private readonly IFactory _factoryForTypes;
 
         private readonly _UML _umlHost;
@@ -38,7 +33,7 @@ namespace DatenMeister.Provider.DotNet
         /// class, properties and other MOF elements</param>
         /// <param name="umlHost">The UML reference storing the metaclass for class, properties, etc. </param>
         /// <param name="targetExtent">Stores the extent into which the elements will be added</param>
-        public DotNetTypeGenerator(IFactory factoryForTypes, _UML umlHost, IUriExtent targetExtent = null)
+        public DotNetTypeGenerator(IFactory factoryForTypes, _UML umlHost, IExtent targetExtent = null)
         {
             _factoryForTypes = factoryForTypes ?? throw new ArgumentNullException(nameof(factoryForTypes));
             _umlHost = umlHost ?? throw new ArgumentNullException(nameof(umlHost));
@@ -161,35 +156,35 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="property">Property that is evaluated</param>
         /// <param name="umlProperty">Property which will have the property type stored according UML</param>
-        private void SetProperty(Type property, IElement umlProperty)
+        private void SetProperty(Type property, IObject umlProperty)
         {
             if (property == typeof(string))
             {
-                var stringType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String",
+                var stringType = UriResolver.Resolve(CoreTypeNames.StringType,
                     ResolveType.NoMetaWorkspaces);
                 umlProperty.set(_UML._CommonStructure._TypedElement.type, stringType);
             }
-            else if (property == typeof(int))
+            else if (property == typeof(int) || property == typeof(long) || property== typeof(short))
             {
-                var integerType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer",
+                var integerType = UriResolver.Resolve(CoreTypeNames.IntegerType,
                     ResolveType.NoMetaWorkspaces);
                 umlProperty.set(_UML._CommonStructure._TypedElement.type, integerType);
             }
             else if (property == typeof(bool))
             {
-                var booleanType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Boolean",
+                var booleanType = UriResolver.Resolve(CoreTypeNames.BooleanType, 
                     ResolveType.NoMetaWorkspaces);
                 umlProperty.set(_UML._CommonStructure._TypedElement.type, booleanType);
             }
-            else if (property == typeof(double))
+            else if (property == typeof(double) || property == typeof(float))
             {
-                var realType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real",
+                var realType = UriResolver.Resolve(CoreTypeNames.RealType,
                     ResolveType.NoMetaWorkspaces);
                 umlProperty.set(_UML._CommonStructure._TypedElement.type, realType);
             }
             else if (property == typeof(DateTime))
             {
-                var dateTimeType = UriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real",
+                var dateTimeType = UriResolver.Resolve(CoreTypeNames.DateTimeType,
                     ResolveType.NoMetaWorkspaces);
                 umlProperty.set(_UML._CommonStructure._TypedElement.type, dateTimeType);
             }
@@ -203,7 +198,8 @@ namespace DatenMeister.Provider.DotNet
                 }
                 else
                 {
-                    umlProperty.set(_UML._CommonStructure._TypedElement.type, new MofObjectShadow($"#{property.FullName}"));
+                    umlProperty.set(_UML._CommonStructure._TypedElement.type,
+                        new MofObjectShadow($"#{property.FullName}"));
                 }
             }
             else
@@ -227,7 +223,8 @@ namespace DatenMeister.Provider.DotNet
                     }
                     else
                     {
-                        umlProperty.set(_UML._CommonStructure._TypedElement.type, new MofObjectShadow($"#{WebUtility.UrlEncode(propertyType.FullName)}"));
+                        umlProperty.set(_UML._CommonStructure._TypedElement.type,
+                            new MofObjectShadow($"#{WebUtility.UrlEncode(propertyType.FullName)}"));
                     }
                 }
             }

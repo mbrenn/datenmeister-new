@@ -3,7 +3,7 @@ namespace DatenMeister.Runtime.Workspaces
     /// <summary>
     /// Stores a set of IDs representing the internal type names
     /// </summary>
-    public static class TypeNames
+    public static class CoreTypeNames
     {
         /// <summary>
         /// Stores the DateTime type
@@ -11,5 +11,12 @@ namespace DatenMeister.Runtime.Workspaces
         public static string DateTimeType = WorkspaceNames.UriInternalTypesExtent + "#PrimitiveTypes.DateTime";
 
         public static string StringType = WorkspaceNames.StandardPrimitiveTypeNamespace + "#String";
+
+        public static string IntegerType = WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer";
+        
+        public static string BooleanType = WorkspaceNames.StandardPrimitiveTypeNamespace + "#Boolean";
+        
+        public static string RealType = WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real";
+        
     }
 }

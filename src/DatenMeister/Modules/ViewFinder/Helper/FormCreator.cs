@@ -50,6 +50,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         private IElement _integerType;
         private IElement _booleanType;
         private IElement _realType;
+        private IElement _dateTimeType;
 
         /// <summary>
         /// Stores the creation mode
@@ -473,6 +474,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             // Check, if field property is an enumeration
             var uml = _workspaceLogic.GetUmlData();
             var primitiveTypes = _workspaceLogic.GetPrimitiveData();
+            var uriResolver = _workspaceLogic.GetTypesWorkspace();
+            
             //var uriResolver = propertyType.GetUriResolver();
             _stringType = _stringType ?? primitiveTypes.__String; /*uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String",
                 ResolveType.Default);*/
@@ -482,6 +485,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 ResolveType.Default);*/
             _realType = _realType ?? primitiveTypes.__Real; /*uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real",
                 ResolveType.Default);*/
+            _dateTimeType = _dateTimeType ?? uriResolver.Resolve(CoreTypeNames.DateTimeType, ResolveType.Default, false);
 
             // Checks, if the property is an enumeration. 
             if (propertyType?.metaclass != null)
@@ -515,8 +519,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     return checkbox;
                 }
 
-                if (!propertyType.@equals(_stringType) && !propertyType.@equals(_integerType) &&
-                    !propertyType.@equals(_realType) && !isForListForm)
+                if (
+                    !propertyType.@equals(_stringType) && 
+                    !propertyType.@equals(_integerType) &&
+                    !propertyType.@equals(_realType) &&
+                    !propertyType.@equals(_dateTimeType) && // TODO: Needs to be changed to DateTime Type
+                    !isForListForm)
                 {
                     // If we have something else than a primitive type and it is not for a list form
                     if (propertyIsEnumeration)

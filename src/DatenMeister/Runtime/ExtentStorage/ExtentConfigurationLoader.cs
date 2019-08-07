@@ -116,8 +116,8 @@ namespace DatenMeister.Runtime.ExtentStorage
                 {
                     Name = "metadata"
                 };
+                
                 xmlExtent.Add(xmlMetaData);
-
                 rootNode.Add(xmlExtent);
             }
 

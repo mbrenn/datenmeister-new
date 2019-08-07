@@ -225,7 +225,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 else
                 {
                     // If no view logic is given, then ask directly the form creator. 
-                    form = this.CreateListForm(groupedMetaclass, creationMode);
+                    form = CreateListForm(groupedMetaclass, creationMode);
                 }
 
                 form.set(_FormAndFields._ListForm.metaClass, group.Key);

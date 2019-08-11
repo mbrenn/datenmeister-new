@@ -189,8 +189,8 @@ namespace StundenMeister.Logic
         /// If the current logic is in hibernation, then the use layer must confirm
         /// or reject the hibernation before the time estimation will continue 
         /// </summary>
-        /// <param name="confirmed">true, if the hibernation is confirmed</param>
-        public void ConfirmationHibernation(bool confirmed)
+        /// <param name="continueRecording">true, if the hibernation is confirmed</param>
+        public void ConfirmHibernation(bool continueRecording)
         {
             if (!_stundenMeisterLogic.Data.HibernationDetected)
             {
@@ -205,7 +205,7 @@ namespace StundenMeister.Logic
                 return;
             }
             
-            if (confirmed)
+            if (continueRecording)
             {
                 // Ok, it is OK to continue with timing
                 var endDate = DateTime.UtcNow;
@@ -218,6 +218,8 @@ namespace StundenMeister.Logic
                 // No, the session has ended. 
                 EndRecording();
             }
+            
+            _stundenMeisterLogic.Data.HibernationDetected = false;
         }
 
         public TimeSpan CalculateWorkingHoursInDay(DateTime day = default)

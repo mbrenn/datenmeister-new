@@ -67,18 +67,28 @@ namespace StundenMeister
             var timeSpanDay = logic.CalculateWorkingHoursInDay();
             var timeSpanWeek = logic.CalculateWorkingHoursInWeek();
             var timeSpanMonth = logic.CalculateWorkingHoursInMonth();
-            ActiveTimeDay.Text =
-                $"{timeSpanDay.Hours:00}:{timeSpanDay.Minutes:00}:{timeSpanDay.Seconds:00}";
-            ActiveTimeWeek.Text = $"{timeSpanWeek.Hours:00}:{timeSpanWeek.Minutes:00}:{timeSpanWeek.Seconds:00}";
-            ActiveTimeMonth.Text = $"{timeSpanMonth.Hours:00}:{timeSpanMonth.Minutes:00}:{timeSpanMonth.Seconds:00}";
-
-            Title = logic.IsTimeRecordingActive() ? "StundenMeister (active)" : "StundenMeister";
+            ActiveTimeDay.Text = FormatTimeSpan(timeSpanDay);
+            ActiveTimeWeek.Text = FormatTimeSpan(timeSpanWeek);
+            ActiveTimeMonth.Text = FormatTimeSpan(timeSpanMonth);
+            
+            Title = logic.IsTimeRecordingActive() ? "StundenMeister (running)" : "StundenMeister";
 
             if (_ticksOccured > 60 * 5)
             {
                 _ticksOccured = 0;
                 StundenMeisterLogic.Get().StoreExtent();
             }
+        }
+
+        /// <summary>
+        /// Formats the timespan and returns the timespan as a string being usable
+        /// for times
+        /// </summary>
+        /// <param name="timeSpan">Time span to be converted</param>
+        /// <returns>The converted Timespan</returns>
+        private string FormatTimeSpan(TimeSpan timeSpan)
+        {
+            return  $"{Math.Floor(timeSpan.TotalHours):00}:{timeSpan.Minutes:00}:{timeSpan.Seconds:00}";
         }
 
         private void Start_OnClick(object sender, RoutedEventArgs e)

@@ -21,11 +21,12 @@
         <Grid x:Name="LoadedAsset" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+            <Viewbox Stretch="Uniform">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -38,14 +39,15 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="1" Grid.Row="0">Today</TextBlock>
-                <TextBlock Grid.Column="2" Grid.Row="0">Week</TextBlock>
-                <TextBlock Grid.Column="3" Grid.Row="0">Month</TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="1">Total</TextBlock>
-                <TextBlock Grid.Column="1" Grid.Row="1" x:Name="ActiveTimeDay"></TextBlock>
-                <TextBlock Grid.Column="2" Grid.Row="1" x:Name="ActiveTimeWeek"></TextBlock>
-                <TextBlock Grid.Column="3" Grid.Row="1" x:Name="ActiveTimeMonth"></TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="0" Margin="4">Today</TextBlock>
+                <TextBlock Grid.Column="2" Grid.Row="0" Margin="4">Week</TextBlock>
+                <TextBlock Grid.Column="3" Grid.Row="0" Margin="4">Month</TextBlock>
+                <TextBlock Grid.Column="0" Grid.Row="1" Margin="4">Total</TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="1" Margin="4" x:Name="ActiveTimeDay"></TextBlock>
+                <TextBlock Grid.Column="2" Grid.Row="1" Margin="4" x:Name="ActiveTimeWeek"></TextBlock>
+                <TextBlock Grid.Column="3" Grid.Row="1" Margin="4" x:Name="ActiveTimeMonth"></TextBlock>
             </Grid>
+            </Viewbox>
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -56,9 +58,9 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Click="Start_OnClick">Start</Button>
-                <Button Grid.Column="1" Click="End_OnClick">End</Button>
-                <Button Grid.Column="2" Click="MenuItem_Click">
+                <Button Grid.Column="0" Click="Start_OnClick" Padding="5">Start</Button>
+                <Button Grid.Column="1" Click="End_OnClick" Padding="5">End</Button>
+                <Button Grid.Column="2" Click="MenuItem_Click" Padding="5">
                     <Button.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Store Now" Click="StoreNow_Click" />

@@ -10,8 +10,11 @@ namespace StundenMeister.Logic
 {
     public class TimeRecordingLogic
     {
-        private StundenMeisterLogic _stundenMeisterLogic;
-
+        private bool hibernationActive => _stundenMeisterLogic.Configuration.HibernationDetectionActive;
+        private TimeSpan hibernationTime => _stundenMeisterLogic.Configuration.HibernationDetectionTime;
+        
+        private readonly StundenMeisterLogic _stundenMeisterLogic;
+        
         public TimeRecordingLogic(StundenMeisterLogic stundenMeisterLogic)
         {
             _stundenMeisterLogic = stundenMeisterLogic;
@@ -110,7 +113,6 @@ namespace StundenMeister.Logic
             if (currentTimeRecording != null)
             {
                 currentTimeRecording.set(nameof(TimeRecording.isActive), false);
-                currentTimeRecording.set(nameof(TimeRecording.endDate), DateTime.UtcNow);
                 _stundenMeisterLogic.Data.CurrentTimeRecording = null;
             }
             
@@ -163,9 +165,58 @@ namespace StundenMeister.Logic
                 
             if (isActive)
             {
+                // Check for current end date
+                var currentEndDate = currentTimeRecording.get<DateTime>(nameof(TimeRecording.endDate));
+                
                 // While current time recording is active, advance content
                 var endDate = DateTime.UtcNow;
+
+                if (hibernationActive && (endDate - currentEndDate) > hibernationTime)
+                {
+                    // Ok, we have a hibernation overflow
+                    _stundenMeisterLogic.Data.HibernationDetected = true;
+                }
+                else
+                {
+                    // No hibernation, we can continue
+                    _stundenMeisterLogic.Data.HibernationDetected = false;
+                    currentTimeRecording.set(nameof(TimeRecording.endDate), endDate);
+                }
+            }
+        }
+
+        /// <summary>
+        /// If the current logic is in hibernation, then the use layer must confirm
+        /// or reject the hibernation before the time estimation will continue 
+        /// </summary>
+        /// <param name="confirmed">true, if the hibernation is confirmed</param>
+        public void ConfirmationHibernation(bool confirmed)
+        {
+            if (!_stundenMeisterLogic.Data.HibernationDetected)
+            {
+                // No active hibernation
+                return;
+            }
+            
+            var currentTimeRecording = StundenMeisterData.TheOne.CurrentTimeRecording;
+            if (currentTimeRecording == null)
+            {
+                // Nothing to do... no active recording
+                return;
+            }
+            
+            if (confirmed)
+            {
+                // Ok, it is OK to continue with timing
+                var endDate = DateTime.UtcNow;
+                
+                _stundenMeisterLogic.Data.HibernationDetected = false;
                 currentTimeRecording.set(nameof(TimeRecording.endDate), endDate);
+            }
+            else
+            {
+                // No, the session has ended. 
+                EndRecording();
             }
         }
 

@@ -31,5 +31,10 @@ namespace StundenMeister.Logic
         /// Gets the Recording Element which is reflecting the current time
         /// </summary>
         public IElement CurrentTimeRecording { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indication whether a hibernation has been detected
+        /// </summary>
+        public bool HibernationDetected { get; set; }
     }
 }

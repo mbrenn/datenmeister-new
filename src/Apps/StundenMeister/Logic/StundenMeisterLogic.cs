@@ -16,6 +16,12 @@ namespace StundenMeister.Logic
     public class StundenMeisterLogic : IDatenMeisterPlugin
     {
         /// <summary>
+        /// Defines the configuration of the StundenMeister
+        /// </summary>
+        public StundenMeisterConfiguration Configuration { get; }
+            = new StundenMeisterConfiguration();
+
+        /// <summary>
         /// Gets the StundenMeisterLogic for the application
         /// </summary>
         /// <returns></returns>
@@ -23,7 +29,7 @@ namespace StundenMeister.Logic
         {
             return GiveMe.Scope.Resolve<StundenMeisterLogic>();
         }
-        
+
         private readonly LocalTypeSupport _localTypeSupport;
         private readonly ExtentManager _extentManager;
 
@@ -57,7 +63,7 @@ namespace StundenMeister.Logic
                 _extentManager.LoadExtentIfNotAlreadyLoaded(
                     storageData,
                     ExtentCreationFlags.LoadOrCreate);
-            
+
             var recordingLogic = new TimeRecordingLogic(this);
             recordingLogic.Initialize();
         }
@@ -67,7 +73,7 @@ namespace StundenMeister.Logic
         /// </summary>
         public void StoreExtent()
         {
-            _extentManager.StoreExtent(Data.Extent); 
+            _extentManager.StoreExtent(Data.Extent);
         }
 
         /// <summary>

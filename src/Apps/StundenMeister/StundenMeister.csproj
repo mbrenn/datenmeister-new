@@ -89,6 +89,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Logic\StundenMeisterConfiguration.cs" />
     <Compile Include="Logic\StundenMeisterData.cs" />
     <Compile Include="Logic\StundenMeisterLogic.cs" />
     <Compile Include="Logic\TimeRecordingLogic.cs" />

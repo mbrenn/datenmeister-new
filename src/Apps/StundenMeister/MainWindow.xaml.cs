@@ -57,6 +57,12 @@ namespace StundenMeister
 
         private int _ticksOccured = 0;
 
+        /// <summary>
+        /// Just a flag indicating whether the form is currently
+        /// in user interaction to avoid multiple queries. 
+        /// </summary>
+        private bool _inUserInteraction;
+
         private void UpdateContentByTick()
         {
             _ticksOccured++;
@@ -77,6 +83,30 @@ namespace StundenMeister
             {
                 _ticksOccured = 0;
                 StundenMeisterLogic.Get().StoreExtent();
+            }
+            
+            // Checks, if hibernation is currently active, if yes, ask the user
+            if (StundenMeisterLogic.Get().Data.HibernationDetected && !_inUserInteraction)
+            {
+                _inUserInteraction = true;
+                var result = MessageBox.Show("Hibernation was detected\r\n" +
+                                    "Press Yes to continue time-recording.\r\n" +
+                                    "Press No to stop time-recording at point of start of hibernation.",
+                        "Hibernation detected",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question,
+                        MessageBoxResult.Yes) ;
+
+                _inUserInteraction = false;
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    logic.ConfirmHibernation(true);
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                    logic.ConfirmHibernation(false);
+                }
             }
         }
 

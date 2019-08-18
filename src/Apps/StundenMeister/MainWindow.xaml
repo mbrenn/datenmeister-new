@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StundenMeister"
         mc:Ignorable="d"
-        Title="StundenMeister" Height="450" Width="800" WindowStyle="ToolWindow"
+        Title="StundenMeister" Height="200" Width="400"
         Loaded="MainWindow_OnLoaded" Closed="MainWindow_OnClosed">
     <Grid>
         <Grid>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,10 +15,12 @@ using BurnSystems.WPF;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Formatter;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using StundenMeister.Logic;
+using StundenMeister.Model;
 
 namespace StundenMeister
 {
@@ -136,7 +139,7 @@ namespace StundenMeister
         {
             var logic = new TimeRecordingLogic(
                 StundenMeisterLogic.Get());
-            logic.StartNewRecording();
+            logic.StartNewRecording(GetSelectedCostCenter());
             UpdateContentByTick();
         }
 
@@ -214,6 +217,8 @@ namespace StundenMeister
             
             var costCenterLogic = new CostCenterLogic(
                 StundenMeisterLogic.Get());
+            var currentTimeRecording = StundenMeisterLogic.Get().Data.CurrentTimeRecording;
+            var currentCostCenter = currentTimeRecording?.getOrDefault<IElement>(nameof(TimeRecording.costCenter));
 
             var costCenters = costCenterLogic.GetCostCenters();
 
@@ -223,11 +228,14 @@ namespace StundenMeister
             foreach (var costCenter in costCenters)
             {
                 var item = new CostCenterDropDownItem(
-                    costCenter, 
+                    costCenter,
                     formatter.Format(costCenter, "{{id}} - {{name}}"));
                 list.Add(item);
 
-                if (costCenter.@equals(selectedCostCenter))
+                // Checks, if the user already has selected a cost center or
+                // if there is an active cost center due to active time recording
+                if (costCenter.@equals(selectedCostCenter)
+                    || selectedCostCenter == null && currentCostCenter.@equals(costCenter))
                 {
                     selectItem = item;
                 }
@@ -235,6 +243,17 @@ namespace StundenMeister
 
             cboCostCenters.ItemsSource = list;
             cboCostCenters.SelectedItem = selectItem;
+
+            if (selectItem == null && list.Count > 0)
+            {
+                cboCostCenters.SelectedIndex = 0;
+            }
+        }
+
+        public IElement GetSelectedCostCenter()
+        {
+            var selectedItem = cboCostCenters.SelectedItem as CostCenterDropDownItem;
+            return selectedItem?.CostCenter;
         }
 
         private class CostCenterDropDownItem

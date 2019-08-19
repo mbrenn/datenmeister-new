@@ -90,7 +90,8 @@ namespace StundenMeister.Logic
         /// Starts a new recording of timing.
         /// Ends the current one and creates a new time record
         /// </summary>
-        public void StartNewRecording()
+        /// <param name="costCenter">Cost center whose timing will be started</param>
+        public void StartNewRecording(IElement costCenter)
         {
             EndRecording();
 
@@ -100,6 +101,7 @@ namespace StundenMeister.Logic
             currentTimeRecording.set(nameof(TimeRecording.startDate), DateTime.UtcNow);
             currentTimeRecording.set(nameof(TimeRecording.endDate), DateTime.UtcNow);
             currentTimeRecording.set(nameof(TimeRecording.isActive), true);
+            currentTimeRecording.set(nameof(TimeRecording.costCenter), costCenter);
             
         }
 

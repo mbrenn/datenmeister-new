@@ -1,5 +1,6 @@
 using System;
 using System.Security.RightsManagement;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace StundenMeister.Model
 {
@@ -10,5 +11,7 @@ namespace StundenMeister.Model
         public DateTime endDate { get; set; }
         
         public bool isActive { get; set; }
+        
+        public CostCenter costCenter { get; set; }
     }
 }

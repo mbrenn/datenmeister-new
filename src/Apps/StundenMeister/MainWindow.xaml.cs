@@ -1,14 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Converters;
 using System.Windows.Threading;
+using System.Xaml.Schema;
 using Autofac;
 using BurnSystems.Logging;
 using BurnSystems.WPF;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Modules.Formatter;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
@@ -29,7 +34,7 @@ namespace StundenMeister
         private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             TheLog.AddProvider(new TextBlockLogProvider(TxtLogging), LogLevel.Trace);
-            
+
             LoadingText.Visibility = Visibility.Visible;
             LoadedAsset.Visibility = Visibility.Collapsed;
 
@@ -39,7 +44,7 @@ namespace StundenMeister
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                     "StundenMeister")
             };
-            
+
             GiveMe.Scope = await GiveMe.DatenMeisterAsync(settings);
 
             LoadingText.Visibility = Visibility.Collapsed;
@@ -47,12 +52,18 @@ namespace StundenMeister
 
             Timer timer = new Timer {AutoReset = true};
 
-            var timer2 = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
-            timer2.Interval = TimeSpan.FromSeconds(1.0);
+            var timer2 = new DispatcherTimer(DispatcherPriority.Background, Dispatcher)
+            {
+                Interval = TimeSpan.FromSeconds(1.0)
+            };
             timer2.Tick += (x, y) => UpdateContentByTick();
             timer2.Start();
-            
+
             UpdateContentByTick();
+            UpdateCostCenters();
+
+            new CostCenterLogic(StundenMeisterLogic.Get()).NotifyForCostCenterChange(
+                (x, y) => { UpdateCostCenters(); });
         }
 
         private int _ticksOccured = 0;
@@ -166,7 +177,7 @@ namespace StundenMeister
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
-            GiveMe.Scope.UnuseDatenMeister();
+            GiveMe.Scope?.UnuseDatenMeister();
         }
 
         private void ManageCostCenters_Click(object sender, RoutedEventArgs e)
@@ -194,6 +205,53 @@ namespace StundenMeister
         private void StoreNow_Click(object sender, RoutedEventArgs e)
         {
             StundenMeisterLogic.Get().StoreExtent();
+        }
+
+        private void UpdateCostCenters()
+        {
+            var selectedCostCenter = (cboCostCenters.SelectedItem as CostCenterDropDownItem)
+                ?.CostCenter;
+            
+            var costCenterLogic = new CostCenterLogic(
+                StundenMeisterLogic.Get());
+
+            var costCenters = costCenterLogic.GetCostCenters();
+
+            CostCenterDropDownItem selectItem = null; 
+            var list = new List<CostCenterDropDownItem>();
+            var formatter = new StringFormatter();
+            foreach (var costCenter in costCenters)
+            {
+                var item = new CostCenterDropDownItem(
+                    costCenter, 
+                    formatter.Format(costCenter, "{{id}} - {{name}}"));
+                list.Add(item);
+
+                if (costCenter.@equals(selectedCostCenter))
+                {
+                    selectItem = item;
+                }
+            }
+
+            cboCostCenters.ItemsSource = list;
+            cboCostCenters.SelectedItem = selectItem;
+        }
+
+        private class CostCenterDropDownItem
+        {
+            public CostCenterDropDownItem(IElement costCenter, string title)
+            {
+                CostCenter = costCenter;
+                Title = title;
+            }
+
+            public IElement CostCenter { get; }
+            public string Title { get; }
+
+            public override string ToString()
+            {
+                return Title;
+            }
         }
     }
 }

@@ -71,6 +71,7 @@
                             <MenuItem Header="Exit" Click="Exit_OnClick" />
                         </ContextMenu>
                     </Button.ContextMenu>
+                    ☰
                 </Button>
             </Grid>
         </Grid>

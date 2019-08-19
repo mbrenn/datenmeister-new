@@ -128,6 +128,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     valueAsObject.Extent = _extent;
 
                     _extent?.ChangeEventManager?.SendChangeEvent(_extent);
+                    _extent?.ChangeEventManager?.SendChangeEvent(valueAsObject);
                     return true;
                 }
 

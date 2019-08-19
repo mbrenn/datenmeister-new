@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Integration;
+using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
@@ -31,12 +32,22 @@ namespace StundenMeister.Logic
         }
 
         private readonly LocalTypeSupport _localTypeSupport;
+        
         private readonly ExtentManager _extentManager;
+        
+        /// <summary>
+        /// Gets the change event manager
+        /// </summary>
+        public ChangeEventManager EventManager { get; }
 
-        public StundenMeisterLogic(LocalTypeSupport localTypeSupport, ExtentManager extentManager)
+        public StundenMeisterLogic(
+            LocalTypeSupport localTypeSupport, 
+            ExtentManager extentManager, 
+            ChangeEventManager changeEventManager)
         {
             _localTypeSupport = localTypeSupport;
             _extentManager = extentManager;
+            EventManager = changeEventManager;
         }
 
         public void Start(PluginLoadingPosition position)
@@ -80,5 +91,6 @@ namespace StundenMeister.Logic
         /// Gets the data for the Stundenmeister
         /// </summary>
         public StundenMeisterData Data => StundenMeisterData.TheOne;
+
     }
 }

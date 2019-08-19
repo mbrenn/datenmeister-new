@@ -80,36 +80,43 @@ namespace StundenMeister
         private void UpdateContentByTick()
         {
             _ticksOccured++;
-            
+
             var logic = new TimeRecordingLogic(StundenMeisterLogic.Get());
             logic.UpdateCurrentRecording();
-            
-            var timeSpanDay = logic.CalculateWorkingHoursInDay();
-            var timeSpanWeek = logic.CalculateWorkingHoursInWeek();
-            var timeSpanMonth = logic.CalculateWorkingHoursInMonth();
-            ActiveTimeDay.Text = FormatTimeSpan(timeSpanDay);
-            ActiveTimeWeek.Text = FormatTimeSpan(timeSpanWeek);
-            ActiveTimeMonth.Text = FormatTimeSpan(timeSpanMonth);
-            
-            Title = logic.IsTimeRecordingActive() ? "StundenMeister (running)" : "StundenMeister";
+
+            while (gridRecording.Children.Count > 4)
+            {
+                gridRecording.Children.RemoveAt(4);
+            }
+
+            foreach (var set in logic.GetTimeRecordingSets())
+            {
+                AddTimeRecordingLine(set);
+            }
+
+            var costCenter = StundenMeisterLogic.Get().Data.CurrentTimeRecording
+                ?.getOrDefault<IElement>(nameof(TimeRecording.costCenter));
+            var text = costCenter != null ? new StringFormatter().Format(costCenter, "{{id}} - {{name}}") : "Running";
+
+            Title = logic.IsTimeRecordingActive() ? $"StundenMeister ({text})" : "StundenMeister";
 
             if (_ticksOccured > 60 * 5)
             {
                 _ticksOccured = 0;
                 StundenMeisterLogic.Get().StoreExtent();
             }
-            
+
             // Checks, if hibernation is currently active, if yes, ask the user
             if (StundenMeisterLogic.Get().Data.HibernationDetected && !_inUserInteraction)
             {
                 _inUserInteraction = true;
                 var result = MessageBox.Show("Hibernation was detected\r\n" +
-                                    "Press Yes to continue time-recording.\r\n" +
-                                    "Press No to stop time-recording at point of start of hibernation.",
-                        "Hibernation detected",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question,
-                        MessageBoxResult.Yes) ;
+                                             "Press Yes to continue time-recording.\r\n" +
+                                             "Press No to stop time-recording at point of start of hibernation.",
+                    "Hibernation detected",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question,
+                    MessageBoxResult.Yes);
 
                 _inUserInteraction = false;
 
@@ -205,6 +212,42 @@ namespace StundenMeister
                 metaclass);
         }
 
+        public void AddTimeRecordingLine(TimeRecordingSet set)
+        {
+            AddTimeRecordingLine(
+                set.Title,
+                set.Day,
+                set.Week,
+                set.Month);
+        }
+        
+        public void AddTimeRecordingLine(string title, TimeSpan day, TimeSpan week, TimeSpan month)
+        {
+            var row = new RowDefinition();
+
+            var titleBlock = new TextBlock {Text = title, Margin = new Thickness(3)};
+            Grid.SetRow(titleBlock, gridRecording.RowDefinitions.Count);
+            Grid.SetColumn(titleBlock, 0);
+            
+            var dayBlock = new TextBlock {Text = FormatTimeSpan(day), Margin = new Thickness(3)};
+            Grid.SetRow(dayBlock, gridRecording.RowDefinitions.Count);
+            Grid.SetColumn(dayBlock, 1);
+            
+            var weekBlock = new TextBlock {Text = FormatTimeSpan(week), Margin = new Thickness(3)};
+            Grid.SetRow(weekBlock, gridRecording.RowDefinitions.Count);
+            Grid.SetColumn(weekBlock, 2);
+            
+            var monthBlock = new TextBlock {Text = FormatTimeSpan(month), Margin = new Thickness(3)};
+            Grid.SetRow(monthBlock, gridRecording.RowDefinitions.Count);
+            Grid.SetColumn(monthBlock, 3);
+            
+            gridRecording.RowDefinitions.Add(row);
+            gridRecording.Children.Add(titleBlock);
+            gridRecording.Children.Add(dayBlock);
+            gridRecording.Children.Add(weekBlock);
+            gridRecording.Children.Add(monthBlock);
+        }
+
         private void StoreNow_Click(object sender, RoutedEventArgs e)
         {
             StundenMeisterLogic.Get().StoreExtent();
@@ -235,7 +278,7 @@ namespace StundenMeister
                 // Checks, if the user already has selected a cost center or
                 // if there is an active cost center due to active time recording
                 if (costCenter.@equals(selectedCostCenter)
-                    || selectedCostCenter == null && currentCostCenter.@equals(costCenter))
+                    || selectedCostCenter == null && currentCostCenter?.@equals(costCenter) == true)
                 {
                     selectItem = item;
                 }

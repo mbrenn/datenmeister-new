@@ -25,7 +25,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Viewbox Stretch="Uniform">
-                <Grid>
+                <Grid x:Name="gridRecording">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
@@ -36,14 +36,10 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Column="1" Grid.Row="0" Margin="4">Today</TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="0" Margin="4">Day</TextBlock>
                     <TextBlock Grid.Column="2" Grid.Row="0" Margin="4">Week</TextBlock>
                     <TextBlock Grid.Column="3" Grid.Row="0" Margin="4">Month</TextBlock>
-                    <TextBlock Grid.Column="0" Grid.Row="1" Margin="4">Total</TextBlock>
-                    <TextBlock Grid.Column="1" Grid.Row="1" Margin="4" x:Name="ActiveTimeDay" />
-                    <TextBlock Grid.Column="2" Grid.Row="1" Margin="4" x:Name="ActiveTimeWeek" />
-                    <TextBlock Grid.Column="3" Grid.Row="1" Margin="4" x:Name="ActiveTimeMonth" />
+                    <TextBlock Grid.Column="0" Grid.Row="0" Margin="4">Title</TextBlock>
                 </Grid>
             </Viewbox>
             <Grid Grid.Row="1">

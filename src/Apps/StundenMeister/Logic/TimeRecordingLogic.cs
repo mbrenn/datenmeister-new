@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -73,6 +74,80 @@ namespace StundenMeister.Logic
             }
         }
 
+        public IEnumerable<TimeRecordingSet> GetTimeRecordingSets()
+        {
+            var now = DateTime.Now;
+            var startDay = FindStartOfDay(now);
+            var endDay = FindEndOfDay(now);
+            var startWeek = FindStartOfWeek(now);
+            var endWeek = FindEndOfWeek(now);
+            var startMonth = FindStartOfMonth(now);
+            var endMonth = FindEndOfMonth(now);
+
+            var total = new TimeRecordingSet {Title = "Total"};
+            var list = new List<TimeRecordingSet>();
+
+            foreach (var recording in _stundenMeisterLogic.Data.Extent
+                .elements()
+                .WhenMetaClassIs(_stundenMeisterLogic.Data.ClassTimeRecording)
+                .OfType<IElement>())
+            {
+                // Checks, if cost center is in given list
+                TimeRecordingSet costCenterSet = null;
+                var costCenter = recording.getOrDefault<IElement>(nameof(TimeRecording.costCenter));
+                if (costCenter != null)
+                {
+                    costCenterSet = list.FirstOrDefault(x=>x.CostCenter?.@equals(costCenter) == true);
+                    if (costCenterSet == null)
+                    {
+                        costCenterSet = new TimeRecordingSet()
+                        {
+                            Title = costCenter.getOrDefault<string>(nameof(CostCenter.id)),
+                            CostCenter = costCenter
+                        };
+                        
+                        list.Add(costCenterSet);
+                    }
+                }
+                
+                var recordingStartDate = recording.getOrDefault<DateTime>(nameof(TimeRecording.startDate));
+                
+                if (recordingStartDate >= startDay && recordingStartDate < endDay)
+                {
+                    total.Day = total.Day.Add(GetTimeSpanOfRecording(recording));
+                    if (costCenterSet != null)
+                    {
+                        costCenterSet.Day = costCenterSet.Day.Add(GetTimeSpanOfRecording(recording));
+                    }
+                }
+                
+                if (recordingStartDate >= startWeek && recordingStartDate < endWeek)
+                {
+                    total.Week = total.Week.Add(GetTimeSpanOfRecording(recording));
+                    if (costCenterSet != null)
+                    {
+                        costCenterSet.Week = costCenterSet.Week.Add(GetTimeSpanOfRecording(recording));
+                    }
+                }
+                
+                if (recordingStartDate >= startMonth && recordingStartDate < endMonth)
+                {
+                    total.Month = total.Month.Add(GetTimeSpanOfRecording(recording));
+                    if (costCenterSet != null)
+                    {
+                        costCenterSet.Month = costCenterSet.Month.Add(GetTimeSpanOfRecording(recording));
+                    }
+                }
+            }
+
+            foreach (var center in list.OrderBy(x => x.Title))
+            {
+                yield return center;
+            }
+            
+            yield return total;
+        }
+
         /// <summary>
         /// Creates a new element containing the time recordings
         /// </summary>
@@ -102,7 +177,6 @@ namespace StundenMeister.Logic
             currentTimeRecording.set(nameof(TimeRecording.endDate), DateTime.UtcNow);
             currentTimeRecording.set(nameof(TimeRecording.isActive), true);
             currentTimeRecording.set(nameof(TimeRecording.costCenter), costCenter);
-            
         }
 
         /// <summary>
@@ -286,7 +360,7 @@ namespace StundenMeister.Logic
 
             return result;
         }
-
+        
         /// <summary>
         /// Finds the start of the day
         /// </summary>
@@ -392,5 +466,15 @@ namespace StundenMeister.Logic
 
             return endDate - startDate;
         }
+    }
+
+    public class TimeRecordingSet
+    {
+        public string Title { get; set; }
+        public TimeSpan Day { get; set; }
+        public TimeSpan Week { get; set; }
+        public TimeSpan Month { get; set; }
+        
+        public IElement CostCenter { get; set; }
     }
 }

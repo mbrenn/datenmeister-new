@@ -43,6 +43,8 @@ namespace DatenMeister.Provider.ManagementProviders
 
         public const string IdWorkspaceListView = "WorkspacesAndExtents.Workspaces.List";
 
+        public const string IdNewXmiDetailForm = "#WorkspacesAndExtents.Xmi.New";
+
         /// <summary>
         /// Creates a form to create a new type. 
         /// </summary>

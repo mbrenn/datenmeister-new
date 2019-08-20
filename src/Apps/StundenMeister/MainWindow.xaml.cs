@@ -29,8 +29,8 @@ namespace StundenMeister
         /// <summary>
         /// Stores the cached values
         /// </summary>
-        private List<TimeRecordingSetUi> _uiRecordingSetCache = new List<TimeRecordingSetUi>();
-        
+        private readonly List<TimeRecordingSetUi> _uiRecordingSetCache = new List<TimeRecordingSetUi>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -59,7 +59,7 @@ namespace StundenMeister
             {
                 Interval = TimeSpan.FromSeconds(0.99)
             };
-            
+
             timer2.Tick += (x, y) => UpdateContentByTick(false);
             timer2.Start();
 
@@ -174,7 +174,7 @@ namespace StundenMeister
         /// <returns>The converted Timespan</returns>
         private string FormatTimeSpan(TimeSpan timeSpan)
         {
-            return  $"{Math.Floor(timeSpan.TotalHours):00}:{timeSpan.Minutes:00}:{timeSpan.Seconds:00}";
+            return $"{Math.Floor(timeSpan.TotalHours):00}:{timeSpan.Minutes:00}:{timeSpan.Seconds:00}";
         }
 
         private void Start_OnClick(object sender, RoutedEventArgs e)
@@ -254,19 +254,19 @@ namespace StundenMeister
             var titleBlock = new TextBlock {Text = set.Title, Margin = new Thickness(3)};
             Grid.SetRow(titleBlock, gridRecording.RowDefinitions.Count);
             Grid.SetColumn(titleBlock, 0);
-            
+
             var dayBlock = new TextBlock {Text = FormatTimeSpan(set.Day), Margin = new Thickness(3)};
             Grid.SetRow(dayBlock, gridRecording.RowDefinitions.Count);
             Grid.SetColumn(dayBlock, 1);
-            
+
             var weekBlock = new TextBlock {Text = FormatTimeSpan(set.Week), Margin = new Thickness(3)};
             Grid.SetRow(weekBlock, gridRecording.RowDefinitions.Count);
             Grid.SetColumn(weekBlock, 2);
-            
+
             var monthBlock = new TextBlock {Text = FormatTimeSpan(set.Month), Margin = new Thickness(3)};
             Grid.SetRow(monthBlock, gridRecording.RowDefinitions.Count);
             Grid.SetColumn(monthBlock, 3);
-            
+
             gridRecording.RowDefinitions.Add(row);
             gridRecording.Children.Add(titleBlock);
             gridRecording.Children.Add(dayBlock);
@@ -275,7 +275,7 @@ namespace StundenMeister
 
             var item = new TimeRecordingSetUi
             {
-                TimeRecordingSet = set, 
+                TimeRecordingSet = set,
                 TextBlockDay = dayBlock,
                 TextBlockWeek = weekBlock,
                 TextBlockMonth = monthBlock
@@ -293,7 +293,7 @@ namespace StundenMeister
         {
             var selectedCostCenter = (cboCostCenters.SelectedItem as CostCenterDropDownItem)
                 ?.CostCenter;
-            
+
             var costCenterLogic = new CostCenterLogic(
                 StundenMeisterLogic.Get());
             var currentTimeRecording = StundenMeisterLogic.Get().Data.CurrentTimeRecording;
@@ -301,7 +301,7 @@ namespace StundenMeister
 
             var costCenters = costCenterLogic.GetCostCenters();
 
-            CostCenterDropDownItem selectItem = null; 
+            CostCenterDropDownItem selectItem = null;
             var list = new List<CostCenterDropDownItem>();
             var formatter = new StringFormatter();
             foreach (var costCenter in costCenters)
@@ -335,6 +335,26 @@ namespace StundenMeister
             return selectedItem?.CostCenter;
         }
 
+        private void CboCostCenters_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var logic = StundenMeisterLogic.Get();
+            var costCenter =
+                logic.Data.CurrentTimeRecording
+                    ?.getOrDefault<IElement>(nameof(TimeRecording.costCenter));
+
+            var selectedCostCenter = (cboCostCenters.SelectedItem as CostCenterDropDownItem)?.CostCenter;
+
+            if (costCenter != null
+                && costCenter == selectedCostCenter)
+            {
+                return;
+            }
+
+            var recordingLogic = new TimeRecordingLogic(logic);
+            recordingLogic.StartNewRecording(selectedCostCenter);
+            UpdateContentByTick(true);
+        }
+
         private class CostCenterDropDownItem
         {
             public CostCenterDropDownItem(IElement costCenter, string title)
@@ -357,9 +377,9 @@ namespace StundenMeister
             public TimeRecordingSet TimeRecordingSet { get; set; }
 
             public TextBlock TextBlockDay { get; set; }
-            
+
             public TextBlock TextBlockWeek { get; set; }
-            
+
             public TextBlock TextBlockMonth { get; set; }
         }
     }

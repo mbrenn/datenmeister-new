@@ -43,7 +43,7 @@
                 </Grid>
             </Viewbox>
             <Grid Grid.Row="1">
-                <ComboBox x:Name="cboCostCenters" />
+                <ComboBox x:Name="cboCostCenters" SelectionChanged="CboCostCenters_OnSelectionChanged" />
             </Grid>
             <Grid Grid.Row="2">
                 <Grid.RowDefinitions>

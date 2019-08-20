@@ -6,9 +6,7 @@ using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Converters;
 using System.Windows.Threading;
-using System.Xaml.Schema;
 using Autofac;
 using BurnSystems.Logging;
 using BurnSystems.WPF;
@@ -18,7 +16,6 @@ using DatenMeister.Modules.Formatter;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Navigation;
-using DatenMeister.WPF.Windows;
 using StundenMeister.Logic;
 using StundenMeister.Model;
 
@@ -29,6 +26,11 @@ namespace StundenMeister
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Stores the cached values
+        /// </summary>
+        private List<TimeRecordingSetUi> _uiRecordingSetCache = new List<TimeRecordingSetUi>();
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -53,16 +55,15 @@ namespace StundenMeister
             LoadingText.Visibility = Visibility.Collapsed;
             LoadedAsset.Visibility = Visibility.Visible;
 
-            Timer timer = new Timer {AutoReset = true};
-
             var timer2 = new DispatcherTimer(DispatcherPriority.Background, Dispatcher)
             {
-                Interval = TimeSpan.FromSeconds(1.0)
+                Interval = TimeSpan.FromSeconds(0.99)
             };
-            timer2.Tick += (x, y) => UpdateContentByTick();
+            
+            timer2.Tick += (x, y) => UpdateContentByTick(false);
             timer2.Start();
 
-            UpdateContentByTick();
+            UpdateContentByTick(true);
             UpdateCostCenters();
 
             new CostCenterLogic(StundenMeisterLogic.Get()).NotifyForCostCenterChange(
@@ -77,21 +78,55 @@ namespace StundenMeister
         /// </summary>
         private bool _inUserInteraction;
 
-        private void UpdateContentByTick()
+        /// <summary>
+        /// Updates the ui of the complete window. 
+        /// </summary>
+        /// <param name="refreshComplete">true, if the window shall be complete regenerated</param>
+        private void UpdateContentByTick(bool refreshComplete)
         {
             _ticksOccured++;
 
             var logic = new TimeRecordingLogic(StundenMeisterLogic.Get());
             logic.UpdateCurrentRecording();
 
-            while (gridRecording.Children.Count > 4)
+            var timeRecordingSets = logic.GetTimeRecordingSets();
+            if (refreshComplete)
             {
-                gridRecording.Children.RemoveAt(4);
-            }
+                _uiRecordingSetCache.Clear();
+                while (gridRecording.Children.Count > 4)
+                {
+                    gridRecording.Children.RemoveAt(4);
+                }
 
-            foreach (var set in logic.GetTimeRecordingSets())
+                foreach (var set in timeRecordingSets)
+                {
+                    AddTimeRecordingLine(set);
+                }
+            }
+            else
             {
-                AddTimeRecordingLine(set);
+                foreach (var set in timeRecordingSets)
+                {
+                    // Find point
+                    var found = _uiRecordingSetCache.FirstOrDefault(
+                        x =>
+                        {
+                            if (x.TimeRecordingSet.CostCenter == null && set.CostCenter == null)
+                            {
+                                return true;
+                            }
+
+                            return x.TimeRecordingSet.CostCenter != null &&
+                                   x.TimeRecordingSet.CostCenter.Equals(set.CostCenter);
+                        });
+
+                    if (found != null)
+                    {
+                        found.TextBlockDay.Text = FormatTimeSpan(set.Day);
+                        found.TextBlockWeek.Text = FormatTimeSpan(set.Week);
+                        found.TextBlockMonth.Text = FormatTimeSpan(set.Month);
+                    }
+                }
             }
 
             var costCenter = StundenMeisterLogic.Get().Data.CurrentTimeRecording
@@ -147,7 +182,7 @@ namespace StundenMeister
             var logic = new TimeRecordingLogic(
                 StundenMeisterLogic.Get());
             logic.StartNewRecording(GetSelectedCostCenter());
-            UpdateContentByTick();
+            UpdateContentByTick(true);
         }
 
         private void End_OnClick(object sender, RoutedEventArgs e)
@@ -155,7 +190,7 @@ namespace StundenMeister
             var logic = new TimeRecordingLogic(
                 StundenMeisterLogic.Get());
             logic.EndRecording();
-            UpdateContentByTick();
+            UpdateContentByTick(false);
         }
 
         private void Exit_OnClick(object sender, RoutedEventArgs e)
@@ -212,32 +247,23 @@ namespace StundenMeister
                 metaclass);
         }
 
-        public void AddTimeRecordingLine(TimeRecordingSet set)
-        {
-            AddTimeRecordingLine(
-                set.Title,
-                set.Day,
-                set.Week,
-                set.Month);
-        }
-        
-        public void AddTimeRecordingLine(string title, TimeSpan day, TimeSpan week, TimeSpan month)
+        private void AddTimeRecordingLine(TimeRecordingSet set)
         {
             var row = new RowDefinition();
 
-            var titleBlock = new TextBlock {Text = title, Margin = new Thickness(3)};
+            var titleBlock = new TextBlock {Text = set.Title, Margin = new Thickness(3)};
             Grid.SetRow(titleBlock, gridRecording.RowDefinitions.Count);
             Grid.SetColumn(titleBlock, 0);
             
-            var dayBlock = new TextBlock {Text = FormatTimeSpan(day), Margin = new Thickness(3)};
+            var dayBlock = new TextBlock {Text = FormatTimeSpan(set.Day), Margin = new Thickness(3)};
             Grid.SetRow(dayBlock, gridRecording.RowDefinitions.Count);
             Grid.SetColumn(dayBlock, 1);
             
-            var weekBlock = new TextBlock {Text = FormatTimeSpan(week), Margin = new Thickness(3)};
+            var weekBlock = new TextBlock {Text = FormatTimeSpan(set.Week), Margin = new Thickness(3)};
             Grid.SetRow(weekBlock, gridRecording.RowDefinitions.Count);
             Grid.SetColumn(weekBlock, 2);
             
-            var monthBlock = new TextBlock {Text = FormatTimeSpan(month), Margin = new Thickness(3)};
+            var monthBlock = new TextBlock {Text = FormatTimeSpan(set.Month), Margin = new Thickness(3)};
             Grid.SetRow(monthBlock, gridRecording.RowDefinitions.Count);
             Grid.SetColumn(monthBlock, 3);
             
@@ -246,6 +272,16 @@ namespace StundenMeister
             gridRecording.Children.Add(dayBlock);
             gridRecording.Children.Add(weekBlock);
             gridRecording.Children.Add(monthBlock);
+
+            var item = new TimeRecordingSetUi
+            {
+                TimeRecordingSet = set, 
+                TextBlockDay = dayBlock,
+                TextBlockWeek = weekBlock,
+                TextBlockMonth = monthBlock
+            };
+
+            _uiRecordingSetCache.Add(item);
         }
 
         private void StoreNow_Click(object sender, RoutedEventArgs e)
@@ -314,6 +350,17 @@ namespace StundenMeister
             {
                 return Title;
             }
+        }
+
+        private class TimeRecordingSetUi
+        {
+            public TimeRecordingSet TimeRecordingSet { get; set; }
+
+            public TextBlock TextBlockDay { get; set; }
+            
+            public TextBlock TextBlockWeek { get; set; }
+            
+            public TextBlock TextBlockMonth { get; set; }
         }
     }
 }

@@ -7,6 +7,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
     <Configurations>Debug;Release;ViewLogicAdditional</Configurations>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ViewLogicAdditional|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;VIEWLOGICINFO</DefineConstants>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -329,6 +328,10 @@ namespace StundenMeister
             }
         }
 
+        /// <summary>
+        /// Gets the selected cost center by the drop down
+        /// </summary>
+        /// <returns>The selected cost center</returns>
         public IElement GetSelectedCostCenter()
         {
             var selectedItem = cboCostCenters.SelectedItem as CostCenterDropDownItem;

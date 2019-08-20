@@ -87,20 +87,21 @@ namespace StundenMeister.Logic
             var total = new TimeRecordingSet {Title = "Total"};
             var list = new List<TimeRecordingSet>();
 
+            TimeRecordingSet costCenterSet = null;
+            
             foreach (var recording in _stundenMeisterLogic.Data.Extent
                 .elements()
                 .WhenMetaClassIs(_stundenMeisterLogic.Data.ClassTimeRecording)
                 .OfType<IElement>())
             {
                 // Checks, if cost center is in given list
-                TimeRecordingSet costCenterSet = null;
                 var costCenter = recording.getOrDefault<IElement>(nameof(TimeRecording.costCenter));
                 if (costCenter != null)
                 {
                     costCenterSet = list.FirstOrDefault(x=>x.CostCenter?.@equals(costCenter) == true);
                     if (costCenterSet == null)
                     {
-                        costCenterSet = new TimeRecordingSet()
+                        costCenterSet = new TimeRecordingSet
                         {
                             Title = costCenter.getOrDefault<string>(nameof(CostCenter.id)),
                             CostCenter = costCenter

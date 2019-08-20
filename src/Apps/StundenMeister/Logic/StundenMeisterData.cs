@@ -26,7 +26,6 @@ namespace StundenMeister.Logic
         /// </summary>
         public IUriExtent Extent { get; set; }
         
-        
         /// <summary>
         /// Gets the Recording Element which is reflecting the current time
         /// </summary>

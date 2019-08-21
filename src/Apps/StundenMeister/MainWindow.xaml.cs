@@ -192,6 +192,31 @@ namespace StundenMeister
             UpdateContentByTick(false);
         }
 
+        private void CboCostCenters_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var logic = StundenMeisterLogic.Get();
+            var costCenter =
+                logic.Data?.CurrentTimeRecording
+                    ?.getOrDefault<IElement>(nameof(TimeRecording.costCenter));
+
+            var selectedCostCenter = (cboCostCenters.SelectedItem as CostCenterDropDownItem)?.CostCenter;
+
+            if (costCenter != null && costCenter == selectedCostCenter)
+            {
+                return;
+            }
+
+            if (logic.Data?.CurrentTimeRecording?.getOrDefault<bool>(nameof(TimeRecording.isActive)) != true)
+            {
+                // If, there is no "isActive" time recording, then do not start a new time recording 
+                return;
+            }
+
+            var recordingLogic = new TimeRecordingLogic(logic);
+            recordingLogic.StartNewRecording(selectedCostCenter);
+            UpdateContentByTick(true);
+        }
+
         private void Exit_OnClick(object sender, RoutedEventArgs e)
         {
             Close();
@@ -336,26 +361,6 @@ namespace StundenMeister
         {
             var selectedItem = cboCostCenters.SelectedItem as CostCenterDropDownItem;
             return selectedItem?.CostCenter;
-        }
-
-        private void CboCostCenters_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var logic = StundenMeisterLogic.Get();
-            var costCenter =
-                logic.Data.CurrentTimeRecording
-                    ?.getOrDefault<IElement>(nameof(TimeRecording.costCenter));
-
-            var selectedCostCenter = (cboCostCenters.SelectedItem as CostCenterDropDownItem)?.CostCenter;
-
-            if (costCenter != null
-                && costCenter == selectedCostCenter)
-            {
-                return;
-            }
-
-            var recordingLogic = new TimeRecordingLogic(logic);
-            recordingLogic.StartNewRecording(selectedCostCenter);
-            UpdateContentByTick(true);
         }
 
         private class CostCenterDropDownItem

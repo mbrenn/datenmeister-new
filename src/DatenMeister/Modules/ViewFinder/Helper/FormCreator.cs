@@ -195,8 +195,10 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 .GroupBy(x => x.getMetaClass())
                 .Where (x=> x.Key != null);
 
-            if (elementsWithoutMetaClass.Any())
+            if (elementsWithoutMetaClass.Any() || elementsAsObjects.Count == 0)
             {
+                // If there are elements without a metaclass or if there are no elements in the extent
+                // then provide an empty list form
                 var form = _factory.create(_formAndFields.__ListForm);
                 form.set(_FormAndFields._ListForm.name, "Unclassified");
 

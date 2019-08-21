@@ -57,7 +57,7 @@
 
                 <Button Grid.Column="0" Click="Start_OnClick" Padding="5">Start</Button>
                 <Button Grid.Column="1" Click="End_OnClick" Padding="5">End</Button>
-                <Button Grid.Column="2" Click="MenuItem_Click" Padding="5">
+                <Button Grid.Column="2" Click="HamburgerMenuItem_Click" Padding="5">
                     <Button.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Store Now" Click="StoreNow_Click" />

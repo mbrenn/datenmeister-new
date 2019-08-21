@@ -57,7 +57,8 @@ namespace DatenMeister.Provider.ManagementProviders
             {
                 hideMetaInformation = true,
                 defaultHeight = 600,
-                defaultWidth = 700
+                defaultWidth = 700,
+                allowNewProperties = false
             };
 
             var type2Field = new ReferenceFieldData("selectedType", "Type")

@@ -12,6 +12,7 @@ namespace StundenMeister.Logic
     public class TimeRecordingLogic
     {
         private bool hibernationActive => _stundenMeisterLogic.Configuration.HibernationDetectionActive;
+        
         private TimeSpan hibernationTime => _stundenMeisterLogic.Configuration.HibernationDetectionTime;
         
         private readonly StundenMeisterLogic _stundenMeisterLogic;
@@ -195,6 +196,33 @@ namespace StundenMeister.Logic
             
             // By the way. Check for any other active time recording
             CheckForActiveTimeRecordingsAndDeactivate();
+        }
+
+        /// <summary>
+        /// Changes the cost center and activates the timing, if there is currently an active
+        /// timing
+        /// </summary>
+        /// <param name="selectedCostCenter">Costcenter to which the system switches</param>
+        public void ChangeCostCenter(IElement selectedCostCenter)
+        {
+            var costCenter =
+                _stundenMeisterLogic.Data?.CurrentTimeRecording
+                    ?.getOrDefault<IElement>(nameof(TimeRecording.costCenter));
+
+            if (costCenter != null && costCenter == selectedCostCenter)
+            {
+                return;
+            }
+
+            if (_stundenMeisterLogic.Data?.CurrentTimeRecording?.getOrDefault<bool>(nameof(TimeRecording.isActive)) != true)
+            {
+                // If, there is no "isActive" time recording, then do not start a new time recording 
+                return;
+            }
+
+            var recordingLogic = new TimeRecordingLogic(_stundenMeisterLogic);
+            recordingLogic.StartNewRecording(selectedCostCenter);
+
         }
 
         /// <summary>

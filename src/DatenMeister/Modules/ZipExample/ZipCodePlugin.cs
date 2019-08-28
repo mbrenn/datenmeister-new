@@ -3,7 +3,6 @@ using DatenMeister.Core.Plugins;
 using DatenMeister.DotNet;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.DotNet;
-using DatenMeister.Uml.Helper;
 using DatenMeister.UserInteractions;
 
 namespace DatenMeister.Modules.ZipExample
@@ -14,22 +13,18 @@ namespace DatenMeister.Modules.ZipExample
     public class ZipCodePlugin : IDatenMeisterPlugin
     {
         private readonly LocalTypeSupport _localTypeSupport;
-        private readonly PackageMethods _packageMethods;
         private readonly ZipCodeModel _zipCodeModel;
 
         /// <summary>
         /// Initializes a new instance of the ZipCodePlugin
         /// </summary>
         /// <param name="localTypeSupport">The local type support being used</param>
-        /// <param name="packageMethods">Package methods</param>
         /// <param name="zipCodeModel">The zip code model</param>
         public ZipCodePlugin(
             LocalTypeSupport localTypeSupport,
-            PackageMethods packageMethods,
             ZipCodeModel zipCodeModel)
         {
             _localTypeSupport = localTypeSupport;
-            _packageMethods = packageMethods;
             _zipCodeModel = zipCodeModel;
         }
         

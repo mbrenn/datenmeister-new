@@ -125,9 +125,8 @@ namespace DatenMeister.WPF.Navigation
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             var navigateToItemConfig = new NavigateToItemConfig
             {
-                FormDefinition = NamedElementMethods.GetByFullName(
-                    viewLogic.GetInternalViewExtent(),
-                    ManagementViewDefinitions.PathNewXmiDetailForm)
+                FormDefinition = 
+                    viewLogic.GetInternalViewExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
             };
 
             var result = await NavigateToElementDetailViewAsync(window, navigateToItemConfig);

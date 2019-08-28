@@ -34,7 +34,6 @@
     <None Remove="XmiFiles\Views\WorkspacesAndExtents.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Modules\ZipExample\zip_type_definition.xmi" />
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
     <EmbeddedResource Include="XmiFiles\UML.xmi" />

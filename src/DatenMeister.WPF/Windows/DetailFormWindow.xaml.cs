@@ -308,7 +308,8 @@ namespace DatenMeister.WPF.Windows
             {
                 var control = new DetailFormControl
                 {
-                    AllowNewProperties = true,
+                    AllowNewProperties =
+                        EffectiveForm.getOrNull<bool>(nameof(_FormAndFields._DetailForm.allowNewProperties)) == true,
                     NavigationHost = this,
                     EffectiveForm = EffectiveForm
                 };

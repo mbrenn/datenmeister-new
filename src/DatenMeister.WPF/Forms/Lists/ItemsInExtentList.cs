@@ -117,7 +117,6 @@ namespace DatenMeister.WPF.Forms.Lists
         ///     Creates the tab for the given items and the metaclass that shell be shown
         /// </summary>
         /// <param name="tabItems">Items for the tab</param>
-        /// <param name="metaClass">Meta class of the items</param>
         private void CreateFormForItems(IReflectiveCollection tabItems)
         {
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
@@ -138,7 +137,6 @@ namespace DatenMeister.WPF.Forms.Lists
 
             var className = "Items";
             var viewDefinition = new ViewDefinition(className, form);
-
             var viewExtensions = new List<ViewExtension>();
 
             // Sets the generic buttons to create the new types

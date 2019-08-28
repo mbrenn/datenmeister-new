@@ -135,13 +135,10 @@ namespace DatenMeister.WPF.Forms.Lists
 
             var viewDefinition = new ViewDefinition("Extents", result)
             {
-                TabViewExtensions = (form) =>
+                TabViewExtensions = (form) => new List<ViewExtension>
                 {
-                    return new List<ViewExtension>()
-                    {
-                        new RowItemButtonDefinition("Show Items", ShowItems, ItemListViewControl.ButtonPosition.Before),
-                        new RowItemButtonDefinition("Delete", DeleteExtent)
-                    };
+                    new RowItemButtonDefinition("Show Items", ShowItems, ItemListViewControl.ButtonPosition.Before),
+                    new RowItemButtonDefinition("Delete", DeleteExtent)
                 }
             };
 
@@ -201,7 +198,9 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void DeleteExtent(INavigationGuest guest, IObject element)
             {
-                if (MessageBox.Show("Are you sure, you would like to delete the extent?", "Delete Extent",
+                if (MessageBox.Show(
+                        "Are you sure, you would like to delete the extent?", 
+                        "Delete Extent",
                         MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     var extentManager = GiveMe.Scope.Resolve<ExtentManager>();

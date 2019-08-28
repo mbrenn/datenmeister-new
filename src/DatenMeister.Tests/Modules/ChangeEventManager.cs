@@ -56,8 +56,8 @@ namespace DatenMeister.Tests.Modules
             extent.elements().add(element2);
 
             Assert.That(counter.elementCount, Is.EqualTo(0));
-            Assert.That(counter.extentCount, Is.EqualTo(1));
-            Assert.That(counter.workspaceCount, Is.EqualTo(1));
+            Assert.That(counter.extentCount, Is.GreaterThanOrEqualTo(1));
+            Assert.That(counter.workspaceCount, Is.GreaterThanOrEqualTo(2));
         }
     }
 }

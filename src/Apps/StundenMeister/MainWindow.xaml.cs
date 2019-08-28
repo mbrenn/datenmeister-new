@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using Autofac;
 using BurnSystems.Logging;
 using BurnSystems.WPF;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Formatter;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.WPF.Navigation;
 using StundenMeister.Logic;
 using StundenMeister.Model;
 
@@ -165,87 +161,6 @@ namespace StundenMeister
             }
         }
 
-        /// <summary>
-        /// Formats the timespan and returns the timespan as a string being usable
-        /// for times
-        /// </summary>
-        /// <param name="timeSpan">Time span to be converted</param>
-        /// <returns>The converted Timespan</returns>
-        private string FormatTimeSpan(TimeSpan timeSpan)
-        {
-            return $"{Math.Floor(timeSpan.TotalHours):00}:{timeSpan.Minutes:00}:{timeSpan.Seconds:00}";
-        }
-
-        private void Start_OnClick(object sender, RoutedEventArgs e)
-        {
-            var logic = new TimeRecordingLogic(
-                StundenMeisterLogic.Get());
-            logic.StartNewRecording(GetSelectedCostCenter());
-            UpdateContentByTick(true);
-        }
-
-        private void End_OnClick(object sender, RoutedEventArgs e)
-        {
-            var logic = new TimeRecordingLogic(
-                StundenMeisterLogic.Get());
-            logic.EndRecording();
-            UpdateContentByTick(false);
-        }
-
-        private void Exit_OnClick(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void OpenStorageFolder_Click(object sender, RoutedEventArgs e)
-        {
-            var settings = GiveMe.Scope.Resolve<IntegrationSettings>();
-            Process.Start(settings.DatabasePath);
-        }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (!(sender is Button senderButton))
-            {
-                throw new InvalidOperationException("sender is not a button");
-            }
-
-            if (senderButton.ContextMenu == null)
-            {
-                // Nothing to see here
-                return;
-            }
-
-            senderButton.ContextMenu.IsOpen = true;
-        }
-
-        private void MainWindow_OnClosed(object sender, EventArgs e)
-        {
-            GiveMe.Scope?.UnuseDatenMeister();
-        }
-
-        private void ManageCostCenters_Click(object sender, RoutedEventArgs e)
-        {
-            var metaclass = StundenMeisterLogic.Get().Data.ClassCostCenter;
-            NavigatorForItems.NavigateToItems(
-                StundenMeisterLogic.Get().Data
-                    .Extent
-                    .elements()
-                    .WhenMetaClassIs(metaclass),
-                metaclass);
-        }
-
-        private void ManageTimeRecordings_Click(object sender, RoutedEventArgs e)
-        {
-            var metaclass = StundenMeisterLogic.Get().Data.ClassTimeRecording;
-            NavigatorForItems.NavigateToItems(
-                StundenMeisterLogic.Get().Data
-                    .Extent
-                    .elements()
-                    .WhenMetaClassIs(metaclass),
-                metaclass);
-        }
-
         private void AddTimeRecordingLine(TimeRecordingSet set)
         {
             var row = new RowDefinition();
@@ -283,11 +198,20 @@ namespace StundenMeister
             _uiRecordingSetCache.Add(item);
         }
 
-        private void StoreNow_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Formats the timespan and returns the timespan as a string being usable
+        /// for times
+        /// </summary>
+        /// <param name="timeSpan">Time span to be converted</param>
+        /// <returns>The converted Timespan</returns>
+        private string FormatTimeSpan(TimeSpan timeSpan)
         {
-            StundenMeisterLogic.Get().StoreExtent();
+            return $"{Math.Floor(timeSpan.TotalHours):00}:{timeSpan.Minutes:00}:{timeSpan.Seconds:00}";
         }
 
+        /// <summary>
+        /// Updates the dropdown for all cost centers
+        /// </summary>
         private void UpdateCostCenters()
         {
             var selectedCostCenter = (cboCostCenters.SelectedItem as CostCenterDropDownItem)
@@ -338,26 +262,6 @@ namespace StundenMeister
             return selectedItem?.CostCenter;
         }
 
-        private void CboCostCenters_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var logic = StundenMeisterLogic.Get();
-            var costCenter =
-                logic.Data.CurrentTimeRecording
-                    ?.getOrDefault<IElement>(nameof(TimeRecording.costCenter));
-
-            var selectedCostCenter = (cboCostCenters.SelectedItem as CostCenterDropDownItem)?.CostCenter;
-
-            if (costCenter != null
-                && costCenter == selectedCostCenter)
-            {
-                return;
-            }
-
-            var recordingLogic = new TimeRecordingLogic(logic);
-            recordingLogic.StartNewRecording(selectedCostCenter);
-            UpdateContentByTick(true);
-        }
-
         private class CostCenterDropDownItem
         {
             public CostCenterDropDownItem(IElement costCenter, string title)
@@ -367,6 +271,7 @@ namespace StundenMeister
             }
 
             public IElement CostCenter { get; }
+            
             public string Title { get; }
 
             public override string ToString()

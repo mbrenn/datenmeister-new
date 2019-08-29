@@ -188,11 +188,17 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             result.set(_FormAndFields._ExtentForm.name, "Items");
 
             var elementsAsObjects = elements.OfType<IObject>().ToList();
-            var elementsWithoutMetaClass = elementsAsObjects.Where(x => !(x is IElement element) || element.getMetaClass() == null).ToList();
+            var elementsWithoutMetaClass = elementsAsObjects
+                .Where(x => !(x is IElement element) || element.getMetaClass() == null || !(x is MofObjectShadow))
+                .ToList();
 
             var elementsWithMetaClass = elementsAsObjects
                 .OfType<IElement>()
-                .GroupBy(x => x.getMetaClass())
+                .GroupBy(x =>
+                {
+                    var metaClass = x.getMetaClass();
+                    return metaClass is MofObjectShadow ? null : metaClass;
+                })
                 .Where (x=> x.Key != null);
 
             if (elementsWithoutMetaClass.Any() || elementsAsObjects.Count == 0)

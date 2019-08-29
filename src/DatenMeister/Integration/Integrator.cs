@@ -125,7 +125,7 @@ namespace DatenMeister.Integration
             var pluginManager = new PluginManager();
             kernel.RegisterInstance(pluginManager).As<PluginManager>();
 
-            Modules.ZipExample.Integrate.Into(kernel);
+            Modules.ZipExample.ZipCodePlugin.Into(kernel);
 
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
@@ -191,9 +191,6 @@ namespace DatenMeister.Integration
                         "DatenMeister::Forms"),
                     fields,
                     (MofUriExtent) localTypeSupport.InternalTypes);
-
-                // Performs the integration into the DatenMeister
-                Modules.ZipExample.Integrate.Into(scope);
 
                 // Adds the module for managementprovider
                 var managementProvider = new _ManagementProvider();

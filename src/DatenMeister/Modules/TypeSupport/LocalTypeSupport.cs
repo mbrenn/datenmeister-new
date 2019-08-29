@@ -98,27 +98,32 @@ namespace DatenMeister.Modules.TypeSupport
             primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespace);
             primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespaceAlternative);
 
-            var foundPackage = _packageMethods.GetOrCreatePackageStructure(primitiveTypes.elements(), "PrimitiveTypes");
-            _workspaceLogic.AddExtent(typeWorkspace, primitiveTypes);
-            
-            CopyMethods.CopyToElementsProperty(
-                _workspaceLogic.GetUmlWorkspace()
-                    .FindElementByUri("datenmeister:///_internal/xmi/primitivetypes?PrimitiveTypes")
-                    .get(_UML._Packages._Package.packagedElement) as IReflectiveCollection,
-                foundPackage,
-                _UML._Packages._Package.packagedElement,
-                CopyOptions.CopyId);
-            
-            // Create the Primitive Type for the .Net-Type: DateTime
-            var internalUserExtent = GetInternalTypeExtent();
-            var factory = new MofFactory(internalUserExtent);
-            var package = _packageMethods.GetOrCreatePackageStructure(internalUserExtent.elements(), "PrimitiveTypes");
-            var umlData = _workspaceLogic.GetUmlData();
+            if (!_integrationSettings.PerformSlimIntegration)
+            {
+                var foundPackage =
+                    _packageMethods.GetOrCreatePackageStructure(primitiveTypes.elements(), "PrimitiveTypes");
+                _workspaceLogic.AddExtent(typeWorkspace, primitiveTypes);
 
-            var dateTime = factory.create(umlData.SimpleClassifiers.__PrimitiveType);
-            ((ICanSetId) dateTime).Id = "PrimitiveTypes.DateTime";
-            dateTime.set(_UML._CommonStructure._NamedElement.name, "DateTime");
-            PackageMethods.AddObjectToPackage(package, dateTime);
+                CopyMethods.CopyToElementsProperty(
+                    _workspaceLogic.GetUmlWorkspace()
+                        .FindElementByUri("datenmeister:///_internal/xmi/primitivetypes?PrimitiveTypes")
+                        .get(_UML._Packages._Package.packagedElement) as IReflectiveCollection,
+                    foundPackage,
+                    _UML._Packages._Package.packagedElement,
+                    CopyOptions.CopyId);
+
+                // Create the Primitive Type for the .Net-Type: DateTime
+                var internalUserExtent = GetInternalTypeExtent();
+                var factory = new MofFactory(internalUserExtent);
+                var package =
+                    _packageMethods.GetOrCreatePackageStructure(internalUserExtent.elements(), "PrimitiveTypes");
+                var umlData = _workspaceLogic.GetUmlData();
+
+                var dateTime = factory.create(umlData.SimpleClassifiers.__PrimitiveType);
+                ((ICanSetId) dateTime).Id = "PrimitiveTypes.DateTime";
+                dateTime.set(_UML._CommonStructure._NamedElement.name, "DateTime");
+                PackageMethods.AddObjectToPackage(package, dateTime);
+            }
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace DatenMeister.Core.Plugins
 {
@@ -6,22 +6,19 @@ namespace DatenMeister.Core.Plugins
     /// Defines a dependency between two plugins. The plugin being dependent that the other plugin has been loaded
     /// needs to attach this attribute upon the Plugin class
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-    public class PluginDependencyAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    public class PluginLoadingAttribute : Attribute
     {
-        /// <summary>
-        /// Gets or sets the type upon which the plugin is dependent upon
-        /// </summary>
-        public Type DependentType { get; }
+        public PluginLoadingPosition PluginLoadingPosition { get; }
 
         /// <summary>
         /// Initializes a new instance of the PluginDependency attribute class
         /// </summary>
         /// <param name="dependentType">Defines teh type upon which this plugin is dependent upon</param>
-        /// <param name="pluginEntry">Defines the plugin execution position</param>
-        public PluginDependencyAttribute(Type dependentType)
+        /// <param name="pluginLoadingPosition">Defines the plugin execution position</param>
+        public PluginLoadingAttribute(PluginLoadingPosition pluginLoadingPosition = PluginLoadingPosition.AfterInitialization)
         {
-            DependentType = dependentType;
+            PluginLoadingPosition = pluginLoadingPosition;
         }
     }
 }

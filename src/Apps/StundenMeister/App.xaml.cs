@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Reflection.Emit;
+using System.Threading.Tasks;
 using System.Windows;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
@@ -27,6 +29,10 @@ namespace StundenMeister
             TheLog.AddProvider(new FileProvider(
                 Path.Combine(StorageFilePath, "Stundenmeister.log"),
                 true));
+
+            AppDomain.CurrentDomain.UnhandledException += (x, y) => { TheLog.Fatal("Exception: " + y.ExceptionObject); };
+            Current.DispatcherUnhandledException += (x,y) => { TheLog.Fatal("Exception: " + y.Exception); };
+            TaskScheduler.UnobservedTaskException += (x,y) => { TheLog.Fatal("Exception: " + y.Exception); };
         }
 
 

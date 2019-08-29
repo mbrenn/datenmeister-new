@@ -43,6 +43,8 @@ namespace DatenMeister.Provider.ManagementProviders
 
         public const string IdWorkspaceListView = "WorkspacesAndExtents.Workspaces.List";
 
+        public const string IdNewXmiDetailForm = "#WorkspacesAndExtents.Xmi.New";
+
         /// <summary>
         /// Creates a form to create a new type. 
         /// </summary>
@@ -55,7 +57,8 @@ namespace DatenMeister.Provider.ManagementProviders
             {
                 hideMetaInformation = true,
                 defaultHeight = 600,
-                defaultWidth = 700
+                defaultWidth = 700,
+                allowNewProperties = false
             };
 
             var type2Field = new ReferenceFieldData("selectedType", "Type")

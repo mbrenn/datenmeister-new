@@ -42,7 +42,8 @@ namespace StundenMeister
             {
                 DatabasePath = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    "StundenMeister")
+                    "StundenMeister"), 
+                PerformSlimIntegration = true
             };
 
             GiveMe.Scope = await GiveMe.DatenMeisterAsync(settings);

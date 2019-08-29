@@ -44,6 +44,6 @@ namespace DatenMeister.WPF
         /// <summary>
         /// Gets a list of the allowed view extension factories
         /// </summary>
-        public List<IViewExtensionFactory> ViewExtensionFactories { get; }= new List<IViewExtensionFactory>();
+        public List<IViewExtensionFactory> ViewExtensionFactories { get; } = new List<IViewExtensionFactory>();
     }
 }

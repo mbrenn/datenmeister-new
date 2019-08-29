@@ -16,8 +16,8 @@ namespace DatenMeister.Tests
         {
             var path = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                "testing/datenmeister/data"); 
-            if ( !Directory.Exists(path))
+                "testing/datenmeister/data");
+            if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
@@ -29,12 +29,30 @@ namespace DatenMeister.Tests
         /// Gets the DatenMeister Scope for the testing
         /// </summary>
         /// <returns></returns>
-        public static IDatenMeisterScope GetDatenMeisterScope(bool dropDatabase = true)
+        public static IDatenMeisterScope GetDatenMeisterScope(bool dropDatabase = true,
+            IntegrationSettings integrationSettings = null)
         {
             TheLog.ClearProviders();
             TheLog.AddProvider(new ConsoleProvider());
             TheLog.AddProvider(new DebugProvider());
 
+            integrationSettings = integrationSettings ?? GetIntegrationSettings(dropDatabase);
+
+            if (dropDatabase)
+            {
+                GiveMe.DropDatenMeisterStorage(integrationSettings);
+            }
+
+            return GiveMe.DatenMeister(integrationSettings);
+        }
+
+        /// <summary>
+        /// Gets the integration settings 
+        /// </summary>
+        /// <param name="dropDatabase">true, if the database shall be dropped</param>
+        /// <returns>The created integration settings</returns>
+        private static IntegrationSettings GetIntegrationSettings(bool dropDatabase = true)
+        {
             var path = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 "testing/datenmeister/data");
@@ -47,20 +65,30 @@ namespace DatenMeister.Tests
                 InitializeDefaultExtents = dropDatabase
             };
 
-            if (dropDatabase)
-            {
-                GiveMe.DropDatenMeisterStorage(integrationSettings);
-            }
-
-            return GiveMe.DatenMeister(integrationSettings);
+            return integrationSettings;
         }
 
         [Test]
         public void CheckFailureFreeLoadingOfDatenMeister()
         {
-            var datenMeister = GetDatenMeisterScope();
-            var pluginManager = datenMeister.Resolve<PluginManager>();
-            Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
+            using (var datenMeister = GetDatenMeisterScope())
+            {
+                var pluginManager = datenMeister.Resolve<PluginManager>();
+                Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
+            }
+        }
+
+        [Test]
+        public void TestSlimLoading()
+        {
+            var integrationSettings = GetIntegrationSettings();
+            integrationSettings.PerformSlimIntegration = true;
+
+            using (var datenMeister = GetDatenMeisterScope(integrationSettings: integrationSettings))
+            {
+                var pluginManager = datenMeister.Resolve<PluginManager>();
+                Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
+            }
         }
     }
 }

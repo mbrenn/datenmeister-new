@@ -26,7 +26,7 @@ namespace DatenMeister.SourcecodeGenerator
             package.set("name", options.Name);
 
             // Do the conversion from dotnet types to real MOF Types
-            var dotNetProvider = new DotNetTypeGenerator(factory, uml);
+            var dotNetProvider = new DotNetTypeGenerator(factory, uml, extent);
             var elements = new List<IElement>();
             foreach (var type in options.Types)
             {

@@ -207,6 +207,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 // then provide an empty list form
                 var form = _factory.create(_formAndFields.__ListForm);
                 form.set(_FormAndFields._ListForm.name, "Unclassified");
+                form.set(_FormAndFields._ListForm.noItemsWithMetaClass, true);
 
                 foreach (var item in elementsWithoutMetaClass)
                 {
@@ -673,6 +674,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 {
                     var form = _factory.create(_formAndFields.__ListForm);
                     form.set(_FormAndFields._ListForm.name, "Unclassified");
+                    form.set(_FormAndFields._ListForm.noItemsWithMetaClass, true);
 
                     foreach (var item in elementsWithoutMetaClass)
                     {

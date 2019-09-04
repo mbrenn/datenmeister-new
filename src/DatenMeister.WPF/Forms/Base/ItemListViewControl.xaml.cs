@@ -527,7 +527,7 @@ namespace DatenMeister.WPF.Forms.Base
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             var (selectedItem, column) = GetObjectsFromEventRouting(e);
-            column.OnClick(this, selectedItem);
+            column?.OnClick(this, selectedItem);
         }
 
         /// <summary>

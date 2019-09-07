@@ -251,7 +251,6 @@ namespace DatenMeister.WPF.Forms.Base
                 NavigationHost = NavigationHost
             };
 
-
             var tabControl = new ItemExplorerTab(form)
             {
                 Content = control,

@@ -41,8 +41,8 @@ namespace DatenMeister.WPF.Modules.ViewManager
                         viewExtensionTargetInformation.NavigationHost,
                         WorkspaceNames.NameManagement,
                         WorkspaceNames.UriUserViewExtent),
-                    "",
-                    "Navigation.User");
+                    string.Empty,
+                    "File.Navigation");
 
                 yield return result;
             }

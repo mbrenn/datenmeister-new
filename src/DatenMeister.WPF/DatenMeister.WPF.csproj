@@ -38,7 +38,9 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Controls.Ribbon" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,6 +59,9 @@
     </Compile>
     <Compile Include="Forms\Base\DetailFormControl.xaml.cs">
       <DependentUpon>DetailFormControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Base\ExplorerTabContent.xaml.cs">
+      <DependentUpon>ExplorerTabContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Base\ICanUnregister.cs" />
     <Compile Include="Forms\Base\IHasSelectedItems.cs" />
@@ -172,6 +177,10 @@
     <Page Include="Forms\Base\DetailFormControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Forms\Base\ExplorerTabContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Forms\Base\ItemExplorerControl.xaml">
       <Generator>MSBuild:Compile</Generator>

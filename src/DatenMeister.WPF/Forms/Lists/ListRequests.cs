@@ -52,7 +52,8 @@ namespace DatenMeister.WPF.Forms.Lists
 
             if (formElement == null)
             {
-                // formElement = viewLogic.GetExtentForm(items, ViewDefinitionMode.Default);
+                // The form was not found, so the form is created automatically
+                // Creates the form out of the properties of the workspace
                 var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
                 formElement = viewLogic.GetExtentFormForSubforms(
                     viewLogic.GetListFormForExtent(extent, formAndFields.__Workspace,

@@ -106,13 +106,14 @@ namespace DatenMeister.WPF.Forms.Base
             var selectedTab = ItemTabControl.SelectedItem as ItemExplorerTab;
             if (selectedTab?.ViewExtensions != null)
             {
-                foreach (var extension in selectedTab.ViewExtensions)
+                selectedTab.EvaluateViewExtensions();
+                /*foreach (var extension in selectedTab.ViewExtensions)
                 {
                     if (extension is RibbonButtonDefinition ribbonButtonDefinition)
                         ribbonButtonDefinition.FixTopCategoryIfNotFixed("View");
 
                     yield return extension;
-                }
+                }*/
             }
 
             // Get the view extensions by the plugins
@@ -253,7 +254,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             var tabControl = new ItemExplorerTab(form)
             {
-                Content = control,
+                Control = control,
                 Header = name,
                 ViewExtensions = viewExtensions.Union(control.GetViewExtensions())
             };

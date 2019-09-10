@@ -107,7 +107,8 @@ namespace DatenMeisterWPF
         }
 
         /// <summary>
-        /// Rebuild the complete navigation
+        /// Rebuild the complete navigation by first collecting the view extensions and
+        /// then by putting it into the ribbon helper
         /// </summary>
         public void RebuildNavigation()
         {
@@ -141,10 +142,21 @@ namespace DatenMeisterWPF
                     "Open Log",
                     OpenLog,
                     null,
-                    NavigationCategories.File + ".Search")
+                    NavigationCategories.File + ".Search"),                
+                new RibbonButtonDefinition(
+                    "Close",
+                    Close,
+                    "file-exit",
+                    NavigationCategories.File),
+                new RibbonButtonDefinition("About",
+                    () => new AboutDialog
+                    {
+                        Owner = this
+                    }.ShowDialog(),
+                    "file-about",
+                    NavigationCategories.File)
             };
 
-            viewExtensions = viewExtensions.Union(_ribbonHelper.GetDefaultNavigation()).ToList();
             if (MainControl.Content is INavigationGuest guest)
             {
                 var guestViewExtensions = guest.GetViewExtensions().ToList();
@@ -154,27 +166,6 @@ namespace DatenMeisterWPF
                 }
 
                 viewExtensions = viewExtensions.Union(guestViewExtensions).ToList();
-
-                /*/*
-                 * Gets the plugins for the selected extent
-                 
-                var dataItems = new ViewExtensionTargetInformation
-                {
-                    NavigationGuest = guest
-                };
-
-                foreach (var plugin in viewExtensionPlugins)
-                {
-                    foreach (var extension in plugin.GetViewExtensions(dataItems))
-                    {
-                        if (extension is RibbonButtonDefinition ribbonButtonDefinition)
-                        {
-                            ribbonButtonDefinition.FixTopCategoryIfNotFixed("Extent");
-                        }
-
-                        viewExtensions.Add(extension);
-                    }
-                }*/
             }
 
             /*

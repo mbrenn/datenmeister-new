@@ -15,7 +15,7 @@ using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Forms.Lists
 {
-    public class WorkspaceList : ItemExplorerControl, INavigationGuest
+    public class WorkspaceList : ItemExplorerControl
     {
         /// <summary>
         /// Stores the workspace extent

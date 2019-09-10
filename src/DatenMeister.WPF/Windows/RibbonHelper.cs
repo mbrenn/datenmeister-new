@@ -199,28 +199,6 @@ namespace DatenMeister.WPF.Windows
             @group.Items.Add(button);
         }
 
-        /// <summary>
-        /// Prepares the default navigation
-        /// </summary>
-        public IEnumerable<ViewExtension> GetDefaultNavigation()
-        {
-            return new[]
-            {
-                new RibbonButtonDefinition(
-                    "Close",
-                    () => (_mainWindow as Window)?.Close(),
-                    "file-exit",
-                    NavigationCategories.File),
-                new RibbonButtonDefinition("About",
-                    () => new AboutDialog
-                    {
-                        Owner = _mainWindow as Window
-                    }.ShowDialog(),
-                    "file-about",
-                    NavigationCategories.File)
-            };
-        }
-
         public void EvaluateExtensions(IEnumerable<ViewExtension> viewExtensions)
         {
             var copiedList = _buttons.ToList();

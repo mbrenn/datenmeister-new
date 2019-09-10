@@ -23,7 +23,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
                         WorkspaceNames.NameTypes,
                         WorkspaceNames.UriUserTypesExtent),
                     string.Empty,
-                    "Navigation.User");
+                    "File.Navigation");
             }
 
             if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl itemInExtentList)

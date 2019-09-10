@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
+using System.Windows.Forms.VisualStyles;
 using BurnSystems.Logging;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 
@@ -139,8 +140,14 @@ namespace DatenMeister.WPF.Windows
             @group.Items.Add(button);
         }
 
+        private void ClearNavigationButtons()
+        {
+            _menu.Items.Clear();
+        }
+
         public void EvaluateExtensions(IEnumerable<ViewExtension> viewExtensions)
         {
+            ClearNavigationButtons();
             var copiedList = _buttons.ToList();
 
             foreach (var viewExtension in viewExtensions.OfType<RibbonButtonDefinition>().OrderByDescending(x => x.Priority))

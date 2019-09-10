@@ -32,19 +32,19 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
             if (viewExtensionTargetInformation.NavigationGuest is ItemsInExtentList itemInExtentList)
             {
                 // Adds the import elements
-                yield return new RibbonButtonDefinition(
+                yield return new ApplicationMenuButtonDefinition(
                     "Import existing Extent",
                     ImportExistingExtent,
                     null,
                     NavigationCategories.File + ".Import");
 
-                yield return new RibbonButtonDefinition(
+                yield return new ApplicationMenuButtonDefinition(
                     "Import new Extent",
                     ImportNewExtent,
                     null,
                     NavigationCategories.File + ".Import");
 
-                yield return new RibbonButtonDefinition(
+                yield return new ApplicationMenuButtonDefinition(
                     "Import from Clipboard",
                     null,
                     null,

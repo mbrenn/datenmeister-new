@@ -150,31 +150,31 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
-            yield return new RibbonButtonDefinition(
+            yield return new ItemMenuButtonDefinition(
                 "Copy",
                 CopyContent,
                 null,
                 NavigationCategories.File);
 
-            yield return new RibbonButtonDefinition(
+            yield return new ItemMenuButtonDefinition(
                 "Copy as XMI",
                 CopyContentAsXmi,
                 null,
                 NavigationCategories.File);
 
-            yield return new RibbonButtonDefinition(
+            yield return new ItemMenuButtonDefinition(
                 "Paste",
                 PasteContent,
                 null,
                 NavigationCategories.File);
 
-            yield return new RibbonButtonDefinition(
+            yield return new ApplicationMenuButtonDefinition(
                 "Show View-Configuration",
                 ViewConfig,
                 null,
                 NavigationCategories.Views);
 
-            yield return new RibbonButtonDefinition(
+            yield return new ApplicationMenuButtonDefinition(
                 "Create Form",
                 CopyForm,
                 null,
@@ -202,7 +202,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             if (DetailElement != null)
             {
-                yield return new RibbonButtonDefinition(
+                yield return new ItemMenuButtonDefinition(
                     "Show as Xmi",
                     ShowAsXmi,
                     null,
@@ -247,35 +247,35 @@ namespace DatenMeister.WPF.Forms.Base
                 dlg.ShowDialog();
             }
 
-            void CopyContent()
+            void CopyContent(IObject element)
             {
-                var inMemory = InMemoryObject.CreateEmpty(DetailElement.GetExtentOf());
+                var inMemory = InMemoryObject.CreateEmpty(element.GetExtentOf());
                 StoreDialogContentIntoElement(inMemory);
 
                 var copyContent = new CopyToClipboardCommand(inMemory);
                 copyContent.Execute(CopyType.Default);
             }
 
-            void CopyContentAsXmi()
+            void CopyContentAsXmi(IObject element)
             {
-                var inMemory = InMemoryObject.CreateEmpty(DetailElement.GetExtentOf());
+                var inMemory = InMemoryObject.CreateEmpty(element.GetExtentOf());
                 StoreDialogContentIntoElement(inMemory);
 
                 var copyContent = new CopyToClipboardCommand(inMemory);
                 copyContent.Execute(CopyType.AsXmi);
             }
 
-            void PasteContent()
+            void PasteContent(IObject element)
             {
-                var pasteContent = new PasteToClipboardCommand(DetailElement);
+                var pasteContent = new PasteToClipboardCommand(element);
                 pasteContent.Execute();
                 UpdateContent();
             }
 
-            void ShowAsXmi()
+            void ShowAsXmi(IObject element)
             {
                 var itemXmlView = new ItemXmlViewWindow();
-                itemXmlView.UpdateContent(DetailElement);
+                itemXmlView.UpdateContent(element);
                 itemXmlView.Show();
             }
 

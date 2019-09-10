@@ -48,7 +48,7 @@ namespace DatenMeister.WPF.Windows
         /// Adds a navigational element to the ribbons
         /// </summary>
         /// <param name="definition">The definition to be used</param>
-        private void AddNavigationButton(RibbonButtonDefinition definition)
+        private void AddNavigationButton(ApplicationMenuButtonDefinition definition)
         {
             // Ok, we have not found it, so create the button
             var name = definition.Name;
@@ -150,7 +150,7 @@ namespace DatenMeister.WPF.Windows
             ClearNavigationButtons();
             var copiedList = _buttons.ToList();
 
-            foreach (var viewExtension in viewExtensions.OfType<RibbonButtonDefinition>().OrderByDescending(x => x.Priority))
+            foreach (var viewExtension in viewExtensions.OfType<ApplicationMenuButtonDefinition>().OrderByDescending(x => x.Priority))
             {
                 // Check, navigation button is already given
                 var foundTuple = _buttons.Find(x => RibbonButtonDefinition.AreEqual(viewExtension, x.Definition));

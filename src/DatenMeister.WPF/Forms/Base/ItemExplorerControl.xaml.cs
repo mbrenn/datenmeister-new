@@ -140,7 +140,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             yield return
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Refresh",
                     UpdateAllViews,
                     Icons.Refresh,

@@ -226,35 +226,35 @@ namespace DatenMeister.WPF.Forms.Lists
         public void PrepareNavigation(ViewDefinition viewDefinition)
         {
             viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "To Extents",
                     () => NavigatorForExtents.NavigateToExtentList(NavigationHost, WorkspaceId),
                     Icons.ExtentsShow,
                     NavigationCategories.File + ".Workspaces"));
 
             viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Extent Info",
                     () => NavigatorForExtents.OpenDetailOfExtent(NavigationHost, ExtentUrl),
                     null,
                     NavigationCategories.File + ".Workspaces"));
 
             viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Show as tree",
                     ShowAsTree,
                     null,
                     NavigationCategories.File + ".Views"));
 
             viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Export as Xmi",
                     ExportAsXmi,
                     null,
                     NavigationCategories.File + ".Export"));
 
             viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Open Extent-Folder",
                     OpenExtentFolder,
                     null,

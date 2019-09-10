@@ -6,21 +6,20 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
     /// <summary>
     /// Defines the ribbon
     /// </summary>
-    public class RibbonButtonDefinition : ViewExtension
+    public abstract class RibbonButtonDefinition : ViewExtension
     {
         /// <summary>
         /// Initializes a new instance of the RibbonButtonDefinition class
         /// </summary>
         /// <param name="name">Name of the button being shown</param>
-        /// <param name="onPressed">Action which is called when the user clicks on the button</param>
         /// <param name="imageName">Name of the image to be shown</param>
         /// <param name="categoryName">Name of the category being used</param>
         /// <param name="priority">Index being used to provide the correct sort order.
         /// The higher the number, the higher the priority</param>
-        public RibbonButtonDefinition(string name, Action onPressed, string imageName, string categoryName, int priority = 0)
+        public RibbonButtonDefinition(string name, string imageName, string categoryName, int priority = 0)
         {
             Name = name;
-            OnPressed = onPressed;
+            // OnPressed = onPressed;
             ImageName = imageName;
             CategoryName = categoryName;
             Priority = Math.Min(priority, 65535) * 65536 + 
@@ -31,17 +30,17 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// Gets or sets the index of the ribbon definition which is used to order the items.
         /// The higher the number, the higher the priority
         /// </summary>
-        public int Priority { get; set; }
+        public int Priority { get; }
 
         /// <summary>
         /// Gets the name of the ribbon
         /// </summary>
         public string Name { get; }
 
-        /// <summary>
+        /*///<summary>
         /// Gets the action being executed when the user clicked upon the button
         /// </summary>
-        public Action OnPressed { get; }
+        public Action OnPressed { get; }*/
 
         /// <summary>
         /// Gets the name of the image
@@ -85,6 +84,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
                 CategoryName = topCategory + CategoryName.Substring(indexPositionDot);
             }
         }
+        
         /// <summary>
         /// Verifies whether two ribbon button definitions can be regarded as absolutely equal
         /// </summary>

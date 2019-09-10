@@ -13,6 +13,7 @@ using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.FastViewFilter;
@@ -152,11 +153,7 @@ namespace DatenMeister.WPF.Forms.Base
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
             foreach (var ribbon in ViewExtensions.OfType<RibbonButtonDefinition>())
-                yield return new RibbonButtonDefinition(
-                    ribbon.Name,
-                    ribbon.OnPressed,
-                    ribbon.ImageName,
-                    ribbon.CategoryName);
+                yield return ribbon;
         }
 
         /// <summary>
@@ -580,13 +577,13 @@ namespace DatenMeister.WPF.Forms.Base
         public void IncludeStandardExtensions()
         {
             // Clears the info lines
-            void ViewExtent()
+            void ViewExtent(IReflectiveCollection items)
             {
                 var dlg = new ItemXmlViewWindow
                 {
                     Owner = Window.GetWindow(this)
                 };
-                dlg.UpdateContent(Items);
+                dlg.UpdateContent(items);
                 dlg.ShowDialog();
             }
 
@@ -621,7 +618,7 @@ namespace DatenMeister.WPF.Forms.Base
                 NavigatorForItems.NavigateToElementDetailView(NavigationHost, copiedForm);
             }
 
-            void ExportToCSV()
+            void ExportToCSV(IReflectiveCollection items)
             {
                 try
                 {
@@ -652,13 +649,13 @@ namespace DatenMeister.WPF.Forms.Base
                 }
             }
 
-            void CopyContent()
+            void CopyContent(IReflectiveCollection items)
             {
                 var copyContent = new CopyToClipboardCommand(this);
                 copyContent.Execute(CopyType.Default);
             }
 
-            void CopyContentAsXmi()
+            void CopyContentAsXmi(IReflectiveCollection items)
             {
                 var copyContent = new CopyToClipboardCommand(this);
                 copyContent.Execute(CopyType.AsXmi);
@@ -671,28 +668,28 @@ namespace DatenMeister.WPF.Forms.Base
                     ButtonPosition.Before));
 
             ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new CollectionMenuButtonDefinition(
                     "Extent as XMI",
                     ViewExtent,
                     null,
                     NavigationCategories.File + ".Views"));
 
             ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new CollectionMenuButtonDefinition(
                     "Export CSV",
                     ExportToCSV,
                     Icons.ExportCSV,
                     NavigationCategories.File + ".Export"));
 
             ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new CollectionMenuButtonDefinition(
                     "Copy",
                     CopyContent,
                     null,
                     NavigationCategories.File + ".Copy"));
 
             ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new CollectionMenuButtonDefinition(
                     "Copy as XMI",
                     CopyContentAsXmi,
                     null,

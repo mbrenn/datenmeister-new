@@ -124,7 +124,7 @@ namespace DatenMeister.WPF.Windows
         /// <returns>Enumeration of extensions</returns>
         private IEnumerable<ViewExtension> GetDefaultExtension()
         {
-            yield return new RibbonButtonDefinition(
+            yield return new ApplicationMenuButtonDefinition(
                 "Close",
                 CloseWindow,
                 null,

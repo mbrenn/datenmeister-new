@@ -16,7 +16,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
         {
             if (viewExtensionTargetInformation.NavigationHost != null)
             {
-                yield return new RibbonButtonDefinition(
+                yield return new ApplicationMenuButtonDefinition(
                     "View User Types",
                     () => NavigatorForItems.NavigateToItemsInExtent(
                         viewExtensionTargetInformation.NavigationHost,
@@ -48,7 +48,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
 
                 if (type == SelectionType.Package)
                 {
-                    yield return new RibbonButtonDefinition(
+                    yield return new ApplicationMenuButtonDefinition(
                         "Create new Class",
                         () =>
                         {
@@ -63,7 +63,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 else if (type == SelectionType.Class)
                 {
                     yield return
-                        new RibbonButtonDefinition(
+                        new ApplicationMenuButtonDefinition(
                             "Create new Property",
                             () =>
                             {
@@ -77,7 +77,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
                             NavigationCategories.Type + "." + "Manager");
                 }
 
-                yield return new RibbonButtonDefinition(
+                yield return new ApplicationMenuButtonDefinition(
                     "Create new Package",
                     () =>
                     {

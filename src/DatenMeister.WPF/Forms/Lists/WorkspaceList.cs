@@ -76,21 +76,21 @@ namespace DatenMeister.WPF.Forms.Lists
             }
 
             viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Add Workspace",
                     NewWorkspace,
                     "workspaces-new",
                     NavigationCategories.File + "." + "Workspaces"));
 
             viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Open Workspace-Folder",
                     () => NavigatorForWorkspaces.OpenFolder(NavigationHost),
                     null,
                     NavigationCategories.File + ".Workspaces"));
 
             viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Reset DatenMeister",
                     () => NavigatorForWorkspaces.ResetDatenMeister(NavigationHost),
                     null,

@@ -35,7 +35,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
 
             if (viewExtensionTargetInformation.NavigationHost != null)
             {
-                var result = new RibbonButtonDefinition(
+                var result = new ApplicationMenuButtonDefinition(
                     "View User Views",
                     () => Navigation.NavigatorForItems.NavigateToItemsInExtent(
                         viewExtensionTargetInformation.NavigationHost,
@@ -49,7 +49,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
 
             if (itemExplorerControl != null || detailFormControl != null)
             {
-                var openView = new RibbonButtonDefinition(
+                var openView = new ApplicationMenuButtonDefinition(
                     "Change Form",
                     async () =>
                     {
@@ -81,7 +81,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
 
                 if (itemExplorerControl != null)
                 {
-                    var showFormDefinition = new RibbonButtonDefinition(
+                    var showFormDefinition = new ApplicationMenuButtonDefinition(
                         "Show Form Definition",
                         () =>
                         {
@@ -102,7 +102,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
 
                     yield return showFormDefinition;
 
-                    var copyFormDefinition = new RibbonButtonDefinition(
+                    var copyFormDefinition = new ApplicationMenuButtonDefinition(
                         "Save Form Definition",
                         () =>
                         {

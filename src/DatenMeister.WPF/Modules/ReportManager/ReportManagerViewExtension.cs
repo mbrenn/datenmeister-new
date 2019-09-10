@@ -21,7 +21,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
             && viewExtensionTargetInformation.NavigationGuest is DetailFormControl detailFormControl)
             {
                 yield return 
-                    new RibbonButtonDefinition(
+                    new ApplicationMenuButtonDefinition(
                         "As Html",
                         () => CreateReportForDetailElement(detailFormControl),
                         null,
@@ -31,7 +31,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
 
             if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl explorerControl)
             {
-                yield return new RibbonButtonDefinition(
+                yield return new ApplicationMenuButtonDefinition(
                     "As Html",
                     () => CreateReportForExplorerView(explorerControl),
                     null,

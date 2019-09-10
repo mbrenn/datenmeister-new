@@ -116,39 +116,39 @@ namespace DatenMeisterWPF
 
             var viewExtensions = new List<ViewExtension>
             {
-                new RibbonButtonDefinition(
-                    "Home",
+                new ApplicationMenuButtonDefinition(
+                    "Goto Home",
                     () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
                     Icons.FileHome,
                     NavigationCategories.File + ".Workspaces",
                     10),
-                new RibbonButtonDefinition(
-                    "Workspaces",
+                new ApplicationMenuButtonDefinition(
+                    "Goto Workspaces",
                     () => NavigatorForWorkspaces.NavigateToWorkspaces(this),
                     Icons.WorkspacesShow,
                     NavigationCategories.File + ".Workspaces",
                     9),
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Find by URL",
                     () => NavigatorForDialogs.SearchByUrl(this),
                     null,
                     NavigationCategories.File + ".Search"),
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Locate",
                     () => NavigatorForDialogs.LocateAndOpen(this),
                     null,
                     NavigationCategories.File + ".Search"),
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Open Log",
                     OpenLog,
                     null,
                     NavigationCategories.File + ".Search"),                
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Close",
                     Close,
                     "file-exit",
                     NavigationCategories.File),
-                new RibbonButtonDefinition("About",
+                new ApplicationMenuButtonDefinition("About",
                     () => new AboutDialog
                     {
                         Owner = this
@@ -162,7 +162,7 @@ namespace DatenMeisterWPF
                 var guestViewExtensions = guest.GetViewExtensions().ToList();
                 foreach (var viewExtension in guestViewExtensions.OfType<RibbonButtonDefinition>())
                 {
-                    viewExtension.FixTopCategoryIfNotFixed("Extent");
+                    //viewExtension.FixTopCategoryIfNotFixed("Extent");
                 }
 
                 viewExtensions = viewExtensions.Union(guestViewExtensions).ToList();

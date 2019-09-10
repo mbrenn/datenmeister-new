@@ -70,7 +70,9 @@ namespace DatenMeister.WPF.Forms.Lists
                             "Show Extents",
                             ShowExtents,
                             ItemListViewControl.ButtonPosition.Before),
-                        new RowItemButtonDefinition("Delete Workspace", DeleteWorkspace)
+                        new RowItemButtonDefinition(
+                            "Delete Workspace",
+                            DeleteWorkspace)
                     };
 
                     return result;
@@ -149,35 +151,35 @@ namespace DatenMeister.WPF.Forms.Lists
                     (x) => { LoadExtent(); }));
 
             viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "New Xmi Extent",
                     NewXmiExtent,
                     null,
                     NavigationCategories.File + ".Workspaces"));
 
             viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Zip-Code Example",
                     AddZipCodeExample,
                     null,
                     NavigationCategories.File + ".Workspaces"));
 
             viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Import Excel",
                     ImportFromExcel,
                     Icons.ImportExcel,
                     NavigationCategories.File + ".Import"));
 
             viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Import from XMI",
                     ImportFromXmi,
                     Icons.ImportExcel,
                     NavigationCategories.File + ".Import"));
 
             viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Load Extent",
                     LoadExtent,
                     Icons.ImportExcel,

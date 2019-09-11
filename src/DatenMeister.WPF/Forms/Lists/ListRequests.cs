@@ -41,7 +41,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// Requests the form for the workspace
         /// </summary>
         /// <returns>Requested form</returns>
-        internal static ViewDefinition RequestFormForWorkspaces(IUriExtent extent, INavigationHost navigationHost)
+        internal static ViewDefinition RequestFormForWorkspaces(IExtent extent, INavigationHost navigationHost)
         {
             // Finds the view
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
@@ -118,7 +118,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <param name="workspaceId">The Id of the workspace</param>
         /// <param name="navigationHost">Defines the navigation host being used for the window</param>
         /// <returns>The created form</returns>
-        internal static ViewDefinition RequestFormForExtents(IUriExtent extent, string workspaceId, INavigationHost navigationHost)
+        internal static ViewDefinition RequestFormForExtents(IExtent extent, string workspaceId, INavigationHost navigationHost)
         {
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             var viewExtent = viewLogic.GetInternalViewExtent();

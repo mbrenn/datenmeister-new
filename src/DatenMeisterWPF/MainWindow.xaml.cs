@@ -103,7 +103,6 @@ namespace DatenMeisterWPF
             }
 
             throw new InvalidOperationException();
-            // return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
         }
 
         /// <summary>
@@ -160,10 +159,6 @@ namespace DatenMeisterWPF
             if (MainControl.Content is INavigationGuest guest)
             {
                 var guestViewExtensions = guest.GetViewExtensions().ToList();
-                foreach (var viewExtension in guestViewExtensions.OfType<RibbonButtonDefinition>())
-                {
-                    //viewExtension.FixTopCategoryIfNotFixed("Extent");
-                }
 
                 viewExtensions = viewExtensions.Union(guestViewExtensions).ToList();
             }
@@ -178,17 +173,13 @@ namespace DatenMeisterWPF
 
             foreach (var plugin in viewExtensionPlugins)
             {
-                foreach (var extension in plugin.GetViewExtensions(data))
-                {
-                    if (extension is RibbonButtonDefinition ribbonButtonDefinition)
-                    {
-                     //   ribbonButtonDefinition.FixTopCategoryIfNotFixed("Item");
-                    }
-
-                    viewExtensions.Add(extension);
-                }
+                viewExtensions.AddRange(plugin.GetViewExtensions(data));
             }
 
+            _ribbonHelper.Item = MainControl.Content is IItemNavigationGuest itemNavigationGuest ? itemNavigationGuest.Item : null;
+            _ribbonHelper.Collection = MainControl.Content is ICollectionNavigationGuest collectionNavigationGuest ? collectionNavigationGuest.Collection : null;
+            _ribbonHelper.Extent = MainControl.Content is IExtentNavigationGuest extentNavigationGuest ? extentNavigationGuest.Extent : null;
+            
             _ribbonHelper.EvaluateExtensions(viewExtensions);
 
             void OpenLog()

@@ -3,8 +3,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms.VisualStyles;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
@@ -20,7 +22,7 @@ namespace DatenMeister.WPF.Forms.Base
     /// <summary>
     ///     Interaktionslogik für ItemBrowser.xaml
     /// </summary>
-    public partial class ItemExplorerControl : UserControl, INavigationGuest, ICanUnregister
+    public partial class ItemExplorerControl : UserControl, INavigationGuest, ICanUnregister, IExtentNavigationGuest, ICollectionNavigationGuest
     {
         /// <summary>
         ///     Stores the information about the active tab controls
@@ -28,6 +30,8 @@ namespace DatenMeister.WPF.Forms.Base
         protected readonly ObservableCollection<ItemExplorerTab> Tabs = new ObservableCollection<ItemExplorerTab>();
 
         private EventHandle _eventHandle;
+
+        protected IExtent _extent;
 
         public ItemExplorerControl()
         {
@@ -106,14 +110,11 @@ namespace DatenMeister.WPF.Forms.Base
             var selectedTab = ItemTabControl.SelectedItem as ItemExplorerTab;
             if (selectedTab?.ViewExtensions != null)
             {
-                selectedTab.EvaluateViewExtensions();
-                /*foreach (var extension in selectedTab.ViewExtensions)
+                selectedTab.EvaluateViewExtensions(this);
+                foreach (var extension in selectedTab.ViewExtensions)
                 {
-                    if (extension is RibbonButtonDefinition ribbonButtonDefinition)
-                        ribbonButtonDefinition.FixTopCategoryIfNotFixed("View");
-
                     yield return extension;
-                }*/
+                }
             }
 
             // Get the view extensions by the plugins
@@ -128,13 +129,6 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 foreach (var extension in plugin.GetViewExtensions(extentData))
                 {
-                    // Checks, if the Category starts with View. If yes, then 
-                    // the element may be fixed 
-                    if (extension is RibbonButtonDefinition ribbonButtonDefinition)
-                    {
-                        ribbonButtonDefinition.FixTopCategoryIfNotFixed("Extent");
-                    }
-
                     yield return extension;
                 }
             }
@@ -344,5 +338,9 @@ namespace DatenMeister.WPF.Forms.Base
         {
             Unregister();
         }
+
+        public IExtent Extent => _extent;
+        
+        public IReflectiveCollection Collection => Items;
     }
 }

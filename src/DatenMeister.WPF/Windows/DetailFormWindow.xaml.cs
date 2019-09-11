@@ -105,7 +105,7 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         public void RebuildNavigation()
         {
-            var detailForm = (DetailFormControl) MainContent?.Content;
+            var detailForm = MainContent?.Content as DetailFormControl;
             var extensions = GetDefaultExtension();
             var otherExtensions = detailForm?.GetViewExtensions();
             if (otherExtensions != null)
@@ -115,6 +115,8 @@ namespace DatenMeister.WPF.Windows
 
             var extensionList = extensions.ToList();
             detailForm?.EvaluateViewExtensions(extensionList);
+
+            MenuHelper.Item = DetailElement;
             MenuHelper.EvaluateExtensions(extensionList);
         }
 

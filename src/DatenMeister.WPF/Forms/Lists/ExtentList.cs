@@ -16,17 +16,13 @@ namespace DatenMeister.WPF.Forms.Lists
     public class ExtentList : ItemExplorerControl
     {
         /// <summary>
-        /// Stores the workspace extent
-        /// </summary>
-        private IUriExtent _workspaceExtent;
-        /// <summary>
         /// Initializes a new instance of the ExtentList class
         /// </summary>
         public ExtentList()
         {
             Loaded += ExtentList_Loaded;
 
-            _workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
+            _extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
         }
 
         private void ExtentList_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -47,14 +43,14 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             WorkspaceId = workspaceId;
             var workspace =
-                _workspaceExtent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() as IElement;
+                _extent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() as IElement;
 
             var extents = workspace?.get("extents") as IReflectiveSequence;
             SetItems(extents);
 
             // Registers upon events
             var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
-            EventHandle = eventManager.RegisterFor(_workspaceExtent, (x, y) =>
+            EventHandle = eventManager.RegisterFor(_extent, (x, y) =>
             {
                 Tabs.FirstOrDefault()?.Control.UpdateContent();
             });
@@ -69,7 +65,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             if (IsExtentSelectedInTreeview)
             {
-                var viewDefinition = ListRequests.RequestFormForExtents(_workspaceExtent, WorkspaceId, NavigationHost);
+                var viewDefinition = ListRequests.RequestFormForExtents(_extent, WorkspaceId, NavigationHost);
 
                 EvaluateForm(
                     SelectedItems,

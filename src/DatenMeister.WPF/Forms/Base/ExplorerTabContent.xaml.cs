@@ -24,7 +24,5 @@ namespace DatenMeister.WPF.Forms.Base
         {
             InitializeComponent();
         }
-        
-        
     }
 }

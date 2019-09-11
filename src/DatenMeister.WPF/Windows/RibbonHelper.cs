@@ -12,7 +12,7 @@ using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Windows
 {
-    public class RibbonHelper
+    public class RibbonHelper : BaseViewExtensionHelper
     {
         /// <summary>
         /// Defines the logger
@@ -86,7 +86,8 @@ namespace DatenMeister.WPF.Windows
             var name = definition.Name;
             var categoryName = definition.CategoryName;
             var imageName = definition.ImageName;
-            var clickMethod = definition.OnPressed;
+            
+            var clickMethod = CreateClickMethod(definition);
 
             string tabName, groupName;
             var indexOfSemicolon = categoryName.IndexOf('.');

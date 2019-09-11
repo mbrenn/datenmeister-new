@@ -32,11 +32,6 @@ namespace DatenMeister.WPF.Forms.Lists
 {
     public class ItemsInExtentList : ItemExplorerControl
     {
-        /// <summary>
-        /// Stores the extent being associated to the extentlist
-        /// </summary>
-        private IExtent _extent;
-
         public ItemsInExtentList()
         {
             Loaded += ItemsInExtentList_Loaded;
@@ -52,11 +47,6 @@ namespace DatenMeister.WPF.Forms.Lists
         /// Stores the delayed dispatcher
         /// </summary>
         private readonly DelayedRefreshDispatcher _delayedDispatcher;
-
-        /// <summary>
-        /// Gets the extent of the item class
-        /// </summary>
-        public IExtent Extent => _extent;
 
         /// <summary>
         ///     Gets or sets a flag whether, all items shall be shown in one tab.

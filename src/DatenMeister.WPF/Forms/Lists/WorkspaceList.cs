@@ -17,11 +17,6 @@ namespace DatenMeister.WPF.Forms.Lists
 {
     public class WorkspaceList : ItemExplorerControl
     {
-        /// <summary>
-        /// Stores the workspace extent
-        /// </summary>
-        private IUriExtent _workspaceExtent;
-
         public WorkspaceList()
         {
             Loaded += WorkspaceList_Loaded;
@@ -29,11 +24,11 @@ namespace DatenMeister.WPF.Forms.Lists
 
         private void WorkspaceList_Loaded(object sender, RoutedEventArgs e)
         {
-            _workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
-            SetItems(_workspaceExtent.elements());
+            _extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
+            SetItems(_extent.elements());
 
             var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
-            EventHandle = eventManager.RegisterFor(_workspaceExtent, (x,y) =>
+            EventHandle = eventManager.RegisterFor(_extent, (x,y) =>
             {
                 Tabs.FirstOrDefault()?.Control.UpdateContent();
             });
@@ -51,11 +46,11 @@ namespace DatenMeister.WPF.Forms.Lists
                 && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
             {
                 var workspaceId = SelectedPackage.get("id")?.ToString();
-                view = ListRequests.RequestFormForExtents(_workspaceExtent, workspaceId, NavigationHost);
+                view = ListRequests.RequestFormForExtents(_extent, workspaceId, NavigationHost);
             }
             else
             {
-                view = ListRequests.RequestFormForWorkspaces(_workspaceExtent, NavigationHost);
+                view = ListRequests.RequestFormForWorkspaces(_extent, NavigationHost);
             }
 
             PrepareNavigation(view);

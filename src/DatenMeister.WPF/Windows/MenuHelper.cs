@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,7 +10,7 @@ using DatenMeister.WPF.Forms.Base.ViewExtensions;
 
 namespace DatenMeister.WPF.Windows
 {
-    public class MenuHelper
+    public class MenuHelper : BaseViewExtensionHelper
     {
         /// <summary>
         /// Defines the logger
@@ -48,13 +49,14 @@ namespace DatenMeister.WPF.Windows
         /// Adds a navigational element to the ribbons
         /// </summary>
         /// <param name="definition">The definition to be used</param>
-        private void AddNavigationButton(ApplicationMenuButtonDefinition definition)
+        private void AddNavigationButton(RibbonButtonDefinition definition)
         {
             // Ok, we have not found it, so create the button
             var name = definition.Name;
             var categoryName = definition.CategoryName;
             var imageName = definition.ImageName;
-            var clickMethod = definition.OnPressed;
+            
+            var clickMethod = CreateClickMethod(definition);
 
             string tabName, groupName;
             var indexOfSemicolon = categoryName.IndexOf('.');

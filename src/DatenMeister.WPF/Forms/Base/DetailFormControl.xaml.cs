@@ -29,7 +29,7 @@ namespace DatenMeister.WPF.Forms.Base
     /// <summary>
     ///     Interaktionslogik für DetailFormControl.xaml
     /// </summary>
-    public partial class DetailFormControl : UserControl, INavigationGuest, IHasSelectedItems, IHasTitle
+    public partial class DetailFormControl : UserControl, INavigationGuest, IHasSelectedItems, IHasTitle, IItemNavigationGuest
     {
         /// <summary>
         /// Stores the logger
@@ -749,5 +749,7 @@ namespace DatenMeister.WPF.Forms.Base
                 }
             }
         }
+
+        public IObject Item => DetailElement;
     }
 }

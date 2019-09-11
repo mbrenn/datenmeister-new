@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 
 namespace DatenMeister.WPF.Forms.Base
@@ -39,9 +40,16 @@ namespace DatenMeister.WPF.Forms.Base
 
         public IEnumerable<ViewExtension> ViewExtensions { get; set; }
 
-        public void EvaluateViewExtensions()
+        public void EvaluateViewExtensions(ItemExplorerControl control)
         {
-            var helper = new MenuHelper(_content.Menu);
+            var helper = new MenuHelper(_content.Menu)
+            {
+                Item = control is IItemNavigationGuest itemNavigationGuest ? itemNavigationGuest.Item : null,
+                Collection = control is ICollectionNavigationGuest collectionNavigationGuest
+                    ? collectionNavigationGuest.Collection
+                    : null,
+                Extent = control is IExtentNavigationGuest extentNavigationGuest ? extentNavigationGuest.Extent : null
+            };
             helper.EvaluateExtensions(ViewExtensions);
         }
     }

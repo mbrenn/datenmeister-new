@@ -18,11 +18,16 @@ namespace DatenMeister.WPF.Windows
         
         public IObject Item { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the application items shall be shown
+        /// </summary>
+        public bool ShowApplicationItems { get; set; } = true;
+
         protected Action CreateClickMethod(RibbonButtonDefinition definition)
         {
             // Defines the clickmethod by the definition
             Action clickMethod = null;
-            if (definition is ApplicationMenuButtonDefinition applicationMenuButtonDefinition)
+            if (ShowApplicationItems && definition is ApplicationMenuButtonDefinition applicationMenuButtonDefinition)
             {
                 clickMethod = applicationMenuButtonDefinition.OnPressed;
             }

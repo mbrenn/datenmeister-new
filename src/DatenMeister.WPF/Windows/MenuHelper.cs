@@ -57,6 +57,10 @@ namespace DatenMeister.WPF.Windows
             var imageName = definition.ImageName;
             
             var clickMethod = CreateClickMethod(definition);
+            if (clickMethod == null)
+            {
+                return;
+            }
 
             string tabName, groupName;
             var indexOfSemicolon = categoryName.IndexOf('.');

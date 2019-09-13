@@ -87,7 +87,10 @@ namespace DatenMeister.WPF.Windows
         public DetailFormWindow()
         {
             InitializeComponent();
-            MenuHelper = new MenuHelper(MainMenu);
+            MenuHelper = new MenuHelper(MainMenu)
+            {
+                ShowApplicationItems = false
+            };
         }
 
         /// <summary>
@@ -117,6 +120,7 @@ namespace DatenMeister.WPF.Windows
             detailForm?.EvaluateViewExtensions(extensionList);
 
             MenuHelper.Item = DetailElement;
+            MenuHelper.ShowApplicationItems = false;
             MenuHelper.EvaluateExtensions(extensionList);
         }
 
@@ -127,7 +131,7 @@ namespace DatenMeister.WPF.Windows
         private IEnumerable<ViewExtension> GetDefaultExtension()
         {
             yield return new ApplicationMenuButtonDefinition(
-                "Close",
+                "Close", 
                 CloseWindow,
                 null,
                 NavigationCategories.File,

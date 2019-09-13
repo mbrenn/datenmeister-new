@@ -44,6 +44,8 @@ namespace DatenMeister.WPF.Forms.Base
         {
             var helper = new MenuHelper(_content.Menu)
             {
+                ShowApplicationItems = false,
+                // ReSharper disable once SuspiciousTypeConversion.Global
                 Item = control is IItemNavigationGuest itemNavigationGuest ? itemNavigationGuest.Item : null,
                 Collection = control is ICollectionNavigationGuest collectionNavigationGuest
                     ? collectionNavigationGuest.Collection

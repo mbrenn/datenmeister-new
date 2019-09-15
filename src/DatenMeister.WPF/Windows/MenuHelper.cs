@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
-using System.Windows.Forms.VisualStyles;
 using BurnSystems.Logging;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 
@@ -157,7 +155,7 @@ namespace DatenMeister.WPF.Windows
             ClearNavigationButtons();
             var copiedList = _buttons.ToList();
 
-            foreach (var viewExtension in viewExtensions.OfType<ApplicationMenuButtonDefinition>().OrderByDescending(x => x.Priority))
+            foreach (var viewExtension in viewExtensions.OfType<NavigationButtonDefinition>().OrderByDescending(x => x.Priority))
             {
                 // Check, navigation button is already given
                 var foundTuple = _buttons.Find(x => NavigationButtonDefinition.AreEqual(viewExtension, x.Definition));
@@ -167,32 +165,19 @@ namespace DatenMeister.WPF.Windows
 
                     // Reorganizes the buttons
                     foundTuple.Button.Click -= foundTuple.ClickEvent;
-                    foundTuple.ClickEvent = (x, y) => viewExtension.OnPressed();
+                    var clickMethod = CreateClickMethod(viewExtension);
+                    if (clickMethod == null)
+                    {
+                        Logger.Error($"No further action defined anymore for item{viewExtension.Name}");
+                        continue;
+                    }
+                    
+                    foundTuple.ClickEvent = (x, y) => clickMethod();
                     foundTuple.Button.Click += foundTuple.ClickEvent;
                 }
                 else
                 {
                     AddNavigationButton(viewExtension);
-                }
-            }
-
-            // Now, remove the buttons that are not needed anymore
-            foreach (var obsolete in copiedList)
-            {
-                var group = (RibbonGroup) obsolete.Button.Parent;
-                group.Items.Remove(obsolete.Button);
-                _buttons.Remove(obsolete);
-
-                // Removes the groups and tabs if necessary
-                if (group.Items.Count == 0)
-                {
-                    var tab = (RibbonTab) group.Parent;
-                    tab.Items.Remove(group);
-
-                    if (tab.Items.Count == 0)
-                    {
-                        ((Ribbon) tab.Parent).Items.Remove(tab);
-                    }
                 }
             }
         }

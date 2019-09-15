@@ -48,7 +48,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
         /// Creates the report for the currently selected element 
         /// </summary>
         /// <param name="explorerControl">The explorer control being used</param>
-        /// <param name="selectedItem">Defines the item that is selected</param>
+        /// <param name="collection">Defines the item that is selected</param>
         private void CreateReportForExplorerView(
             ItemListViewControl explorerControl, 
             IReflectiveCollection collection)

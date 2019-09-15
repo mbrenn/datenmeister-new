@@ -290,8 +290,8 @@ namespace DatenMeister.WPF.Forms.Base
                 Header = name
             };
             
-            tabControl.EvaluateViewExtensions(viewExtensions.Union(control.GetViewExtensions()));
             control.SetContent(collection, form, viewExtensions);
+            tabControl.EvaluateViewExtensions(viewExtensions.Union(control.GetViewExtensions()));
             
             Tabs.Add(tabControl);
 

@@ -29,21 +29,25 @@ namespace DatenMeister.WPF.Navigation
         /// <summary>
         /// Category for all global and file issues
         /// </summary>
-        public static string File = "File";
+        public const string DatenMeister = "DatenMeister";
 
-        public static string Type = "Types";
+        public const string Type = "Types";
 
-        public static string Views = "Views";
+        public const string Views = "Views";
 
         /// <summary>
         /// Defines the order of the ribbon for standard items.
         /// All other ribbons will be stored after that
         /// </summary>
-        public static string[] RibbonOrder = {
-            "File",
+        public static readonly string[] RibbonOrder = {
+            DatenMeister,
             "Extent",
             "Item"
         };
+
+        public const string DatenMeisterNavigation = "DatenMeister" + ".Navigation";
+        
+        public const string Form = "Form";
     }
 
     /// <summary>

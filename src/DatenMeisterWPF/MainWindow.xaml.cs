@@ -41,7 +41,9 @@ namespace DatenMeisterWPF
         public MainWindow()
         {
             InitializeComponent();
-            _ribbonHelper = new RibbonHelper(this, NavigationScope.Application | NavigationScope.Extent);
+            _ribbonHelper = new RibbonHelper(
+                this, 
+                NavigationScope.Application | NavigationScope.Extent);
         }
 
         private async void Window_Initialized(object sender, EventArgs e)
@@ -123,41 +125,41 @@ namespace DatenMeisterWPF
                     "Goto Home",
                     () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
                     Icons.FileHome,
-                    NavigationCategories.File + ".Workspaces",
+                    NavigationCategories.DatenMeisterNavigation,
                     10),
                 new ApplicationMenuButtonDefinition(
                     "Goto Workspaces",
                     () => NavigatorForWorkspaces.NavigateToWorkspaces(this),
                     Icons.WorkspacesShow,
-                    NavigationCategories.File + ".Workspaces",
+                    NavigationCategories.DatenMeisterNavigation,
                     9),
                 new ApplicationMenuButtonDefinition(
                     "Find by URL",
                     () => NavigatorForDialogs.SearchByUrl(this),
                     null,
-                    NavigationCategories.File + ".Search"),
+                    NavigationCategories.DatenMeister + ".Database"),
                 new ApplicationMenuButtonDefinition(
                     "Locate",
                     () => NavigatorForDialogs.LocateAndOpen(this),
                     null,
-                    NavigationCategories.File + ".Search"),
+                    NavigationCategories.DatenMeister + ".Database"),
                 new ApplicationMenuButtonDefinition(
                     "Open Log",
                     OpenLog,
                     null,
-                    NavigationCategories.File + ".Search"),                
+                    NavigationCategories.DatenMeister + ".Tool"),                
                 new ApplicationMenuButtonDefinition(
                     "Close",
                     Close,
                     "file-exit",
-                    NavigationCategories.File),
+                    NavigationCategories.DatenMeister + ".Tool"),
                 new ApplicationMenuButtonDefinition("About",
                     () => new AboutDialog
                     {
                         Owner = this
                     }.ShowDialog(),
                     "file-about",
-                    NavigationCategories.File)
+                    NavigationCategories.DatenMeister + ".Tool")
             };
 
             // 2) The properties of the guest

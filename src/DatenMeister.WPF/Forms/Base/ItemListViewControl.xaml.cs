@@ -41,7 +41,7 @@ namespace DatenMeister.WPF.Forms.Base
     /// <summary>
     ///     Interaktionslogik für ItemListViewControl.xaml
     /// </summary>
-    public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavigationGuest
+    public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavigationGuest, ICollectionNavigationGuest
     {
         /// <summary>
         ///     Defines the possible position of the row button compared to the data
@@ -92,13 +92,13 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Gets or sets the items to be shown. These items are shown also in the navigation view and will
         ///     not be modified, even if the user clicks on the navigation tree.
         /// </summary>
-        protected IReflectiveCollection Items { get; set; }
+        public IReflectiveCollection Items { get; set; }
 
         /// <summary>
         ///     Defines the current form definition of the window as provided by the
         ///     derived method 'RequestForm'.
         /// </summary>
-        public IObject CurrentFormDefinition { get; set; }
+        public IObject EffectiveForm { get; set; }
 
         /// <summary>
         ///     Gets or sets the view extensions
@@ -170,13 +170,13 @@ namespace DatenMeister.WPF.Forms.Base
                     /*SupportWriting = true,*/
                     Owner = Window.GetWindow(this)
                 };
-                dlg.UpdateContent(CurrentFormDefinition);
+                dlg.UpdateContent(EffectiveForm);
 
                 dlg.UpdateButtonPressed += (x, y) =>
                 {
                     var temporaryExtent = InMemoryProvider.TemporaryExtent;
                     var factory = new MofFactory(temporaryExtent);
-                    CurrentFormDefinition = dlg.GetCurrentContentAsMof(factory);
+                    EffectiveForm = dlg.GetCurrentContentAsMof(factory);
                 };
 
                 dlg.ShowDialog();
@@ -188,7 +188,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var target = viewLogic.GetUserViewExtent();
                 var copier = new ObjectCopier(new MofFactory(target));
 
-                var copiedForm = copier.Copy(CurrentFormDefinition);
+                var copiedForm = copier.Copy(EffectiveForm);
                 target.elements().add(copiedForm);
 
                 NavigatorForItems.NavigateToElementDetailView(NavigationHost, copiedForm);
@@ -248,32 +248,44 @@ namespace DatenMeister.WPF.Forms.Base
                     "Extent as XMI",
                     ViewExtent,
                     null,
-                    NavigationCategories.File + ".Views");
+                    NavigationCategories.DatenMeister + ".Views");
 
             yield return
                 new CollectionMenuButtonDefinition(
                     "Export CSV",
                     ExportToCSV,
                     Icons.ExportCSV,
-                    NavigationCategories.File + ".Export");
+                    NavigationCategories.DatenMeister + ".Export");
 
             yield return
                 new CollectionMenuButtonDefinition(
                     "Copy",
                     CopyContent,
                     null,
-                    NavigationCategories.File + ".Copy");
+                    NavigationCategories.DatenMeister + ".Copy");
 
             yield return
                 new CollectionMenuButtonDefinition(
                     "Copy as XMI",
                     CopyContentAsXmi,
                     null,
-                    NavigationCategories.File + ".Copy");
+                    NavigationCategories.DatenMeister + ".Copy");
+            
+            // 3) Get the view extensions by the plugins
+            var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
+            var extentData = new ViewExtensionTargetInformation(ViewExtensionContext.View)
+            {
+                NavigationGuest = this,
+                NavigationHost = NavigationHost
+            };
 
-
-            /*foreach (var ribbon in ViewExtensions.OfType<NavigationButtonDefinition>())
-                yield return ribbon;*/
+            foreach (var plugin in viewExtensionPlugins)
+            {
+                foreach (var extension in plugin.GetViewExtensions(extentData))
+                {
+                   yield return extension;
+                }
+            }
         }
 
         public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
@@ -312,7 +324,6 @@ namespace DatenMeister.WPF.Forms.Base
                 
                 return collection;
             }
-                
         }
 
         /// <summary>
@@ -334,7 +345,7 @@ namespace DatenMeister.WPF.Forms.Base
             // If form  defines constraints upon metaclass, then the filtering will occur here
             Items = FilterItems(items, formDefinition);
 
-            CurrentFormDefinition = formDefinition;
+            EffectiveForm = formDefinition;
             ViewExtensions = viewExtensions.ToList(); // ViewExtensions are stored to be used later in UpdateColumnDefinitions
             UpdateContent();
         }
@@ -385,7 +396,7 @@ namespace DatenMeister.WPF.Forms.Base
         public void UpdateContent()
         {
             SupportNewItems =
-                !CurrentFormDefinition.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
+                !EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
             SupportNewItems = false; // TODO: Make new items working
 
             var listItems = new ObservableCollection<ExpandoObject>();
@@ -503,7 +514,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </returns>
         private (List<string> names, IReflectiveCollection fields) UpdateColumnDefinitions()
         {
-            if (!(CurrentFormDefinition?.get(_FormAndFields._Form.field) is IReflectiveCollection fields))
+            if (!(EffectiveForm?.get(_FormAndFields._Form.field) is IReflectiveCollection fields))
                 return (null, null);
 
             ClearInfoLines();
@@ -685,9 +696,13 @@ namespace DatenMeister.WPF.Forms.Base
 
             if (selectedItem == null)
                 // It is a 'new item'-row which does not need a button
+            {
                 button.Visibility = Visibility.Hidden;
+            }
             else
+            {
                 button.Content = column.Header.ToString();
+            }
         }
 
         private void SearchField_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -785,7 +800,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                                 var pairs = new List<IObject>();
                                 foreach (var field in
-                                    CurrentFormDefinition.get<IReflectiveCollection>(_FormAndFields._ListForm.field)
+                                    EffectiveForm.get<IReflectiveCollection>(_FormAndFields._ListForm.field)
                                         .OfType<IObject>())
                                 {
                                     if (!field.isSet(_FormAndFields._FieldData.name)) continue;
@@ -823,7 +838,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="fastFilter">Fast filter to be stored</param>
         private void AddFastFilter(IObject fastFilter)
         {
-            CurrentFormDefinition.AddCollectionItem(_FormAndFields._ListForm.fastViewFilters, fastFilter);
+            EffectiveForm.AddCollectionItem(_FormAndFields._ListForm.fastViewFilters, fastFilter);
             UpdateFastFilterTexts();
             UpdateContent();
         }
@@ -832,7 +847,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             FastViewFilterPanel.Children.Clear();
             var fastFilters =
-                CurrentFormDefinition.get<IReflectiveCollection>(_FormAndFields._ListForm.fastViewFilters);
+                EffectiveForm.get<IReflectiveCollection>(_FormAndFields._ListForm.fastViewFilters);
 
             foreach (var filter in fastFilters.OfType<IElement>())
             {
@@ -861,7 +876,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns>Enumeration of the fast filters</returns>
         private IEnumerable<IElement> GetFastFilters()
         {
-            return CurrentFormDefinition.ForceAsEnumerable(_FormAndFields._ListForm.fastViewFilters).OfType<IElement>();
+            return EffectiveForm.ForceAsEnumerable(_FormAndFields._ListForm.fastViewFilters).OfType<IElement>();
         }
 
         private void ItemListViewControl_OnUnloaded(object sender, RoutedEventArgs e)
@@ -897,5 +912,7 @@ namespace DatenMeister.WPF.Forms.Base
             /// </summary>
             public Action<INavigationGuest, IObject> OnClick { get; set; }
         }
+
+        IReflectiveCollection ICollectionNavigationGuest.Collection => Items;
     }
 }

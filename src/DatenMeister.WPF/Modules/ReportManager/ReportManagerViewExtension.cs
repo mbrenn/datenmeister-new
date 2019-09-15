@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using BurnSystems;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.HtmlReporter.Formatter;
@@ -30,11 +31,11 @@ namespace DatenMeister.WPF.Modules.ReportManager
                     );
             }
 
-            if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl explorerControl)
+            if (viewExtensionTargetInformation.NavigationGuest is ItemListViewControl viewControl)
             {
-                yield return new ApplicationMenuButtonDefinition(
+                yield return new CollectionMenuButtonDefinition(
                     "As Html",
-                    () => CreateReportForExplorerView(explorerControl),
+                    (x) => CreateReportForExplorerView(viewControl, x),
                     null,
                     "Item.Report")
                 {
@@ -48,9 +49,10 @@ namespace DatenMeister.WPF.Modules.ReportManager
         /// </summary>
         /// <param name="explorerControl">The explorer control being used</param>
         /// <param name="selectedItem">Defines the item that is selected</param>
-        private void CreateReportForExplorerView(ItemExplorerControl explorerControl)
+        private void CreateReportForExplorerView(
+            ItemListViewControl explorerControl, 
+            IReflectiveCollection collection)
         {
-            var collection = explorerControl.SelectedItems;
             var form = explorerControl.EffectiveForm;
             var id = StringManipulation.RandomString(10);
             var tmpPath = Path.Combine(Path.GetTempPath(), id + ".html");

@@ -155,35 +155,35 @@ namespace DatenMeister.WPF.Forms.Lists
                     "New Xmi Extent",
                     NewXmiExtent,
                     null,
-                    NavigationCategories.File + ".Workspaces"));
+                    NavigationCategories.DatenMeister + ".Workspaces"));
 
             viewDefinition.ViewExtensions.Add(
                 new ApplicationMenuButtonDefinition(
                     "Zip-Code Example",
                     AddZipCodeExample,
                     null,
-                    NavigationCategories.File + ".Workspaces"));
+                    NavigationCategories.DatenMeister + ".Workspaces"));
 
             viewDefinition.ViewExtensions.Add(
                 new ApplicationMenuButtonDefinition(
                     "Import Excel",
                     ImportFromExcel,
                     Icons.ImportExcel,
-                    NavigationCategories.File + ".Import"));
+                    NavigationCategories.DatenMeister + ".Import"));
 
             viewDefinition.ViewExtensions.Add(
                 new ApplicationMenuButtonDefinition(
                     "Import from XMI",
                     ImportFromXmi,
                     Icons.ImportExcel,
-                    NavigationCategories.File + ".Import"));
+                    NavigationCategories.DatenMeister + ".Import"));
 
             viewDefinition.ViewExtensions.Add(
                 new ApplicationMenuButtonDefinition(
                     "Load Extent",
                     LoadExtent,
                     Icons.ImportExcel,
-                    NavigationCategories.File + ".Extent"));
+                    NavigationCategories.DatenMeister + ".Extent"));
 
             viewDefinition.ViewExtensions.Add(
                 new InfoLineDefinition(() =>

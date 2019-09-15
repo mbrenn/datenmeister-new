@@ -42,16 +42,16 @@ namespace DatenMeister.WPF.Modules.ViewManager
                         WorkspaceNames.NameManagement,
                         WorkspaceNames.UriUserViewExtent),
                     string.Empty,
-                    "File.Navigation");
+                    NavigationCategories.DatenMeisterNavigation);
 
                 yield return result;
             }
 
             if (itemExplorerControl != null || detailFormControl != null)
             {
-                var openView = new ApplicationMenuButtonDefinition(
+                var openView = new ExtentMenuButtonDefinition(
                     "Change Form",
-                    async () =>
+                    async x =>
                     {
                         var action = await Navigator.CreateDetailWindow(
                             viewExtensionTargetInformation.NavigationHost,
@@ -75,15 +75,15 @@ namespace DatenMeister.WPF.Modules.ViewManager
                         }
                     },
                     "",
-                    NavigationCategories.Views + ".Forms");
+                    NavigationCategories.Form + ".Definition");
 
                 yield return openView;
 
                 if (itemExplorerControl != null)
                 {
-                    var showFormDefinition = new ApplicationMenuButtonDefinition(
+                    var showFormDefinition = new ExtentMenuButtonDefinition(
                         "Show Form Definition",
-                        () =>
+                        x =>
                         {
                             var dlg = new ItemXmlViewWindow
                             {
@@ -98,13 +98,13 @@ namespace DatenMeister.WPF.Modules.ViewManager
 
                         },
                         "",
-                        NavigationCategories.Views + ".Forms");
+                        NavigationCategories.Form + ".Definition");
 
                     yield return showFormDefinition;
 
-                    var copyFormDefinition = new ApplicationMenuButtonDefinition(
+                    var copyFormDefinition = new ExtentMenuButtonDefinition(
                         "Save Form Definition",
-                        () =>
+                        x =>
                         {
                             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
                             var target = viewLogic.GetUserViewExtent();
@@ -117,7 +117,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                                 copiedForm);
                         },
                         "",
-                        NavigationCategories.Views + ".Forms");
+                        NavigationCategories.Form + ".Definition");
 
                     yield return copyFormDefinition;
                 }

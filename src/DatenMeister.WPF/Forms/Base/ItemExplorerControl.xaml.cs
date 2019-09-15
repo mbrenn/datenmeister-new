@@ -139,11 +139,11 @@ namespace DatenMeister.WPF.Forms.Base
 
             // 4) Gets a refresh of window
             yield return
-                new ApplicationMenuButtonDefinition(
+                new ExtentMenuButtonDefinition(
                     "Refresh",
-                    UpdateAllViews,
+                    x => UpdateAllViews(),
                     Icons.Refresh,
-                    NavigationCategories.File + ".Views");
+                    NavigationCategories.Form + ".View");
 
 
             // 5) Gets the context menu for the treeview

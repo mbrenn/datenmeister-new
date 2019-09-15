@@ -36,19 +36,19 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     "Import existing Extent",
                     ImportExistingExtent,
                     null,
-                    NavigationCategories.File + ".Import");
+                    NavigationCategories.DatenMeister + ".Import");
 
                 yield return new ApplicationMenuButtonDefinition(
                     "Import new Extent",
                     ImportNewExtent,
                     null,
-                    NavigationCategories.File + ".Import");
+                    NavigationCategories.DatenMeister + ".Import");
 
                 yield return new ApplicationMenuButtonDefinition(
                     "Import from Clipboard",
                     null,
                     null,
-                    NavigationCategories.File + ".Import");
+                    NavigationCategories.DatenMeister + ".Import");
             }
 
             // Imports the existing extent

@@ -23,12 +23,11 @@ namespace DatenMeister.WPF.Modules.TypeManager
                         WorkspaceNames.NameTypes,
                         WorkspaceNames.UriUserTypesExtent),
                     string.Empty,
-                    "File.Navigation");
+                    NavigationCategories.DatenMeisterNavigation);
             }
 
             if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl itemInExtentList)
             {
-
                 // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
                 var extent = itemInExtentList.Items.GetAssociatedExtent();
                 var extentType = extent?.GetExtentType();

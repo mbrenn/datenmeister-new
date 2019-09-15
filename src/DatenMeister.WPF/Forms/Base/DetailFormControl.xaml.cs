@@ -154,19 +154,19 @@ namespace DatenMeister.WPF.Forms.Base
                 "Copy",
                 CopyContent,
                 null,
-                NavigationCategories.File);
+                NavigationCategories.DatenMeister);
 
             yield return new ItemMenuButtonDefinition(
                 "Copy as XMI",
                 CopyContentAsXmi,
                 null,
-                NavigationCategories.File);
+                NavigationCategories.DatenMeister);
 
             yield return new ItemMenuButtonDefinition(
                 "Paste",
                 PasteContent,
                 null,
-                NavigationCategories.File);
+                NavigationCategories.DatenMeister);
 
             yield return new ApplicationMenuButtonDefinition(
                 "Show View-Configuration",
@@ -206,7 +206,7 @@ namespace DatenMeister.WPF.Forms.Base
                     "Show as Xmi",
                     ShowAsXmi,
                     null,
-                    NavigationCategories.File);
+                    NavigationCategories.DatenMeister);
             }
 
             // Local methods for the buttons

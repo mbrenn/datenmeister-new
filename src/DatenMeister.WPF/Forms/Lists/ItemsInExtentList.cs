@@ -220,35 +220,35 @@ namespace DatenMeister.WPF.Forms.Lists
                     "To Extents",
                     () => NavigatorForExtents.NavigateToExtentList(NavigationHost, WorkspaceId),
                     Icons.ExtentsShow,
-                    NavigationCategories.File + ".Workspaces"));
+                    NavigationCategories.DatenMeister + ".Workspaces"));
 
             viewDefinition.ViewExtensions.Add(
                 new ApplicationMenuButtonDefinition(
                     "Extent Info",
                     () => NavigatorForExtents.OpenDetailOfExtent(NavigationHost, ExtentUrl),
                     null,
-                    NavigationCategories.File + ".Workspaces"));
+                    NavigationCategories.DatenMeister + ".Workspaces"));
 
             viewDefinition.ViewExtensions.Add(
                 new ApplicationMenuButtonDefinition(
                     "Show as tree",
                     ShowAsTree,
                     null,
-                    NavigationCategories.File + ".Views"));
+                    NavigationCategories.DatenMeister + ".Views"));
 
             viewDefinition.ViewExtensions.Add(
                 new ApplicationMenuButtonDefinition(
                     "Export as Xmi",
                     ExportAsXmi,
                     null,
-                    NavigationCategories.File + ".Export"));
+                    NavigationCategories.DatenMeister + ".Export"));
 
             viewDefinition.ViewExtensions.Add(
                 new ApplicationMenuButtonDefinition(
                     "Open Extent-Folder",
                     OpenExtentFolder,
                     null,
-                    NavigationCategories.File + ".Workspaces"));
+                    NavigationCategories.DatenMeister + ".Workspaces"));
 
             // Adds the infoline
             viewDefinition.ViewExtensions.Add(

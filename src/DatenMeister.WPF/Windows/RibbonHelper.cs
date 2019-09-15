@@ -80,7 +80,7 @@ namespace DatenMeister.WPF.Windows
         /// Adds a navigational element to the ribbons
         /// </summary>
         /// <param name="definition">The definition to be used</param>
-        private void AddNavigationButton(ApplicationMenuButtonDefinition definition)
+        private void AddNavigationButton(NavigationButtonDefinition definition)
         {
             // Ok, we have not found it, so create the button
             var name = definition.Name;
@@ -88,6 +88,10 @@ namespace DatenMeister.WPF.Windows
             var imageName = definition.ImageName;
             
             var clickMethod = CreateClickMethod(definition);
+            if (clickMethod == null)
+            {
+                return;
+            }
 
             string tabName, groupName;
             var indexOfSemicolon = categoryName.IndexOf('.');
@@ -179,6 +183,7 @@ namespace DatenMeister.WPF.Windows
                     }
                 }
             };
+            
             _buttons.Add(item);
             button.Click += item.ClickEvent;
 
@@ -200,11 +205,16 @@ namespace DatenMeister.WPF.Windows
             @group.Items.Add(button);
         }
 
+        /// <summary>
+        /// Evaluates the viewExtensions to create the navigation buttons
+        /// </summary>
+        /// <param name="viewExtensions">Enumeration of view extensions</param>
         public void EvaluateExtensions(IEnumerable<ViewExtension> viewExtensions)
         {
             var copiedList = _buttons.ToList();
 
-            foreach (var viewExtension in viewExtensions.OfType<ApplicationMenuButtonDefinition>().OrderByDescending(x => x.Priority))
+            foreach (var viewExtension in viewExtensions.OfType<NavigationButtonDefinition>()
+                .OrderByDescending(x => x.Priority))
             {
                 // Check, navigation button is already given
                 var foundTuple = _buttons.Find(x => NavigationButtonDefinition.AreEqual(viewExtension, x.Definition));
@@ -214,7 +224,14 @@ namespace DatenMeister.WPF.Windows
 
                     // Reorganizes the buttons
                     foundTuple.Button.Click -= foundTuple.ClickEvent;
-                    foundTuple.ClickEvent = (x, y) => viewExtension.OnPressed();
+                    var clickMethod = CreateClickMethod(viewExtension);
+                    if (clickMethod == null)
+                    {
+                        Logger.Error($"No further action defined anymore for item{viewExtension.Name}");
+                        continue;
+                    }
+                    
+                    foundTuple.ClickEvent = (x, y) => clickMethod();
                     foundTuple.Button.Click += foundTuple.ClickEvent;
                 }
                 else

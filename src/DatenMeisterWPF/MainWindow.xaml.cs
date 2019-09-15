@@ -35,10 +35,13 @@ namespace DatenMeisterWPF
         /// <returns></returns>
         public Ribbon GetRibbon() => MainRibbon;
 
+        /// <summary>
+        /// Initializes a new instance of the MainWindow
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
-            _ribbonHelper = new RibbonHelper(this);
+            _ribbonHelper = new RibbonHelper(this, NavigationScope.Application | NavigationScope.Extent);
         }
 
         private async void Window_Initialized(object sender, EventArgs e)

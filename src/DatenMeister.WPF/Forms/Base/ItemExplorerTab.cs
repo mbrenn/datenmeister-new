@@ -42,7 +42,7 @@ namespace DatenMeister.WPF.Forms.Base
 
         public void EvaluateViewExtensions(ItemExplorerControl control)
         {
-            var helper = new MenuHelper(_content.Menu)
+            var helper = new MenuHelper(_content.Menu, NavigationScope.Collection | NavigationScope.Item)
             {
                 ShowApplicationItems = false,
                 // ReSharper disable once SuspiciousTypeConversion.Global

@@ -87,7 +87,7 @@ namespace DatenMeister.WPF.Windows
         public DetailFormWindow()
         {
             InitializeComponent();
-            MenuHelper = new MenuHelper(MainMenu)
+            MenuHelper = new MenuHelper(MainMenu, NavigationScope.Item)
             {
                 ShowApplicationItems = false
             };

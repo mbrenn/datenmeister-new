@@ -6,7 +6,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
     /// <summary>
     /// Defines the ribbon
     /// </summary>
-    public abstract class RibbonButtonDefinition : ViewExtension
+    public abstract class NavigationButtonDefinition : ViewExtension
     {
         /// <summary>
         /// Initializes a new instance of the RibbonButtonDefinition class
@@ -16,8 +16,14 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// <param name="categoryName">Name of the category being used</param>
         /// <param name="priority">Index being used to provide the correct sort order.
         /// The higher the number, the higher the priority</param>
-        public RibbonButtonDefinition(string name, string imageName, string categoryName, int priority = 0)
+        public NavigationButtonDefinition(
+            string name, 
+            NavigationScope navigationScope, 
+            string imageName,
+            string categoryName,
+            int priority = 0)
         {
+            NavigationScope = navigationScope;
             Name = name;
             // OnPressed = onPressed;
             ImageName = imageName;
@@ -37,10 +43,10 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// </summary>
         public string Name { get; }
 
-        /*///<summary>
-        /// Gets the action being executed when the user clicked upon the button
+        /// <summary>
+        /// Gets the navigation scope
         /// </summary>
-        public Action OnPressed { get; }*/
+        public NavigationScope NavigationScope { get; }
 
         /// <summary>
         /// Gets the name of the image
@@ -91,7 +97,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// <param name="first">First parameter to be evaluated</param>
         /// <param name="second">Second parameter to be evaluated</param>
         /// <returns>true, if both values are equal</returns>
-        public static bool AreEqual(RibbonButtonDefinition first, RibbonButtonDefinition second)
+        public static bool AreEqual(NavigationButtonDefinition first, NavigationButtonDefinition second)
         {
             if (first == second)
             {
@@ -131,14 +137,14 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// <summary>
         /// Gets the equality comparer
         /// </summary>
-        public class Comparer : IEqualityComparer<RibbonButtonDefinition>
+        public class Comparer : IEqualityComparer<NavigationButtonDefinition>
         {
-            public bool Equals(RibbonButtonDefinition x, RibbonButtonDefinition y)
+            public bool Equals(NavigationButtonDefinition x, NavigationButtonDefinition y)
             {
-                return RibbonButtonDefinition.AreEqual(x, y);
+                return NavigationButtonDefinition.AreEqual(x, y);
             }
 
-            public int GetHashCode(RibbonButtonDefinition obj)
+            public int GetHashCode(NavigationButtonDefinition obj)
             {
                 return obj.GetHashCode();
             }

@@ -79,14 +79,15 @@
     <Compile Include="Forms\Base\ViewDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensionHelper.cs" />
     <Compile Include="Forms\Base\ViewExtensions\ApplicationMenuButtonDefinition.cs" />
-    <Compile Include="Forms\Base\ViewExtensions\CollectionMenuButtonDefinition - Copy.cs" />
+    <Compile Include="Forms\Base\ViewExtensions\ExtentMenuButtonDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\CollectionMenuButtonDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\GenericButtonDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\InfoLineDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\ItemButtonDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\ItemMenuButtonDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\IViewExtensionFactory.cs" />
-    <Compile Include="Forms\Base\ViewExtensions\RibbonButtonDefinition.cs" />
+    <Compile Include="Forms\Base\ViewExtensions\NavigationButtonDefinition.cs" />
+    <Compile Include="Forms\Base\ViewExtensions\NavigationScope.cs" />
     <Compile Include="Forms\Base\ViewExtensions\RowItemButtonDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\TreeViewItemCommandDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\ViewExtension.cs" />
@@ -172,7 +173,7 @@
     <Compile Include="Windows\TreeViewWindow.xaml.cs">
       <DependentUpon>TreeViewWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\BaseViewExtensionHelper.cs" />
+    <Compile Include="Windows\NavigationExtensionHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\LocateElementControl.xaml">

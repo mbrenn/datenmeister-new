@@ -10,7 +10,7 @@ using DatenMeister.WPF.Forms.Base.ViewExtensions;
 
 namespace DatenMeister.WPF.Windows
 {
-    public class MenuHelper : BaseViewExtensionHelper
+    public class MenuHelper : NavigationExtensionHelper
     {
         /// <summary>
         /// Defines the logger
@@ -24,7 +24,7 @@ namespace DatenMeister.WPF.Windows
 
         private class MenuHelperItem
         {
-            public RibbonButtonDefinition Definition { get; set; }
+            public NavigationButtonDefinition Definition { get; set; }
 
             public MenuItem Button { get; set; }
 
@@ -40,7 +40,7 @@ namespace DatenMeister.WPF.Windows
             }
         }
 
-        public MenuHelper(Menu menu)
+        public MenuHelper(Menu menu, NavigationScope navigationScope) : base (navigationScope)
         {
             _menu = menu;
         }
@@ -49,7 +49,7 @@ namespace DatenMeister.WPF.Windows
         /// Adds a navigational element to the ribbons
         /// </summary>
         /// <param name="definition">The definition to be used</param>
-        private void AddNavigationButton(RibbonButtonDefinition definition)
+        private void AddNavigationButton(NavigationButtonDefinition definition)
         {
             // Ok, we have not found it, so create the button
             var name = definition.Name;
@@ -59,6 +59,7 @@ namespace DatenMeister.WPF.Windows
             var clickMethod = CreateClickMethod(definition);
             if (clickMethod == null)
             {
+                // The method is not valid => no addition to the menu
                 return;
             }
 
@@ -159,7 +160,7 @@ namespace DatenMeister.WPF.Windows
             foreach (var viewExtension in viewExtensions.OfType<ApplicationMenuButtonDefinition>().OrderByDescending(x => x.Priority))
             {
                 // Check, navigation button is already given
-                var foundTuple = _buttons.Find(x => RibbonButtonDefinition.AreEqual(viewExtension, x.Definition));
+                var foundTuple = _buttons.Find(x => NavigationButtonDefinition.AreEqual(viewExtension, x.Definition));
                 if (foundTuple != null)
                 {
                     copiedList.Remove(foundTuple);

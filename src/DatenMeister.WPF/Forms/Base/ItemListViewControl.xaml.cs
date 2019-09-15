@@ -152,7 +152,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
-            foreach (var ribbon in ViewExtensions.OfType<RibbonButtonDefinition>())
+            foreach (var ribbon in ViewExtensions.OfType<NavigationButtonDefinition>())
                 yield return ribbon;
         }
 

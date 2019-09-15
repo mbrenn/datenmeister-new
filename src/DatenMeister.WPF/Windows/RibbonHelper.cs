@@ -12,7 +12,7 @@ using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Windows
 {
-    public class RibbonHelper : BaseViewExtensionHelper
+    public class RibbonHelper : NavigationExtensionHelper
     {
         /// <summary>
         /// Defines the logger
@@ -31,7 +31,7 @@ namespace DatenMeister.WPF.Windows
 
         private class RibbonHelperItem
         {
-            public RibbonButtonDefinition Definition { get; set; }
+            public NavigationButtonDefinition Definition { get; set; }
 
             public RibbonButton Button { get; set; }
 
@@ -71,7 +71,7 @@ namespace DatenMeister.WPF.Windows
             }
         }
 
-        public RibbonHelper(IHasRibbon mainWindow)
+        public RibbonHelper(IHasRibbon mainWindow, NavigationScope navigationScope) : base (navigationScope)
         {
             _mainWindow = mainWindow;
         }
@@ -207,7 +207,7 @@ namespace DatenMeister.WPF.Windows
             foreach (var viewExtension in viewExtensions.OfType<ApplicationMenuButtonDefinition>().OrderByDescending(x => x.Priority))
             {
                 // Check, navigation button is already given
-                var foundTuple = _buttons.Find(x => RibbonButtonDefinition.AreEqual(viewExtension, x.Definition));
+                var foundTuple = _buttons.Find(x => NavigationButtonDefinition.AreEqual(viewExtension, x.Definition));
                 if (foundTuple != null)
                 {
                     copiedList.Remove(foundTuple);

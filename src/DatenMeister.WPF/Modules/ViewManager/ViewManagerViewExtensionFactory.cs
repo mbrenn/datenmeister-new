@@ -92,7 +92,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                             };
                             dlg.SupportWriting = false;
 
-                            dlg.UpdateContent(itemExplorerControl.CurrentForm);
+                            dlg.UpdateContent(itemExplorerControl.EffectiveForm);
 
                             dlg.ShowDialog();
 
@@ -110,7 +110,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                             var target = viewLogic.GetUserViewExtent();
                             var copier = new ObjectCopier(new MofFactory(target));
 
-                            var copiedForm = copier.Copy(itemExplorerControl.CurrentForm);
+                            var copiedForm = copier.Copy(itemExplorerControl.EffectiveForm);
                             target.elements().add(copiedForm);
 
                             NavigatorForItems.NavigateToElementDetailView(itemExplorerControl.NavigationHost,

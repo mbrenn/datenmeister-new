@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Navigation;
@@ -37,22 +38,21 @@ namespace DatenMeister.WPF.Forms.Base
             get => _content.InnerContent.Content as ItemListViewControl;
             set => _content.InnerContent.Content = value;
         }
-
-        public IEnumerable<ViewExtension> ViewExtensions { get; set; }
-
-        public void EvaluateViewExtensions(ItemExplorerControl control)
+        
+        public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
         {
             var helper = new MenuHelper(_content.Menu, NavigationScope.Collection | NavigationScope.Item)
             {
                 ShowApplicationItems = false,
                 // ReSharper disable once SuspiciousTypeConversion.Global
-                Item = control is IItemNavigationGuest itemNavigationGuest ? itemNavigationGuest.Item : null,
-                Collection = control is ICollectionNavigationGuest collectionNavigationGuest
+                Item = Control is IItemNavigationGuest itemNavigationGuest ? itemNavigationGuest.Item : null,
+                Collection = Control is ICollectionNavigationGuest collectionNavigationGuest
                     ? collectionNavigationGuest.Collection
                     : null,
-                Extent = control is IExtentNavigationGuest extentNavigationGuest ? extentNavigationGuest.Extent : null
+                Extent = Control is IExtentNavigationGuest extentNavigationGuest ? extentNavigationGuest.Extent : null
             };
-            helper.EvaluateExtensions(ViewExtensions);
+            
+            helper.EvaluateExtensions(viewExtensions);
         }
     }
 }

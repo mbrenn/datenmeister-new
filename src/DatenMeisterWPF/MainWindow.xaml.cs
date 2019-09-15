@@ -116,6 +116,7 @@ namespace DatenMeisterWPF
         {
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
 
+            // 1) The default properties of the main window
             var viewExtensions = new List<ViewExtension>
             {
                 new ApplicationMenuButtonDefinition(
@@ -159,19 +160,19 @@ namespace DatenMeisterWPF
                     NavigationCategories.File)
             };
 
-            if (MainControl.Content is INavigationGuest guest)
+            // 2) The properties of the guest
+            var guest = MainControl.Content as INavigationGuest;
+            if (guest != null)
             {
                 var guestViewExtensions = guest.GetViewExtensions().ToList();
-
                 viewExtensions = viewExtensions.Union(guestViewExtensions).ToList();
             }
 
-            /*
-             * Gets the plugins for the MainWindow itself
-             */
+            // 3) The plugins
             var data = new ViewExtensionTargetInformation(ViewExtensionContext.Application)
             {
-                NavigationHost = this
+                NavigationHost = this,
+                NavigationGuest = guest
             };
 
             foreach (var plugin in viewExtensionPlugins)
@@ -179,11 +180,14 @@ namespace DatenMeisterWPF
                 viewExtensions.AddRange(plugin.GetViewExtensions(data));
             }
 
+            // Now execute them on the ribbon itself
             _ribbonHelper.Item = MainControl.Content is IItemNavigationGuest itemNavigationGuest ? itemNavigationGuest.Item : null;
             _ribbonHelper.Collection = MainControl.Content is ICollectionNavigationGuest collectionNavigationGuest ? collectionNavigationGuest.Collection : null;
             _ribbonHelper.Extent = MainControl.Content is IExtentNavigationGuest extentNavigationGuest ? extentNavigationGuest.Extent : null;
-            
             _ribbonHelper.EvaluateExtensions(viewExtensions);
+            
+            // And on the guest
+            guest?.EvaluateViewExtensions(viewExtensions);
 
             void OpenLog()
             {

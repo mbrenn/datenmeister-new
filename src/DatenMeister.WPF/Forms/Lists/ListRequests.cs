@@ -62,7 +62,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             var viewDefinition = new ViewDefinition("Workspaces", formElement)
             {
-                TabViewExtensions = form =>
+                TabViewExtensionsFunction = form =>
                 {
                     var result = new List<ViewExtension>
                     {
@@ -138,7 +138,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             var viewDefinition = new ViewDefinition("Extents", result)
             {
-                TabViewExtensions = (form) => new List<ViewExtension>
+                TabViewExtensionsFunction = (form) => new List<ViewExtension>
                 {
                     new RowItemButtonDefinition("Show Items", ShowItems, ItemListViewControl.ButtonPosition.Before),
                     new RowItemButtonDefinition("Delete", DeleteExtent)

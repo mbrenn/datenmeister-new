@@ -69,5 +69,15 @@ namespace DatenMeister.WPF.Windows
         {
             return new ViewExtension[] { };
         }
+        
+        /// <summary>
+        /// Evaluates the given view extensions.
+        /// Currently, the TreeViewWindow does not support viewextensions
+        /// </summary>
+        /// <param name="viewExtensions">Viewextensions being evaluated</param>
+        public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
+        {
+            
+        }
     }
 }

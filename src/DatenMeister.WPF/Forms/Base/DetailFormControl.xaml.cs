@@ -209,22 +209,6 @@ namespace DatenMeister.WPF.Forms.Base
                     NavigationCategories.File);
             }
 
-            // Get the view extensions by the plugins
-            var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var data = new ViewExtensionTargetInformation(ViewExtensionContext.Detail)
-            {
-                NavigationGuest = this,
-                NavigationHost = NavigationHost
-            };
-
-            foreach (var plugin in viewExtensionPlugins)
-            {
-                foreach (var extension in plugin.GetViewExtensions(data))
-                {
-                    yield return extension;
-                }
-            }
-
             // Local methods for the buttons
             void ViewConfig()
             {

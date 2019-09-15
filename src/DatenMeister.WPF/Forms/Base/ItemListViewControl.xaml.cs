@@ -152,8 +152,132 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
-            foreach (var ribbon in ViewExtensions.OfType<NavigationButtonDefinition>())
-                yield return ribbon;
+            // Clears the info lines
+            void ViewExtent(IReflectiveCollection items)
+            {
+                var dlg = new ItemXmlViewWindow
+                {
+                    Owner = Window.GetWindow(this)
+                };
+                dlg.UpdateContent(items);
+                dlg.ShowDialog();
+            }
+
+            void ShowFormDefinition()
+            {
+                var dlg = new ItemXmlViewWindow
+                {
+                    /*SupportWriting = true,*/
+                    Owner = Window.GetWindow(this)
+                };
+                dlg.UpdateContent(CurrentFormDefinition);
+
+                dlg.UpdateButtonPressed += (x, y) =>
+                {
+                    var temporaryExtent = InMemoryProvider.TemporaryExtent;
+                    var factory = new MofFactory(temporaryExtent);
+                    CurrentFormDefinition = dlg.GetCurrentContentAsMof(factory);
+                };
+
+                dlg.ShowDialog();
+            }
+
+            void CopyForm()
+            {
+                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                var target = viewLogic.GetUserViewExtent();
+                var copier = new ObjectCopier(new MofFactory(target));
+
+                var copiedForm = copier.Copy(CurrentFormDefinition);
+                target.elements().add(copiedForm);
+
+                NavigatorForItems.NavigateToElementDetailView(NavigationHost, copiedForm);
+            }
+
+            void ExportToCSV(IReflectiveCollection items)
+            {
+                try
+                {
+                    var dlg = new SaveFileDialog
+                    {
+                        DefaultExt = "csv",
+                        Filter = "CSV-Files|*.csv|All Files|*.*"
+                    };
+                    if (dlg.ShowDialog(Window.GetWindow(this)) == true)
+                    {
+                        var loader = new CSVLoader(GiveMe.Scope.Resolve<IWorkspaceLogic>());
+                        var memoryProvider = new InMemoryProvider();
+                        var temporary = new MofUriExtent(memoryProvider, "datenmeister:///temp");
+                        var copier = new ExtentCopier(new MofFactory(temporary));
+                        copier.Copy(Items, temporary.elements());
+
+                        loader.Save(
+                            memoryProvider,
+                            dlg.FileName,
+                            new CSVSettings());
+
+                        MessageBox.Show($"CSV Export completed. \r\n{temporary.elements().Count()} Items exported.");
+                    }
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show($"Export failed\r\n{exc}");
+                }
+            }
+
+            void CopyContent(IReflectiveCollection items)
+            {
+                var copyContent = new CopyToClipboardCommand(this);
+                copyContent.Execute(CopyType.Default);
+            }
+
+            void CopyContentAsXmi(IReflectiveCollection items)
+            {
+                var copyContent = new CopyToClipboardCommand(this);
+                copyContent.Execute(CopyType.AsXmi);
+            }
+
+            yield return
+                new RowItemButtonDefinition(
+                    "Edit",
+                    NavigateToElement,
+                    ButtonPosition.Before);
+
+            yield return
+                new CollectionMenuButtonDefinition(
+                    "Extent as XMI",
+                    ViewExtent,
+                    null,
+                    NavigationCategories.File + ".Views");
+
+            yield return
+                new CollectionMenuButtonDefinition(
+                    "Export CSV",
+                    ExportToCSV,
+                    Icons.ExportCSV,
+                    NavigationCategories.File + ".Export");
+
+            yield return
+                new CollectionMenuButtonDefinition(
+                    "Copy",
+                    CopyContent,
+                    null,
+                    NavigationCategories.File + ".Copy");
+
+            yield return
+                new CollectionMenuButtonDefinition(
+                    "Copy as XMI",
+                    CopyContentAsXmi,
+                    null,
+                    NavigationCategories.File + ".Copy");
+
+
+            /*foreach (var ribbon in ViewExtensions.OfType<NavigationButtonDefinition>())
+                yield return ribbon;*/
+        }
+
+        public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
+        {
         }
 
         /// <summary>
@@ -194,7 +318,9 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Updates the content by going through the fields and items
         /// </summary>
-        public void SetContent(IReflectiveCollection items, IObject formDefinition,
+        public void SetContent(
+            IReflectiveCollection items, 
+            IObject formDefinition,
             ICollection<ViewExtension> viewExtensions)
         {
             _viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
@@ -209,8 +335,7 @@ namespace DatenMeister.WPF.Forms.Base
             Items = FilterItems(items, formDefinition);
 
             CurrentFormDefinition = formDefinition;
-            ViewExtensions = viewExtensions.ToList();
-            IncludeStandardExtensions();
+            ViewExtensions = viewExtensions.ToList(); // ViewExtensions are stored to be used later in UpdateColumnDefinitions
             UpdateContent();
         }
 
@@ -569,131 +694,6 @@ namespace DatenMeister.WPF.Forms.Base
         {
             _searchText = SearchField.Text;
             UpdateContent();
-        }
-
-        /// <summary>
-        ///     Prepares the navigation and ribbons
-        /// </summary>
-        public void IncludeStandardExtensions()
-        {
-            // Clears the info lines
-            void ViewExtent(IReflectiveCollection items)
-            {
-                var dlg = new ItemXmlViewWindow
-                {
-                    Owner = Window.GetWindow(this)
-                };
-                dlg.UpdateContent(items);
-                dlg.ShowDialog();
-            }
-
-            void ShowFormDefinition()
-            {
-                var dlg = new ItemXmlViewWindow
-                {
-                    /*SupportWriting = true,*/
-                    Owner = Window.GetWindow(this)
-                };
-                dlg.UpdateContent(CurrentFormDefinition);
-
-                dlg.UpdateButtonPressed += (x, y) =>
-                {
-                    var temporaryExtent = InMemoryProvider.TemporaryExtent;
-                    var factory = new MofFactory(temporaryExtent);
-                    CurrentFormDefinition = dlg.GetCurrentContentAsMof(factory);
-                };
-
-                dlg.ShowDialog();
-            }
-
-            void  CopyForm()
-            {
-                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-                var target = viewLogic.GetUserViewExtent();
-                var copier = new ObjectCopier(new MofFactory(target));
-
-                var copiedForm = copier.Copy(CurrentFormDefinition);
-                target.elements().add(copiedForm);
-
-                NavigatorForItems.NavigateToElementDetailView(NavigationHost, copiedForm);
-            }
-
-            void ExportToCSV(IReflectiveCollection items)
-            {
-                try
-                {
-                    var dlg = new SaveFileDialog
-                    {
-                        DefaultExt = "csv",
-                        Filter = "CSV-Files|*.csv|All Files|*.*"
-                    };
-                    if (dlg.ShowDialog(Window.GetWindow(this)) == true)
-                    {
-                        var loader = new CSVLoader(GiveMe.Scope.Resolve<IWorkspaceLogic>());
-                        var memoryProvider = new InMemoryProvider();
-                        var temporary = new MofUriExtent(memoryProvider, "datenmeister:///temp");
-                        var copier = new ExtentCopier(new MofFactory(temporary));
-                        copier.Copy(Items, temporary.elements());
-
-                        loader.Save(
-                            memoryProvider,
-                            dlg.FileName,
-                            new CSVSettings());
-
-                        MessageBox.Show($"CSV Export completed. \r\n{temporary.elements().Count()} Items exported.");
-                    }
-                }
-                catch (Exception exc)
-                {
-                    MessageBox.Show($"Export failed\r\n{exc}");
-                }
-            }
-
-            void CopyContent(IReflectiveCollection items)
-            {
-                var copyContent = new CopyToClipboardCommand(this);
-                copyContent.Execute(CopyType.Default);
-            }
-
-            void CopyContentAsXmi(IReflectiveCollection items)
-            {
-                var copyContent = new CopyToClipboardCommand(this);
-                copyContent.Execute(CopyType.AsXmi);
-            }
-
-            ViewExtensions.Add(
-                new RowItemButtonDefinition(
-                    "Edit",
-                    NavigateToElement,
-                    ButtonPosition.Before));
-
-            ViewExtensions.Add(
-                new CollectionMenuButtonDefinition(
-                    "Extent as XMI",
-                    ViewExtent,
-                    null,
-                    NavigationCategories.File + ".Views"));
-
-            ViewExtensions.Add(
-                new CollectionMenuButtonDefinition(
-                    "Export CSV",
-                    ExportToCSV,
-                    Icons.ExportCSV,
-                    NavigationCategories.File + ".Export"));
-
-            ViewExtensions.Add(
-                new CollectionMenuButtonDefinition(
-                    "Copy",
-                    CopyContent,
-                    null,
-                    NavigationCategories.File + ".Copy"));
-
-            ViewExtensions.Add(
-                new CollectionMenuButtonDefinition(
-                    "Copy as XMI",
-                    CopyContentAsXmi,
-                    null,
-                    NavigationCategories.File + ".Copy"));
         }
 
         /// <summary>

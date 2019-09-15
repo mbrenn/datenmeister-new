@@ -45,7 +45,7 @@ namespace DatenMeister.WPF.Windows
         public event EventHandler<ItemEventArgs> Cancelled;
 
         /// <summary>
-        /// Stores the value whether the  saved or cancelled event is already thrown. 
+        /// Stores the value whether the saved or cancelled event is already thrown. 
         /// This information is used to decide whether to throw an event when user closes the dialogue
         /// </summary>
         private bool _finalEventsThrown;
@@ -104,21 +104,59 @@ namespace DatenMeister.WPF.Windows
         }
 
         /// <summary>
-        ///     Rebuild the complete navigation
+        /// Opens the form by creating the inner dialog
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="viewDefinition"></param>
+        /// <param name="container">Container being used when the item is added</param>
+        public void SetContent(IObject element, ViewDefinition viewDefinition, IReflectiveCollection container = null)
+        {
+            DetailElement = element ?? InMemoryObject.CreateEmpty();
+            DetailElementContainer = container;
+            _viewDefinition = viewDefinition;
+
+            CreateDetailForm();
+        }
+
+        /// <summary>
+        /// Rebuilds the navigation by going through all view extensions
         /// </summary>
         public void RebuildNavigation()
         {
-            var detailForm = MainContent?.Content as DetailFormControl;
-            var extensions = GetDefaultExtension();
-            var otherExtensions = detailForm?.GetViewExtensions();
+            var navigationGuest = MainContent?.Content as INavigationGuest;
+            
+            // 1) Ask myself
+            var extensions = GetDefaultExtension().ToList();
+            
+            // 2) Ask the navigation guest
+            var otherExtensions = navigationGuest?.GetViewExtensions();
             if (otherExtensions != null)
             {
-                extensions = extensions.Union(otherExtensions);
+                extensions.AddRange(otherExtensions);
             }
 
-            var extensionList = extensions.ToList();
-            detailForm?.EvaluateViewExtensions(extensionList);
+            // 3) Ask the plugin
+            var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
+            var data = new ViewExtensionTargetInformation(ViewExtensionContext.Detail)
+            {
+                NavigationGuest = navigationGuest,
+                NavigationHost = this
+            };
 
+            foreach (var plugin in viewExtensionPlugins)
+            {
+                foreach (var extension in plugin.GetViewExtensions(data))
+                {
+                    extensions.Add(extension);
+                }
+            }
+
+            // Now navigation guest and the window itself can work upon the view extensions
+            // The navigation guest gets a chance for the views 
+            var extensionList = extensions.ToList();
+            navigationGuest?.EvaluateViewExtensions(extensionList);
+
+            // The menuhelper itself is asked to work upon the view
             MenuHelper.Item = DetailElement;
             MenuHelper.ShowApplicationItems = false;
             MenuHelper.EvaluateExtensions(extensionList);
@@ -268,29 +306,12 @@ namespace DatenMeister.WPF.Windows
         }
 
         /// <summary>
-        /// Opens the form by creating the inner dialog
-        /// </summary>
-        /// <param name="element"></param>
-        /// <param name="viewDefinition"></param>
-        public void SetContent(IObject element, ViewDefinition viewDefinition, IReflectiveCollection container = null)
-        {
-            DetailElement = element ?? InMemoryObject.CreateEmpty();
-            DetailElementContainer = container;
-            _viewDefinition = viewDefinition;
-            
-            UpdateActualViewDefinition();
-
-            CreateDetailForm();
-        }
-
-        /// <summary>
         /// Sets the form and updates the content of the detail form
         /// </summary>
         /// <param name="formDefinition"></param>
         public void SetForm(IElement formDefinition)
         {
             _viewDefinition = new ViewDefinition(formDefinition);
-            UpdateActualViewDefinition();
             CreateDetailForm();
         }
 
@@ -306,10 +327,11 @@ namespace DatenMeister.WPF.Windows
         }
 
         /// <summary>
-        /// Creates the detailform matching to the given effective form
+        /// Creates the detailform matching to the given effective form as set by the effective Form
         /// </summary>
         private void CreateDetailForm()
         {
+            QueryEffectiveForm();
             if (EffectiveForm != null)
             {
                 var control = new DetailFormControl
@@ -328,13 +350,15 @@ namespace DatenMeister.WPF.Windows
                 {
                     Title = title;
                 }
+                
+                RebuildNavigation();
             }
         }
         
         /// <summary>
         /// Sets the effective form by using the viewdefinition
         /// </summary>
-        private void UpdateActualViewDefinition()
+        private void QueryEffectiveForm()
         {
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
 

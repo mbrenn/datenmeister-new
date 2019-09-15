@@ -71,7 +71,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Gets or sets the function that will receive a list of view extensions dependent on the form for the tab being used
         /// This function is called by the ItemExplorerControl to figure the valid extensions
         /// </summary>
-        public Func<IElement, IEnumerable<ViewExtension>> TabViewExtensions { get; set; }
+        public Func<IElement, IEnumerable<ViewExtension>> TabViewExtensionsFunction { get; set; }
 
         public ViewDefinition(ViewDefinitionMode mode) : this (null, null, mode)
         {   

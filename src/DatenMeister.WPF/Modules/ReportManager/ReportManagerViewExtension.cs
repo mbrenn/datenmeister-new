@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using BurnSystems;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.HtmlReporter.Formatter;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
@@ -21,9 +22,9 @@ namespace DatenMeister.WPF.Modules.ReportManager
             && viewExtensionTargetInformation.NavigationGuest is DetailFormControl detailFormControl)
             {
                 yield return 
-                    new ApplicationMenuButtonDefinition(
+                    new ItemMenuButtonDefinition(
                         "As Html",
-                        () => CreateReportForDetailElement(detailFormControl),
+                        (x) => CreateReportForDetailElement(detailFormControl, x),
                         null,
                         "Report"
                     );
@@ -42,10 +43,15 @@ namespace DatenMeister.WPF.Modules.ReportManager
             }
         }
 
+        /// <summary>
+        /// Creates the report for the currently selected element 
+        /// </summary>
+        /// <param name="explorerControl">The explorer control being used</param>
+        /// <param name="selectedItem">Defines the item that is selected</param>
         private void CreateReportForExplorerView(ItemExplorerControl explorerControl)
         {
             var collection = explorerControl.SelectedItems;
-            var form = explorerControl.CurrentForm;
+            var form = explorerControl.EffectiveForm;
             var id = StringManipulation.RandomString(10);
             var tmpPath = Path.Combine(Path.GetTempPath(), id + ".html");
             
@@ -61,17 +67,17 @@ namespace DatenMeister.WPF.Modules.ReportManager
             Process.Start(tmpPath);
         }
 
-        private void CreateReportForDetailElement(DetailFormControl detailFormControl)
+        private void CreateReportForDetailElement(DetailFormControl detailFormControl, IObject selectedItem)
         {
             var id = StringManipulation.RandomString(10);
             var tmpPath = Path.Combine(Path.GetTempPath(), id + ".html");
             
             using (var report = new HtmlReport(tmpPath))
             {
-                report.StartReport("Detail: " + detailFormControl.DetailElement);
+                report.StartReport("Detail: " + selectedItem);
                 report.Add(new HtmlHeadline("Detail Information", 1));
                 var itemFormatter = new ItemFormatter(report);
-                itemFormatter.FormatItem(detailFormControl.DetailElement, detailFormControl.EffectiveForm);
+                itemFormatter.FormatItem(selectedItem, detailFormControl.EffectiveForm);
                 report.EndReport();
             }
 

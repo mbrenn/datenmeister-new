@@ -18,7 +18,7 @@ namespace DatenMeister.WPF.Forms.Base
     /// <summary>
     /// Interaktionslogik für ItemsTreeView.xaml
     /// </summary>
-    public partial class ItemsTreeView : UserControl
+    public partial class ItemsTreeView : UserControl, INavigationGuest
     {
         private IReflectiveCollection _itemsSource;
 
@@ -177,8 +177,6 @@ namespace DatenMeister.WPF.Forms.Base
                 return;
             }
 
-            SetMenuItemsForContextMenu();
-
             var model = new List<TreeViewItem>();
 
             _newSelectedItem = null;
@@ -229,27 +227,6 @@ namespace DatenMeister.WPF.Forms.Base
                 _newSelectedItem.BringIntoView();
             }
         }
-
-        /// <summary>
-        /// Sets the menu items for the context menu
-        /// </summary>
-        private void SetMenuItemsForContextMenu()
-        {
-            var menuItems = new List<MenuItem>();
-            foreach (var extension in ViewExtensions.OfType<TreeViewItemCommandDefinition>())
-            {
-                var menuItem = new MenuItem
-                {
-                    Header = extension.Text
-                };
-                menuItem.Click += (x, y) => extension.Action(SelectedElement);
-
-                menuItems.Add(menuItem);
-            }
-
-            ItemContextMenu.ItemsSource = menuItems;
-        }
-
 
         /// <summary>
         /// Creates the treeview item for the given item. 
@@ -465,8 +442,30 @@ namespace DatenMeister.WPF.Forms.Base
                     Action = _ => CopyTreeToClipboard_OnClick()
                 });
             }
+        }
 
-            SetMenuItemsForContextMenu();
+        public INavigationHost NavigationHost { get; set; }
+        
+        public IEnumerable<ViewExtension> GetViewExtensions()
+        {
+            return Array.Empty<ViewExtension>();
+        }
+
+        public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
+        {
+            var menuItems = new List<MenuItem>();
+            foreach (var extension in ViewExtensions.OfType<TreeViewItemCommandDefinition>())
+            {
+                var menuItem = new MenuItem
+                {
+                    Header = extension.Text
+                };
+                menuItem.Click += (x, y) => extension.Action(SelectedElement);
+
+                menuItems.Add(menuItem);
+            }
+
+            ItemContextMenu.ItemsSource = menuItems;
         }
     }
 }

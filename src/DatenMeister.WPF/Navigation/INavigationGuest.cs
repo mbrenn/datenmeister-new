@@ -23,6 +23,13 @@ namespace DatenMeister.WPF.Navigation
         /// host. 
         /// </summary>
         IEnumerable<ViewExtension> GetViewExtensions();
+
+        /// <summary>
+        /// Goes through all the given view extensions and performs the necessary evaluation like
+        /// creation of menus, context menus or other
+        /// </summary>
+        /// <param name="viewExtensions">View Extensions to be evaluated</param>
+        void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions);
     }
 
     /// <summary>

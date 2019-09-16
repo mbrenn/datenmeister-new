@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
 using BurnSystems.Logging;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Windows
 {
@@ -72,6 +73,15 @@ namespace DatenMeister.WPF.Windows
             {
                 tabName = categoryName.Substring(0, indexOfSemicolon);
                 groupName = categoryName.Substring(indexOfSemicolon + 1);
+            }
+
+            // If the main window is the datenmeister, then skip 
+            // this navigational element because the standard menu does not contain
+            // sufficient hierarchical depth
+            if (tabName == NavigationCategories.DatenMeister)
+            {
+                tabName = groupName;
+                groupName = null;
             }
 
             var tab = _menu.Items.OfType<MenuItem>().FirstOrDefault(x => x.Header?.ToString() == tabName);

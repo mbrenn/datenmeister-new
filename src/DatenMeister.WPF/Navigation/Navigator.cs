@@ -31,7 +31,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         public const string DatenMeister = "DatenMeister";
 
-        public const string Type = "Types";
+        public const string Type = "TypeManager";
 
         public const string Views = "Views";
 

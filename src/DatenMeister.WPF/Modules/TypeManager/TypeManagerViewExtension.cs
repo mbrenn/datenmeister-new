@@ -17,7 +17,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
             if (viewExtensionTargetInformation.NavigationHost != null)
             {
                 yield return new ApplicationMenuButtonDefinition(
-                    "View User Types",
+                    "Goto User Types",
                     () => NavigatorForItems.NavigateToItemsInExtent(
                         viewExtensionTargetInformation.NavigationHost,
                         WorkspaceNames.NameTypes,

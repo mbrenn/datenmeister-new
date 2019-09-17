@@ -37,7 +37,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                     "As Html",
                     (x) => CreateReportForExplorerView(viewControl, x),
                     null,
-                    "Item.Report")
+                    "Report")
                 {
                     IsTopCategoryFixed = true
                 };

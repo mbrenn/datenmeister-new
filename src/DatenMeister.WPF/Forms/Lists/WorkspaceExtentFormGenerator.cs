@@ -7,6 +7,7 @@ using System.Windows.Documents;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -30,12 +31,12 @@ using DatenMeister.WPF.Windows;
 
 namespace DatenMeister.WPF.Forms.Lists
 {
-    public static class ListRequests
+    public static class WorkspaceExtentFormGenerator
     {
         /// <summary>
         /// Defines the logger for the class
         /// </summary>
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(ListRequests));
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(WorkspaceExtentFormGenerator));
 
         /// <summary>
         /// Requests the form for the workspace
@@ -46,9 +47,6 @@ namespace DatenMeister.WPF.Forms.Lists
             // Finds the view
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             var formElement = viewLogic.GetInternalViewExtent().element($"#{ManagementViewDefinitions.IdWorkspaceListView}");
-            /*var formElement = NamedElementMethods.GetByFullName(
-                viewLogic.GetInternalViewExtent(),
-                ManagementViewDefinitions.PathWorkspaceListView);*/
 
             if (formElement == null)
             {
@@ -78,13 +76,34 @@ namespace DatenMeister.WPF.Forms.Lists
                     return result;
                 }
             };
+            
+            viewDefinition.ViewExtensions.Add(
+                new ItemMenuButtonDefinition(
+                    "Add Workspace",
+                    NewWorkspace,
+                    "workspaces-new",
+                    NavigationCategories.DatenMeister + "." + "Workspaces"));
 
             viewDefinition.ViewExtensions.Add(
-                new TreeViewItemCommandDefinition(
-                    "New Workspace",
-                    (x) => { _ = NavigatorForWorkspaces.CreateNewWorkspace(navigationHost); }));
+                new ItemMenuButtonDefinition(
+                    "Open Workspace-Folder",
+                    (x) => NavigatorForWorkspaces.OpenFolder(navigationHost),
+                    null,
+                    NavigationCategories.DatenMeister + ".Workspaces"));
+
+            viewDefinition.ViewExtensions.Add(
+                new ItemMenuButtonDefinition(
+                    "Reset DatenMeister",
+                    (x) => NavigatorForWorkspaces.ResetDatenMeister(navigationHost),
+                    null,
+                    NavigationCategories.DatenMeister + ".Workspaces"));
 
             return viewDefinition;
+
+            void NewWorkspace(IObject workspaceObject)
+            {
+                _ = NavigatorForWorkspaces.CreateNewWorkspace(navigationHost);
+            }
 
             void ShowExtents(INavigationGuest navigationGuest, IObject workspace)
             {
@@ -148,38 +167,38 @@ namespace DatenMeister.WPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(
                 new TreeViewItemCommandDefinition(
                     "New Extent",
-                    (x) => { LoadExtent(); }));
+                    LoadExtent));
 
             viewDefinition.ViewExtensions.Add(
-                new ApplicationMenuButtonDefinition(
+                new ItemMenuButtonDefinition(
                     "New Xmi Extent",
                     NewXmiExtent,
                     null,
-                    NavigationCategories.DatenMeister + ".Workspaces"));
+                    NavigationCategories.DatenMeister + ".Extent"));
 
             viewDefinition.ViewExtensions.Add(
-                new ApplicationMenuButtonDefinition(
+                new ItemMenuButtonDefinition(
                     "Zip-Code Example",
                     AddZipCodeExample,
                     null,
-                    NavigationCategories.DatenMeister + ".Workspaces"));
+                    NavigationCategories.DatenMeister + ".Extent"));
 
             viewDefinition.ViewExtensions.Add(
-                new ApplicationMenuButtonDefinition(
+                new ItemMenuButtonDefinition(
                     "Import Excel",
                     ImportFromExcel,
                     Icons.ImportExcel,
                     NavigationCategories.DatenMeister + ".Import"));
 
             viewDefinition.ViewExtensions.Add(
-                new ApplicationMenuButtonDefinition(
+                new ItemMenuButtonDefinition(
                     "Import from XMI",
                     ImportFromXmi,
                     Icons.ImportExcel,
                     NavigationCategories.DatenMeister + ".Import"));
 
             viewDefinition.ViewExtensions.Add(
-                new ApplicationMenuButtonDefinition(
+                new ItemMenuButtonDefinition(
                     "Load Extent",
                     LoadExtent,
                     Icons.ImportExcel,
@@ -215,23 +234,23 @@ namespace DatenMeister.WPF.Forms.Lists
                 }
             }
 
-            async void ImportFromExcel()
+            async void ImportFromExcel(IObject collection)
             {
                 await NavigatorForExcelHandling.ImportFromExcel(navigationHost, workspaceId);
             }
 
-            void NewXmiExtent()
+            void NewXmiExtent(IObject item)
             {
                 _ = NavigatorForItems.NavigateToNewXmiExtentDetailView(navigationHost, workspaceId);
             }
 
-            void AddZipCodeExample()
+            void AddZipCodeExample(IObject item)
             {
                 var zipCodeExampleManager = GiveMe.Scope.Resolve<ZipCodeExampleManager>();
                 zipCodeExampleManager.AddZipCodeExample(workspaceId);
             }
 
-            void ImportFromXmi()
+            void ImportFromXmi(IObject item)
             {
                 var dlg = new ImportExtentDlg
                 {
@@ -265,7 +284,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     uri);
             }
 
-            async void LoadExtent()
+            async void LoadExtent(IObject item)
             {
                 var extentLoaderConfig = await QueryExtentConfigurationByUserAsync(navigationHost);
                 if (extentLoaderConfig != null)

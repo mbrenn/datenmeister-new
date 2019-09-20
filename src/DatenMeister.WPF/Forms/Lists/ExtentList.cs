@@ -65,7 +65,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             if (IsExtentSelectedInTreeview)
             {
-                var viewDefinition = ListRequests.RequestFormForExtents(_extent, WorkspaceId, NavigationHost);
+                var viewDefinition = WorkspaceExtentFormGenerator.RequestFormForExtents(_extent, WorkspaceId, NavigationHost);
 
                 EvaluateForm(
                     SelectedItems,

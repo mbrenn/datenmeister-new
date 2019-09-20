@@ -101,7 +101,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
             async void ImportNewExtent()
             {
-                var result = await ListRequests.QueryExtentConfigurationByUserAsync(viewExtensionTargetInformation.NavigationHost);
+                var result = await WorkspaceExtentFormGenerator.QueryExtentConfigurationByUserAsync(viewExtensionTargetInformation.NavigationHost);
                 if (result == null)
                 {
                     return;

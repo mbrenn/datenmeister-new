@@ -23,7 +23,7 @@ namespace DatenMeister.WPF.Forms.Base
     ///     Interaktionslogik für ItemBrowser.xaml
     /// </summary>
     public partial class ItemExplorerControl : UserControl, 
-        INavigationGuest, ICanUnregister, IExtentNavigationGuest, ICollectionNavigationGuest
+        INavigationGuest, ICanUnregister, IExtentNavigationGuest, ICollectionNavigationGuest, IItemNavigationGuest
     {
         /// <summary>
         ///     Stores the information about the active tab controls
@@ -363,5 +363,7 @@ namespace DatenMeister.WPF.Forms.Base
         public IExtent Extent => _extent;
         
         public IReflectiveCollection Collection => Items;
+
+        public IObject Item => SelectedPackage ?? Extent;
     }
 }

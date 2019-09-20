@@ -43,7 +43,9 @@ namespace DatenMeisterWPF
             InitializeComponent();
             _ribbonHelper = new RibbonHelper(
                 this, 
-                NavigationScope.Application | NavigationScope.Extent);
+                NavigationScope.Application | 
+                NavigationScope.Extent |
+                NavigationScope.Item);
         }
 
         private async void Window_Initialized(object sender, EventArgs e)

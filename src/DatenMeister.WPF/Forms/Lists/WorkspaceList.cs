@@ -46,11 +46,11 @@ namespace DatenMeister.WPF.Forms.Lists
                 && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
             {
                 var workspaceId = SelectedPackage.get("id")?.ToString();
-                view = ListRequests.RequestFormForExtents(_extent, workspaceId, NavigationHost);
+                view = WorkspaceExtentFormGenerator.RequestFormForExtents(_extent, workspaceId, NavigationHost);
             }
             else
             {
-                view = ListRequests.RequestFormForWorkspaces(_extent, NavigationHost);
+                view = WorkspaceExtentFormGenerator.RequestFormForWorkspaces(_extent, NavigationHost);
             }
 
             PrepareNavigation(view);
@@ -65,32 +65,6 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <param name="viewDefinition">Definition of the view</param>
         private void PrepareNavigation(ViewDefinition viewDefinition)
         {
-            void NewWorkspace()
-            {
-                _ = NavigatorForWorkspaces.CreateNewWorkspace(NavigationHost);
-            }
-
-            viewDefinition.ViewExtensions.Add(
-                new ApplicationMenuButtonDefinition(
-                    "Add Workspace",
-                    NewWorkspace,
-                    "workspaces-new",
-                    NavigationCategories.DatenMeister + "." + "Workspaces"));
-
-            viewDefinition.ViewExtensions.Add(
-                new ApplicationMenuButtonDefinition(
-                    "Open Workspace-Folder",
-                    () => NavigatorForWorkspaces.OpenFolder(NavigationHost),
-                    null,
-                    NavigationCategories.DatenMeister + ".Workspaces"));
-
-            viewDefinition.ViewExtensions.Add(
-                new ApplicationMenuButtonDefinition(
-                    "Reset DatenMeister",
-                    () => NavigatorForWorkspaces.ResetDatenMeister(NavigationHost),
-                    null,
-                    NavigationCategories.DatenMeister + ".Workspaces"));
-
             viewDefinition.ViewExtensions.Add(
                 new InfoLineDefinition(() => new TextBlock
                 {

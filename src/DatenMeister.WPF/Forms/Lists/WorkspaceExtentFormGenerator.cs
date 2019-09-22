@@ -7,7 +7,6 @@ using System.Windows.Documents;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -301,7 +300,6 @@ namespace DatenMeister.WPF.Forms.Lists
                         Logger.Warn($"User failed to create extent via general dialog: {exc.Message}");
                         MessageBox.Show(exc.Message);
                     }
-
                 }
             }
         }

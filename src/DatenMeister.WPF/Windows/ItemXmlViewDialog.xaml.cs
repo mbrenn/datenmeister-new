@@ -81,9 +81,12 @@ namespace DatenMeister.WPF.Windows
 
         public void UpdateContent()
         {
-            var converter = new XmlConverter();
-            converter.SkipIds = IgnoreIDs.IsChecked == true;
-            if ( _usedReflectiveCollection != null )
+            var converter = new XmlConverter
+            {
+                SkipIds = IgnoreIDs.IsChecked == true
+            };
+
+            if (_usedReflectiveCollection != null)
             {
                 var element = converter.ConvertToXml(_usedReflectiveCollection);
                 XmlTextField.Text = element.ToString();

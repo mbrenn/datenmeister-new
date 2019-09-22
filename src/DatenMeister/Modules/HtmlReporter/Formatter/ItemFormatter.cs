@@ -39,60 +39,66 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
             var tabs = extentForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
             if (tabs == null)
             {
-                _logger.Warn("The given extent form does not have a tabulator");
+                FormatCollectionByTab(collection, extentForm);
                 return;
             }
 
             foreach (var tab in tabs.OfType<IObject>())
             {
-                var table = new HtmlTable();
-                var fields = tab.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field);
+                FormatCollectionByTab(collection, tab);
+            }
+        }
 
-                if (fields == null)
+        private void FormatCollectionByTab(IEnumerable<object> collection, IObject tab)
+        {
+            var table = new HtmlTable();
+            var fields = tab.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field);
+
+            if (fields == null)
+            {
+                _logger.Warn("The given tabulator does not contain fields");
+                return;
+            }
+
+            // Adds the fields that will be added to the table as the headline
+            var listFields = new List<HtmlElement>();
+            foreach (var field in fields.OfType<IObject>())
+            {
+                var fieldName = field.getOrDefault<string>(_FormAndFields._FieldData.name);
+                if (fieldName == null)
                 {
-                    _logger.Warn("The given tabulator does not contain fields");
                     continue;
                 }
 
-                // Adds the fields that will be added to the table as the headline
-                var listFields = new List<HtmlElement>();
-                foreach (var field in fields.OfType<IObject>())
+                listFields.Add(
+                    new HtmlTableCell(field.getOrDefault<string>(_FormAndFields._FieldData.title) ?? "unset")
+                        {IsHeading = true});
+            }
+
+            table.AddRow(listFields.ToArray());
+
+            // Now go through the items and show them
+            foreach (var item in collection.OfType<IObject>())
+            {
+                listFields.Clear();
+                foreach (var field in fields.OfType<IElement>())
                 {
                     var fieldName = field.getOrDefault<string>(_FormAndFields._FieldData.name);
                     if (fieldName == null)
                     {
                         continue;
                     }
-                    
-                    listFields.Add(
-                        new HtmlTableCell(field.getOrDefault<string>(_FormAndFields._FieldData.title) ?? "unset") { IsHeading = true });
-                }
-                
-                table.AddRow(listFields.ToArray());
-               
-                // Now go through the items and show them
-                foreach (var item in collection.OfType<IObject>())
-                {
-                    listFields.Clear();
-                    foreach (var field in fields.OfType<IElement>())
-                    {
-                        var fieldName = field.getOrDefault<string>(_FormAndFields._FieldData.name);
-                        if (fieldName == null)
-                        {
-                            continue;
-                        }
-                        
-                        var value = (HtmlElement) item.getOrDefault<string>(fieldName)
-                                    ?? new HtmlRawString("<i>unset</i>");
-                        
-                        listFields.Add(new HtmlTableCell(value));
-                    }
 
-                    table.AddRow(listFields.ToArray());
+                    var value = (HtmlElement) item.getOrDefault<string>(fieldName)
+                                ?? new HtmlRawString("<i>unset</i>");
+
+                    listFields.Add(new HtmlTableCell(value));
                 }
-                
-                _htmlEngine.Add(table);
+
+                table.AddRow(listFields.ToArray());
             }
+
+            _htmlEngine.Add(table);
         }
 
         /// <summary>

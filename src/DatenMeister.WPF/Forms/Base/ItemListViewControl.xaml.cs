@@ -153,13 +153,14 @@ namespace DatenMeister.WPF.Forms.Base
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
             // Clears the info lines
-            void ViewExtent(IReflectiveCollection items)
+            void ViewExtent(IExtent extent)
             {
                 var dlg = new ItemXmlViewWindow
                 {
                     Owner = Window.GetWindow(this)
                 };
-                dlg.UpdateContent(items);
+                
+                dlg.UpdateContent(extent.elements());
                 dlg.ShowDialog();
             }
 
@@ -203,6 +204,7 @@ namespace DatenMeister.WPF.Forms.Base
                         DefaultExt = "csv",
                         Filter = "CSV-Files|*.csv|All Files|*.*"
                     };
+                    
                     if (dlg.ShowDialog(Window.GetWindow(this)) == true)
                     {
                         var loader = new CSVLoader(GiveMe.Scope.Resolve<IWorkspaceLogic>());
@@ -227,14 +229,12 @@ namespace DatenMeister.WPF.Forms.Base
 
             void CopyContent(IReflectiveCollection items)
             {
-                var copyContent = new CopyToClipboardCommand(this);
-                copyContent.Execute(CopyType.Default);
+                CopyToClipboardCommand.Execute(this, CopyType.Default);
             }
 
             void CopyContentAsXmi(IReflectiveCollection items)
             {
-                var copyContent = new CopyToClipboardCommand(this);
-                copyContent.Execute(CopyType.AsXmi);
+                CopyToClipboardCommand.Execute(this, CopyType.AsXmi);
             }
 
             yield return
@@ -244,32 +244,32 @@ namespace DatenMeister.WPF.Forms.Base
                     ButtonPosition.Before);
 
             yield return
-                new CollectionMenuButtonDefinition(
-                    "Extent as XMI",
+                new ExtentMenuButtonDefinition(
+                    "View as Xmi",
                     ViewExtent,
                     null,
-                    NavigationCategories.DatenMeister + ".Views");
+                    "Collection");
 
             yield return
                 new CollectionMenuButtonDefinition(
                     "Export CSV",
                     ExportToCSV,
                     Icons.ExportCSV,
-                    NavigationCategories.DatenMeister + ".Export");
+                    "Collection");
 
             yield return
                 new CollectionMenuButtonDefinition(
                     "Copy",
                     CopyContent,
                     null,
-                    NavigationCategories.DatenMeister + ".Copy");
+                    "Selection");
 
             yield return
                 new CollectionMenuButtonDefinition(
                     "Copy as XMI",
                     CopyContentAsXmi,
                     null,
-                    NavigationCategories.DatenMeister + ".Copy");
+                    "Selection");
             
             // 3) Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
@@ -728,8 +728,7 @@ namespace DatenMeister.WPF.Forms.Base
 
         private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            var copyContent = new CopyToClipboardCommand(this);
-            copyContent.Execute(CopyType.Default);
+            CopyToClipboardCommand.Execute(this, CopyType.Default);
         }
 
         /// <summary>
@@ -833,7 +832,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        ///     Adds a fast filter to the current view
+        /// Adds a fast filter to the current view
         /// </summary>
         /// <param name="fastFilter">Fast filter to be stored</param>
         private void AddFastFilter(IObject fastFilter)

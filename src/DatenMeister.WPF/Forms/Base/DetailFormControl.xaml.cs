@@ -236,8 +236,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var inMemory = InMemoryObject.CreateEmpty(element.GetExtentOf());
                 StoreDialogContentIntoElement(inMemory);
 
-                var copyContent = new CopyToClipboardCommand(inMemory);
-                copyContent.Execute(CopyType.Default);
+                CopyToClipboardCommand.Execute(inMemory, CopyType.Default);
             }
 
             void CopyContentAsXmi(IObject element)
@@ -245,8 +244,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var inMemory = InMemoryObject.CreateEmpty(element.GetExtentOf());
                 StoreDialogContentIntoElement(inMemory);
 
-                var copyContent = new CopyToClipboardCommand(inMemory);
-                copyContent.Execute(CopyType.AsXmi);
+                CopyToClipboardCommand.Execute(inMemory, CopyType.AsXmi);
             }
 
             void PasteContent(IObject element)
@@ -709,7 +707,7 @@ namespace DatenMeister.WPF.Forms.Base
 
         private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            new CopyToClipboardCommand(this).Execute(CopyType.Default);
+            CopyToClipboardCommand.Execute(this, CopyType.Default);
         }
 
         public class ViewEventArgs : EventArgs

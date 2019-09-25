@@ -207,6 +207,11 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
         /// <summary>
+        /// Stores the cached form and fields
+        /// </summary>
+        private _FormAndFields _cachedFormAndField;
+        
+        /// <summary>
         /// Gets the form and field instance which contains the references to 
         /// the metaclasses
         /// </summary>
@@ -214,8 +219,15 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns></returns>
         public _FormAndFields GetFormAndFieldInstance(IExtent viewExtent = null)
         {
+            if (_cachedFormAndField != null)
+            {
+                return _cachedFormAndField;
+            }
+            
             viewExtent = viewExtent ?? GetUserViewExtent();
-            return _workspaceLogic.GetWorkspaceOfExtent(viewExtent).GetFromMetaWorkspace<_FormAndFields>();
+            _cachedFormAndField =
+                _workspaceLogic.GetWorkspaceOfExtent(viewExtent).GetFromMetaWorkspace<_FormAndFields>();
+            return _cachedFormAndField;
         }
 
         public IElement GetDetailForm(IObject element, IExtent extent, ViewDefinitionMode viewDefinitionMode)

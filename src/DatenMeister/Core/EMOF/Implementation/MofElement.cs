@@ -59,9 +59,19 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IElement metaclass => getMetaClass();
 
+        /// <summary>
+        /// Stores the cached metaclass to speed-up lookup
+        /// </summary>
+        private IElement _cachedMetaClass;
+
         /// <inheritdoc />
         public IElement getMetaClass()
         {
+            if (_cachedMetaClass != null)
+            {
+                return _cachedMetaClass;
+                
+            }
             var uri = ProviderObject.MetaclassUri;
             if (string.IsNullOrEmpty(uri))
             {
@@ -75,6 +85,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 result = new MofObjectShadow(uri);
             }
 
+            _cachedMetaClass = result;
             return result;
         }
 
@@ -101,7 +112,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="metaClass">Metaclass to be set</param>
         public void SetMetaClass(IElement metaClass)
-        {   
+        {
+            _cachedMetaClass = metaClass;
             var mofElement = (MofElement) metaClass;
             if (mofElement.Extent == null)
             {
@@ -119,6 +131,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="metaClassUri">Uri to be set</param>
         public void SetMetaClass(string metaClassUri)
         {
+            _cachedMetaClass = null;
             ProviderObject.MetaclassUri = metaClassUri;
             Extent?.ChangeEventManager?.SendChangeEvent(this);
         }

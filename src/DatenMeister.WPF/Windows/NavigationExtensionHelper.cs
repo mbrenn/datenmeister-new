@@ -16,6 +16,7 @@ namespace DatenMeister.WPF.Windows
         {
             NavigationScope = navigationScope;
         }
+        
         /// <summary>
         /// Defines the menuscope
         /// </summary>

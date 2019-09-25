@@ -15,7 +15,7 @@ namespace DatenMeister.Runtime.Workspaces
     /// MOF Facility Object Lifecycle (MOFFOL)
     /// </summary>
     /// <typeparam name="T">Type of the extents being handled</typeparam>
-    public class Workspace : IWorkspace, IObject, IUriResolver
+    public class Workspace : IWorkspace, IObject, IUriResolver, IObjectAllProperties
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(Workspace));
 
@@ -77,7 +77,6 @@ namespace DatenMeister.Runtime.Workspaces
                         yield return pluginExtent;
                     }
                 }
-
             }
         }
 
@@ -300,6 +299,11 @@ namespace DatenMeister.Runtime.Workspaces
             return !string.IsNullOrEmpty(annotation) 
                 ? $"({id}) {annotation}" 
                 : $"({id})";
+        }
+
+        public IEnumerable<string> getPropertiesBeingSet()
+        {
+            yield return "id";
         }
 
         public bool @equals(object other)

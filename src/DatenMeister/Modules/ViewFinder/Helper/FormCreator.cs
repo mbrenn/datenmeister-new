@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -115,6 +116,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <returns></returns>
         public IElement CreateDetailForm(IObject element, CreationMode creationMode = CreationMode.All)
         {
+            var cache = new FormCreatorCache();
             var createdForm = _factory.create(_formAndFields.__DetailForm);
             createdForm.set(_FormAndFields._DetailForm.name, "Item");
 
@@ -123,7 +125,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 createdForm.set(_FormAndFields._DetailForm.hideMetaInformation, true);
             }
 
-            AddToForm(createdForm, element, creationMode);
+            AddToForm(createdForm, element, creationMode, cache);
 
             return createdForm;
         }
@@ -172,6 +174,15 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             return CreateExtentForm(extent.elements(), creationMode);
         }
 
+        class FormCreatorCache
+        {
+            public bool MetaClassAlreadyAdded { get; set; }
+            
+            public HashSet<IElement> CoveredMetaClasses { get; } = new HashSet<IElement>();
+            
+            public HashSet<string> CoveredPropertyNames { get; } = new HashSet<string>();
+        }
+
         /// <summary>
         /// Creates the extent by parsing through all the elements and creation of fields
         /// </summary>
@@ -180,6 +191,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <returns></returns>
         public IElement CreateExtentForm(IReflectiveCollection elements, CreationMode creationMode)
         {
+            var cache = new FormCreatorCache();
+            
             if (elements == null) throw new ArgumentNullException(nameof(elements));
 
             var tabs = new List<IElement>();
@@ -211,7 +224,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                 foreach (var item in elementsWithoutMetaClass)
                 {
-                    AddToForm(form, item, creationMode);
+                    AddToForm(form, item, creationMode, cache);
                 }
 
                 tabs.Add(form);
@@ -257,6 +270,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <returns>The created list form </returns>
         public IElement CreateListForm(IReflectiveCollection elements, CreationMode creationMode)
         {
+            var cache = new FormCreatorCache();
+            
             var alreadyVisitedMetaClasses = new HashSet<IElement>();
 
             var result = _factory.create(_formAndFields.__ListForm);
@@ -277,7 +292,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 }
                 else if (creationMode.HasFlag(CreationMode.ByProperties))
                 {
-                    AddToForm(result, element, CreationMode.ByProperties);
+                    AddToForm(result, element, CreationMode.ByProperties, cache);
                 }
             }
 
@@ -309,7 +324,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <param name="form">Form which will be extended by the given object</param>
         /// <param name="item">Item being used</param>
         /// <param name="creationMode">Creation mode for the form. Whether by metaclass or ByProperties</param>
-        public void AddToForm(IElement form, object item, CreationMode creationMode)
+        private void AddToForm(IElement form, object item, CreationMode creationMode, FormCreatorCache cache)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
@@ -321,7 +336,15 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             if (creationMode.HasFlag(CreationMode.ByMetaClass)
                 && metaClass != null)
             {
-                wasInMetaClass = AddToFormByMetaclass(form, metaClass, creationMode);
+                if (!cache.CoveredMetaClasses.Contains(metaClass))
+                {
+                    cache.CoveredMetaClasses.Add(metaClass);
+                    wasInMetaClass = AddToFormByMetaclass(form, metaClass, creationMode);
+                }
+                else
+                {
+                    wasInMetaClass = true;
+                }
             }
 
             // Second phase: Get properties by the object itself
@@ -337,17 +360,22 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                  || (isOnlyPropertiesIfNoMetaClass && !wasInMetaClass))
                 && itemAsAllProperties != null)
             {
-                AddToFormByProperties(form, item, creationMode);
+                AddToFormByProperties(form, item, creationMode, cache);
             }
 
             // Third phase: Add metaclass element itself
             var isMetaClass = creationMode.HasFlag(CreationMode.AddMetaClass);
-            if (isMetaClass &&
+            if (!cache.MetaClassAlreadyAdded && 
+                isMetaClass &&
                 !form
                     .get<IReflectiveCollection>(_FormAndFields._Form.field)
                     .OfType<IElement>()
                     .Any(x => x.getMetaClass()?.@equals(_formAndFields.__MetaClassElementFieldData) ?? false))
             {
+                // Sets the information in cache, that the element was already added
+                cache.MetaClassAlreadyAdded = true;
+                
+                // Add the element itself
                 var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
                 form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(metaClassField);
             }
@@ -361,7 +389,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <param name="form">Form to be extended</param>
         /// <param name="item">Item to be evaluated</param>
         /// <param name="creationMode">The creation mode that is used</param>
-        private void AddToFormByProperties(IElement form, object item, CreationMode creationMode)
+        private void AddToFormByProperties(IElement form, object item, CreationMode creationMode, FormCreatorCache cache)
         {
             if (!(item is IObjectAllProperties itemAsAllProperties))
             {
@@ -372,7 +400,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             if (!(item is IObject itemAsObject))
             {
                 // The object cannot be converted and FormCreator does not support 
-                // non MOF OBjects
+                // non MOF Objects
                 return;
             }
 
@@ -381,6 +409,13 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             foreach (var property in properties)
             {
+                if (cache.CoveredPropertyNames.Contains(property))
+                {
+                    continue;
+                }
+
+                cache.CoveredPropertyNames.Add(property);
+                    
                 // Checks, whether a form is already existing
                 var column = form
                     .get<IReflectiveCollection>(_FormAndFields._Form.field)
@@ -607,6 +642,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <returns>Created Extent form as MofObject</returns>
         public IElement CreateExtentFormForObject(IObject element, IExtent extent, CreationMode creationMode)
         {
+            var cache = new FormCreatorCache();
+            
             var extentForm = _factory.create(_formAndFields.__ExtentForm);
             extentForm.set(_FormAndFields._ExtentForm.name, NamedElementMethods.GetName(element));
             var objectMetaClass = (element as IElement)?.getMetaClass();
@@ -678,7 +715,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                     foreach (var item in elementsWithoutMetaClass)
                     {
-                        AddToForm(form, item, creationMode);
+                        AddToForm(form, item, creationMode, cache);
                     }
 
                     tabs.Add(form);

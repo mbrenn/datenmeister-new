@@ -18,7 +18,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// <summary>
     /// Implements the extent interface according the MOF specification
     /// </summary>
-    public class MofExtent : IExtent, IHasWorkspace
+    public class MofExtent : IExtent, IHasWorkspace, IObjectAllProperties
     {
         /// <summary>
         /// This type lookup can be used to convert the instances of the .Net types to real MOF meta classes. 
@@ -483,6 +483,11 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             return result;
+        }
+
+        public IEnumerable<string> getPropertiesBeingSet()
+        {
+            return Provider.Get(null).GetProperties();
         }
     }
 }

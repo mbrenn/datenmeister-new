@@ -226,7 +226,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             NavigateToElement(element);
         }
-
+        
         /// <summary>
         ///     Evaluates the extent form by passing through the tabs and creating the necessary views of each tab
         ///     If the subform is constrained by a property or metaclass, the collection itself is filtered within the

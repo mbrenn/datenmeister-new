@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems;
@@ -71,7 +72,7 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
                 }
 
                 listFields.Add(
-                    new HtmlTableCell(field.getOrDefault<string>(_FormAndFields._FieldData.title) ?? "unset")
+                    new HtmlTableCell(field.getOrDefault<string>(_FormAndFields._FieldData.title ?? "unset"))
                         {IsHeading = true});
             }
 
@@ -137,6 +138,10 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
         private static void CreateRowForFields(IObject item, IObject form, HtmlTable table)
         {
             var fields = form.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field);
+            if (fields == null)
+            {
+                throw  new InvalidOperationException("Fields are null...");
+            }
             foreach (var field in fields.OfType<IElement>())
             {
                 var fieldName = field.getOrDefault<string>(_FormAndFields._FieldData.name);

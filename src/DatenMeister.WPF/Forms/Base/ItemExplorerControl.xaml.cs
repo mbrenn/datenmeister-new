@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms.VisualStyles;
 using Autofac;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -25,6 +27,11 @@ namespace DatenMeister.WPF.Forms.Base
     public partial class ItemExplorerControl : UserControl, 
         INavigationGuest, ICanUnregister, IExtentNavigationGuest, ICollectionNavigationGuest, IItemNavigationGuest
     {
+        /// <summary>
+        /// Stores the logger
+        /// </summary>
+        private ClassLogger _logger = new ClassLogger(typeof(ItemExplorerControl));
+        
         /// <summary>
         ///     Stores the information about the active tab controls
         /// </summary>
@@ -178,9 +185,15 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="items"></param>
         public void SetItems(IReflectiveCollection items)
         {
+            var watch = new Stopwatch();
+            watch.Start();
+            
             Items = items;
             UpdateTreeContent();
             RecreateViews();
+            
+            watch.Stop();
+            _logger.Info(watch.ElapsedMilliseconds.ToString("n0") + "ms required for form creation");
         }
 
         /// <summary>

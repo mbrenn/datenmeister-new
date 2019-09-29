@@ -153,14 +153,14 @@ namespace DatenMeister.WPF.Forms.Base
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
             // Clears the info lines
-            void ViewExtent(IExtent extent)
+            void ViewCollection(IReflectiveCollection reflectiveCollection)
             {
                 var dlg = new ItemXmlViewWindow
                 {
                     Owner = Window.GetWindow(this)
                 };
                 
-                dlg.UpdateContent(extent.elements());
+                dlg.UpdateContent(reflectiveCollection);
                 dlg.ShowDialog();
             }
 
@@ -244,9 +244,9 @@ namespace DatenMeister.WPF.Forms.Base
                     ButtonPosition.Before);
 
             yield return
-                new ExtentMenuButtonDefinition(
+                new CollectionMenuButtonDefinition(
                     "View as Xmi",
-                    ViewExtent,
+                    ViewCollection,
                     null,
                     "Collection");
 

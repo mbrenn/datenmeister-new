@@ -35,6 +35,8 @@ namespace DatenMeister.WPF.Navigation
 
         public const string Views = "Views";
 
+        public const string Extents = "Extent";
+
         /// <summary>
         /// Defines the order of the ribbon for standard items.
         /// All other ribbons will be stored after that

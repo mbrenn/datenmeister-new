@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using Autofac;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.InMemory;
@@ -20,7 +21,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
     /// </summary>
     public class ImportExtentViewExtensions : IViewExtensionFactory
     {
-        private ImportExtentManagerPlugin _plugin;
+        private readonly ImportExtentManagerPlugin _plugin;
 
         public ImportExtentViewExtensions(ImportExtentManagerPlugin plugin)
         {
@@ -32,27 +33,27 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
             if (viewExtensionTargetInformation.NavigationGuest is ItemsInExtentList itemInExtentList)
             {
                 // Adds the import elements
-                yield return new ApplicationMenuButtonDefinition(
+                yield return new ExtentMenuButtonDefinition(
                     "Import existing Extent",
                     ImportExistingExtent,
                     null,
-                    NavigationCategories.DatenMeister + ".Import");
+                    NavigationCategories.Extents + ".Import");
 
-                yield return new ApplicationMenuButtonDefinition(
+                yield return new ExtentMenuButtonDefinition(
                     "Import new Extent",
                     ImportNewExtent,
                     null,
-                    NavigationCategories.DatenMeister + ".Import");
+                    NavigationCategories.Extents + ".Import");
 
-                yield return new ApplicationMenuButtonDefinition(
+                yield return new ExtentMenuButtonDefinition(
                     "Import from Clipboard",
                     null,
                     null,
-                    NavigationCategories.DatenMeister + ".Import");
+                    NavigationCategories.Extents + ".Import");
             }
 
             // Imports the existing extent
-            async void ImportExistingExtent()
+            async void ImportExistingExtent(IExtent extent)
             {
                 var controlNavigation = await NavigatorForItems.NavigateToElementDetailViewAsync(
                     viewExtensionTargetInformation.NavigationHost,
@@ -89,7 +90,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     var uri = selectedExtent.getOrDefault<string>(_ManagementProvider._Extent.uri);
 
                     // Gets the extent from which the data shall be imported
-                    var sourceExtent  = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
+                    var sourceExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
 
                     var itemCountBefore = sourceExtent.elements().Count();
                     _plugin.PerformImport(sourceExtent, itemInExtentList.Items);
@@ -99,7 +100,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                 };
             }
 
-            async void ImportNewExtent()
+            async void ImportNewExtent(IExtent extent)
             {
                 var result = await WorkspaceExtentFormGenerator.QueryExtentConfigurationByUserAsync(viewExtensionTargetInformation.NavigationHost);
                 if (result == null)
@@ -123,9 +124,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     {
                         MessageBox.Show("Extent could not be loaded");
                     }
-
                 }
-
             }
         }
     }

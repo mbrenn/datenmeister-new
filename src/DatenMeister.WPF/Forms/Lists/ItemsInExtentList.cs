@@ -186,7 +186,8 @@ namespace DatenMeister.WPF.Forms.Lists
                 tabItems,
                 new ViewDefinition(form)
                 {
-                    ViewExtensions = viewExtensions
+                    ViewExtensions = 
+                        viewExtensions.Union(viewDefinition.ViewExtensions).ToList()
                 });
         }
 
@@ -220,35 +221,35 @@ namespace DatenMeister.WPF.Forms.Lists
                     "To Extents",
                     () => NavigatorForExtents.NavigateToExtentList(NavigationHost, WorkspaceId),
                     Icons.ExtentsShow,
-                    NavigationCategories.DatenMeister + ".Workspaces"));
+                    NavigationCategories.DatenMeister + ".Navigation"));
 
             viewDefinition.ViewExtensions.Add(
-                new ApplicationMenuButtonDefinition(
+                new ExtentMenuButtonDefinition(
                     "Extent Info",
-                    () => NavigatorForExtents.OpenDetailOfExtent(NavigationHost, ExtentUrl),
+                    (x) => NavigatorForExtents.OpenDetailOfExtent(NavigationHost, ExtentUrl),
                     null,
-                    NavigationCategories.DatenMeister + ".Workspaces"));
+                    NavigationCategories.Extents + ".Info"));
 
             viewDefinition.ViewExtensions.Add(
-                new ApplicationMenuButtonDefinition(
+                new ExtentMenuButtonDefinition(
                     "Show as tree",
-                    ShowAsTree,
+                    x=> ShowAsTree(),
                     null,
-                    NavigationCategories.DatenMeister + ".Views"));
+                    NavigationCategories.Extents + ".Info"));
 
             viewDefinition.ViewExtensions.Add(
-                new ApplicationMenuButtonDefinition(
+                new ExtentMenuButtonDefinition(
                     "Export as Xmi",
-                    ExportAsXmi,
+                    x=>ExportAsXmi(),
                     null,
-                    NavigationCategories.DatenMeister + ".Export"));
+                    NavigationCategories.Extents + ".Export"));
 
             viewDefinition.ViewExtensions.Add(
-                new ApplicationMenuButtonDefinition(
+                new ExtentMenuButtonDefinition(
                     "Open Extent-Folder",
-                    OpenExtentFolder,
+                    x=>OpenExtentFolder(),
                     null,
-                    NavigationCategories.DatenMeister + ".Workspaces"));
+                    NavigationCategories.Extents + ".Info"));
 
             // Adds the infoline
             viewDefinition.ViewExtensions.Add(

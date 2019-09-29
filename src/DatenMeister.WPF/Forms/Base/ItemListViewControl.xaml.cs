@@ -332,7 +332,7 @@ namespace DatenMeister.WPF.Forms.Base
         public void SetContent(
             IReflectiveCollection items, 
             IObject formDefinition,
-            ICollection<ViewExtension> viewExtensions)
+            IEnumerable<ViewExtension> viewExtensions)
         {
             _viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             UnregisterCurrentChangeEventHandle();

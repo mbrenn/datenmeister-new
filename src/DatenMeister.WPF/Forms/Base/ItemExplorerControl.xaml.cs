@@ -30,7 +30,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Stores the logger
         /// </summary>
-        private ClassLogger _logger = new ClassLogger(typeof(ItemExplorerControl));
+        private readonly ClassLogger _logger = new ClassLogger(typeof(ItemExplorerControl));
         
         /// <summary>
         ///     Stores the information about the active tab controls
@@ -285,7 +285,7 @@ namespace DatenMeister.WPF.Forms.Base
         public ItemExplorerTab AddTab(
             IReflectiveCollection collection, 
             IElement form,
-            ICollection<ViewExtension> viewExtensions)
+            IEnumerable<ViewExtension> viewExtensions)
         {
             // Gets the default view for the given tab
             var name = form.getOrDefault<string>(_FormAndFields._Form.title) ??
@@ -296,6 +296,8 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 NavigationHost = NavigationHost
             };
+
+            viewExtensions = viewExtensions.Union(control.GetViewExtensions());
 
             var tabControl = new ItemExplorerTab(form)
             {

@@ -23,6 +23,7 @@ namespace DatenMeister.WPF.Windows
         public NavigationScope NavigationScope
         {
             get;
+            set;
         }
         
         /// <summary>

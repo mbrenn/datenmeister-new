@@ -78,11 +78,11 @@ namespace DatenMeister.WPF.Windows
             // If the main window is the datenmeister, then skip 
             // this navigational element because the standard menu does not contain
             // sufficient hierarchical depth
-            if (tabName == NavigationCategories.DatenMeister)
+            /*if (tabName == NavigationCategories.DatenMeister)
             {
                 tabName = groupName;
                 groupName = null;
-            }
+            }*/
 
             var tab = _menu.Items.OfType<MenuItem>().FirstOrDefault(x => x.Header?.ToString() == tabName);
             if (tab == null)
@@ -158,6 +158,7 @@ namespace DatenMeister.WPF.Windows
         private void ClearNavigationButtons()
         {
             _menu.Items.Clear();
+            _buttons.Clear();
         }
 
         public void EvaluateExtensions(IEnumerable<ViewExtension> viewExtensions)

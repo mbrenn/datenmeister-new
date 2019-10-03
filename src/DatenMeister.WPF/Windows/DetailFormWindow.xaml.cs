@@ -158,7 +158,8 @@ namespace DatenMeister.WPF.Windows
 
             // The menuhelper itself is asked to work upon the view
             MenuHelper.Item = DetailElement;
-            MenuHelper.ShowApplicationItems = false;
+            MenuHelper.ShowApplicationItems = true;
+            MenuHelper.NavigationScope = NavigationScope.Application | NavigationScope.Item;
             MenuHelper.EvaluateExtensions(extensionList);
         }
 
@@ -254,7 +255,7 @@ namespace DatenMeister.WPF.Windows
             }
 
             var width = control.EffectiveForm.getOrDefault<double>(_FormAndFields._DetailForm.defaultWidth);
-            var height = control.EffectiveForm.getOrDefault<double>(_FormAndFields._DetailForm.defaultWidth);
+            var height = control.EffectiveForm.getOrDefault<double>(_FormAndFields._DetailForm.defaultHeight);
             if (width <= 0 && height <= 0)
             {
                 width = 1000;

@@ -25,7 +25,7 @@ namespace DatenMeister.Modules.TypeSupport
     /// of the DatenMeister and will not be stored into 
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
-    [PluginLoading(PluginLoadingPosition.AfterBootstrapping|PluginLoadingPosition.AfterInitialization)]
+    [PluginLoading(PluginLoadingPosition.AfterBootstrapping|PluginLoadingPosition.AfterLoadingOfExtents)]
     public class LocalTypeSupport : IDatenMeisterPlugin
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(LocalTypeSupport));
@@ -73,7 +73,7 @@ namespace DatenMeister.Modules.TypeSupport
                 case PluginLoadingPosition.AfterBootstrapping:
                     CreateInternalTypeExtent();
                     break;
-                case PluginLoadingPosition.AfterInitialization:
+                case PluginLoadingPosition.AfterLoadingOfExtents:
                     // Creates the extent for the user types which is permanently stored on disk. The user is capable to create his own types
                     CreatesUserTypeExtent();
                     break;

@@ -206,6 +206,9 @@ namespace DatenMeister.Integration
 
                 // Includes the extent for the helping extents
                 ManagementProviderHelper.Initialize(workspaceLogic);
+                
+                // Finally loads the plugin
+                pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterInitialization);
 
                 // Boots up the typical DatenMeister Environment by loading the data
                 if (_settings.EstablishDataEnvironment)
@@ -231,7 +234,7 @@ namespace DatenMeister.Integration
                 }
 
                 // Finally loads the plugin
-                pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterInitialization);
+                pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterLoadingOfExtents);
 
                 // After the plugins are loaded, check the extent storage types and create the corresponding internal management types
                 var extentManager = scope.Resolve<IExtentManager>();

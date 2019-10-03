@@ -22,7 +22,7 @@ namespace DatenMeister.Modules.ViewFinder
     /// Defines the access to the view logic and abstracts the access to the view extent
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
-    [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterInitialization)]
+    [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
     public class ViewLogic : IDatenMeisterPlugin
     {
         /// <summary>
@@ -63,7 +63,7 @@ namespace DatenMeister.Modules.ViewFinder
                     _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
                     break;
 
-                case PluginLoadingPosition.AfterInitialization:
+                case PluginLoadingPosition.AfterLoadingOfExtents:
                     _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
                         WorkspaceNames.NameManagement,
                         WorkspaceNames.UriUserViewExtent,

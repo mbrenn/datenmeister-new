@@ -22,7 +22,7 @@ namespace DatenMeister.Modules.ZipExample
         private readonly ZipCodeModel _zipCodeModel;
 
         public ZipCodeExampleManager(
-            IWorkspaceLogic workspaceLogic, 
+            IWorkspaceLogic workspaceLogic,
             IExtentManager extentManager,
             ZipCodeModel zipCodeModel)
         {
@@ -68,10 +68,17 @@ namespace DatenMeister.Modules.ZipExample
                 }
             } while (File.Exists(filename));
 
+            // Copies the example file to a new extent
             var originalFilename = Path.Combine(appBase, "Examples", "plz.csv");
+            if (!File.Exists(originalFilename))
+            {
+                throw new InvalidOperationException(
+                    $"The example files are not stored in folder: \r\n{originalFilename}");
+            }
 
             File.Copy(originalFilename, filename);
-
+            
+            // Creates the configuration
             var defaultConfiguration = new CSVExtentLoaderConfig
             {
                 extentUri = $"datenmeister:///zipcodes/{randomNumber}",

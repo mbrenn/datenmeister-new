@@ -6,7 +6,7 @@ using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.DataViews
 {
-    [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterInitialization)]
+    [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
     public class DataViewPlugin : IDatenMeisterPlugin
     {
         private readonly LocalTypeSupport _localTypeSupport;
@@ -53,7 +53,7 @@ namespace DatenMeister.Modules.DataViews
                     workspace.ExtentPlugins.Add(new DataViewExtentPlugin(_workspaceLogic, _dataViewLogic));
 
                     break;
-                case PluginLoadingPosition.AfterInitialization:
+                case PluginLoadingPosition.AfterLoadingOfExtents:
                     _localTypeSupport.AddInternalTypes(GetTypes(), DataViewLogic.PackagePathTypesDataView);
                     break;
             }

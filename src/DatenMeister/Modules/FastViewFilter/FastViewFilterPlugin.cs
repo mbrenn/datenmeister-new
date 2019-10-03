@@ -7,7 +7,7 @@ namespace DatenMeister.Modules.FastViewFilter
     /// <summary>
     /// Implements the plugin adding the fast views
     /// </summary>
-    [PluginLoading(PluginLoadingPosition.AfterInitialization)]
+    [PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]
     public class FastViewFilterPlugin : IDatenMeisterPlugin
     {
         /// <summary>

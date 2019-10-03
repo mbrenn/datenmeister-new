@@ -270,7 +270,7 @@ namespace DatenMeister.Core.Plugins
         private PluginLoadingPosition GetPluginEntry(Type plugin)
         {
             var attribute = GetPluginLoadingAttribute(plugin);
-            return attribute?.PluginLoadingPosition ?? PluginLoadingPosition.AfterInitialization;
+            return attribute?.PluginLoadingPosition ?? PluginLoadingPosition.AfterLoadingOfExtents;
         }
 
         /// <summary> 

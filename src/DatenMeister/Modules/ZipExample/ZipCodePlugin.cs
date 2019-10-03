@@ -1,8 +1,6 @@
 ﻿using Autofac;
 using DatenMeister.Core.Plugins;
-using DatenMeister.DotNet;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Provider.DotNet;
 using DatenMeister.UserInteractions;
 
 namespace DatenMeister.Modules.ZipExample
@@ -10,6 +8,7 @@ namespace DatenMeister.Modules.ZipExample
     /// <summary>
     /// Integrates the zip code example into the DatenMeister framework
     /// </summary>
+    [PluginLoading(PluginLoadingPosition.AfterInitialization)]
     public class ZipCodePlugin : IDatenMeisterPlugin
     {
         private readonly LocalTypeSupport _localTypeSupport;
@@ -40,8 +39,11 @@ namespace DatenMeister.Modules.ZipExample
 
         public void Start(PluginLoadingPosition position)
         {
-            // Load Resource 
-            _zipCodeModel.ZipCode =_localTypeSupport.AddInternalType(ZipCodeModel.PackagePath, typeof(ZipCode));
+            if (position == PluginLoadingPosition.AfterInitialization)
+            {
+                // Load Resource 
+                _zipCodeModel.ZipCode = _localTypeSupport.AddInternalType(ZipCodeModel.PackagePath, typeof(ZipCode));
+            }
         }
     }
 }
